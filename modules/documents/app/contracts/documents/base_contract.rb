@@ -37,7 +37,8 @@ module Documents
     end
 
     attribute :project
-    attribute :category
+    attribute :type
+    attribute :kind
     attribute :title
     attribute :description
     attribute :content_binary

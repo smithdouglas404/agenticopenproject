@@ -92,7 +92,6 @@ export class TimeEntryTimerService {
     }
 
     return this.turboRequestsService.request(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.pathHelperService.timeEntryEditDialog(active.id!),
       { method: 'GET' },
     );

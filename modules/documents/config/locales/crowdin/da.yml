@@ -63,6 +63,7 @@ da:
   label_document_title: "Titel"
   label_document_description: "Beskrivelse"
   label_document_category: "Kategori"
+  label_document_type: "Type"
   permission_manage_documents: "Håndter dokumenter"
   permission_view_documents: "Se dokumenter"
   project_module_documents: "Dokumenter"

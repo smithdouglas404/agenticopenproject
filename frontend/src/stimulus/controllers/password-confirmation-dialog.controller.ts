@@ -83,7 +83,7 @@ export default class PasswordConfirmationDialogController extends ApplicationCon
           input.type = 'hidden';
           input.id = 'hidden_password_confirmation';
           input.name = '_password_confirmation';
-          input.value = modal.password_confirmation as string;
+          input.value = modal.password_confirmation!;
 
           form.append(input);
           form.requestSubmit(event?.submitter);

@@ -28,6 +28,7 @@ jobs:
           # branch should not be protected
           branch: 'main'
           allowlist: >
+            Copilot,
             Daten-David,
             EinLama,
             HDinger,
@@ -46,6 +47,7 @@ jobs:
             bsatarnejad,
             cbliard,
             copilot[bot],
+            copilot-swe-agent[bot],
             corinnaguenther,
             crohr,
             dependabot[bot],
@@ -54,6 +56,7 @@ jobs:
             dsteiner,
             dtohmucu,
             gleone-art,
+            ihor-khomenko,
             judithroth,
             klaustopher,
             kluedecke,

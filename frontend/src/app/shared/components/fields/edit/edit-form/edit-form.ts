@@ -58,10 +58,10 @@ export abstract class EditForm<T extends HalResource = HalResource> {
   @InjectField() halEvents:HalEventsService;
 
   // All current active (open) edit fields
-  public activeFields:{ [fieldName:string]:EditFieldHandler } = {};
+  public activeFields:Record<string, EditFieldHandler> = {};
 
   // Errors of the last operation (required when adding opening fields afterwards)
-  public errorsPerAttribute:{ [fieldName:string]:string[] } = {};
+  public errorsPerAttribute:Record<string, string[]> = {};
 
   // Reference to the changeset used in this form
   public resource:T;

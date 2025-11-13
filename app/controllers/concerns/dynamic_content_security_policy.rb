@@ -68,8 +68,14 @@ module DynamicContentSecurityPolicy
         nil
       end
       if uri.present?
-        append_content_security_policy_directives(connect_src: ["#{uri.scheme}://#{uri.host}"])
+        append_content_security_policy_directives(connect_src: ["#{uri.scheme}://#{host_with_port(uri)}"])
       end
     end
+  end
+
+  def host_with_port(uri)
+    # Include port if it's not the default port for the scheme (necessary for local dev support)
+    default_port = ["wss", "https"].include?(uri.scheme) ? 443 : 80
+    uri.port && uri.port != default_port ? "#{uri.host}:#{uri.port}" : uri.host
   end
 end

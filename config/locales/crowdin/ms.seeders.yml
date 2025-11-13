@@ -43,13 +43,6 @@ ms:
           name: PM2 Magenta
         item_3:
           name: PM2 Hijau Kuning
-      document_categories:
-        item_0:
-          name: Dokumentasi
-        item_1:
-          name: Spesifikasi
-        item_2:
-          name: Lain-lain
       project_query_roles:
         item_0:
           name: Pemerhati pertanyaan projek

@@ -43,13 +43,6 @@ fr:
           name: Magenta PM2
         item_3:
           name: Jaune vert PM2
-      document_categories:
-        item_0:
-          name: Documentation
-        item_1:
-          name: Spécification
-        item_2:
-          name: Autre
       project_query_roles:
         item_0:
           name: Visionneuse de requêtes du projet

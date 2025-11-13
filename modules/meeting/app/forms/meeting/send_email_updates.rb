@@ -33,6 +33,7 @@ class Meeting::SendEmailUpdates < ApplicationForm
     meeting_form.check_box(
       name: "notify",
       label: I18n.t("label_meeting_send_updates"),
+      caption: I18n.t("label_meeting_send_updates_caption"),
       checked: true,
       data: {
         "show-when-checked-target": "cause",
@@ -41,10 +42,9 @@ class Meeting::SendEmailUpdates < ApplicationForm
     )
   end
 
-  def initialize(meeting:, copy_from:)
+  def initialize(meeting:)
     super()
 
     @meeting = meeting
-    @copy_from = copy_from
   end
 end

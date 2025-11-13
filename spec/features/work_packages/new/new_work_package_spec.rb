@@ -421,20 +421,18 @@ RSpec.describe "new work package", :js do
     let(:user) { create(:user, member_with_roles: { project => role }) }
     let(:wp_page) { Pages::Page.new }
 
-    let(:paths) do
-      [
-        new_work_packages_path,
-        new_split_work_packages_path,
-        new_project_work_packages_path(project),
-        new_split_project_work_packages_path(project)
-      ]
-    end
-
     it "shows a 403 error on creation paths" do
-      paths.each do |path|
-        visit path
-        wp_page.expect_toast(type: :error, message: I18n.t("api_v3.errors.code_403"))
-      end
+      visit new_work_package_path
+      wp_page.expect_flash(type: :error, message: I18n.t(:notice_not_authorized))
+
+      visit new_project_work_packages_path(project)
+      wp_page.expect_flash(type: :error, message: I18n.t(:notice_not_authorized))
+
+      visit new_split_work_packages_path
+      wp_page.expect_toast(type: :error, message: I18n.t("api_v3.errors.code_403"))
+
+      visit new_split_project_work_packages_path(project)
+      wp_page.expect_toast(type: :error, message: I18n.t("api_v3.errors.code_403"))
     end
   end
 
@@ -470,7 +468,7 @@ RSpec.describe "new work package", :js do
 
     let(:paths) do
       [
-        new_work_packages_path,
+        new_work_package_path,
         new_split_work_packages_path,
         new_project_work_packages_path(project),
         new_split_project_work_packages_path(project)
@@ -522,22 +520,6 @@ RSpec.describe "new work package", :js do
       split_create_page.expect_attributes(combinedDate: "no start date - #{parent.due_date.strftime('%m/%d/%Y')}")
 
       expect(split_create_page).to have_test_selector("op-wp-breadcrumb", text: "Parent:\n#{parent.subject}")
-    end
-
-    it "can navigate to the fullscreen page (Regression #49565)" do
-      work_packages_page.visit_index
-
-      context_menu.open_for(parent)
-      context_menu.choose("Create new child")
-
-      subject_field = split_create_page.edit_field(:subject)
-      subject_field.set_value "My subtask"
-
-      find(".work-packages-show-view-button").click
-
-      expect(split_create_page).not_to have_alert_dialog
-      subject_field = wp_page_create.edit_field(:subject)
-      subject_field.expect_value "My subtask"
     end
   end
 end

@@ -83,31 +83,17 @@ RSpec.describe "Meeting requests",
       end
     end
 
-    describe "send_notifications" do
-      let(:params) { { notify: } }
+    describe "does not send notifications" do
+      before do
+        post meetings_path(project),
+             params: base_params
 
-      context "when enabled" do
-        let(:notify) { "1" }
-
-        before do
-          post meetings_path(project),
-               params: base_params.deep_merge(meeting: params)
-
-          Meeting.find_by(title: "Copied meeting")
-          perform_enqueued_jobs
-        end
-
-        it "sends out emails" do
-          expect(ActionMailer::Base.deliveries.size).to eq 1
-        end
+        Meeting.find_by(title: "Copied meeting")
+        perform_enqueued_jobs
       end
 
-      context "when disabled" do
-        let(:notify) { "0" }
-
-        it "sends out no emails" do
-          expect(ActionMailer::Base.deliveries).to be_empty
-        end
+      it do
+        expect(ActionMailer::Base.deliveries.size).to eq 0
       end
     end
 

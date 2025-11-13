@@ -676,6 +676,57 @@ cs:
     memberships:
       no_results_title_text: Tento uživatel není v současné době členem projektu.
     open_profile: "Otevřít profil"
+    invite_user_modal:
+      invite: "Pozvat"
+      title:
+        invite: "Pozvat uživatele"
+        invite_to_project: "Pozvat %{type} do %{project}"
+        invite_principal_to_project: "Pozvat %{principal} do %{project}"
+      project:
+        label: "Projekt"
+        required: "Vyberte projekt"
+        next_button: "Další"
+        no_results: "Nebyly nalezeny žádné projekty"
+        no_invite_rights: "Nejste oprávněni pozvat členy do tohoto projektu"
+      type:
+        required: "Vyberte prosím typ, který chcete pozvat"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Oprávnění založená na přiřazené roli ve vybraném projektu"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Oprávnění založená na přiřazené roli ve vybraném projektu"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "placeholder uživatel (pouze funkce Enterprise Edition)"
+          description: "Nemá přístup k projektu a nejsou odesílány žádné e-maily."
+        already_member_message: "Už jsi členem %{project}"
+      principal:
+        no_results_user: "Nebyli nalezeni žádní uživatelé"
+        invite_user: "Pozvat"
+        no_results_placeholder: "Nebyly nalezeny žádné placeholdery"
+        create_new_placeholder: "Vytvořit nový placeholder"
+        no_results_group: "Nebyly nalezeny žádné skupiny"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Vyberte prosím uživatele"
+          placeholder: "Vyberte prosím placeholder"
+          group: "Zvolte prosím skupinu."
+      role:
+        label: "Role v %{project}"
+        no_roles_found: "Nebyly nalezeny žádné role."
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Vyberte prosím roli"
+      message:
+        label: "Pozvánka"
+        description: "Pošleme uživateli e-mail, ke kterému můžete přidat osobní zprávu. Vysvětlení pozvánky by mohlo být užitečné, nebo pár informací o projektu, které by jim pomohly začít."
+      summary:
+        next_button: "Odeslat pozvánku"
+      success_message:
+        user: "Uživatel se nyní může přihlásit do %{project}. Mezitím již můžete s tímto uživatelem plánovat a přiřazovat například pracovní balíčky."
+        placeholder_user: "Zástupného uživatele lze nyní použít v %{project}. Mezitím již můžete plánovat s tímto uživatelem a přiřadit mu například pracovní balíčky."
+        group: "Skupina je nyní součástí %{project}. Mezitím již můžete s touto skupinou plánovat a přiřadit například pracovní balíčky."
   page:
     text: "Text"
   placeholder_users:
@@ -1104,7 +1155,7 @@ cs:
         enabled_modules: "Povolené moduly"
         identifier: "Identifikátor"
         latest_activity_at: "Poslední aktivita"
-        parent: "Nadřazený projekt"
+        parent: "Podprojekt"
         public_value:
           title: "Viditelnost"
           true: "veřejný"
@@ -1260,6 +1311,9 @@ cs:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Denní připomenutí"
         workdays: "Pracovní dny"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Jméno nebo e-mailová adresa"
       version:
         effective_date: "Datum dokončení"
         sharing: "Sdílení"
@@ -1456,7 +1510,7 @@ cs:
         meeting:
           error_conflict: "Nelze uložit, protože schůzku mezitím aktualizoval někdo jiný. Znovu načtěte stránku."
         notifications:
-          at_least_one_channel: "Pro odesílání notifikací musí být specifikován alespoň jeden kanál"
+          at_least_one_channel: "Alespoň jeden kanál pro odesílání oznámení musí být specifikován."
           attributes:
             read_ian:
               read_on_creation: "nelze nastavit na pravdivé při vytváření oznámení "
@@ -1749,11 +1803,11 @@ cs:
       member: "Člen"
       news: "Novinky"
       notification:
-        one: "Notifikace"
-        few: "Notifikací"
-        many: "Notifikací"
-        other: "Notifikace"
-      placeholder_user: "Placeholder uživatel"
+        one: "Oznámení"
+        few: "Oznámení"
+        many: "Oznámení"
+        other: "Oznámení"
+      placeholder_user: "placeholder uživatel"
       project:
         one: "Projekt"
         few: "Projekty"
@@ -2617,7 +2671,7 @@ cs:
       attribute_not_found: "atribut nenalezen: %{attribute}"
       model_not_found: "neplatný atributový model: %{model}"
       resource_not_found: "zdroj nebyl nalezen: %{resource}"
-      rich_text_unsupported: "Vložení Rich textu v současné době není při exportu podporováno"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: h
       days: d
@@ -2772,7 +2826,7 @@ cs:
   instructions_after_error: "Zkuste se znovu přihlásit kliknutím na %{signin}. Pokud chyba přetrvává, požádejte správce o pomoc."
   menus:
     admin:
-      mail_notification: "E-mailové notifikace"
+      mail_notification: "E-mailová upozornění"
       mails_and_notifications: "E-maily a oznámení"
       aggregation: "Agregace"
       api_and_webhooks: "API & Webhooky"
@@ -2836,7 +2890,7 @@ cs:
       by_project: "Nepřečteno dle projektu"
       by_reason: "Důvod"
       inbox: "Doručená pošta"
-    send_notifications: "Pro tuto akci odeslat notifikaci"
+    send_notifications: "Odeslat oznámení pro tuto akci"
     work_packages:
       subject:
         created: "Pracovní balíček byl vytvořen."
@@ -3275,9 +3329,9 @@ cs:
   label_permissions: "Práva"
   label_permissions_report: "Přehled oprávnění"
   label_personalize_page: "Přizpůsobit tuto stránku"
-  label_placeholder_user: "Placeholder uživatel"
+  label_placeholder_user: "placeholder uživatel"
   label_placeholder_user_new: ""
-  label_placeholder_user_plural: "Placeholder uživatelé"
+  label_placeholder_user_plural: "placeholder uživatelé"
   label_planning: "Plánování"
   label_please_login: "Přihlaste se prosím"
   label_plugins: "Pluginy"
@@ -3300,7 +3354,7 @@ cs:
   label_project_attribute_plural: "Atributy projektu"
   label_project_attribute_manage_link: "Správa atributů produktu"
   label_project_count: "Celkový počet projektů"
-  label_project_copy_notifications: "Během kopírování projektu odeslat notifikace e-mailem"
+  label_project_copy_notifications: "Během kopie projektu odeslat oznámení e-mailem"
   label_project_latest: "Nejnovější projekty"
   label_project_default_type: "Povolit prázdný typ"
   label_project_hierarchy: "Hierarchie projektu"
@@ -3460,7 +3514,7 @@ cs:
   label_version_new: "Nová verze"
   label_version_edit: "Upravit verzi"
   label_version_plural: "Verze"
-  label_version_sharing_descendants: "S podprojekty"
+  label_version_sharing_descendants: "S Podprojekty"
   label_version_sharing_hierarchy: "S hierarchií projektu"
   label_version_sharing_none: "Není sdíleno"
   label_version_sharing_system: "Se všemi projekty"
@@ -3568,28 +3622,28 @@ cs:
     digests:
       including_mention_singular: "včetně zmínky"
       including_mention_plural: "včetně %{number_mentioned} zmínění"
-      unread_notification_singular: "1 nepřečtená notifikace"
-      unread_notification_plural: "%{number_unread} nepřečtených notifikací"
+      unread_notification_singular: "1 nepřečtené oznámení"
+      unread_notification_plural: "%{number_unread} nepřečtených oznámení"
       you_have: "Máte"
     logo_alt_text: "Logo"
     mention:
       subject: "%{user_name} vás zmínil v #%{id} - %{subject}"
     notification:
-      center: "Centrum notifikací"
+      center: "Centrum oznámení"
       see_in_center: "Zobrazit komentář v oznamovacím centru"
       settings: "Změnit nastavení e-mailu"
     salutation: "Ahoj %{user}!"
     salutation_full_name: "Jméno a příjmení"
     work_packages:
       created_at: "Vytvořeno v %{timestamp} uživatelem %{user} "
-      login_to_see_all: "Přihlaste se pro zobrazení všech notifikací."
+      login_to_see_all: "Přihlaste se pro zobrazení všech oznámení."
       mentioned: "Byli jste <b>zmíněni v komentáři</b>"
       mentioned_by: "%{user} vás zmínil v komentáři OpenProject"
       more_to_see:
-        one: "Existuje ještě 1 pracovní balíček s notifikací."
-        few: "Existuje ještě %{count} pracovních balíčků s notifikacema."
-        many: "Existuje ještě %{count} pracovních balíčků s notifikacema."
-        other: "Existuje ještě %{count} pracovních balíčků s notifikacema."
+        one: "Máte ještě 1 pracovní balíček s notifikací."
+        few: "Existuje ještě  %{count}  pracovních balíčků s oznámeními."
+        many: "Máte ještě  %{count}  pracovních balíčků s notifikacemi."
+        other: "Existuje ještě  %{count}  pracovních balíčků s oznámeními."
       open_in_browser: "Otevřít v prohlížeči"
       reason:
         watched: "Sledováno"
@@ -3598,7 +3652,7 @@ cs:
         mentioned: "Zmíněné"
         shared: "Sdílené"
         subscribed: "vše"
-        prefix: "Obdrženo z důvodu nastavení notifikací: %{reason}"
+        prefix: "Obdrženo z důvodu nastavení oznámení: %{reason}"
         date_alert_start_date: "Upozornění na datum"
         date_alert_due_date: "Upozornění na datum"
         reminder: "Připomínka"
@@ -3873,6 +3927,9 @@ cs:
   permission_edit_wiki_pages: "Upravit stránky wiki"
   permission_export_work_packages: "Exportovat pracovní balíčky"
   permission_export_wiki_pages: "Exportovat Wiki stránky"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Seznam příloh"
   permission_log_own_time: "Zaznamenat vlastní čas"
   permission_log_time: "Čas záznamu pro ostatní uživatele"
@@ -3892,7 +3949,7 @@ cs:
   permission_move_work_packages: "Přesun pracovních balíčků"
   permission_protect_wiki_pages: "Ochrana stránky wiki"
   permission_rename_wiki_pages: "Přejmenovat stránky wiki"
-  permission_save_queries: "Uložit zobrazení"
+  permission_save_queries: "Uložit pohled"
   permission_search_project: "Hledat projekt"
   permission_select_custom_fields: "Vybrat vlastní pole"
   permission_select_project_custom_fields: "Vyberte atributy projektu"
@@ -3902,6 +3959,9 @@ cs:
   permission_share_work_packages: "Sdílet pracovní balíčky"
   permission_manage_types: "Vyberte typy"
   permission_manage_own_reminders: "Vytvořit vlastní připomenutí"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Zobrazit projekty"
   permission_view_changesets: "Zobrazit revize repozitáře v OpenProject"
   permission_view_internal_comments: "View internal comments"
@@ -4262,7 +4322,7 @@ cs:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Čas vypršení sezení při neaktivitě"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Hodnota menší než 5 funguje jako zakázáno"
   setting_session_ttl_enabled: "Platnost relace vyprší"
   setting_start_of_week: "Začátek týdne"
@@ -4342,7 +4402,7 @@ cs:
       enable_subscriptions_text_html: Umožňuje uživatelům s nezbytnými oprávněními přihlásit se do OpenProject kalendářů a získat přístup k informacím o pracovním balíčku prostřednictvím externího klienta kalendáře. <strong>Poznámka:</strong> Před povolením si prosím přečtěte <a href="%{link}" target="_blank">podrobnosti o odběru</a>.
     language_name_being_default: "%{language_name} (výchozí)"
     notifications:
-      events_explanation: "Určuje, pro kterou událost je odeslán e-mail. Pracovní balíčky jsou z tohoto seznamu vyloučeny, protože notifikace pro ně mohou být nastavena speciálně pro každého uživatele."
+      events_explanation: "Určuje, pro kterou událost je odeslán e-mail. Pracovní balíčky jsou z tohoto seznamu vyloučeny, protože oznámení pro ně mohou být nastavena speciálně pro každého uživatele."
       delay_minutes_explanation: "Odesílání e-mailu může být pozdrženo, aby bylo uživatelům s nakonfigurovaným v oznámení aplikace před odesláním pošty potvrzeno oznámení. Uživatelé, kteří si přečtou oznámení v aplikaci, nedostanou e-mail pro již přečtené oznámení."
     other: "Ostatní"
     passwords: "Hesla"
@@ -4466,7 +4526,7 @@ cs:
   text_destroy_with_associated: "Existují další objekty, které jsou přiřazeny k pracovním balíčkům a které mají být odstraněny. Tyto objekty jsou následující typy:"
   text_destroy_what_to_do: "Co chcete udělat?"
   text_diff_truncated: "... Toto rozlišení bylo zkráceno, protože přesahuje maximální velikost, kterou lze zobrazit."
-  text_email_delivery_not_configured: "Doručení e-mailu není nakonfigurováno a notifikace jsou zakázány.\nNakonfigurujte váš SMTP server pro jejich povolení."
+  text_email_delivery_not_configured: "Doručení e-mailu není nakonfigurováno a oznámení jsou zakázána.\nNakonfigurujte váš SMTP server pro jejich povolení."
   text_enumeration_category_reassign_to: "Přiřadit je k této hodnotě:"
   text_enumeration_destroy_question: "%{count} objektů je přiřazeno k této hodnotě."
   text_file_repository_writable: "Do adresáře příloh lze zapisovat"

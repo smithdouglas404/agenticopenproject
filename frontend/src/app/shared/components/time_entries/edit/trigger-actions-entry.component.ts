@@ -67,7 +67,7 @@ export class TriggerActionsEntryComponent {
         }
       });
       void this.turboRequestService.request(
-        this.pathHelper.timeEntryEditDialog(entry.id as string),
+        this.pathHelper.timeEntryEditDialog(entry.id!),
         { method: 'GET' },
       );
     });
@@ -93,7 +93,7 @@ export class TriggerActionsEntryComponent {
   }
 
   protected loadEntry():Observable<TimeEntryResource> {
-    const timeEntryId = (this.elementRef.nativeElement as HTMLElement).dataset.entry as string;
+    const timeEntryId = (this.elementRef.nativeElement as HTMLElement).dataset.entry!;
 
     return this
       .apiv3Service

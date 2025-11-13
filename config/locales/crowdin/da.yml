@@ -662,6 +662,57 @@ da:
     memberships:
       no_results_title_text: This user is currently not a member of a project.
     open_profile: "Open profile"
+    invite_user_modal:
+      invite: "Invitér"
+      title:
+        invite: "Invitér bruger"
+        invite_to_project: "Inviter %{type} til %{project}"
+        invite_principal_to_project: "Inviter %{principal} til %{project}"
+      project:
+        label: "Prjoekt"
+        required: "Vælg et projekt"
+        next_button: "Næste"
+        no_results: "Ingen projekter blev fundet"
+        no_invite_rights: "Du har ikke tilladelse til at invitere medlemmer til dette projekt"
+      type:
+        required: "Vælg venligst den type, der skal inviteres"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Tilladelser baseret på den tildelte rolle i det valgte projekt"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Tilladelser baseret på den tildelte rolle i det valgte projekt"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Har ikke adgang til projektet, og ingen e-mails er sendt ud."
+        already_member_message: "Allerede medlem af %{project}"
+      principal:
+        no_results_user: "Ingen brugere blev fundet"
+        invite_user: "Invitér:"
+        no_results_placeholder: "Ingen pladsholdere blev fundet"
+        create_new_placeholder: "Opret ny pladsholder:"
+        no_results_group: "Ingen grupper blev fundet"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Vælg venligst en bruger"
+          placeholder: "Vælg venligst en pladsholder"
+          group: "Vælg venligst en gruppe"
+      role:
+        label: "Rolle i %{project}"
+        no_roles_found: "No roles were found"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Vælg venligst en rolle"
+      message:
+        label: "Invitations besked"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Send invitation"
+      success_message:
+        user: "Brugeren kan nu logge ind for at få adgang til %{project}. I mellemtiden kan du allerede planlægge med den pågældende bruger og tildele arbejdspakker for eksempel."
+        placeholder_user: "Pladsholderen kan nu bruges i %{project}. I mellemtiden kan du allerede planlægge med den pågældende bruger og tildele arbejdspakker for eksempel."
+        group: "Gruppen er nu en del af %{project}. I mellemtiden kan du allerede planlægge med denne gruppe og tildele arbejdspakker for eksempel."
   page:
     text: "Tekst"
   placeholder_users:
@@ -1242,6 +1293,9 @@ da:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Working days"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Navn eller e-mailadresse"
       version:
         effective_date: "Finish date"
         sharing: "Deler"
@@ -2525,7 +2579,7 @@ da:
       attribute_not_found: "attribute not found: %{attribute}"
       model_not_found: "invalid attribute model: %{model}"
       resource_not_found: "resource not found: %{resource}"
-      rich_text_unsupported: "Rich text embedding currently not supported in export"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: h
       days: d
@@ -3778,6 +3832,9 @@ da:
   permission_edit_wiki_pages: "Rediger wiki-sider"
   permission_export_work_packages: "Eksportér arbejdspakker"
   permission_export_wiki_pages: "Eksporter wiki-sider"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Oplist vedhæftninger"
   permission_log_own_time: "Log own time"
   permission_log_time: "Log time for other users"
@@ -3807,6 +3864,9 @@ da:
   permission_share_work_packages: "Share work packages"
   permission_manage_types: "Vælg typer"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "View projects"
   permission_view_changesets: "View repository revisions in OpenProject"
   permission_view_internal_comments: "View internal comments"
@@ -4165,7 +4225,7 @@ da:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Tid inden session udløber ved inaktivitet"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Værdi under 5 fungerer som deaktiveret"
   setting_session_ttl_enabled: "Session udløber"
   setting_start_of_week: "Week starts on"

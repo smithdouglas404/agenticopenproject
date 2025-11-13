@@ -670,6 +670,57 @@ ro:
     memberships:
       no_results_title_text: Acest utilizator nu este în acest moment participant în vreun proiect.
     open_profile: "Open profile"
+    invite_user_modal:
+      invite: "Invită"
+      title:
+        invite: "Invită utilizator"
+        invite_to_project: "Invită %{type} la %{project}"
+        invite_principal_to_project: "Invitați %{principal} la %{project}"
+      project:
+        label: "Proiect"
+        required: "Te rog selectează un proiect"
+        next_button: "Înainte"
+        no_results: "Nu au fost găsite proiecte"
+        no_invite_rights: "Nu aveți voie să invitați membri în acest proiect"
+      type:
+        required: "Te rog selectează tipul de invitat"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permisiuni bazate pe rolul atribuit în proiectul selectat"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permisiuni bazate pe rolul atribuit în proiectul selectat"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Utilizator de tip Placeholder (add-on numai pentru ediția Enterprise)"
+          description: "Nu are acces la proiect și nu se trimite niciun e-mail."
+        already_member_message: "Deja membru al %{project}"
+      principal:
+        no_results_user: "Nu au fost găsiți utilizatori"
+        invite_user: "Invită"
+        no_results_placeholder: "Nu au fost găsiți spații libere"
+        create_new_placeholder: "Creați un nou spațiu rezervat:"
+        no_results_group: "Nu au fost găsite grupuri"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Te rog selectează un utilizator"
+          placeholder: "Te rog selectează un substituent"
+          group: "Te rog selectează un grup"
+      role:
+        label: "Rolul în %{project}"
+        no_roles_found: "Nu au fost găsite roluri"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Te rog selectează un rol"
+      message:
+        label: "Mesaj invitație"
+        description: "Vom trimite un e-mail utilizatorului, la care puteți adăuga un mesaj personal aici. Ar putea fi utilă o explicație pentru invitație sau poate câteva informații despre proiect pentru a-i ajuta să înceapă."
+      summary:
+        next_button: "Trimite invitație"
+      success_message:
+        user: "Utilizatorul se poate autentifica acum pentru a accesa %{project}. Între timp, puteți deja să planificați cu acel utilizator și să atribuiți pachete de lucru, de exemplu."
+        placeholder_user: "Marca de poziție poate fi utilizată acum în %{project}. Între timp, puteți deja să planificați cu acel utilizator și să atribuiți pachete de lucru, de exemplu."
+        group: "Grupul este acum o parte din %{project}. Între timp, puteți deja să planificați cu acest grup și să atribuiți pachete de lucru, de exemplu."
   page:
     text: "Text"
   placeholder_users:
@@ -1252,6 +1303,9 @@ ro:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Zile lucrătoare"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Numele și adresa dvs. de e-mail."
       version:
         effective_date: "Dată finalizare"
         sharing: "Distribuire"
@@ -2572,7 +2626,7 @@ ro:
       attribute_not_found: "attribute not found: %{attribute}"
       model_not_found: "invalid attribute model: %{model}"
       resource_not_found: "resource not found: %{resource}"
-      rich_text_unsupported: "Rich text embedding currently not supported in export"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: h
       days: d
@@ -2983,7 +3037,7 @@ ro:
   label_duplicated_by: "dublat de"
   label_duplicate: "duplicat"
   label_duplicates: "dublează"
-  label_edit: "Editează"
+  label_edit: "Editare"
   label_edit_attribute: "Edit attribute"
   label_edit_x: "Editare: %{x}"
   label_enable_multi_select: "Comutare selecție multiplă"
@@ -3041,7 +3095,7 @@ ro:
   label_global_roles: "Roluri globale"
   label_git_path: "Calea catre directorul .git"
   label_greater_or_equal: ">="
-  label_group_by: "Grupează după"
+  label_group_by: "Grupare după"
   label_group_new: "Grupare nouă"
   label_group: "Grup"
   label_group_named: "Grup %{name}"
@@ -3826,6 +3880,9 @@ ro:
   permission_edit_wiki_pages: "Editare pagini wiki"
   permission_export_work_packages: "Export pachete de lucru"
   permission_export_wiki_pages: "Export pagini wiki"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Listare atașamente"
   permission_log_own_time: "Înregistrare timp propriu"
   permission_log_time: "Înregistrare timp pentru alți utilizatori"
@@ -3855,6 +3912,9 @@ ro:
   permission_share_work_packages: "Partajare pachete de lucru"
   permission_manage_types: "Selectare tipuri"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Vezi proiecte"
   permission_view_changesets: "Vizualizare revizii repo în OpenProject"
   permission_view_internal_comments: "Vezi comentariile interne"
@@ -4215,7 +4275,7 @@ ro:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Durata de inactivitate pentru expirarea sesiunii"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "O valoare sub 5 dezactivează expirarea sesiunii"
   setting_session_ttl_enabled: "Sesiunea expiră"
   setting_start_of_week: "Săptămâna începe pe"

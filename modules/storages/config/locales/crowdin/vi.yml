@@ -119,6 +119,12 @@ vi:
         hide_inactive_folders: 'Ẩn bước các thư mục không hoạt động:'
         remote_folders: 'Đọc nội dung của thư mục nhóm:'
         rename_project_folder: 'Đổi tên thư mục dự án được quản lý:'
+      sharepoint_sync_service:
+        create_folder: 'Tạo thư mục dự án được quản lý:'
+        ensure_root_folder_permissions: 'Thiết lập quyền cho thư mục cơ sở:'
+        hide_inactive_folders: 'Ẩn bước các thư mục không hoạt động:'
+        remote_folders: 'Đọc nội dung của thư mục nhóm:'
+        rename_project_folder: 'Đổi tên thư mục dự án được quản lý:'
     errors:
       messages:
         error: Đã xảy ra lỗi không mong muốn. Vui lòng kiểm tra nhật ký OpenProject để biết thêm thông tin hoặc liên hệ với quản trị viên
@@ -172,6 +178,23 @@ vi:
             remote_folders:
               request_error: OpenProject không thể truy cập ổ đĩa %{drive_id} của bạn. Vui lòng kiểm tra xem cấu hình lưu trữ của bạn có đúng không.
             rename_project_folder:
+              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              forbidden: OpenProject không có quyền truy cập vào %{current_path} để đổi tên nó.
+              not_found: "Không tìm thấy %{current_path}."
+            set_folders_permissions:
+              permission_not_set: không thể thiết lập quyền trên %{path}.
+          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          not_allowed: OpenProject không được phép truy cập ổ đĩa OneDrive của bạn. Vui lòng kiểm tra các quyền được thiết lập trên Ứng dụng Azure.
+          unauthorized: OpenProject không thể đồng bộ với OneDrive. Hãy kiểm tra cấu hình lưu trữ và ứng dụng Azure..
+          user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: '%{folder_name} đã tồn tại ở %{parent_location}.'
+              not_found: "Không tìm thấy %{parent_location}."
+            hide_inactive_folders:
+              permission_not_set: không thể thiết lập quyền trên %{path}.
+            rename_project_folder:
               conflict: OpenProject không thể đổi tên thư mục %{current_path} thành %{project_folder_name} vì đã có một thư mục có cùng tên
               forbidden: OpenProject không có quyền truy cập vào %{current_path} để đổi tên nó.
               not_found: "Không tìm thấy %{current_path}."
@@ -179,7 +202,7 @@ vi:
               permission_not_set: không thể thiết lập quyền trên %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: OpenProject không được phép truy cập ổ đĩa OneDrive của bạn. Vui lòng kiểm tra các quyền được thiết lập trên Ứng dụng Azure.
-          not_found: OpenProject could not find the file on the OneDrive Storage Provider. Please check if it wasn't deleted.
+          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
           unauthorized: OpenProject không thể đồng bộ với OneDrive. Hãy kiểm tra cấu hình lưu trữ và ứng dụng Azure..
           user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
         upload_link_service:

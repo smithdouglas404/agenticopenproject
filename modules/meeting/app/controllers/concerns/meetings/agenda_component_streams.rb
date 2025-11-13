@@ -184,17 +184,6 @@ module Meetings
         end
       end
 
-      def render_base_outcome_component_via_turbo_stream(meeting:, meeting_agenda_item:, meeting_outcome:, edit:)
-        update_via_turbo_stream(
-          component: MeetingAgendaItems::Outcomes::BaseComponent.new(
-            meeting:,
-            meeting_agenda_item:,
-            meeting_outcome:,
-            edit:
-          )
-        )
-      end
-
       def update_list_via_turbo_stream(meeting: @meeting, form_hidden: true, form_type: :simple)
         update_via_turbo_stream(
           component: MeetingAgendaItems::ListComponent.new(
@@ -208,14 +197,18 @@ module Meetings
         update_new_button_via_turbo_stream(disabled: false, meeting:) if form_hidden == true
       end
 
-      def update_item_via_turbo_stream(current_occurrence:, state: :show, meeting_agenda_item: @meeting_agenda_item,
-                                       display_notes_input: nil)
+      def update_item_via_turbo_stream(current_occurrence:,
+                                       state: :show,
+                                       meeting_agenda_item: @meeting_agenda_item,
+                                       presentation_mode: false,
+                                       **)
         update_via_turbo_stream(
           component: MeetingAgendaItems::ItemComponent.new(
             state:,
             meeting_agenda_item:,
-            display_notes_input:,
-            current_occurrence:
+            current_occurrence:,
+            presentation_mode:,
+            **
           )
         )
         update_show_items_via_turbo_stream(current_occurrence:)
@@ -313,6 +306,14 @@ module Meetings
         )
       end
 
+      def update_outcomes_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item)
+        update_via_turbo_stream(
+          component: MeetingAgendaItems::Outcomes::WrapperComponent.new(
+            meeting_agenda_item:
+          )
+        )
+      end
+
       def update_section_via_turbo_stream(meeting_section: @meeting_section, form_hidden: true, form_type: :simple,
                                           force_wrapper: false, state: :show, collapsed: nil, current_occurrence: nil)
         update_via_turbo_stream(
@@ -389,6 +390,11 @@ module Meetings
             )
           )
         end
+      end
+
+      def update_meeting_metadata_via_turbo_stream
+        update_header_component_via_turbo_stream
+        update_sidebar_component_via_turbo_stream
       end
 
       def update_all_via_turbo_stream

@@ -110,7 +110,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
 
   private unregisterGlobalListener:(() => unknown)|undefined;
 
-  public text:{ [key:string]:string } = {
+  public text:Record<string, string> = {
     all_projects: this.I18n.t('js.global_search.all_projects'),
     close_search: this.I18n.t('js.global_search.close_search'),
     current_project_and_all_descendants: this.I18n.t('js.global_search.current_project_and_all_descendants'),
@@ -165,7 +165,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
 
   // detect if click is outside or inside the element
   @HostListener('click', ['$event'])
-  public handleClick(event:JQuery.TriggeredEvent):void {
+  public handleClick(event:MouseEvent):void {
     event.preventDefault();
 
     // handle click on search button
@@ -173,7 +173,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
       if (this.deviceService.isTablet) {
         this.toggleMobileSearch();
         // open ng-select menu on default
-        jQuery('.ng-input input').focus();
+        document.querySelector<HTMLInputElement>('.ng-input input')?.focus();
         // only for mobile and not for all devices!
         // See https://github.com/opf/openproject/commit/a2eb0cd6025f2ecaca00f4ed81c4eb8e9399bd86
         event.stopPropagation();
@@ -228,7 +228,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
       this.toggleTopMenuClass();
     }
 
-    (<HTMLInputElement>document.activeElement).blur();
+    (document.activeElement as HTMLInputElement).blur();
   }
 
   public onClose():void {
@@ -262,7 +262,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   public followItem(item:WorkPackageResource|SearchOptionItem|undefined):void {
     this.selectedItem = item;
     if (item instanceof HalResource) {
-      window.location.href = this.wpPath(item.id as string);
+      window.location.href = this.wpPath(item.id!);
     } else if (item) {
       this.searchInScope(item.projectScope);
     }
@@ -276,12 +276,12 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
 
   // return all project scope items and all items which contain the search term
   public customSearchFn(term:string, item:SearchResultItem):boolean {
-    return item.id === undefined || item.subject.toLowerCase().indexOf(term.toLowerCase()) !== -1;
+    return item.id === undefined || item.subject.toLowerCase().includes(term.toLowerCase());
   }
 
   private autocompleteWorkPackages():Observable<(WorkPackageResource|SearchOptionItem)[]> {
     const query = this.searchTerm;
-    if (query === null || query.match(/^\s+$/)) {
+    if (query === null || /^\s+$/.test(query)) {
       return of([]);
     }
 
@@ -336,7 +336,6 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
             map((collection) => {
               // In case none of the wpIds exist anymore or are not accessible
               // this API call would return five arbitrary work packages, as that's the way valid_subset works
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               return collection.elements.filter((wp) => wpIds.includes(wp.id!));
             })
           );

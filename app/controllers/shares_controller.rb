@@ -289,6 +289,7 @@ class SharesController < ApplicationController
   def load_entity # rubocop:disable Metrics/AbcSize
     if params["work_package_id"]
       @entity = WorkPackage.visible.find(params["work_package_id"])
+      @project = @entity.project
       @sharing_strategy = SharingStrategies::WorkPackageStrategy.new(@entity, user: current_user, query_params:)
     elsif params["project_query_id"]
       @entity = ProjectQuery.visible.find(params["project_query_id"])

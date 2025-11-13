@@ -191,21 +191,24 @@ module Projects::Exports::PDFExport
     end
 
     def write_formattable_attribute(project, attribute, caption)
-      write_project_markdown project.try(attribute), caption
+      write_project_markdown(project, project.try(attribute), caption)
     end
 
     def write_formattable_custom_field(project, custom_field)
       custom_field_value = project.custom_value_for(custom_field)
-      write_project_markdown custom_field_value.value, custom_field.name
+      write_project_markdown(project, custom_field_value.value, custom_field.name)
     end
 
-    def write_project_markdown(value, caption)
+    def write_project_markdown(project, value, caption)
       return if hide_empty_attributes? && value.blank?
 
       write_markdown_label(caption)
       value = Prawn::Text::NBSP if value.blank?
       with_margin(styles.project_markdown_margins) do
-        write_markdown!(value, styles.project_markdown_styling_yml)
+        write_markdown!(
+          apply_markdown_field_macros(value, { project:, user: User.current }),
+          styles.project_markdown_styling_yml
+        )
       end
     end
 

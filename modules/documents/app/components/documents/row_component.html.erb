@@ -44,9 +44,9 @@
       end
     end
 
-    if document.category.present?
+    if document.type.present?
       grid.with_area(:type, tag: :div, color: :subtle, mr: 3, hide: :sm, data: { test_selector: "document-type" }) do
-        render(Primer::Beta::Truncate.new(font_weight: :normal)) { document.category.name }
+        render(Primer::Beta::Truncate.new(font_weight: :normal)) { document.type.name }
       end
     end
 

@@ -49,28 +49,19 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
   end
 
-  shared_examples_for "rendering breadcrumbs" do |breadcrumbs|
-    it "renders #{breadcrumbs.size} breadcrumbs", :aggregate_failures do
-      expect(rendered_component).to have_navigation "Breadcrumb", class: "PageHeader-breadcrumbs" do |nav|
-        expect(nav).to have_list_item count: breadcrumbs.size
-        breadcrumbs.each.with_index do |breadcrumb, i|
-          expect(nav).to have_list_item position: i + 1, text: breadcrumb
-        end
-      end
-    end
-  end
-
   describe "context bar" do
     it "renders context bar" do
       expect(rendered_component).to have_css ".PageHeader-contextBar"
     end
 
-    it "renders current page", with_flag: { new_project_overview: true } do
-      expect(rendered_component).to have_link "Project home", current: "page"
+    it "renders current page without breadcrumbs", with_flag: { new_project_overview: true } do
+      expect(rendered_component).to have_text project.name
+      expect(rendered_component).to have_css ".PageHeader--noBreadcrumb"
     end
 
-    it "renders current page", with_flag: { new_project_overview: false } do
-      expect(rendered_component).to have_link "Overview", current: "page"
+    it "renders current page without breadcrumbs", with_flag: { new_project_overview: false } do
+      expect(rendered_component).to have_text "Overview"
+      expect(rendered_component).to have_css ".PageHeader--noBreadcrumb"
     end
   end
 
@@ -81,30 +72,26 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
 
     context "with Project" do
       it "renders title" do
-        expect(rendered_component).to have_heading "Project home", class: "PageHeader-title"
+        expect(rendered_component).to have_heading project.name, class: "PageHeader-title"
       end
 
-      it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Project home"]
     end
 
     context "with Portfolio" do
       let(:workspace_type) { :portfolio }
 
       it "renders title" do
-        expect(rendered_component).to have_heading "Portfolio home", class: "PageHeader-title"
+        expect(rendered_component).to have_heading project.name, class: "PageHeader-title"
       end
 
-      it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Portfolio home"]
     end
 
     context "with Program" do
       let(:workspace_type) { :program }
 
       it "renders title" do
-        expect(rendered_component).to have_heading "Program home", class: "PageHeader-title"
+        expect(rendered_component).to have_heading project.name, class: "PageHeader-title"
       end
-
-      it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Program home"]
     end
   end
 
@@ -116,8 +103,6 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     it "renders title" do
       expect(rendered_component).to have_heading "Overview", class: "PageHeader-title"
     end
-
-    it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Overview"]
   end
 
   describe "actions" do

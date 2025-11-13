@@ -333,7 +333,6 @@ export class OpProjectIncludeComponent extends UntilDestroyedMixin implements On
     // Replace actually also instantiates if it does not exist, which is handy here
     this.wpTableFilters.replace('project', (projectFilter:QueryFilterInstanceResource) => {
       const projectHrefs = this.selectedProjects;
-      // eslint-disable-next-line no-param-reassign
       projectFilter.values = projectHrefs.map((href:string) => this.halResourceService.createHalResource({ href }, true));
     });
 

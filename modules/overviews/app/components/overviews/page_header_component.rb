@@ -49,7 +49,7 @@ module Overviews
 
     def page_title
       if OpenProject::FeatureDecisions.new_project_overview_active?
-        I18n.t("overviews.label_home", workspace_type: project.workspace_label)
+        project.name
       else
         I18n.t("overviews.label_overview")
       end

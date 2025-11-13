@@ -63,6 +63,7 @@ lt:
   label_document_title: "Pavadinimas"
   label_document_description: "Aprašymas"
   label_document_category: "Kategorija"
+  label_document_type: "Type"
   permission_manage_documents: "Valdyti dokumentus"
   permission_view_documents: "Peržiūrėti dokumentus"
   project_module_documents: "Dokumentai"

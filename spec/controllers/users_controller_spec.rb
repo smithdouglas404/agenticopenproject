@@ -617,7 +617,7 @@ RSpec.describe UsersController do
 
   describe "PATCH #update" do
     shared_let(:user_with_manage_user_global_permission) do
-      create(:user, login: "human-resources", global_permissions: [:manage_user])
+      create(:user, login: "human-resources", global_permissions: %i[view_all_principals manage_user])
     end
     shared_let(:some_user) { create(:user, firstname: "User being updated") }
     shared_let(:some_admin) { create(:admin, firstname: "Admin being updated") }
@@ -787,7 +787,7 @@ RSpec.describe UsersController do
                      current_user: :user
 
     context "with external authentication" do
-      let(:some_user) { create(:user, identity_url: "some:identity") }
+      let(:some_user) { create(:user, :passwordless, identity_url: "some:identity") }
 
       before do
         as_logged_in_user(admin) do
@@ -798,6 +798,21 @@ RSpec.describe UsersController do
 
       it "ignores setting force_password_change" do
         expect(some_user.force_password_change).to be(false)
+      end
+    end
+
+    context "with external authentication and an existing password" do
+      let(:some_user) { create(:user, identity_url: "some:identity") }
+
+      before do
+        as_logged_in_user(admin) do
+          put :update, params: { id: some_user.id, user: { force_password_change: "true" } }
+        end
+        some_user.reload
+      end
+
+      it "accepts setting force_password_change" do
+        expect(some_user.force_password_change).to be(true)
       end
     end
 
@@ -890,9 +905,9 @@ RSpec.describe UsersController do
         end
 
         context "when not login_required", with_settings: { login_required: false } do
-          it "responds with 200" do
+          it "responds with 404" do
             expect(response)
-              .to have_http_status(:ok)
+              .to have_http_status(:not_found)
           end
         end
 

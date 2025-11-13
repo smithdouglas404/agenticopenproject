@@ -38,8 +38,6 @@ See COPYRIGHT and LICENSE files for more details.
   <!-- page specific tags -->
   <%= content_for(:header_tags) if content_for?(:header_tags) %>
   <meta name="current_menu_item" content="<%= current_menu_item %>"/>
-  <%# Disable prefetching for now %>
-  <meta name="turbo-prefetch" content="false">
 </head>
 <%= content_tag :body,
                 class: "#{body_css_classes}  __overflowing_element_container __overflowing_body",
@@ -200,14 +198,10 @@ See COPYRIGHT and LICENSE files for more details.
   }
 
   wrapper.style.display = '';
-<% end %>
 
-<%= nonced_javascript_tag do %>
-  (function($) {
-    // Wrapper for page-specific JS from deprecated inline functions
-    // no longer available with CSP.
-    <%= content_for :additional_js_dom_ready %>
-  }(jQuery));
+  // Wrapper for page-specific JS from deprecated inline functions
+  // no longer available with CSP.
+  <%= content_for :additional_js_dom_ready %>
 <% end %>
 <div class="op-wide-autocomplete-wrapper"></div>
 <%= call_hook :view_layouts_base_body_bottom %>

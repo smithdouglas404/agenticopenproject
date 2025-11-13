@@ -47,5 +47,26 @@ export class GlobalHelpers {
 }
 
 export function getMetaElement(name:string):HTMLMetaElement|null {
-  return document.querySelector(`meta[name=${name}]`);
+  return document.head.querySelector(`meta[name="${CSS.escape(name)}"]`);
+}
+
+export function getMetaContent(name:string):string;
+export function getMetaContent<T extends string|null>(name:string, defaultValue:T):T;
+export function getMetaContent<T extends string|null>(
+  name:string,
+  defaultValue?:T
+):string|T {
+  const content = getMetaElement(name)?.content ?? defaultValue ?? '';
+  return content as string|T;
+}
+
+export function getMetaValue(name:string, key:string):string;
+export function getMetaValue<T extends string|null>(name:string, key:string, defaultValue:T):T;
+export function getMetaValue<T extends string|null>(
+  name:string,
+  key:string,
+  defaultValue?:T
+):string|T {
+  const value = getMetaElement(name)?.dataset[key] ?? defaultValue ?? '';
+  return value as string|T;
 }

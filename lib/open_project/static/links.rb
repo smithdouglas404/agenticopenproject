@@ -117,7 +117,7 @@ module OpenProject
         end
 
         def current_release_notes_link
-          version = OpenProject::VERSION.to_semver(separator: "-", include_special: false)
+          version = OpenProject::VERSION.to_semver(separator: "-")
           "https://www.openproject.org/docs/release-notes/#{version}"
         end
 

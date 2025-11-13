@@ -675,6 +675,57 @@ ru:
     memberships:
       no_results_title_text: Этот пользователь в данный момент в проекте не участвует.
     open_profile: "Открыть профиль"
+    invite_user_modal:
+      invite: "Пригласить"
+      title:
+        invite: "Пригласить пользователя"
+        invite_to_project: "Пригласить %{type} в %{project}"
+        invite_principal_to_project: "Пригласить %{principal} в %{project}"
+      project:
+        label: "Проект"
+        required: "Пожалуйста, выберите проект"
+        next_button: "Следующие"
+        no_results: "Проекты не найдены"
+        no_invite_rights: "Вы не можете пригласить участников в этот проект"
+      type:
+        required: "Пожалуйста, выберите тип для приглашения"
+        user:
+          title: "Пригласить пользователя в %{project_name}"
+          description: "Права доступа, основанные роли исполнителя в выбранном проекте"
+        group:
+          title: "Пригласить группу в %{project_name}"
+          description: "Права доступа, основанные роли исполнителя в выбранном проекте"
+        placeholder_user:
+          title: "Добавить пользователя-заполнителя в %{project_name}."
+          title_no_ee: "Пользователь-заполнитель (только для корпоративной версии)"
+          description: "Нет доступа к проекту и письма не отправляются."
+        already_member_message: "Уже член %{project}"
+      principal:
+        no_results_user: "Пользователи не найдены."
+        invite_user: "Приглашение:"
+        no_results_placeholder: "Заполнители не найдены"
+        create_new_placeholder: "Создать новый плейсхолдер:"
+        no_results_group: "Группы не найдены"
+        invite_to_project: "Пригласить в %{project_name}"
+        required:
+          user: "Пожалуйста, выберите пользователя"
+          placeholder: "Пожалуйста, выберите заполнитель"
+          group: "Пожалуйста, выберите группу"
+      role:
+        label: "Роль в %{project}"
+        no_roles_found: "Роли не найдены"
+        description: >
+          Это роль, которую получит пользователь, когда присоединится к Вашему проекту. Роль определяет, какие действия им разрешено выполнять и какую информацию им разрешено видеть. [Подробнее о ролях и разрешениях.](docs_url)
+        required: "Пожалуйста, выберите роль"
+      message:
+        label: "Сообщение о приглашении"
+        description: "Мы отправим пользователю электронное письмо, к которому вы можете что-нибудь добавить. Приглашение облегчит им начало работы, если у них будет немного информации о проекте."
+      summary:
+        next_button: "Отправить приглашение"
+      success_message:
+        user: "Теперь пользователь может войти в систему и получить доступ к %{project}. Тем временем вы уже можете планировать работу с этим пользователем и назначать пакеты работ."
+        placeholder_user: "Теперь плейсхолдер может быть использован в %{project}. Тем временем вы уже можете планировать с этим пользователем и назначать рабочие пакеты."
+        group: "Теперь группа является частью %{project}. Тем временем вы уже можете спланировать работу с этой группой и назначить пакеты работ."
   page:
     text: "Текст"
   placeholder_users:
@@ -1258,6 +1309,9 @@ ru:
         mode_guideline: "Некоторые режимы перезаписывают цвета пользовательских тем для обеспечения доступности и читаемости. Пожалуйста, выберите светлый режим для полной поддержки пользовательских тем."
         daily_reminders: "Ежедневные напоминания"
         workdays: "Рабочие дни"
+      users/invitation/form_model:
+        principal_type: "Тип приглашения"
+        id_or_email: "Имя или email адрес"
       version:
         effective_date: "Дата окончания"
         sharing: "Совместное использование"
@@ -2615,7 +2669,7 @@ ru:
       attribute_not_found: "атрибут не найден: %{attribute}"
       model_not_found: "неверная модель атрибута: %{model}"
       resource_not_found: "ресурс не найден: %{resource}"
-      rich_text_unsupported: "Встраивание форматированного текста в настоящее время не поддерживается при экспорте."
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: ч
       days: д
@@ -3871,6 +3925,9 @@ ru:
   permission_edit_wiki_pages: "Редактировать wiki-страницы"
   permission_export_work_packages: "Экспорт пакетов работ"
   permission_export_wiki_pages: "Экспорт wiki-страниц"
+  permission_invite_members_by_email: "Пригласить участников по электронной почте"
+  permission_invite_members_by_email_explanation: >
+    Позволяет пользователям приглашать новых пользователей по электронной почте. Приглашенные пользователи получат письмо со ссылкой для установки пароля и активации учетной записи. Зависит от разрешения на управление участниками
   permission_list_attachments: "Отобразить список прикреплённых файлов"
   permission_log_own_time: "Добавить свои трудозатраты"
   permission_log_time: "Журналировать трудозатраты других пользователей"
@@ -3900,6 +3957,9 @@ ru:
   permission_share_work_packages: "Поделиться пакетами работ"
   permission_manage_types: "Выберите типы"
   permission_manage_own_reminders: "Создать собственные напоминания"
+  permission_view_all_principals: "Просмотр всех пользователей и групп"
+  permission_view_all_principals_explanation: >
+    Позволяет пользователям видеть всех пользователей и группы в системе, даже если они не являются членами каких-либо объединенных проектов или групп.
   permission_view_project: "Просмотр проектов"
   permission_view_changesets: "Просмотр изменений репозитория в OpenProject"
   permission_view_internal_comments: "Просмотр служебных комментариев"
@@ -4258,7 +4318,7 @@ ru:
   setting_self_registration_manual_activation: "Активация учётной записи вручную"
   setting_self_registration_manual_activation_caption: >
     Пользователи могут самостоятельно зарегистрироваться. Их учетные записи находятся в ожидании до тех пор, пока администратор или пользователь с общим разрешением на создание или управление пользователями не активирует их.
-  setting_session_ttl: "Срок действия сеанса при неактивности"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "При значении ниже 5-ти отключено"
   setting_session_ttl_enabled: "Сессия истекает"
   setting_start_of_week: "Начало недели в"

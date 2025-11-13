@@ -64,6 +64,7 @@ ru:
       meeting_participant:
         invited: "Приглашённые"
         attended: "Участвовал"
+        participation_status: "Статус участия"
     errors:
       models:
         meeting_participant:
@@ -118,7 +119,7 @@ ru:
   label_meeting_new_dynamic: "Новое однократное совещание"
   label_meeting_new_recurring: "Новое повторяющееся совещание"
   label_meeting_create: "Создать совещание"
-  label_meeting_copy: "Копировать совещание"
+  label_meeting_duplicate: "Duplicate meeting"
   label_meeting_edit: "Измененить совещание"
   label_meeting_agenda: "Повестка дня"
   label_meeting_minutes: "Протокол(-ы)"
@@ -130,7 +131,8 @@ ru:
   label_meeting_date_time: "Дата/Время"
   label_meeting_date_and_time: "Дата и время"
   label_meeting_diff: "Различия"
-  label_meeting_send_updates: "Отправлять обновления календаря"
+  label_meeting_send_updates: "Send email calendar invite and updates"
+  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
   label_recurring_meeting: "Повторяющееся совещание"
   label_recurring_meeting_part_of: "Часть серии совещаний"
   label_recurring_meeting_new: "Новое повторяющееся совещание"
@@ -138,7 +140,7 @@ ru:
   label_template: "Шаблон"
   label_recurring_meeting_view: "Посмотреть серию совещаний"
   label_recurring_meeting_create: "Открыть"
-  label_recurring_meeting_copy: "Копировать как одноразовое"
+  label_recurring_meeting_duplicate: "Duplicate as a one-time meeting"
   label_recurring_meeting_cancel: "Отменить это событие"
   label_recurring_meeting_delete: "Удалить событие"
   label_recurring_meeting_restore: "Восстановить это событие"
@@ -343,9 +345,9 @@ ru:
             Обновления календаря отключены. Участники не получат письмо, информирующее их при добавлении или удалении участников.
         onetime:
           enabled: >
-            Все участники получат по электронной почте обновленные приглашения календаря, информирующие их о Ваших изменениях.
+            All participants will receive updated calendar invites via email when you add or remove participants.
           disabled: >
-            Обновления календаря по электронной почте отключены. Участники не получат электронное письмо с уведомлением о Ваших изменениях.
+            Participants will not receive an email informing them of changes to meeting date, time or participants.
         occurrence:
           enabled: >
             Для этой серии встреч включено обновление календаря по электронной почте. Все участники получат обновленные приглашения календаря, информирующие их о Ваших изменениях в этом событии.
@@ -356,6 +358,16 @@ ru:
             Для серии встреч включено обновление календаря по электронной почте. Все участники будут получать обновленные приглашения календаря, информирующие их о Ваших изменениях в этом шаблоне или отдельных событиях.
           disabled: >
             Обновления календаря по электронной почте отключены для серии встреч. Участники не будут получать электронные письма, информирующие их о Ваших изменениях в этом шаблоне или отдельных событиях.
+    presentation_mode:
+      title: "Presentation Mode"
+      button_present: "Present"
+      exit: "Exit presentation"
+      current_item: "Current item"
+      total_items: "%{current} of %{total}"
+      previous: "Previous"
+      next: "Next"
+      no_items: "No agenda items"
+      no_items_flash: "There are no agenda items to present."
   meeting_section:
     untitled_title: "Раздел без названия"
     delete_confirmation: "Удаление раздела также удалит все пункты его повестки дня. Вы уверены, что хотите это сделать?"
@@ -386,7 +398,9 @@ ru:
       label_view_template: "Посмотреть шаблон"
       label_edit_template: "Изменить шаблон"
       banner_html: >
-        В настоящее время вы редактируете шаблон серии совещаний: %{link}. Каждое новое совещание в этой серии будет использовать этот шаблон. Изменения не повлияют на прошлые или уже созданные совещания.
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+      draft_banner_html: >
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
     frequency:
       x_daily:
         one: "Каждый день"
@@ -512,6 +526,7 @@ ru:
   label_agenda_item_work_package: "Пакет работ по пунктам повестки"
   label_section_rename: "Переименовать раздел"
   label_agenda_outcome: "Итог"
+  label_agenda_new_outcome: "Новый результат"
   label_agenda_outcome_actions: "Действия по итогам"
   label_agenda_outcome_edit: "Редактировать итог"
   label_agenda_outcome_delete: "Удалить итог"
@@ -540,6 +555,7 @@ ru:
   label_meeting_series_details: "Подробности серии совещаний"
   label_meeting_details_edit: "Изменить сведения о совещании"
   label_meeting_state: "Статус совещания"
+  label_meeting_state_draft: "Draft"
   label_meeting_state_open: "Открыть"
   label_meeting_state_closed: "Закрыть"
   label_meeting_state_agenda_created: "Повестка дня создана"
@@ -550,12 +566,19 @@ ru:
   label_meeting_reopen_action: "Открыть совещание заново"
   label_meeting_close_action: "Закрыть совещание"
   label_meeting_in_progress_action: "Начать совещание"
+  label_meeting_open_action: "Open meeting"
+  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
   text_meeting_open_description: "Можно добавлять и удалять пункты повестки и участников. Когда повестка готова, переведите её в статус «В процессе», чтобы фиксировать результаты."
   text_meeting_closed_description: "Это совещание является закрытым. Вы не можете добавлять/удалять пункты повестки."
   text_meeting_in_progress_description: "Можно редактировать повестку, фиксировать результаты по каждому пункту и отмечать присутствие участников. По завершении встречи пометьте её как «Закрыта», чтобы заблокировать изменения."
   text_meeting_open_dropdown_description: "Любые существующие результаты останутся, но пользователи не смогут добавлять новые результаты."
   text_meeting_in_progress_dropdown_description: "Итоги совещания, такие как информация или решения, принятые в ходе совещания."
   text_meeting_closed_dropdown_description: "Совещание закрыто. Вы больше не можете изменять пункты повестки дня или его результаты."
+  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
+  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
+  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
+  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
   text_meeting_not_editable_anymore: "Это совещание больше нельзя редактировать."
   text_meeting_not_present_anymore: "Это совещание было удалено. Пожалуйста, выберите другое."
   label_add_work_package_to_meeting_dialog_title: "Выберите совещание"

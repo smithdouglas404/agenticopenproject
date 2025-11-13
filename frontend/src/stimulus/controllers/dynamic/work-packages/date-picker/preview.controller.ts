@@ -50,12 +50,12 @@ export default class PreviewController extends DialogPreviewController {
   private highlightedField:HTMLInputElement|null = null;
 
   // The field values currently used by the controller
-  private currentIgnoreNonWorkingDays:boolean = false;
+  private currentIgnoreNonWorkingDays = false;
   private currentStartDate:Date|null = null;
   private currentDueDate:Date|null = null;
   private currentDuration:number|null = null;
 
-  private isMilestone:boolean = true;
+  private isMilestone = true;
 
   private handleFlatpickrDatesChangedBound = this.handleFlatpickrDatesChanged.bind(this);
 

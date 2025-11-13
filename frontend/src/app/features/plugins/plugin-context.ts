@@ -83,7 +83,7 @@ export class OpenProjectPluginContext {
 
   // Hooks
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  public readonly hooks:{ [hook:string]:(callback:(...args:any[]) => unknown) => void } = {};
+  public readonly hooks:Record<string, (callback:(...args:any[]) => unknown) => void> = {};
 
   // Angular zone reference
   @InjectField() public readonly zone:NgZone;

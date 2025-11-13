@@ -75,6 +75,19 @@ RSpec.describe API::V3::Documents::DocumentRepresenter, "rendering" do
       let(:method) { :post }
       let(:permission) { :manage_documents }
     end
+
+    it_behaves_like "has an untitled action link" do
+      let(:link) { :update }
+      let(:href) { api_v3_paths.document document.id }
+      let(:method) { :patch }
+      let(:permission) { :manage_documents }
+    end
+
+    context "when user is not allowed to edit documents" do
+      it_behaves_like "has no link" do
+        let(:link) { :update }
+      end
+    end
   end
 
   describe "properties" do

@@ -463,28 +463,8 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
     instantiate_contract(work_package, user).assignable_statuses(include_default: true)
   end
 
-  def min_child_date
-    children_dates.min
-  end
-
-  def children_duration
-    max = max_child_date
-
-    return unless max
-
-    days.duration(min_child_date, max_child_date)
-  end
-
   def days
     WorkPackages::Shared::Days.for(work_package)
-  end
-
-  def max_child_date
-    children_dates.max
-  end
-
-  def children_dates
-    @children_dates ||= work_package.children.pluck(:start_date, :due_date).flatten.compact
   end
 
   def parent_start_earlier_than_due?
