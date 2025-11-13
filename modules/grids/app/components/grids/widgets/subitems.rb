@@ -27,6 +27,7 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 # ++
+
 module Grids
   module Widgets
     class Subitems < Grids::WidgetComponent
@@ -37,6 +38,7 @@ module Grids
       private_constant :SUBITEMS_LIMIT
 
       param :project
+
       option :limit, default: -> { SUBITEMS_LIMIT }
 
       def title
@@ -57,10 +59,6 @@ module Grids
 
       def wrapper_arguments
         { full_width: true }
-      end
-
-      def render?
-        true
       end
 
       def can_view_subprojects?

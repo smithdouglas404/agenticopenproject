@@ -78,7 +78,7 @@ See COPYRIGHT and LICENSE files for more details.
         if can_manage_members?
           component.with_primary_action(
             tag: :a,
-            href: project_members_path(@project, add_user: true),
+            href: project_members_path(@project),
             scheme: :secondary
           ) do |button|
             button.with_leading_visual_icon(icon: :plus)
