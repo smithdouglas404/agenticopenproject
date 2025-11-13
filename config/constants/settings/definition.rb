@@ -637,7 +637,7 @@ module Settings
       large_instance_wp_allowed_to_sql: {
         description: "When querying for allowed work packages, use SQL better suited for instances " \
                      "with a larger set of work packages, projects, members and users",
-        default: false
+        default: true
       },
       ldap_force_no_page: {
         description: "Force LDAP to respond as a single page, in case paged responses do not work with your server.",

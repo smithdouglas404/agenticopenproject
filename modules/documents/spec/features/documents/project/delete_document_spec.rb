@@ -41,7 +41,7 @@ RSpec.describe "Delete Document",
   shared_let(:member_role_manage) { create(:existing_project_role, permissions: %i[view_documents manage_documents]) }
   shared_let(:member) { create(:user, member_with_roles: { project => member_role_read_only }) }
   shared_let(:manager) { create(:user, member_with_roles: { project => member_role_manage }) }
-  shared_let(:documents) { create_list(:document, 3, project:) }
+  shared_let(:documents) { create_list(:document, 3, project:, kind: :classic) }
 
   let(:index_page) { Documents::Pages::ListPage.new(project) }
   let(:delete_candidate) { documents.first }

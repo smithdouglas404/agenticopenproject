@@ -82,6 +82,8 @@
                 with_item_group(submenu) { move_actions(submenu) } unless first? && last?
 
                 with_item_group(submenu) do
+                  move_to_section_action_item(submenu)
+
                   if !in_template? || in_backlog?
                     if in_backlog?
                       move_to_current_meeting_action_item(submenu)
@@ -89,8 +91,6 @@
                       move_to_backlog_action_item(submenu)
                     end
                   end
-
-                  move_to_section_action_item(submenu)
                 end
 
                 with_item_group(submenu) { move_to_next_meeting_action_item(submenu) }

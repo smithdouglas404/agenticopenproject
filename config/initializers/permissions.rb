@@ -127,6 +127,7 @@ Rails.application.reloader.to_prepare do
                        "projects/settings/storage": %i[show],
                        "projects/settings/work_packages": %i[show],
                        "projects/settings/work_packages/internal_comments": %i[show update],
+                       "projects/settings/creation_wizard": %i[show disable_dialog toggle],
                        "projects/templated": %i[create destroy],
                        "projects/identifier": %i[show update],
                        "projects/status": %i[update destroy]

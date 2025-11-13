@@ -153,7 +153,7 @@ RSpec.describe WorkPackages::CopyService, "integration", type: :model do
           custom_value
         end
 
-        subject { copy.custom_value_for(custom_field.id) }
+        subject { copy.custom_value_for(custom_field) }
 
         it { is_expected.to be_nil }
       end

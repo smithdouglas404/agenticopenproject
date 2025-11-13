@@ -38,7 +38,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :documents, except: %i[create new index]
+  resources :documents, except: %i[create new index] do
+    member do
+      put :update_type, defaults: { format: :turbo_stream }
+    end
+  end
 
   namespace :admin do
     namespace :settings do

@@ -152,18 +152,13 @@ RSpec.describe "Upload attachment to documents",
     it "is possible to upload attachments from the editor" do
       expect(page).to have_no_css("img[alt='image.png']")
       editor.open_add_image_dialog
+
       expect do
         attach_file(image_fixture.path, make_visible: true) do
           find(:button, text: "Upload image").click
         end
         expect(page).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
       end.to change { document.attachments.count }.by(1)
-
-      click_on "Save"
-      expect_flash(message: "Successful update.")
-
-      visit edit_document_path(document)
-      expect(page).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
     end
   end
 
@@ -213,14 +208,13 @@ RSpec.describe "Upload attachment to documents",
   end
 
   context "for collaborative documents", with_flag: { block_note_editor: true } do
-    let(:experimental_type) { create(:document_type, :experimental) }
-    let(:document) { create(:document, type: experimental_type, project:) }
+    let(:document) { create(:document, project:) }
     let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
     let(:attachments_list) { Components::AttachmentsList.new }
 
     before do
       DocumentType.destroy_all
-      visit edit_document_path(document)
+      visit document_path(document)
       expect(page).to have_css(".document-form--long-description") # rubocop:disable RSpec/ExpectInHook
       expect(page).not_to have_element("opce-ckeditor-augmented-textarea") # rubocop:disable RSpec/ExpectInHook
     end

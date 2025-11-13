@@ -281,6 +281,10 @@ Rails.application.routes.draw do
           post :toggle_public
         end
         resource :modules, only: %i[show update]
+        resource :creation_wizard, controller: "creation_wizard", only: %i[show] do
+          get :disable_dialog
+          post :toggle
+        end
         resource :project_custom_fields, only: %i[show] do
           member do
             post :toggle
