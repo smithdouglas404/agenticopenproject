@@ -28,35 +28,24 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(border_box_container) do |box|
-    box.with_body(scheme: :default) do
-      render(Primer::Beta::Blankslate.new) do |component|
-        component.with_visual_icon(icon: :"project-template")
-        component.with_heading(tag: :h2).with_content(title)
-        component.with_description do
-          flex_layout do |flex|
-            flex.with_row(mb: 2) do
-              render(Primer::Beta::Text.new(color: :subtle)) { description }
-            end
-
-            flex.with_row(mt: 4) do
-              render(
-                Primer::Beta::Button.new(
-                  scheme: :primary,
-                  mobile_icon: nil,
-                  mobile_label: label,
-                  aria: { label: },
-                  tag: :a,
-                  href: helpers.toggle_project_settings_creation_wizard_path(@project),
-                  data: { turbo_method: :post }
-                )
-              ) do
-                label
-              end
-            end
-          end
-        end
-      end
+  render(
+    Primer::OpenProject::DangerDialog.new(
+      id:,
+      title:,
+      confirm_button_text:,
+      cancel_button_text:,
+      size: :medium_portrait,
+      form_arguments: {
+        action: helpers.toggle_project_settings_creation_wizard_path(@project),
+        method: :post,
+        data: { turbo: true }
+      }
+    )
+  ) do |dialog|
+    dialog.with_confirmation_message do |message|
+      message.with_heading(tag: :h2) { heading }
+      message.with_description_content(confirmation_message)
     end
+    dialog.with_confirmation_check_box_content(checkbox_message)
   end
 %>

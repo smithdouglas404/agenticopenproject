@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,33 +26,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Projects::Settings::CreationWizardController < Projects::SettingsController
-  include OpTurbo::ComponentStream
+class Projects::Settings::CreationWizard::DisableDialogComponent < ApplicationComponent
+  include ApplicationHelper
+  include OpTurbo::Streamable
 
-  menu_item :settings_creation_wizard
+  def initialize(project:)
+    super
 
-  before_action :check_feature_flag
-
-  def show; end
-
-  def disable_dialog
-    respond_with_dialog Projects::Settings::CreationWizard::DisableDialogComponent.new(
-      project: @project
-    )
-  end
-
-  def toggle
-    @project.update(project_creation_wizard_enabled: !@project.project_creation_wizard_enabled)
-    redirect_to project_settings_creation_wizard_path(@project, tab: params[:tab]), status: :see_other
+    @project = project
   end
 
   private
 
-  def check_feature_flag
-    unless OpenProject::FeatureDecisions.project_initiation_active?
-      render_404
-    end
-  end
+  def id = "disable-project-wizard-dialog"
+
+  def title = I18n.t("settings.project_initiation_request.disable_dialog.title")
+
+  def heading = I18n.t("settings.project_initiation_request.disable_dialog.heading")
+
+  def confirmation_message = I18n.t("settings.project_initiation_request.disable_dialog.confirmation_message")
+
+  def checkbox_message = I18n.t("settings.project_initiation_request.disable_dialog.checkbox_message")
+
+  def confirm_button_text = I18n.t("button_disable")
+
+  def cancel_button_text = I18n.t("button_close")
 end
