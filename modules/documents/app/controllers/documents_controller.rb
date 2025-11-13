@@ -71,6 +71,12 @@ class DocumentsController < ApplicationController
     @categories = DocumentCategory.all
   end
 
+  def edit_title
+    update_header_component_via_turbo_stream(state: :edit)
+
+    respond_with_turbo_streams
+  end
+
   def create
     call = attachable_create_call ::Documents::CreateService,
                                   args: document_params.merge(project: @project)
@@ -82,6 +88,12 @@ class DocumentsController < ApplicationController
       @document = call.result
       render action: :new, status: :unprocessable_entity
     end
+  end
+
+  def cancel_title_edit
+    update_header_component_via_turbo_stream(state: :show)
+
+    respond_with_turbo_streams
   end
 
   def update
@@ -96,6 +108,17 @@ class DocumentsController < ApplicationController
       @document = call.result
       render action: :edit, status: :unprocessable_entity
     end
+  end
+
+  def update_title
+    call = Documents::UpdateService
+      .new(user: current_user, model: @document)
+      .call(document_params.slice(:title))
+
+    state = call.success? ? :show : :edit
+    update_header_component_via_turbo_stream(state:)
+
+    respond_with_turbo_streams
   end
 
   def update_type
@@ -156,5 +179,11 @@ class DocumentsController < ApplicationController
     else
       Rails.logger.error("Failed to generate OAuth token for document #{@document.id}: #{result.errors}")
     end
+  end
+
+  def update_header_component_via_turbo_stream(state: :show)
+    update_via_turbo_stream(
+      component: Documents::ShowEditView::PageHeaderComponent.new(@document, project: @project, state:)
+    )
   end
 end

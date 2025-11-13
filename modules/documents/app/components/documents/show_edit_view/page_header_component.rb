@@ -32,9 +32,12 @@
 module Documents
   module ShowEditView
     class PageHeaderComponent < ApplicationComponent
+      include OpTurbo::Streamable
+
       alias_method :document, :model
 
       options :project
+      options state: :show
 
       def action_menu_options
         {
@@ -52,6 +55,10 @@ module Documents
         [{ href: project_overview_path(project.id), text: project.name },
          { href: project_documents_path(project), text: I18n.t(:label_document_plural) },
          document.title]
+      end
+
+      def allowed_to_manage_documents?
+        User.current.allowed_in_project?(:manage_documents, project)
       end
     end
   end

@@ -53,6 +53,7 @@ en:
       heading: "All documents"
       action_menu:
         document_actions: "Document actions"
+        edit_title: "Edit title"
 
     subheader:
       filter:
