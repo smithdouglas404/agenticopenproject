@@ -27,20 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render Projects::Settings::CreationWizard::PageHeaderComponent.new(project: @project) %>
-
-<% if @project.project_creation_wizard_enabled %>
-  <% tab = params[:tab] || "name" %>
-  <% case tab %>
-  <% when "name" %>
-    <%= render partial: "name" %>
-  <% when "attributes" %>
-    <%= render partial: "attributes" %>
-  <% when "submission" %>
-    <%= render partial: "submission" %>
-  <% when "export" %>
-    <%= render partial: "export" %>
-  <% end %>
-<% else %>
-  <%= render Projects::Settings::CreationWizard::BlankSlateComponent.new(project: @project) %>
-<% end %>
+<div>
+  <h2>Request Submission</h2>
+  <!-- add stuff here -->
+</div>

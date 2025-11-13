@@ -58,30 +58,30 @@ See COPYRIGHT and LICENSE files for more details.
       header.with_tab_nav(label: nil) do |tab_nav|
         tab_nav.with_tab(
           selected: params[:tab] == "name" || params[:tab].blank?,
-          href: helpers.toggle_project_settings_creation_wizard_path(tab: :name)
+          href: helpers.project_settings_creation_wizard_path(@project, tab: :name)
         ) do |t|
           t.with_text { I18n.t(:label_name) }
         end
 
         tab_nav.with_tab(
           selected: params[:tab] == "attributes",
-          href: helpers.toggle_project_settings_creation_wizard_path(tab: :attributes)
+          href: helpers.project_settings_creation_wizard_path(@project, tab: :attributes)
         ) do |t|
           t.with_text { I18n.t(:label_project_attribute_plural) }
         end
 
         tab_nav.with_tab(
-          selected: params[:tab] == "approval",
-          href: helpers.toggle_project_settings_creation_wizard_path(tab: :approval)
+          selected: params[:tab] == "submission",
+          href: helpers.project_settings_creation_wizard_path(@project, tab: :submission)
         ) do |t|
-          t.with_text { I18n.t(:label_project_attribute_plural) }
+          t.with_text { I18n.t(:label_request_submission) }
         end
 
         tab_nav.with_tab(
-          selected: params[:tab] == "artifact_export",
-          href: helpers.toggle_project_settings_creation_wizard_path(tab: :artifact_export)
+          selected: params[:tab] == "export",
+          href: helpers.project_settings_creation_wizard_path(@project, tab: :export)
         ) do |t|
-          t.with_text { I18n.t(:label_project_attribute_plural) }
+          t.with_text { I18n.t(:label_artefact_export) }
         end
       end
     end
