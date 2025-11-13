@@ -47,14 +47,12 @@ See COPYRIGHT and LICENSE files for more details.
 <%= labelled_tabular_form_for @custom_field, as: :custom_field,
                                              url: admin_settings_project_custom_field_path(@custom_field),
                                              html: { method: :put, id: "custom_field_form" } do |f| %>
-<section class="form--section">
-      <div class="form--field">
+<%= render(OpPrimer::FlashComponent.new(scheme: :danger, icon: :stop)) { t(:warning_interlinking_custom_field_with_role_html) } %>
+<section class="form--section pt-3">
+  <div class="form--field">
     <%= f.select :role_id,
                  ProjectRole.order(:name).collect { |s| [s.name, s.id] },
                  { include_blank: t("custom_fields.no_role_assigment"), container_class: "-slim" } %>
-      <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.role_html") %></p>
-      </div>
     </div>
 </section>
   <%= hidden_field_tag :back_url, role_assignment_admin_settings_project_custom_field_path(@custom_field) %>

@@ -362,10 +362,6 @@ en:
         Allow the custom field to be used in a filter in work package views.
         Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula: "Add numeric values or type / to search for an attribute or a mathematical operator."
-      role_html: >
-        <strong>WARNING!</strong> Assigning a role here will automatically add the selected user to the project with the
-        given role. As this field can be filled out by people with the Edit Project Attributes permission, make sure to
-        check thoroughly what permissions the selected role gives.
 
     tab:
       no_results_title_text: There are currently no custom fields.
@@ -4907,6 +4903,10 @@ en:
   warning_user_limit_reached_instructions: >
     You reached your user limit (%{current}/%{max} active users).
     Please contact sales@openproject.com to upgrade your Enterprise edition plan and add additional users.
+  warning_interlinking_custom_field_with_role_html: >
+    <strong>Warning:</strong> You are about to link a custom field with a role. This will give users with the "Edit Project Attributes" permission to add members to the project and they will be assigned
+    the linked role. This may lead to privilege escalation because users can assign themselves higher privileges than intended.
+    Please make sure you understand the implications of this action.
   warning_protocol_mismatch_html: >
 
   warning_bar:
