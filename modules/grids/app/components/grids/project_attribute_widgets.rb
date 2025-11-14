@@ -50,10 +50,16 @@ module Grids
     private
 
     def available_project_attributes_grouped_by_section
-      @available_project_attributes_grouped_by_section ||=
-        @project.available_custom_fields
-                .group_by(&:project_custom_field_section)
-                .select { |section, _| section.shown_in_overview_main_section? }
+      if OpenProject::FeatureDecisions.new_project_overview_active?
+        @available_project_attributes_grouped_by_section ||=
+          @project.available_custom_fields
+                  .group_by(&:project_custom_field_section)
+                  .select { |section, _| section.shown_in_overview_main_section? }
+      else
+        @available_project_attributes_grouped_by_section ||=
+          @project.available_custom_fields
+                  .group_by(&:project_custom_field_section)
+      end
     end
   end
 end
