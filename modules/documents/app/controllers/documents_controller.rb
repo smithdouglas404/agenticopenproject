@@ -59,12 +59,25 @@ class DocumentsController < ApplicationController
 
   def show
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
-    generate_oauth_token if @document.collaborative?
+
+    if @document.collaborative?
+      generate_oauth_token
+      derive_show_edit_state_from_params
+    end
   end
 
   def new
-    @document = @project.documents.build
-    @document.attributes = document_params
+    if OpenProject::FeatureDecisions.block_note_editor_active?
+      call = ::Documents::CreateService
+        .new(user: current_user)
+        .call(title: "New document", project: @project, type_id: DocumentType.default.id)
+
+      redirect_to document_path(call.result, state: :edit)
+    else
+      @document = @project.documents.build
+      @document.attributes = document_params
+      render action: :new
+    end
   end
 
   def edit
@@ -185,5 +198,9 @@ class DocumentsController < ApplicationController
     update_via_turbo_stream(
       component: Documents::ShowEditView::PageHeaderComponent.new(@document, project: @project, state:)
     )
+  end
+
+  def derive_show_edit_state_from_params
+    @state = params[:state] == "edit" ? :edit : :show
   end
 end

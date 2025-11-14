@@ -31,7 +31,7 @@
 
 <%=
   component_wrapper do
-    render(Primer::OpenProject::PageHeader.new(test_selector: "document-page-header", state:)) do |header|
+    render(Primer::OpenProject::PageHeader.new(**page_header_attributes)) do |header|
       header.with_title do |title|
         if allowed_to_manage_documents?
           title.with_editable_form(
