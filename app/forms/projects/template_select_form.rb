@@ -91,7 +91,9 @@ module Projects
     def format_caption(text)
       return I18n.t("create_project.blank_description_html").html_safe if text.blank?
 
-      render(Primer::Beta::Text.new) { strip_tags(format_text(text)) }
+      render(Primer::Beta::Text.new(classes: %w[line-clamp-3 lh-default])) do
+        strip_tags(format_text(text))
+      end
     end
   end
 end
