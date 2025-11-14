@@ -51,7 +51,7 @@ RSpec.describe Grids::Widgets::ProjectStatus, type: :component do
   end
 
   it "renders Projects Status Button component" do
-    expect(rendered_component).to have_element id: "projects-status-button-component"
+    expect(rendered_component).to have_element id: "projects-status-button-component-#{project.id}"
   end
 
   context "when user is not allowed to edit" do
