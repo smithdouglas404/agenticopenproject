@@ -88,7 +88,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
 
     else
-      render(Primer::Beta::Blankslate.new(test_selector: "widget-no-permission")) do |component|
+      render(Primer::Beta::Blankslate.new(test_selector: "widget-no-permission-members")) do |component|
         component.with_heading(tag: :h3).with_content(title)
         component.with_description { t("js.grid.widgets.not_available") }
       end
