@@ -12,7 +12,7 @@ module API
       spec["servers"] = [
         {
           "description" => "This server",
-          "url" => "#{Setting.protocol}://#{Setting.host_name}/"
+          "url" => OpenProject::StaticRouting::StaticUrlHelpers.new.root_url
         }
       ]
 
