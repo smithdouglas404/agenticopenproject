@@ -104,8 +104,12 @@ module Filter
     end
 
     def custom_field_hierarchy_autocomplete_options(filter)
-      options = { items: filter.allowed_values.map { |name, id| { name:, id: } } }
-      autocomplete_options.merge(options).merge(model: filter.values)
+      items = filter.allowed_values.map do |name, id|
+        path = name.split(" / ")
+        { name: path.last, id:, depth: path.length - 1 }
+      end
+
+      autocomplete_options.merge({ items: }).merge(model: filter.values)
     end
 
     def list_autocomplete_options(filter)
