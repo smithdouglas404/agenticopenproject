@@ -534,6 +534,9 @@ hu:
         no_results_title_text: "Ebben a projektben nincs további rögzített lemezterület.\n"
       work_package_priorities:
         new_label: "New priority"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
   lists:
@@ -663,6 +666,57 @@ hu:
     memberships:
       no_results_title_text: Ez a felhasználó jelenleg nem tagja egy projektnek sem.
     open_profile: "Open profile"
+    invite_user_modal:
+      invite: "Meghívás"
+      title:
+        invite: "Felhasználó meghívása"
+        invite_to_project: "Meghívás %{type} a %{project}"
+        invite_principal_to_project: "Meghívás %{principal} a %{project} "
+      project:
+        label: "Projekt"
+        required: "Válasszon projektet"
+        next_button: " Következő"
+        no_results: "Egyetlen projekt sem található"
+        no_invite_rights: "Nincs jogosultságod meghívni felhasználókat ehhez a projekthez"
+      type:
+        required: "Kérjük, válassza ki a meghívandó típust\n"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Jogosultságok a kiválasztott projektben kijelölt szerepkör alapján\n"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Jogosultságok a kiválasztott projektben kijelölt szerepkör alapján\n"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Nincs hozzáférése a projekthez, és nem küld ki e-maileket.\n"
+        already_member_message: "Már tagja a %{project}-nek"
+      principal:
+        no_results_user: "Nem található felhasználó."
+        invite_user: "Meghívás:"
+        no_results_placeholder: "Ben találhatók teszt felhasználók"
+        create_new_placeholder: "Új teszt felhasználó létrehozása"
+        no_results_group: "Nem találhatók csoportok."
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Válassz egy felhasználót"
+          placeholder: "Kérjük válasszon egy tesztfelhasználót"
+          group: "Válaszd ki a csoportot"
+      role:
+        label: "Szerepek a %{project}"
+        no_roles_found: "Nem található szerepkör."
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Kérjük, válasszon szerepet"
+      message:
+        label: "Meghívó üzenet"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Meghívó küldése"
+      success_message:
+        user: "A felhasználó most már bejelentkezhet, hogy hozzáférjen a %{project}-hez. Eközben már tervezhet ezzel a felhasználóval, és például munkacsomagokat rendelhet hozzá."
+        placeholder_user: "A tesztfelhasználó mostantól használható a %{project}-ben. Eközben már tervezhetünk ezzel a felhasználóval, és például munkacsomagokat rendelhetünk hozzá."
+        group: "A csoport mostantól a %{project} része. Eközben már tervezhet ezzel a csoporttal, és például munkacsomagokat rendelhet hozzá.\n"
   page:
     text: "Szöveg"
   placeholder_users:
@@ -1243,6 +1297,9 @@ hu:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Munkanapok"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Név vagy e-mail cím"
       version:
         effective_date: "Befejezési dátum"
         sharing: "Megosztás"
@@ -1964,9 +2021,11 @@ hu:
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Megfigyelő törlése %{name}"
   button_download: "Letöltés"
+  button_disable: "Disable"
   button_duplicate: "Másolás ide"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Szerkesztés"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Az összes kibontása"
   button_favorite: "Add to favorites"
@@ -2526,7 +2585,7 @@ hu:
       attribute_not_found: "attribute not found: %{attribute}"
       model_not_found: "invalid attribute model: %{model}"
       resource_not_found: "resource not found: %{resource}"
-      rich_text_unsupported: "Rich text embedding currently not supported in export"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: óra
       days: nap
@@ -3228,6 +3287,7 @@ hu:
   label_project_view_all: "Minden projekt megtekintése"
   label_project_show_details: "Projekt részleteinek megjelenítése"
   label_project_hide_details: "Projekt részleteinek elrejtése"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3778,6 +3838,9 @@ hu:
   permission_edit_wiki_pages: "Wiki lapok szerkesztése"
   permission_export_work_packages: "feladatcsoportok exportálása"
   permission_export_wiki_pages: "Wiki oldalak exportálása"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Mellékletek listája"
   permission_log_own_time: "Saját idő naplózása"
   permission_log_time: "Mások idejének naplózása"
@@ -3807,6 +3870,9 @@ hu:
   permission_share_work_packages: "Share work packages"
   permission_manage_types: "Jelölje ki a típust"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "View projects"
   permission_view_changesets: "Tároló verziók megtekintése az OpenProject-ben"
   permission_view_internal_comments: "View internal comments"
@@ -4167,7 +4233,7 @@ hu:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Munkamenet lejárata ennyi tétlenség ideje után"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Érték alatt 5 működik, mint a letiltott"
   setting_session_ttl_enabled: "A munkamenet lejárt"
   setting_start_of_week: "Hét kezdőnapja"
@@ -4265,6 +4331,15 @@ hu:
       new:
         heading: "New attribute"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Project life cycle"
       heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."

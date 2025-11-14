@@ -39,6 +39,8 @@ zh-CN:
   documents:
     page_header:
       heading: "所有文档"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "文档名称过滤器"
@@ -53,6 +55,7 @@ zh-CN:
     menu:
       all: "所有文档"
       types: "类型"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "附件作者"
     label_categories: "类别"
     new_category: "新类别"
@@ -63,6 +66,7 @@ zh-CN:
   label_document_title: "标题"
   label_document_description: "描述"
   label_document_category: "类别"
+  label_document_type: "类型"
   permission_manage_documents: "管理文档"
   permission_view_documents: "查看文档"
   project_module_documents: "文档"

@@ -297,7 +297,7 @@ nl:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Waar gaat u dit gebruiken?"
       token_name_placeholder: 'Typ een naam, bijv. "Telefoon"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "URL kopiëren"
       ical_generation_error_text: "Er is een fout opgetreden tijdens het genereren van de agenda-URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
@@ -1135,71 +1135,8 @@ nl:
       list: "Tabel"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Terug"
       invite: "Uitnodigen"
-      title:
-        invite: "Gebruiker uitnodigen"
-        invite_to_project: "Nodig %{type} uit voor %{project}"
-        User: "gebruiker"
-        Group: "Groep"
-        PlaceholderUser: "Tijdelijke gebruiker"
-        invite_principal_to_project: "Nodig %{principal} uit voor %{project}"
-      project:
-        label: "Project"
-        required: "Selecteer een project"
-        lacking_permission: "Selecteer een ander project omdat u geen rechten heeft om gebruikers toe te wijzen aan de geselecteerde projecten."
-        lacking_permission_info: "U heeft geen toestemming om gebruikers toe te wijzen aan het project waar u zich momenteel in bevindt. U moet een andere selecteren."
-        next_button: "Volgende"
-        no_results: "Er zijn geen projecten gevonden"
-        no_invite_rights: "U bent niet bevoegd om deelnemers uit te nodigen voor dit project"
-      type:
-        required: "Selecteer het type om uit te nodigen"
-        user:
-          title: "Gebruiker"
-          description: "Permissies gebaseerd op de toegewezen rol in het geselecteerde project"
-        group:
-          title: "Groep"
-          description: "Permissies gebaseerd op de toegewezen rol in het geselecteerde project"
-        placeholder:
-          title: "Tijdelijke gebruiker"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Heeft geen toegang tot het project en er worden geen e-mails verstuurd."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Naam of e-mailadres"
-          name: "Naam"
-        already_member_message: "Al lid van %{project}"
-        no_results_user: "Geen gebruikers gevonden"
-        invite_user: "Uitnodigen:"
-        no_results_placeholder: "Geen tijdelijke gebruikers gevonden"
-        create_new_placeholder: "Maak een nieuwe tijdelijke gebruiker:"
-        no_results_group: "Er zijn geen groepen gevonden."
-        next_button: "Volgende"
-        required:
-          user: "Selecteer een gebruiker"
-          placeholder: "Selecteer een tijdelijke gebruiker"
-          group: "Selecteer een groep"
-      role:
-        label: "Rol in %{project}"
-        no_roles_found: "Geen rollen gevonden"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Selecteer een rol"
-        next_button: "Volgende"
-      message:
-        label: "Uitnodigings bericht"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Volgende"
-      summary:
-        next_button: "Verstuur uitnodiging"
-      success:
-        title: "%{principal} is uitgenodigd!"
-        description:
-          user: "De gebruiker kan nu inloggen om toegang te krijgen tot %{project}. Ondertussen kan je met die gebruiker al plannen en werkpakketten toewijzen, bijvoorbeeld."
-          placeholder: "De tijdelijke gebruiker kan nu worden gebruikt in %{project}. Ondertussen kunt u deze gebruiker al plannen en werkpakketten toewijzen, bijvoorbeeld."
-          group: "De groep is nu een deel van %{project}. Ondertussen kun je al plannen maken met die groep en werkpakketten toewijzen, bijvoorbeeld."
-        next_button: "Ga verder"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"

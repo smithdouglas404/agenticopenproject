@@ -39,6 +39,8 @@ eo:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ eo:
     menu:
       all: "All documents"
       types: "Specoj"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Aŭtoro de la kunsendaĵo"
     label_categories: "Categories"
     new_category: "Nova kategorio"
@@ -63,6 +66,7 @@ eo:
   label_document_title: "Titolo"
   label_document_description: "Priskribo"
   label_document_category: "Kategorio"
+  label_document_type: "Type"
   permission_manage_documents: "Administri dokumentojn"
   permission_view_documents: "Vidi dokumentojn"
   project_module_documents: "Dokumentoj"

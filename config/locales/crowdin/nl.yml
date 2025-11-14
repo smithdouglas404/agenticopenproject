@@ -532,6 +532,9 @@ nl:
         no_results_title_text: Er is geen extra opgenomen schijfruimte verbruikt door dit project.
       work_package_priorities:
         new_label: "New priority"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
   lists:
@@ -661,6 +664,57 @@ nl:
     memberships:
       no_results_title_text: Deze gebruiker is momenteel geen lid van een project.
     open_profile: "Profiel openen"
+    invite_user_modal:
+      invite: "Uitnodigen"
+      title:
+        invite: "Gebruiker uitnodigen"
+        invite_to_project: "Nodig %{type} uit voor %{project}"
+        invite_principal_to_project: "Nodig %{principal} uit voor %{project}"
+      project:
+        label: "Project"
+        required: "Selecteer een project"
+        next_button: "Volgende"
+        no_results: "Er zijn geen projecten gevonden"
+        no_invite_rights: "U bent niet bevoegd om deelnemers uit te nodigen voor dit project"
+      type:
+        required: "Selecteer het type om uit te nodigen"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissies gebaseerd op de toegewezen rol in het geselecteerde project"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissies gebaseerd op de toegewezen rol in het geselecteerde project"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Heeft geen toegang tot het project en er worden geen e-mails verstuurd."
+        already_member_message: "Al lid van %{project}"
+      principal:
+        no_results_user: "Geen gebruikers gevonden"
+        invite_user: "Uitnodigen:"
+        no_results_placeholder: "Geen tijdelijke gebruikers gevonden"
+        create_new_placeholder: "Maak een nieuwe tijdelijke gebruiker:"
+        no_results_group: "Er zijn geen groepen gevonden."
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Selecteer een gebruiker"
+          placeholder: "Selecteer een tijdelijke gebruiker"
+          group: "Selecteer een groep"
+      role:
+        label: "Rol in %{project}"
+        no_roles_found: "Geen rollen gevonden"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Selecteer een rol"
+      message:
+        label: "Uitnodigings bericht"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Verstuur uitnodiging"
+      success_message:
+        user: "De gebruiker kan nu inloggen om toegang te krijgen tot %{project}. Ondertussen kan je met die gebruiker al plannen en werkpakketten toewijzen, bijvoorbeeld."
+        placeholder_user: "De tijdelijke gebruiker kan nu worden gebruikt in %{project}. Ondertussen kunt u deze gebruiker al plannen en werkpakketten toewijzen, bijvoorbeeld."
+        group: "De groep is nu een deel van %{project}. Ondertussen kun je al plannen maken met die groep en werkpakketten toewijzen, bijvoorbeeld."
   page:
     text: "Tekst"
   placeholder_users:
@@ -1240,6 +1294,9 @@ nl:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Werkdagen"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Naam of e-mailadres"
       version:
         effective_date: "Einddatum"
         sharing: "Delen"
@@ -1961,9 +2018,11 @@ nl:
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Verwijderen van watcher %{name}"
   button_download: "Downloaden"
+  button_disable: "Disable"
   button_duplicate: "Dupliceren"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Wijzig"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Alles uitklappen"
   button_favorite: "Aan favorieten toevoegen"
@@ -2523,7 +2582,7 @@ nl:
       attribute_not_found: "attribute not found: %{attribute}"
       model_not_found: "invalid attribute model: %{model}"
       resource_not_found: "bron niet gevonden: %{resource}"
-      rich_text_unsupported: "Rich text embedding currently not supported in export"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: u
       days: d
@@ -3225,6 +3284,7 @@ nl:
   label_project_view_all: "Bekijk alle projecten"
   label_project_show_details: "Toon project details"
   label_project_hide_details: "Verberg project details"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3775,6 +3835,9 @@ nl:
   permission_edit_wiki_pages: "Wiki pagina's bewerken"
   permission_export_work_packages: "Werkpakketten exporteren"
   permission_export_wiki_pages: "Wiki pagina's exporteren"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Bijlagen weergeven"
   permission_log_own_time: "Eigen tijd registreren"
   permission_log_time: "Log tijd voor andere gebruikers"
@@ -3804,6 +3867,9 @@ nl:
   permission_share_work_packages: "Share work packages"
   permission_manage_types: "Selecteer typen"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Bekijk projecten"
   permission_view_changesets: "Bekijk opslagplaats wijzigingen in OpenProject"
   permission_view_internal_comments: "View internal comments"
@@ -4164,7 +4230,7 @@ nl:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Tijd verstrijken sessie na inactiviteit"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Value below 5 works like disabled"
   setting_session_ttl_enabled: "Sessie verloopt"
   setting_start_of_week: "Week begint op"
@@ -4262,6 +4328,15 @@ nl:
       new:
         heading: "Nieuw kenmerk"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Project life cycle"
       heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."

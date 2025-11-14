@@ -39,6 +39,8 @@ id:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ id:
     menu:
       all: "All documents"
       types: "Tipe"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Lampiran penulis"
     label_categories: "Categories"
     new_category: "Kategori Baru"
@@ -63,6 +66,7 @@ id:
   label_document_title: "Judul"
   label_document_description: "Deskripsi"
   label_document_category: "Kategori"
+  label_document_type: "Type"
   permission_manage_documents: "Kelola dokumen"
   permission_view_documents: "Lihat dokumen"
   project_module_documents: "Dokumen"

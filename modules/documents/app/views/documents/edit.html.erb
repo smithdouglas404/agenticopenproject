@@ -28,7 +28,6 @@
 
   ++#
 %>
-
 <%=
   render Primer::OpenProject::PageHeader.new do |header|
     header.with_title { @document.title }
@@ -47,6 +46,6 @@
     method: :patch,
     data: { turbo: false }
   ) do |f|
-    render DocumentForm.new(f, oauth_token: @oauth_token)
+    render DocumentForm.new(f)
   end
 %>

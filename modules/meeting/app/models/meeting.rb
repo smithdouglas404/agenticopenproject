@@ -44,12 +44,6 @@ class Meeting < ApplicationRecord
 
   has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
 
-  # Legacy association to minutes, agendas, contents
-  # to be removed in 17.0
-  has_one :agenda, dependent: :destroy, class_name: "MeetingAgenda"
-  has_one :minutes, dependent: :destroy, class_name: "MeetingMinutes"
-  has_many :contents, -> { readonly }, class_name: "MeetingContent"
-
   has_many :participants,
            dependent: :destroy,
            class_name: "MeetingParticipant"
@@ -120,11 +114,13 @@ class Meeting < ApplicationRecord
 
   before_save :add_new_participants_as_watcher
 
-  after_update :send_updated_mail, if: -> { saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location? }
+  after_update :send_updated_mail, if: -> {
+    saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location?
+  }
 
   enum :state, {
     open: 0, # 0 -> default, leave values for future states between open and closed
-    planned: 1,
+    draft: 1,
     in_progress: 3,
     cancelled: 4,
     closed: 5

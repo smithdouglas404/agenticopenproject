@@ -31,5 +31,9 @@
 module Documents
   class SetAttributesService < ::BaseServices::SetAttributes
     include Attachments::SetReplacements
+
+    def set_default_attributes(_params)
+      model.kind = OpenProject::FeatureDecisions.block_note_editor_active? ? :collaborative : :classic
+    end
   end
 end

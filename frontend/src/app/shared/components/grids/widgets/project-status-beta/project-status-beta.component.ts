@@ -30,6 +30,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractTurboWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-turbo-widget.component';
 
 @Component({
+  selector: 'op-project-status-beta-widget',
   templateUrl: './project-status-beta.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

@@ -85,6 +85,18 @@ ENTRYPOINT ["./docker/prod/entrypoint-slim.sh"]
 VOLUME ["$APP_DATA_PATH"]
 
 # -------------------------------------
+# slim-bim (public)
+# same as slim but with BIM support enabled
+# -------------------------------------
+FROM base AS slim-bim
+
+USER $APP_USER
+EXPOSE 8080
+CMD ["./docker/prod/web"]
+ENTRYPOINT ["./docker/prod/entrypoint-slim.sh"]
+VOLUME ["$APP_DATA_PATH"]
+ENV OPENPROJECT_EDITION=bim
+# -------------------------------------
 # all-in-one (public)
 # -------------------------------------
 FROM base AS all-in-one

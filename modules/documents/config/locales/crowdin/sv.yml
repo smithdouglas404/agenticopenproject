@@ -39,6 +39,8 @@ sv:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ sv:
     menu:
       all: "All documents"
       types: "Typer"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Författare för bilaga"
     label_categories: "Kategorier"
     new_category: "Ny kategori"
@@ -63,6 +66,7 @@ sv:
   label_document_title: "Titel"
   label_document_description: "Beskrivning"
   label_document_category: "Kategori"
+  label_document_type: "Type"
   permission_manage_documents: "Hantera dokument"
   permission_view_documents: "Visa dokument"
   project_module_documents: "Dokument"

@@ -532,6 +532,9 @@ pl:
         no_results_title_text: Nie ma dodatkowego zarejestrowanego miejsca na dysku zużytego przez ten projekt.
       work_package_priorities:
         new_label: "Nowy priorytet"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edytuj status projektu
   lists:
@@ -673,6 +676,57 @@ pl:
     memberships:
       no_results_title_text: Użytkownik jeszcze nie jest członkiem projektu.
     open_profile: "Otwórz profil"
+    invite_user_modal:
+      invite: "Zaproś"
+      title:
+        invite: "Zaproś użytkownika"
+        invite_to_project: "Zaproś %{type} do %{project}"
+        invite_principal_to_project: "Zaproś %{principal} do %{project}"
+      project:
+        label: "Projekt"
+        required: "Wybierz projekt"
+        next_button: "Następny"
+        no_results: "Nie znaleziono żadnych projektów"
+        no_invite_rights: "Nie masz uprawnień do zapraszania członków do tego projektu"
+      type:
+        required: "Wybierz typ, który ma zostać zaproszony"
+        user:
+          title: "Zaproś użytkownika do projektu %{project_name}"
+          description: "Uprawnienia na podstawie przypisanej roli w wybranym projekcie"
+        group:
+          title: "Zaproś grupę do projektu %{project_name}"
+          description: "Uprawnienia na podstawie przypisanej roli w wybranym projekcie"
+        placeholder_user:
+          title: "Dodaj użytkownika zastępczego do projektu %{project_name}"
+          title_no_ee: "Użytkownik zastępczy (dodatek dostępny tylko w wersji Enterprise)"
+          description: "Nie ma dostępu do projektu i nie są wysyłane żadne wiadomości e-mail."
+        already_member_message: "Już jest członkiem %{project}"
+      principal:
+        no_results_user: "Nie znaleziono żadnych użytkowników"
+        invite_user: "Zaproś:"
+        no_results_placeholder: "Nie znaleziono elementów zastępczych"
+        create_new_placeholder: "Utwórz nowy element zastępczy:"
+        no_results_group: "Nie znaleziono żadnych grup"
+        invite_to_project: "Zaproś do projektu %{project_name}"
+        required:
+          user: "Wybierz użytkownika"
+          placeholder: "Wybierz element zastępczy"
+          group: "Wybierz grupę"
+      role:
+        label: "Rola w %{project}"
+        no_roles_found: "Nie znaleziono żadnych ról"
+        description: >
+          Jest to rola, którą użytkownik otrzyma po dołączeniu do projektu. Rola określa, jakie działania może podejmować i jakie informacje może zobaczyć. [Dowiedz się więcej o rolach i uprawnieniach.](docs_url)
+        required: "Wybierz rolę"
+      message:
+        label: "Wiadomość z zaproszeniem"
+        description: "Wyślemy do użytkownika wiadomość e-mail, do której możesz tutaj dodać prywatną wiadomość. Może to być wyjaśnienie zaproszenia lub ułatwiające rozpoczęcie pracy informacje na temat projektu."
+      summary:
+        next_button: "Wyślij zaproszenie"
+      success_message:
+        user: "Użytkownik może się teraz zalogować, aby uzyskać dostęp do %{project}.  Tymczasem możesz już planować z tym użytkownikiem i na przykład przypisać pakiety robocze."
+        placeholder_user: "Symbolu zastępczego można teraz użyć w %{project}. Tymczasem możesz już planować z tym użytkownikiem i na przykład przypisać pakiety robocze."
+        group: "Grupa jest teraz częścią %{project}. Tymczasem możesz już planować z tą grupą i na przykład przypisać pakiety robocze."
   page:
     text: "Tekst"
   placeholder_users:
@@ -1256,6 +1310,9 @@ pl:
         mode_guideline: "Niektóre tryby zastąpią niestandardowe kolory motywów w celu zapewnienia dostępności i czytelności. W celu pełnej obsługi motywów niestandardowych wybierz tryb Jasny."
         daily_reminders: "Codzienne przypomnienia"
         workdays: "Dni robocze"
+      users/invitation/form_model:
+        principal_type: "Typ zaproszenia"
+        id_or_email: "Nazwa lub adres e-mail"
       version:
         effective_date: "Data zakończenia"
         sharing: "Udostępnianie"
@@ -2009,9 +2066,11 @@ pl:
   button_delete_permanently: "Usuń trwale"
   button_delete_watcher: "Usunąć obserwatora %{name}"
   button_download: "Pobierz"
+  button_disable: "Disable"
   button_duplicate: "Duplikat"
   button_duplicate_and_follow: "Zduplikuj i śledź"
   button_edit: "Edycja"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edytuj powiązaną stronę Wiki: %{page_title}"
   button_expand_all: "Rozwiń wszystkie"
   button_favorite: "Dodaj do ulubionych"
@@ -2613,7 +2672,7 @@ pl:
       attribute_not_found: "nie znaleziono atrybutu: %{attribute}"
       model_not_found: "nieprawidłowy model atrybutu: %{model}"
       resource_not_found: "nie znaleziono zasobu: %{resource}"
-      rich_text_unsupported: "Osadzanie tekstu sformatowanego nie jest obecnie obsługiwane w eksporcie"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: h
       days: d
@@ -3315,6 +3374,7 @@ pl:
   label_project_view_all: "Zobacz wszystkie projekty"
   label_project_show_details: "Pokaż szczegóły projektu"
   label_project_hide_details: "Ukryj szczegóły projektu"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "Nowe portfolio"
   label_program: "Program"
@@ -3869,6 +3929,9 @@ pl:
   permission_edit_wiki_pages: "Edycja stron wiki"
   permission_export_work_packages: "Eksportowanie pakietów roboczych"
   permission_export_wiki_pages: "Eksportowanie stron wiki"
+  permission_invite_members_by_email: "Zaproś członków pocztą elektroniczną"
+  permission_invite_members_by_email_explanation: >
+    Umożliwia użytkownikom zapraszanie nowych członków pocztą elektroniczną. Zaproszeni użytkownicy otrzymają wiadomość e-mail z linkiem do ustawienia hasła i aktywacji konta. Zależy od uprawnień do zarządzania członkami
   permission_list_attachments: "Lista załączników"
   permission_log_own_time: "Zarejestruj spędzony czas"
   permission_log_time: "Zarejestruj czas pozostałych użytkowników"
@@ -3898,6 +3961,9 @@ pl:
   permission_share_work_packages: "Udostępnij pakiety robocze"
   permission_manage_types: "Select types"
   permission_manage_own_reminders: "Tworzenie własnych przypomnień"
+  permission_view_all_principals: "Wyświetl wszystkich użytkowników i grupy"
+  permission_view_all_principals_explanation: >
+    Umożliwia użytkownikom wyświetlanie wszystkich użytkowników i grup w systemie, nawet jeśli nie są oni członkami żadnych dołączonych projektów lub grup.
   permission_view_project: "Wyświetl projekty"
   permission_view_changesets: "Zobacz repozytorium poprawek OpenProject"
   permission_view_internal_comments: "Wyświetlanie komentarzy wewnętrznych"
@@ -4256,7 +4322,7 @@ pl:
   setting_self_registration_manual_activation: "Ręczna aktywacja kont"
   setting_self_registration_manual_activation_caption: >
     Użytkownicy mogą rejestrować się samodzielnie. Ich konta są w stanie oczekiwania, dopóki nie aktywuje ich administrator lub użytkownik z globalnymi uprawnieniami do tworzenia użytkowników lub zarządzania nimi.
-  setting_session_ttl: "Czas wygaśnięcia sesji po bezczynności"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Value below 5 works like disabled"
   setting_session_ttl_enabled: "Sesja wygasła"
   setting_start_of_week: "Początek tygodnia"
@@ -4354,6 +4420,15 @@ pl:
       new:
         heading: "Nowy atrybut"
         description: "Zmiany tego atrybutu projektu zostaną odzwierciedlone we wszystkich projektach, w których jest on włączony. Wymaganych atrybutów nie można wyłączyć dla poszczególnych projektów."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Cykl życia projektu"
       heading_description: "Cykl życia projektu określa fazy projektu, których można użyć do planowania projektu, a które pojawią się na stronie przeglądu każdego projektu. Te atrybuty mogą być włączone lub wyłączone, ale nie można zmienić ich kolejności na poziomie projektu."

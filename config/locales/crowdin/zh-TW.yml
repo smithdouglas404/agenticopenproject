@@ -534,6 +534,9 @@ zh-TW:
         no_results_title_text: 該專案沒有額外消耗磁碟空間。
       work_package_priorities:
         new_label: "新優先權"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: 編輯專案狀態
   lists:
@@ -657,6 +660,57 @@ zh-TW:
     memberships:
       no_results_title_text: 這個使用者目前不是任何專案的成員
     open_profile: "開啟個人資料"
+    invite_user_modal:
+      invite: "邀請"
+      title:
+        invite: "邀請使用者"
+        invite_to_project: "邀請 %{type} 到 %{project}"
+        invite_principal_to_project: "邀請 %{principal} 到 %{project}"
+      project:
+        label: "專案"
+        required: "請選擇一個專案"
+        next_button: "下一步"
+        no_results: "找不到專案"
+        no_invite_rights: "您不能邀請成員加入此專案"
+      type:
+        required: "請選擇要邀請的類型"
+        user:
+          title: "邀請使用者至 %{project_name}"
+          description: "根據所選專案中指定角色的權限"
+        group:
+          title: "邀請群組至 %{project_name}"
+          description: "根據所選專案中指定角色的權限"
+        placeholder_user:
+          title: "新增佔位符使用者至 %{project_name}"
+          title_no_ee: "佔位符使用者（僅限企業版附加元件）"
+          description: "無法存取專案，也不會傳送電子郵件。"
+        already_member_message: "已經是 %{project} 的會員"
+      principal:
+        no_results_user: "未找到使用者"
+        invite_user: "邀請："
+        no_results_placeholder: "未找到佔位符"
+        create_new_placeholder: "建立新的佔位符："
+        no_results_group: "未發現任何群組"
+        invite_to_project: "邀請至 %{project_name}"
+        required:
+          user: "請選擇使用者"
+          placeholder: "請選擇一個佔位符"
+          group: "請選擇群組"
+      role:
+        label: "在 %{project} 中的角色"
+        no_roles_found: "未找到任何角色"
+        description: >
+          這是使用者加入專案時將收到的角色。角色定義允許他們執行哪些動作，以及允許他們檢視哪些資訊。[進一步瞭解角色和權限。](docs_url)
+        required: "請選擇角色"
+      message:
+        label: "邀請訊息"
+        description: "我們會寄送一封電子郵件給使用者，您可以在此加入個人訊息。說明邀請的原因或提供一些有關專案的資訊，能夠幫助他們更順利開始使用。"
+      summary:
+        next_button: "發送邀請函"
+      success_message:
+        user: "使用者現在可以登入 %{project}。與此同時，您已經可以與該使用者一起進行規劃，例如指派工作套件。"
+        placeholder_user: "佔位符現在可在 %{project} 中使用。與此同時，您已經可以使用該使用者進行規劃，例如指派工作套件。"
+        group: "現在該群組成為 %{project} 的一部分。與此同時，您已經可以使用該群組進行規劃，例如指派工作套件。"
   page:
     text: "文字"
   placeholder_users:
@@ -1232,6 +1286,9 @@ zh-TW:
         mode_guideline: "某些模式會覆蓋自訂主題的顏色，以提高可訪問性和可存取性。請選擇「Light」模式，以獲得完整的自訂主題支援。"
         daily_reminders: "每日提醒"
         workdays: "工作日"
+      users/invitation/form_model:
+        principal_type: "邀請函類型"
+        id_or_email: "姓名或電子郵件地址"
       version:
         effective_date: "完成日期"
         sharing: "分享"
@@ -1937,9 +1994,11 @@ zh-TW:
   button_delete_permanently: "永久刪除"
   button_delete_watcher: "刪除監看者 %{name}"
   button_download: "下載"
+  button_disable: "Disable"
   button_duplicate: "複本"
   button_duplicate_and_follow: "複製並追蹤"
   button_edit: "編輯"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "編輯關聯的維基頁面：%{page_title}"
   button_expand_all: "全部展開"
   button_favorite: "收藏"
@@ -2478,7 +2537,7 @@ zh-TW:
       attribute_not_found: "屬性未找到： %{attribute}"
       model_not_found: "屬性模型無效： %{model}"
       resource_not_found: "未找到資源： %{resource}"
-      rich_text_unsupported: "導出時不支持富文本嵌入功能"
+      nested_rich_text_unsupported: "目前匯出功能不支援巢狀豐富文字內嵌"
     units:
       hours: 小時
       days: 日
@@ -2931,7 +2990,7 @@ zh-TW:
   label_filter_add: "新增條件"
   label_filter_by: "篩選條件："
   label_filter_any_name_attribute: "名稱屬性"
-  label_filter_plural: "篩選條件"
+  label_filter_plural: "篩選器"
   label_filters_toggle: "顯示/隱藏篩選條件"
   label_float: "浮點數"
   label_folder: "資料夾"
@@ -2946,8 +3005,8 @@ zh-TW:
   label_global_modules: "全域模組"
   label_global_roles: "全域角色"
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: "之前"
-  label_group_by: "分類"
+  label_greater_or_equal: ">="
+  label_group_by: "分組依據"
   label_group_new: "新增群組"
   label_group: "群組"
   label_group_named: "群組名稱 %{name}"
@@ -2959,7 +3018,7 @@ zh-TW:
   label_hierarchy: "階層"
   label_hierarchy_leaf: "頁面結構頁"
   label_home: "Home"
-  label_subject_or_id: "名稱或 id"
+  label_subject_or_id: "主旨或 id"
   label_calendar_subscriptions: "訂閱行事曆"
   label_identifier: "識別碼"
   label_in: "在"
@@ -3008,7 +3067,7 @@ zh-TW:
   label_latest_revision_plural: "最新版本"
   label_ldap_authentication: "LDAP 認證"
   label_learn_more: "了解更多"
-  label_less_or_equal: "之後"
+  label_less_or_equal: "<="
   label_less_than_ago: "幾天內"
   label_link_url: "連結(URL)"
   label_list: "清單"
@@ -3180,6 +3239,7 @@ zh-TW:
   label_project_view_all: "檢視所有專案"
   label_project_show_details: "顯示專案詳細資訊"
   label_project_hide_details: "隱藏專案詳細資訊"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "個人檔案"
   label_portfolio_new: "新投資組合"
   label_program: "方案"
@@ -3727,6 +3787,9 @@ zh-TW:
   permission_edit_wiki_pages: "編輯維基頁面"
   permission_export_work_packages: "匯出工作套件"
   permission_export_wiki_pages: "匯出維基頁面"
+  permission_invite_members_by_email: "透過電子郵件邀請會員"
+  permission_invite_members_by_email_explanation: >
+    允許使用者透過電子郵件邀請新會員。受邀的使用者會收到一封電子郵件，內含設定密碼和啟動帳戶的連結。取決於管理會員的權限
   permission_list_attachments: "列出附件"
   permission_log_own_time: "記錄個人耗時"
   permission_log_time: "紀錄他人耗時"
@@ -3756,6 +3819,9 @@ zh-TW:
   permission_share_work_packages: "參與工作套件"
   permission_manage_types: "選擇類型"
   permission_manage_own_reminders: "建立自己的提醒事項"
+  permission_view_all_principals: "檢視所有使用者和群組"
+  permission_view_all_principals_explanation: >
+    允許使用者查看系統中的所有使用者和群組，即使他們不是任何已加入專案或群組的成員。
   permission_view_project: "檢視專案"
   permission_view_changesets: "在 OpenProject 檢視版本庫修訂"
   permission_view_internal_comments: "檢視內部留言"
@@ -4214,6 +4280,15 @@ zh-TW:
       new:
         heading: "新屬性"
         description: "專案屬性的變更將套用在已啟用該屬性專案中。 若為必要屬性，無法個別專案停用。"
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "專案生命週期"
       heading_description: "專案生命週期定義了可用於專案規劃的階段，並將顯示在各專案的總覽頁面中。這些屬性可啟用或停用，但在單一專案中無法重新排序。"

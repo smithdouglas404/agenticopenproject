@@ -536,6 +536,9 @@ tr:
         no_results_title_text: Bu proje tarafından tüketilen ek kayıtlı disk alanı yoktur.
       work_package_priorities:
         new_label: "Yeni öncelik"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Proje durumunu düzenle
   lists:
@@ -665,6 +668,57 @@ tr:
     memberships:
       no_results_title_text: Bu kullanıcı şuan için bir proje üyesi değil.
     open_profile: "Profili aç"
+    invite_user_modal:
+      invite: "Davet et"
+      title:
+        invite: "Kullanıcı davet et"
+        invite_to_project: "%{type} 'ı %{project} projesine davet edin"
+        invite_principal_to_project: "%{principal} 'i %{project} projesine davet edin\n"
+      project:
+        label: "Proje"
+        required: "Lütfen bir proje seçin"
+        next_button: "Sonraki"
+        no_results: "Hiç proje bulunamadı"
+        no_invite_rights: "Bu projeye üye davet etme izniniz yok"
+      type:
+        required: "Lütfen davet edilecek türü seçin"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Seçilen projede atanan role dayalı izinler"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Seçilen projede atanan role dayalı izinler"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Yer tutucu kullanıcı (yalnızca Enterprise sürümü eklentisi)"
+          description: "Projeye erişimi yoktur ve e-posta gönderilmez."
+        already_member_message: "Zaten %{project} üyesi"
+      principal:
+        no_results_user: "Hiçbir kullanıcı bulunamadı"
+        invite_user: "Davet et"
+        no_results_placeholder: "Hiçbir yer bulunamadı."
+        create_new_placeholder: "Yeni yer tutucu oluşturun:"
+        no_results_group: "Hiç grup bulunamadı."
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Lütfen bir kullanıcı seçin"
+          placeholder: "Lütfen bir yer tutucu seçin"
+          group: "Lütfen bir grup seçin"
+      role:
+        label: "rol %{project}"
+        no_roles_found: "Hiç rol bulunamadı."
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Lütfen bir rol seçin."
+      message:
+        label: "Davet Mesajı"
+        description: "Kullanıcıya, buradan kişisel bir mesaj ekleyebileceğiniz bir e-posta göndereceğiz. Davet için bir açıklama yararlı olabilir veya belki de başlamalarına yardımcı olacak projeyle ilgili bir parça bilgi olabilir."
+      summary:
+        next_button: "Davet gönder"
+      success_message:
+        user: "Kullanıcı artık %{project} 'e erişmek için oturum açabilir. Bu arada, o kullanıcıyla zaten plan yapabilir ve örneğin iş paketleri atayabilirsiniz."
+        placeholder_user: "Kullanıcı artık %{project} 'e erişmek için oturum açabilir. Bu arada, o kullanıcıyla zaten plan yapabilir ve örneğin iş paketleri atayabilirsiniz."
+        group: "Grup artık %{project} 'nin bir parçası. Bu arada, bu grupla zaten plan yapabilir ve örneğin iş paketleri atayabilirsiniz."
   page:
     text: "Metin"
   placeholder_users:
@@ -1244,6 +1298,9 @@ tr:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Günlük hatırlatmalar"
         workdays: "İş Günleri"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "İsim veya e-posta adresi"
       version:
         effective_date: "Bitiş tarihi"
         sharing: "Paylaşım"
@@ -1965,9 +2022,11 @@ tr:
   button_delete_permanently: "Kalıcı olarak sil"
   button_delete_watcher: "%{name} isimli takip edeni sil"
   button_download: "İndir"
+  button_disable: "Disable"
   button_duplicate: "Çoğalt"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Düzenle"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Tümünü genişlet"
   button_favorite: "Favorilere Ekle"
@@ -2527,7 +2586,7 @@ tr:
       attribute_not_found: "öznitelik bulunamadı: %{attribute}"
       model_not_found: "geçersiz öznitelik modeli: %{model}"
       resource_not_found: "kaynak bulunamadı: %{resource}"
-      rich_text_unsupported: "Zengin metin yerleştirme şu anda dışa aktarmada desteklenmiyor"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: sa
       days: g
@@ -3229,6 +3288,7 @@ tr:
   label_project_view_all: "Tüm projeleri görüntüle"
   label_project_show_details: "Proje detaylarını göster"
   label_project_hide_details: "Proje detaylarını gizle"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portföy"
   label_portfolio_new: "Yeni portföy"
   label_program: "Program"
@@ -3778,6 +3838,9 @@ tr:
   permission_edit_wiki_pages: "Wiki sayfalarını düzenlemek"
   permission_export_work_packages: "İş paketlerini dışarı aktar"
   permission_export_wiki_pages: "Wiki sayfalarını dışarı aktar"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Ekleri listelemek"
   permission_log_own_time: "Kendi zamanını günlüğe kaydet"
   permission_log_time: "Diğer kullanıcıların zamanını günlüğe kaydet"
@@ -3807,6 +3870,9 @@ tr:
   permission_share_work_packages: "İş paketini paylaşma"
   permission_manage_types: "İş paketi türlerini seçmek"
   permission_manage_own_reminders: "Kendi hatırlatıcısını oluşturma"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Projeleri görüntüleme"
   permission_view_changesets: "OpenProject'de depo revizyonlarını görüntüle"
   permission_view_internal_comments: "Dahili yorumları görüntüle"
@@ -4167,7 +4233,7 @@ tr:
   setting_self_registration_manual_activation: "Elle hesap etkinleştirme"
   setting_self_registration_manual_activation_caption: >
     Kullanıcılar kendi başlarına kayıt olabilirler. Kullanıcı oluşturma veya yönetme genel iznine sahip bir yönetici veya kullanıcı onları etkinleştirene kadar hesapları beklemede durumundadır.
-  setting_session_ttl: "Hareketsizlikten sonra oturum son kullanma süresi"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "5'in altındaki değer, devre dışı gibi"
   setting_session_ttl_enabled: "Oturum sona eriyor"
   setting_start_of_week: "Hafta Başlangıcı"
@@ -4265,6 +4331,15 @@ tr:
       new:
         heading: "Yeni öznitelik"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Proje yaşam döngüsü"
       heading_description: "Proje yaşam döngüsü, proje planlamanız için kullanılabilecek ve her projenin genel bakış sayfasında görünecek proje aşamalarını tanımlar. Bu nitelikler etkinleştirilebilir veya devre dışı bırakılabilir ancak proje düzeyinde yeniden sıralanamaz."

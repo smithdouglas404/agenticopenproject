@@ -103,13 +103,13 @@ module Pages::Meetings
 
     def expect_copy_action(meeting)
       within more_menu(meeting) do
-        expect(page).to have_link("Copy meeting")
+        expect(page).to have_link("Duplicate meeting")
       end
     end
 
     def expect_no_copy_action(meeting)
       within more_menu(meeting) do
-        expect(page).to have_no_link("Copy meeting")
+        expect(page).to have_no_link("Duplicate meeting")
       end
     end
 

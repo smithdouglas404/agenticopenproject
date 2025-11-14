@@ -112,12 +112,18 @@ Redmine::MenuManager.map :quick_add_menu do |menu|
             }
 
   menu.push :invite_user,
-            nil,
+            ->(project) {
+              { controller: "/users/invite", action: :start_dialog, project_id: project&.id }
+            },
             caption: :label_invite_user,
             icon: "person-add",
             html: {
-              "invite-user-modal-augment": "invite-user-modal-augment"
+              target: nil,
+              data: {
+                turbo_stream: true
+              }
             },
+            skip_permissions_check: true, # Prevent project specific permission checks
             if: ->(_) { User.current.allowed_in_any_project?(:manage_members) }
 end
 
@@ -691,6 +697,10 @@ Redmine::MenuManager.map :project_menu do |menu|
       action: :index
     },
     project_custom_fields: { caption: :label_project_attributes_plural },
+    creation_wizard: {
+      caption: :label_project_initiation_request,
+      if: ->(_) { OpenProject::FeatureDecisions.project_initiation_active? }
+    },
     modules: { caption: :label_module_plural },
     work_packages: {
       caption: :label_work_package_plural,

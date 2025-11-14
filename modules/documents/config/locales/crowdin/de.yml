@@ -39,6 +39,8 @@ de:
   documents:
     page_header:
       heading: "Alle Dokumente"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Filter nach Dokumentnamen"
@@ -53,6 +55,7 @@ de:
     menu:
       all: "Alle Dokumente"
       types: "Typen"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Autor des Dokuments"
     label_categories: "Kategorien"
     new_category: "Neue Kategorie"
@@ -63,6 +66,7 @@ de:
   label_document_title: "Titel"
   label_document_description: "Beschreibung"
   label_document_category: "Kategorie"
+  label_document_type: "Typ"
   permission_manage_documents: "Dokumente verwalten"
   permission_view_documents: "Dokumente ansehen"
   project_module_documents: "Dokumente"

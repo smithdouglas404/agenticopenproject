@@ -39,6 +39,8 @@ fil:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ fil:
     menu:
       all: "All documents"
       types: "Mga uri"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "Bagong kategorya"
@@ -63,6 +66,7 @@ fil:
   label_document_title: "Pamagat"
   label_document_description: "Deskripsyon"
   label_document_category: "Kategorya"
+  label_document_type: "Type"
   permission_manage_documents: "Pamahalaan ang mga dokumento"
   permission_view_documents: "Tingnan ang dokumento"
   project_module_documents: "Mga dokumento"

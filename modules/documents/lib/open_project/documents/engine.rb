@@ -57,7 +57,7 @@ module OpenProject::Documents
                      "documents/menus": %i[show] },
                    permissible_on: :project
         permission :manage_documents,
-                   { documents: %i[new create edit update destroy] },
+                   { documents: %i[new create edit update update_type destroy] },
                    permissible_on: :project,
                    require: :loggedin
       end
@@ -86,6 +86,10 @@ module OpenProject::Documents
 
     add_api_path :attachments_by_document do |id|
       "#{document(id)}/attachments"
+    end
+
+    add_api_path :prepare_attachments_by_document do |id|
+      "#{document(id)}/attachments/prepare"
     end
 
     add_api_endpoint "API::V3::Root" do

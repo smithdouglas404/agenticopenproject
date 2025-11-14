@@ -39,6 +39,8 @@ rw:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ rw:
     menu:
       all: "All documents"
       types: "Types"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "New category"
@@ -63,6 +66,7 @@ rw:
   label_document_title: "Title"
   label_document_description: "Description"
   label_document_category: "Category"
+  label_document_type: "Type"
   permission_manage_documents: "Manage documents"
   permission_view_documents: "View documents"
   project_module_documents: "Documents"

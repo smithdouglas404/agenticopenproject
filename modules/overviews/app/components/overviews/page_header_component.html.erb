@@ -1,7 +1,7 @@
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title(variant: :medium) { page_title }
-    header.with_breadcrumbs(breadcrumb_items)
+    header.with_breadcrumbs(nil)
 
     header.with_action_icon_button(
       icon: favorited? ? "star-fill" : "star",
@@ -52,13 +52,15 @@
           t.with_text { I18n.t("overviews.label_overview") }
         end
 
-        tab_nav.with_tab(
-          test_selector: "project-dashboard-tab",
-          selected: current_page?(dashboard_project_overview_path),
-          href: helpers.dashboard_project_overview_path
-        ) do |t|
-          t.with_icon(icon: :"op-view-list")
-          t.with_text { I18n.t("overviews.label_dashboard") }
+        if current_user.allowed_in_project?(:view_project, project)
+          tab_nav.with_tab(
+            test_selector: "project-dashboard-tab",
+            selected: current_page?(dashboard_project_overview_path),
+            href: helpers.dashboard_project_overview_path
+          ) do |t|
+            t.with_icon(icon: :"op-view-list")
+            t.with_text { I18n.t("overviews.label_dashboard") }
+          end
         end
       end
     end

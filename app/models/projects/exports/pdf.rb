@@ -36,11 +36,11 @@ module Projects::Exports
     include Exports::PDF::Common::Markdown
     include Exports::PDF::Components::Page
     include Exports::PDF::Components::Cover
+    include Exports::PDF::Common::Macro
     include Projects::Exports::PDFExport::TableOfContent
     include Projects::Exports::PDFExport::Report
     include Projects::Exports::PDFExport::InfoMap
     include Projects::Exports::PDFExport::Styles
-
     attr_accessor :pdf
 
     def initialize(object, options = {})

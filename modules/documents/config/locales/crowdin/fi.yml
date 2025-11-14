@@ -39,6 +39,8 @@ fi:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ fi:
     menu:
       all: "All documents"
       types: "Tehtävätyypit"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Liitteen laatija"
     label_categories: "Categories"
     new_category: "Uusi luokka"
@@ -63,6 +66,7 @@ fi:
   label_document_title: "Otsikko"
   label_document_description: "Kuvaus"
   label_document_category: "Kategoria"
+  label_document_type: "Type"
   permission_manage_documents: "Hallitse asiakirjoja"
   permission_view_documents: "Näytä asiakirjat"
   project_module_documents: "Asiakirjat"

@@ -531,6 +531,9 @@ el:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:
         new_label: "New priority"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
   lists:
@@ -660,6 +663,57 @@ el:
     memberships:
       no_results_title_text: Αυτός ο χρήστης δεν είναι προς το παρόν μέλος κάποιου έργου.
     open_profile: "Open profile"
+    invite_user_modal:
+      invite: "Πρόσκληση"
+      title:
+        invite: "Προσκαλέστε χρήστη"
+        invite_to_project: "Προσκαλέστε %{type} στο %{project}"
+        invite_principal_to_project: "Πρόσκληση %{principal} στο %{project}"
+      project:
+        label: "Έργο"
+        required: "Παρακαλούμε επιλέξτε ένα έργο"
+        next_button: "Επόμενο"
+        no_results: "Δεν βρέθηκαν έργα"
+        no_invite_rights: "You are not allowed to invite members to this project"
+      type:
+        required: "Παρακαλώ επιλέξτε τον τύπο που θα προσκληθεί"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Has no access to the project and no emails are sent out."
+        already_member_message: "Ήδη μέλος του %{project}"
+      principal:
+        no_results_user: "Δεν βρέθηκαν χρήστες"
+        invite_user: "Πρόσκληση:"
+        no_results_placeholder: "Δεν βρέθηκαν placeholders"
+        create_new_placeholder: "Δημιουργία νέου placeholder:"
+        no_results_group: "Δεν βρέθηκαν ομάδες"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Παρακαλώ επιλέξτε ένα χρήστη"
+          placeholder: "Παρακαλώ επιλέξτε ένα placeholder"
+          group: "Παρακαλούμε επιλέξτε μια ομάδα"
+      role:
+        label: "Ρόλος στο %{project}"
+        no_roles_found: "Δεν βρέθηκε κανένας ρόλος"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Παρακαλούμε επιλέξτε ένα ρόλο"
+      message:
+        label: "Μήνυμα πρόσκλησης"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Αποστολή πρόσκλησης"
+      success_message:
+        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        group: "Η ομάδα είναι τώρα μέρος του %{project}. Εν τω μεταξύ, μπορείτε να προγραμματίσετε ήδη με αυτή την ομάδα και να αντιστοιχίσετε πακέτα εργασίας."
   page:
     text: "Κείμενο"
   placeholder_users:
@@ -1240,6 +1294,9 @@ el:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Working days"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Όνομα ή διεύθυνση email"
       version:
         effective_date: "Ημερομηνία λήξης"
         sharing: "Κοινή Χρήση"
@@ -1961,9 +2018,11 @@ el:
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Διαγραφή παρατηρητή %{name}"
   button_download: "Λήψη"
+  button_disable: "Disable"
   button_duplicate: "Δημιουργία αντιγράφου"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Επεξεργασία"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Ανάπτυξη όλων"
   button_favorite: "Add to favorites"
@@ -2523,7 +2582,7 @@ el:
       attribute_not_found: "attribute not found: %{attribute}"
       model_not_found: "invalid attribute model: %{model}"
       resource_not_found: "resource not found: %{resource}"
-      rich_text_unsupported: "Rich text embedding currently not supported in export"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: h
       days: d
@@ -3225,6 +3284,7 @@ el:
   label_project_view_all: "Εμφάνιση όλων των έργων"
   label_project_show_details: "Εμφάνιση λεπτομερειών έργου"
   label_project_hide_details: "Απόκρυψη λεπτομερειών έργου"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3775,6 +3835,9 @@ el:
   permission_edit_wiki_pages: "Επεξεργασία σελίδων wiki"
   permission_export_work_packages: "Εξαγωγή πακέτων εργασίας"
   permission_export_wiki_pages: "Εξαγωγή σελίδων wiki"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Λίστα συνημμένων"
   permission_log_own_time: "Log own time"
   permission_log_time: "Log time for other users"
@@ -3804,6 +3867,9 @@ el:
   permission_share_work_packages: "Share work packages"
   permission_manage_types: "Επιλέξτε τύπους"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "View projects"
   permission_view_changesets: "Προβολή αποθετηρίου των αναθεωρήσεων στο OpenProject"
   permission_view_internal_comments: "View internal comments"
@@ -4164,7 +4230,7 @@ el:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Χρόνος λήξης της συνεδρίας μετά από αδράνεια"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Η τιμή κάτω του 5 λειτουργεί ως απενεργοποιημένη"
   setting_session_ttl_enabled: "Η συνεδρία λήγει"
   setting_start_of_week: "Η εβδομάδα ξεκινά από"
@@ -4262,6 +4328,15 @@ el:
       new:
         heading: "New attribute"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Project life cycle"
       heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."

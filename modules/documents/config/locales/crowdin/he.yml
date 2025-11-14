@@ -39,6 +39,8 @@ he:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ he:
     menu:
       all: "All documents"
       types: "סוגים"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "קטגוריה חדשה"
@@ -63,6 +66,7 @@ he:
   label_document_title: "כותרת"
   label_document_description: "תיאור"
   label_document_category: "קטגוריה"
+  label_document_type: "Type"
   permission_manage_documents: "ניהול מסמכים"
   permission_view_documents: "צפיה במסמכים"
   project_module_documents: "מסמכים"

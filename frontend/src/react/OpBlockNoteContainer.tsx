@@ -28,13 +28,15 @@
  * ++
  */
 
-import { BlockNoteEditorOptions, BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from '@blocknote/core';
+import { BlockNoteEditorOptions, BlockNoteSchema, filterSuggestionItems } from '@blocknote/core';
 import { User } from '@blocknote/core/comments';
+import * as blockNoteLocales from '@blocknote/core/locales';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
-import { getDefaultOpenProjectSlashMenuItems, initOpenProjectApi, openProjectWorkPackageBlockSpec } from 'op-blocknote-extensions';
+import { IUploadFile } from 'core-app/core/upload/upload.service';
+import { initOpenProjectApi, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
 import { useEffect, useState } from 'react';
 import * as Y from 'yjs';
 
@@ -47,11 +49,12 @@ export interface OpBlockNoteContainerProps {
   documentName:string;
   documentId:string;
   openProjectUrl:string;
+  attachmentsUploadUrl:string;
+  attachmentsCollectionKey:string;
 }
 
-const schema = BlockNoteSchema.create({
+const schema = BlockNoteSchema.create().extend({
   blockSpecs: {
-    ...defaultBlockSpecs,
     openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
   },
 });
@@ -65,18 +68,23 @@ export default function OpBlockNoteContainer({ inputField,
                                                activeUser,
                                                documentName,
                                                documentId,
-                                               openProjectUrl }:OpBlockNoteContainerProps) {
+                                               openProjectUrl,
+                                               attachmentsUploadUrl,
+                                               attachmentsCollectionKey }:OpBlockNoteContainerProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   initOpenProjectApi({ baseUrl: openProjectUrl });
+
+  const userLocale = window.I18n.locale;
+  const blockNoteLocaleString = Object.keys(blockNoteLocales).includes(userLocale) ? userLocale : 'en';
+  const blockNoteLocale = blockNoteLocales[blockNoteLocaleString as keyof typeof blockNoteLocales];
 
   let doc = new Y.Doc();
 
   const collaborationEnabled = Boolean(hocuspocusUrl && documentName && oauthToken && activeUser);
   let hocuspocusProvider:HocuspocusProvider | null = null;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let editorParams:Partial<BlockNoteEditorOptions<any, any, any>>;
+  let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
   if(collaborationEnabled) {
     const url = new URL(hocuspocusUrl);
     url.searchParams.set('document_id', documentId);
@@ -100,6 +108,8 @@ export default function OpBlockNoteContainer({ inputField,
         },
         showCursorLabels: 'activity'
       },
+      dictionary: blockNoteLocale,
+      ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   } else { // collaboration disabled
     if (inputText) {
@@ -122,18 +132,48 @@ export default function OpBlockNoteContainer({ inputField,
           color: '#333333',
         },
       },
+      dictionary: blockNoteLocale,
+      ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   }
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
 
+  function isReadyForAttachmentUpload():boolean {
+    return (
+      attachmentsCollectionKey !== undefined &&
+      attachmentsCollectionKey !== '' &&
+      attachmentsUploadUrl !== undefined &&
+      attachmentsUploadUrl !== ''
+    );
+  }
+  const fileToIUploadFile = (file:File):IUploadFile => ({
+    file: file
+  });
+
+  async function uploadFile(file:File) {
+    const pluginContext = await window.OpenProject.getPluginContext();
+    try {
+      const service = pluginContext.services.attachmentsResourceService;
+      const iUploadFile = fileToIUploadFile(file);
+      const result = await service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile]).toPromise();
+
+      return result?.[0]._links.staticDownloadLocation.href ?? '';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch(error:any) {
+      const toastService = pluginContext.services.notifications;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      toastService.addError(error);
+
+      return '';
+    }
+  }
+
   const getCustomSlashMenuItems = (editor:EditorType) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return [
       ...getDefaultReactSlashMenuItems(editor),
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      ...getDefaultOpenProjectSlashMenuItems(editor),
+      openProjectWorkPackageSlashMenu(editor),
     ];
   };
 
@@ -168,6 +208,7 @@ export default function OpBlockNoteContainer({ inputField,
         :
         <BlockNoteView
           editor={editor}
+          slashMenu={false}
           theme={detectTheme()}
           className={'block-note-editor-container'}
         >

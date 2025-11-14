@@ -39,6 +39,8 @@ ko:
   documents:
     page_header:
       heading: "모든 문서"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "문서 이름 필터"
@@ -53,6 +55,7 @@ ko:
     menu:
       all: "모든 문서"
       types: "유형"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "첨부 파일 작성자"
     label_categories: "카테고리"
     new_category: "새 카테고리"
@@ -63,6 +66,7 @@ ko:
   label_document_title: "제목"
   label_document_description: "설명"
   label_document_category: "카테고리"
+  label_document_type: "Type"
   permission_manage_documents: "문서 관리"
   permission_view_documents: "문서 보기"
   project_module_documents: "문서"

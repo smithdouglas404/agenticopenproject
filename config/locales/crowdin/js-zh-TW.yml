@@ -296,7 +296,7 @@ zh-TW:
       warning: "請不要與其他用戶共享此 URL 。擁有這個鏈接的任何人都可以在沒有帳戶或密碼的情況下查看工作套件的詳細訊息。"
       token_name_label: "您將在哪裡使用它？"
       token_name_placeholder: '輸入名稱，例如“Phone”'
-      token_name_description_text: '如果您從多個設備訂閱此日曆，此名稱將有助於在<a href="my/access_token", target="_blank">存取令牌(Token)</a>列表中區分它們。'
+      token_name_description_text: '如果您從多個裝置訂閱此行事曆，這個名稱將有助於您在<a href="%{myAccessTokensUrl}" target="_blank">存取令牌</a>清單中加以區分。'
       copy_url_label: "複製URL"
       ical_generation_error_text: "生成日曆 URL 時出錯。"
       success_message: 'URL“%{name}”已成功複製到剪貼板。請將其粘貼到日曆客戶端中以完成訂閱。'
@@ -1130,71 +1130,8 @@ zh-TW:
       list: "表格"
       timeline: "甘特圖"
     invite_user_modal:
-      back: "返回"
       invite: "邀請"
-      title:
-        invite: "邀請加入"
-        invite_to_project: "邀請%{type} 加入 %{project}"
-        User: "使用者"
-        Group: "群組"
-        PlaceholderUser: "佔位符使用者"
-        invite_principal_to_project: "邀請 %{principal} 加入 %{project}"
-      project:
-        label: "專案"
-        required: "請選擇一個專案"
-        lacking_permission: "請選擇其他項目，因為您缺少將用戶分配至當前所選項目的權限。"
-        lacking_permission_info: "您缺少將用戶分配至您當前所在項目的權限。您需要選擇其他項目。"
-        next_button: "下一個"
-        no_results: "找不到專案"
-        no_invite_rights: "您無權邀請成員加入此專案"
-      type:
-        required: "請選擇要邀請的類型"
-        user:
-          title: "使用者"
-          description: "基於所選項目中所分配角色的權限"
-        group:
-          title: "群組"
-          description: "基於所選專案中所分配角色的權限"
-        placeholder:
-          title: "佔位符使用者"
-          title_no_ee: "佔位符使用者（僅限企業版附加元件）"
-          description: "無法訪問該專案並且未發送電子郵件。"
-          description_no_ee: '由於沒有存取專案權限，所以不會發送電子郵件。<br>請查看<a href="%{eeHref}" target="_blank">企業版</a>。'
-      principal:
-        label:
-          name_or_email: "名稱或電子郵件地址"
-          name: "名稱"
-        already_member_message: "已是「 %{project} 」成員"
-        no_results_user: "找不到使用者。"
-        invite_user: "邀請"
-        no_results_placeholder: "沒有找到佔位符"
-        create_new_placeholder: "創建新的佔位符："
-        no_results_group: "找不到群組。"
-        next_button: "下一個"
-        required:
-          user: "請選擇一個使用者"
-          placeholder: "請選擇佔位符"
-          group: "請選擇一個群組"
-      role:
-        label: "%{project} 中的角色"
-        no_roles_found: "找不到角色。"
-        description: >-
-          這是用戶在加入您的專案時將獲得的角色。角色定義了允許其執行哪些操作以及允許其查看哪些信息。<a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank">詳細瞭解角色和權限</a>。
-        required: "請選擇一個角色： "
-        next_button: "下一個"
-      message:
-        label: "邀請訊息"
-        description: "我們將向用戶發送一封電子郵件，您可以在此處添加要向其發送的個人消息。提供邀請說明可能會很有用，您也可以添加一些有關該專案的信息以幫助他們開始。"
-        next_button: "下一個"
-      summary:
-        next_button: "發送邀請"
-      success:
-        title: "%{principal} 已被邀請！"
-        description:
-          user: "該使用者現在可以登入並存取 %{project}。同時，您已可開始與該使用者一起規劃，並指派工作套件等操作。"
-          placeholder: "該佔位符現在可在 %{project} 中使用。您也可以開始與該使用者一起規劃，並指派工作套件等操作。"
-          group: "該群組現在已成為 %{project} 的一部分。您也可以開始與該群組一起規劃，並指派工作套件等操作。"
-        next_button: "繼續"
+      placeholder_add_tag: "建立佔位符使用者"
     exclusion_info:
       modal:
         title: "從層次結構總計中排除的狀態"

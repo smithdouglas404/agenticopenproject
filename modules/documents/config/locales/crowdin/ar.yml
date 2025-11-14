@@ -39,6 +39,8 @@ ar:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ ar:
     menu:
       all: "All documents"
       types: "الأنواع"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "مؤلف مرفق"
     label_categories: "الأقسام"
     new_category: "فئة جديدة"
@@ -63,6 +66,7 @@ ar:
   label_document_title: "العنوان"
   label_document_description: "الوصف"
   label_document_category: "الفئة"
+  label_document_type: "Type"
   permission_manage_documents: "إدارة الوثائق"
   permission_view_documents: "عرض الوثائق"
   project_module_documents: "الوثائق"

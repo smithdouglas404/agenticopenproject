@@ -297,7 +297,7 @@ fr:
       warning: "Veillez à ne pas partager pas cette adresse URL avec d'autres utilisateurs. Quiconque disposant de ce lien sera en mesure de voir les détails du lot de travaux sans nécessité d'avoir un compte ou de saisir un mot de passe."
       token_name_label: "Où comptez-vous l'utiliser ?"
       token_name_placeholder: 'Saisissez un nom, par exemple « Téléphone »'
-      token_name_description_text: 'Si vous vous abonnez à ce calendrier à partir de plusieurs appareils, ce nom vous aidera à les distinguer dans votre liste de <a href="my/access_token", target="_blank">jetons d''accès</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copier l'URL"
       ical_generation_error_text: "Une erreur s'est produite lors de la génération de l'URL du calendrier."
       success_message: 'L''adresse URL « %{name} » a été copiée avec succès dans votre presse-papiers. Collez-la dans votre client de calendrier pour compléter l''abonnement.'
@@ -1135,71 +1135,8 @@ fr:
       list: "Tableau"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Retour"
       invite: "invite"
-      title:
-        invite: "Inviter utilisateur"
-        invite_to_project: "Inviter %{type} à %{project}"
-        User: "utilisateur"
-        Group: "groupe"
-        PlaceholderUser: "utilisateur fictif"
-        invite_principal_to_project: "Inviter %{principal} à %{project}"
-      project:
-        label: "Projet"
-        required: "Veuillez sélectionner un projet"
-        lacking_permission: "Veuillez sélectionner un projet différent car vous n'avez pas les autorisations nécessaires pour assigner des utilisateurs au projet actuellement sélectionné."
-        lacking_permission_info: "Vous n'avez pas la permission d'affecter des utilisateurs au projet dans lequel vous vous trouvez. Vous devez en sélectionner un autre."
-        next_button: "Suivante"
-        no_results: "Aucun projet trouvé"
-        no_invite_rights: "Vous n'êtes pas autorisé à inviter des membres à ce projet"
-      type:
-        required: "Veuillez sélectionner le type d'invité"
-        user:
-          title: "Utilisateur"
-          description: "Permissions basées sur le rôle attribué dans le projet sélectionné"
-        group:
-          title: "Groupe"
-          description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
-        placeholder:
-          title: "Utilisateur fictif"
-          title_no_ee: "Utilisateur fictif (add-on de la version Entreprise uniquement)"
-          description: "N'a pas d'accès au projet et aucun e-mail n'est envoyé."
-          description_no_ee: 'N''a pas accès au projet et aucun e-mail n''est envoyé. <br>Consultez la <a href="%{eeHref}" target="_blank">version Entreprise</a>.'
-      principal:
-        label:
-          name_or_email: "Nom ou adresse e-mail"
-          name: "Nom"
-        already_member_message: "Déjà membre de %{project}"
-        no_results_user: "Aucun utilisateur n'a été trouvé"
-        invite_user: "Invité :"
-        no_results_placeholder: "Aucun utilisateur fictif n'a été trouvé"
-        create_new_placeholder: "Créer un nouveau utilisateur fictif :"
-        no_results_group: "Aucun groupe n'a été trouvé"
-        next_button: "Suivante"
-        required:
-          user: "Veuillez sélectionner un utilisateur"
-          placeholder: "Veuillez sélectionner un utilisateur fictif"
-          group: "Veuillez sélectionner un groupe"
-      role:
-        label: "Rôle dans %{project}"
-        no_roles_found: "Aucun rôle trouvé."
-        description: >-
-          C'est le rôle que l'utilisateur recevra quand il rejoindra votre projet. Le rôle définit quelles actions il est autorisé à entreprendre et quelles informations il peut voir. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> En savoir plus sur les rôles et les permissions. </a>
-        required: "Veuillez sélectionner un rôle"
-        next_button: "Suivante"
-      message:
-        label: "Message d'invitation"
-        description: "Nous enverrons un e-mail à l'utilisateur, auquel vous pourrez ajouter un message personnel ici. Une explication concernant l'invitation pourrait être utile, ou peut-être quelques informations concernant le projet pour les aider à démarrer."
-        next_button: "Suivant"
-      summary:
-        next_button: "Envoyer une invitation"
-      success:
-        title: "%{principal} a été invité !"
-        description:
-          user: "L'utilisateur peut maintenant se connecter pour accéder à %{project}. En attendant, vous pouvez déjà planifier avec cet utilisateur et assigner des lots de travaux par exemple."
-          placeholder: "Le utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux par exemple."
-          group: "Le groupe fait maintenant partie du %{project}. Entre-temps, vous pouvez déjà planifier avec ce groupe et l'assigner des lots de travaux par exemple."
-        next_button: "Continuer"
+      placeholder_add_tag: "Créer un utilisateur fictif"
     exclusion_info:
       modal:
         title: "Statut exclu des totaux de la hiérarchie"

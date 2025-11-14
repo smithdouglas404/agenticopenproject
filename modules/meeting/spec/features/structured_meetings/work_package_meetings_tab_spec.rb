@@ -346,8 +346,9 @@ RSpec.describe "Open the Meetings tab",
         meetings_tab.expect_add_to_meeting_dialog_shown
       end
 
-      context "when open, upcoming meetings are visible for the user" do
+      context "when draft, open, upcoming meetings are visible for the user" do
         shared_let(:past_meeting) { create(:meeting, project:, start_time: Date.yesterday - 10.hours) }
+        shared_let(:draft_meeting) { create(:meeting, project:, state: :draft) }
         shared_let(:first_upcoming_meeting) { create(:meeting, project:) }
         shared_let(:second_upcoming_meeting) { create(:meeting, project:) }
         shared_let(:in_progress_meeting) { create(:meeting, project:, state: :in_progress) }
@@ -358,7 +359,7 @@ RSpec.describe "Open the Meetings tab",
 
         let(:meeting_page) { Pages::Meetings::Show.new(first_upcoming_meeting) }
 
-        it "enables the user to add the work package to multiple open, upcoming meetings" do
+        it "enables the user to add the work package to multiple upcoming meetings" do
           work_package_page.visit!
           switch_to_meetings_tab
 
@@ -389,7 +390,7 @@ RSpec.describe "Open the Meetings tab",
           end
         end
 
-        it "allows the user to select ongoing meetings" do
+        it "allows the user to select ongoing meetings", skip: "flickering spec (#68952)" do
           work_package_page.visit!
           switch_to_meetings_tab
 
@@ -400,6 +401,8 @@ RSpec.describe "Open the Meetings tab",
             "Some notes to be added",
             1
           )
+
+          wait_for_network_idle
 
           meetings_tab.expect_upcoming_counter_to_be(1)
 
@@ -424,6 +427,23 @@ RSpec.describe "Open the Meetings tab",
 
           page.within_test_selector("op-meeting-container-#{in_progress_meeting.id}") do
             expect(page).to have_content("In progress notes")
+          end
+        end
+
+        it "allows the user to select draft meetings" do
+          work_package_page.visit!
+          switch_to_meetings_tab
+
+          meetings_tab.open_add_to_meeting_dialog
+
+          meetings_tab.fill_and_submit_meeting_dialog(
+            draft_meeting,
+            "Draft notes",
+            1
+          )
+
+          page.within_test_selector("op-meeting-container-#{draft_meeting.id}") do
+            expect(page).to have_content("Draft notes")
           end
         end
 

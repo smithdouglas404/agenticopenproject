@@ -39,6 +39,8 @@ ka:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ ka:
     menu:
       all: "All documents"
       types: "ტიპები"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "ახალი კატეგორია"
@@ -63,6 +66,7 @@ ka:
   label_document_title: "სათაური"
   label_document_description: "აღწერა"
   label_document_category: "კატეგორია"
+  label_document_type: "Type"
   permission_manage_documents: "Manage documents"
   permission_view_documents: "დოკუმენტების ნახვა"
   project_module_documents: "დოკუმენტები"

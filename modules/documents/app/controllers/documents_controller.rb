@@ -59,17 +59,16 @@ class DocumentsController < ApplicationController
 
   def show
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
+    generate_oauth_token if @document.collaborative?
   end
 
   def new
     @document = @project.documents.build
     @document.attributes = document_params
-    generate_oauth_token
   end
 
   def edit
     @categories = DocumentCategory.all
-    generate_oauth_token
   end
 
   def create
@@ -99,6 +98,25 @@ class DocumentsController < ApplicationController
     end
   end
 
+  def update_type
+    service_call = Documents::UpdateService
+      .new(user: current_user, model: @document)
+      .call(type_id: params[:type_id])
+
+    if service_call.success?
+      update_via_turbo_stream(
+        component: Documents::ShowEditView::PageHeader::InfoLineComponent.new(@document)
+      )
+    else
+      render_error_flash_message_via_turbo_stream(
+        message: service_call.errors.full_messages
+      )
+      @turbo_status = :unprocessable_entity
+    end
+
+    respond_with_turbo_streams
+  end
+
   def destroy
     if @document.destroy
       flash[:notice] = I18n.t(:notice_successful_delete)
@@ -112,7 +130,7 @@ class DocumentsController < ApplicationController
   private
 
   def document_params
-    params.fetch(:document, {}).permit("category_id", "title", "description", "content_binary")
+    params.fetch(:document, {}).permit("type_id", "title", "description", "content_binary")
   end
 
   def list_documents_query

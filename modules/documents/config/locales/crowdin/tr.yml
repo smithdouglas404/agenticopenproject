@@ -39,6 +39,8 @@ tr:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ tr:
     menu:
       all: "All documents"
       types: "Türler"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Ek yazar"
     label_categories: "Kategoriler"
     new_category: "Yeni kategori"
@@ -63,6 +66,7 @@ tr:
   label_document_title: "Başlık"
   label_document_description: "Açıklama"
   label_document_category: "Kategori"
+  label_document_type: "Type"
   permission_manage_documents: "Belgeleri yönetme"
   permission_view_documents: "Belgeleri görüntüleme"
   project_module_documents: "Belgeler"

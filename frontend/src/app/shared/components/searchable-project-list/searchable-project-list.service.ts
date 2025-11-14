@@ -118,7 +118,7 @@ export class SearchableProjectListService {
       }
 
       return null;
-    }
+    };
 
     this.selectedItemID$.next(findFirstNonDisabledID(projects));
   }

@@ -281,6 +281,10 @@ Rails.application.routes.draw do
           post :toggle_public
         end
         resource :modules, only: %i[show update]
+        resource :creation_wizard, controller: "creation_wizard", only: %i[show] do
+          get :disable_dialog
+          post :toggle
+        end
         resource :project_custom_fields, only: %i[show] do
           member do
             post :toggle
@@ -390,7 +394,7 @@ Rails.application.routes.draw do
     # work as a catchall for everything under /wiki
     get "wiki" => "wiki#show"
 
-    resources :work_packages, only: [] do
+    resources :work_packages, only: %i[index show] do
       collection do
         get "/report/:detail" => "work_packages/reports#report_details"
         get "/report" => "work_packages/reports#report"
@@ -398,14 +402,16 @@ Rails.application.routes.draw do
         get "/export_dialog" => "work_packages#export_dialog"
       end
 
+      get "/copy" => "work_packages#copy", on: :member, as: "copy"
+      get "/new" => "work_packages#new", on: :collection, as: "new"
+
+      get "(/:tab)" => "work_packages#show", on: :member, as: "",
+          constraints: { id: /\d+/, state: /(?!(shares|copy|dialog)).+/ }
+
       # states managed by client-side routing on work_package#index
-      get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog)).+/ }
+      get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog|new)).+/ }
 
       get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
-      get "/new" => "work_packages#index", on: :collection, as: "new"
-
-      # state for show view in project context
-      get "(/*state)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(dialog)).+/ }
     end
 
     namespace :work_packages do
@@ -719,7 +725,7 @@ Rails.application.routes.draw do
     get "/bulk" => "bulk#destroy"
   end
 
-  resources :work_packages, only: [:index] do
+  resources :work_packages, only: %i[index show new] do
     concerns :shareable
 
     get "hover_card" => "work_packages/hover_card#show", on: :member
@@ -801,12 +807,13 @@ Rails.application.routes.draw do
     get "/split_view/get_relations_counter" => "work_packages/split_view#get_relations_counter",
         on: :member
 
+    get "/copy" => "work_packages#copy", on: :member, as: "copy"
+    get "(/:tab)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|new|copy)).+/ }
+
     # states managed by client-side (angular) routing on work_package#show
     get "/" => "work_packages#index", on: :collection, as: "index"
     get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
-    get "/new" => "work_packages#index", on: :collection, as: "new", state: "new"
-    # We do not want to match the work package export routes
-    get "(/*state)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|split_view)).+/ }
+
     get "/share_upsell" => "work_packages#share_upsell", on: :collection, as: "share_upsell"
     get "/edit" => "work_packages#show", on: :member, as: "edit"
   end
@@ -825,6 +832,11 @@ Rails.application.routes.draw do
 
   resources :users, constraints: { id: /(\d+|me)/ }, except: :edit do
     resources :memberships, controller: "users/memberships", only: %i[update create destroy]
+
+    collection do
+      get "/invite" => "users/invite#start_dialog"
+      post "/invite/step" => "users/invite#step"
+    end
 
     member do
       get "/hover_card" => "users/hover_card#show"

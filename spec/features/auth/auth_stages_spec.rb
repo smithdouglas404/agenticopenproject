@@ -88,7 +88,7 @@ RSpec.describe "Authentication Stages", :skip_2fa_stage do
     end
 
     it "redirects to authentication stage after automatic registration and before login" do
-      visit signin_path
+      visit account_register_path
 
       within("#new_user") do
         fill_in "user_login", with: "h.wurst"

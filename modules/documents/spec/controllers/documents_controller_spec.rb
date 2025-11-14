@@ -38,12 +38,12 @@ RSpec.describe DocumentsController do
   let(:user) { create(:user) }
   let(:role) { create(:project_role, permissions: [:view_documents]) }
 
-  let(:default_category) do
-    create(:document_category, project:, name: "Default Category")
+  let(:document_type) do
+    create(:document_type, name: "Default Type")
   end
 
   let!(:document) do
-    create(:document, title: "Sample Document", project:, category: default_category)
+    create(:document, title: "Sample Document", project:, type: document_type)
   end
 
   current_user { admin }
@@ -75,7 +75,7 @@ RSpec.describe DocumentsController do
       attributes_for(:document,
                      title: "New Document",
                      project_id: project.id,
-                     category_id: default_category.id)
+                     type_id: document_type.id)
     end
 
     before do
@@ -87,14 +87,10 @@ RSpec.describe DocumentsController do
         post :create,
              params: {
                project_id: project.identifier,
-               document: attributes_for(
-                 :document,
-                 title: "New Document",
-                 project_id: project.id,
-                 category_id: default_category.id
-               )
+               document: document_attributes
              }
-      end.to change(Document, :count).by 1
+      end.to change(Document, :count).by(1)
+      expect(Document.last.attributes).to include(document_attributes.stringify_keys)
     end
 
     it "does trigger a workflow job for the document" do
@@ -116,7 +112,7 @@ RSpec.describe DocumentsController do
                document: attributes_for(:document,
                                         title: "New Document",
                                         project_id: notify_project.id,
-                                        category_id: default_category.id),
+                                        type_id: document_type.id),
                attachments: { "1" => { id: uncontainered.id } }
              }
       end
@@ -137,7 +133,7 @@ RSpec.describe DocumentsController do
 
   describe "show" do
     before do
-      document
+      document.update(kind: :classic)
       get :show, params: { id: document.id }
     end
 
@@ -164,7 +160,7 @@ RSpec.describe DocumentsController do
   end
 
   describe "generate_oauth_token" do
-    let(:manage_role) { create(:project_role, permissions: [:manage_documents]) }
+    let(:manage_role) { create(:project_role, permissions: %i[view_documents manage_documents]) }
     let(:view_only_role) { create(:project_role, permissions: [:view_documents]) }
     let(:user_with_manage) { create(:user) }
     let(:user_without_manage) { create(:user) }
@@ -172,18 +168,15 @@ RSpec.describe DocumentsController do
     before do
       create(:member, project:, user: user_with_manage, roles: [manage_role])
       create(:member, project:, user: user_without_manage, roles: [view_only_role])
+
+      document.update(kind: :collaborative)
     end
 
     context "when user has manage_documents permission" do
       current_user { user_with_manage }
 
-      it "generates an OAuth token for new action" do
-        get :new, params: { project_id: project.id }
-        expect(assigns(:oauth_token)).to be_present
-      end
-
-      it "generates an OAuth token for edit action" do
-        get :edit, params: { id: document.id }
+      it "generates an OAuth token for show action" do
+        get :show, params: { id: document.id }
         expect(assigns(:oauth_token)).to be_present
       end
     end
@@ -191,13 +184,8 @@ RSpec.describe DocumentsController do
     context "when user does not have manage_documents permission" do
       current_user { user_without_manage }
 
-      it "does not generate an OAuth token for new action" do
-        get :new, params: { project_id: project.id }
-        expect(assigns(:oauth_token)).to be_nil
-      end
-
-      it "does not generate an OAuth token for edit action" do
-        get :edit, params: { id: document.id }
+      it "does not generate an OAuth token for show action" do
+        get :show, params: { id: document.id }
         expect(assigns(:oauth_token)).to be_nil
       end
     end

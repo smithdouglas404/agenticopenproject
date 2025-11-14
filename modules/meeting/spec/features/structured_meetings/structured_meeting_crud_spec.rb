@@ -285,7 +285,7 @@ RSpec.describe "Meetings CRUD",
     expect(page).to have_css(".flash", text: I18n.t("activerecord.errors.messages.error_conflict"))
   end
 
-  it "can copy the meeting via the dialog form" do
+  it "can duplicate the meeting via the dialog form" do
     show_page.add_agenda_item do
       fill_in "Title", with: "My agenda item"
       fill_in "Duration", with: "25"
@@ -302,16 +302,15 @@ RSpec.describe "Meetings CRUD",
 
     wait_for_network_idle
 
-    # check for email notifications for creator & added participant
+    # check that no emails are sent out in draft mode
     perform_enqueued_jobs
-    expect(ActionMailer::Base.deliveries.size).to eq 2
-    ActionMailer::Base.deliveries.clear
+    expect(ActionMailer::Base.deliveries.size).to eq 0
 
     retry_block do
       click_on("op-meetings-header-action-trigger")
-      click_on "Copy"
+      click_on "Duplicate"
       # dynamically wait for the modal to be loaded
-      show_page.expect_modal("Copy meeting")
+      show_page.expect_modal("Duplicate meeting")
     end
 
     fill_in "Title", with: ""
@@ -330,7 +329,7 @@ RSpec.describe "Meetings CRUD",
     # check for copied agenda items
     copied_meeting_page.expect_agenda_item title: "My agenda item"
 
-    copied_meeting_page.start_meeting
+    new_meeting.update!(state: "in_progress")
 
     # check for copied participants with attended status reset
     copied_meeting_page.open_participant_form
@@ -339,9 +338,9 @@ RSpec.describe "Meetings CRUD",
       copied_meeting_page.expect_participant(other_user)
     end
 
-    # check for email notifications for both participants
+    # check that no emails are sent out as the copied meeting is in draft mode
     perform_enqueued_jobs
-    expect(ActionMailer::Base.deliveries.size).to eq 2
+    expect(ActionMailer::Base.deliveries.size).to eq 0
   end
 
   context "with a work package reference to another" do

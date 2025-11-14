@@ -39,6 +39,8 @@ fa:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ fa:
     menu:
       all: "All documents"
       types: "انواع"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "نویسنده پیوست"
     label_categories: "Categories"
     new_category: "New category"
@@ -63,6 +66,7 @@ fa:
   label_document_title: "عنوان"
   label_document_description: "توضیحات"
   label_document_category: "Category"
+  label_document_type: "Type"
   permission_manage_documents: "مدیریت اسناد"
   permission_view_documents: "دیدن اسناد"
   project_module_documents: "اسناد"

@@ -296,7 +296,7 @@ hu:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copy URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
@@ -1134,71 +1134,8 @@ hu:
       list: "Tábla"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Vissza"
       invite: "Meghívás"
-      title:
-        invite: "Felhasználó meghívása"
-        invite_to_project: "Meghívás %{type} a %{project}"
-        User: "Felhasználó"
-        Group: "csoport"
-        PlaceholderUser: "Teszt felhasználó"
-        invite_principal_to_project: "Meghívás %{principal} a %{project} "
-      project:
-        label: "Projekt"
-        required: "Válasszon projektet"
-        lacking_permission: "Kérjük, válasszon másik projektet, mivel nincs jogosultsága a felhasználók kijelöléséhez.\n"
-        lacking_permission_info: "Nincs jogosultsága arra, hogy felhasználókat rendeljen a projekthez, amelyben éppen dolgozik. Ki kell választania egy másikat.\n"
-        next_button: " Következő"
-        no_results: "Egyetlen projekt sem található"
-        no_invite_rights: "Nincs jogosultságod meghívni felhasználókat ehhez a projekthez"
-      type:
-        required: "Kérjük, válassza ki a meghívandó típust\n"
-        user:
-          title: "Felhasználó"
-          description: "Jogosultságok a kiválasztott projektben kijelölt szerepkör alapján\n"
-        group:
-          title: "Csoport"
-          description: "Jogosultságok a kiválasztott projektben kijelölt szerepkör alapján\n"
-        placeholder:
-          title: "Teszt felhasználó"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Nincs hozzáférése a projekthez, és nem küld ki e-maileket.\n"
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Név vagy e-mail cím"
-          name: "Név"
-        already_member_message: "Már tagja a %{project}-nek"
-        no_results_user: "Nem található felhasználó."
-        invite_user: "Meghívás:"
-        no_results_placeholder: "Ben találhatók teszt felhasználók"
-        create_new_placeholder: "Új teszt felhasználó létrehozása"
-        no_results_group: "Nem találhatók csoportok."
-        next_button: " Következő"
-        required:
-          user: "Válassz egy felhasználót"
-          placeholder: "Kérjük válasszon egy tesztfelhasználót"
-          group: "Válaszd ki a csoportot"
-      role:
-        label: "Szerepek a %{project}"
-        no_roles_found: "Nem található szerepkör."
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Kérjük, válasszon szerepet"
-        next_button: " Következő"
-      message:
-        label: "Meghívó üzenet"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: " Következő"
-      summary:
-        next_button: "Meghívó küldése"
-      success:
-        title: "%{principal} meghívást kapott!\n"
-        description:
-          user: "A felhasználó most már bejelentkezhet, hogy hozzáférjen a %{project}-hez. Eközben már tervezhet ezzel a felhasználóval, és például munkacsomagokat rendelhet hozzá."
-          placeholder: "A tesztfelhasználó mostantól használható a %{project}-ben. Eközben már tervezhetünk ezzel a felhasználóval, és például munkacsomagokat rendelhetünk hozzá."
-          group: "A csoport mostantól a %{project} része. Eközben már tervezhet ezzel a csoporttal, és például munkacsomagokat rendelhet hozzá.\n"
-        next_button: "Folytatás"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"

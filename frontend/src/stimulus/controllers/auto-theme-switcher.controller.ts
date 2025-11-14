@@ -52,6 +52,7 @@ export default class AutoThemeSwitcher extends Controller {
   declare readonly desktopLightHighContrastLogoClass:string;
   declare readonly mobileWhiteLogoClass:string;
   declare readonly hasMobileLogoTarget:boolean;
+  declare readonly hasDesktopLogoTarget:boolean;
 
   private colorModeContrastPreferences:Record<OpColorMode, boolean>;
 
@@ -103,7 +104,11 @@ export default class AutoThemeSwitcher extends Controller {
   private updateOpLogoContrast(colorMode:OpColorMode, increaseContrast:boolean):void {
     const isLightHighContrast = (colorMode === 'light' && increaseContrast);
 
-    this.desktopLogoTarget.classList.toggle(this.desktopLightHighContrastLogoClass, isLightHighContrast);
+    // Some layouts do not show a logo
+    if (this.hasDesktopLogoTarget) {
+      this.desktopLogoTarget.classList.toggle(this.desktopLightHighContrastLogoClass, isLightHighContrast);
+    }
+
     // Custom logos are not supported on mobile
     if (this.hasMobileLogoTarget) {
       this.mobileLogoTarget.classList.toggle(this.mobileWhiteLogoClass, !isLightHighContrast);

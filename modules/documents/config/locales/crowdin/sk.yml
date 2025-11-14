@@ -39,6 +39,8 @@ sk:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ sk:
     menu:
       all: "All documents"
       types: "Typy"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Autor prílohy"
     label_categories: "Categories"
     new_category: "Nová kategória"
@@ -63,6 +66,7 @@ sk:
   label_document_title: "Nadpis"
   label_document_description: "Popis"
   label_document_category: "Kategória"
+  label_document_type: "Type"
   permission_manage_documents: "Správa dokumentov"
   permission_view_documents: "Zobrazenie dokumentov"
   project_module_documents: "Dokumenty"

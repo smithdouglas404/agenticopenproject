@@ -39,6 +39,8 @@ sl:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ sl:
     menu:
       all: "All documents"
       types: "Tipi"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Avtor priloge"
     label_categories: "Categories"
     new_category: "Nova kategorija"
@@ -63,6 +66,7 @@ sl:
   label_document_title: "Naslov"
   label_document_description: "Opis"
   label_document_category: "Kategorija"
+  label_document_type: "Type"
   permission_manage_documents: "Uredi dokumente"
   permission_view_documents: "Poglej dokumente"
   project_module_documents: "Dokumenti"

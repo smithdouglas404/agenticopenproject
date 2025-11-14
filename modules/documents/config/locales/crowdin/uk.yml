@@ -39,6 +39,8 @@ uk:
   documents:
     page_header:
       heading: "Усі документи"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Фільтр за назвою документів"
@@ -53,6 +55,7 @@ uk:
     menu:
       all: "Усі документи"
       types: "Типи"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Автор додатку"
     label_categories: "Категорії"
     new_category: "Нова категорія"
@@ -63,6 +66,7 @@ uk:
   label_document_title: "Назва"
   label_document_description: "Опис"
   label_document_category: "Категорія"
+  label_document_type: "Type"
   permission_manage_documents: "Керування документами"
   permission_view_documents: "Перегляд документів"
   project_module_documents: "Документи"

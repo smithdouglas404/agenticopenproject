@@ -39,6 +39,8 @@ el:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ el:
     menu:
       all: "All documents"
       types: "Τύποι"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Συγγραφέας συνημμένου"
     label_categories: "Κατηγορίες"
     new_category: "Νέα κατηγορία"
@@ -63,6 +66,7 @@ el:
   label_document_title: "Τίτλος"
   label_document_description: "Περιγραφή"
   label_document_category: "Κατηγορία"
+  label_document_type: "Type"
   permission_manage_documents: "Διαχείριση εγγράφων"
   permission_view_documents: "Προβολή εγγράφων"
   project_module_documents: "Έγγραφα"

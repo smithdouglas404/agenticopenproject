@@ -70,6 +70,7 @@ RSpec.describe RootSeeder,
       expect(Boards::Grid.count).to eq 5
       expect(Boards::Grid.count { |grid| grid.options.has_key?(:filters) }).to eq 1
       expect(Project::PhaseDefinition.count).to eq 4
+      expect(DocumentType.count).to be >= 3 # at least the 3 default types
     end
 
     it "links work packages to their version" do

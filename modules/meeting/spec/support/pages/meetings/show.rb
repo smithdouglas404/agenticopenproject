@@ -126,9 +126,7 @@ module Pages::Meetings
     end
 
     def expect_modal(...)
-      expect(page).to have_modal(...)
-      modal = find(:modal, ...)
-      wait_for_size_animation_completion(modal)
+      Components::Common::Modal.new.expect_modal(...)
     end
 
     def expect_no_add_form
@@ -309,11 +307,11 @@ module Pages::Meetings
     end
 
     def in_outcome_component(item, &)
-      page.within("#meeting-agenda-items-outcomes-base-component-#{item.id}", &)
+      page.within("#meeting-agenda-items-outcomes-wrapper-component-#{item.id}", &)
     end
 
     def add_outcome(item, &)
-      page.within("#meeting-agenda-items-outcomes-base-component-#{item.id}") do
+      page.within("#meeting-agenda-items-outcomes-wrapper-component-#{item.id}") do
         click_link_or_button "Outcome"
       end
       expect_outcome_form(item)
@@ -332,11 +330,11 @@ module Pages::Meetings
     end
 
     def expect_outcome(text)
-      expect(page).to have_css("#meeting-agenda-items-outcomes-show-notes-component", text:)
+      expect(page).to have_css(".op-meeting-outcome-notes--content", text:)
     end
 
     def expect_no_outcome(text)
-      expect(page).to have_no_css("#meeting-agenda-items-outcomes-show-notes-component", text:)
+      expect(page).to have_no_css(".op-meeting-outcome-notes--content", text:)
     end
 
     def expect_no_outcome_button
@@ -502,7 +500,9 @@ module Pages::Meetings
 
     def open_participant_form
       page.find_test_selector("manage-participants-button").click
-      expect_modal("Manage participants")
+      retry_block do
+        expect_modal("Manage participants")
+      end
     end
 
     def in_participant_form(&)
@@ -577,6 +577,32 @@ module Pages::Meetings
     def close_meeting_from_in_progress
       page.within("#meetings-side-panel-state-component") do
         click_on("Close meeting")
+      end
+    end
+
+    def open_meeting
+      page.within("#meetings-side-panel-state-component") do
+        click_on("Open meeting")
+      end
+
+      expect(page).to have_dialog(I18n.t("text_exit_draft_mode_dialog_title"))
+      page.within_dialog(I18n.t("text_exit_draft_mode_dialog_title")) do
+        click_on "Open meeting"
+      end
+
+      page.within("#meetings-side-panel-state-component") do
+        expect(page).to have_link("Start meeting")
+      end
+    end
+
+    def open_first_meeting
+      page.within("#meetings-side-panel-state-component") do
+        click_on("Open first meeting")
+      end
+
+      expect(page).to have_dialog(I18n.t("text_exit_draft_mode_dialog_template_title"))
+      page.within_dialog(I18n.t("text_exit_draft_mode_dialog_template_title")) do
+        click_on "Open meeting"
       end
     end
 

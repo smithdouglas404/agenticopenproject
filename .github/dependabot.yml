@@ -24,6 +24,12 @@ updates:
       appsignal:
         patterns:
           - '@appsignal/*'
+      react:
+        patterns:
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
     ignore:
       - dependency-name: "@angular*"
         update-types: ["version-update:semver-major"]

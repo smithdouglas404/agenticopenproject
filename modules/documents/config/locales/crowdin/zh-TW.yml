@@ -39,6 +39,8 @@ zh-TW:
   documents:
     page_header:
       heading: "所有文件"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "文件名篩選器"
@@ -53,6 +55,7 @@ zh-TW:
     menu:
       all: "所有文件"
       types: "類型"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "附件作者"
     label_categories: "類別"
     new_category: "新增類別"
@@ -63,6 +66,7 @@ zh-TW:
   label_document_title: "標題"
   label_document_description: "說明"
   label_document_category: "類別"
+  label_document_type: "類型"
   permission_manage_documents: "管理文件"
   permission_view_documents: "檢視文件"
   project_module_documents: "文件"
