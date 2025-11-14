@@ -44,21 +44,35 @@ RSpec.describe Grids::Widgets::News, type: :component do
 
   let(:project) { nil }
 
-  current_user { admin }
+  let(:user) { admin }
 
-  subject(:rendered_component) do
-    render_component(project)
+  current_user { user }
+
+  subject(:rendered_component) { render_component(project) }
+
+  shared_examples "empty-state without action" do
+    it "renders empty blankslate without action" do
+      expect(rendered_component).to have_test_selector("widget-empty-news")
+      expect(rendered_component).to have_text("This widget is currently empty.")
+      expect(rendered_component).to have_no_css(".blankslate-action")
+    end
   end
 
-  it "renders turbo-frame component wrapper" do
+  shared_examples "empty-state with action" do
+    it "renders empty blankslate with add action" do
+      expect(rendered_component).to have_test_selector("widget-empty-news")
+      expect(rendered_component).to have_text("This widget is currently empty.")
+      expect(rendered_component).to have_css(".blankslate-action")
+    end
+  end
+
+  it "renders turbo-frame wrapper" do
     expect(rendered_component).to have_element :"turbo-frame"
   end
 
   context "for root" do
     context "with no news" do
-      it "renders a message" do
-        expect(rendered_component).to have_primer_text "Nothing new to report.", color: "subtle"
-      end
+      it_behaves_like "empty-state without action"
     end
 
     context "with news" do
@@ -79,21 +93,19 @@ RSpec.describe Grids::Widgets::News, type: :component do
   context "with project" do
     let(:project) { project_red }
     # these news from another project should not be visible
-    let!(:some_other_news) { create(:news, project: project_blue, author:) }
+    let!(:other_project_news) { create(:news, project: project_blue, author:) }
 
-    context "with no news" do
-      it "renders a message" do
-        expect(rendered_component).to have_primer_text "Nothing new to report.", color: "subtle"
-      end
+    context "with no news in this project" do
+      it_behaves_like "empty-state with action"
     end
 
     context "with news" do
-      let!(:news) { create_list(:news, 3, project: project, author:) }
+      let!(:news_items) { create_list(:news, 3, project:, author:) }
 
-      it "renders news items of that project", :aggregate_failures do
+      it "renders only this project’s news" do
         expect(rendered_component).to have_list_item(count: 3)
         expect(rendered_component).to have_list_item(position: 3) do |item|
-          expect(item).to have_link href: news_path(news.first)
+          expect(item).to have_link href: news_path(news_items.first)
           expect(item).to have_content(/Added by .+ on \d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/)
           expect(item).to have_link href: user_path(author)
         end
@@ -101,17 +113,27 @@ RSpec.describe Grids::Widgets::News, type: :component do
     end
   end
 
-  context "with project without news module enabled" do
+  context "when the project does not have the news module enabled" do
     let(:project) { project_red }
-    let!(:news) { create(:news, project:, author:) }
+    let!(:news_item) { create(:news, project:, author:) }
 
     before do
-      project.enabled_module_names -= %w[news]
+      project.enabled_module_names = []
     end
 
-    it "renders 'nothing to report' message" do
-      expect(rendered_component).not_to have_list "News"
-      expect(rendered_component).to have_primer_text "Nothing new to report.", color: "subtle"
+    it_behaves_like "empty-state with action"
+  end
+
+  context "when the user does not have permission to manage news" do
+    let(:project) { project_red }
+    let(:user) { create(:user) }
+
+    before do
+      allow(user).to receive(:allowed_in_project?)
+                       .with(:manage_news, project)
+                       .and_return(false)
     end
+
+    it_behaves_like "empty-state without action"
   end
 end
