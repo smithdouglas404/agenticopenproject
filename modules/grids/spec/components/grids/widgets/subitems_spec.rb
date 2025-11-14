@@ -54,7 +54,7 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
 
   shared_examples "empty-state with action" do
     it "renders empty blankslate with action button" do
-      expect(rendered_component).to have_test_selector("widget-empty-subitems")
+      expect(rendered_component).to have_test_selector("subitems-widget-empty")
       expect(rendered_component).to have_text("This widget is currently empty.")
       expect(rendered_component).to have_css(".blankslate-action")
     end
@@ -62,7 +62,7 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
 
   context "with no children" do
     let(:user) { build_stubbed(:admin) }
-    let(:empty_selector) { "widget-empty-subitems" }
+    let(:empty_selector) { "subitems-widget-empty" }
     let(:empty_message)  { "This widget is currently empty." }
 
     it_behaves_like "empty-state with action"
@@ -124,7 +124,7 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
 
     context "when user doesn't have permission to view project" do
       let(:user) { build_stubbed(:user) }
-      let(:empty_selector) { "widget-no-permission-subitems" }
+      let(:empty_selector) { "subitems-widget-no-permission" }
       let(:empty_message)  { "This widget is not available." }
 
       before do
