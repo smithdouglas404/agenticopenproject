@@ -118,7 +118,7 @@ RSpec.describe Grids::Widgets::News, type: :component do
     let!(:news_item) { create(:news, project:, author:) }
 
     before do
-      project.enabled_module_names = []
+      project.enabled_module_names -= %w[news]
     end
 
     it_behaves_like "empty-state with action"

@@ -38,7 +38,7 @@ RSpec.describe Grids::Widgets::Members, type: :component do
   end
 
   let(:project) { build_stubbed(:project) }
-  let(:user)    { build_stubbed(:user) }
+  let(:user) { build_stubbed(:user) }
 
   current_user { user }
 
@@ -56,14 +56,14 @@ RSpec.describe Grids::Widgets::Members, type: :component do
 
   shared_examples "empty-state with action" do
     it "renders blankslate with action button" do
-      expect(rendered_component).to have_test_selector("widget-empty-members")
+      expect(rendered_component).to have_test_selector("members-widget-empty")
       expect(rendered_component).to have_text("This widget is currently empty.")
       expect(rendered_component).to have_css(".blankslate-action")
     end
   end
 
   context "with no members" do
-    let(:empty_selector) { "widget-empty-members" }
+    let(:empty_selector) { "members-widget-empty" }
     let(:empty_message)  { "This widget is currently empty." }
 
     context "when user can view but cannot manage members" do
@@ -86,7 +86,7 @@ RSpec.describe Grids::Widgets::Members, type: :component do
   end
 
   context "when user cannot view members" do
-    let(:empty_selector) { "widget-no-permission-members" }
+    let(:empty_selector) { "members-widget-no-permission" }
     let(:empty_message)  { "This widget is not available." }
 
     before do

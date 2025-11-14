@@ -73,11 +73,11 @@ module Grids
 
       def subitems_with_more
         @subitems_with_more ||= project.children
-                                       .visible(current_user)
-                                       .unscope(:order)
-                                       .newest
-                                       .extending(FinderMethods::WithMore)
-                                       .first_with_more(limit)
+         .visible(current_user)
+         .unscope(:order)
+         .newest
+         .extending(FinderMethods::WithMore)
+         .first_with_more(limit)
       end
 
       def view_all_subitems_path
