@@ -34,7 +34,7 @@ See COPYRIGHT and LICENSE files for more details.
         component.with_heading(tag: :h3).with_content(title)
         component.with_description { t("js.grid.widgets.empty") }
 
-        if can_manage_news?
+        if project.present? && can_manage_news?
           component.with_primary_action(
             tag: :a,
             href: new_project_news_path(project),
