@@ -59,17 +59,22 @@ class DocumentsController < ApplicationController
 
   def show
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
+    generate_oauth_token if @document.collaborative?
   end
 
   def new
     @document = @project.documents.build
     @document.attributes = document_params
-    generate_oauth_token
   end
 
   def edit
     @categories = DocumentCategory.all
-    generate_oauth_token
+  end
+
+  def edit_title
+    update_header_component_via_turbo_stream(state: :edit)
+
+    respond_with_turbo_streams
   end
 
   def create
@@ -85,6 +90,12 @@ class DocumentsController < ApplicationController
     end
   end
 
+  def cancel_title_edit
+    update_header_component_via_turbo_stream(state: :show)
+
+    respond_with_turbo_streams
+  end
+
   def update
     call = attachable_update_call ::Documents::UpdateService,
                                   model: @document,
@@ -97,6 +108,36 @@ class DocumentsController < ApplicationController
       @document = call.result
       render action: :edit, status: :unprocessable_entity
     end
+  end
+
+  def update_title
+    call = Documents::UpdateService
+      .new(user: current_user, model: @document)
+      .call(document_params.slice(:title))
+
+    state = call.success? ? :show : :edit
+    update_header_component_via_turbo_stream(state:)
+
+    respond_with_turbo_streams
+  end
+
+  def update_type
+    service_call = Documents::UpdateService
+      .new(user: current_user, model: @document)
+      .call(type_id: params[:type_id])
+
+    if service_call.success?
+      update_via_turbo_stream(
+        component: Documents::ShowEditView::PageHeader::InfoLineComponent.new(@document)
+      )
+    else
+      render_error_flash_message_via_turbo_stream(
+        message: service_call.errors.full_messages
+      )
+      @turbo_status = :unprocessable_entity
+    end
+
+    respond_with_turbo_streams
   end
 
   def destroy
@@ -138,5 +179,11 @@ class DocumentsController < ApplicationController
     else
       Rails.logger.error("Failed to generate OAuth token for document #{@document.id}: #{result.errors}")
     end
+  end
+
+  def update_header_component_via_turbo_stream(state: :show)
+    update_via_turbo_stream(
+      component: Documents::ShowEditView::PageHeaderComponent.new(@document, project: @project, state:)
+    )
   end
 end

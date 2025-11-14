@@ -5,6 +5,7 @@ import {
 import { AbstractTurboWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-turbo-widget.component';
 
 @Component({
+  selector: 'op-subitems-widget',
   templateUrl: './subprojects.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

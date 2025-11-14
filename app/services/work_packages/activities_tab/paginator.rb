@@ -49,7 +49,7 @@
 #
 # @return [Array<Pagy, Array>] Pagy pagination object and array of activity records
 class WorkPackages::ActivitiesTab::Paginator
-  include Pagy::Backend
+  include Pagy::Method
   include WorkPackages::ActivitiesTab::JournalSortingInquirable
 
   def self.paginate(work_package, params = {})
@@ -72,7 +72,7 @@ class WorkPackages::ActivitiesTab::Paginator
         @filter = :all # Ignore filter when jumping to specific journal
         pagy_array_for_target_journal(anchor_type, target_record_id)
       else
-        pagy_array(base_journals, **pagy_options)
+        pagy(:offset, base_journals, **pagy_options)
       end
 
     # For UI display: if user wants "oldest first" UI, reverse the array
@@ -84,7 +84,12 @@ class WorkPackages::ActivitiesTab::Paginator
   private
 
   def pagy_options
-    { page: params[:page] || 1, limit: params[:limit] || Pagy::DEFAULT[:limit], max_pages: 100 }.compact
+    {
+      page: params[:page] || 1,
+      limit: params[:limit] || Pagy::DEFAULT[:limit],
+      max_pages: 100,
+      request: { params: }
+    }.compact
   end
 
   def extract_target_record_id
@@ -111,10 +116,10 @@ class WorkPackages::ActivitiesTab::Paginator
     if target_index
       limit = pagy_options[:limit]
       target_page = (target_index / limit) + 1
-      pagy_array(journals, **pagy_options, page: target_page)
+      pagy(:offset, journals, **pagy_options, page: target_page)
     else
       # Journal might be filtered out or deleted - fallback to page 1
-      pagy_array(journals, **pagy_options, page: 1)
+      pagy(:offset, journals, **pagy_options, page: 1)
     end
   end
 

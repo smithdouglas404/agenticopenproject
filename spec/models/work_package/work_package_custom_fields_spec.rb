@@ -228,7 +228,7 @@ RSpec.describe WorkPackage do
         end
 
         context "save" do
-          subject { work_package.typed_custom_value_for(custom_field.id) }
+          subject { work_package.typed_custom_value_for(custom_field) }
 
           it { is_expected.to eq("PostgreSQL") }
         end
@@ -242,7 +242,7 @@ RSpec.describe WorkPackage do
           work_package.reload
         end
 
-        subject { work_package.typed_custom_value_for(custom_field.id) }
+        subject { work_package.typed_custom_value_for(custom_field) }
 
         it { is_expected.to eql("PostgreSQL") }
       end
@@ -317,7 +317,7 @@ RSpec.describe WorkPackage do
           end
           wp.attributes = attribute_hash
 
-          wp.custom_value_for(custom_field_2.id).value
+          wp.custom_value_for(custom_field_2).value
         end
 
         it { is_expected.to eql(OpenProject::Database::DB_VALUE_TRUE) }

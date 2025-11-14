@@ -41,10 +41,6 @@ export class WorkPackageCopyFullViewComponent extends WorkPackageCopyController 
 
   breadcrumbItems() {
     const items = [];
-    items.push({
-      href: this.pathHelper.homePath(),
-      text: this.titleService.appTitle,
-    });
     if (this.currentProjectService?.identifier) {
       items.push({
         href: this.pathHelper.projectPath(this.currentProjectService.identifier),

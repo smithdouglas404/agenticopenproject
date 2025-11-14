@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
-  Component, Injector,
+  Component,
+  Injector,
 } from '@angular/core';
 import { AbstractTurboWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-turbo-widget.component';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
@@ -8,9 +9,10 @@ import { CurrentProjectService } from 'core-app/core/current-project/current-pro
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
 
 @Component({
+  selector: 'op-members-widget',
   templateUrl: './members.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+  standalone: false
 })
 export class WidgetMembersComponent extends AbstractTurboWidgetComponent {
   text = {

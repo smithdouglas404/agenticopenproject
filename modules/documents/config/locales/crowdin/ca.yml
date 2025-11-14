@@ -39,6 +39,8 @@ ca:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ ca:
     menu:
       all: "All documents"
       types: "Tipus"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Autor de l'adjunt"
     label_categories: "Categories"
     new_category: "Nova categoria"

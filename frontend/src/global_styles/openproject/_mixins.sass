@@ -222,8 +222,9 @@ $scrollbar-size: 10px
     padding-bottom: 0
 
 @mixin extended-content--top
-  #content-body
-    padding-top: 0
+  @media screen and (min-width: $breakpoint-sm)
+    #content-body
+      padding-top: 0
 
 @mixin extended-content--left
   #content-body,

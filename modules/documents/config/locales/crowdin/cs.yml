@@ -39,6 +39,8 @@ cs:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ cs:
     menu:
       all: "All documents"
       types: "Typy"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Autor přílohy"
     label_categories: "Kategorie"
     new_category: "Nová kategorie"

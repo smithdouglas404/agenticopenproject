@@ -51,10 +51,10 @@ RSpec.describe Meetings::CopyService, "integration", type: :model do
   end
 
   context "when the meeting is closed" do
-    it "reopens the meeting" do
+    it "creates the copy in draft mode" do
       meeting.update! state: "closed"
       expect(service_result).to be_success
-      expect(copy.state).to eq("open")
+      expect(copy.state).to eq("draft")
     end
   end
 

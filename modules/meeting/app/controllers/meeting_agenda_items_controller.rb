@@ -39,6 +39,7 @@ class MeetingAgendaItemsController < ApplicationController
   before_action :set_meeting_agenda_item,
                 except: %i[new cancel_new create]
   before_action :set_current_occurrence,
+                :set_presentation_mode,
                 only: %i[new cancel_new edit cancel_edit create update destroy drop move move_to_section_dialog]
   before_action :authorize
   before_action :check_recurring_meeting_param, only: %i[move_to_next_meeting]
@@ -81,7 +82,9 @@ class MeetingAgendaItemsController < ApplicationController
 
   def edit
     if @meeting_agenda_item.editable?
-      update_item_via_turbo_stream(state: :edit, display_notes_input: params[:display_notes_input],
+      update_item_via_turbo_stream(state: :edit,
+                                   display_notes_input: params[:display_notes_input],
+                                   presentation_mode: @presentation_mode,
                                    current_occurrence: @current_occurrence)
     else
       update_all_via_turbo_stream
@@ -92,7 +95,9 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def cancel_edit
-    update_item_via_turbo_stream(state: :show, current_occurrence: @current_occurrence)
+    update_item_via_turbo_stream(state: :show,
+                                 current_occurrence: @current_occurrence,
+                                 presentation_mode: @presentation_mode)
 
     respond_with_turbo_streams
   end
@@ -140,11 +145,14 @@ class MeetingAgendaItemsController < ApplicationController
         update_header_component_via_turbo_stream
         update_sidebar_details_component_via_turbo_stream
       end
-      update_item_via_turbo_stream(current_occurrence: @current_occurrence)
+      update_item_via_turbo_stream(current_occurrence: @current_occurrence,
+                                   presentation_mode: @presentation_mode)
       update_section_header_via_turbo_stream(meeting_section: @meeting_agenda_item.meeting_section)
     else
       # show errors
-      update_item_via_turbo_stream(state: :edit, current_occurrence: @current_occurrence)
+      update_item_via_turbo_stream(state: :edit,
+                                   current_occurrence: @current_occurrence,
+                                   presentation_mode: @presentation_mode)
       render_base_error_in_flash_message_via_turbo_stream(call.errors)
     end
 
@@ -297,6 +305,10 @@ class MeetingAgendaItemsController < ApplicationController
 
   def set_current_occurrence
     @current_occurrence = Meeting.find_by(id: params[:current_occurrence])
+  end
+
+  def set_presentation_mode
+    @presentation_mode = ActiveModel::Type::Boolean.new.cast(params[:presentation_mode])
   end
 
   def meeting_agenda_item_params

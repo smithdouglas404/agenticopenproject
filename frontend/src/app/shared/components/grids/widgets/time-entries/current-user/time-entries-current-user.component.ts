@@ -10,6 +10,7 @@ import { DisplayedDays } from 'core-app/features/calendar/te-calendar/te-calenda
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 
 @Component({
+  selector: 'op-time-entries-current-user-widget',
   templateUrl: './time-entries-current-user.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

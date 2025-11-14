@@ -147,7 +147,7 @@ export default function OpBlockNoteContainer({ inputField,
       attachmentsUploadUrl !== undefined &&
       attachmentsUploadUrl !== ''
     );
-}
+  }
   const fileToIUploadFile = (file:File):IUploadFile => ({
     file: file
   });
@@ -208,6 +208,7 @@ export default function OpBlockNoteContainer({ inputField,
         :
         <BlockNoteView
           editor={editor}
+          slashMenu={false}
           theme={detectTheme()}
           className={'block-note-editor-container'}
         >

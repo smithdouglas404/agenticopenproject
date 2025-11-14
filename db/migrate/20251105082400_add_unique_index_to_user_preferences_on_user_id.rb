@@ -28,18 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  module Patches
-    module PrimerPageHeaderBreadcrumb
-      def with_breadcrumbs(breadcrumbs, skip_home_on_mobile: false, **)
-        super([{ href: home_path,
-                 text: helpers.organization_name,
-                 skip_for_mobile: skip_home_on_mobile }] + breadcrumbs, **)
-      end
-    end
-  end
-end
+class AddUniqueIndexToUserPreferencesOnUserId < ActiveRecord::Migration[8.0]
+  def up
+    say "Removing duplicate user_preferences if any exist"
 
-OpenProject::Patches.patch_gem_version "openproject-primer_view_components", "0.76.0" do
-  Primer::OpenProject::PageHeader.prepend OpenProject::Patches::PrimerPageHeaderBreadcrumb
+    # Remove any duplicate user_preferences, keeping the most recently updated one
+    execute <<~SQL.squish
+      DELETE FROM user_preferences
+      WHERE id IN (
+        SELECT id
+        FROM (
+          SELECT id,
+                 ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY updated_at DESC, id DESC) AS row_num
+          FROM user_preferences
+        ) t
+        WHERE t.row_num > 1
+      );
+    SQL
+
+    say "Removing old non-unique index"
+    remove_index :user_preferences, name: "index_user_preferences_on_user_id"
+
+    say "Adding unique index on user_id"
+    add_index :user_preferences, :user_id,
+              unique: true,
+              name: "index_user_preferences_on_user_id"
+  end
+
+  def down
+    say "Removing unique index"
+    remove_index :user_preferences, name: "index_user_preferences_on_user_id"
+
+    say "Re-adding non-unique index"
+    add_index :user_preferences, :user_id,
+              name: "index_user_preferences_on_user_id"
+  end
 end

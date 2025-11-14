@@ -40,29 +40,9 @@ RSpec.describe "BlockNote editor rendering", :js, with_flag: { block_note_editor
     login_as(admin)
   end
 
-  it "renders the BlockNote editor when editting a document" do
-    visit edit_document_path(document)
-
-    expect(page).to have_field("Type", required: true)
-    expect(page).to have_field("Title", required: true)
-
-    expect(page).to have_test_selector("blocknote-document-description")
-    expect(page).to have_css(".block-note-editor-container")
-
-    description_field = page.find_test_selector("blocknote-document-description")
-    description_field.click
-    description_field.send_keys("Additional text")
-
-    click_on("Save")
-
-    visit edit_document_path(document)
-
-    expect(page).to have_test_selector("blocknote-document-description", text: "Additional text")
-  end
-
   it "renders the BlockNote editor in the users locale" do
     admin.update!(language: "de")
-    visit edit_document_path(document)
+    visit document_path(document)
 
     expect(page).to have_test_selector("blocknote-document-description")
     expect(page).to have_no_content("Überschrift")
@@ -71,14 +51,22 @@ RSpec.describe "BlockNote editor rendering", :js, with_flag: { block_note_editor
     expect(page).to have_content("Überschrift")
   end
 
-  it "renders the blocknote editor in english if the users locale is not available for BlockNote" do
+  it "renders the BlockNote editor in english if the users locale is not available for BlockNote" do
     admin.update!(language: "af")
-    visit edit_document_path(document)
+    visit document_path(document)
 
     expect(page).to have_test_selector("blocknote-document-description")
     expect(page).to have_no_content("Heading")
 
     editor.open_command_dialog
     expect(page).to have_content("Heading")
+  end
+
+  it "renders the BlockNote editor with custom menu entries for work package linking" do
+    visit document_path(document)
+
+    expect(page).to have_test_selector("blocknote-document-description")
+    editor.fill_in_with_content("/openproject")
+    expect(page).to have_content("Search and link an existing Work Package")
   end
 end

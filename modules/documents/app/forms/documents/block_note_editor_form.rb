@@ -28,26 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  module Authentication
-    module SessionExpiry
-      def session_ttl_enabled?
-        Setting.session_ttl_enabled? && Setting.session_ttl.to_i >= 5
+module Documents
+  class BlockNoteEditorForm < ApplicationForm
+    form do |f|
+      f.block_note_editor(
+        name: :content_binary,
+        label: I18n.t("label_document_description"),
+        visually_hide_label: true,
+        classes: "document-form--long-description",
+        value: model.content_binary,
+        document_id: model.id,
+        document_name: model.title,
+        oauth_token: @oauth_token,
+        attachments_upload_url:,
+        attachments_collection_key:
+      )
+    end
+
+    attr_reader :oauth_token
+
+    def initialize(oauth_token: nil)
+      super()
+      @oauth_token = oauth_token
+    end
+
+    private
+
+    def attachments_upload_url
+      if OpenProject::Configuration.direct_uploads?
+        ::API::V3::Utilities::PathHelper::ApiV3Path.prepare_attachments_by_document(model.id)
+      else
+        ::API::V3::Utilities::PathHelper::ApiV3Path.attachments_by_document(model.id)
       end
+    end
 
-      def session_ttl_minutes
-        Setting.session_ttl.to_i.minutes
-      end
-
-      def session_ttl_expired?
-        # Only when the TTL setting exists
-        return false unless session_ttl_enabled?
-
-        # If the session is rack-provided and empty, also skip it
-        return false if session.empty?
-
-        session[:updated_at].nil? || (session[:updated_at] + session_ttl_minutes) < Time.now
-      end
+    def attachments_collection_key
+      ::API::V3::Utilities::PathHelper::ApiV3Path.attachments_by_document(model.id)
     end
   end
 end

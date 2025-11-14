@@ -534,6 +534,9 @@ ru:
         no_results_title_text: Для этого проекта дополнительного дискового пространства не требуется.
       work_package_priorities:
         new_label: "Новый приоритет"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Редактировать статус проекта
   lists:
@@ -968,15 +971,15 @@ ru:
       parent: "Родитель"
       parent_description: "Делает связанный с этим пакет работ родителем (потомка) пакета работ"
       label_closest: "Ближайший"
-      label_blocks_singular: "заблокирован"
-      label_blocks_plural: "заблокированы"
-      blocks_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт этот пакет"
-      label_blocked_singular: "блокирует"
-      label_blocked_plural: "блокируют"
-      label_blocked_by_singular: "блокируют"
-      label_blocked__by_plural: "блокируют"
-      blocked_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
-      blocked_by_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
+      label_blocks_singular: "заблокированный"
+      label_blocks_plural: "заблокированые"
+      blocks_description: "Пакет работ, который вы укажете, нельзя будет закрыть, пока не будет закрыт этот пакет работ"
+      label_blocked_singular: "блокирующий"
+      label_blocked_plural: "блокирующие"
+      label_blocked_by_singular: "блокирущий"
+      label_blocked__by_plural: "блокирующие"
+      blocked_description: "Этот пакет работ нельзя будет закрыть, пока не будут закрыты пакеты работ, которые вы укажете"
+      blocked_by_description: "Этот пакет работ нельзя будет закрыть, пока не будут закрыты пакеты работ, которые вы укажете"
       label_duplicates_singular: "Дублирует"
       label_duplicates_plural: "Дублирует"
       duplicates_description: "Это копия связанного пакета работ"
@@ -2065,9 +2068,11 @@ ru:
   button_delete_permanently: "Удалить навсегда"
   button_delete_watcher: "Удаление наблюдателя %{name}"
   button_download: "Скачать"
+  button_disable: "Disable"
   button_duplicate: "Дублировать"
   button_duplicate_and_follow: "Скопировать и наблюдать"
   button_edit: "Правка"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Редактировать связанную wiki-страницу: %{page_title}"
   button_expand_all: "Развернуть все"
   button_favorite: "Добавить в избранное"
@@ -3371,6 +3376,7 @@ ru:
   label_project_view_all: "Просмотреть все проекты"
   label_project_show_details: "Показать детали проекта"
   label_project_hide_details: "Скрыть детали проекта"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Портфолио"
   label_portfolio_new: "Новое портфолио"
   label_program: "Программа"
@@ -4318,7 +4324,7 @@ ru:
   setting_self_registration_manual_activation: "Активация учётной записи вручную"
   setting_self_registration_manual_activation_caption: >
     Пользователи могут самостоятельно зарегистрироваться. Их учетные записи находятся в ожидании до тех пор, пока администратор или пользователь с общим разрешением на создание или управление пользователями не активирует их.
-  setting_session_ttl: "Срок действия сеанса при неактивности"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "При значении ниже 5-ти отключено"
   setting_session_ttl_enabled: "Сессия истекает"
   setting_start_of_week: "Начало недели в"
@@ -4416,6 +4422,15 @@ ru:
       new:
         heading: "Новый атрибут"
         description: "Изменения этого атрибута проекта будут отражены во всех проектах, где он включен. Обязательные атрибуты не могут быть отключены для каждого проекта."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Жизненный цикл проекта"
       heading_description: "Жизненный цикл проекта определяет фазы проекта, которые могут быть использованы для планирования Вашего проекта и отображаются на странице Обзор каждого проекта. Эти атрибуты могут быть включены или выключены, но не могут быть переупорядочены на уровне проекта."

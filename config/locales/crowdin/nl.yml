@@ -532,6 +532,9 @@ nl:
         no_results_title_text: Er is geen extra opgenomen schijfruimte verbruikt door dit project.
       work_package_priorities:
         new_label: "New priority"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
   lists:
@@ -2015,9 +2018,11 @@ nl:
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Verwijderen van watcher %{name}"
   button_download: "Downloaden"
+  button_disable: "Disable"
   button_duplicate: "Dupliceren"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Wijzig"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Alles uitklappen"
   button_favorite: "Aan favorieten toevoegen"
@@ -3279,6 +3284,7 @@ nl:
   label_project_view_all: "Bekijk alle projecten"
   label_project_show_details: "Toon project details"
   label_project_hide_details: "Verberg project details"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -4224,7 +4230,7 @@ nl:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Tijd verstrijken sessie na inactiviteit"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Value below 5 works like disabled"
   setting_session_ttl_enabled: "Sessie verloopt"
   setting_start_of_week: "Week begint op"
@@ -4322,6 +4328,15 @@ nl:
       new:
         heading: "Nieuw kenmerk"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Project life cycle"
       heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."

@@ -39,6 +39,7 @@ class Project < ApplicationRecord
   include Projects::Types
   include Projects::Versions
   include Projects::WorkPackageCustomFields
+  include Projects::CreationWizard
 
   include ::Scopes::Scoped
 

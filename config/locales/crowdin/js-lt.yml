@@ -297,7 +297,7 @@ lt:
       warning: "Prašome nesidalinti šiuo URL su kitais naudotojais. Bet kas su šia nuoroda galės peržiūrėti darbo paketo detales be paskyros ar slaptažodžio."
       token_name_label: "Kur jūs tai naudosite?"
       token_name_placeholder: 'Įrašykite pavadinimą, pvz. „Telefonas“'
-      token_name_description_text: 'Jei prenumeruojate kalendorių iš kelių įrenginių, šis pavadinimas padės atskirti juos jūsų <a href="my/access_token", target="_blank">prieigos žetonų</a> sąraše.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Kopijuoti URL"
       ical_generation_error_text: "Kuriant kalendoriaus URL įvyko klaida."
       success_message: 'URL „%{name}“ buvo sėkmingai nukopijuotas į jūsų iškarpinę. Įkelkite jį į jūsų kalendoriaus klientą, kad baigtumėte prenumeratą.'

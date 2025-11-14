@@ -126,6 +126,10 @@ export class PathHelperService {
     return `${this.staticBase}/my/page`;
   }
 
+  public myAccessTokensPath() {
+    return `${this.staticBase}/my/access_tokens`;
+  }
+
   public myNotificationsSettingsPath() {
     return `${this.staticBase}/my/notifications`;
   }

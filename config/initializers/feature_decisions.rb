@@ -70,10 +70,14 @@ OpenProject::FeatureDecisions.add :portfolio_models,
                                   description: "Enables the creation and management of portfolio and program work spaces."
 
 OpenProject::FeatureDecisions.add :new_project_overview,
-                                  description: "Enables the new project overview experience."
+                                  description: "Enables the new project overview experience.",
+                                  force_active: true
 
 OpenProject::FeatureDecisions.add :wp_activity_tab_lazy_pagination,
                                   description: "Enables lazy pagination for the activity tab."
 
 OpenProject::FeatureDecisions.add :project_initiation,
                                   description: "Activate the project creation and initiation wizard"
+
+OpenProject::FeatureDecisions.add :meetings_presentation_mode,
+                                  description: "Enables presentation mode for meetings."

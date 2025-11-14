@@ -110,10 +110,7 @@ export class WorkPackageViewPageComponent extends PartitionedQuerySpacePageCompo
   }
 
   breadcrumbItems() {
-    const items:BreadcrumbItem[] = [{
-      href: this.pathHelperService.homePath(),
-      text: this.titleService.appTitle,
-    }];
+    const items:BreadcrumbItem[] = [];
 
     if (this.currentProject?.identifier) {
       items.push({

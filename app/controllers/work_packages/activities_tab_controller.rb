@@ -213,7 +213,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
 
   def initialize_pagination
     @paginator, @paginated_journals = WorkPackages::ActivitiesTab::Paginator
-      .paginate(@work_package, params.merge(filter: @filter))
+      .paginate(@work_package, params.merge(filter: @filter, limit: 20))
   end
 
   def respond_with_error(error_message)

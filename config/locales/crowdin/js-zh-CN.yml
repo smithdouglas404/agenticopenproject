@@ -297,7 +297,7 @@ zh-CN:
       warning: "请不要与其他用户共享此 URL 。拥有这个链接的任何人都可以在没有帐户或密码的情况下查看工作包的详细信息。"
       token_name_label: "您将在哪里使用它？"
       token_name_placeholder: '输入名称，例如“Phone”'
-      token_name_description_text: '如果您从多个设备订阅此日历，此名称将有助于在<a href="my/access_token", target="_blank">访问令牌</a>列表中区分它们。'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "复制链接"
       ical_generation_error_text: "生成日历 URL 时出错。"
       success_message: 'URL“%{name}”已成功复制到剪贴板。请将其粘贴到日历客户端中以完成订阅。'

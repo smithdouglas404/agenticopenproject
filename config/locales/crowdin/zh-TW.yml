@@ -534,6 +534,9 @@ zh-TW:
         no_results_title_text: 該專案沒有額外消耗磁碟空間。
       work_package_priorities:
         new_label: "新優先權"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: 編輯專案狀態
   lists:
@@ -1991,9 +1994,11 @@ zh-TW:
   button_delete_permanently: "永久刪除"
   button_delete_watcher: "刪除監看者 %{name}"
   button_download: "下載"
+  button_disable: "Disable"
   button_duplicate: "複本"
   button_duplicate_and_follow: "複製並追蹤"
   button_edit: "編輯"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "編輯關聯的維基頁面：%{page_title}"
   button_expand_all: "全部展開"
   button_favorite: "收藏"
@@ -3234,6 +3239,7 @@ zh-TW:
   label_project_view_all: "檢視所有專案"
   label_project_show_details: "顯示專案詳細資訊"
   label_project_hide_details: "隱藏專案詳細資訊"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "個人檔案"
   label_portfolio_new: "新投資組合"
   label_program: "方案"
@@ -4274,6 +4280,15 @@ zh-TW:
       new:
         heading: "新屬性"
         description: "專案屬性的變更將套用在已啟用該屬性專案中。 若為必要屬性，無法個別專案停用。"
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "專案生命週期"
       heading_description: "專案生命週期定義了可用於專案規劃的階段，並將顯示在各專案的總覽頁面中。這些屬性可啟用或停用，但在單一專案中無法重新排序。"

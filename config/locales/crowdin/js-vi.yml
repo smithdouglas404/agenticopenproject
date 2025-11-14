@@ -296,7 +296,7 @@ vi:
       warning: "Vui lòng không chia sẻ URL này với người khác. Bất kỳ ai có liên kết này đều có thể xem chi tiết gói công việc mà không cần tài khoản hoặc mật khẩu."
       token_name_label: "Bạn sẽ sử dụng cái này ở đâu?"
       token_name_placeholder: 'Nhập tên, ví dụ: "Điện thoại"'
-      token_name_description_text: 'Nếu bạn đăng ký lịch này từ nhiều thiết bị, tên này sẽ giúp bạn phân biệt giữa chúng trong danh sách <a href="my/access_token", target="_blank">token truy cập</a> của bạn.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Sao chép URL"
       ical_generation_error_text: "Đã xảy ra lỗi khi tạo URL lịch."
       success_message: 'URL "%{name}" đã được sao chép thành công vào clipboard của bạn. Dán nó vào ứng dụng lịch của bạn để hoàn tất việc đăng ký.'

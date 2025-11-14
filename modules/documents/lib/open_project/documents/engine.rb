@@ -57,7 +57,11 @@ module OpenProject::Documents
                      "documents/menus": %i[show] },
                    permissible_on: :project
         permission :manage_documents,
-                   { documents: %i[new create edit update destroy] },
+                   {
+                     documents: %i[
+                       new create edit edit_title cancel_title_edit update update_title update_type destroy
+                     ]
+                   },
                    permissible_on: :project,
                    require: :loggedin
       end

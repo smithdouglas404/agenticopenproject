@@ -29,6 +29,7 @@
 
             item_options = {
               expanded_fn: ->(*) { true },
+              label_fn: ->(item) { item.to_s },
               checked_fn:,
               select_variant: @project_custom_field.multi_value? ? :multiple : :single
             }

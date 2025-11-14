@@ -54,7 +54,7 @@ class CustomFields::Inputs::Base::Input < ApplicationForm
   end
 
   def custom_value
-    @custom_value ||= model.custom_value_for(@custom_field.id)
+    @custom_value ||= model.custom_value_for(@custom_field)
   end
 
   def invalid?

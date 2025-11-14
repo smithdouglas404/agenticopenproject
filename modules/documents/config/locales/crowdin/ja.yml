@@ -39,6 +39,8 @@ ja:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ ja:
     menu:
       all: "All documents"
       types: "ワークパッケージのタイプ"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "添付ファイルの作成者"
     label_categories: "カテゴリ"
     new_category: "新規カテゴリ"

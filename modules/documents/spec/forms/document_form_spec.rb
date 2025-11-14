@@ -37,21 +37,10 @@ RSpec.describe DocumentForm, type: :forms do
   let(:type) { create(:document_type, :experimental) }
   let(:model) { create(:document, type:) }
 
-  context "when the feature flag is disabled" do
-    it "renders field" do
-      expect(page).to have_field("Type", required: true)
-      expect(page).to have_field("Title", required: true)
-      expect(page).to have_element("opce-ckeditor-augmented-textarea",
-                                   "data-test-selector": "augmented-text-area-description")
-    end
-  end
-
-  context "when the feature flag is enabled", with_flag: { block_note_editor: true } do
-    it "renders field" do
-      expect(page).to have_field("Type", required: true)
-      expect(page).to have_field("Title", required: true)
-      expect(page).to have_css(".document-form--long-description")
-      expect(page).not_to have_element("opce-ckeditor-augmented-textarea")
-    end
+  it "renders field" do
+    expect(page).to have_field("Type", required: true)
+    expect(page).to have_field("Title", required: true)
+    expect(page).to have_element("opce-ckeditor-augmented-textarea",
+                                 "data-test-selector": "augmented-text-area-description")
   end
 end

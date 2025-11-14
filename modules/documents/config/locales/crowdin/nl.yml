@@ -39,6 +39,8 @@ nl:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +55,7 @@ nl:
     menu:
       all: "All documents"
       types: "Typen"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Auteur bijlage"
     label_categories: "Categorieën"
     new_category: "Nieuwe categorie"

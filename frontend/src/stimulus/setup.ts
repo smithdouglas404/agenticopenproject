@@ -11,7 +11,6 @@ import TableHighlightingController from './controllers/table-highlighting.contro
 import OpShowWhenCheckedController from './controllers/show-when-checked.controller';
 import OpShowWhenValueSelectedController from './controllers/show-when-value-selected.controller';
 import FlashController from './controllers/flash.controller';
-import OpProjectsZenModeController from './controllers/dynamic/projects/zen-mode.controller';
 import PasswordConfirmationDialogController from './controllers/password-confirmation-dialog.controller';
 import PreviewController from './controllers/dynamic/work-packages/date-picker/preview.controller';
 import KeepScrollPositionController from './controllers/keep-scroll-position.controller';
@@ -36,6 +35,7 @@ import ExternalLinksController from './controllers/external-links.controller';
 import DisableWhenClickedController from 'core-stimulus/controllers/disable-when-clicked.controller';
 import HighlightTargetElementController from 'core-stimulus/controllers/highlight-target-element.controller';
 import SelectAutosizeController from 'core-stimulus/controllers/select-autosize.controller';
+import OpZenModeController from 'core-stimulus/controllers/zen-mode.controller';
 
 declare global {
   interface Window {
@@ -58,7 +58,7 @@ OpenProjectStimulusApplication.preregister('hover-card-trigger', HoverCardTrigge
 OpenProjectStimulusApplication.preregister('show-when-checked', OpShowWhenCheckedController);
 OpenProjectStimulusApplication.preregister('show-when-value-selected', OpShowWhenValueSelectedController);
 OpenProjectStimulusApplication.preregister('table-highlighting', TableHighlightingController);
-OpenProjectStimulusApplication.preregister('projects-zen-mode', OpProjectsZenModeController);
+OpenProjectStimulusApplication.preregister('zen-mode', OpZenModeController);
 OpenProjectStimulusApplication.preregister('work-packages--date-picker--preview', PreviewController);
 OpenProjectStimulusApplication.preregister('keep-scroll-position', KeepScrollPositionController);
 OpenProjectStimulusApplication.preregister('pattern-input', PatternInputController);

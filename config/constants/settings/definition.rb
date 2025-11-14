@@ -169,9 +169,10 @@ module Settings
         default: %w[ca cs de el en es fr hu id it ja ko lt nl no pl pt-BR pt-PT ro ru sk sl sv tr uk vi zh-CN zh-TW].freeze,
         allowed: -> { Redmine::I18n.all_languages }
       },
-      avatar_link_expiry_seconds: {
+      avatar_link_expiration_seconds: {
         description: "Cache duration for avatar image API responses",
-        default: 24.hours.to_i
+        default: 24.hours.to_i,
+        env_alias: "OPENPROJECT_AVATAR__LINK__EXPIRY__SECONDS"
       },
       # Allow users with the required permissions to create backups via the web interface or API.
       backup_enabled: {
@@ -216,7 +217,7 @@ module Settings
         default: 20
       },
       cache_expires_in_seconds: {
-        description: "Expiration time for memcache entries, empty for no expiry be default",
+        description: "Expiration time for memcache entries, empty for no expiration be default",
         format: :integer,
         default: nil,
         writable: false
@@ -636,7 +637,7 @@ module Settings
       large_instance_wp_allowed_to_sql: {
         description: "When querying for allowed work packages, use SQL better suited for instances " \
                      "with a larger set of work packages, projects, members and users",
-        default: false
+        default: true
       },
       ldap_force_no_page: {
         description: "Force LDAP to respond as a single page, in case paged responses do not work with your server.",

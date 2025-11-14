@@ -35,22 +35,26 @@ class RecurringMeetingsController < ApplicationController
     end
   end
 
-  def new
-    @recurring_meeting = RecurringMeeting.new(project: @project)
-  end
-
   def show
-    if @direction == "past"
-      @meetings = @recurring_meeting.scheduled_instances(upcoming: false).limit(@count)
+    if @recurring_meeting.template.draft?
+      redirect_to meeting_path(@recurring_meeting.template)
     else
-      @meetings, @planned_meetings = upcoming_meetings(count: @count)
-    end
+      if @direction == "past"
+        @meetings = @recurring_meeting.scheduled_instances(upcoming: false).limit(@count)
+      else
+        @meetings, @planned_meetings = upcoming_meetings(count: @count)
+      end
 
-    respond_to do |format|
-      format.html do
-        render :show, locals: { menu_name: project_or_global_menu }
+      respond_to do |format|
+        format.html do
+          render :show, locals: { menu_name: project_or_global_menu }
+        end
       end
     end
+  end
+
+  def new
+    @recurring_meeting = RecurringMeeting.new(project: @project)
   end
 
   def init
@@ -166,10 +170,10 @@ class RecurringMeetingsController < ApplicationController
     end
   end
 
-  def template_completed
-    call = ::RecurringMeetings::InitOccurrenceService
+  def template_completed # rubocop:disable Metrics/AbcSize
+    call = ::RecurringMeetings::TemplateCompletedService
       .new(user: current_user, recurring_meeting: @recurring_meeting)
-      .call(start_time: @first_occurrence)
+      .call(notify: params[:meeting][:notify] == "1", first_occurrence: @first_occurrence)
 
     if call.success?
       init_next_occurrence_job(@first_occurrence)
@@ -180,7 +184,11 @@ class RecurringMeetingsController < ApplicationController
       flash[:error] = call.message
     end
 
-    redirect_to action: :show, id: @recurring_meeting, status: :see_other
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.redirect_to(project_recurring_meeting_path(@project, @recurring_meeting))
+      end
+    end
   end
 
   def delete_scheduled_dialog

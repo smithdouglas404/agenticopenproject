@@ -53,8 +53,8 @@ RSpec.describe Settings::AuthenticationSettingsForm, type: :forms do
     expect(page).to have_unchecked_field "Session expires"
   end
 
-  it "renders 'Session expiry time after inactivity' number field" do
-    expect(page).to have_field "Session expiry time after inactivity", type: "number"
+  it "renders 'Session expiration time after inactivity' number field" do
+    expect(page).to have_field "Session expiration time after inactivity", type: "number"
   end
 
   it "renders 'Log user login, name, and mail address for all requests' checkbox" do

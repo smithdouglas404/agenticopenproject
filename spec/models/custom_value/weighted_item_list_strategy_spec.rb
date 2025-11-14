@@ -149,7 +149,7 @@ RSpec.describe CustomValue::WeightedItemListStrategy do
       end
 
       it "is the hierarchy item label" do
-        expect(subject).to eql "Foo Bar Baz"
+        expect(subject).to eql "Foo Bar Baz 42.0"
       end
 
       context "when item has short value" do

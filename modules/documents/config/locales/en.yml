@@ -51,6 +51,9 @@ en:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
+        edit_title: "Edit title"
 
     subheader:
       filter:
@@ -69,6 +72,8 @@ en:
     menu:
       all: "All documents"
       types: "Types"
+
+    last_updated_at: "Last updated %{time}."
 
     label_attachment_author: "Attachment author"
     label_categories: "Categories"

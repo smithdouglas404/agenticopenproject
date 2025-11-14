@@ -321,7 +321,7 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
       create_page.expect_and_dismiss_toaster message: "Successful creation"
 
       wp = WorkPackage.last
-      expect(wp.custom_value_for(date_cf.id).value).to eq Time.zone.today.iso8601
+      expect(wp.custom_value_for(date_cf).value).to eq Time.zone.today.iso8601
     end
 
     it "can set the date via the in-place editing" do

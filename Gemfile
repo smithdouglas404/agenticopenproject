@@ -123,7 +123,7 @@ gem "multi_json", "~> 1.17.0"
 gem "oj", "~> 3.16.12"
 
 gem "daemons"
-gem "good_job", "= 3.99.1" # update should be done manually in sync with saas-openproject version.
+gem "good_job", "~> 4.12.0" # update should be done manually in sync with saas-openproject version.
 
 gem "rack-protection", "~> 3.2.0"
 
@@ -192,7 +192,7 @@ gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
 gem "fog-aws"
 
-gem "aws-sdk-core", "~> 3.236"
+gem "aws-sdk-core", "~> 3.237"
 # File upload via fog + screenshots on travis
 gem "aws-sdk-s3", "~> 1.203"
 
@@ -228,7 +228,7 @@ gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
 gem "opentelemetry-instrumentation-all", "~> 0.87.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.1.0"
+gem "view_component", "~> 4.1.1"
 # Lookbook
 gem "lookbook", "2.3.13"
 
@@ -415,6 +415,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.30.1"
-gem "openproject-octicons_helper", "~>19.30.1"
-gem "openproject-primer_view_components", "~>0.76.0"
+gem "openproject-octicons", "~>19.31.1"
+gem "openproject-octicons_helper", "~>19.31.1"
+gem "openproject-primer_view_components", "~>0.78.0"

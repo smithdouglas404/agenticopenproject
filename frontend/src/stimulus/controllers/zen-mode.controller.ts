@@ -1,15 +1,22 @@
 import { ApplicationController } from 'stimulus-use';
 
-export default class OpProjectsZenModeController extends ApplicationController {
-  static targets = ['button'];
-  inZenMode = false;
+export default class OpZenModeController extends ApplicationController {
+  static values = {
+    autostart:Boolean,
+  };
 
-  declare readonly buttonTarget:HTMLElement;
+  declare readonly autostartValue:boolean;
+
+  inZenMode = false;
 
   private boundHandler = this.fullscreenChangeEventHandler.bind(this);
 
   connect() {
     document.addEventListener('fullscreenchange', this.boundHandler);
+
+    if (this.autostartValue) {
+      setTimeout(() => this.activateZenMode(), 25);
+    }
   }
 
   disconnect() {

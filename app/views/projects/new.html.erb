@@ -30,7 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title { new_workspace_title(@new_project) }
-    header.with_breadcrumbs([new_workspace_title(@new_project)])
+    header.with_breadcrumbs(nil)
   end
 %>
 

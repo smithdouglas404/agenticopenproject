@@ -39,6 +39,8 @@ pl:
   documents:
     page_header:
       heading: "Wszystkie dokumenty"
+      action_menu:
+        document_actions: "Document actions"
     subheader:
       filter:
         label: "Filtr nazwy dokumentu"
@@ -53,6 +55,7 @@ pl:
     menu:
       all: "Wszystkie dokumenty"
       types: "Typy"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Autor załącznika"
     label_categories: "Kategorie"
     new_category: "Nowa kategoria"

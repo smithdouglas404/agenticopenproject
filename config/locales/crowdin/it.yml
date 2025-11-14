@@ -533,6 +533,9 @@ it:
         no_results_title_text: Nessuno spazio su disco registrato aggiuntivo consumato da questo progetto.
       work_package_priorities:
         new_label: "Nuova priorità"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Modifica lo stato del progetto
   lists:
@@ -2016,9 +2019,11 @@ it:
   button_delete_permanently: "Elimina definitivamente"
   button_delete_watcher: "Eliminare osservatore %{name}"
   button_download: "Scarica"
+  button_disable: "Disable"
   button_duplicate: "Duplica"
   button_duplicate_and_follow: "Duplica e segui"
   button_edit: "Modifica"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Modifica pagina wiki associata: %{page_title}"
   button_expand_all: "Espandi tutto"
   button_favorite: "Aggiunti ai preferiti"
@@ -3280,6 +3285,7 @@ it:
   label_project_view_all: "Vedi tutti i progetti"
   label_project_show_details: "Mostra dettagli progetto"
   label_project_hide_details: "Nascondi dettagli progetto"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "Nuovo portfolio"
   label_program: "Programma"
@@ -4226,7 +4232,7 @@ it:
   setting_self_registration_manual_activation: "Attivazione account manuale"
   setting_self_registration_manual_activation_caption: >
     Gli utenti possono registrarsi autonomamente. I loro account rimangono in sospeso finché un amministratore o un utente con autorizzazione globale per creare o gestire utenti non li attiva.
-  setting_session_ttl: "Intervallo di tempo al termine del quale scade la sessione per inattività"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Per valori inferiori a 5 è pari a disabilitato"
   setting_session_ttl_enabled: "La sessione scade"
   setting_start_of_week: "La settimana inizia da"
@@ -4324,6 +4330,15 @@ it:
       new:
         heading: "Nuovo attributo"
         description: "Le modifiche a questo attributo di progetto si rifletteranno in tutti i progetti in cui è abilitato. Gli attributi obbligatori non possono essere disabilitati per progetto."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Ciclo di vita del progetto"
       heading_description: "Il ciclo di vita del progetto definisce le fasi del progetto che possono essere utilizzate per la pianificazione del progetto e apparirà nella pagina panoramica di ogni progetto. Questi attributi possono essere abilitati o disabilitati ma non riordinati a livello di progetto."

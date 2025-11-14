@@ -165,6 +165,7 @@ ja:
           group_does_not_exist: "%{group} は存在しません。Nextcloudインスタンスの設定を確認してください。"
           insufficient_privileges: OpenProjectには %{user} を %{group}に追加するための十分な権限がありません。Nextcloudでグループ設定を確認してください。
           not_allowed: Nextcloudはリクエストをブロックします。
+          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProjectがNextcloudと同期できませんでした。ストレージとNextcloudの設定を確認してください。
           user_does_not_exist: "Nextcloudには%{user} は存在しません。"
         one_drive_sync_service:
