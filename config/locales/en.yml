@@ -4568,8 +4568,8 @@ en:
         display_representation:
           overview:
             label: "Project attribute shown in:"
-            main_section:
-              label: "Main section"
+            main_area:
+              label: "Main area"
               description: "Add all the project attributes as individual widgets in the main section of the project overview."
             side_panel:
               label: "Side-panel"

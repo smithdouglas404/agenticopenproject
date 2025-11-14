@@ -54,7 +54,7 @@ module Grids
         @available_project_attributes_grouped_by_section ||=
           @project.available_custom_fields
                   .group_by(&:project_custom_field_section)
-                  .select { |section, _| section.shown_in_overview_main_section? }
+                  .select { |section, _| section.shown_in_overview_main_area? }
       else
         @available_project_attributes_grouped_by_section ||=
           @project.available_custom_fields

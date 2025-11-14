@@ -68,8 +68,8 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
 
         # The section is updated directly
         section = CustomFieldSection.find(section_for_input_fields.id)
-        expect(section.shown_in_overview_main_section?).to be(true)
-        expect(page).to have_test_selector("section-position-selector", text: "Main section")
+        expect(section.shown_in_overview_main_area?).to be(true)
+        expect(page).to have_test_selector("section-position-selector", text: "Main area")
       end
     end
 
@@ -98,7 +98,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
     before do
       # Move one section to the main section
       section = CustomFieldSection.find(section_for_input_fields.id)
-      section.display_representation = { overview: "main_section" }
+      section.display_representation = { overview: "main_area" }
       section.save!
 
       overview_page.visit!
@@ -106,7 +106,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
 
     it "shows the sections in either the sidebar or the main section" do
       # The section is shown in the main section of the overview page ...
-      overview_page.within_main_section do
+      overview_page.within_main_area do
         sections = page.all(".op-project-custom-field-section-container")
 
         expect(sections.size).to eq(1)
@@ -126,7 +126,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
     end
 
     it "shows the project custom fields in the correct order within the widget" do
-      overview_page.within_main_section do
+      overview_page.within_main_area do
         overview_page.within_custom_field_section_widget(section_for_input_fields) do
           fields = page.all(".op-project-custom-field-container")
 
@@ -150,7 +150,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
 
       overview_page.visit_page
 
-      overview_page.within_main_section do
+      overview_page.within_main_area do
         expect(page).to have_no_text "String field enabled for other project"
       end
     end
@@ -161,7 +161,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
       page.click_on "Save"
 
       # The new value is shown in the widget
-      overview_page.within_main_section do
+      overview_page.within_main_area do
         overview_page.within_custom_field_section_widget(section_for_input_fields) do
           expect(page).to have_text "My super awesome new value"
         end

@@ -30,7 +30,7 @@
 
 class CustomFieldSection < ApplicationRecord
   OVERVIEW__SIDEBAR_KEY = "sidebar"
-  OVERVIEW__MAIN_SECTION_KEY = "main_section"
+  OVERVIEW__MAIN_AREA_KEY = "main_area"
   DEFAULT_OVERVIEW_KEY = OVERVIEW__SIDEBAR_KEY.freeze
 
   acts_as_list scope: [:type]
@@ -45,7 +45,7 @@ class CustomFieldSection < ApplicationRecord
     overview == OVERVIEW__SIDEBAR_KEY
   end
 
-  def shown_in_overview_main_section?
-    overview == OVERVIEW__MAIN_SECTION_KEY
+  def shown_in_overview_main_area?
+    overview == OVERVIEW__MAIN_AREA_KEY
   end
 end

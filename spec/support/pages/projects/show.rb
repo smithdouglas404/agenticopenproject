@@ -65,7 +65,7 @@ module Pages
         within_test_selector("project-custom-fields-sidebar", &)
       end
 
-      def within_main_section(&)
+      def within_main_area(&)
         within_test_selector("grids-project-attribute-widgets", &)
       end
 

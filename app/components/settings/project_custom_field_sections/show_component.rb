@@ -166,7 +166,7 @@ module Settings
         if section.shown_in_overview_sidebar?
           t("settings.project_attributes.sections.display_representation.overview.side_panel.label")
         else
-          t("settings.project_attributes.sections.display_representation.overview.main_section.label")
+          t("settings.project_attributes.sections.display_representation.overview.main_area.label")
         end
       end
 

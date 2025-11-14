@@ -13,6 +13,7 @@
               end
             end
           end
+
           section_header_container.with_column(flex_layout: true, justify_content: :flex_end) do |actions_container|
             if OpenProject::FeatureDecisions.new_project_overview_active?
               actions_container.with_column do
@@ -36,13 +37,13 @@
                     item.with_description.with_content(t("settings.project_attributes.sections.display_representation.overview.side_panel.description"))
                   end
                   menu.with_item(
-                    label: t("settings.project_attributes.sections.display_representation.overview.main_section.label"),
-                    active: @project_custom_field_section.shown_in_overview_main_section?,
+                    label: t("settings.project_attributes.sections.display_representation.overview.main_area.label"),
+                    active: @project_custom_field_section.shown_in_overview_main_area?,
                     test_selector: "section-position-selector--main-section-option",
-                    **menu_item_options_for(@project_custom_field_section, ProjectCustomFieldSection::OVERVIEW__MAIN_SECTION_KEY)
+                    **menu_item_options_for(@project_custom_field_section, ProjectCustomFieldSection::OVERVIEW__MAIN_AREA_KEY)
                   ) do |item|
                     item.with_leading_visual_icon(icon: :"op-view-cards")
-                    item.with_description.with_content(t("settings.project_attributes.sections.display_representation.overview.main_section.description"))
+                    item.with_description.with_content(t("settings.project_attributes.sections.display_representation.overview.main_area.description"))
                   end
                 end
               end
