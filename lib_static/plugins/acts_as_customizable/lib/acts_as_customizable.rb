@@ -249,22 +249,25 @@ module Redmine
 
         # Build the changes hash similar to ActiveRecord::Base#changes,
         # but for the custom field values that have been changed.
-        def custom_field_changes
-          custom_field_values.reduce({}) do |cfv_changes, cfv|
-            next cfv_changes unless cfv.changed?
+        def custom_field_changes # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+          all_fields_grouped = custom_field_values(all: true).group_by(&:custom_field)
 
-            # In order to construct a valid changes hash, we need to find the old value if it exists.
-            # Otherwise, set it to nil.
-            cfv_was = custom_value_was_for(cfv)
-            value_was = cfv_was&.value
+          all_fields_grouped.each_with_object({}) do |(custom_field, new_custom_field_values), changes|
+            old_value = custom_value_was_for(custom_field)
+
+            # Skip when only setting the default value
+            next if old_value.blank? && new_custom_field_values.all?(&:default?)
+
+            new_value = if custom_field.multi_value?
+                          new_custom_field_values.filter_map(&:value).sort
+                        else
+                          new_custom_field_values.first&.value
+                        end
 
             # Skip when the old value equals the new value (no change happened).
-            next cfv_changes if value_was == cfv.value
+            next if old_value == new_value
 
-            # Skip when the new value is the default value
-            next cfv_changes if value_was.nil? && cfv.default?
-
-            cfv_changes.merge("custom_field_#{cfv.custom_field_id}" => [value_was, cfv.value])
+            changes["custom_field_#{custom_field.id}"] = [old_value, new_value]
           end
         end
 
@@ -272,10 +275,17 @@ module Redmine
           changed + custom_field_changes.keys
         end
 
-        def custom_value_was_for(custom_value)
-          custom_values.find do |cv|
-            cv.marked_for_destruction? &&
-            cv.custom_field_id == custom_value.custom_field_id
+        def custom_value_was_for(custom_field)
+          if custom_field.multi_value?
+            all_old_custom_field_values(custom_field).filter_map(&:value).sort
+          else
+            all_old_custom_field_values(custom_field).first&.value
+          end
+        end
+
+        def all_old_custom_field_values(custom_field)
+          custom_values.select do |cv|
+            (cv.marked_for_destruction? || !cv.new_record?) && cv.custom_field_id == custom_field.id
           end
         end
 
@@ -379,7 +389,7 @@ module Redmine
         def define_custom_field_getter(custom_field)
           define_singleton_method custom_field.attribute_getter do
             custom_values = Array(custom_value_for(custom_field)).map do |custom_value|
-              custom_value ? custom_value.typed_value : nil
+              custom_value&.typed_value
             end
 
             if custom_field.multi_value?
