@@ -41,6 +41,7 @@ es:
       heading: "Todos los documentos"
       action_menu:
         document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "Filtro de nombre de documento"

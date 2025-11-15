@@ -41,6 +41,7 @@ uk:
       heading: "Усі документи"
       action_menu:
         document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "Фільтр за назвою документів"

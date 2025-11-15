@@ -41,6 +41,7 @@ ko:
       heading: "모든 문서"
       action_menu:
         document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "문서 이름 필터"

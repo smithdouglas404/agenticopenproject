@@ -41,6 +41,7 @@ zh-CN:
       heading: "所有文档"
       action_menu:
         document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "文档名称过滤器"

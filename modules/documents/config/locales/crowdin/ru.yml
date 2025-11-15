@@ -41,6 +41,7 @@ ru:
       heading: "Все документы"
       action_menu:
         document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "Фильтр по названию документа"
