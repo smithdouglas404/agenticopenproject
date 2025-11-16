@@ -31,9 +31,9 @@
 class ApplicationForm < Primer::Forms::Base
   include AttributeHelpTexts::FormHelper
 
-  def self.settings_form
+  def self.settings_form(&)
     form do |f|
-      yield Settings::FormObjectDecorator.new(f)
+      instance_exec(Settings::FormObjectDecorator.new(f), &)
     end
   end
 
