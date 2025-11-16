@@ -27,21 +27,36 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-RSpec.shared_context "with rendered form" do
-  include ViewComponent::TestHelpers
 
-  let(:form_arguments) { { url: "/foo", model: } }
-  let(:params) { {} }
+module Admin
+  module Settings
+    class ExperimentalSettingsForm < ApplicationForm
+      include ::Settings::FormHelper
 
-  def render_form
-    render_in_view_context(described_class, form_arguments, params) do |described_class, form_arguments, params|
-      primer_form_with(**form_arguments) do |f|
-        render(described_class.new(f, **params))
+      settings_form do |sf|
+        sf.check_box_group(
+          label: I18n.t("settings.experimental.feature_flags"),
+          visually_hide_label: true
+        ) do |group|
+          available_feature_flags.each do |(label, name)|
+            group.check_box(
+              name:,
+              label:,
+              checked: setting_value(name),
+              disabled: setting_disabled?(name),
+              caption: ::Settings::Definition[name].description
+            )
+          end
+        end
+      end
+
+      private
+
+      def available_feature_flags
+        OpenProject::FeatureDecisions
+          .all
+          .map { [it.to_s.humanize, "feature_#{it}_active"] }
       end
     end
-  end
-
-  before do
-    render_form
   end
 end

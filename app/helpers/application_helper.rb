@@ -333,16 +333,6 @@ module ApplicationHelper
     theme_options
   end
 
-  def highlight_default_language(lang_options)
-    lang_options.map do |(language_name, code)|
-      if code == Setting.default_language
-        [I18n.t("settings.language_name_being_default", language_name:), code, { disabled: true, checked: true }]
-      else
-        [language_name, code]
-      end
-    end
-  end
-
   def labelled_tabular_form_for(record, options = {}, &)
     options.reverse_merge!(builder: TabularFormBuilder, html: {})
     options[:html][:class] = "form" unless options[:html].has_key?(:class)
@@ -476,21 +466,6 @@ module ApplicationHelper
 
   def permitted_params
     PermittedParams.new(params, current_user)
-  end
-
-  # Returns the language name in its own language for a given locale
-  #
-  # @param lang_code [String] the locale for the desired language, like `en`,
-  #   `de`, `fil`, `zh-CN`, and so on.
-  # @return [String] the language name translated in its own language
-  def translate_language(lang_code)
-    # rename in-context translation language name for the language select box
-    if lang_code.to_sym == Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE &&
-      ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
-      [Redmine::I18n::IN_CONTEXT_TRANSLATION_NAME, lang_code.to_s]
-    else
-      [I18n.t("cldr.language_name", locale: lang_code), lang_code.to_s]
-    end
   end
 
   def link_to_content_update(name, options = {}, html_options = {}, &)

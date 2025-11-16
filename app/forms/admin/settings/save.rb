@@ -27,21 +27,21 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-RSpec.shared_context "with rendered form" do
-  include ViewComponent::TestHelpers
 
-  let(:form_arguments) { { url: "/foo", model: } }
-  let(:params) { {} }
+module Admin
+  module Settings
+    class Save < ApplicationForm
+      attr_reader :system_arguments
 
-  def render_form
-    render_in_view_context(described_class, form_arguments, params) do |described_class, form_arguments, params|
-      primer_form_with(**form_arguments) do |f|
-        render(described_class.new(f, **params))
+      settings_form do |sf|
+        sf.submit(**system_arguments)
+      end
+
+      def initialize(**system_arguments)
+        super()
+
+        @system_arguments = system_arguments
       end
     end
-  end
-
-  before do
-    render_form
   end
 end

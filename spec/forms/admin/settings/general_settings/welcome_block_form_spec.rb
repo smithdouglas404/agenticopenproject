@@ -27,21 +27,30 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-RSpec.shared_context "with rendered form" do
-  include ViewComponent::TestHelpers
 
-  let(:form_arguments) { { url: "/foo", model: } }
-  let(:params) { {} }
+require "rails_helper"
 
-  def render_form
-    render_in_view_context(described_class, form_arguments, params) do |described_class, form_arguments, params|
-      primer_form_with(**form_arguments) do |f|
-        render(described_class.new(f, **params))
-      end
-    end
+RSpec.describe Admin::Settings::GeneralSettings::WelcomeBlockForm, type: :forms do
+  include_context "with rendered form"
+
+  let(:form_arguments) { { url: "/foo", model: false, scope: :settings } }
+
+  subject(:rendered_form) do
+    render_form
+    page
   end
 
-  before do
-    render_form
+  it "renders", :aggregate_failures do
+    expect(rendered_form).to have_field "Welcome block title", type: :text do |field|
+      expect(field["name"]).to eq "settings[welcome_title]"
+    end
+
+    expect(rendered_form).to have_field "Welcome block text", type: :textarea, visible: :hidden do |field|
+      expect(field["name"]).to eq "settings[welcome_text]"
+    end
+
+    expect(rendered_form).to have_field "Display welcome block on homescreen", type: :checkbox do |field|
+      expect(field["name"]).to eq "settings[welcome_on_homescreen]"
+    end
   end
 end

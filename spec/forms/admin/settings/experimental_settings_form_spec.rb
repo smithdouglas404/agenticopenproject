@@ -27,21 +27,36 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-RSpec.shared_context "with rendered form" do
-  include ViewComponent::TestHelpers
 
-  let(:form_arguments) { { url: "/foo", model: } }
-  let(:params) { {} }
+require "rails_helper"
 
-  def render_form
-    render_in_view_context(described_class, form_arguments, params) do |described_class, form_arguments, params|
-      primer_form_with(**form_arguments) do |f|
-        render(described_class.new(f, **params))
-      end
+RSpec.describe Admin::Settings::ExperimentalSettingsForm, type: :forms, settings_reset: true do
+  include_context "with clean feature decisions"
+  include_context "with rendered form"
+
+  let(:form_arguments) { { url: "/foo", model: false, scope: :settings } }
+
+  subject(:rendered_form) do
+    render_form
+    page
+  end
+
+  context "without feature flags" do
+    it "renders" do
+      expect(rendered_form).to have_no_field type: :checkbox, fieldset: "Feature flags"
     end
   end
 
-  before do
-    render_form
+  context "with feature flags" do
+    before do
+      OpenProject::FeatureDecisions.add :an_example
+      OpenProject::FeatureDecisions.add :another_example
+    end
+
+    it "renders", :aggregate_failures do
+      expect(rendered_form).to have_field count: 2, type: :checkbox, fieldset: "Feature flags"
+      expect(rendered_form).to have_field "An example", type: :checkbox, fieldset: "Feature flags"
+      expect(rendered_form).to have_field "Another example", type: :checkbox, fieldset: "Feature flags"
+    end
   end
 end

@@ -42,13 +42,37 @@ module Settings
     # @param name [Symbol] The name of the setting
     # @param options [Hash] Additional options for the text field
     # @return [Object] The text field input
-    def text_field(name:, **options)
-      options.reverse_merge!(
-        label: setting_label(name),
-        value: setting_value(name),
-        disabled: setting_disabled?(name)
-      )
-      object.text_field(name:, **options)
+    def text_field(**)
+      object.text_field(**decorate_options_with_value(**))
+    end
+
+    # Creates a text area input for a setting.
+    #
+    # The text field label is set from translating the key "setting_<name>".
+    #
+    # Any options passed to this method will override the default options.
+    #
+    # @param name [Symbol] The name of the setting
+    # @param options [Hash] Additional options for the text field
+    # @return [Object] The text field input
+    def text_area(**options)
+      options = decorate_options_with_value(**options)
+      options[:value] = options[:value].join("\n") if options[:value].is_a?(Array)
+
+      object.text_area(**options)
+    end
+
+    # Creates a rich text area input for a setting.
+    #
+    # The rich text area label is set from translating the key "setting_<name>".
+    #
+    # Any options passed to this method will override the default options.
+    #
+    # @param name [Symbol] The name of the setting
+    # @param options [Hash] Additional options for the text field
+    # @return [Object] The text field input
+    def rich_text_area(**)
+      object.rich_text_area(**decorate_options_with_value(**))
     end
 
     # Creates a rich text area input for a setting.
@@ -79,12 +103,10 @@ module Settings
     # @param options [Hash] Additional options for the check box
     # @return [Object] The check box input
     def check_box(name:, **options, &)
-      options.reverse_merge!(
-        label: setting_label(name),
-        checked: setting_value(name),
-        disabled: setting_disabled?(name)
-      )
-      object.check_box(name:, **options, &)
+      options = decorate_options(name:, **options)
+      options[:checked] = setting_value(name) unless options.key?(:checked)
+
+      object.check_box(**options, &)
     end
 
     # Creates a radio button group for a setting.
@@ -108,38 +130,82 @@ module Settings
     # @param button_options [Hash] Options for individual radio buttons
     # @param options [Hash] Additional options for the radio button group
     # @return [Object] The radio button group
-    def radio_button_group(name:, values: [], disabled: false, button_options: {}, **options) # rubocop:disable Metrics/AbcSize
-      values = values.presence || setting_allowed_values(name)
-      radio_group_options = options.reverse_merge(
-        label: setting_label(name),
-        disabled: disabled || setting_disabled?(name)
-      )
-      object.radio_button_group(
-        name:,
-        **radio_group_options
-      ) do |radio_group|
-        values.each do |value|
-          args =
-            if value.is_a?(Hash)
-              value
-                .except(:name) # Ensure to exclude name to not add another name input
-                .reverse_merge(
-                  checked: setting_value(name) == value[:value],
-                  autocomplete: "off",
-                  label: setting_label(name, value[:name]),
-                  caption: setting_caption(name, value[:name])
-                )
-            else
-              {
-                value:,
-                checked: setting_value(name) == value,
-                autocomplete: "off",
-                label: setting_label(name, value),
-                caption: setting_caption(name, value)
-              }
-            end
+    def radio_button_group(name:, values: nil, button_options: {}, **, &block)
+      options = decorate_options(name:, **)
 
-          radio_group.radio_button(**button_options.reverse_merge(args))
+      if block
+        object.radio_button_group(**options, &block)
+      else
+        values ||= setting_allowed_values(name)
+        object.radio_button_group(**options) do |group|
+          build_radio_button_group_values(group, name:, values:, button_options:)
+        end
+      end
+    end
+
+    # Creates a check box group for a setting.
+    #
+    # When provided with a name:
+    #
+    # The check box group label is set from translating the key "setting_<name>".
+    # The check box label are set from translating the key
+    # "setting_<name>_<value>". The caption is set from translating the key
+    # "setting_<name>_<value>_caption_html", which will be rendered as HTML, or
+    # "setting_<name>_<value>_caption", or nothing if none of the above are
+    # defined.
+    #
+    # Any options passed to this method will override the default options.
+    #
+    # @param name [Symbol] The name of the setting.
+    # @param values [Hash|Array] The values for the check boxes. Default to the
+    #   setting's allowed values.
+    #   If a hash is provided, it is assumed it provides a :name (to derive the labels) and a :value key.
+    #   Other keys are used as arguments to the check_box.
+    # @param disabled [Boolean] Force the check box group to be disabled when
+    #  true, will be disabled if the setting is not writable when false (default)
+    # @param check_box_options [Hash] Options for individual check boxes
+    # @param options [Hash] Additional options for the check box group
+    # @return [Object] The check box group
+    def check_box_group(name: nil, values: nil, check_box_options: {}, **, &block)
+      return object.check_box_group(**, &block) if name.nil? # non-Array style check box group
+
+      options = decorate_options(name:, **)
+
+      if block
+        object.check_box_group(**options, &block)
+      else
+        values ||= setting_allowed_values(name)
+        object.check_box_group(**options) do |group|
+          build_check_box_group_values(group, name:, values:, check_box_options:)
+        end
+      end
+    end
+
+    # Creates a select list for a setting.
+    #
+    # The select list label is set from translating the key "setting_<name>".
+    #
+    # Any options passed to this method will override the default options.
+    #
+    # @param name [Symbol] The name of the setting
+    # @param values [Hash|Array] The values for the select options. Default to the
+    #   setting's allowed values.
+    #   If a hash is provided, it is assumed it provides a :name (to derive the labels) and a :value key.
+    #   Other keys are used as arguments to the option.
+    # @param disabled [Boolean] Force the select list to be disabled when
+    #  true, will be disabled if the setting is not writable when false (default)
+    # @param option_options [Hash] Options for individual options
+    # @param options [Hash] Additional options for the select list
+    # @return [Object] The select list
+    def select_list(name:, values: nil, option_options: {}, **, &block)
+      options = decorate_options(name:, **)
+
+      if block
+        object.select_list(**options, &block)
+      else
+        values ||= setting_allowed_values(name)
+        object.select_list(**options) do |select_list|
+          build_select_list_values(select_list, name:, values:, option_options:)
         end
       end
     end
@@ -172,10 +238,97 @@ module Settings
     # Creates a save button to submit the form
     #
     # @return [Object] The submit button
-    def submit
-      object.submit(name: "submit",
-                    label: I18n.t("button_save"),
-                    scheme: :primary)
+    def submit(**options)
+      options.reverse_merge!(
+        name: "submit",
+        label: I18n.t("button_save"),
+        scheme: :primary
+      )
+      object.submit(**options)
+    end
+
+    private
+
+    def build_radio_button_group_values(group, name:, values:, button_options:)
+      values.each do |value|
+        args = case value
+               in [l, v]
+                 { label: l, value: v }
+               in [l, v, rest] if rest.is_a?(Hash)
+                 { label: l, value: v, **rest }
+               in Hash => h
+                 h.except(:name).reverse_merge(
+                   label: setting_label(name, h[:name]),
+                   caption: setting_caption(name, h[:name])
+                 )
+               else
+                 { value: }
+               end
+
+        args[:label] ||= setting_label(name, args[:value])
+        args[:caption] ||= setting_caption(name, args[:value])
+        args[:checked] = setting_value(name) == args[:value] unless args.key?(:checked)
+
+        group.radio_button(**button_options.reverse_merge(args))
+      end
+    end
+
+    def build_check_box_group_values(group, name:, values:, check_box_options:)
+      values.each do |value|
+        args = case value
+               in [l, v]
+                 { label: l, value: v }
+               in [l, v, rest] if rest.is_a?(Hash)
+                 { label: l, value: v, **rest }
+               in Hash => h
+                 h.except(:name).reverse_merge(
+                   label: setting_label(name, h[:name]),
+                   caption: setting_caption(name, h[:name])
+                 )
+               else
+                 { value: }
+               end
+
+        args[:label] ||= setting_label(name, args[:value])
+        args[:caption] ||= setting_caption(name, args[:value])
+        args[:checked] = setting_value(name).include?(args[:value]) unless args.key?(:checked)
+
+        group.check_box(**check_box_options.reverse_merge(args))
+      end
+    end
+
+    def build_select_list_values(select_list, name:, values:, option_options:)
+      values.each do |value|
+        args = case value
+               in [l, v]
+                 { label: l, value: v }
+               in [l, v, rest] if rest.is_a?(Hash)
+                 { label: l, value: v, **rest }
+               in Hash => h
+                 h
+               else
+                 { value: }
+               end
+
+        args[:selected] = setting_value(name) == args[:value] unless args.key?(:selected)
+
+        select_list.option(**option_options.reverse_merge(args))
+      end
+    end
+
+    def decorate_options_with_value(name:, **options)
+      options = decorate_options(name:, **options)
+      options[:value] = setting_value(name) unless options.key?(:value)
+
+      options
+    end
+
+    def decorate_options(name:, **options)
+      options[:name] = name
+      options[:label] ||= setting_label(name)
+      options[:disabled] = setting_disabled?(name) unless options.key?(:disabled)
+
+      options
     end
   end
 end

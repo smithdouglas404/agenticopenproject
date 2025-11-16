@@ -27,21 +27,44 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-RSpec.shared_context "with rendered form" do
-  include ViewComponent::TestHelpers
 
-  let(:form_arguments) { { url: "/foo", model: } }
-  let(:params) { {} }
+module Admin
+  module Settings
+    class LanguagesSettingsForm < ApplicationForm
+      include Redmine::I18n
 
-  def render_form
-    render_in_view_context(described_class, form_arguments, params) do |described_class, form_arguments, params|
-      primer_form_with(**form_arguments) do |f|
-        render(described_class.new(f, **params))
+      settings_form do |sf|
+        # required since the default checkbox, although checked, is disabled and
+        # thus not submitted with the Form.
+        sf.hidden(
+          name: "settings[available_languages][]",
+          value: Setting.default_language,
+          scope_name_to_model: false,
+          scope_id_to_model: false
+        )
+
+        sf.check_box_group(name: :available_languages, values: available_languages)
+      end
+
+      private
+
+      def available_languages
+        all_languages
+          .map { translate_language(it) }
+          .sort_by(&:first)
+          .map { |name, code| build_language_entry(name, code) }
+      end
+
+      def build_language_entry(name, code)
+        attrs = { label_arguments: { lang: code } }
+
+        if code == Setting.default_language
+          name = I18n.t(:"settings.language_name_being_default", language_name: name)
+          attrs[:disabled] = attrs[:checked] = true
+        end
+
+        [name, code, attrs]
       end
     end
-  end
-
-  before do
-    render_form
   end
 end

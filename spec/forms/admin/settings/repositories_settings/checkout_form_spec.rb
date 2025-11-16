@@ -27,21 +27,43 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-RSpec.shared_context "with rendered form" do
+
+require "rails_helper"
+
+RSpec.describe Admin::Settings::RepositoriesSettings::CheckoutForm, type: :forms do
   include ViewComponent::TestHelpers
 
-  let(:form_arguments) { { url: "/foo", model: } }
-  let(:params) { {} }
+  let(:form_arguments) { { url: "/foo", model: false, scope: :settings } }
+  let(:vendor) { :git }
 
   def render_form
-    render_in_view_context(described_class, form_arguments, params) do |described_class, form_arguments, params|
+    render_in_view_context(described_class, form_arguments, vendor) do |described_class, form_arguments, vendor|
       primer_form_with(**form_arguments) do |f|
-        render(described_class.new(f, **params))
+        f.fields_for(:repository_checkout_data) do |fo|
+          fo.fields_for(vendor) do |fg|
+            render(described_class.new(fg, vendor:))
+          end
+        end
       end
     end
   end
 
-  before do
+  subject(:rendered_form) do
     render_form
+    page
+  end
+
+  it "renders", :aggregate_failures do
+    expect(rendered_form).to have_field "Show checkout instructions", type: :checkbox do |field|
+      expect(field["name"]).to eq "settings[repository_checkout_data][git][enabled]"
+    end
+
+    expect(rendered_form).to have_field "Checkout base URL", type: :url do |field|
+      expect(field["name"]).to eq "settings[repository_checkout_data][git][base_url]"
+    end
+
+    expect(rendered_form).to have_field "Checkout instruction text", type: :textarea do |field|
+      expect(field["name"]).to eq "settings[repository_checkout_data][git][text]"
+    end
   end
 end

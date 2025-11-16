@@ -27,21 +27,25 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-RSpec.shared_context "with rendered form" do
-  include ViewComponent::TestHelpers
 
-  let(:form_arguments) { { url: "/foo", model: } }
-  let(:params) { {} }
+module Admin
+  module Settings
+    module GeneralSettings
+      class WelcomeBlockForm < ApplicationForm
+        settings_form do |sf|
+          sf.text_field(name: :welcome_title)
 
-  def render_form
-    render_in_view_context(described_class, form_arguments, params) do |described_class, form_arguments, params|
-      primer_form_with(**form_arguments) do |f|
-        render(described_class.new(f, **params))
+          sf.rich_text_area(
+            name: :welcome_text,
+            cols: 60,
+            rows: 5,
+            id: "settings_welcome_text",
+            rich_text_options: {}
+          )
+
+          sf.check_box(name: :welcome_on_homescreen)
+        end
       end
     end
-  end
-
-  before do
-    render_form
   end
 end
