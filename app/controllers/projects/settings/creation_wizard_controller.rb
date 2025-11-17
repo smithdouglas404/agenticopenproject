@@ -124,7 +124,7 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
                   submission_status_when_submitted_id
                   submission_send_confirmation_email
                   submission_notification_text
-                  submission_assignee_ids]
+                  submission_assignee_id]
     )
   end
 end

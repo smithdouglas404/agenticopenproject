@@ -81,24 +81,24 @@ module Projects
           )
 
           f.autocompleter(
-            name: :submission_assignee_ids,
+            name: :submission_assignee_id,
             label: I18n.t("settings.project_initiation_request.submission.assignee"),
             caption: I18n.t("settings.project_initiation_request.submission.assignee_caption"),
             required: true,
             input_width: :large,
             autocomplete_options: {
-              component: "opce-user-autocompleter",
-              hideSelected: true,
-              defaultData: true,
-              placeholder: I18n.t(:label_user_search),
-              url: ::API::V3::Utilities::PathHelper::ApiV3Path.principals,
-              filters: [
-                { name: "type", operator: "=", values: ["User"] }
-              ],
-              searchKey: "any_name_attribute",
-              multiple: true
+              component: "opce-autocompleter",
+              decorated: true
             }
-          )
+          ) do |list|
+            model.available_custom_fields.where(field_format: "user").order(:name).each do |custom_field|
+              list.option(
+                value: custom_field.id,
+                label: custom_field.name,
+                selected: custom_field.id == model.submission_assignee_id
+              )
+            end
+          end
 
           f.rich_text_area(
             name: :submission_notification_text,
