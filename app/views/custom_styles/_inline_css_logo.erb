@@ -37,9 +37,17 @@ See COPYRIGHT and LICENSE files for more details.
                asset_path("logo_openproject_white_big.png")
              end
 
-  logo_icon_url = asset_path("icon_logo.svg")
-
-  logo_icon_white_url = asset_path("icon_logo_white.svg")
+  if apply_custom_styles? && CustomStyle.current&.logo_mobile.present?
+    mobile_logo_url = custom_style_logo_mobile_path(
+      digest: CustomStyle.current.digest,
+      filename: CustomStyle.current.logo_mobile_identifier
+    )
+    logo_icon_url = mobile_logo_url
+    logo_icon_white_url = mobile_logo_url
+  else
+    logo_icon_url = asset_path("icon_logo.svg")
+    logo_icon_white_url = asset_path("icon_logo_white.svg")
+  end
 
   high_contrast_logo_url = if isRu
                              asset_path("logo-black-bg-ua.png")
