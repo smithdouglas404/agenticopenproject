@@ -101,7 +101,7 @@ RSpec.describe Primer::OpenProject::Forms::AdvancedRadioButtonGroup, type: :form
         primer_form_with(url: "/foo") do |f|
           render_inline_form(f) do |radio_form|
             radio_form.advanced_radio_button_group(name: :foobar, label: "Foobar", hidden: true) do |radio_group|
-              radio_group.radio_button(name: :foo, value: "Foo", label: "Foo")
+              radio_group.radio_button(value: "Foo", label: "Foo")
             end
           end
         end
@@ -116,7 +116,7 @@ RSpec.describe Primer::OpenProject::Forms::AdvancedRadioButtonGroup, type: :form
         primer_form_with(url: "/foo") do |f|
           render_inline_form(f) do |radio_form|
             radio_form.advanced_radio_button_group(name: :foobar, label: "Foobar", disabled: true) do |radio_group|
-              radio_group.radio_button(name: :foo, value: "Foo", label: "Foo")
+              radio_group.radio_button(value: "Foo", label: "Foo")
             end
           end
         end
@@ -130,7 +130,7 @@ RSpec.describe Primer::OpenProject::Forms::AdvancedRadioButtonGroup, type: :form
         primer_form_with(url: "/foo") do |f|
           render_inline_form(f) do |radio_form|
             radio_form.advanced_radio_button_group(name: :foobar, label: "Foobar") do |radio_group|
-              radio_group.radio_button(name: :foo, value: "Foo", label: "Foo", disabled: true)
+              radio_group.radio_button(value: "Foo", label: "Foo", disabled: true)
             end
           end
         end
