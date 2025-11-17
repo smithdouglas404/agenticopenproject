@@ -32,7 +32,7 @@ See COPYRIGHT and LICENSE files for more details.
       xml:lang="<%= I18n.locale.to_s %>"
       class="<%= "in_modal" unless show_decoration %>">
 <head>
-  <%= render partial: "layouts/common_head" %>
+  <%= render partial: "layouts/common_head", locals: local_assigns %>
   <!-- project specific tags -->
   <%= call_hook :view_layouts_base_html_head %>
   <!-- page specific tags -->

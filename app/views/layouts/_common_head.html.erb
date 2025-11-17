@@ -6,7 +6,9 @@
 <% relative_url_root = OpenProject::Configuration["rails_relative_url_root"] || "" %>
 <meta name="app_title" content="<%= page_title(*html_title_parts) %>">
 <meta name="app_base_path" content="<%= relative_url_root %>">
-<base href="<%= relative_url_root %>/">
+<% unless local_assigns[:skip_base_tag] %>
+  <base href="<%= relative_url_root %>/">
+<% end %>
 <% if @project %>
   <meta name="current_project"
         data-project-name="<%= h @project.name %>"

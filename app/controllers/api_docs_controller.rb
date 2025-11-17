@@ -36,5 +36,7 @@ class APIDocsController < ApplicationController
 
   def index
     render_404 unless Setting.apiv3_docs_enabled?
+
+    render locals: { skip_base_tag: true }
   end
 end
