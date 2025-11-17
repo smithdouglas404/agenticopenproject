@@ -195,6 +195,6 @@ Teams can view their Objectives and Key Results in one workspace, monitor progre
 OpenProject provides a flexible and transparent environment for managing Objectives and Key Results — from strategic planning to operational review. 
 By combining structured work packages, boards, meetings, and an internal knowledge hub, teams can align strategy and execution efficiently within one workspace.
 
-Every organization works differently.  For more insights into how the OpenProject team manages OKRs internally, see this blog post on [How we use OpenProject for OKR management in our team](/blog) *(link coming soon)*. 
+Every organization works differently.  For more insights into how the OpenProject team manages OKRs internally, see this blog post on [How we use OpenProject for OKR management in our team](https://www.openproject.org/blog/okr-software-use-case/).
 
 Treat your OKR setup as an evolving process — **adapt and iterate** your configuration to match your company’s rhythm, reporting needs, and level of maturity.
