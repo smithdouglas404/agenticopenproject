@@ -71,8 +71,14 @@ class Projects::CreationWizardController < ApplicationController
   private
 
   def load_sections_and_fields
+    enabled_in_wizard_ids = @project
+      .project_custom_field_project_mappings
+      .where(creation_wizard: true)
+      .select(:custom_field_id)
+
     @custom_fields_by_section = @project
       .available_custom_fields
+      .where(id: enabled_in_wizard_ids)
       .group_by(&:project_custom_field_section)
   end
 
