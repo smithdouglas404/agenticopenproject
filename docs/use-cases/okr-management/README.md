@@ -90,7 +90,7 @@ These types connect strategic goals to measurable results and operational activi
 > Create a new version for each quarter — this saves time in future cycles, keeps previous OKRs accessible, and makes it easy to move Key Results into the next quarter if priorities change.
 
 ### Optional configuration
-To make the OKR framework your own, you can add **[custom fields](../../user-guide/work-packages/custom-fields/)** that capture information important to your organization.
+To make the OKR framework your own, you can add **[custom fields](../../user-guide/projects/project-settings/work-packages/#work-package-custom-fields)** that capture information important to your organization.
 
 One useful example for such a custom field is the **Impact score**, i.e. the rate for the potential impact of each Objective or Key Result on a scale of 1–5. 
 This helps teams prioritize OKRs based on strategic value. For instance:
@@ -113,7 +113,7 @@ Regularly updating these fields during check-ins allows you to see which OKRs ar
 After configuring your project, define **Strategic Initiatives, Objectives, and Key Results** for the upcoming quarter.
 
 ### Hierarchical structure
-Use **[work package relations](../../user-guide/work-packages/relations/)** to represent dependencies:
+Use **[work package relations](../../user-guide/work-packages/work-package-relations-hierarchies/)** to represent dependencies:
 - *Strategic Initiatives* at the top level 
 - *Objectives* linked beneath each initiative 
 - *Key Results* with respective *Tasks* as children of the relevant Objective 
@@ -143,14 +143,14 @@ Use saved **[work package tables](../../user-guide/work-packages/work-package-vi
 ![Work package table filters tailerd to OKR specific categories in OpenProject](openproject_docs_use_case_okr_project_wp_table_filters.png)
 
 ### Boards
-Use **[parent–child boards](../../user-guide/boards/)** to visualize Objectives alongside their Key Results and supporting Tasks. This view works well for weekly or bi-weekly OKR check-ins to review progress and identify blockers.
+Use **[parent–child boards](../../user-guide/agile-boards/)** to visualize Objectives alongside their Key Results and supporting Tasks. This view works well for weekly or bi-weekly OKR check-ins to review progress and identify blockers.
 
 ![Boards overview in an OKR project in OpenProject](openproject_docs_use_case_okr_boards_list.png)
 
 ![An example of parent-child board to illustrate OKR tasks for product team in OpenProject](openproject_docs_use_case_okr_board_example.png)
 
 ### Overview and statistics
-Open the **[Project overview](../../user-guide/projects/overview/)** page to see an aggregated summary of OKR initiatives, objectives, key results and tasks. 
+Open the **[Project overview](../../user-guide/project-overview/)** page to see an aggregated summary of OKR initiatives, objectives, key results and tasks. 
 
 Combine this with saved filters to create a simple management dashboard.
 
@@ -195,6 +195,6 @@ Teams can view their Objectives and Key Results in one workspace, monitor progre
 OpenProject provides a flexible and transparent environment for managing Objectives and Key Results — from strategic planning to operational review. 
 By combining structured work packages, boards, meetings, and an internal knowledge hub, teams can align strategy and execution efficiently within one workspace.
 
-Every organization works differently.  For more insights into how the OpenProject team manages OKRs internally, see this blog post on [How we use OpenProject for OKR management in our team](#) *(link coming soon)*. 
+Every organization works differently.  For more insights into how the OpenProject team manages OKRs internally, see this blog post on [How we use OpenProject for OKR management in our team](/blog) *(link coming soon)*. 
 
 Treat your OKR setup as an evolving process — **adapt and iterate** your configuration to match your company’s rhythm, reporting needs, and level of maturity.
