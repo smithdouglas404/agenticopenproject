@@ -31,19 +31,8 @@
 require "spec_helper"
 
 RSpec.describe "Portfolios", "index", :js do
-  let!(:portfolio_a) do
-    create(:portfolio, name: "Portfolio A") do |portfolio|
-      create(:project, parent: portfolio)
-
-      program = create(:program, parent: portfolio)
-      create(:project, parent: program)
-    end
-  end
-  let!(:portfolio_favorited) do
-    create(:portfolio, name: "Favorited") do |portfolio|
-      create(:favorite, user: current_user, favorited: portfolio)
-    end
-  end
+  let!(:portfolio_a) { create(:portfolio, name: "Portfolio A") }
+  let!(:portfolio_favorited) { create(:portfolio, name: "Favorited") }
   let!(:inactive_portfolio) { create(:portfolio, name: "Inactive", active: false) }
 
   let(:portfolios_page) { Pages::Portfolios::Index.new }
@@ -52,15 +41,19 @@ RSpec.describe "Portfolios", "index", :js do
     create(:admin,
            global_permissions: %i[add_portfolios],
            member_with_permissions: {
-             portfolio_a => [:view_project],
-             portfolio_favorited => [:view_project],
-             inactive_portfolio => [:view_project]
+             portfolio_a => [:view_project]
            })
   end
 
   current_user { user }
 
   before do
+    create(:favorite, user: current_user, favorited: portfolio_favorited)
+    create(:project, parent: portfolio_a)
+    create(:program, parent: portfolio_a).tap do |program_a|
+      create(:project, parent: program_a)
+    end
+
     portfolios_page.visit!
   end
 

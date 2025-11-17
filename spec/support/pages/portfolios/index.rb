@@ -124,7 +124,7 @@ module Pages
       end
 
       def within_portfolio_list(&)
-        within "#portfolios-index-container", &
+        within_test_selector "op-portfolios--portfolios", &
       end
 
       def within_row(portfolio)

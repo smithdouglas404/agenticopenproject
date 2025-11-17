@@ -35,19 +35,14 @@ RSpec.describe Portfolios::IndexComponent, type: :component do
     render_inline(described_class.new(...))
   end
 
-  let(:portfolio_a) { build_stubbed(:portfolio) }
-  let(:portfolio_b) { build_stubbed(:portfolio) }
+  let!(:portfolio_a) { create(:portfolio) }
+  let!(:portfolio_b) { create(:portfolio) }
 
   let(:query) do
-    build_stubbed(:query).tap do |q|
-      allow(q).to receive(:results).and_return(query_result)
-    end
-  end
-  let(:query_result) do
-    double(portfolio: [portfolio_a, portfolio_b])
+    create(:project_query)
   end
 
-  let(:user) { build_stubbed(:user) }
+  let(:user) { create(:admin) }
 
   current_user { user }
 
@@ -68,9 +63,9 @@ RSpec.describe Portfolios::IndexComponent, type: :component do
     end
 
     context "when the query does not return a result" do
-      before do
-        allow(query_result).to receive(:portfolio).and_return([])
-      end
+      # For the purposes of this component, we do not care about projects. They will not show up in the view.
+      let!(:portfolio_a) { create(:project) }
+      let!(:portfolio_b) { create(:project) }
 
       it "does not render a list" do
         expect(subject).not_to have_test_selector("op-portfolios--portfolio-#{portfolio_a.id}")
