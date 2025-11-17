@@ -31,14 +31,14 @@ See COPYRIGHT and LICENSE files for more details.
   component_wrapper do
     settings_primer_form_with(
       url: new_workspace_path,
-      method: :get,
-      data: {
-        turbo_frame: Projects::NewComponent.wrapper_key,
-        controller: "auto-submit",
-        auto_submit_delay_value: 0
-      }
+      method: :get
     ) do |f|
-      render Projects::TemplateSelectForm.new(f, template_id:, parent_id:, workspace_type: project.workspace_type, current_user:)
+      render(
+        Primer::Forms::FormList.new(
+          Projects::TemplateSelectForm.new(f, template_id:, parent_id:, workspace_type: project.workspace_type, current_user:),
+          Projects::StepForm.new(f, step: 2)
+        )
+      )
     end
   end
 %>

@@ -49,7 +49,6 @@ module Projects
         label: I18n.t("create_project.template_label"),
         scope_name_to_model: false,
         data: {
-          action: "change->auto-submit#submit",
           qa_field_name: "use_template"
         }
       ) do |group|

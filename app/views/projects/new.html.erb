@@ -34,6 +34,8 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
+<% case params.fetch(:step, 1).to_i %>
+<% when 1 %>
 <%=
   render Projects::TemplateSelectComponent.new(
     project: @new_project,
@@ -42,7 +44,7 @@ See COPYRIGHT and LICENSE files for more details.
     current_user:
   )
 %>
-
+<% when 2 %>
 <%=
   render Projects::NewComponent.new(
     project: @new_project,
@@ -50,3 +52,4 @@ See COPYRIGHT and LICENSE files for more details.
     copy_options: @copy_options
   )
 %>
+<% end %>
