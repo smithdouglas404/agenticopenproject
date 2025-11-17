@@ -61,7 +61,7 @@ module Portfolios
     end
 
     def all_descendants
-      @all_descendants ||= portfolio.descendants
+      @all_descendants ||= portfolio.descendants.visible
     end
   end
 end

@@ -107,6 +107,14 @@ module Pages
         wait_for_network_idle
       end
 
+      def expect_new_portfolio_button
+        expect(page).to have_css('[data-test-selector="portfolio-new-button"]')
+      end
+
+      def expect_no_new_portfolio_button
+        expect(page).to have_no_css('[data-test-selector="portfolio-new-button"]')
+      end
+
       def create_new_portfolio
         page.find('[data-test-selector="portfolio-new-button"]').click
       end

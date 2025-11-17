@@ -17,17 +17,19 @@
           render(Projects::ProjectFilterButtonComponent.new(query: @query, disabled: @disable_buttons))
         end
 
-        subheader.with_action_button(
-          tag: :a,
-          href: new_portfolio_path,
-          scheme: :primary,
-          leading_icon: :plus,
-          label: t(:label_portfolio),
-          disabled: @disable_buttons,
-          size: :medium,
-          data: { "test-selector": "portfolio-new-button" }
-        ) do
-          t(:label_portfolio)
+        if show_new_portfolio_button?
+          subheader.with_action_button(
+            tag: :a,
+            href: new_portfolio_path,
+            scheme: :primary,
+            leading_icon: :plus,
+            label: t(:label_portfolio),
+            disabled: @disable_buttons,
+            size: :medium,
+            data: { "test-selector": "portfolio-new-button" }
+          ) do
+            t(:label_portfolio)
+          end
         end
 
         subheader.with_bottom_pane_component(mt: 0) do

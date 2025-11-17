@@ -45,13 +45,20 @@ RSpec.describe "Portfolios", "index", :js do
     end
   end
   let!(:inactive_portfolio) { create(:portfolio, name: "Inactive", active: false) }
+
   let(:portfolios_page) { Pages::Portfolios::Index.new }
 
-  let(:user_with_permissions) do
-    create(:admin, member_with_permissions: { portfolio_a => [:view_project] })
+  let(:user) do
+    create(:admin,
+           global_permissions: %i[add_portfolios],
+           member_with_permissions: {
+             portfolio_a => [:view_project],
+             portfolio_favorited => [:view_project],
+             inactive_portfolio => [:view_project]
+           })
   end
 
-  current_user { user_with_permissions }
+  current_user { user }
 
   before do
     portfolios_page.visit!
@@ -74,10 +81,30 @@ RSpec.describe "Portfolios", "index", :js do
       end
     end
 
-    it "lets you create a new portfolio" do
+    it "shows the create new portfolio button" do
+      portfolios_page.expect_new_portfolio_button
       portfolios_page.create_new_portfolio
 
       expect(page).to have_current_path(new_portfolio_path)
+    end
+
+    context "with a restricted user" do
+      let(:user) do
+        create(:user,
+               global_permissions: [],
+               member_with_permissions: { portfolio_a => [:view_project] })
+      end
+
+      it "does not show the create new portfolio button" do
+        portfolios_page.expect_title("Active portfolios")
+        portfolios_page.expect_portfolios_listed(portfolio_a)
+
+        portfolios_page.expect_no_new_portfolio_button
+      end
+
+      it "only lists visible portfolios" do
+        portfolios_page.expect_portfolios_not_listed(inactive_portfolio, portfolio_favorited)
+      end
     end
 
     it "offers queries in the menu items" do

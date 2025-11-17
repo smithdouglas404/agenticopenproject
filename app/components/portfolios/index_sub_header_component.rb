@@ -68,5 +68,9 @@ module Portfolios
     def clear_button_id
       "portfolio-filters-form-clear-button"
     end
+
+    def show_new_portfolio_button?
+      @current_user.allowed_globally?(:add_portfolios)
+    end
   end
 end
