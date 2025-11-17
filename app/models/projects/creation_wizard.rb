@@ -39,5 +39,6 @@ module Projects::CreationWizard
     store_attribute :settings, :submission_send_confirmation_email, :boolean
     store_attribute :settings, :submission_assignee_id, :integer
     store_attribute :settings, :submission_notification_text, :string
+    store_attribute :settings, :submission_work_package_comment, :string
   end
 end

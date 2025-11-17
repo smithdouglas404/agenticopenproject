@@ -74,12 +74,6 @@ module Projects
             end
           end
 
-          f.check_box(
-            name: :submission_send_confirmation_email,
-            label: I18n.t("settings.project_initiation_request.submission.send_confirmation_email"),
-            checked: model.submission_send_confirmation_email
-          )
-
           f.autocompleter(
             name: :submission_assignee_id,
             label: I18n.t("settings.project_initiation_request.submission.assignee"),
@@ -101,12 +95,45 @@ module Projects
           end
 
           f.rich_text_area(
-            name: :submission_notification_text,
-            label: I18n.t("settings.project_initiation_request.submission.notification_text"),
+            name: :submission_work_package_comment,
+            label: I18n.t("settings.project_initiation_request.submission.work_package_comment"),
+            caption: I18n.t("settings.project_initiation_request.submission.work_package_comment_caption"),
             required: true,
+            value: model.submission_work_package_comment.presence || I18n.t(
+              "settings.project_initiation_request.submission.work_package_comment_default", project_name: model.name
+            ),
             rich_text_options: {
               showAttachments: false,
               editorType: "constrained"
+            }
+          )
+
+          f.check_box(
+            name: :submission_send_confirmation_email,
+            label: I18n.t("settings.project_initiation_request.submission.send_confirmation_email"),
+            checked: model.submission_send_confirmation_email.presence,
+            data: {
+              "show-when-checked-target": "cause",
+              target_name: "send_confirmation_email"
+            }
+          )
+
+          f.rich_text_area(
+            name: :submission_notification_text,
+            label: I18n.t("settings.project_initiation_request.submission.confirmation_email_text"),
+            required: true,
+            value: model.submission_notification_text.presence || I18n.t(
+              "settings.project_initiation_request.submission.confirmation_email_default", project_name: model.name
+            ),
+            rich_text_options: {
+              showAttachments: false,
+              editorType: "constrained"
+            },
+            wrapper_classes: model.submission_send_confirmation_email.blank? ? "d-none" : "",
+            wrapper_data_attributes: {
+              "show-when-checked-target": "effect",
+              target_name: "send_confirmation_email",
+              "visibility-class": "d-none"
             }
           )
 

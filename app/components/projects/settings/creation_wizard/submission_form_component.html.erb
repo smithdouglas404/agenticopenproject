@@ -39,7 +39,8 @@ See COPYRIGHT and LICENSE files for more details.
       url: update_submission_settings_project_settings_creation_wizard_path(@project),
       method: :post,
       data: {
-        refresh_on_form_changes_target: "form"
+        refresh_on_form_changes_target: "form",
+        controller: "show-when-checked"
       }
     ) do |f|
       render(Projects::Settings::CreationWizard::SubmissionForm.new(f))
