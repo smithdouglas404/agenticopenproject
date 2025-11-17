@@ -61,7 +61,7 @@ class CustomStyle < ApplicationRecord
   end
 
   %i(favicon touch_icon export_logo export_cover export_footer logo logo_mobile
-    export_font_regular export_font_bold export_font_italic export_font_bold_italic).each do |name|
+     export_font_regular export_font_bold export_font_italic export_font_bold_italic).each do |name|
     define_method :"#{name}_path" do
       attachment = send(name)
 
