@@ -3,7 +3,7 @@ sidebar_navigation:
   title: OKR management
   priority: 995
 description: OKR management in OpenProject
-keywords: OKR, objective, key result, use case, use-case, objectives and key results
+keywords: OKR, objective, key result, use case, use-case, objectives and key results, strategic objective
 ---
 
 # OKR Management with OpenProject
