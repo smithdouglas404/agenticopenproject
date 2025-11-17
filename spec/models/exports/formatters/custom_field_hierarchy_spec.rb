@@ -62,7 +62,7 @@ RSpec.describe Exports::Formatters::CustomField, with_ee: [:custom_field_hierarc
         [CustomValue.new(custom_field:, value: bart.id)]
       end
 
-      it "returns the label and short" do
+      it "returns the ancestors, label and short" do
         expect(subject.format_for_export(work_package, custom_field)).to eq("Homer / Bart (BS)")
       end
     end
@@ -72,7 +72,7 @@ RSpec.describe Exports::Formatters::CustomField, with_ee: [:custom_field_hierarc
         [CustomValue.new(custom_field:, value: lisa.id)]
       end
 
-      it "returns the label and short" do
+      it "returns the ancestors and label" do
         expect(subject.format_for_export(work_package, custom_field)).to eq("Homer / Lisa")
       end
     end
