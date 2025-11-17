@@ -174,7 +174,7 @@ All participants receive invitations automatically, and meeting notes remain ava
 
 Read more about [meeting management](../meeting-management/) for more insights on structuring meetings.
 
-> [TIP] 
+> [!TIP] 
 >
 > Nominate one or more **OKR masters** to coordinate the process. They help teams define measurable OKRs, ensure consistency across departments, and facilitate the review meetings.
 
