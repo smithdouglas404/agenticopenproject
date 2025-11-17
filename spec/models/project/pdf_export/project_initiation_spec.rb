@@ -88,7 +88,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation do
       unset_string_cf.name, "–",
 
       "Section B",
-      version_cf.name, "Version 1",
+      version_cf.name, system_version,
       user_cf.name, "Other User",
       date_cf.name, format_date(Time.zone.today),
       float_cf.name, "4.5",
