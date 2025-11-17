@@ -52,6 +52,9 @@ module Projects
     attribute :templated do
       validate_templated_set_by_admin
     end
+    attribute :icon do
+      validate_templated_present
+    end
 
     validate :validate_user_allowed_to_manage
 
@@ -113,6 +116,12 @@ module Projects
 
     def validate_status_code_included
       errors.add :status, :inclusion if model.status_code && Project.status_codes.keys.exclude?(model.status_code.to_s)
+    end
+
+    def validate_templated_present
+      if model.templated.nil?
+        errors.add(:templated, :blank)
+      end
     end
 
     def validate_templated_set_by_admin

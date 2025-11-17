@@ -66,7 +66,7 @@ module Projects
             value: template.id,
             label: template.name,
             caption: format_caption(template.description),
-            icon: agile_image, # TODO: support customizable icons (OP #69068)
+            icon: template.icon,
             checked: template.id == template_id
           )
         end
