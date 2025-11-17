@@ -4572,8 +4572,8 @@ en:
               label: "Main area"
               description: "Add all the project attributes as individual widgets in the main section of the project overview."
             side_panel:
-              label: "Side-panel"
-              description: "Add all the project attributes in a section inside the right side-panel in the project overview."
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
       blankslate:
         title: "Initiation request not enabled"
