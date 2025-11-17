@@ -17,7 +17,7 @@ Hovering on the icon will show a toolip. Clicking on the icon will open the
 Attribute help text modal. Depending on permissions, an Edit button may be
 displayed.
 
-<%= embed AttributeHelpTexts::ShowDialogComponentPreview, :default %>
+<%= embed OpenProject::Common::AttributeHelpTextComponentPreview, :dialog_component %>
 
 ## Attribute help texts with forms
 
@@ -174,7 +174,7 @@ By default the label is wrapped in a `span`. This can overriden by passing the
 
 You may also wish to show help texts when displaying attributes to the user. You
 can use `AttributeLabelComponent` as shown above, passing the model and
-applicable attribute. This takes care of finding an instantiating the Attribute
+applicable attribute. This takes care of finding and instantiating the Attribute
 help text.
 
 There is also a lower-level component available: `AttributeHelpTextComponent`.
@@ -182,7 +182,7 @@ This component only renders an icon and optional additional text (via the
 `additional_label` slot). It renders without a wrapper and the caller is
 responsible for finding and passing an instance of `AttributeHelpText`.
 
-<%= embed OpenProject::Common::AttributeHelpTextComponentPreview, :with_additional_label, panels: %i[source] %>
+<%= embed OpenProject::Common::AttributeHelpTextComponentPreview, :playground, panels: %i[source] %>
 
 ### Angular (deprecated)
 
@@ -207,6 +207,5 @@ The `attribute-help-text` component should render identically to its Rails
     [attribute]="model.attribute"
     [attributeScope]="'Project'" />
 ```
-
 
 [system_admin_guide]:https://www.openproject.org/docs/system-admin-guide/attribute-help-texts/

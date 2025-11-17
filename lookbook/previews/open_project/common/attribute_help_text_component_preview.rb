@@ -32,22 +32,56 @@ module OpenProject
   module Common
     # @logical_path OpenProject/Common
     class AttributeHelpTextComponentPreview < Lookbook::Preview
-      def default
-        render OpenProject::Common::AttributeHelpTextComponent.new(help_text: work_package_help_text)
+      # @param additional_text [String]
+      def playground(additional_text: "Show Attribute help text")
+        render_with_template(locals: { additional_text:, help_text: project_help_text })
       end
 
-      def with_additional_label
-        render_with_template(locals: { help_text: project_help_text })
+      # @display min_height 400px
+      def dialog_component
+        render AttributeHelpTexts::ShowDialogComponent.new(
+          attribute_help_text: project_help_text,
+          current_user: admin_user,
+          open: true
+        )
+      end
+
+      def in_a_form
+        render_with_template # (locals: { help_text: work_package_help_text })
       end
 
       private
 
-      def work_package_help_text
-        FactoryBot.build_stubbed(:work_package_help_text)
+      def admin_user
+        FactoryBot.build_stubbed(:admin)
       end
 
       def project_help_text
-        FactoryBot.build_stubbed(:project_help_text)
+        FactoryBot
+          .build_stubbed(
+            :project_help_text,
+            attribute_name: "name",
+            help_text: <<~MARKDOWN
+              #### Goal
+
+              Find something **useful** to say about this project!
+
+              #### Guidance
+
+              The Project name should be concise and describe the project in terms that are understood by all involved.
+
+              _Good examples_
+
+              - 🧹 Spree Cleanup Project
+              - 🦦 Thames Sewage Mitigation Project
+              - 🏊🏼‍♀️ Public Swimming in the Seine
+
+              _Bad examples_
+
+              - 🔥 Stakeholder-Alignment Mega-Project
+              - ✈️ New Airport for Berlin
+            MARKDOWN
+          )
       end
     end
   end
