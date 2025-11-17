@@ -47,11 +47,11 @@ module Portfolios
     end
 
     def all_subprograms
-      all_descendants.filter { it.workspace_type == "program" }
+      all_descendants.program
     end
 
     def all_subprojects
-      all_descendants.filter { it.workspace_type == "project" }
+      all_descendants.project
     end
 
     private
@@ -60,20 +60,8 @@ module Portfolios
       @favorited_project_ids ||= Favorite.where(user: current_user, favorited_type: "Project").pluck(:favorited_id)
     end
 
-    def all_descendants(project = portfolio)
-      return @descendants if defined?(@descendants)
-
-      @descendants = Set.new
-      stack = [project]
-
-      until stack.empty?
-        current = stack.pop
-        current.descendants.each { stack.push(it) }
-
-        @descendants.add(current) unless current == project
-      end
-
-      @descendants
+    def all_descendants
+      @all_descendants ||= portfolio.descendants
     end
   end
 end

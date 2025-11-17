@@ -27,7 +27,7 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
+
 require "rails_helper"
 
 RSpec.describe Portfolios::DetailsComponent, type: :component do
@@ -38,27 +38,25 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
     render_inline(described_class.new(...))
   end
 
-  let(:user) { build_stubbed(:user) }
-  let(:program_a) do
-    build_stubbed(:program) do |p|
-      allow(p).to receive(:descendants).and_return([build_stubbed(:project)])
+  let(:user) { create(:admin) }
+
+  shared_let(:portfolio) do
+    create(:portfolio,
+           description: "portfolio description") do |portfolio|
+      create(:project, parent: portfolio)
     end
   end
-  let(:program_b) do
-    build_stubbed(:program) do |p|
-      allow(p).to receive(:descendants).and_return([build_stubbed(:project), build_stubbed(:project)])
+  shared_let(:program_a) do
+    create(:program, parent: portfolio) do |program_a|
+      create(:project, parent: program_a) do |project_a|
+        create(:project, parent: project_a)
+      end
     end
   end
-  let(:project) do
-    build_stubbed(:project) do |p|
-      allow(p).to receive(:descendants).and_return([build_stubbed(:project)])
-    end
-  end
-  let(:portfolio) do
-    build_stubbed(:portfolio,
-                  description: "portfolio description",
-                  updated_at: 1.month.ago) do |p|
-      allow(p).to receive(:descendants).and_return([program_a, program_b, project])
+  shared_let(:program_b) do
+    create(:program, parent: portfolio) do |program_b|
+      create(:project, parent: program_b)
+      create(:project, parent: program_b)
     end
   end
 
@@ -83,13 +81,19 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
       end
     end
 
-    describe "displays a count of child elements" do
+    describe "displays the number of child programs and projects" do
       it { expect(subject).to have_text("2 programs") }
       it { expect(subject).to have_text("5 projects") }
     end
 
-    it "shows when it was last updated" do
-      expect(subject).to have_test_selector("op-portfolios--updated-at", text: "Updated about 1 month ago")
+    describe "#updated_at" do
+      before do
+        allow(portfolio).to receive(:updated_at).and_return(1.month.ago)
+      end
+
+      it "shows when the portfolio was last updated" do
+        expect(subject).to have_test_selector("op-portfolios--updated-at", text: "Updated about 1 month ago")
+      end
     end
   end
 end
