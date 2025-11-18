@@ -216,6 +216,40 @@ RSpec.describe "Project creation wizard settings - attributes tab",
     expect(new_mapping.creation_wizard).to be true
   end
 
+  it "can enable all fields in a section at once" do
+    within_custom_field_section_container(section1) do
+      within_custom_field_container(string_custom_field) do
+        expect_unchecked_state
+      end
+
+      click_link "Enable all"
+
+      within_custom_field_container(string_custom_field) do
+        expect_checked_state
+      end
+    end
+
+    string_mapping.reload
+    expect(string_mapping.creation_wizard).to be true
+  end
+
+  it "can disable all fields in a section at once" do
+    within_custom_field_section_container(section2) do
+      within_custom_field_container(list_custom_field) do
+        expect_checked_state
+      end
+
+      click_link "Disable all"
+
+      within_custom_field_container(list_custom_field) do
+        expect_unchecked_state
+      end
+    end
+
+    list_mapping.reload
+    expect(list_mapping.creation_wizard).to be false
+  end
+
   context "when a field is not mapped to the project" do
     let!(:unmapped_field) do
       create(:string_project_custom_field,

@@ -127,7 +127,9 @@ Rails.application.reloader.to_prepare do
                        "projects/settings/storage": %i[show],
                        "projects/settings/work_packages": %i[show],
                        "projects/settings/work_packages/internal_comments": %i[show update],
-                       "projects/settings/creation_wizard": %i[show disable_dialog toggle toggle_project_custom_field],
+                       "projects/settings/creation_wizard": %i[show disable_dialog
+                                                               toggle toggle_project_custom_field
+                                                               disable_all_of_section enable_all_of_section],
                        "projects/templated": %i[create destroy],
                        "projects/identifier": %i[show update],
                        "projects/status": %i[update destroy]

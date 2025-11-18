@@ -14,6 +14,52 @@
               @project_custom_field_section.name
             end
           end
+          section_header_container.with_column(flex_layout: true, justify_content: :flex_end) do |actions_container|
+            actions_container.with_column do
+              render(
+                Primer::Beta::Button.new(
+                  tag: :a,
+                  href: enable_all_of_section_project_settings_creation_wizard_path(
+                    @project,
+                    project_custom_field_project_mapping: {
+                      project_id: @project.id,
+                      custom_field_section_id: @project_custom_field_section.id
+                    }
+                  ),
+                  scheme: :invisible,
+                  font_weight: :bold,
+                  color: :subtle,
+                  "aria-label": t("projects.settings.actions.label_enable_all"),
+                  data: { "turbo-method": :put, test_selector: "enable-all-creation-wizard-#{@project_custom_field_section.id}" }
+                )
+              ) do |button|
+                button.with_leading_visual_icon(icon: "check-circle", color: :subtle)
+                t("projects.settings.actions.label_enable_all")
+              end
+            end
+            actions_container.with_column do
+              render(
+                Primer::Beta::Button.new(
+                  tag: :a,
+                  href: disable_all_of_section_project_settings_creation_wizard_path(
+                    @project,
+                    project_custom_field_project_mapping: {
+                      project_id: @project.id,
+                      custom_field_section_id: @project_custom_field_section.id
+                    }
+                  ),
+                  scheme: :invisible,
+                  font_weight: :bold,
+                  color: :subtle,
+                  "aria-label": t("projects.settings.actions.label_disable_all"),
+                  data: { "turbo-method": :put, test_selector: "disable-all-creation-wizard-#{@project_custom_field_section.id}" }
+                )
+              ) do |button|
+                button.with_leading_visual_icon(icon: "x-circle", color: :subtle)
+                t("projects.settings.actions.label_disable_all")
+              end
+            end
+          end
         end
       end
       if @project_custom_fields.empty?
