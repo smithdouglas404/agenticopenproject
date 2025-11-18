@@ -221,6 +221,7 @@ RSpec.describe CustomField do
     let(:user2) { build_stubbed(:user) }
     let(:in_visible_scope) { instance_double(ActiveRecord::Relation) }
     let(:principals_scope) { instance_double(ActiveRecord::Relation) }
+    let(:all_visible_scope) { instance_double(ActiveRecord::Relation) }
 
     context "for a user custom field" do
       before do
@@ -233,13 +234,13 @@ RSpec.describe CustomField do
           .to receive(:select)
                 .and_return([user1, user2])
 
-        allow(Principal)
-          .to receive(:in_visible_project_or_me)
-                .and_return(in_visible_scope)
+        allow(Principal).to receive_messages(
+          in_visible_project_or_me: in_visible_scope,
+          visible: all_visible_scope
+        )
 
-        allow(in_visible_scope)
-          .to receive(:select)
-                .and_return([user2])
+        allow(in_visible_scope).to receive(:select).and_return([user2])
+        allow(all_visible_scope).to receive(:select).and_return([user1])
       end
 
       context "for a project" do
@@ -272,6 +273,15 @@ RSpec.describe CustomField do
 
           expect(in_visible_scope).to have_received(:select)
            .with("login", "lastname", "id", "type")
+        end
+      end
+
+      context "for a custom field bound to role assigment" do
+        let(:project_role) { build_stubbed(:project_role) }
+        let(:field) { build(:project_custom_field, :user, role_id: project_role.id) }
+
+        it "allows all visible users" do
+          expect(field.possible_values_options).to contain_exactly([user1.name, user1.id.to_s])
         end
       end
     end

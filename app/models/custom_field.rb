@@ -421,12 +421,17 @@ class CustomField < ApplicationRecord
   end
 
   def deduce_principals(project)
-    if project&.persisted?
+    if user_field_with_role_assignment?
+      Principal.visible
+    elsif project&.persisted?
       project.principals
     else
-      Principal
-        .in_visible_project_or_me(User.current)
+      Principal.in_visible_project_or_me(User.current)
     end
+  end
+
+  def user_field_with_role_assignment?
+    is_a?(ProjectCustomField) && user? && custom_fields_role.present?
   end
 
   def deduce_versions(project, options: {})
