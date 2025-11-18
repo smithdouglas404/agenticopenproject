@@ -36,8 +36,8 @@ module Storages
     class UploadService < BaseService
       using Peripherals::ServiceResultRefinements
 
-      def self.call(upload_link:, filename:, file_data:, storage:)
-        new(storage).call(upload_link:, filename:, file_data:)
+      def self.call(upload_link:, filename:, file_data:, storage:, user:, file_path:)
+        new(storage).call(upload_link:, filename:, file_data:, user:, file_path:)
       end
 
       def initialize(storage)
@@ -45,24 +45,65 @@ module Storages
         @storage = storage
       end
 
-      def call(upload_link:, filename:, file_data:)
+      def call(upload_link:, filename:, file_data:, user:, file_path:)
         with_tagged_logger do
-          info "Uploading file #{filename} to #{upload_link.destination}"
-
-          uri = URI(upload_link.destination)
-
-          case upload_link.method.to_s.downcase
-          when "post"
-            upload_via_post(uri, filename, file_data)
-          when "put"
-            upload_via_put(uri, filename, file_data)
+          # Try to use adapter command if available (e.g., Nextcloud UploadFileCommand)
+          if command_available?
+            upload_via_command(file_path:, filename:, file_data:, user:)
+          elsif upload_link
+            # Fall back to manual HTTP upload via upload link
+            upload_via_link(upload_link:, filename:, file_data:)
           else
-            Failure(Results::Error.new(source: self.class, payload: "Unsupported upload method: #{upload_link.method}").with(code: :error))
+            Failure(Results::Error.new(source: self.class,
+                                       payload: "No upload method available: command not available and no upload link provided").with(code: :error))
           end
         end
       end
 
       private
+
+      def command_available?
+        Adapters::Registry.key?("#{@storage.short_provider_type}.commands.upload_file")
+      rescue Adapters::Errors::UnknownProvider, Adapters::Errors::OperationNotSupported
+        false
+      end
+
+      def upload_via_command(file_path:, filename:, file_data:, user:)
+        info "Using adapter command to upload file #{filename} to #{file_path}"
+
+        input_data = Adapters::Input::UploadFile.build(file_path:, io: file_data).value_or do |error|
+          return Failure(Results::Error.new(source: self.class, payload: error).with(code: :invalid))
+        end
+
+        auth_strategy = Adapters::Registry["#{@storage.short_provider_type}.authentication.user_bound"].call(user, @storage)
+
+        Adapters::Registry["#{@storage.short_provider_type}.commands.upload_file"]
+          .call(storage: @storage, auth_strategy:, input_data:)
+          .bind do |storage_file|
+            Success({
+              id: storage_file.id.to_s,
+              name: storage_file.name || filename,
+              mime_type: storage_file.mime_type,
+              size: storage_file.size
+            })
+          end
+      end
+
+      def upload_via_link(upload_link:, filename:, file_data:)
+        info "Uploading file #{filename} to #{upload_link.destination} via upload link"
+
+        uri = URI(upload_link.destination)
+
+        case upload_link.method.to_s.downcase
+        when "post"
+          upload_via_post(uri, filename, file_data)
+        when "put"
+          upload_via_put(uri, filename, file_data)
+        else
+          Failure(Results::Error.new(source: self.class,
+                                     payload: "Unsupported upload method: #{upload_link.method}").with(code: :error))
+        end
+      end
 
       def upload_via_post(uri, filename, file_data)
         http = Net::HTTP.new(uri.host, uri.port)
@@ -118,25 +159,25 @@ module Storages
         case @storage.short_provider_type
         when "nextcloud"
           Success({
-            id: body[:file_id].to_s,
-            name: body[:file_name] || filename,
-            mime_type: body[:mime_type],
-            size: body[:size]
-          })
+                    id: body[:file_id].to_s,
+                    name: body[:file_name] || filename,
+                    mime_type: body[:mime_type],
+                    size: body[:size]
+                  })
         when "one_drive", "sharepoint"
           Success({
-            id: body[:id].to_s,
-            name: body[:name] || filename,
-            mime_type: body.dig(:file, :mimeType),
-            size: body[:size]
-          })
+                    id: body[:id].to_s,
+                    name: body[:name] || filename,
+                    mime_type: body.dig(:file, :mimeType),
+                    size: body[:size]
+                  })
         else
           Failure(Results::Error.new(source: self.class, payload: "Unknown storage type").with(code: :error))
         end
       rescue JSON::ParserError => e
-        Failure(Results::Error.new(source: self.class, payload: "Failed to parse upload response: #{e.message}").with(code: :error))
+        Failure(Results::Error.new(source: self.class,
+                                   payload: "Failed to parse upload response: #{e.message}").with(code: :error))
       end
     end
   end
 end
-
