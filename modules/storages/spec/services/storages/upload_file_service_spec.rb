@@ -41,8 +41,6 @@ RSpec.describe Storages::UploadFileService, type: :model do
   let(:filename) { "test_file.pdf" }
   let(:file_data) { StringIO.new("test file content") }
 
-  let(:service) { described_class.new(project_storage) }
-
   describe ".call" do
     subject(:result) do
       described_class.call(
@@ -54,86 +52,280 @@ RSpec.describe Storages::UploadFileService, type: :model do
       )
     end
 
-    context "when folder exists" do
-      before do
-        allow(Storages::StorageFilesService).to receive(:call).and_return(
-          ServiceResult.success(result: [])
-        )
+    context "when storage is not Nextcloud" do
+      let(:storage) { create(:storage, provider_type: "Storages::OneDriveStorage") }
+
+      it "returns failure with unsupported_storage_type error" do
+        expect(result).to be_failure
+        expect(result.errors[:base]).not_to be_empty
       end
 
-      context "with successful upload and file link creation" do
-        let(:upload_link) do
-          Storages::Adapters::Results::UploadLink.build(
-            destination: "https://example.com/upload/token123",
-            method: :post
-          ).value!
-        end
-
-        before do
-          allow(Storages::UploadLinkService).to receive(:call).and_return(
-            ServiceResult.success(result: upload_link)
-          )
-
-          allow(Storages::Files::UploadService).to receive(:call).and_return(
-            Success({
-              id: "123",
-              name: filename,
-              mime_type: "application/pdf",
-              size: 100
-            })
-          )
-
-          allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
-            double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
-          )
-        end
-
-        it "returns success" do
-          expect(result).to be_success
-        end
-
-        it "creates a FileLink" do
-          expect { result }.to change(Storages::FileLink, :count).by(1)
-        end
-
-        it "uses the work package author as creator" do
-          result
-          file_link = Storages::FileLink.last
-          expect(file_link.creator).to eq(user)
-        end
+      it "does not create a FileLink" do
+        expect { result }.not_to change(Storages::FileLink, :count)
       end
     end
 
-    context "when folder does not exist" do
-      before do
-        allow(Storages::StorageFilesService).to receive(:call).and_return(
-          ServiceResult.failure(errors: ActiveModel::Errors.new(double))
-        )
+    context "when storage is Nextcloud" do
+      context "when folder exists" do
+        before do
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.success(result: [])
+          )
+        end
 
-        created_folder = Storages::Adapters::Results::StorageFileInfo.build(
-          status: "OK",
-          status_code: 200,
-          id: "/uploads/documents",
-          name: "documents",
-          location: "/uploads/documents"
-        ).value!
+        context "with successful upload and file link creation" do
+          let(:uploaded_file_info) do
+            {
+              id: "123",
+              name: filename,
+              mime_type: "application/pdf",
+              size: 100
+            }
+          end
 
-        allow(Storages::CreateFolderService).to receive(:call).and_return(
-          ServiceResult.success(result: created_folder)
-        )
+          before do
+            allow(Storages::Files::UploadService).to receive(:call).and_return(
+              Success(uploaded_file_info)
+            )
+
+            allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
+              double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
+            )
+          end
+
+          it "returns success" do
+            expect(result).to be_success
+          end
+
+          it "calls Files::UploadService with correct parameters" do
+            expect(Storages::Files::UploadService).to receive(:call).with(
+              hash_including(
+                filename:,
+                file_data:,
+                storage:,
+                user:,
+                file_path: "/uploads/documents"
+              )
+            )
+            result
+          end
+
+          it "creates a FileLink" do
+            expect { result }.to change(Storages::FileLink, :count).by(1)
+          end
+
+          it "uses the work package author as creator" do
+            result
+            file_link = Storages::FileLink.last
+            expect(file_link.creator).to eq(user)
+          end
+        end
       end
 
-      context "with successful folder creation, upload and file link creation" do
-        let(:upload_link) do
-          Storages::Adapters::Results::UploadLink.build(
-            destination: "https://example.com/upload/token123",
-            method: :post
+      context "when folder does not exist" do
+        before do
+          # First check fails (folder doesn't exist)
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.failure(errors: ActiveModel::Errors.new(double))
+          )
+
+          created_folder = Storages::Adapters::Results::StorageFileInfo.build(
+            status: "OK",
+            status_code: 200,
+            id: "/uploads/documents",
+            name: "documents",
+            location: "/uploads/documents"
           ).value!
+
+          allow(Storages::CreateFolderService).to receive(:call).and_return(
+            ServiceResult.success(result: created_folder)
+          )
+        end
+
+        context "with successful folder creation, upload and file link creation" do
+          let(:uploaded_file_info) do
+            {
+              id: "123",
+              name: filename,
+              mime_type: "application/pdf",
+              size: 100
+            }
+          end
+
+          before do
+            allow(Storages::Files::UploadService).to receive(:call).and_return(
+              Success(uploaded_file_info)
+            )
+
+            allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
+              double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
+            )
+          end
+
+          it "creates the folder structure" do
+            expect(Storages::CreateFolderService).to receive(:call).at_least(:once)
+            result
+          end
+
+          it "returns success" do
+            expect(result).to be_success
+          end
+
+          it "creates a FileLink" do
+            expect { result }.to change(Storages::FileLink, :count).by(1)
+          end
+        end
+
+        context "when folder creation fails" do
+          before do
+            allow(Storages::CreateFolderService).to receive(:call).and_return(
+              ServiceResult.failure(errors: ActiveModel::Errors.new(double).tap { |e| e.add(:base, :error) })
+            )
+          end
+
+          it "returns failure" do
+            expect(result).to be_failure
+          end
+
+          it "does not create a FileLink" do
+            expect { result }.not_to change(Storages::FileLink, :count)
+          end
+        end
+      end
+
+      context "when work package has no author" do
+        let(:work_package_without_author) { create(:work_package, project:, author: nil) }
+
+        subject(:result) do
+          described_class.call(
+            container: work_package_without_author,
+            project_storage:,
+            file_path:,
+            filename:,
+            file_data:
+          )
         end
 
         before do
-          allow(Storages::UploadLinkService).to receive(:call).and_return(
-            ServiceResult.success(result: upload_link)
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.success(result: [])
+          )
+
+          allow(Storages::Files::UploadService).to receive(:call).and_return(
+            Success({
+              id: "123",
+              name: filename,
+              mime_type: "application/pdf",
+              size: 100
+            })
+          )
+
+          allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
+            double(call: ServiceResult.success(result: create(:file_link, container: work_package_without_author, storage:)))
+          )
+        end
+
+        it "uses User.system as creator" do
+          result
+          file_link = Storages::FileLink.last
+          expect(file_link.creator).to eq(User.system)
+        end
+      end
+
+      context "when container is not a WorkPackage" do
+        let(:container) { create(:project) }
+
+        subject(:result) do
+          described_class.call(
+            container:,
+            project_storage:,
+            file_path:,
+            filename:,
+            file_data:
+          )
+        end
+
+        before do
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.success(result: [])
+          )
+
+          allow(Storages::Files::UploadService).to receive(:call).and_return(
+            Success({
+              id: "123",
+              name: filename,
+              mime_type: "application/pdf",
+              size: 100
+            })
+          )
+
+          allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
+            double(call: ServiceResult.success(result: create(:file_link, container:, storage:)))
+          )
+        end
+
+        it "uses User.system as creator" do
+          result
+          file_link = Storages::FileLink.last
+          expect(file_link.creator).to eq(User.system)
+        end
+      end
+
+      context "when file upload fails" do
+        before do
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.success(result: [])
+          )
+
+          allow(Storages::Files::UploadService).to receive(:call).and_return(
+            Failure(Storages::Adapters::Results::Error.new(source: Storages::Files::UploadService, payload: "Upload failed").with(code: :error))
+          )
+        end
+
+        it "returns failure" do
+          expect(result).to be_failure
+        end
+
+        it "does not create a FileLink" do
+          expect { result }.not_to change(Storages::FileLink, :count)
+        end
+      end
+
+      context "when FileLink creation fails" do
+        before do
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.success(result: [])
+          )
+
+          allow(Storages::Files::UploadService).to receive(:call).and_return(
+            Success({
+              id: "123",
+              name: filename,
+              mime_type: "application/pdf",
+              size: 100
+            })
+          )
+
+          allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
+            double(call: ServiceResult.failure(errors: ActiveModel::Errors.new(double).tap { |e| e.add(:base, :error) }))
+          )
+        end
+
+        it "returns failure" do
+          expect(result).to be_failure
+        end
+
+        it "does not create a FileLink" do
+          expect { result }.not_to change(Storages::FileLink, :count)
+        end
+      end
+
+      context "with file path that doesn't start with /" do
+        let(:file_path) { "uploads/documents" }
+
+        before do
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.success(result: [])
           )
 
           allow(Storages::Files::UploadService).to receive(:call).and_return(
@@ -150,244 +342,101 @@ RSpec.describe Storages::UploadFileService, type: :model do
           )
         end
 
-        it "creates the folder structure" do
+        it "normalizes the path by adding leading slash" do
+          expect(Storages::StorageFilesService).to receive(:call).with(
+            hash_including(folder: "/uploads/documents")
+          )
+          result
+        end
+      end
+
+      context "with nested folder path" do
+        let(:file_path) { "/uploads/documents/2024" }
+
+        before do
+          # First check fails (folder doesn't exist)
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.failure(errors: ActiveModel::Errors.new(double))
+          )
+
+          # Create folder service will be called for each folder component
+          created_folder = Storages::Adapters::Results::StorageFileInfo.build(
+            status: "OK",
+            status_code: 200,
+            id: "/uploads/documents/2024",
+            name: "2024",
+            location: "/uploads/documents/2024"
+          ).value!
+
+          allow(Storages::CreateFolderService).to receive(:call).and_return(
+            ServiceResult.success(result: created_folder)
+          )
+
+          allow(Storages::Files::UploadService).to receive(:call).and_return(
+            Success({
+              id: "123",
+              name: filename,
+              mime_type: "application/pdf",
+              size: 100
+            })
+          )
+
+          allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
+            double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
+          )
+        end
+
+        it "creates nested folder structure" do
           expect(Storages::CreateFolderService).to receive(:call).at_least(:once)
           result
         end
+      end
 
-        it "returns success" do
-          expect(result).to be_success
+      context "when project_folder_id is nil" do
+        let(:project_storage) { create(:project_storage, project:, storage:, project_folder_id: nil) }
+
+        before do
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.success(result: [])
+          )
         end
 
-        it "creates a FileLink" do
-          expect { result }.to change(Storages::FileLink, :count).by(1)
+        it "uses / as base folder" do
+          expect(Storages::StorageFilesService).to receive(:call).with(
+            hash_including(folder: "/uploads/documents")
+          )
+          result
         end
       end
-    end
 
-    context "when work package has no author" do
-      let(:work_package_without_author) { create(:work_package, project:, author: nil) }
+      context "when project_folder_id is empty string" do
+        let(:project_storage) { create(:project_storage, project:, storage:, project_folder_id: "") }
 
-      subject(:result) do
-        described_class.call(
-          container: work_package_without_author,
-          project_storage:,
-          file_path:,
-          filename:,
-          file_data:
-        )
-      end
+        before do
+          allow(Storages::StorageFilesService).to receive(:call).and_return(
+            ServiceResult.success(result: [])
+          )
 
-      before do
-        allow(Storages::StorageFilesService).to receive(:call).and_return(
-          ServiceResult.success(result: [])
-        )
+          allow(Storages::Files::UploadService).to receive(:call).and_return(
+            Success({
+              id: "123",
+              name: filename,
+              mime_type: "application/pdf",
+              size: 100
+            })
+          )
 
-        upload_link = Storages::Adapters::Results::UploadLink.build(
-          destination: "https://example.com/upload/token123",
-          method: :post
-        ).value!
+          allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
+            double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
+          )
+        end
 
-        allow(Storages::UploadLinkService).to receive(:call).and_return(
-          ServiceResult.success(result: upload_link)
-        )
-
-        allow(Storages::Files::UploadService).to receive(:call).and_return(
-          Success({
-            id: "123",
-            name: filename,
-            mime_type: "application/pdf",
-            size: 100
-          })
-        )
-
-        allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
-          double(call: ServiceResult.success(result: create(:file_link, container: work_package_without_author, storage:)))
-        )
-      end
-
-      it "uses User.system as creator" do
-        result
-        file_link = Storages::FileLink.last
-        expect(file_link.creator).to eq(User.system)
-      end
-    end
-
-    context "when upload link service fails" do
-      before do
-        allow(Storages::StorageFilesService).to receive(:call).and_return(
-          ServiceResult.success(result: [])
-        )
-
-        allow(Storages::UploadLinkService).to receive(:call).and_return(
-          ServiceResult.failure(errors: ActiveModel::Errors.new(double).tap { |e| e.add(:base, :error) })
-        )
-      end
-
-      it "returns failure" do
-        expect(result).to be_failure
-      end
-
-      it "does not create a FileLink" do
-        expect { result }.not_to change(Storages::FileLink, :count)
-      end
-    end
-
-    context "when file upload fails" do
-      before do
-        allow(Storages::StorageFilesService).to receive(:call).and_return(
-          ServiceResult.success(result: [])
-        )
-
-        upload_link = Storages::Adapters::Results::UploadLink.build(
-          destination: "https://example.com/upload/token123",
-          method: :post
-        ).value!
-
-        allow(Storages::UploadLinkService).to receive(:call).and_return(
-          ServiceResult.success(result: upload_link)
-        )
-
-        allow(Storages::Files::UploadService).to receive(:call).and_return(
-          Failure(Storages::Adapters::Results::Error.new(source: Storages::Files::UploadService, payload: "Upload failed").with(code: :error))
-        )
-      end
-
-      it "returns failure" do
-        expect(result).to be_failure
-      end
-
-      it "does not create a FileLink" do
-        expect { result }.not_to change(Storages::FileLink, :count)
-      end
-    end
-
-    context "when FileLink creation fails" do
-      before do
-        allow(Storages::StorageFilesService).to receive(:call).and_return(
-          ServiceResult.success(result: [])
-        )
-
-        upload_link = Storages::Adapters::Results::UploadLink.build(
-          destination: "https://example.com/upload/token123",
-          method: :post
-        ).value!
-
-        allow(Storages::UploadLinkService).to receive(:call).and_return(
-          ServiceResult.success(result: upload_link)
-        )
-
-        allow(Storages::Files::UploadService).to receive(:call).and_return(
-          Success({
-            id: "123",
-            name: filename,
-            mime_type: "application/pdf",
-            size: 100
-          })
-        )
-
-        allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
-          double(call: ServiceResult.failure(errors: ActiveModel::Errors.new(double).tap { |e| e.add(:base, :error) }))
-        )
-      end
-
-      it "returns failure" do
-        expect(result).to be_failure
-      end
-
-      it "does not create a FileLink" do
-        expect { result }.not_to change(Storages::FileLink, :count)
-      end
-    end
-
-    context "with PUT upload method (OneDrive/SharePoint)" do
-      let(:storage) { create(:storage, provider_type: "Storages::OneDriveStorage") }
-      let(:project_storage) { create(:project_storage, project:, storage:, project_folder_id: "drive_id:folder_id") }
-
-      before do
-        allow(Storages::StorageFilesService).to receive(:call).and_return(
-          ServiceResult.success(result: [])
-        )
-
-        upload_link = Storages::Adapters::Results::UploadLink.build(
-          destination: "https://graph.microsoft.com/v1.0/upload/session123",
-          method: :put
-        ).value!
-
-        allow(Storages::UploadLinkService).to receive(:call).and_return(
-          ServiceResult.success(result: upload_link)
-        )
-
-        allow(Storages::Files::UploadService).to receive(:call).and_return(
-          Success({
-            id: "file123",
-            name: filename,
-            mime_type: "application/pdf",
-            size: 100
-          })
-        )
-
-        allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
-          double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
-        )
-      end
-
-      it "uses PUT method for upload" do
-        expect(Storages::Files::UploadService).to receive(:call).with(
-          hash_including(upload_link: upload_link, filename:, file_data:, storage:)
-        )
-        result
-      end
-    end
-
-    context "with nested folder path" do
-      let(:file_path) { "/uploads/documents/2024" }
-
-      before do
-        # First check fails (folder doesn't exist)
-        allow(Storages::StorageFilesService).to receive(:call).and_return(
-          ServiceResult.failure(errors: ActiveModel::Errors.new(double))
-        )
-
-        # Create folder service will be called for each folder component
-        created_folder = Storages::Adapters::Results::StorageFileInfo.build(
-          status: "OK",
-          status_code: 200,
-          id: "/uploads/documents/2024",
-          name: "2024",
-          location: "/uploads/documents/2024"
-        ).value!
-
-        allow(Storages::CreateFolderService).to receive(:call).and_return(
-          ServiceResult.success(result: created_folder)
-        )
-
-        upload_link = Storages::Adapters::Results::UploadLink.build(
-          destination: "https://example.com/upload/token123",
-          method: :post
-        ).value!
-
-        allow(Storages::UploadLinkService).to receive(:call).and_return(
-          ServiceResult.success(result: upload_link)
-        )
-
-        allow(Storages::Files::UploadService).to receive(:call).and_return(
-          Success({
-            id: "123",
-            name: filename,
-            mime_type: "application/pdf",
-            size: 100
-          })
-        )
-
-        allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
-          double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
-        )
-      end
-
-      it "creates nested folder structure" do
-        expect(Storages::CreateFolderService).to receive(:call).at_least(:once)
-        result
+        it "uses / as base folder" do
+          expect(Storages::StorageFilesService).to receive(:call).with(
+            hash_including(folder: "/uploads/documents")
+          )
+          result
+        end
       end
     end
   end

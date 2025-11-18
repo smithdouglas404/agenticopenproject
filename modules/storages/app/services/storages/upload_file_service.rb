@@ -32,6 +32,7 @@ module Storages
   class UploadFileService < BaseService
     using Peripherals::ServiceResultRefinements
 
+    # container - WorkPackage or other journaled model
     def self.call(container:, project_storage:, file_path:, filename:, file_data:)
       new(project_storage, container).call(file_path:, filename:, file_data:)
     end
@@ -44,35 +45,27 @@ module Storages
       @user = determine_user(container)
     end
 
-    def call(container:, file_path:, filename:, file_data:)
+    def call(file_path:, filename:, file_data:)
       with_tagged_logger do
         info "Starting file upload for #{filename} to #{file_path}"
 
-        # TODO: do we need it?
-        # auth_strategy = Adapters::Registry.resolve("#{storage}.authentication.user_bound").call(@user, storage)
+        unless nextcloud_storage?
+          @result.add_error(:base, :unsupported_storage_type)
+          return @result
+        end
 
-        validate_storage_type(@storage).value_or { return @result }
+        auth_strategy = Adapters::Registry["#{@storage}.authentication.userless"].call
 
-        folder_id = ensure_folder_exists(file_path, @user).value_or { return @result }
+        folder = get_folder!(auth_strategy, file_path).value_or { return @result }
 
-        upload_result = upload_file(folder_id, filename, file_data, @user).value_or { return @result }
-        create_file_link(container, upload_result, @user).value_or { return @result }
+        # TODO: the code still is in the PR
+        file = upload_file(auth_strategy, folder, filename, file_data).value_or { return @result }
 
-        @result
+        create_file_link(file).value_or { return @result }
       end
     end
 
     private
-
-    def validate_storage_type(storage)
-      supported_types = %w[nextcloud one_drive sharepoint]
-
-      unless supported_types.include?(storage.short_provider_type)
-        return add_error(:base, :unsupported_storage_type, options: { storage_type: storage.short_provider_type })
-      end
-
-      Success()
-    end
 
     def nextcloud_storage?
       @storage.short_provider_type == "nextcloud"
@@ -86,132 +79,55 @@ module Storages
       end
     end
 
-    def ensure_folder_exists(file_path)
-      normalized_path = file_path.start_with?("/") ? file_path : "/#{file_path}"
-      base_folder_id = @project_storage.project_folder_id.presence || get_root_folder_id
+    def get_folder!(auth_strategy, file_path)
+      prefix = @project_storage.managed_project_folder_path
+      normalized_path = prefix + (file_path.start_with?("/") ? file_path[1..-1] : file_path)
 
-      return Failure(Results::Error.new(source: self.class).with(code: :not_found)) if base_folder_id.nil?
+      folder = check_folder_exists?(normalized_path).value_or { return @result }
 
-      folder_exists = check_folder_exists?(normalized_path, @user)
-
-      if folder_exists
-        Success(nextcloud_storage? ? normalized_path : base_folder_id)
+      if folder
+        Success(folder)
       else
-        create_folder_structure(normalized_path, base_folder_id, @user)
+        create_folder!(auth_strategy, normalized_path)
       end
-    end
-
-    def get_root_folder_id
-      # For OneDrive/SharePoint, we need to get the drive root
-      # This is typically handled by the storage configuration
-
-      nextcloud_storage? ? "/" : nil
     end
 
     def check_folder_exists?(path)
-      StorageFilesService.call(storage: @storage, user: @user, folder: path).success?
+      input_data = Adapters::Input::Files.build(folder: path).value_or { |error| return add_validation_error(error, context:) }
+
+      Adapters::Registry.resolve("#{@storage}.queries.files").call(auth_strategy:, storage: @storage, input_data:)
     end
 
-    def create_folder(storage:, folder_name:, parent_id:)
-      result = CreateFolderService.call(storage:, folder_name:, parent_id:, user: @user)
-      return Failure(Results::Error.new(source: self.class).with(code: :error)) unless result.success?
+    def create_folder!(auth_strategy, path)
+      folder_path = File.dirname(path)
+      folder_name = path.sub("#{folder_path}/", "")
 
-      Success(result)
-    end
-
-    def create_folder_structure(path, base_folder_id, user)
-      path_components = path.split("/").compact_blank
-      current_folder_id = base_folder_id
-
-      path_components.each do |folder_name|
-        folder_path = "/#{path_components[0..path_components.index(folder_name)].join('/')}"
-        exists = check_folder_exists?(folder_path, user)
-
-        current_folder_id = if exists
-                              nextcloud_storage? ? folder_path : base_folder_id
-                            else
-                              service_result = create_folder(storage: @storage, folder_name:,
-                                                             parent_id: current_folder_id).value_or do
-                                return Failure(Results::Error.new(source: self.class).with(code: :error))
-                              end
-                              service_result.result.id
-                            end
-      end
-
-      Success(current_folder_id)
-    end
-
-    def upload_file_link(user:, storage:, upload_data:)
-      upload_link_result = UploadLinkService.call(user:, storage:, upload_data:)
-
-      unless upload_link_result.success?
-        return Failure(Results::Error.new(source: self.class, payload: upload_link_result.errors).with(code: :error))
-      end
-
-      Success(upload_link_result.result)
-    end
-
-    def upload_file(folder_id, filename, file_data, user)
-      # Check if adapter command is available (e.g., Nextcloud UploadFileCommand)
-      if upload_command_available?
-        # Use command directly - no need for upload link
-        # Construct full file path: folder_id is already a path for Nextcloud, or folder ID for others
-        full_file_path = if nextcloud_storage?
-                           # For Nextcloud, folder_id is already a path like "/uploads/documents"
-                           folder_id.end_with?("/") ? "#{folder_id}#{filename}" : "#{folder_id}/#{filename}"
-                         else
-                           # For other providers, we'd need to resolve folder_id to path
-                           # For now, use folder_id as-is (may need adjustment when OneDrive/SharePoint implement command)
-                           "#{folder_id}/#{filename}"
-                         end
-
-        upload_result = Files::UploadService.call(
-          upload_link: nil, # Not needed when using command
-          filename:,
-          file_data:,
-          storage: @storage,
-          user:,
-          file_path: full_file_path
-        )
-      else
-        # Fall back to upload link + HTTP upload for providers without command
-        upload_link_result = upload_file_link(user:,
-                                              storage: @storage,
-                                              upload_data: { folder_id:, file_name: filename })
-
-        upload_link = upload_link_result.value_or { return Failure(upload_link_result.failure) }
-
-        upload_result = Files::UploadService.call(
-          upload_link:,
-          filename:,
-          file_data:,
-          storage: @storage,
-          user:,
-          file_path: "#{folder_id}/#{filename}"
-        )
-      end
-
-      upload_result.bind do |file_info|
-        info "File uploaded successfully: #{file_info[:id]}"
-        Success(file_info)
+      input_data = Adapters::Input::CreateFolder.build(folder_name:, parent_location: folder_path).value_or { return add_validation_error(it) }
+      Adapters::Registry["#{@storage}.commands.create_folder"].call(storage: @storage, auth_strategy: auth_strategy,
+                                                                    input_data:).bind do |created_folder|
+        @result.result = created_folder
+        return @result
       end
     end
 
-    def upload_command_available?
-      Adapters::Registry.key?("#{@storage.short_provider_type}.commands.upload_file")
-    rescue Adapters::Errors::UnknownProvider, Adapters::Errors::OperationNotSupported
-      false
+    def upload_file(auth_strategy, folder, filename, file_data)
+      input_data = Adapters::Input::UploadFile.build(file_path: folder_id, io: file_data).value_or do |error|
+        return Failure(Results::Error.new(source: self.class, payload: error).with(code: :invalid))
+      end
+
+      Adapters::Registry["#{@storage.short_provider_type}.commands.upload_file"]
+        .call(storage: @storage, auth_strategy:, input_data:)
     end
 
-    def create_file_link(container, file_info)
-      info "Creating FileLink for file #{file_info[:id]}"
+    def create_file_link(file_info)
+      info "Creating FileLink for file #{file_info.id}"
 
       file_link_params = {
         creator: @user,
-        container:,
-        origin_id: file_info[:id],
-        origin_name: file_info[:name],
-        origin_mime_type: file_info[:mime_type],
+        container: @container,
+        origin_id: file_info.id,
+        origin_name: file_info.name,
+        origin_mime_type: file_info.mime_type,
         storage: @storage
       }
 
