@@ -556,6 +556,11 @@ module Settings
         writable: false,
         default: 7.days
       },
+      good_job_engine_basic_auth: {
+        description: "Allow basic authentication for GoodJob web interface by setting a password",
+        format: :string,
+        default: nil
+      },
       host_name: {
         format: :string,
         default: -> { "#{ENV.fetch('HOST', 'localhost')}:#{ENV.fetch('PORT', 3000)}" },
