@@ -282,7 +282,7 @@ group :test do
   gem "rails-controller-testing", "~> 1.0.2"
 
   gem "capybara", "~> 3.40.0"
-  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.14.0"
+  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.15.0"
   gem "capybara-screenshot", "~> 1.0.17"
   gem "cuprite", "~> 0.17.0"
   gem "rspec-wait"
@@ -415,6 +415,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.30.1"
-gem "openproject-octicons_helper", "~>19.30.1"
-gem "openproject-primer_view_components", "~>0.77.0"
+gem "openproject-octicons", "~>19.31.1"
+gem "openproject-octicons_helper", "~>19.31.1"
+gem "openproject-primer_view_components", "~>0.78.0"

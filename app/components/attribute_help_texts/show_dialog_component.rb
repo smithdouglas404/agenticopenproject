@@ -31,17 +31,21 @@
 class AttributeHelpTexts::ShowDialogComponent < ApplicationComponent
   include OpTurbo::Streamable
 
-  def initialize(attribute_help_text:, current_user: User.current)
+  attr_reader :dialog_id
+
+  def initialize(attribute_help_text:, current_user: User.current, **system_arguments)
     super
+
     @attribute_help_text = attribute_help_text
     @current_user = current_user
+
+    @dialog_id = dom_id(@attribute_help_text, :dialog)
+    @system_arguments = system_arguments
+    @system_arguments[:id] = dialog_id
+    @system_arguments[:title] = @attribute_help_text.attribute_caption
   end
 
   private
-
-  def dialog_id = dom_id(@attribute_help_text, :dialog)
-
-  def title = @attribute_help_text.attribute_caption
 
   def has_attachments? = @attribute_help_text.attachments.any?
 

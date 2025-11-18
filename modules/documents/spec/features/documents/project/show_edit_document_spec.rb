@@ -51,6 +51,29 @@ RSpec.describe "Show/Edit Document View",
 
     expect(page).to have_content("Collaborative document")
 
+    aggregate_failures "can edit document title" do
+      within_test_selector("document-page-header") do
+        click_button accessible_name: "Document actions"
+        expect(page).to have_selector :menuitem, "Edit title"
+
+        click_on "Edit title"
+
+        fill_in "document_title", with: ""
+        click_on "Save"
+        expect(page).to have_content("Title can't be blank")
+
+        fill_in "document_title", with: "Updated collaborative document"
+        click_on "Save"
+
+        expect(page).to have_content("Updated collaborative document")
+
+        click_button accessible_name: "Document actions"
+        click_on "Edit title"
+        click_on "Cancel"
+        expect(page).to have_content("Updated collaborative document")
+      end
+    end
+
     aggregate_failures "can change document type" do
       within_test_selector("document-info-line") do
         click_button "Specification"

@@ -532,6 +532,9 @@ uk:
         no_results_title_text: Цей проєкт не потребує додаткового дискового простору.
       work_package_priorities:
         new_label: "Новий пріоритет"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Змінити статус проєкту
   lists:
@@ -2061,9 +2064,11 @@ uk:
   button_delete_permanently: "Видалити назавжди"
   button_delete_watcher: "Видалити спостерігача %{name}"
   button_download: "Завантажити"
+  button_disable: "Disable"
   button_duplicate: "Дублювати"
   button_duplicate_and_follow: "Дублювати й стежити"
   button_edit: "Редагувати"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Редагувати пов’язану сторінку Wiki: %{page_title}"
   button_expand_all: "Розгорнути все"
   button_favorite: "Додати в обране"
@@ -2939,6 +2944,7 @@ uk:
   label_add_column: "Додати стовпець"
   label_applied_status: "Застосовний статус"
   label_archive_project: "Архівний проект"
+  label_artefact_export: "Artefact export"
   label_ascending: "За зростанням"
   label_assigned_to_me_work_packages: "Робочі пакети призначені мені"
   label_associated_revisions: "Пов'язані редакції"
@@ -3367,6 +3373,7 @@ uk:
   label_project_view_all: "Переглянути всi проекти"
   label_project_show_details: "Показати деталі проекту"
   label_project_hide_details: "Приховати деталі проекту"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Портфель"
   label_portfolio_new: "Новий портфель"
   label_program: "Програма"
@@ -3403,6 +3410,7 @@ uk:
   label_repository_remove: "Вилучити репозиторій"
   label_repository_root: "Корень сховища"
   label_repository_plural: "Репозиторії"
+  label_request_submission: "Request submission"
   label_required: "вимагається"
   label_requires: "вимагається"
   label_result_plural: "Результати"
@@ -4413,6 +4421,15 @@ uk:
       new:
         heading: "Новий атрибут"
         description: "Зміни цього атрибута проєкту відобразяться в усіх проєктах, де його ввімкнено. Обов’язкові атрибути не можна вимикати для окремого проєкту."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Життєвий цикл проєкту"
       heading_description: "Життєвий цикл проєкту визначає етапи, які можна використовувати для планування й відображення проєкту на сторінці панелі огляду. Ці атрибути можна вмикати або вимикати, але їх не можна перевпорядковувати на рівні окремого проєкту."

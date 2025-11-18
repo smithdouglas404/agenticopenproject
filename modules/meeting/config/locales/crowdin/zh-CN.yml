@@ -347,7 +347,7 @@ zh-CN:
       title: "Presentation Mode"
       button_present: "Present"
       exit: "Exit presentation"
-      current_item: "Current item"
+      current_item: "当前项目"
       total_items: "%{current} of %{total}"
       previous: "Previous"
       next: "Next"

@@ -39,6 +39,9 @@ uk:
   documents:
     page_header:
       heading: "Усі документи"
+      action_menu:
+        document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "Фільтр за назвою документів"
@@ -53,6 +56,7 @@ uk:
     menu:
       all: "Усі документи"
       types: "Типи"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Автор додатку"
     label_categories: "Категорії"
     new_category: "Нова категорія"

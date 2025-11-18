@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/citizensadvice/capybara_accessible_selectors
-  revision: 4adc180bb42b58d5f84fa88de96a9f1cd3d1663a
-  tag: v0.14.0
+  revision: 5b9ce7840d04270e99f4f0cb03989e05437326a6
+  tag: v0.15.0
   specs:
-    capybara_accessible_selectors (0.14.0)
+    capybara_accessible_selectors (0.15.0)
       capybara (~> 3.36)
 
 GIT
@@ -558,10 +558,10 @@ GEM
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-follow_redirects (0.3.0)
+    faraday-follow_redirects (0.4.0)
       faraday (>= 1, < 3)
-    faraday-net_http (3.4.1)
-      net-http (>= 0.5.0)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     fastimage (2.4.0)
     ferrum (0.17.1)
       addressable (~> 2.5)
@@ -618,7 +618,7 @@ GEM
       fugit (>= 1.11.0)
       railties (>= 6.1.0)
       thor (>= 1.0.0)
-    google-apis-core (1.0.1)
+    google-apis-core (1.0.2)
       addressable (~> 2.8, >= 2.8.7)
       faraday (~> 2.13)
       faraday-follow_redirects (~> 0.3)
@@ -626,7 +626,7 @@ GEM
       mini_mime (~> 1.1)
       representable (~> 3.0)
       retriable (~> 3.1)
-    google-apis-gmail_v1 (0.45.0)
+    google-apis-gmail_v1 (0.46.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-env (2.3.1)
       base64 (~> 0.2)
@@ -753,7 +753,7 @@ GEM
       addressable (~> 2.8)
       childprocess (~> 5.0)
       logger (~> 1.6)
-    lefthook (2.0.3)
+    lefthook (2.0.4)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
     letter_opener_web (3.0.0)
@@ -819,8 +819,8 @@ GEM
       ruby2_keywords (~> 0.0.1)
     mustermann-grape (1.1.0)
       mustermann (>= 1.0.0)
-    net-http (0.6.0)
-      uri
+    net-http (0.8.0)
+      uri (>= 0.11.1)
     net-imap (0.5.12)
       date
       net-protocol
@@ -874,12 +874,12 @@ GEM
       validate_email
       validate_url
       webfinger (~> 2.0)
-    openproject-octicons (19.30.1)
-    openproject-octicons_helper (19.30.1)
+    openproject-octicons (19.31.1)
+    openproject-octicons_helper (19.31.1)
       actionview
-      openproject-octicons (= 19.30.1)
+      openproject-octicons (= 19.31.1)
       railties
-    openproject-primer_view_components (0.77.0)
+    openproject-primer_view_components (0.78.0)
       actionview (>= 7.2.0)
       activesupport (>= 7.2.0)
       openproject-octicons (>= 19.30.1)
@@ -1338,7 +1338,7 @@ GEM
     rubocop-rspec (3.8.0)
       lint_roller (~> 1.1)
       rubocop (~> 1.81)
-    rubocop-rspec_rails (2.31.0)
+    rubocop-rspec_rails (2.32.0)
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
       rubocop-rspec (~> 3.5)
@@ -1649,10 +1649,10 @@ DEPENDENCIES
   openproject-job_status!
   openproject-ldap_groups!
   openproject-meeting!
-  openproject-octicons (~> 19.30.1)
-  openproject-octicons_helper (~> 19.30.1)
+  openproject-octicons (~> 19.31.1)
+  openproject-octicons_helper (~> 19.31.1)
   openproject-openid_connect!
-  openproject-primer_view_components (~> 0.77.0)
+  openproject-primer_view_components (~> 0.78.0)
   openproject-recaptcha!
   openproject-reporting!
   openproject-storages!
@@ -1811,7 +1811,7 @@ CHECKSUMS
   byebug (12.0.0) sha256=d4a150d291cca40b66ec9ca31f754e93fed8aa266a17335f71bb0afa7fca1a1e
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
   capybara-screenshot (1.0.26) sha256=816b9370a07752097c82a05f568aaf5d3b7f45c3db5d3aab2014071e1b3c0c77
-  capybara_accessible_selectors (0.14.0)
+  capybara_accessible_selectors (0.15.0)
   carrierwave (1.3.4) sha256=81772dabd1830edbd7f4526d2ae2c79f974f1d48900c3f03f7ecb7c657463a21
   carrierwave_direct (2.1.0) sha256=b0d5c19c1d17a05940e488cff644a3b2946422d6d494b2174b48f6a90c5dddbf
   cbor (0.5.10.1) sha256=79cdf79f18dcd9ee97e0b849c6d573e5a2e3ddc1954d180f384d6ed2612b6df0
@@ -1881,8 +1881,8 @@ CHECKSUMS
   factory_bot (6.5.6) sha256=12beb373214dccc086a7a63763d6718c49769d5606f0501e0a4442676917e077
   factory_bot_rails (6.5.1) sha256=d3cc4851eae4dea8a665ec4a4516895045e710554d2b5ac9e68b94d351bc6d68
   faraday (2.14.0) sha256=8699cfe5d97e55268f2596f9a9d5a43736808a943714e3d9a53e6110593941cd
-  faraday-follow_redirects (0.3.0) sha256=d92d975635e2c7fe525dd494fcd4b9bb7f0a4a0ec0d5f4c15c729530fdb807f9
-  faraday-net_http (3.4.1) sha256=095757fae7872b94eac839c08a1a4b8d84fd91d6886cfbe75caa2143de64ab3b
+  faraday-follow_redirects (0.4.0) sha256=d3fa1118ab1350e24035a272b4cff64948643bb7182846db89acaf87abadd5d9
+  faraday-net_http (3.4.2) sha256=f147758260d3526939bf57ecf911682f94926a3666502e24c69992765875906c
   fastimage (2.4.0) sha256=5fce375e27d3bdbb46c18dbca6ba9af29d3304801ae1eb995771c4796c5ac7e8
   ferrum (0.17.1) sha256=51d591120fc593e5a13b5d9d6474389f5145bb92a91e36eab147b5d096c8cbe7
   ffi (1.17.2) sha256=297235842e5947cc3036ebe64077584bff583cd7a4e94e9a02fdec399ef46da6
@@ -1909,8 +1909,8 @@ CHECKSUMS
   glob (0.4.0) sha256=893dc9e2d24abe13dda907ce0cda576f680ff382f2a6cf9e543f98ecbe29238c
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
   good_job (4.12.1) sha256=a8a981baf2ac9c40a85412d92ce2bf7a5e6d35d9dadb0900db57780583eafebb
-  google-apis-core (1.0.1) sha256=5cd0fc24e33efe5e8d095374c0fef3d246eded243b751c861e95e3d16ad0d861
-  google-apis-gmail_v1 (0.45.0) sha256=28b12356de6b78e136b5290976633978b23dc0013797b0d25f49bd36882cde78
+  google-apis-core (1.0.2) sha256=ba4579aaadc902d6cc7bc8db88f566ab00f5e31ea87ab41e9f9a032c470f2629
+  google-apis-gmail_v1 (0.46.0) sha256=9586b8398400e8a49b43728cab94737c102ac95ebe96bde5b52ac229eeea7196
   google-cloud-env (2.3.1) sha256=0faac01eb27be78c2591d64433663b1a114f8f7af55a4f819755426cac9178e7
   google-logging-utils (0.2.0) sha256=675462b4ea5affa825a3442694ca2d75d0069455a1d0956127207498fca3df7b
   google-protobuf (4.32.1) sha256=d9ec3f52a283802055647af5d824dcdfe0a791c6ecbad6a514442f40759015e7
@@ -1960,7 +1960,7 @@ CHECKSUMS
   ladle (1.0.1) sha256=e8586964108c798d48bf57d2a65bd5602e8e5223a176b6602a0fb36c0bda90dc
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   launchy (3.1.1) sha256=72b847b5cc961589dde2c395af0108c86ff0119f42d4648d25b5440ebb10059e
-  lefthook (2.0.3) sha256=9253a8fbf7a6a5bbd11451e0026e21eba635ee7b6d0fdc1bd99c2569ade72872
+  lefthook (2.0.4) sha256=edc651f503b4b45cf1c3e24d413027f2ee679de9694a5ccd05337756c3e9f1bd
   letter_opener (1.10.0) sha256=2ff33f2e3b5c3c26d1959be54b395c086ca6d44826e8bf41a14ff96fdf1bdbb2
   letter_opener_web (3.0.0) sha256=3f391efe0e8b9b24becfab5537dfb17a5cf5eb532038f947daab58cb4b749860
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
@@ -1989,7 +1989,7 @@ CHECKSUMS
   mustermann (3.0.4) sha256=85fadcb6b3c6493a8b511b42426f904b7f27b282835502233dd154daab13aa22
   mustermann-grape (1.1.0) sha256=8d258a986004c8f01ce4c023c0b037c168a9ed889cf5778068ad54398fa458c5
   my_page (1.0.0)
-  net-http (0.6.0) sha256=9621b20c137898af9d890556848c93603716cab516dc2c89b01a38b894e259fb
+  net-http (0.8.0) sha256=df42c47ce9f9e95ad32a317c97c12f945bc1af365288837ea4ff259876ecb46d
   net-imap (0.5.12) sha256=cb8cd05bd353fcc19b6cbc530a9cb06b577a969ea10b7ddb0f37787f74be4444
   net-ldap (0.20.0) sha256=b2080b350753a9ac4930869ded8e61a1d2151c01e03b0bf07b4675cbd9ce5372
   net-pop (0.1.2) sha256=848b4e982013c15b2f0382792268763b748cce91c9e91e36b0f27ed26420dff3
@@ -2028,10 +2028,10 @@ CHECKSUMS
   openproject-job_status (1.0.0)
   openproject-ldap_groups (1.0.0)
   openproject-meeting (1.0.0)
-  openproject-octicons (19.30.1) sha256=36ac6e91721ddddc918fba9d51ea3b9d11759d9ad76ff15c0c19c7117c76387b
-  openproject-octicons_helper (19.30.1) sha256=c1cc1cf337fa656de04b3ec58a3410cfb0e88f7c221dbda7a0b647b678398841
+  openproject-octicons (19.31.1) sha256=8f357d4bf5967f7bdc76e0cfe45bf8834d25a2b34327477f21c040835cdadcfa
+  openproject-octicons_helper (19.31.1) sha256=ad4250cf57c06ada9226500891a0c7506556f025bee66ecfb37fe1c6606bc1de
   openproject-openid_connect (1.0.0)
-  openproject-primer_view_components (0.77.0) sha256=10d5a2be9e6d0c92fbc566650c7f49b5618dd4d5303c2040f5e6698e7653e9f5
+  openproject-primer_view_components (0.78.0) sha256=089455b39ee0f94dbfdcf61c15f300d1be957bdff74381312c8fbd9c0d65acb2
   openproject-recaptcha (1.0.0)
   openproject-reporting (1.0.0)
   openproject-storages (1.0.0)
@@ -2198,7 +2198,7 @@ CHECKSUMS
   rubocop-performance (1.26.1) sha256=cd19b936ff196df85829d264b522fd4f98b6c89ad271fa52744a8c11b8f71834
   rubocop-rails (2.33.3) sha256=848c011b58c1292f3066246c9eb18abf6ffcfbce28bc57c4ab888bbec79af74b
   rubocop-rspec (3.8.0) sha256=28440dccb3f223a9938ca1f946bd3438275b8c6c156dab909e2cb8bc424cab33
-  rubocop-rspec_rails (2.31.0) sha256=775375e18a26a1184a812ef3054b79d218e85601b9ae897f38f8be24dddf1f45
+  rubocop-rspec_rails (2.32.0) sha256=4a0d641c72f6ebb957534f539d9d0a62c47abd8ce0d0aeee1ef4701e892a9100
   ruby-duration (3.2.3) sha256=eb3d13b1df85067a015a8fb2ed8f1eec842a3b721e47c9b6fd74d2f356069784
   ruby-next-core (1.1.2) sha256=1b095fe2e45929f2581b3ecdb8d92b601ce4d72c12a466057c10e23b6f0c4512
   ruby-ole (1.2.13.1) sha256=578d10dd2a797a2b35a1286c6fb2c9525f67c24791346fc8015d39f0ffa3cb72

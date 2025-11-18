@@ -57,9 +57,9 @@ module CustomFieldHierarchyTreeViewHelper
     end
   end
 
-  def item_attributes(item, options) # rubocop:disable Metrics/PerceivedComplexity
+  def item_attributes(item, options) # rubocop:disable Metrics/PerceivedComplexity,Metrics/AbcSize
     {
-      label: item.label,
+      label: options[:label_fn]&.call(item) || item.label,
       value: item.id,
       select_variant: options[:select_variant] || :none,
       checked: options[:checked_fn]&.call(item) || false,

@@ -532,6 +532,9 @@ pl:
         no_results_title_text: Nie ma dodatkowego zarejestrowanego miejsca na dysku zużytego przez ten projekt.
       work_package_priorities:
         new_label: "Nowy priorytet"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edytuj status projektu
   lists:
@@ -2063,9 +2066,11 @@ pl:
   button_delete_permanently: "Usuń trwale"
   button_delete_watcher: "Usunąć obserwatora %{name}"
   button_download: "Pobierz"
+  button_disable: "Disable"
   button_duplicate: "Duplikat"
   button_duplicate_and_follow: "Zduplikuj i śledź"
   button_edit: "Edycja"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edytuj powiązaną stronę Wiki: %{page_title}"
   button_expand_all: "Rozwiń wszystkie"
   button_favorite: "Dodaj do ulubionych"
@@ -2941,6 +2946,7 @@ pl:
   label_add_column: "Dodaj kolumnę"
   label_applied_status: "Nadaj status"
   label_archive_project: "Archiwum projektów"
+  label_artefact_export: "Artefact export"
   label_ascending: "Rosnąco"
   label_assigned_to_me_work_packages: "Zadania przypisane do mnie"
   label_associated_revisions: "Powiązane rewizje"
@@ -3369,6 +3375,7 @@ pl:
   label_project_view_all: "Zobacz wszystkie projekty"
   label_project_show_details: "Pokaż szczegóły projektu"
   label_project_hide_details: "Ukryj szczegóły projektu"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "Nowe portfolio"
   label_program: "Program"
@@ -3405,6 +3412,7 @@ pl:
   label_repository_remove: "Usuń repozytorium"
   label_repository_root: "Główne repozytorium"
   label_repository_plural: "Repozytoria"
+  label_request_submission: "Request submission"
   label_required: "wymagane"
   label_requires: "wymaga"
   label_result_plural: "Wyniki"
@@ -4414,6 +4422,15 @@ pl:
       new:
         heading: "Nowy atrybut"
         description: "Zmiany tego atrybutu projektu zostaną odzwierciedlone we wszystkich projektach, w których jest on włączony. Wymaganych atrybutów nie można wyłączyć dla poszczególnych projektów."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Cykl życia projektu"
       heading_description: "Cykl życia projektu określa fazy projektu, których można użyć do planowania projektu, a które pojawią się na stronie przeglądu każdego projektu. Te atrybuty mogą być włączone lub wyłączone, ale nie można zmienić ich kolejności na poziomie projektu."

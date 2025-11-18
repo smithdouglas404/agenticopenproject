@@ -81,9 +81,9 @@ export default class LazyPageController extends BaseController {
     this.cancelPendingLoad(); // Cancel load if element leaves viewport before delay expires
   }
 
-  private startObserving(root = this.scrollableContainer) {
+  private startObserving() {
     const [_observe, unobserve] = useIntersection(this, {
-      root,
+      root: null, // Use document viewport as root to prevent false - positive intersections during responsive layout shifts
       threshold: 0.05,
       dispatchEvent: false
     });

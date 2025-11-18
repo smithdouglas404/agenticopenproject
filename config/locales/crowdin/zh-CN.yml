@@ -532,6 +532,9 @@ zh-CN:
         no_results_title_text: 此项目没有已记录的额外磁盘空间消耗。
       work_package_priorities:
         new_label: "新优先级"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: 编辑项目状态
   lists:
@@ -1991,9 +1994,11 @@ zh-CN:
   button_delete_permanently: "永久删除"
   button_delete_watcher: "删除关注者 %{name}"
   button_download: "下载"
+  button_disable: "Disable"
   button_duplicate: "复制"
   button_duplicate_and_follow: "复制并跟踪"
   button_edit: "编辑"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "编辑关联的 WiKi 页面：%{page_title}"
   button_expand_all: "全部展开"
   button_favorite: "添加至收藏夹"
@@ -2806,6 +2811,7 @@ zh-CN:
   label_add_column: "添加列"
   label_applied_status: "应用的状态"
   label_archive_project: "归档项目"
+  label_artefact_export: "Artefact export"
   label_ascending: "升序"
   label_assigned_to_me_work_packages: "分配给我的工作包"
   label_associated_revisions: "关联的修订版本"
@@ -3234,6 +3240,7 @@ zh-CN:
   label_project_view_all: "查看所有项目"
   label_project_show_details: "显示项目详细信息"
   label_project_hide_details: "隐藏项目详细信息"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "项目组合"
   label_portfolio_new: "新项目组合"
   label_program: "计划"
@@ -3270,6 +3277,7 @@ zh-CN:
   label_repository_remove: "移除存储库"
   label_repository_root: "存储库根"
   label_repository_plural: "存储库"
+  label_request_submission: "Request submission"
   label_required: "必填"
   label_requires: "要求"
   label_result_plural: "结果"
@@ -4173,7 +4181,7 @@ zh-CN:
   setting_self_registration_manual_activation: "自动激活帐户"
   setting_self_registration_manual_activation_caption: >
     用户可以自行注册。 他们的帐户会处于待处理状态，直到管理员或拥有全局权限的用户激活它们为止。
-  setting_session_ttl: "Session expiration time after inactivity"
+  setting_session_ttl: ""
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"
@@ -4271,6 +4279,15 @@ zh-CN:
       new:
         heading: "新建属性"
         description: "对该项目属性的更改将反映在启用该属性的所有项目中。不能按项目禁用必填属性。"
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "项目生命周期"
       heading_description: "项目生命周期定义了可以用于您的项目规划并将出现在每个项目的概览页面中的项目阶段。 这些属性可以启用或禁用，但不能在项目一级重新排序。"

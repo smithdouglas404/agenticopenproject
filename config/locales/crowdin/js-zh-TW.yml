@@ -296,7 +296,7 @@ zh-TW:
       warning: "請不要與其他用戶共享此 URL 。擁有這個鏈接的任何人都可以在沒有帳戶或密碼的情況下查看工作套件的詳細訊息。"
       token_name_label: "您將在哪裡使用它？"
       token_name_placeholder: '輸入名稱，例如“Phone”'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
+      token_name_description_text: '如果您從多個裝置訂閱此行事曆，這個名稱將有助於您在<a href="%{myAccessTokensUrl}" target="_blank">存取令牌</a>清單中加以區分。'
       copy_url_label: "複製URL"
       ical_generation_error_text: "生成日曆 URL 時出錯。"
       success_message: 'URL“%{name}”已成功複製到剪貼板。請將其粘貼到日曆客戶端中以完成訂閱。'

@@ -535,6 +535,9 @@ bg:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:
         new_label: "New priority"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
   lists:
@@ -2019,9 +2022,11 @@ bg:
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Изтриване на наблюдател %{name}"
   button_download: "Изтегли"
+  button_disable: "Disable"
   button_duplicate: "Дублиране"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Редактиране"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Разгъване на всички"
   button_favorite: "Добавяне към любими"
@@ -2855,6 +2860,7 @@ bg:
   label_add_column: "Add column"
   label_applied_status: "Приложен статус"
   label_archive_project: "Archive project"
+  label_artefact_export: "Artefact export"
   label_ascending: "Възходящо"
   label_assigned_to_me_work_packages: "Работни пакети, възложени на мен"
   label_associated_revisions: "Асоциирани ревизии"
@@ -3283,6 +3289,7 @@ bg:
   label_project_view_all: "Покажи всички проекти"
   label_project_show_details: "Show project details"
   label_project_hide_details: "Hide project details"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3319,6 +3326,7 @@ bg:
   label_repository_remove: "Remove repository"
   label_repository_root: "Корен на хранилище"
   label_repository_plural: "Хранилища"
+  label_request_submission: "Request submission"
   label_required: "required"
   label_requires: "requires"
   label_result_plural: "Резултати"
@@ -4327,6 +4335,15 @@ bg:
       new:
         heading: "New attribute"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Project life cycle"
       heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."

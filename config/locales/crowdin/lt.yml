@@ -532,6 +532,9 @@ lt:
         no_results_title_text: Šis projektas papildomos vietos diske nenaudoja.
       work_package_priorities:
         new_label: "New priority"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
   lists:
@@ -2064,9 +2067,11 @@ lt:
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Pašalinti stebėtoją vardu %{name}"
   button_download: "Atsiųsti"
+  button_disable: "Disable"
   button_duplicate: "Dublikuoti"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Redaguoti"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Išskleisti visus"
   button_favorite: "Pridėti prie mėgstamų"
@@ -2942,6 +2947,7 @@ lt:
   label_add_column: "Add column"
   label_applied_status: "Taikomoji būsena"
   label_archive_project: "Archyvuoti projektą"
+  label_artefact_export: "Artefact export"
   label_ascending: "Didėjančia tvarka"
   label_assigned_to_me_work_packages: "Man priskirti darbų paketai"
   label_associated_revisions: "Susijusios revizijos"
@@ -3370,6 +3376,7 @@ lt:
   label_project_view_all: "Peržiūrėti visus projektus"
   label_project_show_details: "Rodyti detalią projekto informaciją"
   label_project_hide_details: "Slėpti detalią projekto informaciją"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3406,6 +3413,7 @@ lt:
   label_repository_remove: "Remove repository"
   label_repository_root: "Repozitorijos šaknis"
   label_repository_plural: "Repozitorijos"
+  label_request_submission: "Request submission"
   label_required: "reikalingas"
   label_requires: "turi turėti"
   label_result_plural: "Rezultatai"
@@ -4415,6 +4423,15 @@ lt:
       new:
         heading: "Naujas atributas"
         description: "Šio projekto atributo pakeitimas matysis visuose projektuose, kur jis įjungtas. Privalomų atributų negalima išjungti konkrečiame projekte."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Project life cycle"
       heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."

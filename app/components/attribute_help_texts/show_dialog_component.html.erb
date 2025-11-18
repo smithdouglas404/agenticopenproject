@@ -1,5 +1,5 @@
 <%=
-  render(Primer::Alpha::Dialog.new(id: dialog_id, title:, size: :large)) do |dialog|
+  render(Primer::Alpha::Dialog.new(**@system_arguments)) do |dialog|
     dialog.with_header(variant: :large)
 
     dialog.with_body do

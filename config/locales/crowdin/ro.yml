@@ -535,6 +535,9 @@ ro:
         no_results_title_text: Acest proiect nu consumă spațiu suplimentar pe disc.
       work_package_priorities:
         new_label: "Prioritate nouă"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
   lists:
@@ -2043,9 +2046,11 @@ ro:
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Ștergere observator %{name}"
   button_download: "Descărcare"
+  button_disable: "Disable"
   button_duplicate: "Duplicare"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Editare"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Extindere totală"
   button_favorite: "Adaugă la favorite"
@@ -2900,6 +2905,7 @@ ro:
   label_add_column: "Adaugă coloană"
   label_applied_status: "Stare aplicată"
   label_archive_project: "Arhivează proiect"
+  label_artefact_export: "Artefact export"
   label_ascending: "Crescător"
   label_assigned_to_me_work_packages: "Pachete de lucru atribuite mie"
   label_associated_revisions: "Revizii asociate"
@@ -3328,6 +3334,7 @@ ro:
   label_project_view_all: "Vizualizează toate proiectele"
   label_project_show_details: "Arată detaliile proietului"
   label_project_hide_details: "Ascunde detaliile proiectului"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3364,6 +3371,7 @@ ro:
   label_repository_remove: "Remove repository"
   label_repository_root: "Rădăcina repo-ului"
   label_repository_plural: "Repo-uri"
+  label_request_submission: "Request submission"
   label_required: "obligatoriu"
   label_requires: "Această caracteristică necesită un cont la"
   label_result_plural: "Rezultate"
@@ -4373,6 +4381,15 @@ ro:
       new:
         heading: "New attribute"
         description: "Modificările la acest atribut al proiectului se vor reflecta în toate proiectele în care este activată. Atributele necesare nu pot fi dezactivate pentru fiecare proiect."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Ciclul de viață proiect"
       heading_description: "Ciclul de viață al proiectului definește fazele proiectului care pot fi utilizate pentru planificarea proiectului și vor apărea în pagina de ansamblu a fiecărui proiect. Aceste atribute pot fi activate sau dezactivate, dar nu pot fi reordonate la nivel de proiect."

@@ -244,6 +244,11 @@ is expected to be named `groups`, but you can change this if desired.
 The default behaviour of OpenProject is to create a new group for each unknown group listed in this claim. It will match existing groups by their name before creating a new group. You can later rename groups created this way in the group management UI, they will still be linked
 to the ID with which they are referenced in OpenID Connect claims and recognized that way.
 
+Once this option is enabled, the identity provider becomes fully responsible for managing group assignments. Each time a user logs in through this provider, only the group memberships declared by the identity provider will be assigned to that user. Any group memberships not declared by the identity provider will be removed.
+
+> [!IMPORTANT]
+> There are no exceptions — even if a different assignment was previously configured in OpenProject, it will be overwritten if it is not set in the identity provider.
+
 ##### Matching groups with regular expressions
 
 For advanced use cases, it's possible to filter which groups will be imported into OpenProject and which part of the group name will be considered.

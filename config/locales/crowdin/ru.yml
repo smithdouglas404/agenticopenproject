@@ -534,6 +534,9 @@ ru:
         no_results_title_text: Для этого проекта дополнительного дискового пространства не требуется.
       work_package_priorities:
         new_label: "Новый приоритет"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Редактировать статус проекта
   lists:
@@ -2065,9 +2068,11 @@ ru:
   button_delete_permanently: "Удалить навсегда"
   button_delete_watcher: "Удаление наблюдателя %{name}"
   button_download: "Скачать"
+  button_disable: "Disable"
   button_duplicate: "Дублировать"
   button_duplicate_and_follow: "Скопировать и наблюдать"
   button_edit: "Правка"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Редактировать связанную wiki-страницу: %{page_title}"
   button_expand_all: "Развернуть все"
   button_favorite: "Добавить в избранное"
@@ -2943,6 +2948,7 @@ ru:
   label_add_column: "Добавить столбец"
   label_applied_status: "Прикладной статус"
   label_archive_project: "Архивировать проект"
+  label_artefact_export: "Artefact export"
   label_ascending: "По возрастанию"
   label_assigned_to_me_work_packages: "Пакеты работ, назначенные мне"
   label_associated_revisions: "Связанные изменения"
@@ -3371,6 +3377,7 @@ ru:
   label_project_view_all: "Просмотреть все проекты"
   label_project_show_details: "Показать детали проекта"
   label_project_hide_details: "Скрыть детали проекта"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Портфолио"
   label_portfolio_new: "Новое портфолио"
   label_program: "Программа"
@@ -3407,6 +3414,7 @@ ru:
   label_repository_remove: "Удалить репозиторий"
   label_repository_root: "Корень хранилища"
   label_repository_plural: "Репозитории"
+  label_request_submission: "Request submission"
   label_required: "требуется"
   label_requires: "требует выполнения"
   label_result_plural: "Результаты"
@@ -4416,6 +4424,15 @@ ru:
       new:
         heading: "Новый атрибут"
         description: "Изменения этого атрибута проекта будут отражены во всех проектах, где он включен. Обязательные атрибуты не могут быть отключены для каждого проекта."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Жизненный цикл проекта"
       heading_description: "Жизненный цикл проекта определяет фазы проекта, которые могут быть использованы для планирования Вашего проекта и отображаются на странице Обзор каждого проекта. Эти атрибуты могут быть включены или выключены, но не могут быть переупорядочены на уровне проекта."

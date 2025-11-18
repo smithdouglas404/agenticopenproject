@@ -39,6 +39,9 @@ tr:
   documents:
     page_header:
       heading: "All documents"
+      action_menu:
+        document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "Document name filter"
@@ -53,6 +56,7 @@ tr:
     menu:
       all: "All documents"
       types: "Türler"
+    last_updated_at: "Last updated %{time}."
     label_attachment_author: "Ek yazar"
     label_categories: "Kategoriler"
     new_category: "Yeni kategori"

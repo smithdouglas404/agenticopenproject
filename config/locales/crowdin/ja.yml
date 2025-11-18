@@ -533,6 +533,9 @@ ja:
         no_results_title_text: このプロジェクトによって使用される追加のディスク領域はありません。
       work_package_priorities:
         new_label: "新しい優先度"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: プロジェクトの状態を編集
   lists:
@@ -1994,9 +1997,11 @@ ja:
   button_delete_permanently: "完全に削除"
   button_delete_watcher: "ウォッチャー「%{name}」を削除"
   button_download: "ダウンロード"
+  button_disable: "Disable"
   button_duplicate: "複製"
   button_duplicate_and_follow: "複製とフォロー"
   button_edit: "編集"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "関連するWikiページを編集: %{page_title}"
   button_expand_all: "全てを展開"
   button_favorite: "お気に入りに追加"
@@ -2809,6 +2814,7 @@ ja:
   label_add_column: "カラムを追加"
   label_applied_status: "適用されるステータス"
   label_archive_project: "プロジェクトをアーカイブ"
+  label_artefact_export: "Artefact export"
   label_ascending: "昇順"
   label_assigned_to_me_work_packages: "担当しているワークパッケージ"
   label_associated_revisions: "関連するリビジョン"
@@ -3237,6 +3243,7 @@ ja:
   label_project_view_all: "全プロジェクトを表示"
   label_project_show_details: "プロジェクトの詳細を表示"
   label_project_hide_details: "プロジェクトの詳細を非表示"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "ポートフォリオ"
   label_portfolio_new: "新しいポートフォリオ"
   label_program: "プログラム"
@@ -3273,6 +3280,7 @@ ja:
   label_repository_remove: "リポジトリを削除"
   label_repository_root: "リポジトリのルート"
   label_repository_plural: "リポジトリ"
+  label_request_submission: "Request submission"
   label_required: "必須"
   label_requires: "要求"
   label_result_plural: "検索結果"
@@ -4279,6 +4287,15 @@ ja:
       new:
         heading: "新しい属性"
         description: "このプロジェクト属性の変更は、有効なすべてのプロジェクトに反映されます。プロジェクトごとに必要な属性を無効にすることはできません。"
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "プロジェクトのライフ サイクル"
       heading_description: "プロジェクトのライフサイクルでは、プロジェクト計画に使用できるプロジェクトフェーズを定義し、各プロジェクトの概要ページに表示されます。 これらの属性は、有効または無効にできますが、プロジェクトレベルでの順序は変更できません。"

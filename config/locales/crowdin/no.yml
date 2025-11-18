@@ -535,6 +535,9 @@
         no_results_title_text: Det er ingen ekstra registrert diskplass brukt av dette prosjektet.
       work_package_priorities:
         new_label: "Ny prioritet"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
   lists:
@@ -2018,9 +2021,11 @@
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Slett overvåker %{name}"
   button_download: "Last ned"
+  button_disable: "Disable"
   button_duplicate: "Kopier"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Rediger"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Utvid alle"
   button_favorite: "Legg til i favoritter"
@@ -2854,6 +2859,7 @@
   label_add_column: "Add column"
   label_applied_status: "Tildelt status"
   label_archive_project: "Arkiver prosjekt"
+  label_artefact_export: "Artefact export"
   label_ascending: "Stigende"
   label_assigned_to_me_work_packages: "Arbeidspakker tildelt meg"
   label_associated_revisions: "Tilknyttede revisjoner"
@@ -3282,6 +3288,7 @@
   label_project_view_all: "Vis alle prosjekter"
   label_project_show_details: "Vis prosjektdetaljer"
   label_project_hide_details: "Skjul prosjektdetaljer"
+  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3318,6 +3325,7 @@
   label_repository_remove: "Remove repository"
   label_repository_root: "Kodelager rot"
   label_repository_plural: "Pakkebrønner"
+  label_request_submission: "Request submission"
   label_required: "påkrevd"
   label_requires: "krever"
   label_result_plural: "Resultater"
@@ -4326,6 +4334,15 @@
       new:
         heading: "Ny egenskap"
         description: "Endringer i denne prosjektegenskapen gjenspeiles i alle prosjekter der det er aktivert. Påkrevde egenskaper kan ikke deaktiveres per prosjekt."
+    project_initiation_request:
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
     project_phase_definitions:
       heading: "Project life cycle"
       heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."

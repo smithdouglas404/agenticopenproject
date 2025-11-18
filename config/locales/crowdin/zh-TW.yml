@@ -534,6 +534,9 @@ zh-TW:
         no_results_title_text: 該專案沒有額外消耗磁碟空間。
       work_package_priorities:
         new_label: "新優先權"
+      creation_wizard:
+        label_request_submission: "要求提交"
+        label_artefact_export: "產物匯出"
     status:
       button_edit: 編輯專案狀態
   lists:
@@ -1991,9 +1994,11 @@ zh-TW:
   button_delete_permanently: "永久刪除"
   button_delete_watcher: "刪除監看者 %{name}"
   button_download: "下載"
+  button_disable: "停用"
   button_duplicate: "複本"
   button_duplicate_and_follow: "複製並追蹤"
   button_edit: "編輯"
+  button_enable: "啟用"
   button_edit_associated_wikipage: "編輯關聯的維基頁面：%{page_title}"
   button_expand_all: "全部展開"
   button_favorite: "收藏"
@@ -2806,6 +2811,7 @@ zh-TW:
   label_add_column: "新增欄位"
   label_applied_status: "套用的狀態"
   label_archive_project: "封存專案"
+  label_artefact_export: "產物匯出"
   label_ascending: "昇冪"
   label_assigned_to_me_work_packages: "分配給我的工作套件"
   label_associated_revisions: "關聯的修訂"
@@ -3234,6 +3240,7 @@ zh-TW:
   label_project_view_all: "檢視所有專案"
   label_project_show_details: "顯示專案詳細資訊"
   label_project_hide_details: "隱藏專案詳細資訊"
+  label_project_initiation_request: "專案啟動請求"
   label_portfolio: "個人檔案"
   label_portfolio_new: "新投資組合"
   label_program: "方案"
@@ -3270,6 +3277,7 @@ zh-TW:
   label_repository_remove: "移除儲存庫"
   label_repository_root: "版本庫根目錄"
   label_repository_plural: "Repositories"
+  label_request_submission: "要求提交"
   label_required: "必要"
   label_requires: "需要"
   label_result_plural: "結果"
@@ -4176,7 +4184,7 @@ zh-TW:
   setting_self_registration_manual_activation: "手動啟用帳號"
   setting_self_registration_manual_activation_caption: >
     帳號註冊後為待審核，需由管理員或有權限的使用者進行啟用，方可生效。
-  setting_session_ttl: "Session expiration time after inactivity"
+  setting_session_ttl: "非活躍使用後連線失效時間"
   setting_session_ttl_hint: "低於5個工作同於停用"
   setting_session_ttl_enabled: "連線逾時"
   setting_start_of_week: "一週起始於"
@@ -4274,6 +4282,15 @@ zh-TW:
       new:
         heading: "新屬性"
         description: "專案屬性的變更將套用在已啟用該屬性專案中。 若為必要屬性，無法個別專案停用。"
+    project_initiation_request:
+      blankslate:
+        title: "啟動請求尚未啟用"
+        description: "OpenProject 可以產生一個逐步精靈來幫助專案經理填寫專案啟動請求。您可以選擇應該包含哪些專案屬性，以及如何處理輸出文件。在此啟用以開始設定精靈。"
+      disable_dialog:
+        title: "停用專案啟動請求"
+        heading: "停用此專案啟動請求？"
+        confirmation_message: "啟動請求精靈將不再適用於基於此模板的新專案。專案經理和專案所有人將需要在專案概述中手動設定和填寫相關資訊。"
+        checkbox_message: "我了解此行動是不可逆轉的"
     project_phase_definitions:
       heading: "專案生命週期"
       heading_description: "專案生命週期定義了可用於專案規劃的階段，並將顯示在各專案的總覽頁面中。這些屬性可啟用或停用，但在單一專案中無法重新排序。"
