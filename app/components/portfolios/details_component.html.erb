@@ -14,7 +14,7 @@
           end
         end
 
-        header.with_column do
+        header.with_column(mr: 2) do
           render(
             Projects::StatusButtonComponent.new(
               user: @current_user,
@@ -25,7 +25,22 @@
           )
         end
 
-        # TODO: WP-68877 render progress bar
+        header.with_column(classes: "op-portfolios--progress") do
+          render(Primer::Beta::ProgressBar.new(size: :large)) do |bar|
+            sub_statuses_with_percentages.each do |status|
+              status_label = t("js.grid.widgets.project_status.#{status[:code] || 'not_set'}")
+
+              bar.with_item(
+                percentage: status[:percentage],
+                bg: nil, # unset default color so that we can inject our own via CSS class
+                classes: "op-portfolios--sub-status #{helpers.project_status_css_class(status[:code])}",
+                aria: {
+                  label: status_label
+                }
+              )
+            end
+          end
+        end
       end
     end
 

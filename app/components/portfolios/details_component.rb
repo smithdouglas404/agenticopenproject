@@ -54,10 +54,29 @@ module Portfolios
       all_descendants.project
     end
 
+    def sub_statuses_with_percentages
+      return @status_percentage if @status_percentage
+
+      statuses = sub_statuses
+      total = statuses.values.sum
+
+      @status_percentage = statuses.map do |code, count|
+        percentage = ((count.to_f / total) * 100).round
+
+        { code:, count:, percentage: }
+      end
+    end
+
     private
 
     def all_descendants
       @all_descendants ||= portfolio.descendants.visible
+    end
+
+    def sub_statuses
+      @sub_statuses ||= all_descendants.where("workspace_type = ? OR workspace_type = ?", "project", "program")
+                                       .pluck(:status_code)
+                                       .tally
     end
   end
 end
