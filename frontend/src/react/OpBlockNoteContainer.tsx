@@ -204,7 +204,14 @@ export default function OpBlockNoteContainer({ inputField,
 
   return (
     <>
-      {isLoading ? <div>Loading...</div>
+      {isLoading ? <div>
+        <div className={'mb-3'}>
+          <div style={{width: '25%', height: '40px'}} className={'SkeletonBox'}/>
+        </div>
+        <div className={'mb-3'}>
+          <div style={{width: '100%', height: '150px'}} className={'SkeletonBox'}/>
+        </div>
+      </div>
         :
         <BlockNoteView
           editor={editor}
