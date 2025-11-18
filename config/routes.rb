@@ -500,20 +500,20 @@ Rails.application.routes.draw do
     end
   end
 
+  # Portfolio and program creation is handled by the projects controller
+  %w[portfolio program].each do |workspace_type|
+    resources workspace_type.pluralize,
+              only: %i[new],
+              defaults: { workspace_type: },
+              controller: "projects"
+  end
+
   resources :portfolios,
             only: %i[index]
-
-  # Portfolio creation is handled by the project controller:
-  get "portfolios/new", to: "projects#new", defaults: { workspace_type: "portfolio" }, as: :new_portfolio
 
   namespace :portfolios do
     resource :menu, only: %i[show]
   end
-
-  resources :programs,
-            only: %i[new],
-            defaults: { workspace_type: "program" },
-            controller: "projects"
 
   resources :project_phases, only: [] do
     member do
