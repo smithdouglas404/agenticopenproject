@@ -85,7 +85,7 @@ module Projects
               decorated: true
             }
           ) do |list|
-            model.available_custom_fields.where(field_format: "user").order(:name).each do |custom_field|
+            model.available_custom_fields.where(field_format: "user", multi_value: false).order(:name).each do |custom_field|
               list.option(
                 value: custom_field.id,
                 label: custom_field.name,

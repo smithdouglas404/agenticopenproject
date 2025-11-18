@@ -28,36 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects
-  class SettingsContract < ::BaseContract
-    attribute :settings
+require "support/pages/page"
 
-    validate :validate_settings
-    validate :validate_submission_assignee
+module Pages
+  module Projects
+    module Settings
+      class CreationWizard < Pages::Page
+        attr_accessor :project, :tab
 
-    protected
+        def initialize(project, tab: nil)
+          super()
 
-    def validate_settings
-      unauthorized_settings_change =
-        has_changed_setting?("deactivate_work_package_attachments") &&
-          !user.allowed_in_project?(:manage_files_in_project, model)
+          @project = project
+          @tab = tab
+        end
 
-      errors.add :base, :error_unauthorized if unauthorized_settings_change
-    end
-
-    def validate_submission_assignee
-      return unless model.project_creation_wizard_enabled == true
-
-      if model.submission_assignee_id.blank?
-        errors.add :submission_assignee_id,
-                   I18n.t("activerecord.errors.messages.blank")
+        def path
+          base_path = "/projects/#{project.identifier}/settings/creation_wizard"
+          tab ? "#{base_path}?tab=#{tab}" : base_path
+        end
       end
-    end
-
-    private
-
-    def has_changed_setting?(key)
-      model.settings_changed? && model.settings_change.any? { |setting| setting.key?(key) }
     end
   end
 end

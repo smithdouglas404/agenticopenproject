@@ -50,7 +50,7 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   def update_submission_settings
     call = Projects::UpdateService
-      .new(model: @project, user: current_user)
+      .new(model: @project, user: current_user, contract_class: Projects::SettingsContract)
       .call(submission_settings_params)
 
     @project = call.result
@@ -59,7 +59,7 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
       flash[:notice] = I18n.t(:notice_successful_update)
       redirect_to project_settings_creation_wizard_path(@project, tab: "submission")
     else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+      params[:tab] = "submission"
       render action: :show, status: :unprocessable_entity
     end
   end
