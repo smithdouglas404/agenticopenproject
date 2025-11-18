@@ -1,0 +1,95 @@
+<%=
+  flex_layout do |flex|
+    flex.with_row(mb: 2) do
+      flex_layout do |header|
+        header.with_column do
+          render(
+            Primer::Beta::Link.new(
+              classes: "portfolio-name",
+              href: project_overview_path(@portfolio),
+              font_weight: :bold
+            )
+          ) do
+            @portfolio.name
+          end
+        end
+
+        # TODO: WP-68876 render status_code
+
+        # TODO: WP-68877 render progress bar
+      end
+    end
+
+    flex.with_row(mb: 2) do
+      @portfolio.description
+    end
+
+    flex.with_row do
+      flex_layout(align_items: :center) do |footer|
+        footer.with_column(mr: 3) do
+          render(
+            Primer::Beta::IconButton.new(
+              icon: currently_favorited? ? "star-fill" : "star",
+              scheme: :invisible,
+              mobile_icon: currently_favorited? ? "star-fill" : "star",
+              size: :medium,
+              tag: :a,
+              tooltip_direction: :e,
+              href: helpers.build_favorite_path(@portfolio, format: :html),
+              data: { turbo_method: currently_favorited? ? :delete : :post },
+              classes: currently_favorited? ? "op-primer--star-icon " : "",
+              label: currently_favorited? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite),
+              aria: { label: currently_favorited? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite) },
+              test_selector: "op-portfolios--favorite-button"
+            )
+          )
+        end
+
+        footer.with_column(mr: 3) do
+          render(
+            Primer::Beta::Octicon.new(
+              icon: workspace_icon("program"),
+              align_self: :center,
+              "aria-label": t("program.count", count: all_subprograms.count),
+              mr: 1
+            )
+          ) + content_tag(:span, t("program.count", count: all_subprograms.count))
+        end
+
+        footer.with_column(mr: 3) do
+          render(
+            Primer::Beta::Octicon.new(
+              icon: workspace_icon("project"),
+              align_self: :center,
+              "aria-label": t("project.count", count: all_subprojects.count),
+              mr: 1
+            )
+          ) + content_tag(:span, t("project.count", count: all_subprojects.count))
+        end
+
+        # TODO: WP-68872 render budget
+        # footer.with_column(mr: 3) do
+        #   render(
+        #     Primer::Beta::Octicon.new(
+        #       icon: "op-budget",
+        #       align_self: :center,
+        #       "aria-label": "TODO",
+        #       mr: 1
+        #     )
+        #   ) + content_tag(:span, "34,000 EUR budget - 12,000 EUR spent")
+        # end
+
+        footer.with_column do
+          render(
+            Primer::Beta::Text.new(
+              color: :muted,
+              data: { test_selector: "op-portfolios--updated-at" }
+            )
+          ) do
+            t(:label_updated_time, value: distance_of_time_in_words(Time.current, portfolio.updated_at))
+          end
+        end
+      end
+    end
+  end
+%>

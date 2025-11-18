@@ -72,6 +72,20 @@ FactoryBot.define do
       templated { true }
     end
 
+    factory :portfolio do
+      sequence(:name) { |n| "Portfolio No. #{n}" }
+      sequence(:identifier) { |n| "portfolio_no_#{n}" }
+
+      workspace_type { "portfolio" }
+    end
+
+    factory :program do
+      sequence(:name) { |n| "Program No. #{n}" }
+      sequence(:identifier) { |n| "program_no_#{n}" }
+
+      workspace_type { "program" }
+    end
+
     factory :project_with_types do
       # using initialize_with types to prevent
       # the project's initialize function looking for the default type

@@ -463,6 +463,17 @@ en:
       Specify a list of names to ignore when processing attachments for incoming mails (e.g., signatures or icons).
       Enter one filename per line.
 
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
+
   projects:
     copy:
       # Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -3398,6 +3409,7 @@ en:
   label_planning: "Planning"
   label_please_login: "Please log in"
   label_plugins: "Plugins"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Modules and Plugins"
   label_precedes: "precedes"
   label_preferences: "Preferences"
@@ -4069,6 +4081,12 @@ en:
 
   placeholders:
     default: "-"
+
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
 
   project:
     archive:

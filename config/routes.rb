@@ -493,9 +493,14 @@ Rails.application.routes.draw do
   end
 
   resources :portfolios,
-            only: %i[new],
-            defaults: { workspace_type: "portfolio" },
-            controller: "projects"
+            only: %i[index]
+
+  # Portfolio creation is handled by the project controller:
+  get "portfolios/new", to: "projects#new", defaults: { workspace_type: "portfolio" }, as: :new_portfolio
+
+  namespace :portfolios do
+    resource :menu, only: %i[show]
+  end
 
   resources :programs,
             only: %i[new],
