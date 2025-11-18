@@ -41,7 +41,7 @@ module Storages
       StorageFileInstance = AdapterTypes.Instance(Results::StorageFile)
       FileAncestorInstance = AdapterTypes.Instance(Results::StorageFileAncestor)
       SemanticVersionType = AdapterTypes.Constructor(SemanticVersion, SemanticVersion.method(:parse))
-      HTTPVerb = AdapterTypes::Nominal::Symbol.constrained(included_in: %i(post put))
+      HTTPVerb = AdapterTypes::Symbol.enum(:post, :put)
 
       # Type requirements for an IO passed to HTTPX
       HttpxIO = (AdapterTypes.Interface(:read) | AdapterTypes.Interface(:each))
