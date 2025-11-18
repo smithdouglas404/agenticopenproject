@@ -141,7 +141,7 @@
     "dragula": "^3.7.3",
     "es6-slide-up-down": "^1.0.0",
     "flatpickr": "^4.6.13",
-    "glob": "^11.0.3",
+    "glob": "^11.1.0",
     "hammerjs": "^2.0.8",
     "i18n-js": "^4.3.0",
     "idiomorph": "^0.7.4",
