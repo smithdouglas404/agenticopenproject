@@ -39,7 +39,7 @@ module Documents
 
       alias_method :document, :model
 
-      options :project, :oauth_token
+      options :project, :oauth_token, :state
 
       private
 

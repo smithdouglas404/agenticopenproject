@@ -59,7 +59,11 @@ class DocumentsController < ApplicationController
 
   def show
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
-    generate_oauth_token if @document.collaborative?
+
+    if @document.collaborative?
+      generate_oauth_token
+      derive_show_edit_state_from_params
+    end
   end
 
   def new
@@ -78,15 +82,10 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    call = attachable_create_call ::Documents::CreateService,
-                                  args: document_params.merge(project: @project)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_create)
-      redirect_to project_documents_path(@project)
+    if document_params[:kind] == "classic"
+      create_classic_document
     else
-      @document = call.result
-      render action: :new, status: :unprocessable_entity
+      create_collaborative_document
     end
   end
 
@@ -153,7 +152,7 @@ class DocumentsController < ApplicationController
   private
 
   def document_params
-    params.fetch(:document, {}).permit("type_id", "title", "description", "content_binary")
+    params.fetch(:document, {}).permit("type_id", "title", "description", "content_binary", "kind")
   end
 
   def list_documents_query
@@ -162,6 +161,27 @@ class DocumentsController < ApplicationController
     @query.order(updated_at: :desc) unless params[:sortBy]
 
     @query.results
+  end
+
+  def create_classic_document
+    call = attachable_create_call ::Documents::CreateService,
+                                  args: document_params.merge(project: @project)
+
+    if call.success?
+      flash[:notice] = I18n.t(:notice_successful_create)
+      redirect_to project_documents_path(@project)
+    else
+      @document = call.result
+      render action: :new, status: :unprocessable_entity
+    end
+  end
+
+  def create_collaborative_document
+    call = ::Documents::CreateService
+        .new(user: current_user)
+        .call(title: I18n.t(:label_document_new), project: @project, type_id: DocumentType.default.id)
+
+    redirect_to document_path(call.result, state: :edit)
   end
 
   def generate_oauth_token
@@ -185,5 +205,9 @@ class DocumentsController < ApplicationController
     update_via_turbo_stream(
       component: Documents::ShowEditView::PageHeaderComponent.new(@document, project: @project, state:)
     )
+  end
+
+  def derive_show_edit_state_from_params
+    @state = params[:state] == "edit" ? :edit : :show
   end
 end

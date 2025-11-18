@@ -68,6 +68,7 @@ en:
       name: "Name"
       type: "Type"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
 
     menu:
       all: "All documents"

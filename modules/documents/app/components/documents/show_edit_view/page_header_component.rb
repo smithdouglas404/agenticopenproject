@@ -39,6 +39,17 @@ module Documents
       options :project
       options state: :show
 
+      def page_header_attributes
+        {
+          test_selector: "document-page-header",
+          state:,
+          data: {
+            controller: "editable-page-header-title",
+            "editable-page-header-title-input-id-value": "document_title"
+          }
+        }
+      end
+
       def action_menu_options
         {
           menu_arguments: { anchor_align: :end },
