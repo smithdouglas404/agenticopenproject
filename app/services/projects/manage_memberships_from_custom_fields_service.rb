@@ -46,21 +46,23 @@ module Projects
       users_to_remove = params[:old_value] - params[:new_value]
       users_to_add = params[:new_value] - params[:old_value]
 
-      users_to_add.each do |user_id|
-        user = User.find_by(id: user_id)
-        add_member_or_add_role_to_member(user) if user
+      if users_to_add.present?
+        Principal.where(id: users_to_add).find_each do |add_user|
+          add_member_or_add_role_to_member(add_user)
+        end
       end
 
-      users_to_remove.each do |user_id|
-        user = User.find_by(id: user_id)
-        remove_member_or_remove_role_from_member(user) if user
+      if users_to_remove.present?
+        Principal.where(id: users_to_remove).find_each do |remove_user|
+          remove_member_or_remove_role_from_member(remove_user)
+        end
       end
 
       ServiceResult.success(result: project)
     end
 
-    def add_member_or_add_role_to_member(user)
-      user_member = project.members.find_by(principal: user)
+    def add_member_or_add_role_to_member(add_user) # rubocop:disable Metrics/AbcSize
+      user_member = project.members.find_by(principal: add_user)
 
       if user_member
         new_role_ids = (user_member.role_ids + [custom_field.role.id]).uniq
@@ -71,12 +73,12 @@ module Projects
       else
         Members::CreateService
           .new(user:, contract_class: EmptyContract)
-          .call(roles: [custom_field.role], project:, principal: user)
+          .call(roles: [custom_field.role], project:, principal: add_user)
       end
     end
 
-    def remove_member_or_remove_role_from_member(user)
-      user_member = project.members.find_by(principal: user)
+    def remove_member_or_remove_role_from_member(remove_user)
+      user_member = project.members.find_by(principal: remove_user)
 
       return unless user_member
 

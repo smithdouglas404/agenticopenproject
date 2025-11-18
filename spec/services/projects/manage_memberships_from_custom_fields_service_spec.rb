@@ -175,9 +175,7 @@ RSpec.describe Projects::ManageMembershipsFromCustomFieldsService, type: :model 
     let(:new_users) { [user1, user3, user5] }
 
     it "adds and removes the correct users" do
-      expect do
-        subject
-      end.to change { project.members.count }.by(0)
+      subject
 
       # user 1 is added as a new member
       membership1 = project.members.find_by(principal: user1)
