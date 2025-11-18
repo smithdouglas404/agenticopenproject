@@ -43,7 +43,7 @@ module Redmine::MenuManager::TopMenu::ModuleMenu
                                 "aria-controls": "op-app-header--modules-menu-list",
                                 "aria-label": I18n.t("label_global_modules"))
         dialog.with_header(classes: "op-app-header--modules-menu-header") do
-          render_waffle_menu_logo_icon unless custom_logo?
+          render_waffle_menu_logo_icon if show_waffle_icon?
         end
 
         item_groups.each do |item_group|

@@ -46,7 +46,13 @@ module Redmine::MenuManager::TopMenuHelper
       render_module_top_menu_node,
       render_logo
     ]
-    items << render_logo_icon unless custom_logo?
+
+    if CustomStyle.current&.logo_mobile.present?
+      items << render_logo_icon
+    elsif !custom_logo?
+      items << render_logo_icon
+    end
+
     items
   end
 
