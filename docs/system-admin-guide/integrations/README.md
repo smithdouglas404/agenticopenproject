@@ -97,7 +97,7 @@ Find out more about the [Excel synchronization with OpenProject](./excel-synchro
 
 We do not provide a direct integration between OpenProject and JIRA ourselves. 
 
-If you want to migrate from JIRA to OpenProject, there are several ways to do that, including OpenProject [API](../../api/), OpenProject [Excel sync](/excel-synchronization) or using a [Markdown export app](https://marketplace.atlassian.com/apps/1221351/markdown-exporter-for-confluence). 
+If you want to migrate from JIRA to OpenProject, there are several ways to do that, including OpenProject [API](../../api/), OpenProject [Excel sync](../excel-synchronization/) or using a [Markdown export app](https://marketplace.atlassian.com/apps/1221351/markdown-exporter-for-confluence). 
 
 Keep in mind that we are [developing a dedicated OpenProject migration solution](https://community.openproject.org/projects/jira-migration). In the meantime our partners at [ALMToolbox](https://www.almtoolbox.com/) are happy to support you with Jira or Confluence migration. 
 
