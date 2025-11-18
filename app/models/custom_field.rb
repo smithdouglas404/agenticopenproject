@@ -412,11 +412,11 @@ class CustomField < ApplicationRecord
     end
   end
 
-  def deduce_project(project)
-    if project.is_a?(Project)
-      project
-    elsif project.respond_to?(:project)
-      project.project
+  def deduce_project(candidate)
+    if candidate.is_a?(Project)
+      candidate
+    elsif candidate.respond_to?(:project)
+      candidate.project
     end
   end
 
