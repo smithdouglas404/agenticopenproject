@@ -90,7 +90,7 @@ module Projects
     end
 
     def format_caption(text)
-      return I18n.t("create_project.blank_description_html").html_safe if text.blank?
+      return I18n.t("create_project.blank_description") if text.blank?
 
       render(Primer::Beta::Text.new(classes: %w[line-clamp-3 lh-default])) do
         strip_tags(format_text(text))
@@ -106,7 +106,7 @@ module Projects
     def blank_template_caption
       return unless Project.workspace_types.key?(workspace_type)
 
-      I18n.t("create_#{workspace_type}.blank_template.description_html").html_safe
+      I18n.t("create_#{workspace_type}.blank_template.description")
     end
   end
 end
