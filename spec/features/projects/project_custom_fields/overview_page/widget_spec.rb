@@ -50,8 +50,8 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
     it "shows an ActionMenu for each section" do
       sections.each do |section|
         within_test_selector("project-custom-field-section-container-#{section.id}") do
-          # Per default, the section is shown in the side-panel
-          expect(page).to have_test_selector("section-position-selector", text: "Side-panel")
+          # Per default, the section is shown in the side panel
+          expect(page).to have_test_selector("section-position-selector", text: "Side panel")
         end
       end
     end
@@ -89,7 +89,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
       section = CustomFieldSection.last
       expect(section.shown_in_overview_sidebar?).to be(true)
       within_test_selector("project-custom-field-section-container-#{section.id}") do
-        expect(page).to have_test_selector("section-position-selector", text: "Side-panel")
+        expect(page).to have_test_selector("section-position-selector", text: "Side panel")
       end
     end
   end
