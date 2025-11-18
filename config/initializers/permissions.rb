@@ -149,7 +149,9 @@ Rails.application.reloader.to_prepare do
                      dependencies: :view_project
 
       map.permission :edit_project_attributes,
-                     {},
+                     {
+                       "projects/creation_wizard": %i[show update help_text]
+                     },
                      permissible_on: :project,
                      require: :member,
                      dependencies: :view_project_attributes,

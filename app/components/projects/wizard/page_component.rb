@@ -28,39 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomFields::Inputs::Base::Autocomplete::MultiValueInput < CustomFields::Inputs::Base::Input
-  def input_attributes
-    base_input_attributes.merge(
-      autocomplete_options:,
-      wrapper_data_attributes: {
-        "custom-field-id": @custom_field.id,
-        "qa-field-name": qa_field_name
-      }
-    )
-  end
+module Projects
+  module Wizard
+    class PageComponent < ApplicationComponent
+      include OpPrimer::ComponentHelpers
+      include OpTurbo::Streamable
+      include ApplicationHelper
 
-  def autocomplete_options
-    {
-      multiple: true,
-      decorated: decorated?,
-      focusDirectly: false,
-      append_to:
-    }
-  end
+      def initialize(project:, custom_fields_by_section:, current_section:)
+        super
 
-  def decorated?
-    raise NotImplementedError
-  end
+        @project = project
+        @custom_fields_by_section = custom_fields_by_section
+        @current_section = current_section
+      end
 
-  def custom_values
-    @custom_values ||= @object.custom_values_for_custom_field(id: @custom_field.id)
-  end
+      private
 
-  def invalid?
-    custom_values.any? { |custom_value| custom_value.errors.any? }
-  end
-
-  def validation_message
-    custom_values.map { |custom_value| custom_value.errors.full_messages }.join(", ") if invalid?
+      attr_reader :project, :custom_fields_by_section, :current_section
+    end
   end
 end

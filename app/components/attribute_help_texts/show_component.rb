@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,41 +26,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class CustomFields::Inputs::Base::Autocomplete::MultiValueInput < CustomFields::Inputs::Base::Input
-  def input_attributes
-    base_input_attributes.merge(
-      autocomplete_options:,
-      wrapper_data_attributes: {
-        "custom-field-id": @custom_field.id,
-        "qa-field-name": qa_field_name
-      }
-    )
+class AttributeHelpTexts::ShowComponent < ApplicationComponent
+  include OpTurbo::Streamable
+
+  def initialize(attribute_help_text:, current_user: User.current)
+    super
+    @attribute_help_text = attribute_help_text
+    @current_user = current_user
   end
 
-  def autocomplete_options
-    {
-      multiple: true,
-      decorated: decorated?,
-      focusDirectly: false,
-      append_to:
-    }
-  end
+  private
 
-  def decorated?
-    raise NotImplementedError
-  end
+  def title = @attribute_help_text.attribute_caption
 
-  def custom_values
-    @custom_values ||= @object.custom_values_for_custom_field(id: @custom_field.id)
-  end
+  def has_attachments? = @attribute_help_text.attachments.any?
 
-  def invalid?
-    custom_values.any? { |custom_value| custom_value.errors.any? }
-  end
-
-  def validation_message
-    custom_values.map { |custom_value| custom_value.errors.full_messages }.join(", ") if invalid?
+  def resource_representer
+    ::API::V3::HelpTexts::HelpTextRepresenter.new(@attribute_help_text, current_user: @current_user, embed_links: false)
   end
 end

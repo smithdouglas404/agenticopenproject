@@ -28,39 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomFields::Inputs::Base::Autocomplete::MultiValueInput < CustomFields::Inputs::Base::Input
-  def input_attributes
-    base_input_attributes.merge(
-      autocomplete_options:,
-      wrapper_data_attributes: {
-        "custom-field-id": @custom_field.id,
-        "qa-field-name": qa_field_name
-      }
-    )
-  end
+module Projects
+  module Wizard
+    class SidebarComponent < ApplicationComponent
+      include OpPrimer::ComponentHelpers
 
-  def autocomplete_options
-    {
-      multiple: true,
-      decorated: decorated?,
-      focusDirectly: false,
-      append_to:
-    }
-  end
+      def initialize(project:, custom_fields_by_section:, current_section:)
+        super
 
-  def decorated?
-    raise NotImplementedError
-  end
+        @project = project
+        @custom_fields_by_section = custom_fields_by_section
+        @current_section = current_section
+      end
 
-  def custom_values
-    @custom_values ||= @object.custom_values_for_custom_field(id: @custom_field.id)
-  end
+      private
 
-  def invalid?
-    custom_values.any? { |custom_value| custom_value.errors.any? }
-  end
+      attr_reader :project, :custom_fields_by_section, :current_section
 
-  def validation_message
-    custom_values.map { |custom_value| custom_value.errors.full_messages }.join(", ") if invalid?
+      def sections
+        @sections ||= custom_fields_by_section.keys
+      end
+
+      def section_completed?(section)
+        custom_fields_by_section[section]
+          .reject(&:boolean?)
+          .all? { |custom_field| project.typed_custom_value_for(custom_field).present? }
+      end
+
+      def section_current?(section)
+        current_section&.id == section.id
+      end
+    end
   end
 end

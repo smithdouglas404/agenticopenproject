@@ -31,7 +31,7 @@
 class AttributeHelpTexts::ShowDialogComponent < ApplicationComponent
   include OpTurbo::Streamable
 
-  attr_reader :dialog_id
+  attr_reader :attribute_help_text, :current_user, :dialog_id
 
   def initialize(attribute_help_text:, current_user: User.current, **system_arguments)
     super
@@ -47,13 +47,11 @@ class AttributeHelpTexts::ShowDialogComponent < ApplicationComponent
 
   private
 
-  def has_attachments? = @attribute_help_text.attachments.any?
+  def allowed_to_edit? = current_user.allowed_globally?(:edit_attribute_help_texts)
 
-  def allowed_to_edit? = @current_user.allowed_globally?(:edit_attribute_help_texts)
-
-  def edit_button_href = url_helpers.edit_attribute_help_text_path(@attribute_help_text)
+  def edit_button_href = url_helpers.edit_attribute_help_text_path(attribute_help_text)
 
   def resource_representer
-    ::API::V3::HelpTexts::HelpTextRepresenter.new(@attribute_help_text, current_user: @current_user, embed_links: false)
+    ::API::V3::HelpTexts::HelpTextRepresenter.new(attribute_help_text, current_user:, embed_links: false)
   end
 end
