@@ -47,7 +47,7 @@ module Projects::Concerns
       super
     end
 
-    def assign_roles_for_user_custom_fields(project)
+    def assign_roles_for_user_custom_fields(project) # rubocop:disable Metrics/AbcSize
       return unless project.persisted?
       return if @custom_field_changes.blank?
       return if project.available_custom_fields.user_field_with_assigned_role.none?
@@ -56,7 +56,8 @@ module Projects::Concerns
       user_fields_with_roles.select do |cf|
         next unless @custom_field_changes.key?(cf.attribute_name)
 
-        old_value, new_value = @custom_field_changes[cf.attribute_name]
+        # turn values into arrays for easier handling
+        old_value, new_value = @custom_field_changes[cf.attribute_name].map { Array.wrap(it) }
 
         Projects::ManageMembershipsFromCustomFieldsService
           .new(user: user, project: project, custom_field: cf)

@@ -33,7 +33,7 @@ module Projects
     attr_reader :project, :user, :custom_field
 
     def initialize(user:, project:, custom_field:)
-      super
+      super()
 
       @custom_field = custom_field
       @user = user
@@ -42,20 +42,53 @@ module Projects
 
     private
 
-    def perform
-      pp({ custom_field: custom_field, project: project, **params })
-      #       # Assuming the members are loaded anyway
-      #       user_member = new_project.members.detect { |m| m.principal == user }
-      #
-      #       if user_member
-      #         Members::UpdateService
-      #           .new(user:, model: user_member, contract_class: EmptyContract)
-      #           .call(role_ids: user_member.role_ids + [role.id])
-      #       else
-      #         Members::CreateService
-      #           .new(user:, contract_class: EmptyContract)
-      #           .call(roles: [role], project: new_project, principal: user)
-      #       end
+    def perform # rubocop:disable Metrics/AbcSize
+      users_to_remove = params[:old_value] - params[:new_value]
+      users_to_add = params[:new_value] - params[:old_value]
+
+      users_to_add.each do |user_id|
+        user = User.find_by(id: user_id)
+        add_member_or_add_role_to_member(user) if user
+      end
+
+      users_to_remove.each do |user_id|
+        user = User.find_by(id: user_id)
+        remove_member_or_remove_role_from_member(user) if user
+      end
+
+      ServiceResult.success(result: project)
+    end
+
+    def add_member_or_add_role_to_member(user)
+      user_member = project.members.find_by(principal: user)
+
+      if user_member
+        Members::UpdateService
+          .new(user:, model: user_member, contract_class: EmptyContract)
+          .call(role_ids: user_member.role_ids + [custom_field.role.id])
+      else
+        Members::CreateService
+          .new(user:, contract_class: EmptyContract)
+          .call(roles: [custom_field.role], project:, principal: user)
+      end
+    end
+
+    def remove_member_or_remove_role_from_member(user)
+      user_member = project.members.find_by(principal: user)
+
+      return unless user_member
+
+      new_role_ids = user_member.role_ids - [custom_field.role.id]
+
+      if new_role_ids.empty?
+        Members::DeleteService
+          .new(user:)
+          .call(user_member)
+      else
+        Members::UpdateService
+          .new(user:, model: user_member, contract_class: EmptyContract)
+          .call(role_ids: new_role_ids)
+      end
     end
   end
 end
