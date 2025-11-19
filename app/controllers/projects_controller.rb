@@ -191,7 +191,6 @@ class ProjectsController < ApplicationController
   end
 
   def new_from_template
-    @copy_options = Projects::CopyOptions.new
     @new_project = Projects::CopyService
       .new(user: current_user, source: @template, contract_options: { validate_model: false })
       .call(target_project_params: params.permit(:parent_id).to_h, attributes_only: true)
@@ -216,8 +215,7 @@ class ProjectsController < ApplicationController
   end
 
   def create_from_template # rubocop:disable Metrics/AbcSize
-    @copy_options = Projects::CopyOptions.new(permitted_params.copy_project_options)
-
+    @copy_options = Projects::CopyOptions.new
     service_call = Projects::EnqueueCopyService
       .new(user: current_user, model: @template)
       .call(
