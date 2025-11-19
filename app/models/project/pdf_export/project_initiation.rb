@@ -149,8 +149,16 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
     false
   end
 
+  def enabled_in_wizard_ids
+    project
+      .project_custom_field_project_mappings
+      .where(creation_wizard: true)
+      .select(:custom_field_id)
+  end
+
   def collect_custom_fields_data
     project.available_custom_fields
+           .where(id: enabled_in_wizard_ids)
            .group_by(&:project_custom_field_section)
            .map do |section, custom_fields|
       {

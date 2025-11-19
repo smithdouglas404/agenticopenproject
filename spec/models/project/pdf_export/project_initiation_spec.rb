@@ -32,7 +32,7 @@ require "spec_helper"
 require "pdf/inspector"
 require_relative "../../projects/exporter/exportable_project_context"
 
-RSpec.describe Project::PDFExport::ProjectInitiation do
+RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initiation: true } do
   include PDFExportSpecUtils
   include Redmine::I18n
 
@@ -42,9 +42,16 @@ RSpec.describe Project::PDFExport::ProjectInitiation do
   let(:current_user) { create(:user, member_with_permissions: { project => %i[view_projects view_project_attributes] }) }
   let(:export_time) { DateTime.new(2025, 11, 13, 13, 37) }
   let(:export_time_formatted) { format_time(export_time) }
-  let(:section_a) { create(:project_custom_field_section, name: "Section A") }
-  let(:section_b) { create(:project_custom_field_section, name: "Section B") }
-  let(:unset_string_cf) { create(:string_project_custom_field, projects: [project]) }
+  let!(:section_a) { create(:project_custom_field_section, name: "Section A") }
+  let!(:section_b) { create(:project_custom_field_section, name: "Section B") }
+  let!(:unset_string_cf) { create(:string_project_custom_field, projects: [project]) }
+  let!(:disabled_custom_field) { create(:string_project_custom_field, name: "Disabled Field") }
+  let!(:disabled_mapping) do
+    create(:project_custom_field_project_mapping,
+           project:,
+           project_custom_field: disabled_custom_field,
+           creation_wizard: false)
+  end
 
   subject do
     result = Timecop.freeze(export_time) do
@@ -64,6 +71,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation do
     text_cf.update!(project_custom_field_section: section_a)
     link_cf.update!(project_custom_field_section: section_a)
     unset_string_cf.update!(project_custom_field_section: section_a)
+    disabled_custom_field.update!(project_custom_field_section: section_a)
 
     int_cf.update!(project_custom_field_section: section_b)
     float_cf.update!(project_custom_field_section: section_b)
