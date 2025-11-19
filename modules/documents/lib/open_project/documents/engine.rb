@@ -67,6 +67,21 @@ module OpenProject::Documents
       end
 
       menu :admin_menu,
+           :documents,
+           { controller: "/documents/admin/settings/document_types", action: :index },
+           if: ->(_) { User.current.admin? },
+           caption: :label_document_plural,
+           before: :files,
+           icon: "note"
+
+      menu :admin_menu,
+           :document_types,
+           { controller: "/documents/admin/settings/document_types", action: :index },
+           if: ->(_) { User.current.admin? },
+           caption: :"documents.menu.types",
+           parent: :documents
+
+      menu :admin_menu,
            :document_categories,
            { controller: "/admin/settings/document_categories", action: :index },
            if: ->(_) { User.current.admin? },

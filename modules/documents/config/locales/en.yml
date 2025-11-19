@@ -64,6 +64,8 @@ en:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
 
+    document_type_actions: "Document type actions"
+
     index_page:
       name: "Name"
       type: "Type"
@@ -79,6 +81,7 @@ en:
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "New category"
+    new_type: "New type"
 
     delete_dialog:
       title: "Delete document"

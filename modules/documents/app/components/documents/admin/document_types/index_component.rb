@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) the OpenProject GmbH
+# Copyright (C) 2010-2024 the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,46 +26,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-Rails.application.routes.draw do
-  resources :projects, only: [] do
-    resources :documents, only: %i[create new index] do
-      collection do
-        get :menu, to: "documents/menus#show"
-        get :search
-      end
-    end
-  end
+module Documents
+  module Admin
+    module DocumentTypes
+      class IndexComponent < ::Admin::Enumerations::IndexComponent
+        alias_method :document_types, :enumerations
 
-  resources :documents, except: %i[create new index] do
-    member do
-      get :edit_title, defaults: { format: :turbo_stream }
-      put :update_title, defaults: { format: :turbo_stream }
-      get :cancel_title_edit, defaults: { format: :turbo_stream }
-      put :update_type, defaults: { format: :turbo_stream }
-      get :delete_dialog
-    end
-  end
-
-  scope module: :documents do
-    namespace :admin do
-      namespace :settings do
-        resources :document_types, except: [:show] do
-          member do
-            put :move
-          end
-        end
-      end
-    end
-  end
-
-  namespace :admin do
-    namespace :settings do
-      resources :document_categories, except: [:show] do
-        member do
-          put :move
-          get :reassign
+        def item_component_class
+          ::Documents::Admin::DocumentTypes::ItemComponent
         end
       end
     end
