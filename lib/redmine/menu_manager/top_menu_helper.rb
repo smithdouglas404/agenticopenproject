@@ -79,8 +79,15 @@ module Redmine::MenuManager::TopMenuHelper
   end
 
   def render_waffle_menu_logo_icon
-    mode_class = User.current.pref.theme === "dark" ? "op-logo--icon_white" : "op-logo--icon"
-    render Primer::BaseComponent.new(tag: :div, classes: ["op-logo", mode_class])
+    style = CustomStyle.current
+    classes = ["op-logo"]
+    if style&.logo_mobile.present?
+      classes << "op-logo--icon"
+    else
+      mode_class = User.current.pref.theme == "dark" ? "op-logo--icon_white" : "op-logo--icon"
+      classes << mode_class
+    end
+    render Primer::BaseComponent.new(tag: :div, classes:)
   end
 
   def render_top_menu_search
