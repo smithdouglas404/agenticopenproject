@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -33,32 +33,39 @@ module Projects
       class ExportForm < ApplicationForm
         form do |f|
           f.radio_button_group(
-            name: :project_creation_wizard_pdf_export,
+            name: :project_creation_wizard_pdf_export_type,
             label: I18n.t("projects.settings.creation_wizard.export.pdf_file_storage")
           ) do |group|
             group.radio_button(
               value: :attachment,
               checked: checked?(:attachment),
               label: I18n.t("projects.settings.creation_wizard.export.label_attachment_export"),
-              caption: I18n.t("projects.settings.creation_wizard.export.description_attachment_export")
+              caption: I18n.t("projects.settings.creation_wizard.export.description_attachment_export"),
+              data: { action: "projects--settings--initiation-request--export-artifact#updateForm" }
             )
             group.radio_button(
               value: :file_link,
               checked: checked?(:file_link),
               label: file_link_label,
               caption: I18n.t("projects.settings.creation_wizard.export.description_file_link_export"),
-              disabled: file_storages.empty?
+              disabled: file_storages.empty?,
+              data: { action: "projects--settings--initiation-request--export-artifact#updateForm" }
             )
           end
 
           if file_storages.any?
-            f.select_list(
-              name: :project_creation_wizard_pdf_export_storage,
-              label: I18n.t("projects.settings.creation_wizard.export.external_file_storage"),
-              caption: I18n.t("projects.settings.creation_wizard.export.description_file_storage_selection")
-            ) do |list|
-              file_storages.each do |project_storage|
-                list.option(label: project_storage.storage.typed_label, value: project_storage.id)
+            f.group(display: :none,
+                    data: {
+                      "projects--settings--initiation-request--export-artifact-target": "projectStoragesSelectList"
+                    }) do |storage_select|
+              storage_select.select_list(
+                name: :project_creation_wizard_pdf_export_storage,
+                label: I18n.t("projects.settings.creation_wizard.export.external_file_storage"),
+                caption: I18n.t("projects.settings.creation_wizard.export.description_file_storage_selection")
+              ) do |list|
+                file_storages.each do |project_storage|
+                  list.option(label: project_storage.storage.typed_label, value: project_storage.id)
+                end
               end
             end
           end
@@ -73,7 +80,7 @@ module Projects
         end
 
         def checked?(value)
-          value == (model.project_creation_wizard_pdf_export&.to_sym || :attachment)
+          value == (model.project_creation_wizard_pdf_export_type&.to_sym || :attachment)
         end
 
         def file_link_label
@@ -87,8 +94,8 @@ module Projects
 
         def file_storages
           @file_storages ||= model.project_storages
+                                  .automatic
                                   .includes(:storage)
-                                  .filter(&:project_folder_automatic?)
                                   .filter { |project_storages| project_storages.storage.provider_type_nextcloud? }
         end
       end

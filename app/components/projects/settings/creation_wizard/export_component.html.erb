@@ -31,7 +31,8 @@ See COPYRIGHT and LICENSE files for more details.
   settings_primer_form_with(
     model: @project,
     id: "project_creation_wizard_export_artifact_form",
-    url: "https://todo.update-route.controller",
-    method: :put
+    url: "/todo/update/correct/controller/action/path",
+    method: :put,
+    data: { controller: "projects--settings--initiation-request--export-artifact" }
   ) { |form| render Projects::Settings::CreationWizard::ExportForm.new(form) }
 %>
