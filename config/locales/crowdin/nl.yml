@@ -424,6 +424,16 @@ nl:
   incoming_mails:
     ignore_filenames: >
       Geef een lijst van namen op om te negeren bij het verwerken van bijlagen voor inkomende mails (bijv. handtekeningen of iconen). Voer één bestandsnaam per regel in.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -533,10 +543,19 @@ nl:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "De gewijzigde lijst is opgeslagen als een nieuwe lijst"
@@ -2008,6 +2027,7 @@ nl:
   button_collapse_all: "Alles inklappen"
   button_configure: "Configureer"
   button_continue: "Verdergaan"
+  button_complete: "Complete"
   button_copy: "Kopieer"
   button_copy_to_clipboard: "Kopiëren naar het klembord"
   button_copy_link_to_clipboard: "Link naar klembord kopiëren"
@@ -2112,6 +2132,18 @@ nl:
     template_label: "Sjabloon gebruiken"
     copy_options:
       dependencies_label: "Copy from template"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Create new wiki page"
   create_wiki_page_button: "Wikipagina"
   date:
@@ -3247,6 +3279,7 @@ nl:
   label_planning: "Planning"
   label_please_login: "Log in a.u.b."
   label_plugins: "Plug-ins"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Modules en Plugins"
   label_precedes: "voorafgaand aan"
   label_preferences: "Voorkeuren"
@@ -3836,6 +3869,7 @@ nl:
   permission_edit_timelines: "Bewerken van tijdlijnen"
   permission_edit_wiki_pages: "Wiki pagina's bewerken"
   permission_export_work_packages: "Werkpakketten exporteren"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Wiki pagina's exporteren"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
@@ -3902,6 +3936,11 @@ nl:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"

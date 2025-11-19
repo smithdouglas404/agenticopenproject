@@ -174,6 +174,14 @@ export class PathHelperService {
     return `${this.projectPath(projectId)}/calendars`;
   }
 
+  public projectCreationWizardPath(projectId:string) {
+    return `${this.projectPath(projectId)}/creation_wizard`;
+  }
+
+  public projectCreationWizardHelpTextPath(projectId:string, customFieldId:string) {
+    return `${this.projectCreationWizardPath(projectId)}/help_text?custom_field_id=${customFieldId}`;
+  }
+
   public projectTeamplannerPath(projectId:string) {
     return `${this.projectPath(projectId)}/team_planners`;
   }

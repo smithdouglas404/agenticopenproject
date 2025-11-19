@@ -1,0 +1,67 @@
+<%=
+  component_wrapper(
+    class: "op-projects-wizard-page",
+    data: {
+      controller: "projects--wizard",
+      action: "focusin->projects--wizard#handleFieldFocus"
+    }
+  ) do
+%>
+  <%=
+    render(Primer::OpenProject::PageHeader.new) do |header|
+      header.with_title { I18n.t("projects.wizard.title") }
+      header.with_breadcrumbs(nil)
+
+      button_title = I18n.t(:button_cancel)
+      header.with_action_icon_button(
+        tag: :a,
+        icon: :x,
+        mobile_icon: :x,
+        label: button_title,
+        size: :medium,
+        href: project_path(project),
+        aria: { label: button_title },
+        title: button_title
+      )
+    end
+  %>
+
+  <%=
+    grid_layout("op-projects-wizard", tag: :div) do |page|
+      page.with_area("sidebar") do
+        render(
+          Projects::Wizard::SidebarComponent.new(
+            project:,
+            custom_fields_by_section:,
+            current_section:
+          )
+        )
+      end
+
+      page.with_area("main") do
+        render(
+          Projects::Wizard::FormComponent.new(
+            project:,
+            section: current_section,
+            custom_fields: custom_fields_by_section[current_section]
+          )
+        )
+      end
+
+      page.with_area("help") do
+        first_custom_field = custom_fields_by_section[current_section].first
+        render(Projects::Wizard::HelpTextComponent.new(first_custom_field))
+      end
+
+      page.with_area("footer") do
+        render(
+          Projects::Wizard::FooterComponent.new(
+            project:,
+            custom_fields_by_section:,
+            current_section:
+          )
+        )
+      end
+    end
+  %>
+<% end %>

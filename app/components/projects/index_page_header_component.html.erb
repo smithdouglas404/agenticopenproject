@@ -125,13 +125,15 @@
           )
         end
 
-        menu.with_item(
-          tag: :a,
-          label: t("js.label_export"),
-          href: export_list_modal_projects_path(projects_query_params),
-          content_arguments: { data: { controller: "async-dialog" }, rel: "nofollow" }
-        ) do |item|
-          item.with_leading_visual_icon(icon: "sign-out")
+        if can_export?
+          menu.with_item(
+            tag: :a,
+            label: t("js.label_export"),
+            href: export_list_modal_projects_path(projects_query_params),
+            content_arguments: { data: { controller: "async-dialog" }, rel: "nofollow" }
+          ) do |item|
+            item.with_leading_visual_icon(icon: "sign-out")
+          end
         end
 
         menu.with_item(

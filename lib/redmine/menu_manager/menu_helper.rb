@@ -38,13 +38,13 @@ module Redmine::MenuManager::MenuHelper
   delegate :current_menu_item, to: :controller
 
   # Renders the application main menu
-  def render_main_menu(menu, project = nil)
+  def render_main_menu(menu, project = nil) # rubocop:disable Metrics/PerceivedComplexity
     # Fall back to project_menu when project exists (not during project creation)
     if menu.nil? && project && project.persisted?
       menu = :project_menu
     end
 
-    if !menu
+    if menu.blank? || menu == :none
       # For some global pages such as home
       nil
     elsif menu == :project_menu && project && project.persisted?

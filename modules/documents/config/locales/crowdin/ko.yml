@@ -53,6 +53,7 @@ ko:
       name: "이름"
       type: "타입"
       updated_at: "마지막 편집"
+      label_legacy: "Legacy"
     menu:
       all: "모든 문서"
       types: "유형"
@@ -60,6 +61,10 @@ ko:
     label_attachment_author: "첨부 파일 작성자"
     label_categories: "카테고리"
     new_category: "새 카테고리"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "문서 추가됨"
   label_document_new: "새 문서"
   label_document_plural: "문서"

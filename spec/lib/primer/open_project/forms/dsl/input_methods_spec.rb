@@ -113,6 +113,20 @@ RSpec.describe Primer::OpenProject::Forms::Dsl::InputMethods, type: :forms do
       include_examples "input class", Primer::Forms::Dsl::CheckBoxGroupInput
       it_behaves_like "supporting help texts"
     end
+
+    describe "#advanced_radio_button_group" do
+      let(:field_group) { form_dsl.advanced_radio_button_group(name:, label:, **options) }
+
+      include_examples "input class", Primer::OpenProject::Forms::Dsl::AdvancedRadioButtonGroupInput
+      it_behaves_like "supporting help texts"
+    end
+
+    describe "#advanced_check_box_group" do
+      let(:field_group) { form_dsl.advanced_check_box_group(name:, label:, **options) }
+
+      include_examples "input class", Primer::OpenProject::Forms::Dsl::AdvancedCheckBoxGroupInput
+      it_behaves_like "supporting help texts"
+    end
   end
 
   describe "#separator" do

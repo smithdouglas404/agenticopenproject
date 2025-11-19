@@ -53,6 +53,7 @@ id:
       name: "Nama"
       type: "Tipe"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Tipe"
@@ -60,6 +61,10 @@ id:
     label_attachment_author: "Lampiran penulis"
     label_categories: "Categories"
     new_category: "Kategori Baru"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Dokumen ditambahkan"
   label_document_new: "Dokumen baru"
   label_document_plural: "Dokumen"

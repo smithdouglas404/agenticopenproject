@@ -427,6 +427,16 @@ vi:
   incoming_mails:
     ignore_filenames: >
       Chỉ định danh sách các tên cần bỏ qua khi xử lý tệp đính kèm cho thư đến (ví dụ: chữ ký hoặc biểu tượng). Nhập một tên tệp trên mỗi dòng.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -536,10 +546,19 @@ vi:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "Danh sách đã sửa đổi đã được lưu thành danh sách mới"
@@ -1988,6 +2007,7 @@ vi:
   button_collapse_all: "Thu gọn tất cả"
   button_configure: "Thiết lập"
   button_continue: "Tiếp tục"
+  button_complete: "Complete"
   button_copy: "Sao chép"
   button_copy_to_clipboard: "Sao chép vào clipboard"
   button_copy_link_to_clipboard: "Sao chép liên kết vào clipboard"
@@ -2092,6 +2112,18 @@ vi:
     template_label: "Sử dụng mẫu"
     copy_options:
       dependencies_label: "Copy from template"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Create new wiki page"
   create_wiki_page_button: "Trang wiki"
   date:
@@ -3206,6 +3238,7 @@ vi:
   label_planning: "Lập kế hoạch"
   label_please_login: "Vui lòng đăng nhập"
   label_plugins: "Plugins"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Mô-đun và Plugin"
   label_precedes: "trước"
   label_preferences: "Tùy chỉnh"
@@ -3794,6 +3827,7 @@ vi:
   permission_edit_timelines: "Chỉnh sửa mốc thời gian"
   permission_edit_wiki_pages: "Chỉnh sửa trang wiki"
   permission_export_work_packages: "Xuất gói công việc"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Xuất trang wiki"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
@@ -3860,6 +3894,11 @@ vi:
   permission_edit_project_query: "Chỉnh sửa truy vấn dự án"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"

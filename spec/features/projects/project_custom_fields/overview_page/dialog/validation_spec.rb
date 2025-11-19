@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../shared_context"
 
-RSpec.describe "Edit project custom fields on project overview page", :js, :selenium do
+RSpec.describe "Edit project custom fields on project overview page", :js do
   include_context "with seeded projects, members and project custom fields"
 
   let(:overview_page) { Pages::Projects::Show.new(project) }

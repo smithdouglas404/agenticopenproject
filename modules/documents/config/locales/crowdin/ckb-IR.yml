@@ -53,6 +53,7 @@ ckb-IR:
       name: "Name"
       type: "Type"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Types"
@@ -60,6 +61,10 @@ ckb-IR:
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "New category"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Document added"
   label_document_new: "New document"
   label_document_plural: "Documents"

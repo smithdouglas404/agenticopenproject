@@ -427,6 +427,16 @@ sk:
   incoming_mails:
     ignore_filenames: >
       Zadajte zoznam názvov, ktoré chcete ignorovať pri spracovávaní príloh prichádzajúcich e-mailov (napr. podpisy alebo ikony). Zadajte jeden názov súboru na riadok.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -536,10 +546,19 @@ sk:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "The modified list has been saved as a new list"
@@ -2060,6 +2079,7 @@ sk:
   button_collapse_all: "Zbaliť všetko"
   button_configure: "Konfigurovať"
   button_continue: "Pokračovať"
+  button_complete: "Complete"
   button_copy: "Kopírovať"
   button_copy_to_clipboard: "Kopírovať do schránky"
   button_copy_link_to_clipboard: "Copy link to clipboard"
@@ -2164,6 +2184,18 @@ sk:
     template_label: "Použiť šablónu"
     copy_options:
       dependencies_label: "Copy from template"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Create new wiki page"
   create_wiki_page_button: "Wiki stránka"
   date:
@@ -3341,6 +3373,7 @@ sk:
   label_planning: "Plánovanie"
   label_please_login: "Prosím prihláste sa"
   label_plugins: "Doplnky"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Moduly a Pluginy"
   label_precedes: "predchádza"
   label_preferences: "Predvoľby"
@@ -3934,6 +3967,7 @@ sk:
   permission_edit_timelines: "Úprava časovej osi"
   permission_edit_wiki_pages: "Úprava wiki stránok"
   permission_export_work_packages: "Export pracovných balíčkov"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Export wiki stránok"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
@@ -4000,6 +4034,11 @@ sk:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"

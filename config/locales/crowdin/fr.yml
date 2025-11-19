@@ -427,6 +427,16 @@ fr:
   incoming_mails:
     ignore_filenames: >
       Spécifiez une liste de noms à ignorer lors du traitement des pièces jointes aux messages entrants (par exemple, signatures ou icônes). Entrez un nom de fichier par ligne.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -536,10 +546,19 @@ fr:
       work_package_priorities:
         new_label: "Nouvelle priorité"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Modifier le statut du projet
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "La liste modifiée a été enregistrée en tant que nouvelle liste"
@@ -2010,6 +2029,7 @@ fr:
   button_collapse_all: "Tout replier"
   button_configure: "Configurer"
   button_continue: "Continuer"
+  button_complete: "Complete"
   button_copy: "Copier"
   button_copy_to_clipboard: "Copier dans le presse-papiers"
   button_copy_link_to_clipboard: "Copier le lien dans le presse-papiers"
@@ -2114,6 +2134,18 @@ fr:
     template_label: "Utiliser le modèle"
     copy_options:
       dependencies_label: "Copier à partir du modèle"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Créer une nouvelle page wiki"
   create_wiki_page_button: "Page wiki"
   date:
@@ -3249,6 +3281,7 @@ fr:
   label_planning: "Planification"
   label_please_login: "Veuillez vous connecter"
   label_plugins: "Plugins"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Modules et plugins"
   label_precedes: "précède"
   label_preferences: "Préférences"
@@ -3839,6 +3872,7 @@ fr:
   permission_edit_timelines: "Éditer les lignes du temps"
   permission_edit_wiki_pages: "Éditer les pages wiki"
   permission_export_work_packages: "Exporter les lots de travaux"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Exporter les pages wiki"
   permission_invite_members_by_email: "Inviter des membres par e-mail"
   permission_invite_members_by_email_explanation: >
@@ -3905,6 +3939,11 @@ fr:
   permission_edit_project_query: "Modifier la requête du projet"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"

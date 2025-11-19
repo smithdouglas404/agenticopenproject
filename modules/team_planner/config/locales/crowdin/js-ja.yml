@@ -18,7 +18,7 @@ ja:
       work_week: '作業週'
       today: '今日'
       drag_here_to_remove: 'ここをドラッグして、担当者と開始日と終了日を削除します。'
-      cannot_drag_here: '権限または編集の制限により、ワークパッケージを削除できません。'
+      cannot_drag_here: 'Cannot move the work package due to permissions or editing restrictions.'
       cannot_drag_to_non_working_day: 'ワークパッケージの開始日時/終了日時を非稼働日に設定することはできません。'
       quick_add:
         empty_state: '検索フィールドを使用してワークパッケージを見つけて、プランナーにドラッグして割り当て、開始日と終了日を設定します。'

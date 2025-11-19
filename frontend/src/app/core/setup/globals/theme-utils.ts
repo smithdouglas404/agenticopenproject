@@ -56,5 +56,10 @@ export class ThemeUtils {
     body.setAttribute('data-color-mode', colorMode);
     body.setAttribute(`data-${colorMode}-theme`, increaseContrast ? `${colorMode}_high_contrast` : colorMode);
     body.removeAttribute(`data-${otherColorMode}-theme`);
+
+    // Dispatch custom event for components that need to react to theme changes
+    window.dispatchEvent(new CustomEvent('op:theme-changed', {
+      detail: { colorMode, increaseContrast },
+    }));
   }
 }

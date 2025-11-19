@@ -53,6 +53,7 @@ es:
       name: "Nombre"
       type: "Tipo"
       updated_at: "Último cambio"
+      label_legacy: "Legacy"
     menu:
       all: "Todos los documentos"
       types: "Tipos"
@@ -60,6 +61,10 @@ es:
     label_attachment_author: "Autor del archivo adjunto"
     label_categories: "Categorías"
     new_category: "Nueva categoría"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Documento agregado"
   label_document_new: "Nuevo documento"
   label_document_plural: "Documentos"

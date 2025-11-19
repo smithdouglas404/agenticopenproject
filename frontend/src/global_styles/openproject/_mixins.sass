@@ -388,3 +388,9 @@ $scrollbar-size: 10px
   @media (hover: hover)
     &:hover
       border-color: var(--borderColor-default) !important
+
+@mixin line-clamp($value)
+  display: -webkit-box
+  -webkit-line-clamp: $value
+  -webkit-box-orient: vertical
+  overflow: hidden

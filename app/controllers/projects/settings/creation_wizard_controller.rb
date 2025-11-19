@@ -48,7 +48,43 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
     redirect_to project_settings_creation_wizard_path(@project, tab: params[:tab]), status: :see_other
   end
 
+  def toggle_project_custom_field
+    mapping = ProjectCustomFieldProjectMapping.find_by(
+      project_id: permitted_params.project_custom_field_project_mapping[:project_id],
+      custom_field_id: permitted_params.project_custom_field_project_mapping[:custom_field_id]
+    )
+    if mapping&.update(creation_wizard: !mapping.creation_wizard)
+      render json: {}, status: :ok
+    else
+      render json: {}, status: :unprocessable_entity
+    end
+  end
+
+  def enable_all_of_section
+    update_section_mappings(true)
+  end
+
+  def disable_all_of_section
+    update_section_mappings(false)
+  end
+
   private
+
+  def update_section_mappings(value)
+    section_id = permitted_params.project_custom_field_project_mapping[:custom_field_section_id]
+    project_id = permitted_params.project_custom_field_project_mapping[:project_id]
+
+    custom_field_ids = ProjectCustomField
+      .where(custom_field_section_id: section_id)
+      .where(is_required: false)
+      .pluck(:id)
+
+    ProjectCustomFieldProjectMapping
+      .where(project_id:, custom_field_id: custom_field_ids)
+      .update_all(creation_wizard: value)
+
+    redirect_to project_settings_creation_wizard_path(@project, tab: "attributes"), status: :see_other
+  end
 
   def check_feature_flag
     unless OpenProject::FeatureDecisions.project_initiation_active?

@@ -85,8 +85,6 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       create(:user, member_with_roles: { template => role })
     end
 
-    let(:template_field) { FormFields::SelectFormField.new :use_template }
-
     current_user do
       create(:user,
              member_with_roles: { template => role, other_project => role },
@@ -100,7 +98,7 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
 
       expect(page).to have_no_selector :fieldset, "Copy options"
 
-      template_field.select_option "My template"
+      choose "My template", fieldset: "Use template"
 
       # Only when a template is selected, the options are displayed.
       # Using this to know when the copy form has been fetched from the backend.
@@ -109,8 +107,6 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       # FIXME: It should keep the name. See BUG OP#64594 https://community.openproject.org/wp/64594
       # expect(page).to have_field "Name", with: "Foo bar"
       fill_in "Name", with: "Foo bar"
-
-      template_field.expect_selected "My template"
 
       expect(page).to have_unchecked_field fieldset: "Notifications"
 

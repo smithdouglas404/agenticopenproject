@@ -425,6 +425,16 @@ da:
   incoming_mails:
     ignore_filenames: >
       Angiv en liste over navne der skal ignoreres ved behandling af vedhæftede filer for indgående breve (f.eks. signaturer eller ikoner). Indtast et filnavn pr. linje.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -534,10 +544,19 @@ da:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "The modified list has been saved as a new list"
@@ -2010,6 +2029,7 @@ da:
   button_collapse_all: "Fold alle sammen"
   button_configure: "Opsæt"
   button_continue: "Fortsæt"
+  button_complete: "Complete"
   button_copy: "Kopier"
   button_copy_to_clipboard: "Kopiér til Udklipsholder"
   button_copy_link_to_clipboard: "Copy link to clipboard"
@@ -2114,6 +2134,18 @@ da:
     template_label: "Use template"
     copy_options:
       dependencies_label: "Copy from template"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Create new wiki page"
   create_wiki_page_button: "Wiki-side"
   date:
@@ -3249,6 +3281,7 @@ da:
   label_planning: "Planlæg"
   label_please_login: "Log venligst ind"
   label_plugins: "Tilføjelsesprogrammer"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Modules and Plugins"
   label_precedes: "kommer før"
   label_preferences: "Indstillinger"
@@ -3839,6 +3872,7 @@ da:
   permission_edit_timelines: "Rediger tidslinjer"
   permission_edit_wiki_pages: "Rediger wiki-sider"
   permission_export_work_packages: "Eksportér arbejdspakker"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Eksporter wiki-sider"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
@@ -3905,6 +3939,11 @@ da:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"

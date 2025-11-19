@@ -194,7 +194,7 @@ RSpec.describe "Upload attachment to documents",
       let!(:attachment) { create(:attachment, filename: "test.jpg", container: document) }
 
       before do
-        visit edit_document_path(document)
+        visit document_path(document)
       end
 
       it "is possible to delete attachments from the sidebar" do

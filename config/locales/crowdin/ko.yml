@@ -427,6 +427,16 @@ ko:
   incoming_mails:
     ignore_filenames: >
       받는 메일의 첨부 파일을 처리할 때 무시할 이름 목록을 지정하십시오(예: 서명 또는 아이콘). 라인 하나에 파일 이름 하나를 입력하십시오.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -536,10 +546,19 @@ ko:
       work_package_priorities:
         new_label: "새로운 우선 순위"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: 프로젝트 상태 편집
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "수정된 목록이 새 목록으로 저장되었습니다"
@@ -1988,6 +2007,7 @@ ko:
   button_collapse_all: "모두 축소"
   button_configure: "구성"
   button_continue: "계속"
+  button_complete: "Complete"
   button_copy: "복사"
   button_copy_to_clipboard: "클립보드 복사"
   button_copy_link_to_clipboard: "클립보드에 링크 복사"
@@ -2092,6 +2112,18 @@ ko:
     template_label: "템플릿 사용"
     copy_options:
       dependencies_label: "템플릿에서 복사"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "새 위키 페이지 만들기"
   create_wiki_page_button: "위키 페이지"
   date:
@@ -3206,6 +3238,7 @@ ko:
   label_planning: "계획"
   label_please_login: "로그인하세요."
   label_plugins: "플러그인"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "모듈 및 플러그인"
   label_precedes: "선행"
   label_preferences: "기본 설정"
@@ -3793,6 +3826,7 @@ ko:
   permission_edit_timelines: "타임라인 편집"
   permission_edit_wiki_pages: "위키 페이지 편집"
   permission_export_work_packages: "작업 패키지 내보내기"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "위키 페이지 내보내기"
   permission_invite_members_by_email: "이메일로 멤버 초대"
   permission_invite_members_by_email_explanation: >
@@ -3859,6 +3893,11 @@ ko:
   permission_edit_project_query: "프로젝트 쿼리 편집"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"

@@ -426,6 +426,16 @@ zh-TW:
   incoming_mails:
     ignore_filenames: >
       請列出要排除的檔案名稱（比如：簽名或大頭貼）。每行請輸入一個檔案名稱。
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -535,10 +545,19 @@ zh-TW:
       work_package_priorities:
         new_label: "新優先權"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "要求提交"
         label_artefact_export: "產物匯出"
     status:
       button_edit: 編輯專案狀態
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "修改後的清單已儲存為新清單"
@@ -1984,6 +2003,7 @@ zh-TW:
   button_collapse_all: "全部收合"
   button_configure: "設定"
   button_continue: "繼續"
+  button_complete: "Complete"
   button_copy: "複製"
   button_copy_to_clipboard: "複製到剪貼簿"
   button_copy_link_to_clipboard: "複製到剪貼簿"
@@ -2088,6 +2108,18 @@ zh-TW:
     template_label: "使用範本"
     copy_options:
       dependencies_label: "從範本複製"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "新增一個 wiki 頁面"
   create_wiki_page_button: "維基頁面"
   date:
@@ -2811,7 +2843,7 @@ zh-TW:
   label_add_column: "新增欄位"
   label_applied_status: "套用的狀態"
   label_archive_project: "封存專案"
-  label_artefact_export: "Artefact export"
+  label_artefact_export: "產物匯出"
   label_ascending: "昇冪"
   label_assigned_to_me_work_packages: "分配給我的工作套件"
   label_associated_revisions: "關聯的修訂"
@@ -3202,6 +3234,7 @@ zh-TW:
   label_planning: "計劃中"
   label_please_login: "請登入"
   label_plugins: "擴充套件"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "模組與外掛"
   label_precedes: "之前"
   label_preferences: "喜好設定"
@@ -3277,7 +3310,7 @@ zh-TW:
   label_repository_remove: "移除儲存庫"
   label_repository_root: "版本庫根目錄"
   label_repository_plural: "Repositories"
-  label_request_submission: "Request submission"
+  label_request_submission: "要求提交"
   label_required: "必要"
   label_requires: "需要"
   label_result_plural: "結果"
@@ -3788,6 +3821,7 @@ zh-TW:
   permission_edit_timelines: "編輯時間軸"
   permission_edit_wiki_pages: "編輯維基頁面"
   permission_export_work_packages: "匯出工作套件"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "匯出維基頁面"
   permission_invite_members_by_email: "透過電子郵件邀請會員"
   permission_invite_members_by_email_explanation: >
@@ -3854,6 +3888,11 @@ zh-TW:
   permission_edit_project_query: "編輯專案查詢"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "封存專案"

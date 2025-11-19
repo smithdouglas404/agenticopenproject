@@ -54,10 +54,22 @@ module Documents
         end
       end
 
-      def expect_blank_slate
+      def expect_blank_slate_with_primary_action
+        expect_blank_slate(with_primary_action: true)
+      end
+
+      def expect_blank_slate_without_primary_action
+        expect_blank_slate(with_primary_action: false)
+      end
+
+      def expect_blank_slate(with_primary_action: false)
         within_test_selector("documents-list-blank-slate") do
           expect(page).to have_text("There are no documents yet")
-          expect(page).to have_text("There are no documents in this view. You can click the button below to add one.")
+
+          if with_primary_action
+            expect(page).to have_text("There are no documents in this view. You can click the button below to add one.")
+            expect(page).to have_link("Document")
+          end
         end
       end
 

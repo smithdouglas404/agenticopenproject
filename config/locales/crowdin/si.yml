@@ -427,6 +427,16 @@ si:
   incoming_mails:
     ignore_filenames: >
       ලැබෙන මේල් සඳහා ඇමුණුම් සැකසීමේදී නොසලකා හැරීමට නම් ලැයිස්තුවක් සඳහන් කරන්න (උදා: අත්සන් හෝ අයිකන). එක් පේළියකට එක් ගොනු නාමයක් ඇතුළත් කරන්න.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -536,10 +546,19 @@ si:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "The modified list has been saved as a new list"
@@ -2012,6 +2031,7 @@ si:
   button_collapse_all: "සියල්ල කඩා වැටෙන්න"
   button_configure: "සකසන්න"
   button_continue: "ඉදිරියට යන්න"
+  button_complete: "Complete"
   button_copy: "පිටපත් කරන්න"
   button_copy_to_clipboard: "පසුරු පුවරුවට පිටපත් කරන්න"
   button_copy_link_to_clipboard: "Copy link to clipboard"
@@ -2116,6 +2136,18 @@ si:
     template_label: "Use template"
     copy_options:
       dependencies_label: "Copy from template"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Create new wiki page"
   create_wiki_page_button: "විකි පිටුව"
   date:
@@ -3251,6 +3283,7 @@ si:
   label_planning: "සැලසුම්"
   label_please_login: "කරුණාකර ලොග් වන්න"
   label_plugins: "ප්ලගින"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "මොඩියුල සහ ප්ලගින"
   label_precedes: "පෙර"
   label_preferences: "මනාප"
@@ -3841,6 +3874,7 @@ si:
   permission_edit_timelines: "කාලනියමයන් සංස්කරණය කරන්න"
   permission_edit_wiki_pages: "විකි පිටු සංස්කරණය කරන්න"
   permission_export_work_packages: "අපනයන වැඩ පැකේජ"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "විකි පිටු අපනයනය කරන්න"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
@@ -3907,6 +3941,11 @@ si:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"

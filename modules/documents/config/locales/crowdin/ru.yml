@@ -53,6 +53,7 @@ ru:
       name: "Имя"
       type: "Тип"
       updated_at: "Последнее редактирование"
+      label_legacy: "Legacy"
     menu:
       all: "Все документы"
       types: "Типы"
@@ -60,6 +61,10 @@ ru:
     label_attachment_author: "Автор вложения"
     label_categories: "Категории"
     new_category: "Новая категория"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Документ добавлен"
   label_document_new: "Новый документ"
   label_document_plural: "Документы"

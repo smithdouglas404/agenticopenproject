@@ -424,6 +424,16 @@ uk:
   incoming_mails:
     ignore_filenames: >
       Вкажіть список імен, які ігноруватимуться під час обробки вкладень для вхідних повідомлень (наприклад, підписів або значків). Введіть одне ім'я файлу у рядок.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -533,10 +543,19 @@ uk:
       work_package_priorities:
         new_label: "Новий пріоритет"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Змінити статус проєкту
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "Змінений список збережено як новий"
@@ -2054,6 +2073,7 @@ uk:
   button_collapse_all: "Згорнути все"
   button_configure: "Настроювання"
   button_continue: "Продовжити"
+  button_complete: "Complete"
   button_copy: "Копіювати"
   button_copy_to_clipboard: "Копіювати в буфер обміну"
   button_copy_link_to_clipboard: "Копіювати посилання в буфер обміну"
@@ -2158,6 +2178,18 @@ uk:
     template_label: "Використовувати шаблон"
     copy_options:
       dependencies_label: "Копіювати з шаблона"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Створити нову вікісторінку"
   create_wiki_page_button: "Сторінка Wiki"
   date:
@@ -3335,6 +3367,7 @@ uk:
   label_planning: "Планування"
   label_please_login: "Увійдіть у систему"
   label_plugins: "Плагіни"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Модулі та плагіни"
   label_precedes: "переважати"
   label_preferences: "Налаштування"
@@ -3927,6 +3960,7 @@ uk:
   permission_edit_timelines: "Змінити часові рамки"
   permission_edit_wiki_pages: "Редагування wiki-сторінок"
   permission_export_work_packages: "Експорт робочих пакетів"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Експорт wiki-сторінок"
   permission_invite_members_by_email: "Запрошення учасників електронною поштою"
   permission_invite_members_by_email_explanation: >
@@ -3993,6 +4027,11 @@ uk:
   permission_edit_project_query: "Редагування запиту проєктів"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"

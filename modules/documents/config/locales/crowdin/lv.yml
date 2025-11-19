@@ -53,6 +53,7 @@ lv:
       name: "Nosaukums"
       type: "Veids"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Veidi"
@@ -60,6 +61,10 @@ lv:
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "New category"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Dokuments pievienots"
   label_document_new: "Jauns dokuments"
   label_document_plural: "Dokumenti"

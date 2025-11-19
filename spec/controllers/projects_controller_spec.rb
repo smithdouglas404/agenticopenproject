@@ -345,6 +345,8 @@ RSpec.describe ProjectsController do
         expect(response).to render_template "index"
       end
     end
+
+    it_behaves_like "successful index"
   end
 
   describe "#destroy" do

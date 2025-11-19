@@ -424,6 +424,16 @@ zh-CN:
   incoming_mails:
     ignore_filenames: >
       指定在处理收到的邮件的附件（例如，签名或图标）时要忽略的名称列表。每行输入一个文件名。
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -533,10 +543,19 @@ zh-CN:
       work_package_priorities:
         new_label: "新优先级"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: 编辑项目状态
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "已将修改后的列表保存为新列表"
@@ -1984,6 +2003,7 @@ zh-CN:
   button_collapse_all: "全部折叠"
   button_configure: "配置"
   button_continue: "继续"
+  button_complete: "Complete"
   button_copy: "复制"
   button_copy_to_clipboard: "复制到剪贴板"
   button_copy_link_to_clipboard: "复制链接到剪贴板"
@@ -2088,6 +2108,18 @@ zh-CN:
     template_label: "使用模板"
     copy_options:
       dependencies_label: "从模板复制"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "创建新的 Wiki 页面"
   create_wiki_page_button: "Wiki 页面"
   date:
@@ -3202,6 +3234,7 @@ zh-CN:
   label_planning: "规划"
   label_please_login: "请登录"
   label_plugins: "插件"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "模块和插件"
   label_precedes: "之前"
   label_preferences: "首选项"
@@ -3787,6 +3820,7 @@ zh-CN:
   permission_edit_timelines: "编辑时间线"
   permission_edit_wiki_pages: "编辑维基页面"
   permission_export_work_packages: "导出工作包"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "导出维基页面"
   permission_invite_members_by_email: "通过电子邮件邀请成员"
   permission_invite_members_by_email_explanation: >
@@ -3853,6 +3887,11 @@ zh-CN:
   permission_edit_project_query: "编辑项目查询"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "归档项目"
