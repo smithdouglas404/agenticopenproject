@@ -28,7 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Grids::WidgetGridComponent.new(align_boxes_start: true)) do |grid|
+  render(Grids::WidgetGridComponent.new) do |grid|
     grid.with_widget(Grids::Widgets::Description, @project)
     grid.with_widget(Grids::Widgets::ProjectStatus, @project)
     grid.with_widget(Grids::Widgets::Subitems, @project)
