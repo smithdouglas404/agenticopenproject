@@ -67,6 +67,10 @@ module Portfolios
       end
     end
 
+    def sub_status_hover_card_id
+      "portfolio-progress-hover-card-#{portfolio.id}"
+    end
+
     private
 
     def all_descendants

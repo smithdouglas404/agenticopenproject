@@ -25,19 +25,29 @@
           )
         end
 
-        header.with_column(classes: "op-portfolios--progress") do
-          render(Primer::Beta::ProgressBar.new(size: :large)) do |bar|
-            sub_statuses_with_percentages.each do |status|
-              status_label = t("js.grid.widgets.project_status.#{status[:code] || 'not_set'}")
-
-              bar.with_item(
-                percentage: status[:percentage],
-                bg: nil, # unset default color so that we can inject our own via CSS class
-                classes: "op-portfolios--sub-status #{helpers.project_status_css_class(status[:code])}",
-                aria: {
-                  label: status_label
+        if sub_statuses_with_percentages.any?
+          header.with_column(classes: "op-portfolios--progress") do
+            render(
+              Primer::Beta::ProgressBar.new(
+                size: :large,
+                data: {
+                  hover_card_trigger_target: "trigger",
+                  hover_card_popover_id: sub_status_hover_card_id
                 }
               )
+            ) do |bar|
+              sub_statuses_with_percentages.each do |status|
+                status_label = t("js.grid.widgets.project_status.#{status[:code] || 'not_set'}")
+
+                bar.with_item(
+                  percentage: status[:percentage],
+                  bg: nil, # unset default color so that we can inject our own via CSS class
+                  classes: "op-portfolios--sub-status #{helpers.project_status_css_class(status[:code])}",
+                  aria: {
+                    label: status_label
+                  }
+                )
+              end
             end
           end
         end
@@ -115,6 +125,55 @@
             )
           ) do
             t(:label_updated_time, value: distance_of_time_in_words(Time.current, portfolio.updated_at))
+          end
+        end
+      end
+    end
+
+    # Card that appears when hovering over the progress bar
+    if sub_statuses_with_percentages.any?
+      flex.with_row(classes: "op-portfolios--popover-container") do
+        flex_layout(
+          classes: "op-portfolios--popover op-hover-card",
+          id: sub_status_hover_card_id,
+          popover: :auto,
+          data: {
+            hover_card_trigger_target: "card"
+          },
+          justify_content: :space_between
+        ) do |popover|
+          popover.with_column(mr: 3) do
+            sub_item_count = sub_statuses_with_percentages.sum { |s| s[:count] }
+
+            concat(
+              render(Primer::Beta::Text.new(color: :muted, font_weight: :bold)) do
+                "#{sub_item_count} "
+              end
+            )
+
+            concat(
+              render(Primer::Beta::Text.new(color: :muted)) do
+                t("portfolios.index.sub_items", count: sub_item_count)
+              end
+            )
+          end
+
+          sub_statuses_with_percentages.each do |status|
+            status_label = t("js.grid.widgets.project_status.#{status[:code] || 'not_set'}")
+
+            popover.with_column(mr: 3, display: :flex) do
+              concat(content_tag(:span, class: "op-bubble op-bubble_mini op-bubble_squared #{helpers.project_status_css_class(status[:code])}") { "" })
+              concat(
+                render(Primer::Beta::Text.new(ml: 2, font_weight: :bold)) do
+                  status[:count].to_s
+                end
+              )
+              concat(
+                render(Primer::Beta::Text.new(ml: 1)) do
+                  status_label
+                end
+              )
+            end
           end
         end
       end

@@ -1,12 +1,10 @@
-// Color variables copied from _project_status.sass
-// We should properly import them instead.
-$project-status_not-set: var(--fgColor-subtle, var(--color-subtle-fg))
-$project-status_off-track: var(--fgColor-danger, var(--color-danger-fg))
-$project-status_at-risk: var(--fgColor-severe, var(--color-severe-fg))
-$project-status_on-track: var(--fgColor-success, var(--color-success-fg))
-$project-status_discontinued: var(--fgColor-attention, var(--color-attention-fg))
-$project-status_not-started: var(--fgColor-accent, var(--fgColor-accent))
-$project-status_finished: var(--fgColor-done, var(--color-done-fg))
+$status_not-set: var(--progressBar-track-bgColor) // invisible background color
+$status_off-track: var(--fgColor-danger)
+$status_at-risk: var(--fgColor-severe)
+$status_on-track: var(--fgColor-success)
+$status_discontinued: var(--fgColor-attention)
+$status_not-started: var(--fgColor-accent)
+$status_finished: var(--fgColor-done)
 
 .op-portfolios
 
@@ -17,16 +15,37 @@ $project-status_finished: var(--fgColor-done, var(--color-done-fg))
 
   &--sub-status
     &.-not-set
-      background-color: $project-status_not-set
+      background-color: $status_not-set
     &.-off-track
-      background-color: $project-status_off-track
+      background-color: $status_off-track
     &.-at-risk
-      background-color: $project-status_at-risk
+      background-color: $status_at-risk
     &.-on-track
-      background-color: $project-status_on_track
+      background-color: $status_on_track
     &.-not-started
-      background-color: $project-status_not_started
+      background-color: $status_not_started
     &.-finished
-      background-color: $project-status_finished
+      background-color: $status_finished
     &.-discontinued
-      background-color: $project-status_discontinued
+      background-color: $status_discontinued
+
+  &--popover
+    width: fit-content
+
+    .op-bubble
+      margin: auto
+
+      &.-not-set
+        background-color: $status_not-set
+      &.-off-track
+        background-color: $status_off-track
+      &.-at-risk
+        background-color: $status_at-risk
+      &.-on-track
+        background-color: $status_on_track
+      &.-not-started
+        background-color: $status_not_started
+      &.-finished
+        background-color: $status_finished
+      &.-discontinued
+        background-color: $status_discontinued
