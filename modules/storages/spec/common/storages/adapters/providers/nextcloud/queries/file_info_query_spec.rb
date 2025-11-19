@@ -43,7 +43,7 @@ module Storages
             let(:auth_strategy) { Registry["nextcloud.authentication.user_bound"].call(user, storage) }
             let(:input_data) { Input::FileInfo.build(file_id:).value! }
 
-            it_behaves_like "adapter file_info_query: basic query setup"
+            it_behaves_like "storage adapter: query call signature", "file_info"
 
             context "with a file id requested", vcr: "nextcloud/file_info_query_success_file" do
               let(:file_id) { "267" }

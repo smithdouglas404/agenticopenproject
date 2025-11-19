@@ -43,7 +43,7 @@ module Storages
             end
             let(:auth_strategy) { Registry["nextcloud.authentication.user_bound"].call(user, storage) }
 
-            it_behaves_like "adapter upload_link_query: basic query setup"
+            it_behaves_like "storage adapter: query call signature", "upload_link"
 
             context "when requesting an upload link for an existing file", vcr: "nextcloud/upload_link_success" do
               let(:input_data) do

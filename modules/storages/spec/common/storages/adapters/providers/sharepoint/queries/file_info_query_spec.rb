@@ -45,7 +45,7 @@ module Storages
 
             let(:input_data) { Input::FileInfo.build(file_id:).value! }
 
-            it_behaves_like "adapter file_info_query: basic query setup"
+            it_behaves_like "storage adapter: query call signature", "file_info"
 
             context "with a file id requested", vcr: "sharepoint/file_info_query_success_file" do
               let(:file_id) { "#{drive_id}:01ANJ53W5UJK2CQO6IY5HLBVYBVNJ4TKHZ" }

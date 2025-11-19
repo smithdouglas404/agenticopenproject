@@ -48,7 +48,7 @@ module Storages
             let(:file_name) { "test-file.txt" }
             let(:io) { StringIO.new("This is the file content.") }
 
-            it_behaves_like "adapter upload_file_command: basic command setup"
+            it_behaves_like "storage adapter: command call signature", "upload_file"
 
             context "when uploading a file to the root folder", vcr: "nextcloud/upload_file_root" do
               it_behaves_like "adapter upload_file_command: successful file upload"

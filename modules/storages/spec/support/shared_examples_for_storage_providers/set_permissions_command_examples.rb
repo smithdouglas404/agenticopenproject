@@ -28,20 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-RSpec.shared_examples_for "adapter set_permissions_command: basic command setup" do
-  it "is registered as commands.set_permissions" do
-    expect(Storages::Adapters::Registry
-             .resolve("#{storage}.commands.set_permissions")).to eq(described_class)
-  end
-
-  it "responds to #call with correct parameters" do
-    expect(described_class).to respond_to(:call)
-
-    method = described_class.method(:call)
-    expect(method.parameters).to contain_exactly(%i[keyreq storage], %i[keyreq auth_strategy], %i[keyreq input_data])
-  end
-end
-
 RSpec.shared_examples_for "adapter set_permissions_command: replaces already set permissions" do
   it "replaces fully the previously set permissions" do
     file_id = test_folder.id

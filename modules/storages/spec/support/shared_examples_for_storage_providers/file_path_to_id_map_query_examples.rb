@@ -28,22 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-RSpec.shared_examples_for "adapter file_path_to_id_map_query: basic query setup" do
-  it "is registered as queries.file_path_to_id_map" do
-    expect(Storages::Adapters::Registry
-             .resolve("#{storage}.queries.file_path_to_id_map")).to eq(described_class)
-  end
-
-  it "responds to #call with correct parameters" do
-    expect(described_class).to respond_to(:call)
-
-    method = described_class.method(:call)
-    expect(method.parameters).to contain_exactly(%i[keyreq storage],
-                                                 %i[keyreq auth_strategy],
-                                                 %i[keyreq input_data])
-  end
-end
-
 RSpec.shared_examples_for "adapter file_path_to_id_map_query: successful query" do
   it "returns a map of locations to file ids" do
     result = described_class.call(storage:, auth_strategy:, input_data:)
