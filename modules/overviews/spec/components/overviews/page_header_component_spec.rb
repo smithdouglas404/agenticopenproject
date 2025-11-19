@@ -139,7 +139,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
 
     context "without export project permissions", with_flag: { project_initiation_active: true } do
       let(:user) { create(:user) }
-      let(:role) { create(:project_role, permissions: %i[view_project edit_project_attributes]) }
+      let(:role) { create(:project_role, permissions: %i[view_project select_project_custom_fields]) }
 
       before do
         create(:member, project:, principal: user, roles: [role])
