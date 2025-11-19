@@ -72,7 +72,9 @@ module Admin::Settings
 
     def project_mappings; end
 
-    def role_assignment; end
+    def role_assignment
+      @assignable_roles = ProjectRole.givable
+    end
 
     def new_link
       @project_mapping = ProjectCustomFieldProjectMapping.new(project_custom_field: @custom_field)
