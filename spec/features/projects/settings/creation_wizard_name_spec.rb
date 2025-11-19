@@ -28,19 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects::CreationWizard
-  extend ActiveSupport::Concern
+require "spec_helper"
 
-  included do
-    store_attribute :settings, :project_creation_wizard_enabled, :boolean
+RSpec.describe "Project creation wizard name settings", :js,
+               with_flag: { project_initiation_active: true } do
+  shared_let(:admin) { create(:admin) }
 
-    store_attribute :settings, :name_artefact_name, :string
+  let!(:project) { create(:project, project_creation_wizard_enabled: true) }
+  let(:name_page) { Pages::Projects::Settings::CreationWizard.new(project, tab: "name") }
 
-    store_attribute :settings, :submission_work_package_type_id, :integer
-    store_attribute :settings, :submission_status_when_submitted_id, :integer
-    store_attribute :settings, :submission_send_confirmation_email, :boolean
-    store_attribute :settings, :submission_assignee_custom_field_id, :integer
-    store_attribute :settings, :submission_notification_text, :string
-    store_attribute :settings, :submission_work_package_comment, :string
+  current_user { admin }
+
+  describe "configuring name settings" do
+    it "allows admin to configure artefact name" do
+      name_page.visit!
+
+      expect(page).to have_select("Artefact name")
+      expect(page).to have_text("Choose the name for this artefact that your project management frameworks recommends.")
+
+      select "Project initiation request", from: "Artefact name"
+      click_button "Save"
+
+      expect_and_dismiss_flash(message: "Successful update.")
+
+      project.reload
+      expect(project.name_artefact_name).to eq("Project initiation request")
+    end
   end
 end

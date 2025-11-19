@@ -47,10 +47,20 @@ module Projects
 
     def validate_submission_assignee
       return unless model.project_creation_wizard_enabled == true
+      return unless updating_submission_settings?
 
       if model.submission_assignee_custom_field_id.blank?
         errors.add :submission_assignee_custom_field_id, :blank
       end
+    end
+
+    def updating_submission_settings?
+      has_changed_setting?("submission_assignee_custom_field_id") ||
+        has_changed_setting?("submission_work_package_type_id") ||
+        has_changed_setting?("submission_status_when_submitted_id") ||
+        has_changed_setting?("submission_send_confirmation_email") ||
+        has_changed_setting?("submission_notification_text") ||
+        has_changed_setting?("submission_work_package_comment")
     end
 
     private

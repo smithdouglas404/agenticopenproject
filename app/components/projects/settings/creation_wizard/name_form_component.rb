@@ -28,19 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects::CreationWizard
-  extend ActiveSupport::Concern
+module Projects
+  module Settings
+    module CreationWizard
+      class NameFormComponent < ApplicationComponent
+        include ApplicationHelper
+        include OpTurbo::Streamable
+        include OpPrimer::ComponentHelpers
 
-  included do
-    store_attribute :settings, :project_creation_wizard_enabled, :boolean
+        def initialize(project:)
+          super
 
-    store_attribute :settings, :name_artefact_name, :string
-
-    store_attribute :settings, :submission_work_package_type_id, :integer
-    store_attribute :settings, :submission_status_when_submitted_id, :integer
-    store_attribute :settings, :submission_send_confirmation_email, :boolean
-    store_attribute :settings, :submission_assignee_custom_field_id, :integer
-    store_attribute :settings, :submission_notification_text, :string
-    store_attribute :settings, :submission_work_package_comment, :string
+          @project = project
+        end
+      end
+    end
   end
 end
