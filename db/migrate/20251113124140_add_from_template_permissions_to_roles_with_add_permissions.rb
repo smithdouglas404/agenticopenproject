@@ -39,14 +39,12 @@ class AddFromTemplatePermissionsToRolesWithAddPermissions < ActiveRecord::Migrat
 
   def down
     # Remove the permissions that were added
-    remove_permission_from_roles(:add_project_from_template)
-    remove_permission_from_roles(:add_programs_from_template)
-    remove_permission_from_roles(:add_portfolios_from_template)
-  end
-
-  private
-
-  def remove_permission_from_roles(permission)
-    RolePermission.where(permission: permission.to_s).delete_all
+    RolePermission.delete_by(
+      permission: %w(
+        add_project_from_template
+        add_programs_from_template
+        add_portfolios_from_template
+      )
+    )
   end
 end
