@@ -3,6 +3,8 @@ en:
     label_widget_in_grid: "Widget contained in Grid %{grid_name}"
 
     widgets:
+      empty: "This widget is currently empty."
+      not_available: "This widget is not available."
       subitems:
         title: "Subitems"
         no_results: "There are no visible children."
@@ -13,8 +15,6 @@ en:
         no_results: "No visible members."
         view_all_members: "View all members"
         show_members_count: "Show all %{count} members"
-        add_member_heading: "Add members to get started"
-        add_member_description: "Add existing users from this instance to this project or invite new ones"
         x_more:
           one: "and one more member."
           other: "and %{count} more members."

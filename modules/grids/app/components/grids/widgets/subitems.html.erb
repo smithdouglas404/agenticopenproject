@@ -67,7 +67,7 @@ See COPYRIGHT and LICENSE files for more details.
       render(Primer::Beta::Blankslate.new(test_selector: "subitems-widget-empty")) do |component|
         component.with_visual_icon(icon: :workflow)
         component.with_heading(tag: :h3).with_content(title)
-        component.with_description { t("js.grid.widgets.empty") }
+        component.with_description { t("grids.widgets.empty") }
 
         if can_manage_subprojects?
           component.with_primary_action(
@@ -84,7 +84,7 @@ See COPYRIGHT and LICENSE files for more details.
     else
       render(Primer::Beta::Blankslate.new(test_selector: "subitems-widget-no-permission")) do |component|
         component.with_heading(tag: :h3).with_content(title)
-        component.with_description { t("js.grid.widgets.not_available") }
+        component.with_description { t("grids.widgets.not_available") }
       end
     end
   end

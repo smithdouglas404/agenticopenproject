@@ -5,8 +5,6 @@ en:
       remove: 'Remove widget'
       configure: 'Configure widget'
       widgets:
-        empty: "This widget is currently empty."
-        not_available: "This widget is not available."
         missing_permission: "You don't have the necessary permissions to view this widget."
         custom_text:
           title: 'Custom text'

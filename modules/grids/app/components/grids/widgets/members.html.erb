@@ -73,7 +73,7 @@ See COPYRIGHT and LICENSE files for more details.
       render(Primer::Beta::Blankslate.new(test_selector: "members-widget-empty")) do |component|
         component.with_visual_icon(icon: :person)
         component.with_heading(tag: :h3).with_content(title)
-        component.with_description { I18n.t("js.grid.widgets.empty") }
+        component.with_description { I18n.t("grids.widgets.empty") }
 
         if can_manage_members?
           component.with_primary_action(
@@ -90,7 +90,7 @@ See COPYRIGHT and LICENSE files for more details.
     else
       render(Primer::Beta::Blankslate.new(test_selector: "members-widget-no-permission")) do |component|
         component.with_heading(tag: :h3).with_content(title)
-        component.with_description { t("js.grid.widgets.not_available") }
+        component.with_description { t("grids.widgets.not_available") }
       end
     end
   end
