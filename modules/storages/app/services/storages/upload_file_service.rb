@@ -50,22 +50,23 @@ module Storages
         info "Starting file upload for #{filename} to #{file_path}"
 
         unless nextcloud_storage?
-          @result.add_error(:base, :unsupported_storage_type)
+          @result.errors.add(:base, :unsupported_storage_type)
+          @result.success = false
           return @result
         end
 
-        auth_strategy = Adapters::Registry["#{@storage}.authentication.userless"].call
-
         folder = get_folder!(auth_strategy, file_path).value_or { return @result }
-
-        # TODO: the code still is in the PR
         file = upload_file(auth_strategy, folder, filename, file_data).value_or { return @result }
+        file_link = create_file_link(file).value_or { return @result }
 
-        create_file_link(file).value_or { return @result }
+        @result.success(file_link)
+        @result
       end
     end
 
     private
+
+    def auth_strategy = Adapters::Registry["nextcloud.authentication.userless"].call
 
     def nextcloud_storage?
       @storage.short_provider_type == "nextcloud"
@@ -81,19 +82,25 @@ module Storages
 
     def get_folder!(auth_strategy, file_path)
       prefix = @project_storage.managed_project_folder_path
-      normalized_path = prefix + (file_path.start_with?("/") ? file_path[1..-1] : file_path)
+      normalized_path = prefix + (file_path.start_with?("/") ? file_path[1...] : file_path)
 
-      folder = check_folder_exists?(normalized_path).value_or { return @result }
+      folder_result = check_folder_exists?(auth_strategy, normalized_path)
 
-      if folder
-        Success(folder)
-      else
-        create_folder!(auth_strategy, normalized_path)
+      folder_result.value_or do |error|
+        if error.code == :not_found
+          return create_folder!(auth_strategy, normalized_path)
+        else
+          return Failure(error)
+        end
       end
+
+      Success(folder_result.parent)
     end
 
-    def check_folder_exists?(path)
-      input_data = Adapters::Input::Files.build(folder: path).value_or { |error| return add_validation_error(error, context:) }
+    def check_folder_exists?(auth_strategy, path)
+      input_data = Adapters::Input::Files.build(folder: path).value_or do |error|
+        add_validation_error(error, options: { folder: path })
+      end
 
       Adapters::Registry.resolve("#{@storage}.queries.files").call(auth_strategy:, storage: @storage, input_data:)
     end
@@ -102,17 +109,19 @@ module Storages
       folder_path = File.dirname(path)
       folder_name = path.sub("#{folder_path}/", "")
 
-      input_data = Adapters::Input::CreateFolder.build(folder_name:, parent_location: folder_path).value_or { return add_validation_error(it) }
-      Adapters::Registry["#{@storage}.commands.create_folder"].call(storage: @storage, auth_strategy: auth_strategy,
-                                                                    input_data:).bind do |created_folder|
-        @result.result = created_folder
-        return @result
+      input_data = Adapters::Input::CreateFolder.build(folder_name:, parent_location: folder_path).value_or do |error|
+        add_validation_error(error, options: { folder_id: folder_path })
       end
+      Adapters::Registry["#{@storage}.commands.create_folder"]
+        .call(storage: @storage, auth_strategy: auth_strategy, input_data:).bind do |created_folder|
+          Success(created_folder)
+        end
     end
 
     def upload_file(auth_strategy, folder, filename, file_data)
-      input_data = Adapters::Input::UploadFile.build(file_path: folder_id, io: file_data).value_or do |error|
-        return Failure(Results::Error.new(source: self.class, payload: error).with(code: :invalid))
+      input_data = Adapters::Input::UploadFile.build(file_path: "#{folder.location}/#{filename}",
+                                                     io: file_data).value_or do |error|
+        add_validation_error(error, options: { file_path: "#{folder.location}/#{filename}" })
       end
 
       Adapters::Registry["#{@storage.short_provider_type}.commands.upload_file"]

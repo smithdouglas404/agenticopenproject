@@ -34,26 +34,48 @@ require_module_spec_helper
 RSpec.describe Storages::UploadFileService, type: :model do
   let(:user) { create(:admin) }
   let(:project) { create(:project) }
-  let(:storage) { create(:storage, provider_type: "Storages::NextcloudStorage") }
+  let(:storage) { create(:nextcloud_storage) }
   let(:project_storage) { create(:project_storage, project:, storage:, project_folder_id: "/project_folder") }
   let(:work_package) { create(:work_package, project:, author: user) }
   let(:file_path) { "/uploads/documents" }
   let(:filename) { "test_file.pdf" }
   let(:file_data) { StringIO.new("test file content") }
 
+  let(:auth_strategy) { Storages::Adapters::Registry["nextcloud.authentication.userless"].call }
+  let(:parent_folder) do
+    Storages::Adapters::Results::StorageFile.new(
+      id: "123",
+      name: "documents",
+      mime_type: "application/x-op-directory",
+      location: "/project_folder/uploads/documents",
+      permissions: %i[readable writeable]
+    )
+  end
+  let(:file_collection) do
+    Storages::Adapters::Results::StorageFileCollection.new(
+      files: [],
+      parent: parent_folder,
+      ancestors: []
+    )
+  end
+  let(:uploaded_file) do
+    Storages::Adapters::Results::StorageFile.new(
+      id: "456",
+      name: filename,
+      mime_type: "application/pdf",
+      size: 100,
+      location: "/project_folder/uploads/documents/#{filename}",
+      permissions: %i[readable writeable]
+    )
+  end
+
   describe ".call" do
     subject(:result) do
-      described_class.call(
-        container: work_package,
-        project_storage:,
-        file_path:,
-        filename:,
-        file_data:
-      )
+      described_class.call(container: work_package, project_storage:, file_path:, filename:, file_data:)
     end
 
     context "when storage is not Nextcloud" do
-      let(:storage) { create(:storage, provider_type: "Storages::OneDriveStorage") }
+      let(:storage) { create(:one_drive_storage_configured) }
 
       it "returns failure with unsupported_storage_type error" do
         expect(result).to be_failure
@@ -68,25 +90,26 @@ RSpec.describe Storages::UploadFileService, type: :model do
     context "when storage is Nextcloud" do
       context "when folder exists" do
         before do
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.success(result: [])
-          )
+          allow(Storages::Adapters::Registry).to receive(:[]).and_call_original
+          allow(Storages::Adapters::Registry)
+            .to receive(:resolve)
+            .with("nextcloud.authentication.userless")
+            .and_call_original
+          allow(Storages::Adapters::Registry)
+            .to receive(:resolve)
+            .with("nextcloud.models.managed_folder_identifier")
+            .and_return("project_folder")
+
+          files_query = double("files_query")
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(Success(file_collection))
         end
 
         context "with successful upload and file link creation" do
-          let(:uploaded_file_info) do
-            {
-              id: "123",
-              name: filename,
-              mime_type: "application/pdf",
-              size: 100
-            }
-          end
-
           before do
-            allow(Storages::Files::UploadService).to receive(:call).and_return(
-              Success(uploaded_file_info)
-            )
+            upload_command = double("upload_command")
+            allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+            allow(upload_command).to receive(:call).and_return(Success(uploaded_file))
 
             allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
               double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
@@ -94,19 +117,20 @@ RSpec.describe Storages::UploadFileService, type: :model do
           end
 
           it "returns success" do
+            binding.pry
             expect(result).to be_success
           end
 
-          it "calls Files::UploadService with correct parameters" do
-            expect(Storages::Files::UploadService).to receive(:call).with(
+          it "calls upload_file command with correct parameters" do
+            upload_command = double("upload_command")
+            allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+            expect(upload_command).to receive(:call).with(
               hash_including(
-                filename:,
-                file_data:,
                 storage:,
-                user:,
-                file_path: "/uploads/documents"
+                auth_strategy:,
+                input_data: anything
               )
-            )
+            ).and_return(Success(uploaded_file))
             result
           end
 
@@ -123,47 +147,43 @@ RSpec.describe Storages::UploadFileService, type: :model do
       end
 
       context "when folder does not exist" do
-        before do
-          # First check fails (folder doesn't exist)
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.failure(errors: ActiveModel::Errors.new(double))
-          )
-
-          created_folder = Storages::Adapters::Results::StorageFileInfo.build(
+        let(:created_folder) do
+          Storages::Adapters::Results::StorageFileInfo.new(
             status: "OK",
             status_code: 200,
-            id: "/uploads/documents",
+            id: "789",
             name: "documents",
-            location: "/uploads/documents"
-          ).value!
-
-          allow(Storages::CreateFolderService).to receive(:call).and_return(
-            ServiceResult.success(result: created_folder)
+            location: "/project_folder/uploads/documents"
           )
         end
 
-        context "with successful folder creation, upload and file link creation" do
-          let(:uploaded_file_info) do
-            {
-              id: "123",
-              name: filename,
-              mime_type: "application/pdf",
-              size: 100
-            }
-          end
+        before do
+          files_query = double("files_query")
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(
+            Failure(Storages::Adapters::Results::Error.new(source: self.class).with(code: :not_found))
+          )
 
+          create_folder_command = double("create_folder_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("#{storage}.commands.create_folder").and_return(create_folder_command)
+          allow(create_folder_command).to receive(:call).and_return(Success(created_folder))
+        end
+
+        context "with successful folder creation, upload and file link creation" do
           before do
-            allow(Storages::Files::UploadService).to receive(:call).and_return(
-              Success(uploaded_file_info)
-            )
+            upload_command = double("upload_command")
+            allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+            allow(upload_command).to receive(:call).and_return(Success(uploaded_file))
 
             allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
               double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
             )
           end
 
-          it "creates the folder structure" do
-            expect(Storages::CreateFolderService).to receive(:call).at_least(:once)
+          it "creates the folder" do
+            create_folder_command = double("create_folder_command")
+            allow(Storages::Adapters::Registry).to receive(:[]).with("#{storage}.commands.create_folder").and_return(create_folder_command)
+            expect(create_folder_command).to receive(:call).and_return(Success(created_folder))
             result
           end
 
@@ -178,8 +198,10 @@ RSpec.describe Storages::UploadFileService, type: :model do
 
         context "when folder creation fails" do
           before do
-            allow(Storages::CreateFolderService).to receive(:call).and_return(
-              ServiceResult.failure(errors: ActiveModel::Errors.new(double).tap { |e| e.add(:base, :error) })
+            create_folder_command = double("create_folder_command")
+            allow(Storages::Adapters::Registry).to receive(:[]).with("#{storage}.commands.create_folder").and_return(create_folder_command)
+            allow(create_folder_command).to receive(:call).and_return(
+              Failure(Storages::Adapters::Results::Error.new(source: self.class).with(code: :error))
             )
           end
 
@@ -207,18 +229,13 @@ RSpec.describe Storages::UploadFileService, type: :model do
         end
 
         before do
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.success(result: [])
-          )
+          files_query = double("files_query")
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(Success(file_collection))
 
-          allow(Storages::Files::UploadService).to receive(:call).and_return(
-            Success({
-              id: "123",
-              name: filename,
-              mime_type: "application/pdf",
-              size: 100
-            })
-          )
+          upload_command = double("upload_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+          allow(upload_command).to receive(:call).and_return(Success(uploaded_file))
 
           allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
             double(call: ServiceResult.success(result: create(:file_link, container: work_package_without_author, storage:)))
@@ -246,18 +263,13 @@ RSpec.describe Storages::UploadFileService, type: :model do
         end
 
         before do
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.success(result: [])
-          )
+          files_query = double("files_query")
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(Success(file_collection))
 
-          allow(Storages::Files::UploadService).to receive(:call).and_return(
-            Success({
-              id: "123",
-              name: filename,
-              mime_type: "application/pdf",
-              size: 100
-            })
-          )
+          upload_command = double("upload_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+          allow(upload_command).to receive(:call).and_return(Success(uploaded_file))
 
           allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
             double(call: ServiceResult.success(result: create(:file_link, container:, storage:)))
@@ -273,12 +285,15 @@ RSpec.describe Storages::UploadFileService, type: :model do
 
       context "when file upload fails" do
         before do
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.success(result: [])
-          )
+          files_query = double("files_query")
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(Success(file_collection))
 
-          allow(Storages::Files::UploadService).to receive(:call).and_return(
-            Failure(Storages::Adapters::Results::Error.new(source: Storages::Files::UploadService, payload: "Upload failed").with(code: :error))
+          upload_command = double("upload_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+          allow(upload_command).to receive(:call).and_return(
+            Failure(Storages::Adapters::Results::Error.new(source: Storages::UploadFileService,
+                                                           payload: "Upload failed").with(code: :error))
           )
         end
 
@@ -293,18 +308,13 @@ RSpec.describe Storages::UploadFileService, type: :model do
 
       context "when FileLink creation fails" do
         before do
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.success(result: [])
-          )
+          files_query = double("files_query")
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(Success(file_collection))
 
-          allow(Storages::Files::UploadService).to receive(:call).and_return(
-            Success({
-              id: "123",
-              name: filename,
-              mime_type: "application/pdf",
-              size: 100
-            })
-          )
+          upload_command = double("upload_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+          allow(upload_command).to receive(:call).and_return(Success(uploaded_file))
 
           allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
             double(call: ServiceResult.failure(errors: ActiveModel::Errors.new(double).tap { |e| e.add(:base, :error) }))
@@ -322,72 +332,69 @@ RSpec.describe Storages::UploadFileService, type: :model do
 
       context "with file path that doesn't start with /" do
         let(:file_path) { "uploads/documents" }
+        let(:files_query) { double("files_query") }
 
         before do
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.success(result: [])
-          )
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(Success(file_collection))
 
-          allow(Storages::Files::UploadService).to receive(:call).and_return(
-            Success({
-              id: "123",
-              name: filename,
-              mime_type: "application/pdf",
-              size: 100
-            })
-          )
+          upload_command = double("upload_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+          allow(upload_command).to receive(:call).and_return(Success(uploaded_file))
 
           allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
             double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
           )
         end
 
-        it "normalizes the path by adding leading slash" do
-          expect(Storages::StorageFilesService).to receive(:call).with(
-            hash_including(folder: "/uploads/documents")
-          )
+        it "normalizes the path by removing leading slash when combining" do
+          expect(files_query).to receive(:call).with(
+            hash_including(
+              auth_strategy:,
+              storage:,
+              input_data: anything
+            )
+          ).and_return(Success(file_collection))
           result
         end
       end
 
       context "with nested folder path" do
         let(:file_path) { "/uploads/documents/2024" }
-
-        before do
-          # First check fails (folder doesn't exist)
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.failure(errors: ActiveModel::Errors.new(double))
-          )
-
-          # Create folder service will be called for each folder component
-          created_folder = Storages::Adapters::Results::StorageFileInfo.build(
+        let(:created_folder) do
+          Storages::Adapters::Results::StorageFileInfo.new(
             status: "OK",
             status_code: 200,
-            id: "/uploads/documents/2024",
+            id: "999",
             name: "2024",
-            location: "/uploads/documents/2024"
-          ).value!
+            location: "/project_folder/uploads/documents/2024"
+          )
+        end
 
-          allow(Storages::CreateFolderService).to receive(:call).and_return(
-            ServiceResult.success(result: created_folder)
+        before do
+          files_query = double("files_query")
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(
+            Failure(Storages::Adapters::Results::Error.new(source: self.class).with(code: :not_found))
           )
 
-          allow(Storages::Files::UploadService).to receive(:call).and_return(
-            Success({
-              id: "123",
-              name: filename,
-              mime_type: "application/pdf",
-              size: 100
-            })
-          )
+          create_folder_command = double("create_folder_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("#{storage}.commands.create_folder").and_return(create_folder_command)
+          allow(create_folder_command).to receive(:call).and_return(Success(created_folder))
+
+          upload_command = double("upload_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+          allow(upload_command).to receive(:call).and_return(Success(uploaded_file))
 
           allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
             double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
           )
         end
 
-        it "creates nested folder structure" do
-          expect(Storages::CreateFolderService).to receive(:call).at_least(:once)
+        it "creates the folder" do
+          create_folder_command = double("create_folder_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("#{storage}.commands.create_folder").and_return(create_folder_command)
+          expect(create_folder_command).to receive(:call).and_return(Success(created_folder))
           result
         end
       end
@@ -395,16 +402,29 @@ RSpec.describe Storages::UploadFileService, type: :model do
       context "when project_folder_id is nil" do
         let(:project_storage) { create(:project_storage, project:, storage:, project_folder_id: nil) }
 
+        let(:files_query) { double("files_query") }
+
         before do
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.success(result: [])
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(Success(file_collection))
+
+          upload_command = double("upload_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+          allow(upload_command).to receive(:call).and_return(Success(uploaded_file))
+
+          allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
+            double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
           )
         end
 
-        it "uses / as base folder" do
-          expect(Storages::StorageFilesService).to receive(:call).with(
-            hash_including(folder: "/uploads/documents")
-          )
+        it "uses managed_project_folder_path as prefix" do
+          expect(files_query).to receive(:call).with(
+            hash_including(
+              auth_strategy:,
+              storage:,
+              input_data: anything
+            )
+          ).and_return(Success(file_collection))
           result
         end
       end
@@ -413,32 +433,30 @@ RSpec.describe Storages::UploadFileService, type: :model do
         let(:project_storage) { create(:project_storage, project:, storage:, project_folder_id: "") }
 
         before do
-          allow(Storages::StorageFilesService).to receive(:call).and_return(
-            ServiceResult.success(result: [])
-          )
+          files_query = double("files_query")
+          allow(Storages::Adapters::Registry).to receive(:resolve).with("#{storage}.queries.files").and_return(files_query)
+          allow(files_query).to receive(:call).and_return(Success(file_collection))
 
-          allow(Storages::Files::UploadService).to receive(:call).and_return(
-            Success({
-              id: "123",
-              name: filename,
-              mime_type: "application/pdf",
-              size: 100
-            })
-          )
+          upload_command = double("upload_command")
+          allow(Storages::Adapters::Registry).to receive(:[]).with("nextcloud.commands.upload_file").and_return(upload_command)
+          allow(upload_command).to receive(:call).and_return(Success(uploaded_file))
 
           allow(Storages::FileLinks::CreateService).to receive(:new).and_return(
             double(call: ServiceResult.success(result: create(:file_link, container: work_package, storage:)))
           )
         end
 
-        it "uses / as base folder" do
-          expect(Storages::StorageFilesService).to receive(:call).with(
-            hash_including(folder: "/uploads/documents")
-          )
+        it "uses managed_project_folder_path as prefix" do
+          expect(files_query).to receive(:call).with(
+            hash_including(
+              auth_strategy:,
+              storage:,
+              input_data: anything
+            )
+          ).and_return(Success(file_collection))
           result
         end
       end
     end
   end
 end
-

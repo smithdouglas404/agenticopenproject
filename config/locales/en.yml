@@ -1903,6 +1903,8 @@ en:
       one: "Additionally, there was a problem with the following field:"
       other: "Additionally, there were problems with the following fields:"
     field_erroneous_label: "This field is invalid: %{full_errors}\nPlease enter a valid value."
+    messages:
+      unsupported_storage_type: "is not a supported storage type."
 
   activity:
     item:
