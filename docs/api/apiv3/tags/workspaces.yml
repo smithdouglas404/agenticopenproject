@@ -3,8 +3,8 @@ name: Workspaces
 description: |-
   Workspaces are containers for resources to be worked on and people with sets of permissions that work on the former. There is no actual workspace resource
   in OpenProject. Rather, it is the generic term describing:
-  * Portfolio
-  * Program
+  * [Portfolio](https://www.openproject.org/docs/api/endpoints/portfolio)
+  * [Program](https://www.openproject.org/docs/api/endpoints/programs)
   * [Project](https://www.openproject.org/docs/api/endpoints/projects)
   
   A lot of resources reference the workspaces they are valid in, e.g. [Work package](https://www.openproject.org/docs/api/endpoints/work-packages/#linked-properties) and
