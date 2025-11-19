@@ -1272,6 +1272,7 @@ en:
         submission_status_when_submitted: "Status when submitted"
         submission_work_package_comment: "Work package comment"
         submission_work_package_type: "Work package type"
+        template: "Template"
         templated: "Template project"
         templated_value:
           true: "marked as template"

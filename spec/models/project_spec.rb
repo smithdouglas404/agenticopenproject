@@ -49,6 +49,22 @@ RSpec.describe Project do
     end
   end
 
+  describe "template associations" do
+    let(:template) { create(:template_project) }
+    let(:project_from_template) { create(:project, template:) }
+
+    it { is_expected.to belong_to(:template).class_name("Project").optional }
+    it { is_expected.to have_many(:templated_projects).class_name("Project").with_foreign_key("template_id") }
+
+    it "allows a project to reference its template" do
+      expect(project_from_template.template).to eq(template)
+    end
+
+    it "allows a template to access projects created from it" do
+      expect(template.templated_projects).to include(project_from_template)
+    end
+  end
+
   describe "#active?" do
     context "if active" do
       it "is true" do
