@@ -46,7 +46,7 @@ delete:
         Returned if the project does not exist or the client does not have sufficient permissions
         to see it.
 
-        **Required permission:** view project
+        **Required permission:** any permission in the project
 
         *Note: A client without sufficient permissions shall not be able to test for the existence of
         a version. That's why a 404 is returned here, even if a 403 might be more appropriate.*

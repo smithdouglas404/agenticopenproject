@@ -290,6 +290,10 @@ paths:
     "$ref": "./paths/placeholder_users.yml"
   "/api/v3/placeholder_users/{id}":
     "$ref": "./paths/placeholder_user.yml"
+  "/api/v3/portfolios":
+    "$ref": "./paths/portfolios.yml"
+  "/api/v3/portfolios/{id}":
+    "$ref": "./paths/portfolio.yml"
   "/api/v3/posts/{id}":
     "$ref": "./paths/post.yml"
   "/api/v3/posts/{id}/attachments":
@@ -551,6 +555,8 @@ components:
       $ref: "./components/examples/notification_collection.yml"
     PlaceholderUserResponse:
       $ref: "./components/examples/placeholder-user-response.yml"
+    PortfolioCollection:
+      $ref: "./components/examples/portfolio_collection.yml"
     PriorityCollection:
       $ref: "./components/examples/priority_collection.yml"
     Project:
@@ -783,6 +789,10 @@ components:
       "$ref": "./components/schemas/placeholder_user_model.yml"
     Plain_TextModel:
       "$ref": "./components/schemas/plain_text_model.yml"
+    PortfolioCollectionModel:
+      "$ref": "./components/schemas/portfolio_collection_model.yml"
+    PortfolioModel:
+      "$ref": "./components/schemas/portfolio_model.yml"
     PostModel:
       "$ref": "./components/schemas/post_model.yml"
     PrincipalCollectionModel:
