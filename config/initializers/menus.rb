@@ -791,6 +791,7 @@ Redmine::MenuManager.map :work_package_split_view do |menu|
   menu.push :watchers,
             { tab: :watchers },
             skip_permissions_check: true,
+            last: true,
             badge: ->(work_package:, **) {
               work_package.watchers.count
             },

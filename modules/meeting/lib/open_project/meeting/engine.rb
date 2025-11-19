@@ -126,6 +126,7 @@ module OpenProject::Meeting
            :meetings,
            { tab: :meetings },
            skip_permissions_check: true,
+           after: :relations,
            if: ->(_project) {
              User.current.allowed_in_any_project?(:view_meetings)
            },
