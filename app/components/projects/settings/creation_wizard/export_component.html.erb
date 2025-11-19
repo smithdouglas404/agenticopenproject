@@ -21,10 +21,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render Projects::Settings::CreationWizard::ExportComponent.new(project: @project) %>
+<%=
+  settings_primer_form_with(
+    model: @project,
+    id: "project_creation_wizard_export_artifact_form",
+    url: "https://todo.update-route.controller",
+    method: :put
+  ) { |form| render Projects::Settings::CreationWizard::ExportForm.new(form) }
+%>
