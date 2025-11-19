@@ -67,6 +67,6 @@ RSpec.describe "BlockNote editor rendering", :js, with_flag: { block_note_editor
 
     expect(page).to have_test_selector("blocknote-document-description")
     editor.fill_in_with_content("/openproject")
-    expect(page).to have_content("Search and link an existing Work Package")
+    expect(page).to have_content("Link to existing work package")
   end
 end
