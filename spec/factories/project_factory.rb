@@ -45,19 +45,10 @@ FactoryBot.define do
       templated { true }
     end
 
-    factory :portfolio do
-      sequence(:name) { |n| "Portfolio No. #{n}" }
-      sequence(:identifier) { |n| "portfolio_no_#{n}" }
-
-      workspace_type { "portfolio" }
-    end
-
-    factory :program do
-      sequence(:name) { |n| "Program No. #{n}" }
-      sequence(:identifier) { |n| "program_no_#{n}" }
-
-      workspace_type { "program" }
-    end
+    # Factories for
+    # * portfolio
+    # * program
+    # are in separate files.
 
     factory :project_with_types do
       with_types
