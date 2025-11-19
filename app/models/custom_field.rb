@@ -244,8 +244,10 @@ class CustomField < ApplicationRecord
       value.to_i
     when "float", "calculated_value"
       value.to_f
-    when "user", "version"
-      field_format.classify.constantize.find_by(id: value.to_i)
+    when "user"
+      Principal.find_by(id: value.to_i)
+    when "version"
+      Version.find_by(id: value.to_i)
     when "hierarchy", "weighted_item_list"
       CustomField::Hierarchy::Item.find_by(id: value.to_i)
     end

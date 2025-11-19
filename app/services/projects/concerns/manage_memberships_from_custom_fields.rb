@@ -32,10 +32,9 @@ module Projects::Concerns
   module ManageMembershipsFromCustomFields
     private
 
-    def before_perform(service_call)
-      super.tap do |super_call|
-        # Because custom field changes are reset after save, we have to store them here
-        @custom_field_changes = super_call.result.custom_field_changes
+    def set_attributes(params)
+      super.tap do |set_attributes_call|
+        @custom_field_changes = set_attributes_call.result.custom_field_changes
       end
     end
 
