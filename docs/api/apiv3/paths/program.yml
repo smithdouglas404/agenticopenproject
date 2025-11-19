@@ -1,0 +1,44 @@
+# /api/v3/programs/{id}
+---
+get:
+  parameters:
+    - description: Program id
+      example: '1'
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      content:
+        application/hal+json:
+          schema:
+            "$ref": "../components/schemas/program_model.yml"
+      description: OK
+      headers: {}
+    '404':
+      content:
+        application/hal+json:
+          schema:
+            $ref: "../components/schemas/error_response.yml"
+          examples:
+            response:
+              value:
+                _type: Error
+                errorIdentifier: urn:openproject-org:api:v3:errors:NotFound
+                message: The requested resource could not be found.
+      description: |-
+        Returned if the program does not exist or the client does not have sufficient permissions
+        to see it.
+
+        **Required permission:** any permission in the program
+
+        *Note: A client without sufficient permissions shall not be able to test for the existence of a program.
+        That's why a 404 is returned here, even if a 403 might be more appropriate.*
+      headers: {}
+  tags:
+    - Programs
+  description: ''
+  operationId: View_program
+  summary: View program

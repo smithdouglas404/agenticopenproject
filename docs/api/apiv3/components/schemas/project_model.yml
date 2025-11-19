@@ -219,6 +219,6 @@ properties:
           allOf:
             - $ref: './link.yml'
             - description: |-
-                The link to the ancestors of this.
+                A collection of links to the ancestor workspaces.
 
                 **Resource**: Workspace

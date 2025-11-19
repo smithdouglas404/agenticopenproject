@@ -1,14 +1,14 @@
-# Schema: PortfolioModel
+# Schema: ProgramModel
 ---
 type: object
 properties:
   _type:
     type: string
     enum:
-      - Portfolio
+      - Program
   id:
     type: integer
-    description: Portfolios' id
+    description: Programs' id
     minimum: 1
   identifier:
     type: string
@@ -16,17 +16,17 @@ properties:
     type: string
   active:
     type: boolean
-    description: Indicates whether the portfolio is currently active or already archived
+    description: Indicates whether the program is currently active or already archived
   favorited:
     type: boolean
-    description: Indicates whether the portfolio is favorited by the current user
+    description: Indicates whether the program is favorited by the current user
   statusExplanation:
     allOf:
       - $ref: './formattable.yml'
-      - description: A text detailing and explaining why the portfolio has the reported status
+      - description: A text detailing and explaining why the program has the reported status
   public:
     type: boolean
-    description: Indicates whether the portfolio is accessible for everybody
+    description: Indicates whether the program is accessible for everybody
   description:
     $ref: './formattable.yml'
   createdAt:
@@ -36,7 +36,7 @@ properties:
   updatedAt:
     type: string
     format: date-time
-    description: Time of the most recent change to the portfolio
+    description: Time of the most recent change to the program
   _links:
     type: object
     required:
@@ -51,7 +51,7 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Form endpoint that aids in updating this portfolio
+              Form endpoint that aids in updating this program
 
               # Conditions
 
@@ -60,7 +60,7 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Directly update this portfolio
+              Directly update this program
 
               # Conditions
 
@@ -69,7 +69,7 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Delete this portfolio
+              Delete this program
 
               # Conditions
 
@@ -78,21 +78,21 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Mark this portfolio as favorited by the current user
+              Mark this program as favorited by the current user
 
               # Conditions
 
-              Only present if the portfolio is not yet favorited
+              Only present if the program is not yet favorited
 
               Permission**: none but login is required
       disfavor:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Mark this portfolio as not favorited by the current user
+              Mark this program as not favorited by the current user
 
               # Conditions
-              Only present if the portfolio is favorited by the current user
+              Only present if the program is favorited by the current user
 
               Permission**: none but login is required
       createWorkPackage:
@@ -108,7 +108,7 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Directly creates a work package in the portfolio
+              Directly creates a work package in the program
 
               # Conditions
 
@@ -117,21 +117,21 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              This portfolio
+              This program
 
-              **Resource**: Portfolio
+              **Resource**: Program
       categories:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Categories available in this portfolio
+              Categories available in this program
 
               **Resource**: Collection
       types:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Types available in this portfolio
+              Types available in this program
 
               **Resource**: Collection
 
@@ -142,7 +142,7 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Versions available in this portfolio
+              Versions available in this program
 
               **Resource**: Collection
 
@@ -153,7 +153,7 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Memberships in the  portfolio
+              Memberships in the  program
 
               **Resource**: Collection
 
@@ -164,16 +164,16 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Work Packages of this portfolio
+              Work Packages of this program
 
               **Resource**: Collection
       parent:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Parent of the portfolio
+              Parent of the program
 
-              **Resource**: Portfolio
+              **Resource**: Program
 
               # Conditions
 
@@ -182,7 +182,7 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              Denotes the status of the portfolio, so whether the portfolio is on track, at risk or is having trouble.
+              Denotes the status of the program, so whether the program is on track, at risk or is having trouble.
 
               **Resource**: ProjectStatus
 
@@ -195,7 +195,7 @@ properties:
           allOf:
             - $ref: './link.yml'
             - description: |-
-                The link to a storage that is active for this portfolio.
+                The link to a storage that is active for this program.
 
                 **Resource**: Storage
 
@@ -206,7 +206,7 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              The project storage collection of this portfolio.
+              The project storage collection of this program.
 
               **Resource**: Collection
 
@@ -219,6 +219,6 @@ properties:
           allOf:
             - $ref: './link.yml'
             - description: |-
-                A collection of links to the ancestor portfolios.
+                A collection of links to the ancestor workspace.
 
-                **Resource**: Portfolio
+                **Resource**: Workspace

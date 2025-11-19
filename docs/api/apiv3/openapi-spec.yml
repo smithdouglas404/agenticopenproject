@@ -304,6 +304,10 @@ paths:
     "$ref": "./paths/priorities.yml"
   "/api/v3/priorities/{id}":
     "$ref": "./paths/priority.yml"
+  "/api/v3/programs":
+    "$ref": "./paths/programs.yml"
+  "/api/v3/programs/{id}":
+    "$ref": "./paths/program.yml"
   "/api/v3/project_phases/{id}":
     "$ref": "./paths/project_phase.yml"
   "/api/v3/project_phase_definitions":
@@ -559,6 +563,8 @@ components:
       $ref: "./components/examples/portfolio_collection.yml"
     PriorityCollection:
       $ref: "./components/examples/priority_collection.yml"
+    ProgramCollection:
+      $ref: "./components/examples/program_collection.yml"
     Project:
       $ref: "./components/examples/project.yml"
     ProjectBody:
@@ -803,6 +809,10 @@ components:
       "$ref": "./components/schemas/priority_collection_model.yml"
     PriorityModel:
       "$ref": "./components/schemas/priority_model.yml"
+    ProgramCollectionModel:
+      "$ref": "./components/schemas/program_collection_model.yml"
+    ProgramModel:
+      "$ref": "./components/schemas/program_model.yml"
     ProjectCollectionModel:
       "$ref": "./components/schemas/project_collection_model.yml"
     ProjectModel:
