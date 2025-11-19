@@ -16,7 +16,7 @@ sidebar_navigation:
 
 This guide provides an overview of the current options for migrating data from Atlassian JIRA or Confluence to OpenProject. It also describes ongoing community and in-house development efforts for dedicated migration solutions.
 
-With the [end of life for JIRA Data Center](https://www.openproject.org/blog/jira-alternative-end-of-data-center/), many organizations are evaluating OpenProject as a secure, open-source, and self-hosted alternative for project management and collaboration.
+With the [end of life for JIRA Data Center](https://www.openproject.org/blog/jira-alternative-end-of-data-center/), many organizations are evaluating [OpenProject as a secure, open-source, and self-hosted alternative for project management and collaboration](https://www.openproject.org/alternative-atlassian-jira-data-center/).
 
 ## Migration Options
 
