@@ -39,7 +39,8 @@ module Primer
                     :value,
                     :active_user,
                     :attachments_upload_url,
-                    :attachments_collection_key
+                    :attachments_collection_key,
+                    :collaboration_enabled
 
         delegate :name, to: :@input
 
@@ -53,6 +54,8 @@ module Primer
           }
           @attachments_upload_url = attachments_upload_url
           @attachments_collection_key = attachments_collection_key
+
+          @collaboration_enabled = true
         end
       end
     end

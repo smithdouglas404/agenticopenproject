@@ -38,6 +38,11 @@ RSpec.describe "BlockNote editor rendering", :js, with_flag: { block_note_editor
 
   before do
     login_as(admin)
+
+    # This is here while we don't have a setting defined for enabling/disabling collaboration
+    # rubocop:disable RSpec/AnyInstance
+    allow_any_instance_of(Primer::OpenProject::Forms::BlockNoteEditor).to receive(:collaboration_enabled).and_return(false)
+    # rubocop:enable RSpec/AnyInstance
   end
 
   it "renders the BlockNote editor in the users locale" do

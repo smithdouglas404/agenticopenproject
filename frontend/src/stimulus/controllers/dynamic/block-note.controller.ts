@@ -42,28 +42,31 @@ export default class extends Controller {
     'blockNoteInputField',
   ];
 
+  declare readonly blockNoteEditorTarget:HTMLElement;
+  declare readonly blockNoteInputFieldTarget:HTMLInputElement;
+
   static values = {
     inputText: String,
     activeUser: Object,
     openProjectUrl: String,
     attachmentsUploadUrl: String,
     attachmentsCollectionKey: String,
+
+    collaborationEnabled: Boolean,
   };
 
-  declare readonly blockNoteEditorTarget:HTMLElement;
-  declare readonly blockNoteInputFieldTarget:HTMLInputElement;
   declare readonly inputTextValue:string;
   declare readonly activeUserValue:User;
   declare readonly openProjectUrlValue:string;
   declare readonly attachmentsUploadUrlValue:string;
   declare readonly attachmentsCollectionKeyValue:string;
 
+  declare readonly collaborationEnabledValue:string;
+
   connect() {
     const root = createRoot(this.blockNoteEditorTarget);
 
-    // this should be a system wide configuration
-    const collaborationEnabled = true;
-    if (collaborationEnabled) {
+    if (this.collaborationEnabledValue) {
       LiveCollaborationManager.onReady((hocuspocusProvider) => {
         root.render(this.BlockNoteReactContainer(hocuspocusProvider));
       });

@@ -46,6 +46,13 @@ RSpec.describe "Show/Edit Document View",
 
   current_user { member }
 
+  before do
+    # This is here while we don't have a setting defined for enabling/disabling collaboration
+    # rubocop:disable RSpec/AnyInstance
+    allow_any_instance_of(Primer::OpenProject::Forms::BlockNoteEditor).to receive(:collaboration_enabled).and_return(false)
+    # rubocop:enable RSpec/AnyInstance
+  end
+
   it "renders a collaborative document" do
     visit document_path(document)
 
