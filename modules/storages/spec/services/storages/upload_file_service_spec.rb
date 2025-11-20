@@ -122,7 +122,7 @@ module Storages
              vcr: "services/nextcloud_upload_file_new_folder_success_file" do
             expect do
               described_class.call(container: work_package, project_storage: project_storage,
-                                   file_path: "/uploads/documents/new_folder", filename: filename, file_data: file_data)
+                                   file_path: "/uploads/documents/secret", filename: filename, file_data: file_data)
             end.to change(FileLink, :count).by(1)
             file_link = FileLink.last
             expect(file_link.creator).to eq(user)
