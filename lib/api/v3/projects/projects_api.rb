@@ -64,9 +64,9 @@ module API
                          end.find(params[:id])
             end
 
-            get &::API::V3::Utilities::Endpoints::Show.new(model: Project).mount
             mount API::V3::Projects::Copy::CopyAPI
 
+            mount ::API::V3::Workspaces::InstanceApis
             mount ::API::V3::Workspaces::NestedApis
           end
         end

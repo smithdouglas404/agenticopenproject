@@ -31,14 +31,13 @@
 module API
   module V3
     module Workspaces
-      class NestedApis < ::API::OpenProjectAPI
-        mount API::V3::Workspaces::AvailableAssigneesAPI
-        mount API::V3::Types::TypesByWorkspaceAPI
-        mount API::V3::WorkPackages::WorkPackagesByWorkspaceAPI
-        mount API::V3::Categories::CategoriesByWorkspaceAPI
-        mount API::V3::Versions::VersionsByProjectAPI
-        mount API::V3::Queries::QueriesByWorkspaceAPI
-        mount API::V3::Favorites::FavoriteActionsAPI, with: { favorite_object_getter: ->(*) { @project } }
+      class InstanceApis < ::API::OpenProjectAPI
+        get &::API::V3::Utilities::Endpoints::Show.new(model: Project).mount
+        # mount ::API::V3::Projects::UpdateFormAPI
+        # patch &::API::V3::Utilities::Endpoints::Update.new(model: Project).mount
+        delete &::API::V3::Utilities::Endpoints::Delete.new(model: Project,
+                                                            process_service: ::Projects::ScheduleDeletionService)
+                                                       .mount
       end
     end
   end

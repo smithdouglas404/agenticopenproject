@@ -49,7 +49,7 @@ module API
                          end.find(params[:id])
             end
 
-            get &::API::V3::Utilities::Endpoints::Show.new(model: Project).mount
+            mount ::API::V3::Workspaces::InstanceApis
           end
         end
       end

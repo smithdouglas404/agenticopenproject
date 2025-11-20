@@ -30,7 +30,7 @@
 
 FactoryBot.define do
   factory :program, parent: :workspace do
-    workspace_type { "portfolio" }
+    workspace_type { "program" }
 
     sequence(:name) { |n| "My Portfolio No. #{n}" }
     sequence(:identifier) { |n| "myportfolio_no_#{n}" }

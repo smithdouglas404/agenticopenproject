@@ -28,17 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module API
-  module V3
-    module Workspaces
-      class NestedApis < ::API::OpenProjectAPI
-        mount API::V3::Workspaces::AvailableAssigneesAPI
-        mount API::V3::Types::TypesByWorkspaceAPI
-        mount API::V3::WorkPackages::WorkPackagesByWorkspaceAPI
-        mount API::V3::Categories::CategoriesByWorkspaceAPI
-        mount API::V3::Versions::VersionsByProjectAPI
-        mount API::V3::Queries::QueriesByWorkspaceAPI
-        mount API::V3::Favorites::FavoriteActionsAPI, with: { favorite_object_getter: ->(*) { @project } }
+require "spec_helper"
+require "rack/test"
+require_relative "../workspaces/delete_resource_examples"
+
+RSpec.describe "API v3 Project resource delete", content_type: :json do
+  describe "DELETE /api/v3/projects/:id" do
+    include_examples "APIv3 deleting a workspace" do
+      let(:workspace) { create(:project) }
+      let(:path_id) { workspace.id }
+      let(:path) { api_v3_paths.project(path_id) }
+
+      context "with a portfolio id" do
+        let(:workspace) do
+          create(:portfolio, public: true)
+        end
+
+        it_behaves_like "not found"
       end
     end
   end
