@@ -54,6 +54,12 @@ module Portfolios
       all_descendants.project
     end
 
+    def render_sub_status_bar?
+      # When none of the descendants have a status set, there's nothing to show and we
+      # will return false.
+      sub_statuses.keys.any?(&:present?)
+    end
+
     def sub_statuses_with_percentages
       return @status_percentage if @status_percentage
 

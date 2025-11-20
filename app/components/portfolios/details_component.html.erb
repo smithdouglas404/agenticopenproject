@@ -25,7 +25,7 @@
           )
         end
 
-        if sub_statuses_with_percentages.any?
+        if render_sub_status_bar?
           header.with_column(classes: "op-portfolios--progress") do
             render(
               Primer::Beta::ProgressBar.new(
@@ -133,7 +133,7 @@
     end
 
     # Card that appears when hovering over the progress bar
-    if sub_statuses_with_percentages.any?
+    if render_sub_status_bar?
       flex.with_row(classes: "op-portfolios--popover-container") do
         flex_layout(
           classes: "op-portfolios--popover op-hover-card",
