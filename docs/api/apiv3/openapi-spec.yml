@@ -520,6 +520,8 @@ paths:
     "$ref": "./paths/work_package_watchers.yml"
   "/api/v3/work_packages/{id}/watchers/{user_id}":
     "$ref": "./paths/work_package_watcher.yml"
+  "/api/v3/workspaces/schema":
+    "$ref": "./paths/workspaces_schema.yml"
 
 components:
   examples:
@@ -707,6 +709,10 @@ components:
       "$ref": "./components/schemas/document_model.yml"
     DocumentsModel:
       "$ref": "./components/schemas/documents_model.yml"
+    EmojiReactionModel:
+      "$ref": "./components/schemas/emoji_reaction_model.yml"
+    EmojiReactions_Model:
+      "$ref": "./components/schemas/emoji_reactions_model.yml"
     ErrorResponse:
       "$ref": "./components/schemas/error_response.yml"
     Example_FormModel:
@@ -839,8 +845,6 @@ components:
       "$ref": "./components/schemas/project_storage_collection_model.yml"
     ProjectStorageModel:
       "$ref": "./components/schemas/project_storage_model.yml"
-    Projects_schemaModel:
-      "$ref": "./components/schemas/projects_schema_model.yml"
     QueriesModel:
       "$ref": "./components/schemas/queries_model.yml"
     QueryModel:
@@ -983,10 +987,8 @@ components:
       "$ref": "./components/schemas/work_package_activities_model.yml"
     Work_PackagesModel:
       "$ref": "./components/schemas/work_packages_model.yml"
-    EmojiReactionModel:
-      "$ref": "./components/schemas/emoji_reaction_model.yml"
-    EmojiReactions_Model:
-      "$ref": "./components/schemas/emoji_reactions_model.yml"
+    Workspaces_schemaModel:
+      "$ref": "./components/schemas/workspaces_schema_model.yml"
   securitySchemes:
     BasicAuth:
       type: http

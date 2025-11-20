@@ -1,4 +1,4 @@
-# /api/v3/projects/schemas
+# /api/v3/workspaces/schemas
 ---
 get:
   responses:
@@ -10,20 +10,20 @@ get:
               value:
                 _dependencies: []
                 _attributeGroups:
-                - _type: ProjectFormCustomFieldSection
-                  name: Project Details
-                  attributes:
-                  - customField30
-                  - customField34
-                - _type: ProjectFormCustomFieldSection
-                  name: Budget Information
-                  attributes:
-                  - customField31
-                  - customField32
-                  - customField35
+                  - _type: ProjectFormCustomFieldSection
+                    name: Project Details
+                    attributes:
+                      - customField30
+                      - customField34
+                  - _type: ProjectFormCustomFieldSection
+                    name: Budget Information
+                    attributes:
+                      - customField31
+                      - customField32
+                      - customField35
                 _links:
                   self:
-                    href: "/api/v3/projects/schema"
+                    href: "/api/v3/workspaces/schema"
                 _type: Schema
                 active:
                   hasDefault: true
@@ -39,7 +39,7 @@ get:
                   writable: false
                 customField30:
                   hasDefault: false
-                  name: Integer project custom field
+                  name: Integer workspace custom field
                   required: false
                   type: Integer
                   visibility: default
@@ -48,7 +48,7 @@ get:
                   _links: {}
                   hasDefault: false
                   location: _links
-                  name: List project custom field
+                  name: List workspace custom field
                   required: false
                   type: CustomOption
                   visibility: default
@@ -57,21 +57,21 @@ get:
                   _links: {}
                   hasDefault: false
                   location: _links
-                  name: Version project custom field
+                  name: Version workspace custom field
                   required: false
                   type: Version
                   visibility: default
                   writable: true
                 customField34:
                   hasDefault: false
-                  name: Boolean project custom field
+                  name: Boolean workspace custom field
                   required: false
                   type: Boolean
                   visibility: default
                   writable: true
                 customField35:
                   hasDefault: false
-                  name: Text project custom field
+                  name: Text workspace custom field
                   required: true
                   type: String
                   visibility: default
@@ -110,7 +110,7 @@ get:
                   location: _links
                   name: Subproject of
                   required: false
-                  type: Project
+                  type: Workspace
                   visibility: default
                   writable: true
                 public:
@@ -122,12 +122,12 @@ get:
                 status:
                   _links:
                     allowedValues:
-                    - href: "/api/v3/project_statuses/on_track"
-                      title: On track
-                    - href: "/api/v3/project_statuses/at_risk"
-                      title: At risk
-                    - href: "/api/v3/project_statuses/off_track"
-                      title: Off track
+                      - href: "/api/v3/project_statuses/on_track"
+                        title: On track
+                      - href: "/api/v3/project_statuses/at_risk"
+                        title: At risk
+                      - href: "/api/v3/project_statuses/off_track"
+                        title: Off track
                   hasDefault: true
                   name: Status
                   required: false
@@ -150,9 +150,7 @@ get:
       description: OK
       headers: {}
   tags:
-  - Projects
-  description: 'Provides the schema describing a project resource.
-
-  This endpoint is deprecated. As projects are workspaces, an equivalent schema can be found fetching `/api/v3/workspaces/schema`.'
-  operationId: View_project_schema
-  summary: View project schema
+    - Workspaces
+  description: ''
+  operationId: View_workspace_schema
+  summary: View workspace schema
