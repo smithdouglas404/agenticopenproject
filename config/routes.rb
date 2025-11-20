@@ -664,6 +664,7 @@ Rails.application.routes.draw do
           delete :unlink
 
           get :role_assignment
+          post :update_role_assignment
         end
         resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
           member do
