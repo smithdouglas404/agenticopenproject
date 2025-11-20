@@ -61,9 +61,15 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
   end
 
   context "with no children" do
-    let(:user) { build_stubbed(:admin) }
+    let(:user) { build_stubbed(:user) }
     let(:empty_selector) { "subitems-widget-empty" }
     let(:empty_message)  { "This widget is currently empty." }
+
+    before do
+      mock_permissions_for(user) do |mock|
+        mock.allow_in_project(:view_project, :add_subprojects, project:)
+      end
+    end
 
     it_behaves_like "empty-state with action"
 
@@ -71,8 +77,9 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
       let(:user) { build_stubbed(:user) }
 
       before do
-        allow(user).to receive(:allowed_in_project?).with(:view_project, project).and_return(true)
-        allow(user).to receive(:allowed_in_project?).with(:add_subprojects, project).and_return(false)
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_project, project:)
+        end
       end
 
       it_behaves_like "empty-state without action"
@@ -122,14 +129,24 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
       end
     end
 
+    context "when user can view parent but does not have permission to view any subprojects" do
+      let(:user) { build_stubbed(:user) }
+      let(:empty_selector) { "subitems-widget-empty" }
+      let(:empty_message)  { "This widget is currently empty." }
+
+      before do
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_project, project:)
+        end
+      end
+
+      it_behaves_like "empty-state without action"
+    end
+
     context "when user doesn't have permission to view project" do
       let(:user) { build_stubbed(:user) }
       let(:empty_selector) { "subitems-widget-no-permission" }
       let(:empty_message)  { "This widget is not available." }
-
-      before do
-        allow(user).to receive(:allowed_in_project?).with(:view_project, project).and_return(false)
-      end
 
       it_behaves_like "empty-state without action"
     end
