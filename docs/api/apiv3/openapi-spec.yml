@@ -520,6 +520,8 @@ paths:
     "$ref": "./paths/work_package_watchers.yml"
   "/api/v3/work_packages/{id}/watchers/{user_id}":
     "$ref": "./paths/work_package_watcher.yml"
+  "/api/v3/workspaces":
+    "$ref": "./paths/workspaces.yml"
   "/api/v3/workspaces/schema":
     "$ref": "./paths/workspaces_schema.yml"
 
@@ -987,6 +989,8 @@ components:
       "$ref": "./components/schemas/work_package_activities_model.yml"
     Work_PackagesModel:
       "$ref": "./components/schemas/work_packages_model.yml"
+    WorkspaceCollectionModel:
+      "$ref": "./components/schemas/workspace_collection_model.yml"
     Workspaces_schemaModel:
       "$ref": "./components/schemas/workspaces_schema_model.yml"
   securitySchemes:
