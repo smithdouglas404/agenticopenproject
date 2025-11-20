@@ -43,7 +43,7 @@ module Storages
             let(:auth_strategy) { Registry["sharepoint.authentication.userless"].call(false) }
             let(:input_data) { Input::Files.build(folder:).value! }
 
-            it_behaves_like "adapter files_query: basic query setup"
+            it_behaves_like "storage adapter: query call signature", "files"
 
             context "when parent folder is root", vcr: "sharepoint/files_query_root" do
               let(:folder) { "/" }

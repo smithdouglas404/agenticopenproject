@@ -23,21 +23,33 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
-  module Adapters
-    module Input
-      CreateFolder = Data.define(:folder_name, :parent_location) do
-        private_class_method :new
+RSpec.shared_examples_for "storage adapter: command call signature" do |command_name|
+  it "is registered as commands.#{command_name}" do
+    expect(Storages::Adapters::Registry.resolve("#{storage}.commands.#{command_name}")).to eq(described_class)
+  end
 
-        def self.build(folder_name:, parent_location:, contract: CreateFolderContract.new)
-          contract.call(folder_name:, parent_location:).to_monad.fmap { new(**it.to_h) }
-        end
-      end
-    end
+  it "responds to #call with correct parameters" do
+    expect(described_class).to respond_to(:call)
+
+    method = described_class.method(:call)
+    expect(method.parameters).to contain_exactly(%i[keyreq storage], %i[keyreq auth_strategy], %i[keyreq input_data])
+  end
+end
+
+RSpec.shared_examples_for "storage adapter: query call signature" do |query_name|
+  it "is registered as queries.#{query_name}" do
+    expect(Storages::Adapters::Registry.resolve("#{storage}.queries.#{query_name}")).to eq(described_class)
+  end
+
+  it "responds to #call with correct parameters" do
+    expect(described_class).to respond_to(:call)
+
+    method = described_class.method(:call)
+    expect(method.parameters).to contain_exactly(%i[keyreq storage], %i[keyreq auth_strategy], %i[keyreq input_data])
   end
 end

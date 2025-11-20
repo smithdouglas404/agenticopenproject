@@ -28,16 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
-  module Adapters
-    module Input
-      CreateFolder = Data.define(:folder_name, :parent_location) do
-        private_class_method :new
+RSpec.shared_examples_for "adapter upload_file_command: successful file upload" do
+  it "uploads the file" do
+    result = described_class.call(storage:, auth_strategy:, input_data:)
 
-        def self.build(folder_name:, parent_location:, contract: CreateFolderContract.new)
-          contract.call(folder_name:, parent_location:).to_monad.fmap { new(**it.to_h) }
-        end
-      end
-    end
+    expect(result).to be_success
+
+    response = result.value!
+    expect(response).to be_a(Storages::Adapters::Results::StorageFile)
+    expect(response.name).to eq(file_name)
+    expect(response.location).to eq("#{parent_location}#{file_name}")
+    expect(response.mime_type).to eq("text/plain")
+  end
+end
+
+RSpec.shared_examples_for "adapter upload_file_command: not found" do
+  it "returns a failure" do
+    result = described_class.call(storage:, auth_strategy:, input_data:)
+
+    expect(result).to be_failure
+
+    error = result.failure
+    expect(error.code).to eq(:not_found)
+    expect(error.source).to eq(described_class)
   end
 end

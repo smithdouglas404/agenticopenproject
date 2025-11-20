@@ -401,6 +401,7 @@ en:
       int?: "must be an integer."
       key?: "is missing."
       not_found: "not found."
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."

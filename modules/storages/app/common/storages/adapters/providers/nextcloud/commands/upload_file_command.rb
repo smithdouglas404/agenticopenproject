@@ -33,30 +33,29 @@ module Storages
     module Providers
       module Nextcloud
         module Commands
-          class CreateFolderCommand < Base
+          class UploadFileCommand < Base
             def call(auth_strategy:, input_data:)
               with_tagged_logger do
-                info "Trying to create folder #{input_data.folder_name} under #{input_data.parent_location}"
                 origin_user_id(auth_strategy:).bind do |origin_user|
                   path_prefix = UrlBuilder.path(@storage.uri.path, "remote.php/dav/files", origin_user)
                   request_url = UrlBuilder.url(@storage.uri,
                                                "remote.php/dav/files",
                                                origin_user,
                                                input_data.parent_location.path,
-                                               input_data.folder_name)
-
-                  create_folder_request(auth_strategy, request_url, path_prefix)
+                                               input_data.file_name)
+                  upload_file_request(auth_strategy, request_url, input_data.io, path_prefix)
                 end
               end
             end
 
             private
 
-            def create_folder_request(auth_strategy, request_url, path_prefix)
+            def upload_file_request(auth_strategy, request_url, io, path_prefix)
               Authentication[auth_strategy].call(storage: @storage) do |http|
-                handle_response(http.mkcol(request_url)).bind do
+                handle_response(http.put(request_url, body: io)).bind do
+                  info "File successfully uploaded, fetching its file info back..."
                   handle_response(http.propfind(request_url, storage_file_transformer.requested_properties)).bind do |response|
-                    info "Folder successfully created"
+                    info "Info of uploaded file fetched"
                     storage_file_transformer.transform_document(response.xml, path_prefix)
                   end
                 end
@@ -71,9 +70,9 @@ module Storages
                 Success(response)
               in { status: 401 }
                 Failure(error.with(code: :unauthorized))
-              in { status: 404 | 409 } # webDAV endpoint returns 409 if path does not exist
+              in { status: 404 }
                 Failure(error.with(code: :not_found))
-              in { status: 405 } # webDAV endpoint returns 405 if folder already exists
+              in { status: 409 }
                 Failure(error.with(code: :conflict))
               else
                 Failure(error.with(code: :error))

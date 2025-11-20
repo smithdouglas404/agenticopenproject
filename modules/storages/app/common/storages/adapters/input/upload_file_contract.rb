@@ -31,11 +31,11 @@
 module Storages
   module Adapters
     module Input
-      CreateFolder = Data.define(:folder_name, :parent_location) do
-        private_class_method :new
-
-        def self.build(folder_name:, parent_location:, contract: CreateFolderContract.new)
-          contract.call(folder_name:, parent_location:).to_monad.fmap { new(**it.to_h) }
+      class UploadFileContract < DryApplicationContract
+        params do
+          required(:parent_location).filter(:filled?, :str?).value(AdapterTypes::Location)
+          required(:file_name).filled(:string)
+          required(:io).filled(AdapterTypes::HttpxIO)
         end
       end
     end

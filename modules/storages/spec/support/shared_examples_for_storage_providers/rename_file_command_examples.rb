@@ -28,19 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-RSpec.shared_examples_for "adapter rename_file_command: basic command setup" do
-  it "is registered as commands.rename_file" do
-    expect(Storages::Adapters::Registry.resolve("#{storage}.commands.rename_file")).to eq(described_class)
-  end
-
-  it "responds to #call with correct parameters" do
-    expect(described_class).to respond_to(:call)
-
-    method = described_class.method(:call)
-    expect(method.parameters).to contain_exactly(%i[keyreq storage], %i[keyreq auth_strategy], %i[keyreq input_data])
-  end
-end
-
 RSpec.shared_examples_for "adapter rename_file_command: successful file renaming" do
   it "returns success and the renamed file" do
     result = described_class.call(storage:, auth_strategy:, input_data:)

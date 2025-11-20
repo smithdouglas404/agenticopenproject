@@ -36,37 +36,40 @@ module Storages
     module Providers
       module Nextcloud
         module Commands
-          RSpec.describe RenameFileCommand, :webmock do
+          RSpec.describe UploadFileCommand, :webmock do
             let(:user) { create(:user) }
             let(:storage) do
-              create(:nextcloud_storage_with_local_connection, :as_not_automatically_managed, oauth_client_token_user: user)
+              create(:nextcloud_storage_with_local_connection, :as_automatically_managed)
             end
 
-            let(:auth_strategy) { Registry.resolve("nextcloud.authentication.user_bound").call(user, storage) }
-            let(:input_data) { Input::RenameFile.build(location: file_id, new_name: name).value! }
+            let(:auth_strategy) { Registry["nextcloud.authentication.userless"].call(user, storage) }
+            let(:input_data) { Input::UploadFile.build(parent_location:, file_name:, io:).value! }
+            let(:parent_location) { "/" }
+            let(:file_name) { "test-file.txt" }
+            let(:io) { StringIO.new("This is the file content.") }
 
-            it_behaves_like "storage adapter: command call signature", "rename_file"
+            it_behaves_like "storage adapter: command call signature", "upload_file"
 
-            context "when renaming a folder", vcr: "nextcloud/rename_file_success" do
-              let(:file_id) { "169" }
-              let(:name) { "I am the senat" }
-
-              it_behaves_like "adapter rename_file_command: successful file renaming"
+            context "when uploading a file to the root folder", vcr: "nextcloud/upload_file_root" do
+              it_behaves_like "adapter upload_file_command: successful file upload"
             end
 
-            context "when renaming a file inside a subdirectory", vcr: "nextcloud/rename_file_with_location_success" do
-              let(:file_id) { "167" }
-              let(:name) { "I❤️you death star.md" }
+            context "when uploading a file to a sub-folder", vcr: "nextcloud/upload_file_subfolder" do
+              let(:parent_location) { "/existing-sub-folder/" }
 
-              it_behaves_like "adapter rename_file_command: successful file renaming"
+              it_behaves_like "adapter upload_file_command: successful file upload"
             end
 
-            context "when trying to rename a not existent file", vcr: "nextcloud/rename_file_not_found" do
-              let(:file_id) { "sith_have_yellow_light_sabers" }
-              let(:name) { "this_will_not_happen.txt" }
-              let(:error_source) { Queries::FileInfoQuery }
+            context "when uploading a file to a non-existing folder", vcr: "nextcloud/upload_file_missing_folder" do
+              let(:parent_location) { "/non-existing-folder/" }
 
-              it_behaves_like "adapter rename_file_command: not found"
+              it_behaves_like "adapter upload_file_command: not found"
+            end
+
+            context "when uploading a file that has a filename with non-ASCII characters", vcr: "nextcloud/upload_file_unicode" do
+              let(:file_name) { "🍑 is not spelled Pfürsich.txt" }
+
+              it_behaves_like "adapter upload_file_command: successful file upload"
             end
           end
         end
