@@ -29,60 +29,62 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   widget_wrapper do
-    if can_view_members? && members_by_role.any?
-      flex_layout(style: "gap: var(--base-size-8, 8px)") do |flex|
-        spacer_component = Primer::Beta::Text.new(mr: 1).with_content(", ")
+    if can_view_members?
+      if members_by_role.any?
+        flex_layout(style: "gap: var(--base-size-8, 8px)") do |flex|
+          spacer_component = Primer::Beta::Text.new(mr: 1).with_content(", ")
 
-        members_by_role.each do |role_data|
-          flex.with_row do
-            render(Primer::Beta::Text.new(font_weight: :semibold)) { role_data[:role].name }
+          members_by_role.each do |role_data|
+            flex.with_row do
+              render(Primer::Beta::Text.new(font_weight: :semibold)) { role_data[:role].name }
+            end
+
+            flex.with_row(mb: 2) do
+              concat render(
+                         Users::AvatarComponent
+                         .with_collection(
+                           role_data[:members],
+                           size: :mini,
+                           link: false,
+                           show_name: true,
+                           spacer_component:
+                         )
+                     )
+
+              if role_data[:has_more]
+                concat render(
+                         Primer::Beta::Link.new(
+                           href: project_members_path(@project, role_id: role_data[:role].id),
+                           ml: 1,
+                           font_weight: :semibold,
+                           classes: "op-principal"
+                         ).with_content(t(".x_more", count: role_data[:remaining])))
+              end
+            end
           end
 
-          flex.with_row(mb: 2) do
-            concat render(
-                       Users::AvatarComponent
-                       .with_collection(
-                         role_data[:members],
-                         size: :mini,
-                         link: false,
-                         show_name: true,
-                         spacer_component:
-                       )
-                   )
-
-            if role_data[:has_more]
-              concat render(
-                       Primer::Beta::Link.new(
-                         href: project_members_path(@project, role_id: role_data[:role].id),
-                         ml: 1,
-                         font_weight: :semibold,
-                         classes: "op-principal"
-                       ).with_content(t(".x_more", count: role_data[:remaining])))
+          flex.with_row(mt: 4) do
+            render Primer::Beta::Link.new(href: project_members_path(@project)) do
+              t(".view_all_members")
             end
           end
         end
+      else
+        render(Primer::Beta::Blankslate.new(test_selector: "members-widget-empty")) do |component|
+          component.with_visual_icon(icon: :person)
+          component.with_heading(tag: :h3).with_content(title)
+          component.with_description { I18n.t("grids.widgets.empty") }
 
-        flex.with_row(mt: 4) do
-          render Primer::Beta::Link.new(href: project_members_path(@project)) do
-            t(".view_all_members")
-          end
-        end
-      end
-
-    elsif can_view_members?
-      render(Primer::Beta::Blankslate.new(test_selector: "members-widget-empty")) do |component|
-        component.with_visual_icon(icon: :person)
-        component.with_heading(tag: :h3).with_content(title)
-        component.with_description { I18n.t("grids.widgets.empty") }
-
-        if can_manage_members?
-          component.with_primary_action(
-            tag: :a,
-            href: project_members_path(@project),
-            scheme: :secondary
-          ) do |button|
-            button.with_leading_visual_icon(icon: :plus)
-            t("activerecord.models.member")
+          if can_manage_members?
+            component.with_primary_action(
+              tag: :a,
+              href: project_members_path(@project),
+              scheme: :secondary,
+              test_selector: "members-widget-add-button"
+            ) do |button|
+              button.with_leading_visual_icon(icon: :plus)
+              t("activerecord.models.member")
+            end
           end
         end
       end
