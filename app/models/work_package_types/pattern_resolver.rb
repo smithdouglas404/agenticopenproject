@@ -57,32 +57,34 @@ module WorkPackageTypes
       return ATTRIBUTE_PLACEHOLDER if attribute_token.nil?
 
       I18n.with_locale(Setting.default_language) do
-        stringify(attribute_token.call(context), nil_replacement(attribute_token))
+        stringify(attribute_token.key, attribute_token.call(context), nil_replacement(attribute_token))
       end
     end
 
-    def nil_replacement(attribute_resolver)
-      if attribute_resolver.context == :work_package
-        "[#{attribute_resolver.label}]"
+    def nil_replacement(attribute_token)
+      if attribute_token.context == :work_package
+        "[#{attribute_token.label}]"
       else
-        "[#{attribute_resolver.label_with_context}]"
+        "[#{attribute_token.label_with_context}]"
       end
     end
 
-    def stringify(value, nil_fallback)
+    def stringify(key, value, nil_fallback)
       case value
       when Date, Time, DateTime
-        value.strftime("%Y-%m-%d")
+        return value.strftime("%Y-%m-%d")
       when Array
         compact = value.compact
-        compact.empty? ? nil_fallback : compact.join(", ")
+        return compact.empty? ? nil_fallback : compact.join(", ")
       when NilClass
-        nil_fallback
+        return nil_fallback
       when :attribute_not_available
-        ATTRIBUTE_PLACEHOLDER
-      else
-        value.to_s
+        return ATTRIBUTE_PLACEHOLDER
       end
+
+      return DurationConverter.output(value) if key.to_s.ends_with?("_time")
+
+      value.to_s
     end
   end
 end
