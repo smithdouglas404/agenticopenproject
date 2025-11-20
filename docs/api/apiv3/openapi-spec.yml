@@ -563,12 +563,16 @@ components:
       $ref: "./components/examples/notification_collection.yml"
     PlaceholderUserResponse:
       $ref: "./components/examples/placeholder-user-response.yml"
+    Portfolio:
+      $ref: "./components/examples/portfolio.yml"
     PortfolioBody:
       $ref: "./components/examples/portfolio_body.yml"
     PortfolioCollection:
       $ref: "./components/examples/portfolio_collection.yml"
     PriorityCollection:
       $ref: "./components/examples/priority_collection.yml"
+    Program:
+      $ref: "./components/examples/program.yml"
     ProgramBody:
       $ref: "./components/examples/program_body.yml"
     ProgramCollection:

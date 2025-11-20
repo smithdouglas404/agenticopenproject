@@ -42,6 +42,101 @@ get:
   description: ''
   operationId: View_program
   summary: View program
+patch:
+  parameters:
+    - description: Program id
+      example: '1'
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/program_model.yml'
+        examples:
+          "with custom fields":
+            "$ref": "../components/examples/program_body.yml"
+  responses:
+    '200':
+      content:
+        application/hal+json:
+          schema:
+            "$ref": "../components/schemas/program_model.yml"
+          examples:
+            "with custom fields":
+              "$ref": "../components/examples/program.yml"
+      description: OK
+      headers: {}
+    '400':
+      $ref: "../components/responses/invalid_request_body.yml"
+    '403':
+      content:
+        application/hal+json:
+          schema:
+            $ref: "../components/schemas/error_response.yml"
+          examples:
+            response:
+              value:
+                _type: Error
+                errorIdentifier: urn:openproject-org:api:v3:errors:MissingPermission
+                message: You are not authorized to access this resource.
+      description: |-
+        Returned if the client does not have sufficient permissions.
+
+        **Required permission:** edit project for the program to be altered
+      headers: {}
+    '404':
+      content:
+        application/hal+json:
+          schema:
+            $ref: "../components/schemas/error_response.yml"
+          examples:
+            response:
+              value:
+                _type: Error
+                errorIdentifier: urn:openproject-org:api:v3:errors:NotFound
+                message: The requested resource could not be found.
+      description: |-
+        Returned if the program does not exist or the client does not have sufficient permissions
+        to see it.
+
+        **Required permission:** view project
+
+        *Note: A client without sufficient permissions shall not be able to test for the existence of
+        a version. That's why a 404 is returned here, even if a 403 might be more appropriate.*
+      headers: {}
+    '406':
+      $ref: "../components/responses/missing_content_type.yml"
+    '415':
+      $ref: "../components/responses/unsupported_media_type.yml"
+    '422':
+      content:
+        application/hal+json:
+          schema:
+            $ref: "../components/schemas/error_response.yml"
+          examples:
+            response:
+              value:
+                _embedded:
+                  details:
+                    attribute: name
+                _type: Error
+                errorIdentifier: urn:openproject-org:api:v3:errors:PropertyConstraintViolation
+                message: Name can't be blank.
+      description: |-
+        Returned if:
+
+        * a constraint for a property was violated (`PropertyConstraintViolation`)
+      headers: {}
+  tags:
+    - Programs
+  description: Updates the given program by applying the attributes provided in the
+    body.
+  operationId: Update_Program
+  summary: Update Program
 delete:
   parameters:
     - description: Program id

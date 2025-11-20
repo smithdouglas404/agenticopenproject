@@ -28,17 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module API
-  module V3
-    module Workspaces
-      class InstanceApis < ::API::OpenProjectAPI
-        get &::API::V3::Utilities::Endpoints::Show.new(model: Project).mount
-        patch &::API::V3::Utilities::Endpoints::Update.new(model: Project).mount
-        delete &::API::V3::Utilities::Endpoints::Delete.new(model: Project,
-                                                            process_service: ::Projects::ScheduleDeletionService)
-                                                       .mount
+require "spec_helper"
+require "rack/test"
+require_relative "../workspaces/update_resource_examples"
 
-        mount ::API::V3::Projects::UpdateFormAPI
+RSpec.describe "API v3 Program resource update", content_type: :json do
+  describe "PATCH /api/v3/programs/:id" do
+    include_examples "APIv3 workspace update" do
+      let(:path) { api_v3_paths.program(workspace.id) }
+      let(:workspace_factory_key) { :program }
+      let(:workspace_api_type) { "Program" }
+
+      context "with a portfolio id" do
+        let(:workspace) do
+          create(:portfolio, public: true)
+        end
+
+        it_behaves_like "not found"
       end
     end
   end

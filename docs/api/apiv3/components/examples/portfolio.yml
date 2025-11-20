@@ -1,46 +1,46 @@
-# Example: ProjectModel
+# Example: PortfolioModel
 ---
 value:
-  _type: Project
+  _type: Portfolio
   _links:
     self:
-      href: "/api/v3/projects/1"
+      href: "/api/v3/portfolios/1"
       title: Lorem
     createWorkPackage:
-      href: "/api/v3/projects/1/work_packages/form"
+      href: "/api/v3/portfolios/1/work_packages/form"
       method: post
     createWorkPackageImmediate:
-      href: "/api/v3/projects/1/work_packages"
+      href: "/api/v3/portfolios/1/work_packages"
       method: post
     categories:
-      href: "/api/v3/projects/1/categories"
+      href: "/api/v3/portfolios/1/categories"
     types:
-      href: "/api/v3/projects/1/types"
+      href: "/api/v3/portfolios/1/types"
     versions:
-      href: "/api/v3/projects/1/versions"
+      href: "/api/v3/portfolios/1/versions"
     workPackages:
-      href: "/api/v3/projects/1/work_packages"
+      href: "/api/v3/portfolios/1/work_packages"
     memberships:
       href: /api/v3/memberships?filters=[{"project":{"operator":"=","values":["1"]}}]
     customField456:
       href: "/api/v3/users/315"
       title: A user
     parent:
-      href: "/api/v3/projects/123"
-      title: "Parent project"
+      href: "/api/v3/portfolios/123"
+      title: "Parent portfolio"
     ancestors:
       - href: "/api/v3/portfolios/2"
-        title: "Root portfolios"
-      - href: "/api/v3/programs/12"
-        title: "Grandparent program"
-      - href: "/api/v3/projects/123"
-        title: "Parent project"
+        title: "Root portfolio"
+      - href: "/api/v3/portfolios/12"
+        title: "Grandparent portfolio"
+      - href: "/api/v3/portfolios/123"
+        title: "Parent portfolio"
     status:
       href: "/api/v3/project_statuses/on_track"
       title: On track
   id: 1
-  identifier: project_example
-  name: Project example
+  identifier: portfolio_example
+  name: Portfolio example
   active: true
   public: false
   statusExplanation:
