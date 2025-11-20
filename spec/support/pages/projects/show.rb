@@ -65,8 +65,16 @@ module Pages
         within_test_selector("project-custom-fields-sidebar", &)
       end
 
+      def within_main_area(&)
+        within_test_selector("grids-project-attribute-widgets", &)
+      end
+
       def within_custom_field_section_container(section, &)
         within_test_selector("project-custom-field-section-#{section.id}", &)
+      end
+
+      def within_custom_field_section_widget(section, &)
+        within_test_selector("project-custom-field-section-widget-#{section.id}", &)
       end
 
       def within_custom_field_container(custom_field, &)
@@ -78,17 +86,15 @@ module Pages
       end
 
       def open_edit_dialog_for_custom_field(custom_field)
-        within_project_attributes_sidebar do
-          scroll_to_element(page.find("[data-test-selector='project-custom-field-#{custom_field.id}']"))
-          within_custom_field_container(custom_field) do
-            # Link and user type custom fields might contain a clickable link inside the edit container.
-            # Use JavaScript to directly trigger the click event on the container to avoid nested links.
-            # Once we create the project custom field inline editing, this can be reverted to a normal
-            # capybara click method call.
-            page.execute_script(
-              "document.querySelector('[data-test-selector=\"project-custom-field-edit-button-#{custom_field.id}\"]').click()"
-            )
-          end
+        scroll_to_element(page.find("[data-test-selector='project-custom-field-#{custom_field.id}']"))
+        within_custom_field_container(custom_field) do
+          # Link and user type custom fields might contain a clickable link inside the edit container.
+          # Use JavaScript to directly trigger the click event on the container to avoid nested links.
+          # Once we create the project custom field inline editing, this can be reverted to a normal
+          # capybara click method call.
+          page.execute_script(
+            "document.querySelector('[data-test-selector=\"project-custom-field-edit-button-#{custom_field.id}\"]').click()"
+          )
         end
 
         wait_for_size_animation_completion("[data-test-selector='async-dialog-content']")

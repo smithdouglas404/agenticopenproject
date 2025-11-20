@@ -32,15 +32,25 @@
 <%=
   grid_layout("op-documents-list--row", tag: :div, align_items: :center) do |grid|
     grid.with_area(:name, tag: :div, mr: 3, classes: "ellipsis") do
-      render(
-        Primer::Beta::Link.new(
-          href: document_path(document),
-          font_weight: :bold,
-          mr: 1,
-          data: { test_selector: "document-name" }
+      concat(
+        render(
+          Primer::Beta::Link.new(
+            href: document_path(document),
+            font_weight: :bold,
+            mr: 1,
+            data: { test_selector: "document-name" }
+          )
+        ) do
+          document.title
+        end
+      )
+
+      if document.classic?
+        concat(
+          render(Primer::Beta::Label.new(scheme: :default, test_selector: "label-legacy")) do
+            I18n.t("documents.index_page.label_legacy")
+          end
         )
-      ) do
-        document.title
       end
     end
 

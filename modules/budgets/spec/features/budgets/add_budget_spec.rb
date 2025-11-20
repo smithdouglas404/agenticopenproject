@@ -113,7 +113,7 @@ RSpec.describe "adding a new budget", :js do
 
       let(:user) { create(:admin, language: :de) }
 
-      it "creates the budget including the given cost items with german locale", :selenium do
+      it "creates the budget including the given cost items with german locale" do
         new_budget_page.visit!
 
         fill_in Budget.human_attribute_name(:subject), with: "First Aid"
@@ -151,7 +151,7 @@ RSpec.describe "adding a new budget", :js do
       end
     end
 
-    it "creates the budget including the given cost items", :selenium do
+    it "creates the budget including the given cost items" do
       new_budget_page.visit!
 
       fill_in "Subject", with: "First Aid"

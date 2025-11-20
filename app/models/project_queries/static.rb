@@ -37,6 +37,11 @@ class ProjectQueries::Static
   OFF_TRACK = "off_track"
   AT_RISK = "at_risk"
 
+  ACTIVE_PORTFOLIOS = "active_portfolios"
+  MY_PORTFOLIOS = "my_portfolios"
+  FAVORITED_PORTFOLIOS = "favorited_portfolios"
+  ARCHIVED_PORTFOLIOS = "archived_portfolios"
+
   DEFAULT = ACTIVE
 
   class << self
@@ -44,12 +49,20 @@ class ProjectQueries::Static
       case id
       when ACTIVE, nil
         static_query_active
+      when ACTIVE_PORTFOLIOS
+        static_query_active_portfolios
       when MY
         static_query_my
+      when MY_PORTFOLIOS
+        static_query_my_portfolios
       when FAVORITED
         static_query_favorited
+      when FAVORITED_PORTFOLIOS
+        static_query_favorited_portfolios
       when ARCHIVED
         static_query_archived
+      when ARCHIVED_PORTFOLIOS
+        static_query_archived_portfolios
       when ON_TRACK
         static_query_status_on_track
       when OFF_TRACK
@@ -67,8 +80,20 @@ class ProjectQueries::Static
       end
     end
 
+    def static_query_active_portfolios
+      list_with(:"portfolios.lists.active") do |query|
+        query.where("active", "=", OpenProject::Database::DB_VALUE_TRUE)
+      end
+    end
+
     def static_query_my
       list_with(:"projects.lists.my") do |query|
+        query.where("member_of", "=", OpenProject::Database::DB_VALUE_TRUE)
+      end
+    end
+
+    def static_query_my_portfolios
+      list_with(:"portfolios.lists.my") do |query|
         query.where("member_of", "=", OpenProject::Database::DB_VALUE_TRUE)
       end
     end
@@ -79,8 +104,20 @@ class ProjectQueries::Static
       end
     end
 
+    def static_query_favorited_portfolios
+      list_with(:"portfolios.lists.favorited") do |query|
+        query.where("favorited", "=", OpenProject::Database::DB_VALUE_TRUE)
+      end
+    end
+
     def static_query_archived
       list_with(:"projects.lists.archived") do |query|
+        query.where("active", "=", OpenProject::Database::DB_VALUE_FALSE)
+      end
+    end
+
+    def static_query_archived_portfolios
+      list_with(:"portfolios.lists.archived") do |query|
         query.where("active", "=", OpenProject::Database::DB_VALUE_FALSE)
       end
     end
@@ -102,8 +139,6 @@ class ProjectQueries::Static
         query.where("project_status_code", "=", Project.status_codes[:at_risk])
       end
     end
-
-    private
 
     def list_with(name)
       ProjectQuery.new(name: I18n.t(name)) do |query|

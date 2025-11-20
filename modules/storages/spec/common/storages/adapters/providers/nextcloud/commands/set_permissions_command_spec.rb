@@ -46,7 +46,7 @@ module Storages
               end
             end
 
-            it_behaves_like "adapter set_permissions_command: basic command setup"
+            it_behaves_like "storage adapter: command call signature", "set_permissions"
 
             context "if folder does not exists", vcr: "nextcloud/set_permissions_not_found_folder" do
               let(:error_source) { Queries::FileInfoQuery }

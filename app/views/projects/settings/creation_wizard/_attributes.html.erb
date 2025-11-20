@@ -28,6 +28,27 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <div>
-  <h2>Project Attributes</h2>
-  <!-- add stuff here -->
+  <%=
+    render Primer::Beta::Text.new(tag: :p, mb: 2) do
+      link_translate(
+        "projects.settings.creation_wizard.project_attributes_description",
+        links: { project_attributes_url: project_settings_project_custom_fields_path },
+        external: false
+      )
+    end
+  %>
+  <%
+    enabled_custom_field_ids = @project.enabled_custom_field_ids
+    sections_with_active_fields = ProjectCustomFieldSection
+      .order(:position)
+      .joins(:custom_fields)
+      .where(custom_fields: { id: enabled_custom_field_ids })
+      .distinct
+  %>
+  <%= render(
+        Projects::Settings::CreationWizard::ProjectCustomFieldSections::IndexComponent.new(
+          project: @project,
+          project_custom_field_sections: sections_with_active_fields
+        )
+      ) %>
 </div>

@@ -43,5 +43,9 @@ module Documents
     def document_row_css_id(document)
       helpers.dom_id document
     end
+
+    def can_add_documents?
+      User.current.allowed_in_project?(:manage_documents, project)
+    end
   end
 end

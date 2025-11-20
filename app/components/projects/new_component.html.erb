@@ -54,7 +54,7 @@ See COPYRIGHT and LICENSE files for more details.
               Projects::Settings::TypeForm.new(f),
               Projects::Settings::NameForm.new(f),
               Projects::Settings::RelationsForm.new(f),
-              Projects::Settings::CustomFieldsForm.new(f)
+              *(Projects::Settings::CustomFieldsForm.new(f) unless template)
             )
           )
         end

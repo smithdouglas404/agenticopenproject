@@ -40,6 +40,7 @@ RSpec.describe DocumentForm, type: :forms do
   it "renders field" do
     expect(page).to have_field("Type", required: true)
     expect(page).to have_field("Title", required: true)
+    expect(page).to have_field("document_kind", type: :hidden, with: "classic")
     expect(page).to have_element("opce-ckeditor-augmented-textarea",
                                  "data-test-selector": "augmented-text-area-description")
   end

@@ -42,7 +42,7 @@ module Settings
             name: "project_custom_field_edit",
             path: edit_admin_settings_project_custom_field_path(@custom_field),
             label: t(:label_details)
-          },
+          }
         ]
 
         if @custom_field.hierarchical_list?
@@ -50,6 +50,14 @@ module Settings
             name: "items",
             path: admin_settings_project_custom_field_items_path(@custom_field),
             label: t(:label_item_plural)
+          }
+        end
+
+        if @custom_field.user?
+          tabs << {
+            name: "role_assignment",
+            path: role_assignment_admin_settings_project_custom_field_path(@custom_field),
+            label: t(:label_interlinked_role_assignment)
           }
         end
 

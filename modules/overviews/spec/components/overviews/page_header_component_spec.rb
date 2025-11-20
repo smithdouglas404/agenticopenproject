@@ -36,7 +36,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
   end
 
   let(:workspace_type) { :project }
-  let(:project) { build_stubbed(:project, name: "Too big to fail", workspace_type:) }
+  let(:project) { build_stubbed(:project, name: "Too big to fail", workspace_type:, project_creation_wizard_enabled: true) }
   let(:user) { build_stubbed(:admin) }
 
   current_user { user }
@@ -120,18 +120,32 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       expect(rendered_component).to have_element "action-menu", "data-select-variant": "none"
     end
 
-    context "without view project permissions" do
+    context "without view project permissions", with_flag: { project_initiation_active: true } do
       let(:user) { create(:user) }
 
       it "renders action menu items", :aggregate_failures do
         expect(rendered_component).to have_menu do |menu|
-          expect(menu).to have_selector :menuitem, count: 1
+          expect(menu).to have_selector :menuitem, count: 2
           expect(menu).to have_selector :menuitem, text: "Add to favorites"
+          expect(menu).to have_selector :menuitem, text: "Export PDF"
         end
       end
     end
 
-    context "with manage permissions" do
+    context "with project project creation wizard disabled", with_flag: { project_initiation: true } do
+      let(:project) { build_stubbed(:project, name: "Too big to fail", workspace_type:, project_creation_wizard_enabled: false) }
+
+      it "renders action menu items", :aggregate_failures do
+        expect(rendered_component).to have_menu do |menu|
+          expect(menu).to have_selector :menuitem, count: 3
+          expect(menu).to have_selector :menuitem, text: "Add to favorites"
+          expect(menu).to have_selector :menuitem, text: "Manage project attributes"
+          expect(menu).to have_selector :menuitem, text: "Archive project"
+        end
+      end
+    end
+
+    context "with manage permissions", with_flag: { project_initiation: false } do
       let(:user) { build_stubbed(:admin) }
 
       it "renders action menu items", :aggregate_failures do

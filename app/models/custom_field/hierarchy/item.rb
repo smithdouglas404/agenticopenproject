@@ -39,7 +39,7 @@ class CustomField::Hierarchy::Item < ApplicationRecord
   def to_s = suffix.empty? ? label : "#{label} #{suffix}"
 
   def ancestry_path(include_shorts_and_weights: false)
-    path = self_and_ancestors.filter_map(&:to_s).reverse.join(" / ")
+    path = self_and_ancestors.filter_map(&:label).reverse.join(" / ")
 
     return path unless include_shorts_and_weights
 

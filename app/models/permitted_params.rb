@@ -514,7 +514,8 @@ class PermittedParams
           :custom_field_section_id,
           :allow_non_open_versions,
           { custom_options_attributes: %i(id value default_value position) },
-          { type_ids: [] }
+          { type_ids: [] },
+          :role_id
         ],
         enumeration: %i(
           active

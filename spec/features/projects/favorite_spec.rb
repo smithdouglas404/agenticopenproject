@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../../../modules/my_page/spec/support/pages/my/page"
 
-RSpec.describe "Favorite projects", :js, :selenium do
+RSpec.describe "Favorite projects", :js do
   shared_let(:project) { create(:public_project, name: "My favorite!", enabled_module_names: []) }
   shared_let(:other_project) { create(:public_project, name: "Other project", enabled_module_names: []) }
   shared_let(:user) do

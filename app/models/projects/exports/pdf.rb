@@ -34,13 +34,15 @@ module Projects::Exports
     include Exports::PDF::Common::Logo
     include Exports::PDF::Common::Attachments
     include Exports::PDF::Common::Markdown
+    include Exports::PDF::Common::Macro
     include Exports::PDF::Components::Page
     include Exports::PDF::Components::Cover
-    include Exports::PDF::Common::Macro
     include Projects::Exports::PDFExport::TableOfContent
     include Projects::Exports::PDFExport::Report
     include Projects::Exports::PDFExport::InfoMap
     include Projects::Exports::PDFExport::Styles
+    include Project::PDFExport::Common::ProjectAttributes
+
     attr_accessor :pdf
 
     def initialize(object, options = {})
@@ -112,6 +114,10 @@ module Projects::Exports
     end
 
     def with_images?
+      true
+    end
+
+    def hide_empty_attributes?
       true
     end
 

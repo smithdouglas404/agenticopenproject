@@ -53,13 +53,13 @@ module OpenProject::Documents
 
       project_module :documents do |_map|
         permission :view_documents,
-                   { documents: %i[index search show download],
+                   { documents: %i[index search show download render_avatars],
                      "documents/menus": %i[show] },
                    permissible_on: :project
         permission :manage_documents,
                    {
                      documents: %i[
-                       new create edit edit_title cancel_title_edit update update_title update_type destroy
+                       new create edit edit_title cancel_title_edit update update_title update_type delete_dialog destroy
                      ]
                    },
                    permissible_on: :project,

@@ -53,6 +53,7 @@ uk:
       name: "Назва"
       type: "Тип"
       updated_at: "Останнє редагування"
+      label_legacy: "Legacy"
     menu:
       all: "Усі документи"
       types: "Типи"
@@ -60,6 +61,10 @@ uk:
     label_attachment_author: "Автор додатку"
     label_categories: "Категорії"
     new_category: "Нова категорія"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Документ додано"
   label_document_new: "Новий документ"
   label_document_plural: "Документи"

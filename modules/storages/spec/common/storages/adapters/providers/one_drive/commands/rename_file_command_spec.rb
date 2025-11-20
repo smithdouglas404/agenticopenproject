@@ -41,7 +41,7 @@ module Storages
             let(:auth_strategy) { Registry.resolve("one_drive.authentication.userless").call }
             let(:input_data) { Input::RenameFile.build(location: file_id, new_name: name).value! }
 
-            it_behaves_like "adapter rename_file_command: basic command setup"
+            it_behaves_like "storage adapter: command call signature", "rename_file"
 
             context "when renaming a folder", vcr: "one_drive/rename_file_success" do
               let(:file_id) { "01AZJL5PMAXGDWAAKMEBALX4Q6GSN5BSBR" }

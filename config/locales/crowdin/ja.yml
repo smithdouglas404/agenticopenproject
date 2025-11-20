@@ -321,6 +321,7 @@ ja:
     reorder_confirmation: "警告：利用可能な値の現在の順序は失われます。続行しますか？"
     placeholder_version_select: "最初にワークパッケージまたはプロジェクトの選択が必要です"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    no_role_assigment: "No role assignment"
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
@@ -425,6 +426,16 @@ ja:
   incoming_mails:
     ignore_filenames: >
       受信メールの添付ファイルを処理するとき、無視する名前の一覧を指定します (例えば、署名またはアイコン)。1 行につき 1 つのファイル名を入力してください。
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -534,10 +545,19 @@ ja:
       work_package_priorities:
         new_label: "新しい優先度"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: プロジェクトの状態を編集
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "変更されたリストは新しいリストとして保存されました"
@@ -1134,6 +1154,7 @@ ja:
         identifier: "識別子"
         latest_activity_at: "最新の活動"
         parent: "親プロジェクト"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "可視性"
           true: "公開"
@@ -1148,6 +1169,13 @@ ja:
           off_track: "脱線"
           finished: "完了"
           discontinued: "中止"
+        submission_assignee_custom_field: "Assignee when submitted"
+        submission_notification_text: "Notification text"
+        submission_send_confirmation_email: "Confirmation email"
+        submission_status_when_submitted: "Status when submitted"
+        submission_work_package_comment: "Work package comment"
+        submission_work_package_type: "Work package type"
+        template: "Template"
         templated: "テンプレートプロジェクト"
         templated_value:
           true: "テンプレートとしてマーク"
@@ -1683,8 +1711,7 @@ ja:
               cant_exceed_work: "仕事より高くすることはできません。"
               must_be_set_when_work_is_set: "作業が設定されている場合に必要です。"
               must_be_set_when_work_and_percent_complete_are_set: "「作業」と「完了率」が設定されている場合に必要です。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                工数が設定されていて，完了率が 100%になっている場合，必ず0hになっている必要があります。
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 「Work」が空で「% Complete」が100%の場合、必ず空でなければなりません。
           readonly_status: "ワークパッケージは読み取り専用の状態になっているため、その属性は変更できません。"
@@ -1987,6 +2014,7 @@ ja:
   button_collapse_all: "全てを折りたたむ"
   button_configure: "設定"
   button_continue: "続行"
+  button_complete: "Complete"
   button_copy: "コピー"
   button_copy_to_clipboard: "クリップボードにコピー"
   button_copy_link_to_clipboard: "クリップボードにリンクをコピー"
@@ -2091,6 +2119,18 @@ ja:
     template_label: "テンプレートを使用"
     copy_options:
       dependencies_label: "テンプレートからコピー"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "新しいWikiページを作成"
   create_wiki_page_button: "Wiki ページ"
   date:
@@ -2544,6 +2584,8 @@ ja:
     units:
       hours: 時間
       days: 日
+    project_initiation:
+      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "ページ %{page} / %{total}"
     template_attributes:
@@ -2721,7 +2763,7 @@ ja:
         static_token_name: "APIトークン"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar サブスクリプションは管理者によって有効になっていません。この機能を使用するには管理者に問い合わせてください。"
         empty_text_hint: "iCalendar トークンを追加するには、プロジェクトの Calendar モジュール内から新規または既存のカレンダーを購読します。 必要な権限が必要です。"
       oauth:
@@ -3040,6 +3082,7 @@ ja:
   label_installation_guides: "インストール ガイド"
   label_integer: "整数"
   label_interface: "インターフェイス"
+  label_interlinked_role_assignment: "Interlinked Role Assignment"
   label_internal: "社内"
   label_introduction_video: "Getting started video"
   label_invite_user: "ユーザを招待"
@@ -3205,6 +3248,7 @@ ja:
   label_planning: "計画"
   label_please_login: "ログインしてください。"
   label_plugins: "プラグイン"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "モジュールとプラグイン"
   label_precedes: "次の項目に先行"
   label_preferences: "設定"
@@ -3225,6 +3269,7 @@ ja:
   label_project_attribute_manage_link: "プロジェクト属性の管理"
   label_project_count: "プロジェクトの合計数"
   label_project_copy_notifications: "プロジェクトのコピーの時、コピーした内容をメール通知する"
+  label_project_initiation_pdf: "Export PDF for project initiation request"
   label_project_latest: "最新のプロジェクト"
   label_project_default_type: "空の種類を許可する"
   label_project_hierarchy: "プロジェクトの階層構造"
@@ -3793,6 +3838,7 @@ ja:
   permission_edit_timelines: "タイムラインの編集"
   permission_edit_wiki_pages: "Wikiページの編集"
   permission_export_work_packages: "ワークパッケージのエクスポート"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Wikiページのエクスポート"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
@@ -3859,6 +3905,11 @@ ja:
   permission_edit_project_query: "プロジェクトのクエリを編集"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"
@@ -4287,6 +4338,16 @@ ja:
       new:
         heading: "新しい属性"
         description: "このプロジェクト属性の変更は、有効なすべてのプロジェクトに反映されます。プロジェクトごとに必要な属性を無効にすることはできません。"
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
       blankslate:
         title: "Initiation request not enabled"
@@ -4296,9 +4357,22 @@ ja:
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      submission:
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artefact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption: "The person or group this project initiation request will be assigned to."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "プロジェクトのライフ サイクル"
-      heading_description: "プロジェクトのライフサイクルでは、プロジェクト計画に使用できるプロジェクトフェーズを定義し、各プロジェクトの概要ページに表示されます。 これらの属性は、有効または無効にできますが、プロジェクトレベルでの順序は変更できません。"
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "追加"
       label_add_description: "プロジェクトフェーズ定義を追加"
       filter:
@@ -4569,6 +4643,8 @@ ja:
     ユーザーを追加すると、現在の制限を超えます。外部ユーザーがこのサイトにアクセスできるように、<a href="%{upgrade_url}">プランをアップグレードして</a>ください。
   warning_user_limit_reached_instructions: >
     ユーザー制限(%{current}/%{max} アクティブユーザー)に達しました。 sales@openproject.com に連絡してEnterprise Editionプランをアップグレードし、ユーザーを追加してください。
+  warning_interlinking_custom_field_with_role_html: >
+    <strong>Warning:</strong> You are about to link a custom field with a role. This will give users with the "Edit Project Attributes" permission to add members to the project and they will be assigned the linked role. This may lead to privilege escalation because users can assign themselves higher privileges than intended. Please make sure you understand the implications of this action.
   warning_protocol_mismatch_html: >
 
   warning_bar:

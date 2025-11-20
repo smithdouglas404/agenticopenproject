@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/citizensadvice/capybara_accessible_selectors
-  revision: 4adc180bb42b58d5f84fa88de96a9f1cd3d1663a
-  tag: v0.14.0
+  revision: 5b9ce7840d04270e99f4f0cb03989e05437326a6
+  tag: v0.15.0
   specs:
-    capybara_accessible_selectors (0.14.0)
+    capybara_accessible_selectors (0.15.0)
       capybara (~> 3.36)
 
 GIT
@@ -36,10 +36,10 @@ GIT
 
 GIT
   remote: https://github.com/opf/omniauth-openid-connect.git
-  revision: e923d9dd14fa4ca04b98720ac2185807b263f5ed
-  ref: e923d9dd14fa4ca04b98720ac2185807b263f5ed
+  revision: f0c1ecdb26e39017a9e929af75a166c772d960bb
+  ref: f0c1ecdb26e39017a9e929af75a166c772d960bb
   specs:
-    omniauth-openid-connect (0.4.1)
+    omniauth-openid-connect (0.4.2)
       addressable (~> 2.5)
       omniauth (~> 1.6)
       openid_connect (~> 2.2.0)
@@ -385,7 +385,7 @@ GEM
       smart_properties
     bigdecimal (3.3.1)
     bindata (2.5.1)
-    bootsnap (1.18.6)
+    bootsnap (1.19.0)
       msgpack (~> 1.2)
     brakeman (7.1.1)
       racc
@@ -532,7 +532,7 @@ GEM
       activemodel
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
-    erb (5.1.3)
+    erb (6.0.0)
     erb_lint (0.9.0)
       activesupport
       better_html (>= 2.0.1)
@@ -700,13 +700,14 @@ GEM
     i18n-js (4.2.4)
       glob (>= 0.4.0)
       i18n
-    i18n-tasks (1.0.15)
+    i18n-tasks (1.1.0)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
       erubi
-      highline (>= 2.0.0)
+      highline (>= 3.0.0)
       i18n
       parser (>= 3.2.2.1)
+      prism
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.8, >= 1.8.1)
@@ -718,6 +719,9 @@ GEM
       ostruct
     ice_cube (0.17.0)
     ice_nine (0.11.2)
+    inline_svg (1.10.0)
+      activesupport (>= 3.0)
+      nokogiri (>= 1.6)
     interception (0.5)
     io-console (0.8.1)
     irb (1.15.3)
@@ -812,7 +816,7 @@ GEM
       logger
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
-    minitest (5.26.1)
+    minitest (5.26.2)
     msgpack (1.8.0)
     multi_json (1.17.0)
     mustermann (3.0.4)
@@ -1066,7 +1070,7 @@ GEM
     ostruct (0.6.3)
     ox (2.14.23)
       bigdecimal (>= 3.0)
-    pagy (43.0.4)
+    pagy (43.0.7)
       json
       yaml
     paper_trail (17.0.0)
@@ -1408,7 +1412,7 @@ GEM
     store_attribute (2.0.1)
       activerecord (>= 6.1)
     stringex (2.8.6)
-    stringio (3.1.7)
+    stringio (3.1.8)
     structured_warnings (0.5.0)
     svg-graph (2.2.2)
     swd (2.0.3)
@@ -1555,7 +1559,7 @@ DEPENDENCIES
   aws-sdk-s3 (~> 1.203)
   axe-core-rspec
   bcrypt (~> 3.1.6)
-  bootsnap (~> 1.18.0)
+  bootsnap (~> 1.19.0)
   brakeman (~> 7.1.1)
   browser (~> 6.2.0)
   budgets!
@@ -1607,9 +1611,10 @@ DEPENDENCIES
   htmldiff
   httpx (~> 1.6.3)
   i18n-js (~> 4.2.4)
-  i18n-tasks (~> 1.0.13)
+  i18n-tasks (~> 1.1.0)
   ice_cube (~> 0.17.0)
   ice_nine
+  inline_svg (~> 1.10.0)
   json_schemer (~> 2.4.0)
   json_spec (~> 1.1.4)
   ladle
@@ -1803,7 +1808,7 @@ CHECKSUMS
   better_html (2.1.1) sha256=046c3551d1488a3f2939a7cac6fabf2bde08c32e135c91fcd683380118e5af55
   bigdecimal (3.3.1) sha256=eaa01e228be54c4f9f53bf3cc34fe3d5e845c31963e7fcc5bedb05a4e7d52218
   bindata (2.5.1) sha256=53186a1ec2da943d4cb413583d680644eb810aacbf8902497aac8f191fad9e58
-  bootsnap (1.18.6) sha256=0ae2393c1e911e38be0f24e9173e7be570c3650128251bf06240046f84a07d00
+  bootsnap (1.19.0) sha256=d3e54558c1a9ea10cb095eb1eb8e921ae83fd4d5764b8809f63aec18ce9f60b5
   brakeman (7.1.1) sha256=629426b5d6496c75e3ffa2299e1ab1bb3ba721fea03d8808414c083660439498
   browser (6.2.0) sha256=281d5295788825c9396427c292c2d2be0a5c91875c93c390fde6e5d61a5ace2d
   budgets (1.0.0)
@@ -1811,7 +1816,7 @@ CHECKSUMS
   byebug (12.0.0) sha256=d4a150d291cca40b66ec9ca31f754e93fed8aa266a17335f71bb0afa7fca1a1e
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
   capybara-screenshot (1.0.26) sha256=816b9370a07752097c82a05f568aaf5d3b7f45c3db5d3aab2014071e1b3c0c77
-  capybara_accessible_selectors (0.14.0)
+  capybara_accessible_selectors (0.15.0)
   carrierwave (1.3.4) sha256=81772dabd1830edbd7f4526d2ae2c79f974f1d48900c3f03f7ecb7c657463a21
   carrierwave_direct (2.1.0) sha256=b0d5c19c1d17a05940e488cff644a3b2946422d6d494b2174b48f6a90c5dddbf
   cbor (0.5.10.1) sha256=79cdf79f18dcd9ee97e0b849c6d573e5a2e3ddc1954d180f384d6ed2612b6df0
@@ -1869,7 +1874,7 @@ CHECKSUMS
   em-synchrony (1.0.6) sha256=6e7470a684d9bbc00d61d552911b65711540bd89e95c157156f5aacdd6f306ca
   email_validator (2.2.4) sha256=5ab238095bec7aef9389f230e9e0c64c5081cdf91f19d6c5cecee0a93af20604
   equivalent-xml (0.6.0) sha256=8919761efa848ad0846369ff8be1f646b17e5061698c4867b09829000cc3f487
-  erb (5.1.3) sha256=566e53057b6ba48699f824b578473b391fa8aef100aa14afad1c46725fae0e67
+  erb (6.0.0) sha256=2730893f9d8c9733f16cab315a4e4b71c1afa9cabc1a1e7ad1403feba8f52579
   erb_lint (0.9.0) sha256=dfb5e40ad839e8d1f0d56ca85ec9a7ac4c9cd966ec281138282f35b323ca7c31
   erblint-github (1.0.1) sha256=9f28f7dc381a0dc68a0093ef7af3424ed9d2bb2b3e39bdc8e8cba86a0d31f2d0
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
@@ -1942,10 +1947,11 @@ CHECKSUMS
   httpx (1.6.3) sha256=1b4a11b9572b78839f649ad6ebbe09b5f467cc458e0ee408bddc902b273a2e8a
   i18n (1.14.7) sha256=ceba573f8138ff2c0915427f1fc5bdf4aa3ab8ae88c8ce255eb3ecf0a11a5d0f
   i18n-js (4.2.4) sha256=61390d372f8fa68c495c5907d577657e8cc3a7031f4945db1e91f935e1391355
-  i18n-tasks (1.0.15) sha256=74f3e9e0e2db5d757c58e659f4269ee698c7a7532ed29066a2aaffc9efbdfb56
+  i18n-tasks (1.1.0) sha256=ebc1e145ca96418307e931f79a60e35e64b8e5f7c3758255c68c1dfad113b068
   icalendar (2.12.1) sha256=ecff56c550aed551f29ad1faad0da54bf62362dfaf22a428bd7ad782938fe764
   ice_cube (0.17.0) sha256=32deb45dda4b4acc53505c2f581f6d32b5afc04d29b9004769944a0df5a5fcbe
   ice_nine (0.11.2) sha256=5d506a7d2723d5592dc121b9928e4931742730131f22a1a37649df1c1e2e63db
+  inline_svg (1.10.0) sha256=5b652934236fd9f8adc61f3fd6e208b7ca3282698b19f28659971da84bf9a10f
   interception (0.5) sha256=a53818d636752a8df90d8c1bb2f7b6e13a7b828543cb02b50fbde98b849d7907
   io-console (0.8.1) sha256=1e15440a6b2f67b6ea496df7c474ed62c860ad11237f29b3bd187f054b925fcb
   irb (1.15.3) sha256=4349edff1efa7ff7bfd34cb9df74a133a588ba88c2718098b3b4468b81184aaa
@@ -1983,7 +1989,7 @@ CHECKSUMS
   mini_magick (5.3.1) sha256=29395dfd76badcabb6403ee5aff6f681e867074f8f28ce08d78661e9e4a351c4
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
   mini_portile2 (2.8.9) sha256=0cd7c7f824e010c072e33f68bc02d85a00aeb6fce05bb4819c03dfd3c140c289
-  minitest (5.26.1) sha256=f16a63d4278e230bba342c3bda3006a69c5216d46461b77dd57f7c7c529b5a96
+  minitest (5.26.2) sha256=f021118a6185b9ba9f5af71f2ba103ad770c75afde9f2ab8da512677c550cde3
   msgpack (1.8.0) sha256=e64ce0212000d016809f5048b48eb3a65ffb169db22238fb4b72472fecb2d732
   multi_json (1.17.0) sha256=76581f6c96aebf2e85f8a8b9854829e0988f335e8671cd1a56a1036eb75e4a1b
   mustermann (3.0.4) sha256=85fadcb6b3c6493a8b511b42426f904b7f27b282835502233dd154daab13aa22
@@ -2008,7 +2014,7 @@ CHECKSUMS
   oj (3.16.12) sha256=ad9fad6a06dabcf4cfe6a420690a4375377685c16eee0ae88e8d38a43ed7b556
   okcomputer (1.19.0) sha256=8548935a82f725bdd8f2c329925a9f1a1bb2ce19ce26b47d7515665ee363b458
   omniauth (1.9.2)
-  omniauth-openid-connect (0.4.1)
+  omniauth-openid-connect (0.4.2)
   omniauth-openid_connect-providers (0.2.0)
   omniauth-saml (1.10.6) sha256=13dde22f4fd1beff0ef2d6dae576f7b68594f159990e8e886d8a02b32397afbd
   op-clamav-client (3.4.2) sha256=f28d697d11758a2ba3dc530cfdf4871a00ecd517631e8bac30dee30cd6012964
@@ -2102,7 +2108,7 @@ CHECKSUMS
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
   overviews (1.0.0)
   ox (2.14.23) sha256=4a9aedb4d6c78c5ebac1d7287dc7cc6808e14a8831d7adb727438f6a1b461b66
-  pagy (43.0.4) sha256=c75a48d91f92a585ebe6558183e882f6f00ca6af533c3953f8fad93d8406fdb6
+  pagy (43.0.7) sha256=91f60a0dbe5792402fdd7ccf5e52e46d954c78d62f074ccf66b990c19a8601fd
   paper_trail (17.0.0) sha256=1c2842061d3874ca7015908e821e2aa14f9b982af2acb2a7974713bf79021c85
   parallel (1.27.0) sha256=4ac151e1806b755fb4e2dc2332cbf0e54f2e24ba821ff2d3dcf86bf6dc4ae130
   parallel_tests (4.10.1) sha256=df05458c691462b210f7a41fc2651d4e4e8a881e8190e6d1e122c92c07735d70
@@ -2231,7 +2237,7 @@ CHECKSUMS
   stackprof (0.2.27) sha256=aff6d28656c852e74cf632cc2046f849033dc1dedffe7cb8c030d61b5745e80c
   store_attribute (2.0.1) sha256=643655e4800655b58379e8b01bd524f5586093a9d88698483ac8762cda25b5ab
   stringex (2.8.6) sha256=c7b382d2b2a47a1e1646f256df201c48d487d6296fbb289d76802f67f5e929c4
-  stringio (3.1.7) sha256=5b78b7cb242a315fb4fca61a8255d62ec438f58da2b90be66048546ade4507fa
+  stringio (3.1.8) sha256=99c43c3a9302843cca223fd985bfc503dd50a4b1723d3e4a9eb1d9c37d99e4ec
   structured_warnings (0.5.0) sha256=864aca5a4d6b63cd3a948f9dcd7f5498af1cf42bcf4fd75e2c315b7d77a30583
   svg-graph (2.2.2) sha256=f928866403055e6539afdfdab5f6268d108b2abc9f002e0fc51b16511809513a
   swd (2.0.3) sha256=4cdbe2a4246c19f093fce22e967ec3ebdd4657d37673672e621bf0c7eb770655

@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -33,5 +33,14 @@ module Projects::CreationWizard
 
   included do
     store_attribute :settings, :project_creation_wizard_enabled, :boolean
+
+    store_attribute :settings, :submission_work_package_type_id, :integer
+    store_attribute :settings, :submission_status_when_submitted_id, :integer
+    store_attribute :settings, :submission_send_confirmation_email, :boolean
+    store_attribute :settings, :submission_assignee_custom_field_id, :integer
+    store_attribute :settings, :submission_notification_text, :string
+    store_attribute :settings, :submission_work_package_comment, :string
+    store_attribute :settings, :project_creation_wizard_pdf_export_type, :string, default: "attachment"
+    store_attribute :settings, :project_creation_wizard_pdf_export_storage, :string
   end
 end

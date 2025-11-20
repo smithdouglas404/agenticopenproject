@@ -320,6 +320,7 @@ pl:
     reorder_confirmation: "Ostrzeżenie: Bieżąca kolejność dostępnych wartości zostanie utracona. Kontynuować?"
     placeholder_version_select: "W pierwszej kolejności wymagany jest wybór pakietu roboczego lub projektu"
     calculated_field_not_editable: "Atrybut nieedytowalny. Ta wartość jest obliczana automatycznie."
+    no_role_assigment: "No role assignment"
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
@@ -424,6 +425,16 @@ pl:
   incoming_mails:
     ignore_filenames: >
       Określ listę nazw, które mają być ignorowane podczas przetwarzania załączników do poczty przychodzącej (np. sygnatur lub ikon). W każdym wierszu prowadź jedną nazwę pliku.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -533,10 +544,19 @@ pl:
       work_package_priorities:
         new_label: "Nowy priorytet"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Edytuj status projektu
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "Zmodyfikowana lista została zapisana jako nowa lista"
@@ -1155,6 +1175,7 @@ pl:
         identifier: "Identyfikator"
         latest_activity_at: "Ostatnia aktywność o"
         parent: "Projekt nadrzędny"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "Widoczność"
           true: "publiczne"
@@ -1169,6 +1190,13 @@ pl:
           off_track: "Poza ścieżką"
           finished: "Zakończone"
           discontinued: "Przerwane"
+        submission_assignee_custom_field: "Assignee when submitted"
+        submission_notification_text: "Notification text"
+        submission_send_confirmation_email: "Confirmation email"
+        submission_status_when_submitted: "Status when submitted"
+        submission_work_package_comment: "Work package comment"
+        submission_work_package_type: "Work package type"
+        template: "Template"
         templated: "Projekt wzorcowy"
         templated_value:
           true: "oznaczono jako szablon"
@@ -1707,8 +1735,7 @@ pl:
               cant_exceed_work: "nie może być wyższa niż Praca."
               must_be_set_when_work_is_set: "wymagane, gdy ustawiona jest opcja Praca."
               must_be_set_when_work_and_percent_complete_are_set: "wymagane, gdy ustawione są opcje Praca i % ukończenia."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                musi wynosić 0 h, gdy ustawiona jest opcja Praca, a % ukończenia wynosi 100%.
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 musi być puste, gdy Praca jest pusta, a % ukończenia wynosi 100%.
           readonly_status: "Pakiet roboczy ma status tylko do odczytu, więc jego atrybutów nie można zmienić."
@@ -2056,6 +2083,7 @@ pl:
   button_collapse_all: "Zwiń wszystko"
   button_configure: "Konfigurowanie"
   button_continue: "Dalej"
+  button_complete: "Complete"
   button_copy: "Kopiuj"
   button_copy_to_clipboard: "Skopiuj do schowka"
   button_copy_link_to_clipboard: "Kopiuj link do schowka"
@@ -2160,6 +2188,18 @@ pl:
     template_label: "Użyj szablonu"
     copy_options:
       dependencies_label: "Skopiuj z szablonu"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Utwórz nową stronę wiki"
   create_wiki_page_button: "Strona wiki"
   date:
@@ -2676,6 +2716,8 @@ pl:
     units:
       hours: h
       days: d
+    project_initiation:
+      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Strona %{page} z %{total}"
     template_attributes:
@@ -2853,7 +2895,7 @@ pl:
         static_token_name: "Token API"
       ical:
         title: "iCalendar"
-        text_hint_link: 'Tokeny iCalendar pozwalają użytkownikom [subskrybować kalendarze OpenProject](docs_url) i przeglądać aktualne informacje o pakietach roboczych z klientów zewnętrznych.'
+        text_hint_link: "Tokeny iCalendar pozwalają użytkownikom [subskrybować kalendarze OpenProject](docs_url) i przeglądać aktualne informacje o pakietach roboczych z klientów zewnętrznych."
         disabled_text: "Subskrypcje iCalendar nie zostały włączone przez administratora. Aby użyć tej funkcji, skontaktuj się z administratorem."
         empty_text_hint: "Aby dodać token iCalendar, subskrybuj nowy lub istniejący kalendarz z modułu Kalendarz projektu. Musisz mieć niezbędne uprawnienia."
       oauth:
@@ -3172,6 +3214,7 @@ pl:
   label_installation_guides: "Przewodniki instalacyjne"
   label_integer: "Liczba całkowita"
   label_interface: "Interfejs"
+  label_interlinked_role_assignment: "Interlinked Role Assignment"
   label_internal: "Wewnętrzne"
   label_introduction_video: "Film wprowadzający"
   label_invite_user: "Zaproś użytkownika"
@@ -3337,6 +3380,7 @@ pl:
   label_planning: "Planowanie"
   label_please_login: "Proszę się zalogować"
   label_plugins: "Wtyczki"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Moduły i dodatki plug-in"
   label_precedes: "Poprzedza"
   label_preferences: "Preferencje"
@@ -3357,6 +3401,7 @@ pl:
   label_project_attribute_manage_link: "Zarządzaj atrybutami projektu"
   label_project_count: "Całkowita liczba projektów"
   label_project_copy_notifications: "Wyślij powiadomienia e-mail podczas kopiowania projektów"
+  label_project_initiation_pdf: "Export PDF for project initiation request"
   label_project_latest: "Najnowsze projekty"
   label_project_default_type: "Pozwalaj na pusty typ"
   label_project_hierarchy: "Hierarchia projektu"
@@ -3930,6 +3975,7 @@ pl:
   permission_edit_timelines: "Edycja osi czasu"
   permission_edit_wiki_pages: "Edycja stron wiki"
   permission_export_work_packages: "Eksportowanie pakietów roboczych"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Eksportowanie stron wiki"
   permission_invite_members_by_email: "Zaproś członków pocztą elektroniczną"
   permission_invite_members_by_email_explanation: >
@@ -3996,6 +4042,11 @@ pl:
   permission_edit_project_query: "Edytuj zapytanie dotyczące projektu"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"
@@ -4422,6 +4473,16 @@ pl:
       new:
         heading: "Nowy atrybut"
         description: "Zmiany tego atrybutu projektu zostaną odzwierciedlone we wszystkich projektach, w których jest on włączony. Wymaganych atrybutów nie można wyłączyć dla poszczególnych projektów."
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
       blankslate:
         title: "Initiation request not enabled"
@@ -4431,9 +4492,22 @@ pl:
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      submission:
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artefact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption: "The person or group this project initiation request will be assigned to."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "Cykl życia projektu"
-      heading_description: "Cykl życia projektu określa fazy projektu, których można użyć do planowania projektu, a które pojawią się na stronie przeglądu każdego projektu. Te atrybuty mogą być włączone lub wyłączone, ale nie można zmienić ich kolejności na poziomie projektu."
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "Dodaj"
       label_add_description: "Dodaj definicję fazy projektu"
       filter:
@@ -4708,6 +4782,8 @@ pl:
     Dodanie dodatkowych użytkowników spowoduje przekroczenie bieżącego limitu. Aby zapewnić użytkownikom zewnętrznym dostęp do tego wystąpienia, <a href="%{upgrade_url}">przejdź na wyższy plan</a>.
   warning_user_limit_reached_instructions: >
     Osiągnięto limit użytkownika (%{current}/%{max} aktywnych użytkowników). Skontaktuj się z sales@openproject.com w celu uaktualnienia planu Enterprise Edition i dodania kont użytkowników.
+  warning_interlinking_custom_field_with_role_html: >
+    <strong>Warning:</strong> You are about to link a custom field with a role. This will give users with the "Edit Project Attributes" permission to add members to the project and they will be assigned the linked role. This may lead to privilege escalation because users can assign themselves higher privileges than intended. Please make sure you understand the implications of this action.
   warning_protocol_mismatch_html: >
 
   warning_bar:

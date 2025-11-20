@@ -53,6 +53,7 @@ el:
       name: "Όνομα"
       type: "Τύπος"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Τύποι"
@@ -60,6 +61,10 @@ el:
     label_attachment_author: "Συγγραφέας συνημμένου"
     label_categories: "Κατηγορίες"
     new_category: "Νέα κατηγορία"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Έγγραφο προστέθηκε"
   label_document_new: "Νέο έγγραφο"
   label_document_plural: "Έγγραφα"

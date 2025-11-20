@@ -100,7 +100,8 @@ RSpec.describe DocumentsController do
       attributes_for(:document,
                      title: "New Document",
                      project_id: project.id,
-                     type_id: document_type.id)
+                     type_id: document_type.id,
+                     kind: "classic")
     end
 
     before do
@@ -137,7 +138,8 @@ RSpec.describe DocumentsController do
                document: attributes_for(:document,
                                         title: "New Document",
                                         project_id: notify_project.id,
-                                        type_id: document_type.id),
+                                        type_id: document_type.id,
+                                        kind: "classic"),
                attachments: { "1" => { id: uncontainered.id } }
              }
       end
@@ -209,9 +211,9 @@ RSpec.describe DocumentsController do
     context "when user does not have manage_documents permission" do
       current_user { user_without_manage }
 
-      it "does not generate an OAuth token for show action" do
+      it "generates an OAuth token for show action" do
         get :show, params: { id: document.id }
-        expect(assigns(:oauth_token)).to be_nil
+        expect(assigns(:oauth_token)).to be_present
       end
     end
   end

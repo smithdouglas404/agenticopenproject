@@ -32,13 +32,40 @@ require "rails_helper"
 
 RSpec.describe Projects::NewComponent, type: :component do
   let(:project) { build_stubbed(:project) }
+  let(:template) { nil }
+  let(:copy_options) { nil }
 
-  def render_component(**params)
-    render_inline(described_class.new(project:, **params))
+  def render_component
+    render_inline(described_class.new(project:, template:, copy_options:))
     page
   end
 
   it "renders a form" do
     expect(render_component).to have_css "form"
+  end
+
+  context "when creating from scratch" do
+    it "renders custom fields form" do
+      allow(Projects::Settings::CustomFieldsForm).to receive(:new).and_call_original
+      render_component
+      expect(Projects::Settings::CustomFieldsForm).to have_received(:new)
+    end
+  end
+
+  context "when creating from template" do
+    let(:template) { build_stubbed(:template_project) }
+    let(:copy_options) { Projects::CopyOptions.new }
+
+    it "does not render custom fields form" do
+      allow(Projects::Settings::CustomFieldsForm).to receive(:new)
+      render_component
+      expect(Projects::Settings::CustomFieldsForm).not_to have_received(:new)
+    end
+
+    it "renders template form" do
+      allow(Projects::TemplateForm).to receive(:new).and_call_original
+      render_component
+      expect(Projects::TemplateForm).to have_received(:new).with(anything, template:, copy_options:)
+    end
   end
 end

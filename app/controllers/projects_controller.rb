@@ -36,7 +36,8 @@ class ProjectsController < ApplicationController
 
   before_action :find_project, except: %i[index new create export_list_modal]
   before_action :load_query_or_deny_access, only: %i[index export_list_modal]
-  before_action :authorize, only: %i[copy_form copy deactivate_work_package_attachments]
+  before_action :authorize,
+                only: %i[copy_form copy deactivate_work_package_attachments export_list_modal export_project_initiation_pdf]
   before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
   before_action :not_authorized_on_feature_flag_inactive,
@@ -47,7 +48,7 @@ class ProjectsController < ApplicationController
   before_action :find_optional_template, only: %i[new create]
   before_action :find_optional_parent, only: :new
 
-  no_authorization_required! :index, :export_list_modal
+  no_authorization_required! :index
 
   include SortHelper
   include PaginationHelper
@@ -180,6 +181,13 @@ class ProjectsController < ApplicationController
     respond_with_dialog Projects::ExportListModalComponent.new(query: @query)
   end
 
+  def export_project_initiation_pdf
+    export = Project::PDFExport::ProjectInitiation.new(@project).export!
+    send_data(export.content, type: export.mime_type, filename: export.title)
+  rescue ::Exports::ExportError => e
+    redirect_to project_path(@project), flash: { error: e.message }
+  end
+
   private
 
   def from_template? = @template.present?
@@ -218,11 +226,14 @@ class ProjectsController < ApplicationController
   def create_from_template # rubocop:disable Metrics/AbcSize
     @copy_options = Projects::CopyOptions.new(permitted_params.copy_project_options)
 
+    target_project_params = permitted_params.new_project.to_h.merge(template: @template)
+
     service_call = Projects::EnqueueCopyService
       .new(user: current_user, model: @template)
       .call(
-        target_project_params: permitted_params.new_project.to_h,
+        target_project_params:,
         only: @copy_options.dependencies,
+        skip_custom_field_validation: true,
         send_notifications: @copy_options.send_notifications
       )
 
@@ -245,6 +256,8 @@ class ProjectsController < ApplicationController
   end
 
   def export_list(query, mime_type)
+    return not_authorized_on_export_list unless current_user.allowed_in_any_project?(:export_projects)
+
     job = Projects::ExportJob.perform_later(
       export: Projects::Export.create,
       user: current_user,
@@ -256,6 +269,14 @@ class ProjectsController < ApplicationController
       render json: { job_id: job.job_id }
     else
       redirect_to job_status_path(job.job_id)
+    end
+  end
+
+  def not_authorized_on_export_list
+    if request.headers["Accept"]&.include?("application/json")
+      render json: { error: I18n.t(:notice_not_authorized) }, status: :forbidden
+    else
+      redirect_to projects_path, alert: I18n.t(:notice_not_authorized), status: :see_other
     end
   end
 

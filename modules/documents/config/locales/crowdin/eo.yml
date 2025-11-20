@@ -53,6 +53,7 @@ eo:
       name: "Nomo"
       type: "Tipo"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Specoj"
@@ -60,6 +61,10 @@ eo:
     label_attachment_author: "Aŭtoro de la kunsendaĵo"
     label_categories: "Categories"
     new_category: "Nova kategorio"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Dokumento aldonita"
   label_document_new: "Nova dokumento"
   label_document_plural: "Dokumentoj"

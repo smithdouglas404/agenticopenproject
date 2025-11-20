@@ -53,6 +53,7 @@ et:
       name: "Nimi"
       type: "Tüüp"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Tüübid"
@@ -60,6 +61,10 @@ et:
     label_attachment_author: "Lisatud faili autor"
     label_categories: "Kategooriad"
     new_category: "Uus kategooria"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Dokument on lisatud"
   label_document_new: "Uus dokument"
   label_document_plural: "Dokumendid"

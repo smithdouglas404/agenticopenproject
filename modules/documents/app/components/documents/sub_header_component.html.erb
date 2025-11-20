@@ -19,7 +19,8 @@
         leading_icon: :plus,
         label: I18n.t(:label_document_new),
         tag: :a,
-        href: url_helpers.new_project_document_path(project)
+        data: { turbo_method: :post },
+        href: project_documents_path(project)
       ) do
         I18n.t("activerecord.models.document")
       end

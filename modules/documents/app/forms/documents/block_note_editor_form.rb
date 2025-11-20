@@ -37,9 +37,6 @@ module Documents
         visually_hide_label: true,
         classes: "document-form--long-description",
         value: model.content_binary,
-        document_id: model.id,
-        document_name: model.title,
-        oauth_token: @oauth_token,
         attachments_upload_url:,
         attachments_collection_key:
       )

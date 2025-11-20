@@ -58,6 +58,8 @@ class DocumentForm < ApplicationForm
       }
     )
 
+    f.hidden(name: :kind, value: "classic")
+
     f.submit(
       name: :save,
       label: save_label,

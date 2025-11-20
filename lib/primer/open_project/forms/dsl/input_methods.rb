@@ -21,6 +21,14 @@ module Primer
             super(**decorate_options(**), &)
           end
 
+          def advanced_radio_button_group(**, &)
+            add_input AdvancedRadioButtonGroupInput.new(builder:, form:, **decorate_options(**), &)
+          end
+
+          def advanced_check_box_group(**, &)
+            add_input AdvancedCheckBoxGroupInput.new(builder:, form:, **decorate_options(**), &)
+          end
+
           def autocompleter(**, &)
             add_input AutocompleterInput.new(builder:, form:, **decorate_options(**), &)
           end

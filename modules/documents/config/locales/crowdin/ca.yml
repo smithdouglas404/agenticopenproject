@@ -53,6 +53,7 @@ ca:
       name: "Nom"
       type: "Tipus"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Tipus"
@@ -60,6 +61,10 @@ ca:
     label_attachment_author: "Autor de l'adjunt"
     label_categories: "Categories"
     new_category: "Nova categoria"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Document afegit"
   label_document_new: "Nou document"
   label_document_plural: "Documents"

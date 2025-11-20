@@ -41,7 +41,7 @@ module Storages
             let(:auth_strategy) { Registry.resolve("one_drive.authentication.userless").call }
             let(:input_data) { Input::CreateFolder.build(folder_name:, parent_location:).value! }
 
-            it_behaves_like "adapter create_folder_command: basic command setup"
+            it_behaves_like "storage adapter: command call signature", "create_folder"
 
             context "when creating a folder in the root", vcr: "one_drive/create_folder_root" do
               let(:folder_name) { "Földer CreatedBy Çommand" }

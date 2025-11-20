@@ -35,12 +35,12 @@ class CopyProjectJob < ApplicationJob
   queue_with_priority :above_normal
 
   # Again error handling pushing the branch costs up
-  def perform(target_project_params:, associations_to_copy:, send_mails: false)
+  def perform(target_project_params:, associations_to_copy:, skip_custom_field_validation: false, send_mails: false) # rubocop:disable Metrics/AbcSize
     User.current = user
     target_project_params = target_project_params.with_indifferent_access
 
     target_project, errors = with_locale_for(user) do
-      create_project_copy(target_project_params, associations_to_copy, send_mails)
+      create_project_copy(target_project_params, associations_to_copy, skip_custom_field_validation, send_mails)
     end
 
     update_batch(target_project:, errors:, target_project_name: target_project_params[:name])
@@ -111,8 +111,13 @@ class CopyProjectJob < ApplicationJob
 
   # rubocop:disable Metrics/AbcSize
   # Most of the cost is from handling errors, we need to check what can be moved around / removed
-  def create_project_copy(target_project_params, associations_to_copy, send_mails)
-    service_result = copy_project(target_project_params, associations_to_copy, send_mails)
+  def create_project_copy(target_project_params, associations_to_copy, skip_custom_field_validation, send_mails)
+    service_result = copy_project(
+      target_project_params,
+      associations_to_copy,
+      skip_custom_field_validation,
+      send_mails
+    )
     target_project = service_result.result
     errors = service_result.errors.full_messages
 
@@ -138,8 +143,9 @@ class CopyProjectJob < ApplicationJob
   end
   # rubocop:enable Metrics/AbcSize
 
-  def copy_project(target_project_params, associations_to_copy, send_notifications)
-    copy_service = ::Projects::CopyService.new(source: source_project, user:)
+  def copy_project(target_project_params, associations_to_copy, skip_custom_field_validation, send_notifications)
+    contract_options = { skip_custom_field_validation: }
+    copy_service = ::Projects::CopyService.new(source: source_project, user:, contract_options:)
     result = copy_service.call({ target_project_params:, send_notifications:, only: Array(associations_to_copy) })
 
     enqueue_copy_project_folder_jobs(copy_service.state.copied_project_storages,

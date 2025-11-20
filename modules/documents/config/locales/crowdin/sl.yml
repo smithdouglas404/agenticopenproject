@@ -53,6 +53,7 @@ sl:
       name: "Ime"
       type: "Vrsta"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Tipi"
@@ -60,6 +61,10 @@ sl:
     label_attachment_author: "Avtor priloge"
     label_categories: "Categories"
     new_category: "Nova kategorija"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Dokument dodan"
   label_document_new: "Nov dokument"
   label_document_plural: "Dokumenti"

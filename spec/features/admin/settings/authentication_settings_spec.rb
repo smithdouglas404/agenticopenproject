@@ -76,7 +76,9 @@ RSpec.describe "Authentication Settings", :js do
       login_page.reload!
 
       expect(login_page).to have_checked_field "Session expires"
-      expect(login_page).to have_field "Session expiration time after inactivity", with: "30", described_by: "minutes"
+      expect(login_page).to have_field "Session expiration time after inactivity",
+                                       with: "30",
+                                       accessible_description: "minutes"
 
       uncheck "Session expires"
 

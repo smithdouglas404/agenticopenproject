@@ -320,6 +320,7 @@ lt:
     reorder_confirmation: "Dėmesio: Dabartinė galimų reikšmių tvarka bus prarasta. Tęsti?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    no_role_assigment: "No role assignment"
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
@@ -424,6 +425,16 @@ lt:
   incoming_mails:
     ignore_filenames: >
       Nurodykite sąrašą, kurį reikia ignoruoti apdorojant įeinančių laiškų priedus (pvz. parašus ar piešinius). Įveskite po vieną failo pavadinimą eilutėje.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -533,10 +544,19 @@ lt:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "Pakeistas sąrašas įrašytas kaip naujas sąrašas"
@@ -1156,6 +1176,7 @@ lt:
         identifier: "Identifikatorius"
         latest_activity_at: "Naujausia veikla"
         parent: "Priklauso projektui"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "Matomumas"
           true: "vieša"
@@ -1170,6 +1191,13 @@ lt:
           off_track: "Pasiklydęs"
           finished: "Baigtas"
           discontinued: "Nutrauktas"
+        submission_assignee_custom_field: "Assignee when submitted"
+        submission_notification_text: "Notification text"
+        submission_send_confirmation_email: "Confirmation email"
+        submission_status_when_submitted: "Status when submitted"
+        submission_work_package_comment: "Work package comment"
+        submission_work_package_type: "Work package type"
+        template: "Template"
         templated: "Šabloninis projektas"
         templated_value:
           true: "pažymėta kaip šablonas"
@@ -1708,8 +1736,7 @@ lt:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "Darbo paketas yra tik skaitymo būsenoje, taigi jo atributų keisti negalima."
@@ -2057,6 +2084,7 @@ lt:
   button_collapse_all: "Sutraukti visus"
   button_configure: "Konfigūruoti"
   button_continue: "Tęsti"
+  button_complete: "Complete"
   button_copy: "Kopijuoti"
   button_copy_to_clipboard: "Kopijuoti į iškarpinę"
   button_copy_link_to_clipboard: "Kopijuoti nuorodą į iškarpinę"
@@ -2161,6 +2189,18 @@ lt:
     template_label: "Naudoti šabloną"
     copy_options:
       dependencies_label: "Copy from template"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Create new wiki page"
   create_wiki_page_button: "Wiki puslapis"
   date:
@@ -2677,6 +2717,8 @@ lt:
     units:
       hours: h
       days: d
+    project_initiation:
+      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Page %{page} of %{total}"
     template_attributes:
@@ -2854,7 +2896,7 @@ lt:
         static_token_name: "API žetonas"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "Administratorius neįjungė iCalendar prenumeratų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
         empty_text_hint: "Norėdami pridėti iCalendar žetoną, prenumeruokite naują ar esamą kalendorių iš projekto kalendoriaus modulio. Jūs turite turėti reikiamas teises."
       oauth:
@@ -3173,6 +3215,7 @@ lt:
   label_installation_guides: "Diegimo gidai"
   label_integer: "Sveikasis skaičius"
   label_interface: "Interface"
+  label_interlinked_role_assignment: "Interlinked Role Assignment"
   label_internal: "Vidinis"
   label_introduction_video: "Getting started video"
   label_invite_user: "Pakviesti vartotoją"
@@ -3338,6 +3381,7 @@ lt:
   label_planning: "Planavimas"
   label_please_login: "Prašome prisijungti"
   label_plugins: "Papildiniai"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Moduliai ir priedai"
   label_precedes: "ankstesnis"
   label_preferences: "Parinktys"
@@ -3358,6 +3402,7 @@ lt:
   label_project_attribute_manage_link: "Valdyti projekto atributus"
   label_project_count: "Bendras projektų skaičius"
   label_project_copy_notifications: "Vykstant projekto kopijavimui siųsti pranešimus į el. paštą"
+  label_project_initiation_pdf: "Export PDF for project initiation request"
   label_project_latest: "Naujausi projektai"
   label_project_default_type: "Leisti tuščią tipą"
   label_project_hierarchy: "Projekto hierarchija"
@@ -3931,6 +3976,7 @@ lt:
   permission_edit_timelines: "Redaguoti tvarkaraščius"
   permission_edit_wiki_pages: "Redaguoti wiki puslapius"
   permission_export_work_packages: "Eksportuoti darbų paketus"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Eksportuoti wiki puslapius"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
@@ -3997,6 +4043,11 @@ lt:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"
@@ -4423,6 +4474,16 @@ lt:
       new:
         heading: "Naujas atributas"
         description: "Šio projekto atributo pakeitimas matysis visuose projektuose, kur jis įjungtas. Privalomų atributų negalima išjungti konkrečiame projekte."
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
       blankslate:
         title: "Initiation request not enabled"
@@ -4432,9 +4493,22 @@ lt:
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      submission:
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artefact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption: "The person or group this project initiation request will be assigned to."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "Project life cycle"
-      heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "Pridėti"
       label_add_description: "Add project phase definition"
       filter:
@@ -4708,6 +4782,8 @@ lt:
     Pridėjus papildomus naudotojus bus viršytas dabartinis apribojimas. Prašome <a href="%{upgrade_url}">pagerinti jūsų planą</a>, kad užtikrintumėte, jog išoriniai naudotojai gali prieigi prie šio egzemplioriaus.
   warning_user_limit_reached_instructions: >
     Jūs pasiekėte naudotojų ribą (%{current}/%{max} aktyvūs naudotojai). Susisiekite su sales@openproject.com norėdami atnaujinti savo Enterprise versijos planą arba pridėti papildomų naudotojų.
+  warning_interlinking_custom_field_with_role_html: >
+    <strong>Warning:</strong> You are about to link a custom field with a role. This will give users with the "Edit Project Attributes" permission to add members to the project and they will be assigned the linked role. This may lead to privilege escalation because users can assign themselves higher privileges than intended. Please make sure you understand the implications of this action.
   warning_protocol_mismatch_html: >
 
   warning_bar:

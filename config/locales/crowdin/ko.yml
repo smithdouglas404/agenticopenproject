@@ -323,6 +323,7 @@ ko:
     reorder_confirmation: "경고: 사용 가능한 값의 현재 순서가 손실됩니다. 계속하시겠습니까?"
     placeholder_version_select: "먼저 작업 패키지 또는 프로젝트를 선택해야 합니다"
     calculated_field_not_editable: "편집할 수 없는 특성입니다. 이 값은 자동으로 계산됩니다."
+    no_role_assigment: "No role assignment"
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
@@ -427,6 +428,16 @@ ko:
   incoming_mails:
     ignore_filenames: >
       받는 메일의 첨부 파일을 처리할 때 무시할 이름 목록을 지정하십시오(예: 서명 또는 아이콘). 라인 하나에 파일 이름 하나를 입력하십시오.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -536,10 +547,19 @@ ko:
       work_package_priorities:
         new_label: "새로운 우선 순위"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: 프로젝트 상태 편집
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "수정된 목록이 새 목록으로 저장되었습니다"
@@ -1135,6 +1155,7 @@ ko:
         identifier: "식별자"
         latest_activity_at: "다음의 최근 활동"
         parent: "하위 프로젝트"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "표시 여부"
           true: "공개"
@@ -1149,6 +1170,13 @@ ko:
           off_track: "비정상 상태"
           finished: "마침"
           discontinued: "중단됨"
+        submission_assignee_custom_field: "Assignee when submitted"
+        submission_notification_text: "Notification text"
+        submission_send_confirmation_email: "Confirmation email"
+        submission_status_when_submitted: "Status when submitted"
+        submission_work_package_comment: "Work package comment"
+        submission_work_package_type: "Work package type"
+        template: "Template"
         templated: "템플릿 프로젝트"
         templated_value:
           true: "템플릿으로 표시됨"
@@ -1684,8 +1712,7 @@ ko:
               cant_exceed_work: "- 작업보다 높을 수 없습니다."
               must_be_set_when_work_is_set: "- 작업이 설정된 경우 필수입니다."
               must_be_set_when_work_and_percent_complete_are_set: "- 작업 및 완료 %가 설정된 경우 필수입니다."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                - 작업이 설정되고 완료 %가 100%인 경우 0시간이어야 합니다.
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 - 작업이 비어 있고 완료 %가 100%인 경우 비어 있어야 합니다.
           readonly_status: "작업 패키지가 읽기 전용 상태이므로 해당 속성을 변경할 수 없습니다."
@@ -1988,6 +2015,7 @@ ko:
   button_collapse_all: "모두 축소"
   button_configure: "구성"
   button_continue: "계속"
+  button_complete: "Complete"
   button_copy: "복사"
   button_copy_to_clipboard: "클립보드 복사"
   button_copy_link_to_clipboard: "클립보드에 링크 복사"
@@ -2092,6 +2120,18 @@ ko:
     template_label: "템플릿 사용"
     copy_options:
       dependencies_label: "템플릿에서 복사"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "새 위키 페이지 만들기"
   create_wiki_page_button: "위키 페이지"
   date:
@@ -2545,6 +2585,8 @@ ko:
     units:
       hours: 시간
       days: 일
+    project_initiation:
+      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "%{page}/%{total}페이지"
     template_attributes:
@@ -2722,7 +2764,7 @@ ko:
         static_token_name: "API 토큰"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar 토큰을 사용하여 사용자가 [OpenProject 캘린더를 구독](docs_url)하고 외부 클라이언트의 최신 작업 패키지 정보를 볼 수 있습니다.'
+        text_hint_link: "iCalendar 토큰을 사용하여 사용자가 [OpenProject 캘린더를 구독](docs_url)하고 외부 클라이언트의 최신 작업 패키지 정보를 볼 수 있습니다."
         disabled_text: "관리자가 iCalendar 구독을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
         empty_text_hint: "iCalendar 토큰을 추가하려면 프로젝트의 캘린더 모듈 내에서 새 캘린더 또는 기존 캘린더를 구독하세요. 필요한 권한이 있어야 합니다."
       oauth:
@@ -3041,6 +3083,7 @@ ko:
   label_installation_guides: "설치 가이드"
   label_integer: "정수"
   label_interface: "인터페이스"
+  label_interlinked_role_assignment: "Interlinked Role Assignment"
   label_internal: "내부"
   label_introduction_video: "시작하기 동영상"
   label_invite_user: "사용자 초대"
@@ -3206,6 +3249,7 @@ ko:
   label_planning: "계획"
   label_please_login: "로그인하세요."
   label_plugins: "플러그인"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "모듈 및 플러그인"
   label_precedes: "선행"
   label_preferences: "기본 설정"
@@ -3226,6 +3270,7 @@ ko:
   label_project_attribute_manage_link: "프로젝트 특성 관리"
   label_project_count: "전체 프로젝트 수"
   label_project_copy_notifications: "프로젝트 복사 중에 이메일 알림 보내기"
+  label_project_initiation_pdf: "Export PDF for project initiation request"
   label_project_latest: "최근 프로젝트"
   label_project_default_type: "빈 유형 허용"
   label_project_hierarchy: "프로젝트 계층 구조"
@@ -3793,6 +3838,7 @@ ko:
   permission_edit_timelines: "타임라인 편집"
   permission_edit_wiki_pages: "위키 페이지 편집"
   permission_export_work_packages: "작업 패키지 내보내기"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "위키 페이지 내보내기"
   permission_invite_members_by_email: "이메일로 멤버 초대"
   permission_invite_members_by_email_explanation: >
@@ -3859,6 +3905,11 @@ ko:
   permission_edit_project_query: "프로젝트 쿼리 편집"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"
@@ -4285,6 +4336,16 @@ ko:
       new:
         heading: "새 특성"
         description: "이 프로젝트 특성에 대한 변경 사항은 이 특성이 활성화된 모든 프로젝트에 반영됩니다. 필수 특성은 프로젝트별로 비활성화할 수 없습니다."
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
       blankslate:
         title: "Initiation request not enabled"
@@ -4294,9 +4355,22 @@ ko:
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      submission:
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artefact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption: "The person or group this project initiation request will be assigned to."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "프로젝트 수명 주기"
-      heading_description: "프로젝트 수명 주기는 프로젝트 계획에 사용할 수 있는 프로젝트 단계를 정의하며, 각 프로젝트의 개요 페이지에 표시됩니다. 이러한 특성은 활성화 또는 비활성화할 수 있지만 프로젝트 수준에서 재정렬할 수는 없습니다."
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "추가"
       label_add_description: "프로젝트 단계 정의 추가"
       filter:
@@ -4568,6 +4642,8 @@ ko:
     사용자를 더 추가하면 현재 한도가 초과됩니다. 외부 사용자가 이 인스턴스에 액세스할 수 있도록 하려면 <a href="%{upgrade_url}">플랜을 업그레이드</a>하세요.
   warning_user_limit_reached_instructions: >
     사용자 제한(활성 사용자 %{current}/%{max}명)에 도달했습니다. sales@openproject.com으로 연락하여 Enterprise Edition 플랜을 업그레이드하고 사용자를 더 추가하세요.
+  warning_interlinking_custom_field_with_role_html: >
+    <strong>Warning:</strong> You are about to link a custom field with a role. This will give users with the "Edit Project Attributes" permission to add members to the project and they will be assigned the linked role. This may lead to privilege escalation because users can assign themselves higher privileges than intended. Please make sure you understand the implications of this action.
   warning_protocol_mismatch_html: >
 
   warning_bar:

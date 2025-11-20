@@ -85,8 +85,6 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       create(:user, member_with_roles: { template => role })
     end
 
-    let(:template_field) { FormFields::SelectFormField.new :use_template }
-
     current_user do
       create(:user,
              member_with_roles: { template => role, other_project => role },
@@ -100,7 +98,7 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
 
       expect(page).to have_no_selector :fieldset, "Copy options"
 
-      template_field.select_option "My template"
+      choose "My template", fieldset: "Use template"
 
       # Only when a template is selected, the options are displayed.
       # Using this to know when the copy form has been fetched from the backend.
@@ -109,8 +107,6 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       # FIXME: It should keep the name. See BUG OP#64594 https://community.openproject.org/wp/64594
       # expect(page).to have_field "Name", with: "Foo bar"
       fill_in "Name", with: "Foo bar"
-
-      template_field.expect_selected "My template"
 
       expect(page).to have_unchecked_field fieldset: "Notifications"
 
@@ -152,6 +148,41 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       wiki_target = project.wiki.pages.first
       expect(wiki_source.title).to eq(wiki_target.title)
       expect(wiki_source.text).to eq(wiki_target.text)
+    end
+
+    it "skips custom field validation when creating from template" do
+      # Create a required custom field on the template
+      custom_field = create(:string_project_custom_field, is_required: true)
+      template.project_custom_field_ids = [custom_field.id]
+
+      visit new_project_path
+
+      # Should show required custom field when creating a blank project
+      expect(page).to have_field custom_field.name
+
+      choose "My template", fieldset: "Use template"
+
+      # Only when a template is selected, the options are displayed
+      expect(page).to have_selector :fieldset, "Copy from template"
+
+      fill_in "Name", with: "Project from template"
+
+      # Should not show custom field form when creating from template
+      expect(page).to have_no_field custom_field.name
+
+      click_on "Create"
+
+      expect(page).to have_dialog "Background job status"
+
+      GoodJob.perform_inline
+
+      expect(page).to have_current_path /\/projects\/project-from-template\/?/, wait: 20
+
+      # Project should be created successfully even though required custom field is empty
+      project = Project.find_by(identifier: "project-from-template")
+      expect(project).to be_present
+      expect(project.template).to eq(template)
+      expect(project.send(custom_field.attribute_getter)).to be_blank
     end
   end
 end
