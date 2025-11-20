@@ -62,7 +62,15 @@ module Grids
       end
 
       def can_view_subprojects?
-        current_user.allowed_in_project?(:view_project, project)
+        return false unless current_user.allowed_in_project?(:view_project, project)
+
+        subprojects = project.children
+
+        return true if subprojects.none?
+
+        subprojects.any? do |child|
+          current_user.allowed_in_project?(:view_project, child)
+        end
       end
 
       def can_manage_subprojects?

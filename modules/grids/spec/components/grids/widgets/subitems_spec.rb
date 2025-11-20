@@ -131,8 +131,8 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
 
     context "when user can view parent but does not have permission to view any subprojects" do
       let(:user) { build_stubbed(:user) }
-      let(:empty_selector) { "subitems-widget-empty" }
-      let(:empty_message)  { "This widget is currently empty." }
+      let(:empty_selector) { "subitems-widget-no-permission" }
+      let(:empty_message)  { "This widget is not available." }
 
       before do
         mock_permissions_for(user) do |mock|
