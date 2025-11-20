@@ -57,7 +57,8 @@ A team planner has a number of features numbered 1 to 8 in the above screenshot:
 
 4. By default, the team planner will only show assigned work packages belonging to the current project. 
 
-   > [!TIP] It is possible to also add assigned work packages belonging to other projects. You can make these work packages from other projects visible by using **Include projects** feature and selecting additional projects to be included in this view.
+> [!TIP]
+> It is possible to also add assigned work packages belonging to other projects. You can make these work packages from other projects visible by using **Include projects** feature and selecting additional projects to be included in this view.
 
 5. Use the **Filter** feature (same as in the [work packages](../work-packages/work-package-table-configuration/#filter-work-packages) module) to display only work packages that meet certain filter criteria. You could, for example, filter such that only work packages of certain types, certain status or certain custom field values are visible.
 
