@@ -1,13 +1,15 @@
+$op-logo-link-margin-y: 0.25rem
+
 .op-logo
   width: 130px
   height: var(--header-height)
   margin: 0 0.5rem
 
   &--link
-    margin: 0.25rem 0
+    margin: $op-logo-link-margin-y 0
     width: 100%
     display: block
-    height: calc(100% - 8px)
+    height: calc(100% - (#{$op-logo-link-margin-y} * 2))
     text-indent: -9999em
     background: no-repeat left center
     background-size: contain
