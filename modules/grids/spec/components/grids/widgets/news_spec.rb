@@ -127,13 +127,7 @@ RSpec.describe Grids::Widgets::News, type: :component do
   context "when the user does not have permission to manage news" do
     let(:project) { project_red }
     let(:user) { create(:user) }
-
-    before do
-      allow(user).to receive(:allowed_in_project?)
-                       .with(:manage_news, project)
-                       .and_return(false)
-    end
-
+    # User has only view_news permission now
     it_behaves_like "empty-state without action"
   end
 end
