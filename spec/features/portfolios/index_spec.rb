@@ -49,9 +49,9 @@ RSpec.describe "Portfolios", "index", :js do
 
   before do
     create(:favorite, user: current_user, favorited: portfolio_favorited)
-    create(:project, parent: portfolio_a)
-    create(:program, parent: portfolio_a).tap do |program_a|
-      create(:project, parent: program_a)
+    create(:project, parent: portfolio_a, status_code: "on_track")
+    create(:program, parent: portfolio_a, status_code: "at_risk").tap do |program_a|
+      create(:project, parent: program_a, status_code: "on_track")
     end
 
     portfolios_page.visit!
@@ -158,7 +158,7 @@ RSpec.describe "Portfolios", "index", :js do
       portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_favorited)
     end
 
-    it "allows seeing and changing the status" do
+    it "allows seeing and changing the portfolio status" do
       portfolios_page.expect_status_of(portfolio_a, "Not set")
       portfolios_page.expect_status_of(portfolio_favorited, "Not set")
 
@@ -166,6 +166,35 @@ RSpec.describe "Portfolios", "index", :js do
 
       portfolios_page.expect_status_of(portfolio_favorited, "At risk")
       portfolios_page.expect_status_of(portfolio_a, "Not set")
+    end
+
+    describe "status of sub-items" do
+      it "shows the status summary of sub-items" do
+        portfolios_page.within_row(portfolio_a) do
+          expect(page).to have_test_selector("op-portfolios--sub-status")
+
+          # It renders the correct percentages per status:
+          on_track = page.find_test_selector("op-portfolios--status-on_track")
+          on_track_percentage = on_track["data-percentage"]
+          expect(on_track_percentage).to eq("67")
+
+          at_risk = page.find_test_selector("op-portfolios--status-at_risk")
+          at_risk_percentage = at_risk["data-percentage"]
+          expect(at_risk_percentage).to eq("33")
+
+          # The status bar shows a hover card on hover:
+          hover_card_selector = "op-portfolios--hover-card-#{portfolio_a.id}"
+          expect(page).not_to have_test_selector(hover_card_selector)
+          page.find_test_selector("op-portfolios--sub-status").hover
+          expect(page).to have_test_selector(hover_card_selector)
+        end
+      end
+
+      it "does not show a status summary if no sub-item has a status" do
+        portfolios_page.within_row(portfolio_favorited) do
+          expect(page).not_to have_test_selector("op-portfolios--sub-status")
+        end
+      end
     end
 
     context "when using the more menu" do
