@@ -62,14 +62,22 @@ RSpec.describe Grids::Widgets::Members, type: :component do
     end
   end
 
+  context "when user cannot view members" do
+    let(:empty_selector) { "members-widget-no-permission" }
+    let(:empty_message)  { "This widget is not available." }
+
+    it_behaves_like "empty-state without action"
+  end
+
   context "with no members" do
     let(:empty_selector) { "members-widget-empty" }
     let(:empty_message)  { "This widget is currently empty." }
 
     context "when user can view but cannot manage members" do
       before do
-        allow(user).to receive(:allowed_in_project?).with(:view_members, project).and_return(true)
-        allow(user).to receive(:allowed_in_project?).with(:manage_members, project).and_return(false)
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_members, project:)
+        end
       end
 
       it_behaves_like "empty-state without action"
@@ -77,24 +85,13 @@ RSpec.describe Grids::Widgets::Members, type: :component do
 
     context "when user can view and manage members" do
       before do
-        allow(user).to receive(:allowed_in_project?).with(:view_members, project).and_return(true)
-        allow(user).to receive(:allowed_in_project?).with(:manage_members, project).and_return(true)
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_members, :manage_members, project:)
+        end
       end
 
       it_behaves_like "empty-state with action"
     end
-  end
-
-  context "when user cannot view members" do
-    let(:empty_selector) { "members-widget-no-permission" }
-    let(:empty_message)  { "This widget is not available." }
-
-    before do
-      allow(user).to receive(:allowed_in_project?).with(:view_members, project).and_return(false)
-      allow(user).to receive(:allowed_in_project?).with(:manage_members, project).and_return(false)
-    end
-
-    it_behaves_like "empty-state without action"
   end
 
   context "with members" do
