@@ -48,7 +48,7 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
     it "renders empty blankslate without action button" do
       expect(rendered_component).to have_test_selector(empty_selector)
       expect(rendered_component).to have_text(empty_message)
-      expect(rendered_component).to have_no_css(".blankslate-action")
+      expect(rendered_component).to have_no_test_selector("subitems-widget-add-button")
     end
   end
 
@@ -56,7 +56,7 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
     it "renders empty blankslate with action button" do
       expect(rendered_component).to have_test_selector("subitems-widget-empty")
       expect(rendered_component).to have_text("This widget is currently empty.")
-      expect(rendered_component).to have_css(".blankslate-action")
+      expect(rendered_component).to have_test_selector("subitems-widget-add-button")
     end
   end
 

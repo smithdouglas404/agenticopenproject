@@ -50,7 +50,7 @@ RSpec.describe Grids::Widgets::Members, type: :component do
     it "renders blankslate without action button" do
       expect(rendered_component).to have_test_selector(empty_selector)
       expect(rendered_component).to have_text(empty_message)
-      expect(rendered_component).to have_no_css(".blankslate-action")
+      expect(rendered_component).to have_no_test_selector("members-widget-add-button")
     end
   end
 
@@ -58,7 +58,7 @@ RSpec.describe Grids::Widgets::Members, type: :component do
     it "renders blankslate with action button" do
       expect(rendered_component).to have_test_selector("members-widget-empty")
       expect(rendered_component).to have_text("This widget is currently empty.")
-      expect(rendered_component).to have_css(".blankslate-action")
+      expect(rendered_component).to have_test_selector("members-widget-add-button")
     end
   end
 

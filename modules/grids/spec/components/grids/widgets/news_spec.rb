@@ -54,7 +54,7 @@ RSpec.describe Grids::Widgets::News, type: :component do
     it "renders empty blankslate without action" do
       expect(rendered_component).to have_test_selector("news-widget-empty")
       expect(rendered_component).to have_text("This widget is currently empty.")
-      expect(rendered_component).to have_no_css(".blankslate-action")
+      expect(rendered_component).to have_no_test_selector("news-widget-add-button")
     end
   end
 
@@ -62,7 +62,7 @@ RSpec.describe Grids::Widgets::News, type: :component do
     it "renders empty blankslate with add action" do
       expect(rendered_component).to have_test_selector("news-widget-empty")
       expect(rendered_component).to have_text("This widget is currently empty.")
-      expect(rendered_component).to have_css(".blankslate-action")
+      expect(rendered_component).to have_test_selector("news-widget-add-button")
     end
   end
 
