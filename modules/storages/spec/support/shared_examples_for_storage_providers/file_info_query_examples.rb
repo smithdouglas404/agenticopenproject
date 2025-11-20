@@ -60,6 +60,6 @@ RSpec.shared_examples_for "adapter file_info_query: error" do
 
     error = result.failure
     expect(error.code).to eq(:error)
-    expect(error.source).to eq(described_class)
+    expect(error.source).to eq(error_source)
   end
 end

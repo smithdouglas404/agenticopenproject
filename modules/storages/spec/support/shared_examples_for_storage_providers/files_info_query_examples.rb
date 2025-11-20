@@ -40,3 +40,15 @@ RSpec.shared_examples_for "adapter files_info_query: successful list response" d
     expect(response).to eq(expected_file_infos)
   end
 end
+
+RSpec.shared_examples_for "adapter files_info_query: error" do
+  it "returns a failure" do
+    result = described_class.call(storage:, auth_strategy:, input_data:)
+
+    expect(result).to be_failure
+
+    error = result.failure
+    expect(error.code).to eq(:error)
+    expect(error.source).to eq(error_source)
+  end
+end
