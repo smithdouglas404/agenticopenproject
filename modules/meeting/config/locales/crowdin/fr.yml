@@ -115,7 +115,7 @@ fr:
   label_meeting_new_dynamic: "Nouvelle réunion ponctuelle"
   label_meeting_new_recurring: "Nouvelle réunion récurrente"
   label_meeting_create: "Créer une réunion"
-  label_meeting_duplicate: "Duplicate meeting"
+  label_meeting_duplicate: "Réunion en double"
   label_meeting_edit: "Modifier la réunion"
   label_meeting_agenda: "Ordre du jour"
   label_meeting_minutes: "Compte rendu"
@@ -127,7 +127,7 @@ fr:
   label_meeting_date_time: "Date/Heure"
   label_meeting_date_and_time: "Date et heure"
   label_meeting_diff: "Différence"
-  label_meeting_send_updates: "Send email calendar invite and updates"
+  label_meeting_send_updates: "Envoi d'invitations et de mises à jour du calendrier par courrier électronique"
   label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
   label_recurring_meeting: "Réunion récurrente"
   label_recurring_meeting_part_of: "Partie d'une série de réunions"
@@ -136,7 +136,7 @@ fr:
   label_template: "Modèle"
   label_recurring_meeting_view: "Voir la série de réunions"
   label_recurring_meeting_create: "Ouvrir"
-  label_recurring_meeting_duplicate: "Duplicate as a one-time meeting"
+  label_recurring_meeting_duplicate: "Dupliquer pour une réunion unique"
   label_recurring_meeting_cancel: "Annuler cette occurrence"
   label_recurring_meeting_delete: "Supprimer l'occurrence"
   label_recurring_meeting_restore: "Restaurer cette occurrence"
@@ -335,9 +335,9 @@ fr:
             Les mises à jour du calendrier par e-mail sont désactivées. Les participants ne recevront pas d'e-mail les informant de l'ajout ou de la suppression de participants.
         onetime:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            Tous les participants recevront des invitations de calendrier mises à jour par e-mail lorsque vous ajouterez ou supprimerez des participants.
           disabled: >
-            Participants will not receive an email informing them of changes to meeting date, time or participants.
+            Les participants ne recevront pas d'e-mail les informant des changements de date, d'heure ou de participants.
         occurrence:
           enabled: >
             Les mises à jour du calendrier par e-mail sont activées pour la série de réunions. Tous les participants recevront des invitations de calendrier mises à jour les informant des modifications que vous avez apportées à cet événement.
@@ -349,13 +349,13 @@ fr:
           disabled: >
             Les mises à jour du calendrier par e-mail sont désactivées pour la série de réunions. Les participants ne recevront pas d'e-mail les informant des modifications que vous avez apportées à ce modèle ou aux événements individuels.
     presentation_mode:
-      title: "Presentation Mode"
-      button_present: "Present"
-      exit: "Exit presentation"
-      current_item: "Current item"
-      total_items: "%{current} of %{total}"
-      previous: "Previous"
-      next: "Next"
+      title: "Mode de Présentation"
+      button_present: "Présent"
+      exit: "Quitter la présentation"
+      current_item: "Élément actuel"
+      total_items: "%{current} sur %{total}"
+      previous: "Précédent"
+      next: "Suivante"
       no_items: "No agenda items"
       no_items_flash: "There are no agenda items to present."
   meeting_section:

@@ -98,6 +98,10 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
     query.editable?
   end
 
+  def can_export?
+    current_user.allowed_in_any_project?(:export_projects)
+  end
+
   def show_state?
     state == :show
   end

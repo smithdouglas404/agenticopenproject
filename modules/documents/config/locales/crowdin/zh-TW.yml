@@ -40,7 +40,8 @@ zh-TW:
     page_header:
       heading: "所有文件"
       action_menu:
-        document_actions: "Document actions"
+        document_actions: "文件操作"
+        edit_title: "編輯標題"
     subheader:
       filter:
         label: "文件名篩選器"
@@ -52,13 +53,18 @@ zh-TW:
       name: "名稱"
       type: "類型"
       updated_at: "最近編輯紀錄"
+      label_legacy: "傳統方式"
     menu:
       all: "所有文件"
       types: "類型"
-    last_updated_at: "Last updated %{time}."
+    last_updated_at: "最後更新 %{time}。"
     label_attachment_author: "附件作者"
     label_categories: "類別"
     new_category: "新增類別"
+    delete_dialog:
+      title: "刪除文件"
+      heading: "刪除此文件？"
+      confirmation_message_html: "這將永久刪除本文件和所有檔案附件。您確定要這麼做？"
   label_document_added: "文件已新增"
   label_document_new: "建立新文件"
   label_document_plural: "文件"

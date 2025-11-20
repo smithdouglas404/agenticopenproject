@@ -244,8 +244,10 @@ class CustomField < ApplicationRecord
       value.to_i
     when "float", "calculated_value"
       value.to_f
-    when "user", "version"
-      field_format.classify.constantize.find_by(id: value.to_i)
+    when "user"
+      Principal.find_by(id: value.to_i)
+    when "version"
+      Version.find_by(id: value.to_i)
     when "hierarchy", "weighted_item_list"
       CustomField::Hierarchy::Item.find_by(id: value.to_i)
     end
@@ -412,21 +414,26 @@ class CustomField < ApplicationRecord
     end
   end
 
-  def deduce_project(project)
-    if project.is_a?(Project)
-      project
-    elsif project.respond_to?(:project)
-      project.project
+  def deduce_project(candidate)
+    if candidate.is_a?(Project)
+      candidate
+    elsif candidate.respond_to?(:project)
+      candidate.project
     end
   end
 
   def deduce_principals(project)
-    if project&.persisted?
+    if user_field_with_role_assignment?
+      Principal.visible
+    elsif project&.persisted?
       project.principals
     else
-      Principal
-        .in_visible_project_or_me(User.current)
+      Principal.in_visible_project_or_me(User.current)
     end
+  end
+
+  def user_field_with_role_assignment?
+    is_a?(ProjectCustomField) && user? && custom_fields_role.present?
   end
 
   def deduce_versions(project, options: {})

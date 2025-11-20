@@ -434,5 +434,129 @@ RSpec.describe Projects::UpdateService, type: :model do
         end
       end
     end
+
+    describe "custom user fields with role assignment" do
+      let(:project) { create(:project) }
+      let!(:model_instance) { project }
+      # Remove the set_attributes_service mocking to use the real service.
+      let!(:set_attributes_service) { nil }
+      let(:contract_class) { EmptyContract }
+
+      let(:user) { create(:admin) }
+
+      let(:project_role) { create(:project_role) }
+      let(:second_user) { create(:user) }
+      let(:third_user) { create(:user) }
+      let!(:role_based_cf) do
+        create(:project_custom_field, :user, is_for_all: true, role_id: project_role.id, projects: [project])
+      end
+
+      let(:manage_memberships_service) do
+        instance_double(Projects::ManageMembershipsFromCustomFieldsService)
+      end
+
+      before do
+        User.current = user
+
+        allow(Projects::ManageMembershipsFromCustomFieldsService)
+          .to receive(:new)
+          .and_return(manage_memberships_service)
+
+        allow(manage_memberships_service).to receive(:call)
+      end
+
+      context "when the custom field is not set" do
+        context "when not setting a user in a custom field that assigns roles" do
+          let(:call_attributes) do
+            {}
+          end
+
+          it "does not call the ManageMembershipsFromCustomFieldsService" do
+            subject
+
+            expect(Projects::ManageMembershipsFromCustomFieldsService)
+              .not_to have_received(:new)
+          end
+        end
+
+        context "when setting a user in a custom field that assigns roles" do
+          let(:call_attributes) do
+            {
+              custom_field_values: {
+                role_based_cf.id => third_user.id
+              }
+            }
+          end
+
+          it "calls the ManageMembershipsFromCustomFieldsService" do
+            subject
+
+            expect(Projects::ManageMembershipsFromCustomFieldsService).to have_received(:new).with(
+              user:,
+              project:,
+              custom_field: role_based_cf
+            )
+
+            expect(manage_memberships_service).to have_received(:call).with(
+              old_value: [], new_value: [third_user.id.to_s]
+            )
+          end
+        end
+      end
+
+      context "when the custom field is set" do
+        before do
+          create(:custom_value, customized: project, custom_field: role_based_cf, value: second_user.id)
+        end
+
+        context "when unsetting the user in a custom field that assigns roles" do
+          let(:call_attributes) do
+            {
+              custom_field_values: {
+                role_based_cf.id => nil
+              }
+            }
+          end
+
+          it "calls the ManageMembershipsFromCustomFieldsService" do
+            subject
+
+            expect(Projects::ManageMembershipsFromCustomFieldsService).to have_received(:new).with(
+              user:,
+              project:,
+              custom_field: role_based_cf
+            )
+
+            expect(manage_memberships_service).to have_received(:call).with(
+              old_value: [second_user.id.to_s], new_value: []
+            )
+          end
+        end
+
+        context "when changing the user in a custom field that assigns roles" do
+          let(:call_attributes) do
+            {
+              custom_field_values: {
+                role_based_cf.id => third_user.id
+              }
+            }
+          end
+
+          it "calls the ManageMembershipsFromCustomFieldsService" do
+            subject
+
+            expect(Projects::ManageMembershipsFromCustomFieldsService).to have_received(:new).with(
+              user:,
+              project:,
+              custom_field: role_based_cf
+            )
+
+            expect(manage_memberships_service).to have_received(:call).with(
+              old_value: [second_user.id.to_s], new_value: [third_user.id.to_s]
+            )
+          end
+        end
+      end
+    end
   end
 end

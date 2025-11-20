@@ -26,33 +26,45 @@
  *
  * See COPYRIGHT and LICENSE files for more details.
  * ++
+ *
  */
 
 import { Controller } from '@hotwired/stimulus';
 
-export default class WorkPackagesGeneralFormController extends Controller<HTMLFormElement> {
-  static targets = ['highlightedAttribute'];
+export default class EditablePageHeaderTitleController extends Controller {
+  static values = {
+    inputId: String,
+  };
 
-  declare readonly highlightedAttributeTargets:HTMLInputElement[];
+  declare readonly inputIdValue:string;
 
-  private abortController:AbortController|null = null;
-
-  connect():void {
-    this.abortController = new AbortController();
-    const { signal } = this.abortController;
-
-    this.element.addEventListener('submit', this.onSubmit.bind(this), { signal });
+  connect() {
+    setTimeout(() => {
+      if (this.inEditMode) {
+        this.focusOnTitleInput();
+        this.clearStateFromUrl();
+      }
+    }, 100); // Delay to ensure input is rendered
   }
 
-  disconnect():void {
-    this.abortController?.abort();
-    this.abortController = null;
-  }
-
-  private onSubmit() {
-    const attributes = this.highlightedAttributeTargets;
-    if (attributes.every((attr) => attr.checked)) {
-      attributes.forEach((attr) => { attr.checked = false; });
+  focusOnTitleInput():void {
+    if (this.inputIdValue) {
+      const input = document.getElementById(this.inputIdValue) as HTMLInputElement;
+      if (input) {
+        input.focus();
+        input.select();
+      }
     }
+  }
+
+  clearStateFromUrl():void {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('state');
+    window.history.replaceState({}, document.title, url.toString());
+  }
+
+  private get inEditMode():boolean {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    return urlSearchParams.get('state') === 'edit';
   }
 }

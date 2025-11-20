@@ -318,6 +318,12 @@ module Pages
         wait_for_network_idle
       end
 
+      def expect_no_more_menu_item(item)
+        wait_for_network_idle
+        page.find('[data-test-selector="project-more-dropdown-menu"]').click
+        expect(page).to have_no_css(".ActionListItem", text: item, exact_text: true)
+      end
+
       def click_menu_item_of(title, project)
         activate_menu_of(project) do
           click_on title

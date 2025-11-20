@@ -72,6 +72,7 @@ export default function OpBlockNoteContainer({ inputField,
                                                attachmentsUploadUrl,
                                                attachmentsCollectionKey }:OpBlockNoteContainerProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [theme, setTheme] = useState<OpColorMode>(detectTheme());
 
   initOpenProjectApi({ baseUrl: openProjectUrl });
 
@@ -202,14 +203,34 @@ export default function OpBlockNoteContainer({ inputField,
     };
   }, []);
 
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const newTheme = detectTheme();
+      setTheme(newTheme);
+    };
+
+    window.addEventListener('op:theme-changed', handleThemeChange);
+
+    return () => {
+      window.removeEventListener('op:theme-changed', handleThemeChange);
+    };
+  }, []);
+
   return (
     <>
-      {isLoading ? <div>Loading...</div>
+      {isLoading ? <div>
+        <div className={'mb-3'}>
+          <div style={{width: '25%', height: '40px'}} className={'SkeletonBox'}/>
+        </div>
+        <div className={'mb-3'}>
+          <div style={{width: '100%', height: '150px'}} className={'SkeletonBox'}/>
+        </div>
+      </div>
         :
         <BlockNoteView
           editor={editor}
           slashMenu={false}
-          theme={detectTheme()}
+          theme={theme}
           className={'block-note-editor-container'}
         >
           <SuggestionMenuController

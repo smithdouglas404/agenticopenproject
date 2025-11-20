@@ -144,6 +144,13 @@ RSpec.describe Projects::CreateContract do
         end
       end
 
+      describe "writing template attribute" do
+        it_behaves_like "can write" do
+          let(:attribute) { :template }
+          let(:value) { build_stubbed(:template_project) }
+        end
+      end
+
       describe "writing read-only attributes" do
         context "when enabled for admin", with_settings: { apiv3_write_readonly_attributes: true } do
           let(:current_user) { build_stubbed(:admin) }

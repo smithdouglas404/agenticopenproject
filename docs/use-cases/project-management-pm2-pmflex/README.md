@@ -1,7 +1,7 @@
 ---
 sidebar_navigation:
   title: PM² and PMflex project management
-  priority: 600
+  priority: 985
 description: Learn how to set up and configure OpenProject to support the PM²/PMflex methodology with OpenProject
 keywords: pmflex, PM², PM2, 
 

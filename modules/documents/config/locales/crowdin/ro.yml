@@ -41,6 +41,7 @@ ro:
       heading: "All documents"
       action_menu:
         document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "Document name filter"
@@ -52,6 +53,7 @@ ro:
       name: "Nume"
       type: "Tip"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Tipuri"
@@ -59,6 +61,10 @@ ro:
     label_attachment_author: "Autorul anexei"
     label_categories: "Categorii"
     new_category: "Categorie nouă"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Document adăugat"
   label_document_new: "Document nou"
   label_document_plural: "Documente"

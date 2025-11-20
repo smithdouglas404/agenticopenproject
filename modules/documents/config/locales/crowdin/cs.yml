@@ -41,6 +41,7 @@ cs:
       heading: "All documents"
       action_menu:
         document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "Document name filter"
@@ -52,6 +53,7 @@ cs:
       name: "Název:"
       type: "Typ"
       updated_at: "Last edited"
+      label_legacy: "Legacy"
     menu:
       all: "All documents"
       types: "Typy"
@@ -59,6 +61,10 @@ cs:
     label_attachment_author: "Autor přílohy"
     label_categories: "Kategorie"
     new_category: "Nová kategorie"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Dokument byl přidán"
   label_document_new: "Nový dokument"
   label_document_plural: "Dokumenty"

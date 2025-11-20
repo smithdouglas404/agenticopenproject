@@ -62,16 +62,20 @@
     else
       render Primer::Beta::Blankslate.new(border: true, test_selector: "documents-list-blank-slate") do |component|
         component.with_visual_icon(icon: :briefcase)
-        component.with_heading(tag: :h2).with_content(I18n.t("documents.documents_list_blank_slate.heading", project_name: project.name))
-        component.with_description { I18n.t("documents.documents_list_blank_slate.description") }
-        component.with_primary_action(
-          scheme: :primary,
-          label: I18n.t(:label_document_new),
-          tag: :a,
-          href: url_for({ controller: "/documents", action: "new", project_id: project })
-        ) do |button|
-          button.with_leading_visual_icon(icon: :plus)
-          I18n.t("activerecord.models.document")
+        component.with_heading(tag: :h2).with_content(I18n.t("documents.documents_list_blank_slate.heading"))
+
+        if can_add_documents?
+          component.with_description { I18n.t("documents.documents_list_blank_slate.description") }
+          component.with_primary_action(
+            scheme: :primary,
+            label: I18n.t(:label_document_new),
+            tag: :a,
+            data: { turbo_method: :post },
+            href: project_documents_path(project)
+          ) do |button|
+            button.with_leading_visual_icon(icon: :plus)
+            I18n.t("activerecord.models.document")
+          end
         end
       end
     end

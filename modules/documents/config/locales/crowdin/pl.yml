@@ -41,6 +41,7 @@ pl:
       heading: "Wszystkie dokumenty"
       action_menu:
         document_actions: "Document actions"
+        edit_title: "Edit title"
     subheader:
       filter:
         label: "Filtr nazwy dokumentu"
@@ -52,6 +53,7 @@ pl:
       name: "Nazwa"
       type: "Typ"
       updated_at: "Ostatnio edytowano"
+      label_legacy: "Legacy"
     menu:
       all: "Wszystkie dokumenty"
       types: "Typy"
@@ -59,6 +61,10 @@ pl:
     label_attachment_author: "Autor załącznika"
     label_categories: "Kategorie"
     new_category: "Nowa kategoria"
+    delete_dialog:
+      title: "Delete document"
+      heading: "Delete this document?"
+      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
   label_document_added: "Dodano dokument"
   label_document_new: "Nowy dokument"
   label_document_plural: "Dokumenty"

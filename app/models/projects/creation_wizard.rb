@@ -33,5 +33,12 @@ module Projects::CreationWizard
 
   included do
     store_attribute :settings, :project_creation_wizard_enabled, :boolean
+
+    store_attribute :settings, :submission_work_package_type_id, :integer
+    store_attribute :settings, :submission_status_when_submitted_id, :integer
+    store_attribute :settings, :submission_send_confirmation_email, :boolean
+    store_attribute :settings, :submission_assignee_custom_field_id, :integer
+    store_attribute :settings, :submission_notification_text, :string
+    store_attribute :settings, :submission_work_package_comment, :string
   end
 end

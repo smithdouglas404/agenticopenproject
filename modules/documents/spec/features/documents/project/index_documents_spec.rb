@@ -103,7 +103,7 @@ RSpec.describe "List Documents",
     it "renders a blank slate" do
       index_page.visit!
 
-      index_page.expect_blank_slate
+      index_page.expect_blank_slate_without_primary_action
 
       aggregate_failures "renders content that is accessible" do
         expect(page).to be_axe_clean.within("#content")

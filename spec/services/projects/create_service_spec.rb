@@ -503,6 +503,67 @@ RSpec.describe Projects::CreateService, type: :model do
           end
         end
       end
+
+      describe "custom user fields with role assignment" do
+        let(:user) { create(:admin) }
+
+        let(:project_role) { create(:project_role) }
+        let(:other_user) { create(:user) }
+        let!(:role_based_cf) do
+          create(:project_custom_field, :user, is_for_all: true, role_id: project_role.id)
+        end
+
+        let(:manage_memberships_service) do
+          instance_double(Projects::ManageMembershipsFromCustomFieldsService)
+        end
+
+        before do
+          User.current = user
+
+          allow(Projects::ManageMembershipsFromCustomFieldsService)
+            .to receive(:new)
+            .and_return(manage_memberships_service)
+
+          allow(manage_memberships_service).to receive(:call)
+        end
+
+        context "when not setting a user in a custom field that assigns roles" do
+          let(:project_attributes) do
+            {}
+          end
+
+          it "does not call the ManageMembershipsFromCustomFieldsService" do
+            subject
+
+            expect(Projects::ManageMembershipsFromCustomFieldsService)
+              .not_to have_received(:new)
+          end
+        end
+
+        context "when setting a user in a custom field that assigns roles" do
+          let(:project_attributes) do
+            {
+              custom_field_values: {
+                role_based_cf.id => other_user.id
+              }
+            }
+          end
+
+          it "calls the ManageMembershipsFromCustomFieldsService" do
+            subject
+
+            expect(Projects::ManageMembershipsFromCustomFieldsService).to have_received(:new).with(
+              user:,
+              project:,
+              custom_field: role_based_cf
+            )
+
+            expect(manage_memberships_service).to have_received(:call).with(
+              old_value: [], new_value: [other_user.id.to_s]
+            )
+          end
+        end
+      end
     end
   end
 end

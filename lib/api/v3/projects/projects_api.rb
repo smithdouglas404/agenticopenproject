@@ -42,8 +42,7 @@ module API
 
           post &::API::V3::Utilities::Endpoints::Create.new(model: Project,
                                                             params_modifier: ->(attributes) {
-                                                              attributes[:workspace_type] = Project.workspace_types[:project]
-                                                              attributes
+                                                              attributes.merge!(workspace_type: "project")
                                                             })
                                                        .mount
 

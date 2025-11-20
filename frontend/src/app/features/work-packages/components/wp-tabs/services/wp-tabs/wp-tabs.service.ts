@@ -85,6 +85,25 @@ export class WorkPackageTabsService {
     ];
   }
 
+  registerBefore(id:string, tab:WpTabDefinition):void {
+    const index = this.registeredTabs.findIndex((t) => t.id === id);
+    if (index !== -1) {
+      this.registeredTabs.splice(index, 0, tab);
+    } else {
+      throw new Error(`Tab with id "${id}" not found. Appending tab to the end.`);
+    }
+  }
+
+  registerAfter(id:string, tab:WpTabDefinition):void {
+    const index = this.registeredTabs.findIndex((t) => t.id === id);
+    if (index !== -1) {
+      this.registeredTabs.splice(index + 1, 0, tab);
+    } else {
+      throw new Error(`Tab with id "${id}" not found. Appending tab to the end.`);
+    }
+  }
+
+
   patchTabCondition(id:string, displayable:(workPackage:WorkPackageResource, $state:StateService) => boolean):void {
     const tabDefinition = this.registeredTabs.find((tab) => tab.id === id);
     if (tabDefinition) {

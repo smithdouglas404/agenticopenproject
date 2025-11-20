@@ -232,6 +232,8 @@ gem "view_component", "~> 4.1.1"
 # Lookbook
 gem "lookbook", "2.3.13"
 
+gem "inline_svg", "~> 1.10.0"
+
 # Require factory_bot for usage with openproject plugins testing
 gem "factory_bot", "~> 6.5.6", require: false
 # require factory_bot_rails for convenience in core development
@@ -282,7 +284,7 @@ group :test do
   gem "rails-controller-testing", "~> 1.0.2"
 
   gem "capybara", "~> 3.40.0"
-  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.14.0"
+  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.15.0"
   gem "capybara-screenshot", "~> 1.0.17"
   gem "cuprite", "~> 0.17.0"
   gem "rspec-wait"
@@ -366,13 +368,13 @@ group :development, :test do
   gem "brakeman", "~> 7.1.1"
 
   # i18n-tasks helps find and manage missing and unused translations.
-  gem "i18n-tasks", "~> 1.0.13", require: false
+  gem "i18n-tasks", "~> 1.1.0", require: false
 
   # Active Record Doctor helps to keep the database in good shape.
   gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem "bootsnap", "~> 1.18.0", require: false
+gem "bootsnap", "~> 1.19.0", require: false
 
 # API gems
 gem "grape", "~> 2.4.0"

@@ -283,8 +283,12 @@ RSpec.describe ProjectsController do
 
         allow(copy_service)
           .to receive(:call)
-              .with(target_project_params: { "name" => name }, only: [], send_notifications: false)
-              .and_return(service_result)
+              .with(
+                target_project_params: { "name" => name, "template" => template },
+                only: [],
+                skip_custom_field_validation: true,
+                send_notifications: false
+              ).and_return(service_result)
 
         post :create, params: {
           template_id: template.id,
@@ -345,6 +349,8 @@ RSpec.describe ProjectsController do
         expect(response).to render_template "index"
       end
     end
+
+    it_behaves_like "successful index"
   end
 
   describe "#destroy" do

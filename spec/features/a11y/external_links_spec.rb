@@ -40,8 +40,8 @@ RSpec.describe "External links", :js do
   it "sets ARIA describedby on external links" do
     visit "/"
 
-    expect(page).to have_link target: "_blank", described_by: "Open link in a new tab"
-    expect(page.all(:link, target: "_blank")).to all match_selector(:link, described_by: "Open link in a new tab")
+    expect(page).to have_link target: "_blank", accessible_description: "Open link in a new tab"
+    expect(page.all(:link, target: "_blank")).to all match_selector(:link, accessible_description: "Open link in a new tab")
   end
 
   it "updates external links to open in a new tab and sets rel attributes" do

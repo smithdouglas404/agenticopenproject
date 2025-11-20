@@ -320,6 +320,7 @@ uk:
     reorder_confirmation: "Увага! Поточний порядок доступних значень буде втрачено. Продовжити?"
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
     calculated_field_not_editable: "Атрибут не підлягає редагуванню. Його значення обчислюється автоматично."
+    no_role_assigment: "No role assignment"
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
@@ -424,6 +425,16 @@ uk:
   incoming_mails:
     ignore_filenames: >
       Вкажіть список імен, які ігноруватимуться під час обробки вкладень для вхідних повідомлень (наприклад, підписів або значків). Введіть одне ім'я файлу у рядок.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -533,10 +544,19 @@ uk:
       work_package_priorities:
         new_label: "Новий пріоритет"
       creation_wizard:
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
         label_request_submission: "Request submission"
         label_artefact_export: "Artifact export"
     status:
       button_edit: Змінити статус проєкту
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes have been saved successfully."
+      progress_label: "%{current} of %{total}"
   lists:
     create:
       success: "Змінений список збережено як новий"
@@ -1153,6 +1173,7 @@ uk:
         identifier: "Ідентифікатор"
         latest_activity_at: "Остання активність на"
         parent: "Підпроект"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "Видимість"
           true: "публічний"
@@ -1167,6 +1188,13 @@ uk:
           off_track: "Не за графіком"
           finished: "Завершено"
           discontinued: "Припинено"
+        submission_assignee_custom_field: "Assignee when submitted"
+        submission_notification_text: "Notification text"
+        submission_send_confirmation_email: "Confirmation email"
+        submission_status_when_submitted: "Status when submitted"
+        submission_work_package_comment: "Work package comment"
+        submission_work_package_type: "Work package type"
+        template: "Template"
         templated: "Проєкт шаблона"
         templated_value:
           true: "позначено як шаблон"
@@ -1705,8 +1733,7 @@ uk:
               cant_exceed_work: "не може перевищувати значення атрибута «Робота»."
               must_be_set_when_work_is_set: "потрібно вказати, якщо визначено атрибут «Робота»."
               must_be_set_when_work_and_percent_complete_are_set: "потрібно вказати, якщо визначено атрибути «Робота» й «% завершення»."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                має дорівнювати 0 год, якщо вибрано варіант «Робота», а атрибут «% завершення» становить 100%.
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 має бути пустим, якщо визначено атрибути «Робота» й «% завершення».
           readonly_status: "Пакет робіт перебуває в стані лише для читання, тому його атрибути не можна змінити."
@@ -2054,6 +2081,7 @@ uk:
   button_collapse_all: "Згорнути все"
   button_configure: "Настроювання"
   button_continue: "Продовжити"
+  button_complete: "Complete"
   button_copy: "Копіювати"
   button_copy_to_clipboard: "Копіювати в буфер обміну"
   button_copy_link_to_clipboard: "Копіювати посилання в буфер обміну"
@@ -2158,6 +2186,18 @@ uk:
     template_label: "Використовувати шаблон"
     copy_options:
       dependencies_label: "Копіювати з шаблона"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Створити нову вікісторінку"
   create_wiki_page_button: "Сторінка Wiki"
   date:
@@ -2674,6 +2714,8 @@ uk:
     units:
       hours: г
       days: д
+    project_initiation:
+      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Сторінка %{page} з %{total}"
     template_attributes:
@@ -2851,7 +2893,7 @@ uk:
         static_token_name: "Маркер API"
       ical:
         title: "iCalendar"
-        text_hint_link: 'Маркери iCalendar дають змогу користувачам [підписуватися на календарі OpenProject](docs_url) і переглядати актуальну інформацію про пакети робіт у зовнішніх клієнтах.'
+        text_hint_link: "Маркери iCalendar дають змогу користувачам [підписуватися на календарі OpenProject](docs_url) і переглядати актуальну інформацію про пакети робіт у зовнішніх клієнтах."
         disabled_text: "Підписки на iCalendar не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
         empty_text_hint: "Щоб додати маркер iCalendar, підпишіться на новий або наявний календар у модулі календаря проєкту. У вас мають бути необхідні дозволи."
       oauth:
@@ -2944,6 +2986,7 @@ uk:
   label_add_column: "Додати стовпець"
   label_applied_status: "Застосовний статус"
   label_archive_project: "Архівний проект"
+  label_artefact_export: "Artefact export"
   label_ascending: "За зростанням"
   label_assigned_to_me_work_packages: "Робочі пакети призначені мені"
   label_associated_revisions: "Пов'язані редакції"
@@ -3169,6 +3212,7 @@ uk:
   label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
+  label_interlinked_role_assignment: "Interlinked Role Assignment"
   label_internal: "Власне"
   label_introduction_video: "Відео про початок роботи"
   label_invite_user: "Запросити користувача"
@@ -3334,6 +3378,7 @@ uk:
   label_planning: "Планування"
   label_please_login: "Увійдіть у систему"
   label_plugins: "Плагіни"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Модулі та плагіни"
   label_precedes: "переважати"
   label_preferences: "Налаштування"
@@ -3354,6 +3399,7 @@ uk:
   label_project_attribute_manage_link: "Керувати атрибутами проєкту"
   label_project_count: "Загальна кількість проектів"
   label_project_copy_notifications: "Відправлення повідомлень по електронній пошті в ході реалізації проекту копія"
+  label_project_initiation_pdf: "Export PDF for project initiation request"
   label_project_latest: "Останні проекти"
   label_project_default_type: "Дозволити порожній тип"
   label_project_hierarchy: "Ієрархія проектів"
@@ -3409,6 +3455,7 @@ uk:
   label_repository_remove: "Вилучити репозиторій"
   label_repository_root: "Корень сховища"
   label_repository_plural: "Репозиторії"
+  label_request_submission: "Request submission"
   label_required: "вимагається"
   label_requires: "вимагається"
   label_result_plural: "Результати"
@@ -3925,6 +3972,7 @@ uk:
   permission_edit_timelines: "Змінити часові рамки"
   permission_edit_wiki_pages: "Редагування wiki-сторінок"
   permission_export_work_packages: "Експорт робочих пакетів"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Експорт wiki-сторінок"
   permission_invite_members_by_email: "Запрошення учасників електронною поштою"
   permission_invite_members_by_email_explanation: >
@@ -3991,6 +4039,11 @@ uk:
   permission_edit_project_query: "Редагування запиту проєктів"
   placeholders:
     default: "-"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
       title: "Archive project"
@@ -4419,6 +4472,16 @@ uk:
       new:
         heading: "Новий атрибут"
         description: "Зміни цього атрибута проєкту відобразяться в усіх проєктах, де його ввімкнено. Обов’язкові атрибути не можна вимикати для окремого проєкту."
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
       blankslate:
         title: "Initiation request not enabled"
@@ -4428,9 +4491,22 @@ uk:
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      submission:
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artefact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption: "The person or group this project initiation request will be assigned to."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "Життєвий цикл проєкту"
-      heading_description: "Життєвий цикл проєкту визначає етапи, які можна використовувати для планування й відображення проєкту на сторінці панелі огляду. Ці атрибути можна вмикати або вимикати, але їх не можна перевпорядковувати на рівні окремого проєкту."
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "Додати"
       label_add_description: "Додати визначення етапу проєкту"
       filter:
@@ -4704,6 +4780,8 @@ uk:
     Додавання користувачів призведе до перевищення поточного ліміту. <a href="%{upgrade_url}">Підвищте рівень свого плану</a>, щоб забезпечити доступ до цього екземпляра зовнішнім користувачам.
   warning_user_limit_reached_instructions: >
     Ви досягли обмеження користувача (%{current}/%{max} активних користувачів). Напишіть на адресу sales@openproject.com, щоб перейти на версію Enterprise і додати більше користувачів.
+  warning_interlinking_custom_field_with_role_html: >
+    <strong>Warning:</strong> You are about to link a custom field with a role. This will give users with the "Edit Project Attributes" permission to add members to the project and they will be assigned the linked role. This may lead to privilege escalation because users can assign themselves higher privileges than intended. Please make sure you understand the implications of this action.
   warning_protocol_mismatch_html: >
 
   warning_bar:

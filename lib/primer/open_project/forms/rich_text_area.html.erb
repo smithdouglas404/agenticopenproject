@@ -1,4 +1,4 @@
-<%= render(FormControl.new(input: @input)) do %>
+<%= render(FormControl.new(input: @input, class: @wrapper_classes, data: @wrapper_data_attributes)) do %>
   <%= content_tag(:div, hidden: true) do %>
     <%= builder.text_area(@input.name, **@input.input_arguments) %>
   <% end %>

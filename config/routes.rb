@@ -284,6 +284,11 @@ Rails.application.routes.draw do
         resource :creation_wizard, controller: "creation_wizard", only: %i[show] do
           get :disable_dialog
           post :toggle
+          post :update_submission_settings
+          get :refresh_submission_form
+          post :toggle_project_custom_field
+          put :enable_all_of_section
+          put :disable_all_of_section
         end
         resource :project_custom_fields, only: %i[show] do
           member do
@@ -326,10 +331,15 @@ Rails.application.routes.draw do
       end
       resource :identifier, only: %i[show update], controller: "identifier"
       resource :status, only: %i[update destroy], controller: "status"
+      resource :creation_wizard, only: %i[show update], controller: "creation_wizard" do
+        get :help_text, on: :member
+      end
     end
 
     member do
       get "settings", to: redirect("projects/%{id}/settings/general/")
+
+      get "export_project_initiation", to: "projects#export_project_initiation_pdf"
 
       get :copy, to: "projects#copy_form"
       post :copy
@@ -462,37 +472,42 @@ Rails.application.routes.draw do
       get "(/revisions/:rev)/diff(/*repo_path)",
           action: :diff,
           format: "html",
-          constraints: { rev: /[\w.\-]+/, repo_path: /.*/ }
+          constraints: { rev: /[\w.-]+/, repo_path: /.*/ }
 
       get "(/revisions/:rev)/:format/*repo_path",
           action: :entry,
           format: /raw/,
-          rev: /[\w.\-]+/
+          rev: /[\w.-]+/
 
       %w{diff annotate changes entry browse}.each do |action|
         get "(/revisions/:rev)/#{action}(/*repo_path)",
             format: "html",
             action:,
-            constraints: { rev: /[\w.\-]+/, repo_path: /.*/ },
+            constraints: { rev: /[\w.-]+/, repo_path: /.*/ },
             as: "#{action}_revision"
       end
 
-      get "/revision(/:rev)", rev: /[\w.\-]+/,
+      get "/revision(/:rev)", rev: /[\w.-]+/,
                               action: :revision,
                               as: "show_revision"
 
       get "(/revisions/:rev)(/*repo_path)",
           action: :show,
           format: "html",
-          constraints: { rev: /[\w.\-]+/, repo_path: /.*/ },
+          constraints: { rev: /[\w.-]+/, repo_path: /.*/ },
           as: "show_revisions_path"
     end
   end
 
   resources :portfolios,
-            only: %i[new],
-            defaults: { workspace_type: "portfolio" },
-            controller: "projects"
+            only: %i[index]
+
+  # Portfolio creation is handled by the project controller:
+  get "portfolios/new", to: "projects#new", defaults: { workspace_type: "portfolio" }, as: :new_portfolio
+
+  namespace :portfolios do
+    resource :menu, only: %i[show]
+  end
 
   resources :programs,
             only: %i[new],
@@ -647,6 +662,8 @@ Rails.application.routes.draw do
           get :new_link
           post :link
           delete :unlink
+
+          get :role_assignment
         end
         resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
           member do
@@ -1024,6 +1041,9 @@ Rails.application.routes.draw do
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
+  if Rails.env.development? || OpenProject::Configuration.good_job_engine_basic_auth.present?
     mount GoodJob::Engine => "good_job"
   end
 end
