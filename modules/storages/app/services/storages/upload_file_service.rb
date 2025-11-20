@@ -108,7 +108,7 @@ module Storages
       end
 
       # TODO: file query returns collection, create folder returns monad result
-      Success(current_folder.respond_to?(:success?) ? current_folder.value! : current_folder)
+      Success(current_folder.respond_to?(:success?) ? current_folder.value! : current_folder.parent)
     end
 
     def cumulative_paths(path)
