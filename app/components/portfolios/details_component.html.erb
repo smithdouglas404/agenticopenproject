@@ -47,7 +47,10 @@
                   aria: {
                     label: status_label
                   },
-                  test_selector: "op-portfolios--status-#{status[:code] || 'not_set'}"
+                  test_selector: "op-portfolios--status-#{status[:code] || 'not_set'}",
+                  data: {
+                    percentage: status[:percentage]
+                  }
                 )
               end
             end
