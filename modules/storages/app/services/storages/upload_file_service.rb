@@ -32,8 +32,6 @@ module Storages
   class UploadFileService < BaseService
     using Peripherals::ServiceResultRefinements
 
-    # container - WorkPackage or other journaled model
-    # TODO: file_data IO?
     def self.call(container:, project_storage:, file_path:, filename:, file_data:)
       new(project_storage, container).call(file_path:, filename:, file_data:)
     end
@@ -56,10 +54,10 @@ module Storages
           return @result
         end
 
-        validate_container_validity_period!
+        ensure_validity_period_exists
 
-        folder = get_folder!(auth_strategy, file_path).value_or { return @result }
-        file = upload_file(auth_strategy, folder, filename, file_data).value_or { return @result }
+        folder = fetch_or_create_folder(file_path).value_or { return @result }
+        file = upload_file(folder, filename, file_data).value_or { return @result }
         file_link = create_file_link(file).value_or { return @result }
 
         @result.success = file_link
@@ -84,7 +82,7 @@ module Storages
     end
 
     # TODO: do we need to validate validity_period here? For some reason FileLink creation fails otherwise.
-    def validate_container_validity_period!
+    def ensure_validity_period_exists
       if @container.respond_to?(:start_date) && @container.respond_to?(:due_date)
         @container.start_date ||= Time.zone.today
         @container.due_date ||= Time.zone.today + 7.days
@@ -93,30 +91,27 @@ module Storages
       @container.save! if @container.changed?
     end
 
-    def get_folder!(auth_strategy, file_path)
+    def fetch_or_create_folder(file_path)
       prefix = @project_storage.managed_project_folder_path
-      normalized_path = prefix + (file_path.start_with?("/") ? file_path[1...] : file_path)
-
       current_folder = nil
 
-      cumulative_paths(normalized_path).each do |folder_name|
-        folder_result = check_folder_exists?(auth_strategy, folder_name)
-
-        current_folder = folder_result.value_or do |error|
-          create_folder!(auth_strategy, folder_name) if error.code == :not_found
+      cumulative_paths(prefix, file_path).each do |folder_path|
+        current_folder = check_folder_exists?(folder_path).value_or do |error|
+          create_folder!(folder_path) if error.code == :not_found
         end
       end
 
       # TODO: file query returns collection, create folder returns monad result
-      Success(current_folder.respond_to?(:success?) ? current_folder.value! : current_folder.parent)
+      parent_folder = current_folder.respond_to?(:success?) ? current_folder.value! : current_folder.parent
+      Success(parent_folder)
     end
 
-    def cumulative_paths(path)
+    def cumulative_paths(prefix, path)
       segments = path.split("/").reject(&:empty?)
-      segments.map.with_index { |_, i| "/#{segments[0..i].join('/')}" }
+      segments.map.with_index { |_, i| "#{prefix}#{segments[0..i].join('/')}" }
     end
 
-    def check_folder_exists?(auth_strategy, path)
+    def check_folder_exists?(path)
       input_data = Adapters::Input::Files.build(folder: path).value_or do |error|
         add_validation_error(error, options: { folder: path })
       end
@@ -124,19 +119,21 @@ module Storages
       Adapters::Registry.resolve("#{@storage}.queries.files").call(auth_strategy:, storage: @storage, input_data:)
     end
 
-    def create_folder!(auth_strategy, path)
+    def create_folder!(path)
       folder_path = File.dirname(path)
       folder_name = path.sub("#{folder_path}/", "")
-
       input_data = Adapters::Input::CreateFolder.build(folder_name:, parent_location: folder_path).value_or do |error|
         add_validation_error(error, options: { folder_id: folder_path })
       end
-      Adapters::Registry["#{@storage}.commands.create_folder"].call(storage: @storage, auth_strategy: auth_strategy, input_data:)
+      Adapters::Registry["#{@storage}.commands.create_folder"].call(storage: @storage, auth_strategy:, input_data:)
     end
 
-    def upload_file(auth_strategy, folder, filename, file_data)
-      input_data = Adapters::Input::UploadFile.build(parent_location: folder.location, file_name: filename,
-                                                     io: file_data).value_or do |error|
+    def upload_file(folder, filename, file_data)
+      input_data = Adapters::Input::UploadFile.build(
+        parent_location: folder.location,
+        file_name: filename,
+        io: file_data
+      ).value_or do |error|
         add_validation_error(error, options: { file_path: "#{folder.location}/#{filename}" })
       end
 
@@ -156,15 +153,11 @@ module Storages
         storage: @storage
       }
 
-      create_service = FileLinks::CreateService.new(user: @user, contract_class: FileLinks::CreateContract)
-      result = create_service.call(file_link_params)
+      result = FileLinks::CreateService
+        .new(user: @user, contract_class: FileLinks::CreateContract)
+        .call(file_link_params)
 
-      if result.success?
-        info "FileLink created successfully: #{result.result.id}"
-        Success(result.result)
-      else
-        Failure(result.errors)
-      end
+      result.success? ? Success(result.result) : Failure(result.errors)
     end
   end
 end
