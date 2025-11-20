@@ -50,16 +50,15 @@ module Storages
     let(:project) { create(:project, name: "UploadProject") }
     let(:storage) { create(:nextcloud_storage_with_local_connection) }
     let(:project_storage) { create(:project_storage, project:, storage:, project_folder_id: "/project_folder") }
-    let(:work_package) { create(:work_package, project:, author: user) }
-    let(:file_path) { "/uploads/documents" }
+    let(:container) { create(:work_package, project:, author: user) }
     let(:filename) { "test_file.pdf" }
     let(:file_data) { StringIO.new("This is the file content.") }
 
-    describe ".call" do
-      subject(:result) do
-        described_class.call(container: work_package, project_storage:, file_path:, filename:, file_data:)
-      end
+    subject(:result) do
+      described_class.call(container:, project_storage:, file_path:, filename:, file_data:)
+    end
 
+    describe ".call" do
       context "when storage is not Nextcloud" do
         let(:storage) { create(:one_drive_storage) }
 
@@ -75,13 +74,11 @@ module Storages
 
       context "when storage is Nextcloud" do
         context "when folder exists", vcr: "services/nextcloud_upload_file_success_file" do
-          # ...existing code...
+          let(:file_path) { "/uploads/documents" }
 
           it "uploads and creates a FileLink via Nextcloud" do
-            expect do
-              described_class.call(container: work_package, project_storage: project_storage, file_path: file_path,
-                                   filename: filename, file_data: file_data)
-            end.to change(FileLink, :count).by(1)
+            expect { result }.to change(FileLink, :count).by(1)
+
             file_link = FileLink.last
             expect(file_link.creator).to eq(user)
             expect(file_link.origin_name).to eq(filename)
@@ -89,13 +86,12 @@ module Storages
         end
 
         context "when folder does not exist" do
-          # ...existing code...
+          let(:file_path) { "/uploads/documents/secret" }
+
           it "creates the folder, uploads, and creates a FileLink",
              vcr: "services/nextcloud_upload_file_new_folder_success_file" do
-            expect do
-              described_class.call(container: work_package, project_storage: project_storage,
-                                   file_path: "/uploads/documents/secret", filename: filename, file_data: file_data)
-            end.to change(FileLink, :count).by(1)
+            expect { result }.to change(FileLink, :count).by(1)
+
             file_link = FileLink.last
             expect(file_link.creator).to eq(user)
             expect(file_link.origin_name).to eq(filename)

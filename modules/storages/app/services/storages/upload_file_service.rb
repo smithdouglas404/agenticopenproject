@@ -73,6 +73,10 @@ module Storages
       @storage.short_provider_type == "nextcloud"
     end
 
+    def error_with_code(error, code)
+      Adapters::Results::Error.new(payload: error.payload, source: self.class).with(code: code)
+    end
+
     def determine_user(container)
       if container.is_a?(WorkPackage) && container.author.present?
         container.author
@@ -97,7 +101,11 @@ module Storages
 
       cumulative_paths(prefix, file_path).each do |folder_path|
         current_folder = check_folder_exists?(folder_path).value_or do |error|
-          create_folder!(folder_path) if error.code == :not_found
+          if error.code == :not_found
+            create_folder!(folder_path)
+          else
+            return Failure(error_with_code(error, error.code))
+          end
         end
       end
 
@@ -108,6 +116,8 @@ module Storages
 
     def cumulative_paths(prefix, path)
       segments = path.split("/").reject(&:empty?)
+      return [prefix] if segments.empty?
+
       segments.map.with_index { |_, i| "#{prefix}#{segments[0..i].join('/')}" }
     end
 
