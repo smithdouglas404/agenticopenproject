@@ -56,13 +56,11 @@ module Storages
           return @result
         end
 
-        binding.pry
-
         folder = get_folder!(auth_strategy, file_path).value_or { return @result }
         file = upload_file(auth_strategy, folder, filename, file_data).value_or { return @result }
         file_link = create_file_link(file).value_or { return @result }
 
-        @result.success(file_link)
+        @result.success = file_link
         @result
       end
     end
@@ -90,12 +88,11 @@ module Storages
       current_folder = nil
 
       cumulative_paths(normalized_path).each do |folder_name|
-        # todo: return partent
         folder_result = check_folder_exists?(auth_strategy, folder_name)
 
         current_folder = folder_result.value_or do |error|
           create_folder!(auth_strategy, folder_name) if error.code == :not_found
-        end
+        end&.parent
       end
 
       Success(current_folder)
@@ -128,7 +125,7 @@ module Storages
     end
 
     def upload_file(auth_strategy, folder, filename, file_data)
-      input_data = Adapters::Input::UploadFile.build(file_path: "#{folder.location}/#{filename}",
+      input_data = Adapters::Input::UploadFile.build(parent_location: folder.location, file_name: filename,
                                                      io: file_data).value_or do |error|
         add_validation_error(error, options: { file_path: "#{folder.location}/#{filename}" })
       end
@@ -139,6 +136,11 @@ module Storages
 
     def create_file_link(file_info)
       info "Creating FileLink for file #{file_info.id}"
+
+      # TODO: do we need to validate validity_period here? For some reason FileLink creation fails otherwise.
+      @container.start_date = Time.zone.today if @container.respond_to?(:start_date) && @container.start_date.blank?
+      @container.due_date = Time.zone.today + 7.days if @container.respond_to?(:due_date) && @container.due_date.blank?
+      @container.save! if @container.changed?
 
       file_link_params = {
         creator: @user,
