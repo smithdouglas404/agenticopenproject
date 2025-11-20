@@ -2246,7 +2246,10 @@ en:
       dependencies_label: "Copy from project"
 
   create_project:
+    attributes_heading: "Required attributes"
+    details_heading: "Project details"
     template_label: "Use template"
+    template_heading: "Templated projects"
     copy_options:
       dependencies_label: "Copy from template"
     blank_template:
@@ -2255,11 +2258,15 @@ en:
     blank_description: No description provided.
 
   create_portfolio:
+    details_heading: "Portfolio details"
+    template_heading: "Templated portfolios"
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
 
   create_program:
+    details_heading: "Program details"
+    template_heading: "Templated programs"
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.

@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   component_wrapper do
-    settings_primer_form_with(
+    primer_form_with(
       url: new_workspace_path,
       method: :get
     ) do |f|
@@ -38,7 +38,7 @@ See COPYRIGHT and LICENSE files for more details.
           render Projects::TemplateSelectForm.new(f, template_id:, parent_id:, workspace_type: project.workspace_type, current_user:)
         end
 
-        container.with_row(mb: 3) do
+        container.with_row do
           render Projects::StepForm.new(f, step: 2)
         end
       end

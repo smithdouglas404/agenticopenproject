@@ -47,6 +47,7 @@ module Projects
       f.advanced_radio_button_group(
         name: :template_id,
         label: I18n.t("create_project.template_label"),
+        visually_hide_label: true,
         scope_name_to_model: false,
         data: {
           qa_field_name: "use_template"

@@ -34,30 +34,35 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
-<% case params.fetch(:step, 1).to_i %>
-<% when 1 %>
-<%=
-  render Projects::TemplateSelectComponent.new(
-    project: @new_project,
-    template: @template,
-    parent: @parent,
-    current_user:
-  )
-%>
-<% when 2 %>
-<%=
-  render Projects::NewComponent.new(
-    project: @new_project,
-    template: @template,
-    step: 2
-  )
-%>
-<% when 3 %>
-<%=
-  render Projects::NewComponent.new(
-    project: @new_project,
-    template: @template,
-    step: 3
-  )
-%>
+<%= render(Primer::BaseComponent.new(tag: :div, border: true, p: 3, mb: 3, border_radius: 2)) do %>
+  <% case params.fetch(:step, 1).to_i %>
+  <% when 1 %>
+    <%= render(Primer::Beta::Heading.new(tag: :h3, mb: 2, font_size: 3)) { I18n.t("create_#{@new_project.workspace_type}.template_heading") } %>
+    <%=
+      render Projects::TemplateSelectComponent.new(
+        project: @new_project,
+        template: @template,
+        parent: @parent,
+        current_user:
+      )
+    %>
+  <% when 2 %>
+    <%= render(Primer::Beta::Heading.new(tag: :h3, mb: 2, font_size: 3)) { I18n.t("create_#{@new_project.workspace_type}.details_heading") } %>
+    <%=
+      render Projects::NewComponent.new(
+        project: @new_project,
+        template: @template,
+        step: 2
+      )
+    %>
+  <% when 3 %>
+    <%= render(Primer::Beta::Heading.new(tag: :h3, mb: 2, font_size: 3)) { I18n.t("create_project.attributes_heading") } %>
+    <%=
+      render Projects::NewComponent.new(
+        project: @new_project,
+        template: @template,
+        step: 3
+      )
+    %>
+  <% end %>
 <% end %>
