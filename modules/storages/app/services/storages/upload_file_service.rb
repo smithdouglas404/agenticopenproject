@@ -56,6 +56,8 @@ module Storages
           return @result
         end
 
+        binding.pry
+
         folder = get_folder!(auth_strategy, file_path).value_or { return @result }
         file = upload_file(auth_strategy, folder, filename, file_data).value_or { return @result }
         file_link = create_file_link(file).value_or { return @result }
@@ -85,17 +87,23 @@ module Storages
       prefix = @project_storage.managed_project_folder_path
       normalized_path = prefix + (file_path.start_with?("/") ? file_path[1...] : file_path)
 
-      folder_result = check_folder_exists?(auth_strategy, normalized_path)
+      current_folder = nil
 
-      folder_result.value_or do |error|
-        if error.code == :not_found
-          return create_folder!(auth_strategy, normalized_path)
-        else
-          return Failure(error)
+      cumulative_paths(normalized_path).each do |folder_name|
+        # todo: return partent
+        folder_result = check_folder_exists?(auth_strategy, folder_name)
+
+        current_folder = folder_result.value_or do |error|
+          create_folder!(auth_strategy, folder_name) if error.code == :not_found
         end
       end
 
-      Success(folder_result.parent)
+      Success(current_folder)
+    end
+
+    def cumulative_paths(path)
+      segments = path.split("/").reject(&:empty?)
+      segments.map.with_index { |_, i| "/#{segments[0..i].join('/')}" }
     end
 
     def check_folder_exists?(auth_strategy, path)
