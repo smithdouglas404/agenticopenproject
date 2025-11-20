@@ -39,26 +39,10 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
   end
 
   let(:user) { create(:admin) }
-
-  shared_let(:portfolio) do
-    create(:portfolio,
-           description: "portfolio description") do |portfolio|
-      create(:project, parent: portfolio)
-    end
-  end
-  shared_let(:program_a) do
-    create(:program, parent: portfolio) do |program_a|
-      create(:project, parent: program_a) do |project_a|
-        create(:project, parent: project_a)
-      end
-    end
-  end
-  shared_let(:program_b) do
-    create(:program, parent: portfolio) do |program_b|
-      create(:project, parent: program_b)
-      create(:project, parent: program_b)
-    end
-  end
+  let(:status_code_a) { "on_track" }
+  let(:status_code_b) { "at_risk" }
+  let!(:portfolio) { create(:portfolio, description: "portfolio description") }
+  let(:add_sub_items_to_portfolio) { true }
 
   current_user { user }
 
@@ -67,6 +51,23 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
   end
 
   before do
+    if add_sub_items_to_portfolio
+      create(:program, parent: portfolio, status_code: status_code_a).tap do |program_a|
+        create(:project, parent: program_a, status_code: status_code_a).tap do |project_a|
+          create(:project, parent: project_a, status_code: status_code_b)
+        end
+      end
+
+      create(:program, parent: portfolio, status_code: status_code_b).tap do |program_b|
+        create(:project, parent: program_b, status_code: status_code_b)
+        create(:project, parent: program_b, status_code: status_code_a)
+      end
+
+      create(:project, parent: portfolio, status_code: status_code_a)
+
+      portfolio.reload
+    end
+
     portfolio.define_singleton_method(:favorited?) { false }
   end
 
@@ -105,6 +106,24 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
       it "shows when the portfolio was last updated" do
         expect(subject).to have_test_selector("op-portfolios--updated-at", text: "Updated about 1 month ago")
+      end
+    end
+
+    describe "sub-item status" do
+      context "when there are no sub-items" do
+        let(:add_sub_items_to_portfolio) { false }
+        let(:portfolio) { create(:portfolio) }
+
+        it "does not render a progress bar" do
+          expect(portfolio.descendants.count).to eq(0)
+          expect(subject).not_to have_test_selector("op-portfolios--sub-status")
+        end
+      end
+
+      context "when some of the sub-items have a status set" do
+        it "renders a progress bar detailing the status of child programs and projects" do
+          expect(subject).to have_test_selector("op-portfolios--sub-status")
+        end
       end
     end
   end

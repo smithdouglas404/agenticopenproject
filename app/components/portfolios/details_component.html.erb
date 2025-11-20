@@ -32,7 +32,8 @@
                 size: :large,
                 data: {
                   hover_card_trigger_target: "trigger",
-                  hover_card_popover_id: sub_status_hover_card_id
+                  hover_card_popover_id: sub_status_hover_card_id,
+                  test_selector: "op-portfolios--sub-status"
                 }
               )
             ) do |bar|
@@ -45,7 +46,8 @@
                   classes: "op-portfolios--sub-status #{helpers.project_status_css_class(status[:code])}",
                   aria: {
                     label: status_label
-                  }
+                  },
+                  test_selector: "op-portfolios--status-#{status[:code] || 'not_set'}"
                 )
               end
             end
@@ -138,7 +140,8 @@
           id: sub_status_hover_card_id,
           popover: :auto,
           data: {
-            hover_card_trigger_target: "card"
+            hover_card_trigger_target: "card",
+            test_selector: "op-portfolios--hover-card-#{portfolio.id}"
           },
           justify_content: :space_between
         ) do |popover|
