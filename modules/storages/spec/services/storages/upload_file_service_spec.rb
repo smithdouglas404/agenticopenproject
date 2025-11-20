@@ -60,6 +60,7 @@ module Storages
 
     describe ".call" do
       context "when storage is not Nextcloud" do
+        let(:file_path) { "/uploads/documents" }
         let(:storage) { create(:one_drive_storage) }
 
         it "returns failure with unsupported_storage_type error" do
@@ -90,6 +91,18 @@ module Storages
 
           it "creates the folder, uploads, and creates a FileLink",
              vcr: "services/nextcloud_upload_file_new_folder_success_file" do
+            expect { result }.to change(FileLink, :count).by(1)
+
+            file_link = FileLink.last
+            expect(file_link.creator).to eq(user)
+            expect(file_link.origin_name).to eq(filename)
+          end
+        end
+
+        context "when the folder is an empty string or root older" do
+          let(:file_path) { "/" }
+
+          it "does not create a FileLink", vcr: "services/nextcloud_upload_file_root_path_success_file" do
             expect { result }.to change(FileLink, :count).by(1)
 
             file_link = FileLink.last
