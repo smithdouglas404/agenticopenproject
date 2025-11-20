@@ -1,7 +1,7 @@
-# Example: Project request payload
+# Example: Portfolio request payload
 ---
 value:
-  name: 'Project example'
+  name: 'Portfolio example'
   statusExplanation:
     raw: Everything **fine**
   description:
@@ -9,6 +9,6 @@ value:
   customField123: 123
   _links:
     parent:
-      href: "/api/v3/projects/123"
+      href: "/api/v3/portfolios/123"
     customField456:
-      href: "/api/v3/users/315"
+      href: "/api/v3/portfolios/315"

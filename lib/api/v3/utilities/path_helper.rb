@@ -346,6 +346,7 @@ module API
 
           index :portfolio
           show :portfolio
+          update_form :portfolio
 
           index :post
           show :post
@@ -362,6 +363,7 @@ module API
 
           index :program
           show :program
+          update_form :program
 
           show :oauth_application
 

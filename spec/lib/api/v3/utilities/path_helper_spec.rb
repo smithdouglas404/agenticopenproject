@@ -283,6 +283,7 @@ RSpec.describe API::V3::Utilities::PathHelper do
   describe "portfolios paths" do
     it_behaves_like "index", :portfolio
     it_behaves_like "show", :portfolio
+    it_behaves_like "update form", :portfolio
   end
 
   describe "posts paths" do
@@ -302,6 +303,7 @@ RSpec.describe API::V3::Utilities::PathHelper do
   describe "programs paths" do
     it_behaves_like "index", :program
     it_behaves_like "show", :program
+    it_behaves_like "update form", :program
   end
 
   describe "projects paths" do

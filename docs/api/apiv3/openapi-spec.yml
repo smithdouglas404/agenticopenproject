@@ -294,6 +294,8 @@ paths:
     "$ref": "./paths/portfolios.yml"
   "/api/v3/portfolios/{id}":
     "$ref": "./paths/portfolio.yml"
+  "/api/v3/portfolios/{id}/form":
+    "$ref": "./paths/portfolio_form.yml"
   "/api/v3/posts/{id}":
     "$ref": "./paths/post.yml"
   "/api/v3/posts/{id}/attachments":
@@ -308,6 +310,8 @@ paths:
     "$ref": "./paths/programs.yml"
   "/api/v3/programs/{id}":
     "$ref": "./paths/program.yml"
+  "/api/v3/programs/{id}/form":
+    "$ref": "./paths/program_form.yml"
   "/api/v3/project_phases/{id}":
     "$ref": "./paths/project_phase.yml"
   "/api/v3/project_phase_definitions":
@@ -559,10 +563,14 @@ components:
       $ref: "./components/examples/notification_collection.yml"
     PlaceholderUserResponse:
       $ref: "./components/examples/placeholder-user-response.yml"
+    PortfolioBody:
+      $ref: "./components/examples/portfolio_body.yml"
     PortfolioCollection:
       $ref: "./components/examples/portfolio_collection.yml"
     PriorityCollection:
       $ref: "./components/examples/priority_collection.yml"
+    ProgramBody:
+      $ref: "./components/examples/program_body.yml"
     ProgramCollection:
       $ref: "./components/examples/program_collection.yml"
     Project:
