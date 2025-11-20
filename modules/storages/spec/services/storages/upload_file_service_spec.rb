@@ -55,34 +55,6 @@ module Storages
     let(:filename) { "test_file.pdf" }
     let(:file_data) { StringIO.new("This is the file content.") }
 
-    let(:auth_strategy) { Storages::Adapters::Registry["nextcloud.authentication.userless"].call }
-    let(:parent_folder) do
-      Storages::Adapters::Results::StorageFile.new(
-        id: "123",
-        name: "documents",
-        mime_type: "application/x-op-directory",
-        location: "/project_folder/uploads/documents",
-        permissions: %i[readable writeable]
-      )
-    end
-    let(:file_collection) do
-      Storages::Adapters::Results::StorageFileCollection.new(
-        files: [],
-        parent: parent_folder,
-        ancestors: []
-      )
-    end
-    let(:uploaded_file) do
-      Storages::Adapters::Results::StorageFile.new(
-        id: "456",
-        name: filename,
-        mime_type: "application/pdf",
-        size: 100,
-        location: "/project_folder/uploads/documents/#{filename}",
-        permissions: %i[readable writeable]
-      )
-    end
-
     describe ".call" do
       subject(:result) do
         described_class.call(container: work_package, project_storage:, file_path:, filename:, file_data:)
