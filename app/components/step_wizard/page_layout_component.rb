@@ -28,28 +28,32 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects
-  module Wizard
-    class PageComponent < ApplicationComponent
-      include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
-      include ApplicationHelper
+module StepWizard
+  class PageLayoutComponent < ViewComponent::Base
+    include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
 
-      def initialize(project:, custom_fields_by_section:, current_section:)
-        super
+    renders_one :page_header, lambda {
+      Primer::Content.new
+    }
 
-        @project = project
-        @custom_fields_by_section = custom_fields_by_section
-        @current_section = current_section
-      end
+    renders_one :footer, lambda {
+      Primer::Content.new
+    }
 
-      private
+    renders_one :wizard_content, lambda { |**content_arguments|
+      @content_arguments = content_arguments
+      Primer::Content.new
+    }
 
-      attr_reader :project, :custom_fields_by_section, :current_section
+    def initialize(**container_arguments)
+      super()
 
-      def header_button_title
-        I18n.t(:button_cancel)
-      end
+      @container_arguments = container_arguments
+      @container_arguments[:class] = class_names(
+        @container_arguments[:class],
+        "step-wizard-page"
+      )
     end
   end
 end

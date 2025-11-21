@@ -7,7 +7,7 @@
     end
 
     form_wrapper.with_row do
-      helpers.settings_primer_form_with(
+      primer_form_with(
         model: project,
         method: :patch,
         url: project_creation_wizard_path(project, section: @section.id),
