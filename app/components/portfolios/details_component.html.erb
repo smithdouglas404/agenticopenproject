@@ -30,7 +30,11 @@
     end
 
     flex.with_row(mb: 2) do
-      @portfolio.description
+      if @portfolio.description.blank?
+        render(Primer::Beta::Text.new(color: :muted)) { t("create_project.blank_description") }
+      else
+        render(Primer::Beta::Text.new(classes: "line-clamp-5 lh-default")) { format_text(@portfolio.description) }
+      end
     end
 
     flex.with_row do
