@@ -64,7 +64,7 @@ These upcoming features will make the OpenProject Mobile App even more connected
 As a Beta user, your feedback is invaluable. If you encounter issues or have suggestions, please let us know:&nbsp;
 
 *   Using the **flow to provide feedback** directly from the **app** in the user settings.
-![Entry point for the mobile app flow to provide feedback](mobile_app_feedback_flow_entrypoint.png)
+![Entry point for the OpenProject mobile app flow to provide user feedback](mobile_app_feedback_flow_entrypoint.png)
 *   Create a **feedback work package** directly in OpenProject **Community**.
 
 Your input directly helps improve the mobile experience and ensure a stable, feature-rich public release.
