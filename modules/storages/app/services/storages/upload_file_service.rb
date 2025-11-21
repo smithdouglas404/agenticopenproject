@@ -54,8 +54,6 @@ module Storages
           return @result
         end
 
-        ensure_validity_period_exists
-
         result = fetch_or_create_folder(file_path).bind do |folder|
           upload_file(folder, filename, file_data).bind do |file|
             create_file_link(file)
@@ -78,16 +76,6 @@ module Storages
       return container.author if container.respond_to?(:author) && container.author
 
       User.system
-    end
-
-    # TODO: do we need to validate validity_period here? For some reason FileLink creation fails otherwise.
-    def ensure_validity_period_exists
-      if @container.respond_to?(:start_date) && @container.respond_to?(:due_date)
-        @container.start_date ||= Time.zone.today
-        @container.due_date ||= Time.zone.today + 7.days
-      end
-
-      @container.save! if @container.changed?
     end
 
     def fetch_or_create_folder(file_path)
