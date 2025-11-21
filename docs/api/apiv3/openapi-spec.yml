@@ -526,6 +526,10 @@ paths:
     "$ref": "./paths/workspace_available_assignees.yml"
   "/api/v3/workspaces/{id}/types":
     "$ref": "./paths/workspace_types.yml"
+  "/api/v3/workspaces/{id}/work_packages":
+    "$ref": "./paths/workspace_work_packages.yml"
+  "/api/v3/workspaces/{id}/work_packages/form":
+    "$ref": "./paths/workspace_work_packages_form.yml"
   "/api/v3/workspaces/schema":
     "$ref": "./paths/workspaces_schema.yml"
 

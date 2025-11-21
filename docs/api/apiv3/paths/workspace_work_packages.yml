@@ -1,15 +1,13 @@
-# /api/v3/projects/{id}/work_packages
+# /api/v3/workspaces/{id}/work_packages
 ---
 get:
-  summary: Get work packages of project
-  operationId: Get_Project_Work_Package_Collection
+  summary: Get work packages of workspace
+  operationId: Get_Workspace_Work_Package_Collection
   tags:
     - Work Packages
-  description: Returns the collection of work packages that are related to the given project.
-
-    This endpoint is deprecated and replaced by [`/api/v3/workspaces/{id}/work_packages`](https://www.openproject.org/docs/api/endpoints/work-packages/#get-work-packages-of-workspace)
+  description: Returns the collection of work packages that are related to the given workspace.
   parameters:
-    - description: Project id
+    - description: Workspace id
       example: '1'
       in: path
       name: id
@@ -98,7 +96,7 @@ get:
 
         **Required permission:** view work packages
 
-        *Note that you will only receive this error, if you are at least allowed to see the corresponding project.*
+        *Note that you will only receive this error, if you are at least allowed to see the corresponding workspace.*
     '404':
       content:
         application/hal+json:
@@ -109,21 +107,19 @@ get:
             errorIdentifier: urn:openproject-org:api:v3:errors:NotFound
             message: The specified project does not exist.
       description: |-
-        Returned if the project does not exist or the client does not have sufficient permissions to see it.
+        Returned if the workspace does not exist or the client does not have sufficient permissions to see it.
 
-        **Required permission:** view project
+        **Required permission:** view workspace
 
 post:
-  summary: Create work package in project
-  operationId: Create_Project_Work_Package
+  summary: Create work package in workspace
+  operationId: Create_Workspace_Work_Package
   tags:
     - Work Packages
   description: |-
     When calling this endpoint the client provides a single object, containing at least the properties and links that
     are required, in the body. The required fields of a WorkPackage can be found in its schema, which is embedded in
     the respective form. Note that it is only allowed to provide properties or links supporting the write operation.
-
-    This endpoint is deprecated and replaced by [`/api/v3/workspaces/{id}/work_packages`](https://www.openproject.org/docs/api/endpoints/work-packages/#create-work-package-in-workspace)
   requestBody:
     content:
       application/json:
@@ -165,13 +161,13 @@ post:
           example:
             _type: Error
             errorIdentifier: urn:openproject-org:api:v3:errors:MissingPermission
-            message: You are not allowed to add work packages to this project.
+            message: You are not allowed to add work packages to this workspace.
       description: |-
         Returned if the client does not have sufficient permissions.
 
         **Required permission:** add work packages
 
-        *Note that you will only receive this error, if you are at least allowed to see the corresponding project.*
+        *Note that you will only receive this error, if you are at least allowed to see the corresponding workspace.*
     '404':
       content:
         application/hal+json:
@@ -182,12 +178,12 @@ post:
             errorIdentifier: urn:openproject-org:api:v3:errors:NotFound
             message: The specified project does not exist.
       description: |-
-        Returned if the project does not exist or the client does not have sufficient permissions
+        Returned if the workspace does not exist or the client does not have sufficient permissions
         to see it.
 
-        **Required permissions:** view project
+        **Required permissions:** view workspace
 
-        *Note: A client without sufficient permissions shall not be able to test for the existence of a project.
+        *Note: A client without sufficient permissions shall not be able to test for the existence of a workspace.
         That's why a 404 is returned here, even if a 403 might be more appropriate.*
     '406':
       $ref: "../components/responses/missing_content_type.yml"
