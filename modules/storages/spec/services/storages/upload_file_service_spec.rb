@@ -50,10 +50,7 @@ module Storages
     let(:project) { create(:project, name: "UploadProject") }
     let(:storage) { create(:nextcloud_storage_with_local_connection) }
     let(:project_storage) { create(:project_storage, project:, storage:, project_folder_id: "/project_folder") }
-    # The container has to have start_date and due_date for journal validity period checks
-    let(:container) do
-      create(:work_package, project:, author: user, start_date: Time.zone.today, due_date: Time.zone.today + 7.days)
-    end
+    let!(:container) { create(:work_package, project:, author: user).tap(&:clear_changes_information) }
     let(:filename) { "test_file.pdf" }
     let(:file_data) { StringIO.new("This is the file content.") }
 
