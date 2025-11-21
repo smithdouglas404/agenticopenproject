@@ -111,6 +111,19 @@ module Storages
           end
         end
 
+        context "when a folder is just a string" do
+          let(:file_path) { "veryGoodPath" }
+
+          it "creates the folder in the root directory, uploads, and creates a FileLink",
+             vcr: "services/nextcloud_upload_file_wrong_folder_success_file" do
+            expect { result }.to change(FileLink, :count).by(1)
+
+            file_link = FileLink.last
+            expect(file_link.creator).to eq(user)
+            expect(file_link.origin_name).to eq(filename)
+          end
+        end
+
         context "when file is not an IO object", vcr: "services/nextcloud_upload_file_fail" do
           let(:file_path) { "/uploads/documents" }
           let(:file_data) { "This is a string, not an IO object." }
