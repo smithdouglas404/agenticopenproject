@@ -44,7 +44,7 @@ RSpec.describe API::V3::Versions::VersionRepresenter, "rendering" do
 
   before do
     mock_permissions_for(current_user) do |mock|
-      mock.allow_in_project *permissions, project: workspace
+      mock.allow_in_project *permissions, project: workspace if workspace
     end
   end
 
@@ -111,7 +111,7 @@ RSpec.describe API::V3::Versions::VersionRepresenter, "rendering" do
     describe "to available projects" do
       it_behaves_like "has an untitled link" do
         let(:link) { "availableInProjects" }
-        let(:href) { api_v3_paths.projects_by_version(version.id) }
+        let(:href) { api_v3_paths.workspaces_by_version(version.id) }
       end
     end
 

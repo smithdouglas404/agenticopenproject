@@ -1,10 +1,10 @@
-# Schema: List_projects_by_versionModel
+# Schema: List_workspaces_by_versionModel
 ---
 type: object
 example:
   _links:
     self:
-      href: "/api/v3/versions/2/projects"
+      href: "/api/v3/versions/2/workspaces"
   total: 1
   count: 1
   _type: Collection

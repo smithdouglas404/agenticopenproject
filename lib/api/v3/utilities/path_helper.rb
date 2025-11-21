@@ -622,6 +622,10 @@ module API
             "#{version(version_id)}/projects"
           end
 
+          def self.workspaces_by_version(version_id)
+            "#{version(version_id)}/workspaces"
+          end
+
           def self.watcher(id, work_package_id)
             "#{work_package_watchers(work_package_id)}/#{id}"
           end

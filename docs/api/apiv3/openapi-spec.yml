@@ -474,6 +474,8 @@ paths:
     "$ref": "./paths/version_form.yml"
   "/api/v3/versions/{id}/projects":
     "$ref": "./paths/version_projects.yml"
+  "/api/v3/versions/{id}/workspaces":
+    "$ref": "./paths/version_workspaces.yml"
   "/api/v3/views":
     "$ref": "./paths/views.yml"
   "/api/v3/views/{id}":
@@ -779,8 +781,8 @@ components:
       "$ref": "./components/schemas/list_capabilities_model.yml"
     List_of_NewsModel:
       "$ref": "./components/schemas/list_of_news_model.yml"
-    List_projects_by_versionModel:
-      "$ref": "./components/schemas/list_projects_by_version_model.yml"
+    List_workspaces_by_versionModel:
+      "$ref": "./components/schemas/list_workspaces_by_version_model.yml"
     MeetingModel:
       "$ref": "./components/schemas/meeting_model.yml"
     MarkdownModel:

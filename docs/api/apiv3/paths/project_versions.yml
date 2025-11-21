@@ -20,7 +20,7 @@ get:
                   elements:
                   - _links:
                       availableInProjects:
-                        href: "/api/v3/versions/11/projects"
+                        href: "/api/v3/versions/11/workspaces"
                       definingProject:
                         href: "/api/v3/projects/11"
                       self:
@@ -37,7 +37,7 @@ get:
                     status: Open
                   - _links:
                       availableInProjects:
-                        href: "/api/v3/versions/12/projects"
+                        href: "/api/v3/versions/12/workspaces"
                       definingProject:
                         href: "/api/v3/projects/11"
                       self:
@@ -54,7 +54,7 @@ get:
                     status: Closed
                   - _links:
                       availableInProjects:
-                        href: "/api/v3/versions/10/projects"
+                        href: "/api/v3/versions/10/workspaces"
                       definingProject:
                         href: "/api/v3/projects/11"
                       self:
