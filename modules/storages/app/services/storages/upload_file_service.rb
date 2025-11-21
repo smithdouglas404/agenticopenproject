@@ -48,7 +48,7 @@ module Storages
       with_tagged_logger do
         info "Starting file upload for #{filename} to #{file_path}"
 
-        unless nextcloud_storage?
+        unless @storage.provider_type_nextcloud?
           @result.errors.add(:base, :unsupported_storage_type)
           @result.success = false
           return @result
@@ -56,22 +56,23 @@ module Storages
 
         ensure_validity_period_exists
 
-        folder = fetch_or_create_folder(file_path).value_or { return @result }
-        file = upload_file(folder, filename, file_data).value_or { return @result }
-        file_link = create_file_link(file).value_or { return @result }
+        result = fetch_or_create_folder(file_path).bind do |folder|
+          upload_file(folder, filename, file_data).bind do |file|
+            create_file_link(file)
+          end
+        end
 
-        @result.success = file_link
-        @result
+        if result.success?
+          ServiceResult.success(result: result.value!)
+        else
+          add_error(:base, result.failure)
+        end
       end
     end
 
     private
 
     def auth_strategy = Adapters::Registry["nextcloud.authentication.userless"].call
-
-    def nextcloud_storage?
-      @storage.short_provider_type == "nextcloud"
-    end
 
     def error_with_code(error, code)
       Adapters::Results::Error.new(payload: error.payload, source: self.class).with(code: code)
@@ -131,7 +132,7 @@ module Storages
 
     def create_folder!(path)
       folder_path = File.dirname(path)
-      folder_name = path.sub("#{folder_path}/", "")
+      folder_name = path.delete_prefix("#{folder_path}/")
       input_data = Adapters::Input::CreateFolder.build(folder_name:, parent_location: folder_path).value_or do |error|
         add_validation_error(error, options: { folder_id: folder_path })
       end
