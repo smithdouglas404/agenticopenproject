@@ -84,6 +84,23 @@ module Storages
             expect(file_link.creator).to eq(user)
             expect(file_link.origin_name).to eq(filename)
           end
+
+          context "when file query fails" do
+            let(:file_info_result) { Adapters::Results::Error.new(code: :storage_error, source: self) }
+
+            before do
+              Adapters::Registry.stub("nextcloud.queries.files", ->(*) { Failure(file_info_result) })
+            end
+
+            it "returns failure with storage_error" do
+              expect(result).to be_failure
+              expect(result.errors[:base]).not_to be_empty
+            end
+
+            it "does not create a FileLink" do
+              expect { result }.not_to change(FileLink, :count)
+            end
+          end
         end
 
         context "when folder does not exist" do
@@ -96,6 +113,24 @@ module Storages
             file_link = FileLink.last
             expect(file_link.creator).to eq(user)
             expect(file_link.origin_name).to eq(filename)
+          end
+
+          context "when folder creation fails", vcr: "nextcloud/nextcloud_upload_file_new_folder_fail_file" do
+            let(:file_path) { "/uploads/documents/top_secret" }
+            let(:create_folder_error) { Adapters::Results::Error.new(code: :storage_error, source: self) }
+
+            before do
+              Adapters::Registry.stub("nextcloud.commands.create_folder", ->(*) { Failure(create_folder_error) })
+            end
+
+            it "returns failure with storage_error" do
+              expect(result).to be_failure
+              expect(result.errors[:base]).not_to be_empty
+            end
+
+            it "does not create a FileLink" do
+              expect { result }.not_to change(FileLink, :count)
+            end
           end
         end
 

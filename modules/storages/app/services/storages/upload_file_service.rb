@@ -117,6 +117,7 @@ module Storages
     def create_folder!(path)
       folder_path = File.dirname(path)
       folder_name = path.delete_prefix("#{folder_path}/")
+
       input_data = Adapters::Input::CreateFolder.build(folder_name:, parent_location: folder_path).value_or do |error|
         add_validation_error(error, options: { folder_path: folder_path })
         return Failure(:invalid_input)

@@ -603,7 +603,7 @@ en:
           unavailable: "unavailable"
         label_request_submission: "Request submission"
         project_attributes_description: >
-          Select which project attributes should be included in the project initiation request. 
+          Select which project attributes should be included in the project initiation request.
           This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
       button_edit: Edit project status
@@ -1946,6 +1946,8 @@ en:
     field_erroneous_label: "This field is invalid: %{full_errors}\nPlease enter a valid value."
     messages:
       unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
 
   activity:
     item:
