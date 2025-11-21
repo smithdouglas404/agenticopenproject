@@ -524,6 +524,8 @@ paths:
     "$ref": "./paths/workspaces.yml"
   "/api/v3/workspaces/{id}/available_assignees":
     "$ref": "./paths/workspace_available_assignees.yml"
+  "/api/v3/workspaces/{id}/types":
+    "$ref": "./paths/workspace_types.yml"
   "/api/v3/workspaces/schema":
     "$ref": "./paths/workspaces_schema.yml"
 
@@ -929,8 +931,8 @@ components:
       "$ref": "./components/schemas/type_model.yml"
     TypesModel:
       "$ref": "./components/schemas/types_model.yml"
-    Types_by_ProjectModel:
-      "$ref": "./components/schemas/types_by_project_model.yml"
+    Types_by_WorkspaceModel:
+      "$ref": "./components/schemas/types_by_workspace_model.yml"
     Unstar_QueryModel:
       "$ref": "./components/schemas/unstar_query_model.yml"
     UserCollectionModel:
