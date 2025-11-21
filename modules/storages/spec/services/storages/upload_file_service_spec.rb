@@ -110,6 +110,20 @@ module Storages
             expect(file_link.origin_name).to eq(filename)
           end
         end
+
+        context "when file is not an IO object", vcr: "services/nextcloud_upload_file_fail" do
+          let(:file_path) { "/uploads/documents" }
+          let(:file_data) { "This is a string, not an IO object." }
+
+          it "returns failure with invalid_file_data error" do
+            expect(result).to be_failure
+            expect(result.errors[:base]).not_to be_empty
+          end
+
+          it "does not create a FileLink" do
+            expect { result }.not_to change(FileLink, :count)
+          end
+        end
       end
     end
   end

@@ -62,7 +62,6 @@ module Storages
           end
         end
 
-        if result.success?
           ServiceResult.success(result: result.value!)
         else
           add_error(:base, result.failure)
