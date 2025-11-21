@@ -79,6 +79,14 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
     it { expect(subject).to have_text(portfolio.description) }
 
+    context "when the portfolio has no description" do
+      before do
+        allow(portfolio).to receive(:description).and_return(nil)
+      end
+
+      it { expect(subject).to have_text("No description provided") }
+    end
+
     it "offers a button to favor the portfolio" do
       expect(subject).to have_test_selector("op-portfolios--favorite-button") do |link|
         expect(link[:href]).to eq(build_favorite_path(portfolio, format: :html))
