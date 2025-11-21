@@ -62,27 +62,22 @@ module Storages
           end
         end
 
-          ServiceResult.success(result: result.value!)
-        else
-          add_error(:base, result.failure)
-        end
+        result.success? ? result : @result
       end
     end
 
     private
 
-    def auth_strategy = Adapters::Registry["nextcloud.authentication.userless"].call
+    def auth_strategy = Adapters::Registry["#{@storage}.authentication.userless"].call
 
     def error_with_code(error, code)
       Adapters::Results::Error.new(payload: error.payload, source: self.class).with(code: code)
     end
 
     def determine_user(container)
-      if container.is_a?(WorkPackage) && container.author.present?
-        container.author
-      else
-        User.system
-      end
+      return container.author if container.respond_to?(:author) && container.author
+
+      User.system
     end
 
     # TODO: do we need to validate validity_period here? For some reason FileLink creation fails otherwise.
@@ -100,7 +95,7 @@ module Storages
       current_folder = nil
 
       cumulative_paths(prefix, file_path).each do |folder_path|
-        current_folder = check_folder_exists?(folder_path).value_or do |error|
+        current_folder = check_folder_exists(folder_path).value_or do |error|
           if error.code == :not_found
             create_folder!(folder_path)
           else
@@ -121,9 +116,10 @@ module Storages
       segments.map.with_index { |_, i| "#{prefix}#{segments[0..i].join('/')}" }
     end
 
-    def check_folder_exists?(path)
+    def check_folder_exists(path)
       input_data = Adapters::Input::Files.build(folder: path).value_or do |error|
         add_validation_error(error, options: { folder: path })
+        return @result
       end
 
       Adapters::Registry.resolve("#{@storage}.queries.files").call(auth_strategy:, storage: @storage, input_data:)
@@ -145,6 +141,7 @@ module Storages
         io: file_data
       ).value_or do |error|
         add_validation_error(error, options: { file_path: "#{folder.location}/#{filename}" })
+        return @result
       end
 
       Adapters::Registry["#{@storage.short_provider_type}.commands.upload_file"]
