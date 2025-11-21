@@ -28,46 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  resources :projects, only: [] do
-    resources :documents, only: %i[create new index] do
-      collection do
-        get :menu, to: "documents/menus#show"
-        get :search
-      end
-    end
-  end
+module Documents
+  module Admin
+    module DocumentTypes
+      class SelectReassignToForm < ApplicationForm
+        attr_reader :other_document_types
 
-  resources :documents, except: %i[create new index] do
-    member do
-      get :edit_title, defaults: { format: :turbo_stream }
-      put :update_title, defaults: { format: :turbo_stream }
-      get :cancel_title_edit, defaults: { format: :turbo_stream }
-      put :update_type, defaults: { format: :turbo_stream }
-      get :delete_dialog
-      get :render_avatars, defaults: { format: :turbo_stream }
-    end
-  end
+        def initialize(other_document_types:)
+          super()
 
-  scope module: :documents do
-    namespace :admin do
-      namespace :settings do
-        resources :document_types, except: [:show] do
-          member do
-            put :move
-            get :delete_dialog, defaults: { format: :turbo_stream }
-          end
+          @other_document_types = other_document_types
         end
-      end
-    end
-  end
 
-  namespace :admin do
-    namespace :settings do
-      resources :document_categories, except: [:show] do
-        member do
-          put :move
-          get :reassign
+        form do |form|
+          form.select_list(
+            name: :reassign_to_id,
+            label: I18n.t(:"documents.delete_document_type_dialog.select_reassign_to_label"),
+            required: true,
+            input_width: :large
+          ) do |select|
+            other_document_types.each do |document_type|
+              select.option(value: document_type.id, label: document_type.name)
+            end
+          end
         end
       end
     end

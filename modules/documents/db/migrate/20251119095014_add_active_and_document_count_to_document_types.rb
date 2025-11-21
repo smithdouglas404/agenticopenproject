@@ -28,46 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  resources :projects, only: [] do
-    resources :documents, only: %i[create new index] do
-      collection do
-        get :menu, to: "documents/menus#show"
-        get :search
-      end
-    end
-  end
+class AddActiveAndDocumentCountToDocumentTypes < ActiveRecord::Migration[8.0]
+  def change
+    add_column :document_types, :active, :boolean, default: true, null: false
+    add_column :document_types, :documents_count, :integer, default: 0, null: false
 
-  resources :documents, except: %i[create new index] do
-    member do
-      get :edit_title, defaults: { format: :turbo_stream }
-      put :update_title, defaults: { format: :turbo_stream }
-      get :cancel_title_edit, defaults: { format: :turbo_stream }
-      put :update_type, defaults: { format: :turbo_stream }
-      get :delete_dialog
-      get :render_avatars, defaults: { format: :turbo_stream }
-    end
-  end
-
-  scope module: :documents do
-    namespace :admin do
-      namespace :settings do
-        resources :document_types, except: [:show] do
-          member do
-            put :move
-            get :delete_dialog, defaults: { format: :turbo_stream }
-          end
-        end
-      end
-    end
-  end
-
-  namespace :admin do
-    namespace :settings do
-      resources :document_categories, except: [:show] do
-        member do
-          put :move
-          get :reassign
+    reversible do |dir|
+      dir.up do
+        say_with_time "update documents counter cache for document_types" do
+          execute <<-SQL.squish
+            UPDATE document_types
+            SET documents_count = (
+              SELECT COUNT(*)
+              FROM documents
+              WHERE documents.type_id = document_types.id
+            )
+          SQL
         end
       end
     end

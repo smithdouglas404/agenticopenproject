@@ -28,48 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  resources :projects, only: [] do
-    resources :documents, only: %i[create new index] do
-      collection do
-        get :menu, to: "documents/menus#show"
-        get :search
+module Documents
+  # Concern to be included in enumeration-like models within the documents module.
+  module EnumerationModel
+    extend ActiveSupport::Concern
+
+    included do
+      before_save :unmark_old_default_values, if: :became_default_value?
+      before_save :ensure_activated, if: -> { self.class.can_have_default_value? && is_default? }
+    end
+
+    class_methods do
+      def can_have_default_value?
+        true
       end
     end
-  end
 
-  resources :documents, except: %i[create new index] do
-    member do
-      get :edit_title, defaults: { format: :turbo_stream }
-      put :update_title, defaults: { format: :turbo_stream }
-      get :cancel_title_edit, defaults: { format: :turbo_stream }
-      put :update_type, defaults: { format: :turbo_stream }
-      get :delete_dialog
-      get :render_avatars, defaults: { format: :turbo_stream }
+    def colored?
+      false
     end
-  end
 
-  scope module: :documents do
-    namespace :admin do
-      namespace :settings do
-        resources :document_types, except: [:show] do
-          member do
-            put :move
-            get :delete_dialog, defaults: { format: :turbo_stream }
-          end
-        end
-      end
+    def became_default_value?
+      is_default? && is_default_changed?
     end
-  end
 
-  namespace :admin do
-    namespace :settings do
-      resources :document_categories, except: [:show] do
-        member do
-          put :move
-          get :reassign
-        end
-      end
+    def unmark_old_default_values
+      self.class.update_all(is_default: false)
+    end
+
+    def in_use?
+      Document.exists?(type_id: id)
+    end
+
+    private
+
+    def ensure_activated
+      self.active = true
     end
   end
 end
