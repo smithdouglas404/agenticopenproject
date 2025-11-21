@@ -270,8 +270,8 @@ end
 Redmine::MenuManager.map :my_menu do |menu|
   menu.push :account,
             { controller: "/my", action: "account" },
-            caption: :label_profile,
-            icon: "person-fill"
+            caption: :label_account,
+            icon: "person"
   menu.push :locale,
             { controller: "/my", action: "locale" },
             caption: :label_locale,
