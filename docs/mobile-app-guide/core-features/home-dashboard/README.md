@@ -43,7 +43,7 @@ The Home Dashboard consists of **modular widgets** that provide snapshots of you
 *   Shows the **currently running timer** or allows you to start a new focus timer.
 *   Helps track work time efficiently and accurately.
 
-![Home dashboard time tracker widget](mobile_app_homewidget_timetracker.png)
+![Home dashboard displaying the "time tracker" widget in OpenProject mobile app](mobile_app_homewidget_timetracker.png)
 
 ### **Week Time Tracking**
 
