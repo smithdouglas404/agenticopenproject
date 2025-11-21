@@ -1,51 +1,39 @@
 $status_not-set: var(--progressBar-track-bgColor) // invisible background color
-$status_off-track: var(--fgColor-danger)
-$status_at-risk: var(--fgColor-severe)
-$status_on-track: var(--fgColor-success)
-$status_discontinued: var(--fgColor-attention)
-$status_not-started: var(--fgColor-accent)
-$status_finished: var(--fgColor-done)
+
+@mixin portfolio-sub-item-status-background-color
+  &.-not-set
+    background-color: $status_not-set
+  &.-off-track
+    background-color: $project-status_off-track
+  &.-at-risk
+    background-color: $project-status_at-risk
+  &.-on-track
+    background-color: $project-status_on_track
+  &.-not-started
+    background-color: $project-status_not_started
+  &.-finished
+    background-color: $project-status_finished
+  &.-discontinued
+    background-color: $project-status_discontinued
 
 .op-portfolios
-
   &--progress
     flex-basis: 25%
     max-width: 300px
     margin-left: auto
 
+    @media screen and (max-width: $breakpoint-sm)
+      display: none
+
   &--sub-status
-    &.-not-set
-      background-color: $status_not-set
-    &.-off-track
-      background-color: $status_off-track
-    &.-at-risk
-      background-color: $status_at-risk
-    &.-on-track
-      background-color: $status_on_track
-    &.-not-started
-      background-color: $status_not_started
-    &.-finished
-      background-color: $status_finished
-    &.-discontinued
-      background-color: $status_discontinued
+    @include portfolio-sub-item-status-background-color
 
   &--popover
     width: fit-content
+    max-width: 550px
+    flex-wrap: wrap
+    row-gap: var(--base-size-16, 1rem)
 
     .op-bubble
       margin: auto
-
-      &.-not-set
-        background-color: $status_not-set
-      &.-off-track
-        background-color: $status_off-track
-      &.-at-risk
-        background-color: $status_at-risk
-      &.-on-track
-        background-color: $status_on_track
-      &.-not-started
-        background-color: $status_not_started
-      &.-finished
-        background-color: $status_finished
-      &.-discontinued
-        background-color: $status_discontinued
+      @include portfolio-sub-item-status-background-color
