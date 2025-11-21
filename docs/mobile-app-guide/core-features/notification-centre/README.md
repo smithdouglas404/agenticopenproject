@@ -3,7 +3,7 @@ sidebar_navigation:
   title: Notification Centre
   priority: 750
 description: A centralized view of all updates, mentions, and activities that require the user’s attention in OpenProject mobile app.
-keywords: Mobile app features Notification Centre
+keywords: Mobile app Notification Centre, mobile notification, mobile notifications, notification, mobile mention
 ---
 
 # Notification Centre
