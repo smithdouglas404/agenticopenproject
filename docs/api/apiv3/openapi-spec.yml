@@ -522,6 +522,8 @@ paths:
     "$ref": "./paths/work_package_watcher.yml"
   "/api/v3/workspaces":
     "$ref": "./paths/workspaces.yml"
+  "/api/v3/workspaces/{id}/available_assignees":
+    "$ref": "./paths/workspace_available_assignees.yml"
   "/api/v3/workspaces/schema":
     "$ref": "./paths/workspaces_schema.yml"
 
