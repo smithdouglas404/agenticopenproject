@@ -369,6 +369,7 @@ zh-TW:
       int?: "必須是整數。"
       key?: "遺失。"
       not_found: "未找到。"
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "沒有自己的工作流程。"
@@ -546,10 +547,19 @@ zh-TW:
       work_package_priorities:
         new_label: "新優先權"
       creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "unavailable"
+        label_request_submission: "要求提交"
         project_attributes_description: >
           選擇哪些專案屬性應包含在專案啟動請求中。此清單僅包含此專案啟用的 [專案屬性](project_attributes_url)。
-        label_request_submission: "要求提交"
-        label_artefact_export: "產物匯出"
     status:
       button_edit: 編輯專案狀態
     wizard:
@@ -2853,7 +2863,6 @@ zh-TW:
   label_add_column: "新增欄位"
   label_applied_status: "套用的狀態"
   label_archive_project: "封存專案"
-  label_artefact_export: "產物匯出"
   label_ascending: "昇冪"
   label_assigned_to_me_work_packages: "分配給我的工作套件"
   label_associated_revisions: "關聯的修訂"
@@ -3788,6 +3797,9 @@ zh-TW:
   permission_add_project: "建立專案"
   permission_add_portfolios: "建立投資組合"
   permission_add_programs: "建立方案"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "新增附件"
   permission_add_work_package_attachments_explanation: "允許在沒有編輯工作套件權限的情況下新增附件"
   permission_add_internal_comments: "撰寫內部留言"
@@ -4352,6 +4364,13 @@ zh-TW:
         heading: "停用此專案啟動請求？"
         confirmation_message: "啟動請求精靈將不再適用於基於此模板的新專案。專案經理和專案所有人將需要在專案概述中手動設定和填寫相關資訊。"
         checkbox_message: "我了解此行動是不可逆轉的"
+      name:
+        artefact_name: "Artefact name"
+        artefact_name_caption: "Choose the name for this artefact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
       submission:
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artefact."

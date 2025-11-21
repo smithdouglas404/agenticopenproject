@@ -58,6 +58,8 @@ fr:
       all: "Tous les documents"
       types: "Types"
     last_updated_at: "Dernière mise à jour : %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Auteur de la pièce jointe"
     label_categories: "Catégories"
     new_category: "Nouvelle catégorie"

@@ -58,6 +58,8 @@ pt-PT:
       all: "Todos os documentos"
       types: "Tipos"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Autor do anexo"
     label_categories: "Categorias"
     new_category: "Nova categoria"

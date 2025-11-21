@@ -58,6 +58,8 @@ ar:
       all: "All documents"
       types: "الأنواع"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "مؤلف مرفق"
     label_categories: "الأقسام"
     new_category: "فئة جديدة"

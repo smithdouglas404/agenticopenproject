@@ -58,6 +58,8 @@ tr:
       all: "All documents"
       types: "Türler"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Ek yazar"
     label_categories: "Kategoriler"
     new_category: "Yeni kategori"

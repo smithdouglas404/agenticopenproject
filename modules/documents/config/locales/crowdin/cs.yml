@@ -58,6 +58,8 @@ cs:
       all: "All documents"
       types: "Typy"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Autor přílohy"
     label_categories: "Kategorie"
     new_category: "Nová kategorie"

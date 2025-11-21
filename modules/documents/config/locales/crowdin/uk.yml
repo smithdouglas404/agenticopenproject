@@ -58,6 +58,8 @@ uk:
       all: "Усі документи"
       types: "Типи"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Автор додатку"
     label_categories: "Категорії"
     new_category: "Нова категорія"
