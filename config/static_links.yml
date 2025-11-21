@@ -39,6 +39,8 @@ disable_password_login:
 docker_installation:
   href: https://www.openproject.org/docs/installation-and-operations/installation/docker/
   label: Docker installation
+documents_docs:
+  href: https://www.openproject.org/docs/user-guide/documents/
 enterprise_features:
   attribute_highlighting:
     href: https://www.openproject.org/docs/user-guide/work-packages/work-package-table-configuration/#attribute-highlighting-enterprise-add-on

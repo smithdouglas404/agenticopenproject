@@ -70,6 +70,14 @@ en:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
 
+    document_categories_deprecation_notice:
+      heading: File categories are now called 'Document types'
+      description: |-
+        Your existing file categories have been converted to document types with the introduction of the new Documents module.
+        All existing documents have also been migrated to these new types.
+      primary_action: Configure document types
+      secondary_action: Learn more about the Documents module
+
     document_type_actions: "Document type actions"
 
     index_page:

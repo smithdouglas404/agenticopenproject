@@ -29,17 +29,24 @@
   ++#
 %>
 
-<% html_title t(:label_administration), t("documents.label_categories") %>
+<%= render(
+      Primer::Beta::Blankslate.new(border: true, test_selector: "documents-categories-deprecation-notice")
+    ) do |component|
+      component.with_visual_icon(icon: :"op-file-doc")
+      component.with_heading(tag: :h2).with_content(I18n.t("documents.document_categories_deprecation_notice.heading"))
 
-<%= render(Primer::OpenProject::PageHeader.new) do |header|
-      header.with_title { t("documents.label_categories") }
-      header.with_breadcrumbs(
-        [
-          { href: admin_index_path, text: t("label_administration") },
-          { href: admin_settings_storages_path, text: t("project_module_storages") },
-          t("documents.label_categories")
-        ]
-      )
+      component.with_description { I18n.t("documents.document_categories_deprecation_notice.description") }
+      component.with_primary_action(
+        scheme: :primary,
+        label: I18n.t("documents.document_categories_deprecation_notice.primary_action"),
+        tag: :a,
+        href: admin_settings_document_types_path
+      ).with_content(I18n.t("documents.document_categories_deprecation_notice.primary_action"))
+
+      component.with_secondary_action(
+        scheme: :secondary,
+        label: I18n.t("documents.document_categories_deprecation_notice.secondary_action"),
+        tag: :a,
+        href: OpenProject::Static::Links.url_for(:documents_docs)
+      ).with_content(I18n.t("documents.document_categories_deprecation_notice.secondary_action"))
     end %>
-
-<%= render(Documents::Admin::DocumentCategories::DeprecationNoticeComponent.new) %>

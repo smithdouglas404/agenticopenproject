@@ -28,16 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Admin
-  module Settings
-    class DocumentCategoriesController < ApplicationController
-      layout "admin"
-
-      before_action :require_admin
-
-      menu_item :document_categories
-
-      def index; end
+module Documents
+  module Admin
+    module DocumentCategories
+      class DeprecationNoticeComponent < ApplicationComponent
+      end
     end
   end
 end
