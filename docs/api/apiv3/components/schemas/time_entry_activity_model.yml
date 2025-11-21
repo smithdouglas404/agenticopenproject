@@ -35,7 +35,10 @@ properties:
       projects:
         type: array
         items:
-          $ref: './project_model.yml'
+          oneOf:
+            - $ref: './project_model.yml'
+            - $ref: './program_model.yml'
+            - $ref: './portfolio_model.yml'
   _links:
     type: object
     required:

@@ -306,7 +306,7 @@ properties:
 
               # Conditions
 
-              - **Setting**: deactivate_work_package_attachments set to false in related project
+              - **Setting**: deactivate_work_package_attachments set to false in related workspace
       addAttachment:
         allOf:
           - $ref: "./link.yml"
@@ -423,9 +423,9 @@ properties:
         allOf:
           - $ref: "./link.yml"
           - description: |-
-              The project to which the work package belongs
+              The workspace to which the work package belongs
 
-              **Resource**: Project
+              **Resource**: Workspace
       projectPhase:
         allOf:
           - $ref: "./link.yml"
@@ -571,8 +571,8 @@ example:
       href: "/api/v3/priorities/2"
       title: Normal
     project:
-      href: "/api/v3/projects/1"
-      title: A Test Project
+      href: "/api/v3/portfolio/1"
+      title: A Test Portfolio
     status:
       href: "/api/v3/statuses/1"
       title: New
