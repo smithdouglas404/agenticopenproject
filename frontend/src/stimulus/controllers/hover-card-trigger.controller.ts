@@ -38,7 +38,7 @@ import { computePosition, flip, limitShift, shift } from '@floating-ui/dom';
  * You can define a trigger element by adding the `data-hover-card-trigger-target="trigger"` to it.
  * To have hover cards available everywhere, add this controller to the body tag.
  *
- * TODO: insert instructions of how to use hover cards without a turbo frame. Also update lookbook.
+ * Please see our guide in the lookbook for more information on how to use hover cards.
  */
 export default class HoverCardTriggerController extends ApplicationController {
   static targets = ['trigger', 'card'];
