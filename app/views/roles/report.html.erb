@@ -63,7 +63,9 @@ See COPYRIGHT and LICENSE files for more details.
       <% section.with_collapsible_content do %>
         <div class="generic-table--container">
           <div class="generic-table--results-container">
-            <table class="generic-table" data-controller="table-highlighting">
+            <table
+              class="generic-table"
+              data-controller="checkable table-highlighting">
               <colgroup>
                 <col>
                 <col>
@@ -87,15 +89,30 @@ See COPYRIGHT and LICENSE files for more details.
                     <th>
                       <div class="generic-table--sort-header-outer">
                         <div class="generic-table--sort-header">
-                          <span>
-                            <%= content_tag(role.builtin? ? "em" : "span", h(role.name)) %>
-                            <%= link_to_function(
-                                  icon_wrapper("icon-context icon-checkmark", "#{t(:button_check_all)}/#{t(:button_uncheck_all)}"),
-                                  "OpenProject.helpers.toggleCheckboxesBySelector('input.role-#{role.id}')",
-                                  class: "no-decoration-on-hover",
-                                  title: "#{t(:button_check_all)}/#{t(:button_uncheck_all)}"
-                                ) %>
-                          </span>
+                          <%= render(Primer::BaseComponent.new(tag: :div, display: :inline_flex, align_items: :center)) do %>
+                            <%= render(Primer::Beta::Text.new(mr: 1)) do %>
+                              <%= role.name %>
+                              <%= render(Primer::Beta::Label.new(scheme: :secondary)) { t(:label_builtin) } if role.builtin? %>
+                            <% end %>
+                            <%=
+                              render(
+                                Primer::Beta::IconButton.new(
+                                  scheme: :invisible,
+                                  size: :small,
+                                  icon: :check,
+                                  tooltip_direction: :se,
+                                  aria: {
+                                    label: t(:label_check_uncheck_all_in_column)
+                                  },
+                                  data: {
+                                    action: "checkable#toggleSelection",
+                                    checkable_key_param: "role",
+                                    checkable_value_param: role.id
+                                  }
+                                )
+                              )
+                            %>
+                          <% end %>
                         </div>
                       </div>
                     </th>
@@ -104,20 +121,48 @@ See COPYRIGHT and LICENSE files for more details.
               </thead>
               <tbody>
                 <% mod_permissions.each do |permission| %>
-                  <tr class="permission-<%= permission.name %>">
+                  <tr>
                     <td>
-                      <%= link_to_function(
-                            icon_wrapper("icon-context icon-checkmark", "#{t(:button_check_all)}/#{t(:button_uncheck_all)}"),
-                            "OpenProject.helpers.toggleCheckboxesBySelector('.permission-#{permission.name} input')",
-                            class: "no-decoration-on-hover",
-                            title: "#{t(:button_check_all)}/#{t(:button_uncheck_all)}"
-                          ) %>
-                      <%= l_or_humanize(permission.name, prefix: "permission_") %>
+                       <%= render(Primer::BaseComponent.new(tag: :div, display: :inline_flex, align_items: :center)) do %>
+                        <%=
+                          render(
+                            Primer::Beta::IconButton.new(
+                              scheme: :invisible,
+                              size: :small,
+                              icon: :check,
+                              tooltip_direction: :sw,
+                              aria: {
+                                label: t(:label_check_uncheck_all_in_row)
+                              },
+                              data: {
+                                action: "checkable#toggleSelection",
+                                checkable_key_param: "permission",
+                                checkable_value_param: permission.name
+                              }
+                            )
+                          )
+                        %>
+                        <%= render(Primer::Beta::Text.new(ml: 1)) do %>
+                          <%= l_or_humanize(permission.name, prefix: "permission_") %>
+                        <% end %>
+                      <% end %>
                     </td>
                     <% @roles.each do |role| %>
                       <td>
-                        <% if setable_permissions(role).include? permission %>
-                          <%= check_box_tag "permissions[#{role.id}][]", permission.name, (role.permissions.include? permission.name), id: nil, class: "role-#{role.id}" %>
+                        <% if setable_permissions(role).include?(permission) %>
+                          <%=
+                            check_box_tag(
+                              "permissions[#{role.id}][]",
+                              permission.name,
+                              role.permissions.include?(permission.name),
+                              id: nil,
+                              data: {
+                                checkable_target: "checkbox",
+                                role: role.id,
+                                permission: permission.name
+                              }
+                            )
+                          %>
                         <% end %>
                       </td>
                     <% end %>

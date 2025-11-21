@@ -28,7 +28,7 @@
 
 import { OpenProjectPluginContext } from 'core-app/features/plugins/plugin-context';
 import { input, InputState } from '@openproject/reactivestates';
-import { getMetaContent, getMetaValue, GlobalHelpers } from 'core-app/core/setup/globals/global-helpers';
+import { getMetaContent, getMetaValue } from 'core-app/core/setup/globals/global-helpers';
 import { firstValueFrom } from 'rxjs';
 import { ThemeUtils } from './theme-utils';
 
@@ -39,8 +39,6 @@ export type OpenProjectPageState = 'pristine'|'edited'|'submitted';
  */
 export class OpenProject {
   public pluginContext:InputState<OpenProjectPluginContext> = input<OpenProjectPluginContext>();
-
-  public helpers = new GlobalHelpers();
 
   /**
    * Theme utilities for system theme detection and application
