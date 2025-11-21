@@ -1,4 +1,4 @@
-# Schema: Versions_by_ProjectModel
+# Schema: Versions_by_WorkspaceModel
 ---
 allOf:
   - "$ref": "./collection_model.yml"

@@ -532,6 +532,8 @@ paths:
     "$ref": "./paths/workspace_work_packages.yml"
   "/api/v3/workspaces/{id}/work_packages/form":
     "$ref": "./paths/workspace_work_packages_form.yml"
+  "/api/v3/workspaces/{id}/versions":
+    "$ref": "./paths/workspace_versions.yml"
   "/api/v3/workspaces/schema":
     "$ref": "./paths/workspaces_schema.yml"
 
@@ -957,8 +959,8 @@ components:
       "$ref": "./components/schemas/version_schema_model.yml"
     VersionsModel:
       "$ref": "./components/schemas/versions_model.yml"
-    Versions_by_ProjectModel:
-      "$ref": "./components/schemas/versions_by_project_model.yml"
+    Versions_by_WorkspaceModel:
+      "$ref": "./components/schemas/versions_by_workspace_model.yml"
     View_actionModel:
       "$ref": "./components/schemas/view_action_model.yml"
     View_capabilitiesModel:
