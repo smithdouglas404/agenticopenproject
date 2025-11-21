@@ -66,12 +66,12 @@ RSpec.describe "Project creation wizard submission settings", :js,
       comment_field = TextEditorField.new(
         page,
         "Work package comment",
-        selector: test_selector("augmented-text-area-submission_work_package_comment")
+        selector: test_selector("augmented-text-area-project_creation_wizard_work_package_comment")
       )
       notification_field = TextEditorField.new(
         page,
         "Confirmation email text",
-        selector: test_selector("augmented-text-area-submission_notification_text")
+        selector: test_selector("augmented-text-area-project_creation_wizard_notification_text")
       )
 
       expect(page).to have_select("Work package type")
@@ -98,12 +98,12 @@ RSpec.describe "Project creation wizard submission settings", :js,
       expect_and_dismiss_flash(message: "Successful update.")
 
       project.reload
-      expect(project.submission_work_package_type_id).to eq(type.id)
-      expect(project.submission_status_when_submitted_id).to eq(status2.id)
-      expect(project.submission_assignee_custom_field_id).to eq(user_custom_field.id)
-      expect(project.submission_work_package_comment).to include("A project initiation request has been submitted.")
-      expect(project.submission_send_confirmation_email).to be true
-      expect(project.submission_notification_text).to include("Thank you for submitting your project request.")
+      expect(project.project_creation_wizard_work_package_type_id).to eq(type.id)
+      expect(project.project_creation_wizard_status_when_submitted_id).to eq(status2.id)
+      expect(project.project_creation_wizard_assignee_custom_field_id).to eq(user_custom_field.id)
+      expect(project.project_creation_wizard_work_package_comment).to include("A project initiation request has been submitted.")
+      expect(project.project_creation_wizard_send_confirmation_email).to be true
+      expect(project.project_creation_wizard_notification_text).to include("Thank you for submitting your project request.")
     end
 
     it "shows and hides confirmation email text based on checkbox" do
