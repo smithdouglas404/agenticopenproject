@@ -33,15 +33,13 @@ module Projects::CreationWizard
 
   included do
     store_attribute :settings, :project_creation_wizard_enabled, :boolean
-
     store_attribute :settings, :name_artefact_name, :string
-
-    store_attribute :settings, :submission_work_package_type_id, :integer
-    store_attribute :settings, :submission_status_when_submitted_id, :integer
-    store_attribute :settings, :submission_send_confirmation_email, :boolean
-    store_attribute :settings, :submission_assignee_custom_field_id, :integer
-    store_attribute :settings, :submission_notification_text, :string
-    store_attribute :settings, :submission_work_package_comment, :string
+    store_attribute :settings, :project_creation_wizard_work_package_type_id, :integer
+    store_attribute :settings, :project_creation_wizard_status_when_submitted_id, :integer
+    store_attribute :settings, :project_creation_wizard_send_confirmation_email, :boolean
+    store_attribute :settings, :project_creation_wizard_assignee_custom_field_id, :integer
+    store_attribute :settings, :project_creation_wizard_notification_text, :string
+    store_attribute :settings, :project_creation_wizard_work_package_comment, :string
     store_attribute :settings, :project_creation_wizard_pdf_export_type, :string, default: "attachment"
     store_attribute :settings, :project_creation_wizard_pdf_export_storage, :string
   end

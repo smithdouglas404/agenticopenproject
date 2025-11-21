@@ -134,12 +134,12 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   def submission_settings_params
     params.expect(
-      project: %i[submission_work_package_type_id
-                  submission_status_when_submitted_id
-                  submission_send_confirmation_email
-                  submission_notification_text
-                  submission_assignee_custom_field_id
-                  submission_work_package_comment]
+      project: %i[project_creation_wizard_work_package_type_id
+                  project_creation_wizard_status_when_submitted_id
+                  project_creation_wizard_send_confirmation_email
+                  project_creation_wizard_notification_text
+                  project_creation_wizard_assignee_custom_field_id
+                  project_creation_wizard_work_package_comment]
     )
   end
 end

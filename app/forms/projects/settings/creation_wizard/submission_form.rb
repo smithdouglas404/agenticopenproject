@@ -34,7 +34,7 @@ module Projects
       class SubmissionForm < ApplicationForm
         form do |f|
           f.select_list(
-            name: :submission_work_package_type_id,
+            name: :project_creation_wizard_work_package_type_id,
             label: I18n.t("settings.project_initiation_request.submission.work_package_type"),
             caption: I18n.t("settings.project_initiation_request.submission.work_package_type_caption"),
             required: true,
@@ -47,20 +47,20 @@ module Projects
               list.option(
                 value: type.id,
                 label: type.name,
-                selected: type.id == model.submission_work_package_type_id
+                selected: type.id == model.project_creation_wizard_work_package_type_id
               )
             end
           end
 
           f.select_list(
-            name: :submission_status_when_submitted_id,
+            name: :project_creation_wizard_status_when_submitted_id,
             label: I18n.t("settings.project_initiation_request.submission.status_when_submitted"),
             caption: I18n.t("settings.project_initiation_request.submission.status_when_submitted_caption"),
             required: true,
             input_width: :large
           ) do |list|
             # Statuses of the selected WP type
-            type_id = model.submission_work_package_type_id || model.types.first&.id
+            type_id = model.project_creation_wizard_work_package_type_id || model.types.first&.id
 
             if type_id.present?
               type = Type.find_by(id: type_id)
@@ -68,14 +68,14 @@ module Projects
                 list.option(
                   value: status.id,
                   label: status.name,
-                  selected: status.id == model.submission_status_when_submitted_id
+                  selected: status.id == model.project_creation_wizard_status_when_submitted_id
                 )
               end
             end
           end
 
           f.autocompleter(
-            name: :submission_assignee_custom_field_id,
+            name: :project_creation_wizard_assignee_custom_field_id,
             label: I18n.t("settings.project_initiation_request.submission.assignee"),
             caption: I18n.t("settings.project_initiation_request.submission.assignee_caption"),
             required: true,
@@ -90,17 +90,17 @@ module Projects
               list.option(
                 value: custom_field.id,
                 label: custom_field.name,
-                selected: custom_field.id == model.submission_assignee_custom_field_id
+                selected: custom_field.id == model.project_creation_wizard_assignee_custom_field_id
               )
             end
           end
 
           f.rich_text_area(
-            name: :submission_work_package_comment,
+            name: :project_creation_wizard_work_package_comment,
             label: I18n.t("settings.project_initiation_request.submission.work_package_comment"),
             caption: I18n.t("settings.project_initiation_request.submission.work_package_comment_caption"),
             required: true,
-            value: model.submission_work_package_comment.presence || I18n.t(
+            value: model.project_creation_wizard_work_package_comment.presence || I18n.t(
               "settings.project_initiation_request.submission.work_package_comment_default", project_name: model.name
             ),
             rich_text_options: {
@@ -110,9 +110,9 @@ module Projects
           )
 
           f.check_box(
-            name: :submission_send_confirmation_email,
+            name: :project_creation_wizard_send_confirmation_email,
             label: I18n.t("settings.project_initiation_request.submission.send_confirmation_email"),
-            checked: model.submission_send_confirmation_email.presence,
+            checked: model.project_creation_wizard_send_confirmation_email.presence,
             data: {
               "show-when-checked-target": "cause",
               target_name: "send_confirmation_email"
@@ -120,17 +120,17 @@ module Projects
           )
 
           f.rich_text_area(
-            name: :submission_notification_text,
+            name: :project_creation_wizard_notification_text,
             label: I18n.t("settings.project_initiation_request.submission.confirmation_email_text"),
             required: true,
-            value: model.submission_notification_text.presence || I18n.t(
+            value: model.project_creation_wizard_notification_text.presence || I18n.t(
               "settings.project_initiation_request.submission.confirmation_email_default", project_name: model.name
             ),
             rich_text_options: {
               showAttachments: false,
               editorType: "constrained"
             },
-            wrapper_classes: model.submission_send_confirmation_email.blank? ? "d-none" : "",
+            wrapper_classes: model.project_creation_wizard_send_confirmation_email.blank? ? "d-none" : "",
             wrapper_data_attributes: {
               "show-when-checked-target": "effect",
               target_name: "send_confirmation_email",
