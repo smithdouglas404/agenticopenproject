@@ -528,6 +528,12 @@ paths:
     "$ref": "./paths/workspace_available_assignees.yml"
   "/api/v3/workspaces/{id}/categories":
     "$ref": "./paths/workspace_categories.yml"
+  "/api/v3/workspaces/{id}/queries/default":
+    "$ref": "./paths/workspace_queries_default.yml"
+  "/api/v3/workspace/{id}/queries/filter_instance_schemas":
+    "$ref": "./paths/workspace_queries_filter_instance_schemas.yml"
+  "/api/v3/workspace/{id}/queries/schema":
+    "$ref": "./paths/workspace_queries_schema.yml"
   "/api/v3/workspaces/{id}/types":
     "$ref": "./paths/workspace_types.yml"
   "/api/v3/workspaces/{id}/work_packages":
@@ -719,8 +725,8 @@ components:
       "$ref": "./components/schemas/day_model.yml"
     Default_QueryModel:
       "$ref": "./components/schemas/default_query_model.yml"
-    Default_Query_for_ProjectModel:
-      "$ref": "./components/schemas/default_query_for_project_model.yml"
+    Default_Query_for_WorkspaceModel:
+      "$ref": "./components/schemas/default_query_for_workspace_model.yml"
     DocumentModel:
       "$ref": "./components/schemas/document_model.yml"
     DocumentsModel:
@@ -875,8 +881,8 @@ components:
       "$ref": "./components/schemas/query_filter_instance_schema_model.yml"
     Query_Filter_Instance_SchemasModel:
       "$ref": "./components/schemas/query_filter_instance_schemas_model.yml"
-    Query_Filter_Instance_Schemas_For_ProjectModel:
-      "$ref": "./components/schemas/query_filter_instance_schemas_for_project_model.yml"
+    Query_Filter_Instance_Schemas_For_WorkspaceModel:
+      "$ref": "./components/schemas/query_filter_instance_schemas_for_workspace_model.yml"
     Query_OperatorModel:
       "$ref": "./components/schemas/query_operator_model.yml"
     Query_Sort_ByModel:
@@ -907,8 +913,8 @@ components:
       "$ref": "./components/schemas/schema_property_model.yml"
     Schema_For_Global_QueriesModel:
       "$ref": "./components/schemas/schema_for_global_queries_model.yml"
-    Schema_For_Project_QueriesModel:
-      "$ref": "./components/schemas/schema_for_project_queries_model.yml"
+    Schema_For_Workspace_QueriesModel:
+      "$ref": "./components/schemas/schema_for_workspace_queries_model.yml"
     Star_QueryModel:
       "$ref": "./components/schemas/star_query_model.yml"
     StatusCollectionModel:

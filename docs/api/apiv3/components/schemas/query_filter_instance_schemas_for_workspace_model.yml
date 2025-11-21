@@ -1,4 +1,4 @@
-# Schema: Query_Filter_Instance_Schemas_For_ProjectModel
+# Schema: Query_Filter_Instance_Schemas_For_WorkspaceModel
 ---
 type: object
 example:
@@ -91,4 +91,4 @@ example:
           title: Author
   _links:
     self:
-      href: "/api/v3/projects/42/queries/filter_instance_schemas"
+      href: "/api/v3/workspaces/42/queries/filter_instance_schemas"

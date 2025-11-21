@@ -1,4 +1,4 @@
-# Schema: Schema_For_Project_QueriesModel
+# Schema: Schema_For_Workspace_QueriesModel
 ---
 type: object
 example:
@@ -37,7 +37,7 @@ example:
     hasDefault: true
     writable: false
   project:
-    type: Project
+    type: Workspace
     name: Project
     required: false
     hasDefault: false
@@ -94,7 +94,7 @@ example:
     hasDefault: true
     _links:
       allowedValuesSchemas:
-        href: "/api/v3/projects/42/queries/filter_instance_schemas"
+        href: "/api/v3/workspaces/42/queries/filter_instance_schemas"
   groupBy:
     type: "[]QueryGroupBy"
     name: Group results by
@@ -206,7 +206,7 @@ example:
               title: Author
       _links:
         self:
-          href: "/api/v3/projects/42/queries/filter_instance_schemas"
+          href: "/api/v3/workspaces/42/queries/filter_instance_schemas"
   _links:
     self:
-      href: "/api/v3/projects/42/queries/schema"
+      href: "/api/v3/workspaces/42/queries/schema"
