@@ -49,6 +49,11 @@ RSpec.describe "Portfolios",
     projects_page.create_new_workspace
 
     expect(page).to have_heading "New portfolio"
+
+    # Step 1: Select workspace type (blank portfolio)
+    click_on "Continue"
+
+    # Step 2: Fill in project details
     # This should be an
     #   expect(page).to have_no_field "Subproject of"
     # But this leads to a false negative. Even with the field being there, is the
@@ -56,7 +61,7 @@ RSpec.describe "Portfolios",
     expect(page).to have_no_content "Subproject of"
 
     fill_in "Name", with: "Foo bar"
-    click_on "Create"
+    click_on "Complete"
 
     expect_and_dismiss_flash type: :success, message: "Successful creation."
 

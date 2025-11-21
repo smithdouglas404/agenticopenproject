@@ -58,6 +58,10 @@ RSpec.describe "Subproject creation", :js do
 
     expect(page).to have_heading "New project"
 
+    # Step 1: Select workspace type (blank project)
+    click_on "Continue"
+
+    # Step 2: Fill in project details
     fill_in "Name", with: "Foo child"
 
     expect(page).to have_combo_box "Subproject of"
@@ -67,7 +71,7 @@ RSpec.describe "Subproject creation", :js do
     parent_field.expect_no_option(other_project.name)
     parent_field.expect_selected parent_project.name
 
-    click_on "Create"
+    click_on "Complete"
 
     expect_and_dismiss_flash type: :success, message: "Successful creation."
 

@@ -92,28 +92,17 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
     end
 
     it "can instantiate the project with the copy permission" do
-      visit new_project_path
+      visit new_project_path(template_id: template.id)
 
+      # Step 1: Template is pre-selected
+      expect(page).to have_checked_field "My template"
+
+      click_on "Continue"
+
+      # Step 2: Project details
       fill_in "Name", with: "Foo bar"
 
-      expect(page).to have_no_selector :fieldset, "Copy options"
-
-      choose "My template", fieldset: "Use template"
-
-      # Only when a template is selected, the options are displayed.
-      # Using this to know when the copy form has been fetched from the backend.
-      expect(page).to have_selector :fieldset, "Copy from template"
-
-      # FIXME: It should keep the name. See BUG OP#64594 https://community.openproject.org/wp/64594
-      # expect(page).to have_field "Name", with: "Foo bar"
-      fill_in "Name", with: "Foo bar"
-
-      expect(page).to have_unchecked_field fieldset: "Notifications"
-
-      # And allows to deselect copying the members.
-      uncheck "Project members", fieldset: "Copy from template"
-
-      click_on "Create"
+      click_on "Complete"
 
       expect(page).to have_dialog "Background job status"
 
@@ -136,8 +125,8 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       project = Project.find_by identifier: "foo-bar"
       expect(project.name).to eq "Foo bar"
       expect(project).not_to be_templated
-      # Does not include the member excluded from being copied but sets the copying user as member.
-      expect(project.users).to match_array(current_user)
+      # Members are copied by default from the template
+      expect(project.users).to contain_exactly(current_user, other_user)
       expect(project.enabled_module_names.sort).to eq(template.enabled_module_names.sort)
 
       wp_source = template.work_packages.first.attributes.except(*%w[id author_id project_id updated_at created_at])
@@ -155,23 +144,22 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       custom_field = create(:string_project_custom_field, is_required: true)
       template.project_custom_field_ids = [custom_field.id]
 
-      visit new_project_path
+      visit new_project_path(template_id: template.id)
 
-      # Should show required custom field when creating a blank project
-      expect(page).to have_field custom_field.name
+      # Step 1: Template is pre-selected
+      expect(page).to have_checked_field "My template"
 
-      choose "My template", fieldset: "Use template"
+      click_on "Continue"
 
-      # Only when a template is selected, the options are displayed
-      expect(page).to have_selector :fieldset, "Copy from template"
-
+      # Step 2: Project details
       fill_in "Name", with: "Project from template"
 
-      # Should not show custom field form when creating from template
+      click_on "Continue"
+
+      # Step 3: Custom fields - should not show custom field form when creating from template
       expect(page).to have_no_field custom_field.name
 
-      click_on "Create"
-
+      # Templates submit automatically on step 3 since custom fields are skipped
       expect(page).to have_dialog "Background job status"
 
       GoodJob.perform_inline
