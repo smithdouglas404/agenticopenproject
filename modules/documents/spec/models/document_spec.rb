@@ -32,7 +32,6 @@ require "spec_helper"
 require_module_spec_helper
 
 RSpec.describe Document do
-  let(:documentation_category) { create(:document_category, name: "User documentation") }
   let(:project)                { create(:project) }
   let(:user)                   { create(:user) }
   let(:admin)                  { create(:admin) }
@@ -52,7 +51,6 @@ RSpec.describe Document do
   end
 
   describe "Associations" do
-    it { is_expected.to belong_to(:category).class_name("DocumentCategory").optional }
     it { is_expected.to belong_to(:project) }
     it { is_expected.to belong_to(:type).class_name("DocumentType").optional }
   end
@@ -71,7 +69,7 @@ RSpec.describe Document do
   end
 
   describe "create with a valid document" do
-    let(:valid_document) { build(:document, title: "Test", project:, category: documentation_category) }
+    let(:valid_document) { build(:document, title: "Test", project:) }
 
     it "adds a document" do
       expect  do

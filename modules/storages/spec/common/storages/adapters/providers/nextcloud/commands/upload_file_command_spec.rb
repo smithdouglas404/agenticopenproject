@@ -62,8 +62,9 @@ module Storages
 
             context "when uploading a file to a non-existing folder", vcr: "nextcloud/upload_file_missing_folder" do
               let(:parent_location) { "/non-existing-folder/" }
+              let(:error_source) { described_class }
 
-              it_behaves_like "adapter upload_file_command: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
 
             context "when uploading a file that has a filename with non-ASCII characters", vcr: "nextcloud/upload_file_unicode" do

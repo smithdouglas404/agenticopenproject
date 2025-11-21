@@ -81,6 +81,7 @@ module Projects
         .visible(current_user)
         .active
         .templated
+        .workspace_type(workspace_type)
         .order(name: :asc)
     end
 

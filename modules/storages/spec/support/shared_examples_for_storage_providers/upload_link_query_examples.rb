@@ -41,27 +41,3 @@ RSpec.shared_examples_for "adapter upload_link_query: successful upload link res
     expect(response.method).to eq(upload_method)
   end
 end
-
-RSpec.shared_examples_for "adapter upload_link_query: not found" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:not_found)
-    expect(error.source).to eq(described_class)
-  end
-end
-
-RSpec.shared_examples_for "adapter upload_link_query: error" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:error)
-    expect(error.source).to eq(described_class)
-  end
-end

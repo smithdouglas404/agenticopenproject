@@ -116,6 +116,13 @@ module Storages
 
               it_behaves_like "adapter files_info_query: successful list response"
             end
+
+            context "with the integration app being disabled", vcr: "nextcloud/files_info_query_app_disabled" do
+              let(:file_ids) { %w[50 53] }
+              let(:error_source) { described_class }
+
+              it_behaves_like "storage adapter: error response", :error
+            end
           end
         end
       end

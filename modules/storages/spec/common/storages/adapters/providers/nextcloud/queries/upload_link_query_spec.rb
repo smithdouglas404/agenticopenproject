@@ -64,7 +64,7 @@ module Storages
 
               let(:error_source) { described_class }
 
-              it_behaves_like "adapter upload_link_query: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
           end
         end

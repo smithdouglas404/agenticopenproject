@@ -48,20 +48,12 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
     redirect_to project_settings_creation_wizard_path(@project, tab: params[:tab]), status: :see_other
   end
 
+  def update_name_settings
+    update_settings_for_tab("name", name_settings_params)
+  end
+
   def update_submission_settings
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: Projects::SettingsContract)
-      .call(submission_settings_params)
-
-    @project = call.result
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_creation_wizard_path(@project, tab: "submission")
-    else
-      params[:tab] = "submission"
-      render action: :show, status: :unprocessable_entity
-    end
+    update_settings_for_tab("submission", submission_settings_params)
   end
 
   def refresh_submission_form
@@ -118,14 +110,36 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
     end
   end
 
+  def update_settings_for_tab(tab, settings_params)
+    call = Projects::UpdateService
+      .new(model: @project, user: current_user, contract_class: Projects::SettingsContract)
+      .call(settings_params)
+
+    @project = call.result
+
+    if call.success?
+      flash[:notice] = I18n.t(:notice_successful_update)
+      redirect_to project_settings_creation_wizard_path(@project, tab:)
+    else
+      params[:tab] = tab
+      render action: :show, status: :unprocessable_entity
+    end
+  end
+
+  def name_settings_params
+    params.expect(
+      project: %i[name_artefact_name]
+    )
+  end
+
   def submission_settings_params
     params.expect(
-      project: %i[submission_work_package_type_id
-                  submission_status_when_submitted_id
-                  submission_send_confirmation_email
-                  submission_notification_text
-                  submission_assignee_custom_field_id
-                  submission_work_package_comment]
+      project: %i[project_creation_wizard_work_package_type_id
+                  project_creation_wizard_status_when_submitted_id
+                  project_creation_wizard_send_confirmation_email
+                  project_creation_wizard_notification_text
+                  project_creation_wizard_assignee_custom_field_id
+                  project_creation_wizard_work_package_comment]
     )
   end
 end

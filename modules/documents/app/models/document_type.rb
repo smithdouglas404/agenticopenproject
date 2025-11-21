@@ -29,6 +29,8 @@
 #++
 
 class DocumentType < ApplicationRecord
+  include ::Documents::EnumerationModel
+
   default_scope { order(:position) }
   acts_as_list
 
@@ -40,7 +42,36 @@ class DocumentType < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
+  before_destroy :prevent_deletion_of_last_type
+
   def self.default
     where(is_default: true).first || first
+  end
+
+  def only_remaining_record?
+    self.class.where.not(id: id).none?
+  end
+
+  alias :destroy_without_reassign :destroy
+
+  def destroy(reassign_to = nil)
+    if reassign_to.is_a?(DocumentType)
+      transfer_relations(reassign_to)
+    end
+    destroy_without_reassign
+  end
+
+  private
+
+  def prevent_deletion_of_last_type
+    if only_remaining_record?
+      errors.add(:base, :one_or_more_required)
+      throw(:abort)
+    end
+  end
+
+  def transfer_relations(to)
+    documents.update_all(type_id: to.id)
+    to.update_column(:documents_count, to.documents.count)
   end
 end

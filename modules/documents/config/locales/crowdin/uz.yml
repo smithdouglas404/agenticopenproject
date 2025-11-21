@@ -58,6 +58,8 @@ uz:
       all: "All documents"
       types: "Types"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "New category"

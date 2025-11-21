@@ -124,7 +124,7 @@ module Storages
               let(:file_id) { "#{drive_id}:not_existent" }
               let(:error_source) { Internal::DriveItemQuery }
 
-              it_behaves_like "adapter file_info_query: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
           end
         end

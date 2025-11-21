@@ -234,7 +234,7 @@ module Storages
               let(:folder) { "/I/just/made/that/up" }
               let(:error_source) { described_class }
 
-              it_behaves_like "adapter files_query: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
           end
         end

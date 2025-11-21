@@ -314,14 +314,16 @@ module Storages
 
             context "when requesting an unknown file", vcr: "sharepoint/files_query_file_not_found" do
               let(:folder) { "/Marcello VCR/POTATO" }
+              let(:error_source) { Internal::ChildrenQuery }
 
-              it_behaves_like "adapter files_query: not found", Internal::ChildrenQuery
+              it_behaves_like "storage adapter: error response", :not_found
             end
 
             context "when requestion an unknown drive", vcr: "sharepoint/files_query_drive_not_found" do
               let(:folder) { "/That is no moon" }
+              let(:error_source) { described_class }
 
-              it_behaves_like "adapter files_query: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
           end
         end

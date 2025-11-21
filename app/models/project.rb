@@ -222,6 +222,7 @@ class Project < ApplicationRecord
   scope :archived, -> { where(active: false) }
   scope :with_member, ->(user = User.current) { where(id: user.memberships.select(:project_id)) }
   scope :without_member, ->(user = User.current) { where.not(id: user.memberships.select(:project_id)) }
+  scope :workspace_type, ->(workspace_type) { workspace_types.key?(workspace_type) ? where(workspace_type:) : none }
   scope :templated, -> { where(templated: true) }
 
   scopes :activated_time_activity,

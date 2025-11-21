@@ -86,8 +86,10 @@ RSpec.describe ProjectsController do
       end
     end
 
+    let(:workspace_type) { "project" }
+
     before do
-      get :new, params: { parent_id: parent&.id, template_id: template&.id }
+      get :new, params: { parent_id: parent&.id, template_id: template&.id, workspace_type: }
     end
 
     context "as an admin" do
@@ -134,20 +136,94 @@ RSpec.describe ProjectsController do
       end
     end
 
-    context "as a non-admin with global add_portfolios permission", with_flag: { portfolio_models: true } do
-      let(:parent) { nil }
-      let(:user) { create(:user, global_permissions: [:add_portfolios]) }
+    context "for portfolio" do
       let(:template) { nil }
+      let(:workspace_type) { "portfolio" }
+      let(:parent) { nil }
 
-      it_behaves_like "successful request"
+      context "as an admin" do
+        context "with flag enabled", with_flag: { portfolio_models: true } do
+          it_behaves_like "successful request"
+        end
+
+        context "with flag disabled", with_flag: { portfolio_models: false } do
+          it "returns 403 Not Authorized" do
+            expect(response).not_to be_successful
+            expect(response).to have_http_status :forbidden
+          end
+        end
+      end
+
+      context "as a non-admin with global add_portfolios permission" do
+        let(:user) { create(:user, global_permissions: [:add_portfolios]) }
+
+        context "with flag enabled", with_flag: { portfolio_models: true } do
+          it_behaves_like "successful request"
+        end
+
+        context "with flag disabled", with_flag: { portfolio_models: false } do
+          it "returns 403 Not Authorized" do
+            expect(response).not_to be_successful
+            expect(response).to have_http_status :forbidden
+          end
+        end
+      end
+
+      context "as a non-admin without add_portfolios permission" do
+        let(:user) { create(:user) }
+
+        context "with flag enabled", with_flag: { portfolio_models: true } do
+          it "returns 403 Not Authorized" do
+            expect(response).not_to be_successful
+            expect(response).to have_http_status :forbidden
+          end
+        end
+      end
     end
 
-    context "as a non-admin with global add_programs permission", with_flag: { portfolio_models: true } do
-      let(:parent) { nil }
-      let(:user) { create(:user, global_permissions: [:add_programs]) }
+    context "for program" do
       let(:template) { nil }
+      let(:workspace_type) { "program" }
+      let(:parent) { nil }
 
-      it_behaves_like "successful request"
+      context "as an admin" do
+        context "with flag enabled", with_flag: { portfolio_models: true } do
+          it_behaves_like "successful request"
+        end
+
+        context "with flag disabled", with_flag: { portfolio_models: false } do
+          it "returns 403 Not Authorized" do
+            expect(response).not_to be_successful
+            expect(response).to have_http_status :forbidden
+          end
+        end
+      end
+
+      context "as a non-admin with global add_programs permission" do
+        let(:user) { create(:user, global_permissions: [:add_programs]) }
+
+        context "with flag enabled", with_flag: { portfolio_models: true } do
+          it_behaves_like "successful request"
+        end
+
+        context "with flag disabled", with_flag: { portfolio_models: false } do
+          it "returns 403 Not Authorized" do
+            expect(response).not_to be_successful
+            expect(response).to have_http_status :forbidden
+          end
+        end
+      end
+
+      context "as a non-admin without add_programs permission" do
+        let(:user) { create(:user) }
+
+        context "with flag enabled", with_flag: { portfolio_models: true } do
+          it "returns 403 Not Authorized" do
+            expect(response).not_to be_successful
+            expect(response).to have_http_status :forbidden
+          end
+        end
+      end
     end
   end
 
@@ -271,7 +347,7 @@ RSpec.describe ProjectsController do
     end
 
     context "with a template" do
-      let(:template) { create(:template_project) }
+      let(:template) { create(:template_project, workspace_type:) }
 
       before do
         copy_service = instance_double(Projects::EnqueueCopyService)
@@ -292,12 +368,14 @@ RSpec.describe ProjectsController do
 
         post :create, params: {
           template_id: template.id,
+          workspace_type:,
           project: { name: },
           copy_options: { dependencies: [""], send_notifications: false } # emulating empty dependencies array
         }
       end
 
       context "when service call succeeds" do
+        let(:workspace_type) { "project" }
         let(:name) { "Copied project" }
         let(:job) { CopyProjectJob.new }
         let(:service_result) { ServiceResult.success(result: job) }
@@ -307,20 +385,26 @@ RSpec.describe ProjectsController do
         end
       end
 
-      context "when service call fails" do
+      context "when service call fails", with_flag: { portfolio_models: true } do
         let(:name) { "" }
         let(:project) { Project.new }
         let(:service_result) { ServiceResult.failure(result: project, message: "") }
 
-        it "renders new template with errors", :aggregate_failures do
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :unprocessable_entity
-          expect(assigns(:new_project)).to be_a_new(Project)
-          expect(assigns(:new_project)).not_to be_valid
-          expect(assigns(:template)).not_to be_nil
-          expect(assigns(:copy_options)).not_to be_nil
-          expect(flash[:error]).to start_with I18n.t(:notice_unsuccessful_create_with_reason, reason: "")
-          expect(response).to render_template "new"
+        %w[portfolio program project].each do |workspace_type|
+          context "for workspace type #{workspace_type}" do
+            let(:workspace_type) { workspace_type }
+
+            it "renders new template with errors", :aggregate_failures do
+              expect(response).not_to be_successful
+              expect(response).to have_http_status :unprocessable_entity
+              expect(assigns(:new_project)).to be_a_new(Project)
+              expect(assigns(:new_project)).not_to be_valid
+              expect(assigns(:template)).not_to be_nil
+              expect(assigns(:copy_options)).not_to be_nil
+              expect(flash[:error]).to start_with I18n.t(:notice_unsuccessful_create_with_reason, reason: "")
+              expect(response).to render_template "new"
+            end
+          end
         end
       end
     end

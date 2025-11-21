@@ -70,7 +70,7 @@ module Storages
               let(:input_data) { Input::OpenFileLink.build(file_id:).value! }
               let(:error_source) { Internal::DriveItemQuery }
 
-              it_behaves_like "adapter open_file_link_query: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
           end
         end

@@ -43,7 +43,7 @@ class ProjectsController < ApplicationController
   before_action :not_authorized_on_feature_flag_inactive,
                 only: %i[new create],
                 if: -> {
-                  params[:workspace_type].in?(Project.workspace_types.values_at(:program, :portfolio))
+                  params[:workspace_type].in?(%w[portfolio program])
                 }
   before_action :find_optional_template, only: %i[new create]
   before_action :find_optional_parent, only: :new
@@ -248,7 +248,13 @@ class ProjectsController < ApplicationController
   end
 
   def find_optional_template
-    @template = Project.templated.visible(current_user).find(params[:template_id]) if params[:template_id].present?
+    return if params[:workspace_type].blank? || params[:template_id].blank?
+
+    @template = Project
+      .templated
+      .workspace_type(params[:workspace_type])
+      .visible(current_user)
+      .find_by(id: params[:template_id])
   end
 
   def find_optional_parent

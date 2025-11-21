@@ -59,7 +59,7 @@ module Storages
               let(:error_source) { Queries::Internal::DriveItemQuery }
               let(:input_data) { permission_input_data("#{base_drive}:THIS_IS_NOT_THE_FOLDER_YOURE_LOOKING_FOR", []) }
 
-              it_behaves_like "adapter set_permissions_command: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
 
             context "if a write roles is already set" do

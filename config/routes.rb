@@ -176,6 +176,10 @@ Rails.application.routes.draw do
       as: "custom_style_logo",
       constraints: { filename: /[^\/]*/ }
 
+  get "custom_style/:digest/logo_mobile/:filename" => "custom_styles#logo_mobile_download",
+      as: "custom_style_logo_mobile",
+      constraints: { filename: /[^\/]*/ }
+
   get "custom_style/:digest/export_logo/:filename" => "custom_styles#export_logo_download",
       as: "custom_style_export_logo",
       constraints: { filename: /[^\/]*/ }
@@ -270,10 +274,10 @@ Rails.application.routes.draw do
   # Extracted from the resources definition right below so that the
   # default parameters can be defined.
   resources :projects,
-            only: %i[new],
+            only: %i[new create],
             defaults: { workspace_type: "project" }
 
-  resources :projects, except: %i[new show edit update] do
+  resources :projects, except: %i[new create show edit update] do
     scope module: "projects" do
       namespace "settings" do
         resource :general, only: %i[show update], controller: "general" do
@@ -284,6 +288,7 @@ Rails.application.routes.draw do
         resource :creation_wizard, controller: "creation_wizard", only: %i[show] do
           get :disable_dialog
           post :toggle
+          post :update_name_settings
           post :update_submission_settings
           get :refresh_submission_form
           post :toggle_project_custom_field
@@ -499,20 +504,20 @@ Rails.application.routes.draw do
     end
   end
 
+  # Portfolio and program creation is handled by the projects controller
+  %w[portfolio program].each do |workspace_type|
+    resources workspace_type.pluralize,
+              only: %i[new create],
+              defaults: { workspace_type: },
+              controller: "projects"
+  end
+
   resources :portfolios,
             only: %i[index]
-
-  # Portfolio creation is handled by the project controller:
-  get "portfolios/new", to: "projects#new", defaults: { workspace_type: "portfolio" }, as: :new_portfolio
 
   namespace :portfolios do
     resource :menu, only: %i[show]
   end
-
-  resources :programs,
-            only: %i[new],
-            defaults: { workspace_type: "program" },
-            controller: "projects"
 
   resources :project_phases, only: [] do
     member do
@@ -552,6 +557,7 @@ Rails.application.routes.draw do
     end
 
     delete "design/logo" => "custom_styles#logo_delete", as: "custom_style_logo_delete"
+    delete "design/logo_mobile" => "custom_styles#logo_mobile_delete", as: "custom_style_logo_mobile_delete"
     delete "design/export_logo" => "custom_styles#export_logo_delete", as: "custom_style_export_logo_delete"
     delete "design/export_cover" => "custom_styles#export_cover_delete", as: "custom_style_export_cover_delete"
     delete "design/export_footer" => "custom_styles#export_footer_delete", as: "custom_style_export_footer_delete"

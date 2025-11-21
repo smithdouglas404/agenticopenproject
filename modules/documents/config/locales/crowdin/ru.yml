@@ -58,6 +58,8 @@ ru:
       all: "Все документы"
       types: "Типы"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Автор вложения"
     label_categories: "Категории"
     new_category: "Новая категория"

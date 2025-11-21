@@ -63,15 +63,17 @@ module Storages
             context "when creating a folder in a non-existing parent folder", vcr: "sharepoint/create_folder_parent_not_found" do
               let(:folder_name) { "Földer CreatedBy Çommand" }
               let(:parent_location) { composite_identifier("01AZJL5PKU2WV3U3RKKFF4A7ZCWVBXRTEU") }
+              let(:error_source) { described_class }
 
-              it_behaves_like "adapter create_folder_command: parent not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
 
             context "when folder already exists", vcr: "sharepoint/create_folder_already_exists" do
               let(:folder_name) { "data" }
               let(:parent_location) { composite_identifier(nil) }
+              let(:error_source) { described_class }
 
-              it_behaves_like "adapter create_folder_command: folder already exists"
+              it_behaves_like "storage adapter: error response", :conflict
             end
 
             context "when trying to create a folder under the root of the site",

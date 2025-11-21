@@ -68,7 +68,7 @@ module Storages
               let(:parent_location) { "/DeathStar3" }
               let(:error_source) { described_class }
 
-              it_behaves_like "adapter create_folder_command: parent not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
 
             context "when folder already exists", vcr: "nextcloud/create_folder_already_exists" do
@@ -76,7 +76,7 @@ module Storages
               let(:parent_location) { "/" }
               let(:error_source) { described_class }
 
-              it_behaves_like "adapter create_folder_command: folder already exists"
+              it_behaves_like "storage adapter: error response", :conflict
             end
 
             # For the VCR tests in this block it's necessary to

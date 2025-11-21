@@ -58,6 +58,8 @@ ja:
       all: "All documents"
       types: "ワークパッケージのタイプ"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "添付ファイルの作成者"
     label_categories: "カテゴリ"
     new_category: "新規カテゴリ"

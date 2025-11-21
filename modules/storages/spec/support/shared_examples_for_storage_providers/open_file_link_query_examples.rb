@@ -38,27 +38,3 @@ RSpec.shared_examples_for "adapter open_file_link_query: successful link respons
     expect(response).to eq(open_file_link)
   end
 end
-
-RSpec.shared_examples_for "adapter open_file_link_query: not found" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:not_found)
-    expect(error.source).to eq(error_source)
-  end
-end
-
-RSpec.shared_examples_for "adapter open_file_link_query: error" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:error)
-    expect(error.source).to eq(described_class)
-  end
-end

@@ -41,15 +41,3 @@ RSpec.shared_examples_for "adapter upload_file_command: successful file upload" 
     expect(response.mime_type).to eq("text/plain")
   end
 end
-
-RSpec.shared_examples_for "adapter upload_file_command: not found" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:not_found)
-    expect(error.source).to eq(described_class)
-  end
-end

@@ -58,6 +58,8 @@ zh-CN:
       all: "所有文档"
       types: "类型"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "附件作者"
     label_categories: "类别"
     new_category: "新类别"

@@ -49,6 +49,19 @@ Rails.application.routes.draw do
     end
   end
 
+  scope module: :documents do
+    namespace :admin do
+      namespace :settings do
+        resources :document_types, except: [:show] do
+          member do
+            put :move
+            get :delete_dialog, defaults: { format: :turbo_stream }
+          end
+        end
+      end
+    end
+  end
+
   namespace :admin do
     namespace :settings do
       resources :document_categories, except: [:show] do

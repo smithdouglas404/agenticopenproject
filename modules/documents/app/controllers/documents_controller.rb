@@ -44,7 +44,7 @@ class DocumentsController < ApplicationController
 
   def index
     @documents = list_documents_query
-      .includes(:category)
+      .includes(:type)
       .paginate(page: page_param, per_page: per_page_param)
   end
 

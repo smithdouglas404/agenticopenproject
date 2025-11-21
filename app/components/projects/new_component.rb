@@ -35,5 +35,15 @@ module Projects
     include OpTurbo::Streamable
 
     options :project, :template, :copy_options
+
+    def workspaces_path
+      workspace_type = if Project.workspace_types.key?(project.workspace_type)
+                         project.workspace_type
+                       else
+                         "project"
+                       end
+
+      url_for(workspace_type.pluralize.to_sym)
+    end
   end
 end

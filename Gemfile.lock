@@ -339,8 +339,8 @@ GEM
     awesome_nested_set (3.8.0)
       activerecord (>= 4.0.0, < 8.1)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1181.0)
-    aws-sdk-core (3.237.0)
+    aws-partitions (1.1185.0)
+    aws-sdk-core (3.238.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -351,7 +351,7 @@ GEM
     aws-sdk-kms (1.117.0)
       aws-sdk-core (~> 3, >= 3.234.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.203.1)
+    aws-sdk-s3 (1.204.0)
       aws-sdk-core (~> 3, >= 3.234.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
@@ -417,7 +417,7 @@ GEM
     childprocess (5.1.0)
       logger (~> 1.5)
     climate_control (1.2.0)
-    closure_tree (9.2.0)
+    closure_tree (9.3.0)
       activerecord (>= 7.2.0)
       with_advisory_lock (>= 7.0.0)
       zeitwerk (~> 2.7)
@@ -1555,8 +1555,8 @@ DEPENDENCIES
   appsignal (~> 4.7)
   auto_strip_attributes (~> 2.5)
   awesome_nested_set (~> 3.8.0)
-  aws-sdk-core (~> 3.237)
-  aws-sdk-s3 (~> 1.203)
+  aws-sdk-core (~> 3.238)
+  aws-sdk-s3 (~> 1.204)
   axe-core-rspec
   bcrypt (~> 3.1.6)
   bootsnap (~> 1.19.0)
@@ -1570,7 +1570,7 @@ DEPENDENCIES
   carrierwave (~> 1.3.4)
   carrierwave_direct (~> 2.1.0)
   climate_control
-  closure_tree (~> 9.2.0)
+  closure_tree (~> 9.3.0)
   colored2
   commonmarker (~> 2.5.0)
   compare-xml (~> 0.66)
@@ -1793,10 +1793,10 @@ CHECKSUMS
   auto_strip_attributes (2.6.0) sha256=a7e2e0cf744de2bcd947fd68014220702bcc88c81274c1cd9ce6f7316aae39b0
   awesome_nested_set (3.8.0) sha256=469daff411d80291dbb80d1973133e498048a7afc2519c545f62d2cdebc60eda
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
-  aws-partitions (1.1181.0) sha256=ad818435b31c5ed60f9332896dc83bfa7eff9661af93935b468f012e07c8ea7d
-  aws-sdk-core (3.237.0) sha256=9a8b14167a75be07ba7cfd9d27075aa12f1ed897d6eaed808a1c6a20963af32b
+  aws-partitions (1.1185.0) sha256=cc711b7c3381e83abfd9e3a84b8a50e37f23c82fd0386ef6b91c15b6e4981b1b
+  aws-sdk-core (3.238.0) sha256=379ab70effc304ba2ca361d2a7140cb5ea6be23abbc948c75bd405282604cb92
   aws-sdk-kms (1.117.0) sha256=d3d655ae825ca0d6715555e2543e062fe14ccacf30bace04f3aefd6005b76c14
-  aws-sdk-s3 (1.203.1) sha256=edaa6ecc641ffa8564f38df237876876ac679b937ca8cd7873f6f9857d8f99b9
+  aws-sdk-s3 (1.204.0) sha256=b680a2552ee8225a24d4df115caacb140aa3adc35cb9d975e20e53549b607e63
   aws-sdk-sns (1.108.0) sha256=043650ee2af3107b4cfebe4bfe24d2cfc71db81ae811bbead8203024bca9f078
   aws-sigv4 (1.12.1) sha256=6973ff95cb0fd0dc58ba26e90e9510a2219525d07620c8babeb70ef831826c00
   axe-core-api (4.11.0) sha256=3d9c94e3c8f8f9b8f154a3ce036b3dec2dabf7bb7de5e51d663b18bd8a0d691b
@@ -1823,7 +1823,7 @@ CHECKSUMS
   cgi (0.5.0) sha256=fe99f65bb2c146e294372ebb27602adbc3b4c008e9ea7038c6bd48c1ec9759da
   childprocess (5.1.0) sha256=9a8d484be2fd4096a0e90a0cd3e449a05bc3aa33f8ac9e4d6dcef6ac1455b6ec
   climate_control (1.2.0) sha256=36b21896193fa8c8536fa1cd843a07cf8ddbd03aaba43665e26c53ec1bd70aa5
-  closure_tree (9.2.0) sha256=54e80a8abbd800d95e4bcd483fbcb143076e061a465b962e39f302659b73351c
+  closure_tree (9.3.0) sha256=0da5587c83963861d49b4b5f1217e1baa782b89b62aba0b15d4ad872fa43dce9
   coderay (1.1.3) sha256=dc530018a4684512f8f38143cd2a096c9f02a1fc2459edcfe534787a7fc77d4b
   coercible (1.0.0) sha256=5081ad24352cc8435ce5472bc2faa30260c7ea7f2102cc6a9f167c4d9bffaadc
   color_conversion (0.1.2) sha256=99bea5fa412e1527a11389975aa6ad445ff8528ebae202c11d08c45ea2b94c96

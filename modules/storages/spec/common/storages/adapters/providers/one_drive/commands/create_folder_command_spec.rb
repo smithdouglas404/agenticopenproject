@@ -62,15 +62,17 @@ module Storages
             context "when creating a folder in a non-existing parent folder", vcr: "one_drive/create_folder_parent_not_found" do
               let(:folder_name) { "Földer CreatedBy Çommand" }
               let(:parent_location) { "01AZJL5PKU2WV3U3RKKFF4A7ZCWVBXRTEU" }
+              let(:error_source) { described_class }
 
-              it_behaves_like "adapter create_folder_command: parent not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
 
             context "when folder already exists", vcr: "one_drive/create_folder_already_exists" do
               let(:folder_name) { "Folder" }
               let(:parent_location) { "/" }
+              let(:error_source) { described_class }
 
-              it_behaves_like "adapter create_folder_command: folder already exists"
+              it_behaves_like "storage adapter: error response", :conflict
             end
 
             private

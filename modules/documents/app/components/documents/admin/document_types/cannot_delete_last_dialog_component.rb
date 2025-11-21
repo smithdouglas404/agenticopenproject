@@ -28,9 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :document_category do
-    project
-    sequence(:name) { |n| "I am Category No. #{n}" }
+module Documents
+  module Admin
+    module DocumentTypes
+      class CannotDeleteLastDialogComponent < ApplicationComponent
+        include OpTurbo::Streamable
+      end
+    end
   end
 end

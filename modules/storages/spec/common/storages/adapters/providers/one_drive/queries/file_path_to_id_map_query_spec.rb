@@ -121,7 +121,7 @@ module Storages
               let(:folder) { "/I/just/made/that/up" }
               let(:error_source) { Internal::DriveItemQuery }
 
-              it_behaves_like "adapter file_path_to_id_map_query: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
           end
         end

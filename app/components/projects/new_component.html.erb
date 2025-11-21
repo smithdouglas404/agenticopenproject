@@ -36,7 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
     },
     target: "_top"
   ) do
-    settings_primer_form_with(model: project) do |f|
+    settings_primer_form_with(model: project, url: workspaces_path) do |f|
       flex_layout do |container|
         if template
           container.with_row(mb: 3) do

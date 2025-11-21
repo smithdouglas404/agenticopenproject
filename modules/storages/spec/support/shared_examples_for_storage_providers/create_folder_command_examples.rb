@@ -43,27 +43,3 @@ RSpec.shared_examples_for "adapter create_folder_command: successful folder crea
     delete_created_folder(response)
   end
 end
-
-RSpec.shared_examples_for "adapter create_folder_command: parent not found" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:not_found)
-    expect(error.source).to eq(described_class)
-  end
-end
-
-RSpec.shared_examples_for "adapter create_folder_command: folder already exists" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:conflict)
-    expect(error.source).to eq(described_class)
-  end
-end

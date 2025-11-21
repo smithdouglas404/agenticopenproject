@@ -78,8 +78,12 @@ module Grids
           .distinct
       end
 
-      def render?
+      def can_view_members?
         current_user.allowed_in_project?(:view_members, project)
+      end
+
+      def can_manage_members?
+        current_user.allowed_in_project?(:manage_members, project)
       end
     end
   end

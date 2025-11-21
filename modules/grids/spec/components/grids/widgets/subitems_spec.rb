@@ -38,27 +38,60 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
   end
 
   let(:project) { build_stubbed(:project) }
-  let(:user) { build_stubbed(:user) }
   let(:params) { {} }
 
   current_user { user }
 
-  subject(:rendered_component) do
-    render_component(project, current_user:, **params)
+  subject(:rendered_component) { render_component(project, current_user:, **params) }
+
+  shared_examples "empty-state without action" do
+    it "renders empty blankslate without action button" do
+      expect(rendered_component).to have_test_selector(empty_selector)
+      expect(rendered_component).to have_text(empty_message)
+      expect(rendered_component).to have_no_test_selector("subitems-widget-add-button")
+    end
+  end
+
+  shared_examples "empty-state with action" do
+    it "renders empty blankslate with action button" do
+      expect(rendered_component).to have_test_selector("subitems-widget-empty")
+      expect(rendered_component).to have_text("This widget is currently empty.")
+      expect(rendered_component).to have_test_selector("subitems-widget-add-button")
+    end
   end
 
   context "with no children" do
-    it "renders a message" do
-      expect(rendered_component).to have_primer_text "There are no visible children.", color: "subtle"
+    let(:user) { build_stubbed(:user) }
+    let(:empty_selector) { "subitems-widget-empty" }
+    let(:empty_message)  { "This widget is currently empty." }
+
+    before do
+      mock_permissions_for(user) do |mock|
+        mock.allow_in_project(:view_project, :add_subprojects, project:)
+      end
+    end
+
+    it_behaves_like "empty-state with action"
+
+    context "when user cannot add subprojects but can view" do
+      let(:user) { build_stubbed(:user) }
+
+      before do
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_project, project:)
+        end
+      end
+
+      it_behaves_like "empty-state without action"
     end
   end
 
   context "with children" do
     let(:project) { create(:project) }
     let!(:subprojects) { create_list(:project, 3, parent: project) }
+    let(:user) { build_stubbed(:admin) }
 
     context "when visible to user" do
-      let(:user) { create(:admin) }
 
       context "and a limit greater than the number of all subitems (default: 10)" do
         it "renders all subitems, without a 'view all' item", :aggregate_failures do
@@ -96,10 +129,26 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
       end
     end
 
-    context "when not visible to user" do
-      it "renders a message" do
-        expect(rendered_component).to have_primer_text "There are no visible children.", color: "subtle"
+    context "when user can view parent but does not have permission to view any subprojects" do
+      let(:user) { build_stubbed(:user) }
+      let(:empty_selector) { "subitems-widget-no-permission" }
+      let(:empty_message)  { "This widget is not available." }
+
+      before do
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_project, project:)
+        end
       end
+
+      it_behaves_like "empty-state without action"
+    end
+
+    context "when user doesn't have permission to view project" do
+      let(:user) { build_stubbed(:user) }
+      let(:empty_selector) { "subitems-widget-no-permission" }
+      let(:empty_message)  { "This widget is not available." }
+
+      it_behaves_like "empty-state without action"
     end
   end
 end

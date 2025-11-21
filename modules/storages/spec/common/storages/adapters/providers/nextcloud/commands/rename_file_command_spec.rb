@@ -66,7 +66,7 @@ module Storages
               let(:name) { "this_will_not_happen.txt" }
               let(:error_source) { Queries::FileInfoQuery }
 
-              it_behaves_like "adapter rename_file_command: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
           end
         end

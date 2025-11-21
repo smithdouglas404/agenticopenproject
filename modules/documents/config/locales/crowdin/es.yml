@@ -58,6 +58,8 @@ es:
       all: "Todos los documentos"
       types: "Tipos"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Autor del archivo adjunto"
     label_categories: "Categorías"
     new_category: "Nueva categoría"

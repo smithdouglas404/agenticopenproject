@@ -40,27 +40,3 @@ RSpec.shared_examples_for "adapter rename_file_command: successful file renaming
     expect(response.name).to eq(name)
   end
 end
-
-RSpec.shared_examples_for "adapter rename_file_command: not found" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:not_found)
-    expect(error.source).to eq(error_source || described_class)
-  end
-end
-
-RSpec.shared_examples_for "adapter rename_file_command: error" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:error)
-    expect(error.source).to eq(described_class)
-  end
-end

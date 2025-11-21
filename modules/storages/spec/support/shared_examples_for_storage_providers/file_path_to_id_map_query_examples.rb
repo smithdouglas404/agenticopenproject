@@ -37,15 +37,3 @@ RSpec.shared_examples_for "adapter file_path_to_id_map_query: successful query" 
     expect(response.transform_values(&:id)).to eq(expected_ids)
   end
 end
-
-RSpec.shared_examples_for "adapter file_path_to_id_map_query: not found" do
-  it "returns a failure" do
-    result = described_class.call(storage:, auth_strategy:, input_data:)
-
-    expect(result).to be_failure
-
-    error = result.failure
-    expect(error.code).to eq(:not_found)
-    expect(error.source).to eq(error_source)
-  end
-end

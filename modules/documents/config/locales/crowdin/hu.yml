@@ -58,6 +58,8 @@ hu:
       all: "All documents"
       types: "Típus"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Melléklet szerzője"
     label_categories: "Kategóriák"
     new_category: "Új kategória"
