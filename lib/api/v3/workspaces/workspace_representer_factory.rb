@@ -44,23 +44,31 @@ module API
 
         def create_setter_lambda(name, namespaces: %i(projects programs portfolios))
           ->(fragment:, **) {
-            id = ::API::Utilities::ResourceLinkParser.parse_id(
-              fragment["href"],
-              property: name,
-              expected_version: "3",
-              expected_namespace: namespaces
-            )
+            href = fragment["href"]
 
-            # In case an identifier is provided, which might
-            # start with numbers, the id needs to be looked up
-            # in the DB.
-            id = if id.to_i.to_s == id
-                   id.to_i # return numerical ID
-                 else
-                   Project.where(identifier: id).pick(:id) # lookup Project by identifier
-                 end
+            break if href == API::V3::URN_UNDISCLOSED
 
-            represented.public_send("#{name}_id=", id) if id
+            if href
+              id = ::API::Utilities::ResourceLinkParser.parse_id(
+                href,
+                property: name,
+                expected_version: "3",
+                expected_namespace: namespaces
+              )
+
+              # In case an identifier is provided, which might
+              # start with numbers, the id needs to be looked up
+              # in the DB.
+              id = if id.to_i.to_s == id
+                     id.to_i # return numerical ID
+                   else
+                     Project.where(identifier: id).pick(:id) # lookup Project by identifier
+                   end
+
+              represented.public_send("#{name}_id=", id) if id
+            else
+              represented.public_send("#{name}_id=", nil)
+            end
           }
         end
       end

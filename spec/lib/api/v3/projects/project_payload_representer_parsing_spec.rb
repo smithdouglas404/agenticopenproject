@@ -150,7 +150,7 @@ RSpec.describe API::V3::Projects::ProjectPayloadRepresenter, "parsing" do
           project = representer.from_hash(hash)
 
           expect(project[:parent_id])
-            .to eq "5"
+            .to eq 5
         end
       end
 
@@ -169,7 +169,7 @@ RSpec.describe API::V3::Projects::ProjectPayloadRepresenter, "parsing" do
           project = representer.from_hash(hash)
 
           expect(project[:parent_id])
-            .to eq "5"
+            .to eq 5
         end
       end
 
@@ -188,7 +188,7 @@ RSpec.describe API::V3::Projects::ProjectPayloadRepresenter, "parsing" do
           project = representer.from_hash(hash)
 
           expect(project[:parent_id])
-            .to eq "5"
+            .to eq 5
         end
       end
 

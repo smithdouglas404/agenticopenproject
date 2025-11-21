@@ -37,7 +37,7 @@ RSpec.describe "API v3 Program resource delete", content_type: :json do
     include_examples "APIv3 deleting a workspace" do
       let(:workspace) { create(:program) }
       let(:path_id) { workspace.id }
-      let(:path) { api_v3_paths.project(path_id) }
+      let(:path) { api_v3_paths.program(path_id) }
 
       context "with a portfolio id" do
         let(:workspace) do
