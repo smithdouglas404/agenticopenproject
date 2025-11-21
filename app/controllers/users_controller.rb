@@ -29,6 +29,8 @@
 #++
 
 class UsersController < ApplicationController
+  include OpTurbo::ComponentStream
+
   layout "admin"
 
   before_action :authorize_global, except: %i[show deletion_info destroy]
@@ -223,7 +225,7 @@ class UsersController < ApplicationController
   end
 
   def deletion_info
-    render action: "deletion_info", layout: my_or_admin_layout, locals: { layout: my_or_admin_layout }
+    respond_with_dialog Users::DeleteDialogComponent.new(user: @user)
   end
 
   private

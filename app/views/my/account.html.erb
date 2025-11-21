@@ -36,6 +36,24 @@ See COPYRIGHT and LICENSE files for more details.
       [{ href: my_account_path, text: t(:label_my_account), skip_for_mobile: true },
        t(:label_account)]
     )
+
+    if Setting.users_deletable_by_self?
+      header.with_action_button(
+        tag: :a,
+        scheme: :danger,
+        mobile_icon: :trash,
+        mobile_label: t("backup.label_delete_token"),
+        size: :medium,
+        href: delete_my_account_info_path,
+        data: { controller: "async-dialog" },
+        aria: { label: I18n.t(:button_delete) },
+        title: I18n.t(:button_delete),
+        test_selector: "delete-my-account-button"
+      ) do |button|
+        button.with_leading_visual_icon(icon: :trash)
+        t(:button_delete)
+      end
+    end
   end
 %>
 
