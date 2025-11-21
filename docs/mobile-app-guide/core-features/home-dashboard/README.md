@@ -57,7 +57,7 @@ The Home Dashboard consists of **modular widgets** that provide snapshots of you
 *   Shows a snapshot of the portfolios available.
 *   Useful for portfolio managers and team members tracking **high-level progress** across multiple projects.
 
-![Home dashboard portfolios widget](mobile_app_homewidget_portfolios.png)
+![Home dashboard displaying "portfolios" widget in the OpenProject mobile app](mobile_app_homewidget_portfolios.png)
 
 ### **Assigned to Me**
 
