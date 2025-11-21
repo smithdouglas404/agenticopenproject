@@ -34,7 +34,7 @@ The following core features are available in the mobile app:
 | [Projects](projects) | Browse your projects, access project-specific details, and stay on top of deadlines and activities. |
 | [Time Tracking](time-tracking) | Track time spent on work packages, run timers in focus mode, and keep your reporting accurate and up to date. |
 | [Work Packages](work-packages)| Create, view, and edit work packages directly from the app. Work packages are organized for quick access and easy collaboration. |
-| [Notification Centre](notification-centre) | Receive updates about comments, mentions, and work package changes — ensuring you never miss important activity. |
+| [Notification Centre](notification-centre) | Receive updates about comments, mentions, and work package changes — ensuring you never miss an important activity. |
 | [User Settings](user-settings) | Configure your account, manage app preferences, and tailor notifications to suit your workflow. |
 
 > [!NOTE]
