@@ -37,8 +37,8 @@ RSpec.describe Grids::Widgets::Members, type: :component do
     render_inline(described_class.new(...))
   end
 
-  let(:project) { nil }
-  let(:user) { nil }
+  let(:project) { build_stubbed(:project) }
+  let(:user) { build_stubbed(:user) }
 
   current_user { user }
 
@@ -46,42 +46,79 @@ RSpec.describe Grids::Widgets::Members, type: :component do
     render_component(project)
   end
 
-  context "with permissions" do
-    let(:project) { create(:project) }
-    let(:user) { create(:admin) }
-
-    context "with no members" do
-      it "does render" do
-        expect(rendered_component).to have_content "No visible members."
-      end
-    end
-
-    context "with members" do
-      let(:member) { create(:user, member_with_permissions: { project => %i[view_members] }) }
-
-      before do
-        member
-      end
-
-      it "renders turbo-frame component wrapper" do
-        expect(rendered_component).to have_element :"turbo-frame"
-      end
-
-      it "renders members items", :aggregate_failures do
-        expect(rendered_component).to have_element class: "op-widget-box--body" do |body|
-          expect(body).to have_link href: project_members_path(project)
-          expect(body).to have_element :"opce-principal"
-        end
-      end
+  shared_examples "empty-state without action" do
+    it "renders blankslate without action button" do
+      expect(rendered_component).to have_test_selector(empty_selector)
+      expect(rendered_component).to have_text(empty_message)
+      expect(rendered_component).to have_no_test_selector("members-widget-add-button")
     end
   end
 
-  context "without permissions" do
-    let(:project) { create(:project) }
-    let(:user) { create(:anonymous) }
+  shared_examples "empty-state with action" do
+    it "renders blankslate with action button" do
+      expect(rendered_component).to have_test_selector("members-widget-empty")
+      expect(rendered_component).to have_text("This widget is currently empty.")
+      expect(rendered_component).to have_test_selector("members-widget-add-button")
+    end
+  end
 
-    it "does not render" do
-      expect(rendered_component).not_to have_element id: "grids-widgets-members-box"
+  context "when user cannot view members" do
+    let(:empty_selector) { "members-widget-no-permission" }
+    let(:empty_message)  { "This widget is not available." }
+
+    it_behaves_like "empty-state without action"
+  end
+
+  context "with no members" do
+    let(:empty_selector) { "members-widget-empty" }
+    let(:empty_message)  { "This widget is currently empty." }
+
+    context "when user can view but cannot manage members" do
+      before do
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_members, project:)
+        end
+      end
+
+      it_behaves_like "empty-state without action"
+    end
+
+    context "when user can view and manage members" do
+      before do
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_members, :manage_members, project:)
+        end
+      end
+
+      it_behaves_like "empty-state with action"
+    end
+  end
+
+  context "with members" do
+    let(:project) { create(:project) }
+    let(:user) { create(:admin) }
+
+    let!(:member) do
+      create(:user, member_with_permissions: { project => [:view_members] })
+    end
+
+    before do
+      member
+    end
+
+    it "renders turbo-frame wrapper" do
+      expect(rendered_component).to have_element :"turbo-frame"
+    end
+
+    it "renders members items", :aggregate_failures do
+      expect(rendered_component).to have_element class: "op-widget-box--body" do |body|
+        expect(body).to have_link href: project_members_path(project)
+        expect(body).to have_element :"opce-principal"
+      end
+    end
+
+    it "renders link to view all members" do
+      expect(rendered_component).to have_link href: project_members_path(project)
     end
   end
 end

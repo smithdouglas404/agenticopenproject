@@ -61,15 +61,31 @@ module Grids
         { full_width: true }
       end
 
+      def can_view_subprojects?
+        return false unless current_user.allowed_in_project?(:view_project, project)
+
+        subprojects = project.children
+
+        return true if subprojects.none?
+
+        subprojects.any? do |child|
+          current_user.allowed_in_project?(:view_project, child)
+        end
+      end
+
+      def can_manage_subprojects?
+        current_user.allowed_in_project?(:add_subprojects, project)
+      end
+
       private
 
       def subitems_with_more
         @subitems_with_more ||= project.children
-          .visible(current_user)
-          .unscope(:order)
-          .newest
-          .extending(FinderMethods::WithMore)
-          .first_with_more(limit)
+         .visible(current_user)
+         .unscope(:order)
+         .newest
+         .extending(FinderMethods::WithMore)
+         .first_with_more(limit)
       end
 
       def view_all_subitems_path
