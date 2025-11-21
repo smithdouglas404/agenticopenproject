@@ -135,6 +135,7 @@ FactoryBot.define do
 
     name { "Nextcloud Local" }
     host { "https://nextcloud.local/" }
+    password { ENV.fetch("NEXTCLOUD_LOCAL_AMPF_PASSWORD", "MISSING_NEXTCLOUD_AMPF_PASSWORD") }
 
     initialize_with do
       Storages::NextcloudStorage.create_or_find_by(attributes.except(:oauth_client, :oauth_application))
