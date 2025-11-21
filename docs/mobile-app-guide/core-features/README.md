@@ -3,7 +3,7 @@ sidebar_navigation:
   title: Mobile app core features
   priority: 800
 description: The OpenProject Mobile App is designed to keep you connected to your projects wherever you are. While it doesn’t replace the full desktop experience, it provides access to the essential tools you need to stay productive on the go.
-keywords: Mobile app core features
+keywords: Mobile app core features, mobile, mobile app, core, mobile core, core features
 ---
 
 # Mobile app core features
