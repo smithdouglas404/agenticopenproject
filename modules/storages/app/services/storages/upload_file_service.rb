@@ -95,7 +95,7 @@ module Storages
       current_folder = nil
 
       cumulative_paths(prefix, file_path).each do |folder_path|
-        current_folder = check_folder_exists(folder_path).value_or do |error|
+        current_folder = check_folder_exists(folder_path).or do |error|
           if error.code == :not_found
             create_folder!(folder_path)
           else
@@ -103,10 +103,7 @@ module Storages
           end
         end
       end
-
-      # TODO: file query returns collection, create folder returns monad result
-      parent_folder = current_folder.respond_to?(:success?) ? current_folder.value! : current_folder.parent
-      Success(parent_folder)
+      current_folder
     end
 
     def cumulative_paths(prefix, path)
@@ -118,18 +115,20 @@ module Storages
 
     def check_folder_exists(path)
       input_data = Adapters::Input::Files.build(folder: path).value_or do |error|
-        add_validation_error(error, options: { folder: path })
-        return @result
+        return add_validation_error(error, options: { folder: path })
       end
 
-      Adapters::Registry.resolve("#{@storage}.queries.files").call(auth_strategy:, storage: @storage, input_data:)
+      Adapters::Registry
+        .resolve("#{@storage}.queries.files")
+        .call(auth_strategy:, storage: @storage, input_data:)
+        .bind { |files_collection| Success(files_collection.parent) }
     end
 
     def create_folder!(path)
       folder_path = File.dirname(path)
       folder_name = path.delete_prefix("#{folder_path}/")
       input_data = Adapters::Input::CreateFolder.build(folder_name:, parent_location: folder_path).value_or do |error|
-        add_validation_error(error, options: { folder_id: folder_path })
+        return add_validation_error(error, options: { folder_id: folder_path })
       end
       Adapters::Registry["#{@storage}.commands.create_folder"].call(storage: @storage, auth_strategy:, input_data:)
     end
@@ -140,8 +139,7 @@ module Storages
         file_name: filename,
         io: file_data
       ).value_or do |error|
-        add_validation_error(error, options: { file_path: "#{folder.location}/#{filename}" })
-        return @result
+        return add_validation_error(error, options: { file_path: "#{folder.location}/#{filename}" })
       end
 
       Adapters::Registry["#{@storage.short_provider_type}.commands.upload_file"]
