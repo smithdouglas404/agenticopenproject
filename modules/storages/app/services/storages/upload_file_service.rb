@@ -54,13 +54,13 @@ module Storages
           return @result
         end
 
-        result = fetch_or_create_folder(file_path).bind do |folder|
+        fetch_or_create_folder(file_path).bind do |folder|
           upload_file(folder, filename, file_data).bind do |file|
             create_file_link(file)
           end
         end
 
-        result.success? ? result : @result
+        @result
       end
     end
 
@@ -87,7 +87,8 @@ module Storages
           if error.code == :not_found
             create_folder!(folder_path)
           else
-            return Failure(error_with_code(error, error.code))
+            add_error(:base, error)
+            return Failure(:storage_error)
           end
         end
       end
@@ -103,7 +104,8 @@ module Storages
 
     def check_folder_exists(path)
       input_data = Adapters::Input::Files.build(folder: path).value_or do |error|
-        return add_validation_error(error, options: { folder: path })
+        add_validation_error(error, options: { folder_path: path })
+        return Failure(:invalid_input)
       end
 
       Adapters::Registry
@@ -116,9 +118,13 @@ module Storages
       folder_path = File.dirname(path)
       folder_name = path.delete_prefix("#{folder_path}/")
       input_data = Adapters::Input::CreateFolder.build(folder_name:, parent_location: folder_path).value_or do |error|
-        return add_validation_error(error, options: { folder_id: folder_path })
+        add_validation_error(error, options: { folder_path: folder_path })
+        return Failure(:invalid_input)
       end
-      Adapters::Registry["#{@storage}.commands.create_folder"].call(storage: @storage, auth_strategy:, input_data:)
+      Adapters::Registry["#{@storage}.commands.create_folder"].call(storage: @storage, auth_strategy:, input_data:).or do |error|
+        add_error(:base, error, options: { folder_path: folder_path })
+        Failure(:storage_error)
+      end
     end
 
     def upload_file(folder, filename, file_data)
@@ -127,11 +133,15 @@ module Storages
         file_name: filename,
         io: file_data
       ).value_or do |error|
-        return add_validation_error(error, options: { file_path: "#{folder.location}/#{filename}" })
+        add_validation_error(error, options: { file_path: "#{folder.location}/#{filename}" })
+        return Failure(:invalid_input)
       end
 
       Adapters::Registry["#{@storage.short_provider_type}.commands.upload_file"]
-        .call(storage: @storage, auth_strategy:, input_data:)
+        .call(storage: @storage, auth_strategy:, input_data:).or do |error|
+          add_error(:base, error, options: { file_path: "#{folder.location}/#{filename}" })
+          Failure(:storage_error)
+        end
     end
 
     def create_file_link(file_info)
@@ -146,7 +156,11 @@ module Storages
         storage: @storage
       }
 
-      FileLinks::CreateService.new(user: @user, contract_class: FileLinks::CreateContract).call(file_link_params)
+      file_link_result = FileLinks::CreateService
+        .new(user: @user, contract_class: FileLinks::CreateContract)
+        .call(file_link_params)
+      @result.result = file_link_result.result if file_link_result.success?
+      @result.merge!(file_link_result)
     end
   end
 end
