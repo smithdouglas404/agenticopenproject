@@ -160,11 +160,7 @@ module Storages
         storage: @storage
       }
 
-      result = FileLinks::CreateService
-        .new(user: @user, contract_class: FileLinks::CreateContract)
-        .call(file_link_params)
-
-      result.success? ? Success(result.result) : Failure(result.errors)
+      FileLinks::CreateService.new(user: @user, contract_class: FileLinks::CreateContract).call(file_link_params)
     end
   end
 end
