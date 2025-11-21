@@ -528,6 +528,8 @@ paths:
     "$ref": "./paths/workspace_available_assignees.yml"
   "/api/v3/workspaces/{id}/categories":
     "$ref": "./paths/workspace_categories.yml"
+  "/api/v3/workspaces/{id}/favorite":
+    "$ref": "./paths/workspace_favorite.yml"
   "/api/v3/workspaces/{id}/queries/default":
     "$ref": "./paths/workspace_queries_default.yml"
   "/api/v3/workspace/{id}/queries/filter_instance_schemas":
