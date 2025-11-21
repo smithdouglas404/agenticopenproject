@@ -81,7 +81,7 @@ While the mobile dashboard is designed for simplicity, the **order and visibilit
 *   Reorder widgets
 
 ![Home dashboard edit widgets entry point in OpenProject mobile app](mobile_app_home_addwidget.png)
-![Home dashboard edit widgets bottom sheet configuration](mobile_app_home_addwidget_bottomsheet.png)
+![Home dashboard edit widgets bottom sheet configuration in OpenProject mobile app](mobile_app_home_addwidget_bottomsheet.png)
 
 > [!NOTE]
 > If you don't have the right permissions or have disabled a feature, the related widgets will be deactivated in the home dashboard tab.
