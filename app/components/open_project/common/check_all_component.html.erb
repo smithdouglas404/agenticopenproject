@@ -1,0 +1,13 @@
+<% unless check_all? %>
+  <% with_check_all # set the default %>
+<% end %>
+
+<% unless uncheck_all? %>
+  <% with_uncheck_all # set the default %>
+<% end %>
+
+<%= render(Primer::BaseComponent.new(**@system_arguments)) do %>
+  <%= check_all %>
+  |
+  <%= uncheck_all %>
+<% end %>
