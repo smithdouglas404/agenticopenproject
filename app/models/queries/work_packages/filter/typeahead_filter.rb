@@ -67,11 +67,10 @@ class Queries::WorkPackages::Filter::TypeaheadFilter <
     Queries::Operators::Contains.sql_for_field([string], Type.table_name, "name")
   end
 
-
   def status_condition(string)
     # Check if the search string matches translated "open" or "closed" meta statuses
-    open_term = I18n.t('label_open').downcase
-    closed_term = I18n.t('label_closed').downcase
+    open_term = I18n.t("label_open").downcase
+    closed_term = I18n.t("label_closed").downcase
     search_term = string.downcase
     
     if search_term == open_term
