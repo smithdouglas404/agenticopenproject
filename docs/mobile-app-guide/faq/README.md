@@ -10,7 +10,7 @@ keywords: Mobile app FAQ, faq, mobile app questions, OpenProject mobile app
 
 ## Why is the OpenProject Mobile App being released in a Beta state?
 
-The app is released in **Beta** to provide early access to users while the core functionality is still under development. This allows the OpenProject team to gather **feedback from real users**, identify issues, and make improvements before the full public release. The Beta release ensures that users can start using the app for essential tasks while the remaining advanced features and refinements are being implemented.
+The app is released in **Beta** state to provide early access to users while the core functionality is still under development. This allows the OpenProject team to gather **feedback from real users**, identify issues, and make improvements before the full public release. The Beta release ensures that users can start using the app for essential tasks while the remaining advanced features and refinements are being implemented.
 
 ## What is the OpenProject Mobile App?
 
