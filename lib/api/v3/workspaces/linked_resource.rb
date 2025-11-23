@@ -65,15 +65,24 @@ module API
           def associated_project(name = :project,
                                  as: name,
                                  skip_render: ->(*) { project_visible?(represented.public_send(name)) })
-            associated_resource name,
-                                as:,
-                                representer: ::API::V3::Projects::ProjectRepresenter,
-                                uncacheable_link: true,
-                                skip_render:,
-                                link: ::API::V3::Workspaces::WorkspaceRepresenterFactory
-                                        .create_link_lambda(name),
-                                setter: ::API::V3::Workspaces::WorkspaceRepresenterFactory
-                                          .create_setter_lambda(name)
+            options = {
+              as: as,
+              representer: ::API::V3::Projects::ProjectRepresenter,
+              skip_render: skip_render,
+              link: ::API::V3::Workspaces::WorkspaceRepresenterFactory
+                     .create_link_lambda(name),
+              setter: ::API::V3::Workspaces::WorkspaceRepresenterFactory
+                      .create_setter_lambda(name)
+            }
+
+            if include?(API::Caching::CachedRepresenter)
+              # Prevent this option to be displayed in the generated JSON.
+              # A cached representer will remove this option anyway but uncached representers do not.
+              options[:uncacheable_link] = true
+            end
+
+            associated_resource(name,
+                                **options)
           end
         end
       end
