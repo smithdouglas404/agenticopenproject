@@ -64,7 +64,7 @@ The Work Packages module supports:
 *   Logging time or starting a timer for focused work
 *   Setting reminders
 *   **Sharing work packages** using the device’s native sharing options
-    
+    [Learn more about Work Packages module in the OpenProject mobile app](../core-features/work-packages/).
 ## How does Time Tracking work?
 
 The Time Tracking module allows you to monitor and log your work efficiently:
