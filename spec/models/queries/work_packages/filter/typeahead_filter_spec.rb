@@ -54,7 +54,7 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
     let!(:epic_work_package)  { create(:work_package, project:, type: epic_type, subject: "Epic Gorilla work package ething") }
     let!(:bug_work_package)   { create(:work_package, project:, type: bug_type,  subject: "Bug Gorilla work package bthing") }
     let!(:task_work_package)  { create(:work_package, project:, type: task_type, subject: "Task work package tthing") }
-    
+
     context "when searching by work package type name" do
       let(:values) { ["epic"] }
 
@@ -224,9 +224,9 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
 
           it "returns work packages with open status using German translation" do
             # Assuming German translation exists
-            allow(I18n).to receive(:t).with('label_open').and_return('offen')
-            allow(I18n).to receive(:t).with('label_closed').and_return('geschlossen')
-            
+            allow(I18n).to receive(:t).with("label_open").and_return("offen")
+            allow(I18n).to receive(:t).with("label_closed").and_return("geschlossen")
+
             expect(subject).to include(open_work_package)
             expect(subject).not_to include(closed_work_package)
           end

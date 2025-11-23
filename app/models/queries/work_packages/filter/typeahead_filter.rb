@@ -72,7 +72,7 @@ class Queries::WorkPackages::Filter::TypeaheadFilter <
     open_term = I18n.t("label_open").downcase
     closed_term = I18n.t("label_closed").downcase
     search_term = string.downcase
-    
+
     if search_term == open_term
       # Match meta statuses that are not closed (open statuses)
       "#{Status.table_name}.is_closed = false"
