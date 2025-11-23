@@ -49,8 +49,8 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
 
     let(:project)   { create(:project, name: "Phoenix") }
     let(:epic_type) { create(:type, name: "Epic") }
-    let(:bug_type)  { create(:type, name: "Bug") }, task_work_package
-
+    let(:bug_type)  { create(:type, name: "Bug") }
+    let(:task_type) { create(:type, name: "Task") }
     let!(:epic_work_package)  { create(:work_package, project:, type: epic_type, subject: "Epic Gorilla work package ething") }
     let!(:bug_work_package)   { create(:work_package, project:, type: bug_type,  subject: "Bug Gorilla work package bthing") }
     let!(:task_work_package)  { create(:work_package, project:, type: task_type, subject: "Task work package tthing") }
@@ -161,7 +161,7 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
       context "when searching for status name 'In Progress'" do
         let(:values) { ["In Progress"] }
 
-        it "returns work packages with "In Progress" status" do
+        it "returns work packages with 'In Progress' status" do
           expect(subject).to include(open_work_package)
           expect(subject).not_to include(closed_work_package)
         end
@@ -170,7 +170,7 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
       context "when searching for status name 'In Progress' and part of subject 'wide'" do
         let(:values) { ["In Progress wide"] }
 
-        it "returns work packages with "In Progress" status containing the search term 'wide'" do
+        it "returns work packages with 'In Progress' status containing the search term 'wide'" do
           expect(subject).to include(open_work_package)
           expect(subject).not_to include(closed_work_package)
         end
@@ -242,4 +242,4 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
       end
     end
   end
-end 
+end
