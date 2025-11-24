@@ -410,6 +410,7 @@ class AggregatedMigrations < SquashedMigration
     20241121094113_migrate_cost_settings_to_regular_settings
     20241121113638_create_reminder_notifications
     20241125161226_unique_index_on_project_life_cycle_steps
+    20241126111225_add_project_life_cycle_step_roles
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
