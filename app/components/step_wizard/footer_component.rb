@@ -35,7 +35,7 @@ module StepWizard
     renders_one :progress_bar, lambda { |**progress_bar_args|
       progress_bar_args[:size] ||= :small
 
-      render(Primer::Beta::ProgressBar.new(**progress_bar_args)) do |progress_bar|
+      Primer::Beta::ProgressBar.new(**progress_bar_args).tap do |progress_bar|
         progress_bar.with_item(percentage: progress_percentage)
       end
     }
@@ -45,9 +45,8 @@ module StepWizard
       back_button_args[:color] ||= :muted
       back_button_args[:tag] ||= :a
 
-      render(Primer::Beta::Button.new(**back_button_args)) do |button|
-        button.with_leading_visual_icon(icon: :"arrow-left")
-        I18n.t("button_back")
+      Primer::Beta::Button.new(**back_button_args).with_content(I18n.t("button_back")).tap do |back_button|
+        back_button.with_leading_visual_icon(icon: :"arrow-left")
       end
     }
 
