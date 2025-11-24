@@ -108,6 +108,10 @@ module AvatarHelper
       title: tag_options.fetch(:title, "")
     }
 
+    if tag_options.key?(:avatar_alt)
+      inputs[:avatarAlt] = tag_options[:avatar_alt]
+    end
+
     inputs = hover_card_options(user, inputs, tag_options)
 
     angular_component_tag "opce-principal",
