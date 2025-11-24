@@ -129,7 +129,9 @@ class AggregatedMigrations < SquashedMigration
          Tables::AuthProviders,
          Tables::RemoteIdentities,
          Tables::HierarchicalItems,
-         Tables::HierarchicalItemHierarchies
+         Tables::HierarchicalItemHierarchies,
+         Tables::ProjectLifeCycleStepDefinitions,
+         Tables::ProjectLifeCycleSteps
 
   # rubocop:disable Metrics/CollectionLiteralLength
   squashed_migrations *%w[
@@ -400,6 +402,7 @@ class AggregatedMigrations < SquashedMigration
     20241001205821_add_standard_global_role
     20241002151949_remove_hide_mail_from_user_preferences
     20241015081341_remove_obsolete_design_variables
+    20241030154245_create_project_life_cycles
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end

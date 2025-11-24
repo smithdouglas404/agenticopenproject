@@ -62,6 +62,8 @@ class Tables::WorkPackages < Tables::Base
       t.index :schedule_manually, where: :schedule_manually
 
       t.check_constraint "due_date >= start_date", name: "work_packages_due_larger_start_date"
+
+      t.references :project_life_cycle_step, foreign_key: false, null: true
     end
   end
 end

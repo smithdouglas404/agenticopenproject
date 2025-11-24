@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,20 +26,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class CreateProjectLifeCycles < ActiveRecord::Migration[7.1]
-  def change
-    create_table :project_life_cycle_step_definitions do |t|
-      t.string :type
-      t.string :name
-      t.integer :position, null: true
-      t.references :color, foreign_key: true
+require_relative "base"
 
-      t.timestamps
-    end
-
-    create_table :project_life_cycle_steps do |t|
+class Tables::ProjectLifeCycleSteps < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
       t.string :type
       t.date :start_date
       t.date :end_date
@@ -49,7 +42,5 @@ class CreateProjectLifeCycles < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-
-    add_reference :work_packages, :project_life_cycle_step, null: true
   end
 end
