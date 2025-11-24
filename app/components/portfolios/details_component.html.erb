@@ -88,6 +88,19 @@
           )
         end
 
+        if render_subportfolios?
+          footer.with_column(mr: 3) do
+            render(
+              Primer::Beta::Octicon.new(
+                icon: workspace_icon("portfolio"),
+                align_self: :center,
+                "aria-label": t("portfolio.count", count: all_subportfolios.count),
+                mr: 1
+              )
+            ) + content_tag(:span, t("portfolio.count", count: all_subportfolios.count))
+          end
+        end
+
         footer.with_column(mr: 3) do
           render(
             Primer::Beta::Octicon.new(

@@ -4192,6 +4192,12 @@ en:
   placeholders:
     default: "-"
 
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
+
   program:
     count:
       zero: "0 programs"

@@ -46,6 +46,14 @@ module Portfolios
       @currently_favorited ||= portfolio.favorited?
     end
 
+    def render_subportfolios?
+      all_subportfolios.any?
+    end
+
+    def all_subportfolios
+      all_descendants.portfolio
+    end
+
     def all_subprograms
       all_descendants.program
     end
