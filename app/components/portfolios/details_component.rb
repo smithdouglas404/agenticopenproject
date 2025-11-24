@@ -84,8 +84,7 @@ module Portfolios
     end
 
     def sub_statuses
-      @sub_statuses ||= all_descendants.where("workspace_type = ? OR workspace_type = ?", "project", "program")
-                                       .pluck(:status_code)
+      @sub_statuses ||= all_descendants.pluck(:status_code)
                                        .tally
     end
   end
