@@ -45,7 +45,7 @@ class BacklogsSettingsController < ApplicationController
   private
 
   def check_valid_settings
-    story_types = update_settings[:story_types]
+    story_types = update_settings[:story_types] || []
     task_type = update_settings[:task_type]
 
     if story_types.include?(task_type)

@@ -2022,7 +2022,9 @@ en:
       token/api:
         one: Access token
         other: Access tokens
-      type: "Type"
+      type:
+        one: "Type"
+        other: "Types"
       user: "User"
       version: "Version"
       workflow: "Workflow"
