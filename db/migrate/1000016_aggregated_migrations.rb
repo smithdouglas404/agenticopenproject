@@ -419,6 +419,7 @@ class AggregatedMigrations < SquashedMigration
     20250102161733_adds_position_cache_to_hierarchy_items
     20250108100511_remove_incorrect_manage_own_reminders_permission
     20250114162956_create_project_life_cycle_step_journals
+    20250117105334_remove_manage_own_reminders_permission
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
