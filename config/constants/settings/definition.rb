@@ -742,11 +742,11 @@ module Settings
       },
       new_project_send_confirmation_email: {
         format: :boolean,
-        default: true
+        default: false
       },
       new_project_notification_text: {
         format: :string,
-        default: nil
+        default: ""
       },
       notifications_hidden: {
         default: false

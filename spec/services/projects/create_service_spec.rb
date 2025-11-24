@@ -60,7 +60,7 @@ RSpec.describe Projects::CreateService, type: :model do
               roles: [new_project_role])
     end
 
-    context "current user is admin" do
+    context "when current user is admin" do
       it "does not add the user to the project" do
         allow(user)
           .to(receive(:admin?))
@@ -70,6 +70,31 @@ RSpec.describe Projects::CreateService, type: :model do
 
         expect(create_member_instance)
           .not_to(have_received(:call))
+      end
+    end
+
+    describe "project creation email" do
+      context "when enabled", with_settings: { new_project_send_confirmation_email: true } do
+        it "sends the email to the user" do
+          allow(ProjectMailer)
+            .to receive(:project_created)
+            .with(model_instance, user:)
+            .and_call_original
+
+          subject
+
+          expect(ProjectMailer).to have_received(:project_created)
+        end
+      end
+
+      context "when disabled", with_settings: { new_project_send_confirmation_email: false } do
+        it "does not send the email" do
+          allow(ProjectMailer).to receive(:project_created)
+
+          subject
+
+          expect(ProjectMailer).not_to have_received(:project_created)
+        end
       end
     end
 

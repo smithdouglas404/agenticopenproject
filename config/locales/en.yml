@@ -4497,7 +4497,7 @@ en:
   setting_mail_handler_body_delimiter_regex: "Truncate emails matching this regex"
   setting_mail_handler_ignore_filenames: "Ignored mail attachments"
   setting_new_project_user_role_id: "Role given to a non-admin user who creates a project"
-  setting_new_project_send_confirmation_email: "Send confirmation email to the user that created the project"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
   setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Active character classes"
   setting_password_count_former_banned: "Number of most recently used passwords banned for reuse"
