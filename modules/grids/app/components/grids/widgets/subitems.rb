@@ -62,7 +62,11 @@ module Grids
       end
 
       def show_create_sub_program_button?
-        project.portfolio?
+        project.portfolio? && can_create_sub_projects?
+      end
+
+      def can_create_sub_projects?
+        @can_create_sub_projects ||= User.current.allowed_in_project?(:add_subprojects, @project)
       end
 
       def create_sub_program_path

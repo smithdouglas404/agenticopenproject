@@ -47,12 +47,14 @@ See COPYRIGHT and LICENSE files for more details.
           end
         end
 
-        menu.with_item(
-          label: I18n.t(:label_project),
-          tag: :a,
-          href: create_sub_project_path
-        ) do |item|
-          item.with_leading_visual_icon(icon: :project)
+        if can_create_sub_projects?
+          menu.with_item(
+            label: I18n.t(:label_project),
+            tag: :a,
+            href: create_sub_project_path
+          ) do |item|
+            item.with_leading_visual_icon(icon: :project)
+          end
         end
       end
     end
