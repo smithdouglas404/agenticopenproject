@@ -27,49 +27,27 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+#
 
-Rails.application.routes.draw do
-  resources :projects, only: [] do
-    resources :documents, only: %i[create new index] do
-      collection do
-        get :menu, to: "documents/menus#show"
-        get :search
-      end
-    end
-  end
-
-  resources :documents, except: %i[create new index] do
-    member do
-      get :edit_title, defaults: { format: :turbo_stream }
-      put :update_title, defaults: { format: :turbo_stream }
-      get :cancel_title_edit, defaults: { format: :turbo_stream }
-      put :update_type, defaults: { format: :turbo_stream }
-      get :delete_dialog
-      get :render_avatars, defaults: { format: :turbo_stream }
-    end
-  end
-
-  scope module: :documents do
-    namespace :admin do
-      namespace :settings do
-        resources :document_types, except: [:show] do
-          member do
-            put :move
-            get :delete_dialog, defaults: { format: :turbo_stream }
-          end
+module Documents
+  module Admin
+    module CollaborationSettings
+      class PageHeaderComponent < ApplicationComponent
+        def description
+          I18n.t("documents.admin.collaboration_settings.page_header.description", hocuspocus_server_link:).html_safe
         end
 
-        resources :document_collaboration_settings, only: [:index]
-      end
-    end
-  end
-
-  namespace :admin do
-    namespace :settings do
-      resources :document_categories, except: [:show] do
-        member do
-          put :move
-          get :reassign
+        def hocuspocus_server_link
+          render(
+            Primer::Beta::Link.new(
+              href: OpenProject::Static::Links.url_for(:hocuspocus_server_docs),
+              target: "_blank",
+              underline: true
+            )
+          ) do |link|
+            link.with_trailing_visual_icon(icon: :"link-external")
+            I18n.t("documents.admin.collaboration_settings.hocuspocus_server")
+          end
         end
       end
     end

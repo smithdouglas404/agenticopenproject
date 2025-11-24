@@ -27,49 +27,29 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+#
 
-Rails.application.routes.draw do
-  resources :projects, only: [] do
-    resources :documents, only: %i[create new index] do
-      collection do
-        get :menu, to: "documents/menus#show"
-        get :search
-      end
-    end
-  end
+module Documents
+  module Admin
+    module CollaborationSettings
+      class SettingsFormComponent < ApplicationComponent
+        include OpPrimer::FormHelpers
 
-  resources :documents, except: %i[create new index] do
-    member do
-      get :edit_title, defaults: { format: :turbo_stream }
-      put :update_title, defaults: { format: :turbo_stream }
-      get :cancel_title_edit, defaults: { format: :turbo_stream }
-      put :update_type, defaults: { format: :turbo_stream }
-      get :delete_dialog
-      get :render_avatars, defaults: { format: :turbo_stream }
-    end
-  end
+        delegate :disabled_setting_option, :writable_setting?, to: :helpers
 
-  scope module: :documents do
-    namespace :admin do
-      namespace :settings do
-        resources :document_types, except: [:show] do
-          member do
-            put :move
-            get :delete_dialog, defaults: { format: :turbo_stream }
-          end
+        def none_writable_settings?
+          settings.none? { writable_setting?(it) }
         end
 
-        resources :document_collaboration_settings, only: [:index]
-      end
-    end
-  end
+        def some_unwritable_settings?
+          settings.any? { !writable_setting?(it) }
+        end
 
-  namespace :admin do
-    namespace :settings do
-      resources :document_categories, except: [:show] do
-        member do
-          put :move
-          get :reassign
+        private
+
+        def settings
+          %i[collaborative_editing_hocuspocus_url
+             collaborative_editing_hocuspocus_secret]
         end
       end
     end

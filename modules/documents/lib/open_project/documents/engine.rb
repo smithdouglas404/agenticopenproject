@@ -82,6 +82,13 @@ module OpenProject::Documents
            parent: :documents
 
       menu :admin_menu,
+           :document_collaboration_settings,
+           { controller: "/documents/admin/settings/document_collaboration_settings", action: :index },
+           if: ->(_) { User.current.admin? },
+           caption: :"documents.menu.collaboration_settings",
+           parent: :documents
+
+      menu :admin_menu,
            :document_categories,
            { controller: "/admin/settings/document_categories", action: :index },
            if: ->(_) { User.current.admin? },
