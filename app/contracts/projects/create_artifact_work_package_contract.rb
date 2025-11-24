@@ -31,6 +31,7 @@
 module Projects
   class CreateArtifactWorkPackageContract < ::BaseContract
     validate :validate_project_initiation_request_enabled
+    validate :allowed_to_create_work_package
     validate :validate_work_package_type
     validate :validate_work_package_status
     validate :validate_assignee_custom_field
@@ -43,6 +44,12 @@ module Projects
       if !project.project_creation_wizard_enabled?
         errors.add :base, :project_initiation_request_disabled
       end
+    end
+
+    def allowed_to_create_work_package
+      return if user.allowed_in_project?(:add_work_packages, project)
+
+      errors.add :base, :error_unauthorized
     end
 
     def validate_work_package_type

@@ -40,7 +40,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
   shared_let(:user_custom_field) { create(:user_project_custom_field, name: "Project Manager") }
   shared_let(:user_assignee) { create(:user, firstname: "user_assignee") }
   shared_let(:current_user) { create(:user, lastname: "current_user") }
-  shared_let(:role) { create(:project_role, permissions: %i[view_project_attributes]) }
+  shared_let(:role) { create(:project_role, permissions: %i[view_project_attributes add_work_packages]) }
   shared_let(:project) do
     create(
       :project,
@@ -91,6 +91,15 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
                                              project_creation_wizard_status_when_submitted_id: [],
                                              project_creation_wizard_assignee_custom_field_id: []
     end
+  end
+
+  context "with missing :add_work_packages permission" do
+    before do
+      role.permissions = %i[view_project_attributes]
+      role.save
+    end
+
+    it_behaves_like "contract is invalid", base: :error_unauthorized
   end
 
   context "with unset work package type" do
