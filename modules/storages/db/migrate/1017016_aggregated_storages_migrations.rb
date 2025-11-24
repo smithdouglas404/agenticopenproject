@@ -34,6 +34,7 @@ Dir[File.join(__dir__, "tables/*.rb")].each { |file| require file }
 
 class AggregatedStoragesMigrations < SquashedMigration
   squashed_migrations *%w[
+    1017015_aggregated_storages_migrations
     20220113144323_create_storage
     20220113144759_create_file_links
     20220121090847_create_projects_storages
@@ -56,6 +57,7 @@ class AggregatedStoragesMigrations < SquashedMigration
     20240610130953_rename_manage_storages_in_project_permission
     20230725165505_add_storage_name_to_storages_file_links_journals
     20230731153909_add_file_link_journals_to_existing_containers
+    20250115100336_set_default_authentication_method
   ].freeze
 
   tables Tables::Storages,
