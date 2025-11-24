@@ -65,9 +65,21 @@ module Projects
         status_id: project.project_creation_wizard_status_when_submitted_id,
         subject: "Project submission",
         description: "A project submission has been created.",
+        assigned_to_id:,
         attachments: [pdf_attachment]
       }
       WorkPackages::CreateService.new(user:).call(create_params)
+    end
+
+    def assigned_to_id
+      project.custom_value_for(assignee_custom_field).value
+    end
+
+    def assignee_custom_field
+      return @assignee_custom_field if defined?(@assignee_custom_field)
+
+      @assignee_custom_field = project.available_custom_fields
+                                      .find_by(id: project.project_creation_wizard_assignee_custom_field_id)
     end
 
     def pdf_attachment

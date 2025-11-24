@@ -42,46 +42,41 @@ module Projects
 
     def validate_project_initiation_request_enabled
       if !project.project_creation_wizard_enabled?
-        errors.add :base, :project_initiation_request_disabled
+        add_error :base, :project_initiation_request_disabled
       end
     end
 
     def allowed_to_create_work_package
       return if user.allowed_in_project?(:add_work_packages, project)
 
-      errors.add :base, :error_unauthorized
+      add_error :base, :error_unauthorized
     end
 
     def validate_work_package_type
-      return unless project.project_creation_wizard_enabled?
-
       if project.project_creation_wizard_work_package_type_id.blank?
-        errors.add :project_creation_wizard_work_package_type_id, :blank
+        add_error :project_creation_wizard_work_package_type_id, :blank
       elsif !project.project_creation_wizard_work_package_type_id.in?(project.type_ids)
-        errors.add :project_creation_wizard_work_package_type_id, :inclusion
+        add_error :project_creation_wizard_work_package_type_id, :inclusion
       end
     end
 
     def validate_work_package_status
-      return unless project.project_creation_wizard_enabled?
-
       if project.project_creation_wizard_status_when_submitted_id.blank?
-        errors.add :project_creation_wizard_status_when_submitted_id, :blank
+        add_error :project_creation_wizard_status_when_submitted_id, :blank
       elsif invalid_status_for_type?
-        errors.add :project_creation_wizard_status_when_submitted_id, :inclusion
+        add_error :project_creation_wizard_status_when_submitted_id, :inclusion
       end
     end
 
     def validate_assignee_custom_field
-      return unless project.project_creation_wizard_enabled?
-
       if project_assignee_custom_field_not_configured?
-        errors.add :project_creation_wizard_assignee_custom_field_id, :blank
+        add_error :project_creation_wizard_assignee_custom_field_id, :blank
       elsif not_allowed_to_read_assignee_custom_field_value?
-        # insufficient permissions to see the custom field value (current user is not a member of the project)
-        errors.add assignee_custom_field.attribute_name, :unauthorized
+        add_error assignee_custom_field.attribute_name, :unauthorized
       elsif missing_assignee_custom_field_value?
-        errors.add assignee_custom_field.attribute_name, :blank
+        add_error assignee_custom_field.attribute_name, :blank
+      elsif assignee_not_allowed_be_assigned_to_work_package?
+        add_error assignee_custom_field.attribute_name, :cannot_be_assigned_to_artifact_work_package
       end
     end
 
@@ -99,10 +94,16 @@ module Projects
       project.custom_value_for(assignee_custom_field).value.blank?
     end
 
+    def assignee_not_allowed_be_assigned_to_work_package?
+      assignee = project.typed_custom_value_for(assignee_custom_field)
+      !assignee.allowed_in_project?(:work_package_assigned, project)
+    end
+
     def assignee_custom_field
       return @assignee_custom_field if defined?(@assignee_custom_field)
 
-      @assignee_custom_field = ProjectCustomField.find_by(id: project.project_creation_wizard_assignee_custom_field_id)
+      @assignee_custom_field = project.available_custom_fields
+                                      .find_by(id: project.project_creation_wizard_assignee_custom_field_id)
     end
 
     def invalid_status_for_type?
@@ -110,6 +111,12 @@ module Projects
       return false if type.blank? # no extra error if there is already an error about type being blank
 
       type.statuses.pluck(:id).exclude?(project.project_creation_wizard_status_when_submitted_id)
+    end
+
+    def add_error(attribute, error)
+      return if errors.added?(:base, :project_initiation_request_disabled)
+
+      errors.add attribute, error
     end
   end
 end

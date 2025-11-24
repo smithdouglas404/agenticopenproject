@@ -101,7 +101,7 @@ RSpec.describe "Project creation wizard",
     status_new = create(:status, name: "New")
     status_in_progress = create(:status, name: "In Progress")
     type = create(:type, name: "Project initiation")
-    role = create(:project_role, permissions: %i[view_project_attributes add_work_packages])
+    role = create(:project_role, permissions: %i[view_project_attributes add_work_packages work_package_assigned])
     create(:workflow, type:, role:, old_status: status_new, new_status: status_in_progress)
     create(:default_priority)
     create(:project,

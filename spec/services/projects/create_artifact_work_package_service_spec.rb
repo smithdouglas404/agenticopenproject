@@ -36,7 +36,13 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
   shared_let(:user_custom_field) { create(:user_project_custom_field, name: "Project Manager") }
   shared_let(:assignee_user) { create(:user, firstname: "assignee_user") }
   shared_let(:current_user) { create(:user, lastname: "current_user") }
-  shared_let(:role) { create(:project_role, permissions: %i[view_project_attributes add_work_packages]) }
+  shared_let(:role) do
+    create(:project_role, permissions: %i[
+             add_work_packages
+             view_project_attributes
+             work_package_assigned
+           ])
+  end
   shared_let(:default_priority) { create(:default_priority) }
   shared_let(:project) do
     create(
@@ -77,6 +83,14 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       expect(result.errors.full_messages).to be_empty
       project = result.result
       expect(project.project_creation_wizard_artifact_work_package_id).to be_present
+    end
+
+    it "assigns the artifact work package to the user pointed by the 'Assignee when submitted' custom field" do
+      result = instance.call
+      project = result.result
+
+      artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+      expect(artifact_work_package.assigned_to).to eq(assignee_user)
     end
   end
 end

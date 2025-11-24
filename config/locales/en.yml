@@ -1667,6 +1667,7 @@ en:
         project:
           archived_ancestor: "The project has an archived ancestor."
           foreign_wps_reference_version: "Work packages in non descendant projects reference versions of the project or its descendants."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "You do not have the permissions required to archive all sub-projects. Please contact an administrator."

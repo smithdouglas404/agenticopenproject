@@ -40,7 +40,8 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
   shared_let(:user_custom_field) { create(:user_project_custom_field, name: "Project Manager") }
   shared_let(:user_assignee) { create(:user, firstname: "user_assignee") }
   shared_let(:current_user) { create(:user, lastname: "current_user") }
-  shared_let(:role) { create(:project_role, permissions: %i[view_project_attributes add_work_packages]) }
+  shared_let(:role_for_user) { create(:project_role, permissions: %i[add_work_packages view_project_attributes]) }
+  shared_let(:role_for_assignee) { create(:project_role, permissions: %i[work_package_assigned]) }
   shared_let(:project) do
     create(
       :project,
@@ -53,12 +54,12 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
       project_creation_wizard_assignee_custom_field_id: user_custom_field.id,
       user_custom_field.attribute_name => user_assignee.id
     ).tap do |p|
-      p.members << create(:member, principal: user_assignee, project: p, roles: [role])
-      p.members << create(:member, principal: current_user, project: p, roles: [role])
+      p.members << create(:member, principal: user_assignee, project: p, roles: [role_for_assignee])
+      p.members << create(:member, principal: current_user, project: p, roles: [role_for_user])
     end
   end
   shared_let(:workflow_type_new_to_in_progress) do
-    create(:workflow, type:, role:, old_status: status_new, new_status: status_in_progress)
+    create(:workflow, type:, role: role_for_assignee, old_status: status_new, new_status: status_in_progress)
   end
 
   let(:contract) { described_class.new(project, current_user) }
@@ -95,8 +96,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
 
   context "with missing :add_work_packages permission" do
     before do
-      role.permissions = %i[view_project_attributes]
-      role.save
+      role_for_user.role_permissions.where(permission: "add_work_packages").delete_all
     end
 
     it_behaves_like "contract is invalid", base: :error_unauthorized
@@ -162,6 +162,16 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
 
     it "has invalid contract with :blank error for the assignee custom field" do
       expect_contract_invalid(user_custom_field.attribute_name => :blank)
+    end
+  end
+
+  context "with assignee not having the :work_package_assigned permission (cannot be assigned to a wp)" do
+    before do
+      role_for_assignee.role_permissions.where(permission: "work_package_assigned").delete_all
+    end
+
+    it "has invalid contract with :cannot_be_assigned_to_artifact_work_package error for the assignee custom field" do
+      expect_contract_invalid(user_custom_field.attribute_name => :cannot_be_assigned_to_artifact_work_package)
     end
   end
 end
