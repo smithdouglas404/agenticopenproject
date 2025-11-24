@@ -9,7 +9,9 @@
   <%=
     layout.with_page_header do
       render(Primer::OpenProject::PageHeader.new) do |header|
-        header.with_title { I18n.t("projects.wizard.title") }
+        header.with_title do
+          I18n.t("settings.project_initiation_request.name.options.#{@project.project_creation_wizard_artifact_name}")
+        end
         header.with_breadcrumbs(nil)
 
         header.with_action_icon_button(

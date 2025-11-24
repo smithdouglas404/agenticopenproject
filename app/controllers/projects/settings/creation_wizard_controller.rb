@@ -132,7 +132,7 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   def name_settings_params
     params.expect(
-      project: %i[name_artefact_name]
+      project: %i[project_creation_wizard_artifact_name]
     )
   end
 
