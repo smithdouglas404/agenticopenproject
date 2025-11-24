@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -36,10 +38,10 @@ class Widget::Settings::Fieldset < Widget::Base
     @label = :"label_#{@type}"
   end
 
-  def call
+  def view_template(&)
     render Primer::OpenProject::CollapsibleSection.new(id: @id, display: :block, mb: 3) do |section|
-      section.with_title(tag: :h3) { I18n.t(@label) }
-      section.with_collapsible_content { content }
+      section.with_title(tag: :h3) { t(@label) }
+      section.with_collapsible_content(&)
     end
   end
 end

@@ -29,18 +29,19 @@
 #++
 
 class Widget::Filters::TextBox < Widget::Filters::Base
-  def render_filter # rubocop:disable Metrics/AbcSize
-    label = content_tag :label,
-                        "#{h(filter_class.label)} #{I18n.t(:label_filter_value)}",
-                        for: "#{filter_class.underscore_name}_arg_1_val",
-                        class: "sr-only"
+  include Phlex::Rails::Helpers::TextFieldTag
 
-    content_tag(:div, id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value") do
-      label + text_field_tag("values[#{filter_class.underscore_name}]", "",
-                             size: "6",
-                             class: "advanced-filters--text-field",
-                             id: "#{filter_class.underscore_name}_arg_1_val",
-                             "data-filter-name": filter_class.underscore_name)
+  def render_filter
+    div(id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value") do
+      label for: "#{filter_class.underscore_name}_arg_1_val", class: "sr-only" do
+        "#{filter_class.label} #{t(:label_filter_value)}"
+      end
+
+      text_field_tag("values[#{filter_class.underscore_name}]", "",
+                     size: "6",
+                     class: "advanced-filters--text-field",
+                     id: "#{filter_class.underscore_name}_arg_1_val",
+                     "data-filter-name": filter_class.underscore_name)
     end
   end
 end

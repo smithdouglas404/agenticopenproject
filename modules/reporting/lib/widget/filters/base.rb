@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,6 +29,8 @@
 #++
 
 class Widget::Filters::Base < Widget::Base
+  include Phlex::Rails::Helpers::LabelTag
+
   attr_reader :filter, :filter_class
 
   def initialize(filter, **)
@@ -42,7 +46,7 @@ class Widget::Filters::Base < Widget::Base
     super
   end
 
-  def call
+  def view_template
     render_filter
   end
 

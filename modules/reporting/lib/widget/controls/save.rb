@@ -39,7 +39,7 @@ class Widget::Controls::Save < Widget::Controls
     ) do |button|
       button.with_leading_visual_icon(icon: :"op-save")
 
-      I18n.t(:button_save)
+      t(:button_save)
     end
   end
 

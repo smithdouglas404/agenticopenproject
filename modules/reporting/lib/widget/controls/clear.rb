@@ -37,7 +37,7 @@ class Widget::Controls::Clear < Widget::Controls
     ) do |button|
       button.with_leading_visual_icon(icon: :undo)
 
-      I18n.t(:button_clear)
+      t(:button_clear)
     end
   end
 end

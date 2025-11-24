@@ -32,42 +32,39 @@ class Widget::Filters::MultiValues < Widget::Filters::Base
   option :lazy, optional: true
 
   def render_filter # rubocop:disable Metrics/AbcSize
-    content_tag(:div, id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value") do
-      select_options = {
-        "data-remote-url": url_for(action: "available_values"),
-        "data-initially-selected": JSON::dump(Array(filter.values).flatten),
-        style: "vertical-align: top;", # FIXME: Do CSS
-        name: "values[#{filter_class.underscore_name}][]",
-        "data-loading": @lazy ? "ajax" : "",
-        id: "#{filter_class.underscore_name}_arg_1_val",
-        class: "form--select filter-value",
-        "data-filter-name": filter_class.underscore_name,
-        "data-action": "change->reporting--page#selectValueChanged"
-      }
-      box_content = "".html_safe
-      label = label_tag "#{filter_class.underscore_name}_arg_1_val",
-                        "#{h(filter_class.label)} #{I18n.t(:label_filter_value)}",
-                        class: "sr-only"
-
-      box = content_tag :select, select_options, id: "#{filter_class.underscore_name}_select_1" do
-        render_widget Widget::Filters::Option, filter, to: box_content unless @lazy
-      end
-      plus = content_tag :a,
-                         href: "#",
-                         class: "form-label filter_multi-select -transparent",
-                         "data-action": "click->reporting--page#toggleMultiSelect",
-                         "data-filter-name": filter_class.underscore_name,
-                         title: I18n.t(:description_multi_select) do
-        content_tag :span,
-                    "",
-                    class: "icon-context icon-button icon-add icon4",
-                    title: I18n.t(:label_enable_multi_select) do
-          content_tag :span, I18n.t(:label_enable_multi_select), class: "sr-only"
+    div(id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value") do
+      span(class: "inline-label") do
+        label(for: "#{filter_class.underscore_name}_arg_1_val", class: "sr-only") do
+          "#{filter_class.label} #{t(:label_filter_value)}"
         end
-      end
 
-      content_tag(:span, class: "inline-label") do
-        label + box + plus
+        select_options = {
+          "data-remote-url": url_for(action: "available_values"),
+          "data-initially-selected": JSON::dump(Array(filter.values).flatten),
+          style: "vertical-align: top;", # FIXME: Do CSS
+          name: "values[#{filter_class.underscore_name}][]",
+          "data-loading": @lazy ? "ajax" : "",
+          id: "#{filter_class.underscore_name}_arg_1_val",
+          class: "form--select filter-value",
+          "data-filter-name": filter_class.underscore_name,
+          "data-action": "change->reporting--page#selectValueChanged"
+        }
+
+        select(**select_options, id: "#{filter_class.underscore_name}_select_1") do
+          render Widget::Filters::Option.new(filter) unless @lazy
+        end
+
+        a href: "#",
+          class: "form-label filter_multi-select -transparent",
+          "data-action": "click->reporting--page#toggleMultiSelect",
+          "data-filter-name": filter_class.underscore_name,
+          title: t(:description_multi_select) do
+          span class: "icon-context icon-button icon-add icon4", title: t(:label_enable_multi_select) do
+            span class: "sr-only" do
+              t(:label_enable_multi_select)
+            end
+          end
+        end
       end
     end
   end

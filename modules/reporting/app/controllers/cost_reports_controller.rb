@@ -80,9 +80,11 @@ class CostReportsController < ApplicationController
   def index
     respond_to do |format|
       format.html { render_html }
-      format.turbo_stream do
-        update_via_turbo_stream(component: Widget::Table.new(@query))
-        render turbo_stream: turbo_streams
+      format.turbo_stream do |turbo_stream|
+        render turbo_stream: turbo_stream.update(
+          "foo-bar",
+          render_to_string(Widget::Table.new(@query))
+        )
       end
       format.xls { export(:xls) }
       format.pdf { export(:pdf) }

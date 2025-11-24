@@ -36,18 +36,16 @@ class Widget::Controls::SaveAs < Widget::Controls
   option :can_save_as_public, default: -> { false }
 
   def render_control
-    concat(
-      render_button(
-        id: "query-icon-save-as",
-        data: { show_dialog_id: DIALOG_ID }
-      ) do |button|
-        button.with_leading_visual_icon(icon: :"op-save")
+    render_button(
+      id: "query-icon-save-as",
+      data: { show_dialog_id: DIALOG_ID }
+    ) do |button|
+      button.with_leading_visual_icon(icon: :"op-save")
 
-        button_text
-      end
-    )
+      button_text
+    end
 
-    concat render_popup
+    render_popup
   end
 
   def render?
@@ -71,22 +69,26 @@ class Widget::Controls::SaveAs < Widget::Controls
   end
 
   def render_popup_form
-    can_save_as_public = self.can_save_as_public
+    can_save_as_public
 
-    render_inline_form(form) do |form|
-      form.text_field name: :name, label: Query.human_attribute_name(:name), required: true
+    # render_inline_form(form) do |form|
+    #   form.text_field name: :name, label: Query.human_attribute_name(:name), required: true
 
-      if can_save_as_public
-        form.check_box name: :is_public, label: Query.human_attribute_name(:public)
-      end
-    end
+    #   if can_save_as_public
+    #     form.check_box name: :is_public, label: Query.human_attribute_name(:public)
+    #   end
+    # end
   end
 
   def render_popup_buttons
     save_url_params = { action: "create", set_filter: "1" }
     save_url_params[:project_id] = @subject.project.id if @subject.project
 
-    save_button = render_button(
+    render_button(data: { close_dialog_id: DIALOG_ID }) do
+      t(:button_cancel)
+    end
+
+    render_button(
       scheme: :primary,
       type: :submit,
       id: "query-icon-save-button",
@@ -95,21 +97,15 @@ class Widget::Controls::SaveAs < Widget::Controls
     ) do |button|
       button.with_leading_visual_icon(icon: :check)
 
-      I18n.t(:button_save)
+      t(:button_save)
     end
-
-    cancel_button = render_button(data: { close_dialog_id: DIALOG_ID }) do
-      I18n.t(:button_cancel)
-    end
-
-    safe_join([cancel_button, save_button])
   end
 
   def button_text
     if @subject.new_record?
-      I18n.t(:button_save)
+      t(:button_save)
     else
-      I18n.t(:button_save_report_as)
+      t(:button_save_report_as)
     end
   end
 end

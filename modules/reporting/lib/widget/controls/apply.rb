@@ -35,7 +35,7 @@ class Widget::Controls::Apply < Widget::Controls
       type: :submit,
       id: "query-icon-apply-button"
     ) do
-      I18n.t(:button_apply)
+      t(:button_apply)
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -31,18 +33,12 @@ class Widget::CostTypes < Widget::Base
 
   option :selected_type_id, optional: true
 
-  def call
-    contents
-  end
-
-  def contents
-    content_tag :div do
-      render(Primer::Alpha::RadioButtonGroup.new(name: "unit")) do |component|
-        available_cost_type_tabs(@subject)
-          .sort_by { |id, _| id }
-          .map do |id, label|
-          component.radio_button(label:, value: id, checked: id == @selected_type_id)
-        end
+  def view_template
+    render(Primer::Alpha::RadioButtonGroup.new(name: "unit")) do |component|
+      available_cost_type_tabs(@subject)
+        .sort_by { |id, _| id }
+        .map do |id, label|
+        component.radio_button(label:, value: id, checked: id == @selected_type_id)
       end
     end
   end

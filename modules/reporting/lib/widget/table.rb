@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,8 +30,7 @@
 
 class Widget::Table < Widget::Base
   extend Report::InheritedAttribute
-  include OpTurbo::Streamable
-  include ReportingHelper
+  include Phlex::Rails::Helpers::TurboFrameTag
 
   delegate :cost_type, :unit_id, to: :controller
 
@@ -44,25 +45,27 @@ class Widget::Table < Widget::Base
     super
   end
 
+  def view_template
+    turbo_frame_tag(id: "foo-bar") do
+      comment { "table start" }
+      if @subject.result.count <= 0
+        div(class: "generic-table--no-results-container") do
+          i(class: "icon-info1")
+          span(class: "generic-table--no-results-title") { t(:no_results_title_text) }
+        end
+      else
+        render(resolve_table.new(@subject, **@options))
+      end
+    end
+  end
+
+  private
+
   def resolve_table
     if @subject.group_bys.empty?
       Widget::Table::EntryTable
     else
       Widget::Table::ReportTable
-    end
-  end
-
-  def call
-    component_wrapper(tag: "turbo-frame") do
-      # concat("<!-- table start -->".html_safe)
-      if @subject.result.count <= 0
-        content_tag(:div, "", class: "generic-table--no-results-container") do
-          content_tag(:i, "", class: "icon-info1") +
-            content_tag(:span, I18n.t(:no_results_title_text), class: "generic-table--no-results-title")
-        end
-      else
-        render_widget(resolve_table, @subject, **@options)
-      end
     end
   end
 end

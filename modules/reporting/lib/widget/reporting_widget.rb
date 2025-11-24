@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,28 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Widget::ReportingWidget < ViewComponent::Base
+class Widget::ReportingWidget < Phlex::HTML
   extend Dry::Initializer[undefined: false]
-  include Rails.application.routes.url_helpers
-  include ApplicationHelper
+
+  include Phlex::Rails::Helpers::Routes
+  include Phlex::Rails::Helpers::FormWith
+  include Phlex::Rails::Helpers::Request
+  include Phlex::Rails::Helpers::Translate
+
   include ReportingHelper
   include Redmine::I18n
 
-  def render_widget(widget, *, to: nil, **, &)
-    instance = widget.new(*, **)
-    rendered = instance.render_in(self, &)
-    return rendered unless to
+  register_output_helper :angular_component_tag
+  register_value_helper :truncate_single_line
 
-    to << rendered
-    to
+  protected
+
+  def primer_form_with(**, &)
+    form_with(**, skip_default_ids: false, builder: Primer::Forms::Builder, &)
   end
 
-  module RenderWidgetInstanceMethods
-    def render_widget(widget, *, **, &)
-      widget.new(*, **).render_in(self, &)
-    end
+  def render_button(**, &)
+    render(Primer::Beta::Button.new(**), &)
   end
 end
-
-ActionView::Base.include Widget::ReportingWidget::RenderWidgetInstanceMethods
-ActionController::Base.include Widget::ReportingWidget::RenderWidgetInstanceMethods

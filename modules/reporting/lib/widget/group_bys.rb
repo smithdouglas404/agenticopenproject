@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,6 +29,8 @@
 #++
 
 class Widget::GroupBys < Widget::Base
+  include Phlex::Rails::Helpers::LabelTag
+
   param :subject, reader: false
 
   attr_reader :engine
@@ -37,29 +41,25 @@ class Widget::GroupBys < Widget::Base
     @engine = @subject.class
   end
 
-  def call
-    content_tag(:div, id: "group-by--area", class: "autoscroll") do
-      out = "".html_safe
-      out << render_group("columns", @subject.group_bys(:column))
-      out << render_group("rows", @subject.group_bys(:row))
-      out
+  def view_template
+    div(id: "group-by--area", class: "autoscroll") do
+      render_group("columns", @subject.group_bys(:column))
+      render_group("rows", @subject.group_bys(:row))
     end
   end
 
   # rubocop:disable Metrics/AbcSize
   def render_options(group_by_ary)
-    options = group_by_ary.sort_by(&:label).map do |group_by|
+    group_by_ary.sort_by(&:label).each do |group_by|
       next unless group_by.selectable?
 
       label_text = group_by.label
       option_tags = { value: group_by.underscore_name, "data-label": label_text }
       option_tags[:title] = label_text if label_text.length > 40
-      content_tag :option, option_tags do
+      option(**option_tags) do
         truncate_single_line(label_text, length: 40)
       end
     end
-
-    safe_join(options)
   end
 
   def render_group(type, initially_selected)
@@ -67,55 +67,43 @@ class Widget::GroupBys < Widget::Base
       [group_by.class.underscore_name, group_by.class.label]
     end
 
-    content_tag :fieldset do
-      legend = content_tag :legend, I18n.t("reporting.group_by.selected_#{type}"), class: "sr-only"
+    fieldset do
+      legend(class: "sr-only") { t("reporting.group_by.selected_#{type}") }
 
-      container = content_tag :div,
-                              id: "group-by--#{type}",
-                              class: "group-by--container grid-block",
-                              "data-initially-selected": initially_selected.to_json.tr('"', "'") do
-        out = content_tag :span, class: "group-by--caption grid-content shrink" do
-          content_tag :span do
-            I18n.t(:"label_#{type}")
+      div id: "group-by--#{type}", class: "group-by--container grid-block",
+          "data-initially-selected": initially_selected.to_json.tr('"', "'") do
+        span class: "group-by--caption grid-content shrink" do
+          span do
+            t(:"label_#{type}")
           end
         end
 
-        out += content_tag :span, "", id: "group-by--selected-#{type}", class: "group-by--selected-elements grid-block"
+        span id: "group-by--selected-#{type}", class: "group-by--selected-elements grid-block"
 
-        out += content_tag :span,
-                           class: "group-by--control grid-content shrink" do
-          label = label_tag "group-by--add-#{type}",
-                            "#{I18n.t(:label_group_by_add)} #{I18n.t('js.filter.description.text_open_filter')}",
-                            class: "sr-only"
+        span class: "group-by--control grid-content shrink" do
+          label for: "group-by--add-#{type}", class: "sr-only" do
+            "#{t(:label_group_by_add)} #{t('js.filter.description.text_open_filter')}"
+          end
 
-          label += content_tag(
-            :select,
+          select(
             id: "group-by--add-#{type}",
             class: "advanced-filters--select",
             data: {
               action: "change->reporting--page#addGroupBy"
             }
           ) do
-            content = content_tag :option, I18n.t(:label_group_by_add), value: "", disabled: true, selected: true
+            option(value: "", disabled: true, selected: true) { t(:label_group_by_add) }
 
-            sort_by_options = engine::GroupBy.all_grouped.sort_by do |i18n_key, _group_by_ary|
-              I18n.t(i18n_key)
+            engine::GroupBy.all_grouped.sort_by do |i18n_key, _group_by_ary|
+              t(i18n_key)
             end.map do |i18n_key, group_by_ary| # rubocop:disable Style/MultilineBlockChain
-              content_tag :optgroup, label: I18n.t(i18n_key) do
+              optgroup label: t(i18n_key) do
                 render_options group_by_ary
               end
             end
-            content += safe_join(sort_by_options)
-            content
           end
-
-          label
         end
-
-        out
       end
-
-      legend + container
     end
   end
   # rubocop:enable Metrics/AbcSize

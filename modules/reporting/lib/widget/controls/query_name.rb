@@ -29,27 +29,13 @@
 #++
 
 class Widget::Controls::QueryName < Widget::Controls
-  def initialize(...)
-    super
-
-    @system_arguments = { id: "query_saved_name", data: { translations: } }
-    @name = if @subject.new_record?
-              I18n.t(:label_new_report)
-            else
-              @subject.name
-            end
-    @system_arguments[:data] = merge_data(
-      @system_arguments, {
-        data: { is_new: @subject.new_record? }
-      }
-    )
-  end
-
-  def call
-    render Primer::Beta::Text.new(**@system_arguments).with_content(@name)
+  def view_template
+    render(Primer::Beta::Text.new(**@system_arguments)) do
+      @name
+    end
   end
 
   def translations
-    { isPublic: I18n.t(:public, scope: "attributes") }.to_json
+    { isPublic: t(:public, scope: "attributes") }.to_json
   end
 end

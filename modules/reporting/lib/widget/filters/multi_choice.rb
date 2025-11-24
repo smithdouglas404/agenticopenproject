@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,35 +29,33 @@
 #++
 
 class Widget::Filters::MultiChoice < Widget::Filters::Base
-  # rubocop:disable Metrics/AbcSize
   def render_filter
     filter_name = filter_class.underscore_name
-    content_tag :div, id: "#{filter_name}_arg_1", class: "advanced-filters--filter-value" do
-      choices = filter_class.available_values.each_with_index.map do |(label, value), i|
-        opts = {
-          type: "radio",
-          name: "values[#{filter_name}][]",
-          id: "#{filter_name}_radio_option_#{i}",
-          value:
-        }
-        opts[:checked] = "checked" if filter.values == [value].flatten
-        radio_button = tag :input, opts
-        content_tag :label, radio_button + translate(label),
-                    for: "#{filter_name}_radio_option_#{i}",
-                    "data-filter-name": filter_class.underscore_name,
-                    class: "#{filter_name}_radio_option filter_radio_option"
+    div id: "#{filter_name}_arg_1", class: "advanced-filters--filter-value" do
+      div id: "#{filter_class.underscore_name}_arg_1_val" do
+        filter_class.available_values.each_with_index.map do |(label, value), i|
+          opts = {
+            type: "radio",
+            name: "values[#{filter_name}][]",
+            id: "#{filter_name}_radio_option_#{i}",
+            value:
+          }
+          opts[:checked] = "checked" if filter.values == [value].flatten
+          radio_button = tag :input, opts
+          label radio_button + translate(label),
+                for: "#{filter_name}_radio_option_#{i}",
+                "data-filter-name": filter_class.underscore_name,
+                class: "#{filter_name}_radio_option filter_radio_option"
+        end
       end
-      content_tag :div, safe_join(choices),
-                  id: "#{filter_class.underscore_name}_arg_1_val"
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   private
 
   def translate(label)
     if label.is_a?(Symbol)
-      ::I18n.t(label)
+      ::t(label)
     else
       label
     end

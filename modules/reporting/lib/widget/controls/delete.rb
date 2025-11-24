@@ -58,7 +58,7 @@ class Widget::Controls::Delete < Widget::Controls
       dialog.with_show_button(scheme: :invisible) do |button|
         button.with_leading_visual_icon(icon: :trash)
 
-        I18n.t(:button_delete)
+        t(:button_delete)
       end
 
       dialog.with_body do
@@ -66,7 +66,7 @@ class Widget::Controls::Delete < Widget::Controls
           icon_arguments: { icon: :alert, color: :danger },
           border: false
         ) do |message|
-          message.with_heading(tag: :h2) { I18n.t(:label_really_delete_question) }
+          message.with_heading(tag: :h2) { t(:label_really_delete_question) }
         end
       end
 
@@ -77,20 +77,18 @@ class Widget::Controls::Delete < Widget::Controls
   end
 
   def render_popup_buttons
-    delete_button = render_button(
+    render_button(data: { close_dialog_id: DIALOG_ID }) do
+      t(:button_cancel)
+    end
+
+    render_button(
       scheme: :danger,
       type: :submit,
       formaction: url_for(action: :destroy, id: @subject.id),
       formmethod: :delete,
       data: { submit_dialog_id: DIALOG_ID }
     ) do
-      I18n.t(:button_delete)
+      t(:button_delete)
     end
-
-    cancel_button = render_button(data: { close_dialog_id: DIALOG_ID }) do
-      I18n.t(:button_cancel)
-    end
-
-    safe_join([cancel_button, delete_button])
   end
 end

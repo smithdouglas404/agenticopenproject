@@ -29,31 +29,27 @@
 #++
 
 class Widget::Filters::WorkPackage < Widget::Filters::Base
-  include AngularHelper
-
   def render_filter
-    content_tag(:div, id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value") do
-      label = html_label
-
+    div(id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value") do
       selected_values = map_filter_values
 
-      box = angular_component_tag "opce-autocompleter",
-                                  inputs: {
-                                    filters: [],
-                                    InputName: "values[#{filter_class.underscore_name}]",
-                                    hiddenFieldAction: "change->reporting--page#selectValueChanged",
-                                    multiple: true,
-                                    defaultData: true,
-                                    model: selected_values.compact,
-                                    url: ::API::V3::Utilities::PathHelper::ApiV3Path.work_packages,
-                                    resource: "work_packages",
-                                    searchKey: "subjectOrId"
-                                  },
-                                  id: "#{filter_class.underscore_name}_select_1",
-                                  class: "filter-value advanced-filters--ng-select"
+      span(class: "inline-label") do
+        html_label
 
-      content_tag(:span, class: "inline-label") do
-        label + box
+        angular_component_tag "opce-autocompleter",
+                              inputs: {
+                                filters: [],
+                                InputName: "values[#{filter_class.underscore_name}]",
+                                hiddenFieldAction: "change->reporting--page#selectValueChanged",
+                                multiple: true,
+                                defaultData: true,
+                                model: selected_values.compact,
+                                url: ::API::V3::Utilities::PathHelper::ApiV3Path.work_packages,
+                                resource: "work_packages",
+                                searchKey: "subjectOrId"
+                              },
+                              id: "#{filter_class.underscore_name}_select_1",
+                              class: "filter-value advanced-filters--ng-select"
       end
     end
   end
@@ -61,9 +57,9 @@ class Widget::Filters::WorkPackage < Widget::Filters::Base
   private
 
   def html_label
-    label_tag "#{filter_class.underscore_name}_arg_1_val",
-              "#{h(filter_class.label)} #{I18n.t(:label_filter_value)}",
-              class: "sr-only"
+    label for: "#{filter_class.underscore_name}_arg_1_val", class: "sr-only" do
+      "#{filter_class.label} #{t(:label_filter_value)}"
+    end
   end
 
   def map_filter_values

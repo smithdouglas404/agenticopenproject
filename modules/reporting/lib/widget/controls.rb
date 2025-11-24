@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,22 +29,14 @@
 #++
 
 class Widget::Controls < Widget::Base
-  include Primer::AttributesHelper
-
   param :subject
   param :form, optional: true
 
-  def call
-    render(Primer::Alpha::StackItem.new) do
-      render_control
-    end
+  def view_template
+    render_control
   end
 
   def render_control
     raise NotImplementedError, "Control subclasses must implement this method."
-  end
-
-  def render_button(**, &)
-    render(Primer::Beta::Button.new(**), &)
   end
 end

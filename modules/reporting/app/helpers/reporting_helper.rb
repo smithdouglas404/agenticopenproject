@@ -30,7 +30,7 @@ require "digest/md5"
 
 module ReportingHelper
   # ======================= SHARED CODE START
-  include ApplicationHelper
+  # include ApplicationHelper
   include WorkPackagesHelper
 
   def with_project(project)
