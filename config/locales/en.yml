@@ -2882,6 +2882,7 @@ en:
       new_features:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
+        missing: "There are no highlight features presented yet."
         # We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
