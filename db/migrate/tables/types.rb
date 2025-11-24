@@ -43,6 +43,7 @@ class Tables::Types < Tables::Base
       t.boolean :is_standard, default: false, null: false
       t.text :attribute_groups
       t.text :description
+      t.text :patterns, null: true
     end
   end
 end

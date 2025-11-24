@@ -413,6 +413,7 @@ class AggregatedMigrations < SquashedMigration
     20241126111225_add_project_life_cycle_step_roles
     20241127161228_grant_select_project_life_cycle_permission
     20241129135602_populate_manage_own_reminders_permission
+    20241211152749_introduce_patterns_to_types
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
