@@ -61,7 +61,7 @@ module Portfolios
     end
 
     def sub_statuses_with_percentages
-      return @status_percentage if @status_percentage
+      return @status_percentage if @status_percentage.present?
 
       statuses = sub_statuses
       total = statuses.values.sum
@@ -84,8 +84,9 @@ module Portfolios
     end
 
     def sub_statuses
-      @sub_statuses ||= all_descendants.pluck(:status_code)
-                                       .tally
+      @sub_statuses ||= all_descendants.reorder(:status_code)
+                          .pluck(:status_code)
+                          .tally
     end
   end
 end
