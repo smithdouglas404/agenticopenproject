@@ -74,8 +74,9 @@ module Admin
         user_ids = custom_values.filter_map(&:value)
         users = Principal.includes(:memberships).where(id: user_ids).index_by(&:id)
 
-        custom_values.map do |cv|
+        custom_values.filter_map do |cv|
           user = users[cv.value.to_i]
+          next if user.nil?
 
           membership = user.memberships.find { |m| m.project = cv.customized }
 
