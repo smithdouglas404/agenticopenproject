@@ -63,6 +63,7 @@ RSpec.describe "Projects", "creation",
     click_on "Continue"
 
     # Step 2: Fill in project details
+    expect(page).to have_text("2 of 2")
     fill_in "Name", with: "Foo bar"
     click_on "Complete"
 
@@ -100,10 +101,13 @@ RSpec.describe "Projects", "creation",
     # Step 1: Select workspace type (blank project)
     click_on "Continue"
 
+    # Step 2: Try to complete without name
+    expect(page).to have_text("2 of 2")
     click_on "Complete"
 
     expect_and_dismiss_flash type: :error, message: /^Creation failed/
 
+    expect(page).to have_text("2 of 2")
     expect(page).to have_field "Name", validation_error: "can't be blank."
   end
 
@@ -131,10 +135,12 @@ RSpec.describe "Projects", "creation",
       click_on "Continue"
 
       # Step 2: Fill in project details
+      expect(page).to have_text("2 of 3")
       fill_in "Name", with: "Foo bar"
       click_on "Continue"
 
       # Step 3: Fill in custom fields
+      expect(page).to have_text("3 of 3")
       expect(page).to have_combo_box "List CF *"
       list_field.select_option "A", "B"
 
@@ -191,10 +197,12 @@ RSpec.describe "Projects", "creation",
       click_on "Continue"
 
       # Step 2: Fill in project details
+      expect(page).to have_text("2 of 3")
       fill_in "Name", with: "Foo bar"
       click_on "Continue"
 
       # Step 3: Fill in custom fields
+      expect(page).to have_text("3 of 3")
       expect(page).to have_combo_box "Version CF *"
 
       # expect the versions are grouped by the project name
@@ -259,10 +267,12 @@ RSpec.describe "Projects", "creation",
         click_on "Continue"
 
         # Step 2: Project details - skip to step 3
+        expect(page).to have_text("2 of 3")
         fill_in "Name", with: "Test Project"
         click_on "Continue"
 
         # Step 3: Custom fields
+        expect(page).to have_text("3 of 3")
         expect(page).to have_field "Required Foo *"
         expect(page).to have_field "Required User *"
         expect(page).to have_no_field "Optional Foo"
@@ -281,14 +291,17 @@ RSpec.describe "Projects", "creation",
         click_on "Continue"
 
         # Step 2: Fill in name
+        expect(page).to have_text("2 of 3")
         fill_in "Name", with: "Test Project"
         click_on "Continue"
 
         # Step 3: Try to complete without required custom field
+        expect(page).to have_text("3 of 3")
         click_on "Complete"
 
         expect_and_dismiss_flash type: :error, message: /^Creation failed/
 
+        expect(page).to have_text("3 of 3")
         expect(page).to have_field "Required Foo *", validation_error: "can't be blank."
       end
     end
