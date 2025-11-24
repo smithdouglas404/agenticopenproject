@@ -427,3 +427,5 @@ end
 gem "openproject-octicons", "~>19.32.0"
 gem "openproject-octicons_helper", "~>19.32.0"
 gem "openproject-primer_view_components", "~>0.78.1"
+
+gem "phlex-rails", "~> 2.3"
