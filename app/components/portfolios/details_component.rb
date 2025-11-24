@@ -69,16 +69,16 @@ module Portfolios
     end
 
     def sub_statuses_with_percentages
-      return @status_percentage if @status_percentage.present?
+      @sub_statuses_with_percentages ||=
+        begin
+          total = sub_statuses.values.sum
 
-      statuses = sub_statuses
-      total = statuses.values.sum
+          sub_statuses.map do |code, count|
+            percentage = (count.fdiv(total) * 100).round
 
-      @status_percentage = statuses.map do |code, count|
-        percentage = ((count.to_f / total) * 100).round
-
-        { code:, count:, percentage: }
-      end
+            { code:, count:, percentage: }
+          end
+        end
     end
 
     def sub_status_hover_card_id
@@ -92,7 +92,8 @@ module Portfolios
     end
 
     def sub_statuses
-      @sub_statuses ||= all_descendants.reorder(:status_code)
+      @sub_statuses ||= all_descendants
+                          .reorder(:status_code)
                           .pluck(:status_code)
                           .tally
     end

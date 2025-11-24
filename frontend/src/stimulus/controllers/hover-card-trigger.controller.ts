@@ -128,7 +128,6 @@ export default class HoverCardTriggerController extends ApplicationController {
     if (!this.triggerTargets.some((trigger) => trigger === el)) {
       // If the element is not a trigger itself, one of its parents must be. Find the correct one.
       const trigger = el.closest('[data-hover-card-trigger-target="trigger"]')!;
-      if (!trigger) { return; }
 
       el = trigger as HTMLElement;
     }

@@ -497,9 +497,9 @@ en:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
-      sub_items:
-        one: "sub-item"
-        other: "sub-items"
+      sub_items_html:
+        one: "<strong>1</strong> sub-item"
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"

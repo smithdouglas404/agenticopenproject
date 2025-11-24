@@ -112,7 +112,7 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
         let(:status_code_b) { nil }
 
         it "does not render a progress bar" do
-          expect(subject).not_to have_test_selector("op-portfolios--sub-status")
+          expect(subject).not_to have_test_selector("op-portfolios--sub-status-bar")
         end
       end
 
@@ -120,7 +120,7 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
         let(:status_code_b) { nil }
 
         it "renders a progress bar detailing the status of child programs and projects" do
-          expect(subject).to have_test_selector("op-portfolios--sub-status")
+          expect(subject).to have_test_selector("op-portfolios--sub-status-bar")
 
           expect(subject).to have_test_selector("op-portfolios--status-#{status_code_a}")
           expect(subject).not_to have_test_selector("op-portfolios--status-#{status_code_b}")
@@ -129,7 +129,7 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
       context "when all of the sub-items have a status set" do
         it "renders a progress bar detailing the status of child programs and projects" do
-          expect(subject).to have_test_selector("op-portfolios--sub-status")
+          expect(subject).to have_test_selector("op-portfolios--sub-status-bar")
 
           expect(subject).to have_test_selector("op-portfolios--status-#{status_code_a}")
           expect(subject).to have_test_selector("op-portfolios--status-#{status_code_b}")

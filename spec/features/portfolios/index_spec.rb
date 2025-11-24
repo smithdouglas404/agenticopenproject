@@ -171,7 +171,7 @@ RSpec.describe "Portfolios", "index", :js do
     describe "status of sub-items" do
       it "shows the status summary of sub-items" do
         portfolios_page.within_row(portfolio_a) do
-          expect(page).to have_test_selector("op-portfolios--sub-status")
+          expect(page).to have_test_selector("op-portfolios--sub-status-bar")
 
           # It renders the correct percentages per status:
           on_track = page.find_test_selector("op-portfolios--status-on_track")
@@ -185,14 +185,14 @@ RSpec.describe "Portfolios", "index", :js do
           # The status bar shows a hover card on hover:
           hover_card_selector = "op-portfolios--hover-card-#{portfolio_a.id}"
           expect(page).not_to have_test_selector(hover_card_selector)
-          page.find_test_selector("op-portfolios--sub-status").hover
+          page.find_test_selector("op-portfolios--sub-status-bar").hover
           expect(page).to have_test_selector(hover_card_selector)
         end
       end
 
       it "does not show a status summary if no sub-item has a status" do
         portfolios_page.within_row(portfolio_favorited) do
-          expect(page).not_to have_test_selector("op-portfolios--sub-status")
+          expect(page).not_to have_test_selector("op-portfolios--sub-status-bar")
         end
       end
     end

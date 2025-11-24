@@ -2,7 +2,7 @@
   flex_layout do |flex|
     flex.with_row(mb: 2) do
       flex_layout(align_items: :center) do |header|
-        header.with_column(mr: 2) do
+        header.with_column do
           render(
             Primer::Beta::Link.new(
               classes: "portfolio-name",
@@ -14,7 +14,7 @@
           end
         end
 
-        header.with_column(mr: 2) do
+        header.with_column(ml: 2, mr: 2) do
           render(
             Projects::StatusButtonComponent.new(
               user: @current_user,
@@ -33,23 +33,25 @@
                 data: {
                   hover_card_trigger_target: "trigger",
                   hover_card_popover_id: sub_status_hover_card_id,
-                  test_selector: "op-portfolios--sub-status"
+                  test_selector: "op-portfolios--sub-status-bar"
                 }
               )
             ) do |bar|
               sub_statuses_with_percentages.each do |status|
-                status_label = t("js.grid.widgets.project_status.#{status[:code] || 'not_set'}")
+                status => { code:, percentage: }
+
+                status_label = t("js.grid.widgets.project_status.#{code || 'not_set'}")
 
                 bar.with_item(
-                  percentage: status[:percentage],
+                  percentage:,
                   bg: nil, # unset default color so that we can inject our own via CSS class
-                  classes: "op-portfolios--sub-status #{helpers.project_status_css_class(status[:code])}",
+                  classes: "op-portfolios--sub-status #{helpers.project_status_css_class(code)}",
                   aria: {
                     label: status_label
                   },
-                  test_selector: "op-portfolios--status-#{status[:code] || 'not_set'}",
+                  test_selector: "op-portfolios--status-#{code || 'not_set'}",
                   data: {
-                    percentage: status[:percentage]
+                    percentage:
                   }
                 )
               end
@@ -164,32 +166,26 @@
           popover.with_column(mr: 3) do
             sub_item_count = sub_statuses_with_percentages.sum { |s| s[:count] }
 
-            concat(
-              render(Primer::Beta::Text.new(color: :muted, font_weight: :bold)) do
-                "#{sub_item_count} "
-              end
-            )
-
-            concat(
-              render(Primer::Beta::Text.new(color: :muted)) do
-                t("portfolios.index.sub_items", count: sub_item_count)
-              end
-            )
+            render(Primer::Beta::Text.new(color: :muted)) do
+              t("portfolios.index.sub_items_html", count: sub_item_count)
+            end
           end
 
           sub_statuses_with_percentages.each do |status|
-            status_label = t("js.grid.widgets.project_status.#{status[:code] || 'not_set'}")
+            status => { code:, count: }
+
+            status_label = t("js.grid.widgets.project_status.#{code || 'not_set'}")
 
             popover.with_column(mr: 3, display: :flex) do
-              concat(content_tag(:span, class: "op-bubble op-bubble_mini op-bubble_squared #{helpers.project_status_css_class(status[:code])}") { "" })
+              concat(content_tag(:span, class: "op-bubble op-bubble_mini op-bubble_squared #{helpers.project_status_css_class(code)}") { "" })
               concat(
                 render(Primer::Beta::Text.new(ml: 2, font_weight: :bold)) do
-                  status[:count].to_s
+                  count.to_s
                 end
               )
               concat(
                 render(Primer::Beta::Text.new(ml: 1)) do
-                  status_label
+                  " #{status_label}"
                 end
               )
             end
