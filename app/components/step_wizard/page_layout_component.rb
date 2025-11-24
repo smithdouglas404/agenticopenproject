@@ -33,13 +33,9 @@ module StepWizard
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
 
-    renders_one :page_header, lambda {
-      Primer::Content.new
-    }
+    renders_one :page_header, Primer::Content
 
-    renders_one :footer, lambda {
-      Primer::Content.new
-    }
+    renders_one :footer, Primer::Content
 
     renders_one :wizard_content, lambda { |**content_arguments|
       @content_arguments = content_arguments

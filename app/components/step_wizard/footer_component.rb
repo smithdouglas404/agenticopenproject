@@ -54,27 +54,21 @@ module StepWizard
     renders_one :cancel_button, lambda { |**cancel_button_args|
       cancel_button_args[:tag] ||= :a
 
-      render(Primer::Beta::Button.new(**cancel_button_args)) do
-        I18n.t("button_cancel")
-      end
+      Primer::Beta::Button.new(**cancel_button_args).with_content(I18n.t("button_cancel"))
     }
 
     renders_one :continue_button, lambda { |**continue_button_args|
       continue_button_args[:scheme] ||= :primary
       continue_button_args[:type] ||= :submit
 
-      render(Primer::Beta::Button.new(**continue_button_args)) do
-        I18n.t("button_continue")
-      end
+      Primer::Beta::Button.new(**continue_button_args).with_content(I18n.t("button_continue"))
     }
 
     renders_one :submit_button, lambda { |**submit_button_args|
       submit_button_args[:scheme] ||= :primary
       submit_button_args[:type] ||= :submit
 
-      render(Primer::Beta::Button.new(**submit_button_args)) do
-        I18n.t("button_complete")
-      end
+      Primer::Beta::Button.new(**submit_button_args).with_content(I18n.t("button_complete"))
     }
 
     def initialize(form_identifier:, total_steps:, current_step:)
