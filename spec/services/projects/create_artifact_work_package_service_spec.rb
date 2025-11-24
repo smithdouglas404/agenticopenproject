@@ -85,12 +85,32 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       expect(project.project_creation_wizard_artifact_work_package_id).to be_present
     end
 
+    it "uses the type and status defined in the project initiation request settings" do
+      result = instance.call
+      project = result.result
+      artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+      expect(artifact_work_package.type.id).to eq(project.project_creation_wizard_work_package_type_id)
+      expect(artifact_work_package.status.id).to eq(project.project_creation_wizard_status_when_submitted_id)
+    end
+
     it "assigns the artifact work package to the user pointed by the 'Assignee when submitted' custom field" do
       result = instance.call
       project = result.result
 
       artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
       expect(artifact_work_package.assigned_to).to eq(assignee_user)
+    end
+
+    it "attaches the project initiation request pdf file to the artifact work package" do
+      result = instance.call
+      project = result.result
+
+      artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+      expect(artifact_work_package.attachments.count).to eq(1)
+
+      attachment = artifact_work_package.attachments.first
+      expect(attachment.file.content_type).to eq("application/pdf")
+      expect(attachment.author).to eq(current_user)
     end
   end
 end
