@@ -48,7 +48,8 @@ module Projects
         type_id: project.project_creation_wizard_work_package_type_id,
         status_id: project.project_creation_wizard_status_when_submitted_id,
         subject: "Project submission",
-        description: "A project submission has been created."
+        description: "A project submission has been created.",
+        attachments: [pdf_attachment]
       }
       creation_call = WorkPackages::CreateService.new(user: User.current).call(create_params)
       if creation_call.success?
@@ -65,6 +66,23 @@ module Projects
       # store_attribute :settings, :project_creation_wizard_work_package_comment, :string
 
       service_call
+    end
+
+    def pdf_attachment
+      export = Project::PDFExport::ProjectInitiation.new(project).export!
+
+      file = OpenProject::Files.create_uploaded_file(
+        name: export.title,
+        content_type: export.mime_type,
+        content: export.content,
+        binary: true
+      )
+
+      Attachment.new(
+        container: nil,
+        author: user,
+        file:
+      )
     end
   end
 end

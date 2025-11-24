@@ -57,7 +57,8 @@ class Projects::CreationWizardController < ApplicationController
       if last_page?
         service_call2 = Projects::CreateArtifactWorkPackageService.new(user: current_user, model: @project).call
         if service_call2.success?
-          redirect_to project_path(@project), notice: I18n.t("projects.wizard.success")
+          redirect_to project_work_packages_path(@project, @project.project_creation_wizard_artifact_work_package_id),
+                      notice: I18n.t("projects.wizard.success")
         else
           flash[:error] = service_call2.errors.full_messages
           render :show,
