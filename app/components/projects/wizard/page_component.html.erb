@@ -9,7 +9,7 @@
   <%=
     layout.with_page_header do
       render(Primer::OpenProject::PageHeader.new) do |header|
-        header.with_title { I18n.t("projects.wizard.title") }
+        header.with_title { @project.project_creation_wizard_name }
         header.with_breadcrumbs(nil)
 
         header.with_action_icon_button(

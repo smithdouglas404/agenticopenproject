@@ -630,7 +630,6 @@ en:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
-      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
       success: "Project attributes have been saved successfully."
       progress_label: "%{current} of %{total}"
@@ -4688,15 +4687,15 @@ en:
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
       name:
-        artefact_name: "Artefact name"
-        artefact_name_caption: "Choose the name for this artefact that your project management framework recommends."
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
         options:
           project_initiation_request: "Project initiation request"
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
         work_package_type: "Work package type"
-        work_package_type_caption: "The work package type that should be used to store the completed artefact."
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"

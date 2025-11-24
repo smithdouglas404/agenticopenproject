@@ -34,17 +34,17 @@ module Projects
       class NameForm < ApplicationForm
         form do |f|
           f.select_list(
-            name: :name_artefact_name,
-            label: I18n.t("settings.project_initiation_request.name.artefact_name"),
-            caption: I18n.t("settings.project_initiation_request.name.artefact_name_caption"),
+            name: :project_creation_wizard_artifact_name,
+            label: I18n.t("settings.project_initiation_request.name.artifact_name"),
+            caption: I18n.t("settings.project_initiation_request.name.artifact_name_caption"),
             required: true,
             input_width: :large
           ) do |list|
-            options.each do |id|
+            ::Projects::CreationWizard::ARTIFACT_NAME_OPTIONS.each do |id|
               list.option(
                 value: id,
                 label: I18n.t("settings.project_initiation_request.name.options.#{id}"),
-                selected: id == model.name_artefact_name
+                selected: id == model.project_creation_wizard_artifact_name
               )
             end
           end
@@ -54,12 +54,6 @@ module Projects
             label: I18n.t("button_save"),
             scheme: :primary
           )
-        end
-
-        private
-
-        def options
-          %i[project_initiation_request project_creation_wizard project_mandate]
         end
       end
     end
