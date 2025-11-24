@@ -131,7 +131,8 @@ class AggregatedMigrations < SquashedMigration
          Tables::HierarchicalItems,
          Tables::HierarchicalItemHierarchies,
          Tables::ProjectLifeCycleStepDefinitions,
-         Tables::ProjectLifeCycleSteps
+         Tables::ProjectLifeCycleSteps,
+         Tables::Reminders
 
   # rubocop:disable Metrics/CollectionLiteralLength
   squashed_migrations *%w[
@@ -403,6 +404,7 @@ class AggregatedMigrations < SquashedMigration
     20241002151949_remove_hide_mail_from_user_preferences
     20241015081341_remove_obsolete_design_variables
     20241030154245_create_project_life_cycles
+    20241119131205_create_reminders
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end

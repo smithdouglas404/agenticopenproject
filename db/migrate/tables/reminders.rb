@@ -28,9 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CreateReminders < ActiveRecord::Migration[7.1]
-  def change
-    create_table :reminders do |t|
+require_relative "base"
+
+class Tables::Reminders < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
       t.references :remindable, polymorphic: true, null: false
       t.references :creator, null: false, foreign_key: { to_table: :users }
       t.datetime :remind_at, null: false
