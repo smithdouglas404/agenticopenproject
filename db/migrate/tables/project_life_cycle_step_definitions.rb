@@ -39,6 +39,8 @@ class Tables::ProjectLifeCycleStepDefinitions < Tables::Base
       t.references :color, foreign_key: true
 
       t.timestamps
+
+      t.index :name, unique: true
     end
   end
 end
