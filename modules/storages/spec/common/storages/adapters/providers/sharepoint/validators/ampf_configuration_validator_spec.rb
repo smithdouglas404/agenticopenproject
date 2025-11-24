@@ -59,7 +59,7 @@ module Storages
                 results = validator.call
 
                 expect(results[:drive_contents]).to be_a_warning
-                expect(results[:drive_contents].code).to eq(:od_unexpected_content)
+                expect(results[:drive_contents].code).to eq(:sp_unexpected_content)
               end
 
               it "fails when folders can't be created" do
@@ -73,7 +73,7 @@ module Storages
                 results = validator.call
 
                 expect(results[:client_folder_creation]).to be_a_failure
-                expect(results[:client_folder_creation].code).to eq(:od_client_write_permission_missing)
+                expect(results[:client_folder_creation].code).to eq(:sp_client_write_permission_missing)
               end
 
               it "fails when the test folder already exists on the remote",
@@ -84,7 +84,7 @@ module Storages
 
                 result = validator.call
                 expect(result[:client_folder_creation]).to be_a_failure
-                expect(result[:client_folder_creation].code).to eq(:od_existing_test_folder)
+                expect(result[:client_folder_creation].code).to eq(:sp_existing_test_folder)
                 expect(result[:client_folder_creation].context[:folder_name]).to eq(folder_name)
               ensure
                 Input::DeleteFolder.build(location: created_folder).bind do |input_data|
@@ -101,7 +101,7 @@ module Storages
                 results = validator.call
 
                 expect(results[:client_folder_removal]).to be_a_failure
-                expect(results[:client_folder_removal].code).to eq(:od_client_cant_delete_folder)
+                expect(results[:client_folder_removal].code).to eq(:sp_client_cant_delete_folder)
               ensure
                 Input::DeleteFolder.build(location: created_folder).bind do |input_data|
                   Commands::DeleteFolderCommand.call(storage:, auth_strategy:, input_data:)

@@ -55,7 +55,7 @@ module Storages
                 pass_check(:drive_contents)
               else
                 log_extraneous_files(unexpected_files)
-                warn_check(:drive_contents, :od_unexpected_content)
+                warn_check(:drive_contents, :sp_unexpected_content)
               end
             end
 
@@ -71,7 +71,7 @@ module Storages
               Input::DeleteFolder.build(location: folder.id).bind do |input_data|
                 Registry["sharepoint.commands.delete_folder"].call(storage: @storage, auth_strategy:, input_data:)
                   .either(->(_) { pass_check(:client_folder_removal) },
-                          ->(_) { fail_check(:client_folder_removal, :od_client_cant_delete_folder) })
+                          ->(_) { fail_check(:client_folder_removal, :sp_client_cant_delete_folder) })
               end
             end
 
@@ -83,7 +83,7 @@ module Storages
                 folder_result.either(
                   ->(_) { pass_check(:client_folder_creation) },
                   ->(error) do
-                    code = error.code == :conflict ? :od_existing_test_folder : :od_client_write_permission_missing
+                    code = error.code == :conflict ? :sp_existing_test_folder : :sp_client_write_permission_missing
                     fail_check(:client_folder_creation, code, context: { folder_name: TEST_FOLDER_NAME })
                   end
                 )
