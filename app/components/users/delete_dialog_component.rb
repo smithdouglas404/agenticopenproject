@@ -48,7 +48,7 @@ module Users
     def heading = I18n.t("account.deletion_info.heading", name: @user.name)
 
     def user_scope
-      User.current == @user ? 'self' : 'other'
+      User.current == @user ? "self" : "other"
     end
   end
 end
