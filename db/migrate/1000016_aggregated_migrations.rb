@@ -133,7 +133,8 @@ class AggregatedMigrations < SquashedMigration
          Tables::ProjectLifeCycleStepDefinitions,
          Tables::ProjectLifeCycleSteps,
          Tables::Reminders,
-         Tables::ReminderNotifications
+         Tables::ReminderNotifications,
+         Tables::ProjectLifeCycleStepJournals
 
   # rubocop:disable Metrics/CollectionLiteralLength
   squashed_migrations *%w[
@@ -417,6 +418,7 @@ class AggregatedMigrations < SquashedMigration
     20241217190533_add_uniqueness_index_to_project_life_cycle_step_definitions_name
     20250102161733_adds_position_cache_to_hierarchy_items
     20250108100511_remove_incorrect_manage_own_reminders_permission
+    20250114162956_create_project_life_cycle_step_journals
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
