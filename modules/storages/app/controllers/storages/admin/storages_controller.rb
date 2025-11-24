@@ -80,7 +80,9 @@ module Storages
         @target_step = @wizard.prepare_next_step
       end
 
-      def upsell; end
+      def upsell
+        @provider_type = Storage.provider_types[params.fetch(:provider, "one_drive")]
+      end
 
       def edit
         @wizard = storage_wizard(@storage)
@@ -274,7 +276,7 @@ module Storages
 
       def require_ee_token_for_one_drive
         if (@provider_type || @storage).disallowed_by_enterprise_token?
-          redirect_to action: :upsell
+          redirect_to action: :upsell, provider: @provider_type.short_provider_name
         end
       end
 
