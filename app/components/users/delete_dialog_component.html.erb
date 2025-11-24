@@ -57,6 +57,9 @@
               I18n.t("account.deletion_info.data_consequences.#{user_scope}")
             end
           end
+          flex.with_row(text_align: :center) do
+            helpers.angular_component_tag "opce-custom-modal-overlay"
+          end
         end
       end
     end
