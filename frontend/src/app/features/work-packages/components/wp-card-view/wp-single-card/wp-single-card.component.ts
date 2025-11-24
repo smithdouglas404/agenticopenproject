@@ -238,4 +238,8 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
   private attributeHighlighting(type:string, wp:WorkPackageResource):string {
     return Highlighting.inlineClass(type, wp.type.id!);
   }
+
+  public assigneeAlt(): string {
+    return `${this.I18n.t("js.label_assignee_is")} ${this.workPackage.assignee.name}`;
+  }
 }
