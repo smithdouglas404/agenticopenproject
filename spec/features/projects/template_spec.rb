@@ -91,6 +91,14 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
              global_permissions:)
     end
 
+    it "shows the new project initiation request heading when the feature is enabled",
+       with_flag: { project_initiation_active: true } do
+      visit new_project_path(template_id: template.id)
+      click_on "Continue"
+
+      expect(page).to have_heading "New project creation wizard"
+    end
+
     it "can instantiate the project with the copy permission" do
       visit new_project_path(template_id: template.id)
 
@@ -100,6 +108,7 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       click_on "Continue"
 
       # Step 2: Project details
+      expect(page).to have_heading "New project"
       expect(page).to have_text("2 of 2")
       fill_in "Name", with: "Foo bar"
 

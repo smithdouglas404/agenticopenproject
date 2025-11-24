@@ -51,8 +51,4 @@ module Projects::CreationWizard
       super.presence || "project_creation_wizard"
     end
   end
-
-  def project_creation_wizard_name
-    I18n.t("settings.project_initiation_request.name.options.#{project_creation_wizard_artifact_name}")
-  end
 end
