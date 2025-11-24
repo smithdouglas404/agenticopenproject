@@ -559,6 +559,14 @@ en:
           The project will only be visible to project members depending on their role and associated permissions.
           Sub-projects are not affected and have their own settings.
       change_identifier: Change identifier
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Enable all"
         label_disable_all: "Disable all"
@@ -3610,6 +3618,7 @@ en:
   label_subproject: "Subproject"
   label_subproject_new: "New subproject"
   label_subproject_plural: "Subprojects"
+  label_subitems: "Subitems"
   label_subtask_plural: "Subtasks"
   label_summary: "Summary"
   label_system: "System"
@@ -3617,6 +3626,8 @@ en:
   label_table_of_contents: "Table of contents"
   label_tag: "Tag"
   label_team_planner: "Team Planner"
+  label_template: "Template"
+  label_templates: "Templates"
   label_text: "Long text"
   label_this_month: "this month"
   label_this_week: "this week"

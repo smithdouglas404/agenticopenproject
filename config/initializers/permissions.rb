@@ -153,6 +153,7 @@ Rails.application.reloader.to_prepare do
                                                                update_artifact_export_settings
                                                                toggle_project_custom_field
                                                                disable_all_of_section enable_all_of_section],
+                       "projects/settings/subitems": %i[show update],
                        "projects/templated": %i[create destroy],
                        "projects/identifier": %i[show update],
                        "projects/status": %i[update destroy]

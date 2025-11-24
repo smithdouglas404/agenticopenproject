@@ -731,6 +731,7 @@ Redmine::MenuManager.map :project_menu do |menu|
       if: ->(_) { OpenProject::FeatureDecisions.project_initiation_active? }
     },
     modules: { caption: :label_module_plural },
+    subitems: { caption: :label_subitems },
     work_packages: {
       caption: :label_work_package_plural,
       if: ->(project) {
