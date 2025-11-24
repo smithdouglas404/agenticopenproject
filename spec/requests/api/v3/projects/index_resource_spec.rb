@@ -36,6 +36,8 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
   include API::V3::Utilities::PathHelper
 
   shared_let(:admin) { create(:admin) }
+  # This portfolio is here as a check to see if only projects are returned via this endpoint.
+  shared_let(:portfolio) { create(:portfolio, public: true) }
 
   let(:project) do
     create(:project, public: false, active: project_active)
@@ -520,6 +522,14 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
           )
         end
       end
+    end
+  end
+
+  context "when not being logged in and login is required" do
+    current_user { create(:anonymous) }
+
+    context "if user is not logged in" do
+      it_behaves_like "unauthenticated access"
     end
   end
 end

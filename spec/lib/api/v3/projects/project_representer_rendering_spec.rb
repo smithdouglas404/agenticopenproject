@@ -37,6 +37,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
 
   let(:available_custom_fields) { [int_custom_field, version_custom_field] }
   let(:all_available_custom_fields) { [int_custom_field, version_custom_field] }
+  let(:favorited) { true }
   let(:project) do
     build_stubbed(:project,
                   :with_status,
@@ -64,6 +65,10 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
           .to receive(calculated_value_custom_field.attribute_getter)
                 .and_return(calculated_custom_value.value)
       end
+
+      allow(p)
+        .to receive(:favorited_by?)
+              .and_return(favorited)
     end
   end
 
@@ -113,8 +118,28 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
   it { is_expected.to include_json("Project".to_json).at_path("_type") }
 
   describe "properties" do
-    it_behaves_like "property", :_type do
-      let(:value) { "Project" }
+    describe "_type" do
+      context "for a project" do
+        it_behaves_like "property", :_type do
+          let(:value) { "Project" }
+        end
+      end
+
+      context "for a portfolio" do
+        let(:project) { build_stubbed(:portfolio) }
+
+        it_behaves_like "property", :_type do
+          let(:value) { "Portfolio" }
+        end
+      end
+
+      context "for a program" do
+        let(:project) { build_stubbed(:program) }
+
+        it_behaves_like "property", :_type do
+          let(:value) { "Program" }
+        end
+      end
     end
 
     it_behaves_like "property", :id do
@@ -135,6 +160,10 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
 
     it_behaves_like "property", :public do
       let(:value) { project.public }
+    end
+
+    it_behaves_like "property", :favorited do
+      let(:value) { true }
     end
 
     it_behaves_like "formattable property", :description do
@@ -248,12 +277,34 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
   describe "_links" do
     it { is_expected.to have_json_type(Object).at_path("_links") }
 
-    it "links to self" do
-      expect(subject).to have_json_path("_links/self/href")
-    end
+    describe "self" do
+      context "for a project" do
+        it_behaves_like "has a titled link" do
+          let(:link) { "self" }
+          let(:href) { api_v3_paths.project(project.id) }
+          let(:title) { project.name }
+        end
+      end
 
-    it "has a title for link to self" do
-      expect(subject).to have_json_path("_links/self/title")
+      context "for a portfolio" do
+        let(:project) { build_stubbed(:portfolio) }
+
+        it_behaves_like "has a titled link" do
+          let(:link) { "self" }
+          let(:href) { api_v3_paths.portfolio(project.id) }
+          let(:title) { project.name }
+        end
+      end
+
+      context "for a program" do
+        let(:project) { build_stubbed(:program) }
+
+        it_behaves_like "has a titled link" do
+          let(:link) { "self" }
+          let(:href) { api_v3_paths.program(project.id) }
+          let(:title) { project.name }
+        end
+      end
     end
 
     describe "create work packages" do
@@ -530,6 +581,45 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
 
         it_behaves_like "has no link" do
           let(:link) { "memberships" }
+        end
+      end
+    end
+
+    describe "schema" do
+      it_behaves_like "has an untitled link" do
+        let(:link) { "schema" }
+        let(:href) { api_v3_paths.workspace_schema }
+      end
+    end
+
+    describe "favor" do
+      context "when the project isn't favored yet" do
+        let(:favorited) { false }
+        let(:link) { "favor" }
+
+        it_behaves_like "has an untitled link" do
+          let(:href) { api_v3_paths.favor_workspace(project.id) }
+        end
+
+        it_behaves_like "the link indicates the verb" do
+          let(:verb) { :post }
+        end
+      end
+
+      context "when the project is favorited" do
+        let(:favorited) { true }
+
+        it_behaves_like "has no link" do
+          let(:link) { "favor" }
+        end
+      end
+
+      context "when the project isn't favored yet and the user is not logged in" do
+        let(:user) { build_stubbed(:anonymous) }
+        let(:favorited) { false }
+
+        it_behaves_like "has no link" do
+          let(:link) { "favor" }
         end
       end
     end

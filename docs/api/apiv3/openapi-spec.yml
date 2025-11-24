@@ -290,6 +290,12 @@ paths:
     "$ref": "./paths/placeholder_users.yml"
   "/api/v3/placeholder_users/{id}":
     "$ref": "./paths/placeholder_user.yml"
+  "/api/v3/portfolios":
+    "$ref": "./paths/portfolios.yml"
+  "/api/v3/portfolios/{id}":
+    "$ref": "./paths/portfolio.yml"
+  "/api/v3/portfolios/{id}/form":
+    "$ref": "./paths/portfolio_form.yml"
   "/api/v3/posts/{id}":
     "$ref": "./paths/post.yml"
   "/api/v3/posts/{id}/attachments":
@@ -300,6 +306,12 @@ paths:
     "$ref": "./paths/priorities.yml"
   "/api/v3/priorities/{id}":
     "$ref": "./paths/priority.yml"
+  "/api/v3/programs":
+    "$ref": "./paths/programs.yml"
+  "/api/v3/programs/{id}":
+    "$ref": "./paths/program.yml"
+  "/api/v3/programs/{id}/form":
+    "$ref": "./paths/program_form.yml"
   "/api/v3/project_phases/{id}":
     "$ref": "./paths/project_phase.yml"
   "/api/v3/project_phase_definitions":
@@ -508,6 +520,10 @@ paths:
     "$ref": "./paths/work_package_watchers.yml"
   "/api/v3/work_packages/{id}/watchers/{user_id}":
     "$ref": "./paths/work_package_watcher.yml"
+  "/api/v3/workspaces":
+    "$ref": "./paths/workspaces.yml"
+  "/api/v3/workspaces/schema":
+    "$ref": "./paths/workspaces_schema.yml"
 
 components:
   examples:
@@ -551,8 +567,20 @@ components:
       $ref: "./components/examples/notification_collection.yml"
     PlaceholderUserResponse:
       $ref: "./components/examples/placeholder-user-response.yml"
+    Portfolio:
+      $ref: "./components/examples/portfolio.yml"
+    PortfolioBody:
+      $ref: "./components/examples/portfolio_body.yml"
+    PortfolioCollection:
+      $ref: "./components/examples/portfolio_collection.yml"
     PriorityCollection:
       $ref: "./components/examples/priority_collection.yml"
+    Program:
+      $ref: "./components/examples/program.yml"
+    ProgramBody:
+      $ref: "./components/examples/program_body.yml"
+    ProgramCollection:
+      $ref: "./components/examples/program_collection.yml"
     Project:
       $ref: "./components/examples/project.yml"
     ProjectBody:
@@ -683,6 +711,10 @@ components:
       "$ref": "./components/schemas/document_model.yml"
     DocumentsModel:
       "$ref": "./components/schemas/documents_model.yml"
+    EmojiReactionModel:
+      "$ref": "./components/schemas/emoji_reaction_model.yml"
+    EmojiReactions_Model:
+      "$ref": "./components/schemas/emoji_reactions_model.yml"
     ErrorResponse:
       "$ref": "./components/schemas/error_response.yml"
     Example_FormModel:
@@ -783,6 +815,10 @@ components:
       "$ref": "./components/schemas/placeholder_user_model.yml"
     Plain_TextModel:
       "$ref": "./components/schemas/plain_text_model.yml"
+    PortfolioCollectionModel:
+      "$ref": "./components/schemas/portfolio_collection_model.yml"
+    PortfolioModel:
+      "$ref": "./components/schemas/portfolio_model.yml"
     PostModel:
       "$ref": "./components/schemas/post_model.yml"
     PrincipalCollectionModel:
@@ -793,6 +829,10 @@ components:
       "$ref": "./components/schemas/priority_collection_model.yml"
     PriorityModel:
       "$ref": "./components/schemas/priority_model.yml"
+    ProgramCollectionModel:
+      "$ref": "./components/schemas/program_collection_model.yml"
+    ProgramModel:
+      "$ref": "./components/schemas/program_model.yml"
     ProjectCollectionModel:
       "$ref": "./components/schemas/project_collection_model.yml"
     ProjectModel:
@@ -807,8 +847,6 @@ components:
       "$ref": "./components/schemas/project_storage_collection_model.yml"
     ProjectStorageModel:
       "$ref": "./components/schemas/project_storage_model.yml"
-    Projects_schemaModel:
-      "$ref": "./components/schemas/projects_schema_model.yml"
     QueriesModel:
       "$ref": "./components/schemas/queries_model.yml"
     QueryModel:
@@ -951,10 +989,10 @@ components:
       "$ref": "./components/schemas/work_package_activities_model.yml"
     Work_PackagesModel:
       "$ref": "./components/schemas/work_packages_model.yml"
-    EmojiReactionModel:
-      "$ref": "./components/schemas/emoji_reaction_model.yml"
-    EmojiReactions_Model:
-      "$ref": "./components/schemas/emoji_reactions_model.yml"
+    WorkspaceCollectionModel:
+      "$ref": "./components/schemas/workspace_collection_model.yml"
+    Workspaces_schemaModel:
+      "$ref": "./components/schemas/workspaces_schema_model.yml"
   securitySchemes:
     BasicAuth:
       type: http
@@ -983,9 +1021,11 @@ tags:
   - "$ref": "./tags/news.yml"
   - "$ref": "./tags/notifications.yml"
   - "$ref": "./tags/oauth.yml"
+  - "$ref": "./tags/portfolios.yml"
   - "$ref": "./tags/posts.yml"
   - "$ref": "./tags/principals.yml"
   - "$ref": "./tags/priorities.yml"
+  - "$ref": "./tags/programs.yml"
   - "$ref": "./tags/project_phases.yml"
   - "$ref": "./tags/project_phase_definitions.yml"
   - "$ref": "./tags/projects.yml"
@@ -1013,5 +1053,6 @@ tags:
   - "$ref": "./tags/wiki_pages.yml"
   - "$ref": "./tags/work_packages.yml"
   - "$ref": "./tags/work_schedule.yml"
+  - "$ref": "./tags/workspaces.yml"
 security:
   - BasicAuth: []

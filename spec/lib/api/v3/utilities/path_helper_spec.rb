@@ -274,6 +274,12 @@ RSpec.describe API::V3::Utilities::PathHelper do
     it_behaves_like "show", :placeholder_user
   end
 
+  describe "portfolios paths" do
+    it_behaves_like "index", :portfolio
+    it_behaves_like "show", :portfolio
+    it_behaves_like "update form", :portfolio
+  end
+
   describe "posts paths" do
     it_behaves_like "index", :post
     it_behaves_like "show", :post
@@ -286,6 +292,12 @@ RSpec.describe API::V3::Utilities::PathHelper do
   describe "priorities paths" do
     it_behaves_like "index", :priority
     it_behaves_like "show", :priority
+  end
+
+  describe "programs paths" do
+    it_behaves_like "index", :program
+    it_behaves_like "show", :program
+    it_behaves_like "update form", :program
   end
 
   describe "projects paths" do
@@ -676,6 +688,16 @@ RSpec.describe API::V3::Utilities::PathHelper do
 
         it_behaves_like "api v3 path", "/work_packages/schemas/sums"
       end
+    end
+  end
+
+  describe "workspace paths" do
+    it_behaves_like "resource", :workspace, except: %i[create_form show]
+
+    describe "#favor_workspace" do
+      subject { helper.favor_workspace 42 }
+
+      it_behaves_like "api v3 path", "/workspaces/42/favorite"
     end
   end
 

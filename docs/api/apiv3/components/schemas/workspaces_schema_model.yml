@@ -1,8 +1,8 @@
-# Schema: Projects_schemaModel
+# Schema: Workspaces_schemaModel
 ---
 type: object
 description: |-
-  A schema for a project. This schema defines the attributes of a project.
+  A schema for a workspace. This schema defines the attributes of a workspace.
 
 properties:
   _type:
@@ -11,7 +11,7 @@ properties:
     description: The type identifier for this resource
   _dependencies:
     type: array
-    description: Schema dependencies (currently empty for projects)
+    description: Schema dependencies (currently empty for workspaces)
   _attributeGroups:
     type: array
     items:
@@ -92,7 +92,7 @@ properties:
         properties:
           href:
             type: string
-            example: "/api/v3/projects/schema"
+            example: "/api/v3/workspaces/schema"
 
 example:
   _type: Schema
@@ -170,7 +170,7 @@ example:
     hasDefault: false
     writable: true
   parent:
-    type: Project
+    type: Workspace
     name: Subproject of
     required: false
     hasDefault: false
@@ -231,4 +231,4 @@ example:
     visibility: default
   _links:
     self:
-      href: "/api/v3/projects/schema"
+      href: "/api/v3/workspaces/schema"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -25,9 +27,6 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
-require "roar/decorator"
-require "roar/json/hal"
 
 module API
   module V3
@@ -141,9 +140,25 @@ module API
           }
         end
 
+        link :favor,
+             method: :post,
+             cache_if: -> {
+               current_user.logged? && !represented.favorited_by?(current_user)
+             } do
+          { href: api_v3_paths.favor_workspace(represented.id) }
+        end
+
+        link :disfavor,
+             method: :delete,
+             cache_if: -> {
+               current_user.logged? && represented.favorited_by?(current_user)
+             } do
+          { href: api_v3_paths.favor_workspace(represented.id) }
+        end
+
         link :schema do
           {
-            href: api_v3_paths.projects_schema
+            href: api_v3_paths.workspace_schema
           }
         end
 
@@ -187,6 +202,10 @@ module API
 
         property :active
         property :public
+
+        property :favorited,
+                 exec_context: :decorator,
+                 getter: ->(*) { represented.favorited_by?(current_user) }
 
         formattable_property :description,
                              cache_if: current_user_view_allowed_lambda
@@ -232,7 +251,24 @@ module API
                              cache_if: current_user_view_allowed_lambda
 
         def _type
-          "Project"
+          strategy.type
+        end
+
+        def self_v3_path(*)
+          strategy.path(represented)
+        end
+
+        def strategy(resource = represented)
+          case resource.workspace_type
+          when "project"
+            ProjectStrategy
+          when "program"
+            ProgramStrategy
+          when "portfolio"
+            PortfolioStrategy
+          else
+            raise NoMethodError
+          end
         end
 
         self.to_eager_load = %i[enabled_modules parent]

@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,17 +26,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module API
-  module V3
-    module Projects
-      module Schemas
-        class ProjectSchemaAPI < ::API::OpenProjectAPI
-          resources :schema do
-            get &::API::V3::Utilities::Endpoints::Schema.new(model: Project).mount
-          end
-        end
+require "spec_helper"
+require "rack/test"
+require_relative "../workspaces/update_form_resource_examples"
+
+RSpec.describe "API v3 Portfolio resource update form", content_type: :json do
+  describe "POST /api/v3/portfolios/:id/form" do
+    include_examples "APIv3 workspace update form" do
+      shared_let(:workspace, reload: true) { create(:portfolio) }
+
+      let(:path) { api_v3_paths.portfolio_form(path_id) }
+      let(:workspace_path) { api_v3_paths.portfolio(workspace.id) }
+
+      context "with a program id" do
+        let(:workspace) { create(:program, public: true) }
+
+        it_behaves_like "not found"
       end
     end
   end

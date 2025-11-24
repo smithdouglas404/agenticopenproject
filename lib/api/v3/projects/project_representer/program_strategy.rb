@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,45 +26,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-require "spec_helper"
-require "rack/test"
+module API
+  module V3
+    module Projects
+      class ProjectRepresenter::ProgramStrategy
+        extend APIV3Helper
 
-RSpec.describe "API v3 Projects schema resource", content_type: :json do
-  include Rack::Test::Methods
-  include API::V3::Utilities::PathHelper
+        def self.type
+          "Program"
+        end
 
-  shared_let(:current_user) do
-    create(:user)
-  end
+        def self.path_name
+          :program
+        end
 
-  let(:path) { api_v3_paths.project_schema }
-
-  before do
-    login_as(current_user)
-  end
-
-  subject(:response) { last_response }
-
-  describe "#GET /projects/schema" do
-    before do
-      get path
-    end
-
-    it "responds with 200 OK" do
-      expect(subject.status).to eq(200)
-    end
-
-    it "returns a schema" do
-      expect(subject.body)
-        .to be_json_eql("Schema".to_json)
-        .at_path "_type"
-    end
-
-    it "does not embed" do
-      expect(subject.body)
-        .not_to have_json_path("parent/_links/allowedValues")
+        def self.path(represented)
+          api_v3_paths.program(represented.id)
+        end
+      end
     end
   end
 end

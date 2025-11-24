@@ -37,6 +37,7 @@ module API
                                                                        scope: -> {
                                                                          Project
                                                                            .includes(ProjectRepresenter.to_eager_load)
+                                                                           .project
                                                                        })
                                                                   .mount
 
@@ -46,7 +47,7 @@ module API
                                                             })
                                                        .mount
 
-          mount ::API::V3::Projects::Schemas::ProjectSchemaAPI
+          mount ::API::V3::Workspaces::Schemas::WorkspaceSchemaAPI
           mount ::API::V3::Projects::CreateFormAPI
 
           mount API::V3::Projects::AvailableParentsAPI
@@ -57,19 +58,13 @@ module API
           route_param :id do
             after_validation do
               @project = if current_user.admin?
-                           Project.all
+                           Project.project
                          else
-                           Project.visible(current_user)
+                           Project.project.visible(current_user)
                          end.find(params[:id])
             end
 
-            get &::API::V3::Utilities::Endpoints::Show.new(model: Project).mount
-            patch &::API::V3::Utilities::Endpoints::Update.new(model: Project).mount
-            delete &::API::V3::Utilities::Endpoints::Delete.new(model: Project,
-                                                                process_service: ::Projects::ScheduleDeletionService)
-                                                           .mount
-
-            mount ::API::V3::Projects::UpdateFormAPI
+            mount ::API::V3::Workspaces::InstanceApis
 
             mount API::V3::Projects::AvailableAssigneesAPI
             mount API::V3::Projects::Copy::CopyAPI

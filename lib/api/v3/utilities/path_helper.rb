@@ -281,6 +281,10 @@ module API
             "#{days_non_working}/#{date}"
           end
 
+          def self.favor_workspace(workspace_id)
+            "#{workspace(workspace_id)}/favorite"
+          end
+
           index :help_text
           show :help_text
 
@@ -328,6 +332,10 @@ module API
           index :placeholder_user
           show :placeholder_user
 
+          index :portfolio
+          show :portfolio
+          update_form :portfolio
+
           index :post
           show :post
 
@@ -340,6 +348,10 @@ module API
             alias :issue_priorities :priorities
             alias :issue_priority :priority
           end
+
+          index :program
+          show :program
+          update_form :program
 
           show :oauth_application
 
@@ -652,6 +664,8 @@ module API
           def self.work_packages_by_project(project_id)
             "#{project(project_id)}/work_packages"
           end
+
+          resources :workspace, except: %i[create_form]
 
           def self.timestamps_to_param_value(timestamps)
             Array(timestamps).map { |timestamp| Timestamp.parse(timestamp).absolute }.join(",")

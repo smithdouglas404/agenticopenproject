@@ -96,9 +96,28 @@ module API
               SQL
             end
           end
+
+          def workspace_type_link_case(table = nil)
+            table = "#{table}." if table
+
+            <<~SQL.squish
+              CASE
+                WHEN #{table}workspace_type = 'project'
+                  THEN json_build_object('href', format('#{api_v3_paths.project('%s')}', #{table}id),
+                                         'title', #{table}name)
+                WHEN #{table}workspace_type = 'program'
+                  THEN json_build_object('href', format('#{api_v3_paths.program('%s')}', #{table}id),
+                                         'title', #{table}name)
+                WHEN #{table}workspace_type = 'portfolio'
+                  THEN json_build_object('href', format('#{api_v3_paths.portfolio('%s')}', #{table}id),
+                                         'title', #{table}name)
+              END
+            SQL
+          end
         end
 
         link :self,
+             sql: -> { workspace_type_link_case(nil) },
              path: { api: :project, params: %w(id) },
              column: -> { :id },
              title: -> { :name }
@@ -112,7 +131,15 @@ module API
              }
 
         property :_type,
-                 representation: ->(*) { "'Project'" }
+                 representation: ->(*) {
+                   <<~SQL.squish
+                     CASE
+                       WHEN workspace_type = 'project' THEN 'Project'
+                       WHEN workspace_type = 'program' THEN 'Program'
+                       WHEN workspace_type = 'portfolio' THEN 'Portfolio'
+                     END
+                   SQL
+                 }
 
         property :id
 

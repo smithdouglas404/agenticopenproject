@@ -135,7 +135,7 @@ RSpec.describe API::V3::Projects::ProjectPayloadRepresenter, "parsing" do
 
   describe "_links" do
     context "with a parent link" do
-      context "with the href being an url" do
+      context "with the href being a project url" do
         let(:hash) do
           {
             "_links" => {
