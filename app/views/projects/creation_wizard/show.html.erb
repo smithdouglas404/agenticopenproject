@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title @project.project_creation_wizard_name %>
+<% html_title I18n.t("settings.project_initiation_request.name.options.#{@project.project_creation_wizard_artifact_name}") %>
 
 <%= render(
       Projects::Wizard::PageComponent.new(
