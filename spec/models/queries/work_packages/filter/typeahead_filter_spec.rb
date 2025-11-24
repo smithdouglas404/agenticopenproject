@@ -45,7 +45,7 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
   end
 
   describe "#where clause" do
-    subject { instance.where }
+    subject { WorkPackage.joins(instance.joins).where(instance.where) }
 
     let(:project)   { create(:project, name: "Phoenix") }
     let(:epic_type) { create(:type, name: "Epic") }
