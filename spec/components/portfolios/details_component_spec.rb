@@ -91,9 +91,30 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
       end
     end
 
-    describe "displays the number of child programs and projects" do
-      it { expect(subject).to have_text("2 programs") }
-      it { expect(subject).to have_text("5 projects") }
+    context "when there are no child portfolios" do
+      describe "displays the number of child programs and projects" do
+        it { expect(subject).to have_text("2 programs") }
+        it { expect(subject).to have_text("5 projects") }
+
+        it { expect(subject).to have_no_text("0 portfolios") }
+      end
+    end
+
+    context "when there are child portfolios" do
+      before do
+        create(:portfolio, parent: portfolio, status_code: status_code_b).tap do |child_portfolio|
+          create(:program, parent: child_portfolio, status_code: status_code_b)
+        end
+
+        portfolio.reload
+      end
+
+      describe "displays the number of child programs and projects, including portfolios" do
+        it { expect(subject).to have_text("3 programs") }
+        it { expect(subject).to have_text("5 projects") }
+
+        it { expect(subject).to have_text("1 portfolio") }
+      end
     end
 
     describe "#updated_at" do
