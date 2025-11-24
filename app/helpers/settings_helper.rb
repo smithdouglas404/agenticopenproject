@@ -175,10 +175,6 @@ module SettingsHelper
     setting_label(setting, options) + wrap_field_outer(options, &)
   end
 
-  def disabled_setting_option(setting)
-    { disabled: !writable_setting?(setting) }
-  end
-
   def writable_setting?(setting)
     Setting.send(:"#{setting}_writable?")
   end
@@ -249,6 +245,10 @@ module SettingsHelper
 
       safe_join([check_box_tag, text, hidden_checked_input])
     end
+  end
+
+  def disabled_setting_option(setting)
+    { disabled: !writable_setting?(setting) }
   end
 
   def with_empty_unless_writable(setting)

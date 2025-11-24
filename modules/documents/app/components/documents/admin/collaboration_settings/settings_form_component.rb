@@ -35,7 +35,7 @@ module Documents
       class SettingsFormComponent < ApplicationComponent
         include OpPrimer::FormHelpers
 
-        delegate :disabled_setting_option, :writable_setting?, to: :helpers
+        delegate :writable_setting?, to: :helpers
 
         def none_writable_settings?
           settings.none? { writable_setting?(it) }

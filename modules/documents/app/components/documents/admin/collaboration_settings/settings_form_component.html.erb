@@ -46,8 +46,7 @@
           label: I18n.t("documents.admin.collaboration_settings.hocuspocus_server_url.label"),
           required: true,
           input_width: :large,
-          caption: I18n.t("documents.admin.collaboration_settings.hocuspocus_server_url.caption"),
-          **disabled_setting_option(:collaborative_editing_hocuspocus_url)
+          caption: I18n.t("documents.admin.collaboration_settings.hocuspocus_server_url.caption")
         )
 
         form.text_field(
@@ -58,8 +57,7 @@
           caption: I18n.t("documents.admin.collaboration_settings.hocuspocus_server_secret.caption"),
           type: :password,
           value: nil, # IMPORTANT: Don't expose the secret in the form
-          placeholder: Setting.collaborative_editing_hocuspocus_secret.present? ? "••••••••••••••••" : nil,
-          **disabled_setting_option(:collaborative_editing_hocuspocus_secret)
+          placeholder: Setting.collaborative_editing_hocuspocus_secret.present? ? "••••••••••••••••" : nil
         )
 
         form.submit
