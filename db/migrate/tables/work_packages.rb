@@ -51,7 +51,7 @@ class Tables::WorkPackages < Tables::Base
       t.date :start_date, index: true
       t.belongs_to :responsible
       t.float :derived_estimated_hours
-      t.boolean :schedule_manually, default: false # rubocop:disable Rails/ThreeStateBooleanColumn
+      t.boolean :schedule_manually, default: true, null: false
       t.bigint :parent_id, null: true, index: true
       t.integer :duration
       t.boolean :ignore_non_working_days, default: false, null: false
