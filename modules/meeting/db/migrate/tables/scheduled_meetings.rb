@@ -46,7 +46,9 @@ class Tables::ScheduledMeetings < Tables::Base
 
       t.timestamps
 
-      t.index %i[recurring_meeting_id start_time], unique: true
+      # TODO: Check if we can do it like this or need to manually add the constraint
+      t.check_constraint("UNIQUE (recurring_meeting_id, start_time) DEFERRABLE INITIALLY DEFERRED",
+                         name: "unique_recurring_meeting_start_time")
     end
   end
 end
