@@ -61,6 +61,18 @@ module Grids
         { full_width: true }
       end
 
+      def show_create_sub_program_button?
+        project.portfolio?
+      end
+
+      def create_sub_program_path
+        new_program_path(parent_id: project.id)
+      end
+
+      def create_sub_project_path
+        new_project_path(parent_id: project.id)
+      end
+
       def can_view_subprojects?
         return false unless current_user.allowed_in_project?(:view_project, project)
 
