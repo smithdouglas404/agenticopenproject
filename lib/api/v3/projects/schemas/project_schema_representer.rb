@@ -94,13 +94,13 @@ module API
                                        !current_user.allowed_globally?(:add_project)
                                    },
                                    href_callback: ->(*) {
-                                     query_props = if represented.model.new_record?
-                                                     ""
-                                                   else
-                                                     "?of=#{represented.model.id}"
-                                                   end
+                                     params = if represented.model.new_record?
+                                                { workspace_type: represented.model.workspace_type }
+                                              else
+                                                { of: represented.model.id }
+                                              end
 
-                                     api_v3_paths.projects_available_parents + query_props
+                                     api_v3_paths.projects_available_parents(**params)
                                    }
 
           schema :created_at,

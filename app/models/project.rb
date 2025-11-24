@@ -55,6 +55,12 @@ class Project < ApplicationRecord
     portfolio: "portfolio"
   }, validate: true
 
+  ALLOWED_PARENT_WORKSPACE_TYPES = {
+    project: %i[portfolio program project],
+    program: %i[portfolio],
+    portfolio: %i[portfolio]
+  }.with_indifferent_access
+
   has_many :members, -> {
     # TODO: check whether this should
     # remain to be limited to User only
@@ -268,6 +274,8 @@ class Project < ApplicationRecord
   def to_s
     name
   end
+
+  def allowed_parent_workspace_types = ALLOWED_PARENT_WORKSPACE_TYPES[workspace_type] || []
 
   def workspace_label
     case workspace_type

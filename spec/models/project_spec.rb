@@ -593,4 +593,28 @@ RSpec.describe Project do
       end
     end
   end
+
+  describe "#allowed_parent_workspace_types" do
+    {
+      project: %i[portfolio program project],
+      program: %i[portfolio],
+      portfolio: %i[portfolio]
+    }.each do |workspace_type, allowed_parent_workspace_types|
+      context "for workspace type #{workspace_type}" do
+        let(:project) { described_class.new(workspace_type:) }
+
+        subject { project.allowed_parent_workspace_types }
+
+        it { is_expected.to match_array(allowed_parent_workspace_types) }
+      end
+    end
+
+    context "for unknown workspace type" do
+      let(:project) { described_class.new(workspace_type: :unknown) }
+
+      subject { project.allowed_parent_workspace_types }
+
+      it { is_expected.to eq [] }
+    end
+  end
 end
