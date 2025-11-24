@@ -33,8 +33,6 @@ module Documents
     module Settings
       class DocumentCollaborationSettingsController < ::Admin::SettingsController
         menu_item :document_collaboration_settings
-
-        def index; end
       end
     end
   end

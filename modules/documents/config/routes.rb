@@ -59,7 +59,12 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :document_collaboration_settings, only: [:index]
+        resource :document_collaboration_settings, only: %i[show update] do
+          member do
+            get :delete_dialog, defaults: { format: :turbo_stream }
+            delete :destroy
+          end
+        end
       end
     end
   end
