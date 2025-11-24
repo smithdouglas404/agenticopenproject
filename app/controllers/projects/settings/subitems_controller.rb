@@ -34,26 +34,27 @@ class Projects::Settings::SubitemsController < Projects::SettingsController
   def show; end
 
   def update
-    workspace_type = params[:workspace_type]
-    template_id = params[:template_id]
-
-    assignment = @project.subproject_template_assignments.find_or_initialize_by(workspace_type:)
-
-    if template_id.blank?
-      if assignment.persisted?
-        assignment.destroy
-        flash[:notice] = I18n.t(:notice_successful_update)
-      end
-    else
-      assignment.template_id = template_id
-      if assignment.save
-        flash[:notice] = I18n.t(:notice_successful_update)
-      else
-        flash[:error] = assignment.errors.full_messages.join(", ")
-      end
+    if params.key?(:project_template)
+      update_template_assignment("project", params[:project_template])
     end
 
+    if params.key?(:program_template)
+      update_template_assignment("program", params[:program_template])
+    end
+
+    flash[:notice] = I18n.t(:notice_successful_update)
     redirect_to project_settings_subitems_path(@project)
   end
 
+  private
+
+  def update_template_assignment(workspace_type, template_id)
+    assignment = @project.subproject_template_assignments.find_or_initialize_by(workspace_type:)
+
+    if template_id.blank? && assignment.persisted?
+      assignment.destroy
+    else
+      assignment.update(template_id:)
+    end
+  end
 end
