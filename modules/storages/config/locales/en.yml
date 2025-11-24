@@ -352,7 +352,6 @@ en:
         sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         sp_oauth_token_missing: OpenProject cannot test the user level communication with SharePoint as the user did not yet link their SharePoint account.
         sp_tenant_id_missing: The configured directory (tenant) id is missing for SharePoint. Please check the configuration.
-        sp_test_folder_exists: The folder %{folder_name} needed for testing already exists. Please delete it and try again.
         sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
         unknown_error: The connection could not be validated. An unknown error occurred. Please check the server logs for further information.
       label_error: Error
