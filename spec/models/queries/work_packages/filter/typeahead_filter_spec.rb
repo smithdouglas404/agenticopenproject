@@ -45,7 +45,7 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
   end
 
   describe "#where clause" do
-    subject { WorkPackage.joins(instance.joins).where(instance.where) }
+    subject { WorkPackage.joins(instance.joins + [:project]).where(instance.where) }
 
     let(:project)   { create(:project, name: "Phoenix") }
     let(:epic_type) { create(:type, name: "Epic") }
@@ -237,8 +237,8 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
     context "with empty search term" do
       let(:values) { [""] }
 
-      it "returns no work packages" do
-        expect(subject).to be_empty
+      it "returns some work packages" do
+        expect(subject).to include(epic_work_package, bug_work_package, task_work_package)
       end
     end
   end
