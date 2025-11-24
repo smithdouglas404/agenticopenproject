@@ -30,23 +30,19 @@
 
 require Rails.root.join("db/migrate/tables/base").to_s
 
-class Tables::Meetings < Tables::Base
+class Tables::RecurringMeetings < Tables::Base
   def self.table(migration)
     create_table migration do |t|
-      t.string :title
-      t.bigint :author_id
-      t.bigint :project_id
-      t.string :location
-      t.datetime :start_time, precision: nil
-      t.float :duration
-      t.timestamps precision: nil, null: false
-      t.integer :state, default: 0, null: false
-      t.integer :lock_version, default: 0, null: false
-      t.string :type, default: "Meeting", null: false
-      t.refereces :recurring_meeting, index: true
-      t.boolean :template, default: false, null: false
+      t.datetime :start_time
+      t.date :end_date, null: true
+      t.text :title
+      t.integer :frequency, default: 0, null: false
+      t.integer :end_after, default: 0, null: false
+      t.integer :iterations, null: true
+      t.belongs_to :project, foreign_key: true, index: true
+      t.belongs_to :author, foreign_key: { to_table: :users }
 
-      t.index %i[project_id updated_at]
+      t.timestamps
     end
   end
 end

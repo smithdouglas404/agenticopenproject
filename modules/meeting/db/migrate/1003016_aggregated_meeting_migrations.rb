@@ -53,6 +53,7 @@ class AggregatedMeetingMigrations < SquashedMigration
     20240418110249_set_author_as_presenter
     20240516102219_fix_untitled_meetings
     20250318123314_add_backlog_to_meeting_sections
+    20240426073948_create_recurring_meetings
   ].freeze
 
   tables Tables::MeetingContents,
@@ -62,5 +63,6 @@ class AggregatedMeetingMigrations < SquashedMigration
          Tables::MeetingContentJournals,
          Tables::MeetingSections,
          Tables::MeetingAgendaItems,
-         Tables::MeetingAgendaItemJournals
+         Tables::MeetingAgendaItemJournals,
+         Tables::RecurringMeetings
 end
