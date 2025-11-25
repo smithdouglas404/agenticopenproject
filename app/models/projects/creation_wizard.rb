@@ -50,5 +50,11 @@ module Projects::CreationWizard
     def project_creation_wizard_artifact_name
       super.presence || "project_creation_wizard"
     end
+
+    def project_creation_wizard_name
+      I18n.t(project_creation_wizard_artifact_name,
+             default: :project_initiation_request,
+             scope: "settings.project_initiation_request.name.options")
+    end
   end
 end

@@ -121,7 +121,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def heading
-    project.project_creation_wizard_artifact_name
+    project.project_creation_wizard_name
   end
 
   def footer_title

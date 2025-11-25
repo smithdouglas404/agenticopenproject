@@ -73,7 +73,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
     let(:current_user) { create(:admin) }
 
     it "exports a PDF containing project initiation using the custom defined name" do
-      custom_artefact_name = project.project_creation_wizard_artifact_name
+      custom_artefact_name = project.project_creation_wizard_name
       expected_document = [
         project.name, custom_artefact_name, export_time_formatted, # cover page
         custom_artefact_name,
@@ -105,7 +105,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
     end
 
     it "exports a PDF containing project initiation with custom attributes grouped by sections" do
-      heading = project.project_creation_wizard_artifact_name
+      heading = project.project_creation_wizard_name
 
       expected_document = [
         project.name, heading, export_time_formatted, # cover page
