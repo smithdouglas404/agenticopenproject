@@ -30,7 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= render Admin::Settings::NewProjectSettings::PageHeaderComponent.new %>
 
-<% case params[:tab] %>
+<% case params.fetch(:tab, "settings") %>
 <% when "settings" %>
   <%= render partial: "settings" %>
 <% when "notifications" %>
