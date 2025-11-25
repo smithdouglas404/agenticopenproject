@@ -31,12 +31,12 @@
 
 module Documents
   module ShowEditView
-    class BlockNoteEditorComponent < ApplicationComponent
+    class CollaborationDisabledNoticeComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
       alias_method :document, :model
 
-      options :project, :oauth_token, :state
+      options :project, :state
     end
   end
 end
