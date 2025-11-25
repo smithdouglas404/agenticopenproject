@@ -33,6 +33,22 @@ module Grids
     class Header < ApplicationComponent
       attr_reader :id, :title
 
+      renders_one :action, types: {
+        icon_button: lambda { |icon:, label:, **system_arguments|
+          deny_tag_argument(**system_arguments)
+
+          system_arguments[:icon] = icon
+          system_arguments[:"aria-label"] ||= label
+
+          Primer::Beta::IconButton.new(**system_arguments)
+        },
+        menu: {
+          renders: lambda { |menu_arguments: {}, button_arguments: {}|
+            MenuButton.new(menu_arguments: menu_arguments, button_arguments: button_arguments)
+          }
+        }
+      }
+
       # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>
       def initialize(title:, **system_arguments)
         super()
@@ -50,6 +66,46 @@ module Grids
 
       def render?
         title.present?
+      end
+
+      # Copied from Primer::Beta::ButtonGroup::MenuButton
+      # Renders a button in a WidgetBoxComponent::Header that displays an ActionMenu when clicked.
+      # This component should not be used outside of a `WidgetBoxComponent::Header` context.
+      #
+      # This component yields both the button and the list to the block when rendered.
+      #
+      # ```erb
+      # <%= render(WidgetBoxComponent::Header.new) do |header| %>
+      #   <% header.with_action_menu do |menu, button| %>
+      #     <% menu.with_item(label: "Item 1") %>
+      #     <% button.with_trailing_visual_icon(icon: "triangle-down") %>
+      #   <% end %>
+      # <% end %>
+      # ```
+      #
+      class MenuButton < Primer::Component
+        # @param menu_arguments [Hash] The arguments accepted by Primer::Alpha::ActionMenu.
+        # @param button_arguments [Hash] The arguments accepted by Primer::Beta::Button or Primer::Beta::IconButton,
+        # depending on the value of the `icon:` argument.
+        def initialize(menu_arguments: {}, button_arguments: {})
+          @menu = Primer::Alpha::ActionMenu.new(**menu_arguments)
+          @button = @menu.with_show_button(**button_arguments)
+          super()
+        end
+
+        def render_in(view_context, &)
+          super do
+            yield(@menu, @button)
+          end
+        end
+
+        def before_render
+          content
+        end
+
+        def call
+          render(@menu)
+        end
       end
     end
   end

@@ -559,6 +559,16 @@ en:
           The project will only be visible to project members depending on their role and associated permissions.
           Sub-projects are not affected and have their own settings.
       change_identifier: Change identifier
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Enable all"
         label_disable_all: "Disable all"
@@ -630,6 +640,7 @@ en:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
+      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
       success: "Project attributes have been saved successfully."
       progress_label: "%{current} of %{total}"
@@ -1313,6 +1324,8 @@ en:
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Date range"
         definition: "Definition"
@@ -1964,6 +1977,7 @@ en:
       other: "Additionally, there were problems with the following fields:"
     field_erroneous_label: "This field is invalid: %{full_errors}\nPlease enter a valid value."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -2097,6 +2111,7 @@ en:
     subject: "Subject"
     slug: "Slug"
     summary: "Summary"
+    template: "Template"
     time_zone: "Time zone"
     text: "Text"
     title: "Title"
@@ -3520,7 +3535,6 @@ en:
   label_project_view_all: "View all projects"
   label_project_show_details: "Show project details"
   label_project_hide_details: "Hide project details"
-  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3608,6 +3622,7 @@ en:
   label_subproject: "Subproject"
   label_subproject_new: "New subproject"
   label_subproject_plural: "Subprojects"
+  label_subitems: "Subitems"
   label_subtask_plural: "Subtasks"
   label_summary: "Summary"
   label_system: "System"
@@ -3615,6 +3630,8 @@ en:
   label_table_of_contents: "Table of contents"
   label_tag: "Tag"
   label_team_planner: "Team Planner"
+  label_template: "Template"
+  label_templates: "Templates"
   label_text: "Long text"
   label_this_month: "this month"
   label_this_week: "this week"
@@ -4696,7 +4713,7 @@ en:
           project_mandate: "Project mandate"
       submission:
         work_package_type: "Work package type"
-        work_package_type_caption: "The work package type that should be used to store the completed artifact."
+        work_package_type_caption: "The work package type that should be used to store the completed artefact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"

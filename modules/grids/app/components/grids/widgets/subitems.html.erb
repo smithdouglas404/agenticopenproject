@@ -30,6 +30,43 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   widget_wrapper do |container|
+    container.with_header(title:) do |header|
+      header.with_action_menu(
+        menu_arguments: {},
+        button_arguments: { icon: :plus,
+                            scheme: :invisible,
+                            aria: { label: I18n.t(:button_add_sub_item) } }
+      ) do |menu|
+        if show_create_sub_work_space_buttons?
+          menu.with_item(
+            label: I18n.t(:label_portfolio),
+            tag: :a,
+            href: create_sub_portfolio_path
+          ) do |item|
+            item.with_leading_visual_icon(icon: :briefcase)
+          end
+
+          menu.with_item(
+            label: I18n.t(:label_program),
+            tag: :a,
+            href: create_sub_program_path
+          ) do |item|
+            item.with_leading_visual_icon(icon: :versions)
+          end
+        end
+
+        if can_create_sub_projects?
+          menu.with_item(
+            label: I18n.t(:label_project),
+            tag: :a,
+            href: create_sub_project_path
+          ) do |item|
+            item.with_leading_visual_icon(icon: :project)
+          end
+        end
+      end
+    end
+
     if can_view_subprojects?
       if !has_no_subitems?
         displayed_subitems.each do |child|

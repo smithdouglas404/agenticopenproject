@@ -111,11 +111,15 @@ class Project < ApplicationRecord
   has_many :recurring_meetings, dependent: :destroy
 
   belongs_to :template, class_name: "Project", optional: true
+
   has_many :templated_projects,
            class_name: "Project",
            foreign_key: "template_id",
            inverse_of: :template,
            dependent: nil
+
+  has_many :subproject_template_assignments,
+           dependent: :delete_all
 
   accepts_nested_attributes_for :available_phases
   validates_associated :available_phases, on: :saving_phases

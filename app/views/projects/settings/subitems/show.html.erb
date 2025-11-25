@@ -1,5 +1,4 @@
 <%#-- copyright
-
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -28,9 +27,42 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render(Primer::BaseComponent.new(**@system_arguments)) do %>
-  <div class="op-widget-box--header-title title-container">
-    <h3 class="editable-toolbar-title--fixed"><%= title %></h3>
-  </div>
-  <%= action %>
-<% end %>
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title { I18n.t(:label_subitems) }
+    header.with_breadcrumbs(
+      [{ href: project_overview_path(@project.id), text: @project.name },
+       { href: project_settings_general_path(@project.id), text: I18n.t("label_project_settings") },
+       I18n.t(:label_subitems)]
+    )
+
+    header.with_tab_nav(label: nil) do |tab_nav|
+      tab_nav.with_tab(
+        selected: true,
+        href: project_settings_subitems_path(@project)
+      ) do |t|
+        t.with_text { I18n.t(:label_templates) }
+      end
+    end
+  end
+%>
+
+<%= error_messages_for(@project) %>
+
+<%= render Primer::Beta::Text.new { I18n.t("projects.settings.subitems.template_section") } %>
+
+<%=
+  settings_primer_form_with(
+    url: project_settings_subitems_path(@project),
+    method: :patch
+  ) do |f|
+    render(
+      Primer::Forms::FormList.new(
+        Projects::Settings::SubitemsTemplateForm.new(
+          f,
+          project: @project,
+        )
+      )
+    )
+  end
+%>

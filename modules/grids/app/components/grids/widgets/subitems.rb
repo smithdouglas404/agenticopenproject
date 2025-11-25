@@ -61,6 +61,26 @@ module Grids
         { full_width: true }
       end
 
+      def show_create_sub_work_space_buttons?
+        project.portfolio? && can_create_sub_projects?
+      end
+
+      def can_create_sub_projects?
+        @can_create_sub_projects ||= User.current.allowed_in_project?(:add_subprojects, @project)
+      end
+
+      def create_sub_portfolio_path
+        new_portfolio_path(parent_id: project.id)
+      end
+
+      def create_sub_program_path
+        new_program_path(parent_id: project.id)
+      end
+
+      def create_sub_project_path
+        new_project_path(parent_id: project.id)
+      end
+
       def can_view_subprojects?
         return false unless current_user.allowed_in_project?(:view_project, project)
 

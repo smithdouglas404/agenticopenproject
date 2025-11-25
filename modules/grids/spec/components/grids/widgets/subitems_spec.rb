@@ -86,13 +86,70 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
     end
   end
 
+  describe "action menu" do
+    let(:user) { build_stubbed(:user) }
+
+    before do
+      mock_permissions_for(user) do |mock|
+        mock.allow_in_project(:view_project, :add_subprojects, project:)
+      end
+    end
+
+    context "for a regular project" do
+      let(:project) { build_stubbed(:project, workspace_type: :project) }
+
+      it "shows the add project menu item" do
+        expect(rendered_component).to have_link "Project", href: new_project_path(parent_id: project.id)
+      end
+
+      it "does not show the add program menu item" do
+        expect(rendered_component).to have_no_link "Program"
+      end
+    end
+
+    context "for a portfolio" do
+      let(:project) { build_stubbed(:project, workspace_type: :portfolio) }
+
+      it "shows both add project and add program menu items" do
+        expect(rendered_component).to have_link "Project", href: new_project_path(parent_id: project.id)
+        expect(rendered_component).to have_link "Program", href: new_program_path(parent_id: project.id)
+      end
+    end
+
+    context "for a program" do
+      let(:project) { build_stubbed(:project, workspace_type: :program) }
+
+      it "shows the add project menu item" do
+        expect(rendered_component).to have_link "Project", href: new_project_path(parent_id: project.id)
+      end
+
+      it "does not show the add program menu item" do
+        expect(rendered_component).to have_no_link "Program"
+      end
+    end
+
+    context "when user cannot add subprojects" do
+      let(:user) { build_stubbed(:user) }
+
+      before do
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_project, project:)
+        end
+      end
+
+      it "does not show any menu items" do
+        expect(rendered_component).to have_no_link "Project"
+        expect(rendered_component).to have_no_link "Program"
+      end
+    end
+  end
+
   context "with children" do
     let(:project) { create(:project) }
     let!(:subprojects) { create_list(:project, 3, parent: project) }
     let(:user) { build_stubbed(:admin) }
 
     context "when visible to user" do
-
       context "and a limit greater than the number of all subitems (default: 10)" do
         it "renders all subitems, without a 'view all' item", :aggregate_failures do
           expect(rendered_component).to have_list "Subitems" do |list|

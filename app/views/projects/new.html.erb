@@ -39,7 +39,7 @@ See COPYRIGHT and LICENSE files for more details.
   %>
 
   <%= layout.with_wizard_content(border: true, p: 3, border_radius: 2) do %>
-    <% case params.fetch(:step, 1).to_i %>
+    <% case params[:step] %>
     <% when 1 %>
       <%= render(Primer::Beta::Heading.new(tag: :h3, mb: 2, font_size: 3)) { I18n.t("create_#{@new_project.workspace_type}.template_heading") } %>
       <%=
