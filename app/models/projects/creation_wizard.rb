@@ -30,6 +30,7 @@
 
 module Projects::CreationWizard
   ARTIFACT_NAME_OPTIONS = %w[project_creation_wizard project_initiation_request project_mandate].freeze
+  DEFAULT_ARTIFACT_NAME_OPTION = "project_creation_wizard"
 
   extend ActiveSupport::Concern
 
@@ -42,13 +43,14 @@ module Projects::CreationWizard
     store_attribute :settings, :project_creation_wizard_assignee_custom_field_id, :integer
     store_attribute :settings, :project_creation_wizard_notification_text, :string
     store_attribute :settings, :project_creation_wizard_work_package_comment, :string
+    store_attribute :settings, :project_creation_wizard_artifact_work_package_id, :integer
     store_attribute :settings, :project_creation_wizard_artifact_export_type, :string, default: "attachment"
     store_attribute :settings, :project_creation_wizard_artifact_export_storage, :string
 
     # The store_attribute default cannot be used here, because the default is not returned
     # when the JSON defintion is present but it's nil.
     def project_creation_wizard_artifact_name
-      super.presence || "project_creation_wizard"
+      super.presence || DEFAULT_ARTIFACT_NAME_OPTION
     end
   end
 end

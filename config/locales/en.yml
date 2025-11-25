@@ -652,8 +652,9 @@ en:
       sections: "Sections"
       title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
   lists:
     create:
       success: "The modified list has been saved as a new list"
@@ -1688,9 +1689,11 @@ en:
         project:
           archived_ancestor: "The project has an archived ancestor."
           foreign_wps_reference_version: "Work packages in non descendant projects reference versions of the project or its descendants."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "You do not have the permissions required to archive all sub-projects. Please contact an administrator."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "still in use by work packages: %{types}"
             enabled_modules:
