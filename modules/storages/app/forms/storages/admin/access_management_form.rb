@@ -36,8 +36,8 @@ module Storages::Admin
           name: :automatic_management_enabled,
           value: true,
           checked: @storage.automatic_management_enabled?,
-          label: I18n.t("storages.file_storage_view.access_management.automatic_management"),
-          caption: I18n.t("storages.file_storage_view.access_management.automatic_management_description"),
+          label: I18n.t("#{translation_scope}.automatic_management"),
+          caption: I18n.t("#{translation_scope}.automatic_management_description"),
           visually_hide_label: false
         )
 
@@ -45,8 +45,8 @@ module Storages::Admin
           name: :automatic_management_enabled,
           value: false,
           checked: !@storage.automatic_management_enabled?,
-          label: I18n.t("storages.file_storage_view.access_management.manual_management"),
-          caption: I18n.t("storages.file_storage_view.access_management.manual_management_description"),
+          label: I18n.t("#{translation_scope}.manual_management"),
+          caption: I18n.t("#{translation_scope}.manual_management_description"),
           visually_hide_label: false
         )
       end
@@ -55,6 +55,14 @@ module Storages::Admin
     def initialize(storage:)
       super()
       @storage = storage
+    end
+
+    private
+
+    def translation_scope
+      return "storages.file_storage_view.one_drive.access_management" if @storage.provider_type_one_drive?
+
+      "storages.file_storage_view.access_management"
     end
   end
 end
