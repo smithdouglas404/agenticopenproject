@@ -47,6 +47,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
   shared_let(:project) do
     create(
       :project,
+      name: "Important Project",
       types: [type],
       project_custom_fields: [user_custom_field],
       # project initiation request settings
@@ -155,6 +156,76 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       expect(artifact_work_package.last_journal.notes).not_to be_empty
       expect(artifact_work_package.last_journal.notes).to include(project.project_creation_wizard_work_package_comment)
       expect(artifact_work_package.last_journal.notes).to include(/<mention[^>]+>@#{assignee_user.name}<\/mention>/)
+    end
+
+    context "when artifact storage is internal" do
+      it "attaches directly to the work package" do
+        project.update(project_creation_wizard_artifact_export_type: "attachment")
+        result = instance.call
+        project = result.result
+
+        artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+        expect(artifact_work_package.attachments.count).to eq(1)
+        attachment = artifact_work_package.attachments.first
+        date = Time.zone.today.iso8601
+        expect(attachment.content_type).to eq "application/pdf"
+        expect(attachment.filename).to match /Important_Project_project_mandate_#{date}_\d+-\d+.pdf/
+      end
+    end
+
+    context "when artifact storage is project storage" do
+      let(:storage) { create(:nextcloud_storage_with_local_connection) }
+      let(:project_storage) { create(:project_storage, project:, storage:, project_folder_id: "/project_folder") }
+
+      let(:service_result) { ServiceResult.success(result: nil) }
+
+      before do
+        project.update(
+          project_creation_wizard_artifact_export_type: "file_link",
+          project_creation_wizard_artifact_export_storage: project_storage.id
+        )
+
+        allow(Storages::UploadFileService)
+          .to receive(:call)
+          .and_return(service_result)
+      end
+
+      it "calls the nextcloud storage service" do
+        result = instance.call
+        project = result.result
+
+        expect(result).to be_success
+        artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+        expect(artifact_work_package.attachments.count).to eq(0)
+
+        date = Time.zone.today.iso8601
+        expect(Storages::UploadFileService)
+          .to have_received(:call)
+          .with(container: project,
+                project_storage:,
+                file_path: "project_mandate",
+                filename: /Important_Project_project_mandate_#{date}_\d+-\d+.pdf/,
+                file_data: instance_of(StringIO))
+      end
+
+      context "when service call fails" do
+        let(:service_result) { ServiceResult.failure(result: nil) }
+
+        it "rolls back the work package" do
+          result = instance.call
+          project = result.result
+
+          expect(Storages::UploadFileService)
+            .to have_received(:call)
+
+          # The outer service is successful, but an error is added
+          expect(result).to be_success
+          expect(result.errors[:base]).to include "Failed to store artifact in file storage"
+
+          artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+          expect(artifact_work_package.attachments.count).to eq(0)
+        end
+      end
     end
   end
 end
