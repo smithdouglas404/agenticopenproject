@@ -121,11 +121,9 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
 
     context "without manage project permissions", with_flag: { project_initiation_active: true } do
-      let(:user) { create(:user) }
-      let(:role) { create(:project_role, permissions: %i[view_project export_projects]) }
-
-      before do
-        create(:member, project:, principal: user, roles: [role])
+      let(:user) do
+        create(:user,
+               member_with_permissions: { project => %i[view_project export_projects] })
       end
 
       it "renders action menu items", :aggregate_failures do
@@ -138,11 +136,9 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
 
     context "without export project permissions", with_flag: { project_initiation_active: true } do
-      let(:user) { create(:user) }
-      let(:role) { create(:project_role, permissions: %i[view_project select_project_custom_fields]) }
-
-      before do
-        create(:member, project:, principal: user, roles: [role])
+      let(:user) do
+        create(:user,
+               member_with_permissions: { project => %i[view_project select_project_custom_fields] })
       end
 
       it "renders action menu items", :aggregate_failures do
