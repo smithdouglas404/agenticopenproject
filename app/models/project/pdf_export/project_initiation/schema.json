@@ -342,6 +342,11 @@
               "margin_bottom": 4
             }
           },
+          "properties": {
+            "badge": {
+              "$ref": "#/$defs/badge"
+            }
+          },
           "allOf": [
             {
               "$ref": "#/$defs/font"
@@ -469,6 +474,28 @@
       "allOf": [
         {
           "$ref": "#/$defs/margin"
+        }
+      ]
+    },
+    "badge": {
+      "type": "object",
+      "title": "Status Badge",
+      "x-example": {
+        "badge": {
+          "offset": 1,
+          "size": 8
+        }
+      },
+      "properties": {
+        "offset": {
+          "title": "Offset in title",
+          "examples": [1],
+          "$ref": "#/$defs/measurement_signed"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/font"
         }
       ]
     },

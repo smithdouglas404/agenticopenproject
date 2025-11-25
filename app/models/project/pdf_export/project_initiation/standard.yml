@@ -81,6 +81,9 @@ project:
     color: "000000"
     margin_bottom: 8
     styles: [ "bold" ]
+    badge:
+      size: 10
+      offset: 1
   markdown_label:
     size: 10
     color: "000000"

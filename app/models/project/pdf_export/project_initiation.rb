@@ -34,6 +34,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   include Exports::PDF::Common::Logo
   include Exports::PDF::Common::Macro
   include Exports::PDF::Common::Markdown
+  include Exports::PDF::Common::Badge
   include Exports::PDF::Components::Page
   include Exports::PDF::Components::Cover
   include Project::PDFExport::Common::ProjectAttributes
@@ -86,8 +87,9 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def render_project_initiation
+    pdf.title = heading
     write_cover_page! if with_cover?
-    write_title!
+    write_project_initiation_title
     write_project_initiation
     write_headers_footers
   end
@@ -200,6 +202,52 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
       write_section_title(section[:caption])
       write_project_detail_content(project, section[:fields])
     end
+  end
+
+  def write_project_initiation_title
+    status = project_initiation_status
+    return write_title! if status.nil?
+
+    write_title_with_badge(status.name, status_prawn_color(status))
+  end
+
+  def write_title_with_badge(badge_text, color)
+    offset = styles.status_badge_offset
+    with_margin(styles.page_heading_margins) do
+      pdf.formatted_text(
+        title_fragments(badge_text, color, offset),
+        title_options(badge_text, offset)
+      )
+    end
+  end
+
+  def title_fragments(badge_text, color, offset)
+    badge_style = styles.status_badge
+    [
+      styles.page_heading.merge(text: heading),
+      { text: " " },
+      prawn_badge(badge_text, color, offset: offset, font_size: badge_style[:size], line_height: badge_style[:size])
+    ]
+  end
+
+  def title_options(badge_text, offset)
+    styles.page_heading.merge(draw_text_callback: prawn_badge_draw_text_callback(badge_text, offset))
+  end
+
+  def project_initiation_status
+    status = project_initiation_work_package_status
+    return status unless status.nil?
+
+    return nil if project.project_creation_wizard_status_when_submitted_id.blank?
+
+    Status.find_by(id: project.project_creation_wizard_status_when_submitted_id)
+  end
+
+  def project_initiation_work_package_status
+    return nil if project.project_creation_wizard_artifact_work_package_id.blank?
+
+    work_package = WorkPackage.find_by(id: project.project_creation_wizard_artifact_work_package_id)
+    work_package&.status
   end
 
   def write_project_initiation
