@@ -39,6 +39,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
   shared_let(:role) do
     create(:project_role, permissions: %i[
              add_work_packages
+             edit_own_work_package_comments
              view_project_attributes
              work_package_assigned
            ])
@@ -55,6 +56,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       project_creation_wizard_work_package_type_id: type.id,
       project_creation_wizard_status_when_submitted_id: status_new.id,
       project_creation_wizard_assignee_custom_field_id: user_custom_field.id,
+      project_creation_wizard_work_package_comment: "PIR submitted for **Project Name**.",
       user_custom_field.attribute_name => assignee_user.id
     ).tap do |p|
       p.members << create(:member, principal: assignee_user, project: p, roles: [role])
@@ -142,6 +144,18 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
       expected_name = I18n.t("settings.project_initiation_request.name.options.project_creation_wizard")
       expect(artifact_work_package.subject).to eq(expected_name)
+    end
+
+    it "adds a comment to the artifact work package " \
+       "using the project_creation_wizard_work_package_comment setting " \
+       "and mentioning the assignee" do
+      result = instance.call
+      project = result.result
+
+      artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+      expect(artifact_work_package.last_journal.notes).not_to be_empty
+      expect(artifact_work_package.last_journal.notes).to include(project.project_creation_wizard_work_package_comment)
+      expect(artifact_work_package.last_journal.notes).to include(/<mention[^>]+>@#{assignee_user.name}<\/mention>/)
     end
   end
 end

@@ -40,7 +40,13 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
   shared_let(:user_custom_field) { create(:user_project_custom_field, name: "Project Manager") }
   shared_let(:user_assignee) { create(:user, firstname: "user_assignee") }
   shared_let(:current_user) { create(:user, lastname: "current_user") }
-  shared_let(:role_for_user) { create(:project_role, permissions: %i[add_work_packages view_project_attributes]) }
+  shared_let(:role_for_user) do
+    create(:project_role,
+           permissions: %i[add_work_packages
+                           edit_work_package_comments
+                           edit_own_work_package_comments
+                           view_project_attributes])
+  end
   shared_let(:role_for_assignee) { create(:project_role, permissions: %i[work_package_assigned]) }
   shared_let(:project) do
     create(
@@ -97,6 +103,15 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
   context "with missing :add_work_packages permission" do
     before do
       role_for_user.role_permissions.where(permission: "add_work_packages").delete_all
+    end
+
+    it_behaves_like "contract is invalid", base: :error_unauthorized
+  end
+
+  context "with missing :edit_work_package_comments and :edit_own_work_package_comments permission" do
+    before do
+      role_for_user.role_permissions.where(permission: "edit_work_package_comments").delete_all
+      role_for_user.role_permissions.where(permission: "edit_own_work_package_comments").delete_all
     end
 
     it_behaves_like "contract is invalid", base: :error_unauthorized

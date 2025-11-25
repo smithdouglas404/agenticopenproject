@@ -68,7 +68,15 @@ module Projects
         assigned_to_id:,
         attachments: [pdf_attachment]
       }
-      WorkPackages::CreateService.new(user:).call(create_params)
+      WorkPackages::CreateService.new(user:).call(create_params).tap do |result|
+        result.on_success do
+          work_package = result.result
+          Journals::UpdateService.new(model: work_package.last_journal, user:)
+                                 .call(notes: "#{mention_tag(assignee_user)}\n" \
+                                              "\n" \
+                                              "#{project.project_creation_wizard_work_package_comment}")
+        end
+      end
     end
 
     def subject
@@ -79,6 +87,10 @@ module Projects
 
     def assigned_to_id
       project.custom_value_for(assignee_custom_field).value
+    end
+
+    def assignee_user
+      User.find(assigned_to_id)
     end
 
     def assignee_custom_field
@@ -102,6 +114,19 @@ module Projects
         container: nil,
         author: user,
         file:
+      )
+    end
+
+    def mention_tag(user)
+      ApplicationController.helpers.content_tag(
+        "mention",
+        "@#{user.name}",
+        class: "mention",
+        data: {
+          id: user.id,
+          type: "user",
+          text: "@#{user.name}"
+        }
       )
     end
   end
