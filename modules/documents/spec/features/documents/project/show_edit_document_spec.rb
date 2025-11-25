@@ -104,6 +104,17 @@ RSpec.describe "Show/Edit Document View",
     end
   end
 
+  context "with real-time collaboration disabled",
+          with_settings: { real_time_text_collaboration_enabled: false } do
+    it "renders a notice about collaboration being disabled" do
+      visit document_path(document)
+
+      expect(page).to have_content("Unable to open document because real-time text collaboration is disabled. " \
+                                   "Please contact your administrator to enable real-time text collaboration " \
+                                   "if you want to access this document.")
+    end
+  end
+
   context "without view documents permission" do
     let(:user) { create(:user) }
 

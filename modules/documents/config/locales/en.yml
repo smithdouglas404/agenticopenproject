@@ -80,6 +80,11 @@ en:
 
     document_type_actions: "Document type actions"
 
+    text_collaboration_disabled_notice:
+      description: |-
+        Unable to open document because real-time text collaboration is disabled.
+        Please contact your administrator to enable real-time text collaboration if you want to access this document.
+
     index_page:
       name: "Name"
       type: "Type"

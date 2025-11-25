@@ -378,8 +378,16 @@ module Exports::PDF::Common::Common
     make_link_anchor(work_package.id, escape_tags(value))
   end
 
+  def prawn_color(color)
+    color&.hexcode&.sub("#", "") || "F0F0F0"
+  end
+
+  def status_prawn_color(status)
+    prawn_color(status&.color)
+  end
+
   def wp_status_prawn_color(work_package)
-    work_package.status.color&.hexcode&.sub("#", "") || "F0F0F0"
+    status_prawn_color(work_package.status)
   end
 
   def add_pdf_table_anchors(prawn_table)

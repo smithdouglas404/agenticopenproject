@@ -42,7 +42,8 @@ require_relative "../../lib_static/open_project/feature_decisions"
 #   end
 
 OpenProject::FeatureDecisions.add :built_in_oauth_applications,
-                                  description: "Allows the display and use of built-in OAuth applications."
+                                  description: "Allows the display and use of built-in OAuth applications.",
+                                  force_active: true
 
 OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   description: "Allows the use of calculated values as a project attribute.",

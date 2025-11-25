@@ -32,20 +32,11 @@
 module Documents
   module ShowEditView
     class BlockNoteEditorComponent < ApplicationComponent
-      include AngularHelper
-      include AttachmentsHelper
-      include DocumentsHelper
       include OpPrimer::ComponentHelpers
 
       alias_method :document, :model
 
       options :project, :oauth_token, :state
-
-      private
-
-      def current_user
-        User.current
-      end
     end
   end
 end

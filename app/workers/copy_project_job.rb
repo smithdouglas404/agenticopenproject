@@ -73,7 +73,8 @@ class CopyProjectJob < ApplicationJob
   end
 
   def successful_status_update(target_project, errors)
-    payload = redirect_payload(url_helpers.project_url(target_project)).merge(hal_links(target_project))
+    payload = redirect_payload(success_redirect_url(target_project))
+      .merge(hal_links(target_project))
 
     if errors.any?
       payload[:errors] = errors
@@ -82,6 +83,14 @@ class CopyProjectJob < ApplicationJob
     upsert_status status: :success,
                   message: I18n.t("copy_project.succeeded", target_project_name: target_project.name),
                   payload:
+  end
+
+  def success_redirect_url(target_project)
+    if target_project.project_creation_wizard_enabled
+      url_helpers.project_creation_wizard_path(target_project)
+    else
+      url_helpers.project_url(target_project)
+    end
   end
 
   def failure_status_update(errors)

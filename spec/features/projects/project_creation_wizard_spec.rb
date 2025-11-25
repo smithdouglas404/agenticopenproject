@@ -63,6 +63,12 @@ RSpec.describe "Project creation wizard",
            possible_values: %w[Internal External Research])
   end
 
+  shared_let(:user_custom_field) do
+    create(:user_project_custom_field,
+           name: "Project Validator",
+           project_custom_field_section: section2)
+  end
+
   shared_let(:int_custom_field) do
     create(:integer_project_custom_field,
            name: "Team Size",
@@ -87,7 +93,28 @@ RSpec.describe "Project creation wizard",
            help_text: "Select the type that best describes your project.")
   end
 
-  let(:project) { create(:project, name: "Test Project") }
+  shared_let(:user_assignee) do
+    create(:user, firstname: "user_assignee")
+  end
+
+  shared_let(:project) do
+    status_new = create(:status, name: "New")
+    status_in_progress = create(:status, name: "In Progress")
+    type = create(:type, name: "Project initiation")
+    role = create(:project_role, permissions: %i[view_project_attributes add_work_packages work_package_assigned])
+    create(:workflow, type:, role:, old_status: status_new, new_status: status_in_progress)
+    create(:default_priority)
+    create(:project,
+           name: "Test Project",
+           types: [type],
+           project_custom_fields: [user_custom_field],
+           project_creation_wizard_enabled: true,
+           project_creation_wizard_work_package_type_id: type.id,
+           project_creation_wizard_status_when_submitted_id: status_new.id,
+           project_creation_wizard_assignee_custom_field_id: user_custom_field.id).tap do |prj|
+             prj.members << create(:member, principal: user_assignee, project: prj, roles: [role])
+           end
+  end
   let(:wizard_path) { "/projects/#{project.identifier}/creation_wizard" }
   let(:text_field_editor) do
     Components::WysiwygEditor.new "[data-test-selector='augmented-text-area-#{text_custom_field.id}']"
@@ -217,17 +244,23 @@ RSpec.describe "Project creation wizard",
     select_autocomplete page.find("[data-custom-field-id='#{list_custom_field.id}']"),
                         results_selector: "body",
                         query: "Internal"
+    select_autocomplete page.find("[data-custom-field-id='#{user_custom_field.id}']"),
+                        results_selector: "body",
+                        query: user_assignee.name
     fill_in "Team Size", with: "5"
 
     click_button "Complete"
-    expect(page).to have_current_path("/projects/#{project.identifier}")
-    expect(page).to have_text("Project attributes have been saved successfully.")
+    expect(page).to have_text("Project attributes saved and artifact work package created successfully.")
 
     project.reload
+    expect(page).to have_current_path("/projects/#{project.identifier}/" \
+                                      "work_packages/#{project.project_creation_wizard_artifact_work_package_id}/" \
+                                      "activity")
     expect(project.typed_custom_value_for(text_custom_field)).to eq("This is a test project for validation")
     expect(project.typed_custom_value_for(string_custom_field)).to eq("TEST-001")
     expect(project.typed_custom_value_for(list_custom_field)).to eq("Internal")
     expect(project.typed_custom_value_for(int_custom_field)).to eq(5)
+    expect(project.typed_custom_value_for(user_custom_field)).to eq(user_assignee)
   end
 
   it "shows completion checkmarks for sections with filled fields" do
@@ -328,25 +361,31 @@ RSpec.describe "Project creation wizard",
       select_autocomplete page.find("[data-custom-field-id='#{list_custom_field.id}']"),
                           results_selector: "body",
                           query: "Internal"
+      select_autocomplete page.find("[data-custom-field-id='#{user_custom_field.id}']"),
+                          results_selector: "body",
+                          query: user_assignee.name
       fill_in "Team Size", with: "3"
 
       click_button "Complete"
 
-      expect(page).to have_current_path("/projects/#{project.identifier}")
-      expect(page).to have_text("Project attributes have been saved successfully.")
+      expect(page).to have_text("Project attributes saved and artifact work package created successfully.")
 
       project.reload
+      expect(page).to have_current_path("/projects/#{project.identifier}/" \
+                                        "work_packages/#{project.project_creation_wizard_artifact_work_package_id}/" \
+                                        "activity")
       expect(project.typed_custom_value_for(text_custom_field)).to eq("Test description")
       expect(project.typed_custom_value_for(string_custom_field)).to eq("TEST-ENABLED")
       expect(project.typed_custom_value_for(list_custom_field)).to eq("Internal")
       expect(project.typed_custom_value_for(int_custom_field)).to eq(3)
+      expect(project.typed_custom_value_for(user_custom_field)).to eq(user_assignee)
     end
   end
 
   context "when all fields in a section are disabled in the creation wizard" do
     before do
       ProjectCustomFieldProjectMapping
-        .where(project:, custom_field_id: [list_custom_field.id, int_custom_field.id])
+        .where(project:, custom_field_id: [list_custom_field.id, user_custom_field.id, int_custom_field.id])
         .update_all(creation_wizard: false)
     end
 

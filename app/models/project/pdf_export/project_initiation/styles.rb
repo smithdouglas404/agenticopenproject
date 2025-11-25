@@ -48,6 +48,14 @@ module Project::PDFExport::ProjectInitiation::Styles
       }
     end
 
+    def status_badge
+      resolve_font(@styles.dig(:project, :title, :badge))
+    end
+
+    def status_badge_offset
+      resolve_pt(@styles.dig(:project, :title, :badge, :offset), 0)
+    end
+
     def section_title_margins
       resolve_margin(@styles.dig(:section, :title))
     end

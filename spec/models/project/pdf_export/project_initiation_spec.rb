@@ -43,6 +43,9 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
   let(:current_user) { create(:user, member_with_permissions: { project => %i[view_projects view_project_attributes] }) }
   let(:export_time) { DateTime.new(2025, 11, 13, 13, 37) }
   let(:export_time_formatted) { format_time(export_time) }
+  let(:wizard_status) { create(:status, name: "Submitted") }
+  let(:status) { create(:status, name: "Approved") }
+  let(:work_package) { create(:work_package, status:) }
   let(:custom_artefact_name_key) { "project_mandate" }
   let(:section_a) { create(:project_custom_field_section, name: "Section A") }
   let(:section_b) { create(:project_custom_field_section, name: "Section B") }
@@ -54,6 +57,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
            project_custom_field: disabled_custom_field,
            creation_wizard: false)
   end
+  let(:heading) { project_creation_wizard_name(project) }
 
   subject do
     result = Timecop.freeze(export_time) do
@@ -74,7 +78,9 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
     let(:current_user) { create(:admin) }
 
     it "exports a PDF containing project initiation using the custom defined name" do
-      custom_artefact_name = project_creation_wizard_name(project)
+      custom_artefact_name = I18n.t(project.project_creation_wizard_artifact_name,
+                                    default: :project_initiation_request,
+                                    scope: "settings.project_initiation_request.name.options")
       expected_document = [
         project.name, custom_artefact_name, export_time_formatted, # cover page
         custom_artefact_name,
@@ -106,8 +112,6 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
     end
 
     it "exports a PDF containing project initiation with custom attributes grouped by sections" do
-      heading = project_creation_wizard_name(project)
-
       expected_document = [
         project.name, heading, export_time_formatted, # cover page
 
@@ -134,6 +138,38 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
         "1/1", export_time_formatted, "#{project.name} | #{heading}"
       ].join(" ")
 
+      expect(subject).to eq expected_document
+    end
+  end
+
+  context "with a status" do
+    let(:project) { create(:project, project_creation_wizard_status_when_submitted_id: wizard_status.id) }
+
+    it "exports a PDF containing project initiation using the custom defined name" do
+      expected_document = [
+        project.name, heading, export_time_formatted, # cover page
+        heading, " ", "    Submitted    ",
+        "Project",
+        "Name", project.name,
+        "Description", "–",
+        "1/1", export_time_formatted, "#{project.name} | #{heading}"
+      ].join(" ")
+      expect(subject).to eq expected_document
+    end
+  end
+
+  context "with a work package status" do
+    let(:project) { create(:project, project_creation_wizard_artifact_work_package_id: work_package.id) }
+
+    it "exports a PDF containing project initiation using the custom defined name" do
+      expected_document = [
+        project.name, heading, export_time_formatted, # cover page
+        heading, " ", "    Approved    ",
+        "Project",
+        "Name", project.name,
+        "Description", "–",
+        "1/1", export_time_formatted, "#{project.name} | #{heading}"
+      ].join(" ")
       expect(subject).to eq expected_document
     end
   end
