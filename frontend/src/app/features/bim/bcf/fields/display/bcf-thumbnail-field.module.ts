@@ -38,7 +38,7 @@ export class BcfThumbnailDisplayField extends DisplayField {
     if (viewpoints && viewpoints.length > 0) {
       const viewpoint = viewpoints[0];
       element.innerHTML = `
-        <img src="${this.bcfPathHelper.snapshotPath(viewpoint)}" class="thumbnail">
+        <img src="${this.bcfPathHelper.snapshotPath(viewpoint)}" class="thumbnail" alt="">
       `;
     } else {
       element.innerHTML = '';

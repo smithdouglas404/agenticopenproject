@@ -121,7 +121,8 @@
       @if (this.cardCoverImageShown(workPackage) && !showAsInlineCard) {
         <img
           [src]="this.bcfSnapshotPath(workPackage)"
-          class="op-wp-single-card--content-cover-image">
+          class="op-wp-single-card--content-cover-image"
+          [attr.alt]="coverImageAlt(workPackage)">
       }
       <div class="op-wp-single-card--content-status-baseline">
         @if (showStatusButton) {

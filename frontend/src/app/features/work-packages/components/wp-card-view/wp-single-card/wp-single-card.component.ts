@@ -242,4 +242,8 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
   public assigneeAlt(): string {
     return `${this.I18n.t("js.label_assignee_is")} ${this.workPackage.assignee.name}`;
   }
+
+  public coverImageAlt(wp: any): string {
+    return `${this.I18n.t('js.bcf.snapshot_alt')}: ${wp.subject}`;
+  }
 }
