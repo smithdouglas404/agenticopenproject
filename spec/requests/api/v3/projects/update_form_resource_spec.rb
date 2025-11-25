@@ -150,7 +150,7 @@ RSpec.describe API::V3::Projects::UpdateFormAPI, content_type: :json do
 
         it "links to the allowed parents in the schema" do
           expect(subject.body)
-            .to be_json_eql((api_v3_paths.projects_available_parents + "?of=#{project.id}").to_json)
+            .to be_json_eql(api_v3_paths.projects_available_parents(of: project.id).to_json)
             .at_path("_embedded/schema/parent/_links/allowedValues/href")
         end
       end

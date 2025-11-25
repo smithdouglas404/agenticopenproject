@@ -26,13 +26,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% html_title new_workspace_title(@new_project) %>
+<% html_title new_workspace_title(@new_project, @template) %>
 
 <%= render(StepWizard::PageLayoutComponent.new) do |layout| %>
   <%=
     layout.with_page_header do
       render(Primer::OpenProject::PageHeader.new) do |header|
-        header.with_title { new_workspace_title(@new_project) }
+        header.with_title { new_workspace_title(@new_project, @template) }
         header.with_breadcrumbs(nil)
       end
     end
@@ -75,6 +75,7 @@ See COPYRIGHT and LICENSE files for more details.
       render Projects::ProjectCreationFooterComponent.new(
         form_identifier: "project-create-form",
         project: @new_project,
+        template: @template,
         current_step: params.fetch(:step, 1).to_i
       )
     end

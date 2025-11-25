@@ -36,6 +36,8 @@ module Projects
         f.project_autocompleter(
           name: :parent_id,
           label: attribute_name(:parent_id),
+          invalid: model.errors.include?(:parent_id),
+          validation_message: validation_message(:parent),
           autocomplete_options: {
             model: project_autocompleter_model,
             focusDirectly: false,
@@ -49,8 +51,8 @@ module Projects
 
       private
 
-      def render?
-        model.project?
+      def validation_message(attribute)
+        model.errors.full_messages_for(attribute).to_sentence.presence
       end
 
       def project_autocompleter_model
@@ -61,9 +63,13 @@ module Projects
       end
 
       def project_autocompleter_url
-        url_str = ::API::V3::Utilities::PathHelper::ApiV3Path.projects_available_parents
-        url_str << "?of=#{model.id}" unless model.new_record?
-        url_str
+        params = if model.new_record?
+                   { workspace_type: model.workspace_type }
+                 else
+                   { of: model.id }
+                 end
+
+        ::API::V3::Utilities::PathHelper::ApiV3Path.projects_available_parents(**params)
       end
     end
   end

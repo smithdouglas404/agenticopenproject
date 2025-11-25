@@ -40,19 +40,19 @@ RSpec.describe "Project creation wizard name settings", :js,
   current_user { admin }
 
   describe "configuring name settings" do
-    it "allows admin to configure artefact name" do
+    it "allows admin to configure artifact name" do
       name_page.visit!
 
-      expect(page).to have_select("Artefact name")
-      expect(page).to have_text("Choose the name for this artefact that your project management framework recommends.")
+      expect(page).to have_select("Artifact name")
+      expect(page).to have_text("Choose the name for this artifact that your project management framework recommends.")
 
-      select "Project initiation request", from: "Artefact name"
+      select "Project initiation request", from: "Artifact name"
       click_button "Save"
 
       expect_and_dismiss_flash(message: "Successful update.")
 
       project.reload
-      expect(project.name_artefact_name).to eq("project_initiation_request")
+      expect(project.project_creation_wizard_artifact_name).to eq("project_initiation_request")
     end
   end
 end

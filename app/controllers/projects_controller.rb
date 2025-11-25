@@ -254,7 +254,7 @@ class ProjectsController < ApplicationController
 
   def set_wizard_step!(project)
     attributes_with_error = project.errors.attribute_names
-    second_step_attributes = %i[name description identifier]
+    second_step_attributes = %i[name description identifier parent]
     step_2_is_valid = !attributes_with_error.intersect?(second_step_attributes)
 
     params[:step] = step_2_is_valid ? 3 : 2

@@ -630,7 +630,6 @@ en:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
-      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
       success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
@@ -2804,8 +2803,6 @@ en:
     units:
       hours: h
       days: d
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Page %{page} of %{total}"
     template_attributes:
@@ -2885,6 +2882,7 @@ en:
       new_features:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
+        missing: "There are no highlighted features yet."
         # We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
@@ -3503,12 +3501,15 @@ en:
   label_project_attribute_manage_link: "Manage project attributes"
   label_project_count: "Total number of projects"
   label_project_copy_notifications: "Send email notifications during the project copy"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Latest projects"
   label_project_default_type: "Allow empty type"
   label_project_hierarchy: "Project hierarchy"
   label_project_mappings: "Projects"
   label_project_new: "New project"
+  label_project_initiation_request: "New project initiation request"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "Projects"
   label_project_list_plural: "Project lists"
   label_project_life_cycle: "Project life cycle"
@@ -4690,15 +4691,15 @@ en:
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
       name:
-        artefact_name: "Artefact name"
-        artefact_name_caption: "Choose the name for this artefact that your project management framework recommends."
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
         options:
           project_initiation_request: "Project initiation request"
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
         work_package_type: "Work package type"
-        work_package_type_caption: "The work package type that should be used to store the completed artefact."
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"

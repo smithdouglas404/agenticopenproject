@@ -121,7 +121,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def heading
-    I18n.t(:"export.project_initiation.title")
+    project.project_creation_wizard_artifact_name
   end
 
   def footer_title
