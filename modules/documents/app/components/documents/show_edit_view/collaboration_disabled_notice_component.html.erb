@@ -29,17 +29,6 @@
   ++#
 %>
 
-<%
-  helpers.content_controller(
-    "documents--init-yjs-provider",
-    "documents--init-yjs-provider-hocuspocus-url-value": Setting.collaborative_editing_hocuspocus_url,
-    "documents--init-yjs-provider-open-project-url-value": root_url,
-    "documents--init-yjs-provider-oauth-token-value": oauth_token,
-    "documents--init-yjs-provider-document-name-value": document.title,
-    "documents--init-yjs-provider-document-id-value": document.id
-  )
-%>
-
 <%=
   render(Primer::Alpha::Layout.new(stacking_breakpoint: :md, classes: "op-document-view")) do |component|
     component.with_main(classes: "op-document-view--main") do
@@ -49,13 +38,8 @@
         end
 
         flex.with_row(classes: "op-document-view--editor") do
-          primer_form_with(
-            model: document,
-            url: document_path(document),
-            method: :patch,
-            data: { turbo: false }
-          ) do |form|
-            render Documents::BlockNoteEditorForm.new(form, oauth_token:)
+          render(Primer::Alpha::Banner.new(icon: :alert, scheme: :warning)) do
+            I18n.t("documents.text_collaboration_disabled_notice.description")
           end
         end
       end
@@ -67,7 +51,7 @@
       px: 3,
       classes: "op-document-view--sidebar"
     ) do
-      render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document)
+      render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document, allow_uploading: false)
     end
   end
 %>

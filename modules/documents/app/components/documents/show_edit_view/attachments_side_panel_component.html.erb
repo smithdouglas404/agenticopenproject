@@ -29,24 +29,27 @@
   ++#
 %>
 
-<% if @document.collaborative? %>
-  <% if Setting.real_time_text_collaboration_enabled? %>
-    <%=
-      render(
-        Documents::ShowEditView::BlockNoteEditorComponent.new(
-          @document, project: @project, oauth_token: @oauth_token, state: @state
-        )
+<%=
+  render(Primer::OpenProject::SidePanel.new) do |panel|
+    panel.with_section do |section|
+      section.with_title { t(:label_attachment_plural) }
+
+      section.with_footer_button(
+        color: :accent,
+        id: "documents-add-attachments",
+        classes: "hide-when-print"
+      ) do |button|
+        button.with_leading_visual_icon(icon: "op-add-attachment")
+        I18n.t("js.label_add_attachments")
+      end
+
+      list_attachments(
+        api_v3_document_resource(document),
+        inputs: {
+          allowUploading: allow_uploading,
+          externalUploadButton: "#documents-add-attachments"
+        }
       )
-    %>
-  <% else %>
-    <%=
-      render(
-        Documents::ShowEditView::CollaborationDisabledNoticeComponent.new(
-          @document, project: @project, state: :show
-        )
-      )
-    %>
-  <% end %>
-<% else %>
-  <%= render partial: "classic_show", locals: { document: @document, project: @project, attachments: @attachments } %>
-<% end %>
+    end
+  end
+%>
