@@ -250,16 +250,16 @@ en:
         manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
         setup_incomplete: Select the type of management of user access and folder creation.
         subtitle: Folder and access management
+      access_management_section: Access and project folders
+      automatically_managed_folders: Automatically managed folders
+      general_information: General information
+      oauth_configuration: OAuth configuration
       one_drive:
         access_management:
           automatic_management: Enable automatically-manage access and folders
           automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
           manual_management: Only allow manually-managed access and folders
           manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
-      access_management_section: Access and project folders
-      automatically_managed_folders: Automatically managed folders
-      general_information: General information
-      oauth_configuration: OAuth configuration
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Project folders
