@@ -105,11 +105,12 @@ RSpec.describe "user deletion:", :js do
       click_on "Delete"
 
       SeleniumHubWaiter.wait
-      fill_in "login_verification", with: user.login
-      click_on "Delete"
+      check "I understand that this deletion cannot be reversed"
+      click_on "Delete permanently"
 
       dialog.confirm_flow_with "wrong", should_fail: true
 
+      click_on "Delete"
       SeleniumHubWaiter.wait
       check "I understand that this deletion cannot be reversed"
       click_on "Delete permanently"

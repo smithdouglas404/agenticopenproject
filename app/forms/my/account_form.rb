@@ -44,7 +44,8 @@ class My::AccountForm < ApplicationForm
       input_width: :small,
       disabled: @login_via_provider || @login_via_ldap,
       caption: name_caption,
-      required: true
+      required: true,
+      autocomplete: "given-name"
     )
 
     f.text_field(
@@ -53,16 +54,19 @@ class My::AccountForm < ApplicationForm
       input_width: :small,
       disabled: @login_via_provider || @login_via_ldap,
       caption: name_caption,
-      required: true
+      required: true,
+      autocomplete: "family-name"
     )
 
     f.text_field(
       name: :mail,
+      type: :email,
       label: User.human_attribute_name(:mail),
       input_width: :small,
       disabled: @login_via_ldap,
-      caption: @login_via_ldap ? t("user.text_change_disabled_for_ldap_login") : nil,
-      required: true
+      caption: @login_via_ldap ? I18n.t("user.text_change_disabled_for_ldap_login") : nil,
+      required: true,
+      autocomplete: "email"
     )
   end
 
@@ -75,9 +79,9 @@ class My::AccountForm < ApplicationForm
 
   def name_caption
     if @login_via_provider
-      t("user.text_change_disabled_for_provider_login")
+      I18n.t("user.text_change_disabled_for_provider_login")
     elsif @login_via_ldap
-      t("user.text_change_disabled_for_ldap_login")
+      I18n.t("user.text_change_disabled_for_ldap_login")
     end
   end
 end
