@@ -142,8 +142,7 @@ class WorkPackages::ActivitiesTab::Paginator
         :storable_journals,
         :notifications
       )
-      .reorder(version: :desc) # Always fetch newest first for pagination
-      .with_sequence_version
+      .reorder(sequence_version: :desc) # Always fetch newest first for pagination
 
     case filter
     when :only_comments then apply_comments_only_filter(journals)

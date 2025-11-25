@@ -69,8 +69,7 @@ module WorkPackages
               .journals
               .internal_visible
               .includes(:user, :customizable_journals, :attachable_journals, :storable_journals, :notifications)
-              .reorder(version: journal_sorting)
-              .with_sequence_version
+              .reorder(sequence_version: :desc)
           )
         end
 
