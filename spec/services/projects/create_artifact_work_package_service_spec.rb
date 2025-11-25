@@ -39,7 +39,6 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
   shared_let(:role) do
     create(:project_role, permissions: %i[
              add_work_packages
-             edit_own_work_package_comments
              view_project_attributes
              work_package_assigned
            ])

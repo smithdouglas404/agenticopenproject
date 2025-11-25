@@ -32,7 +32,6 @@ module Projects
   class CreateArtifactWorkPackageContract < ::BaseContract
     validate :validate_project_initiation_request_enabled
     validate :allowed_to_create_work_package
-    validate :allowed_to_edit_work_package_comments
     validate :validate_work_package_type
     validate :validate_work_package_status
     validate :validate_assignee_custom_field
@@ -49,13 +48,6 @@ module Projects
 
     def allowed_to_create_work_package
       return if user.allowed_in_project?(:add_work_packages, project)
-
-      add_error :base, :error_unauthorized
-    end
-
-    def allowed_to_edit_work_package_comments
-      return if user.allowed_in_project?(:edit_work_package_comments, project) ||
-                user.allowed_in_project?(:edit_own_work_package_comments, project)
 
       add_error :base, :error_unauthorized
     end
