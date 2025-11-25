@@ -68,9 +68,12 @@ module Storages::Admin
     # i18n-tasks-use t('storages.file_storage_view.access_management.automatic_management')
     # i18n-tasks-use t('storages.file_storage_view.access_management.automatic_management_description')
     def translation_scope
-      return "storages.file_storage_view.one_drive.access_management" if @storage.provider_type_one_drive?
+      @translation_scope ||= if @storage.provider_type_one_drive?
+                               "storages.file_storage_view.one_drive.access_management"
+                             else
 
-      "storages.file_storage_view.access_management"
+                               "storages.file_storage_view.access_management"
+                             end
     end
   end
 end
