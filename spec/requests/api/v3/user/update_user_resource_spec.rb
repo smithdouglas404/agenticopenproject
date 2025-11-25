@@ -97,6 +97,24 @@ RSpec.describe API::V3::Users::UsersAPI do
       end
     end
 
+    describe "updating name attribute" do
+      let(:parameters) { { name: "Bobnelda Bobbit" } }
+
+      it "responds with an error" do
+        send_request
+
+        expect(last_response).to have_http_status(:unprocessable_entity)
+
+        expect(last_response.body)
+          .to be_json_eql("name".to_json)
+                .at_path("_embedded/details/attribute")
+
+        expect(last_response.body)
+          .to be_json_eql("urn:openproject-org:api:v3:errors:PropertyIsReadOnly".to_json)
+                .at_path("errorIdentifier")
+      end
+    end
+
     describe "custom fields" do
       let!(:required_custom_field) do
         create(:user_custom_field,
