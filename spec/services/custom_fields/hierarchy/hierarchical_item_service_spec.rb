@@ -84,11 +84,11 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
           expect(result).to be_success
         end
 
-        it "insert an item into a specific sort_order" do
+        it "insert an item at a specific position" do
           leia = service.insert_item(contract_class:, parent: root, label: "leia").value!
           expect(root.reload.children).to contain_exactly(luke, leia)
 
-          bob = service.insert_item(contract_class:, parent: root, label: "Bob", sort_order: 1).value!
+          bob = service.insert_item(contract_class:, parent: root, label: "Bob", before: 1).value!
           expect(root.reload.children).to contain_exactly(luke, bob, leia)
         end
 
@@ -96,15 +96,15 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
           leia = service.insert_item(contract_class:, parent: root, label: "leia").value!
           expect(root.reload.position_cache).to eq(64)
 
-          service.insert_item(contract_class:, parent: root, label: "Bob", sort_order: 1).value!
+          service.insert_item(contract_class:, parent: root, label: "Bob", before: 1).value!
           expect(leia.reload.position_cache).to eq(200)
         end
       end
 
       context "with invalid item" do
         it "fails to insert an item" do
-          child = instance_double(CustomField::Hierarchy::Item, new_record?: true, errors: "some errors")
-          allow(root.children).to receive(:create).and_return(child)
+          # child item won't be persisted if `add_child` is mocked
+          allow(root).to receive(:add_child)
 
           result = service.insert_item(contract_class:, parent: root, label:, short:)
           expect(result).to be_failure

@@ -51,14 +51,15 @@ module CustomFields
       # @param label [String] the node label/name that must be unique at the same tree level
       # @param short [String] an alias for the node
       # @param weight [Decimal] a numeric value for the node
-      # @param sort_order [Integer] the position into which insert the item.
+      # @param before [Integer] the position where to prepend the item. If not set or the position does not exist,
+      #   the item is inserted at the end.
       # @return [Success(CustomField::Hierarchy::Item), Failure(Dry::Validation::Result), Failure(ActiveModel::Errors)]
-      def insert_item(contract_class:, parent:, label:, short: nil, weight: nil, sort_order: nil)
+      def insert_item(contract_class:, parent:, label:, short: nil, weight: nil, before: nil)
         contract_class
           .new
           .call({ parent:, label:, short:, weight: })
           .to_monad
-          .bind { |validation| create_child_item(validation:, sort_order:) }
+          .bind { |validation| create_child_item(validation:, before:) }
       end
 
       # Updates an item/node
@@ -176,11 +177,17 @@ module CustomFields
         Success(item)
       end
 
-      def create_child_item(validation:, sort_order: nil)
-        attributes = validation.to_h
-        attributes[:sort_order] = sort_order - 1 if sort_order
+      def create_child_item(validation:, before:)
+        item = CustomField::Hierarchy::Item.new(**validation.to_h.except(:parent))
+        parent = validation[:parent]
+        relative_sibling = parent.children.find_by(sort_order: before)
 
-        item = validation[:parent].children.create(**attributes)
+        if relative_sibling.present?
+          relative_sibling.prepend_sibling(item)
+        else
+          parent.add_child(item)
+        end
+
         return Failure(item.errors) if item.new_record?
 
         update_position_cache(item.root)
@@ -204,13 +211,13 @@ module CustomFields
         return unless custom_field&.field_format_weighted_item_list?
 
         custom_field.class.customized_class
-          .where(custom_values: custom_field.custom_values.where(value: item_ids))
-          .find_each do |customized|
-            affected_cfs = customized.available_custom_fields.affected_calculated_fields([custom_field.id])
+                    .where(custom_values: custom_field.custom_values.where(value: item_ids))
+                    .find_each do |customized|
+          affected_cfs = customized.available_custom_fields.affected_calculated_fields([custom_field.id])
 
-            customized.calculate_custom_fields(affected_cfs)
-            customized.save if customized.changed_for_autosave?
-          end
+          customized.calculate_custom_fields(affected_cfs)
+          customized.save if customized.changed_for_autosave?
+        end
       end
 
       def update_item_order(item:, new_sort_order:)
