@@ -51,6 +51,24 @@ module Settings
       object.text_field(name:, **options)
     end
 
+    # Creates a rich text area input for a setting.
+    #
+    # The rich text area label is set from translating the key "setting_<name>".
+    #
+    # Any options passed to this method will override the default options.
+    #
+    # @param name [Symbol] The name of the setting
+    # @param options [Hash] Additional options for the rich text area
+    # @return [Object] The rich text area input
+    def rich_text_area(name:, **options)
+      options.reverse_merge!(
+        label: setting_label(name),
+        value: setting_value(name),
+        disabled: setting_disabled?(name)
+      )
+      object.rich_text_area(name:, **options)
+    end
+
     # Creates a check box input for a setting.
     #
     # The check box label is set from translating the key "setting_<name>".

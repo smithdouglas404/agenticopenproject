@@ -171,6 +171,13 @@ en:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p>
+          <p>A new project has been created: projectValue:name</p>
+          <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -507,12 +514,15 @@ en:
       work_package_categories: "Work packages: categories"
       work_package_file_links: "Work packages: file links"
       work_package_shares: "Work packages: shares"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Deletion has been scheduled and is performed in the background. You will be notified of the result."
       schedule_failed: "Project cannot be deleted: %{errors}"
-      failed: "Deletion of project %{name} has failed"
-      failed_text: "The request to delete project %{name} has failed. The project was left archived."
-      completed: "Deletion of project %{name} completed"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "The request to delete project '%{name}' has been completed."
       completed_text_children: "Additionally, the following subprojects have been deleted:"
     index:
@@ -4502,6 +4512,8 @@ en:
   setting_mail_handler_body_delimiter_regex: "Truncate emails matching this regex"
   setting_mail_handler_ignore_filenames: "Ignored mail attachments"
   setting_new_project_user_role_id: "Role given to a non-admin user who creates a project"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Active character classes"
   setting_password_count_former_banned: "Number of most recently used passwords banned for reuse"
   setting_password_days_valid: "Number of days, after which to enforce a password change"

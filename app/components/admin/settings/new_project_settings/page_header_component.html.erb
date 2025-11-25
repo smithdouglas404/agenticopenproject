@@ -26,13 +26,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% html_title t(:label_administration), t(:label_project_new) %>
 
-<%= render Admin::Settings::NewProjectSettings::PageHeaderComponent.new %>
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title { t(:label_project_new) }
+    header.with_breadcrumbs(
+      [{ href: admin_index_path, text: t(:label_administration) },
+       { href: admin_settings_project_custom_fields_path, text: t(:label_project_plural) },
+       t(:label_project_new)]
+    )
 
-<% case params.fetch(:tab, "settings") %>
-<% when "settings" %>
-  <%= render partial: "settings" %>
-<% when "notifications" %>
-  <%= render partial: "notifications" %>
-<% end %>
+    header.with_tab_nav(label: nil) do |tab_nav|
+      tab_nav.with_tab(
+        selected: params[:tab] == "settings" || params[:tab].blank?,
+        href: helpers.admin_settings_new_project_path(tab: :settings)
+      ) do |t|
+        t.with_text { t(:label_setting_plural) }
+      end
+
+      tab_nav.with_tab(
+        selected: params[:tab] == "notifications",
+        href: helpers.admin_settings_new_project_path(tab: :notifications)
+      ) do |t|
+        t.with_text { I18n.t(:label_notification_center_plural) }
+      end
+    end
+  end
+%>

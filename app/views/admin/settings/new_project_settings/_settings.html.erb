@@ -26,13 +26,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% html_title t(:label_administration), t(:label_project_new) %>
 
-<%= render Admin::Settings::NewProjectSettings::PageHeaderComponent.new %>
-
-<% case params.fetch(:tab, "settings") %>
-<% when "settings" %>
-  <%= render partial: "settings" %>
-<% when "notifications" %>
-  <%= render partial: "notifications" %>
-<% end %>
+<%=
+  settings_primer_form_with(
+    scope: :settings,
+    url: admin_settings_new_project_path(tab: "settings"),
+    method: :patch
+  ) do |f|
+    render(Settings::NewProjectSettingsForm.new(f))
+  end
+%>

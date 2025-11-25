@@ -26,13 +26,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% html_title t(:label_administration), t(:label_project_new) %>
 
-<%= render Admin::Settings::NewProjectSettings::PageHeaderComponent.new %>
+<h1><%= link_to @project.name, project_url(@project) %></h1>
 
-<% case params.fetch(:tab, "settings") %>
-<% when "settings" %>
-  <%= render partial: "settings" %>
-<% when "notifications" %>
-  <%= render partial: "notifications" %>
+<%= format_text(@notification_text, project: @project) %>
+
+<% if @project.project_creation_wizard_enabled? %>
+  <p>
+    <%= link_to(
+          I18n.t(
+            "projects.create.complete_wizard_link",
+            artefact_name: I18n.t(
+              "settings.project_initiation_request.name.options.#{@project.project_creation_wizard_artifact_name}"
+            )
+          ),
+          project_creation_wizard_url(@project),
+          target: "_blank",
+          rel: "noopener"
+        ) %>
+  </p>
 <% end %>
