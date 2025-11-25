@@ -81,4 +81,5 @@ OpenProject::FeatureDecisions.add :project_initiation,
                                   description: "Activate the project creation and initiation wizard"
 
 OpenProject::FeatureDecisions.add :meetings_presentation_mode,
-                                  description: "Enables presentation mode for meetings."
+                                  description: "Enables presentation mode for meetings.",
+                                  force_active: true
