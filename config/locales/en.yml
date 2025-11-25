@@ -4793,9 +4793,9 @@ en:
       <li><b>Add custom fields for projects to your Project list to create a project portfolio view</b></li>
     </ul>
   text_custom_logo_instructions: >
-    A white logo on transparent background is recommended.
-    For best results on both, conventional and retina displays,
-    make sure your image's dimensions are 460px by 60px.
+    The logo automatically scales to fit the header.
+    For best results, upload a white logo on a transparent 130×47px image.
+    You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     This is the logo that appears in your PDF exports.
     It needs to be a PNG or JPEG image file.
