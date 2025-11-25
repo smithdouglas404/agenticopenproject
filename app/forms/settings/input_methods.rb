@@ -69,28 +69,10 @@ module Settings
     # Any options passed to this method will override the default options.
     #
     # @param name [Symbol] The name of the setting
-    # @param options [Hash] Additional options for the text field
-    # @return [Object] The text field input
-    def rich_text_area(**)
-      object.rich_text_area(**decorate_options_with_value(**))
-    end
-
-    # Creates a rich text area input for a setting.
-    #
-    # The rich text area label is set from translating the key "setting_<name>".
-    #
-    # Any options passed to this method will override the default options.
-    #
-    # @param name [Symbol] The name of the setting
     # @param options [Hash] Additional options for the rich text area
     # @return [Object] The rich text area input
-    def rich_text_area(name:, **options)
-      options.reverse_merge!(
-        label: setting_label(name),
-        value: setting_value(name),
-        disabled: setting_disabled?(name)
-      )
-      object.rich_text_area(name:, **options)
+    def rich_text_area(**)
+      object.rich_text_area(**decorate_options_with_value(**))
     end
 
     # Creates a check box input for a setting.
@@ -251,22 +233,7 @@ module Settings
 
     def build_radio_button_group_values(group, name:, values:, button_options:)
       values.each do |value|
-        args = case value
-               in [l, v]
-                 { label: l, value: v }
-               in [l, v, rest] if rest.is_a?(Hash)
-                 { label: l, value: v, **rest }
-               in Hash => h
-                 h.except(:name).reverse_merge(
-                   label: setting_label(name, h[:name]),
-                   caption: setting_caption(name, h[:name])
-                 )
-               else
-                 { value: }
-               end
-
-        args[:label] ||= setting_label(name, args[:value])
-        args[:caption] ||= setting_caption(name, args[:value])
+        args = parse_value_entry(value, name:, with_label_caption_fallback: true)
         args[:checked] = setting_value(name) == args[:value] unless args.key?(:checked)
 
         group.radio_button(**button_options.reverse_merge(args))
@@ -275,22 +242,7 @@ module Settings
 
     def build_check_box_group_values(group, name:, values:, check_box_options:)
       values.each do |value|
-        args = case value
-               in [l, v]
-                 { label: l, value: v }
-               in [l, v, rest] if rest.is_a?(Hash)
-                 { label: l, value: v, **rest }
-               in Hash => h
-                 h.except(:name).reverse_merge(
-                   label: setting_label(name, h[:name]),
-                   caption: setting_caption(name, h[:name])
-                 )
-               else
-                 { value: }
-               end
-
-        args[:label] ||= setting_label(name, args[:value])
-        args[:caption] ||= setting_caption(name, args[:value])
+        args = parse_value_entry(value, name:, with_label_caption_fallback: true)
         args[:checked] = setting_value(name).include?(args[:value]) unless args.key?(:checked)
 
         group.check_box(**check_box_options.reverse_merge(args))
@@ -299,21 +251,49 @@ module Settings
 
     def build_select_list_values(select_list, name:, values:, option_options:)
       values.each do |value|
-        args = case value
-               in [l, v]
-                 { label: l, value: v }
-               in [l, v, rest] if rest.is_a?(Hash)
-                 { label: l, value: v, **rest }
-               in Hash => h
-                 h
-               else
-                 { value: }
-               end
-
+        args = parse_value_entry(value, name:, with_label_caption_fallback: false)
         args[:selected] = setting_value(name) == args[:value] unless args.key?(:selected)
 
         select_list.option(**option_options.reverse_merge(args))
       end
+    end
+
+    # Parses a value entry from the values array and returns a hash of arguments.
+    # Supports multiple formats:
+    #   - [label, value] tuple
+    #   - [label, value, extra_options] tuple with additional options
+    #   - Hash with :name and :value keys (name used for label/caption derivation)
+    #   - Simple value (label/caption derived from setting translations)
+    #
+    # @param value [Array, Hash, Object] The value entry to parse
+    # @param name [Symbol] The setting name for translation lookups
+    # @param with_label_caption_fallback [Boolean] Whether to add label/caption fallbacks
+    # @return [Hash] Parsed arguments hash with :value, :label, :caption, etc.
+    def parse_value_entry(value, name:, with_label_caption_fallback:)
+      args = case value
+             in [l, v]
+               { label: l, value: v }
+             in [l, v, rest] if rest.is_a?(Hash)
+               { label: l, value: v, **rest }
+             in Hash => h
+               if with_label_caption_fallback
+                 h.except(:name).reverse_merge(
+                   label: setting_label(name, h[:name]),
+                   caption: setting_caption(name, h[:name])
+                 )
+               else
+                 h
+               end
+             else
+               { value: }
+             end
+
+      if with_label_caption_fallback
+        args[:label] ||= setting_label(name, args[:value])
+        args[:caption] ||= setting_caption(name, args[:value])
+      end
+
+      args
     end
 
     def decorate_options_with_value(name:, **options)
