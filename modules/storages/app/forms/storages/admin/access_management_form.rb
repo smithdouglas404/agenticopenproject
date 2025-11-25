@@ -59,6 +59,14 @@ module Storages::Admin
 
     private
 
+    # i18n-tasks-use t('storages.file_storage_view.one_drive.access_management.manual_management')
+    # i18n-tasks-use t('storages.file_storage_view.one_drive.access_management.manual_management_description')
+    # i18n-tasks-use t('storages.file_storage_view.one_drive.access_management.automatic_management')
+    # i18n-tasks-use t('storages.file_storage_view.one_drive.access_management.automatic_management_description')
+    # i18n-tasks-use t('storages.file_storage_view.access_management.manual_management')
+    # i18n-tasks-use t('storages.file_storage_view.access_management.manual_management_description')
+    # i18n-tasks-use t('storages.file_storage_view.access_management.automatic_management')
+    # i18n-tasks-use t('storages.file_storage_view.access_management.automatic_management_description')
     def translation_scope
       return "storages.file_storage_view.one_drive.access_management" if @storage.provider_type_one_drive?
 
