@@ -197,9 +197,13 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       end
 
       context "when service call fails" do
-        let(:service_result) { ServiceResult.failure(result: nil) }
+        let(:service_result) do
+          ServiceResult.failure(result: nil).tap do |result|
+            result.errors.add(:base, "Something happened!")
+          end
+        end
 
-        it "rolls back the work package" do
+        it "keeps the work package, but shows an error" do
           result = instance.call
           project = result.result
 
@@ -208,7 +212,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
 
           # The outer service is successful, but an error is added
           expect(result).to be_success
-          expect(result.errors[:base]).to include "Failed to store artifact in file storage"
+          expect(result.errors[:base]).to include "Something happened!"
 
           artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
           expect(artifact_work_package.attachments.count).to eq(0)

@@ -82,7 +82,7 @@ module Projects
         )
 
       storage_call.on_failure do
-        service_call.errors.add(:base, I18n.t("projects.wizard.create_artifact_storage_error"))
+        service_call.merge!(storage_call, without_success: true)
       end
 
       service_call
