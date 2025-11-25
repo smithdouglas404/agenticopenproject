@@ -64,7 +64,10 @@ See COPYRIGHT and LICENSE files for more details.
     model: @user,
     url: { action: "update_account" },
     lang: current_language,
-    data: password_confirmation_data_attribute({ turbo: false })
+    data: password_confirmation_data_attribute(
+      { turbo: false,
+        test_selector: "my-account-form" }
+    )
   ) do |form|
     render(
       Primer::Forms::FormList.new(

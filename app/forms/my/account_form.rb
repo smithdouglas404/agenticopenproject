@@ -61,7 +61,7 @@ class My::AccountForm < ApplicationForm
       label: User.human_attribute_name(:mail),
       input_width: :small,
       disabled: @login_via_ldap,
-      caption: @login_via_ldap ? t("user.text_change_disabled_for_ldap_login") : nil,
+      caption: @login_via_ldap ? I18n.t("user.text_change_disabled_for_ldap_login") : nil,
       required: true
     )
   end
@@ -75,9 +75,9 @@ class My::AccountForm < ApplicationForm
 
   def name_caption
     if @login_via_provider
-      t("user.text_change_disabled_for_provider_login")
+      I18n.t("user.text_change_disabled_for_provider_login")
     elsif @login_via_ldap
-      t("user.text_change_disabled_for_ldap_login")
+      I18n.t("user.text_change_disabled_for_ldap_login")
     end
   end
 end
