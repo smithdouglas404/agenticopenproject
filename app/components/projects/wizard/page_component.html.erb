@@ -10,7 +10,7 @@
     layout.with_page_header do
       render(Primer::OpenProject::PageHeader.new) do |header|
         header.with_title do
-          I18n.t("settings.project_initiation_request.name.options.#{@project.project_creation_wizard_artifact_name}")
+          project_creation_wizard_name(@project)
         end
         header.with_breadcrumbs(nil)
 

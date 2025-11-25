@@ -38,6 +38,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   include Exports::PDF::Components::Cover
   include Project::PDFExport::Common::ProjectAttributes
   include Project::PDFExport::ProjectInitiation::Styles
+  include ProjectHelper
 
   attr_accessor :pdf
 
@@ -121,7 +122,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def heading
-    project.project_creation_wizard_artifact_name
+    @heading ||= project_creation_wizard_name(project)
   end
 
   def footer_title

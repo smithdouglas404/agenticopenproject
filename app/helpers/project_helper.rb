@@ -28,29 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects
-  module Wizard
-    class PageComponent < ApplicationComponent
-      include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
-      include ApplicationHelper
-      include ProjectHelper
-
-      def initialize(project:, custom_fields_by_section:, current_section:)
-        super
-
-        @project = project
-        @custom_fields_by_section = custom_fields_by_section
-        @current_section = current_section
-      end
-
-      private
-
-      attr_reader :project, :custom_fields_by_section, :current_section
-
-      def header_button_title
-        I18n.t(:button_cancel)
-      end
-    end
+module ProjectHelper
+  def project_creation_wizard_name(project)
+    I18n.t(project.project_creation_wizard_artifact_name,
+           default: :project_initiation_request,
+           scope: "settings.project_initiation_request.name.options")
   end
 end
