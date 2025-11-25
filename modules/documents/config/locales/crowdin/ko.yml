@@ -24,8 +24,13 @@ ko:
     name: "OpenProject 문서"
     description: "프로젝트에서 문서 생성을 허용하는 OpenProject 플러그인입니다."
   activerecord:
+    errors:
+      models:
+        document_type:
+          one_or_more_required: "Cannot delete the last document type"
     models:
       document: "문서"
+      documents: "Documents"
     attributes:
       document:
         content_binary: "콘텐츠 바이너리"
@@ -49,6 +54,14 @@ ko:
     documents_list_blank_slate:
       heading: "아직 문서가 없습니다"
       description: "이 보기에는 문서가 없습니다. 아래 버튼을 클릭하여 문서를 추가할 수 있습니다."
+    document_categories_deprecation_notice:
+      heading: File categories are now called 'Document types'
+      description: |-
+        Your existing file categories have been converted to document types with the introduction of the new Documents module.
+        All existing documents have also been migrated to these new types.
+      primary_action: Configure document types
+      secondary_action: Learn more about the Documents module
+    document_type_actions: "Document type actions"
     index_page:
       name: "이름"
       type: "타입"
@@ -58,13 +71,28 @@ ko:
       all: "모든 문서"
       types: "유형"
     last_updated_at: "Last updated %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "첨부 파일 작성자"
     label_categories: "카테고리"
     new_category: "새 카테고리"
+    new_type: "New type"
     delete_dialog:
       title: "Delete document"
       heading: "Delete this document?"
       confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
+    delete_document_type_dialog:
+      title: Delete document type
+      heading: Delete this document type?
+      confirmation_message: |-
+        The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
+      select_reassign_to_label: Reassign documents to
+      reassign_message:
+        other: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+      at_least_one_type_required:
+        title: Cannot delete document type
+        heading: Cannot delete the last document type
+        message: There must always be at least one document type configured. Create another one first if you want to delete this one.
   label_document_added: "문서 추가됨"
   label_document_new: "새 문서"
   label_document_plural: "문서"

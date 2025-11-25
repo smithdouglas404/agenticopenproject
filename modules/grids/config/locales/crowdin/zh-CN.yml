@@ -2,10 +2,13 @@ zh-CN:
   grids:
     label_widget_in_grid: "网格 %{grid_name} 中包含的微件"
     widgets:
+      empty: "This widget is currently empty."
+      not_available: "This widget is not available."
       subitems:
         title: "子项目"
         no_results: "没有可见的子级。"
         view_all_subitems: "查看所有子项目"
+        button_text: "Subitem"
       members:
         title: "成员"
         no_results: "无可见成员。"

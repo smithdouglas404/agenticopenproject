@@ -144,7 +144,7 @@ RSpec.describe RootSeeder,
     end
 
     include_examples "it creates records", model: Color, expected_count: 148
-    include_examples "it creates records", model: DocumentCategory, expected_count: 3
+    include_examples "it creates records", model: DocumentType, expected_count: 6
     include_examples "it creates records", model: GlobalRole, expected_count: 2
     include_examples "it creates records", model: WorkPackageRole, expected_count: 3
     include_examples "it creates records", model: ProjectRole, expected_count: 5

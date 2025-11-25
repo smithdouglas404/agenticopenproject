@@ -33,54 +33,73 @@ module Projects
     class FooterComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
-      def initialize(project:, custom_fields_by_section:, current_section:)
-        super
-
+      def initialize(form_identifier:, project:, custom_fields_by_section:, current_step:)
+        @form_identifier = form_identifier
         @project = project
         @custom_fields_by_section = custom_fields_by_section
-        @current_section = current_section
+        @current_step = current_step
+
+        super
+      end
+
+      def call
+        render(StepWizard::FooterComponent.new(form_identifier:, total_steps:, current_step: current_step + 1)) do |footer|
+          footer.with_back_button(href: back_button_href)
+          footer.with_cancel_button(href: cancel_button_href)
+          footer.with_continue_button(**continue_button_args)
+          footer.with_submit_button(**submit_button_args)
+          footer.with_progress_bar
+        end
       end
 
       private
 
-      attr_reader :project, :custom_fields_by_section, :current_section
+      attr_reader :form_identifier, :project, :custom_fields_by_section, :current_step
 
       def sections
         @sections ||= custom_fields_by_section.keys
       end
 
-      def current_section_index
-        @current_section_index ||= sections.index(current_section) || 0
-      end
-
-      def total_sections
+      def total_steps
         sections.count
       end
 
-      def progress_percentage
-        return 0 if total_sections.zero?
-
-        ((current_section_index + 1).to_f / total_sections * 100).round
+      def back_button_href
+        if previous_step
+          project_creation_wizard_path(project, section: sections[previous_step].id)
+        end
       end
 
-      def previous_section
-        return nil if current_section_index.zero?
-
-        sections[current_section_index - 1]
+      def cancel_button_href
+        project_path(project)
       end
 
-      def next_section
-        return nil if current_section_index >= sections.count - 1
-
-        sections[current_section_index + 1]
+      def continue_button_args
+        {
+          form: form_identifier,
+          name: "next_section",
+          value: sections[next_step]&.id
+        }
       end
 
-      def first_section?
-        current_section_index.zero?
+      def submit_button_args
+        {
+          form: form_identifier,
+          name: "finish",
+          value: "true"
+        }
       end
 
-      def last_section?
-        current_section_index >= sections.count - 1
+      def next_step
+        return nil if current_step >= total_steps
+
+        current_step + 1
+      end
+
+      def previous_step
+        return nil if current_step == 0
+
+        current_step - 1
       end
     end
   end

@@ -45,6 +45,20 @@ Rails.application.routes.draw do
       get :cancel_title_edit, defaults: { format: :turbo_stream }
       put :update_type, defaults: { format: :turbo_stream }
       get :delete_dialog
+      get :render_avatars, defaults: { format: :turbo_stream }
+    end
+  end
+
+  scope module: :documents do
+    namespace :admin do
+      namespace :settings do
+        resources :document_types, except: [:show] do
+          member do
+            put :move
+            get :delete_dialog, defaults: { format: :turbo_stream }
+          end
+        end
+      end
     end
   end
 

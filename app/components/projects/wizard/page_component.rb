@@ -46,6 +46,10 @@ module Projects
       private
 
       attr_reader :project, :custom_fields_by_section, :current_section
+
+      def header_button_title
+        I18n.t(:button_cancel)
+      end
     end
   end
 end

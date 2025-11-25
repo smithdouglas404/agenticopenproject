@@ -296,6 +296,18 @@ RSpec.describe API::V3::Utilities::PathHelper do
 
       it_behaves_like "api v3 path", "/projects/available_parent_projects"
     end
+
+    describe "#projects_available_parents with of parameter" do
+      subject { helper.projects_available_parents(of: 42) }
+
+      it_behaves_like "api v3 path", "/projects/available_parent_projects?of=42"
+    end
+
+    describe "#projects_available_parents with workspace_type parameter" do
+      subject { helper.projects_available_parents(workspace_type: :special) }
+
+      it_behaves_like "api v3 path", "/projects/available_parent_projects?workspace_type=special"
+    end
   end
 
   describe "project phase paths" do

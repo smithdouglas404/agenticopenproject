@@ -88,6 +88,10 @@ class ProjectCustomField < CustomField
     role&.id
   end
 
+  def role=(role)
+    self.role_id = role&.id
+  end
+
   def role_id=(role_id)
     if role_id.present?
       build_custom_fields_role unless custom_fields_role

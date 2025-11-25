@@ -2,10 +2,13 @@ uk:
   grids:
     label_widget_in_grid: "Віджет, що міститься в сітці %{grid_name}"
     widgets:
+      empty: "This widget is currently empty."
+      not_available: "This widget is not available."
       subitems:
         title: "Піделементи"
         no_results: "Немає видимих дочірніх об’єктів."
         view_all_subitems: "Переглянути всі піделементи"
+        button_text: "Subitem"
       members:
         title: "Members"
         no_results: "Немає видимих учасників."

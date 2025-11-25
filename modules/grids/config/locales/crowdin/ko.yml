@@ -2,10 +2,13 @@ ko:
   grids:
     label_widget_in_grid: "그리드 %{grid_name}에 포함된 위젯"
     widgets:
+      empty: "This widget is currently empty."
+      not_available: "This widget is not available."
       subitems:
         title: "하위 항목"
         no_results: "표시되는 자식이 없습니다."
         view_all_subitems: "모든 하위 항목 보기"
+        button_text: "Subitem"
       members:
         title: "Members"
         no_results: "표시할 멤버가 없습니다."

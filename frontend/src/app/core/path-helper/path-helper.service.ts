@@ -443,6 +443,10 @@ export class PathHelperService {
     return `${this.staticBase}/my/time-tracking/refresh?date=${date}&view_mode=${viewMode}&mode=${mode}`;
   }
 
+  public previewCustomFieldRoleAssignmentDialog(customFieldId:number, roleId:number) {
+    return `${this.staticBase}/admin/settings/project_custom_fields/${customFieldId}/role_assignment_preview_dialog?role_id=${roleId}`;
+  }
+
   public homePath() {
     return `${this.staticBase}/`;
   }

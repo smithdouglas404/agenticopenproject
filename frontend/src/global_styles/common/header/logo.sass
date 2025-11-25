@@ -1,15 +1,17 @@
+$op-logo-link-margin-y: 0.25rem
+
 .op-logo
   width: 130px
   height: var(--header-height)
   margin: 0 0.5rem
 
   &--link
-    margin-top: 16px
+    margin: $op-logo-link-margin-y 0
     width: 100%
     display: block
-    height: 24px
+    height: calc(100% - (#{$op-logo-link-margin-y} * 2))
     text-indent: -9999em
-    background: no-repeat center
+    background: no-repeat left center
     background-size: contain
 
   @media screen and (max-width: 850px)

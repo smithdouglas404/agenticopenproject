@@ -30,41 +30,62 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   widget_wrapper do |container|
-    if has_no_subitems?
-      container.with_row do
-        render(Primer::Beta::Text.new(color: :subtle)) { t(".no_results") }
-      end
-    else
-      displayed_subitems.each do |child|
-        container.with_row do
-          flex_layout do |row|
-            row.with_column do
-              render(Primer::Beta::Text.new(color: :subtle)) do
-                concat render Primer::Beta::Octicon.new(
-                  icon: helpers.workspace_icon(child.workspace_type),
-                  mr: 1,
-                  color: :subtle,
-                  "aria-label": child.workspace_label
-                )
-                concat child.workspace_label
+    if can_view_subprojects?
+      if !has_no_subitems?
+        displayed_subitems.each do |child|
+          container.with_row do
+            flex_layout do |row|
+              row.with_column do
+                render(Primer::Beta::Text.new(color: :subtle)) do
+                  concat render Primer::Beta::Octicon.new(
+                    icon: helpers.workspace_icon(child.workspace_type),
+                    mr: 1,
+                    color: :subtle,
+                    "aria-label": child.workspace_label
+                  )
+                  concat child.workspace_label
+                end
+              end
+
+              row.with_column(ml: 2) do
+                render(Primer::Beta::Link.new(href: project_path(child))) { child.name }
+              end
+
+              row.with_column(ml: 2) do
+                render(Projects::StatusBadgeComponent.new(project: child))
               end
             end
+          end
+        end
 
-            row.with_column(ml: 2) do
-              render(Primer::Beta::Link.new(href: project_path(child))) { child.name }
-            end
+        if has_more_subitems?
+          container.with_row do
+            render(Primer::Beta::Link.new(href: view_all_subitems_path)) { t(".view_all_subitems") }
+          end
+        end
+      else
+        render(Primer::Beta::Blankslate.new(test_selector: "subitems-widget-empty")) do |component|
+          component.with_visual_icon(icon: :workflow)
+          component.with_heading(tag: :h3).with_content(title)
+          component.with_description { t("grids.widgets.empty") }
 
-            row.with_column(ml: 2) do
-              render(Projects::StatusBadgeComponent.new(project: child))
+          if can_manage_subprojects?
+            component.with_primary_action(
+              tag: :a,
+              href: new_project_path(parent_id: project.id),
+              test_selector: "subitems-widget-add-button",
+              scheme: :secondary
+            ) do |button|
+              button.with_leading_visual_icon(icon: :plus)
+              t(".button_text")
             end
           end
         end
       end
-
-      if has_more_subitems?
-        container.with_row do
-          render(Primer::Beta::Link.new(href: view_all_subitems_path)) { t(".view_all_subitems") }
-        end
+    else
+      render(Primer::Beta::Blankslate.new(test_selector: "subitems-widget-no-permission")) do |component|
+        component.with_heading(tag: :h3).with_content(title)
+        component.with_description { t("grids.widgets.not_available") }
       end
     end
   end

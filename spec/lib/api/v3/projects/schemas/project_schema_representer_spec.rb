@@ -38,6 +38,7 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
   let(:embedded) { true }
   let(:new_record) { true }
   let(:model_id) { 1 }
+  let(:workspace_type) { "foobar" }
   let(:custom_field) do
     build_stubbed(:integer_project_custom_field)
   end
@@ -66,7 +67,7 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
       .to receive_messages(available_custom_fields: [custom_field, calculated_value_cf], model: model)
 
     allow(model)
-      .to receive_messages(new_record?: new_record, id: model_id)
+      .to receive_messages(new_record?: new_record, id: model_id, workspace_type:)
 
     contract
   end
@@ -330,7 +331,7 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
 
           it_behaves_like "links to allowed values via collection link" do
             let(:href) do
-              api_v3_paths.projects_available_parents
+              api_v3_paths.projects_available_parents(workspace_type: :foobar)
             end
           end
         end
@@ -372,7 +373,7 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
 
           it_behaves_like "links to allowed values via collection link" do
             let(:href) do
-              api_v3_paths.projects_available_parents + "?of=#{model_id}"
+              api_v3_paths.projects_available_parents(of: model_id)
             end
           end
         end

@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -35,15 +35,36 @@ Rails.application.reloader.to_prepare do
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     contract_actions: { projects: %i[create] }
+                     contract_actions: { projects: %i[create] },
+                     dependencies: :add_project_from_template
 
       map.permission :add_portfolios,
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     dependencies: :add_portfolios_from_template
 
       map.permission :add_programs,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     dependencies: :add_programs_from_template
+
+      map.permission :add_project_from_template,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     contract_actions: { projects: %i[create] }
+
+      map.permission :add_portfolios_from_template,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+
+      map.permission :add_programs_from_template,
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
@@ -127,8 +148,10 @@ Rails.application.reloader.to_prepare do
                        "projects/settings/storage": %i[show],
                        "projects/settings/work_packages": %i[show],
                        "projects/settings/work_packages/internal_comments": %i[show update],
-                       "projects/settings/creation_wizard": %i[show disable_dialog
-                                                               toggle toggle_project_custom_field
+                       "projects/settings/creation_wizard": %i[show disable_dialog toggle refresh_submission_form
+                                                               update_name_settings update_submission_settings
+                                                               update_artifact_export_settings
+                                                               toggle_project_custom_field
                                                                disable_all_of_section enable_all_of_section],
                        "projects/templated": %i[create destroy],
                        "projects/identifier": %i[show update],

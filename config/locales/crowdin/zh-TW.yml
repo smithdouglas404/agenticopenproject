@@ -312,6 +312,25 @@ zh-TW:
           zero: 無子項目
           one: 1 個子項目
           other: "%{count} 子項目"
+      role_assignment:
+        title: Role Assignment
+        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
+        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
+        role_field_label: "Project Role"
+        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        review_hint: >
+          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
+        review_button: Review users and permissions
+        dialog:
+          title: "Overview of users and permissions"
+          change: Change
+          changes:
+            new_member: Will be added as a member
+            remove_member: Will be removed as a member
+            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
+            gain_role: Will gain role ‘%{new_role}’
+            lose_role: Will lose role ‘%{old_role}’
+            no_change: No changes
     text_add_new_custom_field: >
       要加入客製欄位至一個專案，您必須先建立欄位才能將它們加入至此專案。
     is_enabled_globally: "已全域啟用"
@@ -322,6 +341,7 @@ zh-TW:
     reorder_confirmation: "警告：目前可用值的順序將會遺失。繼續嗎？"
     placeholder_version_select: "需要先選擇工作套件或專案"
     calculated_field_not_editable: "不可編輯屬性。此值會自動計算。"
+    no_role_assigment: "無角色指派"
     instructions:
       is_required: "將自訂欄位標記為必填。這將使您在建立新資源時必須填寫該欄位。更新現有資源時則不需要填寫值。"
       is_required_for_project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。現有專案更新時將不需要此值。"
@@ -368,6 +388,7 @@ zh-TW:
       int?: "必須是整數。"
       key?: "遺失。"
       not_found: "未找到。"
+      respond_to?: "未執行所需的方法。"
       rules:
         copy_workflow_from:
           workflow_missing: "沒有自己的工作流程。"
@@ -429,13 +450,13 @@ zh-TW:
   portfolios:
     index:
       search:
-        label: Portfolio name filter
-        placeholder: Search portfolios
+        label: 專案組合名稱篩選
+        placeholder: 搜尋組合
     lists:
-      active: "Active portfolios"
-      my: "My portfolios"
-      favorited: "Favorite portfolios"
-      archived: "Archived portfolios"
+      active: "封存組合"
+      my: "我的專案組合"
+      favorited: "最愛的專案組合"
+      archived: "已封存的專案組合"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -545,18 +566,26 @@ zh-TW:
       work_package_priorities:
         new_label: "新優先權"
       creation_wizard:
-        project_attributes_description: >
-          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
+        export:
+          description_attachment_export: "產生的產物將會以 PDF 附件的形式，儲存到該產物的工作套件中。"
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "選擇應使用哪個已設定的外部檔案儲存空間。"
+          external_file_storage: "外部存儲空間"
+          label_artifact_export: "產物匯出"
+          label_attachment_export: "儲存為工作套件檔案附件"
+          label_file_link_export: "將檔案上傳至外部檔案儲存空間，並將檔案連結新增至工作套件"
+          pdf_file_storage: "PDF 檔案儲存"
+          unavailable: "無法使用"
         label_request_submission: "要求提交"
-        label_artefact_export: "產物匯出"
+        project_attributes_description: >
+          選擇哪些專案屬性應包含在專案啟動請求中。此清單僅包含此專案啟用的 [專案屬性](project_attributes_url)。
     status:
       button_edit: 編輯專案狀態
     wizard:
-      sidebar_content_title: "Content"
-      sections: "Sections"
-      title: "Project initiation request"
-      no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      sidebar_content_title: "內容"
+      sections: "區段"
+      no_help_text: "此屬性未定義任何說明文字。"
+      success: "專案屬性已成功儲存。"
       progress_label: "%{current} of %{total}"
   lists:
     create:
@@ -1150,6 +1179,7 @@ zh-TW:
         identifier: "識別碼"
         latest_activity_at: "最新活動"
         parent: "上層專案"
+        project_creation_wizard_enabled: "專案啟動請求"
         public_value:
           title: "可見度"
           true: "公開"
@@ -1164,6 +1194,13 @@ zh-TW:
           off_track: "進度落後"
           finished: "已完成"
           discontinued: "已中止"
+        project_creation_wizard_assignee_custom_field: "提交時的執行者"
+        project_creation_wizard_notification_text: "通知文字"
+        project_creation_wizard_send_confirmation_email: "確認電子郵件"
+        project_creation_wizard_status_when_submitted: "提交時的狀態"
+        project_creation_wizard_work_package_comment: "工作套件留言"
+        project_creation_wizard_work_package_type: "工作套件類型"
+        template: "範本"
         templated: "範本專案"
         templated_value:
           true: "設為範本"
@@ -1699,8 +1736,7 @@ zh-TW:
               cant_exceed_work: "不能高於工時。"
               must_be_set_when_work_is_set: "工時已設定時必填"
               must_be_set_when_work_and_percent_complete_are_set: "工時 和 完成百分比 已設置時必填。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                設定為 Work 且 % 完成度為 100% 時，必須為 0h。
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: 當已設定工作量且完成百分比為 100% 時，必須為 0 小時。
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 工時未設定設定，但完成度100%時，剩餘工時必須是空白。
           readonly_status: "工作套件處於唯讀狀態，因此無法變更其屬性。"
@@ -1807,6 +1843,10 @@ zh-TW:
     header_additional_invalid_fields:
       other: "以下的欄位有問題:"
     field_erroneous_label: "此欄位不正確: %{full_errors}\n請輸入一個有效的值！"
+    messages:
+      unsupported_storage_type: "不是支援的儲存類型。"
+      storage_error: "儲存連線出錯。"
+      invalid_input: "輸入無效。"
   activity:
     item:
       created_by_on: "由 %{user} 於 %{datetime} 新增"
@@ -2003,7 +2043,7 @@ zh-TW:
   button_collapse_all: "全部收合"
   button_configure: "設定"
   button_continue: "繼續"
-  button_complete: "Complete"
+  button_complete: "完成"
   button_copy: "複製"
   button_copy_to_clipboard: "複製到剪貼簿"
   button_copy_link_to_clipboard: "複製到剪貼簿"
@@ -2105,21 +2145,28 @@ zh-TW:
     copy_options:
       dependencies_label: "從專案複製"
   create_project:
+    attributes_heading: "Required attributes"
+    details_heading: "Project details"
     template_label: "使用範本"
+    template_heading: "Templated projects"
     copy_options:
       dependencies_label: "從範本複製"
     blank_template:
-      label: "Blank project"
-      description: Start from scratch. Manually add project attributes, members and modules.
-    blank_description: No description provided.
+      label: "空白專案"
+      description: 從零開始。手動新增專案屬性、成員和模組。
+    blank_description: 未提供說明。
   create_portfolio:
+    details_heading: "Portfolio details"
+    template_heading: "Templated portfolios"
     blank_template:
-      label: "Blank portfolio"
-      description: Start from scratch. Manually add portfolio attributes, members and modules.
+      label: "空白組合"
+      description: 從零開始。手動新增組合屬性、成員和模組。
   create_program:
+    details_heading: "Program details"
+    template_heading: "Templated programs"
     blank_template:
-      label: "Blank program"
-      description: Start from scratch. Manually add program attributes, members and modules.
+      label: "空白方案"
+      description: 從零開始手動新增方案屬性、成員和模組。
   create_wiki_page: "新增一個 wiki 頁面"
   create_wiki_page_button: "維基頁面"
   date:
@@ -2573,6 +2620,8 @@ zh-TW:
     units:
       hours: 小時
       days: 日
+    project_initiation:
+      title: "專案啟動請求"
   pdf_generator:
     page_nr_footer: "頁面 %{page} of %{total}"
     template_attributes:
@@ -2647,6 +2696,7 @@ zh-TW:
       new_features:
         header: "閱讀關於新功能和產品更新的資訊。"
         learn_about: "進一步瞭解所有新功能"
+        missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
@@ -2750,7 +2800,7 @@ zh-TW:
         static_token_name: "API 令牌(Token)"
       ical:
         title: "iCalendar "
-        text_hint_link: 'iCalendar 權杖可讓使用者[訂閱 OpenProject 行事曆](docs_url)，並在外部用戶端中檢視最新的工作套件資訊。'
+        text_hint_link: "iCalendar 權杖可讓使用者[訂閱 OpenProject 行事曆](docs_url)，並在外部用戶端中檢視最新的工作套件資訊。"
         disabled_text: "管理員未啟用 iCalendar 訂閱。 請聯絡您的管理員以使用此功能。"
         empty_text_hint: "新增 iCalendar 令牌(Token)，可訂閱各專案裡面的日曆( 需擁有相關權限)。"
       oauth:
@@ -2843,7 +2893,6 @@ zh-TW:
   label_add_column: "新增欄位"
   label_applied_status: "套用的狀態"
   label_archive_project: "封存專案"
-  label_artefact_export: "產物匯出"
   label_ascending: "昇冪"
   label_assigned_to_me_work_packages: "分配給我的工作套件"
   label_associated_revisions: "關聯的修訂"
@@ -3109,7 +3158,8 @@ zh-TW:
   label_lock_user: "鎖定使用者"
   label_logged_as: "登入為"
   label_login: "登入"
-  label_custom_logo: "自訂logo"
+  label_custom_logo: "客製化桌面標誌"
+  label_custom_logo_mobile: "自訂手機標誌"
   label_custom_export_logo: "客製匯出的Logo"
   label_custom_export_cover: "自訂匯出封面背景圖"
   label_custom_export_footer: "自訂匯出頁尾圖片"
@@ -3234,7 +3284,7 @@ zh-TW:
   label_planning: "計劃中"
   label_please_login: "請登入"
   label_plugins: "擴充套件"
-  label_portfolio_plural: "Portfolios"
+  label_portfolio_plural: "專案組合"
   label_modules_and_plugins: "模組與外掛"
   label_precedes: "之前"
   label_preferences: "喜好設定"
@@ -3255,11 +3305,15 @@ zh-TW:
   label_project_attribute_manage_link: "管理專案屬性"
   label_project_count: "專案總數"
   label_project_copy_notifications: "在專案複製期間發送電子郵件通知"
+  label_project_initiation_pdf: "匯出專案啟動請求的 PDF"
   label_project_latest: "最新的專案"
   label_project_default_type: "允許空類型"
   label_project_hierarchy: "專案結構"
   label_project_mappings: "專案"
   label_project_new: "新增專案"
+  label_project_initiation_request: "專案啟動請求"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "專案"
   label_project_list_plural: "專案列表"
   label_project_life_cycle: "專案生命週期"
@@ -3273,7 +3327,6 @@ zh-TW:
   label_project_view_all: "檢視所有專案"
   label_project_show_details: "顯示專案詳細資訊"
   label_project_hide_details: "隱藏專案詳細資訊"
-  label_project_initiation_request: "專案啟動請求"
   label_portfolio: "個人檔案"
   label_portfolio_new: "新投資組合"
   label_program: "方案"
@@ -3776,6 +3829,9 @@ zh-TW:
   permission_add_project: "建立專案"
   permission_add_portfolios: "建立投資組合"
   permission_add_programs: "建立方案"
+  permission_add_project_from_template: "從範本建立專案"
+  permission_add_portfolios_from_template: "從範本建立專案組合"
+  permission_add_programs_from_template: "從範本建立方案"
   permission_add_work_package_attachments: "新增附件"
   permission_add_work_package_attachments_explanation: "允許在沒有編輯工作套件權限的情況下新增附件"
   permission_add_internal_comments: "撰寫內部留言"
@@ -3821,7 +3877,7 @@ zh-TW:
   permission_edit_timelines: "編輯時間軸"
   permission_edit_wiki_pages: "編輯維基頁面"
   permission_export_work_packages: "匯出工作套件"
-  permission_export_projects: "Export projects"
+  permission_export_projects: "匯出專案"
   permission_export_wiki_pages: "匯出維基頁面"
   permission_invite_members_by_email: "透過電子郵件邀請會員"
   permission_invite_members_by_email_explanation: >
@@ -3890,9 +3946,9 @@ zh-TW:
     default: "-"
   program:
     count:
-      zero: "0 programs"
-      one: "1 program"
-      other: "%{count} programs"
+      zero: "0 個方案"
+      one: "1 個方案"
+      other: "%{count} 個方案"
   project:
     archive:
       title: "封存專案"
@@ -4321,6 +4377,16 @@ zh-TW:
       new:
         heading: "新屬性"
         description: "專案屬性的變更將套用在已啟用該屬性專案中。 若為必要屬性，無法個別專案停用。"
+      sections:
+        display_representation:
+          overview:
+            label: "專案屬性顯示於："
+            main_area:
+              label: "主要區域"
+              description: "在專案總覽的主要區段中，將所有專案屬性新增為個別小工具。"
+            side_panel:
+              label: "側邊欄"
+              description: "將所有專案屬性加入專案總覽中右側面板內的區段。"
     project_initiation_request:
       blankslate:
         title: "啟動請求尚未啟用"
@@ -4330,9 +4396,29 @@ zh-TW:
         heading: "停用此專案啟動請求？"
         confirmation_message: "啟動請求精靈將不再適用於基於此模板的新專案。專案經理和專案所有人將需要在專案概述中手動設定和填寫相關資訊。"
         checkbox_message: "我了解此行動是不可逆轉的"
+      name:
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        options:
+          project_initiation_request: "專案啟動請求"
+          project_creation_wizard: "專案建立精靈"
+          project_mandate: "項目任務"
+      submission:
+        work_package_type: "工作套件類型"
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
+        status_when_submitted: "提交時的狀態"
+        status_when_submitted_caption: "提交請求後，產生的工作套件將轉換到的狀態。"
+        send_confirmation_email: "向提交專案啟動請求的使用者傳送確認電子郵件"
+        assignee: "提交時的執行者"
+        assignee_caption: "將此專案啟動請求指派給的個人或群組。"
+        confirmation_email_text: "確認電子郵件文字"
+        confirmation_email_default: "您已提交 %{project_name} 的專案啟動請求，目前正等待審核。\n請點擊下方連結以存取包含您請求的工作套件。"
+        work_package_comment: "工作套件留言"
+        work_package_comment_caption: "上面選擇的執行者會自動在留言中 @。"
+        work_package_comment_default: "%{project_name} 的專案啟動請求已提交，正在等待審核。"
     project_phase_definitions:
       heading: "專案生命週期"
-      heading_description: "專案生命週期定義了可用於專案規劃的階段，並將顯示在各專案的總覽頁面中。這些屬性可啟用或停用，但在單一專案中無法重新排序。"
+      heading_description: "專案生命週期定義了可用於專案規劃的各階段，並會顯示在每個專案的概覽頁面中。\n這些屬性可以在專案層級啟用或停用，但無法重新排序。"
       label_add: "增加"
       label_add_description: "增加專案階段定義"
       filter:

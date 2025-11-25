@@ -5,13 +5,6 @@
 fil:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Dokumentasyon
-        item_1:
-          name: Mga detalye
-        item_2:
-          name: Iba pa
       document_types:
         item_0:
           name: Note

@@ -38,6 +38,15 @@ RSpec.describe DocumentType do
         .dependent(:nullify)
         .with_foreign_key(:type_id)
     end
+
+    context "for documents" do
+      let(:document_type) { create(:document_type) }
+
+      it "maintains documents counter cache" do
+        expect { create(:document, type: document_type) }
+          .to change { document_type.reload.documents_count }.by(1)
+      end
+    end
   end
 
   describe "Normalizations" do
@@ -66,6 +75,30 @@ RSpec.describe DocumentType do
       create(:document_type, is_default: false)
 
       expect(described_class.default).to eq first_type
+    end
+  end
+
+  describe "#destroy(reassign_to)" do
+    let!(:document_type) { create(:document_type) }
+    let!(:other_type) { create(:document_type) }
+    let!(:document) { create(:document, type: document_type) }
+
+    it "reassigns documents to the given document type before destroying" do
+      expect do
+        document_type.destroy(other_type)
+      end.to change { document.reload.type }.from(document_type).to(other_type)
+        .and(change { other_type.reload.documents_count }.by(1))
+        .and(change(described_class, :count).by(-1))
+    end
+  end
+
+  describe "#prevent_deletion_of_last_type" do
+    let!(:only_type) { create(:document_type) }
+
+    it "prevents destroying the last remaining document type" do
+      expect(only_type.destroy).to be_falsey
+      expect(only_type.errors[:base]).to include("Cannot delete the last document type")
+      expect(described_class.count).to eq 1
     end
   end
 end

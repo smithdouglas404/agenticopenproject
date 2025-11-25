@@ -49,6 +49,22 @@ RSpec.describe Project do
     end
   end
 
+  describe "template associations" do
+    let(:template) { create(:template_project) }
+    let(:project_from_template) { create(:project, template:) }
+
+    it { is_expected.to belong_to(:template).class_name("Project").optional }
+    it { is_expected.to have_many(:templated_projects).class_name("Project").with_foreign_key("template_id") }
+
+    it "allows a project to reference its template" do
+      expect(project_from_template.template).to eq(template)
+    end
+
+    it "allows a template to access projects created from it" do
+      expect(template.templated_projects).to include(project_from_template)
+    end
+  end
+
   describe "#active?" do
     context "if active" do
       it "is true" do
@@ -575,6 +591,30 @@ RSpec.describe Project do
           expect(project.identifier).not_to eq(word)
         end
       end
+    end
+  end
+
+  describe "#allowed_parent_workspace_types" do
+    {
+      project: %i[portfolio program project],
+      program: %i[portfolio],
+      portfolio: %i[portfolio]
+    }.each do |workspace_type, allowed_parent_workspace_types|
+      context "for workspace type #{workspace_type}" do
+        let(:project) { described_class.new(workspace_type:) }
+
+        subject { project.allowed_parent_workspace_types }
+
+        it { is_expected.to match_array(allowed_parent_workspace_types) }
+      end
+    end
+
+    context "for unknown workspace type" do
+      let(:project) { described_class.new(workspace_type: :unknown) }
+
+      subject { project.allowed_parent_workspace_types }
+
+      it { is_expected.to eq [] }
     end
   end
 end

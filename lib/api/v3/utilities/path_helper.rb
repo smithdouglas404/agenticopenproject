@@ -359,8 +359,10 @@ module API
 
           show :project_status
 
-          def self.projects_available_parents
-            "#{projects}/available_parent_projects"
+          def self.projects_available_parents(of: nil, workspace_type: nil)
+            query = { of:, workspace_type: }.compact_blank.to_query
+
+            "#{projects}/available_parent_projects#{"?#{query}" unless query.empty?}"
           end
 
           def self.projects_schema

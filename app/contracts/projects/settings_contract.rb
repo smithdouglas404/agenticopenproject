@@ -33,6 +33,7 @@ module Projects
     attribute :settings
 
     validate :validate_settings
+    validate :validate_submission_assignee
 
     protected
 
@@ -42,6 +43,24 @@ module Projects
           !user.allowed_in_project?(:manage_files_in_project, model)
 
       errors.add :base, :error_unauthorized if unauthorized_settings_change
+    end
+
+    def validate_submission_assignee
+      return unless model.project_creation_wizard_enabled == true
+      return unless updating_submission_settings?
+
+      if model.project_creation_wizard_assignee_custom_field_id.blank?
+        errors.add :project_creation_wizard_assignee_custom_field_id, :blank
+      end
+    end
+
+    def updating_submission_settings?
+      has_changed_setting?("project_creation_wizard_assignee_custom_field_id") ||
+        has_changed_setting?("project_creation_wizard_work_package_type_id") ||
+        has_changed_setting?("project_creation_wizard_status_when_submitted_id") ||
+        has_changed_setting?("project_creation_wizard_send_confirmation_email") ||
+        has_changed_setting?("project_creation_wizard_notification_text") ||
+        has_changed_setting?("project_creation_wizard_work_package_comment")
     end
 
     private

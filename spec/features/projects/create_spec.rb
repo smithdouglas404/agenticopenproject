@@ -59,8 +59,13 @@ RSpec.describe "Projects", "creation",
 
     expect(page).to have_heading "New project"
 
+    # Step 1: Select workspace type (blank project)
+    click_on "Continue"
+
+    # Step 2: Fill in project details
+    expect(page).to have_text("2 of 2")
     fill_in "Name", with: "Foo bar"
-    click_on "Create"
+    click_on "Complete"
 
     expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -73,8 +78,12 @@ RSpec.describe "Projects", "creation",
 
     expect(page).to have_heading "New project"
 
+    # Step 1: Select workspace type (blank project)
+    click_on "Continue"
+
+    # Step 2: Fill in project details
     fill_in "Name", with: "Foo project"
-    click_on "Create"
+    click_on "Complete"
 
     expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -82,6 +91,24 @@ RSpec.describe "Projects", "creation",
 
     project = Project.last
     expect(project.identifier).to eq "foo-project-1"
+  end
+
+  it "does not create a project when the name is not present" do
+    projects_page.create_new_workspace
+
+    expect(page).to have_heading "New project"
+
+    # Step 1: Select workspace type (blank project)
+    click_on "Continue"
+
+    # Step 2: Try to complete without name
+    expect(page).to have_text("2 of 2")
+    click_on "Complete"
+
+    expect_and_dismiss_flash type: :error, message: /^Creation failed/
+
+    expect(page).to have_text("2 of 2")
+    expect(page).to have_field "Name", validation_error: "can't be blank."
   end
 
   context "with a multi-select list custom field" do
@@ -104,12 +131,20 @@ RSpec.describe "Projects", "creation",
 
       expect(page).to have_heading "New project"
 
-      fill_in "Name", with: "Foo bar"
+      # Step 1: Select workspace type (blank project)
+      click_on "Continue"
 
+      # Step 2: Fill in project details
+      expect(page).to have_text("2 of 3")
+      fill_in "Name", with: "Foo bar"
+      click_on "Continue"
+
+      # Step 3: Fill in custom fields
+      expect(page).to have_text("3 of 3")
       expect(page).to have_combo_box "List CF *"
       list_field.select_option "A", "B"
 
-      click_on "Create"
+      click_on "Complete"
 
       expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -158,8 +193,16 @@ RSpec.describe "Projects", "creation",
 
       expect(page).to have_heading "New project"
 
-      fill_in "Name", with: "Foo bar"
+      # Step 1: Select workspace type (blank project)
+      click_on "Continue"
 
+      # Step 2: Fill in project details
+      expect(page).to have_text("2 of 3")
+      fill_in "Name", with: "Foo bar"
+      click_on "Continue"
+
+      # Step 3: Fill in custom fields
+      expect(page).to have_text("3 of 3")
       expect(page).to have_combo_box "Version CF *"
 
       # expect the versions are grouped by the project name
@@ -168,7 +211,7 @@ RSpec.describe "Projects", "creation",
 
       version_field.select_option(versions.first.name, versions.last.name)
 
-      click_on "Create"
+      click_on "Complete"
 
       expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -220,8 +263,18 @@ RSpec.describe "Projects", "creation",
 
         expect(page).to have_heading "New project"
 
-        expect(page).to have_field "Required Foo", required: true
-        expect(page).to have_field "Required User *" # FIXME required: true
+        # Step 1: Select workspace type (blank project)
+        click_on "Continue"
+
+        # Step 2: Project details - skip to step 3
+        expect(page).to have_text("2 of 3")
+        fill_in "Name", with: "Test Project"
+        click_on "Continue"
+
+        # Step 3: Custom fields
+        expect(page).to have_text("3 of 3")
+        expect(page).to have_field "Required Foo *"
+        expect(page).to have_field "Required User *"
         expect(page).to have_no_field "Optional Foo"
       end
     end
@@ -234,11 +287,22 @@ RSpec.describe "Projects", "creation",
       it "requires the required custom field" do
         expect(page).to have_heading "New project"
 
-        click_on "Create"
+        # Step 1: Select workspace type (blank project)
+        click_on "Continue"
+
+        # Step 2: Fill in name
+        expect(page).to have_text("2 of 3")
+        fill_in "Name", with: "Test Project"
+        click_on "Continue"
+
+        # Step 3: Try to complete without required custom field
+        expect(page).to have_text("3 of 3")
+        click_on "Complete"
 
         expect_and_dismiss_flash type: :error, message: /^Creation failed/
 
-        expect(page).to have_field "Required Foo", validation_error: "can't be blank."
+        expect(page).to have_text("3 of 3")
+        expect(page).to have_field "Required Foo *", validation_error: "can't be blank."
       end
     end
 
@@ -254,12 +318,19 @@ RSpec.describe "Projects", "creation",
 
         expect(page).to have_heading "New project" # rubocop:disable RSpec/ExpectInHook
 
+        # Step 1: Select workspace type
+        click_on "Continue"
+
+        # Step 2: Fill in project details
         fill_in "Name", with: "Foo bar"
+        click_on "Continue"
+
+        # Step 3: Fill in required custom field
         fill_in "Required Foo", with: "Required value"
       end
 
       it "enables custom fields with provided values for this project" do
-        click_on "Create"
+        click_on "Complete"
 
         expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -284,7 +355,7 @@ RSpec.describe "Projects", "creation",
 
         it "enables custom fields with default values if not set to blank explicitly" do
           # don't touch the default value
-          click_on "Create"
+          click_on "Complete"
 
           expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -303,7 +374,7 @@ RSpec.describe "Projects", "creation",
         it "does enable custom fields with default values if overwritten with a new value" do
           fill_in "Foo with default value", with: "foo"
 
-          click_on "Create"
+          click_on "Complete"
 
           expect(page).to have_current_path /\/projects\/foo-bar\/?/
 
@@ -334,7 +405,7 @@ RSpec.describe "Projects", "creation",
 
             fill_in "Text for Admins only", with: "foo"
 
-            click_on "Create"
+            click_on "Complete"
 
             expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -358,7 +429,7 @@ RSpec.describe "Projects", "creation",
 
             expect(page).to have_no_content "Text for Admins only"
 
-            click_on "Create"
+            click_on "Complete"
 
             expect_and_dismiss_flash type: :success, message: "Successful creation."
 

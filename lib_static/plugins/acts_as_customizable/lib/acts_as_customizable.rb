@@ -224,11 +224,7 @@ module Redmine
         end
 
         def custom_values_to_validate
-          if persisted?
-            @custom_values_to_validate ||= []
-          else
-            custom_field_values
-          end
+          @custom_values_to_validate ||= persisted? ? [] : custom_field_values
         end
 
         def custom_values_to_validate=(custom_values)
@@ -245,6 +241,10 @@ module Redmine
 
         def activate_custom_field_validations!
           self.custom_values_to_validate = custom_field_values
+        end
+
+        def deactivate_custom_field_validations!
+          self.custom_values_to_validate = []
         end
 
         # Build the changes hash similar to ActiveRecord::Base#changes,

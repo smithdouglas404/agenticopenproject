@@ -5,13 +5,6 @@
 sk:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Dokumentácia
-        item_1:
-          name: Špecifikácia
-        item_2:
-          name: Ostatné
       document_types:
         item_0:
           name: Note

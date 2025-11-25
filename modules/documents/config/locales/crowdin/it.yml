@@ -24,8 +24,13 @@ it:
     name: "Documenti OpenProject"
     description: "Un plugin OpenProject per consentire la creazione di documenti nei progetti."
   activerecord:
+    errors:
+      models:
+        document_type:
+          one_or_more_required: "Non è possibile eliminare l'ultimo tipo di documento"
     models:
       document: "Documento"
+      documents: "Documenti"
     attributes:
       document:
         content_binary: "Contenuto binario"
@@ -40,8 +45,8 @@ it:
     page_header:
       heading: "Tutti i documenti"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "Azioni sul documento"
+        edit_title: "Modifica titolo"
     subheader:
       filter:
         label: "Filtro per nome documento"
@@ -49,6 +54,14 @@ it:
     documents_list_blank_slate:
       heading: "Non ci sono ancora documenti"
       description: "Non ci sono documenti in questa vista. Puoi cliccare sul pulsante qui sotto per aggiungerne uno."
+    document_categories_deprecation_notice:
+      heading: Le categorie di file sono ora chiamate 'Tipi di documento'
+      description: |-
+        Le categorie di file esistenti sono state convertite in tipi di documento con l'introduzione del nuovo modulo Documenti.
+        Tutti i documenti esistenti sono stati migrati verso questi nuovi tipi.
+      primary_action: Configura tipi di documento
+      secondary_action: Scopri di più sul modulo Documenti
+    document_type_actions: "Azioni sul tipo di documento"
     index_page:
       name: "Nome"
       type: "Tipo"
@@ -57,14 +70,30 @@ it:
     menu:
       all: "Tutti i documenti"
       types: "Tipi"
-    last_updated_at: "Last updated %{time}."
+    last_updated_at: "Ultimo aggiornamento %{time}."
+    active_editors: "Active editors"
+    active_editors_count: "%{count} active editors"
     label_attachment_author: "Autore allegato"
     label_categories: "Categorie"
     new_category: "Nuova categoria"
+    new_type: "New type"
     delete_dialog:
       title: "Delete document"
       heading: "Delete this document?"
       confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
+    delete_document_type_dialog:
+      title: Delete document type
+      heading: Delete this document type?
+      confirmation_message: |-
+        The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
+      select_reassign_to_label: Reassign documents to
+      reassign_message:
+        one: The type "%{type_name}" is currently being used in %{document_count} document. Please select which type to reassign them to.
+        other: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+      at_least_one_type_required:
+        title: Cannot delete document type
+        heading: Cannot delete the last document type
+        message: There must always be at least one document type configured. Create another one first if you want to delete this one.
   label_document_added: "Documento aggiunto"
   label_document_new: "Nuovo Documento"
   label_document_plural: "Documenti"

@@ -276,7 +276,7 @@ RSpec.describe "Project creation wizard",
     fill_in "Project Code", with: "CANCEL-TEST"
 
     # Click Cancel (in the footer)
-    within(".op-projects-wizard-footer") do
+    within(".op-step-wizard-footer") do
       click_link "Cancel"
     end
 

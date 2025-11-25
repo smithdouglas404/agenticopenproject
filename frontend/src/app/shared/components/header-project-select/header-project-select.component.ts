@@ -28,10 +28,10 @@
 
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { debounceTime, defaultIfEmpty, filter, map, mergeMap, shareReplay, take } from 'rxjs/operators';
+import { BehaviorSubject, Observable, ReplaySubject, Subscription } from 'rxjs';
+import { map, shareReplay, take, tap } from 'rxjs/operators';
 import { IProject } from 'core-app/core/state/projects/project.model';
 import { insertInList } from 'core-app/shared/components/project-include/insert-in-list';
 import { recursiveSort } from 'core-app/shared/components/project-include/recursive-sort';
@@ -42,8 +42,6 @@ import { CurrentUserService } from 'core-app/core/current-user/current-user.serv
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { IProjectData } from 'core-app/shared/components/searchable-project-list/project-data';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { ApiV3Filter } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
-import { IHALCollection } from 'core-app/core/apiv3/types/hal-collection.type';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 
 @Component({
@@ -57,7 +55,7 @@ import { ConfigurationService } from 'core-app/core/config/configuration.service
   ],
   standalone: false,
 })
-export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implements OnInit {
+export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   @HostBinding('class.op-project-select') className = true;
 
   public dropModalOpen = false;
@@ -68,14 +66,12 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
 
   public canCreateNewProjects$ = this.currentUserService.hasCapabilities$('projects/create', 'global');
 
-  public projects$ = combineLatest([
-    this.searchableProjectListService.allProjects$,
-    this.searchableProjectListService.searchText$.pipe(debounceTime(200)),
-  ]).pipe(
+  public projects$ = this.searchableProjectListService.allProjects$.pipe(
     map(
-      ([projects, searchText]:[IProject[], string]) => projects
+      (projects:IProject[]) => projects
         .filter(
           (project) => {
+            const searchText = this.searchableProjectListService.searchText;
             if (searchText.length) {
               const matches = project.name.toLowerCase().includes(searchText.toLowerCase());
 
@@ -103,25 +99,17 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
         ),
     ),
     map((projects) => recursiveSort(projects)),
+    tap(() => {
+      if(this.dropModalOpen) {
+        // only clear loading indicator if modal is open, otherwise rendering is triggered that will cause loading of
+        // favorites while the modal is closed
+        this.loading$.next(false);
+      }
+    }),
     shareReplay(),
   );
 
-  public favorites$:Observable<string[]> = this
-    .apiV3Service
-    .projects
-    .signalled(
-      ApiV3Filter('favorited', '=', true),
-      [
-        'elements/id',
-      ],
-      { pageSize: '-1' },
-    )
-    .pipe(
-      map((collection:IHALCollection<{ id:string|number }>) => collection._embedded.elements || []),
-      map((elements) => elements.map((item) => item.id.toString())),
-      defaultIfEmpty([]),
-      shareReplay(1),
-    );
+  public favorites$:Observable<string[]> = this.searchableProjectListService.favoriteIds$;
 
   public text = {
     all: this.I18n.t('js.label_all_uppercase'),
@@ -147,23 +135,7 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     { value: 'favorited', title: this.text.favorited },
   ];
 
-  /* This seems like a way too convoluted loading check, but there's a good reason we need it.
-   * The searchableProjectListService says fetching is "done" when the request returns.
-   * However, this causes flickering on the initial load, since `projects$` still needs
-   * to do the tree calculation. In the template, we show the project-list when `loading$ | async` is false,
-   * but if we would only make this depend on `fetchingProjects$` Angular would still wait with
-   * rendering the project-list until `projects$ | async` has also fired.
-   *
-   * To fix this, we first wait for fetchingProjects$ to be true once,
-   * then switch over to projects$, and after that has pinged once, it switches back to
-   * fetchingProjects$ as the decider for when fetching is done.
-   */
-  public loading$ = this.searchableProjectListService.fetchingProjects$.pipe(
-    filter((fetching) => fetching),
-    take(1),
-    mergeMap(() => this.projects$),
-    mergeMap(() => this.searchableProjectListService.fetchingProjects$),
-  );
+  public loading$ = new BehaviorSubject<boolean>(true);
 
   private scrollToCurrent = false;
 
@@ -182,6 +154,10 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
   ) {
     super();
 
+    if(this.currentProject.id) {
+      this.searchableProjectListService.preloadProjectIds = [this.currentProject.id];
+    }
+
     this.projects$
       .pipe(this.untilDestroyed())
       .subscribe((projects) => {
@@ -196,17 +172,27 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
       });
   }
 
+  private onTextInput:Subscription;
+
   ngOnInit():void {
     const stored = window.OpenProject.guardedLocalStorage(this.displayModeLocalStorageKey) as 'all'|'favorited'|undefined;
     this.displayMode = stored || 'all';
+    this.onTextInput = this.searchableProjectListService.queriedSearchText$.subscribe(() => this.loading$.next(true));
+  }
+
+  ngOnDestroy():void {
+    this.onTextInput.unsubscribe();
   }
 
   toggleDropModal():void {
     this.subscriptionComplete$.pipe(take(1)).subscribe(() => {
       this.dropModalOpen = !this.dropModalOpen;
       if (this.dropModalOpen) {
+        this.loading$.next(true);
+        this.searchableProjectListService.enableLoading();
         this.scrollToCurrent = true;
-        this.searchableProjectListService.loadAllProjects();
+      } else {
+        this.searchableProjectListService.disableLoading();
       }
     });
   }
@@ -221,8 +207,9 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
   }
 
   close():void {
-    this.searchableProjectListService.searchText = '';
     this.dropModalOpen = false;
+    this.searchableProjectListService.disableLoading();
+    this.searchableProjectListService.searchText = '';
   }
 
   currentProjectName():string {

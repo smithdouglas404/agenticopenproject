@@ -5,13 +5,6 @@
 ro:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Documentație
-        item_1:
-          name: Specificație
-        item_2:
-          name: Altele
       document_types:
         item_0:
           name: Note

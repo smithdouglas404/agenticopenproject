@@ -233,6 +233,73 @@ RSpec.describe CustomStylesController do
       end
     end
 
+    describe "#logo_mobile_download" do
+      before do
+        allow(CustomStyle).to receive(:current).and_return(custom_style)
+        allow(controller).to receive(:send_file) { controller.head 200 }
+
+        get :logo_mobile_download, params: {
+          digest: "1234",
+          filename: "logo_mobile_image.png"
+        }
+      end
+
+      context "when mobile logo is present" do
+        let(:custom_style) { build(:custom_style_with_logo_mobile) }
+
+        it "sends a file" do
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "when no custom style is present" do
+        let(:custom_style) { nil }
+
+        it "renders with error" do
+          expect(controller).not_to have_received(:send_file)
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "when no mobile logo is present" do
+        let(:custom_style) { build_stubbed(:custom_style) }
+
+        it "renders with error" do
+          expect(controller).not_to have_received(:send_file)
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+
+    describe "#logo_mobile_delete", with_ee: %i[define_custom_style] do
+      let(:custom_style) { create(:custom_style_with_logo_mobile) }
+
+      context "if it exists" do
+        before do
+          allow(CustomStyle).to receive(:current).and_return(custom_style)
+          allow(custom_style).to receive(:remove_logo_mobile).and_call_original
+
+          delete :logo_mobile_delete
+        end
+
+        it "removes the mobile logo from custom_style" do
+          expect(response).to redirect_to(action: :show)
+          expect(response).to have_http_status(:see_other)
+        end
+      end
+
+      context "if it does not exist" do
+        before do
+          allow(CustomStyle).to receive(:current).and_return(nil)
+          delete :logo_mobile_delete
+        end
+
+        it "renders 404" do
+          expect(response).to have_http_status :not_found
+        end
+      end
+    end
+
     describe "#export_logo_download", with_ee: %i[define_custom_style] do
       before do
         allow(CustomStyle).to receive(:current).and_return(custom_style)

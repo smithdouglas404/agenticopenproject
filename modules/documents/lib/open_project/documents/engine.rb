@@ -53,7 +53,7 @@ module OpenProject::Documents
 
       project_module :documents do |_map|
         permission :view_documents,
-                   { documents: %i[index search show download],
+                   { documents: %i[index search show download render_avatars],
                      "documents/menus": %i[show] },
                    permissible_on: :project
         permission :manage_documents,
@@ -65,6 +65,21 @@ module OpenProject::Documents
                    permissible_on: :project,
                    require: :loggedin
       end
+
+      menu :admin_menu,
+           :documents,
+           { controller: "/documents/admin/settings/document_types", action: :index },
+           if: ->(_) { User.current.admin? },
+           caption: :label_document_plural,
+           before: :files,
+           icon: "note"
+
+      menu :admin_menu,
+           :document_types,
+           { controller: "/documents/admin/settings/document_types", action: :index },
+           if: ->(_) { User.current.admin? },
+           caption: :"documents.menu.types",
+           parent: :documents
 
       menu :admin_menu,
            :document_categories,
@@ -102,10 +117,5 @@ module OpenProject::Documents
 
     # Add documents to allowed search params
     additional_permitted_attributes search: %i(documents)
-
-    config.to_prepare do
-      # Load Enumeration descendants due to STI
-      DocumentCategory
-    end
   end
 end

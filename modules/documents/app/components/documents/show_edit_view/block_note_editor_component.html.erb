@@ -29,6 +29,17 @@
   ++#
 %>
 
+<%
+  helpers.content_controller(
+    "documents--init-yjs-provider",
+    "documents--init-yjs-provider-hocuspocus-url-value": Setting.collaborative_editing_hocuspocus_url,
+    "documents--init-yjs-provider-open-project-url-value": root_url,
+    "documents--init-yjs-provider-oauth-token-value": oauth_token,
+    "documents--init-yjs-provider-document-name-value": document.title,
+    "documents--init-yjs-provider-document-id-value": document.id
+  )
+%>
+
 <%=
   render(Primer::Alpha::Layout.new(stacking_breakpoint: :md, classes: "op-document-view")) do |component|
     component.with_main(classes: "op-document-view--main") do

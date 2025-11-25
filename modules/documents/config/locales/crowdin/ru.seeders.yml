@@ -5,13 +5,6 @@
 ru:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Документация
-        item_1:
-          name: Спецификация
-        item_2:
-          name: Другие
       document_types:
         item_0:
           name: Note

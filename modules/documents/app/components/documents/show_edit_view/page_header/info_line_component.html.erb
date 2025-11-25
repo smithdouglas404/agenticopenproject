@@ -52,6 +52,10 @@
         end
       end
 
+      flex.with_column(mr: 2) do
+        render(Documents::ShowEditView::PageHeader::LiveUsersComponent.new)
+      end
+
       flex.with_column do
         last_updated_at_content
       end

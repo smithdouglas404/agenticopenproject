@@ -55,6 +55,11 @@ RSpec.describe "Upload attachment to documents",
 
   before do
     login_as(user)
+
+    # This is here while we don't have a setting defined for enabling/disabling collaboration
+    # rubocop:disable RSpec/AnyInstance
+    allow_any_instance_of(Primer::OpenProject::Forms::BlockNoteEditor).to receive(:collaboration_enabled).and_return(false)
+    # rubocop:enable RSpec/AnyInstance
   end
 
   shared_examples "can upload an image in CKEditor" do

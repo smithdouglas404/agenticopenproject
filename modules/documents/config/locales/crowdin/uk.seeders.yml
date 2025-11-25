@@ -5,13 +5,6 @@
 uk:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Документація
-        item_1:
-          name: Специфікація
-        item_2:
-          name: Інше
       document_types:
         item_0:
           name: Note

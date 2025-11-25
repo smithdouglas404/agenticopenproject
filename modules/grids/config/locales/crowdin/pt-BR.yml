@@ -2,10 +2,13 @@ pt-BR:
   grids:
     label_widget_in_grid: "Widget contido na Grade %{grid_name}"
     widgets:
+      empty: "This widget is currently empty."
+      not_available: "This widget is not available."
       subitems:
         title: "Subitens"
         no_results: "Não há filhos visíveis."
         view_all_subitems: "Visualizar todos os subitens"
+        button_text: "Subitem"
       members:
         title: "Members"
         no_results: "Nenhum membro visível."

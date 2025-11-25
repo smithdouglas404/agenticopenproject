@@ -424,4 +424,27 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
       expect(members_create_service).to have_received(:call).with(hash_excluding(:send_notifications))
     end
   end
+
+  describe "skip_custom_field_validation parameter" do
+    let(:source_project) { create(:project) }
+    let(:job_args) do
+      {
+        target_project_params: { name: "Copy", identifier: "copy" },
+        associations_to_copy: [],
+        skip_custom_field_validation: true
+      }
+    end
+
+    it "passes skip_custom_field_validation to CopyService" do
+      allow(Projects::CopyService).to receive(:new).and_call_original
+      GoodJob::Batch.enqueue(user: admin, source_project:) do
+        described_class.perform_later(**job_args)
+      end
+      GoodJob.perform_inline
+
+      expect(Projects::CopyService).to have_received(:new).with(
+        hash_including(contract_options: { skip_custom_field_validation: true })
+      )
+    end
+  end
 end

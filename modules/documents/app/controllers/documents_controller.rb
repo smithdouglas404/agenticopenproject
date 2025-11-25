@@ -44,7 +44,7 @@ class DocumentsController < ApplicationController
 
   def index
     @documents = list_documents_query
-      .includes(:category)
+      .includes(:type)
       .paginate(page: page_param, per_page: per_page_param)
   end
 
@@ -64,6 +64,14 @@ class DocumentsController < ApplicationController
       generate_oauth_token
       derive_show_edit_state_from_params
     end
+  end
+
+  def render_avatars
+    user_ids = params[:user_ids]
+    @users = User.where(id: user_ids)
+    update_via_turbo_stream(component: Documents::ShowEditView::PageHeader::LiveUsersComponent.new(users: @users))
+
+    respond_with_turbo_streams
   end
 
   def new
@@ -194,7 +202,7 @@ class DocumentsController < ApplicationController
 
   def generate_oauth_token
     # do not generate a token if the user is not allowed to manage documents
-    if !current_user.allowed_in_project?(:manage_documents, @project)
+    if !current_user.allowed_in_project?(:view_documents, @project)
       return
     end
 

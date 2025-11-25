@@ -36,14 +36,6 @@ modules_permissions:
     add:
     - :view_documents
 
-document_categories:
-  - t_name: Documentation
-    position: 1
-  - t_name: Specification
-    position: 2
-  - t_name: Other
-    position: 3
-
 document_types:
   - reference: doc_type_note
     t_name: Note

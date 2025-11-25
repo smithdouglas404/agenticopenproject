@@ -2,10 +2,13 @@ ru:
   grids:
     label_widget_in_grid: "Виджет содержится в Сетке %{grid_name}"
     widgets:
+      empty: "This widget is currently empty."
+      not_available: "This widget is not available."
       subitems:
         title: "Подпункты"
         no_results: "Нет видимых потомков."
         view_all_subitems: "Отобразить все подпункты"
+        button_text: "Subitem"
       members:
         title: "Участники"
         no_results: "Нет видимых участников."

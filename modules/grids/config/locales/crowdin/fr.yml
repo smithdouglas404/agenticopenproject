@@ -2,10 +2,13 @@ fr:
   grids:
     label_widget_in_grid: "Widget contenu dans la grille %{grid_name}"
     widgets:
+      empty: "This widget is currently empty."
+      not_available: "This widget is not available."
       subitems:
         title: "Sous-éléments"
         no_results: "Il n'y a pas d'enfants visibles."
         view_all_subitems: "Voir tous les sous-éléments"
+        button_text: "Subitem"
       members:
         title: "Members"
         no_results: "Aucun membre visible."
