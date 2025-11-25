@@ -63,12 +63,18 @@ module Projects
         project:,
         type_id: project.project_creation_wizard_work_package_type_id,
         status_id: project.project_creation_wizard_status_when_submitted_id,
-        subject: "Project submission",
+        subject:,
         description: "A project submission has been created.",
         assigned_to_id:,
         attachments: [pdf_attachment]
       }
       WorkPackages::CreateService.new(user:).call(create_params)
+    end
+
+    def subject
+      I18n.t(project.name_artefact_name,
+             default: :project_initiation_request,
+             scope: "settings.project_initiation_request.name.options")
     end
 
     def assigned_to_id
