@@ -55,12 +55,12 @@ class Projects::CreationWizardController < ApplicationController
 
     if service_call.success?
       if last_page?
-        service_call2 = Projects::CreateArtifactWorkPackageService.new(user: current_user, model: @project).call
-        if service_call2.success?
+        creation_call = Projects::CreateArtifactWorkPackageService.new(user: current_user, model: @project).call
+        if creation_call.success?
           redirect_to project_work_packages_path(@project, @project.project_creation_wizard_artifact_work_package_id),
                       notice: I18n.t("projects.wizard.success")
         else
-          flash[:error] = service_call2.errors.full_messages
+          flash[:error] = creation_call.errors.full_messages
           render :show,
                  locals: { menu_name: :none },
                  status: :unprocessable_entity
