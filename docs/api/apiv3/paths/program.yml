@@ -215,7 +215,7 @@ delete:
     - Programs
   description: |-
     Deletes the program permanently. As this is a lengthy process, the actual deletion is carried out asynchronously.
-    So the project might exist well after the request has returned successfully. To prevent unwanted changes to
-    the project scheduled for deletion, it is archived at once.
+    So the program might exist well after the request has returned successfully. To prevent unwanted changes to
+    the program scheduled for deletion, it is archived at once.
   operationId: Delete_Program
   summary: Delete Program

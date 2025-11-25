@@ -5,12 +5,12 @@ get:
   operationId: list_workspace
   tags:
     - Workspace
-  description: Returns a collection of workspace. The collection can be filtered via
+  description: Returns a collection of workspaces. The collection can be filtered via
     query parameters similar to how work packages are filtered. In addition to the
-    provided filter, the result set is always limited to only contain workspace the
+    provided filter, the result set is always limited to only contain workspaces the
     client is allowed to see.
 
-    Since workflows are the generic term for a number of resources like projects and portfolios, the returned
+    Since workspaces are the generic term for a number of resources like projects and portfolios, the returned
     collection will contain a mix of those resources.
   parameters:
     - name: filters
@@ -20,34 +20,34 @@ get:
       required: false
       description: |-
         JSON specifying filter conditions.
-        Accepts the same format as returned by the [queries](https://www.openportfolio.org/docs/api/endpoints/queries/) endpoint.
+        Accepts the same format as returned by the [queries](https://www.openproject.org/docs/api/endpoints/queries/) endpoint.
         Currently supported filters are:
 
-        + active: based on the active property of the portfolio
-        + ancestor: filters workspace by their ancestor. A portfolio is not considered to be its own ancestor.
+        + active: based on the active property of the workspace
+        + ancestor: filters workspace by their ancestor. A workspace is not considered to be its own ancestor.
         + available_project_attributes: filters workspace based on the activated project attributes.
-        + created_at: based on the time the portfolio was created
-        + favorited: based on the favorited property of the portfolio
+        + created_at: based on the time the workspace was created
+        + favorited: based on the favorited property of the workspace
         + id: based on workspace' id.
-        + latest_activity_at: based on the time the last activity was registered on a portfolio.
+        + latest_activity_at: based on the time the last activity was registered on a workspace.
         + name_and_identifier: based on both the name and the identifier.
         + parent_id: filters workspace by their parent.
-        + principal: based on members of the portfolio.
-        + project_phase_any: based on the project phases active in a portfolio.
-        + project_status_code: based on status code of the portfolio
+        + principal: based on members of the workspace.
+        + project_phase_any: based on the project phases active in a workspace.
+        + project_status_code: based on status code of the workspace
         + storage_id: filters workspace by linked storages
         + storage_url: filters workspace by linked storages identified by the host url
-        + type_id: based on the types active in a portfolio.
-        + user_action: based on the actions the current user has in the portfolio.
+        + type_id: based on the types active in a workspace.
+        + user_action: based on the actions the current user has in the workspace.
         + visible: based on the visibility for the user (id) provided as the filter value. This filter is useful for admins to identify the workspace visible to a user.
 
         There might also be additional filters based on the custom fields that have been configured.
 
         Each defined lifecycle step will also define a filter in this list endpoint. Given that the elements are not
         static but rather dynamically created on each OpenProject instance, a list cannot be provided. Those filters follow the schema:
-        + project_start_gate_[id]: a filter on a project phase's start gate active in a portfolio. The id is the id of the phase the gate belongs to.
-        + project_finish_gate_[id]: a filter on a project phase's finish gate active in a portfolio. The id is the id of the phase the gate belongs to.
-        + project_phase_[id]: a filter on a project phase active in a portfolio. The id is the id of the phase queried for.
+        + project_start_gate_[id]: a filter on a project phase's start gate active in a workspace. The id is the id of the phase the gate belongs to.
+        + project_finish_gate_[id]: a filter on a project phase's finish gate active in a workspace. The id is the id of the phase the gate belongs to.
+        + project_phase_[id]: a filter on a project phase active in a workspace. The id is the id of the phase queried for.
       example: '[{ "ancestor": { "operator": "=", "values": ["1"] }" }]'
     - name: sortBy
       schema:

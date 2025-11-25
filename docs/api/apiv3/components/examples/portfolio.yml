@@ -39,8 +39,8 @@ value:
       href: "/api/v3/project_statuses/on_track"
       title: On track
   id: 1
-  identifier: portfolio_example
-  name: Portfolio example
+  identifier: connect2025
+  name: Digital Connect 2030
   active: true
   public: false
   statusExplanation:
@@ -49,8 +49,8 @@ value:
     html: "<p>Everything <strong>fine</strong></p>"
   description:
     format: markdown
-    raw: Lorem **ipsum** dolor sit amet
-    html: "<p>Lorem <strong>ipsum</strong> dolor sit amet</p>"
+    raw: This collection showcases a diverse selection of projects that highlight our commitment to excellence and our passion for design. From innovative web applications to stunning graphic designs, each piece reflects our unique approach and dedication to delivering impactful solutions. Discover the journey of our work and see how we bring ideas to life.
+    html: "<p>This collection showcases a diverse selection of projects that highlight our commitment to excellence and our passion for design. From innovative web applications to stunning graphic designs, each piece reflects our unique approach and dedication to delivering impactful solutions. Discover the journey of our work and see how we bring ideas to life.</p>"
   createdAt: '2014-05-21T08:51:20.396Z'
   updatedAt: '2014-05-21T08:51:20.396Z'
   customField123: 123

@@ -10,14 +10,14 @@ value:
     elements:
       - _hint: Portfolio resource shortened for brevity
         id: 1
-        identifier: initialportfolio
-        name: DeathStar construction
+        identifier: connect2030
+        name: Digital Connect 2030
         active: true
         public: true
       - _hint: Portfolio resource shortened for brevity
         id: 2
-        identifier: mysecret
-        name: Palpatine's secret plan
+        identifier: future2050
+        name: Digital Future 2050
         active: true
         public: false
   _links:

@@ -11,7 +11,7 @@ get:
                 _dependencies: []
                 _attributeGroups:
                   - _type: ProjectFormCustomFieldSection
-                    name: Project Details
+                    name: Workspace Details
                     attributes:
                       - customField30
                       - customField34
