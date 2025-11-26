@@ -48,6 +48,7 @@ export default class extends Controller {
   static values = {
     inputText: String,
     activeUser: Object,
+    readonly: Boolean,
     openProjectUrl: String,
     attachmentsUploadUrl: String,
     attachmentsCollectionKey: String,
@@ -57,6 +58,7 @@ export default class extends Controller {
 
   declare readonly inputTextValue:string;
   declare readonly activeUserValue:User;
+  declare readonly readonlyValue:boolean;
   declare readonly openProjectUrlValue:string;
   declare readonly attachmentsUploadUrlValue:string;
   declare readonly attachmentsCollectionKeyValue:string;
@@ -80,6 +82,7 @@ export default class extends Controller {
       inputField: this.blockNoteInputFieldTarget,
       inputText: this.inputTextValue,
       activeUser: this.activeUserValue,
+      readOnly: this.readonlyValue,
       openProjectUrl: this.openProjectUrlValue,
       attachmentsUploadUrl: this.attachmentsUploadUrlValue,
       attachmentsCollectionKey: this.attachmentsCollectionKeyValue,

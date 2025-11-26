@@ -62,6 +62,7 @@ class DocumentsController < ApplicationController
 
     if @document.collaborative? && Setting.real_time_text_collaboration_enabled?
       generate_encrypted_oauth_token
+      derive_readonly_from_permissions
       derive_show_edit_state_from_params
     end
   end
@@ -236,5 +237,10 @@ class DocumentsController < ApplicationController
 
   def derive_show_edit_state_from_params
     @state = params[:state] == "edit" ? :edit : :show
+  end
+
+  def derive_readonly_from_permissions
+    @readonly = current_user.allowed_in_project?(:view_documents, @project) &&
+      !current_user.allowed_in_project?(:manage_documents, @project)
   end
 end

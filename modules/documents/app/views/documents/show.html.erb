@@ -34,7 +34,7 @@
     <%=
       render(
         Documents::ShowEditView::BlockNoteEditorComponent.new(
-          @document, project: @project, oauth_token: @oauth_token, state: @state
+          @document, project: @project, oauth_token: @oauth_token, state: @state, readonly: @readonly
         )
       )
     %>
