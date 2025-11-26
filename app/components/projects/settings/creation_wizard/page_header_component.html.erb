@@ -34,7 +34,7 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_breadcrumbs(
       [{ href: project_overview_path(@project.id), text: @project.name },
        { href: project_settings_general_path(@project.id), text: I18n.t("label_project_settings") },
-       I18n.t("label_project_initiation_request")]
+       I18n.t("settings.project_initiation_request.name.options.project_initiation_request")]
     )
 
     enabled = @project.project_creation_wizard_enabled
