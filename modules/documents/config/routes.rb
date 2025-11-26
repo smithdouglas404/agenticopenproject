@@ -46,6 +46,8 @@ Rails.application.routes.draw do
       put :update_type, defaults: { format: :turbo_stream }
       get :delete_dialog
       get :render_avatars, defaults: { format: :turbo_stream }
+      get :render_connection_error, defaults: { format: :turbo_stream }
+      get :render_connection_recovery, defaults: { format: :turbo_stream }
     end
   end
 
