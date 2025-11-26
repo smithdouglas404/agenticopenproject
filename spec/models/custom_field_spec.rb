@@ -631,4 +631,29 @@ RSpec.describe CustomField do
       end
     end
   end
+
+  describe ".required",
+           with_ee: %i[calculated_values],
+           with_flag: { calculated_value_project_attribute: true } do
+    let!(:required_text_field) { create(:text_project_custom_field, is_required: true) }
+    let!(:required_calculated_field) { create(:calculated_value_project_custom_field, is_required: true) }
+    let!(:required_bool_field) { create(:boolean_project_custom_field, is_required: true) }
+    let!(:optional_text_field) { create(:text_project_custom_field, is_required: false) }
+
+    it "includes required fields that are not calculated_value or bool" do
+      expect(described_class.required).to include(required_text_field)
+    end
+
+    it "excludes calculated_value fields even when required" do
+      expect(described_class.required).not_to include(required_calculated_field)
+    end
+
+    it "excludes bool fields even when required" do
+      expect(described_class.required).not_to include(required_bool_field)
+    end
+
+    it "excludes optional fields" do
+      expect(described_class.required).not_to include(optional_text_field)
+    end
+  end
 end
