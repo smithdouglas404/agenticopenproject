@@ -36,8 +36,8 @@ module Storages::Admin
           name: :automatic_management_enabled,
           value: true,
           checked: @storage.automatic_management_enabled?,
-          label: I18n.t("#{translation_scope}.automatic_management"),
-          caption: I18n.t("#{translation_scope}.automatic_management_description"),
+          label: access_management_translation("automatic_management"),
+          caption: access_management_translation("automatic_management_description"),
           visually_hide_label: false
         )
 
@@ -45,8 +45,8 @@ module Storages::Admin
           name: :automatic_management_enabled,
           value: false,
           checked: !@storage.automatic_management_enabled?,
-          label: I18n.t("#{translation_scope}.manual_management"),
-          caption: I18n.t("#{translation_scope}.manual_management_description"),
+          label: access_management_translation("manual_management"),
+          caption: access_management_translation("manual_management_description"),
           visually_hide_label: false
         )
       end
@@ -59,21 +59,12 @@ module Storages::Admin
 
     private
 
-    # i18n-tasks-use t('storages.file_storage_view.one_drive.access_management.manual_management')
-    # i18n-tasks-use t('storages.file_storage_view.one_drive.access_management.manual_management_description')
-    # i18n-tasks-use t('storages.file_storage_view.one_drive.access_management.automatic_management')
-    # i18n-tasks-use t('storages.file_storage_view.one_drive.access_management.automatic_management_description')
-    # i18n-tasks-use t('storages.file_storage_view.access_management.manual_management')
-    # i18n-tasks-use t('storages.file_storage_view.access_management.manual_management_description')
-    # i18n-tasks-use t('storages.file_storage_view.access_management.automatic_management')
-    # i18n-tasks-use t('storages.file_storage_view.access_management.automatic_management_description')
-    def translation_scope
-      @translation_scope ||= if @storage.provider_type_one_drive?
-                               "storages.file_storage_view.one_drive.access_management"
-                             else
-
-                               "storages.file_storage_view.access_management"
-                             end
+    def access_management_translation(key)
+      if @storage.provider_type_one_drive?
+        I18n.t("storages.file_storage_view.one_drive.access_management.#{key}")
+      else
+        I18n.t("storages.file_storage_view.access_management.#{key}")
+      end
     end
   end
 end
