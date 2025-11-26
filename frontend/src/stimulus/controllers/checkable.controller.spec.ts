@@ -29,6 +29,7 @@
  */
 /* eslint-disable @typescript-eslint/no-empty-function, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return */
 
+import { ActionEvent } from '@hotwired/stimulus';
 import CheckableController from './checkable.controller';
 
 describe('CheckableController', () => {
@@ -103,8 +104,8 @@ describe('CheckableController', () => {
 
   describe('toggleSelection', () => {
     // Helper to create an ActionEvent-like object with params
-    function createActionEvent(params:Record<string, unknown>) {
-      const event = new Event('click') as Event & { params:Record<string, unknown> };
+    function createActionEvent(params:ActionEvent['params']):ActionEvent {
+      const event = new Event('click') as ActionEvent;
       event.params = params;
       return event;
     }
