@@ -190,12 +190,12 @@ it:
       title: "Allegati in quarantena"
       error_cannot_act_self: "Impossibile eseguire azioni sui propri file caricati."
   attribute_help_texts:
-    note_public: "Qualsiasi testo o immagine che aggiungi a questo campo sarà pubblicamente visibile a tutti gli utenti registrati!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "In questa vista, puoi creare testi guida personalizzati per la visualizzazione degli attributi. Quando definiti, questi testi possono essere visualizzati facendo clic sull'icona guida accanto all'attributo relativo."
-    label_plural: "Testi guida degli attributi"
     show_preview: "Anteprima testo"
     add_new: "Aggiungi testo guida"
-    edit: "Modifica il testo guida per %{attribute_caption}"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "Si è verificato un errore col lavoro ma si sta riprovando. Errore: %{message}"
@@ -456,6 +456,9 @@ it:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        one: "<strong>1</strong> sub-item"
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -1068,18 +1071,12 @@ it:
     deletion_pending: "Il profilo è stato programmato per l'eliminazione. Nota che questo processo avviene in background. Potrebbe volerci un po', prima della completa eliminazione dell'utente."
     deletion_info:
       data_consequences:
-        other: 'I dati creati dall''utente (ad esempio posta elettronica, preferenze, macro-attività, voci wiki) verranno eliminati completamente se possibile. Si noti, tuttavia, che alcuni tipi di dati, come ad esempio i pacchetti di lavoro e le voci wiki, non possono essere eliminati senza creare un ostacolo per il lavoro di altri utenti. La proprietà di tali dati sarà pertanto trasferita ad un account generico chiamato "Deleted user". Visto che i dati di tutti gli account eliminati vengono riassegnati a questo stesso account, non sarà più possibile distinguere i dati creati dall''utente dai dati di un altro account eliminato.'
-        self: 'I dati creati dalle tue attività (ad esempio posta elettronica, preferenze, macro-attività, voci wiki) verranno eliminati completamente se possibile. Si noti, tuttavia, che alcuni tipi di dati, come ad esempio i pacchetti di lavoro e le voci wiki, non possono essere eliminati senza creare un ostacolo per il lavoro di altri utenti. La proprietà di tali dati sarà pertanto trasferita ad un account generico chiamato "Deleted user". Visto che i dati di tutti gli account eliminati vengono riassegnati a questo stesso account, non sarà più possibile distinguere i tuoi dati dai dati di un altro account eliminato.'
-      heading: "Cancella l'account %{name}"
-      info:
-        other: "Cancellare l'account utente è un azione irreversibile."
-        self: "Cancellare il tuo account utente è un azione irreversibile."
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "L'account verrà cancellato dal sistema. Pertanto l'utente non sarà più in grado di accedere con le sue credenziali correnti. L'utente potrà in futuro scegliere di diventare nuovamente utente di quest'applicazione ripercorrendo le normali procedure."
-        self: "Il tuo account verrà eliminato dal sistema. Pertanto non sarai più in grado di accedere con le tue credenziali correnti. Se in futuro sceglierai di diventare nuovamente utente di quest'applicazione, potrai farlo ripercorrendo le normali procedure."
-      login_verification:
-        other: "Immetti le credenziali di accesso di %{name} per verificare l'eliminazione. Una volta inviato, ti verrà richiesto di confermare la password."
-        self: "Immetti le tue credenziali di accesso %{name} per verificare l'eliminazione. Una volta inviato, ti verrà richiesto di confermare la password."
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       Il tuo account non è stato ancora attivato. Per attivare il tuo account, clicca sul link che ti è stato inviato via email.
     error_inactive_manual_activation: >
@@ -1112,6 +1109,7 @@ it:
       attribute_help_text:
         attribute_name: "Attributo"
         help_text: "Testo guida"
+        caption: "Caption"
       auth_provider:
         scim_clients: "Client SCIM"
       calculated_value_error:
@@ -1353,6 +1351,7 @@ it:
         header_alerts: "Avvisi"
         button_update_look_and_feel: "Aggiorna l'aspetto"
         button_update_alerts: "Aggiorna gli avvisi"
+        button_update_user_information: "Update profile"
         comments_sorting: "Visualizza le attività della macro-attività ordinate per"
         disable_keyboard_shortcuts: "Disabilita le scorciatoie da tastiera"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1832,7 +1831,9 @@ it:
           other: "%{count} errori hanno impedito di salvare questo %{model}"
     models:
       attachment: "File"
-      attribute_help_text: "Testo guida dell'attributo"
+      attribute_help_text:
+        one: "Attribute help text"
+        other: "Attribute help texts"
       auth_provider:
         one: "Servizio di autenticazione"
         other: "Servizi di autenticazione"
@@ -2197,10 +2198,9 @@ it:
     copy_options:
       dependencies_label: "Copia dal progetto"
   create_project:
-    attributes_heading: "Required attributes"
-    details_heading: "Project details"
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "Usa modello"
-    template_heading: "Templated projects"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "Copia da modello"
     blank_template:
@@ -2208,14 +2208,12 @@ it:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
-    details_heading: "Portfolio details"
-    template_heading: "Templated portfolios"
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
-    details_heading: "Program details"
-    template_heading: "Templated programs"
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -4022,6 +4020,11 @@ it:
   permission_edit_project_query: "Modifica elenco di progetti"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
   program:
     count:
       zero: "0 programs"
@@ -4468,10 +4471,20 @@ it:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
       blankslate:
         title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
       disable_dialog:
         title: "Disable project initiation request"
         heading: "Disable this project initiation request?"
@@ -4485,7 +4498,9 @@ it:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
-        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
@@ -4978,8 +4993,10 @@ it:
     resources:
       schema: "Schema"
     undisclosed:
-      parent: Non divulgato - Il genitore selezionato è invisibile a causa della mancanza dei permessi.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Non divulgato - L'antenato è invisibile a causa della mancanza dei permessi.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Pre-autorizzazione"

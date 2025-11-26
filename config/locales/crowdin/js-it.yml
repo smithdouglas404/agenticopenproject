@@ -303,6 +303,7 @@ it:
       success_message: 'L''URL "%{name}" è stato copiato con successo negli appunti. Incollalo nel tuo client di calendario per completare l''iscrizione.'
     label_activate: "Attiva"
     label_assignee: "Assegnatario"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Aggiungi colonna dopo"
     label_add_column_before: "Aggiungi colonna prima"
     label_add_columns: "Aggiungi colonne"
@@ -1126,6 +1127,7 @@ it:
       current_project_and_all_descendants: "In questo progetto + sottoprogetti"
       current_project: "In questo progetto"
       recently_viewed: "Visualizzati di recente"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "tutti i progetti"
         project_and_subprojects: "e tutti i sottoprogetti"
@@ -1162,6 +1164,11 @@ it:
         does_not_match_search: "Il progetto non corrisponde ai criteri di ricerca."
       no_results: "Nessun progetto corrisponde ai tuoi criteri di ricerca"
       no_favorite_results: "Nessun progetto preferito corrisponde ai tuoi criteri di ricerca."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Base di riferimento"
       clear: "Pulisci"

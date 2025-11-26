@@ -544,7 +544,13 @@ ja:
       heading: まだストレージがありません。
     successful_storage_connection: ストレージが正常に接続されました! 使用する各プロジェクトの「プロジェクト」タブでストレージをアクティブにすることを忘れないでください。
     upsell:
-      description: |-
-        OpenProjectでOneDriveをファイルストレージとして統合。ファイルをアップロードし、プロジェクト内の
-        ワークパッケージに直接リンクします。
-      title: OneDriveの統合
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

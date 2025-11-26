@@ -549,7 +549,13 @@ cs:
       heading: Zatím nemáte žádné úložiště.
     successful_storage_connection: Úložiště bylo úspěšně připojeno! Nezapomeňte aktivovat úložiště v záložce Projekty pro každý požadovaný projekt.
     upsell:
-      description: |-
-        Integrate your OneDrive as a file storage with OpenProject. Upload files and link them directly to
-        work packages in a project.
-      title: OneDrive integration
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

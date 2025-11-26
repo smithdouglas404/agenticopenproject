@@ -190,12 +190,12 @@ id:
       title: "Quarantined attachments"
       error_cannot_act_self: "Cannot perform actions on your own uploaded files."
   attribute_help_texts:
-    note_public: "Teks dan gambar apa pun yang Anda tambahkan ke bidang ini dapat dilihat secara publik oleh semua pengguna yang masuk!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "Pada tampilan ini, anda dapat membuat teks-teks bantuan yang dikhususkan untuk tampilan atribut-atribut tersebut. Ketika didefinisikan, teks-teks ini dapat ditampilkan dengan mengklik ikon bantuan pada atribut miliknya."
-    label_plural: "Atribut teks bantuan"
     show_preview: "Teks pratinjau"
     add_new: "Menambahkan teks bantuan"
-    edit: "Mengedit teks bantuan untuk %{attribute_caption}"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "Pekerjaan mengalami kesalahan tetapi mencoba lagi.  Kesalahannya adalah: %{message}"
@@ -454,6 +454,8 @@ id:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -1059,18 +1061,12 @@ id:
     deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
-        other: 'Data yang dibuat pengguna (seperti email, preferensi, Work Package, entri wiki) akan dihapus. Namun, data seperti Work Package dan entri wiki yang terhubung dengan pengguna lain tidak bisa dihapus. Data seperti ini akan dipindahkan ke sebuah akun bernama "Pengguna Terhapus". Karena data dari setiap akun terhapus dipindahkan ke akun tersebut, maka pembedaan antara data yang dibuat pengguna dengan data dari akun terhapus lainnya tidak akan bisa dilakukan.'
-        self: 'Of the data you created (e.g. email, preferences, work packages, wiki entries) as much as possible will be deleted. Note however, that data like work packages and wiki entries can not be deleted without impeding the work of the other users. Such data is hence reassigned to an account called "Deleted user". As the data of every deleted account is reassigned to this account it will not be possible to distinguish the data you created from the data of another deleted account.'
-      heading: "Hapus akun %{name}"
-      info:
-        other: "User yang akan dihapus akan terputus dari alur proses dalam sistem."
-        self: "Jika akun dihapus, Anda akan terputus dari alur proses dalam sistem."
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "Akun akan dihapus dari sistem. User tidak akan bisa Login kembali."
-        self: "Akun Anda akan dihapus dari sistem. Anda tidak akan bisa Login kembali."
-      login_verification:
-        other: "Masukkan login %{name} untuk memverifikasi penghapusan. Setelah dikirimkan, Anda akan diminta untuk mengkonfirmasi kata sandi Anda."
-        self: "Masukkan login Anda %{name} untuk memverifikasi penghapusan. Setelah dikirimkan, Anda akan diminta untuk mengkonfirmasi kata sandi Anda."
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       Akun anda belum diaktifkan. Untuk mengaktifkan, klik pada link yang ada di email anda.
     error_inactive_manual_activation: >
@@ -1103,6 +1099,7 @@ id:
       attribute_help_text:
         attribute_name: "Atribut"
         help_text: "Teks bantuan"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIM clients"
       calculated_value_error:
@@ -1344,6 +1341,7 @@ id:
         header_alerts: "Alerts"
         button_update_look_and_feel: "Update look and feel"
         button_update_alerts: "Update alerts"
+        button_update_user_information: "Update profile"
         comments_sorting: "Display work package activity sorted by"
         disable_keyboard_shortcuts: "Disable keyboard shortcuts"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1820,7 +1818,8 @@ id:
           other: "%{count} error menyebabkan %{model} gagal untuk disimpan"
     models:
       attachment: "File"
-      attribute_help_text: "Atribut teks bantuan"
+      attribute_help_text:
+        other: "Attribute help texts"
       auth_provider:
         other: "Authentication providers"
       category: "Kategori"
@@ -2172,10 +2171,9 @@ id:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    attributes_heading: "Required attributes"
-    details_heading: "Project details"
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "Gunakan templat"
-    template_heading: "Templated projects"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "Copy from template"
     blank_template:
@@ -2183,14 +2181,12 @@ id:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
-    details_heading: "Portfolio details"
-    template_heading: "Templated portfolios"
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
-    details_heading: "Program details"
-    template_heading: "Templated programs"
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -3973,6 +3969,11 @@ id:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "Hapus nilai"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
   program:
     count:
       zero: "0 programs"
@@ -4417,10 +4418,20 @@ id:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
       blankslate:
         title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
       disable_dialog:
         title: "Disable project initiation request"
         heading: "Disable this project initiation request?"
@@ -4434,7 +4445,9 @@ id:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
-        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
@@ -4926,8 +4939,10 @@ id:
     resources:
       schema: "Schema"
     undisclosed:
-      parent: Dirahasiakan - Induk yang dipilih tidak terlihat karena tidak memiliki izin.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Dirahasiakan - Leluhur tidak terlihat karena tidak memiliki izin.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Pra-otorisasi"

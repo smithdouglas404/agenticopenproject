@@ -302,6 +302,7 @@ vi:
       success_message: 'URL "%{name}" đã được sao chép thành công vào clipboard của bạn. Dán nó vào ứng dụng lịch của bạn để hoàn tất việc đăng ký.'
     label_activate: "Kích hoạt"
     label_assignee: "Người được giao"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Thêm cột phía sau"
     label_add_column_before: "Thêm cột phía trước"
     label_add_columns: "Thêm cột"
@@ -1121,6 +1122,7 @@ vi:
       current_project_and_all_descendants: "Trong dự án này + các dự án con"
       current_project: "Trong dự án này"
       recently_viewed: "Đã xem gần đây"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "mọi dự án"
         project_and_subprojects: "và tất cả các dự án con"
@@ -1157,6 +1159,11 @@ vi:
         does_not_match_search: "Dự án không khớp với tiêu chí tìm kiếm."
       no_results: "Không có dự án nào khớp với tiêu chí tìm kiếm của bạn."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Cơ sở"
       clear: "Xóa"

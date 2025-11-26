@@ -190,12 +190,12 @@ ro:
       title: "Quarantined attachments"
       error_cannot_act_self: "Cannot perform actions on your own uploaded files."
   attribute_help_texts:
-    note_public: "Orice text și imagini pe care le adaugi în acest câmp sunt vizibile public pentru toți utilizatorii conectați!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "În această vizualizare, poți crea texte de ajutor personalizate pentru vizualizarea atributelor. Atunci când sunt definite, aceste texte pot fi afișate făcând clic pe pictograma de ajutor de lângă atributul care îi aparține."
-    label_plural: "Texte de ajutor pentru atribute"
     show_preview: "Previzualizare text"
     add_new: "Adaugă text de ajutor"
-    edit: "Editați textul de ajutor pentru %{attribute_caption}"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "Lucrarea a avut o eroare, dar încearcă din nou. Eroarea a fost: %{message}"
@@ -458,6 +458,10 @@ ro:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        one: "<strong>1</strong> sub-item"
+        few: "<strong>%{count}</strong> sub-items"
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -1079,18 +1083,12 @@ ro:
     deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
-        other: 'Vor fi șterse cât mai multe din datele create de utilizator (e.g. email, preferințe, pachete de lucru, contribuții wiki). De reținut, totuși, că date precum pachete de lucru și contribuții wiki nu pot fi șterse fără a afecta activitatea altor utilizatori. Prin urmare, astfel de date sunt realocate la un cont numit "Utilizator șters". Deoarece datele fiecărui cont șters sunt realocate acestui cont, nu va mai fi posibil să se facă distincția între datele create de utilizator și datele altui cont șters.'
-        self: 'Vor fi șterse cât mai multe din datele create de tine (e.g. email, preferințe, pachete de lucru, contribuții wiki). De reținut, totuși, că date precum pachete de lucru și contribuții wiki nu pot fi șterse fără a afecta activitatea altor utilizatori. Prin urmare, astfel de date sunt realocate la un cont numit "Utilizator șters". Deoarece datele fiecărui cont șters sunt realocate acestui cont, nu va mai fi posibil să se facă distincția între datele create de tine și datele altui cont șters.'
-      heading: "Ştergere cont %{name}"
-      info:
-        other: "Ştergerea contului de utilizator este o acţiune ireversibilă."
-        self: "Stergerea contului tău de utilizator este o acţiune ireversibilă."
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "Contul va fi şters din sistem. Prin urmare, utilizatorul nu va mai putea accesa aplicația cu credențialele curente. El poate să devină din nou utilizator al aplicației prin mijloacele permise de sistem."
-        self: "Contul dumneavoatră va fi şters din sistem. Prin urmare, nu veți mai putea accesa aplicația cu credențialele curente. Puteți deveni din nou utilizator al aplicației prin mijloacele permise de sistem."
-      login_verification:
-        other: "Introdu numele de utilizator %{name} pentru a verifica ștergerea. Odată trimisă, ți se va cere să confirmi parola."
-        self: "Introdu numele de utilizator %{name} pentru a verifica ștergerea. Odată trimisă, ți se va cere să confirmi parola."
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       Contul nu a fost încă activat. Pentru a activa contul dumneavoastră, dați click pe link-ul care v-a fost trimis prin e-mail.
     error_inactive_manual_activation: >
@@ -1123,6 +1121,7 @@ ro:
       attribute_help_text:
         attribute_name: "Atribut"
         help_text: "Text de ajutor"
+        caption: "Caption"
       auth_provider:
         scim_clients: "Clienți SCIM"
       calculated_value_error:
@@ -1364,6 +1363,7 @@ ro:
         header_alerts: "Alerts"
         button_update_look_and_feel: "Actualizează aspectul și simțul"
         button_update_alerts: "Actualizează alerte"
+        button_update_user_information: "Update profile"
         comments_sorting: "Afișează activitatea pachetelor de lucru sortate după"
         disable_keyboard_shortcuts: "Dezactivează comenzile rapide pentru tastatură"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1846,7 +1846,10 @@ ro:
           other: "%{count} de erori au împiedicat salvarea acestui %{model}"
     models:
       attachment: "Fișier"
-      attribute_help_text: "Text de ajutor pentru atribute"
+      attribute_help_text:
+        one: "Attribute help text"
+        few: "Attribute help texts"
+        other: "Attribute help texts"
       auth_provider:
         one: "Authentication provider"
         few: "Authentication providers"
@@ -2224,10 +2227,9 @@ ro:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    attributes_heading: "Required attributes"
-    details_heading: "Project details"
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "Utilizează șablon"
-    template_heading: "Templated projects"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "Copy from template"
     blank_template:
@@ -2235,14 +2237,12 @@ ro:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
-    details_heading: "Portfolio details"
-    template_heading: "Templated portfolios"
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
-    details_heading: "Program details"
-    template_heading: "Templated programs"
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -4071,6 +4071,11 @@ ro:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
   program:
     count:
       zero: "0 programs"
@@ -4517,10 +4522,20 @@ ro:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
       blankslate:
         title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
       disable_dialog:
         title: "Disable project initiation request"
         heading: "Disable this project initiation request?"
@@ -4534,7 +4549,9 @@ ro:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
-        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
@@ -5028,8 +5045,10 @@ ro:
     resources:
       schema: "Schemă"
     undisclosed:
-      parent: Nevăzut - Părintele selectat este invizibil din cauza lipsei de permisiuni.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Undisclosed - Strămoșul este invizibil din cauza lipsei de permisiuni.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Autorizare prealabilă"

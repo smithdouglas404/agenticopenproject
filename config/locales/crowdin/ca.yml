@@ -190,12 +190,12 @@ ca:
       title: "Adjunts en quarantena"
       error_cannot_act_self: "No es poden realitzar accions amb els vostres propis fitxers pujats."
   attribute_help_texts:
-    note_public: "Tots els textos i imatges que afegeixis a aquest camp seran públicament visibles per a tots els usuaris que hagin iniciat sessió!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "En aquesta vista pots crear texts d'ajuda personalitzats per la vista d'atributs. Una vegada definits, aquests texts es poden veure clicant la icona d'ajuda al costat de l'atribut pertinent."
-    label_plural: "Texts d'ajuda d'atributs"
     show_preview: "Previsualitzar text"
     add_new: "Afegeix text d'ajuda"
-    edit: "Edita el text d'ajuda per a %{attribute_caption}"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "La tasca ha produït un error, però s'està reintentant. L'error era: %{message}"
@@ -455,6 +455,9 @@ ca:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        one: "<strong>1</strong> sub-item"
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -1068,18 +1071,12 @@ ca:
     deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
-        other: 'De les dades de l''usuari ha creat (per exemple, correu electrònic, preferències, paquets de treball, wiki entrades) se n''esborraran tantes com sigui possible. Fixeu-vos que dades com paquets de treball i entrades de la wiki no es poden suprimir sense que obstaculitzin la feina d''altres usuaris. Aquestes dades es reassignaran a un compte genèric anomenat "Usuari esborrat". Com que les dades de cada usuari suprimit es reassignen sempre a aquest compte genèric no serà possible distingir les dades d''aquest usuari de les dades d''un altre usuari esborrat.'
-        self: 'De les dades que has creat (per exemple, correu electrònic, preferències, paquets de treball, wiki entrades) se n''esborraran tantes com sigui possible. Fixa''t que dades com paquets de treball i entrades de la wiki no es poden suprimir sense que obstaculitzin la feina d''altres usuaris. Aquestes dades es reassignaran a un compte genèric anomenat "Usuari esborrat". Com que les dades de cada usuari suprimit es reassignen sempre a aquest compte genèric no serà possible distingir les teves dades de les dades d''un altre usuari esborrat.'
-      heading: "Suprimir el compte %{name}"
-      info:
-        other: "Suprimir el compte d'usuari és una acció irreversible."
-        self: "Eliminar el compte d'usuari és una acció irreversible."
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "El compte es suprimirà del sistema. Per tant, l'usuari ja no podrà iniciar la sessió amb les seves credencials actuals. Ell/ella pot decidir convertir-se en un usuari d'aquesta aplicació una altra vegada pels mitjans que aquesta aplicació ofereix."
-        self: "El teu compte s'eliminarà del sistema. Per tant, ja no podràs accedir amb les vostres credencials actuals. Si vols tornar a ser usuari d'aquesta aplicació una altra vegada, podràs fer-ho utilitzant els mitjans que l'aplicació proporciona."
-      login_verification:
-        other: "Introdueix les teves credencials %{name} per a verificar l'eliminació. Un cop enviades, et demanarem la confirmació de la teva contrasenya."
-        self: "Introdueix les teves credencials %{name} per a verificar l'eliminació. Un cop enviades, et demanarem la confirmació de la teva contrasenya."
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       El teu compte encara no ha estat activat. Per activar el compte, feu clic a l'enllaç que se't va enviar per correu electrònic.
     error_inactive_manual_activation: >
@@ -1112,6 +1109,7 @@ ca:
       attribute_help_text:
         attribute_name: "Atribut"
         help_text: "Text d'ajuda"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIM clients"
       calculated_value_error:
@@ -1353,6 +1351,7 @@ ca:
         header_alerts: "Alerts"
         button_update_look_and_feel: "Update look and feel"
         button_update_alerts: "Update alerts"
+        button_update_user_information: "Update profile"
         comments_sorting: "Display work package activity sorted by"
         disable_keyboard_shortcuts: "Disable keyboard shortcuts"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1832,7 +1831,9 @@ ca:
           other: "no s'ha pogut desar aquest %{model} perquè s'han trobat %{count} errors"
     models:
       attachment: "Fitxer"
-      attribute_help_text: "Texts d'ajuda d'atributs"
+      attribute_help_text:
+        one: "Attribute help text"
+        other: "Attribute help texts"
       auth_provider:
         one: "Authentication provider"
         other: "Authentication providers"
@@ -2197,10 +2198,9 @@ ca:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    attributes_heading: "Required attributes"
-    details_heading: "Project details"
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "Utilitzar plantilla"
-    template_heading: "Templated projects"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "Copy from template"
     blank_template:
@@ -2208,14 +2208,12 @@ ca:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
-    details_heading: "Portfolio details"
-    template_heading: "Templated portfolios"
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
-    details_heading: "Program details"
-    template_heading: "Templated programs"
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -4018,6 +4016,11 @@ ca:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
   program:
     count:
       zero: "0 programs"
@@ -4462,10 +4465,20 @@ ca:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
       blankslate:
         title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
       disable_dialog:
         title: "Disable project initiation request"
         heading: "Disable this project initiation request?"
@@ -4479,7 +4492,9 @@ ca:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
-        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
@@ -4972,8 +4987,10 @@ ca:
     resources:
       schema: "Esquema"
     undisclosed:
-      parent: No revelat - El pare seleccionat és invisible per falta de permisos.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: No revelat - L'ancestre és invisible per falta de permisos.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Pre-autorització"

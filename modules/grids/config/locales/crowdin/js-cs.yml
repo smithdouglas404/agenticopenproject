@@ -52,6 +52,7 @@ cs:
           title: 'Tabulka pracovních balíčků'
         work_packages_graph:
           title: 'Graf pracovních balíčků'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Kalendář'
         work_packages_overview:

@@ -52,6 +52,7 @@ ko:
           title: '작업 패키지 테이블'
         work_packages_graph:
           title: '작업 패키지 그래프'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: '달력'
         work_packages_overview:

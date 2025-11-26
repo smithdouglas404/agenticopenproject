@@ -543,6 +543,13 @@ zh-CN:
       heading: 您还没有任何存储。
     successful_storage_connection: 存储连接成功！请记住，在每个所需项目的项目设置中激活模块和特定存储，以进行使用。
     upsell:
-      description: |-
-        将 OneDrive 作为文件存储与 OpenProject 集成。上传文件并直接将其链接到项目中的工作包。
-      title: OneDrive 集成
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

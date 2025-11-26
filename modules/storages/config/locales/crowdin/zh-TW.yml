@@ -544,7 +544,13 @@ zh-TW:
       heading: 目前沒有任何儲存空間
     successful_storage_connection: 儲存已成功連接！請記住在每個所需專案的專案索引標籤中啟動儲存，以便使用。
     upsell:
-      description: |-
-        將你的 OneDrive 整合為 OpenProject 的檔案儲存空間。
-        你可以上傳檔案，並將其直接連結至專案中的工作套件。
-      title: OneDrive 整合
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

@@ -52,6 +52,7 @@ vi:
           title: 'Bảng gói công việc'
         work_packages_graph:
           title: 'Đồ thị gói công việc'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Lịch'
         work_packages_overview:

@@ -546,7 +546,13 @@ it:
       heading: Non hai ancora archivi.
     successful_storage_connection: Spazio di archiviazione connesso correttamente! Ricordati di attivare l'archivio nella scheda Progetto di ciascun progetto in cui vuoi utilizzarlo.
     upsell:
-      description: |-
-        Integra il tuo OneDrive come archivio file con OpenProject. Carica i file e collegali direttamente
-        a macro-attività in un progetto.
-      title: Integrazione di OneDrive
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

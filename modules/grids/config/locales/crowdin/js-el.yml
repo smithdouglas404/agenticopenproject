@@ -52,6 +52,7 @@ el:
           title: 'Πίνακας πακέτων εργασίας'
         work_packages_graph:
           title: 'Γράφημα πακέτων εργασίας'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Ημερολόγιο'
         work_packages_overview:

@@ -303,6 +303,7 @@ uk:
       success_message: 'URL-адресу «%{name}» скопійовано в буфер обміну. Вставте її в клієнт свого календаря, що завершити створення підписки.'
     label_activate: "Активувати"
     label_assignee: "Виконавець"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Додати стовпець після"
     label_add_column_before: "Додати стовпець перед"
     label_add_columns: "Додати стовпці"
@@ -1134,6 +1135,7 @@ uk:
       current_project_and_all_descendants: "У цьому проекті + підпроекти"
       current_project: "У цьому проекті"
       recently_viewed: "Нещодавно переглянуті"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "всі проекти"
         project_and_subprojects: "і всі підпроекти"
@@ -1170,6 +1172,11 @@ uk:
         does_not_match_search: "Проєкт не відповідає критеріям пошуку."
       no_results: "Жоден проєкт не відповідає вашим критеріям пошуку."
       no_favorite_results: "Немає вибраних проєктів, які відповідають критеріям пошуку."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Вихідний рівень"
       clear: "Очистити"

@@ -303,6 +303,7 @@ ko:
       success_message: '"%{name}" URL이 클립보드에 복사되었습니다. 구독을 완료하려면 캘린더 클라이언트에 붙여넣으세요.'
     label_activate: "활성화"
     label_assignee: "담당자"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "다음 뒤에 열 추가"
     label_add_column_before: "다음 앞에 열 추가"
     label_add_columns: "열 추가"
@@ -1122,6 +1123,7 @@ ko:
       current_project_and_all_descendants: "이 프로젝트 + 하위 프로젝트에서"
       current_project: "이 프로젝트에서"
       recently_viewed: "최근에 조회됨"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "모든 프로젝트"
         project_and_subprojects: "그리고 모든 하위 프로젝트"
@@ -1158,6 +1160,11 @@ ko:
         does_not_match_search: "프로젝트가 검색 기준과 일치하지 않습니다."
       no_results: "검색 기준과 일치하는 프로젝트가 없습니다."
       no_favorite_results: "검색 기준과 일치하는 프로젝트 즐겨찾기가 없습니다."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "기준선"
       clear: "선택 취소"

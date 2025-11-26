@@ -190,12 +190,12 @@
       title: "Vedlegg i karantene"
       error_cannot_act_self: "Kan ikke utføre handlinger på egne opplastede filer."
   attribute_help_texts:
-    note_public: "Eventuell tekst og bilder du legger til i dette feltet er offentlig synlig for alle påloggede brukere!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "I denne visningen kan du opprette egendefinerte hjelpetekster for attributtvisning. Når definert kan disse tekstene vises ved å klikke på hjelpeikonet ved siden av egenskapen det tilhører."
-    label_plural: "Egenskap for hjelpetekster"
     show_preview: "Forhåndsvis tekst"
     add_new: "Legge til hjelpetekst"
-    edit: "Rediger hjelpetekst for %{attribute_caption}"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "Oppgaven resulterte i en feil, men prøver på nytt. Feilen var: %{message}"
@@ -458,6 +458,9 @@
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        one: "<strong>1</strong> sub-item"
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -1070,18 +1073,12 @@
     deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
-        other: 'Av dataene brukeren opprettet (f.eks. e-post, innstillinger, arbeidspakker, wiki-oppføringer) vil så mye som mulig bli slettet. Merk imidlertid at data som arbeidspakker og wiki-oppføringer ikke kan slettes uten å påvirke arbeidet til de andre brukerne. Slike data blir derfor flyttet til en konto kalt "Slettet bruker". Fordi dataene til hver slettede konto blir flyttet til denne kontoen vil det ikke være mulig å skille data brukeren har opprettet fra data for en annen slettet konto.'
-        self: 'Av dataene du opprettet (f.eks. e-post, innstillinger, arbeidspakker, wiki-oppføringer) vil så mye som mulig bli slettet. Merk imidlertid at data som arbeidspakker og wiki-oppføringer ikke kan slettes uten å påvirke arbeidet til de andre brukerne. Slike data blir derfor flyttet til en konto kalt "Slettet bruker". Fordi dataene til hver slettede konto blir flyttet til denne kontoen vil det ikke være mulig å skille dataene du opprettet fra data for en annen slettet konto.'
-      heading: "Slett kontoen %{name}"
-      info:
-        other: "Sletting av en brukerkonto kan ikke angres."
-        self: "Sletting av din brukerkonto kan ikke angres."
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "Kontoen vil bli slettet fra systemet. Dette innebærer at brukeren ikke lenger kan logge inn med sine kontoopplysninger. I den grad applikasjonen tillater det, kan han/hun velge å registrere seg som en bruker på nytt."
-        self: "Din konto vil bli slettet fra systemet. Dette innebærer at du ikke lenger kan logge på med dine kontoopplysninger. Hvis du velger å bli en bruker av denne applikasjonen igjen, kan du registrere deg på nytt så fremt applikasjonen tillater det."
-      login_verification:
-        other: "Skriv inn %{name} for å bekrefte slettingen. Når den er sendt inn vil du bli bedt om å bekrefte passordet ditt."
-        self: "Skriv inn din pålogging %{name} for å bekrefte slettingen. Når den er sendt inn vil du bli bedt om å bekrefte passordet ditt."
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       Din konto er ennå ikke aktivert. For å aktivere kontoen må du følge lenken som er sendt deg på e-post.
     error_inactive_manual_activation: >
@@ -1114,6 +1111,7 @@
       attribute_help_text:
         attribute_name: "Attributt"
         help_text: "Hjelpetekst"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIM clients"
       calculated_value_error:
@@ -1355,6 +1353,7 @@
         header_alerts: "Alerts"
         button_update_look_and_feel: "Update look and feel"
         button_update_alerts: "Update alerts"
+        button_update_user_information: "Update profile"
         comments_sorting: "Display work package activity sorted by"
         disable_keyboard_shortcuts: "Disable keyboard shortcuts"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1834,7 +1833,9 @@
           other: "%{count} feil forhindret lagring av denne %{model}"
     models:
       attachment: "Fil"
-      attribute_help_text: "Egenskap hjelpetekster"
+      attribute_help_text:
+        one: "Attribute help text"
+        other: "Attribute help texts"
       auth_provider:
         one: "Authentication provider"
         other: "Authentication providers"
@@ -2199,10 +2200,9 @@
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    attributes_heading: "Required attributes"
-    details_heading: "Project details"
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "Bruk mal"
-    template_heading: "Templated projects"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "Copy from template"
     blank_template:
@@ -2210,14 +2210,12 @@
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
-    details_heading: "Portfolio details"
-    template_heading: "Templated portfolios"
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
-    details_heading: "Program details"
-    template_heading: "Templated programs"
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -4024,6 +4022,11 @@
   permission_edit_project_query: "Rediger prosjektspørring"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
   program:
     count:
       zero: "0 programs"
@@ -4470,10 +4473,20 @@
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
       blankslate:
         title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
       disable_dialog:
         title: "Disable project initiation request"
         heading: "Disable this project initiation request?"
@@ -4487,7 +4500,9 @@
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
-        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
@@ -4980,8 +4995,10 @@
     resources:
       schema: "Skjema"
     undisclosed:
-      parent: Ukjent - den valgte overordnet er usynlig på grunn av manglende tillatelser.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Ukjent - den valgte overordnet er usynlig på grunn av manglende tillatelser.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Pre-autorisasjon"

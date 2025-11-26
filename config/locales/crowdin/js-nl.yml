@@ -303,6 +303,7 @@ nl:
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Activeren"
     label_assignee: "Toegewezene"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Kolom toevoegen"
     label_add_column_before: "Kolom invoegen"
     label_add_columns: "Kolommen toevoegen"
@@ -1126,6 +1127,7 @@ nl:
       current_project_and_all_descendants: "In dit project + subprojecten"
       current_project: "In dit project"
       recently_viewed: "Recent bekeken"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "alle projecten"
         project_and_subprojects: "en alle subprojecten"
@@ -1162,6 +1164,11 @@ nl:
         does_not_match_search: "Het project komt niet overeen met de zoekcriteria."
       no_results: "Geen enkel project komt overeen met uw zoekcriteria."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Baseline"
       clear: "Wissen"

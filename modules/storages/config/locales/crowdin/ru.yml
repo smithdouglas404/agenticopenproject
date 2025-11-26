@@ -549,6 +549,13 @@ ru:
       heading: У вас пока нет хранилищ.
     successful_storage_connection: Хранилище успешно подключено! Не забудьте активировать хранилище на вкладке Проекты для каждого желаемого проекта, чтобы использовать его.
     upsell:
-      description: |-
-        Интегрируйте Ваш OneDrive как файловое хранилище в OpenProject. Загружайте файлы и связывайте их напрямую с пакетами работ в проекте.
-      title: Интеграция с OneDrive
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

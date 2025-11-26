@@ -52,6 +52,7 @@ ru:
           title: 'Таблица пакетов работ'
         work_packages_graph:
           title: 'Диаграмма по пакетам работ'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Календарь'
         work_packages_overview:

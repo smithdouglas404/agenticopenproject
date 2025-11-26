@@ -66,6 +66,14 @@ da:
       description: |-
         Unable to open document because real-time text collaboration is disabled.
         Please contact your administrator to enable real-time text collaboration if you want to access this document.
+    show_edit_view:
+      connection_error_notice:
+        description: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
+        action: Try again
+      connection_recovery_notice:
+        description: "The connection to the real-time text collaboration server has been restored."
     index_page:
       name: "Navn"
       type: "Type"
@@ -110,7 +118,7 @@ da:
           some_unwritable: Some values are configured via environment variables and cannot be edited here.
         hocuspocus_server_url:
           label: "Hocuspocus server URL"
-          caption: "The address of the a working Hocuspocus server."
+          caption: "The address of the working Hocuspocus server."
         hocuspocus_server_secret:
           label: "Client secret"
           caption: "Paste the secret provided by the Hocuspocus server."

@@ -545,6 +545,13 @@ pt-PT:
       heading: Ainda não tem nenhum armazenamento.
     successful_storage_connection: Armazenamento ligado com sucesso! Lembre-se de ativar o armazenamento no separador Projetos de cada projeto pretendido para o utilizar.
     upsell:
-      description: |-
-        Integre o seu OneDrive como um armazenamento de ficheiros com o OpenProject. Carregue ficheiros e ligue-os diretamente aos pacotes de trabalho de um projeto.
-      title: Integração com o OneDrive
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

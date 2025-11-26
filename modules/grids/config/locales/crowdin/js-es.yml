@@ -52,6 +52,7 @@ es:
           title: 'Tabla de paquetes de trabajo'
         work_packages_graph:
           title: 'Gráfico de paquetes de trabajo'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Calendario'
         work_packages_overview:

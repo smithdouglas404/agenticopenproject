@@ -190,12 +190,12 @@ ko:
       title: "격리된 첨부 파일"
       error_cannot_act_self: "고유한 업로드 파일에서는 작업을 수행할 수 없습니다."
   attribute_help_texts:
-    note_public: "이 필드에 추가하는 모든 텍스트와 이미지는 로그인한 모든 사용자에게 공개됩니다!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "이 보기에서 특성 보기에 대한 사용자 지정 도움말 텍스트를 작성할 수 있습니다. 이 텍스트를 정의하면 속하는 특성 옆에 있는 도움말 아이콘을 클릭하여 표시할 수 있습니다."
-    label_plural: "특성 도움말 텍스트"
     show_preview: "미리 보기 텍스트"
     add_new: "도움말 텍스트 추가"
-    edit: "%{attribute_caption}에 대한 도움말 텍스트 편집"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "작업 중에 오류가 발생했지만 다시 시도 중입니다. 오류 메시지: %{message}"
@@ -458,6 +458,8 @@ ko:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -1063,18 +1065,12 @@ ko:
     deletion_pending: "계정 삭제가 예약되었습니다. 이 프로세스는 백그라운드에서 수행됩니다. 사용자가 완전히 삭제될 때까지 몇 분 정도 걸릴 수 있습니다."
     deletion_info:
       data_consequences:
-        other: '이 사용자에 대한 데이터(예를 들어 이메일, 환경 설정, 일감, 위키 항목)를 가능한 범위까지 지울 것입니다. 다만 일감이나 위키 항목과 같은 데이터는 지워버릴 경우 다른 사용자의 작업을 방해하게 됩니다. 따라서 그러한 데이터는 "삭제된 사용자" 계정에 귀속됩니다. 삭제된 사용자의 작업물이 하나의 계정으로 귀속되기에, 작업물을 만든 원래 사용자가 누구인지 구분할 수 없게 됩니다.'
-        self: '당신에 대한 데이터(예를 들어 이메일, 환경 설정, 일감, 위키 항목)를 가능한 범위까지 지울 것입니다. 다만 일감이나 위키 항목과 같은 데이터는 지워버릴 경우 다른 사용자의 작업을 방해하게 됩니다. 따라서 그러한 데이터는 "삭제된 사용자" 계정에 귀속됩니다. 삭제된 사용자의 작업물이 하나의 계정으로 귀속되기에, 당신이 만든 작업물과 다른 삭제된 사용자가 만든 작업물을 구분할 수 없게 됩니다.'
-      heading: "계정 %{name}를 삭제"
-      info:
-        other: "사용자 계정을 삭제하는것은 돌이킬 수 없는 행동입니다."
-        self: "당신의 계정을 삭제하는 것은 되돌릴 수 없습니다."
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "이 계정이 시스템에서 삭제됩니다. 따라서 사용자는 지금의 인증 정보로 더 이상 로그인할 수 없습니다. 이 사람은 이 애플리케이션이 허용하는 방법을 따르면 다시 사용자가 될 수 있습니다."
-        self: "당신의 계정이 시스템에서 삭제됩니다. 따라서 당신은 지금의 인증 정보로 더 이상 로그인할 수 없습니다. 원한다면 이 애플리케이션이 허용하는 방법을 따라서 다시 사용자가 될 수 있습니다."
-      login_verification:
-        other: "삭제를 확인하려면 로그인 %{name}을(를) 입력하세요. 제출하면 암호를 확인하라는 메시지가 표시됩니다."
-        self: "삭제를 확인하려면 로그인 %{name}을(를) 입력하세요. 제출하면 암호를 확인하라는 메시지가 표시됩니다."
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       당신의 계정이 아직 활성화되지 않았습니다. 계정을 활성화하기 위해, 이메일로 전송된 링크를 클릭하십시오.
     error_inactive_manual_activation: >
@@ -1107,6 +1103,7 @@ ko:
       attribute_help_text:
         attribute_name: "특성"
         help_text: "도움말 텍스트"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIM 클라이언트"
       calculated_value_error:
@@ -1348,6 +1345,7 @@ ko:
         header_alerts: "알림"
         button_update_look_and_feel: "모양과 느낌 업데이트"
         button_update_alerts: "업데이트 알림"
+        button_update_user_information: "Update profile"
         comments_sorting: "다음을 기준으로 작업 패키지 활동을 정렬하여 표시:"
         disable_keyboard_shortcuts: "키보드 바로 가기 비활성화"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1824,7 +1822,8 @@ ko:
           other: "%{count} 오류 때문에 %{model} 을 저장할 수 없습니다."
     models:
       attachment: "파일"
-      attribute_help_text: "특성 도움말 텍스트"
+      attribute_help_text:
+        other: "Attribute help texts"
       auth_provider:
         other: "인증 공급자"
       category: "카테고리"
@@ -2176,10 +2175,9 @@ ko:
     copy_options:
       dependencies_label: "프로젝트에서 복사"
   create_project:
-    attributes_heading: "Required attributes"
-    details_heading: "Project details"
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "템플릿 사용"
-    template_heading: "Templated projects"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "템플릿에서 복사"
     blank_template:
@@ -2187,14 +2185,12 @@ ko:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
-    details_heading: "Portfolio details"
-    template_heading: "Templated portfolios"
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
-    details_heading: "Program details"
-    template_heading: "Templated programs"
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -3977,6 +3973,11 @@ ko:
   permission_edit_project_query: "프로젝트 쿼리 편집"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
   program:
     count:
       zero: "0 programs"
@@ -4421,10 +4422,20 @@ ko:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
       blankslate:
         title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
       disable_dialog:
         title: "Disable project initiation request"
         heading: "Disable this project initiation request?"
@@ -4438,7 +4449,9 @@ ko:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
-        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
@@ -4930,8 +4943,10 @@ ko:
     resources:
       schema: "스키마"
     undisclosed:
-      parent: 숨겨짐 - 권한이 없어 선택한 부모를 볼 수 없습니다.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: 숨겨짐 - 권한이 없어 상위 항목을 볼 수 없습니다.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "사전 권한 부여"
