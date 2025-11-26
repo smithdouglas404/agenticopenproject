@@ -44,11 +44,13 @@ module Projects
 
     private
 
+    attr_accessor :artifact_work_package
+
     def persist(service_call)
       creation_call = create_artifact_work_package
 
       creation_call.on_success do
-        artifact_work_package = creation_call.result
+        self.artifact_work_package = creation_call.result
         project.project_creation_wizard_artifact_work_package_id = artifact_work_package.id
         project.save
       end
@@ -76,7 +78,7 @@ module Projects
 
       storage_call = Storages::UploadFileService
         .call(
-          container: service_call.result,
+          container: artifact_work_package,
           project_storage:,
           file_path: project.project_creation_wizard_artifact_name,
           file_data: StringIO.new(export.content),
