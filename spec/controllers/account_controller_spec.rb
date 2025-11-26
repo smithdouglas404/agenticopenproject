@@ -462,7 +462,7 @@ RSpec.describe AccountController, :skip_2fa_stage do
       before do
         post "change_password",
              flash: {
-               _password_change_user_id: nil
+               _password_change_user: nil
              },
              params: {
                username: admin.login,
@@ -481,8 +481,7 @@ RSpec.describe AccountController, :skip_2fa_stage do
       before do
         post "change_password",
              params: {
-               password_change_user_id: admin.id,
-               username: admin.login,
+               password_change_user: admin.login,
                password: "adminADMIN!",
                new_password: "adminADMIN!New",
                new_password_confirmation: "adminADMIN!New"
