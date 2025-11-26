@@ -51,6 +51,7 @@ module API
                          end.find(params[:id])
             end
 
+            mount ::API::V3::Workspaces::InstanceApis
             mount API::V3::Workspaces::NestedApis
           end
         end

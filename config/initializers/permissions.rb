@@ -43,6 +43,7 @@ Rails.application.reloader.to_prepare do
                      permissible_on: :global,
                      require: :loggedin,
                      visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     contract_actions: { portfolios: %i[create] },
                      dependencies: :add_portfolios_from_template
 
       map.permission :add_programs,
@@ -50,6 +51,7 @@ Rails.application.reloader.to_prepare do
                      permissible_on: :global,
                      require: :loggedin,
                      visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     contract_actions: { programs: %i[create] },
                      dependencies: :add_programs_from_template
 
       map.permission :add_project_from_template,

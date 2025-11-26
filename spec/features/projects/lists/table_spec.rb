@@ -643,4 +643,37 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
       end
     end
   end
+
+  describe "workspace type badges", with_flag: { portfolio_models: true } do
+    shared_let(:portfolio_project) { create(:portfolio, name: "Test Portfolio") }
+    shared_let(:program_project) { create(:program, name: "Test Program") }
+    shared_let(:regular_project) { project }
+
+    before do
+      login_as(admin)
+      projects_page.visit!
+    end
+
+    it "displays badges for portfolio and program workspaces but not for regular projects" do
+      # Check portfolio has badge with icon and label
+      projects_page.within_row(portfolio_project) do
+        expect(page).to have_css("svg.octicon-briefcase")
+        expect(page).to have_text("Portfolio")
+      end
+
+      # Check program has badge with icon and label
+      projects_page.within_row(program_project) do
+        expect(page).to have_css("svg.octicon-project-roadmap")
+        expect(page).to have_text("Program")
+      end
+
+      # Check regular project does NOT have workspace badge
+      projects_page.within_row(regular_project) do
+        expect(page).to have_no_css("svg.octicon-briefcase")
+        expect(page).to have_no_css("svg.octicon-project-roadmap")
+        expect(page).to have_no_text("Portfolio", exact: false)
+        expect(page).to have_no_text("Program", exact: false)
+      end
+    end
+  end
 end
