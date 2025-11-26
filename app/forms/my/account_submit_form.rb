@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,27 +26,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-class Users::DeletePageHeaderComponent < ApplicationComponent
-  include OpPrimer::ComponentHelpers
-  include ApplicationHelper
-
-  def initialize(user:, layout:)
-    super
-    @user = user
-    @layout = layout
-  end
-
-  def breadcrumb_items
-    if @layout == "my"
-      [{ href: my_account_path, text: t(:label_my_account) }, t("account.delete")]
-    else
-      [{ href: admin_index_path, text: t(:label_administration) },
-       { href: admin_settings_users_path, text: t(:label_user_and_permission) },
-       { href: users_path, text: t(:label_user_plural) },
-       { href: edit_user_path(@user), text: @user.name },
-       t("account.delete")]
-    end
+class My::AccountSubmitForm < ApplicationForm
+  form do |form|
+    form.submit(name: :submit,
+                label: I18n.t("activerecord.attributes.user_preference.button_update_user_information"),
+                scheme: :default)
   end
 end

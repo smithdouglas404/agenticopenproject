@@ -117,7 +117,7 @@ RSpec.describe UsersController do
       context "when the setting users_deletable_by_self is set to true",
               with_settings: { users_deletable_by_self: true } do
         before do
-          get :deletion_info, params:
+          get :deletion_info, params:, format: :turbo_stream
         end
 
         it { expect(response).to have_http_status(:success) }
@@ -126,13 +126,16 @@ RSpec.describe UsersController do
           expect(assigns(:user)).to eq(user)
         end
 
-        it { expect(response).to render_template("deletion_info") }
+        it "renders a dialog" do
+          expect(response).to be_successful
+          expect(response).to have_turbo_stream action: "dialog", target: "users-delete-dialog-component"
+        end
       end
 
       context "when the setting users_deletable_by_self is set to false",
               with_settings: { users_deletable_by_self: false } do
         before do
-          get :deletion_info, params:
+          get :deletion_info, params:, format: :turbo_stream
         end
 
         it { expect(response).to have_http_status(:not_found) }
@@ -143,15 +146,10 @@ RSpec.describe UsersController do
       current_user { anonymous }
 
       before do
-        get :deletion_info, params:
+        get :deletion_info, params:, format: :turbo_stream
       end
 
-      it {
-        expect(response).to redirect_to(controller: "account",
-                                        action: "login",
-                                        back_url: controller.url_for(controller: "users",
-                                                                     action: "deletion_info"))
-      }
+      it { expect(response).to have_http_status(:unauthorized) }
     end
 
     context "when the current user is admin" do
@@ -160,7 +158,7 @@ RSpec.describe UsersController do
       context "when the setting users_deletable_by_admins is set to true",
               with_settings: { users_deletable_by_admins: true } do
         before do
-          get :deletion_info, params:
+          get :deletion_info, params:, format: :turbo_stream
         end
 
         it { expect(response).to have_http_status(:success) }
@@ -169,13 +167,16 @@ RSpec.describe UsersController do
           expect(assigns(:user)).to eq(user)
         end
 
-        it { expect(response).to render_template("deletion_info") }
+        it "renders a dialog" do
+          expect(response).to be_successful
+          expect(response).to have_turbo_stream action: "dialog", target: "users-delete-dialog-component"
+        end
       end
 
       context "when the setting users_deletable_by_admins is set to false",
               with_settings: { users_deletable_by_admins: false } do
         before do
-          get :deletion_info, params:
+          get :deletion_info, params:, format: :turbo_stream
         end
 
         it { expect(response).to have_http_status(:not_found) }

@@ -270,8 +270,8 @@ end
 Redmine::MenuManager.map :my_menu do |menu|
   menu.push :account,
             { controller: "/my", action: "account" },
-            caption: :label_profile,
-            icon: "person-fill"
+            caption: :label_account,
+            icon: "person"
   menu.push :locale,
             { controller: "/my", action: "locale" },
             caption: :label_locale,
@@ -301,13 +301,6 @@ Redmine::MenuManager.map :my_menu do |menu|
             { controller: "/my", action: "reminders" },
             caption: I18n.t("js.reminders.settings.title"),
             icon: "unread"
-
-  menu.push :delete_account, :delete_my_account_info_path,
-            caption: I18n.t("account.delete"),
-            param: :user_id,
-            if: ->(_) { Setting.users_deletable_by_self? },
-            last: :delete_account,
-            icon: "trash"
 end
 
 Redmine::MenuManager.map :admin_menu do |menu|

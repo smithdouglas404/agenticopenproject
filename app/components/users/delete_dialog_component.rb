@@ -28,52 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Users
+  class DeleteDialogComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
+    include PasswordHelper
 
-RSpec.describe "Session TTL",
-               with_settings: { session_ttl_enabled?: true, session_ttl: "10" } do
-  shared_let(:admin) { create(:admin) }
-  let(:admin_password) { "adminADMIN!" }
+    def initialize(user:, **options)
+      super
 
-  let!(:work_package) { create(:work_package) }
-
-  before do
-    login_with(admin.login, admin_password)
-  end
-
-  def expire!
-    page.set_rack_session(updated_at: Time.now - 1.hour)
-  end
-
-  describe "outdated TTL on Rails request" do
-    it "expires on the next Rails request" do
-      visit "/my/account"
-
-      within_test_selector "my-account-form" do
-        expect(page).to have_field "user_username", with: admin.login
-      end
-
-      # Expire the session
-      expire!
-
-      visit "/"
-      expect(page).to have_css(".action-login")
+      @user = user
     end
-  end
 
-  describe "outdated TTL on API request" do
-    it "expires on the next APIv3 request" do
-      page.driver.header("X-Requested-With", "XMLHttpRequest")
-      visit "/api/v3/work_packages/#{work_package.id}"
+    private
 
-      body = JSON.parse(page.body)
-      expect(body["id"]).to eq(work_package.id)
+    def id = "delete-user-dialog"
+    def title = I18n.t("account.deletion_info.heading", name: @user.name)
+    def heading = I18n.t("account.deletion_info.heading", name: @user.name)
 
-      # Expire the session
-      expire!
-      visit "/api/v3/work_packages/#{work_package.id}"
-
-      expect(page.body).to eq("unauthorized")
+    def user_scope
+      User.current == @user ? "self" : "other"
     end
   end
 end
