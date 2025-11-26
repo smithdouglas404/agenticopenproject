@@ -46,8 +46,8 @@ module Portfolios
       @currently_favorited ||= portfolio.favorited?
     end
 
-    def render_subportfolios?
-      all_subportfolios.any?
+    def has_subportfolios?
+      all_subportfolios.present?
     end
 
     def all_subportfolios
@@ -74,7 +74,7 @@ module Portfolios
           total = sub_statuses.values.sum
 
           sub_statuses.map do |code, count|
-            percentage = (count.fdiv(total) * 100).round
+            percentage = (count.fdiv(total) * 100).round(1)
 
             { code:, count:, percentage: }
           end

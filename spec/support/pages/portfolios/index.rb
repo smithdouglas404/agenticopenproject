@@ -81,6 +81,14 @@ module Pages
         expect(page).to have_css('[data-test-selector="portfolio-query-name"]', text: name)
       end
 
+      def expect_status_bar_percentage(portfolio, status_text, percentage)
+        within_row(portfolio) do
+          status = page.find_test_selector("op-portfolios--status-#{status_text}")
+          status_percentage = status["data-percentage"]
+          expect(status_percentage).to eq(percentage.to_s)
+        end
+      end
+
       def expect_status_of(portfolio, status_text)
         expect(page).to have_css("#projects-status-button-component-#{portfolio.id} .Button-label", text: status_text)
       end
