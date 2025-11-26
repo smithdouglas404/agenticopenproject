@@ -31,30 +31,103 @@
 import { Controller, ActionEvent } from '@hotwired/stimulus';
 import invariant from 'tiny-invariant';
 
+/**
+ * A Stimulus Controller providing checkbox group behavior, enabling bulk
+ * checking/unchecking of multiple checkboxes within a scoped element.
+ *
+ * This controller manages a collection of checkbox inputs marked with
+ * `data-checkable-target="checkbox"`. It provides methods to check all,
+ * uncheck all, toggle all, or toggle a filtered subset of checkboxes.
+ *
+ * Can be used standalone or in combination with {@link CheckAllController}
+ * when the "Check all" / "Uncheck all" controls are outside the scope of this
+ * controller (i.e. in another part of the DOM that is not a descendant).
+ *
+ * @example Basic usage with targets
+ * ```html
+ *  <div data-controller="checkable">
+ *    <button data-action="checkable#checkAll">Check all</button>
+ *    <button data-action="checkable#uncheckAll">Uncheck all</button>
+ *    <button data-action="checkable#toggleAll">Toggle all</button>
+ *
+ *    <input type="checkbox" data-checkable-target="checkbox">
+ *    <input type="checkbox" data-checkable-target="checkbox">
+ *    <input type="checkbox" data-checkable-target="checkbox">
+ *  </div>
+ * ```
+ *
+ * @example Filtering with toggleSelection using action params
+ * ```html
+ *  <div data-controller="checkable">
+ *    <button data-action="checkable#toggleSelection"
+ *            data-checkable-key-param="role"
+ *            data-checkable-value-param="admin">Toggle admins</button>
+ *
+ *    <input type="checkbox" data-checkable-target="checkbox" data-role="admin">
+ *    <input type="checkbox" data-checkable-target="checkbox" data-role="member">
+ *    <input type="checkbox" data-checkable-target="checkbox" data-role="admin">
+ *  </div>
+ * ```
+ *
+ * @see {@link CheckAllController} for controlling from outside the DOM scope
+ */
 export default class CheckableController extends Controller<HTMLElement> {
   static targets = ['checkbox'];
 
   declare readonly checkboxTargets:HTMLInputElement[];
 
+  /**
+   * Checks all checkbox targets.
+   *
+   * @param event - The triggering event (will be prevented)
+   */
   checkAll(event:Event) {
     event.preventDefault();
     this.toggleChecked(this.checkboxTargets, true);
   }
 
+  /**
+   * Unchecks all checkbox targets.
+   *
+   * @param event - The triggering event (will be prevented)
+   */
   uncheckAll(event:Event) {
     event.preventDefault();
     this.toggleChecked(this.checkboxTargets, false);
   }
 
+  /**
+   * Toggles all checkbox targets. If all are checked, unchecks all.
+   * If any are unchecked (mixed state or none checked), checks all.
+   *
+   * @param event - The triggering event (will be prevented)
+   */
   toggleAll(event:Event) {
     event.preventDefault();
 
     this.toggleChecked(this.checkboxTargets);
   }
 
-  // Generic selection toggle used by table-like controllers. It looks up
-  // `data-` attributes on checkboxes and toggles the subset matching the
-  // provided key/value pair.
+  /**
+   * Toggles a filtered subset of checkboxes based on data attributes.
+   *
+   * This method filters checkboxes by matching a `data-*` attribute (specified
+   * by `key`) against a value (specified by `value`). Useful for table-like
+   * UIs where you want to toggle checkboxes by row or column.
+   *
+   * @param event - The ActionEvent containing params
+   * @param event.params.key - The data attribute name to filter by (camelCase)
+   * @param event.params.value - The value to match (will be converted to string)
+   *
+   * @throws {Error} If key or value params are missing
+   *
+   * @example Toggle all checkboxes where data-column-id="3"
+   * ```html
+   *  <button data-action="checkable#toggleSelection"
+   *          data-checkable-key-param="columnId"
+   *          data-checkable-value-param="3">Toggle column</button>
+   * ```
+   */
   toggleSelection(event:ActionEvent) {
     event.preventDefault();
 
@@ -67,6 +140,13 @@ export default class CheckableController extends Controller<HTMLElement> {
     this.toggleChecked(checkboxes);
   }
 
+  /**
+   * Internal method to toggle checked state on a collection of checkboxes.
+   *
+   * @param checkboxes - The checkboxes to toggle
+   * @param checked - Optional explicit state. If omitted, toggles based on current state.
+   * @private
+   */
   private toggleChecked(checkboxes:HTMLInputElement[], checked?:boolean) {
     // If all are checked -> uncheck all.
     // If mixed or none checked -> check all.
