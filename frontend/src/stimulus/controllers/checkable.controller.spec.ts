@@ -27,7 +27,7 @@
  * See COPYRIGHT and LICENSE files for more details.
  * ++
  */
-/* eslint-disable @typescript-eslint/no-empty-function, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-empty-function, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return */
 
 import CheckableController from './checkable.controller';
 
@@ -99,5 +99,96 @@ describe('CheckableController', () => {
     controller.uncheckAll(new Event('click'));
 
     expect(controller.toggleChecked).toHaveBeenCalledWith(controller.checkboxTargets, false);
+  });
+
+  describe('toggleSelection', () => {
+    // Helper to create an ActionEvent-like object with params
+    function createActionEvent(params:Record<string, unknown>) {
+      const event = new Event('click') as Event & { params:Record<string, unknown> };
+      event.params = params;
+      return event;
+    }
+
+    it('throws when key param is missing', () => {
+      const event = createActionEvent({ value: 'someValue' });
+
+      expect(() => controller.toggleSelection(event)).toThrowError('Invariant failed: toggleSelection requires a key param');
+    });
+
+    it('throws when value param is missing', () => {
+      const event = createActionEvent({ key: 'role' });
+
+      expect(() => controller.toggleSelection(event)).toThrowError('Invariant failed: toggleSelection requires value param');
+    });
+
+    it('throws when both params are missing', () => {
+      const event = createActionEvent({});
+
+      expect(() => controller.toggleSelection(event)).toThrowError('Invariant failed: toggleSelection requires a key param');
+    });
+
+    it('toggles only checkboxes matching the key/value pair', () => {
+      // Add data attributes to checkboxes
+      inputs[0].dataset.role = 'admin';
+      inputs[1].dataset.role = 'member';
+      inputs[2].dataset.role = 'admin';
+
+      const event = createActionEvent({ key: 'role', value: 'admin' });
+
+      controller.toggleSelection(event);
+
+      // Only admin checkboxes should be checked
+      expect(inputs[0].checked).toBeTrue();
+      expect(inputs[1].checked).toBeFalse();
+      expect(inputs[2].checked).toBeTrue();
+    });
+
+    it('unchecks all matching checkboxes when all are checked', () => {
+      inputs[0].dataset.role = 'admin';
+      inputs[0].checked = true;
+      inputs[1].dataset.role = 'member';
+      inputs[1].checked = true;
+      inputs[2].dataset.role = 'admin';
+      inputs[2].checked = true;
+
+      const event = createActionEvent({ key: 'role', value: 'admin' });
+
+      controller.toggleSelection(event);
+
+      // Only admin checkboxes should be unchecked
+      expect(inputs[0].checked).toBeFalse();
+      expect(inputs[1].checked).toBeTrue(); // member stays checked
+      expect(inputs[2].checked).toBeFalse();
+    });
+
+    it('works with numeric value params (converted to string)', () => {
+      inputs[0].dataset.columnId = '1';
+      inputs[1].dataset.columnId = '2';
+      inputs[2].dataset.columnId = '1';
+
+      // Stimulus typecasts numeric strings to numbers, but our code converts back to string
+      const event = createActionEvent({ key: 'columnId', value: 1 });
+
+      controller.toggleSelection(event);
+
+      expect(inputs[0].checked).toBeTrue();
+      expect(inputs[1].checked).toBeFalse();
+      expect(inputs[2].checked).toBeTrue();
+    });
+
+    it('works with boolean value params (converted to string)', () => {
+      inputs[0].dataset.active = 'true';
+      inputs[1].dataset.active = 'false';
+      inputs[2].dataset.active = 'true';
+
+      // Stimulus typecasts "true"/"false" to boolean, but our code converts back to string
+      const event = createActionEvent({ key: 'active', value: true });
+
+      controller.toggleSelection(event);
+
+      expect(inputs[0].checked).toBeTrue();
+      expect(inputs[1].checked).toBeFalse();
+      expect(inputs[2].checked).toBeTrue();
+    });
   });
 });
