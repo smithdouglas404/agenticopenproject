@@ -131,7 +131,7 @@ RSpec.describe Settings::InputMethods, "#check_box_group", :aggregate_failures, 
 
   context "without :name param" do
     subject(:rendered_form) do
-      render_inline_settings_form do |settings_form|
+      vc_render_inline_settings_form do |settings_form|
         settings_form.check_box_group(label: "Ultimate answer") do |group|
           group.check_box(label: "Custom label", value: "Custom value")
         end
@@ -150,7 +150,7 @@ RSpec.describe Settings::InputMethods, "#check_box_group", :aggregate_failures, 
 
   context "with :name param and a block argument" do
     subject(:rendered_form) do
-      render_inline_settings_form do |settings_form|
+      vc_render_inline_settings_form do |settings_form|
         settings_form.check_box_group(name: :ultimate_answer, **params) do |group|
           group.check_box(label: "Custom label", value: "Custom value")
         end
@@ -178,7 +178,7 @@ RSpec.describe Settings::InputMethods, "#check_box_group", :aggregate_failures, 
 
   context "with :name param and without a block argument" do
     subject(:rendered_form) do
-      render_inline_settings_form do |settings_form|
+      vc_render_inline_settings_form do |settings_form|
         settings_form.check_box_group(name: :ultimate_answer, **params)
       end
 

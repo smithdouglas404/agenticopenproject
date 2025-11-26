@@ -32,7 +32,7 @@ RSpec.shared_context "with rendered inline form" do
 
   let(:form_arguments) { { url: "/foo", model: } }
 
-  def render_inline_form(&)
+  def vc_render_inline_form(&)
     render_in_view_context(form_arguments) do |form_arguments|
       primer_form_with(**form_arguments) do |f|
         render_inline_form(f, &)

@@ -110,7 +110,7 @@ RSpec.describe Settings::InputMethods, "#radio_button_group", :aggregate_failure
 
   context "with a block argument" do
     subject(:rendered_form) do
-      render_inline_settings_form do |settings_form|
+      vc_render_inline_settings_form do |settings_form|
         settings_form.radio_button_group(name: :ultimate_answer, **params) do |group|
           group.radio_button(label: "Custom label 1", value: "Custom value 1")
           group.radio_button(label: "Custom label 2", value: "Custom value 2")
@@ -140,7 +140,7 @@ RSpec.describe Settings::InputMethods, "#radio_button_group", :aggregate_failure
 
   context "without a block argument" do
     subject(:rendered_form) do
-      render_inline_settings_form do |settings_form|
+      vc_render_inline_settings_form do |settings_form|
         settings_form.radio_button_group(name: :ultimate_answer, **params)
       end
 

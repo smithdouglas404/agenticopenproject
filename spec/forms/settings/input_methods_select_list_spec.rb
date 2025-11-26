@@ -104,7 +104,7 @@ RSpec.describe Settings::InputMethods, "#select_list", :aggregate_failures, :set
 
   context "with a block argument" do
     subject(:rendered_form) do
-      render_inline_settings_form do |settings_form|
+      vc_render_inline_settings_form do |settings_form|
         settings_form.select_list(name: :ultimate_answer, **params) do |select|
           select.option(label: "Custom label", value: "Custom value")
         end
@@ -132,7 +132,7 @@ RSpec.describe Settings::InputMethods, "#select_list", :aggregate_failures, :set
 
   context "without a block argument" do
     subject(:rendered_form) do
-      render_inline_settings_form do |settings_form|
+      vc_render_inline_settings_form do |settings_form|
         settings_form.select_list(name: :ultimate_answer, **params)
       end
 

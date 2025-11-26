@@ -36,7 +36,7 @@ RSpec.describe Admin::Settings::RepositoriesSettings::CheckoutForm, type: :forms
   let(:form_arguments) { { url: "/foo", model: false, scope: :settings } }
   let(:vendor) { :git }
 
-  def render_form
+  def vc_render_form
     render_in_view_context(described_class, form_arguments, vendor) do |described_class, form_arguments, vendor|
       primer_form_with(**form_arguments) do |f|
         f.fields_for(:repository_checkout_data) do |fo|
@@ -49,7 +49,7 @@ RSpec.describe Admin::Settings::RepositoriesSettings::CheckoutForm, type: :forms
   end
 
   subject(:rendered_form) do
-    render_form
+    vc_render_form
     page
   end
 

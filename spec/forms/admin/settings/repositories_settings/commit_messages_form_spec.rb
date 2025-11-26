@@ -50,7 +50,7 @@ RSpec.describe Admin::Settings::RepositoriesSettings::CommitMessagesForm, type: 
   end
 
   subject(:rendered_form) do
-    render_form
+    vc_render_form
     page
   end
 

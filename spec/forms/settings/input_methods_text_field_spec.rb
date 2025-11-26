@@ -45,7 +45,7 @@ RSpec.describe Settings::InputMethods, "#text_field", :aggregate_failures, :sett
   end
 
   subject(:rendered_form) do
-    render_inline_settings_form do |settings_form|
+    vc_render_inline_settings_form do |settings_form|
       settings_form.text_field(name: :ultimate_answer)
     end
 

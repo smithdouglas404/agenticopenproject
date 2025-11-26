@@ -45,7 +45,7 @@ RSpec.describe Settings::InputMethods, "#check_box", :aggregate_failures, :setti
   end
 
   subject(:rendered_form) do
-    render_inline_settings_form do |settings_form|
+    vc_render_inline_settings_form do |settings_form|
       settings_form.check_box(name: :ultimate_answer)
     end
 

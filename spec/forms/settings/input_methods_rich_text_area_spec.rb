@@ -45,7 +45,7 @@ RSpec.describe Settings::InputMethods, "#rich_text_area", :aggregate_failures, :
   end
 
   subject(:rendered_form) do
-    render_inline_settings_form do |settings_form|
+    vc_render_inline_settings_form do |settings_form|
       settings_form.rich_text_area(name: :ultimate_answer, rich_text_options: {})
     end
 

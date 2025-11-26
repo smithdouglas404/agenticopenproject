@@ -36,7 +36,7 @@ RSpec.describe Admin::Settings::GeneralSettings::WelcomeBlockForm, type: :forms 
   let(:form_arguments) { { url: "/foo", model: false, scope: :settings } }
 
   subject(:rendered_form) do
-    render_form
+    vc_render_form
     page
   end
 
