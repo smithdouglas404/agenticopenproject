@@ -42,7 +42,7 @@ class AttributeHelpTexts::ShowDialogComponent < ApplicationComponent
     @dialog_id = dom_id(@attribute_help_text, :dialog)
     @system_arguments = system_arguments
     @system_arguments[:id] = dialog_id
-    @system_arguments[:title] = @attribute_help_text.attribute_caption
+    @system_arguments[:title] = @attribute_help_text.attribute_field_name
   end
 
   private

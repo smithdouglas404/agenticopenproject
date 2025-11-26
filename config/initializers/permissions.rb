@@ -43,6 +43,7 @@ Rails.application.reloader.to_prepare do
                      permissible_on: :global,
                      require: :loggedin,
                      visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     contract_actions: { portfolios: %i[create] },
                      dependencies: :add_portfolios_from_template
 
       map.permission :add_programs,
@@ -50,25 +51,27 @@ Rails.application.reloader.to_prepare do
                      permissible_on: :global,
                      require: :loggedin,
                      visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     contract_actions: { programs: %i[create] },
                      dependencies: :add_programs_from_template
 
       map.permission :add_project_from_template,
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? },
                      contract_actions: { projects: %i[create] }
 
       map.permission :add_portfolios_from_template,
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+                     visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? }
 
       map.permission :add_programs_from_template,
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+                     visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? }
 
       map.permission :archive_project,
                      {
@@ -133,7 +136,7 @@ Rails.application.reloader.to_prepare do
                      require: :loggedin
 
       map.permission :view_project,
-                     { projects: %i[show export_project_initiation_pdf] },
+                     { projects: %i[show] },
                      permissible_on: :project,
                      public: true
 
@@ -153,6 +156,7 @@ Rails.application.reloader.to_prepare do
                                                                update_artifact_export_settings
                                                                toggle_project_custom_field
                                                                disable_all_of_section enable_all_of_section],
+                       "projects/settings/subitems": %i[show update],
                        "projects/templated": %i[create destroy],
                        "projects/identifier": %i[show update],
                        "projects/status": %i[update destroy]
@@ -175,7 +179,7 @@ Rails.application.reloader.to_prepare do
 
       map.permission :export_projects,
                      {
-                       projects: %i[export_list_modal]
+                       projects: %i[export_list_modal export_project_initiation_pdf]
                      },
                      permissible_on: :project,
                      dependencies: :view_project

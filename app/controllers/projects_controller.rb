@@ -45,8 +45,8 @@ class ProjectsController < ApplicationController
                 if: -> {
                   params[:workspace_type].in?(%w[portfolio program])
                 }
-  before_action :find_optional_template, only: %i[new create]
   before_action :find_optional_parent, only: :new
+  before_action :find_optional_template, only: %i[new create]
 
   no_authorization_required! :index
 
@@ -193,12 +193,14 @@ class ProjectsController < ApplicationController
   def from_template? = @template.present?
 
   def new_blank
+    params[:step] = params.fetch(:step, 1).to_i
     @new_project = @parent&.children&.build(params.permit(:workspace_type)) || Project.new(params.permit(:workspace_type))
 
     render layout: "no_menu"
   end
 
   def new_from_template
+    params[:step] = 2
     @new_project = Projects::CopyService
       .new(user: current_user, source: @template, contract_options: { validate_model: false })
       .call(target_project_params: params.permit(:parent_id).to_h, attributes_only: true)
@@ -224,7 +226,7 @@ class ProjectsController < ApplicationController
       if service_call.message.present?
         flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
       end
-      render action: :new, status: :unprocessable_entity
+      render action: :new, status: :unprocessable_entity, layout: "no_menu"
     end
   end
 
@@ -247,14 +249,15 @@ class ProjectsController < ApplicationController
       redirect_to job_status_path(job.job_id)
     else
       @new_project = service_call.result
+      params[:step] = 2
       flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
-      render action: :new, status: :unprocessable_entity
+      render action: :new, status: :unprocessable_entity, layout: "no_menu"
     end
   end
 
   def set_wizard_step!(project)
     attributes_with_error = project.errors.attribute_names
-    second_step_attributes = %i[name description identifier]
+    second_step_attributes = %i[name description identifier parent]
     step_2_is_valid = !attributes_with_error.intersect?(second_step_attributes)
 
     params[:step] = step_2_is_valid ? 3 : 2
@@ -275,13 +278,25 @@ class ProjectsController < ApplicationController
   end
 
   def find_optional_template
-    return if params[:workspace_type].blank? || params[:template_id].blank?
+    template_id = find_template_id
+    return if params[:workspace_type].blank? || template_id.blank?
 
     @template = Project
       .templated
       .workspace_type(params[:workspace_type])
       .visible(current_user)
-      .find_by(id: params[:template_id])
+      .find_by(id: template_id)
+  end
+
+  # Parent projects MAY define templates for subitems to be used
+  # so if we have a parent, we want to search for one of these
+  # if not, we return to the usual workflow
+  def find_template_id
+    return params[:template_id] if params[:template_id].present?
+
+    if @parent && params[:workspace_type].present?
+      @parent.subproject_template_assignments.find_by(workspace_type: params[:workspace_type])&.template_id
+    end
   end
 
   def find_optional_parent

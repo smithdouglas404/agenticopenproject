@@ -18,6 +18,9 @@
     "page_heading": {
       "$ref": "#/$defs/page_heading"
     },
+    "page_subheading": {
+      "$ref": "#/$defs/page_heading"
+    },
     "cover": {
       "$ref": "#/$defs/cover"
     },
@@ -342,6 +345,11 @@
               "margin_bottom": 4
             }
           },
+          "properties": {
+            "badge": {
+              "$ref": "#/$defs/badge"
+            }
+          },
           "allOf": [
             {
               "$ref": "#/$defs/font"
@@ -354,6 +362,18 @@
         "markdown_label": {
           "type": "object",
           "title": "Project attribute markdown label",
+          "allOf": [
+            {
+              "$ref": "#/$defs/font"
+            },
+            {
+              "$ref": "#/$defs/margin"
+            }
+          ]
+        },
+        "attribute_value": {
+          "type": "object",
+          "title": "Project attribute value",
           "allOf": [
             {
               "$ref": "#/$defs/font"
@@ -469,6 +489,28 @@
       "allOf": [
         {
           "$ref": "#/$defs/margin"
+        }
+      ]
+    },
+    "badge": {
+      "type": "object",
+      "title": "Status Badge",
+      "x-example": {
+        "badge": {
+          "offset": 1,
+          "size": 8
+        }
+      },
+      "properties": {
+        "offset": {
+          "title": "Offset in title",
+          "examples": [1],
+          "$ref": "#/$defs/measurement_signed"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/font"
         }
       ]
     },

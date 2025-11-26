@@ -361,6 +361,29 @@ RSpec.describe ProjectsController do
             end
           end
 
+          context "when the parent is invalid", with_flag: { portfolio_models: true } do
+            shared_let(:invalid_parent) { create(:project, workspace_type: :program) }
+            let(:project_params) { { name: "Valid Project", parent_id: invalid_parent.id, workspace_type: :portfolio } }
+
+            it "renders step 2 with errors", :aggregate_failures do
+              expect(controller.params[:step].to_i).to eq 2
+              expect(response).to render_template "new"
+              expect(response).to have_http_status :unprocessable_entity
+            end
+
+            it "shows an error on the parent", :aggregate_failures do
+              expect(assigns(:new_project).errors[:parent]).to be_present
+              expect(flash[:error]).to be_present
+            end
+
+            it "does not show custom field errors", :aggregate_failures do
+              expect(assigns(:new_project).errors[:"custom_field_#{custom_field.id}"]).to be_empty
+              assigns(:new_project).custom_values.each do |cv|
+                expect(cv.errors).to be_empty
+              end
+            end
+          end
+
           context "when it has no validation error on name" do
             let(:project_params) { { name: "Valid Project" } }
 

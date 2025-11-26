@@ -573,6 +573,10 @@ module Settings
         description: "Additional allowed host names for the application.",
         default: []
       },
+      real_time_text_collaboration_enabled: {
+        description: "Enable real-time collaborative editing of text fields using BlockNoteJS and Hocuspocus server.",
+        default: true
+      },
       collaborative_editing_hocuspocus_url: {
         format: :string,
         default: nil,
@@ -739,6 +743,14 @@ module Settings
         format: :integer,
         default: nil,
         allowed: -> { Role.pluck(:id) }
+      },
+      new_project_send_confirmation_email: {
+        format: :boolean,
+        default: false
+      },
+      new_project_notification_text: {
+        format: :string,
+        default: ""
       },
       notifications_hidden: {
         default: false

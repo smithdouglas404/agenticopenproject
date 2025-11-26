@@ -37,6 +37,14 @@ module Project::PDFExport::ProjectInitiation::Styles
     include Exports::PDF::Components::CoverStyles
     include Project::PDFExport::Common::ProjectAttributesStyles
 
+    def page_subheading
+      resolve_font(@styles[:page_subheading])
+    end
+
+    def page_subheading_margins
+      resolve_margin(@styles[:page_subheading])
+    end
+
     def section_title
       resolve_font(@styles.dig(:section, :title))
     end
@@ -46,6 +54,14 @@ module Project::PDFExport::ProjectInitiation::Styles
         color: @styles.dig(:section, :title, :hr, :color),
         height: resolve_pt(@styles.dig(:section, :title, :hr, :height), 1)
       }
+    end
+
+    def status_badge
+      resolve_font(@styles.dig(:project, :title, :badge))
+    end
+
+    def status_badge_offset
+      resolve_pt(@styles.dig(:project, :title, :badge, :offset), 0)
     end
 
     def section_title_margins

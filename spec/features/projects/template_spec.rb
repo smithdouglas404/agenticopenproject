@@ -94,18 +94,11 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
     it "shows the new project initiation request heading when the feature is enabled",
        with_flag: { project_initiation_active: true } do
       visit new_project_path(template_id: template.id)
-      click_on "Continue"
-
       expect(page).to have_heading "New project creation wizard"
     end
 
     it "can instantiate the project with the copy permission" do
       visit new_project_path(template_id: template.id)
-
-      # Step 1: Template is pre-selected
-      expect(page).to have_checked_field "My template"
-
-      click_on "Continue"
 
       # Step 2: Project details
       expect(page).to have_heading "New project"
@@ -155,11 +148,6 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       template.project_custom_field_ids = [custom_field.id]
 
       visit new_project_path(template_id: template.id)
-
-      # Step 1: Template is pre-selected
-      expect(page).to have_checked_field "My template"
-
-      click_on "Continue"
 
       # Step 2: Project details
       expect(page).to have_text("2 of 2")

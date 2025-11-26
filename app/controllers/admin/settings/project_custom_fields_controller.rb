@@ -31,6 +31,7 @@
 module Admin::Settings
   class ProjectCustomFieldsController < ::Admin::SettingsController
     include CustomFields::SharedActions
+    include CustomFields::AttributeHelpTextActions
     include OpTurbo::ComponentStream
     include FlashMessagesOutputSafetyHelper
     include Admin::Settings::ProjectCustomFields::ComponentStreams
@@ -41,13 +42,15 @@ module Admin::Settings
     before_action :set_sections, only: %i[show index edit update move drop]
     before_action :find_custom_field,
                   only: %i(show edit project_mappings new_link link unlink update destroy delete_option reorder_alphabetical
-                           move drop role_assignment update_role_assignment role_assignment_preview_dialog)
+                           move drop role_assignment update_role_assignment role_assignment_preview_dialog
+                           attribute_help_text update_attribute_help_text)
     before_action :prepare_custom_option_position, only: %i(update create)
     before_action :find_custom_option, only: :delete_option
     before_action :project_custom_field_mappings_query, only: %i[project_mappings unlink]
     before_action :find_custom_field_projects_to_link, only: :link
     before_action :find_unlink_project_custom_field_mapping, only: :unlink
     before_action :prepare_role_assignment_form, only: %i[role_assignment update_role_assignment]
+    before_action :find_or_initialize_attribute_help_text, only: %i[attribute_help_text update_attribute_help_text]
     # rubocop:enable Rails/LexicallyScopedActionFilter
 
     def index
@@ -184,6 +187,14 @@ module Admin::Settings
       respond_with_turbo_streams
     end
 
+    def attribute_help_text
+      render_attribute_help_text_form
+    end
+
+    def update_attribute_help_text
+      update_help_text
+    end
+
     private
 
     def prepare_role_assignment_form
@@ -265,6 +276,14 @@ module Admin::Settings
 
     def role_assignment_params
       params.expect(custom_field: [:role_id])
+    end
+
+    def show_path
+      attribute_help_text_admin_settings_project_custom_field_path(@custom_field)
+    end
+
+    def render_attribute_help_text_form(status: :ok)
+      render "custom_fields/attribute_help_texts/show_project", status:
     end
   end
 end

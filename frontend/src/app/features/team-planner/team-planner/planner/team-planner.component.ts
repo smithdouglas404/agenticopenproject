@@ -237,10 +237,10 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
 
         const projectFilter = queryFilters.find((queryFilter) => queryFilter.id === 'project');
         if (projectFilter) {
-          const values = (projectFilter.values as HalResource[]).map((el:HalResource) => `p${el.id!}`);
+          const values = (projectFilter.values as HalResource[]).map((el:HalResource) => `w${el.id!}`);
           filters.push(['context', '=', values]);
         } else {
-          filters.push(['context', '=', [`p${this.currentProject.id!}`]]);
+          filters.push(['context', '=', [`w${this.currentProject.id!}`]]);
         }
 
         return this

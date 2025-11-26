@@ -31,6 +31,7 @@ module API
     module TimeEntries
       class TimeEntryRepresenter < ::API::Decorators::Single
         include API::Decorators::LinkedResource
+        include API::V3::Workspaces::LinkedResource
         include API::Decorators::FormattableProperty
         include API::Decorators::DateProperty
         extend ::API::V3::Utilities::CustomFieldInjector::RepresenterClass
@@ -91,7 +92,7 @@ module API
         date_time_property :created_at
         date_time_property :updated_at
 
-        associated_resource :project
+        associated_project
 
         associated_resource :entity,
                             getter: ::API::V3::TimeEntries::EntityRepresenterFactory.create_getter_lambda(:entity),

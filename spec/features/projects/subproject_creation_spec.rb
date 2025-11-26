@@ -64,12 +64,7 @@ RSpec.describe "Subproject creation", :js do
     # Step 2: Fill in project details
     fill_in "Name", with: "Foo child"
 
-    expect(page).to have_combo_box "Subproject of"
-
-    # The other project is not a valid parent since the user is lacking
-    # the add_subproject permission therein.
-    parent_field.expect_no_option(other_project.name)
-    parent_field.expect_selected parent_project.name
+    expect(page).to have_no_field "Subproject of"
 
     click_on "Complete"
 

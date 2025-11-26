@@ -239,7 +239,7 @@ RSpec.describe "my access tokens", :js do
     end
   end
 
-  describe "iCal Meeting tokens", with_flag: { meeting_ical_subscription: true } do
+  describe "iCal Meeting tokens" do
     context "when iCal access is disabled via global settings", with_settings: { ical_enabled: false } do
       it "shows notice about disabled token" do
         visit my_access_tokens_path

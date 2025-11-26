@@ -162,6 +162,11 @@ sl:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -312,6 +317,25 @@ sl:
           zero: no sub-items
           one: 1 sub-item
           other: "%{count} sub-items"
+      role_assignment:
+        title: Role Assignment
+        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
+        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
+        role_field_label: "Project Role"
+        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        review_hint: >
+          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
+        review_button: Review users and permissions
+        dialog:
+          title: "Overview of users and permissions"
+          change: Change
+          changes:
+            new_member: Will be added as a member
+            remove_member: Will be removed as a member
+            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
+            gain_role: Will gain role ‘%{new_role}’
+            lose_role: Will lose role ‘%{old_role}’
+            no_change: No changes
     text_add_new_custom_field: >
       Če želite projektu dodati nova polja po meri, jih morate najprej ustvariti, preden jih lahko dodate v ta projekt.
     is_enabled_globally: "Omogočeno po vsem svetu"
@@ -449,12 +473,15 @@ sl:
       work_package_categories: "Work packages: categories"
       work_package_file_links: "Work packages: file links"
       work_package_shares: "Work packages: shares"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Izbris je predviden in se izvaja v ozadju. Obveščeni boste o rezultatih."
       schedule_failed: "Projekta ni mogoče izbrisati: %{errors}"
-      failed: "Projekt %{name} ni uspel"
-      failed_text: "Zahteva za izbris projekta %{name} ni uspela. Projekt je ostal arhiviran."
-      completed: "Projekt %{name} izbrisan"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "Zahteva za izbris projekta '%{name}' je zaključena."
       completed_text_children: "Additionally, the following subprojects have been deleted:"
     index:
@@ -497,6 +524,16 @@ sl:
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Zamenjaj identifikator
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Enable all"
         label_disable_all: "Disable all"
@@ -549,7 +586,7 @@ sl:
       creation_wizard:
         export:
           description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
-          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders. At the moment only Nextcloud file storages are supported."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
           description_file_storage_selection: "Select which of the configured external file storages should be used."
           external_file_storage: "External file storage"
           label_artifact_export: "Artifact export"
@@ -567,8 +604,10 @@ sl:
       sections: "Sections"
       title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "The modified list has been saved as a new list"
@@ -1221,6 +1260,8 @@ sl:
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Datumski obseg"
         definition: "Definition"
@@ -1574,9 +1615,11 @@ sl:
         project:
           archived_ancestor: "projektu je arhiviran prednik."
           foreign_wps_reference_version: "Delovni paketi v nesorodnih projektih referenčnih različicah projekta ali njegovih potomcih."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "You do not have the permissions required to archive all sub-projects. Please contact an administrator."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "delovni paketi še vedno uporabljajo: %{types}"
             enabled_modules:
@@ -1895,6 +1938,7 @@ sl:
       other: "Additionally, there were problems with the following fields:"
     field_erroneous_label: "To polje je neveljavno: %{full_errors}\nProsimo vnesite veljavno vrednost."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -2030,6 +2074,7 @@ sl:
     subject: "Zadeva"
     slug: "Slug"
     summary: "Povzetek"
+    template: "Template"
     time_zone: "Časovni pas"
     text: "Besedilo"
     title: "Naslov"
@@ -2202,7 +2247,10 @@ sl:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
+    attributes_heading: "Required attributes"
+    details_heading: "Project details"
     template_label: "Uporabi predlogo"
+    template_heading: "Templated projects"
     copy_options:
       dependencies_label: "Copy from template"
     blank_template:
@@ -2210,10 +2258,14 @@ sl:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
+    details_heading: "Portfolio details"
+    template_heading: "Templated portfolios"
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
+    details_heading: "Program details"
+    template_heading: "Templated programs"
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -2733,8 +2785,6 @@ sl:
     units:
       hours: h
       days: d
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Page %{page} of %{total}"
     template_attributes:
@@ -2809,6 +2859,7 @@ sl:
       new_features:
         header: "Preberite o novih funkcijah in posodobitvah izdelka."
         learn_about: "Learn more about all new features"
+        missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
@@ -3230,7 +3281,6 @@ sl:
   label_installation_guides: "Installation guides"
   label_integer: "Celo število"
   label_interface: "Interface"
-  label_interlinked_role_assignment: "Interlinked Role Assignment"
   label_internal: "Notranji"
   label_introduction_video: "Getting started video"
   label_invite_user: "Povabi uporabnika"
@@ -3418,12 +3468,15 @@ sl:
   label_project_attribute_manage_link: "Manage project attributes"
   label_project_count: "Skupno število projektov"
   label_project_copy_notifications: "Med kopijo projekta pošljite obvestila po e-pošti"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Zadnji projekti"
   label_project_default_type: "Dovoli prazen tip\n"
   label_project_hierarchy: "Struktura projekta"
   label_project_mappings: "Projekti"
   label_project_new: "Nov projekt"
+  label_project_initiation_request: "New project initiation request"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "Projekti"
   label_project_list_plural: "Project lists"
   label_project_life_cycle: "Project life cycle"
@@ -3437,7 +3490,6 @@ sl:
   label_project_view_all: "Prikaži vse projekte"
   label_project_show_details: "Prikaži podrobnosti projekta"
   label_project_hide_details: "Skrij podrobnosti projekta"
-  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3525,6 +3577,7 @@ sl:
   label_subproject: "Podprojekt"
   label_subproject_new: "Nov podprojekt"
   label_subproject_plural: "Podprojekti"
+  label_subitems: "Subitems"
   label_subtask_plural: "Podnaloge"
   label_summary: "Povzetek"
   label_system: "Sistem"
@@ -3532,6 +3585,8 @@ sl:
   label_table_of_contents: "Kazalo vsebine"
   label_tag: "Oznaka"
   label_team_planner: "Team Planner"
+  label_template: "Template"
+  label_templates: "Templates"
   label_text: "Dolgo besedilo"
   label_this_month: "Ta mesec"
   label_this_week: "ta teden"
@@ -4351,6 +4406,8 @@ sl:
   setting_mail_handler_body_delimiter_regex: "skrajšaj e-poštna sporočila, ki se ujemajo s tem izražanjem"
   setting_mail_handler_ignore_filenames: "Zanemarjene priloge e-pošte"
   setting_new_project_user_role_id: "Vloga, dodeljena neadministratorskemu uporabniku, ki je ustvaril projekt"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Aktivni razredi znakov"
   setting_password_count_former_banned: "Število nazadnje uporabljenih gesel, prepovedanih za ponovno uporabo"
   setting_password_days_valid: "Število dni, po katerih se zahteva sprememba gesla"
@@ -4506,6 +4563,7 @@ sl:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
       blankslate:
         title: "Initiation request not enabled"
         description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
@@ -4515,20 +4573,21 @@ sl:
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
       name:
-        artefact_name: "Artefact name"
-        artefact_name_caption: "Choose the name for this artefact that your project management framework recommends."
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
         options:
           project_initiation_request: "Project initiation request"
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
         work_package_type: "Work package type"
-        work_package_type_caption: "The work package type that should be used to store the completed artefact."
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The person or group this project initiation request will be assigned to."
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4610,7 +4669,7 @@ sl:
   text_project_custom_field_html: >
     The Enterprise edition will add these additional add-ons for projects' custom fields: <br> <ul> <li><b>Add custom fields for projects to your Project list to create a project portfolio view</b></li> </ul>
   text_custom_logo_instructions: >
-    Priporočljiv je bel logotip na transparentnem ozadju. Za najboljše rezultate na običajnih zaslonih in mrežnici se prepričajte, da so dimenzije vaše slike 460px za 60px.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     This is the logo that appears in your PDF exports. It needs to be a PNG or JPEG image file. A black or colored logo on transparent or white background is recommended.
   text_custom_export_cover_instructions: >
@@ -4811,8 +4870,6 @@ sl:
     Adding additional users will exceed the current limit. Please <a href="%{upgrade_url}">upgrade your plan</a> to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     You reached your user limit (%{current}/%{max} active users). Please contact sales@openproject.com to upgrade your Enterprise edition plan and add additional users.
-  warning_interlinking_custom_field_with_role_html: >
-    <strong>Warning:</strong> You are about to link a custom field with a role. This will give users with the "Edit Project Attributes" permission to add members to the project and they will be assigned the linked role. This may lead to privilege escalation because users can assign themselves higher privileges than intended. Please make sure you understand the implications of this action.
   warning_protocol_mismatch_html: >
 
   warning_bar:
@@ -5002,6 +5059,8 @@ sl:
       multiple_errors: "Kršilo se je več omejitev polja."
       unable_to_create_attachment: "Priloge ni bilo mogoče ustvariti"
       unable_to_create_attachment_permissions: "Priloge ni bilo mogoče shraniti zaradi pomanjkanja dovoljenj datotečnega sistema"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "Navedeni kontekst ni povezava do vira."
         unsupported_context: "Navedeni vir ni podprt kot kontekst."

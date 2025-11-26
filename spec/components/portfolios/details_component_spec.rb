@@ -39,26 +39,9 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
   end
 
   let(:user) { create(:admin) }
-
-  shared_let(:portfolio) do
-    create(:portfolio,
-           description: "portfolio description") do |portfolio|
-      create(:project, parent: portfolio)
-    end
-  end
-  shared_let(:program_a) do
-    create(:program, parent: portfolio) do |program_a|
-      create(:project, parent: program_a) do |project_a|
-        create(:project, parent: project_a)
-      end
-    end
-  end
-  shared_let(:program_b) do
-    create(:program, parent: portfolio) do |program_b|
-      create(:project, parent: program_b)
-      create(:project, parent: program_b)
-    end
-  end
+  let(:status_code_a) { "on_track" }
+  let(:status_code_b) { "at_risk" }
+  let!(:portfolio) { create(:portfolio, description: "portfolio description") }
 
   current_user { user }
 
@@ -67,7 +50,22 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
   end
 
   before do
-    portfolio.define_singleton_method(:favorited?) { false }
+    create(:program, parent: portfolio, status_code: status_code_a).tap do |program_a|
+      create(:project, parent: program_a, status_code: status_code_a).tap do |project_a|
+        create(:project, parent: project_a, status_code: status_code_b)
+      end
+    end
+
+    create(:program, parent: portfolio, status_code: status_code_b).tap do |program_b|
+      create(:project, parent: program_b, status_code: status_code_b)
+      create(:project, parent: program_b, status_code: status_code_a)
+    end
+
+    create(:project, parent: portfolio, status_code: status_code_a)
+
+    portfolio.reload
+
+    def portfolio.favorited?; false; end
   end
 
   describe "portfolio" do
@@ -93,9 +91,30 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
       end
     end
 
-    describe "displays the number of child programs and projects" do
-      it { expect(subject).to have_text("2 programs") }
-      it { expect(subject).to have_text("5 projects") }
+    context "when there are no child portfolios" do
+      describe "displays the number of child programs and projects" do
+        it { expect(subject).to have_text("2 programs") }
+        it { expect(subject).to have_text("5 projects") }
+
+        it { expect(subject).to have_no_text("0 portfolios") }
+      end
+    end
+
+    context "when there are child portfolios" do
+      before do
+        create(:portfolio, parent: portfolio).tap do |child_portfolio|
+          create(:program, parent: child_portfolio)
+        end
+
+        portfolio.reload
+      end
+
+      describe "displays the number of child programs and projects, including portfolios" do
+        it { expect(subject).to have_text("3 programs") }
+        it { expect(subject).to have_text("5 projects") }
+
+        it { expect(subject).to have_text("1 portfolio") }
+      end
     end
 
     describe "#updated_at" do
@@ -105,6 +124,39 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
       it "shows when the portfolio was last updated" do
         expect(subject).to have_test_selector("op-portfolios--updated-at", text: "Updated about 1 month ago")
+      end
+    end
+
+    describe "sub-item status" do
+      context "when none of the sub-items has a status" do
+        let(:status_code_a) { nil }
+        let(:status_code_b) { nil }
+
+        it "does not render a progress bar" do
+          expect(subject).not_to have_test_selector("op-portfolios--sub-status-bar")
+        end
+      end
+
+      context "when some of the sub-items have a status set" do
+        let(:status_code_b) { nil }
+
+        it "renders a progress bar detailing the status of child programs and projects" do
+          expect(subject).to have_test_selector("op-portfolios--sub-status-bar")
+
+          expect(subject).to have_test_selector("op-portfolios--status-#{status_code_a}")
+          expect(subject).not_to have_test_selector("op-portfolios--status-#{status_code_b}")
+          expect(subject).to have_test_selector("op-portfolios--status-not_set")
+        end
+      end
+
+      context "when all of the sub-items have a status set" do
+        it "renders a progress bar detailing the status of child programs and projects" do
+          expect(subject).to have_test_selector("op-portfolios--sub-status-bar")
+
+          expect(subject).to have_test_selector("op-portfolios--status-#{status_code_a}")
+          expect(subject).to have_test_selector("op-portfolios--status-#{status_code_b}")
+          expect(subject).not_to have_test_selector("op-portfolios--status-not_set")
+        end
       end
     end
   end

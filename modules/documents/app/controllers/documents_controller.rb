@@ -60,8 +60,9 @@ class DocumentsController < ApplicationController
   def show
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
 
-    if @document.collaborative?
-      generate_oauth_token
+    if @document.collaborative? && Setting.real_time_text_collaboration_enabled?
+      generate_encrypted_oauth_token
+      derive_readonly_from_permissions
       derive_show_edit_state_from_params
     end
   end
@@ -70,6 +71,20 @@ class DocumentsController < ApplicationController
     user_ids = params[:user_ids]
     @users = User.where(id: user_ids)
     update_via_turbo_stream(component: Documents::ShowEditView::PageHeader::LiveUsersComponent.new(users: @users))
+
+    respond_with_turbo_streams
+  end
+
+  def render_connection_error
+    update_via_turbo_stream(component: Documents::ShowEditView::ConnectionErrorNoticeComponent.new)
+
+    respond_with_turbo_streams
+  end
+
+  def render_connection_recovery
+    render_success_flash_message_via_turbo_stream(
+      message: I18n.t("documents.show_edit_view.connection_recovery_notice.description")
+    )
 
     respond_with_turbo_streams
   end
@@ -200,8 +215,8 @@ class DocumentsController < ApplicationController
     redirect_to document_path(call.result, state: :edit)
   end
 
-  def generate_oauth_token
-    # do not generate a token if the user is not allowed to manage documents
+  # rubocop:disable Metrics/AbcSize
+  def generate_encrypted_oauth_token
     if !current_user.allowed_in_project?(:view_documents, @project)
       return
     end
@@ -210,12 +225,23 @@ class DocumentsController < ApplicationController
       .new(user: current_user)
       .call
 
-    if result.success?
-      @oauth_token = result.result.plaintext_token
-    else
+    if result.failure?
       Rails.logger.error("Failed to generate OAuth token for document #{@document.id}: #{result.errors}")
+      return
     end
+
+    result = Documents::OAuth::EncryptTokenService
+      .new(token: result.result.plaintext_token)
+      .call
+
+    if result.failure?
+      Rails.logger.error("Failed to encrypt OAuth token for document #{@document.id}: #{result.errors}")
+      return
+    end
+
+    @oauth_token = result.result
   end
+  # rubocop:enable Metrics/AbcSize
 
   def update_header_component_via_turbo_stream(state: :show)
     update_via_turbo_stream(
@@ -225,5 +251,10 @@ class DocumentsController < ApplicationController
 
   def derive_show_edit_state_from_params
     @state = params[:state] == "edit" ? :edit : :show
+  end
+
+  def derive_readonly_from_permissions
+    @readonly = current_user.allowed_in_project?(:view_documents, @project) &&
+      !current_user.allowed_in_project?(:manage_documents, @project)
   end
 end

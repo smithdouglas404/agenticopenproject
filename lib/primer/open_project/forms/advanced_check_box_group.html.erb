@@ -5,9 +5,11 @@
         <%= @input.label %>
       <% end %>
     <% end %>
-    <div class="mb-2">
+
+    <%= render Primer::ConditionalWrapper.new(condition: @input.input_arguments[:caption].present?, trim: true, mb: 2) do %>
       <%= render(Caption.new(input: @input)) %>
-    </div>
+    <% end %>
+
     <%= render(SpacingWrapper.new) do %>
       <div class="FormControl-advanced-check-group-list">
         <% @input.check_boxes.each do |check_box| %>

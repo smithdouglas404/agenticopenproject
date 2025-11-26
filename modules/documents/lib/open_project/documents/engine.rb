@@ -53,8 +53,12 @@ module OpenProject::Documents
 
       project_module :documents do |_map|
         permission :view_documents,
-                   { documents: %i[index search show download render_avatars],
-                     "documents/menus": %i[show] },
+                   {
+                     documents: %i[
+                       index search show download render_avatars render_connection_error render_connection_recovery
+                     ],
+                     "documents/menus": %i[show]
+                   },
                    permissible_on: :project
         permission :manage_documents,
                    {
@@ -79,6 +83,13 @@ module OpenProject::Documents
            { controller: "/documents/admin/settings/document_types", action: :index },
            if: ->(_) { User.current.admin? },
            caption: :"documents.menu.types",
+           parent: :documents
+
+      menu :admin_menu,
+           :document_collaboration_settings,
+           { controller: "/documents/admin/settings/document_collaboration_settings", action: :show },
+           if: ->(_) { User.current.admin? },
+           caption: :"documents.menu.collaboration_settings",
            parent: :documents
 
       menu :admin_menu,

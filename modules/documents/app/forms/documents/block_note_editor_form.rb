@@ -34,6 +34,7 @@ module Documents
       f.block_note_editor(
         name: :content_binary,
         label: I18n.t("label_document_description"),
+        readonly: readonly,
         visually_hide_label: true,
         classes: "document-form--long-description",
         value: model.content_binary,
@@ -42,11 +43,12 @@ module Documents
       )
     end
 
-    attr_reader :oauth_token
+    attr_reader :oauth_token, :readonly
 
-    def initialize(oauth_token: nil)
+    def initialize(oauth_token: nil, readonly: false)
       super()
       @oauth_token = oauth_token
+      @readonly = readonly
     end
 
     private

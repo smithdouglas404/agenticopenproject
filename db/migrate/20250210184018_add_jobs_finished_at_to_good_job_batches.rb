@@ -2,16 +2,7 @@
 
 class AddJobsFinishedAtToGoodJobBatches < ActiveRecord::Migration[7.1]
   def change
-    reversible do |dir|
-      dir.up do
-        # Ensure this incremental update migration is idempotent
-        # with monolithic install migration.
-        return if connection.column_exists?(:good_job_batches, :jobs_finished_at)
-      end
-    end
-
-    change_table :good_job_batches do |t|
-      t.datetime :jobs_finished_at
-    end
+    # Moved to db/migrate/tables/good_job_batches.rb
+    # These files are not squashed since good_job will recreate them otherwise when an update is done.
   end
 end

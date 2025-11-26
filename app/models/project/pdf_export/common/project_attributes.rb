@@ -34,6 +34,27 @@ module Project::PDFExport::Common::ProjectAttributes
   def write_project_detail_content(project, export_fields)
     return if export_fields.empty?
 
+    if attributes_in_table?
+      write_project_detail_content_tables(project, export_fields)
+    else
+      write_project_detail_content_list(project, export_fields)
+    end
+  end
+
+  def write_project_detail_content_list(project, export_fields)
+    export_fields.each do |field|
+      write_field = process_field(project, field)
+      next if write_field.nil?
+
+      if write_field[:formattable]
+        write_project_markdown(project, write_field[:value], write_field[:caption])
+      else
+        write_project_attribute(write_field[:value], write_field[:caption])
+      end
+    end
+  end
+
+  def write_project_detail_content_tables(project, export_fields)
     write_groups = collect_field_groups(project, export_fields)
     write_groups.each do |non_formattable_fields, formattable_field|
       write_project_fields(project, non_formattable_fields)
@@ -164,13 +185,33 @@ module Project::PDFExport::Common::ProjectAttributes
       project.project_custom_field_project_mappings.exists?(custom_field_id: custom_field.id)
   end
 
+  def write_project_attribute(value, caption)
+    if value.blank?
+      return if hide_empty_attributes?
+
+      value = EMPTY_VALUE_PLACEHOLDER
+    end
+    write_optional_page_break
+    write_markdown_label(caption)
+    with_margin(styles.project_markdown_margins) do
+      style = styles.project_attribute_value
+      formatted = if value.is_a?(::Exports::Formatters::LinkFormatter)
+                    { link: value.to_s, text: value.to_s }
+                  else
+                    { text: value.to_s }
+                  end
+      pdf.formatted_text([style.merge(formatted)], style)
+    end
+  end
+
   def write_project_markdown(project, value, caption)
     if value.blank?
       return if hide_empty_attributes?
 
       value = EMPTY_VALUE_PLACEHOLDER
     end
-    write_markdown_label(caption)
+    write_optional_page_break
+    write_markdown_label(caption) if caption
     with_margin(styles.project_markdown_margins) do
       write_markdown!(
         apply_markdown_field_macros(value, { project:, user: User.current }),
@@ -181,8 +222,13 @@ module Project::PDFExport::Common::ProjectAttributes
 
   def write_markdown_label(caption)
     with_margin(styles.project_markdown_label_margins) do
-      pdf.formatted_text([styles.project_markdown_label.merge({ text: caption })])
+      style = styles.project_markdown_label
+      pdf.formatted_text([style.merge({ text: caption })], style)
     end
+  end
+
+  def attributes_in_table?
+    true
   end
 
   def attributes_table_4_column?

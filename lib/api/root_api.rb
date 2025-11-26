@@ -267,6 +267,12 @@ module API
           raise_query_errors(service)
         end
       end
+
+      def guard_feature_flag(feature_key)
+        unless OpenProject::FeatureDecisions.public_send("#{feature_key}_active?")
+          raise API::Errors::NotFound
+        end
+      end
     end
 
     helpers Helpers

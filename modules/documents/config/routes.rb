@@ -46,6 +46,8 @@ Rails.application.routes.draw do
       put :update_type, defaults: { format: :turbo_stream }
       get :delete_dialog
       get :render_avatars, defaults: { format: :turbo_stream }
+      get :render_connection_error, defaults: { format: :turbo_stream }
+      get :render_connection_recovery, defaults: { format: :turbo_stream }
     end
   end
 
@@ -56,6 +58,13 @@ Rails.application.routes.draw do
           member do
             put :move
             get :delete_dialog, defaults: { format: :turbo_stream }
+          end
+        end
+
+        resource :document_collaboration_settings, only: %i[show create update] do
+          member do
+            get :delete_dialog, defaults: { format: :turbo_stream }
+            delete :destroy
           end
         end
       end

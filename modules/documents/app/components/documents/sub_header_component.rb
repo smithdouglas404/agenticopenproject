@@ -68,5 +68,18 @@ module Documents
     def can_add_document?
       User.current.allowed_in_project?(:manage_documents, project)
     end
+
+    def new_document_path_options
+      if Setting.real_time_text_collaboration_enabled?
+        {
+          data: { turbo_method: :post },
+          href: project_documents_path(project)
+        }
+      else
+        {
+          href: new_project_document_path(project)
+        }
+      end
+    end
   end
 end

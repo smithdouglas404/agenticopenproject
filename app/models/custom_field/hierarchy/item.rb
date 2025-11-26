@@ -46,15 +46,9 @@ class CustomField::Hierarchy::Item < ApplicationRecord
     suffix.empty? ? path : "#{path} #{suffix}"
   end
 
-  private
-
   def suffix
-    if short.present?
-      "(#{short})"
-    elsif weight.present?
-      weight.to_s
-    else
-      ""
-    end
+    return "" if short.nil? && weight.nil?
+
+    "(#{short || weight})"
   end
 end

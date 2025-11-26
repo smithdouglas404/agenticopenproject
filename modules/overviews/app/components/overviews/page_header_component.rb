@@ -33,6 +33,7 @@ module Overviews
     extend Dry::Initializer
 
     include ApplicationHelper
+    include ProjectHelper
     include Redmine::I18n
 
     option :project
@@ -65,6 +66,12 @@ module Overviews
 
     def allowed_to_archive?
       current_user.allowed_in_project?(:archive_project, project)
+    end
+
+    def allowed_to_export_project_initiation_pdf?
+      OpenProject::FeatureDecisions.project_initiation_active? &&
+        project.project_creation_wizard_enabled &&
+        current_user.allowed_in_project?(:export_projects, project)
     end
   end
 end

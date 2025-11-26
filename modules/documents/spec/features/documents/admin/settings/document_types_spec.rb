@@ -183,4 +183,14 @@ RSpec.describe "Document types admin", :js do
       end
     end
   end
+
+  context "with non-admin user" do
+    current_user { create(:user) }
+
+    it "is not accessible" do
+      visit admin_settings_document_types_path
+
+      expect(page).to have_content("You are not authorized to access this page.")
+    end
+  end
 end

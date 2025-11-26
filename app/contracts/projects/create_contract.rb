@@ -30,8 +30,6 @@
 
 module Projects
   class CreateContract < BaseContract
-    # TODO: differentiate on allowed types based on permissions.
-    # Permissions will need to be added: project, program, portfolio.
     attribute :workspace_type
     attribute :template
 

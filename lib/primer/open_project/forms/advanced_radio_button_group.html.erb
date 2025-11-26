@@ -5,9 +5,11 @@
         <%= @input.label %>
       <% end %>
     <% end %>
-    <div class="mb-2">
+
+    <%= render Primer::ConditionalWrapper.new(condition: @input.input_arguments[:caption].present?, trim: true, mb: 2) do %>
       <%= render(Caption.new(input: @input)) %>
-    </div>
+    <% end %>
+
     <%= render(SpacingWrapper.new) do %>
       <div class="FormControl-advanced-radio-group-list">
         <% @input.radio_buttons.each do |radio_button| %>

@@ -71,8 +71,8 @@ RSpec.describe "Quick-add menu", :js do
         # Step 1: Select workspace type (blank project)
         click_on "Continue"
 
-        # Step 2: Project details - Parent field is visible here
-        field.expect_selected project.name
+        # Step 2: Project details - Parent field is not visible here
+        field.expect_not_visible
       end
     end
   end

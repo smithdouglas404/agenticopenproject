@@ -28,19 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 RSpec.shared_context "with rendered form" do
+  extend DeprecatedAlias
   include ViewComponent::TestHelpers
 
+  let(:form_arguments) { { url: "/foo", model: } }
   let(:params) { {} }
 
-  def render_form
-    render_in_view_context(model, described_class, params) do |model, described_class, params|
-      primer_form_with(url: "/foo", model:) do |f|
+  def vc_render_form
+    render_in_view_context(described_class, form_arguments, params) do |described_class, form_arguments, params|
+      primer_form_with(**form_arguments) do |f|
         render(described_class.new(f, **params))
       end
     end
   end
 
+  deprecated_alias :render_form, :vc_render_form
+
   before do
-    render_form
+    vc_render_form
   end
 end

@@ -30,9 +30,9 @@
         end
       end
 
-      if OpenProject::FeatureDecisions.project_initiation_active? && project.project_creation_wizard_enabled
+      if allowed_to_export_project_initiation_pdf?
         menu.with_item(
-          label: t(:label_project_initiation_pdf),
+          label: t(:label_project_initiation_export_pdf, project_creation_name: project_creation_wizard_name(project)),
           href: helpers.export_project_initiation_project_path(project, format: :pdf),
           data: { turbo: false }
         ) do |item|

@@ -17,6 +17,7 @@ export interface HoverCardOptions {
 export interface AvatarOptions {
   hide:boolean;
   size:AvatarSize;
+  imageAltText?:string;
 }
 
 export interface NameOptions {
@@ -179,7 +180,7 @@ export class PrincipalRendererService {
 
     image.src = url;
     image.title = principal.name;
-    image.alt = principal.name;
+    image.alt = options.imageAltText ?? principal.name;
     image.onload = () => {
       fallback.replaceWith(image);
       (fallback as unknown) = undefined;

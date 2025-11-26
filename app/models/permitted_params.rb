@@ -460,6 +460,7 @@ class PermittedParams
           type
           attribute_name
           help_text
+          caption
         ),
         ldap_auth_source: %i(
           name

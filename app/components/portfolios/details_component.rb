@@ -46,6 +46,14 @@ module Portfolios
       @currently_favorited ||= portfolio.favorited?
     end
 
+    def has_subportfolios?
+      all_subportfolios.present?
+    end
+
+    def all_subportfolios
+      all_descendants.portfolio
+    end
+
     def all_subprograms
       all_descendants.program
     end
@@ -54,10 +62,40 @@ module Portfolios
       all_descendants.project
     end
 
+    def render_sub_status_bar?
+      # When none of the descendants have a status set, there's nothing to show and we
+      # will return false.
+      sub_statuses.keys.any?(&:present?)
+    end
+
+    def sub_statuses_with_percentages
+      @sub_statuses_with_percentages ||=
+        begin
+          total = sub_statuses.values.sum
+
+          sub_statuses.map do |code, count|
+            percentage = (count.fdiv(total) * 100).round(1)
+
+            { code:, count:, percentage: }
+          end
+        end
+    end
+
+    def sub_status_hover_card_id
+      "portfolio-progress-hover-card-#{portfolio.id}"
+    end
+
     private
 
     def all_descendants
       @all_descendants ||= portfolio.descendants.visible
+    end
+
+    def sub_statuses
+      @sub_statuses ||= all_descendants
+                          .reorder(:status_code)
+                          .pluck(:status_code)
+                          .tally
     end
   end
 end
