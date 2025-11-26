@@ -210,7 +210,7 @@ en:
     text_overview: "In this view, you can create custom help texts for attributes view. When defined, these texts can be shown by clicking the help icon next to its belonging attribute."
     show_preview: "Preview text"
     add_new: "Add help text"
-    edit: "Edit help text for %{attribute_field_name}"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
 
   background_jobs:
     status:
