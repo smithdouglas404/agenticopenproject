@@ -52,6 +52,7 @@ en:
           title: 'Work packages table'
         work_packages_graph:
           title: 'Work packages graph'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Calendar'
         work_packages_overview:
