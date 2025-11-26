@@ -145,13 +145,6 @@ export default class CheckableController extends Controller<HTMLElement> {
     this.toggleChecked(checkboxes);
   }
 
-  /**
-   * Internal method to toggle checked state on a collection of checkboxes.
-   *
-   * @param checkboxes - The checkboxes to toggle
-   * @param checked - Optional explicit state. If omitted, toggles based on current state.
-   * @private
-   */
   private toggleChecked(checkboxes:HTMLInputElement[], checked?:boolean) {
     // If all are checked -> uncheck all.
     // If mixed or none checked -> check all.
