@@ -104,9 +104,9 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
     baseLineIconAdded: this.I18n.t('js.baseline.icon_tooltip.added'),
     baseLineIconChanged: this.I18n.t('js.baseline.icon_tooltip.changed'),
     baseLineIconRemoved: this.I18n.t('js.baseline.icon_tooltip.removed'),
-    assigneeAlt:(assignee: string) =>
-      this.I18n.t("js.label_assignee_alt_text", { name: assignee }),
-    coverImageAlt: this.I18n.t('js.bcf.snapshot_alt', { title: this.cardTitle() }),
+    assigneeAlt:(assignee:string) =>
+      this.I18n.t('js.label_assignee_alt_text', { name: assignee }),
+    coverImageAlt: this.I18n.t('js.bcf.snapshot_alt', { title:this.cardTitle() }),
   };
 
   public isNewResource = isNewResource;
