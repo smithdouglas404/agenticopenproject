@@ -39,6 +39,11 @@ import invariant from 'tiny-invariant';
  * `data-checkable-target="checkbox"`. It provides methods to check all,
  * uncheck all, toggle all, or toggle a filtered subset of checkboxes.
  *
+ * Rather than defining event handlers within the controller, this controller
+ * uses Stimulus actions. The implementer is responsible for adding appropriate
+ * {@link https://stimulus.hotwired.dev/reference/actions#descriptors action descriptors}
+ * to HTML elements that should trigger the controller's methods.
+ *
  * Can be used standalone or in combination with {@link CheckAllController}
  * when the "Check all" / "Uncheck all" controls are outside the scope of this
  * controller (i.e. in another part of the DOM that is not a descendant).
