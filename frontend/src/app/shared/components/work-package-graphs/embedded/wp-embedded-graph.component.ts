@@ -235,13 +235,13 @@ export class WorkPackageEmbeddedGraphComponent implements OnChanges {
     return this.chartType === 'radar' || this.chartType === 'polarArea';
   }
 
-  public get chartSummary(): string {
+  public get chartSummary():string {
     const typeLabel = this.chartTypeLabel;
 
     return `${typeLabel} chart showing work packages which are ${this.chartDescription}.`;
   }
 
-  public get chartTypeLabel(): string {
+  public get chartTypeLabel():string {
     switch (this.chartType) {
       case 'bar':
         return this.i18n.t('js.chart.types.bar');

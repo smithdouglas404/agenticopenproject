@@ -239,11 +239,11 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
     return Highlighting.inlineClass(type, wp.type.id!);
   }
 
-  public assigneeAlt(): string {
-    return `${this.I18n.t("js.label_assignee_is")} ${this.workPackage.assignee.name}`;
+  public assigneeAlt(assignee:string):string {
+    return `${this.I18n.t("js.label_assignee_is")} ${assignee}`;
   }
 
-  public coverImageAlt(wp: any): string {
-    return `${this.I18n.t('js.bcf.snapshot_alt')}: ${wp.subject}`;
+  public coverImageAlt():string {
+    return `${this.I18n.t('js.bcf.snapshot_alt')}: ${this.cardTitle()}`;
   }
 }
