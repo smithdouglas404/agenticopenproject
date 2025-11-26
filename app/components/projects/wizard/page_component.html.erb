@@ -7,12 +7,14 @@
       )
     ) do |layout| %>
   <%=
+    title = project_creation_wizard_name(@project)
     layout.with_page_header do
       render(Primer::OpenProject::PageHeader.new) do |header|
-        header.with_title do
-          project_creation_wizard_name(@project)
-        end
-        header.with_breadcrumbs(nil)
+        header.with_title { title }
+        header.with_breadcrumbs(
+          [{ href: project_overview_path(@project.id), text: @project.name },
+           title]
+        )
 
         header.with_action_icon_button(
           tag: :a,
