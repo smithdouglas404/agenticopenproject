@@ -87,7 +87,7 @@ RSpec.describe "Creating subproject with predefined template from quick add menu
         click_on "Complete"
 
         within_dialog "Background job status" do
-          expect(page).to have_heading "Copy project"
+          expect(page).to have_heading "Applying template"
           expect(page).to have_text "The job has been queued and will be processed shortly."
         end
 

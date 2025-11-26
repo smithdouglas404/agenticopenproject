@@ -35,7 +35,7 @@ class CopyProjectJob < ApplicationJob
   queue_with_priority :above_normal
 
   # Again error handling pushing the branch costs up
-  def perform(target_project_params:, associations_to_copy:, skip_custom_field_validation: false, send_mails: false) # rubocop:disable Metrics/AbcSize
+  def perform(target_project_params:, associations_to_copy:, skip_custom_field_validation: false, send_mails: false, **) # rubocop:disable Metrics/AbcSize
     User.current = user
     target_project_params = target_project_params.with_indifferent_access
 
@@ -63,7 +63,21 @@ class CopyProjectJob < ApplicationJob
 
   protected
 
-  def title = I18n.t(:label_copy_project)
+  def title
+    if params[:copy_from_template]
+      I18n.t("project.template.copying_title")
+    else
+      I18n.t(:label_copy_project)
+    end
+  end
+
+  def params
+    if arguments.is_a?(Array)
+      Hash(arguments.first)
+    else
+      {}
+    end
+  end
 
   private
 

@@ -110,7 +110,7 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       expect(page).to have_dialog "Background job status"
 
       within_dialog "Background job status" do
-        expect(page).to have_heading "Copy project"
+        expect(page).to have_heading "Applying template"
         expect(page).to have_text "The job has been queued and will be processed shortly."
       end
 
