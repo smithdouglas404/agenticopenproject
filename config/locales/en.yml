@@ -1148,7 +1148,7 @@ en:
       heading: "Delete %{name}'s account?"
       login_consequences:
         other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
-        self: "Your account will immediately be removed from the system and you will will no longer be able to log in using your credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       Your account has not yet been activated.
       To activate your account, click on the link that was emailed to you.
