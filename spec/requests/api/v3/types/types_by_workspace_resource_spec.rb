@@ -78,14 +78,23 @@ RSpec.describe "/api/v3/projects/:id/types" do
     end
   end
 
-  context "for a project" do
-    let(:project) { create(:project, no_types: true) }
-    let(:get_path) { api_v3_paths.types_by_project requested_project.id }
+  context "when using the projects route" do
+    context "for a project" do
+      let(:project) { create(:project, no_types: true) }
+      let(:get_path) { api_v3_paths.types_by_project requested_project.id }
 
-    include_context "for types by workspace"
+      include_context "for types by workspace"
+    end
+
+    context "for a portfolio" do
+      let(:project) { create(:portfolio, no_types: true) }
+      let(:get_path) { api_v3_paths.types_by_project requested_project.id }
+
+      include_context "for types by workspace"
+    end
   end
 
-  context "for a workspace" do
+  context "when using the workspaces route" do
     let(:project) { create(:portfolio, no_types: true) }
     let(:get_path) { api_v3_paths.types_by_workspace requested_project.id }
 

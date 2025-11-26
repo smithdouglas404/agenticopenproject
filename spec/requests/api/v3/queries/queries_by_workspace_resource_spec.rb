@@ -35,7 +35,8 @@ RSpec.describe "GET workspaces/:id/queries/default" do
   include Rack::Test::Methods
   include API::V3::Utilities::PathHelper
 
-  shared_let(:project) { create(:project) }
+  shared_let(:project_instance) { create(:project) }
+  shared_let(:portfolio_instance) { create(:portfolio) }
 
   let(:role) { create(:project_role, permissions:) }
   let(:permissions) { [:view_work_packages] }
@@ -47,19 +48,40 @@ RSpec.describe "GET workspaces/:id/queries/default" do
   end
 
   context "for a project scope" do
-    it_behaves_like "GET individual query" do
-      let(:base_path) { api_v3_paths.query_project_default(project.id) }
-      let(:self_path) { api_v3_paths.query_workspace_default(project.id) }
+    context "for a project" do
+      let(:project) { project_instance }
 
-      context "when lacking permissions" do
-        let(:permissions) { [] }
+      it_behaves_like "GET individual query" do
+        let(:base_path) { api_v3_paths.query_project_default(project.id) }
+        let(:self_path) { api_v3_paths.query_workspace_default(project.id) }
 
-        it_behaves_like "unauthorized access"
+        context "when lacking permissions" do
+          let(:permissions) { [] }
+
+          it_behaves_like "unauthorized access"
+        end
+      end
+    end
+
+    context "for a portfolio" do
+      let(:project) { portfolio_instance }
+
+      it_behaves_like "GET individual query" do
+        let(:base_path) { api_v3_paths.query_project_default(project.id) }
+        let(:self_path) { api_v3_paths.query_workspace_default(project.id) }
+
+        context "when lacking permissions" do
+          let(:permissions) { [] }
+
+          it_behaves_like "unauthorized access"
+        end
       end
     end
   end
 
   context "for a workspace scope" do
+    let(:project) { project_instance }
+
     it_behaves_like "GET individual query" do
       let(:base_path) { api_v3_paths.query_workspace_default(project.id) }
       context "when lacking permissions" do

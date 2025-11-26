@@ -34,17 +34,19 @@ require_relative "../workspaces/delete_resource_examples"
 
 RSpec.describe "API v3 Project resource delete", content_type: :json do
   describe "DELETE /api/v3/projects/:id" do
-    include_examples "APIv3 deleting a workspace" do
-      let(:workspace) { create(:project) }
-      let(:path_id) { workspace.id }
-      let(:path) { api_v3_paths.project(path_id) }
+    context "for a project" do
+      include_examples "APIv3 deleting a workspace" do
+        let(:workspace) { create(:project) }
+        let(:path_id) { workspace.id }
+        let(:path) { api_v3_paths.project(path_id) }
+      end
+    end
 
-      context "with a portfolio id" do
-        let(:workspace) do
-          create(:portfolio, public: true)
-        end
-
-        it_behaves_like "not found"
+    context "for a portfolio" do
+      include_examples "APIv3 deleting a workspace" do
+        let(:workspace) { create(:portfolio) }
+        let(:path_id) { workspace.id }
+        let(:path) { api_v3_paths.project(path_id) }
       end
     end
   end

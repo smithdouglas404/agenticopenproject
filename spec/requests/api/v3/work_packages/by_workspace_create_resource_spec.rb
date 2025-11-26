@@ -191,10 +191,19 @@ RSpec.describe "POST api/v3/workspace/:id/work_packages", content_type: :json do
   end
 
   context "for a project path" do
-    let(:path) { api_v3_paths.work_packages_by_project project.id }
-    let(:workspace) { project }
+    context "within a project" do
+      let(:path) { api_v3_paths.work_packages_by_project project.id }
+      let(:workspace) { project }
 
-    include_context "with work package creation"
+      include_context "with work package creation"
+    end
+
+    context "within a portfolio" do
+      let(:path) { api_v3_paths.work_packages_by_project workspace.id }
+      let(:workspace) { portfolio }
+
+      include_context "with work package creation"
+    end
   end
 
   context "for a workspace path" do

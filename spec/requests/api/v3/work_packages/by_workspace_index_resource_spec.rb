@@ -315,10 +315,19 @@ RSpec.describe "GET api/v3/workspace/:id/work_packages", content_type: :json do
   end
 
   context "for a project path" do
-    let(:base_path) { api_v3_paths.work_packages_by_project project.id }
-    let(:workspace) { project }
+    context "within a project" do
+      let(:base_path) { api_v3_paths.work_packages_by_project project.id }
+      let(:workspace) { project }
 
-    include_context "with work package indexing"
+      include_context "with work package indexing"
+    end
+
+    context "within a portfolio" do
+      let(:base_path) { api_v3_paths.work_packages_by_project portfolio.id }
+      let(:workspace) { portfolio }
+
+      include_context "with work package indexing"
+    end
   end
 
   context "for a workspace path" do

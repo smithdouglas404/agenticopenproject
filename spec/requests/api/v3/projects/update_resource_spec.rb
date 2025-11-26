@@ -34,17 +34,19 @@ require_relative "../workspaces/update_resource_examples"
 
 RSpec.describe "API v3 Project resource update", content_type: :json do
   describe "PATCH /api/v3/projects/:id" do
-    include_examples "APIv3 workspace update" do
-      let(:path) { api_v3_paths.project(workspace.id) }
-      let(:workspace_factory_key) { :project }
-      let(:workspace_api_type) { "Project" }
+    context "for a project" do
+      include_examples "APIv3 workspace update" do
+        let(:path) { api_v3_paths.project(workspace.id) }
+        let(:workspace_factory_key) { :project }
+        let(:workspace_api_type) { "Project" }
+      end
+    end
 
-      context "with a portfolio id" do
-        let(:workspace) do
-          create(:portfolio, public: true)
-        end
-
-        it_behaves_like "not found"
+    context "for a portfolio" do
+      include_examples "APIv3 workspace update" do
+        let(:path) { api_v3_paths.project(workspace.id) }
+        let(:workspace_factory_key) { :portfolio }
+        let(:workspace_api_type) { "Portfolio" }
       end
     end
   end

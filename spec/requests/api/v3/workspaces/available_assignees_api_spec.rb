@@ -33,13 +33,24 @@ require "spec_helper"
 RSpec.describe "API::V3::Workspaces::AvailableAssigneesAPI" do
   include API::V3::Utilities::PathHelper
 
-  it_behaves_like "available principals", :assignees do
-    let(:base_permissions) { %i[add_work_packages] }
-    let(:href) { api_v3_paths.available_assignees_in_workspace(project.id) }
+  context "when using the workspaces route" do
+    it_behaves_like "available principals", :assignees do
+      let(:base_permissions) { %i[add_work_packages] }
+      let(:href) { api_v3_paths.available_assignees_in_workspace(project.id) }
+    end
   end
 
-  it_behaves_like "available principals", :assignees do
-    let(:base_permissions) { %i[add_work_packages] }
-    let(:href) { api_v3_paths.available_assignees_in_project(project.id) }
+  context "when using the projects route" do
+    it_behaves_like "available principals", :assignees do
+      let(:base_permissions) { %i[add_work_packages] }
+      let(:href) { api_v3_paths.available_assignees_in_project(project.id) }
+    end
+    context "for a non project" do
+      it_behaves_like "available principals", :assignees do
+        let(:base_permissions) { %i[add_work_packages] }
+        let(:project) { create(:portfolio) }
+        let(:href) { api_v3_paths.available_assignees_in_project(project.id) }
+      end
+    end
   end
 end

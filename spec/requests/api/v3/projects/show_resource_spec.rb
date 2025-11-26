@@ -189,7 +189,14 @@ RSpec.describe "API v3 Project resource show", content_type: :json do
         response
       end
 
-      it_behaves_like "not found"
+      it "responds with 200 OK" do
+        expect(subject.status).to eq(200)
+      end
+
+      it "responds with the correct project" do
+        expect(subject.body).to include_json("Portfolio".to_json).at_path("_type")
+        expect(subject.body).to be_json_eql(project.identifier.to_json).at_path("identifier")
+      end
     end
 
     context "when not being allowed to see the parent project" do
