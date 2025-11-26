@@ -2,7 +2,7 @@
   flex_layout(**archived_style) do |flex|
     flex.with_row(mb: 2) do
       flex_layout(align_items: :center) do |header|
-        header.with_column do
+        header.with_column(mr: 2) do
           if archived?
             render(Primer::Beta::Text.new(classes: "portfolio-name")) do
               name_caption
@@ -21,7 +21,7 @@
         end
 
         unless archived?
-          header.with_column(ml: 2) do
+          header.with_column(mr: 2) do
             render(
               Projects::StatusButtonComponent.new(
                 user: @current_user,
@@ -101,6 +101,26 @@
           end
         end
 
+        if has_subportfolios?
+          footer.with_column(mr: 3) do
+            concat(
+              render(
+                Primer::Beta::Octicon.new(
+                  icon: workspace_icon("portfolio"),
+                  align_self: :center,
+                  "aria-label": t("portfolio.count", count: all_subportfolios.count),
+                  mr: 1
+                )
+              )
+            )
+            concat(
+              render(Primer::Beta::Text.new) do
+                t("portfolio.count", count: all_subportfolios.count)
+              end
+            )
+          end
+        end
+
         footer.with_column(mr: 3) do
           concat(
             render(
@@ -117,19 +137,6 @@
               t("program.count", count: all_subprograms.count)
             end
           )
-        end
-
-        if has_subportfolios?
-          footer.with_column(mr: 3) do
-            render(
-              Primer::Beta::Octicon.new(
-                icon: workspace_icon("portfolio"),
-                align_self: :center,
-                "aria-label": t("portfolio.count", count: all_subportfolios.count),
-                mr: 1
-              )
-            ) + content_tag(:span, t("portfolio.count", count: all_subportfolios.count))
-          end
         end
 
         footer.with_column(mr: 3) do
