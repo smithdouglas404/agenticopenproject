@@ -108,8 +108,8 @@ module AvatarHelper
       title: tag_options.fetch(:title, "")
     }
 
-    if tag_options.key?(:avatar_alt)
-      inputs[:avatarAlt] = tag_options[:avatar_alt]
+    if tag_options.key?(:avatar_image_alt_text)
+      inputs[:avatarImageAltText] = tag_options[:avatar_image_alt_text]
     end
 
     inputs = hover_card_options(user, inputs, tag_options)

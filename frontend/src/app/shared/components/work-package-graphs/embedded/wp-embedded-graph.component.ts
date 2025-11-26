@@ -236,29 +236,7 @@ export class WorkPackageEmbeddedGraphComponent implements OnChanges {
   }
 
   public get chartSummary():string {
-    const typeLabel = this.chartTypeLabel;
-
-    return `${typeLabel} chart showing work packages which are ${this.chartDescription}.`;
-  }
-
-  public get chartTypeLabel():string {
-    switch (this.chartType) {
-      case 'bar':
-        return this.i18n.t('js.chart.types.bar');
-      case 'horizontalBar':
-        return this.i18n.t('js.chart.types.horizontal_bar');
-      case 'line':
-        return this.i18n.t('js.chart.types.line');
-      case 'radar':
-        return this.i18n.t('js.chart.types.radar');
-      case 'polarArea':
-        return this.i18n.t('js.chart.types.polar_area');
-      case 'doughnut':
-        return this.i18n.t('js.chart.types.doughnut');
-      case 'pie':
-        return this.i18n.t('js.chart.types.pie');
-      default:
-        return '';
-    }
+    const chartTypeLabel = this.chartType ? this.i18n.t(`js.chart.types.${this.chartType}`) : '';
+    return this.i18n.t('js.grid.widgets.work_packages_graph.summary', { chartType: chartTypeLabel, description: this.chartDescription });
   }
 }

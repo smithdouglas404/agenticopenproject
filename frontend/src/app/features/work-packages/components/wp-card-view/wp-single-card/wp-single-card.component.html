@@ -122,7 +122,7 @@
         <img
           [src]="this.bcfSnapshotPath(workPackage)"
           class="op-wp-single-card--content-cover-image"
-          [attr.alt]="coverImageAlt()">
+          [attr.alt]="text.coverImageAlt">
       }
       <div class="op-wp-single-card--content-status-baseline">
         @if (showStatusButton) {
@@ -155,7 +155,7 @@
         <op-principal [principal]="workPackage.assignee"
           [hideName]="true"
           [link]="false"
-          avatarAlt="{{ assigneeAlt(workPackage.assignee.name) }}"
+          avatarImageAltText="{{ text.assigneeAlt(workPackage.assignee.name) }}"
           size="mini"
           class="op-wp-single-card--content-assignee"
           data-test-selector="op-wp-single-card--content-assignee"

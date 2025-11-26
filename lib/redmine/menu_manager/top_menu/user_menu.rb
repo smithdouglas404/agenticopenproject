@@ -50,7 +50,7 @@ module Redmine::MenuManager::TopMenu::UserMenu
 
   def render_user_drop_down(items)
     avatar = avatar(
-      User.current, class: "op-top-menu-user-avatar", hover_card: { active: false }, avatar_alt: I18n.t("label_user_menu")
+      User.current, class: "op-top-menu-user-avatar", hover_card: { active: false }, avatar_image_alt_text: I18n.t("label_user_menu")
     )
 
     render Primer::Alpha::Dialog.new(title: I18n.t("label_user_menu"),

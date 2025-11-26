@@ -66,7 +66,7 @@ export class OpPrincipalComponent implements OnInit {
 
   @Input() hideAvatar = false;
 
-  @Input() avatarAlt?:string;
+  @Input() avatarImageAltText?:string;
 
   @Input() hideName = false;
 
@@ -101,7 +101,7 @@ export class OpPrincipalComponent implements OnInit {
       const avatarOptions:AvatarOptions = {
         hide: this.hideAvatar,
         size: this.size,
-        alt: this.avatarAlt,
+        imageAltText: this.avatarImageAltText,
       };
 
       const hoverCardOptions:HoverCardOptions = {
