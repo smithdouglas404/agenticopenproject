@@ -1244,8 +1244,6 @@ en:
       no_favorite_results: "No favorite project matches your search criteria."
     include_workspaces:
       search_placeholder: "Search..."
-      no_results: "No workspace matches your search criteria."
-      no_favorite_results: "No favorite workspace matches your search criteria."
       types:
         program: "Program"
         portfolio: "Portfolio"
