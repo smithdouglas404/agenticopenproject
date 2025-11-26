@@ -37,13 +37,21 @@ RSpec.describe Projects::Settings::RelationsForm, type: :forms do
   let(:parent) { nil }
   let(:workspace_type) { :project }
 
-  %i[portfolio program project].each do |workspace_type|
+  %i[program project].each do |workspace_type|
     context "for workspace type #{workspace_type}" do
       let(:workspace_type) { workspace_type }
 
       it "renders field" do
         expect(page).to have_element "opce-project-autocompleter", "data-input-name": "\"project[parent_id]\""
       end
+    end
+  end
+
+  context "for workspace type portfolio" do
+    let(:workspace_type) { "portfolio" }
+
+    it "does not render" do
+      expect(page).not_to have_element "opce-project-autocompleter", "data-input-name": "\"project[parent_id]\""
     end
   end
 

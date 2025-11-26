@@ -33,7 +33,7 @@ module Projects
       delegate :parent, to: :model
 
       form do |f|
-        if @visible
+        if visible?
           f.project_autocompleter(
             name: :parent_id,
             label: attribute_name(:parent_id),
@@ -53,13 +53,19 @@ module Projects
         end
       end
 
-      def initialize(visible: true)
+      def initialize(invisible: false)
         super()
 
-        @visible = visible
+        @invisible = invisible
       end
 
       private
+
+      attr_reader :invisible
+
+      def visible?
+        model.parent_allowed? && !invisible
+      end
 
       def validation_message(attribute)
         model.errors.full_messages_for(attribute).to_sentence.presence
