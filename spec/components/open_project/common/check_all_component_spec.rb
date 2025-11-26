@@ -70,6 +70,14 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
         expect(button["data-action"]).to include "check-all#uncheckAll:stop"
       end
     end
+
+    it "applies aria-controls attribute to 'Check all'" do
+      expect(rendered_component).to have_button "Check all", aria: { controls: "foo" }
+    end
+
+    it "applies aria-controls attribute to 'Uncheck all'" do
+      expect(rendered_component).to have_button "Uncheck all", aria: { controls: "foo" }
+    end
   end
 
   context "when :checkable_id is nil" do

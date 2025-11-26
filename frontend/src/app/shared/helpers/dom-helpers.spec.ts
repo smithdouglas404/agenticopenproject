@@ -30,6 +30,7 @@ import {
   toggleElement,
   toggleElementByClass,
   toggleElementByVisibility,
+  attributeTokenList,
 } from './dom-helpers';
 
 describe('dom-helpers', () => {
@@ -182,6 +183,88 @@ describe('dom-helpers', () => {
       toggleElementByVisibility(element, false);
 
       expect(element.style.getPropertyValue('visibility')).toBe('hidden');
+    });
+  });
+
+  describe('attributeTokenList', () => {
+    let el:HTMLElement;
+    const attr = 'aria-describedby';
+
+    beforeEach(() => {
+      el = document.createElement('div');
+    });
+
+    it('mimics DOMTokenList over an attribute', () => {
+      const list = attributeTokenList(el, attr);
+
+      expect(list.contains('a')).toBeFalse();
+      expect(el.getAttribute(attr)).toBeNull();
+
+      list.add('a', 'b');
+
+      expect(list.contains('a')).toBeTrue();
+      expect(list.contains('b')).toBeTrue();
+      expect(el.getAttribute(attr)).toBe('a b');
+
+      // adding duplicates is idempotent
+      list.add('a');
+
+      expect(el.getAttribute(attr)).toBe('a b');
+
+      // remove works
+      list.remove('a');
+
+      expect(list.contains('a')).toBeFalse();
+      expect(el.getAttribute(attr)).toBe('b');
+
+      // toggle without force flips presence and returns the new state
+      expect(list.toggle('b')).toBeFalse(); // removed
+      expect(el.getAttribute(attr)).toBe('');
+      expect(list.toggle('c')).toBeTrue(); // added
+      expect(el.getAttribute(attr)).toBe('c');
+
+      // forced toggle honors force
+      expect(list.toggle('x', true)).toBeTrue();
+      expect(list.contains('x')).toBeTrue();
+      expect(list.toggle('x', false)).toBeFalse();
+      expect(list.contains('x')).toBeFalse();
+
+      // replace swaps tokens and returns true when old exists
+      expect(list.replace('c', 'd')).toBeTrue();
+      expect(list.contains('c')).toBeFalse();
+      expect(list.contains('d')).toBeTrue();
+
+      // iterator yields tokens
+      expect([...list]).toEqual(['d']);
+
+      // value accessor updates attribute
+      list.value = 'e f';
+
+      expect(el.getAttribute(attr)).toBe('e f');
+      expect(list.contains('e')).toBeTrue();
+      expect(list.contains('f')).toBeTrue();
+    });
+
+    it('replace on non-existent token returns false and does not change tokens', () => {
+      const list = attributeTokenList(el, attr);
+      list.add('a', 'b');
+
+      expect(list.replace('x', 'y')).toBeFalse();
+      expect([...list]).toEqual(['a', 'b']);
+      expect(el.getAttribute(attr)).toBe('a b');
+    });
+
+    it('iterates empty list and value setter overwrites tokens', () => {
+      const list = attributeTokenList(el, attr);
+
+      // Initially empty
+      expect([...list]).toEqual([]);
+
+      // Setting value directly replaces tokens
+      list.value = 'm   n  ';
+
+      expect([...list]).toEqual(['m', 'n']);
+      expect(el.getAttribute(attr)).toBe('m n');
     });
   });
 });

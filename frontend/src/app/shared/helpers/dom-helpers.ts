@@ -143,3 +143,77 @@ export function ensureId(el:HTMLElement, prefix = 'el'):string {
   }
   return el.id;
 }
+
+/**
+ * Returns a `DOMTokenList`-like facade for an arbitrary attribute.
+ *
+ * Mimics `element.classList` for space-separated attributes (e.g.
+ * `aria-describedby`). It reads and writes the underlying attribute and
+ * supports `contains`, `add`, `remove`, `toggle`, `replace`, iteration, and a
+ * `.value` accessor.
+ *
+ * @example
+ * ```ts
+ * const tokens = attributeTokenList(el, 'aria-describedby');
+ * tokens.add('hint-1', 'hint-2'); // sets attribute to "hint-1 hint-2"
+ * ```
+ *
+ * @param element Target element whose attribute holds space-separated tokens.
+ * @param attribute Attribute name to manage (e.g. "aria-describedby").
+ * @returns A `DOMTokenList`-like object bound to the given attribute.
+ */
+export function attributeTokenList(element:HTMLElement, attribute:string):DOMTokenList {
+  const getTokens = () =>
+    (element.getAttribute(attribute) ?? '')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  const setTokens = (tokens:string[]) =>
+    element.setAttribute(attribute, tokens.join(' '));
+
+  const list = Object.create(DOMTokenList.prototype) as DOMTokenList;
+
+  list.contains = (token:string):boolean => getTokens().includes(token);
+
+  list.add = (...tokens:string[]):void => {
+    const set = new Set(getTokens());
+    tokens.forEach(t => set.add(t));
+    setTokens([...set]);
+  };
+
+  list.remove = (...tokens:string[]):void => {
+    setTokens(getTokens().filter(t => !tokens.includes(t)));
+  };
+
+  list.toggle = (token:string, force?:boolean):boolean => {
+    const exists = list.contains(token);
+    const shouldAdd = force ?? !exists;
+    if (shouldAdd) {
+      list.add(token);
+    } else {
+      list.remove(token);
+    }
+    return shouldAdd;
+  };
+
+  list.replace = (oldToken:string, newToken:string):boolean => {
+    if (!list.contains(oldToken)) return false;
+    list.remove(oldToken);
+    list.add(newToken);
+    return true;
+  };
+
+  // Keep value updated
+  Object.defineProperty(list, 'value', {
+    get: () => element.getAttribute(attribute) ?? '',
+    set: (v:string) => setTokens(v.trim().split(/\s+/).filter(Boolean))
+  });
+
+  // Iterable support
+  list[Symbol.iterator] = function* ():IterableIterator<string> {
+    yield* getTokens();
+  } as () => IterableIterator<string>;
+
+  return list;
+}

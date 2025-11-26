@@ -82,13 +82,14 @@ describe('CheckAllController', () => {
   });
 
   describe('with checkable controller', () => {
-    it('toggles checkboxes', async () => {
+    beforeEach(async () => {
       appendTemplate(checkableTemplate);
       appendTemplate(checkAllTemplate);
 
-      // Allow Stimulus to connect controllers and resolve outlets
       await new Promise((resolve) => setTimeout(resolve, 0));
+    });
 
+    it('toggles checkboxes', () => {
       const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'));
 
       expect(inputs).toHaveSize(3);
@@ -101,6 +102,33 @@ describe('CheckAllController', () => {
       document.getElementById('uncheck-all')!.click();
 
       expect(inputs.every((i) => !i.checked)).toBeTrue();
+    });
+
+    it('applies aria-controls for connected outlet', () => {
+      const checkAllEl = document.querySelector('[data-controller="check-all"]')!;
+
+      expect(checkAllEl).toBeDefined();
+
+      const ariaControls = checkAllEl.getAttribute('aria-controls');
+
+      expect(ariaControls).toBeTruthy();
+      expect(ariaControls!.split(/\s+/)).toContain('checkables');
+    });
+
+    it('removes aria-controls entry when outlet disconnects', async () => {
+      const checkAllEl = document.querySelector('[data-controller="check-all"]')!;
+      const ariaBefore = checkAllEl.getAttribute('aria-controls') ?? '';
+      // Scenarios with connected checkable outlets
+      expect(ariaBefore.split(/\s+/)).toContain('checkables');
+
+      // Remove the outlet element to trigger outlet disconnect
+      document.getElementById('checkables')!.remove();
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      const ariaAfter = checkAllEl.getAttribute('aria-controls') ?? '';
+
+      expect(ariaAfter.split(/\s+/)).not.toContain('checkables');
     });
   });
 

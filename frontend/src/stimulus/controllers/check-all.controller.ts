@@ -30,18 +30,24 @@
 
 import { Controller } from '@hotwired/stimulus';
 import CheckableController from './checkable.controller';
+import { attributeTokenList, ensureId } from 'core-app/shared/helpers/dom-helpers';
+
+type ExtractElement<T> = T extends Controller<infer U> ? U : never;
+type CheckableElement = ExtractElement<CheckableController>;
 
 /**
  * A Stimulus Controller providing behavior for "Check all" / "Uncheck all"
  * links and buttons.
  *
- * This Controller does not provide functionality to toggle checkboxes itself,
+ * This controller does not provide functionality to toggle checkboxes itself,
  * but rather uses outlets to communicate (and delegate to) instances of
  * {@link CheckableController}. This is designed for scenarios where the "Check
  * all" links and buttons are outside scope of a `CheckableController`, i.e. in
  * another part of the DOM that is not a descendant.
  *
  * @see https://stimulus.hotwired.dev/reference/outlets
+ *
+ * This controller also handles setting `aria-controls` on its HTML element.
  *
  * Rather than using targets, it is up to the implementer to "wire up" events
  * using descriptors. This is designed for maximum flexibility.
@@ -58,6 +64,14 @@ export default class CheckAllController extends Controller<HTMLElement> {
   static outlets = ['checkable'];
 
   declare readonly checkableOutlets:CheckableController[];
+
+  checkableOutletConnected(_outlet:CheckableController, element:CheckableElement) {
+    attributeTokenList(this.element, 'aria-controls').add(ensureId(element));
+  }
+
+  checkableOutletDisconnected(_outlet:CheckableController, element:CheckableElement) {
+    attributeTokenList(this.element, 'aria-controls').remove(element.id);
+  }
 
   /**
    *
