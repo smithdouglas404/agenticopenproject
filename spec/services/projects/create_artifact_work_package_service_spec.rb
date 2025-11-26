@@ -189,7 +189,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
         date = Date.current.iso8601
         expect(Storages::UploadFileService)
           .to have_received(:call)
-          .with(container: project,
+          .with(container: artifact_work_package,
                 project_storage:,
                 file_path: "project_mandate",
                 filename: /Important_Project_Project_mandate_#{date}_\d+-\d+.pdf/,
