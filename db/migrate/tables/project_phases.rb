@@ -33,8 +33,8 @@ require_relative "base"
 class Tables::ProjectPhases < Tables::Base
   def self.table(migration)
     create_table migration do |t|
-      t.date :start_date
-      t.date :finish_date
+      t.date :start_date, index: true
+      t.date :finish_date, index: true
       t.boolean :active, default: false, null: false
       t.references :project, foreign_key: true
       t.references :definition, foreign_key: { to_table: :project_phase_definitions }
@@ -42,7 +42,6 @@ class Tables::ProjectPhases < Tables::Base
       t.timestamps
 
       t.index %i[project_id definition_id], unique: true
-      t.index :start_date
     end
   end
 end
