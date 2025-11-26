@@ -3,6 +3,9 @@
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title { t("webhooks.outgoing.label_add_new") }
+    header.with_description do
+      link_translate("webhooks.outgoing.form.introduction", links: { docs_url: %i[api_docs] }, external: true)
+    end
     header.with_breadcrumbs(
       [{ href: admin_index_path, text: t("label_administration") },
        { href: admin_settings_api_path, text: t("menus.admin.api_and_webhooks") },
@@ -14,13 +17,25 @@
 
 <%= error_messages_for @webhook %>
 
-<%= labelled_tabular_form_for @webhook,
-                              url: { action: :create },
-                              as: "webhook",
-                              html: { class: "form", autocomplete: "off" } do |f| %>
-  <%= render partial: "form", locals: { f: f, webhook: @webhook } %>
-  <p>
-    <%= styled_button_tag t(:button_create), class: "-primary -with-icon icon-checkmark" %>
-    <%= link_to t(:button_cancel), { action: :index }, class: "button -with-icon icon-cancel" %>
-  </p>
+<%=
+  settings_primer_form_with(
+    model: @webhook,
+    url: { action: :create },
+    scope: :webhook
+  ) do |f|
+%>
+  <%=
+    render(
+      Primer::Forms::FormList.new(
+        Webhooks::Outgoing::WebhooksForm.new(f),
+        Webhooks::Outgoing::EnabledEventsForm.new(f),
+        Webhooks::Outgoing::EnabledProjectsForm.new(f),
+        Webhooks::SaveOrCancel.new(
+          f,
+          submit_label: I18n.t(:button_create),
+          cancel_path: url_for(action: :index)
+        )
+      )
+    )
+  %>
 <% end %>
