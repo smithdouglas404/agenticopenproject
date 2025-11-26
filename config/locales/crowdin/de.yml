@@ -164,9 +164,9 @@ de:
         title: "Zugangs-Token Tabelle"
     settings:
       new_project:
-        project_creation: "Project creation"
+        project_creation: "Erstellung von Projekten"
         notification_text_default: >
-          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
+          <p>Hallo,</p> <p>Ein neues Projekt wurde erstellt: projectValue:name</p> <p>Vielen Dank</p>
     workflows:
       tabs:
         default_transitions: "Standard-Übergänge"
@@ -190,12 +190,12 @@ de:
       title: "Unter Quarantäne gestellte Anhänge"
       error_cannot_act_self: "Sie können keine Aktionen für Ihre eigenen hochgeladenen Dateien durchführen."
   attribute_help_texts:
-    caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    caption: "Diese Kurzversion wird als Untertitel des Attributs angezeigt."
+    note_public: "Alle Texte und Bilder, die Sie diesem Feld hinzufügen, sind öffentlich für angemeldete Benutzer sichtbar."
     text_overview: "In dieser Ansicht können Sie benutzerdefinierte Hilfe-Texte für Attribute definieren. Für Attribute mit hinterlegtem Text können diese über ein kleines Hilfe-Icon neben dem Attribut angezeigt werden."
     show_preview: "Vorschau des Hilfe-Textes"
     add_new: "Hilfe-Text hinzufügen"
-    edit_field_name: "Edit help text for %{attribute_field_name}"
+    edit_field_name: "Hilfe-Text für %{attribute_field_name} bearbeiten"
   background_jobs:
     status:
       error_requeue: "Der Job ist mit einem Fehler fehlgeschlagen, wird aber erneut eingestellt. Der Fehler war: %{message}"
@@ -316,24 +316,24 @@ de:
           one: 1 Unterelement
           other: "%{count} Unterelemente"
       role_assignment:
-        title: Role Assignment
-        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
-        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
-        role_field_label: "Project Role"
-        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        title: Rollenzuweisung
+        description: Sie können jedem Benutzer, dem dieses Projektattribut zugewiesen wurde, automatisch eine bestimmte Projektrolle zuweisen, unabhängig von der ursprünglichen Rolle dieses Benutzers in diesem Projekt.
+        warning: Je nach der unten ausgewählten Rolle kann der Benutzer, der diesem Projektattribut zugewiesen ist, wesentlich mehr Berechtigungen erhalten, als er zuvor hatte. Dies könnte bedeuten, dass er seine eigene Rolle und verknüpfte Berechtigungen ausweitet.
+        role_field_label: "Projektrolle"
+        role_field_caption: Diese Projektrolle wird automatisch jedem Benutzer zugewiesen, der diesem Projektattribut zugeordnet ist
         review_hint: >
-          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
-        review_button: Review users and permissions
+          Es gibt %{user_count}, die diesem Projektattribut bereits in verschiedenen Projekten zugewiesen sind. Sie könnten zusätzliche Berechtigungen erhalten und zu Projekten als Mitglied hinzugefügt werden, auf die sie vorher keinen Zugriff hatten.
+        review_button: Benutzer und Berechtigungen prüfen
         dialog:
-          title: "Overview of users and permissions"
-          change: Change
+          title: "Übersicht über Benutzer und Berechtigungen"
+          change: Ändern
           changes:
-            new_member: Will be added as a member
-            remove_member: Will be removed as a member
-            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
-            gain_role: Will gain role ‘%{new_role}’
-            lose_role: Will lose role ‘%{old_role}’
-            no_change: No changes
+            new_member: Wird als Mitglied hinzugefügt
+            remove_member: Wird als Mitglied entfernt
+            gain_and_lose_role: Wird die Rolle '%{old_role}' verlieren und die Rolle '%{new_role}' erhalten
+            gain_role: Wird die Rolle '%{new_role}' erhalten
+            lose_role: Wird die Rolle '%{old_role}' verlieren
+            no_change: Keine Änderungen
     text_add_new_custom_field: >
       Um neue benutzerdefinierte Felder einem Projekt zuzuweisen, müssen Sie diese erst global erstellen, um Sie dann an dieser Stelle aktivieren zu können.
     is_enabled_globally: "Für alle Projekte aktiviert"
@@ -456,8 +456,8 @@ de:
         label: Portfolio-Namensfilter
         placeholder: Portfolios suchen
       sub_items_html:
-        one: "<strong>1</strong> sub-item"
-        other: "<strong>%{count}</strong> sub-items"
+        one: "<strong>1</strong> Unterelement"
+        other: "<strong>%{count}</strong> Unterelemente"
     lists:
       active: "Aktive Portfolios"
       my: "Meine Portfolios"
@@ -475,14 +475,14 @@ de:
       work_package_file_links: "Arbeitspakete: Datei-Links"
       work_package_shares: "Arbeitspakete: Geteilte Zugriffe"
     create:
-      notification_email_subject: "Your project '%{project_name}' has been created"
-      complete_wizard_link: "Complete the %{artefact_name}"
+      notification_email_subject: "Das Projekt '%{project_name}' wurde erstellt"
+      complete_wizard_link: "Vervollständigen Sie den %{artefact_name}"
     delete:
       scheduled: "Die Löschung wurde geplant und wird im Hintergrund durchgeführt. Sie werden über das Ergebnis informiert."
       schedule_failed: "Projekt kann nicht gelöscht werden: %{errors}"
-      failed: "Deletion of project '%{name}' has failed"
-      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
-      completed: "Deletion of project '%{name}' completed"
+      failed: "Löschen des Projekts %{name} ist fehlgeschlagen"
+      failed_text: "Die Anfrage zum Löschen des Projekts %{name} ist fehlgeschlagen. Das Projekt wurde archiviert."
+      completed: "Löschen des Projekts %{name} abgeschlossen"
       completed_text: "Die Anfrage zum Löschen des Projekts '%{name}' wurde abgeschlossen."
       completed_text_children: "Zusätzlich wurden folgende Unterprojekte gelöscht:"
     index:
@@ -527,14 +527,14 @@ de:
       change_identifier: Kennung ändern
       subitems:
         template_section: >
-          Select templates to be used when creating new subitems.
-        project_template_label: "Template for projects"
-        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
-        program_template_label: "Template for programs"
-        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
-        no_template: "No predefined template"
+          Wählen Sie Vorlagen aus, die bei der Erstellung neuer Unterelemente verwendet werden sollen.
+        project_template_label: "Vorlage für Projekte"
+        project_template_caption: "Wählen Sie eine Projektvorlage, die als Standard für neue Unterprojekte verwendet werden soll."
+        program_template_label: "Vorlage für Programme"
+        program_template_caption: "Wählen Sie eine Programmvorlage, die als Standard für neue Programme in diesem Portfolio verwendet werden soll."
+        portfolio_template_label: "Vorlage für Portfolios"
+        portfolio_template_caption: "Wählen Sie eine Portfoliovorlage, die als Standard für neue Teilportfolios verwendet werden soll."
+        no_template: "Keine vordefinierte Vorlage"
       actions:
         label_enable_all: "Alles aktivieren"
         label_disable_all: "Alles deaktivieren"
@@ -587,7 +587,7 @@ de:
       creation_wizard:
         export:
           description_attachment_export: "Das erzeugte Artefakt wird als PDF-Anhang zum erstellten Arbeitspaket gespeichert."
-          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
+          description_file_link_export: "Das erstellte Arbeitspaket enthält einen Dateilink zu einer PDF-Datei, die in einem externen Dateispeicher gespeichert ist. Erfordert einen aktiven Dateispeicher mit automatisch verwalteten Projektordnern. Im Moment werden nur Nextcloud-Dateispeicher unterstützt."
           description_file_storage_selection: "Wählen Sie, welcher der konfigurierten externen Dateispeicher verwendet werden soll."
           external_file_storage: "Externe Dateispeicher"
           label_artifact_export: "Artefakt-Export"
@@ -603,12 +603,12 @@ de:
     wizard:
       sidebar_content_title: "Inhalt"
       sections: "Abschnitte"
-      title: "Project initiation request"
+      title: "Projektinitiierungsantrag"
       no_help_text: "Für dieses Feld ist kein Hilfetext definiert."
-      success: "Project attributes saved and artifact work package created successfully."
+      success: "Projektattribute gespeichert und Artefakt der Anfrage als Arbeitspaket erstellt."
       progress_label: "%{current} von %{total}"
-      create_artifact_work_package_error: "Failed to create artifact work package"
-      create_artifact_storage_error: "Failed to store artifact in file storage"
+      create_artifact_work_package_error: "Arbeitspaket für das Artefakt der Anfrage konnte nicht erstellt werden"
+      create_artifact_storage_error: "Artefakt konnte nicht im Dateispeicher gespeichert werden"
   lists:
     create:
       success: "Die geänderte Liste wurde als neue Liste gespeichert"
@@ -1066,12 +1066,12 @@ de:
     deletion_pending: "Das Konto wurde Löschung vorgesehen. Beachten Sie, dass dieser Vorgang im Hintergrund abläuft. Es kann ein paar Momente dauern, bis der Benutzer vollständig gelöscht ist."
     deletion_info:
       data_consequences:
-        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
-        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
-      heading: "Delete %{name}'s account?"
+        other: "Alle benutzerspezifischen Daten werden gelöscht. Die Aktivitäten des Benutzers in gemeinsamen Ansichten wie Arbeitspaketen und Besprechungen werden nicht gelöscht, sondern mit einem generischen \"Gelöschten Benutzer\" verknüpft, der nicht mit dem ursprünglichen Konto verknüpft werden kann."
+        self: "Alle benutzerspezifischen Daten werden gelöscht. Ihre Aktivitäten in gemeinsamen Ansichten wie Arbeitspaketen und Besprechungen werden nicht gelöscht, sondern mit einem allgemeinen \"Gelöschten Benutzer\" verbunden, der nicht mit Ihrem ursprünglichen Konto verknüpft werden kann."
+      heading: "Konto von %{name} löschen?"
       login_consequences:
-        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
-        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
+        other: "Dieses Konto wird sofort aus dem System entfernt und der Benutzer kann sich nicht mehr mit seinen Anmeldedaten anmelden."
+        self: "Ihr Konto wird sofort aus dem System entfernt und Sie können sich nicht mehr mit Ihren Anmeldedaten anmelden."
     error_inactive_activation_by_mail: >
       Ihr Konto wurde noch nicht aktiviert. Zur Aktivierung folgen Sie bitte dem Link, der Ihnen bei der Registrierung per E-Mail zugeschickt wurde.
     error_inactive_manual_activation: >
@@ -1104,7 +1104,7 @@ de:
       attribute_help_text:
         attribute_name: "Attribut"
         help_text: "Hilfe-Text"
-        caption: "Caption"
+        caption: "Untertitel"
       auth_provider:
         scim_clients: "SCIM-Clients"
       calculated_value_error:
@@ -1236,7 +1236,7 @@ de:
         is_required: "In allen Projekten erforderlich"
         custom_field_section: Abschnitt
       subproject_template_assignment:
-        workspace_type: "Workspace type"
+        workspace_type: "Arbeitsbereichstyp"
       project/phase:
         date_range: "Zeitraum"
         definition: "Definition"
@@ -1346,7 +1346,7 @@ de:
         header_alerts: "Warnmeldungen"
         button_update_look_and_feel: "Erscheinungsbild und Bedienverhalten aktualisieren"
         button_update_alerts: "Warnmeldungen aktualisieren"
-        button_update_user_information: "Update profile"
+        button_update_user_information: "Profil aktualisieren"
         comments_sorting: "Arbeits­paket­aktivität anzeigen, sortiert nach"
         disable_keyboard_shortcuts: "Tastaturkürzel deaktivieren"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1589,11 +1589,11 @@ de:
         project:
           archived_ancestor: "Das Projekt hat einen archivierten Vorgänger."
           foreign_wps_reference_version: "Arbeitspakete in nicht verknüpften Projekten verweisen auf Versionen des Projekts oder seiner verknüpften Projekte."
-          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
+          cannot_be_assigned_to_artifact_work_package: "Der gewählte Nutzer darf im Arbeitspaket nicht zugewiesen werden."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "Sie haben nicht die erforderlichen Berechtigungen, um alle Unterprojekte zu archivieren. Bitte kontaktieren Sie einen Administrator."
-              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
+              project_initiation_request_disabled: "Die Anfrage zur Projektinitiierung ist deaktiviert. Sie muss aktiviert sein, um das Artefakt-Arbeitspaket zu erstellen."
             types:
               in_use_by_work_packages: "wird noch genutzt von folgenden Arbeitspaketen: %{types}"
             enabled_modules:
@@ -1827,8 +1827,8 @@ de:
     models:
       attachment: "Datei"
       attribute_help_text:
-        one: "Attribute help text"
-        other: "Attribute help texts"
+        one: "Hilfe-Text für Attribute"
+        other: "Hilfe-Texte für Attribute"
       auth_provider:
         one: "Authentifizierungsanbieter"
         other: "Authentifizierungsanbieter"
@@ -1888,7 +1888,7 @@ de:
       other: "Zusätzlich gab es ein Problem mit den folgenden Feldern:"
     field_erroneous_label: "Dieses Feld ist ungültig: %{full_errors} \nBitte geben Sie einen gültigen Wert ein."
     messages:
-      must_be_template: "must be template"
+      must_be_template: "muss eine Vorlage sein"
       unsupported_storage_type: "ist kein unterstützter Speichertyp."
       storage_error: "Es ist ein Fehler bei der Speicherverbindung aufgetreten."
       invalid_input: "Die Eingabe ist ungültig."
@@ -2020,7 +2020,7 @@ de:
     subject: "Thema"
     slug: "Slug"
     summary: "Zusammenfassung"
-    template: "Template"
+    template: "Vorlage"
     time_zone: "Zeitzone"
     text: "Text"
     title: "Titel"
@@ -2193,9 +2193,9 @@ de:
     copy_options:
       dependencies_label: "Projekt kopieren"
   create_project:
-    attributes_heading: "Fill in this mandatory information to work on your projects."
+    attributes_heading: "Füllen Sie diese Pflichtangaben aus, um das Projekt anzulegen."
     template_label: "Vorlage verwenden"
-    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
+    template_heading: "Wählen Sie eine Projektvorlage, um mit den gängigsten Projektmanagementmethoden zu arbeiten, oder erstellen Sie ein leeres Projekt."
     copy_options:
       dependencies_label: "Aus Vorlage erstellen"
     blank_template:
@@ -2203,12 +2203,12 @@ de:
       description: Bei Null anfangen. Projektattribute, Mitglieder und Module manuell hinzufügen.
     blank_description: Keine Beschreibung angegeben.
   create_portfolio:
-    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
+    template_heading: "Wählen Sie eine Portfoliovorlage, um mit den gängigsten Projektmanagementmethoden zu arbeiten, oder erstellen Sie ein leeres Portfolio."
     blank_template:
       label: "Leeres Portfolio"
       description: Beginnen Sie bei Null. Fügen Sie Portfolioattribute, Mitglieder und Module manuell hinzu.
   create_program:
-    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
+    template_heading: "Wählen Sie eine Programmvorlage, um mit den gängigsten Projektmanagementmethoden zu arbeiten, oder erstellen Sie ein Programm von Grund auf neu."
     blank_template:
       label: "Leeres Programm"
       description: Bei Null anfangen. Programmattribute, Mitglieder und Module manuell hinzufügen.
@@ -2385,6 +2385,7 @@ de:
       nextcloud_sso: Single Sign-On für Nextcloud-Speicher
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
+      portfolio_management: Portfolio management
       project_list_sharing: Projektlistenfreigabe
       readonly_work_packages: Schreibgeschützte Arbeitspakete
       scim_api: SCIM-Server-API
@@ -2477,6 +2478,8 @@ de:
       internal_comments_inline:
         title: "Interne Kommentare schreiben, die nur für ausgewählte Mitglieder sichtbar ist."
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         one: "Ein Tag des %{trial_plan} Test-Token verbleibend"
@@ -2760,7 +2763,7 @@ de:
       new_features:
         header: "Lesen Sie über neue Funktionen und Updates."
         learn_about: "Erfahren Sie mehr über die neuen Funktionen"
-        missing: "There are no highlighted features yet."
+        missing: "Es gibt noch keine hervorgehobenen Funktionen."
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
@@ -3369,15 +3372,15 @@ de:
   label_project_attribute_manage_link: "Projektattribute verwalten"
   label_project_count: "Gesamtzahl der Projekte"
   label_project_copy_notifications: "Sende Mailbenachrichtigungen beim Kopieren des Projekts."
-  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
+  label_project_initiation_export_pdf: "PDF-Export für %{project_creation_name}"
   label_project_latest: "Neueste Projekte"
   label_project_default_type: "Erlaube leere Typen"
   label_project_hierarchy: "Projekthierarchie"
   label_project_mappings: "Projekte"
   label_project_new: "Neues Projekt"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
+  label_project_initiation_request: "Neuer Projektinitiierungsantrag"
+  label_project_creation_wizard: "Neuer Projekterstellungs-Assistent"
+  label_project_mandate: "Neues Projektmandat"
   label_project_plural: "Projekte"
   label_project_list_plural: "Projektlisten"
   label_project_life_cycle: "Projekt-Lebenszyklus"
@@ -3478,7 +3481,7 @@ de:
   label_subproject: "Unterprojekt"
   label_subproject_new: "Neues Unterprojekt"
   label_subproject_plural: "Unterprojekte"
-  label_subitems: "Subitems"
+  label_subitems: "Unterelemente"
   label_subtask_plural: "Unteraufgaben"
   label_summary: "Zusammenfassung"
   label_system: "System"
@@ -3487,7 +3490,7 @@ de:
   label_tag: "Markierung"
   label_team_planner: "Teamplaner"
   label_template: "Vorlage"
-  label_templates: "Templates"
+  label_templates: "Vorlagen"
   label_text: "Langer Text"
   label_this_month: "aktueller Monat"
   label_this_week: "aktuelle Woche"
@@ -4017,9 +4020,9 @@ de:
     default: "-"
   portfolio:
     count:
-      zero: "0 portfolios"
-      one: "1 portfolio"
-      other: "%{count} portfolios"
+      zero: "Keine Portfolios"
+      one: "Ein Portfolio"
+      other: "%{count} Portfolios"
   program:
     count:
       zero: "0 Programme"
@@ -4309,8 +4312,8 @@ de:
   setting_mail_handler_body_delimiter_regex: "Schneide E-Mails nach Zeile ab, die diesem regulären Ausdruck entspricht"
   setting_mail_handler_ignore_filenames: "Ignorierte E-Mail-Anhänge"
   setting_new_project_user_role_id: "Rolle, die einem Nicht-Administrator zugeordnet wird, der ein Projekt erstellt"
-  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
-  setting_new_project_notification_text: "Notification text"
+  setting_new_project_send_confirmation_email: "Benachrichtigung an den Autor senden, wenn ein neues Projekt erstellt wird"
+  setting_new_project_notification_text: "Benachrichtigungstext"
   setting_password_active_rules: "Aktive Zeichenklassen"
   setting_password_count_former_banned: "Anzahl zuletzt benutzter Passwörter, die nicht wiederverwendet werden dürfen"
   setting_password_days_valid: "Anzahl von Tagen, nach denen ein Passwortwechsel erzwungen wird"
@@ -4466,43 +4469,45 @@ de:
               label: "Seitenleiste"
               description: "Fügen Sie alle Projektattribute in einem Abschnitt in der rechten Seitenleiste der Projektübersicht hinzu."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: "OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren."
       status:
-        submitted: "%{wizard_name} has been submitted"
-        submitted_description: "Click the button below to go to the work package for the submission process."
-        submitted_button: "Open submission request"
-        not_completed: "%{wizard_name} not yet completed"
-        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+        submitted: "%{wizard_name} wurde eingereicht"
+        submitted_description: "Klicken Sie auf die Schaltfläche unten, um zum Arbeitspaket für den Einreichungsprozess zu gelangen."
+        submitted_button: "Einreichungsantrag öffnen"
+        not_completed: "%{wizard_name} ist noch nicht abgeschlossen"
+        not_completed_description: "Geben Sie die erforderlichen Informationen an, indem Sie die Formularschritte ausfüllen, und starten Sie das Projekt."
       wizard_status_button:
-        project_initiation_request: "Open project initiation request"
-        project_creation_wizard: "Open project creation wizard"
-        project_mandate: "Open project mandate"
+        project_initiation_request: "Projektinitiierungsantrag öffnen"
+        project_creation_wizard: "Projekterstellungs-Assistent öffnen"
+        project_mandate: "Projektmandat öffnen"
       blankslate:
         title: "Initiierungsanfrage nicht aktiviert"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren."
       disable_dialog:
         title: "Projektinitiierungsantrag deaktivieren"
         heading: "Diesen Projektinitiationsantrag deaktivieren?"
         confirmation_message: "Der Projektinitiierungsantrag wird für neue Projekte, die auf dieser Vorlage basieren, nicht mehr verfügbar sein. Projektmanager und Projektverantwortliche müssen die entsprechenden Informationen in der Projektübersicht manuell konfigurieren und ausfüllen."
         checkbox_message: "Ich verstehe, dass diese Aktion nicht rückgängig gemacht werden kann"
       name:
-        artifact_name: "Artifact name"
-        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        artifact_name: "Name des Artefakts"
+        artifact_name_caption: "Wählen Sie den Namen für dieses Artefakt, passend zu Ihrer Projektmanagement-Methodik."
         options:
           project_initiation_request: "Projektinitiierungsantrag"
           project_creation_wizard: "Projekterstellungs-Assistent"
           project_mandate: "Projektmandat"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
-        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
+          **Dieses Arbeitspaket wurde automatisch nach Abschluss des %{wizard_name} Workflows erstellt.**
+          Ein PDF-Artefakt mit allen eingereichten Informationen wurde generiert und zu Referenz- und Prüfzwecken an dieses Arbeitspaket angehängt.
+          Wenn Sie die Einleitungsschritte aktualisieren oder erneut ausführen müssen, können Sie den Assistenten jederzeit über den unten stehenden Link erneut öffnen:
+        description: "Wenn ein Benutzer eine Anfrage zur Projektinitiierung einreicht, wird ein neues Arbeitspaket erstellt, an das ein Artefakt der Anfrage als PDF-Datei angehängt wird. Die folgenden Einstellungen definieren den Typ, den Status und den Empfänger für dieses neue Arbeitspaket."
         work_package_type: "Arbeitspaket-Typ"
-        work_package_type_caption: "The work package type that should be used to store the completed artifact."
+        work_package_type_caption: "Der Arbeitspaket-Typ, der zum Speichern des Artefakts verwendet wird."
         status_when_submitted: "Status bei Einreichung"
         status_when_submitted_caption: "Der Status, in den das erstellte Arbeitspaket übergeht, sobald der Antrag eingereicht wird."
         send_confirmation_email: "Senden Sie eine Bestätigungs-E-Mail an den Benutzer, der den Projektinitiierungsantrag gestellt hat"
         assignee: "Zuweisung bei Einreichung"
-        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
+        assignee_caption: "Der Benutzer oder die Gruppe, die auf diesem Projektattribut zugewiesen ist, wird auch der Empfänger des neuen Arbeitspakets."
         confirmation_email_text: "Text der Bestätigungs-E-Mail"
         confirmation_email_default: "Hallo,\n\nSie haben einen Antrag auf Projektinitiierung für **%{project_name}** eingereicht. Dieser wartet nun auf seine Überprüfung.\nKlicken Sie auf den untenstehenden Link, um das Arbeitspaket mit Ihrem Antrag aufzurufen."
         work_package_comment: "Arbeitspaket-Kommentar"
@@ -4584,7 +4589,7 @@ de:
   text_project_custom_field_html: >
     Die Enterprise Edition fügt diese zusätzlichen Add-ons für die benutzerdefinierten Felder der Projekte hinzu: <br> <ul> <li><b>Fügt benutzerdefinierte Felder für Projekte zu Ihrer Projektliste hinzu, um eine Portfolioansicht zu erstellen</b></li> </ul>
   text_custom_logo_instructions: >
-    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+    Das Logo passt sich automatisch an die Kopfzeile an. Die besten Ergebnisse erzielen Sie, wenn Sie ein weißes Logo auf ein transparentes 130×47px großes Bild hochladen. Sie können innerhalb des Bildes so viel Abstand einfügen, wie Sie möchten.
   text_custom_export_logo_instructions: >
     Dies ist das Logo, das in Ihren PDF-Exporten erscheint. Es muss eine PNG- oder JPEG-Bilddatei sein. Ein schwarzes oder farbiges Logo auf transparentem oder weißem Hintergrund wird empfohlen.
   text_custom_export_cover_instructions: >
@@ -4972,7 +4977,7 @@ de:
       unable_to_create_attachment: "Der Anhang konnte nicht erstellt werden"
       unable_to_create_attachment_permissions: "Der Anhang konnte aufgrund fehlender Dateisystemberechtigungen nicht gespeichert werden"
       user:
-        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
+        name_readonly: "Das Attribut 'name' ist schreibgeschützt. Änderungen können über die Attribute firstname und lastname geschrieben werden."
       render:
         context_not_parsable: "Der übergebene Kontext ist kein Link zu einer Ressource."
         unsupported_context: "Die übergebene Ressource wird nicht als Kontext unterstützt."
@@ -4987,10 +4992,10 @@ de:
     resources:
       schema: "Schema"
     undisclosed:
-      parent: Undisclosed - The parent is invisible because of lacking permissions.
-      project: Undisclosed - The project is invisible because of lacking permissions.
+      parent: Unbekannt - Das übergeordnete Element ist wegen fehlender Berechtigungen nicht sichtbar.
+      project: Unbekannt - Das Projekt ist wegen fehlender Berechtigungen nicht sichtbar.
       ancestor: Unbekannt - Das übergeordnete Element ist wegen fehlender Berechtigungen nicht sichtbar.
-      definingProject: Undisclosed - The project is invisible because of lacking permissions.
+      definingProject: Unbekannt - Das Projekt ist wegen fehlender Berechtigungen nicht sichtbar.
   doorkeeper:
     pre_authorization:
       status: "Vorab-Autorisierung"

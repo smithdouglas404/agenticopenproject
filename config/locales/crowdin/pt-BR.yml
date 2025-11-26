@@ -2390,6 +2390,7 @@ pt-BR:
       nextcloud_sso: Autenticação única para o armazenamento do Nextcloud
       one_drive_sharepoint_file_storage: Armazenamento de Arquivos OneDrive/SharePoint
       placeholder_users: Usuários Genéricos
+      portfolio_management: Portfolio management
       project_list_sharing: Compartilhamento de Lista de Projetos
       readonly_work_packages: Pacotes de Trabalho somente leitura
       scim_api: API do servidor SCIM
@@ -2482,6 +2483,8 @@ pt-BR:
       internal_comments_inline:
         title: "Escreva comentários internos visíveis apenas para um grupo restrito"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         one: "Falta um dia para o término do token de avaliação %{trial_plan}"

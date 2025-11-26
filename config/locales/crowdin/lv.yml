@@ -2439,6 +2439,7 @@ lv:
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
       placeholder_users: Placeholder Users
+      portfolio_management: Portfolio management
       project_list_sharing: Project List Sharing
       readonly_work_packages: Readonly Work Packages
       scim_api: SCIM server API
@@ -2531,6 +2532,8 @@ lv:
       internal_comments_inline:
         title: "Write internal comments only a small group can see"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         zero: "%{count} days left of %{trial_plan} trial token"

@@ -2346,6 +2346,7 @@ ja:
       nextcloud_sso: Nextcloudストレージのシングルサインオン。
       one_drive_sharepoint_file_storage: OneDrive/SharePointファイルストレージ
       placeholder_users: プレースホルダー ユーザー
+      portfolio_management: Portfolio management
       project_list_sharing: プロジェクトリストの共有
       readonly_work_packages: 読み取り専用のワークパッケージ
       scim_api: SCIMサーバーAPI
@@ -2438,6 +2439,8 @@ ja:
       internal_comments_inline:
         title: "内部コメントはグループ内のメンバーのみ閲覧できます"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         other: "%{count} 日後 %{trial_plan} トライアルトークンです"

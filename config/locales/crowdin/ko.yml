@@ -2347,6 +2347,7 @@ ko:
       nextcloud_sso: Nextcloud 저장소용 Single Sign-On
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 파일 저장소
       placeholder_users: 플레이스홀더 사용자
+      portfolio_management: Portfolio management
       project_list_sharing: 프로젝트 목록 공유
       readonly_work_packages: 읽기 전용 작업 패키지
       scim_api: SCIM 서버 API
@@ -2439,6 +2440,8 @@ ko:
       internal_comments_inline:
         title: "소규모 그룹만 볼 수 있는 내부 코멘트 작성"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         other: "%{trial_plan} 평가판 토큰 %{count}일 남음"

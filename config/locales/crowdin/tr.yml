@@ -2393,6 +2393,7 @@ tr:
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint Dosya Depolama
       placeholder_users: Yer Tutucu Kullanıcılar
+      portfolio_management: Portfolio management
       project_list_sharing: Proje Listesi Paylaşımı
       readonly_work_packages: Salt Okunur İş Paketleri
       scim_api: SCIM server API
@@ -2485,6 +2486,8 @@ tr:
       internal_comments_inline:
         title: "Sadece küçük bir grubun görebileceği iç yorumlar yazın"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         one: "%{trial_plan} deneme anahtarının son bir günü kaldı"

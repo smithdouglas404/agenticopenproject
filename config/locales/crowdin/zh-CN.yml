@@ -2343,6 +2343,7 @@ zh-CN:
       nextcloud_sso: Nextcloud存储的单点登录(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 文件存储
       placeholder_users: 占位符用户
+      portfolio_management: Portfolio management
       project_list_sharing: 项目列表共享
       readonly_work_packages: 只读工作包
       scim_api: SCIM 服务器 API
@@ -2435,6 +2436,8 @@ zh-CN:
       internal_comments_inline:
         title: "编写只有小部分群体能看见的内部评论"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         other: "%{trial_plan} 试用令牌剩余 %{count} 天"

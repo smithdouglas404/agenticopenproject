@@ -2483,6 +2483,7 @@ ru:
       nextcloud_sso: Единый вход для Nextcloud хранения
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
+      portfolio_management: Portfolio management
       project_list_sharing: Совместное использование списка проектов
       readonly_work_packages: Пакеты работ только для чтения
       scim_api: API сервера SCIM
@@ -2575,6 +2576,8 @@ ru:
       internal_comments_inline:
         title: "Напишите внутренние комментарии только небольшой группы"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         one: "Остался день для пробного токена %{trial_plan}"

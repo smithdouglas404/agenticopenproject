@@ -302,7 +302,7 @@ de:
       success_message: 'Die URL "%{name}" wurde erfolgreich in Ihre Zwischenablage kopiert. Fügen Sie sie in Ihren Kalender-Client ein, um das Abonnement abzuschließen.'
     label_activate: "Aktiviere"
     label_assignee: "Zugewiesen an"
-    label_assignee_alt_text: "This work package is assigned to %{name}"
+    label_assignee_alt_text: "Dieses Arbeitspaket wird %{name} zugewiesen"
     label_add_column_after: "Spalte danach hinzufügen"
     label_add_column_before: "Spalte davor hinzufügen"
     label_add_columns: "Spalte hinzufügen"
@@ -1126,7 +1126,7 @@ de:
       current_project_and_all_descendants: "In diesem Projekt + Unterprojekten"
       current_project: "In diesem Projekt"
       recently_viewed: "Vor Kurzem angesehen"
-      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
+      search_placeholder_expanded: "Suchen Sie Arbeitspakete nach Thema, Projekt, Typ, Status oder ID"
       title:
         all_projects: "alle Projekte"
         project_and_subprojects: "und alle Unterprojekte"
@@ -1164,9 +1164,9 @@ de:
       no_results: "Kein Projekt entspricht Ihren Suchkriterien."
       no_favorite_results: "Kein favorisiertes Projekt entspricht Ihren Suchkriterien."
     include_workspaces:
-      search_placeholder: "Search..."
+      search_placeholder: "Suchen..."
       types:
-        program: "Program"
+        program: "Programm"
         portfolio: "Portfolio"
     baseline:
       toggle_title: "Grundlinie"
