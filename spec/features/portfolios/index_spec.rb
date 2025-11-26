@@ -136,11 +136,14 @@ RSpec.describe "Portfolios", "index", :js do
       portfolios_page.expect_portfolios_listed(inactive_portfolio)
       portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_b, portfolio_favorited)
 
-      # For archived portfolios, no status bar or favorite button is shown:
+      # For archived portfolios, no status bar, favorite button or project count is shown:
       portfolios_page.within_row(inactive_portfolio) do
         expect(page).to have_no_test_selector("op-portfolios--favorite-button")
         expect(page).to have_no_test_selector("op-portfolios--sub-status-bar")
         expect(page).to have_no_test_selector("op-portfolios--status")
+        expect(page).to have_no_text("0 portfolios")
+        expect(page).to have_no_text("0 projects")
+        expect(page).to have_no_text("0 programs")
       end
     end
 

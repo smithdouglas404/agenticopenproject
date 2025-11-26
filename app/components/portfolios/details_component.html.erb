@@ -98,75 +98,75 @@
               )
             )
           end
-        end
 
-        if has_subportfolios?
+          if has_subportfolios?
+            footer.with_column(mr: 3) do
+              concat(
+                render(
+                  Primer::Beta::Octicon.new(
+                    icon: workspace_icon("portfolio"),
+                    align_self: :center,
+                    "aria-label": t("portfolio.count", count: all_subportfolios.count),
+                    mr: 1
+                  )
+                )
+              )
+              concat(
+                render(Primer::Beta::Text.new) do
+                  t("portfolio.count", count: all_subportfolios.count)
+                end
+              )
+            end
+          end
+
           footer.with_column(mr: 3) do
             concat(
               render(
                 Primer::Beta::Octicon.new(
-                  icon: workspace_icon("portfolio"),
+                  icon: workspace_icon("program"),
                   align_self: :center,
-                  "aria-label": t("portfolio.count", count: all_subportfolios.count),
+                  "aria-label": t("program.count", count: all_subprograms.count),
                   mr: 1
                 )
               )
             )
             concat(
               render(Primer::Beta::Text.new) do
-                t("portfolio.count", count: all_subportfolios.count)
+                t("program.count", count: all_subprograms.count)
               end
             )
           end
-        end
 
-        footer.with_column(mr: 3) do
-          concat(
-            render(
-              Primer::Beta::Octicon.new(
-                icon: workspace_icon("program"),
-                align_self: :center,
-                "aria-label": t("program.count", count: all_subprograms.count),
-                mr: 1
+          footer.with_column(mr: 3) do
+            concat(
+              render(
+                Primer::Beta::Octicon.new(
+                  icon: workspace_icon("project"),
+                  align_self: :center,
+                  "aria-label": t("project.count", count: all_subprojects.count),
+                  mr: 1
+                )
               )
             )
-          )
-          concat(
-            render(Primer::Beta::Text.new) do
-              t("program.count", count: all_subprograms.count)
-            end
-          )
-        end
-
-        footer.with_column(mr: 3) do
-          concat(
-            render(
-              Primer::Beta::Octicon.new(
-                icon: workspace_icon("project"),
-                align_self: :center,
-                "aria-label": t("project.count", count: all_subprojects.count),
-                mr: 1
-              )
+            concat(
+              render(Primer::Beta::Text.new) do
+                t("project.count", count: all_subprojects.count)
+              end
             )
-          )
-          concat(
-            render(Primer::Beta::Text.new) do
-              t("project.count", count: all_subprojects.count)
-            end
-          )
-        end
+          end
 
-        # TODO: WP-68872 render budget
-        # footer.with_column(mr: 3) do
-        #   render(
-        #     Primer::Beta::Octicon.new(
-        #       icon: "op-budget",
-        #       align_self: :center,
-        #       "aria-label": "TODO",
-        #       mr: 1
-        #     )
-        #   ) + content_tag(:span, "34,000 EUR budget - 12,000 EUR spent")
-        # end
+          # TODO: WP-68872 render budget
+          # footer.with_column(mr: 3) do
+          #   render(
+          #     Primer::Beta::Octicon.new(
+          #       icon: "op-budget",
+          #       align_self: :center,
+          #       "aria-label": "TODO",
+          #       mr: 1
+          #     )
+          #   ) + content_tag(:span, "34,000 EUR budget - 12,000 EUR spent")
+          # end
+        end
 
         footer.with_column do
           render(

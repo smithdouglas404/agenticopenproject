@@ -69,7 +69,7 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
     def portfolio.favorited?; false; end
   end
 
-  shared_examples "having a description, updated info and sub-item counts" do
+  shared_examples "having a description and last update time" do
     it { expect(subject).to have_text(portfolio.description) }
 
     context "when the portfolio has no description" do
@@ -87,6 +87,22 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
       it "shows when the portfolio was last updated" do
         expect(subject).to have_test_selector("op-portfolios--updated-at", text: "Updated about 1 month ago")
+      end
+    end
+  end
+
+  describe "portfolio" do
+    it_behaves_like "having a description and last update time"
+
+    it "renders the title as a link" do
+      expect(subject).to have_css(".portfolio-name", text: portfolio.name) do |link|
+        expect(link[:href]).to eq(project_overview_path(portfolio))
+      end
+    end
+
+    it "offers a button to favor the portfolio" do
+      expect(subject).to have_test_selector("op-portfolios--favorite-button") do |link|
+        expect(link[:href]).to eq(build_favorite_path(portfolio, format: :html))
       end
     end
 
@@ -113,22 +129,6 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
         it { expect(subject).to have_text("5 projects") }
 
         it { expect(subject).to have_text("1 portfolio") }
-      end
-    end
-  end
-
-  describe "portfolio" do
-    it_behaves_like "having a description, updated info and sub-item counts"
-
-    it "renders the title as a link" do
-      expect(subject).to have_css(".portfolio-name", text: portfolio.name) do |link|
-        expect(link[:href]).to eq(project_overview_path(portfolio))
-      end
-    end
-
-    it "offers a button to favor the portfolio" do
-      expect(subject).to have_test_selector("op-portfolios--favorite-button") do |link|
-        expect(link[:href]).to eq(build_favorite_path(portfolio, format: :html))
       end
     end
 
@@ -180,7 +180,11 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
   describe "archived portfolio" do
     let(:active) { false }
 
-    it_behaves_like "having a description, updated info and sub-item counts"
+    it_behaves_like "having a description and last update time"
+
+    it { expect(subject).to have_no_text("2 programs") }
+    it { expect(subject).to have_no_text("5 projects") }
+    it { expect(subject).to have_no_text("0 portfolios") }
 
     it "renders the title as text" do
       expect(subject).to have_no_css(".portfolio-name.Link")
