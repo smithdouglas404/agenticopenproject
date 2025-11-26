@@ -51,6 +51,7 @@ export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
   inputText?:string;
   activeUser:User;
+  readOnly:boolean;
   openProjectUrl:string;
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
@@ -68,6 +69,7 @@ const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOp
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
                                                activeUser,
+                                               readOnly,
                                                openProjectUrl,
                                                attachmentsUploadUrl,
                                                attachmentsCollectionKey,
@@ -222,6 +224,7 @@ export default function OpBlockNoteContainer({ inputField,
           editor={editor}
           slashMenu={false}
           theme={theme}
+          editable={!readOnly}
           className={'block-note-editor-container'}
         >
           <SuggestionMenuController

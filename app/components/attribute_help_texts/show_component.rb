@@ -39,7 +39,7 @@ class AttributeHelpTexts::ShowComponent < ApplicationComponent
 
   private
 
-  def title = @attribute_help_text.attribute_caption
+  def title = @attribute_help_text.attribute_field_name
 
   def has_attachments? = @attribute_help_text.attachments.any?
 

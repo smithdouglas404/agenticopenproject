@@ -205,12 +205,12 @@ en:
       error_cannot_act_self: "Cannot perform actions on your own uploaded files."
 
   attribute_help_texts:
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "In this view, you can create custom help texts for attributes view. When defined, these texts can be shown by clicking the help icon next to its belonging attribute."
-    label_plural: "Attribute help texts"
     show_preview: "Preview text"
     add_new: "Add help text"
-    edit: "Edit help text for %{attribute_caption}"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
 
   background_jobs:
     status:
@@ -497,6 +497,9 @@ en:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        one: "<strong>1</strong> sub-item"
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -1206,6 +1209,7 @@ en:
       attribute_help_text:
         attribute_name: "Attribute"
         help_text: "Help text"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIM clients"
       calculated_value_error:
@@ -1930,7 +1934,9 @@ en:
 
     models:
       attachment: "File"
-      attribute_help_text: "Attribute help text"
+      attribute_help_text:
+        one: "Attribute help text"
+        other: "Attribute help texts"
       auth_provider:
         one: "Authentication provider"
         other: "Authentication providers"
@@ -4188,6 +4194,12 @@ en:
 
   placeholders:
     default: "-"
+
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
 
   program:
     count:

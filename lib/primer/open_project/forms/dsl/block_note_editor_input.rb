@@ -36,6 +36,7 @@ module Primer
           attr_reader :name,
                       :label,
                       :value,
+                      :readonly,
                       :classes,
                       :attachments_upload_url,
                       :attachments_collection_key
@@ -46,10 +47,12 @@ module Primer
           # @param value [String] The initial value of the input in base64 format.
           # @param attachments_upload_url [String] The URL to which attachments will be uploaded.
           # @param attachments_collection_key [String] The collection key for attachments.
-          def initialize(name:, label:, value:, attachments_upload_url: "", attachments_collection_key: "", **system_arguments)
+          def initialize(name:, label:, value:, readonly: false, attachments_upload_url: "", attachments_collection_key: "",
+                         **system_arguments)
             @name = name
             @label = label
             @value = value
+            @readonly = readonly
             @classes = system_arguments[:classes]
             @attachments_upload_url = attachments_upload_url
             @attachments_collection_key = attachments_collection_key
@@ -58,7 +61,7 @@ module Primer
           end
 
           def to_component
-            BlockNoteEditor.new(input: self, value:, attachments_upload_url:, attachments_collection_key:)
+            BlockNoteEditor.new(input: self, value:, readonly:, attachments_upload_url:, attachments_collection_key:)
           end
 
           def type

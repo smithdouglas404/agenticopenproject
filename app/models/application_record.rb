@@ -83,6 +83,14 @@ class ApplicationRecord < ActiveRecord::Base
     ActiveRecord::Base.connection.select_value(union_query)
   end
 
+  def self.human_model_name
+    model_name.human
+  end
+
+  def self.human_plural_model_name(count: 2)
+    model_name.human(count:)
+  end
+
   # Returns all the attribute names as symbols.
   # @return [Array<Symbol>]
   def attribute_keys

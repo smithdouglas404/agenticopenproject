@@ -10,10 +10,11 @@ administrators on how to create and manage Attribute help texts.
 
 When Attribute help text is configured for an attribute, a small question mark
 icon is displayed next to the attribute in question.
+If the help text has a short caption configured, this is shown below the field.
 
 <%= image_tag("lookbook/attribute_help_text_example1.png") %>
 
-Hovering on the icon will show a toolip. Clicking on the icon will open the
+Hovering on the icon will show a tooltip. Clicking on the icon will open the
 Attribute help text modal. Depending on permissions, an Edit button may be
 displayed.
 
@@ -23,7 +24,7 @@ displayed.
 
 When using Primer Forms (via `primer_form_with` and the Forms DSL), configured
 Attribute help texts will automatically be rendered for all applicable fields as
-part of the field's label, provided a `model:` is passed to `primer_form_with`
+part of the field's label and caption, provided a `model:` is passed to `primer_form_with`
 and that the model supports Attribute help texts.
 
 All current input methods in use are supported, with the exception of `hidden`
@@ -141,27 +142,40 @@ an `OpenProject::Common::AttributeLabelComponent`. There may be times when you
 need to create a component that has Form-field like behavior or visuals, but
 that does not use the Primer Forms API (i.e. components that extend
 `ApplicationComponent`/`ViewComponent::Base` rather than `Primer:Forms::Dsl::Input`).
-In such cases, you can use `AttributeLabelComponent` directly:
+In such cases, you can use `AttributeLabelComponent` directly.
+For captions you can use `OpenProject::Common::AttributeHelpTextCaptionComponent`:
 
 <%= image_tag("lookbook/attribute_help_text_example2.png") %>
 
 ```erb
 <%%=
-  flex_layout(align_items: :center) do |flex|
-    flex.with_column do
-      render(Primer::Beta::Text.new(font_weight: bold)) { project.name }
-    end
+    flex_layout do |container|
+      container.with_row do
+        flex_layout(align_items: :center) do |flex|
+          flex.with_column do
+            render(Primer::Beta::Text.new(font_weight: bold)) { project.name }
+          end
 
-    flex.with_column(mr: 2) do
-      render(
-        OpenProject::Common::AttributeLabelComponent.new(
-          attribute: :name,
-          model: project,
-          current_user: user
+          flex.with_column(mr: 2) do
+            render(
+              OpenProject::Common::AttributeLabelComponent.new(
+                attribute: :name,
+                model: project,
+                current_user: user
+              )
+            )
+          end
+        end
+      end
+
+      container.with_row do
+        render(
+          OpenProject::Common::AttributeHelpTextCaptionComponent.new(
+            help_text: helpers.help_text_for(project, :name, current_user: :user)
+          )
         )
-      )
+      end
     end
-  end
 %>
 ```
 

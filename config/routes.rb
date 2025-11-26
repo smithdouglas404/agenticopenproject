@@ -208,6 +208,9 @@ Rails.application.routes.draw do
       delete "options/:option_id", to: "custom_fields#delete_option", as: :delete_option_of
 
       post :reorder_alphabetical
+
+      get :attribute_help_text
+      put :update_attribute_help_text
     end
 
     scope module: :admin do
@@ -674,7 +677,11 @@ Rails.application.routes.draw do
           get :role_assignment
           post :update_role_assignment
           get :role_assignment_preview_dialog
+
+          get :attribute_help_text
+          put :update_attribute_help_text
         end
+
         resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
           member do
             get :change_parent, action: :change_parent_dialog
@@ -686,6 +693,7 @@ Rails.application.routes.draw do
           end
         end
       end
+
       resources :project_custom_field_sections, controller: "/admin/settings/project_custom_field_sections",
                                                 only: %i[create update destroy] do
         member do

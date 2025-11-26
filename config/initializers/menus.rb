@@ -470,7 +470,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
 
   menu.push :attribute_help_texts,
             { controller: "/attribute_help_texts" },
-            caption: :"attribute_help_texts.label_plural",
+            caption: AttributeHelpText.human_plural_model_name,
             icon: "question",
             if: ->(_) { User.current.allowed_globally?(:edit_attribute_help_texts) }
 

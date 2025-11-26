@@ -91,12 +91,15 @@ module Projects
     end
 
     def missing_assignee_custom_field_value?
-      project.custom_value_for(assignee_custom_field).value.blank?
+      assignee_id.blank?
     end
 
     def assignee_not_allowed_be_assigned_to_work_package?
-      assignee = project.typed_custom_value_for(assignee_custom_field)
-      !assignee.allowed_in_project?(:work_package_assigned, project)
+      !Principal.possible_assignee(project).exists?(id: assignee_id)
+    end
+
+    def assignee_id
+      project.custom_value_for(assignee_custom_field).value
     end
 
     def assignee_custom_field

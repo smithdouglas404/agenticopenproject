@@ -37,6 +37,7 @@ module Primer
 
         attr_reader :input,
                     :value,
+                    :readonly,
                     :active_user,
                     :attachments_upload_url,
                     :attachments_collection_key,
@@ -44,10 +45,11 @@ module Primer
 
         delegate :name, to: :@input
 
-        def initialize(input:, value:, attachments_upload_url: "", attachments_collection_key: "")
+        def initialize(input:, value:, readonly:, attachments_upload_url: "", attachments_collection_key: "")
           super()
           @input = input
           @value = value
+          @readonly = readonly
           @active_user = {
             id: User.current.id,
             username: User.current.name

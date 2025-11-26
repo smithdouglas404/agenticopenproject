@@ -70,6 +70,14 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
 
   context "with all project initiation request information filled correctly" do
     it_behaves_like "contract is valid"
+
+    context "when the assignee is an admin" do
+      before do
+        user_assignee.update(admin: true)
+      end
+
+      it_behaves_like "contract is valid"
+    end
   end
 
   context "with project initiation request disabled" do

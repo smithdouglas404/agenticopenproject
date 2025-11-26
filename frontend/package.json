@@ -120,7 +120,7 @@
     "@rails/request.js": "^0.0.12",
     "@stimulus-components/auto-submit": "^6.0.0",
     "@stimulus-components/reveal": "^5.0.0",
-    "@tiptap/extensions": "^3.10.2",
+    "@tiptap/extensions": "^3.11.0",
     "@types/hotwired__turbo": "^8.0.1",
     "@types/jquery.cookie": "^1.4.36",
     "@uirouter/angular": "^17.0.0",

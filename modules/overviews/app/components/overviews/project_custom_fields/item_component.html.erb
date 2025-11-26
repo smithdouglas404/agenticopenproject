@@ -28,6 +28,16 @@
       end
     end
 
+    custom_field_value_container.with_row(w: :full) do
+      render OpenProject::Common::AttributeHelpTextCaptionComponent.new(
+        help_text: helpers.help_text_for(
+          @project,
+          @project_custom_field.attribute_name,
+          current_user: helpers.current_user
+        )
+      )
+    end
+
     if calculation_error?
       custom_field_value_container.with_row(w: :full) do
         render_calculation_error
