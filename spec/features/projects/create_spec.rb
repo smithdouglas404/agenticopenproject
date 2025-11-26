@@ -445,4 +445,59 @@ RSpec.describe "Projects", "creation",
       end
     end
   end
+
+  context "with workspace type badges in parent field", with_flag: { portfolio_models: true } do
+    include_context "ng-select-autocomplete helpers"
+
+    shared_let(:portfolio) { create(:portfolio, name: "Parent Portfolio") }
+    shared_let(:program) { create(:program, name: "Parent Program") }
+
+    it "displays workspace type badges for portfolios and programs in the parent field" do
+      visit new_project_path
+
+      # Step 1: Select workspace type (blank project)
+      click_on "Continue"
+
+      # Step 2: Fill in project details
+      fill_in "Name", with: "Test Subproject"
+
+      # Open parent field autocompleter
+      expect(page).to have_combo_box "Subproject of"
+      parent_autocompleter = page.find("opce-project-autocompleter")
+
+      # Search for portfolio
+      dropdown = search_autocomplete(parent_autocompleter,
+                                     query: "Portfolio",
+                                     results_selector: ".ng-dropdown-panel-items")
+
+      within(dropdown) do
+        expect(page).to have_text("Portfolio")
+        expect(page).to have_css("svg.octicon")
+      end
+
+      # Clear and search for program
+      parent_autocompleter.find("input").set("")
+
+      dropdown = search_autocomplete(parent_autocompleter,
+                                     query: "Program",
+                                     results_selector: ".ng-dropdown-panel-items")
+
+      within(dropdown) do
+        expect(page).to have_text("Program")
+        expect(page).to have_css("svg.octicon")
+      end
+
+      # Clear and search for regular project - should not have workspace type badge
+      parent_autocompleter.find("input").set("")
+
+      dropdown = search_autocomplete(parent_autocompleter,
+                                     query: "Foo project",
+                                     results_selector: ".ng-dropdown-panel-items")
+
+      within(dropdown) do
+        expect(page).to have_text("Foo project")
+        expect(page).to have_no_css("svg.octicon")
+      end
+    end
+  end
 end
