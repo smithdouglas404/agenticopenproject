@@ -37,6 +37,15 @@ module Documents
       alias_method :document, :model
 
       options :project, :oauth_token, :state
+
+      private
+
+      def resource_url
+        URI.join(
+          root_url,
+          API::V3::Utilities::PathHelper::ApiV3Path.document(document.id)
+        ).to_s
+      end
     end
   end
 end

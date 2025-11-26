@@ -655,6 +655,7 @@ en:
       success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
       create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "The modified list has been saved as a new list"

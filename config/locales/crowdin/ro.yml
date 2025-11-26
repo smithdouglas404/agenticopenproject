@@ -162,6 +162,11 @@ ro:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -469,12 +474,15 @@ ro:
       work_package_categories: "Pachete de lucru: categorii"
       work_package_file_links: "Pachete de lucru: legături de fișiere"
       work_package_shares: "Pachete de lucru: partajări"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Ștergerea a fost programată și se efectuează în fundal. Veți fi notificat cu privire la rezultat."
       schedule_failed: "Proiectul nu poate fi șters: %{errors}"
-      failed: "Ștergerea proiectului %{name} a eșuat"
-      failed_text: "Solicitarea de ștergere a proiectului %{name} a eșuat. Proiectul a rămas arhivat."
-      completed: "Ștergerea proiectului %{name} finalizată"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "Cererea de ștergere a proiectului \"%{name}\" a fost finalizată."
       completed_text_children: "În plus, următoarele subproiecte au fost eliminate:"
     index:
@@ -517,6 +525,16 @@ ro:
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Schimbă identificatorul
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Activează tot"
         label_disable_all: "Dezactivează tot"
@@ -585,9 +603,12 @@ ro:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
+      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "The modified list has been saved as a new list"
@@ -1232,6 +1253,8 @@ ro:
       project_custom_field:
         is_required: "Obligatoriu în toate proiectele"
         custom_field_section: Secțiune
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Interval calendaristic"
         definition: "Definiţie"
@@ -1584,9 +1607,11 @@ ro:
         project:
           archived_ancestor: "Proiectul are un strămoș arhivat."
           foreign_wps_reference_version: "Pachetele de lucru din proiectele care nu sunt descendente fac trimitere la versiuni ale proiectului sau la descendenți ai acestuia."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "Nu ai permisiunile necesare pentru a arhiva toate sub-proiectele. Te rog să contactezi un administrator."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "încă în uz în pachetele de lucru: %{types}"
             enabled_modules:
@@ -1892,6 +1917,7 @@ ro:
       other: "Additionally, there were problems with the following fields:"
     field_erroneous_label: "Acest câmp este invalid: %{full_errors}\nTrebuie introdusă o valoare validă."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -2025,6 +2051,7 @@ ro:
     subject: "Subiect"
     slug: "Slug"
     summary: "Rezumat"
+    template: "Template"
     time_zone: "Fus orar"
     text: "Text"
     title: "Titlu"
@@ -2714,8 +2741,6 @@ ro:
     units:
       hours: h
       days: d
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Page %{page} of %{total}"
     template_attributes:
@@ -3399,13 +3424,13 @@ ro:
   label_project_attribute_manage_link: "Gestionează atribute proiect"
   label_project_count: "Număr total de proiecte"
   label_project_copy_notifications: "Trimitere notificări e-mail în timpul copierii proiectului"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Ultimele proiecte"
   label_project_default_type: "Tip gol permis"
   label_project_hierarchy: "Ierarhie de proiecte"
   label_project_mappings: "Proiecte"
   label_project_new: "Proiect nou"
-  label_project_initiation_request: "Project initiation request"
+  label_project_initiation_request: "New project initiation request"
   label_project_creation_wizard: "New project creation wizard"
   label_project_mandate: "New project mandate"
   label_project_plural: "Proiecte"
@@ -3508,6 +3533,7 @@ ro:
   label_subproject: "Subproiect"
   label_subproject_new: "Subproiect nou"
   label_subproject_plural: "Subproiecte"
+  label_subitems: "Subitems"
   label_subtask_plural: "Sub-activități"
   label_summary: "Rezumat"
   label_system: "Sistem"
@@ -3515,6 +3541,8 @@ ro:
   label_table_of_contents: "Cuprins"
   label_tag: "Etichetă"
   label_team_planner: "Planificare echipă"
+  label_template: "Șablon"
+  label_templates: "Templates"
   label_text: "Text lung"
   label_this_month: "luna curentă"
   label_this_week: "săptămâna curentă"
@@ -4332,6 +4360,8 @@ ro:
   setting_mail_handler_body_delimiter_regex: "Trunchiază email-uri care se potrivesc cu acest regex"
   setting_mail_handler_ignore_filenames: "Atașamente de e-mail ignorate"
   setting_new_project_user_role_id: "Rol atribuit unui utilizator non-administrator care crează un proiect"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Clase de caractere active"
   setting_password_count_former_banned: "Numărul celor mai recente parole folosite interzise spre a fi reutilizate"
   setting_password_days_valid: "Numărul de zile după care este obligatorie schimbarea parolei"
@@ -4487,6 +4517,7 @@ ro:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
       blankslate:
         title: "Initiation request not enabled"
         description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
@@ -4503,13 +4534,14 @@ ro:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The person or group this project initiation request will be assigned to."
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4591,7 +4623,7 @@ ro:
   text_project_custom_field_html: >
     Ediția Enterprise va adăuga aceste add-on-uri suplimentare pentru câmpurile personalizate ale proiectelor: <br> <ul> <li><b>Adăugă câmpuri personalizate pentru proiecte la lista de proiecte pentru a crea o vizualizare a portofoliului de proiecte</b></li> </ul>
   text_custom_logo_instructions: >
-    Este recomandată utilizarea unui logo cu fundal transparent. Pentru a obține rezultate satisfăcătoare pe afișajele convenționale dar și pe cele de tipe retina, asigurați-vă că dimensiunea imaginii este de 460px pe 110px.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     This is the logo that appears in your PDF exports. It needs to be a PNG or JPEG image file. A black or colored logo on transparent or white background is recommended.
   text_custom_export_cover_instructions: >
@@ -4980,6 +5012,8 @@ ro:
       multiple_errors: "Au fost încălcate multiple constrângeri pentru câmpuri."
       unable_to_create_attachment: "Atașamentul nu a putut fi creat"
       unable_to_create_attachment_permissions: "Atașamentul nu a putut fi salvat din cauza lipsei permisiunilor sistemului de fișiere"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "Contextul primit nu reprezintă un link la o resursă."
         unsupported_context: "Resursa furnizată nu este suportată ca și context."

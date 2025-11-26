@@ -162,6 +162,11 @@ tr:
         expired: "Son kullanma tarihi %{date}"
         revoked: "%{date} tarihinde iptal edildi"
         title: "Erişim anahtarı tablosu"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -470,12 +475,15 @@ tr:
       work_package_categories: "İş paketleri: kategoriler"
       work_package_file_links: "Çalışma paketleri: dosya bağlantıları"
       work_package_shares: "İş paketleri: paylaşımlar"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Silme planlandı ve arka planda gerçekleştirilir. Sonuçtan haberdar edileceksiniz."
       schedule_failed: "Proje silinemiyor: %{errors}"
-      failed: "%{name} projesinin silinmesi başarısız oldu"
-      failed_text: "%{name} projesini silme isteği başarısız oldu. Proje arşivlendi."
-      completed: " %{name}  projesinin silinmesi tamamlandı"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "'%{name}' projesini silme isteği tamamlandı."
       completed_text_children: "Ayrıca, aşağıdaki alt projeler silinmiştir:"
     index:
@@ -518,6 +526,16 @@ tr:
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Tanımlayıcıyı değiştir
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Tümünü etkinleştir"
         label_disable_all: "Tümünü devre dışı bırak"
@@ -586,9 +604,12 @@ tr:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
+      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "Değiştirilen liste yeni bir liste olarak kaydedildi"
@@ -1224,6 +1245,8 @@ tr:
       project_custom_field:
         is_required: "Tüm projelerde zorunludur"
         custom_field_section: Bölüm
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Tarih aralığı"
         definition: "Tanım"
@@ -1575,9 +1598,11 @@ tr:
         project:
           archived_ancestor: "Projenin arşivlenmiş bir atası var."
           foreign_wps_reference_version: "Soyundan gelmeyen projelerdeki iş paketleri, projenin veya soyundan gelenlerin referans versiyonlarını referans alır."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "Tüm alt projeleri arşivlemek için gereken izinlere sahip değilsiniz. Lütfen bir yönetici ile iletişime geçin."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "hala iş paketleri tarafından kullanılmaktadır:%{types}"
             enabled_modules:
@@ -1870,6 +1895,7 @@ tr:
       other: "Ek olarak, aşağıdaki alanlarla ilgili bir sorun vardı:"
     field_erroneous_label: "Bu alan geçersiz:% {full_errors}\nLütfen geçerli bir değer girin. %{full_errors}."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -2001,6 +2027,7 @@ tr:
     subject: "Konu"
     slug: "Rumuz"
     summary: "Özet"
+    template: "Template"
     time_zone: "Zaman dilimi"
     text: "Metin"
     title: "Başlık"
@@ -2669,8 +2696,6 @@ tr:
     units:
       hours: sa
       days: g
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Sayfa %{page} / %{total}"
     template_attributes:
@@ -3354,13 +3379,13 @@ tr:
   label_project_attribute_manage_link: "Proje özniteliklerini yönetin"
   label_project_count: "Toplam proje sayısı"
   label_project_copy_notifications: "Proje kopyalaması esnasında bilgilendirme e-postaları gönder"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Son projeler"
   label_project_default_type: "Boş türe izin ver"
   label_project_hierarchy: "Proje hiyerarşisi"
   label_project_mappings: "Projeler"
   label_project_new: "Yeni proje"
-  label_project_initiation_request: "Project initiation request"
+  label_project_initiation_request: "New project initiation request"
   label_project_creation_wizard: "New project creation wizard"
   label_project_mandate: "New project mandate"
   label_project_plural: "Projeler"
@@ -3463,6 +3488,7 @@ tr:
   label_subproject: "Alt proje"
   label_subproject_new: "Yeni alt proje"
   label_subproject_plural: "Alt Projeler"
+  label_subitems: "Subitems"
   label_subtask_plural: "Alt görevler"
   label_summary: "Özet"
   label_system: "Sistem"
@@ -3470,6 +3496,8 @@ tr:
   label_table_of_contents: "İçindekiler"
   label_tag: "Etiket"
   label_team_planner: "Takım planlayıcısı"
+  label_template: "Şablon"
+  label_templates: "Templates"
   label_text: "Uzun metin"
   label_this_month: "bu ay"
   label_this_week: "bu hafta"
@@ -4284,6 +4312,8 @@ tr:
   setting_mail_handler_body_delimiter_regex: "Bu düzenli ifade ile uyuşan e-postaları kırp"
   setting_mail_handler_ignore_filenames: "Yoksayılan posta ekleri"
   setting_new_project_user_role_id: "Bir proje oluşturan yönetici olmayan bir kullanıcıya verilen rolü"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Aktif karakter sınıfları"
   setting_password_count_former_banned: "Yeniden kullanımı yasaklanan en son kullanılan parola sayısı"
   setting_password_days_valid: "Ardından, bir şifre değişikliğinin uygulanması için gereken gün sayısı"
@@ -4439,6 +4469,7 @@ tr:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
       blankslate:
         title: "Initiation request not enabled"
         description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
@@ -4455,13 +4486,14 @@ tr:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The person or group this project initiation request will be assigned to."
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4543,7 +4575,7 @@ tr:
   text_project_custom_field_html: >
     Enterprise sürümü, projelerin özel alanları için şu ek eklentileri ekleyecektir: <br> <ul> <li><b>Bir proje portföy görünümü oluşturmak için Projeler için özel alanları Proje listenize ekleyin</b></li > </ul>
   text_custom_logo_instructions: >
-    Saydam arka plan üzerinde beyaz bir logo önerilir. Hem geleneksel en iyi sonuçları almak ve retina görüntüler için resm boyutlarının 60px ye 460px olduğundan emin olun.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Bu, PDF dışa aktarımlarınızda görünen logodur. Bir PNG veya JPEG görüntü dosyası olması gerekir. Şeffaf veya beyaz arka plan üzerinde siyah veya renkli bir logo önerilir.
   text_custom_export_cover_instructions: >
@@ -4930,6 +4962,8 @@ tr:
       multiple_errors: "Çoklu alan kısıtlamaları ihlal edilmiştir."
       unable_to_create_attachment: "Ek oluşturulamadı"
       unable_to_create_attachment_permissions: "Dosya sistemi izinlerinin eksik olması nedeniyle ek kaydedilemedi\n"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "Sağlanan bağlam, bir kaynağa bağ değildir."
         unsupported_context: "Verilen kaynak bağlam olarak desteklenmiyor."

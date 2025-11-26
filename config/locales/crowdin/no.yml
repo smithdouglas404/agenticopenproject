@@ -162,6 +162,11 @@
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -469,12 +474,15 @@
       work_package_categories: "Arbeidspakker: kategorier"
       work_package_file_links: "Arbeidspakker: fillinker"
       work_package_shares: "Delte arbeidspakker"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Sletting har blitt planlagt og blir utført i bakgrunnen. Du vil bli varslet om resultatet."
       schedule_failed: "Prosjektet kan ikke slettes: %{errors}"
-      failed: "Sletting av prosjektet %{name} mislyktes"
-      failed_text: "Forespørselen om å slette prosjektet %{name} mislyktes. Prosjektet ble satt som arkivert."
-      completed: "Sletting av prosjektet %{name} er fullført"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "Forespørselen om å slette prosjektet '%{name}' er fullført."
       completed_text_children: "I tillegg er følgende underprosjekter slettet:"
     index:
@@ -517,6 +525,16 @@
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Endre identifier
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Aktiver alle"
         label_disable_all: "Deaktiver alle"
@@ -585,9 +603,12 @@
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
+      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "Den endrede listen er lagret som en ny liste"
@@ -1223,6 +1244,8 @@
       project_custom_field:
         is_required: "Påkrevd for alle prosjekter"
         custom_field_section: Seksjon
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Datointervall"
         definition: "Definisjon"
@@ -1574,9 +1597,11 @@
         project:
           archived_ancestor: "Prosjektet har en arkivert overordnede rolle."
           foreign_wps_reference_version: "Arbeidspakker i ikke underordnede prosjekters referanseversjoner av prosjektet eller dets etterkommere."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "Du har ikke tillatelser som kreves for å arkivere alle underprosjekter. Kontakt en administrator."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "fortsatt i bruk av arbeidspakker: %{types}"
             enabled_modules:
@@ -1869,6 +1894,7 @@
       other: "I tillegg oppstod det problemer med følgende felter:"
     field_erroneous_label: "Feltet er ugyldig: %{full_errors}\nVennligst angi en gyldig verdi."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -2000,6 +2026,7 @@
     subject: "Emne"
     slug: "Slug"
     summary: "Sammendrag"
+    template: "Template"
     time_zone: "Tidssone"
     text: "Tekst"
     title: "Tittel"
@@ -2668,8 +2695,6 @@
     units:
       hours: t
       days: d
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Page %{page} of %{total}"
     template_attributes:
@@ -3353,13 +3378,13 @@
   label_project_attribute_manage_link: "Administrer prosjektegenskaper"
   label_project_count: "Antall prosjekter"
   label_project_copy_notifications: "Send e-postvarsler mens prosjektkopieringen pågår"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Siste prosjekter"
   label_project_default_type: "Tillatt tom type"
   label_project_hierarchy: "Prosjekthierarki"
   label_project_mappings: "Prosjekter"
   label_project_new: "Nytt prosjekt"
-  label_project_initiation_request: "Project initiation request"
+  label_project_initiation_request: "New project initiation request"
   label_project_creation_wizard: "New project creation wizard"
   label_project_mandate: "New project mandate"
   label_project_plural: "Prosjekter"
@@ -3462,6 +3487,7 @@
   label_subproject: "Underprosjekt"
   label_subproject_new: "Nytt underprosjekt"
   label_subproject_plural: "Underprosjekter"
+  label_subitems: "Subitems"
   label_subtask_plural: "Underoppgaver"
   label_summary: "Sammendrag"
   label_system: "System"
@@ -3469,6 +3495,8 @@
   label_table_of_contents: "Innholdsfortegnelse"
   label_tag: "Etikett"
   label_team_planner: "Teamplanlegger"
+  label_template: "Template"
+  label_templates: "Templates"
   label_text: "Lang tekst"
   label_this_month: "denne måneden"
   label_this_week: "denne uken"
@@ -4285,6 +4313,8 @@
   setting_mail_handler_body_delimiter_regex: "Avkort e-post som samsvarer med denne regex"
   setting_mail_handler_ignore_filenames: "Ignorert e-postvedlegg"
   setting_new_project_user_role_id: "Rolle gitt til en ikke-administrativ bruker som oppretter et prosjekt"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Aktive tegnklasser"
   setting_password_count_former_banned: "Antall nylig brukte passord som er blokkert for gjenbruk"
   setting_password_days_valid: "Antall dager før bruker er tvunget til å bytte passord"
@@ -4440,6 +4470,7 @@
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
       blankslate:
         title: "Initiation request not enabled"
         description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
@@ -4456,13 +4487,14 @@
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The person or group this project initiation request will be assigned to."
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4544,7 +4576,7 @@
   text_project_custom_field_html: >
     Enterprise utgaven vil legge til disse ekstra utvidelsene for prosjektets egendefinerte felter: <br> <ul> <li><b>Legg til egendefinerte felt for prosjekter i din prosjektliste for å opprette en prosjektporteføljevisning</b></li> </ul>
   text_custom_logo_instructions: >
-    En hvit logo på gjennomsiktig bakgrunn anbefales. For best resultat på både konvensjonelle og retina skjermer, kontroller at bildets størrelse er 460x60 px.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Dette er logoen som vises i din PDF-eksport. Det må være en PNG eller JPEG bildefil. En svart eller farget logo på gjennomsiktig eller hvit bakgrunn anbefales.
   text_custom_export_cover_instructions: >
@@ -4932,6 +4964,8 @@
       multiple_errors: "Flere feltsbegrensninger er brutt."
       unable_to_create_attachment: "Vedlegget kunne ikke opprettes"
       unable_to_create_attachment_permissions: "Vedlegget kunne ikke lagres på grunn av manglende systemtillatelser"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "Konteksten som er angitt er ikke koblet til en ressurs."
         unsupported_context: "Ressursen som er gitt støttes ikke som kontekst."

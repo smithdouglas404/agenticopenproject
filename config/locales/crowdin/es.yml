@@ -162,6 +162,11 @@ es:
         expired: "Caducó el %{date}"
         revoked: "Revocado el %{date}"
         title: "Tabla de tokens de acceso"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Transiciones predeterminadas"
@@ -467,12 +472,15 @@ es:
       work_package_categories: "Paquetes de trabajo: categorías"
       work_package_file_links: "Paquetes de trabajo: enlaces de archivos"
       work_package_shares: "Paquetes de trabajo: comparticiones"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Se ha programado la eliminación y se ejecutará en segundo plano. Recibirá una notificación con el resultado."
       schedule_failed: "El proyecto no puede ser eliminado: %{errors}"
-      failed: "El borrado del proyecto %{name} ha fallado"
-      failed_text: "La petición de borrado del proyecto %{name} ha fallado. El proyecto ha sido archivado."
-      completed: "Borrado del proyecto %{name} completado"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "La petición para borrar el proyecto '%{name}' se ha completado."
       completed_text_children: "Adicionalmente, los siguientes subproyectos han sido eliminados:"
     index:
@@ -515,6 +523,16 @@ es:
         description: >
           El proyecto solo será visible para los miembros del proyecto en función de su rol y los permisos asociados. Los subproyectos no se ven afectados y tienen sus propios ajustes.
       change_identifier: Cambiar identificador
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Activar todo"
         label_disable_all: "Desactivar todo"
@@ -583,9 +601,12 @@ es:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
+      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "La lista modificada se ha guardado como una nueva lista"
@@ -1221,6 +1242,8 @@ es:
       project_custom_field:
         is_required: "Obligatorio para todos los proyectos"
         custom_field_section: Sección
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Intervalo de fechas"
         definition: "Definición"
@@ -1572,9 +1595,11 @@ es:
         project:
           archived_ancestor: "El proyecto tiene un antecesor archivado."
           foreign_wps_reference_version: "Los paquetes de trabajo en los proyectos no descendientes hacen referencia a versiones del proyecto o a sus descendientes."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "No tiene los permisos necesarios para archivar todos los subproyectos. Por favor, póngase en contacto con un administrador."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "todavia en uso por los paquetes de trabajo: %{types}"
             enabled_modules:
@@ -1867,6 +1892,7 @@ es:
       other: "Además, hubo problemas con los siguientes campos:"
     field_erroneous_label: "Este campo es inválido: %{full_errors} por favor, ingrese un valor válido."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -1998,6 +2024,7 @@ es:
     subject: "Asunto"
     slug: "Slug"
     summary: "Resumen"
+    template: "Template"
     time_zone: "Zona horaria"
     text: "Texto"
     title: "Título"
@@ -2666,8 +2693,6 @@ es:
     units:
       hours: h
       days: d
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Página %{page} de %{total}"
     template_attributes:
@@ -3351,13 +3376,13 @@ es:
   label_project_attribute_manage_link: "Administrar atributos del proyecto"
   label_project_count: "Número total de proyectos"
   label_project_copy_notifications: "Enviar notificaciones por correo electrónico durante la copia del proyecto"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Últimos proyectos"
   label_project_default_type: "Permitir tipo vacio"
   label_project_hierarchy: "Jerarquía del proyecto"
   label_project_mappings: "Proyectos"
   label_project_new: "Nuevo proyecto"
-  label_project_initiation_request: "Project initiation request"
+  label_project_initiation_request: "New project initiation request"
   label_project_creation_wizard: "New project creation wizard"
   label_project_mandate: "New project mandate"
   label_project_plural: "Proyectos"
@@ -3460,6 +3485,7 @@ es:
   label_subproject: "Subproyecto"
   label_subproject_new: "Subproyecto nuevo"
   label_subproject_plural: "Subproyectos"
+  label_subitems: "Subitems"
   label_subtask_plural: "Subtareas"
   label_summary: "Resumen"
   label_system: "Sistema"
@@ -3467,6 +3493,8 @@ es:
   label_table_of_contents: "Índice"
   label_tag: "Etiqueta"
   label_team_planner: "Planificador de equipos"
+  label_template: "Plantilla"
+  label_templates: "Templates"
   label_text: "Texto largo"
   label_this_month: "este mes"
   label_this_week: "esta semana"
@@ -4282,6 +4310,8 @@ es:
   setting_mail_handler_body_delimiter_regex: "Truncar correos que coincidan con esta expresión regular"
   setting_mail_handler_ignore_filenames: "Archivos adjuntos de email ignorados"
   setting_new_project_user_role_id: "Papel ortorgado a usuario no administrador que crea un proyecto"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Activar clases de personajes"
   setting_password_count_former_banned: "Numero de contraseñas usadas mas recientemente bloqueadas para re-uso"
   setting_password_days_valid: "Número de días, después de que sea necesario imponer un cambio de contraseña"
@@ -4437,6 +4467,7 @@ es:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
       blankslate:
         title: "Initiation request not enabled"
         description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
@@ -4453,13 +4484,14 @@ es:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The person or group this project initiation request will be assigned to."
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4541,7 +4573,7 @@ es:
   text_project_custom_field_html: >
     Enterprise añadirá estas extensiones para los campos personalizados de los proyectos: <br> <ul> <li><b>Añadir campos personalizados para proyectos a tu lista de proyectos para crear una vista porfolio de proyectos</b></li> </ul>
   text_custom_logo_instructions: >
-    Se recomienda usar un logotipo blanco sobre un fondo transparente. Para obtener los mejores resultados, tanto en pantallas convencionales como en las del tipo Retina, asegúrese de que las dimensiones de la imagen sean de 460 × 60 px.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Este es el logotipo que aparece en sus exportaciones PDF. Tiene que ser un archivo de imagen PNG o JPEG. Se recomienda un logotipo negro o de color sobre fondo transparente o blanco.
   text_custom_export_cover_instructions: >
@@ -4928,6 +4960,8 @@ es:
       multiple_errors: "Múltiples limitaciones de campo han sido violadas."
       unable_to_create_attachment: "No se pudo crear el adjunto"
       unable_to_create_attachment_permissions: "No se pudo guardar el archivo adjunto porque faltan permisos del sistema de archivos"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "El contexto proporcionado no es un enlace a un recurso."
         unsupported_context: "El recurso dado no es soportado como contexto."

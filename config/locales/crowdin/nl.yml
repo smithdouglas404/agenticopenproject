@@ -162,6 +162,11 @@ nl:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -466,12 +471,15 @@ nl:
       work_package_categories: "Werkpakketten: categorieën"
       work_package_file_links: "Werkpakketten: bestandslinks"
       work_package_shares: "Werkpakketten: aandelen"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Het verwijderen is gepland en wordt op de achtergrond uitgevoerd. U wordt op de hoogte gebracht van het resultaat."
       schedule_failed: "Project kan niet worden verwijderd: %{errors}"
-      failed: "Verwijderen van project %{name} is mislukt"
-      failed_text: "Het verzoek om het project %{name} verwijderen is mislukt. Het project is gearchiveerd gebleven."
-      completed: "Verwijderen van project %{name} is gelukt"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "Het verzoek om het verwijderen van project '%{name}' is voltooid."
       completed_text_children: "Additionally, the following subprojects have been deleted:"
     index:
@@ -514,6 +522,16 @@ nl:
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Change identifier
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Alles inschakelen"
         label_disable_all: "Alles uitschakelen"
@@ -582,9 +600,12 @@ nl:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
+      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "De gewijzigde lijst is opgeslagen als een nieuwe lijst"
@@ -1220,6 +1241,8 @@ nl:
       project_custom_field:
         is_required: "Vereist voor alle projecten"
         custom_field_section: Sectie
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Datumbereik"
         definition: "Definition"
@@ -1571,9 +1594,11 @@ nl:
         project:
           archived_ancestor: "Het project heeft een gearchiveerde voorouder."
           foreign_wps_reference_version: "Werkpakketten in niet-onderliggende projecten verwijzen naar versies van het project of zijn afstammelingen."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "U hebt niet de benodigde rechten om alle sub-projecten te archiveren. Neem contact op met een beheerder."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "nog steeds in gebruik door werkpakketten: %{types}"
             enabled_modules:
@@ -1866,6 +1891,7 @@ nl:
       other: "Additionally, there were problems with the following fields:"
     field_erroneous_label: "Dit veld is ongeldig: %{full_errors} \nVoer alstublieft een geldige waarde in."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -1997,6 +2023,7 @@ nl:
     subject: "Onderwerp"
     slug: "Slug"
     summary: "Samenvatting"
+    template: "Template"
     time_zone: "Tijdzone"
     text: "Tekst"
     title: "Titel"
@@ -2665,8 +2692,6 @@ nl:
     units:
       hours: u
       days: d
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Page %{page} of %{total}"
     template_attributes:
@@ -3350,13 +3375,13 @@ nl:
   label_project_attribute_manage_link: "Projectattributen beheren"
   label_project_count: "Totale aantal projecten"
   label_project_copy_notifications: "Verzenden van e-mailmeldingen tijdens het project kopiëren"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Meest recente projecten"
   label_project_default_type: "Lege type toestaan"
   label_project_hierarchy: "Projecthiërarchie"
   label_project_mappings: "Projecten"
   label_project_new: "Nieuw project"
-  label_project_initiation_request: "Project initiation request"
+  label_project_initiation_request: "New project initiation request"
   label_project_creation_wizard: "New project creation wizard"
   label_project_mandate: "New project mandate"
   label_project_plural: "Projecten"
@@ -3459,6 +3484,7 @@ nl:
   label_subproject: "Subproject"
   label_subproject_new: "Nieuwe subproject"
   label_subproject_plural: "Subprojecten"
+  label_subitems: "Subitems"
   label_subtask_plural: "Subtaken"
   label_summary: "Samenvatting"
   label_system: "Systeem"
@@ -3466,6 +3492,8 @@ nl:
   label_table_of_contents: "Inhoudsopgave"
   label_tag: "Label"
   label_team_planner: "Team Planner"
+  label_template: "Sjabloon"
+  label_templates: "Templates"
   label_text: "Lange tekst"
   label_this_month: "Deze maand"
   label_this_week: "deze week"
@@ -4281,6 +4309,8 @@ nl:
   setting_mail_handler_body_delimiter_regex: "E-mails die overeenkomen met deze regex afkappen"
   setting_mail_handler_ignore_filenames: "Genegeerde e-mailbijlagen"
   setting_new_project_user_role_id: "Rol gegeven aan een niet-admin-gebruiker die een project maakt"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Actieve tekenklassen"
   setting_password_count_former_banned: "Nummer van meest recent gebruikte wachtwoorden verboden voor hergebruik"
   setting_password_days_valid: "Aantal dagen waarna een wachtwoordwijziging afdwingen"
@@ -4436,6 +4466,7 @@ nl:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
       blankslate:
         title: "Initiation request not enabled"
         description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
@@ -4452,13 +4483,14 @@ nl:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The person or group this project initiation request will be assigned to."
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4540,7 +4572,7 @@ nl:
   text_project_custom_field_html: >
     The Enterprise edition will add these additional add-ons for projects' custom fields: <br> <ul> <li><b>Add custom fields for projects to your Project list to create a project portfolio view</b></li> </ul>
   text_custom_logo_instructions: >
-    Een wit logo op transparante achtergrond wordt aanbevolen. Voor de beste resultaten op zowel conventionele en retina displays, doet u door ervoor te zorgen dat uw afbeelding afmetingen zijn 460px bij 60px.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     This is the logo that appears in your PDF exports. It needs to be a PNG or JPEG image file. A black or colored logo on transparent or white background is recommended.
   text_custom_export_cover_instructions: >
@@ -4927,6 +4959,8 @@ nl:
       multiple_errors: "Meerdere veldbeperkingen werden overtreden."
       unable_to_create_attachment: "De bijlage kon niet aangemaakt worden"
       unable_to_create_attachment_permissions: "De bijlage kon niet worden opgeslagen vanwege ontbrekende bestandssysteem rechten"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "De geboden context is niet een link naar een bron."
         unsupported_context: "De gegeven bron wordt niet ondersteund als context."

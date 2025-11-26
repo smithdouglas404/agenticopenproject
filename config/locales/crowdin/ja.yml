@@ -162,6 +162,11 @@ ja:
         expired: "%{date} に期限切れ"
         revoked: "%{date} で取り消されました"
         title: "アクセストークンテーブル"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -467,12 +472,15 @@ ja:
       work_package_categories: "ワークパッケージ：カテゴリー"
       work_package_file_links: "ワークパッケージ：ファイルリンク"
       work_package_shares: "ワークパッケージ：共有"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "削除がスケジュールされ、バックグラウンドで実行されます。結果は通知されます。"
       schedule_failed: "プロジェクトを削除できません: %{errors}"
-      failed: "プロジェクト%{name} の削除に失敗しました"
-      failed_text: "プロジェクト%{name} の削除要求が失敗しました。 プロジェクトはアーカイブされたままです。"
-      completed: "プロジェクト%{name} の削除が完了しました"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "プロジェクト '%{name}'を削除要求は完了しました。"
       completed_text_children: "さらに、次の子プロジェクトが削除されました:"
     index:
@@ -515,6 +523,16 @@ ja:
         description: >
           プロジェクトは、その役割と関連する権限に応じてプロジェクトメンバーにのみ表示されます。子プロジェクトは影響を受けず、独自の設定があります。
       change_identifier: 識別子の変更
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "全て有効"
         label_disable_all: "すべて無効"
@@ -583,9 +601,12 @@ ja:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
+      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "変更されたリストは新しいリストとして保存されました"
@@ -1215,6 +1236,8 @@ ja:
       project_custom_field:
         is_required: "すべてのプロジェクトに必要"
         custom_field_section: セクション
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "期間"
         definition: "定義"
@@ -1565,9 +1588,11 @@ ja:
         project:
           archived_ancestor: "プロジェクトの祖先がアーカイブされています。"
           foreign_wps_reference_version: "子孫でないプロジェクトのワークパッケージが、プロジェクトまたはその子孫のバージョンを参照しています。"
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "すべての子プロジェクトをアーカイブするために必要な権限がありません。管理者に連絡してください。"
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "まだワークパッケージによって使用されています: %{types}"
             enabled_modules:
@@ -1847,6 +1872,7 @@ ja:
       other: "また、以下のフィールドに問題がありました："
     field_erroneous_label: "このフィールドが間違っています: %{full_errors}\n正しい値を入力してください。"
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -1976,6 +2002,7 @@ ja:
     subject: "タイトル"
     slug: "スラグ"
     summary: "サマリ"
+    template: "Template"
     time_zone: "タイムゾーン"
     text: "テキスト（本文）"
     title: "タイトル"
@@ -2623,8 +2650,6 @@ ja:
     units:
       hours: 時間
       days: 日
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "ページ %{page} / %{total}"
     template_attributes:
@@ -3308,13 +3333,13 @@ ja:
   label_project_attribute_manage_link: "プロジェクト属性の管理"
   label_project_count: "プロジェクトの合計数"
   label_project_copy_notifications: "プロジェクトのコピーの時、コピーした内容をメール通知する"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "最新のプロジェクト"
   label_project_default_type: "空の種類を許可する"
   label_project_hierarchy: "プロジェクトの階層構造"
   label_project_mappings: "プロジェクト"
   label_project_new: "新規プロジェクト"
-  label_project_initiation_request: "Project initiation request"
+  label_project_initiation_request: "New project initiation request"
   label_project_creation_wizard: "New project creation wizard"
   label_project_mandate: "New project mandate"
   label_project_plural: "プロジェクト"
@@ -3417,6 +3442,7 @@ ja:
   label_subproject: "子プロジェクト"
   label_subproject_new: "新しい子プロジェクト"
   label_subproject_plural: "子プロジェクト"
+  label_subitems: "Subitems"
   label_subtask_plural: "子タスク"
   label_summary: "サマリ"
   label_system: "システム"
@@ -3424,6 +3450,8 @@ ja:
   label_table_of_contents: "目次"
   label_tag: "タグ"
   label_team_planner: "チームプランナー"
+  label_template: "テンプレート"
+  label_templates: "Templates"
   label_text: "長文"
   label_this_month: "今月"
   label_this_week: "今週"
@@ -4238,6 +4266,8 @@ ja:
   setting_mail_handler_body_delimiter_regex: "この正規表現に一致するメールを切り捨てる"
   setting_mail_handler_ignore_filenames: "無視するメールの添付ファイル"
   setting_new_project_user_role_id: "システム管理者以外のプロジェクト作成者に設定するロール"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "有効な文字の種類"
   setting_password_count_former_banned: "再利用を禁止される最近使用済みパスワードの数"
   setting_password_days_valid: "パスワードを強制変更させる経過日数"
@@ -4393,6 +4423,7 @@ ja:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
       blankslate:
         title: "Initiation request not enabled"
         description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
@@ -4409,13 +4440,14 @@ ja:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The person or group this project initiation request will be assigned to."
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4497,7 +4529,7 @@ ja:
   text_project_custom_field_html: >
     Enterpriseエディションでは、プロジェクトのカスタムフィールド用に以下のアドオンが追加されます:<br> <ul> <li><b>プロジェクトのカスタムフィールドをプロジェクトリストに追加して、プロジェクトポートフォリオビューを作成します。</b></li> </ul>
   text_custom_logo_instructions: >
-    透明な背景の白いロゴをお勧めします。 従来、および Retina ディスプレイの両方で最高の結果となるように、画像の寸法は、460px x 60px を確認してください。
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     これは、PDFエクスポートに表示されるロゴです。PNGまたはJPEG画像ファイルである必要があります。 透明または白背景の黒または色のロゴをお勧めします。
   text_custom_export_cover_instructions: >
@@ -4883,6 +4915,8 @@ ja:
       multiple_errors: "複数フィールド制限に違反が生じました。"
       unable_to_create_attachment: "添付ファイルを作成できませんでした"
       unable_to_create_attachment_permissions: "ファイルシステムのアクセス許可がないため、添付ファイルを保存できませんでした"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "このコンテキストはリソースへのリンクではありません。"
         unsupported_context: "指定されたリソースは、コンテキストとしてはサポートされません。"

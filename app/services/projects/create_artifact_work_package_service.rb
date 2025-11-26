@@ -58,6 +58,44 @@ module Projects
       service_call
     end
 
+    def after_perform(service_call)
+      return service_call if store_attachment_locally?
+
+      if project_storage.nil?
+        service_call.errors.add(:base, I18n.t("projects.wizard.create_artifact_storage_error"))
+        return service_call
+      end
+
+      upload_artifact_to_storage(service_call)
+    end
+
+    def upload_artifact_to_storage(service_call)
+      export = create_pdf_export!
+
+      storage_call = Storages::UploadFileService
+        .call(
+          container: service_call.result,
+          project_storage:,
+          file_path: project.project_creation_wizard_artifact_name,
+          file_data: StringIO.new(export.content),
+          filename: export.title
+        )
+
+      storage_call.on_failure do
+        service_call.merge!(storage_call, without_success: true)
+      end
+
+      service_call
+    end
+
+    def project_storage
+      return @project_storage if defined?(@project_storage)
+
+      @project_storage = project
+        .project_storages
+        .find_by(id: project.project_creation_wizard_artifact_export_storage)
+    end
+
     def create_artifact_work_package
       create_params = {
         project:,
@@ -65,10 +103,10 @@ module Projects
         status_id: project.project_creation_wizard_status_when_submitted_id,
         subject:,
         assigned_to_id:,
-        attachments: [pdf_attachment],
         journal_notes:
       }
 
+      create_params[:attachments] = [pdf_attachment] if store_attachment_locally?
       WorkPackages::CreateService.new(user:).call(create_params)
     end
 
@@ -86,6 +124,10 @@ module Projects
              scope: "settings.project_initiation_request.name.options")
     end
 
+    def store_attachment_locally?
+      project.project_creation_wizard_artifact_export_type == "attachment"
+    end
+
     def assigned_to_id
       project.custom_value_for(assignee_custom_field).value
     end
@@ -101,9 +143,12 @@ module Projects
                                       .find_by(id: project.project_creation_wizard_assignee_custom_field_id)
     end
 
-    def pdf_attachment
-      export = Project::PDFExport::ProjectInitiation.new(project).export!
+    def create_pdf_export!
+      Project::PDFExport::ProjectInitiation.new(project).export!
+    end
 
+    def pdf_attachment
+      export = create_pdf_export!
       file = OpenProject::Files.create_uploaded_file(
         name: export.title,
         content_type: export.mime_type,

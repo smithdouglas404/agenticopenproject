@@ -61,6 +61,10 @@ de:
       primary_action: Dokumenttypen konfigurieren
       secondary_action: Erfahren Sie mehr über das Dokumenten-Modul
     document_type_actions: "Aktionen auf diesem Dokument"
+    text_collaboration_disabled_notice:
+      description: |-
+        Unable to open document because real-time text collaboration is disabled.
+        Please contact your administrator to enable real-time text collaboration if you want to access this document.
     index_page:
       name: "Name"
       type: "Art"
@@ -69,6 +73,7 @@ de:
     menu:
       all: "Alle Dokumente"
       types: "Typen"
+      collaboration_settings: "Real-time collaboration"
     last_updated_at: "Zuletzt aktualisiert %{time}."
     active_editors: "Aktive Bearbeiter"
     active_editors_count: "%{count} aktive Bearbeiter"
@@ -93,6 +98,38 @@ de:
         title: Kann diesen Dokumenttyp nicht löschen
         heading: Kann den letzten Dokumenttyp nicht löschen
         message: Es muss immer mindestens ein Dokumenttyp konfiguriert sein. Erstellen Sie zuerst einen anderen, wenn Sie diesen löschen möchten.
+    admin:
+      collaboration_settings:
+        page_header:
+          description: |-
+            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
+            It requires a working %{hocuspocus_server_link} to function.
+        banner:
+          none_writable: These values are configured via environment variables and cannot be edited here.
+          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+        hocuspocus_server_url:
+          label: "Hocuspocus server URL"
+          caption: "The address of the a working Hocuspocus server."
+        hocuspocus_server_secret:
+          label: "Client secret"
+          caption: "Paste the secret provided by the Hocuspocus server."
+        hocuspocus_server: Hocuspocus server
+      enable_text_collaboration:
+        heading: Real-time collaboration is not enabled
+        description: |-
+          Once enabled, multiple users will be able to work together on a document at the same time.
+          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
+          Hocuspocus server.
+        primary_action: Enable real-time collaboration
+        success: Real-time collaboration has been enabled.
+      disable_text_collaboration_dialog:
+        title: Disable real-time collaboration
+        heading: Disable real-time collaboration?
+        confirmation_message: |-
+          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
+          real-time collaboration and the BlockNote editor in this instance.
+        confirmation_checkbox_message: I understand that I might permanently lose data
+        success: Real-time collaboration has been disabled.
   label_document_added: "Dokument hinzugefügt"
   label_document_new: "Neues Dokument"
   label_document_plural: "Dokumente"

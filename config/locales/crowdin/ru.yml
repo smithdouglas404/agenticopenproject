@@ -162,6 +162,11 @@ ru:
         expired: "Истекает %{date}"
         revoked: "Отменено %{date}"
         title: "Таблица токенов доступа"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Переходы по умолчанию"
@@ -468,12 +473,15 @@ ru:
       work_package_categories: "Пакеты работ: категории"
       work_package_file_links: "Пакеты работ: ссылки на файлы"
       work_package_shares: "Пакеты работ: общие ресурсы"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Удаление было запланировано и исполнено в фоновом режиме. О результатах вы будете уведомлены."
       schedule_failed: "Проект удален быть не может: %{errors}"
-      failed: "Удаление проекта %{name} не удалось"
-      failed_text: "Запрос на удаление проекта %{name} не удался. Проект был оставлен в архиве."
-      completed: "Удаление проекта %{name} завершено"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "Запрос на удаление проекта '%{name}' был завершен."
       completed_text_children: "Кроме того, были удалены следующие подпроекты:"
     index:
@@ -516,6 +524,16 @@ ru:
         description: >
           Проект будет доступен только участникам проекта в зависимости от их роли и соответствующих разрешений. Подпроекты не затрагиваются и имеют свои собственные настройки.
       change_identifier: Изменить идентификатор
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Включить всё"
         label_disable_all: "Выключить всё"
@@ -584,9 +602,12 @@ ru:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
+      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "Измененный список был сохранен как новый"
@@ -1238,6 +1259,8 @@ ru:
       project_custom_field:
         is_required: "Требуется для всех проектов"
         custom_field_section: Раздел
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Диапазон дат"
         definition: "Описание"
@@ -1591,9 +1614,11 @@ ru:
         project:
           archived_ancestor: "В проекте есть архивированный предок."
           foreign_wps_reference_version: "Комплексы работ в проектах, не расположенных по убыванию, ссылаются на версии проекта или его производных."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "У вас нет разрешений, необходимых для архивирования всех подпроектов. Обратитесь к администратору."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "всё ещё используются в пакетах работ: %{types}"
             enabled_modules:
@@ -1912,6 +1937,7 @@ ru:
       other: "Кроме того, возникли проблемы с полями:"
     field_erroneous_label: "Значение этого поля неверно: %{full_errors}. Пожалуйста, введите верное значение."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -2047,6 +2073,7 @@ ru:
     subject: "Тема"
     slug: "Уникальный идентификатор"
     summary: "Сводка"
+    template: "Template"
     time_zone: "Часовой пояс"
     text: "Текст"
     title: "Заголовок"
@@ -2757,8 +2784,6 @@ ru:
     units:
       hours: ч
       days: д
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Страница %{page} из %{total}"
     template_attributes:
@@ -3442,13 +3467,13 @@ ru:
   label_project_attribute_manage_link: "Управление атрибутами проекта"
   label_project_count: "Общее количество проектов"
   label_project_copy_notifications: "Уведомлять по электронной почте по ходу копирования проекта"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Последние проекты"
   label_project_default_type: "Разрешить пустой тип"
   label_project_hierarchy: "Иерархия проектов"
   label_project_mappings: "Проекты"
   label_project_new: "Новый проект"
-  label_project_initiation_request: "Project initiation request"
+  label_project_initiation_request: "New project initiation request"
   label_project_creation_wizard: "New project creation wizard"
   label_project_mandate: "New project mandate"
   label_project_plural: "Проекты"
@@ -3551,6 +3576,7 @@ ru:
   label_subproject: "Подпроект"
   label_subproject_new: "Новый подпроект"
   label_subproject_plural: "Подпроекты"
+  label_subitems: "Subitems"
   label_subtask_plural: "Подзадачи"
   label_summary: "Сводка"
   label_system: "Система"
@@ -3558,6 +3584,8 @@ ru:
   label_table_of_contents: "Содержание"
   label_tag: "Тег"
   label_team_planner: "Менеджер команды"
+  label_template: "Шаблон"
+  label_templates: "Templates"
   label_text: "Длинный текст"
   label_this_month: "в этом месяце"
   label_this_week: "на этой неделе"
@@ -4375,6 +4403,8 @@ ru:
   setting_mail_handler_body_delimiter_regex: "Сообщение усекается по этому регулярному выражению"
   setting_mail_handler_ignore_filenames: "Игнорируемые вложения почты"
   setting_new_project_user_role_id: "Роль, назначаемая пользователю-создателю проекта, не являющемуся администратором"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Активные классы символов"
   setting_password_count_former_banned: "Количество паролей, запрещенных для повторного использования"
   setting_password_days_valid: "Количество дней, после которого требуется смена пароля"
@@ -4530,6 +4560,7 @@ ru:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
       blankslate:
         title: "Initiation request not enabled"
         description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
@@ -4546,13 +4577,14 @@ ru:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The person or group this project initiation request will be assigned to."
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4634,7 +4666,7 @@ ru:
   text_project_custom_field_html: >
     Корпоративная версия добавит эти дополнительные дополнения для пользовательских полей проектов: <br> <ul> <li><b>Добавить пользовательские поля для проектов в ваш список проектов, чтобы создать представление портфолио проекта</b></li> </ul>
   text_custom_logo_instructions: >
-    Рекомендуется использовать белый логотип с прозрачным фоном. Для оптимального отображения на обычных и retina-дисплеях размер картинки должен быть 460 на 110 пикселей.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Это логотип, который отображается при экспорте в формате PDF. Это должен быть файл изображения в формате PNG или JPEG. Рекомендуется использовать черный или цветной логотип на прозрачном или белом фоне.
   text_custom_export_cover_instructions: >
@@ -5023,6 +5055,8 @@ ru:
       multiple_errors: "Для нескольких полей были нарушены ограничения."
       unable_to_create_attachment: "Вложение не может быть создано"
       unable_to_create_attachment_permissions: "Вложение не может быть сохранено из-за отсутствия прав на файловую систему"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "Предоставленного контекста не является ссылка на ресурс."
         unsupported_context: "Ресурс не поддерживается как контекст."

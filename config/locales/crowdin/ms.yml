@@ -162,6 +162,11 @@ ms:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -468,12 +473,15 @@ ms:
       work_package_categories: "Pakej kerja: kategori"
       work_package_file_links: "Pakej kerja: pautan fail"
       work_package_shares: "Pakej kerja: kongsi"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Pembuangan telah dijadualkan dan dilaksanakan di latar belakang. Anda akan dimaklumkan tentang hasilnya."
       schedule_failed: "Projek tidak dapat dipadam: %{errors}"
-      failed: "Pemadaman projek %{name} telah gagal"
-      failed_text: "Permintaan untuk padamkan projek %{name} telah gagal. Projek telah diarkibkan."
-      completed: "Pemadaman projek %{name} selesai"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "Permintaan untuk memadamkan projek %{name} selesai."
       completed_text_children: "Tambahan pula, subprojek berikut telah dipadam:"
     index:
@@ -516,6 +524,16 @@ ms:
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Tukar pengenal
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Aktifkan semua"
         label_disable_all: "Nyahaktifkan semua"
@@ -584,9 +602,12 @@ ms:
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
+      title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "Senarai yang diubah suai telah disimpan sebagai senarai baharu."
@@ -1214,6 +1235,8 @@ ms:
       project_custom_field:
         is_required: "Diperlukan untuk semua projek"
         custom_field_section: Bahagian
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Date range"
         definition: "Definition"
@@ -1564,9 +1587,11 @@ ms:
         project:
           archived_ancestor: "Projek mempunyai leluhur yang diarkibkan."
           foreign_wps_reference_version: "Pakej kerja dalam projek bukan keturunan versi rujukan projek atau keturunannya."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "Anda tidak mempunyai kebenaran yang diperlukan untuk mengarkib semua sub-projek. Sila hubungi pentadbir."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "masih digunakan oleh pakej kerja: %{types}"
             enabled_modules:
@@ -1846,6 +1871,7 @@ ms:
       other: "Tambahan pula, terdapat masalah dengan ruangan yang berikut:"
     field_erroneous_label: "Ruang ini tidak sah: %{full_errors}\nSila masukkan nilai yang sah."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -1975,6 +2001,7 @@ ms:
     subject: "Subjek"
     slug: "Slug"
     summary: "Ringkasan"
+    template: "Template"
     time_zone: "Zon waktu"
     text: "Teks"
     title: "Tajuk"
@@ -2622,8 +2649,6 @@ ms:
     units:
       hours: j
       days: h
-    project_initiation:
-      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Halaman %{page} daripada %{total}"
     template_attributes:
@@ -3307,13 +3332,13 @@ ms:
   label_project_attribute_manage_link: "Urus atribut projek"
   label_project_count: "Jumlah bilangan projek"
   label_project_copy_notifications: "Hantar pemberitahuan e-mel semasa salinan projek"
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Projek terkini"
   label_project_default_type: "Benarkan jenis kosong"
   label_project_hierarchy: "Hierarki projek"
   label_project_mappings: "Projek-projek"
   label_project_new: "Projek baharu"
-  label_project_initiation_request: "Project initiation request"
+  label_project_initiation_request: "New project initiation request"
   label_project_creation_wizard: "New project creation wizard"
   label_project_mandate: "New project mandate"
   label_project_plural: "Projek-projek"
@@ -3416,6 +3441,7 @@ ms:
   label_subproject: "Subprojek"
   label_subproject_new: "Subprojek baharu"
   label_subproject_plural: "Subprojek"
+  label_subitems: "Subitems"
   label_subtask_plural: "Subtugas"
   label_summary: "Ringkasan"
   label_system: "Sistem"
@@ -3423,6 +3449,8 @@ ms:
   label_table_of_contents: "Jadual kandungan"
   label_tag: "Tag"
   label_team_planner: "Perancang Pasukan"
+  label_template: "templat"
+  label_templates: "Templates"
   label_text: "Teks panjang"
   label_this_month: "bulan ini"
   label_this_week: "minggu ini"
@@ -4236,6 +4264,8 @@ ms:
   setting_mail_handler_body_delimiter_regex: "Memangkas e-mel yang hampir sama dengan regex ini"
   setting_mail_handler_ignore_filenames: "Lampiran mel yang diabaikan"
   setting_new_project_user_role_id: "Peranan yang diberikan kepada pengguna bukan pentadbir yang mencipta projek"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Kelas-kelas karakter yang aktif"
   setting_password_count_former_banned: "Jumlah kebanyakkan kata laluan buat masa ini yang telah digunakan yang disekat untuk penggunaan semula"
   setting_password_days_valid: "Jumlah hari, selepas untuk menguatkuasakan pertukaran kata laluan"
@@ -4391,6 +4421,7 @@ ms:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document."
       blankslate:
         title: "Initiation request not enabled"
         description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
@@ -4407,13 +4438,14 @@ ms:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define which type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
         status_when_submitted: "Status when submitted"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The person or group this project initiation request will be assigned to."
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4495,7 +4527,7 @@ ms:
   text_project_custom_field_html: >
     Edisi Enterprise akan menambahkan segala jenis tambahan ke ruang tersuai projek: <br> <ul> <li><b> Tambah ruang tersuai ke projek ke senarai Projek anda untuk ciptakan paparan portfolio project </b></li> </ul>
   text_custom_logo_instructions: >
-    Logo putih pada latar belakang telus disarankan. Untuk hasil yang terbaik pada kedua-duanya, paparan konvensional dan paparan retina, pastikan dimensi imej adalah 460px kali 60px.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Ini merupakan logo yang akan muncul dalam eksport PDF anda. Ia perlu menjadi fail imej PNG atau JPEG. Logo hitam atau bewarna pada latar belakang telus atau putih disarankan.
   text_custom_export_cover_instructions: >
@@ -4882,6 +4914,8 @@ ms:
       multiple_errors: "Beberapa kekangan ruang telah dilanggar."
       unable_to_create_attachment: "Lampiran tidak boleh dicipta"
       unable_to_create_attachment_permissions: "Lampiran tidak dapat disimpan kerana kurang kebenaran sistem fail"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "Konteks yang diberi bukan satu pautan untuk sumber."
         unsupported_context: "Sumber yang diberi tidak disokong sebagai konteks."

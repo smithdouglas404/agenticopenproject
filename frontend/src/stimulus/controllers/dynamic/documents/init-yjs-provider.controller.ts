@@ -35,26 +35,18 @@ import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaborati
 export default class extends Controller {
   static values = {
     hocuspocusUrl: String,
-    openProjectUrl: String,
     oauthToken: String,
     documentName: String,
-    documentId: String,
   };
 
   declare readonly hocuspocusUrlValue:string;
-  declare readonly openProjectUrlValue:string;
   declare readonly oauthTokenValue:string;
   declare readonly documentNameValue:string;
-  declare readonly documentIdValue:string;
 
   connect():void {
-    const url = new URL(this.hocuspocusUrlValue);
-    url.searchParams.set('document_id', this.documentIdValue);
-    url.searchParams.set('openproject_base_path', this.openProjectUrlValue);
-
     LiveCollaborationManager.initializeYjsProvider(
       new HocuspocusProvider({
-        url: url.toString(),
+        url: this.hocuspocusUrlValue,
         name: this.documentNameValue,
         token: this.oauthTokenValue,
         document: LiveCollaborationManager.ydoc,

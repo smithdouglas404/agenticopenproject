@@ -62,6 +62,10 @@ zh-TW:
       primary_action: 設定文件類型
       secondary_action: 進一步瞭解文件模組
     document_type_actions: "文件類型動作"
+    text_collaboration_disabled_notice:
+      description: |-
+        Unable to open document because real-time text collaboration is disabled.
+        Please contact your administrator to enable real-time text collaboration if you want to access this document.
     index_page:
       name: "名稱"
       type: "類型"
@@ -70,6 +74,7 @@ zh-TW:
     menu:
       all: "所有文件"
       types: "類型"
+      collaboration_settings: "Real-time collaboration"
     last_updated_at: "最後更新 %{time}。"
     active_editors: "活躍的編輯者"
     active_editors_count: "%{count} 活躍的編輯"
@@ -93,6 +98,38 @@ zh-TW:
         title: 無法刪除文件類型
         heading: 無法刪除最後一個文件類型
         message: 必須始終至少配置一個文件類型。如果要刪除此文件類型，請先建立另一個。
+    admin:
+      collaboration_settings:
+        page_header:
+          description: |-
+            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
+            It requires a working %{hocuspocus_server_link} to function.
+        banner:
+          none_writable: These values are configured via environment variables and cannot be edited here.
+          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+        hocuspocus_server_url:
+          label: "Hocuspocus server URL"
+          caption: "The address of the a working Hocuspocus server."
+        hocuspocus_server_secret:
+          label: "Client secret"
+          caption: "Paste the secret provided by the Hocuspocus server."
+        hocuspocus_server: Hocuspocus server
+      enable_text_collaboration:
+        heading: Real-time collaboration is not enabled
+        description: |-
+          Once enabled, multiple users will be able to work together on a document at the same time.
+          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
+          Hocuspocus server.
+        primary_action: Enable real-time collaboration
+        success: Real-time collaboration has been enabled.
+      disable_text_collaboration_dialog:
+        title: Disable real-time collaboration
+        heading: Disable real-time collaboration?
+        confirmation_message: |-
+          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
+          real-time collaboration and the BlockNote editor in this instance.
+        confirmation_checkbox_message: I understand that I might permanently lose data
+        success: Real-time collaboration has been disabled.
   label_document_added: "文件已新增"
   label_document_new: "建立新文件"
   label_document_plural: "文件"
