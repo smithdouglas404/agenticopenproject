@@ -33,20 +33,30 @@ module Projects
       delegate :parent, to: :model
 
       form do |f|
-        f.project_autocompleter(
-          name: :parent_id,
-          label: attribute_name(:parent_id),
-          invalid: model.errors.include?(:parent_id),
-          validation_message: validation_message(:parent),
-          autocomplete_options: {
-            model: project_autocompleter_model,
-            focusDirectly: false,
-            dropdownPosition: "bottom",
-            url: project_autocompleter_url,
-            filters: [],
-            data: { qa_field_name: "parent" }
-          }
-        )
+        if @visible
+          f.project_autocompleter(
+            name: :parent_id,
+            label: attribute_name(:parent_id),
+            invalid: model.errors.include?(:parent_id),
+            validation_message: validation_message(:parent),
+            autocomplete_options: {
+              model: project_autocompleter_model,
+              focusDirectly: false,
+              dropdownPosition: "bottom",
+              url: project_autocompleter_url,
+              filters: [],
+              data: { qa_field_name: "parent" }
+            }
+          )
+        else
+          f.hidden(name: :parent_id)
+        end
+      end
+
+      def initialize(visible: true)
+        super()
+
+        @visible = visible
       end
 
       private
@@ -64,10 +74,10 @@ module Projects
 
       def project_autocompleter_url
         params = if model.new_record?
-                   { workspace_type: model.workspace_type }
-                 else
-                   { of: model.id }
-                 end
+          { workspace_type: model.workspace_type }
+        else
+          { of: model.id }
+        end
 
         ::API::V3::Utilities::PathHelper::ApiV3Path.projects_available_parents(**params)
       end
