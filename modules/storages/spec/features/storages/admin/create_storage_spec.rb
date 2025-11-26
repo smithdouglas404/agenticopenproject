@@ -284,7 +284,7 @@ RSpec.describe "Admin Create a new file storage",
         end
       end
 
-      wait_for { page }.to have_current_path(upsell_admin_settings_storages_path)
+      wait_for { page }.to have_current_path(upsell_admin_settings_storages_path(provider: "one_drive"))
       expect(page).to have_text("OneDrive integration")
     end
   end
