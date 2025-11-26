@@ -65,7 +65,7 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
     portfolio.reload
 
-    portfolio.define_singleton_method(:favorited?) { false }
+    def portfolio.favorited?; false; end
   end
 
   describe "portfolio" do
@@ -102,8 +102,8 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
     context "when there are child portfolios" do
       before do
-        create(:portfolio, parent: portfolio, status_code: status_code_b).tap do |child_portfolio|
-          create(:program, parent: child_portfolio, status_code: status_code_b)
+        create(:portfolio, parent: portfolio).tap do |child_portfolio|
+          create(:program, parent: child_portfolio)
         end
 
         portfolio.reload
@@ -145,6 +145,7 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
           expect(subject).to have_test_selector("op-portfolios--status-#{status_code_a}")
           expect(subject).not_to have_test_selector("op-portfolios--status-#{status_code_b}")
+          expect(subject).to have_test_selector("op-portfolios--status-not_set")
         end
       end
 
@@ -154,6 +155,7 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
           expect(subject).to have_test_selector("op-portfolios--status-#{status_code_a}")
           expect(subject).to have_test_selector("op-portfolios--status-#{status_code_b}")
+          expect(subject).not_to have_test_selector("op-portfolios--status-not_set")
         end
       end
     end

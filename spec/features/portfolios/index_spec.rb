@@ -183,11 +183,11 @@ RSpec.describe "Portfolios", "index", :js do
           # It renders the correct percentages per status:
           on_track = page.find_test_selector("op-portfolios--status-on_track")
           on_track_percentage = on_track["data-percentage"]
-          expect(on_track_percentage).to eq("67")
+          expect(on_track_percentage).to eq("66.7")
 
           at_risk = page.find_test_selector("op-portfolios--status-at_risk")
           at_risk_percentage = at_risk["data-percentage"]
-          expect(at_risk_percentage).to eq("33")
+          expect(at_risk_percentage).to eq("33.3")
 
           # The status bar shows a hover card on hover:
           hover_card_selector = "op-portfolios--hover-card-#{portfolio_a.id}"
@@ -203,21 +203,22 @@ RSpec.describe "Portfolios", "index", :js do
           expect(page).to have_text("2 projects")
 
           expect(page).to have_test_selector("op-portfolios--sub-status-bar")
-
-          # Status of the child portfolio
-          discontinued = page.find_test_selector("op-portfolios--status-discontinued")
-          discontinued_percentage = discontinued["data-percentage"]
-          expect(discontinued_percentage).to eq("33")
-
-          # Status of a child project
-          not_started = page.find_test_selector("op-portfolios--status-not_started")
-          not_started_percentage = not_started["data-percentage"]
-          expect(not_started_percentage).to eq("33")
         end
+
+        # Status of the child portfolio
+        portfolios_page.expect_status_bar_percentage(portfolio_b, "discontinued", "33.3")
+        # Status of a child project
+        portfolios_page.expect_status_bar_percentage(portfolio_b, "not_started", "33.3")
+        portfolios_page.expect_status_bar_percentage(portfolio_b, "not_set", "33.3")
       end
 
       it "does not show a status summary if no sub-item has a status" do
+        # Statusless sub-item:
+        create(:project, parent: portfolio_favorited)
+        portfolios_page.visit!
+
         portfolios_page.within_row(portfolio_favorited) do
+          expect(page).to have_text("1 project")
           expect(page).not_to have_test_selector("op-portfolios--sub-status-bar")
         end
       end
