@@ -132,7 +132,16 @@ module Projects
     end
 
     def description
-      wizard_relative_link
+      <<~DESCRIPTION
+        #{description_template}
+
+        #{wizard_relative_link}
+      DESCRIPTION
+    end
+
+    def description_template
+      I18n.t("settings.project_initiation_request.submission.description_template",
+             wizard_name: project_creation_wizard_name(project))
     end
 
     def store_attachment_locally?

@@ -156,6 +156,8 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       expected_link = "[#{expected_link_text}](#{expected_path})"
 
       expect(artifact_work_package.last_journal.notes).to include(expected_link)
+      expect(artifact_work_package.description)
+        .to include("This work package was automatically created upon completion of the Project mandate workflow.")
       expect(artifact_work_package.description).to include(expected_link)
     end
 

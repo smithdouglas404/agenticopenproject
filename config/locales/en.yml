@@ -4748,6 +4748,12 @@ en:
           project_creation_wizard: "Project creation wizard"
           project_mandate: "Project mandate"
       submission:
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.**
+
+          A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes.
+
+          If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
         description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
