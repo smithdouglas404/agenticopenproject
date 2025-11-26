@@ -38,7 +38,7 @@ import { HocuspocusProvider } from '@hocuspocus/provider';
 import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
 import { IUploadFile } from 'core-app/core/upload/upload.service';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
-import { initOpenProjectApi, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
+import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
 import { useEffect, useState } from 'react';
 import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
@@ -79,11 +79,11 @@ export default function OpBlockNoteContainer({ inputField,
   const [connectionError, setConnectionError] = useState(false);
   const [theme, setTheme] = useState<OpColorMode>(detectTheme());
 
-  initOpenProjectApi({ baseUrl: openProjectUrl });
-
   const userLocale = window.I18n.locale;
   const blockNoteLocaleString = Object.keys(blockNoteLocales).includes(userLocale) ? userLocale : 'en';
   const blockNoteLocale = blockNoteLocales[blockNoteLocaleString as keyof typeof blockNoteLocales];
+
+  initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: blockNoteLocaleString});
 
   let doc = LiveCollaborationManager.ydoc;
 
