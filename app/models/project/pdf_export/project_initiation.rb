@@ -153,8 +153,8 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def title
-    # <project>_<project_initialization>_<YYYY-MM-DD>_<HH-MM>.pdf
-    build_pdf_filename([project.name, heading].join("_"))
+    # <project.identifier>_<wizard type name>_<WP status>_<yyyy-mm-dd_hh:mm>.pdf
+    build_pdf_filename([project.identifier, heading, project_initiation_status_name].compact.join("_"))
   end
 
   def with_images?
@@ -267,6 +267,10 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
     return if description.blank?
 
     write_project_markdown(project, description, nil)
+  end
+
+  def project_initiation_status_name
+    project_initiation_status&.name
   end
 
   def project_initiation_status

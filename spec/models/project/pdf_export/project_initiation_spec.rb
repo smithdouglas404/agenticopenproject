@@ -76,11 +76,19 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
   context "with a custom defined name" do
     let(:project) { create(:project, project_creation_wizard_artifact_name: custom_artefact_name_key) }
     let(:current_user) { create(:admin) }
+    let(:custom_artefact_name) do
+      I18n.t(project.project_creation_wizard_artifact_name,
+             default: :project_initiation_request,
+             scope: "settings.project_initiation_request.name.options")
+    end
+
+    it "uses a fixed pattern for the filename" do
+      title_datetime = exporter.send(:title_datetime)
+      expect(exporter.title).to eq("#{project.identifier}_#{exporter.sane_filename(custom_artefact_name)}_#{title_datetime}.pdf")
+    end
+
 
     it "exports a PDF containing project initiation using the custom defined name" do
-      custom_artefact_name = I18n.t(project.project_creation_wizard_artifact_name,
-                                    default: :project_initiation_request,
-                                    scope: "settings.project_initiation_request.name.options")
       expected_document = [
         custom_artefact_name, project.name, Setting.app_title, export_time_formatted, # cover page
         custom_artefact_name,
@@ -140,6 +148,11 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
   context "with a status" do
     let(:project) { create(:project, project_creation_wizard_status_when_submitted_id: wizard_status.id) }
 
+    it "uses a fixed pattern for the filename" do
+      title_datetime = exporter.send(:title_datetime)
+      expect(exporter.title).to eq("#{project.identifier}_#{exporter.sane_filename(heading)}_Submitted_#{title_datetime}.pdf")
+    end
+
     it "exports a PDF containing project initiation using the custom defined name" do
       heading_with_badge = [heading, " ", "    Submitted    "]
       expected_document = [
@@ -154,6 +167,11 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
 
   context "with a work package status" do
     let(:project) { create(:project, project_creation_wizard_artifact_work_package_id: work_package.id) }
+
+    it "uses a fixed pattern for the filename" do
+      title_datetime = exporter.send(:title_datetime)
+      expect(exporter.title).to eq("#{project.identifier}_#{exporter.sane_filename(heading)}_Approved_#{title_datetime}.pdf")
+    end
 
     it "exports a PDF containing project initiation using the custom defined name" do
       heading_with_badge = [heading, " ", "    Approved    "]
