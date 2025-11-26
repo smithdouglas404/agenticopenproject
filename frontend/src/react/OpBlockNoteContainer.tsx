@@ -28,6 +28,7 @@
  * ++
  */
 
+import { debugLog } from 'core-app/shared/helpers/debug_output';
 import { BlockNoteEditorOptions, BlockNoteSchema, filterSuggestionItems } from '@blocknote/core';
 import { User } from '@blocknote/core/comments';
 import * as blockNoteLocales from '@blocknote/core/locales';
@@ -75,6 +76,7 @@ export default function OpBlockNoteContainer({ inputField,
                                                attachmentsCollectionKey,
                                                hocuspocusProvider }:OpBlockNoteContainerProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [connectionError, setConnectionError] = useState(false);
   const [theme, setTheme] = useState<OpColorMode>(detectTheme());
 
   initOpenProjectApi({ baseUrl: openProjectUrl });
@@ -177,10 +179,33 @@ export default function OpBlockNoteContainer({ inputField,
       inputField.value = b64;
     };
 
+    let connectionTimeout:ReturnType<typeof setTimeout> | null = null;
+
+    const editorReady = () => {
+      debugLog('[BlockNote Editor] synced with collaboration server');
+      setIsLoading(false);
+      setConnectionError(false);
+    };
+
+    const handleDisconnect = () => {
+      debugLog('[BlockNote Editor] Disconnected from collaboration server');
+      setConnectionError(true);
+    };
+
     if(hocuspocusProvider) {
-      if (hocuspocusProvider.synced) { setIsLoading(false); }
-      hocuspocusProvider.on('synced', () => setIsLoading(false));
-      hocuspocusProvider.on('disconnect', () => setIsLoading(true));
+      if (hocuspocusProvider.synced) {
+        editorReady();
+      } else {
+        // Set timeout to show connection error if not connected within 5 seconds
+        connectionTimeout = setTimeout(() => {
+          if (!hocuspocusProvider.synced) {
+            setConnectionError(true);
+          }
+        }, 5000);
+      }
+
+      hocuspocusProvider.on('synced', editorReady);
+      hocuspocusProvider.on('disconnect', handleDisconnect);
     } else {
       doc.on('update', updateInput);
       setIsLoading(false);
@@ -188,6 +213,10 @@ export default function OpBlockNoteContainer({ inputField,
 
     return () => {
       if (hocuspocusProvider) {
+        if (connectionTimeout) clearTimeout(connectionTimeout);
+
+        hocuspocusProvider.off('synced', editorReady);
+        hocuspocusProvider.off('disconnect', handleDisconnect);
         hocuspocusProvider.destroy();
       } else {
         // disable Yjs update listener. Opposite of doc.on('update', ...);
@@ -208,6 +237,15 @@ export default function OpBlockNoteContainer({ inputField,
       window.removeEventListener('op:theme-changed', handleThemeChange);
     };
   }, []);
+
+  if (connectionError) {
+    return (
+      <div
+        id="documents-show-edit-view-connection-error-notice-component"
+        data-controller="documents--connection-error-handler"
+      />
+    );
+  }
 
   return (
     <>

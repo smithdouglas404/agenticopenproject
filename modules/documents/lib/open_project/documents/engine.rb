@@ -53,8 +53,12 @@ module OpenProject::Documents
 
       project_module :documents do |_map|
         permission :view_documents,
-                   { documents: %i[index search show download render_avatars],
-                     "documents/menus": %i[show] },
+                   {
+                     documents: %i[
+                       index search show download render_avatars render_connection_error render_connection_recovery
+                     ],
+                     "documents/menus": %i[show]
+                   },
                    permissible_on: :project
         permission :manage_documents,
                    {

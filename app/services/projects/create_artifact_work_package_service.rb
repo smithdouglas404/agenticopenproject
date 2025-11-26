@@ -38,6 +38,7 @@ module Projects
     def initialize(user:, model:, contract_class: Projects::CreateArtifactWorkPackageContract)
       super(user:, contract_class:)
       self.model = model
+      @skip_creation = false
     end
 
     def project = model
@@ -46,7 +47,26 @@ module Projects
 
     attr_accessor :artifact_work_package
 
+    def skip_creation? = @skip_creation
+    def skip_creation! = @skip_creation = true
+
+    def before_perform(service_call)
+      if WorkPackage.exists?(project.project_creation_wizard_artifact_work_package_id)
+        skip_creation!
+      end
+
+      service_call
+    end
+
+    def validate_contract(service_call)
+      return service_call if skip_creation?
+
+      super
+    end
+
     def persist(service_call)
+      return service_call if skip_creation?
+
       creation_call = create_artifact_work_package
 
       creation_call.on_success do
@@ -63,7 +83,7 @@ module Projects
     end
 
     def after_perform(service_call)
-      return service_call if store_attachment_locally?
+      return service_call if store_attachment_locally? || skip_creation?
 
       if project_storage.nil?
         service_call.errors.add(:base, I18n.t("projects.wizard.create_artifact_storage_error"))
@@ -132,7 +152,16 @@ module Projects
     end
 
     def description
-      wizard_relative_link
+      <<~DESCRIPTION
+        #{description_template}
+
+        #{wizard_relative_link}
+      DESCRIPTION
+    end
+
+    def description_template
+      I18n.t("settings.project_initiation_request.submission.description_template",
+             wizard_name: project_creation_wizard_name(project))
     end
 
     def store_attachment_locally?
