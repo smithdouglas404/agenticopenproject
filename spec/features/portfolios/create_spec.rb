@@ -65,9 +65,9 @@ RSpec.describe "Portfolios",
     # Step 2: Fill in project details
     fill_in "Name", with: "Foo bar"
 
-    expect(page).to have_combo_box "Subproject of"
-    parent_field.expect_no_option "Other portfolio"
-    parent_field.expect_no_option "Root portfolio" # Since no a project cannot have a parent
+    # No parent field since portfolios are always root elements
+    expect(page)
+      .not_to have_combo_box "Subproject of"
 
     click_on "Complete"
 

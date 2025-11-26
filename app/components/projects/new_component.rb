@@ -53,5 +53,9 @@ module Projects
 
       url_for(workspace_type.pluralize.to_sym)
     end
+
+    def relation_form_visible?
+      project.parent_allowed? && params[:parent_id].blank?
+    end
   end
 end

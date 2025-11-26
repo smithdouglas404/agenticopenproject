@@ -279,8 +279,6 @@ class Project < ApplicationRecord
     name
   end
 
-  def allowed_parent_workspace_types = ALLOWED_PARENT_WORKSPACE_TYPES[workspace_type] || []
-
   def workspace_label
     case workspace_type
     when "program"
