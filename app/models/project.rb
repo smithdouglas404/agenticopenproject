@@ -58,7 +58,7 @@ class Project < ApplicationRecord
   ALLOWED_PARENT_WORKSPACE_TYPES = {
     project: %i[portfolio program project],
     program: %i[portfolio],
-    portfolio: %i[portfolio]
+    portfolio: %i[]
   }.with_indifferent_access
 
   has_many :members, -> {

@@ -598,7 +598,7 @@ RSpec.describe Project do
     {
       project: %i[portfolio program project],
       program: %i[portfolio],
-      portfolio: %i[portfolio]
+      portfolio: %i[]
     }.each do |workspace_type, allowed_parent_workspace_types|
       context "for workspace type #{workspace_type}" do
         let(:project) { described_class.new(workspace_type:) }
@@ -615,6 +615,32 @@ RSpec.describe Project do
       subject { project.allowed_parent_workspace_types }
 
       it { is_expected.to eq [] }
+    end
+  end
+
+  describe "#parent_allowed?" do
+    context "for a project" do
+      let(:workspace) { build_stubbed(:project) }
+
+      it "is truthy" do
+        expect(workspace).to be_parent_allowed
+      end
+    end
+
+    context "for a program" do
+      let(:workspace) { build_stubbed(:program) }
+
+      it "is truthy" do
+        expect(workspace).to be_parent_allowed
+      end
+    end
+
+    context "for a portfolio" do
+      let(:workspace) { build_stubbed(:portfolio) }
+
+      it "is falsey" do
+        expect(workspace).not_to be_parent_allowed
+      end
     end
   end
 end

@@ -20,6 +20,9 @@ get:
   - description: >-
       The workspace type of the new project the parent candidate is determined for.
       Ignored when `of` parameter is provided.
+
+      Note that while 'portfolio' is supported as a type (since it is a type of Workspace), the endpoint will currently
+      always return an empty resultset as portfolios cannot have parents.
     example: program
     in: query
     name: workspace_type

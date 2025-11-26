@@ -67,7 +67,7 @@ RSpec.describe "Portfolios",
 
     expect(page).to have_combo_box "Subproject of"
     parent_field.expect_no_option "Other portfolio"
-    parent_field.select_option "Root portfolio"
+    parent_field.expect_no_option "Root portfolio" # Since no a project cannot have a parent
 
     click_on "Complete"
 
@@ -79,7 +79,7 @@ RSpec.describe "Portfolios",
     portfolio = Project.last
     expect(portfolio.workspace_type).to eq "portfolio"
     expect(portfolio.identifier).to eq "foo-bar"
-    expect(portfolio.parent).to eq root_portfolio
+    expect(portfolio.parent).to be_nil
   end
 
   context "without the necessary permissions to create portfolios", with_flag: { portfolio_models: true } do

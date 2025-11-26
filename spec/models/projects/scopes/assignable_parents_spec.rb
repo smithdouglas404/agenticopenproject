@@ -78,12 +78,9 @@ RSpec.describe Projects::Scopes::AssignableParents do
   context "for a portfolio" do
     let(:workspace_type) { :portfolio }
 
-    it "returns portfolios the user has the add_subprojects permission in but without self or descendants" do
+    it "is empty since portfolios are always root elements" do
       expect(Project.assignable_parents(user, subject_workspace))
-        .to contain_exactly(
-          portfolio_with_permission,
-          parent_portfolio
-        )
+        .to be_empty
     end
   end
 
