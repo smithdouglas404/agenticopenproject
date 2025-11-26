@@ -70,6 +70,10 @@ OpenProject::FeatureDecisions.add :minutes_styling_meeting_pdf,
 OpenProject::FeatureDecisions.add :portfolio_models,
                                   description: "Enables the creation and management of portfolio and program work spaces."
 
+OpenProject::FeatureDecisions.add :create_from_template_permissions,
+                                  description: "Enables the currently unused " \
+                                               '"Create Project, Portfolio, Program from template" permission.'
+
 OpenProject::FeatureDecisions.add :new_project_overview,
                                   description: "Enables the new project overview experience.",
                                   force_active: true
