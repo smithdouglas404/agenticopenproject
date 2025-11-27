@@ -23,7 +23,8 @@ import { getMetaContent } from 'core-app/core/setup/globals/global-helpers';
 import {
   toDOMString,
   briefcaseIconData,
-  SVGData, versionsIconData,
+  SVGData,
+  versionsIconData,
 } from '@openproject/octicons-angular';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
