@@ -37,3 +37,16 @@ $status_not-set: var(--progressBar-track-bgColor) // invisible background color
     .op-bubble
       margin: auto
       @include portfolio-sub-item-status-background-color
+
+  &--details-footer, &--details-header
+    align-items: center
+
+    @media screen and (max-width: $breakpoint-sm)
+      flex-direction: column !important
+      align-items: flex-start
+      row-gap: var(--base-size-16, 1rem)
+
+  &--description
+    @media screen and (max-width: $breakpoint-sm)
+      margin-top: var(--base-size-16, 1rem)
+      margin-bottom: var(--base-size-16, 1rem) !important
