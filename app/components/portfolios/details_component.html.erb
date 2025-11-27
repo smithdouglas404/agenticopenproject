@@ -191,8 +191,7 @@
           data: {
             hover_card_trigger_target: "card",
             test_selector: "op-portfolios--hover-card-#{portfolio.id}"
-          },
-          justify_content: :space_between
+          }
         ) do |popover|
           popover.with_column(mr: 3) do
             sub_item_count = sub_statuses_with_percentages.sum { |s| s[:count] }
