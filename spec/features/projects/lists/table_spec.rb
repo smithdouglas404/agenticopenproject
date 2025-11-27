@@ -681,14 +681,14 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
 
       # Check program has badge with icon and label
       projects_page.within_row(program_project) do
-        expect(page).to have_css("svg.octicon-project-roadmap")
+        expect(page).to have_css("svg.octicon-versions")
         expect(page).to have_text("Program")
       end
 
       # Check regular project does NOT have workspace badge
       projects_page.within_row(regular_project) do
         expect(page).to have_no_css("svg.octicon-briefcase")
-        expect(page).to have_no_css("svg.octicon-project-roadmap")
+        expect(page).to have_no_css("svg.octicon-versions")
         expect(page).to have_no_text("Portfolio", exact: false)
         expect(page).to have_no_text("Program", exact: false)
       end

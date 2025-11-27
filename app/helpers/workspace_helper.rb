@@ -32,7 +32,7 @@ module WorkspaceHelper
   WORKSPACE_ICON_MAPPING = {
     project: :project,
     portfolio: :briefcase,
-    program: :"project-roadmap"
+    program: :versions
   }.with_indifferent_access.freeze
 
   def new_workspace_title(workspace, template = nil)
