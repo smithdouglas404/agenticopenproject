@@ -34,14 +34,13 @@ import * as blockNoteLocales from '@blocknote/core/locales';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
 import { IUploadFile } from 'core-app/core/upload/upload.service';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
-import { useEffect, useState } from 'react';
 import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
 import { useCollaboration } from './hooks/useCollaboration';
+import { useOpTheme } from './hooks/useOpTheme';
 
 interface CollaborativeUser {
   name:string;
@@ -65,8 +64,6 @@ const schema = BlockNoteSchema.create().extend({
   },
 });
 
-const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOpColorMode(); };
-
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
                                                activeUser,
@@ -75,7 +72,6 @@ export default function OpBlockNoteContainer({ inputField,
                                                attachmentsUploadUrl,
                                                attachmentsCollectionKey,
                                                hocuspocusProvider }:OpBlockNoteContainerProps) {
-  const [theme, setTheme] = useState<OpColorMode>(detectTheme());
 
   const userLocale = window.I18n.locale;
   const blockNoteLocaleString = Object.keys(blockNoteLocales).includes(userLocale) ? userLocale : 'en';
@@ -171,19 +167,7 @@ export default function OpBlockNoteContainer({ inputField,
   };
 
   const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
-
-  useEffect(() => {
-    const handleThemeChange = () => {
-      const newTheme = detectTheme();
-      setTheme(newTheme);
-    };
-
-    window.addEventListener('op:theme-changed', handleThemeChange);
-
-    return () => {
-      window.removeEventListener('op:theme-changed', handleThemeChange);
-    };
-  }, []);
+  const theme = useOpTheme();
 
   if (connectionError) {
     return (
