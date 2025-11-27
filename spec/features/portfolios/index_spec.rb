@@ -147,6 +147,8 @@ RSpec.describe "Portfolios", "index", :js, with_ee: :portfolio_management do # T
         page.find_test_selector("op-portfolios--favorite-button").click
       end
 
+      wait_for_network_idle
+
       expect(portfolio_a).to be_favorited_by(current_user)
     end
 
