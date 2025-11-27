@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { OpSharedModule } from 'core-app/shared/shared.module';
 import { DragulaModule } from 'ng2-dragula';
 import { TypeFormAttributeGroupComponent } from 'core-app/features/admin/types/attribute-group.component';
@@ -49,5 +49,6 @@ import { EditableQueryPropsComponent } from 'core-app/features/admin/editable-qu
     GroupEditInPlaceComponent,
     EditableQueryPropsComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class OpenprojectAdminModule { }

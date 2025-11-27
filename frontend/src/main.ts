@@ -17,6 +17,8 @@ import './stimulus/setup';
 import './turbo/setup';
 import { platformBrowser } from '@angular/platform-browser';
 
+import './custom-elements';
+
 // Ensure we set the correct dynamic frontend path
 // based on the RAILS_RELATIVE_URL_ROOT setting
 // https://webpack.js.org/guides/public-path/
