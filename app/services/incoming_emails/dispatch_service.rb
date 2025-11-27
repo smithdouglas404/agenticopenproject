@@ -147,7 +147,7 @@ module IncomingEmails
     # If the user is not found, we will handle using the given unkown_user option
     def determine_actor
       if sender_email.present?
-        @user = User.find_by_mail(sender_email) # rubocop:disable Rails/DynamicFindBy
+        @user = User.find_by_mail(sender_email)
       end
 
       # If the user is still not set, we have to deal with an unkonwn user
@@ -202,7 +202,7 @@ module IncomingEmails
     end
 
     def ignore_mail?
-      mail_from_system? || ignored_by_header? || ignored_user?
+      mail_from_system? || ignored_by_header? || ignored_user? || mail_with_ics_attachment?
     end
 
     def mail_from_system?
@@ -247,6 +247,16 @@ module IncomingEmails
       unless @user.active?
         log "ignoring email from non-active user [#{@user.login}]"
         true
+      end
+    end
+
+    def mail_with_ics_attachment?
+      if email.attachments.any? { |a| a.content_type.start_with?("text/calendar") } ||
+          (email.multipart? && email.parts.any? { |part| part.content_type.start_with?("text/calendar") })
+        log "ignoring email with calendar attachment from [#{sender_email}]"
+        true
+      else
+        false
       end
     end
 
