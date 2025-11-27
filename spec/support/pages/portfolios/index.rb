@@ -158,6 +158,10 @@ module Pages
         page.find('[data-test-selector="portfolio-new-button"]').click
       end
 
+      def expect_hover_card(portfolio, options = {})
+        expect(page).to have_test_selector("op-portfolios--hover-card-#{portfolio.id}", **options)
+      end
+
       def sidebar_menu_items
         page.find_by_id("menu-sidebar").all(".op-submenu--item-title").map(&:text)
       end

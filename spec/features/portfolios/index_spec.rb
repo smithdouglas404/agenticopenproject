@@ -194,10 +194,8 @@ RSpec.describe "Portfolios", "index", :js, with_ee: :portfolio_management do # T
           portfolios_page.expect_status_bar_percentage(portfolio_a, "at_risk", "33.3", find_row: false)
 
           # The status bar shows a hover card on hover:
-          hover_card_selector = "op-portfolios--hover-card-#{portfolio_a.id}"
-          expect(page).not_to have_test_selector(hover_card_selector)
           page.find_test_selector("op-portfolios--sub-status-bar").hover
-          expect(page).to have_test_selector(hover_card_selector)
+          portfolios_page.expect_hover_card(portfolio_a, text: /3\ssub-items\s2\sOn track\s1\sAt risk/)
         end
 
         # Portfolio B has a child portfolio of its own:
@@ -216,14 +214,19 @@ RSpec.describe "Portfolios", "index", :js, with_ee: :portfolio_management do # T
         portfolios_page.expect_status_bar_percentage(portfolio_b, "not_set", "33.3")
       end
 
-      it "does not show a status summary if no sub-item has a status" do
+      it "does show an empty status bar if no sub-item has a status" do
         # Statusless sub-item:
         create(:project, parent: portfolio_favorited)
         portfolios_page.visit!
 
         portfolios_page.within_row(portfolio_favorited) do
           expect(page).to have_text("1 project")
-          expect(page).not_to have_test_selector("op-portfolios--sub-status-bar")
+          expect(page).to have_test_selector("op-portfolios--sub-status-bar")
+
+          portfolios_page.expect_status_bar_percentage(portfolio_favorited, "not_set", "100.0", find_row: false)
+
+          page.find_test_selector("op-portfolios--sub-status-bar").hover
+          portfolios_page.expect_hover_card(portfolio_favorited, text: /1\ssub-item\s1\sNot set/)
         end
       end
     end

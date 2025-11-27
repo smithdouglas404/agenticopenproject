@@ -45,7 +45,7 @@
                 }
               )
             ) do |bar|
-              sub_statuses_with_percentages.each do |status|
+              sub_status_bar_contents.each do |status|
                 status => { code:, percentage: }
 
                 status_label = t("js.grid.widgets.project_status.#{code || 'not_set'}")
