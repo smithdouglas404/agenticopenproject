@@ -148,8 +148,11 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
         let(:status_code_a) { nil }
         let(:status_code_b) { nil }
 
-        it "does not render a progress bar" do
-          expect(subject).not_to have_test_selector("op-portfolios--sub-status-bar")
+        it "renders an empty status bar" do
+          expect(subject).to have_test_selector("op-portfolios--sub-status-bar")
+          expect(subject).to have_test_selector("op-portfolios--status-not_set")
+          expect(subject).not_to have_test_selector("op-portfolios--status-#{status_code_a}")
+          expect(subject).not_to have_test_selector("op-portfolios--status-#{status_code_b}")
         end
       end
 

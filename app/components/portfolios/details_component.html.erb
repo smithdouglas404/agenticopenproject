@@ -45,7 +45,7 @@
                 }
               )
             ) do |bar|
-              sub_statuses_with_percentages.each do |status|
+              sub_status_bar_contents.each do |status|
                 status => { code:, percentage: }
 
                 status_label = t("js.grid.widgets.project_status.#{code || 'not_set'}")
@@ -191,8 +191,7 @@
           data: {
             hover_card_trigger_target: "card",
             test_selector: "op-portfolios--hover-card-#{portfolio.id}"
-          },
-          justify_content: :space_between
+          }
         ) do |popover|
           popover.with_column(mr: 3) do
             sub_item_count = sub_statuses_with_percentages.sum { |s| s[:count] }
