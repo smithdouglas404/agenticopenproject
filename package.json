@@ -24,7 +24,7 @@
   "dependencies": {
     "@blocknote/server-util": "^0.41.1",
     "@hocuspocus/server": "^3.4.0",
-    "op-blocknote-extensions": "https://github.com/opf/op-blocknote-extensions/releases/download/v0.0.9/op-blocknote-extensions-0.0.9.tgz",
+    "op-blocknote-extensions": "https://github.com/opf/op-blocknote-extensions/releases/download/v0.0.14/op-blocknote-extensions-0.0.14.tgz",
     "tsx": "^4.20.5"
   },
   "devDependencies": {

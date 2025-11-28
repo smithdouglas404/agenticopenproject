@@ -1,4 +1,4 @@
-import { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
+import { Document, onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import * as Y from "yjs";
 import { OpenProjectApi, createEditor } from "../../src/extensions/openProjectApi";
@@ -271,7 +271,7 @@ describe("OpenProjectApi", () => {
           resourceUrl: "https://test.api/api/v3/documents/121",
           readonly: false,
         },
-        document,
+        document: { ...document, connections: [] } as unknown as Document,
       } as onStoreDocumentPayload;
 
       const api = new OpenProjectApi();

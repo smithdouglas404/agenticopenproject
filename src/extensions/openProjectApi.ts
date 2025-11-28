@@ -144,7 +144,10 @@ export class OpenProjectApi implements Extension {
 
     if (!response.ok) {
       console.warn(`Error storing document: ${response.statusText}`);
+      return;
     }
+
+    data.document.connections.forEach(({ connection }) => connection.sendStateless("storeEvent"));
   }
 }
 
