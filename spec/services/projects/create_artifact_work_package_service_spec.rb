@@ -298,6 +298,30 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       end
     end
 
+    context "with required work package custom fields" do
+      shared_let(:required_wp_custom_field) do
+        create(:work_package_custom_field,
+               field_format: "string",
+               name: "Required Field",
+               is_required: true,
+               projects: [project],
+               types: [type])
+      end
+
+      it "bypasses custom field validation and creates the artifact work package" do
+        result = instance.call
+
+        expect(result).to be_success
+        expect(result.errors.full_messages).to be_empty
+        project = result.result
+        expect(project.project_creation_wizard_artifact_work_package_id).to be_present
+
+        artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+        expect(artifact_work_package).to be_persisted
+        expect(artifact_work_package.custom_value_for(required_wp_custom_field)&.value).to be_blank
+      end
+    end
+
     describe "notification email" do
       context "when confirmation email is enabled" do
         before do

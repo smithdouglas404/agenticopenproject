@@ -142,7 +142,7 @@ module Projects
       }
 
       create_params[:attachments] = [pdf_attachment] if store_attachment_locally?
-      WorkPackages::CreateService.new(user:).call(create_params)
+      WorkPackages::CreateService.new(user:, contract_options: { skip_custom_field_validation: true }).call(create_params)
     end
 
     def journal_notes
