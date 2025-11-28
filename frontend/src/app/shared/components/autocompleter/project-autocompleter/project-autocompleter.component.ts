@@ -142,7 +142,7 @@ export class ProjectAutocompleterComponent extends OpAutocompleterComponent<IPro
       return projects;
     }
 
-    const normalizedValue = (value || []);
+    const normalizedValue = (value ?? []);
     const arrayedValue = (Array.isArray(normalizedValue) ? normalizedValue : [normalizedValue]).map((p) => p.href || p.id);
     return projects.map((project) => {
       const isSelected = !!arrayedValue.find((selected) => selected === this.projectTracker(project));
@@ -177,7 +177,7 @@ export class ProjectAutocompleterComponent extends OpAutocompleterComponent<IPro
 
         filteredURL.searchParams.set('pageSize', params.pageSize?.toString() || '-1');
         filteredURL.searchParams.set('offset', params.offset?.toString() || '1');
-        filteredURL.searchParams.set('select', 'elements/id,elements/name,elements/identifier,elements/self,elements/ancestors,total,count,pageSize');
+        filteredURL.searchParams.set('select', 'elements/id,elements/name,elements/identifier,elements/self,elements/ancestors,elements/_type,total,count,pageSize');
 
         return this
           .http
@@ -193,6 +193,7 @@ export class ProjectAutocompleterComponent extends OpAutocompleterComponent<IPro
             id: project.id,
             href: project._links.self.href,
             name: project.name,
+            _type: project._type,
             disabled,
             disabledReason: (typeof this.disabledProjects[id] === 'string') ? this.disabledProjects[id] : '',
             ancestors: project._links.ancestors,

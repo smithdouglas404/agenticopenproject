@@ -104,7 +104,7 @@ ca:
     button_save: "Desa"
     button_settings: "Configuració"
     button_uncheck_all: "Desmarca-ho tot"
-    button_update: "Actualitza"
+    button_update: "Actualitzar"
     button_export-atom: "Descarregar Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Crear"
@@ -303,6 +303,7 @@ ca:
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Activar"
     label_assignee: "Assignat a"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Afegir una columna després"
     label_add_column_before: "Afegir una columna abans"
     label_add_columns: "Afegir una columna"
@@ -1126,6 +1127,7 @@ ca:
       current_project_and_all_descendants: "En aquest projecte + subprojectes"
       current_project: "En aquest projecte"
       recently_viewed: "Vist recentment"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "tots els projectes"
         project_and_subprojects: "i tots els subprojectes"
@@ -1162,6 +1164,11 @@ ca:
         does_not_match_search: "El projecte no coincideix amb la cerca."
       no_results: "Cap projecte s'ajusta a la teva cerca."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Base de referència"
       clear: "Esborra"

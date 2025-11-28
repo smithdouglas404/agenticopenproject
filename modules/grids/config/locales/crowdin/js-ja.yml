@@ -52,6 +52,7 @@ ja:
           title: 'ワークパッケージの一覧'
         work_packages_graph:
           title: 'ワークパッケージのグラフ'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'カレンダー'
         work_packages_overview:

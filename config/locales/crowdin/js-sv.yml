@@ -302,6 +302,7 @@ sv:
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Aktivera"
     label_assignee: "Tilldelad till"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Lägg till kolumn efter"
     label_add_column_before: "Lägg till kolumn före"
     label_add_columns: "Lägg till kolumn"
@@ -1125,6 +1126,7 @@ sv:
       current_project_and_all_descendants: "I detta projekt + delprojekt"
       current_project: "I detta projekt"
       recently_viewed: "Nyligen visade"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "alla projekt"
         project_and_subprojects: "och alla delprojekt"
@@ -1161,6 +1163,11 @@ sv:
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Baslinje"
       clear: "Rensa"

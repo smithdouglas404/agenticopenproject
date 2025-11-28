@@ -52,6 +52,7 @@ ca:
           title: 'Taula de paquets de treball'
         work_packages_graph:
           title: 'Gràfica de paquets de treball'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Calendari'
         work_packages_overview:

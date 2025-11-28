@@ -44,7 +44,7 @@ module Pages
         within_table do
           projects.each do |project|
             displayed_name = if archived
-                               "ARCHIVED #{project.name}"
+                               "#{project.name} (Archived)"
                              else
                                project.name
                              end

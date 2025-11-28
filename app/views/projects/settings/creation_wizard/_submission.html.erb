@@ -28,6 +28,6 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <div>
-  <h2>Request Submission</h2>
-  <!-- add stuff here -->
+  <%= render(Primer::Beta::Text.new(tag: :p, mb: 2)) { I18n.t("settings.project_initiation_request.submission.description") } %>
+  <%= render(Projects::Settings::CreationWizard::SubmissionFormComponent.new(project: @project)) %>
 </div>

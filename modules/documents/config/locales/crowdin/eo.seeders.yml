@@ -5,13 +5,6 @@
 eo:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Dokumentado
-        item_1:
-          name: Specifo
-        item_2:
-          name: Aliaj
       document_types:
         item_0:
           name: Note

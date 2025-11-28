@@ -119,7 +119,7 @@ uk:
   label_meeting_new_dynamic: "Нова одноразова нарада"
   label_meeting_new_recurring: "Нова повторювана нарада"
   label_meeting_create: "Створити нараду"
-  label_meeting_duplicate: "Duplicate meeting"
+  label_meeting_duplicate: "Дублювати нараду"
   label_meeting_edit: "Редагувати збори"
   label_meeting_agenda: "Порядок денний"
   label_meeting_minutes: "Хвилини"
@@ -131,8 +131,8 @@ uk:
   label_meeting_date_time: "Дата, час"
   label_meeting_date_and_time: "Дата й час"
   label_meeting_diff: "Відмінність"
-  label_meeting_send_updates: "Send email calendar invite and updates"
-  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
+  label_meeting_send_updates: "Надіслати запрошення та оновлення календаря електронною поштою"
+  label_meeting_send_updates_caption: "Надіслати електронні запрошення всім учасникам цієї наради"
   label_recurring_meeting: "Повторювана нарада"
   label_recurring_meeting_part_of: "Частина серії нарад"
   label_recurring_meeting_new: "Нова повторювана нарада"
@@ -140,7 +140,7 @@ uk:
   label_template: "Шаблон"
   label_recurring_meeting_view: "Переглянути серію нарад"
   label_recurring_meeting_create: "Відкрити"
-  label_recurring_meeting_duplicate: "Duplicate as a one-time meeting"
+  label_recurring_meeting_duplicate: "Дублювати як одноразову зустріч"
   label_recurring_meeting_cancel: "Скасувати це повторення"
   label_recurring_meeting_delete: "Видалити повторення"
   label_recurring_meeting_restore: "Відновити це повторення"
@@ -345,9 +345,9 @@ uk:
             Надсилання електронною поштою оновлень із календаря вимкнено. Якщо ви додасте нових учасників чи вилучите наявних, учасники не отримають листа з інформацією про це.
         onetime:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            Усі учасники отримають оновлені запрошення в календарі електронною поштою, коли ви додасте або видалите учасників.
           disabled: >
-            Participants will not receive an email informing them of changes to meeting date, time or participants.
+            Учасники не отримають електронного листа з повідомленням про зміни дати, часу чи учасників зустрічі.
         occurrence:
           enabled: >
             Надсилання електронною поштою оновлень із календаря ввімкнено для цієї серії нарад. Усі учасники отримають оновлені запрошення з календаря, що міститимуть інформацію про зміни, які ви вносите в цю нараду серії.
@@ -359,12 +359,12 @@ uk:
           disabled: >
             Надсилання електронною поштою оновлень із календаря вимкнено для цієї серії нарад. Учасники не отримають електронного листа з інформацією про зміни, які ви вносите в цей шаблон або окремі наради серії.
     presentation_mode:
-      title: "Presentation Mode"
-      button_present: "Present"
+      title: "Режим презентації"
+      button_present: "Презентувати"
       exit: "Exit presentation"
-      current_item: "Current item"
-      total_items: "%{current} of %{total}"
-      previous: "Previous"
+      current_item: "Поточний елемент"
+      total_items: "%{current} з %{total}"
+      previous: "Попереднє"
       next: "Next"
       no_items: "No agenda items"
       no_items_flash: "There are no agenda items to present."

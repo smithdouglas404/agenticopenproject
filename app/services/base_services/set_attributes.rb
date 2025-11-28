@@ -67,6 +67,8 @@ module BaseServices
     end
 
     def set_custom_values_to_validate(params)
+      return model.deactivate_custom_field_validations! if contract_options[:skip_custom_field_validation]
+
       custom_field_ids = custom_field_ids_from(params)
 
       # Only update custom_values_to_validate when custom field params are provided.

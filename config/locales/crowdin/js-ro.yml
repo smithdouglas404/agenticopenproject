@@ -104,7 +104,7 @@ ro:
     button_save: "Salvează"
     button_settings: "Setări"
     button_uncheck_all: "Deselectează tot"
-    button_update: "Actualizare"
+    button_update: "Actualizează"
     button_export-atom: "Descarcă Atom"
     button_generate_pdf: "Generează PDF"
     button_create: "Creează"
@@ -302,6 +302,7 @@ ro:
       success_message: 'URL-ul "%{name}" a fost copiat cu succes în clipboard-ul tău. Lipiți-l în clientul calendar pentru a finaliza abonamentul.'
     label_activate: "Activează"
     label_assignee: "Executant"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Adaugă coloană după"
     label_add_column_before: "Adaugă coloană înainte"
     label_add_columns: "Adaugă coloane"
@@ -1129,6 +1130,7 @@ ro:
       current_project_and_all_descendants: "In acest proiect + subproiecte"
       current_project: "În acest proiect"
       recently_viewed: "Vizualizate recent"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "toate proiectele"
         project_and_subprojects: "si toate subproiectele"
@@ -1165,6 +1167,11 @@ ro:
         does_not_match_search: "Proiectul nu corespunde criteriilor de căutare."
       no_results: "Niciun proiect nu corespunde criteriilor de căutare."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Referință"
       clear: "Șterge"

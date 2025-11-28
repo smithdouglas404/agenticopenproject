@@ -5,13 +5,6 @@
 tr:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Belgeleme
-        item_1:
-          name: Özellik
-        item_2:
-          name: Diğer
       document_types:
         item_0:
           name: Note

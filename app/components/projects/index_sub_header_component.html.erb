@@ -50,6 +50,9 @@
                 size: :medium
               ) do |item|
                 item.with_leading_visual_icon(icon: helpers.workspace_icon(new_type))
+                unless worspace_type_enterprise_feature_allowed?(new_type)
+                  item.with_trailing_visual_icon(icon: :"op-enterprise-addons", classes: "upsell-colored")
+                end
               end
             end
           end

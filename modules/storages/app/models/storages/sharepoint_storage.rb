@@ -42,10 +42,8 @@ module Storages
     store_attribute :provider_fields, :managed_drive_id, :string
     store_attribute :provider_fields, :managed_drive_name, :string
 
-    # For now SharePoint is visible only in tests.
-    # This is to prevent it from being shown in the UI, as it is not ready yet.
-    def self.visible?
-      OpenProject::FeatureDecisions.sharepoint_storage_active?
+    def self.allowed_by_enterprise_token?
+      EnterpriseToken.allows_to?(:one_drive_sharepoint_file_storage)
     end
 
     def self.short_provider_name = :sharepoint

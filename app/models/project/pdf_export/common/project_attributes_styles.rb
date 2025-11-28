@@ -41,6 +41,10 @@ module Project::PDFExport::Common::ProjectAttributesStyles
     resolve_margin(@styles.dig(:project, :markdown_margins))
   end
 
+  def project_attribute_value
+    resolve_font(@styles.dig(:project, :attribute_value) || {})
+  end
+
   def project_markdown_styling_yml
     resolve_markdown_styling(@styles.dig(:project, :markdown) || {})
   end

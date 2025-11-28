@@ -303,7 +303,7 @@ class PermittedParams
 
   def new_project
     params
-      .expect(project: %i[name parent_id workspace_type])
+      .expect(project: %i[name description parent_id workspace_type])
       .merge(custom_field_values(:project))
   end
 
@@ -460,6 +460,7 @@ class PermittedParams
           type
           attribute_name
           help_text
+          caption
         ),
         ldap_auth_source: %i(
           name
@@ -514,8 +515,7 @@ class PermittedParams
           :custom_field_section_id,
           :allow_non_open_versions,
           { custom_options_attributes: %i(id value default_value position) },
-          { type_ids: [] },
-          :role_id
+          { type_ids: [] }
         ],
         enumeration: %i(
           active

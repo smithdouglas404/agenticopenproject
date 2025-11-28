@@ -75,11 +75,15 @@ RSpec.describe "Create Document",
     end
   end
 
-  context "for classic documents" do
+  context "for classic documents", with_settings: { real_time_text_collaboration_enabled: false } do
     let(:editor) { Components::WysiwygEditor.new }
 
     it "creates a new document via `/projeects/:id/documents/new` route" do
-      visit new_project_document_path(project)
+      index_page.visit!
+
+      within_test_selector("documents-sub-header") do
+        click_on "Document"
+      end
 
       select document_types.second.name, from: "Type"
       fill_in "Title", with: "My classic document"

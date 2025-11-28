@@ -102,5 +102,11 @@ module Projects
 
       yield allowed_new_workspace_types
     end
+
+    def worspace_type_enterprise_feature_allowed?(workspace_type)
+      return EnterpriseToken.allows_to?(:portfolio_management) if workspace_type.in?(%w[portfolio program])
+
+      true
+    end
   end
 end

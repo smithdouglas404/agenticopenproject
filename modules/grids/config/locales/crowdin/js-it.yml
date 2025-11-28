@@ -52,6 +52,7 @@ it:
           title: 'Tabella delle macro-attività'
         work_packages_graph:
           title: 'Grafico delle macro-attività'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Calendario'
         work_packages_overview:

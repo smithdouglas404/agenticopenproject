@@ -38,23 +38,28 @@ See COPYRIGHT and LICENSE files for more details.
   )
 %>
 
-<%= error_messages_for "custom_field" %>
+<%= settings_primer_form_with(model: @custom_field, as: "custom_field", data: { turbo: false, controller: "admin--custom-field-role-assignment", "admin--custom-field-role-assignment-initial-role-value" => @custom_field.role_id, "admin--custom-field-role-assignment-custom-field-id-value" => @custom_field.id }, url: update_role_assignment_admin_settings_project_custom_field_path(@custom_field), method: :post) do |f| %>
+  <%= render(Primer::Beta::Text.new(tag: :p)) { I18n.t("custom_fields.admin.role_assignment.description") } %>
+  <%= render(Primer::Alpha::Banner.new(scheme: :warning, mb: 3, mt: 3)) { I18n.t("custom_fields.admin.role_assignment.warning") } %>
+  <%= render(Projects::Settings::CustomFieldRoleAssignmentForm.new(f)) %>
 
-<% content_controller "admin--custom-fields",
-                      "admin--custom-fields-format-value": @custom_field.field_format,
-                      "admin--custom-fields-format-config-value": OpenProject::CustomFieldFormatDependent.stimulus_config %>
+  <% if @custom_field_usages.any? %>
+    <%= render OpPrimer::InsetBoxComponent.new(mt: 3, display: :none, data: { "admin--custom-field-role-assignment-target": "previewHintBox" }) do
+          flex_layout do |box|
+            box.with_row do
+              render(Primer::Beta::Text.new(tag: :p)) do
+                I18n.t("custom_fields.admin.role_assignment.review_hint", user_count: pluralize(@custom_field_usages.count, User.model_name.singular, plural: User.model_name.plural))
+              end
+            end
 
-<%= labelled_tabular_form_for @custom_field, as: :custom_field,
-                                             url: admin_settings_project_custom_field_path(@custom_field),
-                                             html: { method: :put, id: "custom_field_form" } do |f| %>
-<%= render(OpPrimer::FlashComponent.new(scheme: :danger, icon: :stop)) { t(:warning_interlinking_custom_field_with_role_html) } %>
-<section class="form--section pt-3">
-  <div class="form--field">
-    <%= f.select :role_id,
-                 @assignable_roles.collect { |s| [s.name, s.id] },
-                 { include_blank: t("custom_fields.no_role_assigment"), container_class: "-slim" } %>
-    </div>
-</section>
-  <%= hidden_field_tag :back_url, role_assignment_admin_settings_project_custom_field_path(@custom_field) %>
-  <%= styled_button_tag t(:button_save), class: "-highlight -with-icon icon-checkmark" %>
+            box.with_row do
+              render(Primer::Beta::Button.new(mt: 3, data: { action: "click->admin--custom-field-role-assignment#showPreviewModal" }, "aria-label": t("custom_fields.admin.role_assignment.review_button"))) do
+                t("custom_fields.admin.role_assignment.review_button")
+              end
+            end
+          end
+        end %>
+  <% end %>
+
+  <%= render(Primer::Beta::Button.new(mt: 3, type: :submit, scheme: :primary, "aria-label": t(:button_save))) { t(:button_save) } %>
 <% end %>

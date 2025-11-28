@@ -162,6 +162,11 @@ si:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -185,12 +190,12 @@ si:
       title: "Quarantined attachments"
       error_cannot_act_self: "Cannot perform actions on your own uploaded files."
   attribute_help_texts:
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "මෙම මතය තුළ, ඔබට ගුණාංග දැක්ම සඳහා අභිරුචි උපකාරක පෙළ නිර්මාණය කළ හැකිය. නිර්වචනය කළ විට, මෙම පෙළ එහි අයත් ගුණාංගයට යාබදව ඇති උපකාරක නිරූපකය ක්ලික් කිරීමෙන් පෙන්විය හැකිය."
-    label_plural: "උපකාරක පෙළ ආරෝපණය කරන්න"
     show_preview: "පෙරදසුන පෙළ"
     add_new: "උපකාරක පෙළ එකතු කරන්න"
-    edit: "%{attribute_caption}සඳහා උපකාරක පෙළ සංස්කරණය කරන්න"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "Job experienced an error but is retrying. The error was: %{message}"
@@ -313,6 +318,25 @@ si:
           zero: no sub-items
           one: 1 sub-item
           other: "%{count} sub-items"
+      role_assignment:
+        title: Role Assignment
+        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
+        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
+        role_field_label: "Project Role"
+        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        review_hint: >
+          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
+        review_button: Review users and permissions
+        dialog:
+          title: "Overview of users and permissions"
+          change: Change
+          changes:
+            new_member: Will be added as a member
+            remove_member: Will be removed as a member
+            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
+            gain_role: Will gain role ‘%{new_role}’
+            lose_role: Will lose role ‘%{old_role}’
+            no_change: No changes
     text_add_new_custom_field: >
       ව්යාපෘතියකට නව අභිරුචි ක්ෂේත්ර එකතු කිරීම සඳහා ඔබ මුලින්ම මෙම ව්යාපෘතියට එකතු කිරීමට පෙර ඒවා නිර්මාණය කළ යුතුය.
     is_enabled_globally: "ගෝලීයව සබල කර ඇත"
@@ -323,6 +347,7 @@ si:
     reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    no_role_assigment: "No role assignment"
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
@@ -369,6 +394,7 @@ si:
       int?: "must be an integer."
       key?: "is missing."
       not_found: "not found."
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
@@ -432,6 +458,9 @@ si:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        one: "<strong>1</strong> sub-item"
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -448,12 +477,15 @@ si:
       work_package_categories: "Work packages: categories"
       work_package_file_links: "Work packages: file links"
       work_package_shares: "Work packages: shares"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Deletion has been scheduled and is performed in the background. You will be notified of the result."
       schedule_failed: "ව්යාපෘතිය මකා දැමිය නොහැක: %{errors}"
-      failed: "ව්යාපෘති මකාදැමීම %{name} අසාර්ථක වී ඇත"
-      failed_text: "ව්යාපෘතිය %{name} මකා දැමීමේ ඉල්ලීම අසාර්ථක වී ඇත. මෙම ව්යාපෘතිය සංරක්ෂණය කර ඇත."
-      completed: "ව්යාපෘතිය මකාදැමීම %{name} අවසන්"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "The request to delete project '%{name}' has been completed."
       completed_text_children: "Additionally, the following subprojects have been deleted:"
     index:
@@ -496,6 +528,16 @@ si:
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Change identifier
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Enable all"
         label_disable_all: "Disable all"
@@ -546,10 +588,19 @@ si:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "unavailable"
+        label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
-        label_request_submission: "Request submission"
-        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
     wizard:
@@ -557,8 +608,10 @@ si:
       sections: "Sections"
       title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "The modified list has been saved as a new list"
@@ -1021,18 +1074,12 @@ si:
     deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
-        other: 'පරිශීලකයා විසින් නිර්මාණය කරන ලද දත්ත (උදා: ඊමේල්, මනාපයන්, වැඩ පැකේජ, විකි ඇතුළත් කිරීම්) හැකිතාක් මකා දැමෙනු ඇත. කෙසේ වෙතත්, අනෙකුත් පරිශීලකයින්ගේ කාර්යයට බාධා නොකර වැඩ පැකේජ සහ විකි ඇතුළත් කිරීම් වැනි දත්ත මකා දැමිය නොහැකි බව සලකන්න. එබැවින් එවැනි දත්ත “මකාදැමූ පරිශීලකයා” නමින් ගිණුමකට නැවත පවරනු ලැබේ. මකාදැමූ සෑම ගිණුමකම දත්ත මෙම ගිණුමට නැවත පැවරෙන බැවින් පරිශීලකයා වෙනත් මකාදැමූ ගිණුමක දත්ත වලින් නිර්මාණය කළ දත්ත වෙන්කර හඳුනා ගැනීමට නොහැකි වනු ඇත.'
-        self: 'ඔබ නිර්මාණය කළ දත්ත වලින් (උදා: ඊමේල්, මනාපයන්, වැඩ පැකේජ, විකි ඇතුළත් කිරීම්) හැකි තරම් මකා දැමෙනු ඇත. කෙසේ වෙතත්, අනෙකුත් පරිශීලකයින්ගේ කාර්යයට බාධා නොකර වැඩ පැකේජ සහ විකි ඇතුළත් කිරීම් වැනි දත්ත මකා දැමිය නොහැකි බව සලකන්න. එබැවින් එවැනි දත්ත “මකාදැමූ පරිශීලකයා” නමින් ගිණුමකට නැවත පවරනු ලැබේ. මකාදැමූ සෑම ගිණුමකම දත්ත මෙම ගිණුමට නැවත පැවරෙන බැවින් ඔබ විසින් නිර්මාණය කරන ලද දත්ත වෙනත් මකාදැමූ ගිණුමක දත්ත වලින් වෙන්කර හඳුනා ගැනීමට නොහැකි වනු ඇත.'
-      heading: "ගිණුම මකන්න %{name}"
-      info:
-        other: "පරිශීලක ගිණුම මකා දැමීම ආපසු හැරවිය නොහැකි ක්රියාවකි."
-        self: "ඔබගේ පරිශීලක ගිණුම මකා දැමීම ආපසු හැරවිය නොහැකි ක්රියාවකි."
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "ගිණුම පද්ධතියෙන් මකා දැමෙනු ඇත. එමනිසා, පරිශීලකයාට ඔහුගේ වර්තමාන අක්තපත්ර සමඟ ලොග් වීමට තවදුරටත් නොහැකි වනු ඇත. ඔහුට/ඇයට මෙම යෙදුම ප්රදානය කරන මාර්ගයෙන් නැවත මෙම යෙදුම භාවිතා කරන්නෙකු වීමට තෝරා ගත හැකිය."
-        self: "ඔබගේ ගිණුම පද්ධතියෙන් මකා දැමෙනු ඇත. එමනිසා, ඔබේ වර්තමාන අක්තපත්ර සමඟ ලොග් වීමට ඔබට තවදුරටත් නොහැකි වනු ඇත. ඔබ නැවත මෙම යෙදුම භාවිතා කරන්නෙකු වීමට තෝරා ගන්නේ නම්, මෙම යෙදුම ලබා දෙන මාධ්යයන් භාවිතා කිරීමෙන් ඔබට එය කළ හැකිය."
-      login_verification:
-        other: "මකාදැමීම සත්යාපනය කිරීමට ලොගින් වන්න %{name} ඇතුල් කරන්න. ඉදිරිපත් කළ පසු, ඔබගේ මුරපදය තහවුරු කිරීමට ඔබෙන් අසනු ඇත."
-        self: "මකාදැමීම සත්යාපනය කිරීමට ඔබගේ පිවිසුම %{name} ඇතුලත් කරන්න. ඉදිරිපත් කළ පසු, ඔබගේ මුරපදය තහවුරු කිරීමට ඔබෙන් අසනු ඇත."
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       ඔබගේ ගිණුම තවමත් සක්රිය කර නොමැත. ඔබගේ ගිණුම සක්රිය කිරීම සඳහා, ඔබට ඊමේල් කළ සබැඳිය ක්ලික් කරන්න.
     error_inactive_manual_activation: >
@@ -1065,6 +1112,7 @@ si:
       attribute_help_text:
         attribute_name: "ගුණාංගය"
         help_text: "උපකාරක පෙළ"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIM clients"
       calculated_value_error:
@@ -1162,6 +1210,7 @@ si:
         identifier: "හඳුනාගැනීමේ"
         latest_activity_at: "නවතම ක්රියාකාරකම්"
         parent: "උප ව්යාපෘතිය"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "දෘශ්යතාව"
           true: "public"
@@ -1176,6 +1225,13 @@ si:
           off_track: "ධාවන පථය"
           finished: "Finished"
           discontinued: "Discontinued"
+        project_creation_wizard_assignee_custom_field: "Assignee when submitted"
+        project_creation_wizard_notification_text: "Notification text"
+        project_creation_wizard_send_confirmation_email: "Confirmation email"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Work package type"
+        template: "Template"
         templated: "Template project"
         templated_value:
           true: "marked as template"
@@ -1187,6 +1243,8 @@ si:
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "දිනය පරාසයක"
         definition: "Definition"
@@ -1296,6 +1354,7 @@ si:
         header_alerts: "Alerts"
         button_update_look_and_feel: "Update look and feel"
         button_update_alerts: "Update alerts"
+        button_update_user_information: "Update profile"
         comments_sorting: "Display work package activity sorted by"
         disable_keyboard_shortcuts: "Disable keyboard shortcuts"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1538,9 +1597,11 @@ si:
         project:
           archived_ancestor: "මෙම ව්යාපෘතියට සංරක්ෂිත මුතුන් මිත්තෙකු සිටී."
           foreign_wps_reference_version: "ව්යාපෘතියේ හෝ එහි පරම්පරාවෙන් පැවත එන නොවන ව්යාපෘති විමර්ශන අනුවාදවල වැඩ පැකේජ."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "You do not have the permissions required to archive all sub-projects. Please contact an administrator."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "වැඩ පැකේජ මගින් තවමත් භාවිතා වේ: %{types}"
             enabled_modules:
@@ -1712,8 +1773,7 @@ si:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "The work package is in a readonly status so its attributes cannot be changed."
@@ -1774,7 +1834,9 @@ si:
           other: "%{count} දෝෂ මෙම %{model} ගැලවීම වීම තහනම්"
     models:
       attachment: "ගොනුව"
-      attribute_help_text: "උපකාරය පෙළ ගුණාංග"
+      attribute_help_text:
+        one: "Attribute help text"
+        other: "Attribute help texts"
       auth_provider:
         one: "Authentication provider"
         other: "Authentication providers"
@@ -1833,6 +1895,11 @@ si:
       one: "Additionally, there was a problem with the following field:"
       other: "Additionally, there were problems with the following fields:"
     field_erroneous_label: "මෙම ක්ෂේත්රය වලංගු නොවේ: %{full_errors}\nකරුණාකර වලංගු අගයක් ඇතුළත් කරන්න."
+    messages:
+      must_be_template: "must be template"
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "created by %{user} on %{datetime}"
@@ -1961,6 +2028,7 @@ si:
     subject: "විෂය"
     slug: "Slug"
     summary: "සාරාංශය"
+    template: "Template"
     time_zone: "වේලා කලාපය"
     text: "පෙළ"
     title: "මාතෘකාව"
@@ -2133,7 +2201,9 @@ si:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "Use template"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "Copy from template"
     blank_template:
@@ -2141,10 +2211,12 @@ si:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -2321,6 +2393,7 @@ si:
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
       placeholder_users: Placeholder Users
+      portfolio_management: Portfolio management
       project_list_sharing: Project List Sharing
       readonly_work_packages: Readonly Work Packages
       scim_api: SCIM server API
@@ -2413,6 +2486,8 @@ si:
       internal_comments_inline:
         title: "Write internal comments only a small group can see"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -2696,6 +2771,7 @@ si:
       new_features:
         header: "නව විශේෂාංග සහ නිෂ්පාදන යාවත්කාලීන කිරීම් ගැන කියවන්න."
         learn_about: "Learn more about all new features"
+        missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
@@ -2799,7 +2875,7 @@ si:
         static_token_name: "API token"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:
@@ -2892,7 +2968,6 @@ si:
   label_add_column: "Add column"
   label_applied_status: "ව්යවහාරික තත්ත්වය"
   label_archive_project: "සංරක්ෂිත ව්යාපෘතිය"
-  label_artefact_export: "Artefact export"
   label_ascending: "නැගීම"
   label_assigned_to_me_work_packages: "මට පවරා ඇති වැඩ පැකේජ"
   label_associated_revisions: "ආශ්රිත සංශෝධන"
@@ -3158,7 +3233,8 @@ si:
   label_lock_user: "පරිශීලක අගුළු"
   label_logged_as: "ලෙස ලොගින් වී"
   label_login: "පුරනය වන්න"
-  label_custom_logo: "අභිරුචි ලාංඡනය"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Custom export logo"
   label_custom_export_cover: "Custom export cover background"
   label_custom_export_footer: "Custom export footer image"
@@ -3304,11 +3380,15 @@ si:
   label_project_attribute_manage_link: "Manage project attributes"
   label_project_count: "මුළු ව්යාපෘති සංඛ්යාව"
   label_project_copy_notifications: "ව්යාපෘති පිටපත තුළ විද්යුත් තැපැල් දැනුම්දීම් යවන්න"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "නවතම ව්යාපෘති"
   label_project_default_type: "හිස් වර්ගය ඉඩ"
   label_project_hierarchy: "ව්යාපෘති ධූරාවලිය"
   label_project_mappings: "ව්‍යාපෘති"
   label_project_new: "නව ව්යාපෘතිය"
+  label_project_initiation_request: "New project initiation request"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "ව්‍යාපෘති"
   label_project_list_plural: "Project lists"
   label_project_life_cycle: "Project life cycle"
@@ -3322,7 +3402,6 @@ si:
   label_project_view_all: "සියලුම ව්යාපෘති බලන්න"
   label_project_show_details: "ව්යාපෘති විස්තර පෙන්වන්න"
   label_project_hide_details: "ව්යාපෘති විස්තර සඟවන්න"
-  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -3410,6 +3489,7 @@ si:
   label_subproject: "උප ව්යාපෘතිය"
   label_subproject_new: "නව උප ව්යාපෘතිය"
   label_subproject_plural: "උප ව්යාපෘති"
+  label_subitems: "Subitems"
   label_subtask_plural: "උප කාර්යයන්"
   label_summary: "සාරාංශය"
   label_system: "පද්ධතිය"
@@ -3417,6 +3497,8 @@ si:
   label_table_of_contents: "අන්තර්ගත වගුව"
   label_tag: "ටැග"
   label_team_planner: "Team Planner"
+  label_template: "Template"
+  label_templates: "Templates"
   label_text: "දිගු පෙළ"
   label_this_month: "මෙම මාසය"
   label_this_week: "මේ සතියේ"
@@ -3829,6 +3911,9 @@ si:
   permission_add_project: "Create projects"
   permission_add_portfolios: "Create portfolios"
   permission_add_programs: "Create programs"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "ඇමුණුම් එකතු කරන්න"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"
@@ -3941,6 +4026,11 @@ si:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
   program:
     count:
       zero: "0 programs"
@@ -3975,6 +4065,7 @@ si:
       title: ව්යාපෘතියේ හඳුනා ගැනීම වෙනස් කරන්න
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Your project is being created from the selected template project. You will be notified by mail as soon as the project is available.
       use_template: "Use template"
@@ -4230,6 +4321,8 @@ si:
   setting_mail_handler_body_delimiter_regex: "මෙම regex ගැලපෙන ඊමේල් Truncate"
   setting_mail_handler_ignore_filenames: "නොසලකා හරින ලද තැපැල් ඇමුණුම්"
   setting_new_project_user_role_id: "ව්යාපෘතියක් නිර්මාණය කරන පරිපාලක නොවන පරිශීලකයෙකුට ලබා දී ඇති කාර්යභාරය"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "ක්රියාකාරී චරිත පන්ති"
   setting_password_count_former_banned: "නැවත භාවිතය සඳහා තහනම් කරන ලද මුරපද ගණන"
   setting_password_days_valid: "මුරපදය වෙනස් කිරීම බලාත්මක කිරීම සඳහා දින ගණන"
@@ -4374,18 +4467,62 @@ si:
       new:
         heading: "New attribute"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
       blankslate:
         title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
       disable_dialog:
         title: "Disable project initiation request"
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      name:
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
+      submission:
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "Project life cycle"
-      heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "එකතු කරන්න"
       label_add_description: "Add project phase definition"
       filter:
@@ -4459,7 +4596,7 @@ si:
   text_project_custom_field_html: >
     The Enterprise edition will add these additional add-ons for projects' custom fields: <br> <ul> <li><b>Add custom fields for projects to your Project list to create a project portfolio view</b></li> </ul>
   text_custom_logo_instructions: >
-    විනිවිද පෙනෙන පසුබිම මත සුදු ලාංඡනය නිර්දේශ කරනු ලැබේ. දෙකම මත හොඳම ප්රතිඵල සඳහා, සාම්ප්රදායික හා දෘෂ්ටි විතානයේ ප්රදර්ශනය, ඔබගේ රූපයේ මානයන් 60px විසින් 460px බවට වග බලා ගන්න.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     This is the logo that appears in your PDF exports. It needs to be a PNG or JPEG image file. A black or colored logo on transparent or white background is recommended.
   text_custom_export_cover_instructions: >
@@ -4847,6 +4984,8 @@ si:
       multiple_errors: "බහු ක්ෂේත්ර බාධක උල්ලං lated නය කර ඇත."
       unable_to_create_attachment: "ඇමුණුමක් නිර්මාණය කළ නොහැකි විය"
       unable_to_create_attachment_permissions: "ගොනු පද්ධති අවසර නොමැති නිසා ඇමුණුම සුරැකිය නොහැකි විය"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "සපයා ඇති සන්දර්භය සම්පතකට සබැඳියක් නොවේ."
         unsupported_context: "ලබා දී ඇති සම්පත සන්දර්භය ලෙස සහාය නොදක්වයි."
@@ -4861,8 +5000,10 @@ si:
     resources:
       schema: "යෝජනා ක්රමය"
     undisclosed:
-      parent: Undisclosed - The selected parent is invisible because of lacking permissions.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Undisclosed - The ancestor is invisible because of lacking permissions.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "පූර්ව අවසරය"

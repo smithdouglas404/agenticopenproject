@@ -111,7 +111,7 @@ ms:
       idp_sso_service_url: >
         URL titik akhir log masuk pembekal identiti.
       idp_slo_service_url: >
-        URL titik akhir log masuk pembekal identiti.
+        The URL of the identity provider logout endpoint.
       idp_cert: >
         Masukkan sijil awam berformat PEM X509 bagi pembekal identiti. Anda boleh memasukkan berbilang sijil dengan memisahkannya dengan baris baharu.
       name_identifier_format: >

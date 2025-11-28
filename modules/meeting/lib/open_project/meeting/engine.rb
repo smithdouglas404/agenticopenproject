@@ -166,11 +166,6 @@ module OpenProject::Meeting
       end
     end
 
-    initializer "openproject-meetings.feature_decisions" do
-      OpenProject::FeatureDecisions.add :meeting_ical_subscription,
-                                        description: "Allows users to subscribe to all of their meetings via iCalendar"
-    end
-
     activity_provider :meetings, class_name: "Activities::MeetingActivityProvider", default: false
 
     patches [:Project]

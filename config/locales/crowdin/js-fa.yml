@@ -303,6 +303,7 @@ fa:
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Activate"
     label_assignee: "نماینده"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Add column after"
     label_add_column_before: "افزودن ستون قبل از"
     label_add_columns: "افزودن ستون ها"
@@ -1126,6 +1127,7 @@ fa:
       current_project_and_all_descendants: "In this project + subprojects"
       current_project: "در این پروژه"
       recently_viewed: "Recently viewed"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "all projects"
         project_and_subprojects: "and all subprojects"
@@ -1162,6 +1164,11 @@ fa:
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Baseline"
       clear: "پاکسازی"

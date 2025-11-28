@@ -2,10 +2,13 @@ ja:
   grids:
     label_widget_in_grid: "グリッド %{grid_name} に含まれるウィジェット"
     widgets:
+      empty: "This widget is currently empty."
+      not_available: "This widget is not available."
       subitems:
         title: "Subitems"
         no_results: "There are no visible children."
         view_all_subitems: "View all subitems"
+        button_text: "Subitem"
       members:
         title: "Members"
         no_results: "表示するメンバーはありません。"

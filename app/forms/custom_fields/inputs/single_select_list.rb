@@ -57,7 +57,7 @@ class CustomFields::Inputs::SingleSelectList < CustomFields::Inputs::Base::Autoc
     when "hierarchy", "weighted_item_list"
       hierarchical_list_items.map do |item|
         {
-          label: item.ancestry_path,
+          label: item.ancestry_path(include_shorts_and_weights: true),
           value: item.id,
           selected: item.id == @custom_value.value&.to_i
         }

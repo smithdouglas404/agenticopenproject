@@ -43,7 +43,7 @@ module Projects::Concerns
 
       set_default_role(new_project) unless user.admin?
       disable_custom_fields_with_empty_values(new_project)
-      notify_project_created(new_project)
+      notify_project_created(new_project) if new_project.persisted?
 
       super
     end
@@ -76,6 +76,12 @@ module Projects::Concerns
         OpenProject::Events::PROJECT_CREATED,
         project: new_project
       )
+
+      send_project_creation_email(new_project) if Setting.new_project_send_confirmation_email?
+    end
+
+    def send_project_creation_email(new_project)
+      ProjectMailer.project_created(new_project, user:).deliver_later
     end
 
     def disable_custom_fields_with_empty_values(new_project)

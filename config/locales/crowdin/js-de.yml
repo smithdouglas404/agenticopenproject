@@ -138,7 +138,7 @@ de:
     description_available_columns: "Verfügbare Spalten"
     description_current_position: "Sie sind hier: "
     description_select_work_package: "Arbeitspaket #%{id} auswählen"
-    description_subwork_package: "Kind von Arbeitspaket #%{id}"
+    description_subwork_package: "Unteraufgabe von Arbeitspaket #%{id}"
     editor:
       revisions: "Lokale Änderungen anzeigen"
       no_revisions: "Keine lokalen Änderungen gefunden"
@@ -296,12 +296,13 @@ de:
       warning: "Bitte teilen Sie diese URL nicht mit anderen Benutzern. Jeder mit diesem Link kann die Arbeitspaket-Details ohne Konto oder Passwort anzeigen."
       token_name_label: "Wo werden Sie diesen Kalender nutzen?"
       token_name_placeholder: 'Geben sie einen Namen ein (z.B. "Telefon")'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
+      token_name_description_text: 'Wenn Sie diesen Kalender auf mehreren Geräten abonnieren, wird Ihnen dieser Name helfen, zwischen diesen in der Liste der <a href="%{myAccessTokensUrl}", target="_blank">Zugriffstoken</a> zu unterscheiden.'
       copy_url_label: "URL kopieren"
       ical_generation_error_text: "Beim Generieren der Kalender-URL ist ein Fehler aufgetreten."
       success_message: 'Die URL "%{name}" wurde erfolgreich in Ihre Zwischenablage kopiert. Fügen Sie sie in Ihren Kalender-Client ein, um das Abonnement abzuschließen.'
     label_activate: "Aktiviere"
     label_assignee: "Zugewiesen an"
+    label_assignee_alt_text: "Dieses Arbeitspaket wird %{name} zugewiesen"
     label_add_column_after: "Spalte danach hinzufügen"
     label_add_column_before: "Spalte davor hinzufügen"
     label_add_columns: "Spalte hinzufügen"
@@ -451,7 +452,7 @@ de:
     label_total_progress: "%{percent}% Gesamtfortschritt"
     label_total_amount: "Gesamt: %{amount}"
     label_updated_on: "aktualisiert am"
-    label_value_derived_from_children: "(aggregierter Wert von Kindelementen)"
+    label_value_derived_from_children: "(aggregierter Wert von Unteraufgaben)"
     label_children_derived_duration: "Aggregierte Dauer der Unteraufgaben"
     label_warning: "Warnung"
     label_work_package: "Arbeitspaket"
@@ -863,7 +864,7 @@ de:
         title: "Neues Arbeitspaket"
         header: "Neu: %{type}"
         header_no_type: "Neues Arbeitspaket (Typ noch nicht gesetzt)"
-        header_with_parent: "Neu: %{type} (Kind von %{parent_type} #%{id})"
+        header_with_parent: "Neu: %{type} (Unteraufgabe von %{parent_type} #%{id})"
         button: "Erstellen"
       duplicate:
         title: "Arbeitspaket duplizieren"
@@ -1060,7 +1061,7 @@ de:
         single_text: "Sind Sie sicher, dass Sie das Arbeitspaket löschen möchten?"
         bulk_text: "Sind Sie sicher, dass Sie die folgenden %{label} löschen möchten?"
         has_children: "Dieses Arbeitspaket hat %{childUnits}:"
-        confirm_deletion_children: "Ich bestätige, dass alle untergordneten Elemente der hier aufgeführten Arbeitspakete rekursiv entfernt werden."
+        confirm_deletion_children: "Ich bestätige, dass alle Unteraufgaben der hier aufgeführten Arbeitspakete rekursiv entfernt werden."
         deletes_children: "Alle Unteraufgaben und deren Nachkommen werden auch rekursiv gelöscht."
       destroy_time_entry:
         title: "Löschen der Zeitbuchung bestätigen"
@@ -1125,6 +1126,7 @@ de:
       current_project_and_all_descendants: "In diesem Projekt + Unterprojekten"
       current_project: "In diesem Projekt"
       recently_viewed: "Vor Kurzem angesehen"
+      search_placeholder_expanded: "Suchen Sie Arbeitspakete nach Thema, Projekt, Typ, Status oder ID"
       title:
         all_projects: "alle Projekte"
         project_and_subprojects: "und alle Unterprojekte"
@@ -1161,6 +1163,11 @@ de:
         does_not_match_search: "Projekt entspricht nicht den Suchkriterien."
       no_results: "Kein Projekt entspricht Ihren Suchkriterien."
       no_favorite_results: "Kein favorisiertes Projekt entspricht Ihren Suchkriterien."
+    include_workspaces:
+      search_placeholder: "Suchen..."
+      types:
+        program: "Programm"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Grundlinie"
       clear: "Zurücksetzen"

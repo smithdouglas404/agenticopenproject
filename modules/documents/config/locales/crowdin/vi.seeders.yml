@@ -5,13 +5,6 @@
 vi:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Tài liệu
-        item_1:
-          name: Đặc điểm kỹ thuật
-        item_2:
-          name: Khác
       document_types:
         item_0:
           name: Note

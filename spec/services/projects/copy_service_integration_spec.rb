@@ -398,6 +398,28 @@ RSpec.describe(
       # rubocop:enable RSpec/ExampleLength
       # rubocop:enable RSpec/MultipleExpectations
 
+      context "with project_creation_wizard_artifact_export_storage set" do
+        before do
+          source.project_creation_wizard_artifact_export_storage = source_automatic_project_storage.id.to_s
+          source.save!
+        end
+
+        it "updates the reference to the copied project storage" do
+          expect(subject).to be_success
+
+          automatic_project_storage_copy = project_copy.project_storages.find_by(storage: storage1)
+          expect(project_copy.project_creation_wizard_artifact_export_storage).to eq(automatic_project_storage_copy.id.to_s)
+          expect(project_copy.project_creation_wizard_artifact_export_storage).not_to eq(source.project_creation_wizard_artifact_export_storage)
+        end
+      end
+
+      context "without project_creation_wizard_artifact_export_storage set" do
+        it "does not set project_creation_wizard_artifact_export_storage in the copy" do
+          expect(subject).to be_success
+          expect(project_copy.project_creation_wizard_artifact_export_storage).to be_nil
+        end
+      end
+
       it_behaves_like "copies public attribute"
       it_behaves_like "copies custom fields"
     end

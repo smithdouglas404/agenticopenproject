@@ -51,7 +51,10 @@ properties:
       actor:
         $ref: './user_model.yml'
       project:
-        $ref: './project_model.yml'
+        oneOf:
+          - $ref: './project_model.yml'
+          - $ref: './program_model.yml'
+          - $ref: './portfolio_model.yml'
       activity:
         $ref: './activity_model.yml'
       resource:
@@ -88,9 +91,9 @@ properties:
         allOf:
           - "$ref": "./link.yml"
           - description: |-
-              The project the notification originated in
+              The workspace the notification originated in
               
-              **Resource**: Project
+              **Resource**: Workspace
       actor:
         allOf:
           - "$ref": "./link.yml"

@@ -29,16 +29,20 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   component_wrapper do
-    settings_primer_form_with(
+    primer_form_with(
       url: new_workspace_path,
       method: :get,
-      data: {
-        turbo_frame: Projects::NewComponent.wrapper_key,
-        controller: "auto-submit",
-        auto_submit_delay_value: 0
-      }
+      html: { id: "project-create-form" }
     ) do |f|
-      render Projects::TemplateSelectForm.new(f, template_id:, parent_id:, workspace_type: project.workspace_type, current_user:)
+      flex_layout do |container|
+        container.with_row(mb: 3) do
+          render Projects::TemplateSelectForm.new(f, template_id:, parent_id:, workspace_type: project.workspace_type, current_user:)
+        end
+
+        container.with_row do
+          render Projects::StepForm.new(f, step: 2)
+        end
+      end
     end
   end
 %>

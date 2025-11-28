@@ -5,13 +5,6 @@
 zh-CN:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: 文档
-        item_1:
-          name: 技术规范
-        item_2:
-          name: 其他
       document_types:
         item_0:
           name: 笔记

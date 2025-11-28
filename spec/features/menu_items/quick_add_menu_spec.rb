@@ -68,7 +68,11 @@ RSpec.describe "Quick-add menu", :js do
         quick_add.click_link "Project"
         expect(page).to have_current_path new_project_path(parent_id: project.id)
 
-        field.expect_selected project.name
+        # Step 1: Select workspace type (blank project)
+        click_on "Continue"
+
+        # Step 2: Project details - Parent field is not visible here
+        field.expect_not_visible
       end
     end
   end

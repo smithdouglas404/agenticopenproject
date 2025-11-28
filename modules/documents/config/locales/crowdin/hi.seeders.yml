@@ -5,13 +5,6 @@
 hi:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Documentation
-        item_1:
-          name: विनिर्देश
-        item_2:
-          name: अन्य
       document_types:
         item_0:
           name: Note

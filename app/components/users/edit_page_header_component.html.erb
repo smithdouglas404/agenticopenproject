@@ -88,6 +88,7 @@ See COPYRIGHT and LICENSE files for more details.
           mobile_label: t(:button_delete),
           size: :medium,
           href: deletion_info_user_path(@user),
+          data: { controller: "async-dialog" },
           aria: { label: I18n.t(:button_delete) },
           title: I18n.t(:button_delete)
         ) do |button|

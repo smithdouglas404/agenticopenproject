@@ -5,23 +5,16 @@
 fr:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Documentation
-        item_1:
-          name: Spécification
-        item_2:
-          name: Autre
       document_types:
         item_0:
           name: Note
         item_1:
-          name: Idea
+          name: Idée
         item_2:
-          name: Proposal
+          name: Proposition
         item_3:
-          name: Specification
+          name: Spécification
         item_4:
-          name: Report
+          name: Rapport
         item_5:
           name: Documentation

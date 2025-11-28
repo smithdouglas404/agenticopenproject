@@ -5,23 +5,16 @@
 uk:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Документація
-        item_1:
-          name: Специфікація
-        item_2:
-          name: Інше
       document_types:
         item_0:
-          name: Note
+          name: Примітка
         item_1:
-          name: Idea
+          name: Ідея
         item_2:
-          name: Proposal
+          name: Пропозиція
         item_3:
-          name: Specification
+          name: Специфікація
         item_4:
-          name: Report
+          name: Звітувати
         item_5:
-          name: Documentation
+          name: Документація

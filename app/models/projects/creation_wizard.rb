@@ -23,15 +23,34 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
 module Projects::CreationWizard
+  ARTIFACT_NAME_OPTIONS = %w[project_creation_wizard project_initiation_request project_mandate].freeze
+  DEFAULT_ARTIFACT_NAME_OPTION = "project_creation_wizard"
+
   extend ActiveSupport::Concern
 
   included do
     store_attribute :settings, :project_creation_wizard_enabled, :boolean
+    store_attribute :settings, :project_creation_wizard_artifact_name, :string
+    store_attribute :settings, :project_creation_wizard_work_package_type_id, :integer
+    store_attribute :settings, :project_creation_wizard_status_when_submitted_id, :integer
+    store_attribute :settings, :project_creation_wizard_send_confirmation_email, :boolean
+    store_attribute :settings, :project_creation_wizard_assignee_custom_field_id, :integer
+    store_attribute :settings, :project_creation_wizard_notification_text, :string
+    store_attribute :settings, :project_creation_wizard_work_package_comment, :string
+    store_attribute :settings, :project_creation_wizard_artifact_work_package_id, :integer
+    store_attribute :settings, :project_creation_wizard_artifact_export_type, :string, default: "attachment"
+    store_attribute :settings, :project_creation_wizard_artifact_export_storage, :string
+
+    # The store_attribute default cannot be used here, because the default is not returned
+    # when the JSON defintion is present but it's nil.
+    def project_creation_wizard_artifact_name
+      super.presence || DEFAULT_ARTIFACT_NAME_OPTION
+    end
   end
 end

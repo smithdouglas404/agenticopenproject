@@ -573,6 +573,10 @@ module Settings
         description: "Additional allowed host names for the application.",
         default: []
       },
+      real_time_text_collaboration_enabled: {
+        description: "Enable real-time collaborative editing of text fields using BlockNoteJS and Hocuspocus server.",
+        default: true
+      },
       collaborative_editing_hocuspocus_url: {
         format: :string,
         default: nil,
@@ -580,6 +584,14 @@ module Settings
         default_by_env: {
           development: "wss://hocuspocus.local"
         }
+      },
+      collaborative_editing_hocuspocus_secret: {
+        format: :string,
+        default: nil,
+        default_by_env: {
+          development: "secret12345"
+        },
+        description: "The secret used for generating access tokens to access documents on hocuspocus server."
       },
       hours_per_day: {
         description: "This will define what is considered a “day” when displaying duration in a more natural way " \
@@ -731,6 +743,14 @@ module Settings
         format: :integer,
         default: nil,
         allowed: -> { Role.pluck(:id) }
+      },
+      new_project_send_confirmation_email: {
+        format: :boolean,
+        default: false
+      },
+      new_project_notification_text: {
+        format: :string,
+        default: ""
       },
       notifications_hidden: {
         default: false

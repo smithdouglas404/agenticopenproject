@@ -303,6 +303,7 @@ lt:
       success_message: 'URL „%{name}“ buvo sėkmingai nukopijuotas į jūsų iškarpinę. Įkelkite jį į jūsų kalendoriaus klientą, kad baigtumėte prenumeratą.'
     label_activate: "Aktyvuoti"
     label_assignee: "Paskirtas"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Pridėti stulpelį po"
     label_add_column_before: "Pridėti stulpelį prieš"
     label_add_columns: "Pridėti stulpelių"
@@ -1134,6 +1135,7 @@ lt:
       current_project_and_all_descendants: "Šiame projekte + subprojektuose"
       current_project: "Šiame projekte"
       recently_viewed: "Neseniai žiūrėtos"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "visi projektai"
         project_and_subprojects: "ir visi subprojektai"
@@ -1170,6 +1172,11 @@ lt:
         does_not_match_search: "Projektas neatitinka paieškos kriterijaus."
       no_results: "Nei vienas projektas neatitinka jūsų paieškos kriterijaus."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Bazinė linija"
       clear: "Išvalyti"

@@ -28,16 +28,23 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 <% html_title(t(:label_portfolio_plural)) -%>
 <div class="portfolios-page">
-  <%= render(
-        Portfolios::IndexPageHeaderComponent.new(
-          query:,
-          current_user:,
-          params:
-        )
-      ) %>
-  <%= render(Portfolios::IndexSubHeaderComponent.new(query:, current_user:, disable_buttons: false)) %>
-  <%= render Portfolios::IndexComponent.new(
+  <%=
+    render(
+      Portfolios::IndexPageHeaderComponent.new(
         query:,
-        current_user:
-      ) %>
+        current_user:,
+        params:
+      )
+    )
+  %>
+  <%=
+    with_enterprise_banner_guard(
+      :portfolio_management,
+      variant: :large,
+      image: "enterprise/portfolio-management.png"
+    ) do
+  %>
+    <%= render Portfolios::IndexSubHeaderComponent.new(query:, current_user:, disable_buttons: false) %>
+    <%= render Portfolios::IndexComponent.new(query:, current_user:) %>
+  <% end %>
 </div>

@@ -55,6 +55,12 @@ class Project < ApplicationRecord
     portfolio: "portfolio"
   }, validate: true
 
+  ALLOWED_PARENT_WORKSPACE_TYPES = {
+    project: %i[portfolio program project],
+    program: %i[portfolio],
+    portfolio: %i[]
+  }.with_indifferent_access
+
   has_many :members, -> {
     # TODO: check whether this should
     # remain to be limited to User only
@@ -103,6 +109,17 @@ class Project < ApplicationRecord
            inverse_of: :project
 
   has_many :recurring_meetings, dependent: :destroy
+
+  belongs_to :template, class_name: "Project", optional: true
+
+  has_many :templated_projects,
+           class_name: "Project",
+           foreign_key: "template_id",
+           inverse_of: :template,
+           dependent: nil
+
+  has_many :subproject_template_assignments,
+           dependent: :delete_all
 
   accepts_nested_attributes_for :available_phases
   validates_associated :available_phases, on: :saving_phases
@@ -215,6 +232,7 @@ class Project < ApplicationRecord
   scope :archived, -> { where(active: false) }
   scope :with_member, ->(user = User.current) { where(id: user.memberships.select(:project_id)) }
   scope :without_member, ->(user = User.current) { where.not(id: user.memberships.select(:project_id)) }
+  scope :workspace_type, ->(workspace_type) { workspace_types.key?(workspace_type) ? where(workspace_type:) : none }
   scope :templated, -> { where(templated: true) }
 
   scopes :activated_time_activity,

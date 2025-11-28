@@ -42,7 +42,8 @@ require_relative "../../lib_static/open_project/feature_decisions"
 #   end
 
 OpenProject::FeatureDecisions.add :built_in_oauth_applications,
-                                  description: "Allows the display and use of built-in OAuth applications."
+                                  description: "Allows the display and use of built-in OAuth applications.",
+                                  force_active: true
 
 OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   description: "Allows the use of calculated values as a project attribute.",
@@ -67,7 +68,12 @@ OpenProject::FeatureDecisions.add :minutes_styling_meeting_pdf,
                                                "See #65124 for details."
 
 OpenProject::FeatureDecisions.add :portfolio_models,
-                                  description: "Enables the creation and management of portfolio and program work spaces."
+                                  description: "Enables the creation and management of portfolio and program work spaces.",
+                                  force_active: true
+
+OpenProject::FeatureDecisions.add :create_from_template_permissions,
+                                  description: "Enables the currently unused " \
+                                               '"Create Project, Portfolio, Program from template" permission.'
 
 OpenProject::FeatureDecisions.add :new_project_overview,
                                   description: "Enables the new project overview experience.",
@@ -80,4 +86,5 @@ OpenProject::FeatureDecisions.add :project_initiation,
                                   description: "Activate the project creation and initiation wizard"
 
 OpenProject::FeatureDecisions.add :meetings_presentation_mode,
-                                  description: "Enables presentation mode for meetings."
+                                  description: "Enables presentation mode for meetings.",
+                                  force_active: true

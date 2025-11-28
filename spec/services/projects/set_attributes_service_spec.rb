@@ -37,7 +37,7 @@ RSpec.describe Projects::SetAttributesService, type: :model do
 
     allow(contract)
       .to receive(:new)
-      .with(project, user, options: {})
+      .with(project, user, options: contract_options)
       .and_return(contract_instance)
 
     contract
@@ -50,10 +50,12 @@ RSpec.describe Projects::SetAttributesService, type: :model do
     instance_double(ActiveModel::Errors)
   end
   let(:project_valid) { true }
+  let(:contract_options) { {} }
   let(:instance) do
     described_class.new(user:,
                         model: project,
-                        contract_class:)
+                        contract_class:,
+                        contract_options:)
   end
   let(:call_attributes) { {} }
   let(:project) do
@@ -308,6 +310,47 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           end
 
           include_examples "setting status attributes"
+        end
+      end
+    end
+
+    context "with a required custom field" do
+      shared_let(:required_custom_field) { create(:text_project_custom_field, is_required: true) }
+      shared_let(:call_attributes) { { custom_field_values: { required_custom_field.id => "Provided value" } } }
+
+      context "when skip_custom_field_validation is true" do
+        let(:contract_options) { { skip_custom_field_validation: true } }
+        let(:project) { create(:project) }
+
+        it "deactivates custom field validations" do
+          allow(project).to receive(:deactivate_custom_field_validations!).and_call_original
+          subject
+
+          expect(project).to have_received(:deactivate_custom_field_validations!)
+        end
+
+        it "clears the custom values to validate" do
+          subject
+
+          expect(subject.result.custom_values_to_validate).to be_empty
+        end
+      end
+
+      context "when skip_custom_field_validation is false" do
+        let(:contract_options) { { skip_custom_field_validation: false } }
+        let(:project) { create(:project) }
+
+        it "does not deactivate custom field validations" do
+          allow(project).to receive(:deactivate_custom_field_validations!).and_call_original
+          subject
+
+          expect(project).not_to have_received(:deactivate_custom_field_validations!)
+        end
+
+        it "keeps the custom values to validate" do
+          custom_field_ids = subject.result.custom_values_to_validate.map(&:custom_field_id).uniq
+
+          expect(custom_field_ids).to contain_exactly(required_custom_field.id)
         end
       end
     end

@@ -41,7 +41,8 @@ Redmine::MenuManager.map :top_menu do |menu|
                 (User.current.logged? || !Setting.login_required?) &&
                 (User.current.allowed_globally?(:add_portfolios) ||
                   Project.portfolio.allowed_to(User.current, :view_project).any?)
-            }
+            },
+            enterprise_feature: :portfolio_management
 
   # projects menu will be added by
   # Redmine::MenuManager::TopMenuHelper#render_projects_top_menu_node
@@ -200,10 +201,12 @@ Redmine::MenuManager.map :global_menu do |menu|
                 (User.current.logged? || !Setting.login_required?) &&
                 (User.current.allowed_globally?(:add_portfolios) ||
                   Project.portfolio.allowed_to(User.current, :view_project).any?)
-            }
+            },
+            enterprise_feature: :portfolio_management
 
   menu.push :portfolios_query_select,
             { controller: "/portfolios", action: "index" },
+            if: ->(_) { EnterpriseToken.allows_to?(:portfolio_management) },
             parent: :portfolios,
             partial: "portfolios/menus/menu"
 
@@ -270,8 +273,8 @@ end
 Redmine::MenuManager.map :my_menu do |menu|
   menu.push :account,
             { controller: "/my", action: "account" },
-            caption: :label_profile,
-            icon: "person-fill"
+            caption: :label_account,
+            icon: "person"
   menu.push :locale,
             { controller: "/my", action: "locale" },
             caption: :label_locale,
@@ -301,13 +304,6 @@ Redmine::MenuManager.map :my_menu do |menu|
             { controller: "/my", action: "reminders" },
             caption: I18n.t("js.reminders.settings.title"),
             icon: "unread"
-
-  menu.push :delete_account, :delete_my_account_info_path,
-            caption: I18n.t("account.delete"),
-            param: :user_id,
-            if: ->(_) { Setting.users_deletable_by_self? },
-            last: :delete_account,
-            icon: "trash"
 end
 
 Redmine::MenuManager.map :admin_menu do |menu|
@@ -470,7 +466,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
 
   menu.push :attribute_help_texts,
             { controller: "/attribute_help_texts" },
-            caption: :"attribute_help_texts.label_plural",
+            caption: AttributeHelpText.human_plural_model_name,
             icon: "question",
             if: ->(_) { User.current.allowed_globally?(:edit_attribute_help_texts) }
 
@@ -727,10 +723,11 @@ Redmine::MenuManager.map :project_menu do |menu|
     },
     project_custom_fields: { caption: :label_project_attributes_plural },
     creation_wizard: {
-      caption: :label_project_initiation_request,
+      caption: :"settings.project_initiation_request.name.options.project_initiation_request",
       if: ->(_) { OpenProject::FeatureDecisions.project_initiation_active? }
     },
     modules: { caption: :label_module_plural },
+    subitems: { caption: :label_subitems },
     work_packages: {
       caption: :label_work_package_plural,
       if: ->(project) {

@@ -31,6 +31,9 @@
               size="small"
             ></svg>
           }
+          @if (portfolioModelsEnabled) {
+            <span class="color-fg-muted" [innerHTML]="workspaceTypeIconWithLabel(project)"></span>
+          }
         </span>
         @if (currentProjectService.id === project.id.toString()) {
           <a
@@ -54,7 +57,12 @@
           <span
             class="spot-list--item-title spot-list--item-title_ellipse-text"
             data-test-selector="op-header-project-select--item-disabled-title"
-          >{{ project.name }}</span>
+          >
+            <span>{{ project.name }}</span>
+            @if (portfolioModelsEnabled) {
+              <span class="color-fg-muted" [innerHTML]="workspaceTypeIconWithLabel(project)"></span>
+            }
+          </span>
         </span>
       }
       @if (project.children.length) {

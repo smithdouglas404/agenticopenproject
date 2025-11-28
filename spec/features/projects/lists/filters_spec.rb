@@ -175,9 +175,9 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
 
       # Test visibility of 'more' menu list items
       projects_page.activate_menu_of(parent_project) do |menu|
-        expect(menu).to have_text("Add to favorites")
         expect(menu).to have_text("Unarchive")
         expect(menu).to have_text("Delete")
+        expect(menu).to have_no_text("Add to favorites")
         expect(menu).to have_no_text("Archive")
         expect(menu).to have_no_text("Copy")
         expect(menu).to have_no_text("Settings")

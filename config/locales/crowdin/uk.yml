@@ -162,6 +162,11 @@ uk:
         expired: "Термін дії минув %{date}"
         revoked: "Анульовано %{date}"
         title: "Таблиця маркерів доступу"
+    settings:
+      new_project:
+        project_creation: "Створення проєкту"
+        notification_text_default: >
+          <p>Вітаємо,</p> <p>Новий проєкт створено: projectValue:name</p> <p>Дякуємо</p>
     workflows:
       tabs:
         default_transitions: "Стандартні переходи"
@@ -185,12 +190,12 @@ uk:
       title: "Вкладення на карантині"
       error_cannot_act_self: "Неможливо виконати дії з файлами, вивантаженими вами."
   attribute_help_texts:
-    note_public: "Будь який доданий вами текст чи зображення видимі для усіх активних користувачів!"
+    caption: "Ця коротка версія буде показуватися як заголовок атрибута."
+    note_public: "Будь-який текст та зображення, додані до цього поля, є загальнодоступними для всіх зареєстрованих користувачів."
     text_overview: "У цьому поданні можна створювати спеціальні тексти довідки для перегляду атрибутів. Коли вони визначені, ці тексти можна показувати, натиснувши піктограму довідки поруч з її атрибутом."
-    label_plural: "Тексти довідки атрибутів"
     show_preview: "Попередній перегляд тексту"
     add_new: "Додати текст довідки"
-    edit: "Редагувати текст довідки для %{attribute_caption}"
+    edit_field_name: "Редагувати текст довідки для%{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "Виконується повторний запуск завдання, оскільки попередня спроба завершилася такою помилкою: %{message}"
@@ -302,7 +307,7 @@ uk:
         placeholder:
           label: "Мітка елемента"
           short: "Коротка назва"
-          weight: "Weight"
+          weight: "Вага"
       notice:
         remember_items_and_projects: "Обов’язково задайте елементи й проєкти на відповідних вкладках для цього користувацького поля."
       hierarchy:
@@ -310,6 +315,25 @@ uk:
           zero: немає піделементів
           one: 1 піделемент
           other: "Піделементів: %{count}"
+      role_assignment:
+        title: Призначення ролі
+        description: Ви можете автоматично надавати певну роль у проєкті будь-якому користувачу, якому призначено цей атрибут, незалежно від його початкової ролі у цьому проєкті.
+        warning: Залежно від вибраної нижче ролі, користувач, якому призначено цей атрибут проєкту, може отримати значно більше прав доступу, ніж мав раніше, включно з можливістю додавати нових учасників та підвищувати їхню роль.
+        role_field_label: "Роль проєкту"
+        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        review_hint: >
+          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
+        review_button: Review users and permissions
+        dialog:
+          title: "Overview of users and permissions"
+          change: Change
+          changes:
+            new_member: Will be added as a member
+            remove_member: Will be removed as a member
+            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
+            gain_role: Will gain role ‘%{new_role}’
+            lose_role: Will lose role ‘%{old_role}’
+            no_change: No changes
     text_add_new_custom_field: >
       Щоб додати нові користувальницькі поля до проекту, спочатку потрібно створити їх, перш ніж ви зможете додати їх до цього проекту.
     is_enabled_globally: "Увімкнено у всьому світі"
@@ -320,8 +344,9 @@ uk:
     reorder_confirmation: "Увага! Поточний порядок доступних значень буде втрачено. Продовжити?"
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
     calculated_field_not_editable: "Атрибут не підлягає редагуванню. Його значення обчислюється автоматично."
+    no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required: "Позначте поле як обов'язкове. Це зробить заповнення поля обов'язковим під час створення нових ресурсів. Наявні ресурси не потребуватимуть введення значення під час оновлення."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Позначте користувацьке поле як доступне в усіх наявних і нових проєктах."
       multi_select: "Дає змогу користувачу задавати кілька значень цього користувацького поля."
@@ -366,6 +391,7 @@ uk:
       int?: "має бути цілим числом."
       key?: "— відсутній елемент."
       not_found: "— не знайдено."
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "не має власного робочого процесу."
@@ -429,6 +455,11 @@ uk:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        one: "<strong>1</strong> sub-item"
+        few: "<strong>%{count}</strong> sub-items"
+        many: "<strong>%{count}</strong> sub-items"
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -445,12 +476,15 @@ uk:
       work_package_categories: "Пакети робіт: категорії"
       work_package_file_links: "Пакети робіт: посилання на файли"
       work_package_shares: "Пакети робіт: спільні ресурси"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Видалення заплановано та виконується у фоновому режимі. Ви отримаєте сповіщення про результат."
       schedule_failed: "Проект не можна видалити: %{errors}"
-      failed: "Видалення проекту %{name}  не вдалося"
-      failed_text: "Запит видалення проекту %{name} не вдало. Проект залишився в архіві."
-      completed: "Видалення проекту %{name} завершено."
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "Запит видалення проекту '%{name}' завершено."
       completed_text_children: "Крім того, видалено такі підпроєкти:"
     index:
@@ -493,6 +527,16 @@ uk:
         description: >
           Цей проєкт бачитимуть лише учасники проєкту відповідно до своїх ролей і пов’язаних дозволів. Вкладені проєкти мають власні налаштування, тому це не вплине на них.
       change_identifier: Ідентифікатор змін
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Увімкнути все"
         label_disable_all: "Вимкнути все"
@@ -543,10 +587,19 @@ uk:
       work_package_priorities:
         new_label: "Новий пріоритет"
       creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "unavailable"
+        label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
-        label_request_submission: "Request submission"
-        label_artefact_export: "Artifact export"
     status:
       button_edit: Змінити статус проєкту
     wizard:
@@ -554,8 +607,10 @@ uk:
       sections: "Sections"
       title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "Змінений список збережено як новий"
@@ -1031,18 +1086,12 @@ uk:
     deletion_pending: "Для цього облікового запису заплановано видалення. Зверніть увагу, що цей процес відбувається у фоновому режимі. Остаточне видалення даних користувача може зайняти кілька хвилин."
     deletion_info:
       data_consequences:
-        other: 'З даних, створених користувачем (наприклад, електронною поштою, налаштуваннями, робочими пакетами, вікі-записами), буде максимально вилучено. Зауважте, що дані, такі як робочі пакети та записи вікі, не можуть бути видалені без перешкод роботі інших користувачів. Таким чином, такі дані перепризначено до облікового запису, який називається "Видалений користувач". Оскільки дані кожного видаленого облікового запису перепризначені для цього облікового запису, неможливо буде розрізняти дані, створені користувачем, з даних іншого видаленого облікового запису.'
-        self: 'З даних, створених користувачем (наприклад, електронною поштою, налаштуваннями, робочими пакетами, вікі-записами), буде максимально вилучено. Зауважте, що дані, такі як робочі пакети та записи вікі, не можуть бути видалені без перешкод роботі інших користувачів. Таким чином, такі дані перепризначено до облікового запису, який називається "Видалений користувач". Оскільки дані кожного видаленого облікового запису перепризначені для цього облікового запису, неможливо буде розрізняти дані, створені користувачем, з даних іншого видаленого облікового запису.'
-      heading: "Видалити обліковий запис %{name}"
-      info:
-        other: "Видалення облікового запису користувача є незворотнім дією."
-        self: "Видалення облікового запису є незворотнім дією."
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "Аккаунт буде видалений з системи. Таким чином, користувач не зможе увійти в його поточні облікові дані. Він/вона може вибрати щоб стати користувачем цього додатка за допомогою цього додатка грантів."
-        self: "Ваш аккаунт буде видалений з системи. Таким чином, Ви більше не зможете ввійти в систему з обліковими даними поточного користувача. Якщо ви вирішите знову стати користувачем цього додатка, ви можете зробити це використовуючи кошти для даного додатка."
-      login_verification:
-        other: "Введіть логін %{name} , щоб перевірити видалення. Після подання вам буде запропоновано підтвердити свій пароль."
-        self: "Введіть свій логін %{name} , щоб перевірити видалення. Після подання вам буде запропоновано підтвердити свій пароль."
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       Ваш обліковий запис ще не активовано. Щоб активувати ваш обліковий запис, перейдіть за посиланням, яке було відправлено вам електронною поштою.
     error_inactive_manual_activation: >
@@ -1075,6 +1124,7 @@ uk:
       attribute_help_text:
         attribute_name: "Атрибут"
         help_text: "Довідковий текст"
+        caption: "Caption"
       auth_provider:
         scim_clients: "Клієнти SCIM"
       calculated_value_error:
@@ -1172,6 +1222,7 @@ uk:
         identifier: "Ідентифікатор"
         latest_activity_at: "Остання активність на"
         parent: "Підпроект"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "Видимість"
           true: "публічний"
@@ -1186,6 +1237,13 @@ uk:
           off_track: "Не за графіком"
           finished: "Завершено"
           discontinued: "Припинено"
+        project_creation_wizard_assignee_custom_field: "Assignee when submitted"
+        project_creation_wizard_notification_text: "Notification text"
+        project_creation_wizard_send_confirmation_email: "Confirmation email"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Work package type"
+        template: "Template"
         templated: "Проєкт шаблона"
         templated_value:
           true: "позначено як шаблон"
@@ -1197,6 +1255,8 @@ uk:
       project_custom_field:
         is_required: "Обов’язково для всіх проєктів"
         custom_field_section: Розділ
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Діапазон дат"
         definition: "Визначення"
@@ -1306,6 +1366,7 @@ uk:
         header_alerts: "Сповіщення"
         button_update_look_and_feel: "Оновити оформлення"
         button_update_alerts: "Сповіщення про оновлення"
+        button_update_user_information: "Update profile"
         comments_sorting: "Відображати дії з пакетів робіт, відсортовані за"
         disable_keyboard_shortcuts: "Вимкнути комбінації клавіш"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1468,7 +1529,7 @@ uk:
               minimum: "має містити принаймні один фільтр для адміністратора доступу, контексту або адміністратора з оператором «=»."
         custom_field:
           at_least_one_custom_option: "Необхідно мати принаймні один варіант."
-          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
+          previous_custom_field_recalculation_unprocessed: "Перерахунок попередніх змін для цього власного поля ще не було застосовано. Спробуйте повторити спробу за кілька хвилин."
           referenced_in_other_fields_html:
             one: "%{name} використовується при обчисленні атрибутів проєкту %{links}."
             few: "%{name} використовується при обчисленнях атрибутів проєкту: %{links}."
@@ -1550,9 +1611,11 @@ uk:
         project:
           archived_ancestor: "У проєкту є архівований предок."
           foreign_wps_reference_version: "Пакети робіт у ненащадкових проєктах посилаються на версії цього проєкту або його нащадків."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "У вас немає дозволів для архівації всіх підпроєктів. Зверніться до адміністратора."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "як і раніше використовуються робочі пакети: %{types}"
             enabled_modules:
@@ -1724,8 +1787,7 @@ uk:
               cant_exceed_work: "не може перевищувати значення атрибута «Робота»."
               must_be_set_when_work_is_set: "потрібно вказати, якщо визначено атрибут «Робота»."
               must_be_set_when_work_and_percent_complete_are_set: "потрібно вказати, якщо визначено атрибути «Робота» й «% завершення»."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                має дорівнювати 0 год, якщо вибрано варіант «Робота», а атрибут «% завершення» становить 100%.
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 має бути пустим, якщо визначено атрибути «Робота» й «% завершення».
           readonly_status: "Пакет робіт перебуває в стані лише для читання, тому його атрибути не можна змінити."
@@ -1790,7 +1852,11 @@ uk:
           other: "%{count} помилка заборонила це %{model} від збереження"
     models:
       attachment: "Файл"
-      attribute_help_text: "Текст довідки атрибута"
+      attribute_help_text:
+        one: "Attribute help text"
+        few: "Attribute help texts"
+        many: "Attribute help texts"
+        other: "Attribute help texts"
       auth_provider:
         one: "Постачальник послуг автентифікації"
         few: "Постачальники послуг автентифікації"
@@ -1871,6 +1937,11 @@ uk:
       many: "Крім того, виникли проблеми з такими полями:"
       other: "Крім того, виникли проблеми з такими полями:"
     field_erroneous_label: "Це поле недійсне: %{full_errors}\nВведіть дійсне значення."
+    messages:
+      must_be_template: "must be template"
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "створено %{datetime} користувачем %{user}"
@@ -2003,6 +2074,7 @@ uk:
     subject: "Тема"
     slug: "Слаг"
     summary: "Резюме"
+    template: "Template"
     time_zone: "Часовий пояс"
     text: "Текст"
     title: "Назва"
@@ -2175,7 +2247,9 @@ uk:
     copy_options:
       dependencies_label: "Копіювати з проєкту"
   create_project:
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "Використовувати шаблон"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "Копіювати з шаблона"
     blank_template:
@@ -2183,10 +2257,12 @@ uk:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -2403,6 +2479,7 @@ uk:
       nextcloud_sso: Єдиний вхід для сховища Nextcloud
       one_drive_sharepoint_file_storage: Сховище файлів OneDrive / SharePoint
       placeholder_users: Прототипи користувачів
+      portfolio_management: Portfolio management
       project_list_sharing: Спільне використання списку проєктів
       readonly_work_packages: Пакети робіт лише для читання
       scim_api: API сервера SCIM
@@ -2495,6 +2572,8 @@ uk:
       internal_comments_inline:
         title: "Створюйте внутрішні коментарі лише для учасників невеликої групи"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         one: "Один день до завершення строку дії пробного маркера %{trial_plan}"
@@ -2780,10 +2859,11 @@ uk:
       new_features:
         header: "Читайте про нові функції і оновлення продуктів."
         learn_about: "Дізнайтеся більше про всі нові функції"
+        missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            Випуск включає різноманітні нові функції і покращення, такі як:
+            Випуск включає різноманітні нові функції та покращення, такі як:
           new_features_list:
             line_0: Обчислені значення для оцінки проєктів і підрахунку балів (доповнення версії Enterprise).
             line_1: Ієрархія типів атрибутів проєкту.
@@ -2883,7 +2963,7 @@ uk:
         static_token_name: "Маркер API"
       ical:
         title: "iCalendar"
-        text_hint_link: 'Маркери iCalendar дають змогу користувачам [підписуватися на календарі OpenProject](docs_url) і переглядати актуальну інформацію про пакети робіт у зовнішніх клієнтах.'
+        text_hint_link: "Маркери iCalendar дають змогу користувачам [підписуватися на календарі OpenProject](docs_url) і переглядати актуальну інформацію про пакети робіт у зовнішніх клієнтах."
         disabled_text: "Підписки на iCalendar не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
         empty_text_hint: "Щоб додати маркер iCalendar, підпишіться на новий або наявний календар у модулі календаря проєкту. У вас мають бути необхідні дозволи."
       oauth:
@@ -2976,7 +3056,6 @@ uk:
   label_add_column: "Додати стовпець"
   label_applied_status: "Застосовний статус"
   label_archive_project: "Архівний проект"
-  label_artefact_export: "Artefact export"
   label_ascending: "За зростанням"
   label_assigned_to_me_work_packages: "Робочі пакети призначені мені"
   label_associated_revisions: "Пов'язані редакції"
@@ -3199,7 +3278,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції зі встановлення"
+  label_installation_guides: "Інструкції із встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -3242,7 +3321,8 @@ uk:
   label_lock_user: "Заблокувати користувача"
   label_logged_as: "Ви увійшли як"
   label_login: "Увійти"
-  label_custom_logo: "Спеціальний логотип"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Користувацький логотип експорту"
   label_custom_export_cover: "Фон обкладинки експорту"
   label_custom_export_footer: "Власне зображення для нижнього колонтитула файлу, що експортується"
@@ -3388,11 +3468,15 @@ uk:
   label_project_attribute_manage_link: "Керувати атрибутами проєкту"
   label_project_count: "Загальна кількість проектів"
   label_project_copy_notifications: "Відправлення повідомлень по електронній пошті в ході реалізації проекту копія"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Останні проекти"
   label_project_default_type: "Дозволити порожній тип"
   label_project_hierarchy: "Ієрархія проектів"
   label_project_mappings: "Проєкти"
   label_project_new: "Новий проект"
+  label_project_initiation_request: "New project initiation request"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "Проєкти"
   label_project_list_plural: "Списки проєкту"
   label_project_life_cycle: "Життєвий цикл проєкту"
@@ -3406,7 +3490,6 @@ uk:
   label_project_view_all: "Переглянути всi проекти"
   label_project_show_details: "Показати деталі проекту"
   label_project_hide_details: "Приховати деталі проекту"
-  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Портфель"
   label_portfolio_new: "Новий портфель"
   label_program: "Програма"
@@ -3494,6 +3577,7 @@ uk:
   label_subproject: "Підпроєкт"
   label_subproject_new: "Новий підпроект"
   label_subproject_plural: "Підпроекти"
+  label_subitems: "Subitems"
   label_subtask_plural: "Підзадачі"
   label_summary: "Резюме"
   label_system: "Система"
@@ -3501,6 +3585,8 @@ uk:
   label_table_of_contents: "Зміст"
   label_tag: "Мітка"
   label_team_planner: "Командний планувальник"
+  label_template: "Шаблон"
+  label_templates: "Templates"
   label_text: "Довгий текст"
   label_this_month: "цього місяця"
   label_this_week: "цього тижня"
@@ -3915,6 +4001,9 @@ uk:
   permission_add_project: "Створення проєктів"
   permission_add_portfolios: "Створити портфелі"
   permission_add_programs: "Створити програми"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Додати вкладення"
   permission_add_work_package_attachments_explanation: "Дає змогу додавати вкладення без дозволу «Редагування пакетів робіт»"
   permission_add_internal_comments: "Створення внутрішніх коментарів"
@@ -4027,6 +4116,11 @@ uk:
   permission_edit_project_query: "Редагування запиту проєктів"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
   program:
     count:
       zero: "0 programs"
@@ -4061,6 +4155,7 @@ uk:
       title: Змініть ідентифікатор проекту
     not_available: "Проєкт Н/Д"
     template:
+      copying_title: "Applying template"
       copying: >
         Ваш проєкт створюється на основі вибраного шаблону проєкту. Ми повідомимо Вас електронною поштою, щойно проєкт стане доступним.
       use_template: "Використовувати шаблон"
@@ -4316,6 +4411,8 @@ uk:
   setting_mail_handler_body_delimiter_regex: "Обрізати електронні листи, які відповідають цьому регулярному виразу"
   setting_mail_handler_ignore_filenames: "Проігноровані вкладення пошти"
   setting_new_project_user_role_id: "Роль, що призначається користувачу, створившому проект"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Активні класи символів"
   setting_password_count_former_banned: "Кількість останніх використаних паролів, заборонених для повторного використання"
   setting_password_days_valid: "Кількість днів, після чого змінюється пароль"
@@ -4460,18 +4557,62 @@ uk:
       new:
         heading: "Новий атрибут"
         description: "Зміни цього атрибута проєкту відобразяться в усіх проєктах, де його ввімкнено. Обов’язкові атрибути не можна вимикати для окремого проєкту."
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
       blankslate:
         title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
       disable_dialog:
         title: "Disable project initiation request"
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      name:
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
+      submission:
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "Життєвий цикл проєкту"
-      heading_description: "Життєвий цикл проєкту визначає етапи, які можна використовувати для планування й відображення проєкту на сторінці панелі огляду. Ці атрибути можна вмикати або вимикати, але їх не можна перевпорядковувати на рівні окремого проєкту."
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "Додати"
       label_add_description: "Додати визначення етапу проєкту"
       filter:
@@ -4545,7 +4686,7 @@ uk:
   text_project_custom_field_html: >
     У версії Enterprise з’являться такі додаткові доповнення для користувацьких полів проєктів: <br> <ul><li><b>Додавати користувацькі поля проєктів у список проєктів для створення режиму перегляду портфеля проєктів</b></li> </ul>
   text_custom_logo_instructions: >
-    Рекомендується використовувати білий логотип з прозорим фоном. Для оптимального відображення на звичайних і retina-дисплеях розмір картинки повинен бути 460 на 110 пікселів.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Це логотип з’являється, що відображається у ваших експортах PDF. Він має бути у форматі файлу зображення PNG або JPEG. Рекомендується чорний або кольоровий логотип на прозорому чи білому фоні.
   text_custom_export_cover_instructions: >
@@ -4934,6 +5075,8 @@ uk:
       multiple_errors: "Було порушено декілька обмежень поля."
       unable_to_create_attachment: "Не вдалося створити вкладення"
       unable_to_create_attachment_permissions: "Вкладення не вдалося зберегти через відсутність дозволів на файлову систему"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "Контексті не посилання на ресурс."
         unsupported_context: "Даний ресурс не підтримується як контекст."
@@ -4948,8 +5091,10 @@ uk:
     resources:
       schema: "Схема"
     undisclosed:
-      parent: Нерозкритий – вибраний батьківський елемент невидимий через відсутність дозволів.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Нерозкритий – предок невидимий через відсутність дозволів.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Попередня авторизація"

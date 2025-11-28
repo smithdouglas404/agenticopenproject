@@ -61,28 +61,72 @@ RSpec.describe Projects::TemplateSelectForm, type: :forms do
   end
 
   context "with templates" do
-    let!(:templates) do
+    shared_let(:templates) do
       [
         create(:template_project, name: "Agile", description: "**Great for beginners.**"),
         create(:template_project, name: "SAF€", description: nil),
-        create(:template_project, name: "PRINCE", description: "## His Majesty's Choice.")
+        create(:template_project, name: "PRINCE", description: "## His Majesty's Choice."),
+        create(:template_project, name: "The Portfolio", description: "Collect them all", workspace_type: "portfolio"),
+        create(:template_project, name: "The Program", description: "Collect some of them", workspace_type: "program")
       ]
     end
 
-    it "renders radio buttons for each template in addition to Blank Project", :aggregate_failures do
-      expect(rendered_form).to have_field type: :radio, count: 4, fieldset: "Use template"
-      expect(rendered_form).to have_field "Blank project",
-                                          type: :radio,
-                                          accessible_description: /^Start from scratch.*project/
-      expect(rendered_form).to have_field "Agile",
-                                          type: :radio,
-                                          accessible_description: /^Great for beginners\.$/
-      expect(rendered_form).to have_field "SAF€",
-                                          type: :radio,
-                                          accessible_description: /^No description provided\.$/
-      expect(rendered_form).to have_field "PRINCE",
-                                          type: :radio,
-                                          accessible_description: /^His Majesty's Choice\.$/
+    context "when workspace_type is project", :aggregate_failures do
+      let(:model) { create(:project, workspace_type: "project") }
+
+      it "renders radio buttons for each project template in addition to Blank Project, but not other templates" do
+        expect(rendered_form).to have_field type: :radio, count: 4, fieldset: "Use template"
+        expect(rendered_form).to have_field "Blank project",
+                                            type: :radio,
+                                            accessible_description: /^Start from scratch.*project/
+        expect(rendered_form).to have_field "Agile",
+                                            type: :radio,
+                                            accessible_description: /^Great for beginners\.$/
+        expect(rendered_form).to have_field "SAF€",
+                                            type: :radio,
+                                            accessible_description: /^No description provided\.$/
+        expect(rendered_form).to have_field "PRINCE",
+                                            type: :radio,
+                                            accessible_description: /^His Majesty's Choice\.$/
+        expect(rendered_form).to have_no_field "The Portfolio"
+        expect(rendered_form).to have_no_field "The Program"
+      end
+    end
+
+    context "when workspace_type is portfolio", :aggregate_failures do
+      let(:model) { create(:project, workspace_type: "portfolio") }
+
+      it "renders radio buttons for each portfolio template in addition to Blank Project, but not other templates" do
+        expect(rendered_form).to have_field type: :radio, count: 2, fieldset: "Use template"
+        expect(rendered_form).to have_field "Blank portfolio",
+                                            type: :radio,
+                                            accessible_description: /^Start from scratch.*portfolio/
+        expect(rendered_form).to have_no_field "Agile"
+        expect(rendered_form).to have_no_field "SAF€"
+        expect(rendered_form).to have_no_field "PRINCE"
+        expect(rendered_form).to have_field "The Portfolio",
+                                            type: :radio,
+                                            accessible_description: "Collect them all"
+        expect(rendered_form).to have_no_field "The Program"
+      end
+    end
+
+    context "when workspace_type is program", :aggregate_failures do
+      let(:model) { create(:project, workspace_type: "program") }
+
+      it "renders radio buttons for each program template in addition to Blank Project, but not other templates" do
+        expect(rendered_form).to have_field type: :radio, count: 2, fieldset: "Use template"
+        expect(rendered_form).to have_field "Blank program",
+                                            type: :radio,
+                                            accessible_description: /^Start from scratch.*program/
+        expect(rendered_form).to have_no_field "Agile"
+        expect(rendered_form).to have_no_field "SAF€"
+        expect(rendered_form).to have_no_field "PRINCE"
+        expect(rendered_form).to have_no_field "The Portfolio"
+        expect(rendered_form).to have_field "The Program",
+                                            type: :radio,
+                                            accessible_description: "Collect some of them"
+      end
     end
 
     context "when template_id is nil" do
@@ -92,7 +136,7 @@ RSpec.describe Projects::TemplateSelectForm, type: :forms do
     end
 
     context "when template_id is not nil" do
-      let(:template_id) { templates.last.id }
+      let(:template_id) { templates.find { it.name == "PRINCE" }.id }
 
       it "renders checked radio button for given template" do
         expect(rendered_form).to have_checked_field "PRINCE", type: :radio

@@ -42,11 +42,9 @@ class ProjectsController < ApplicationController
   before_action :require_admin, only: %i[destroy destroy_info]
   before_action :not_authorized_on_feature_flag_inactive,
                 only: %i[new create],
-                if: -> {
-                  params[:workspace_type].in?(Project.workspace_types.values_at(:program, :portfolio))
-                }
-  before_action :find_optional_template, only: %i[new create]
+                if: :portfolio_management_feature_required?
   before_action :find_optional_parent, only: :new
+  before_action :find_optional_template, only: %i[new create]
 
   no_authorization_required! :index
 
@@ -193,22 +191,23 @@ class ProjectsController < ApplicationController
   def from_template? = @template.present?
 
   def new_blank
+    params[:step] = params.fetch(:step, 1).to_i
     @new_project = @parent&.children&.build(params.permit(:workspace_type)) || Project.new(params.permit(:workspace_type))
 
-    render layout: "no_menu"
+    render layout: layout_for_new
   end
 
   def new_from_template
-    @copy_options = Projects::CopyOptions.new
+    params[:step] = 2
     @new_project = Projects::CopyService
       .new(user: current_user, source: @template, contract_options: { validate_model: false })
       .call(target_project_params: params.permit(:parent_id).to_h, attributes_only: true)
       .result
 
-    render layout: "no_menu"
+    render layout: layout_for_new
   end
 
-  def create_blank
+  def create_blank # rubocop:disable Metrics/AbcSize
     service_call = Projects::CreateService
       .new(user: current_user)
       .call(permitted_params.new_project)
@@ -218,19 +217,28 @@ class ProjectsController < ApplicationController
     if service_call.success?
       redirect_to project_path(@new_project), notice: I18n.t(:notice_successful_create)
     else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
-      render action: :new, status: :unprocessable_entity
+      # Do not display custom field errors if the form is submitted from the second page.
+      clear_custom_field_errors!(@new_project) unless from_step_3?
+      set_wizard_step!(@new_project)
+
+      if service_call.message.present?
+        flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
+      end
+      render action: :new, status: :unprocessable_entity, layout: "no_menu"
     end
   end
 
   def create_from_template # rubocop:disable Metrics/AbcSize
-    @copy_options = Projects::CopyOptions.new(permitted_params.copy_project_options)
+    @copy_options = Projects::CopyOptions.new
+
+    target_project_params = permitted_params.new_project.to_h.merge(template: @template)
 
     service_call = Projects::EnqueueCopyService
       .new(user: current_user, model: @template)
       .call(
-        target_project_params: permitted_params.new_project.to_h,
+        target_project_params:,
         only: @copy_options.dependencies,
+        skip_custom_field_validation: true,
         send_notifications: @copy_options.send_notifications
       )
 
@@ -239,13 +247,54 @@ class ProjectsController < ApplicationController
       redirect_to job_status_path(job.job_id)
     else
       @new_project = service_call.result
+      params[:step] = 2
       flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
-      render action: :new, status: :unprocessable_entity
+      render action: :new, status: :unprocessable_entity, layout: "no_menu"
     end
   end
 
+  def set_wizard_step!(project)
+    attributes_with_error = project.errors.attribute_names
+    second_step_attributes = %i[name description identifier parent]
+    step_2_is_valid = !attributes_with_error.intersect?(second_step_attributes)
+
+    params[:step] = step_2_is_valid ? 3 : 2
+  end
+
+  def clear_custom_field_errors!(project)
+    # Delete custom field errors from project
+    project.errors.attribute_names
+      .select { |key| key.to_s.start_with?("custom_field") }
+      .each { |key| project.errors.delete(key) }
+
+    # Clear errors on custom value objects
+    project.custom_values.each { |cv| cv.errors.clear }
+  end
+
+  def from_step_3?
+    params[:step].to_i == 3
+  end
+
   def find_optional_template
-    @template = Project.templated.visible(current_user).find(params[:template_id]) if params[:template_id].present?
+    template_id = find_template_id
+    return if params[:workspace_type].blank? || template_id.blank?
+
+    @template = Project
+      .templated
+      .workspace_type(params[:workspace_type])
+      .visible(current_user)
+      .find_by(id: template_id)
+  end
+
+  # Parent projects MAY define templates for subitems to be used
+  # so if we have a parent, we want to search for one of these
+  # if not, we return to the usual workflow
+  def find_template_id
+    return params[:template_id] if params[:template_id].present?
+
+    if @parent && params[:workspace_type].present?
+      @parent.subproject_template_assignments.find_by(workspace_type: params[:workspace_type])&.template_id
+    end
   end
 
   def find_optional_parent
@@ -285,5 +334,20 @@ class ProjectsController < ApplicationController
     render_403 unless OpenProject::FeatureDecisions.portfolio_models_active?
   end
 
-  helper_method :supported_export_formats
+  def layout_for_new
+    if portfolio_management_feature_missing?
+      "global"
+    else
+      "no_menu"
+    end
+  end
+
+  def portfolio_management_feature_required? = params[:workspace_type].in?(%w[portfolio program])
+
+  def portfolio_management_feature_missing?
+    portfolio_management_feature_required? && !EnterpriseToken.allows_to?(:portfolio_management)
+  end
+
+  helper_method :supported_export_formats,
+                :portfolio_management_feature_missing?
 end

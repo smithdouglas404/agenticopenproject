@@ -45,7 +45,7 @@ module Storages
             let(:auth_strategy) { Registry["nextcloud.authentication.user_bound"].call(user, storage) }
             let(:input_data) { Input::CreateFolder.build(folder_name:, parent_location:).value! }
 
-            it_behaves_like "adapter create_folder_command: basic command setup"
+            it_behaves_like "storage adapter: command call signature", "create_folder"
 
             context "when creating a folder in the root", vcr: "nextcloud/create_folder_root" do
               let(:folder_name) { "Földer CreatedBy Çommand" }
@@ -68,7 +68,7 @@ module Storages
               let(:parent_location) { "/DeathStar3" }
               let(:error_source) { described_class }
 
-              it_behaves_like "adapter create_folder_command: parent not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
 
             context "when folder already exists", vcr: "nextcloud/create_folder_already_exists" do
@@ -76,7 +76,7 @@ module Storages
               let(:parent_location) { "/" }
               let(:error_source) { described_class }
 
-              it_behaves_like "adapter create_folder_command: folder already exists"
+              it_behaves_like "storage adapter: error response", :conflict
             end
 
             # For the VCR tests in this block it's necessary to

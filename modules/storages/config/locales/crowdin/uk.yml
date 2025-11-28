@@ -165,7 +165,7 @@ uk:
           group_does_not_exist: "Групи «%{group}» не існує. Перевірте конфігурацію свого екземпляра Nextcloud."
           insufficient_privileges: OpenProject не має достатніх привілеїв, щоб додати користувача %{user} в групу «%{group}». Перевірте налаштування своєї групи в Nextcloud.
           not_allowed: Nextcloud блокує запит.
-          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
+          not_found: OpenProject не зміг знайти файл на сховищі Nextcloud. Перевірте, будь ласка, чи він не був видалений.
           unauthorized: Не вдалося синхронізувати OpenProject із Nextcloud. Перевірте своє сховище й конфігурацію Nextcloud.
           user_does_not_exist: "%{user} не існує в Nextcloud."
         one_drive_sync_service:
@@ -185,7 +185,7 @@ uk:
               permission_not_set: не вдалося встановити дозволи за шляхом %{path}.
           error: Сталася неочікувана помилка. Переконайтеся, що є доступ до OneDrive, і перевірте журнали працівників OpenProject, щоб дізнатися більше.
           not_allowed: OpenProject не має дозволу на доступ до вашого диска OneDrive. Перевірте дозволи, установлені в програмі Azure.
-          unauthorized: Не вдалося синхронізувати OpenProject із OneDrive. Перевірте конфігурацію свого сховища й додатку Azure.
+          unauthorized: Не вдалося синхронізувати OpenProject з OneDrive. Перевірте конфігурацію свого сховища й додатку Azure.
           user_does_not_exist: "%{user} не існує в Nextcloud."
         sharepoint_sync_service:
           attributes:
@@ -352,9 +352,10 @@ uk:
         sp_client_write_permission_missing: Схоже, клієнту бракує дозволів на записування в SharePoint. Ознайомтеся з документацією щодо конфігурації для свого сховища.
         sp_existing_test_folder: Папка «%{folder_name}», необхідна для тестування, уже існує в SharePoint. Видаліть її і повторіть спробу.
         sp_oauth_request_error: Не вдалося виконати пов’язаний із користувачем запит до SharePoint. Докладні відомості наведено в журналах сервера.
+        sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         sp_oauth_token_missing: OpenProject не може перевірити з’єднання на рівні користувача із SharePoint, оскільки користувач досі не прив’язав свій обліковий запис SharePoint.
         sp_tenant_id_missing: Бракує налаштованого ідентифікатора каталогу (клієнта). Перевірте конфігурацію.
-        sp_unexpected_content: На диску SharePoint знайдено неочікуваний контент.
+        sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
         unknown_error: Не вдалося перевірити підключення. Сталася невідома помилка. Щоб дізнатися більше, перегляньте журнали сервера.
       label_error: Помилка
       label_failed: Не пройдено
@@ -547,8 +548,15 @@ uk:
     storage_list_blank_slate:
       description: Додайте сховище, щоб воно з’явилося тут.
       heading: У вас ще немає жодного сховища.
-    successful_storage_connection: Сховище підключено. Щоб користуватися ним, активуйте модуль і визначене сховище в налаштуваннях кожного потрібного проєкту.
+    successful_storage_connection: Сховище під'єднано. Щоб користуватися ним, активуйте модуль і визначене сховище в налаштуваннях кожного потрібного проєкту.
     upsell:
-      description: |-
-        Інтегруйте OneDrive як файлове сховище в OpenProject. Додайте файли й прив’яжіть їх безпосередньо до пакетів робіт у проєкті.
-      title: Інтеграція з OneDrive
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

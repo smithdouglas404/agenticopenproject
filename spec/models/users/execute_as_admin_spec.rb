@@ -152,4 +152,15 @@ RSpec.describe User, ".execute_as_admin" do # rubocop:disable RSpec/SpecFilePath
       end
     end
   end
+
+  it "throws an error if the user is attempted to be saved", :aggregate_failures do
+    described_class.execute_as_admin(user) do
+      expect { user.save }.to raise_error ActiveRecord::ReadOnlyRecord
+      expect { user.save(validate: false) }.to raise_error ActiveRecord::ReadOnlyRecord
+      expect { user.update_attribute(:firstname, "Obi") }.to raise_error ActiveRecord::ReadOnlyRecord
+    end
+
+    expect(user)
+      .not_to be_readonly
+  end
 end

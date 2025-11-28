@@ -30,13 +30,23 @@
 %>
 
 <% if @document.collaborative? %>
-  <%=
-    render(
-      Documents::ShowEditView::BlockNoteEditorComponent.new(
-        @document, project: @project, oauth_token: @oauth_token, state: @state
+  <% if Setting.real_time_text_collaboration_enabled? %>
+    <%=
+      render(
+        Documents::ShowEditView::BlockNoteEditorComponent.new(
+          @document, project: @project, oauth_token: @oauth_token, state: @state, readonly: @readonly
+        )
       )
-    )
-  %>
+    %>
+  <% else %>
+    <%=
+      render(
+        Documents::ShowEditView::CollaborationDisabledNoticeComponent.new(
+          @document, project: @project, state: :show
+        )
+      )
+    %>
+  <% end %>
 <% else %>
   <%= render partial: "classic_show", locals: { document: @document, project: @project, attachments: @attachments } %>
 <% end %>

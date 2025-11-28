@@ -34,10 +34,12 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   include Exports::PDF::Common::Logo
   include Exports::PDF::Common::Macro
   include Exports::PDF::Common::Markdown
+  include Exports::PDF::Common::Badge
   include Exports::PDF::Components::Page
   include Exports::PDF::Components::Cover
   include Project::PDFExport::Common::ProjectAttributes
   include Project::PDFExport::ProjectInitiation::Styles
+  include ProjectHelper
 
   attr_accessor :pdf
 
@@ -85,8 +87,11 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def render_project_initiation
+    pdf.title = heading
     write_cover_page! if with_cover?
-    write_title!
+    write_project_initiation_heading
+    write_project_initiation_title
+    write_project_initiation_description
     write_project_initiation
     write_headers_footers
   end
@@ -100,8 +105,12 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
     @export_datetime = Time.zone.now
   end
 
-  def footer_date
+  def cover_page_footer_date
     format_time(export_datetime)
+  end
+
+  def footer_date
+    heading
   end
 
   def cover_page_dates
@@ -121,11 +130,11 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def heading
-    I18n.t(:"export.project_initiation.title")
+    @heading ||= project_creation_wizard_name(project)
   end
 
   def footer_title
-    "#{project.name} | #{cover_page_heading}"
+    project.name
   end
 
   def title
@@ -149,8 +158,20 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
     false
   end
 
+  def attributes_in_table?
+    false
+  end
+
+  def enabled_in_wizard_ids
+    project
+      .project_custom_field_project_mappings
+      .where(creation_wizard: true)
+      .select(:custom_field_id)
+  end
+
   def collect_custom_fields_data
     project.available_custom_fields
+           .where(id: enabled_in_wizard_ids)
            .group_by(&:project_custom_field_section)
            .map do |section, custom_fields|
       {
@@ -160,17 +181,6 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
         end
       }
     end
-  end
-
-  def collect_base_data
-    [
-      { caption: I18n.t(:label_project),
-        fields: %i[name description].map { |key| { key:, caption: Project.human_attribute_name(key) } } }
-    ]
-  end
-
-  def collect_sections_data
-    collect_base_data.concat collect_custom_fields_data
   end
 
   def write_section_title_hr
@@ -193,8 +203,75 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
     end
   end
 
+  def write_project_initiation_title
+    status = project_initiation_status
+    return write_subheading if status.nil?
+
+    write_subheading_with_badge(status.name, status_prawn_color(status))
+  end
+
+  def write_project_initiation_heading
+    with_margin(styles.page_heading_margins) do
+      style = styles.page_heading
+      pdf.formatted_text([style.merge({ text: project.name })], style)
+    end
+  end
+
+  def write_subheading
+    with_margin(styles.page_subheading_margins) do
+      style = styles.page_subheading
+      pdf.formatted_text([style.merge({ text: heading })], style)
+    end
+  end
+
+  def write_subheading_with_badge(badge_text, color)
+    offset = styles.status_badge_offset
+    with_margin(styles.page_subheading_margins) do
+      pdf.formatted_text(
+        title_fragments(badge_text, color, offset),
+        title_options(badge_text, offset)
+      )
+    end
+  end
+
+  def title_fragments(badge_text, color, offset)
+    badge_style = styles.status_badge
+    [
+      styles.page_subheading.merge(text: heading),
+      { text: " " },
+      prawn_badge(badge_text, color, offset: offset, font_size: badge_style[:size], line_height: badge_style[:size])
+    ]
+  end
+
+  def title_options(badge_text, offset)
+    styles.page_subheading.merge(draw_text_callback: prawn_badge_draw_text_callback(badge_text, offset))
+  end
+
+  def write_project_initiation_description
+    description = project.description
+    return if description.blank?
+
+    write_project_markdown(project, description, nil)
+  end
+
+  def project_initiation_status
+    status = project_initiation_work_package_status
+    return status unless status.nil?
+
+    return nil if project.project_creation_wizard_status_when_submitted_id.blank?
+
+    Status.find_by(id: project.project_creation_wizard_status_when_submitted_id)
+  end
+
+  def project_initiation_work_package_status
+    return nil if project.project_creation_wizard_artifact_work_package_id.blank?
+
+    work_package = WorkPackage.find_by(id: project.project_creation_wizard_artifact_work_package_id)
+    work_package&.status
+  end
+
   def write_project_initiation
-    collect_sections_data.each do |section|
+    collect_custom_fields_data.each do |section|
       next if section[:fields].empty?
 
       write_optional_page_break

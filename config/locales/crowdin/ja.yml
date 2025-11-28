@@ -107,17 +107,17 @@ ja:
     jemalloc_allocator: Jemalloc メモリアロケータ
     journal_aggregation:
       explanation:
-        text: "ユーザーの個々のアクション (例:ワークパッケージを2回更新する)は、指定された時間範囲よりも時間差が小さい場合、単一のアクションに集約されます。 これらはアプリケーション内で単一のアクションとして表示されます。 これにより、送信されるメールの数が減少し、 %{webhook_link} の遅延にも影響します。"
+        text: "ユーザーの個々のアクション（例えば、ワークパッケージを2回更新する）は、それらの年齢差が指定されたタイムスパン未満である場合、単一のアクションに集約されます。これらはアプリケーション内で1つのアクションとして表示されます。これはまた、送信されるメールの数を減らし、 %{webhook_link} の遅延にも影響します。"
         link: "webhook"
     scim_clients:
       authentication_methods:
-        sso: "アイデンティティプロバイダからのJWT"
-        oauth2_client: "OAuth 2.0 クライアント資格情報"
+        sso: "IDプロバイダーからのJWT"
+        oauth2_client: "OAuth 2.0クライアント認証情報"
         oauth2_token: "静的アクセストークン"
       created_client_credentials_dialog_component:
-        title: "クライアントの資格情報が作成されました"
-        heading: "クライアントの資格情報が生成されました"
-        one_time_hint: "クライアントのシークレットが表示される唯一の時間です。今すぐコピーしてください。"
+        title: "クライアント認証情報の作成"
+        heading: "クライアント認証情報が生成されました"
+        one_time_hint: "クライアント・シークレットが表示されるのはこの時だけです。必ずコピーしてください。"
       created_token_dialog_component:
         title: "トークンを作成しました"
         heading: "トークンが生成されました"
@@ -130,21 +130,21 @@ ja:
       edit:
         label_delete_scim_client: "SCIM クライアントを削除"
       form:
-        auth_provider_description: "これは、SCIMプロバイダが追加したユーザーがOpenProjectでの認証に使用するサービスです。"
-        authentication_method_description_html: "これは SCIM クライアントが OpenProject で認証する方法です。OAuth トークンに <code>scim_v2</code> スコープが含まれていることを確認してください。"
-        description: "設定オプションの詳細については、[SCIM クライアントの設定に関するドキュメント](docs_url)を参照してください。"
+        auth_provider_description: "これは、SCIM プロバイダによって追加されたユーザが OpenProject で認証するために使用するサービスです。"
+        authentication_method_description_html: "これは SCIM クライアントが OpenProject で認証する方法です。OAuth トークンに<code>scim_v2</code>スコープが含まれていることを確認してください。"
+        description: "これらの設定オプションの詳細については、[SCIMクライアントの設定に関する文書](docs_url)を参照してください。"
         jwt_sub_description: "例えば、Keycloakの場合、これはSCIMクライアントに関連付けられたサービスアカウントのUUIDです。あなたのユースケースにあった Subject claim を見つける方法については [ドキュメント](docs_url) を参照してください。"
-        name_description: "他の管理者がこのクライアントが設定された理由を理解するのに役立つ名前を選択してください。"
+        name_description: "このクライアントが設定された理由を他の管理者が理解しやすい名前を選んでください。"
       index:
-        description: "ここで設定されたSCIMクライアントは、OpenProjectのSCIMサーバー APIと相互作用して、ユーザーアカウントとグループのプロビジョニング、更新、およびデプロビジョニングを行うことができます。"
-        label_create_button: "SCIMクライアントを追加"
+        description: "ここで設定された SCIM クライアントは、OpenProject SCIM サーバ API と対話し、ユーザアカウントやグループのプロビジョニング、更新、デプロビジョニングを行うことができます。"
+        label_create_button: "SCIMクライアントの追加"
       new:
         title: "新しいSCIMクライアント"
       revoke_static_token_dialog_component:
         confirm_button: "取り消す"
-        title: "静的トークンを取り消す"
-        heading: "このトークンを取り消してもよろしいですか？"
-        description: "このトークンを使用する SCIM クライアントは、OpenProject の SCIM サーバ API にアクセスできなくなります。"
+        title: "静的トークンの失効"
+        heading: "このトークンを本当に取り消しますか？"
+        description: "このトークンを使っている SCIM クライアントは、OpenProject の SCIM サーバ API にアクセスできなくなります。"
       table_component:
         blank_slate:
           title: "SCIMクライアントがまだ設定されていません"
@@ -162,6 +162,11 @@ ja:
         expired: "%{date} に期限切れ"
         revoked: "%{date} で取り消されました"
         title: "アクセストークンテーブル"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -185,12 +190,12 @@ ja:
       title: "隔離された添付ファイル"
       error_cannot_act_self: "アップロードしたファイルに対してアクションを実行できません。"
   attribute_help_texts:
-    note_public: "このフィールドに追加したテキストと画像は、ログインしているすべてのユーザーに公開されます！"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "このビューは、属性表示のカスタム ヘルプ テキストを作成できます。定義すると、このテキストはその属性の横にあるヘルプ アイコンをクリックして表示できます。"
-    label_plural: "属性のヘルプ テキスト"
     show_preview: "テキストをプレビュー"
     add_new: "ヘルプ テキストを追加"
-    edit: "%{attribute_caption} のヘルプ テキストを編集"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "ジョブにエラーが発生しましたが、再試行中です。エラー: %{message}"
@@ -311,6 +316,25 @@ ja:
           zero: 子項目はありません
           one: 1 個の子項目があります
           other: "%{count} 個の子項目があります"
+      role_assignment:
+        title: Role Assignment
+        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
+        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
+        role_field_label: "Project Role"
+        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        review_hint: >
+          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
+        review_button: Review users and permissions
+        dialog:
+          title: "Overview of users and permissions"
+          change: Change
+          changes:
+            new_member: Will be added as a member
+            remove_member: Will be removed as a member
+            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
+            gain_role: Will gain role ‘%{new_role}’
+            lose_role: Will lose role ‘%{old_role}’
+            no_change: No changes
     text_add_new_custom_field: >
       新しいカスタムフィールドをプロジェクトに追加するには、それをこのプロジェクトに追加する前に、まず作成する必要があります。
     is_enabled_globally: "グローバルで有効"
@@ -321,6 +345,7 @@ ja:
     reorder_confirmation: "警告：利用可能な値の現在の順序は失われます。続行しますか？"
     placeholder_version_select: "最初にワークパッケージまたはプロジェクトの選択が必要です"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    no_role_assigment: "No role assignment"
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
@@ -367,6 +392,7 @@ ja:
       int?: "は整数でなければなりません。"
       key?: "は見つかりません。"
       not_found: "見つかりません。"
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "独自のワークフローはありません。"
@@ -430,6 +456,8 @@ ja:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      sub_items_html:
+        other: "<strong>%{count}</strong> sub-items"
     lists:
       active: "Active portfolios"
       my: "My portfolios"
@@ -446,12 +474,15 @@ ja:
       work_package_categories: "ワークパッケージ：カテゴリー"
       work_package_file_links: "ワークパッケージ：ファイルリンク"
       work_package_shares: "ワークパッケージ：共有"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "削除がスケジュールされ、バックグラウンドで実行されます。結果は通知されます。"
       schedule_failed: "プロジェクトを削除できません: %{errors}"
-      failed: "プロジェクト%{name} の削除に失敗しました"
-      failed_text: "プロジェクト%{name} の削除要求が失敗しました。 プロジェクトはアーカイブされたままです。"
-      completed: "プロジェクト%{name} の削除が完了しました"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "プロジェクト '%{name}'を削除要求は完了しました。"
       completed_text_children: "さらに、次の子プロジェクトが削除されました:"
     index:
@@ -494,6 +525,16 @@ ja:
         description: >
           プロジェクトは、その役割と関連する権限に応じてプロジェクトメンバーにのみ表示されます。子プロジェクトは影響を受けず、独自の設定があります。
       change_identifier: 識別子の変更
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "全て有効"
         label_disable_all: "すべて無効"
@@ -544,10 +585,19 @@ ja:
       work_package_priorities:
         new_label: "新しい優先度"
       creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "unavailable"
+        label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
-        label_request_submission: "Request submission"
-        label_artefact_export: "Artifact export"
     status:
       button_edit: プロジェクトの状態を編集
     wizard:
@@ -555,8 +605,10 @@ ja:
       sections: "Sections"
       title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
+      success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "変更されたリストは新しいリストとして保存されました"
@@ -605,26 +657,26 @@ ja:
         other: "また、 %{shared_work_packages_link} はこのユーザーと共有されています。"
       remove_project_membership_or_work_package_shares_too: "直接のメンバーとしてのユーザーだけを削除したい（および共有を維持したい）、またはワークパッケージの共有も削除しますか？"
       will_remove_all_user_access_priveleges: "このメンバーを削除すると、プロジェクトへのユーザーのすべてのアクセス権が削除されます。ユーザーはまだサイトの一部として存在します。"
-      will_remove_all_group_access_priveleges: "このメンバーを削除すると、グループのすべてのアクセス権がプロジェクトに削除されます。グループはサイトの一部として存在します。"
-      cannot_delete_inherited_membership: "このメンバーはこのプロジェクトのメンバーであるグループに属しているため、削除できません。"
-      cannot_delete_inherited_membership_note_admin_html: "プロジェクトのメンバーとしてグループを削除するか、 %{administration_settings_link} のグループからこの特定のメンバーを削除することができます。"
-      cannot_delete_inherited_membership_note_non_admin: "プロジェクトのメンバーとしてグループを削除するか、管理者に問い合わせてグループから特定のメンバーを削除することができます。"
+      will_remove_all_group_access_priveleges: "このメンバを削除すると、プロジェクトに対するグループのすべてのアクセス権が削除されます。グループはサイトの一部としてまだ存在します。"
+      cannot_delete_inherited_membership: "このプロジェクトのメンバーであるグループに所属しているため、このメンバーを削除することはできません。"
+      cannot_delete_inherited_membership_note_admin_html: "%{administration_settings_link}で、プロジェクトのメンバーとしてグループを削除することも、特定のメンバーをグループから削除することもできます。"
+      cannot_delete_inherited_membership_note_non_admin: "プロジェクトのメンバーとしてグループを削除するか、管理者に連絡してこの特定のメンバーをグループから削除することができます。"
     delete_work_package_shares_dialog:
-      title: "ワークパッケージの共有の取り消し"
+      title: "ワーク・パッケージ・シェアの破棄"
       shared_with_this_user_html:
         other: "%{all_shared_work_packages_link} はこのユーザーと共有されています。"
       shared_with_this_group_html:
         other: "%{all_shared_work_packages_link} はこのグループと共有されています。"
       shared_with_permission_html:
         other: "%{shared_work_packages_link} のみが %{shared_role_name} 権限と共有されています。"
-      revoke_all_or_with_role: "共有されたワークパッケージ、または %{shared_role_name} 権限を持つワークパッケージのみへのアクセスを取り消しますか？"
-      will_not_affect_inherited_shares: "(これはグループと共有されているワークパッケージには影響しません)。"
-      cannot_remove_inherited: "グループ間で共有されるワークパッケージは削除できません。"
-      cannot_remove_inherited_with_role: "ワークパッケージとロール %{shared_role_name} が共有されているため、削除できません。"
-      cannot_remove_inherited_note_admin_html: "あなたは、グループへの共有を取り消すか、 %{administration_settings_link} のグループからこの特定のメンバーを削除することができます。"
-      cannot_remove_inherited_note_non_admin: "共有をグループに取り消すか、管理者に問い合わせてグループから特定のメンバーを削除することができます。"
-      will_revoke_directly_granted_access: "このアクションは、すべてのユーザーへのアクセスを取り消しますが、グループと共有されているワークパッケージです。"
-      will_revoke_access_to_all: "このアクションは、すべてのユーザーへのアクセスを取り消します。"
+      revoke_all_or_with_role: "すべての共有ワークパッケージ、または %{shared_role_name} 権限を持つワークパッケージのみへのアクセス権を剥奪しますか？"
+      will_not_affect_inherited_shares: "(これは、そのグループと共有しているワークパッケージには影響しません）。"
+      cannot_remove_inherited: "グループで共有されたワークパッケージの共有は削除できません。"
+      cannot_remove_inherited_with_role: "ロール %{shared_role_name} で共有されるワークパッケージは、グループを介して共有され、削除することはできません。"
+      cannot_remove_inherited_note_admin_html: "%{administration_settings_link}、グループへの共有を取り消すか、グループからこの特定のメンバーを削除することができます。"
+      cannot_remove_inherited_note_non_admin: "グループへの共有を取り消すか、管理者に連絡して特定のメンバーをグループから削除することができます。"
+      will_revoke_directly_granted_access: "このアクションは、グループと共有されているワークパッケージ以外の、すべてのワークパッケージへのアクセス権を剥奪する。"
+      will_revoke_access_to_all: "このアクションは、すべてのアクセス権を剥奪する。"
   my:
     access_token:
       dialog:
@@ -646,14 +698,14 @@ ja:
       no_results_title_text: "現在、有効なアクセス トークンはありません。"
       notice_api_token_revoked: "APIトークンが削除されました。新しいトークンを作成するには、APIセクションの作成ボタンを使用してください。"
       notice_rss_token_revoked: "RSSトークンが削除されました。新しいトークンを作成するには、RSSセクションのリンクを使用してください。"
-      notice_ical_token_revoked: 'プロジェクト "%{token_name}" のカレンダー "%{calendar_name}" の iCalendar トークン "%{project_name}" が取り消されました。 このトークンのiCalendar URLは無効です。'
+      notice_ical_token_revoked: 'プロジェクト "%{project_name}" のカレンダー "%{calendar_name}" の iCalendar トークン "%{token_name}" が失効しました。このトークンを持つiCalendar URLは無効になりました。'
   news:
     index:
       no_results_title_text: 現在、報告するニュースはありません。
       no_results_content_text: ニュース項目を追加
   users:
     autologins:
-      prompt: "%{num_days} のログインを維持"
+      prompt: "ログインしたまま %{num_days}"
     sessions:
       session_name: "%{browser_name} %{browser_version} の %{os_name}"
       browser: "ブラウザ"
@@ -667,17 +719,17 @@ ja:
       current: "Current (this device)"
       title: "セッション管理"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
-      may_not_delete_current: "現在のセッションは削除できません。"
+      may_not_delete_current: "現在のセッションを削除することはできません。"
       deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "このユーザーは現在以下のグループのメンバーです："
       no_results_title_text: このユーザーは現在どのグループのメンバーでもありません。
-      summary_with_more: '%{names} と %{count_link} のメンバー。'
-      more: "%{count} 以上"
-      summary: '%{names} のメンバー .'
+      summary_with_more: '%{names} と %{count_link}のメンバー。'
+      more: "%{count} もっと見る"
+      summary: '%{names}のメンバー。'
     memberships:
       no_results_title_text: このユーザは現在プロジェクトのメンバーではありません。
-    open_profile: "プロファイルを開く"
+    open_profile: "プロフィール"
     invite_user_modal:
       invite: "招待"
       title:
@@ -734,7 +786,7 @@ ja:
   placeholder_users:
     right_to_manage_members_missing: >
       プレースホルダーユーザを削除する権限がありません。 プレースホルダー ユーザーがメンバーであるすべてのプロジェクトのメンバーを管理する権利はありません。
-    delete_tooltip: "プレースホルダー ユーザーを削除"
+    delete_tooltip: "プレースホルダー・ユーザーの削除"
     deletion_info:
       heading: "プレースホルダー ユーザー %{name} を削除"
       data_consequences: >
@@ -752,11 +804,11 @@ ja:
   reactions:
     action_title: "リアクト"
     add_reaction: "リアクションを追加"
-    react_with: "%{reaction} で反応する"
-    and_user: "と %{user}"
+    react_with: "%{reaction} と リアクト"
+    and_user: "および %{user}"
     and_others:
       other: と %{count} その他
-    reaction_by: "%{reaction} による"
+    reaction_by: "%{reaction} によって"
   reportings:
     index:
       no_results_title_text: 現在、ステータス報告はありません。
@@ -767,20 +819,19 @@ ja:
         このステータスの色を割り当てたり変更する場合にクリックします。
         ステータスボタンに表示され、テーブル内のワークパッケージを強調表示するために使用できます。
       status_default_text: |-
-        新しいワークパッケージはデフォルトでこのタイプに設定されています。読み取り専用にすることはできません。
+        新しいワークパッケージは、デフォルトでこのタイプに設定される。読み取り専用にはできない。
       status_excluded_from_totals_text: |-
-        このオプションをオンにすると、このステータスのワークパッケージを合計作業量、
-        残作業量、および階層構造で完了させることができます。
+        このステータスを持つワークパッケージを、階層内の「作業」、「
+        残作業」、「完了率」の合計から除外するには、このオプションをオンにします。
       status_percent_complete_text: |-
         <a href="%{href}">ステータスベースの進捗計算モードでは</a>、このステータスが選択されると、作業
         パッケージの「完了%」が自動的にこの値に設定される。
         ワークベースモードでは無視される。
       status_readonly_html: |
-        ワークパッケージを読み取り専用としてマークするには、このオプションをオンにしてください。
-        ステータスを除いて変更することはできません。
-
+        このステータスを持つワークパッケージを読み取り専用としてマークするには、このオプションをチェックする。
+        ステータス以外の属性は変更できません。
         <br>
-        <strong>メモ</strong>: 継承された値 (例えば、子や関連) が適用されます。
+        <strong>注意</strong>: 継承された値 (子やリレーションなど) は適用されます。
     index:
       no_results_title_text: 現在、ワークパッケージのステータスはありません。
       no_results_content_text: 新しいステータスを追加
@@ -790,7 +841,7 @@ ja:
         is_readonly: "読み取り専用"
         excluded_from_totals: "合計から除外"
   themes:
-    dark: "ダーク"
+    dark: "暗い"
     light: "ライト"
     sync_with_os: "自動(OSのテーマ設定に追従)"
   types:
@@ -898,15 +949,15 @@ ja:
       could_not_be_saved: "次のワークパッケージを保存できませんでした:"
       none_could_be_saved: "%{total} 作業パッケージのどれも更新できませんでした。"
       x_out_of_y_could_be_saved: "%{failing} の %{total} ワークパッケージのうち、 %{success} を更新できませんでした。"
-      selected_because_descendants: "%{selected} ワークパッケージが選択されている間、合計で %{total} ワークパッケージが子孫を含む影響を受けます。"
-      descendant: "選択された子孫です"
+      selected_because_descendants: "%{selected} のワークパッケージが選択されたが、合計 %{total} のワークパッケージが影響を受け、その中には子孫も含まれる。"
+      descendant: "選択された子孫"
     move:
       no_common_statuses_exists: "選択されたすべてのワークパッケージに利用できるステータスはありません。 それらの状態は変更できません。"
       unsupported_for_multiple_projects: "複数のプロジェクトからのワークパッケージの一括移動 / コピーはサポートされていません"
       current_type_not_available_in_target_project: >
-        ターゲット プロジェクトで現在のワークパッケージのタイプが有効になっていません。 変更を行わないようにしたい場合は、対象プロジェクトのタイプを有効にしてください。 それ以外の場合は、リストからターゲット プロジェクトで使用可能なタイプを選択します。
+        ワークパッケージの現在のタイプがターゲットプロジェクトで有効になっていません。変更しない場合は、ターゲットプロジェクトでタイプを有効にしてください。そうでない場合は、リストからターゲットプロジェクトで使用可能なタイプを選択してください。
       bulk_current_type_not_available_in_target_project: >
-        現在のタイプのワークパッケージはターゲット プロジェクトで有効になっていません。 変更を行わないようにしたい場合は、対象プロジェクトのタイプを有効にしてください。 それ以外の場合は、リストからターゲット プロジェクトで使用可能なタイプを選択します。
+        ワークパッケージの現在のタイプがターゲットプロジェクトで有効になっていません。変更しない場合は、ターゲットプロジェクトでタイプを有効にしてください。そうでない場合は、リストからターゲットプロジェクトで使用可能なタイプを選択してください。
     sharing:
       missing_workflow_warning:
         title: "ワークパッケージの共有のためのワークフローがありません"
@@ -931,9 +982,9 @@ ja:
           no_results_title_text: 現在、有効なバージョンはありません。
   work_package_relations_tab:
     index:
-      action_bar_title: "他のワークパッケージにリレーションを追加して、その間にリンクを作成します。"
-      no_results_title_text: 現在利用可能なリレーションはありません。
-      blankslate_heading: "リレーションなし"
+      action_bar_title: "他のワークパッケージとのリレーションを追加して、それらの間にリンクを作成する。"
+      no_results_title_text: 現在、利用可能な関係はない。
+      blankslate_heading: "関係なし"
       blankslate_description: "このワークパッケージにはまだリレーションがありません。"
     label_add_child_button: "子要素"
     label_add_x: "%{x} を追加"
@@ -1012,18 +1063,12 @@ ja:
     deletion_pending: "アカウントは削除待ちの状態です。この処理はバックグラウンドで行われます。ユーザーが完全に削除されるまで少し時間がかかる場合があります。"
     deletion_info:
       data_consequences:
-        other: 'ユーザーが作成した殆どのデータ (例えば電子メール、設定、ワークパッケージ 、wiki記載 )が削除されます。ただし、他のユーザーの作業を妨害することがなくワークパッケージやwiki 記載のようなデータは削除することはできません。それ故に、このようなデータは「削除されたユーザー」と呼ばれるアカウントに再割り当てされます。削除された各アカウントのデータがこのアカウントに再割り当てされるので、そのユーザーが作成したデータと削除された別のユーザーのデータとを区別することができなくなります。'
-        self: 'あなたが作成した殆どのデータ (例えば電子メール、設定、ワークパッケージ 、wiki記載 )が削除されます。ただし、他のユーザーの作業を妨害することがなくワークパッケージやwiki 記載のようなデータは削除することはできません。それ故に、このようなデータは「削除されたユーザー」と呼ばれるアカウントに再割り当てされます。削除された各アカウントのデータがこのアカウントに再割り当てされるので、あなたが作成したデータと削除された別のユーザーのデータとを区別することができなくなります。'
-      heading: "アカウント名「 %{name} 」を削除します。"
-      info:
-        other: "ユーザアカウントの削除は復元できない操作です。"
-        self: "アカウントの削除は復元できない操作です。"
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "このアカウントはシステムから削除されます。したがって、このユーザは現在の認証情報でログイン不可能になります。再度このアプリケーションのユーザになることは可能です。"
-        self: "自分のアカウントがシステムから削除されます。したがって、現在の認証情報ではログイン不可能になります。再度このアプリケーションのユーザになることは可能です。"
-      login_verification:
-        other: "削除を確認するためにログイン名 %{name} を入力してください。送信した後は、パスワードの確認が求められます。"
-        self: "削除を確認するためにあなたのログイン名 %{name} を入力してください。送信した後は、パスワードの確認を求められます。"
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       アカウントが有効化されていません。アカウントを有効にするために、受信したメール内のリンクをクリックしてください。
     error_inactive_manual_activation: >
@@ -1056,6 +1101,7 @@ ja:
       attribute_help_text:
         attribute_name: "属性"
         help_text: "ヘルプ テキスト"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIMクライアント"
       calculated_value_error:
@@ -1153,6 +1199,7 @@ ja:
         identifier: "識別子"
         latest_activity_at: "最新の活動"
         parent: "親プロジェクト"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "可視性"
           true: "公開"
@@ -1167,6 +1214,13 @@ ja:
           off_track: "脱線"
           finished: "完了"
           discontinued: "中止"
+        project_creation_wizard_assignee_custom_field: "Assignee when submitted"
+        project_creation_wizard_notification_text: "Notification text"
+        project_creation_wizard_send_confirmation_email: "Confirmation email"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Work package type"
+        template: "Template"
         templated: "テンプレートプロジェクト"
         templated_value:
           true: "テンプレートとしてマーク"
@@ -1178,6 +1232,8 @@ ja:
       project_custom_field:
         is_required: "すべてのプロジェクトに必要"
         custom_field_section: セクション
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "期間"
         definition: "定義"
@@ -1287,6 +1343,7 @@ ja:
         header_alerts: "アラート"
         button_update_look_and_feel: "ルック＆フィールを更新"
         button_update_alerts: "アラートの更新"
+        button_update_user_information: "Update profile"
         comments_sorting: "ワークパッケージのアクティビティを並べ替えて表示する"
         disable_keyboard_shortcuts: "キーボードショートカットを無効にする"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1528,9 +1585,11 @@ ja:
         project:
           archived_ancestor: "プロジェクトの祖先がアーカイブされています。"
           foreign_wps_reference_version: "子孫でないプロジェクトのワークパッケージが、プロジェクトまたはその子孫のバージョンを参照しています。"
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "すべての子プロジェクトをアーカイブするために必要な権限がありません。管理者に連絡してください。"
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "まだワークパッケージによって使用されています: %{types}"
             enabled_modules:
@@ -1702,8 +1761,7 @@ ja:
               cant_exceed_work: "仕事より高くすることはできません。"
               must_be_set_when_work_is_set: "作業が設定されている場合に必要です。"
               must_be_set_when_work_and_percent_complete_are_set: "「作業」と「完了率」が設定されている場合に必要です。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                工数が設定されていて，完了率が 100%になっている場合，必ず0hになっている必要があります。
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 「Work」が空で「% Complete」が100%の場合、必ず空でなければなりません。
           readonly_status: "ワークパッケージは読み取り専用の状態になっているため、その属性は変更できません。"
@@ -1762,7 +1820,8 @@ ja:
           other: "%{count} つのエラーにより %{model} を保存できませんでした"
     models:
       attachment: "ファイル"
-      attribute_help_text: "属性のヘルプ テキスト"
+      attribute_help_text:
+        other: "Attribute help texts"
       auth_provider:
         other: "認証プロバイダー"
       category: "カテゴリ"
@@ -1810,6 +1869,11 @@ ja:
     header_additional_invalid_fields:
       other: "また、以下のフィールドに問題がありました："
     field_erroneous_label: "このフィールドが間違っています: %{full_errors}\n正しい値を入力してください。"
+    messages:
+      must_be_template: "must be template"
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "%{user} によって %{datetime} に作成されました"
@@ -1936,6 +2000,7 @@ ja:
     subject: "タイトル"
     slug: "スラグ"
     summary: "サマリ"
+    template: "Template"
     time_zone: "タイムゾーン"
     text: "テキスト（本文）"
     title: "タイトル"
@@ -2108,7 +2173,9 @@ ja:
     copy_options:
       dependencies_label: "プロジェクトからコピー"
   create_project:
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "テンプレートを使用"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "テンプレートからコピー"
     blank_template:
@@ -2116,10 +2183,12 @@ ja:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -2276,6 +2345,7 @@ ja:
       nextcloud_sso: Nextcloudストレージのシングルサインオン。
       one_drive_sharepoint_file_storage: OneDrive/SharePointファイルストレージ
       placeholder_users: プレースホルダー ユーザー
+      portfolio_management: Portfolio management
       project_list_sharing: プロジェクトリストの共有
       readonly_work_packages: 読み取り専用のワークパッケージ
       scim_api: SCIMサーバーAPI
@@ -2368,6 +2438,8 @@ ja:
       internal_comments_inline:
         title: "内部コメントはグループ内のメンバーのみ閲覧できます"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         other: "%{count} 日後 %{trial_plan} トライアルトークンです"
@@ -2650,6 +2722,7 @@ ja:
       new_features:
         header: "新機能と製品のアップデートについて読む。"
         learn_about: "すべての新機能の詳細"
+        missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
@@ -2753,7 +2826,7 @@ ja:
         static_token_name: "APIトークン"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar サブスクリプションは管理者によって有効になっていません。この機能を使用するには管理者に問い合わせてください。"
         empty_text_hint: "iCalendar トークンを追加するには、プロジェクトの Calendar モジュール内から新規または既存のカレンダーを購読します。 必要な権限が必要です。"
       oauth:
@@ -2846,7 +2919,6 @@ ja:
   label_add_column: "カラムを追加"
   label_applied_status: "適用されるステータス"
   label_archive_project: "プロジェクトをアーカイブ"
-  label_artefact_export: "Artefact export"
   label_ascending: "昇順"
   label_assigned_to_me_work_packages: "担当しているワークパッケージ"
   label_associated_revisions: "関連するリビジョン"
@@ -3112,7 +3184,8 @@ ja:
   label_lock_user: "ユーザーをロック"
   label_logged_as: "ログイン中"
   label_login: "ログイン"
-  label_custom_logo: "カスタムロゴ"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "カスタムエクスポートロゴ"
   label_custom_export_cover: "カスタムエクスポートカバーの背景"
   label_custom_export_footer: "カスタムエクスポートフッター画像"
@@ -3258,11 +3331,15 @@ ja:
   label_project_attribute_manage_link: "プロジェクト属性の管理"
   label_project_count: "プロジェクトの合計数"
   label_project_copy_notifications: "プロジェクトのコピーの時、コピーした内容をメール通知する"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "最新のプロジェクト"
   label_project_default_type: "空の種類を許可する"
   label_project_hierarchy: "プロジェクトの階層構造"
   label_project_mappings: "プロジェクト"
   label_project_new: "新規プロジェクト"
+  label_project_initiation_request: "New project initiation request"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "プロジェクト"
   label_project_list_plural: "プロジェクト一覧"
   label_project_life_cycle: "プロジェクトのライフ サイクル"
@@ -3276,7 +3353,6 @@ ja:
   label_project_view_all: "全プロジェクトを表示"
   label_project_show_details: "プロジェクトの詳細を表示"
   label_project_hide_details: "プロジェクトの詳細を非表示"
-  label_project_initiation_request: "Project initiation request"
   label_portfolio: "ポートフォリオ"
   label_portfolio_new: "新しいポートフォリオ"
   label_program: "プログラム"
@@ -3364,6 +3440,7 @@ ja:
   label_subproject: "子プロジェクト"
   label_subproject_new: "新しい子プロジェクト"
   label_subproject_plural: "子プロジェクト"
+  label_subitems: "Subitems"
   label_subtask_plural: "子タスク"
   label_summary: "サマリ"
   label_system: "システム"
@@ -3371,6 +3448,8 @@ ja:
   label_table_of_contents: "目次"
   label_tag: "タグ"
   label_team_planner: "チームプランナー"
+  label_template: "テンプレート"
+  label_templates: "Templates"
   label_text: "長文"
   label_this_month: "今月"
   label_this_week: "今週"
@@ -3781,6 +3860,9 @@ ja:
   permission_add_project: "プロジェクトの作成"
   permission_add_portfolios: "ポートフォリオを作成"
   permission_add_programs: "プログラムの作成"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "添付ファイルを追加"
   permission_add_work_package_attachments_explanation: "ワークパッケージの編集権限なしで添付ファイルを追加できます"
   permission_add_internal_comments: "内部コメントの追加"
@@ -3893,6 +3975,11 @@ ja:
   permission_edit_project_query: "プロジェクトのクエリを編集"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
   program:
     count:
       zero: "0 programs"
@@ -3927,6 +4014,7 @@ ja:
       title: プロジェクトの識別子を変更
     not_available: "プロジェクトなし"
     template:
+      copying_title: "Applying template"
       copying: >
         プロジェクトは選択したテンプレートプロジェクトから作成されています。プロジェクトが利用可能になるとすぐにメールで通知されます。
       use_template: "テンプレートを使用"
@@ -4182,6 +4270,8 @@ ja:
   setting_mail_handler_body_delimiter_regex: "この正規表現に一致するメールを切り捨てる"
   setting_mail_handler_ignore_filenames: "無視するメールの添付ファイル"
   setting_new_project_user_role_id: "システム管理者以外のプロジェクト作成者に設定するロール"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "有効な文字の種類"
   setting_password_count_former_banned: "再利用を禁止される最近使用済みパスワードの数"
   setting_password_days_valid: "パスワードを強制変更させる経過日数"
@@ -4326,18 +4416,62 @@ ja:
       new:
         heading: "新しい属性"
         description: "このプロジェクト属性の変更は、有効なすべてのプロジェクトに反映されます。プロジェクトごとに必要な属性を無効にすることはできません。"
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
       blankslate:
         title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
       disable_dialog:
         title: "Disable project initiation request"
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      name:
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
+      submission:
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "プロジェクトのライフ サイクル"
-      heading_description: "プロジェクトのライフサイクルでは、プロジェクト計画に使用できるプロジェクトフェーズを定義し、各プロジェクトの概要ページに表示されます。 これらの属性は、有効または無効にできますが、プロジェクトレベルでの順序は変更できません。"
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "追加"
       label_add_description: "プロジェクトフェーズ定義を追加"
       filter:
@@ -4411,7 +4545,7 @@ ja:
   text_project_custom_field_html: >
     Enterpriseエディションでは、プロジェクトのカスタムフィールド用に以下のアドオンが追加されます:<br> <ul> <li><b>プロジェクトのカスタムフィールドをプロジェクトリストに追加して、プロジェクトポートフォリオビューを作成します。</b></li> </ul>
   text_custom_logo_instructions: >
-    透明な背景の白いロゴをお勧めします。 従来、および Retina ディスプレイの両方で最高の結果となるように、画像の寸法は、460px x 60px を確認してください。
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     これは、PDFエクスポートに表示されるロゴです。PNGまたはJPEG画像ファイルである必要があります。 透明または白背景の黒または色のロゴをお勧めします。
   text_custom_export_cover_instructions: >
@@ -4797,6 +4931,8 @@ ja:
       multiple_errors: "複数フィールド制限に違反が生じました。"
       unable_to_create_attachment: "添付ファイルを作成できませんでした"
       unable_to_create_attachment_permissions: "ファイルシステムのアクセス許可がないため、添付ファイルを保存できませんでした"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "このコンテキストはリソースへのリンクではありません。"
         unsupported_context: "指定されたリソースは、コンテキストとしてはサポートされません。"
@@ -4811,8 +4947,10 @@ ja:
     resources:
       schema: "スキーマ"
     undisclosed:
-      parent: 未公開 - 権限がないため、選択された親は見えません。
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: 未公開 - アクセス許可がないため、祖先は見えません。
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "事前承認"

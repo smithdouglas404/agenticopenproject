@@ -54,14 +54,25 @@ class Projects::CreationWizardController < ApplicationController
       .call(permitted_params.project)
 
     if service_call.success?
-      if params[:finish]
-        redirect_to project_path(@project), notice: I18n.t("projects.wizard.success")
+      if last_page?
+        creation_call = Projects::CreateArtifactWorkPackageService.new(user: current_user, model: @project).call
+
+        # even when successful, there can be errors related to the artifact
+        # upload to Nextcloud that needs to be shown to the user
+        flash[:error] = creation_call.errors.full_messages # rubocop:disable Rails/ActionControllerFlashBeforeRender
+        if creation_call.success?
+          redirect_to project_work_packages_path(@project, @project.project_creation_wizard_artifact_work_package_id),
+                      notice: I18n.t("projects.wizard.success")
+        else
+          render :show,
+                 locals: { menu_name: :none },
+                 status: :unprocessable_entity
+        end
       else
         redirect_to project_creation_wizard_path(@project, section: params[:next_section])
       end
     else
       @project = service_call.result
-      @errors = service_call.errors
       render :show,
              locals: { menu_name: :none },
              status: :unprocessable_entity
@@ -69,6 +80,10 @@ class Projects::CreationWizardController < ApplicationController
   end
 
   private
+
+  def last_page?
+    params[:finish]
+  end
 
   def load_sections_and_fields
     enabled_in_wizard_ids = @project

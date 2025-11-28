@@ -2,9 +2,9 @@ page:
   page_size: "A4"
   margin_top: 80
   margin_bottom: 60
-  margin_left: 40
-  margin_right: 40
-  page_break_threshold: 200
+  margin_left: 60
+  margin_right: 60
+  page_break_threshold: 140
   link_color: "175A8E"
 
 page_header:
@@ -12,7 +12,7 @@ page_header:
   size: 8
 
 page_footer:
-  offset: -30
+  offset: -40
   size: 8
   spacing: 6
 
@@ -23,6 +23,11 @@ page_logo:
 
 page_heading:
   size: 14
+  styles: [ "bold" ]
+  margin_bottom: 8
+
+page_subheading:
+  size: 12
   styles: [ "bold" ]
   margin_bottom: 20
 
@@ -68,11 +73,11 @@ section:
   margin_bottom: 8
   title:
     size: 12
-    color: "000000"
+    color: "008080"
     margin_bottom: 8
     styles: [ "bold" ]
     hr:
-      color: "1F2328"
+      color: "FFFFFF"
       height: 0.25
 
 project:
@@ -81,13 +86,19 @@ project:
     color: "000000"
     margin_bottom: 8
     styles: [ "bold" ]
+    badge:
+      size: 10
+      offset: 1
   markdown_label:
     size: 10
     color: "000000"
     styles: [ "bold" ]
     margin_bottom: 3
+  attribute_value:
+    size: 10
+    leading: 3
   markdown_margins:
-    margin_bottom: 8
+    margin_bottom: 4
   markdown:
     font:
       size: 10

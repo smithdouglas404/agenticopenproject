@@ -348,9 +348,10 @@ it:
         sp_client_write_permission_missing: Il client non ha i permessi di scrittura necessari su SharePoint. Consulta la documentazione di configurazione del tuo archivio.
         sp_existing_test_folder: La cartella %{folder_name} necessaria per il test esiste già su SharePoint. Eliminala e riprova.
         sp_oauth_request_error: La richiesta vincolata all'utente verso SharePoint non è riuscita. Controlla i log del server per ulteriori informazioni.
+        sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         sp_oauth_token_missing: OpenProject non può testare la comunicazione a livello utente con SharePoint poiché l'utente non ha ancora collegato il proprio account SharePoint.
         sp_tenant_id_missing: L'ID directory (tenant) configurato per SharePoint è mancante. Controlla la configurazione.
-        sp_unexpected_content: Contenuto inatteso nello spazio di archiviazione SharePoint.
+        sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
         unknown_error: Non è stato possibile verificare la connessione. Si è verificato un errore sconosciuto. Per maggiori informazioni consulta i log del server.
       label_error: Errore
       label_failed: Non riuscito
@@ -545,7 +546,13 @@ it:
       heading: Non hai ancora archivi.
     successful_storage_connection: Spazio di archiviazione connesso correttamente! Ricordati di attivare l'archivio nella scheda Progetto di ciascun progetto in cui vuoi utilizzarlo.
     upsell:
-      description: |-
-        Integra il tuo OneDrive come archivio file con OpenProject. Carica i file e collegali direttamente
-        a macro-attività in un progetto.
-      title: Integrazione di OneDrive
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

@@ -47,7 +47,11 @@ module OpenProject
       end
 
       def in_a_form
-        render_with_template # (locals: { help_text: work_package_help_text })
+        render_with_template
+      end
+
+      def standalone_caption
+        render_with_template(locals: { help_text: project_help_text })
       end
 
       private
@@ -61,6 +65,7 @@ module OpenProject
           .build_stubbed(
             :project_help_text,
             attribute_name: "name",
+            caption: "A short summary",
             help_text: <<~MARKDOWN
               #### Goal
 

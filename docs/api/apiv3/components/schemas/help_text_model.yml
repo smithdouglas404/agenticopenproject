@@ -67,6 +67,7 @@ example:
   id: 1
   attribute: id
   scope: WorkPackage
+  caption: "Some plain text caption"
   helpText:
     format: markdown
     raw: Help text for id attribute.

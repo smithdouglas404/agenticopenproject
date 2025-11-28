@@ -36,14 +36,32 @@ module Portfolios
 
     attr_reader :current_user, :portfolio
 
+    delegate :archived?, to: :portfolio
+
     def initialize(portfolio:, current_user:)
       super
       @portfolio = portfolio
       @current_user = current_user
     end
 
+    def name_caption
+      if archived?
+        "#{@portfolio.name} (#{t('project.archive.archived')})"
+      else
+        @portfolio.name
+      end
+    end
+
     def currently_favorited?
       @currently_favorited ||= portfolio.favorited?
+    end
+
+    def has_subportfolios?
+      all_subportfolios.present?
+    end
+
+    def all_subportfolios
+      all_descendants.portfolio
     end
 
     def all_subprograms
@@ -54,10 +72,49 @@ module Portfolios
       all_descendants.project
     end
 
+    def render_sub_status_bar?
+      # When none of the descendants have a status set, there's nothing to show and we
+      # will return false. Additionally, we won't show the bar for archived portfolios.
+      !archived? && sub_statuses.keys.any?(&:present?)
+    end
+
+    def sub_statuses_with_percentages
+      @sub_statuses_with_percentages ||=
+        begin
+          total = sub_statuses.values.sum
+
+          sub_statuses.map do |code, count|
+            percentage = (count.fdiv(total) * 100).round(1)
+
+            { code:, count:, percentage: }
+          end
+        end
+    end
+
+    def sub_status_hover_card_id
+      "portfolio-progress-hover-card-#{portfolio.id}"
+    end
+
     private
 
     def all_descendants
       @all_descendants ||= portfolio.descendants.visible
+    end
+
+    def sub_statuses
+      @sub_statuses ||= all_descendants
+                          .reorder(:status_code)
+                          .pluck(:status_code)
+                          .tally
+    end
+
+    # Will return a hash with Primer style options if the portfolio is archived.
+    # Will return an empty hash if the portfolio is active.
+    #
+    # Intended to be injected into a Primer component's `**options` parameter that relies on the archived
+    # state of a portfolio to decide the display style.
+    def archived_style
+      archived? ? { color: :muted } : {}
     end
   end
 end

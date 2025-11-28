@@ -65,6 +65,10 @@ module Grids
       def news_module_disabled?
         project.present? && !project.module_enabled?("news")
       end
+
+      def can_manage_news?
+        current_user.allowed_in_project?(:manage_news, project)
+      end
     end
   end
 end

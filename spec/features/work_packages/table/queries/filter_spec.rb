@@ -166,7 +166,7 @@ RSpec.describe "filter work packages", :js do
         expect_ng_option(
           page.find_by_id("values-version"),
           shared_version,
-          grouping: "Project N/A",
+          grouping: I18n.t(:"api_v3.undisclosed.project"),
           results_selector: "body"
         )
 

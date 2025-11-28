@@ -57,7 +57,7 @@ module Settings
           tabs << {
             name: "role_assignment",
             path: role_assignment_admin_settings_project_custom_field_path(@custom_field),
-            label: t(:label_interlinked_role_assignment)
+            label: t("custom_fields.admin.role_assignment.title")
           }
         end
 
@@ -66,6 +66,13 @@ module Settings
             name: "project_custom_field_project_mappings",
             path: project_mappings_admin_settings_project_custom_field_path(@custom_field),
             label: t(:label_project_mappings)
+          }
+
+        tabs <<
+          {
+            name: "attribute_help_text",
+            path: attribute_help_text_admin_settings_project_custom_field_path(@custom_field),
+            label: AttributeHelpText.human_plural_model_name
           }
 
         tabs

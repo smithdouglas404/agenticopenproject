@@ -47,10 +47,9 @@ RSpec.describe Projects::TemplateSelectComponent, type: :component do
 
   describe "action" do
     let(:project) { Project.new(workspace_type:) }
+    let(:workspace_type) { nil }
 
     context "when workspace type is not set" do
-      let(:workspace_type) { nil }
-
       it "sets action to create project" do
         expect(rendered_component).to have_element :form, method: "get" do |form|
           expect(form["action"]).to eq "/projects/new"
@@ -97,17 +96,11 @@ RSpec.describe Projects::TemplateSelectComponent, type: :component do
         end
       end
     end
-  end
 
-  it "registers Stimulus controller" do
-    expect(rendered_component).to have_element :form do |form|
-      expect(form["data-controller"]).to include "auto-submit"
-    end
-  end
-
-  it "connects Stimulus controller actions" do
-    expect(rendered_component).to have_selector :fieldset, "Use template" do |fieldset|
-      expect(fieldset["data-action"]).to include "change->auto-submit#submit"
+    it "renders the wizard step form" do
+      allow(Projects::StepForm).to receive(:new).with(anything, step: 2).and_call_original
+      rendered_component
+      expect(Projects::StepForm).to have_received(:new)
     end
   end
 end

@@ -5,13 +5,6 @@
 hu:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Dokumentáció
-        item_1:
-          name: Specifikáció
-        item_2:
-          name: Egyéb
       document_types:
         item_0:
           name: Note

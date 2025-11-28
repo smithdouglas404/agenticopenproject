@@ -53,6 +53,11 @@ RSpec.describe AddCollaborationToDocuments, type: :model do
         end
       end
 
+      after do
+        # Ensure cache is cleared after migration spec to prevent contaminating subsequent tests
+        ActiveRecord::Base.connection.clear_cache!
+      end
+
       it "sets existing documents to 'classic' kind" do
         ActiveRecord::Migration.suppress_messages { described_class.new.migrate(:up) }
 

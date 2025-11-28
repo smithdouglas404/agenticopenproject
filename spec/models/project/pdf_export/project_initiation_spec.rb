@@ -32,8 +32,9 @@ require "spec_helper"
 require "pdf/inspector"
 require_relative "../../projects/exporter/exportable_project_context"
 
-RSpec.describe Project::PDFExport::ProjectInitiation do
+RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initiation: true } do
   include PDFExportSpecUtils
+  include ProjectHelper
   include Redmine::I18n
 
   include_context "with a project with an arrangement of custom fields"
@@ -42,9 +43,21 @@ RSpec.describe Project::PDFExport::ProjectInitiation do
   let(:current_user) { create(:user, member_with_permissions: { project => %i[view_projects view_project_attributes] }) }
   let(:export_time) { DateTime.new(2025, 11, 13, 13, 37) }
   let(:export_time_formatted) { format_time(export_time) }
+  let(:wizard_status) { create(:status, name: "Submitted") }
+  let(:status) { create(:status, name: "Approved") }
+  let(:work_package) { create(:work_package, status:) }
+  let(:custom_artefact_name_key) { "project_mandate" }
   let(:section_a) { create(:project_custom_field_section, name: "Section A") }
   let(:section_b) { create(:project_custom_field_section, name: "Section B") }
   let(:unset_string_cf) { create(:string_project_custom_field, projects: [project]) }
+  let(:disabled_custom_field) { create(:string_project_custom_field, name: "Disabled Field") }
+  let(:disabled_mapping) do
+    create(:project_custom_field_project_mapping,
+           project:,
+           project_custom_field: disabled_custom_field,
+           creation_wizard: false)
+  end
+  let(:heading) { project_creation_wizard_name(project) }
 
   subject do
     result = Timecop.freeze(export_time) do
@@ -58,49 +71,97 @@ RSpec.describe Project::PDFExport::ProjectInitiation do
 
   before do
     login_as current_user
-
-    bool_cf.update!(project_custom_field_section: section_a)
-    string_cf.update!(project_custom_field_section: section_a)
-    text_cf.update!(project_custom_field_section: section_a)
-    link_cf.update!(project_custom_field_section: section_a)
-    unset_string_cf.update!(project_custom_field_section: section_a)
-
-    int_cf.update!(project_custom_field_section: section_b)
-    float_cf.update!(project_custom_field_section: section_b)
-    date_cf.update!(project_custom_field_section: section_b)
-    user_cf.update!(project_custom_field_section: section_b)
-    version_cf.update!(project_custom_field_section: section_b)
   end
 
-  it "exports a PDF containing project initiation with custom attributes grouped by sections" do
-    heading = I18n.t(:"export.project_initiation.title")
+  context "with a custom defined name" do
+    let(:project) { create(:project, project_creation_wizard_artifact_name: custom_artefact_name_key) }
+    let(:current_user) { create(:admin) }
 
-    expected_document = [
-      project.name, heading, export_time_formatted, # cover page
+    it "exports a PDF containing project initiation using the custom defined name" do
+      custom_artefact_name = I18n.t(project.project_creation_wizard_artifact_name,
+                                    default: :project_initiation_request,
+                                    scope: "settings.project_initiation_request.name.options")
+      expected_document = [
+        project.name, custom_artefact_name, export_time_formatted, # cover page
+        project.name,
+        custom_artefact_name,
+        "1/1", custom_artefact_name, project.name
+      ].join(" ")
+      expect(subject).to eq expected_document
+    end
+  end
 
-      heading,
+  context "with a project attributes" do
+    before do
+      bool_cf.update!(project_custom_field_section: section_a)
+      string_cf.update!(project_custom_field_section: section_a)
+      text_cf.update!(project_custom_field_section: section_a)
+      link_cf.update!(project_custom_field_section: section_a)
+      unset_string_cf.update!(project_custom_field_section: section_a)
+      disabled_custom_field.update!(project_custom_field_section: section_a)
 
-      "Project",
-      "Name", project.name,
-      "Description", "The description of the project",
+      int_cf.update!(project_custom_field_section: section_b)
+      float_cf.update!(project_custom_field_section: section_b)
+      date_cf.update!(project_custom_field_section: section_b)
+      user_cf.update!(project_custom_field_section: section_b)
+      version_cf.update!(project_custom_field_section: section_b)
 
-      "Section A",
-      link_cf.name, "https://www.example.com",
-      text_cf.name, "Some ", "long", " text",
-      string_cf.name, "Some small text",
-      bool_cf.name, "Yes",
-      unset_string_cf.name, "–",
+      disabled_mapping
+    end
 
-      "Section B",
-      version_cf.name, system_version,
-      user_cf.name, "Other User",
-      date_cf.name, format_date(Time.zone.today),
-      float_cf.name, "4.5",
-      int_cf.name, "5",
+    it "exports a PDF containing project initiation with custom attributes grouped by sections" do
+      expected_document = [
+        project.name, heading, export_time_formatted, # cover page
+        project.name,
+        heading,
+        "The description of the project",
 
-      "1/1", export_time_formatted, "#{project.name} | #{heading}"
-    ].join(" ")
+        "Section A",
+        link_cf.name, "https://www.example.com",
+        text_cf.name, "Some ", "long", " text",
+        string_cf.name, "Some small text",
+        bool_cf.name, "Yes",
+        unset_string_cf.name, "–",
 
-    expect(subject).to eq expected_document
+        "Section B",
+        version_cf.name, system_version,
+        user_cf.name, "Other User",
+        date_cf.name, format_date(Time.zone.today),
+        float_cf.name, "4.5",
+        int_cf.name, "5",
+
+        "1/1", heading, project.name
+      ].join(" ")
+
+      expect(subject).to eq expected_document
+    end
+  end
+
+  context "with a status" do
+    let(:project) { create(:project, project_creation_wizard_status_when_submitted_id: wizard_status.id) }
+
+    it "exports a PDF containing project initiation using the custom defined name" do
+      expected_document = [
+        project.name, heading, export_time_formatted, # cover page
+        project.name,
+        heading, " ", "    Submitted    ",
+        "1/1", heading, project.name
+      ].join(" ")
+      expect(subject).to eq expected_document
+    end
+  end
+
+  context "with a work package status" do
+    let(:project) { create(:project, project_creation_wizard_artifact_work_package_id: work_package.id) }
+
+    it "exports a PDF containing project initiation using the custom defined name" do
+      expected_document = [
+        project.name, heading, export_time_formatted, # cover page
+        project.name,
+        heading, " ", "    Approved    ",
+        "1/1", heading, project.name
+      ].join(" ")
+      expect(subject).to eq expected_document
+    end
   end
 end

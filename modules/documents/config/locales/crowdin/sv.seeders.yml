@@ -5,13 +5,6 @@
 sv:
   seeds:
     common:
-      document_categories:
-        item_0:
-          name: Dokumentation
-        item_1:
-          name: Specifikation
-        item_2:
-          name: Andra
       document_types:
         item_0:
           name: Note

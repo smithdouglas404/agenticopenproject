@@ -52,6 +52,7 @@ hu:
           title: 'Munka-csomag tábla'
         work_packages_graph:
           title: 'Munka-csomag grafikon'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Naptár'
         work_packages_overview:

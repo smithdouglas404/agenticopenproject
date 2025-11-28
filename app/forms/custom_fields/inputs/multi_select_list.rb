@@ -62,7 +62,7 @@ class CustomFields::Inputs::MultiSelectList < CustomFields::Inputs::Base::Autoco
     when "hierarchy", "weighted_item_list"
       hierarchical_list_items.map do |item|
         {
-          label: item.ancestry_path,
+          label: item.ancestry_path(include_shorts_and_weights: true),
           value: item.id,
           selected: custom_values.pluck(:value).map(&:to_i).include?(item.id)
         }

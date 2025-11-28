@@ -81,6 +81,13 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
 
   public expanded = false;
 
+  // Computed placeholder that changes based on expanded state
+  public get effectivePlaceholder():string {
+    return this.expanded 
+      ? this.I18n.t('js.global_search.search_placeholder_expanded')
+      : this.placeholder;
+  }
+
   private _markable = new BehaviorSubject<boolean>(false);
 
   public markable$ = this._markable.asObservable();

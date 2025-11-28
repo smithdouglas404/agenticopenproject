@@ -30,8 +30,9 @@
 
 require "spec_helper"
 
-RSpec.describe "Portfolios", "index", :js do
+RSpec.describe "Portfolios", "index", :js, with_ee: :portfolio_management do # TODO: test without enterprise feature
   let!(:portfolio_a) { create(:portfolio, name: "Portfolio A") }
+  let!(:portfolio_b) { create(:portfolio, name: "Portfolio B") }
   let!(:portfolio_favorited) { create(:portfolio, name: "Favorited") }
   let!(:inactive_portfolio) { create(:portfolio, name: "Inactive", active: false) }
 
@@ -49,9 +50,14 @@ RSpec.describe "Portfolios", "index", :js do
 
   before do
     create(:favorite, user: current_user, favorited: portfolio_favorited)
-    create(:project, parent: portfolio_a)
-    create(:program, parent: portfolio_a).tap do |program_a|
-      create(:project, parent: program_a)
+    create(:project, parent: portfolio_a, status_code: "on_track")
+    create(:program, parent: portfolio_a, status_code: "at_risk").tap do |program_a|
+      create(:project, parent: program_a, status_code: "on_track")
+    end
+
+    create(:portfolio, parent: portfolio_b, status_code: "discontinued").tap do |portfolio_b_child|
+      create(:project, parent: portfolio_b_child, status_code: "not_started")
+      create(:project, parent: portfolio_b_child)
     end
 
     portfolios_page.visit!
@@ -62,7 +68,7 @@ RSpec.describe "Portfolios", "index", :js do
       expect(page).to have_title("Portfolios")
       portfolios_page.expect_title("Active portfolios")
 
-      portfolios_page.expect_portfolios_listed(portfolio_a, portfolio_favorited)
+      portfolios_page.expect_portfolios_listed(portfolio_a, portfolio_b, portfolio_favorited)
       portfolios_page.expect_portfolios_not_listed(inactive_portfolio)
 
       portfolios_page.within_row(portfolio_a) do
@@ -71,6 +77,7 @@ RSpec.describe "Portfolios", "index", :js do
 
         expect(page).to have_text("2 projects")
         expect(page).to have_text("1 program")
+        expect(page).to have_no_text("0 portfolios")
       end
     end
 
@@ -96,7 +103,7 @@ RSpec.describe "Portfolios", "index", :js do
       end
 
       it "only lists visible portfolios" do
-        portfolios_page.expect_portfolios_not_listed(inactive_portfolio, portfolio_favorited)
+        portfolios_page.expect_portfolios_not_listed(inactive_portfolio, portfolio_b, portfolio_favorited)
       end
     end
 
@@ -117,17 +124,27 @@ RSpec.describe "Portfolios", "index", :js do
       click_on "Favorite portfolios"
       portfolios_page.expect_title("Favorite portfolios")
       portfolios_page.expect_portfolios_listed(portfolio_favorited)
-      portfolios_page.expect_portfolios_not_listed(portfolio_a, inactive_portfolio)
+      portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_b, inactive_portfolio)
 
       click_on "My portfolios"
       portfolios_page.expect_title("My portfolios")
       portfolios_page.expect_portfolios_listed(portfolio_a)
-      portfolios_page.expect_portfolios_not_listed(portfolio_favorited, inactive_portfolio)
+      portfolios_page.expect_portfolios_not_listed(portfolio_favorited, portfolio_b, inactive_portfolio)
 
       click_on "Archived portfolios"
       portfolios_page.expect_title("Archived portfolios")
       portfolios_page.expect_portfolios_listed(inactive_portfolio)
-      portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_favorited)
+      portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_b, portfolio_favorited)
+
+      # For archived portfolios, no status bar, favorite button or project count is shown:
+      portfolios_page.within_row(inactive_portfolio) do
+        expect(page).to have_no_test_selector("op-portfolios--favorite-button")
+        expect(page).to have_no_test_selector("op-portfolios--sub-status-bar")
+        expect(page).to have_no_test_selector("op-portfolios--status")
+        expect(page).to have_no_text("0 portfolios")
+        expect(page).to have_no_text("0 projects")
+        expect(page).to have_no_text("0 programs")
+      end
     end
 
     it "allows you to favorite and unfavorite portfolios" do
@@ -149,16 +166,16 @@ RSpec.describe "Portfolios", "index", :js do
     it "lets you apply filters" do
       portfolios_page.filter_by_name_and_identifier("Favorited")
       portfolios_page.expect_portfolios_listed(portfolio_favorited)
-      portfolios_page.expect_portfolios_not_listed(portfolio_a, inactive_portfolio)
+      portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_b, inactive_portfolio)
       page.find_by_id("portfolio-filters-form-clear-button").click
 
       portfolios_page.toggle_filters_section
       portfolios_page.filter_by_active("no")
       portfolios_page.expect_portfolios_listed(inactive_portfolio)
-      portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_favorited)
+      portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_b, portfolio_favorited)
     end
 
-    it "allows seeing and changing the status" do
+    it "allows seeing and changing the portfolio status" do
       portfolios_page.expect_status_of(portfolio_a, "Not set")
       portfolios_page.expect_status_of(portfolio_favorited, "Not set")
 
@@ -166,6 +183,49 @@ RSpec.describe "Portfolios", "index", :js do
 
       portfolios_page.expect_status_of(portfolio_favorited, "At risk")
       portfolios_page.expect_status_of(portfolio_a, "Not set")
+    end
+
+    describe "status of sub-items" do
+      it "shows the status summary of sub-items" do
+        portfolios_page.within_row(portfolio_a) do
+          expect(page).to have_test_selector("op-portfolios--sub-status-bar")
+
+          portfolios_page.expect_status_bar_percentage(portfolio_a, "on_track", "66.7", find_row: false)
+          portfolios_page.expect_status_bar_percentage(portfolio_a, "at_risk", "33.3", find_row: false)
+
+          # The status bar shows a hover card on hover:
+          hover_card_selector = "op-portfolios--hover-card-#{portfolio_a.id}"
+          expect(page).not_to have_test_selector(hover_card_selector)
+          page.find_test_selector("op-portfolios--sub-status-bar").hover
+          expect(page).to have_test_selector(hover_card_selector)
+        end
+
+        # Portfolio B has a child portfolio of its own:
+        portfolios_page.within_row(portfolio_b) do
+          expect(page).to have_text("1 portfolio")
+          expect(page).to have_text("0 programs")
+          expect(page).to have_text("2 projects")
+
+          expect(page).to have_test_selector("op-portfolios--sub-status-bar")
+        end
+
+        # Status of the child portfolio
+        portfolios_page.expect_status_bar_percentage(portfolio_b, "discontinued", "33.3")
+        # Status of a child project
+        portfolios_page.expect_status_bar_percentage(portfolio_b, "not_started", "33.3")
+        portfolios_page.expect_status_bar_percentage(portfolio_b, "not_set", "33.3")
+      end
+
+      it "does not show a status summary if no sub-item has a status" do
+        # Statusless sub-item:
+        create(:project, parent: portfolio_favorited)
+        portfolios_page.visit!
+
+        portfolios_page.within_row(portfolio_favorited) do
+          expect(page).to have_text("1 project")
+          expect(page).not_to have_test_selector("op-portfolios--sub-status-bar")
+        end
+      end
     end
 
     context "when using the more menu" do

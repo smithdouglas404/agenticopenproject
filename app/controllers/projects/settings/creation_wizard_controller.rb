@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -46,6 +46,28 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
   def toggle
     @project.update(project_creation_wizard_enabled: !@project.project_creation_wizard_enabled)
     redirect_to project_settings_creation_wizard_path(@project, tab: params[:tab]), status: :see_other
+  end
+
+  def update_name_settings
+    update_settings_for_tab("name", name_settings_params)
+  end
+
+  def update_submission_settings
+    update_settings_for_tab("submission", submission_settings_params)
+  end
+
+  def update_artifact_export_settings
+    update_settings_for_tab("export", artifact_export_settings_params)
+  end
+
+  def refresh_submission_form
+    @project.assign_attributes(submission_settings_params)
+
+    update_via_turbo_stream(
+      component: Projects::Settings::CreationWizard::SubmissionFormComponent.new(project: @project)
+    )
+
+    respond_with_turbo_streams
   end
 
   def toggle_project_custom_field
@@ -75,9 +97,9 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
     project_id = permitted_params.project_custom_field_project_mapping[:project_id]
 
     custom_field_ids = ProjectCustomField
-      .where(custom_field_section_id: section_id)
-      .where(is_required: false)
-      .pluck(:id)
+                         .where(custom_field_section_id: section_id)
+                         .where(is_required: false)
+                         .pluck(:id)
 
     ProjectCustomFieldProjectMapping
       .where(project_id:, custom_field_id: custom_field_ids)
@@ -90,5 +112,45 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
     unless OpenProject::FeatureDecisions.project_initiation_active?
       render_404
     end
+  end
+
+  def update_settings_for_tab(tab, settings_params)
+    call = Projects::UpdateService
+             .new(model: @project, user: current_user, contract_class: Projects::SettingsContract)
+             .call(settings_params)
+
+    @project = call.result
+
+    if call.success?
+      flash[:notice] = I18n.t(:notice_successful_update)
+      redirect_to project_settings_creation_wizard_path(@project, tab:)
+    else
+      params[:tab] = tab
+      render action: :show, status: :unprocessable_entity
+    end
+  end
+
+  def name_settings_params
+    params.expect(
+      project: %i[project_creation_wizard_artifact_name]
+    )
+  end
+
+  def submission_settings_params
+    params.expect(
+      project: %i[project_creation_wizard_work_package_type_id
+                  project_creation_wizard_status_when_submitted_id
+                  project_creation_wizard_send_confirmation_email
+                  project_creation_wizard_notification_text
+                  project_creation_wizard_assignee_custom_field_id
+                  project_creation_wizard_work_package_comment]
+    )
+  end
+
+  def artifact_export_settings_params
+    params.expect(
+      project: %i[project_creation_wizard_artifact_export_type
+                  project_creation_wizard_artifact_export_storage]
+    )
   end
 end

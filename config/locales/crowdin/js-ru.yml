@@ -104,7 +104,7 @@ ru:
     button_save: "Сохранить"
     button_settings: "Настройки"
     button_uncheck_all: "Снять все отметки"
-    button_update: "Обновление"
+    button_update: "Обновить"
     button_export-atom: "Скачать Atom"
     button_generate_pdf: "Создать PDF"
     button_create: "Создать"
@@ -302,6 +302,7 @@ ru:
       success_message: 'URL-адрес "%{name}" был успешно скопирован в ваш буфер обмена. Вставьте его в свой клиент календаря, чтобы завершить подписку.'
     label_activate: "Активировать"
     label_assignee: "Назначенный"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Добавить столбец после"
     label_add_column_before: "Добавить столбец перед"
     label_add_columns: "Добавить столбец"
@@ -1133,6 +1134,7 @@ ru:
       current_project_and_all_descendants: "В этом проекте + подпроектах"
       current_project: "В этом проекте"
       recently_viewed: "Недавно просмотренные"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "все проекты"
         project_and_subprojects: "и все подпроекты"
@@ -1169,6 +1171,11 @@ ru:
         does_not_match_search: "Ни один проект не соответствует критериям поиска."
       no_results: "Ни один проект не соответствует критериям поиска."
       no_favorite_results: "Ни один избранный проект не соответствует критериям поиска."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Базовый уровень"
       clear: "Очистить"

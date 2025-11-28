@@ -24,8 +24,13 @@ zh-TW:
     name: "OpenProject 文件"
     description: "一個允許在 OpenProject 專案中建立文件的外掛。"
   activerecord:
+    errors:
+      models:
+        document_type:
+          one_or_more_required: "無法刪除最後一個文件類型"
     models:
       document: "文件"
+      documents: "文件"
     attributes:
       document:
         content_binary: "二進制內容"
@@ -49,22 +54,90 @@ zh-TW:
     documents_list_blank_slate:
       heading: "尚未有任何文件"
       description: "此檢視中沒有文件。您可以點擊下面的按鈕添加一個。"
+    document_categories_deprecation_notice:
+      heading: 檔案類別現在稱為「文件類型」
+      description: |-
+        隨著新文件模組的推出，您現有的文件類別已轉換為文件類型。
+        所有現有的文件也已轉換成這些新的類型。
+      primary_action: 設定文件類型
+      secondary_action: 進一步瞭解文件模組
+    document_type_actions: "文件類型動作"
+    text_collaboration_disabled_notice:
+      description: |-
+        Unable to open document because real-time text collaboration is disabled.
+        Please contact your administrator to enable real-time text collaboration if you want to access this document.
+    show_edit_view:
+      connection_error_notice:
+        description: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
+        action: Try again
+      connection_recovery_notice:
+        description: "The connection to the real-time text collaboration server has been restored."
     index_page:
       name: "名稱"
       type: "類型"
       updated_at: "最近編輯紀錄"
-      label_legacy: "Legacy"
+      label_legacy: "傳統方式"
     menu:
       all: "所有文件"
       types: "類型"
+      collaboration_settings: "Real-time collaboration"
     last_updated_at: "最後更新 %{time}。"
+    active_editors: "活躍的編輯者"
+    active_editors_count: "%{count} 活躍的編輯"
     label_attachment_author: "附件作者"
     label_categories: "類別"
     new_category: "新增類別"
+    new_type: "新增種類"
     delete_dialog:
-      title: "Delete document"
-      heading: "Delete this document?"
-      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
+      title: "刪除文件"
+      heading: "刪除此文件？"
+      confirmation_message_html: "這將永久刪除本文件和所有檔案附件。您確定要這麼做？"
+    delete_document_type_dialog:
+      title: 刪除文件類型
+      heading: 刪除此文件類型？
+      confirmation_message: |-
+        %{type_name}" 類型目前尚未使用。刪除此類型對現有文件沒有影響。
+      select_reassign_to_label: 重新分配文件至
+      reassign_message:
+        other: 類型 "%{type_name}" 目前用於 %{document_count} 文件。請選擇將其重新指定為哪一種類型。
+      at_least_one_type_required:
+        title: 無法刪除文件類型
+        heading: 無法刪除最後一個文件類型
+        message: 必須始終至少配置一個文件類型。如果要刪除此文件類型，請先建立另一個。
+    admin:
+      collaboration_settings:
+        page_header:
+          description: |-
+            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
+            It requires a working %{hocuspocus_server_link} to function.
+        banner:
+          none_writable: These values are configured via environment variables and cannot be edited here.
+          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+        hocuspocus_server_url:
+          label: "Hocuspocus server URL"
+          caption: "The address of the working Hocuspocus server."
+        hocuspocus_server_secret:
+          label: "Client secret"
+          caption: "Paste the secret provided by the Hocuspocus server."
+        hocuspocus_server: Hocuspocus server
+      enable_text_collaboration:
+        heading: Real-time collaboration is not enabled
+        description: |-
+          Once enabled, multiple users will be able to work together on a document at the same time.
+          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
+          Hocuspocus server.
+        primary_action: Enable real-time collaboration
+        success: Real-time collaboration has been enabled.
+      disable_text_collaboration_dialog:
+        title: Disable real-time collaboration
+        heading: Disable real-time collaboration?
+        confirmation_message: |-
+          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
+          real-time collaboration and the BlockNote editor in this instance.
+        confirmation_checkbox_message: I understand that I might permanently lose data
+        success: Real-time collaboration has been disabled.
   label_document_added: "文件已新增"
   label_document_new: "建立新文件"
   label_document_plural: "文件"

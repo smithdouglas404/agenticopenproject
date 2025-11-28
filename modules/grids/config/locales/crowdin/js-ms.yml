@@ -52,6 +52,7 @@ ms:
           title: 'Jadual pakej kerja'
         work_packages_graph:
           title: 'Graf pakej kerja'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Kalendar'
         work_packages_overview:

@@ -162,6 +162,11 @@ ru:
         expired: "Истекает %{date}"
         revoked: "Отменено %{date}"
         title: "Таблица токенов доступа"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Переходы по умолчанию"
@@ -185,12 +190,12 @@ ru:
       title: "Вложения в карантине"
       error_cannot_act_self: "Невозможно выполнить действия с собственными загруженными файлами."
   attribute_help_texts:
-    note_public: "Любой текст и изображения, которые вы добавляете в это поле, видны всем аутентифицированным пользователям!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "В этом представлении можно создать пользовательскую текстовую справку для атрибутов представления. При ее наличии, она будет показана по клику по значку справки возле атрибута."
-    label_plural: "Справка по атрибуту"
     show_preview: "Предпросмотр текста"
     add_new: "Добавить текст справки"
-    edit: "Редактировать текст справки для %{attribute_caption}"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "Осуществляется повторный запуск задания, т.к. предыдущий завершился с ошибкой: %{message}"
@@ -312,6 +317,25 @@ ru:
           zero: нет подпунктов
           one: 1 подпункт
           other: "%{count} подпунктов"
+      role_assignment:
+        title: Role Assignment
+        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
+        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
+        role_field_label: "Project Role"
+        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        review_hint: >
+          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
+        review_button: Review users and permissions
+        dialog:
+          title: "Overview of users and permissions"
+          change: Change
+          changes:
+            new_member: Will be added as a member
+            remove_member: Will be removed as a member
+            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
+            gain_role: Will gain role ‘%{new_role}’
+            lose_role: Will lose role ‘%{old_role}’
+            no_change: No changes
     text_add_new_custom_field: >
       Прежде чем добавлять настраиваемые поля в проект, нужно создать их.
     is_enabled_globally: "Разрешено в глобальном масштабе"
@@ -322,6 +346,7 @@ ru:
     reorder_confirmation: "Внимание: Текущий порядок доступных значений будет утерян. Продолжить?"
     placeholder_version_select: "Сначала необходимо выбрать пакет работ или проект"
     calculated_field_not_editable: "Не редактируемый атрибут. Это значение рассчитывается автоматически."
+    no_role_assigment: "No role assignment"
     instructions:
       is_required: "Отметьте настраиваемое поле как обязательное. Это сделает обязательным его заполнение при создании новых ресурсов. Существующие ресурсы не будут требовать ввода значения при обновлении."
       is_required_for_project: "Отметьте, чтобы включить этот атрибут и сделать его необходимым во всех проектах. Это не может быть отменено для отдельных проектов. Существующие проекты не будут требовать этого значения при обновлении."
@@ -368,6 +393,7 @@ ru:
       int?: "должно быть целым числом."
       key?: "отсутствует."
       not_found: "не найдено."
+      respond_to?: "не реализует требуемый метод."
       rules:
         copy_workflow_from:
           workflow_missing: "не имеет собственного рабочего процесса."
@@ -429,13 +455,18 @@ ru:
   portfolios:
     index:
       search:
-        label: Portfolio name filter
-        placeholder: Search portfolios
+        label: Фильтр по названию портфолио
+        placeholder: Поиск портфолио
+      sub_items_html:
+        one: "<strong>1</strong> подпункт"
+        few: "<strong>%{count}</strong> sub-items"
+        many: "<strong>%{count}</strong> sub-items"
+        other: "<strong>%{count}</strong> подпунктов"
     lists:
-      active: "Active portfolios"
-      my: "My portfolios"
-      favorited: "Favorite portfolios"
-      archived: "Archived portfolios"
+      active: "Активные портфолио"
+      my: "Мои портфолио"
+      favorited: "Избранные портфолио"
+      archived: "Архивные портфолио"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -447,12 +478,15 @@ ru:
       work_package_categories: "Пакеты работ: категории"
       work_package_file_links: "Пакеты работ: ссылки на файлы"
       work_package_shares: "Пакеты работ: общие ресурсы"
+    create:
+      notification_email_subject: "Ваш проект '%{project_name}' создан"
+      complete_wizard_link: "Завершите %{artefact_name}"
     delete:
       scheduled: "Удаление было запланировано и исполнено в фоновом режиме. О результатах вы будете уведомлены."
       schedule_failed: "Проект удален быть не может: %{errors}"
-      failed: "Удаление проекта %{name} не удалось"
-      failed_text: "Запрос на удаление проекта %{name} не удался. Проект был оставлен в архиве."
-      completed: "Удаление проекта %{name} завершено"
+      failed: "Удаление проекта '%{name}' не удалось"
+      failed_text: "Запрос на удаление проекта '%{name}' не удался. Проект оставлен в архиве."
+      completed: "Удаление проекта '%{name}' завершено"
       completed_text: "Запрос на удаление проекта '%{name}' был завершен."
       completed_text_children: "Кроме того, были удалены следующие подпроекты:"
     index:
@@ -495,6 +529,16 @@ ru:
         description: >
           Проект будет доступен только участникам проекта в зависимости от их роли и соответствующих разрешений. Подпроекты не затрагиваются и имеют свои собственные настройки.
       change_identifier: Изменить идентификатор
+      subitems:
+        template_section: >
+          Выберите шаблоны, которые будут использоваться при создании новых подпунктов.
+        project_template_label: "Шаблон для проектов"
+        project_template_caption: "Выберите шаблон проекта, который будет использоваться по умолчанию для новых подпунктов этого типа."
+        program_template_label: "Шаблон для программ"
+        program_template_caption: "Выберите шаблон программы, который будет использоваться по умолчанию для новых подпунктов этого типа."
+        portfolio_template_label: "Шаблон для портфолио"
+        portfolio_template_caption: "Выберите шаблон портфолио, который будет использоваться по умолчанию для новых подпунктов этого типа."
+        no_template: "Нет предопределенного шаблона"
       actions:
         label_enable_all: "Включить всё"
         label_disable_all: "Выключить всё"
@@ -545,19 +589,30 @@ ru:
       work_package_priorities:
         new_label: "Новый приоритет"
       creation_wizard:
+        export:
+          description_attachment_export: "Созданный артефакт будет сохранен в виде PDF-вложения к пакету работ."
+          description_file_link_export: "Пакет работ будет содержать ссылку на файл PDF, хранящийся во внешнем файловом хранилище. Требуется рабочее файловое хранилище с автоматически управляемыми папками для данного проекта. На данный момент поддерживаются только файловые хранилища Nextcloud."
+          description_file_storage_selection: "Выберите, какое из настроенных внешних файловых хранилищ должно использоваться."
+          external_file_storage: "Внешнее хранилище файлов"
+          label_artifact_export: "Экспорт артефакта"
+          label_attachment_export: "Сохраните как вложение файла в пакете работ"
+          label_file_link_export: "Загрузить файл на внешнее хранилище файлов и добавить ссылку на файл в пакет работ"
+          pdf_file_storage: "Хранилище файлов PDF"
+          unavailable: "недоступно"
+        label_request_submission: "Подача заявки"
         project_attributes_description: >
-          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
-        label_request_submission: "Request submission"
-        label_artefact_export: "Artifact export"
+          Выберите, какие атрибуты проекта должны быть включены в запрос на инициацию проекта. В этот список входят только [атрибуты проекта](project_attributes_url), включенные для этого проекта.
     status:
       button_edit: Редактировать статус проекта
     wizard:
-      sidebar_content_title: "Content"
-      sections: "Sections"
-      title: "Project initiation request"
-      no_help_text: "This attribute has no help text defined."
-      success: "Project attributes have been saved successfully."
-      progress_label: "%{current} of %{total}"
+      sidebar_content_title: "Содержимое"
+      sections: "Разделы"
+      title: "Запрос на инициализацию проекта"
+      no_help_text: "Для этого атрибута не определен текст справки."
+      success: "Атрибуты проекта сохранены и пакет работ успешно создан."
+      progress_label: "%{current} из %{total}"
+      create_artifact_work_package_error: "Не удалось создать артефактный пакет работ"
+      create_artifact_storage_error: "Не удалось сохранить артефакт в файловом хранилище"
   lists:
     create:
       success: "Измененный список был сохранен как новый"
@@ -1035,18 +1090,12 @@ ru:
     deletion_pending: "Учетная запись была запланирована для удаления. Обратите внимание, что этот процесс происходит в фоновом режиме. Может пройти несколько минут, пока пользователь будет полностью удален."
     deletion_info:
       data_consequences:
-        other: 'Данные, созданные пользователем (адрес электронной почты, предпочтения, пакеты работ, wiki-записи) полностью не удаляются. Рабочие пакеты, wiki-записи и пр. могут влиять на работы других пользователей, поэтому такие данные не удаляются, а закрепляются за другой, специальной учетной записью, именуемой «Удаленный пользователь». После такого переназначения определить кому принадлежали эти данные ранее становиться невозможно.'
-        self: 'Данные, созданные Вами (адрес электронной почты, предпочтения, пакеты работ, wiki-записи) полностью не удаляются. Рабочие пакеты, wiki-записи и пр. могут влиять на работы других пользователей, поэтому такие данные не удаляются, а закрепляются за другой, специальной учетной записью, именуемой «Удаленный пользователь». После такого переназначения определить кому принадлежали эти данные ранее становиться невозможно.'
-      heading: "Удаление учетной записи %{name}"
-      info:
-        other: "Удаление учетной записи пользователя является необратимым действием."
-        self: "Удаление вашей учетной записи  является необратимым действием."
+        other: "Все данные, относящиеся к конкретному пользователю, будут удалены. Активность пользователя в общих представлениях, таких как пакеты работ и совещания, не будет удалена, а будет связана с общим \"Удаленным пользователем\", который нельзя будет связать с исходной учетной записью."
+        self: "Все данные конкретного пользователя будут удалены. Ваша активность в общих представлениях, таких как пакеты работ и совещания, не будет удалена, а будет связана с общим \"Удаленным пользователем\", который нельзя будет связать с Вашей исходной учетной записью."
+      heading: "Удалить учетную запись %{name}?"
       login_consequences:
-        other: "Учетная запись будет удалена из системы. Таким образом пользователь больше не сможет войти в систему с его текущими учетными данными. Он/она может снова стать пользователем через средства предоставления прав этого приложения."
-        self: "Ваша учетная запись будет удалена из системы. Таким образом вы больше не сможете войти в систему с текущими учетными данными. Если  снова хотите  стать пользователем, то делайте это через средства пердоставления прав этого приложения."
-      login_verification:
-        other: "Введите логин %{name} для проверки удаления. После, вам будет предложено подтвердить свой пароль."
-        self: "Введите ваш логин %{name} для проверки удаления. После, вам будет предложено подтвердить свой пароль."
+        other: "Эта учетная запись будет немедленно удалена из системы, и пользователь больше не сможет войти в систему с ее учетными данными."
+        self: "Ваша учетная запись будет немедленно удалена из системы, и Вы больше не сможете войти в систему, используя свои учетные данные."
     error_inactive_activation_by_mail: >
       Ваша учетная запись не была активирована. Для активации перейдите по ссылке, направленной вам по электронной почте.
     error_inactive_manual_activation: >
@@ -1079,6 +1128,7 @@ ru:
       attribute_help_text:
         attribute_name: "Атрибут"
         help_text: "Текст справки"
+        caption: "Заголовок"
       auth_provider:
         scim_clients: "Клиенты SCIM"
       calculated_value_error:
@@ -1176,6 +1226,7 @@ ru:
         identifier: "Идентификатор"
         latest_activity_at: "Последние действия"
         parent: "Подпроект"
+        project_creation_wizard_enabled: "Запрос на инициализацию проекта"
         public_value:
           title: "Видимость"
           true: "публичный"
@@ -1190,6 +1241,13 @@ ru:
           off_track: "Приостановлен"
           finished: "Завершен"
           discontinued: "Прекращен"
+        project_creation_wizard_assignee_custom_field: "Назначенный при отправке"
+        project_creation_wizard_notification_text: "Текст уведомления"
+        project_creation_wizard_send_confirmation_email: "Подтверждающее письмо"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Work package type"
+        template: "Template"
         templated: "Проект шаблона"
         templated_value:
           true: "помечено как шаблон"
@@ -1201,6 +1259,8 @@ ru:
       project_custom_field:
         is_required: "Требуется для всех проектов"
         custom_field_section: Раздел
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Диапазон дат"
         definition: "Описание"
@@ -1310,6 +1370,7 @@ ru:
         header_alerts: "Оповещения"
         button_update_look_and_feel: "Обновить оформление"
         button_update_alerts: "Обновить оповещения"
+        button_update_user_information: "Update profile"
         comments_sorting: "Отображение активности пакета работ, отсортированной по"
         disable_keyboard_shortcuts: "Отключить горячие клавиши"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1554,9 +1615,11 @@ ru:
         project:
           archived_ancestor: "В проекте есть архивированный предок."
           foreign_wps_reference_version: "Комплексы работ в проектах, не расположенных по убыванию, ссылаются на версии проекта или его производных."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "У вас нет разрешений, необходимых для архивирования всех подпроектов. Обратитесь к администратору."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "всё ещё используются в пакетах работ: %{types}"
             enabled_modules:
@@ -1728,8 +1791,7 @@ ru:
               cant_exceed_work: "не может быть больше, чем Предполагаемое время."
               must_be_set_when_work_is_set: "требуется, если установлен параметр Предполагаемое время."
               must_be_set_when_work_and_percent_complete_are_set: "требуется, если установлены параметры Предполагаемое время и % завершения."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                должно быть равно 0ч, если установлен параметр Предполагаемое время и % завершения установлен в 100%.
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 должно быть пустым, если параметр Предполагаемое время не установлен, а % завершения равен 100%.
           readonly_status: "Пакет работ находится в статусе доступном только для чтения, поэтому его атрибуты не могут быть изменены."
@@ -1794,7 +1856,11 @@ ru:
           other: "%{count} ошибки не позволили сохранить %{model}"
     models:
       attachment: "Файл"
-      attribute_help_text: "Атрибут текста справки"
+      attribute_help_text:
+        one: "Attribute help text"
+        few: "Attribute help texts"
+        many: "Attribute help texts"
+        other: "Attribute help texts"
       auth_provider:
         one: "Провайдер аутентификации"
         few: "Authentication providers"
@@ -1875,6 +1941,11 @@ ru:
       many: "Кроме того, возникли проблемы со следующими полями:"
       other: "Кроме того, возникли проблемы с полями:"
     field_erroneous_label: "Значение этого поля неверно: %{full_errors}. Пожалуйста, введите верное значение."
+    messages:
+      must_be_template: "must be template"
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "создано %{user} %{datetime}"
@@ -2007,6 +2078,7 @@ ru:
     subject: "Тема"
     slug: "Уникальный идентификатор"
     summary: "Сводка"
+    template: "Template"
     time_zone: "Часовой пояс"
     text: "Текст"
     title: "Заголовок"
@@ -2179,7 +2251,9 @@ ru:
     copy_options:
       dependencies_label: "Копировать из проекта"
   create_project:
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "Использовать шаблон"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "Копировать из шаблона"
     blank_template:
@@ -2187,10 +2261,12 @@ ru:
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
     blank_template:
       label: "Blank portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
     blank_template:
       label: "Blank program"
       description: Start from scratch. Manually add program attributes, members and modules.
@@ -2407,6 +2483,7 @@ ru:
       nextcloud_sso: Единый вход для Nextcloud хранения
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
+      portfolio_management: Portfolio management
       project_list_sharing: Совместное использование списка проектов
       readonly_work_packages: Пакеты работ только для чтения
       scim_api: API сервера SCIM
@@ -2499,6 +2576,8 @@ ru:
       internal_comments_inline:
         title: "Напишите внутренние комментарии только небольшой группы"
         description: " "
+      portfolio_management:
+        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
     teaser:
       title:
         one: "Остался день для пробного токена %{trial_plan}"
@@ -2784,6 +2863,7 @@ ru:
       new_features:
         header: "Читайте о новых возможностях и обновлениях продуктов."
         learn_about: "Узнайте больше о всех новых функциях"
+        missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
@@ -2887,7 +2967,7 @@ ru:
         static_token_name: "API-токен"
       ical:
         title: "iCalendar"
-        text_hint_link: 'Токены iCalendar позволяют пользователям [подписываться на календари OpenProject](docs_url) и просматривать актуальную информацию о пакетах работ во внешних клиентах.'
+        text_hint_link: "Токены iCalendar позволяют пользователям [подписываться на календари OpenProject](docs_url) и просматривать актуальную информацию о пакетах работ во внешних клиентах."
         disabled_text: "Подписки на iCalendar не включены администратором. Обратитесь к администратору для использования этой функции."
         empty_text_hint: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
       oauth:
@@ -2980,7 +3060,6 @@ ru:
   label_add_column: "Добавить столбец"
   label_applied_status: "Прикладной статус"
   label_archive_project: "Архивировать проект"
-  label_artefact_export: "Artefact export"
   label_ascending: "По возрастанию"
   label_assigned_to_me_work_packages: "Пакеты работ, назначенные мне"
   label_associated_revisions: "Связанные изменения"
@@ -3246,7 +3325,8 @@ ru:
   label_lock_user: "Заблокировать пользователя"
   label_logged_as: "Войти в систему как"
   label_login: "Войти"
-  label_custom_logo: "Свой логотип"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Пользовательский логотип экспорта"
   label_custom_export_cover: "Фон обложки для экспорта"
   label_custom_export_footer: "Пользовательское изображение нижнего колонтитула при экспорте"
@@ -3392,11 +3472,15 @@ ru:
   label_project_attribute_manage_link: "Управление атрибутами проекта"
   label_project_count: "Общее количество проектов"
   label_project_copy_notifications: "Уведомлять по электронной почте по ходу копирования проекта"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Последние проекты"
   label_project_default_type: "Разрешить пустой тип"
   label_project_hierarchy: "Иерархия проектов"
   label_project_mappings: "Проекты"
   label_project_new: "Новый проект"
+  label_project_initiation_request: "New project initiation request"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "Проекты"
   label_project_list_plural: "Списки проектов"
   label_project_life_cycle: "Жизненный цикл проекта"
@@ -3410,7 +3494,6 @@ ru:
   label_project_view_all: "Просмотреть все проекты"
   label_project_show_details: "Показать детали проекта"
   label_project_hide_details: "Скрыть детали проекта"
-  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Портфолио"
   label_portfolio_new: "Новое портфолио"
   label_program: "Программа"
@@ -3498,6 +3581,7 @@ ru:
   label_subproject: "Подпроект"
   label_subproject_new: "Новый подпроект"
   label_subproject_plural: "Подпроекты"
+  label_subitems: "Subitems"
   label_subtask_plural: "Подзадачи"
   label_summary: "Сводка"
   label_system: "Система"
@@ -3505,6 +3589,8 @@ ru:
   label_table_of_contents: "Содержание"
   label_tag: "Тег"
   label_team_planner: "Менеджер команды"
+  label_template: "Шаблон"
+  label_templates: "Templates"
   label_text: "Длинный текст"
   label_this_month: "в этом месяце"
   label_this_week: "на этой неделе"
@@ -3920,6 +4006,9 @@ ru:
   permission_add_project: "Создание проектов"
   permission_add_portfolios: "Создать портфолио"
   permission_add_programs: "Создать программу"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Создание программы из шаблона"
   permission_add_work_package_attachments: "Добавить вложения"
   permission_add_work_package_attachments_explanation: "Позволяет добавлять вложения без права редактирования пакетов работ"
   permission_add_internal_comments: "Написать внутренние комментарии"
@@ -3965,7 +4054,7 @@ ru:
   permission_edit_timelines: "Редактировать графики"
   permission_edit_wiki_pages: "Редактировать wiki-страницы"
   permission_export_work_packages: "Экспорт пакетов работ"
-  permission_export_projects: "Export projects"
+  permission_export_projects: "Экспорт проектов"
   permission_export_wiki_pages: "Экспорт wiki-страниц"
   permission_invite_members_by_email: "Пригласить участников по электронной почте"
   permission_invite_members_by_email_explanation: >
@@ -4032,11 +4121,16 @@ ru:
   permission_edit_project_query: "Редактирование запроса проекта"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 портфолио"
+      one: "1 портфолио"
+      other: "%{count} портфолио"
   program:
     count:
-      zero: "0 programs"
-      one: "1 program"
-      other: "%{count} programs"
+      zero: "0 программ"
+      one: "1 программа"
+      other: "%{count} программ"
   project:
     archive:
       title: "Архивировать проект"
@@ -4066,6 +4160,7 @@ ru:
       title: Измените идентификатор проекта
     not_available: "Проект не существует"
     template:
+      copying_title: "Применение шаблона"
       copying: >
         Ваш проект создается из проекта выбранного шаблона. Вы будете уведомлены по почте, как только проект будет доступен.
       use_template: "Применить шаблон"
@@ -4319,6 +4414,8 @@ ru:
   setting_mail_handler_body_delimiter_regex: "Сообщение усекается по этому регулярному выражению"
   setting_mail_handler_ignore_filenames: "Игнорируемые вложения почты"
   setting_new_project_user_role_id: "Роль, назначаемая пользователю-создателю проекта, не являющемуся администратором"
+  setting_new_project_send_confirmation_email: "Отправить уведомление автору при создании нового проекта"
+  setting_new_project_notification_text: "Текст уведомления"
   setting_password_active_rules: "Активные классы символов"
   setting_password_count_former_banned: "Количество паролей, запрещенных для повторного использования"
   setting_password_days_valid: "Количество дней, после которого требуется смена пароля"
@@ -4365,7 +4462,7 @@ ru:
   setting_self_registration_manual_activation: "Активация учётной записи вручную"
   setting_self_registration_manual_activation_caption: >
     Пользователи могут самостоятельно зарегистрироваться. Их учетные записи находятся в ожидании до тех пор, пока администратор или пользователь с общим разрешением на создание или управление пользователями не активирует их.
-  setting_session_ttl: "Session expiration time after inactivity"
+  setting_session_ttl: "Время окончания сессии после бездействия"
   setting_session_ttl_hint: "При значении ниже 5-ти отключено"
   setting_session_ttl_enabled: "Сессия истекает"
   setting_start_of_week: "Начало недели в"
@@ -4463,18 +4560,62 @@ ru:
       new:
         heading: "Новый атрибут"
         description: "Изменения этого атрибута проекта будут отражены во всех проектах, где он включен. Обязательные атрибуты не могут быть отключены для каждого проекта."
+      sections:
+        display_representation:
+          overview:
+            label: "Атрибут проекта показан в:"
+            main_area:
+              label: "Основная область"
+              description: "Добавьте все атрибуты проекта в виде отдельных виджетов в основную область обзора проекта."
+            side_panel:
+              label: "Боковая панель"
+              description: "Добавьте все атрибуты проекта в область на правой боковой панели в обзоре проекта."
     project_initiation_request:
+      header_description: "OpenProject может сгенерировать пошаговый мастер, чтобы помочь менеджерам проектов заполнить запрос на инициацию проекта. Вы можете выбрать, какие атрибуты проекта должны быть включены и что делать с выходным документом."
+      status:
+        submitted: "%{wizard_name} был отправлен"
+        submitted_description: "Нажмите на кнопку ниже, чтобы перейти к пакету работ для процесса подачи заявки."
+        submitted_button: "Открыть запрос на отправку"
+        not_completed: "%{wizard_name} еще не завершен"
+        not_completed_description: "Предоставьте необходимую информацию, заполнив атрибуты, и начните проект."
+      wizard_status_button:
+        project_initiation_request: "Открыть запрос на инициализацию проекта"
+        project_creation_wizard: "Открыть мастер создания проекта"
+        project_mandate: "Открыть мандат проекта"
       blankslate:
-        title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can chose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        title: "Запрос инициации не разрешен"
+        description: "OpenProject может сгенерировать пошаговый мастер, чтобы помочь менеджерам проектов заполнить запрос на инициацию проекта. Вы можете выбрать, какие атрибуты проекта должны быть включены и что делать с выходным документом. Включите его здесь, чтобы начать настройку мастера."
       disable_dialog:
-        title: "Disable project initiation request"
-        heading: "Disable this project initiation request?"
-        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
-        checkbox_message: "I understand that this action is not reversible"
+        title: "Отключить запрос на инициализацию проекта"
+        heading: "Отключить запрос на инициирование этого проекта?"
+        confirmation_message: "Мастер запроса инициации больше не будет доступен для новых проектов, основанных на этом шаблоне. Менеджерам и руководителям проектов придется вручную настраивать и заполнять соответствующую информацию в обзоре проекта."
+        checkbox_message: "Я понимаю, что это действие необратимо"
+      name:
+        artifact_name: "Название артефакта"
+        artifact_name_caption: "Выберите для этого артефакта название, которое рекомендует Ваша система управления проектами."
+        options:
+          project_initiation_request: "Запрос на инициализацию проекта"
+          project_creation_wizard: "Мастер создания проекта"
+          project_mandate: "Мандат проекта"
+      submission:
+        description_template: >
+          **Этот пакет работ был автоматически создан по завершении рабочего процесса %{wizard_name}.** Артефакт в формате PDF, содержащий всю представленную информацию, был создан и прикреплен к этому рабочему пакету для справки и целей аудита. Если Вам необходимо обновить или повторно выполнить шаги инициации, Вы можете в любой момент снова открыть мастер, воспользовавшись приведенной ниже ссылкой:
+        description: "Когда пользователь подает запрос на инициирование проекта, будет создан новый пакет работ с запросом, прикрепленным в виде PDF-файла. Настройки, приведенные ниже, определяют тип, статус и назначение этого нового рабочего пакета."
+        work_package_type: "Тип пакета работ"
+        work_package_type_caption: "Тип пакета работ, который должен использоваться для хранения завершенного артефакта."
+        status_when_submitted: "Статус на момент подачи"
+        status_when_submitted_caption: "Статус, в который перейдет созданный пакет работ после отправки запроса."
+        send_confirmation_email: "Отправить подтверждение по электронной почте пользователю, подавшему запрос на инициирование проекта"
+        assignee: "Назначенный при отправке"
+        assignee_caption: "Пользователь или группа, назначенная на этот атрибут проекта, также станет назначенным в новом пакете работ."
+        confirmation_email_text: "Текст письма подтверждения"
+        confirmation_email_default: "Здравствуйте,\n\nВы подали запрос на инициирование проекта **%{project_name}**. Сейчас он ожидает рассмотрения.\nЩелкните по ссылке ниже, чтобы получить доступ к пакету работ с Вашим запросом."
+        work_package_comment: "Комментарий к пакету работ"
+        work_package_comment_caption: "Выбранный выше адресат будет автоматически @указан в комментарии."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "Жизненный цикл проекта"
-      heading_description: "Жизненный цикл проекта определяет фазы проекта, которые могут быть использованы для планирования Вашего проекта и отображаются на странице Обзор каждого проекта. Эти атрибуты могут быть включены или выключены, но не могут быть переупорядочены на уровне проекта."
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "Добавить"
       label_add_description: "Добавить определение фазы проекта"
       filter:
@@ -4548,7 +4689,7 @@ ru:
   text_project_custom_field_html: >
     Корпоративная версия добавит эти дополнительные дополнения для пользовательских полей проектов: <br> <ul> <li><b>Добавить пользовательские поля для проектов в ваш список проектов, чтобы создать представление портфолио проекта</b></li> </ul>
   text_custom_logo_instructions: >
-    Рекомендуется использовать белый логотип с прозрачным фоном. Для оптимального отображения на обычных и retina-дисплеях размер картинки должен быть 460 на 110 пикселей.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Это логотип, который отображается при экспорте в формате PDF. Это должен быть файл изображения в формате PNG или JPEG. Рекомендуется использовать черный или цветной логотип на прозрачном или белом фоне.
   text_custom_export_cover_instructions: >
@@ -4937,6 +5078,8 @@ ru:
       multiple_errors: "Для нескольких полей были нарушены ограничения."
       unable_to_create_attachment: "Вложение не может быть создано"
       unable_to_create_attachment_permissions: "Вложение не может быть сохранено из-за отсутствия прав на файловую систему"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "Предоставленного контекста не является ссылка на ресурс."
         unsupported_context: "Ресурс не поддерживается как контекст."
@@ -4951,8 +5094,10 @@ ru:
     resources:
       schema: "Схема"
     undisclosed:
-      parent: Неизвестные - выбранный родитель невидим из-за отсутствия разрешений.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Неизвестный - выбранный родитель невидим из-за отсутствия разрешений.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Предавторизация"

@@ -27,7 +27,4 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<div>
-  <h2>Artefact Export</h2>
-  <!-- add stuff here -->
-</div>
+<%= render Projects::Settings::CreationWizard::ExportComponent.new(project: @project) %>

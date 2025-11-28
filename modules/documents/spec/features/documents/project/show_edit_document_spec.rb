@@ -46,10 +46,23 @@ RSpec.describe "Show/Edit Document View",
 
   current_user { member }
 
+  before do
+    # This is here while we don't have a setting defined for enabling/disabling collaboration
+    # rubocop:disable RSpec/AnyInstance
+    allow_any_instance_of(Primer::OpenProject::Forms::BlockNoteEditor).to receive(:collaboration_enabled).and_return(false)
+    # rubocop:enable RSpec/AnyInstance
+  end
+
   it "renders a collaborative document" do
     visit document_path(document)
 
     expect(page).to have_content("Collaborative document")
+
+    aggregate_failures "can see live users" do
+      within_test_selector("live-users") do
+        expect(page).to have_content("1 active editors")
+      end
+    end
 
     aggregate_failures "can edit document title" do
       within_test_selector("document-page-header") do
@@ -88,6 +101,17 @@ RSpec.describe "Show/Edit Document View",
       editor.fill_in_with_content("This is the new **content**.")
 
       expect(page).to have_content("This is the new content.")
+    end
+  end
+
+  context "with real-time collaboration disabled",
+          with_settings: { real_time_text_collaboration_enabled: false } do
+    it "renders a notice about collaboration being disabled" do
+      visit document_path(document)
+
+      expect(page).to have_content("Unable to open document because real-time text collaboration is disabled. " \
+                                   "Please contact your administrator to enable real-time text collaboration " \
+                                   "if you want to access this document.")
     end
   end
 

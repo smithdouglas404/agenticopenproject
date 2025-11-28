@@ -1,7 +1,7 @@
 /*
  * -- copyright
  * OpenProject is an open source project management software.
- * Copyright (C) 2023 the OpenProject GmbH
+ * Copyright (C) the OpenProject GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3.
@@ -34,23 +34,28 @@ import * as blockNoteLocales from '@blocknote/core/locales';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
 import { IUploadFile } from 'core-app/core/upload/upload.service';
-import { initOpenProjectApi, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
-import { useEffect, useState } from 'react';
+import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
+import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
+import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
+import { useCollaboration } from './hooks/useCollaboration';
+import { useOpTheme } from './hooks/useOpTheme';
+
+interface CollaborativeUser {
+  name:string;
+  color:string;
+}
 
 export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
   inputText?:string;
-  hocuspocusUrl:string;
-  oauthToken:string,
   activeUser:User;
-  documentName:string;
-  documentId:string;
+  readOnly:boolean;
   openProjectUrl:string;
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
+  hocuspocusProvider?:HocuspocusProvider;
 }
 
 const schema = BlockNoteSchema.create().extend({
@@ -59,54 +64,35 @@ const schema = BlockNoteSchema.create().extend({
   },
 });
 
-const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOpColorMode(); };
-
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
-                                               hocuspocusUrl,
-                                               oauthToken,
                                                activeUser,
-                                               documentName,
-                                               documentId,
+                                               readOnly,
                                                openProjectUrl,
                                                attachmentsUploadUrl,
-                                               attachmentsCollectionKey }:OpBlockNoteContainerProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [theme, setTheme] = useState<OpColorMode>(detectTheme());
-
-  initOpenProjectApi({ baseUrl: openProjectUrl });
+                                               attachmentsCollectionKey,
+                                               hocuspocusProvider }:OpBlockNoteContainerProps) {
 
   const userLocale = window.I18n.locale;
   const blockNoteLocaleString = Object.keys(blockNoteLocales).includes(userLocale) ? userLocale : 'en';
   const blockNoteLocale = blockNoteLocales[blockNoteLocaleString as keyof typeof blockNoteLocales];
 
-  let doc = new Y.Doc();
+  initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: blockNoteLocaleString});
 
-  const collaborationEnabled = Boolean(hocuspocusUrl && documentName && oauthToken && activeUser);
-  let hocuspocusProvider:HocuspocusProvider | null = null;
+  let doc = LiveCollaborationManager.ydoc;
 
   let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
-  if(collaborationEnabled) {
-    const url = new URL(hocuspocusUrl);
-    url.searchParams.set('document_id', documentId);
-    url.searchParams.set('openproject_base_path', openProjectUrl);
-
-    hocuspocusProvider = new HocuspocusProvider({
-      url: url.toString(),
-      name: documentName,
-      token: oauthToken,
-      document: doc
-    });
-
+  if(hocuspocusProvider) {
     editorParams = {
       schema,
       collaboration: {
         provider: hocuspocusProvider,
         fragment: doc.getXmlFragment('document-store'),
         user: {
+          id: activeUser.id,
           name: activeUser.username,
           color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
-        },
+        } as unknown as CollaborativeUser,
         showCursorLabels: 'activity'
       },
       dictionary: blockNoteLocale,
@@ -158,7 +144,9 @@ export default function OpBlockNoteContainer({ inputField,
     try {
       const service = pluginContext.services.attachmentsResourceService;
       const iUploadFile = fileToIUploadFile(file);
-      const result = await service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile]).toPromise();
+      const result = await firstValueFrom(
+        service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile])
+      );
 
       return result?.[0]._links.staticDownloadLocation.href ?? '';
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -178,43 +166,17 @@ export default function OpBlockNoteContainer({ inputField,
     ];
   };
 
-  useEffect(() => {
-    const updateInput = () => {
-      const update = Y.encodeStateAsUpdate(doc);
-      const b64 = btoa(String.fromCharCode(...update));
-      inputField.value = b64;
-    };
+  const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
+  const theme = useOpTheme();
 
-    if(collaborationEnabled && hocuspocusProvider) {
-      hocuspocusProvider.on('synced', () => setIsLoading(false));
-      hocuspocusProvider.on('disconnect', () => setIsLoading(true));
-    } else {
-      doc.on('update', updateInput);
-      setIsLoading(false);
-    }
-
-    return () => {
-      if (collaborationEnabled && hocuspocusProvider) {
-        hocuspocusProvider.destroy();
-      } else {
-        // disable Yjs update listener. Opposite of doc.on('update', ...);
-        doc.off('update', updateInput);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleThemeChange = () => {
-      const newTheme = detectTheme();
-      setTheme(newTheme);
-    };
-
-    window.addEventListener('op:theme-changed', handleThemeChange);
-
-    return () => {
-      window.removeEventListener('op:theme-changed', handleThemeChange);
-    };
-  }, []);
+  if (connectionError) {
+    return (
+      <div
+        id="documents-show-edit-view-connection-error-notice-component"
+        data-controller="documents--connection-error-handler"
+      />
+    );
+  }
 
   return (
     <>
@@ -231,6 +193,7 @@ export default function OpBlockNoteContainer({ inputField,
           editor={editor}
           slashMenu={false}
           theme={theme}
+          editable={!readOnly}
           className={'block-note-editor-container'}
         >
           <SuggestionMenuController

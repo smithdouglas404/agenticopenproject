@@ -95,7 +95,7 @@ module Projects
       if model.parent &&
          model.parent_id_changed? &&
          !assignable_parents.exists?(id: parent.id)
-        errors.add(:parent, :does_not_exist)
+        errors.add(:parent, :invalid)
       end
     end
 

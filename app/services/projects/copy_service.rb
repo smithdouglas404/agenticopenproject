@@ -78,8 +78,13 @@ module Projects
         # Clear enabled modules
         enabled_module_names: source_enabled_modules,
         types: source_types,
-        work_package_custom_fields: source_custom_fields
+        work_package_custom_fields: source_custom_fields,
+
+        # clear PIR settings
+        project_creation_wizard_artifact_work_package_id: nil
       )
+
+      clean_settings_attributes!(attributes[:settings])
 
       only_allowed_parent_id(attributes)
         .merge(source_custom_field_attributes)
@@ -102,6 +107,11 @@ module Projects
         copy_activated_custom_fields(super_call)
         update_calculated_value_custom_fields(super_call.result)
       end
+    end
+
+    def clean_settings_attributes!(settings)
+      # We want to remove the PIR work package as that should be reset on copy
+      settings.delete("project_creation_wizard_artifact_work_package_id")
     end
 
     def copy_activated_custom_fields(call)

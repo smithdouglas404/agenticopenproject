@@ -52,6 +52,7 @@ uk:
           title: 'Таблиця робочих пакетів'
         work_packages_graph:
           title: 'Графік робочих пакетів'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Календар'
         work_packages_overview:

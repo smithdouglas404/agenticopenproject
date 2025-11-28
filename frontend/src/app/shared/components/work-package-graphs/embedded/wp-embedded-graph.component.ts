@@ -234,4 +234,9 @@ export class WorkPackageEmbeddedGraphComponent implements OnChanges {
   private isRadarChart() {
     return this.chartType === 'radar' || this.chartType === 'polarArea';
   }
+
+  public get chartSummary():string {
+    const chartTypeLabel = this.chartType ? this.i18n.t(`js.chart.types.${this.chartType}`) : '';
+    return this.i18n.t('js.grid.widgets.work_packages_graph.summary', { chartType: chartTypeLabel, description: this.chartDescription });
+  }
 }

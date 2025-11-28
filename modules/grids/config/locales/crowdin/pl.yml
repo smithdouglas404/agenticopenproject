@@ -2,10 +2,13 @@ pl:
   grids:
     label_widget_in_grid: "Widżet zawarty w siatce %{grid_name}"
     widgets:
+      empty: "This widget is currently empty."
+      not_available: "This widget is not available."
       subitems:
         title: "Podpozycje"
         no_results: "Nie ma żadnych widocznych elementów podrzędnych."
         view_all_subitems: "Wyświetl wszystkie podpozycje"
+        button_text: "Subitem"
       members:
         title: "Members"
         no_results: "Brak widocznych członków."
