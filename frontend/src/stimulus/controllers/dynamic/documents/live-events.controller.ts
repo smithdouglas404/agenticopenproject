@@ -74,7 +74,7 @@ export default class extends ApplicationController {
 
   private onStateless = (data:onStatelessParameters) => {
     if (data.payload == 'storeEvent') {
-      this.triggerUpdateLastUpdatedAtUI();
+      this.fetchTemplate(`${window.location.pathname}/render_last_saved_at`);
     }
   };
 
@@ -104,25 +104,10 @@ export default class extends ApplicationController {
       params.append('user_ids[]', user.id);
     }
 
-    const url = `${window.location.pathname}/render_avatars?${params}`;
-
-    void fetch(url, {
-      method: 'GET',
-      headers: { Accept: 'text/vnd.turbo-stream.htm' },
-    })
-      .then((response:Response) => {
-        if (response.ok) {
-          return response.text();
-        }
-        return Promise.reject(new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`));
-      })
-      .then((html:string) => Turbo.renderStreamMessage(html))
-      .catch((error:Error) => console.error('Error:', error));
+    this.fetchTemplate(`${window.location.pathname}/render_avatars?${params}`);
   }
 
-  private triggerUpdateLastUpdatedAtUI() {
-    const url = `${window.location.pathname}/render_last_saved_at`;
-
+  private fetchTemplate(url:string) {
     void fetch(url, {
       method: 'GET',
       headers: { Accept: 'text/vnd.turbo-stream.htm' },

@@ -38,6 +38,13 @@ module Documents
 
         alias_method :document, :model
 
+        # replaces the need for a template
+        def call
+          component_wrapper do
+            last_saved_at_content
+          end
+        end
+
         def last_saved_at_content
           safe_join [
             I18n.t("documents.last_updated_at", time: updated_at_time).html_safe
