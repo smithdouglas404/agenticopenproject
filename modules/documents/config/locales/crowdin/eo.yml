@@ -83,7 +83,7 @@ eo:
       all: "All documents"
       types: "Specoj"
       collaboration_settings: "Real-time collaboration"
-    last_updated_at: "Last updated %{time}."
+    last_updated_at: "Last saved %{time}."
     active_editors: "Active editors"
     active_editors_count: "%{count} active editors"
     label_attachment_author: "Aŭtoro de la kunsendaĵo"

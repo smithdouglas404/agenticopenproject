@@ -83,7 +83,7 @@ zh-CN:
       all: "所有文档"
       types: "类型"
       collaboration_settings: "Real-time collaboration"
-    last_updated_at: "Last updated %{time}."
+    last_updated_at: "Last saved %{time}."
     active_editors: "Active editors"
     active_editors_count: "%{count} active editors"
     label_attachment_author: "附件作者"

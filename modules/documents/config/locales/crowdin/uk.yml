@@ -83,7 +83,7 @@ uk:
       all: "Усі документи"
       types: "Типи"
       collaboration_settings: "Спільне редагування в реальному часі"
-    last_updated_at: "Останнє оновлення%{time}."
+    last_updated_at: "Last saved %{time}."
     active_editors: "Активні редактори"
     active_editors_count: "%{count} активних редакторів"
     label_attachment_author: "Автор додатку"
