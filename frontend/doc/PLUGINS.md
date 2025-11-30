@@ -62,12 +62,12 @@ export function initializeCostsPlugin() {
             pluginContext.services.editField.extendFieldType('select', ['Budget']);
 	
             // Register a hook callback for a specific core hook
-            pluginContext.hooks.workPackageSingleContextMenu(function(params:any) {
+            pluginContext.hooks.workPackageSingleContextMenu(function(params:object) {
                 return {
                     key: 'log_costs',
                     icon: 'icon-projects',
-                    indexBy: function(actions:any) {
-                        var index = _.findIndex(actions, {key: 'log_time'});
+                    indexBy: function(actions:WorkPackageAction[]) {
+                        var index = actions.findIndex((action) => action.key === 'log_time'));
                         return index !== -1 ? index + 1 : actions.length;
                     },
                     resource: 'workPackage',
