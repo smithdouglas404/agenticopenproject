@@ -143,7 +143,7 @@ export class WpDestroyModalComponent extends OpModalComponent implements OnInit 
       result = this.singleWorkPackageChildren.length > 0;
     }
 
-    return result || !!_.find(this.workPackages, (wp) => wp.children && wp.children.length > 0);
+    return result || this.workPackages.some((wp) => wp.children && wp.children.length > 0);
   }
 
   public confirmDeletion($event:Event):boolean {

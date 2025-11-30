@@ -26,6 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { debounce } from 'lodash-es';
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -62,7 +63,7 @@ export class RemoteFieldUpdaterComponent implements OnInit, OnDestroy {
 
     this.url = element.dataset.url!;
 
-    this.debouncedUpdaterBound = _.debounce(this.updater.bind(this), 500);
+    this.debouncedUpdaterBound = debounce(this.updater.bind(this), 500);
 
     this.addListeners();
   }
@@ -134,13 +135,13 @@ export class RemoteFieldUpdaterComponent implements OnInit, OnDestroy {
     this
       .request(params)
       .subscribe((response:object) => {
-        _.each(response, (val:string, selector:string) => {
+        Object.entries(response).forEach(([selector, val]) => {
           const element = document.getElementById(selector) as HTMLElement|HTMLInputElement;
 
           if (element instanceof HTMLInputElement) {
-            element.value = val;
+            element.value = val as string;
           } else if (element) {
-            element.textContent = val;
+            element.textContent = val as string;
           }
         });
       });

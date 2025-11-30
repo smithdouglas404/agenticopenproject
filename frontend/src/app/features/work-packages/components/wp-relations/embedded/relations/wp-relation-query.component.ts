@@ -26,6 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { isEmpty } from 'lodash-es';
 import {
   Component,
   Inject,
@@ -114,7 +115,7 @@ export class WorkPackageRelationQueryComponent extends WorkPackageRelationQueryB
     // When relations have changed, refresh this table
     this.wpRelations.observe(this.workPackage.id!)
       .pipe(
-        filter((val) => !_.isEmpty(val)),
+        filter((val) => !isEmpty(val)),
         this.untilDestroyed(),
       )
       .subscribe(() => this.refreshTable());

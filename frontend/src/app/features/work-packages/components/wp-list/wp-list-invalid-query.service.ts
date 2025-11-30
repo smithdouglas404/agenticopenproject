@@ -51,8 +51,8 @@ export class WorkPackagesListInvalidQueryService {
   }
 
   private restoreFilters(query:QueryResource, payload:QueryResource, querySchema:SchemaResource) {
-    let filters = _.map((payload.filters), (filter) => {
-      const filterInstanceSchema = _.find(querySchema.filtersSchemas.elements, (schema:QueryFilterInstanceSchemaResource) => (schema.filter.allowedValues as QueryFilterResource[])[0].href === filter.filter.href);
+    const filters = payload.filters.map((filter) => {
+      const filterInstanceSchema = querySchema.filtersSchemas.elements.find((schema:QueryFilterInstanceSchemaResource) => (schema.filter.allowedValues as QueryFilterResource[])[0].href === filter.filter.href);
 
       if (!filterInstanceSchema) {
         return null;
@@ -60,56 +60,58 @@ export class WorkPackagesListInvalidQueryService {
 
       const recreatedFilter = filterInstanceSchema.getFilter();
 
-      const operator = _.find(filterInstanceSchema.operator.allowedValues, (operator) => operator.href === filter.operator.href);
+      const operator = (filterInstanceSchema.operator.allowedValues as QueryFilterResource[]).find((op) => op.href === filter.operator.href);
 
       if (operator) {
         recreatedFilter.operator = operator;
       }
 
       recreatedFilter.values.length = 0;
-      _.each(filter.values, (value) => recreatedFilter.values.push(value));
+      filter.values.forEach((value) => recreatedFilter.values.push(value));
 
       return recreatedFilter;
-    });
-
-    filters = _.compact(filters);
+    }).filter((f):f is NonNullable<typeof f> => f !== null);
 
     // clear filters while keeping reference
     query.filters.length = 0;
-    _.each(filters, (filter) => query.filters.push(filter));
+    filters.forEach((filter) => query.filters.push(filter));
   }
 
   private restoreColumns(query:QueryResource, stubQuery:QueryResource, schema:SchemaResource) {
-    let columns = _.map(stubQuery.columns, (column) => _.find((schema.columns.allowedValues as QueryColumn[]), (candidate) => candidate.href === column.href));
-
-    columns = _.compact(columns);
+    const columns = stubQuery.columns
+      .map((column) => (schema.columns.allowedValues as QueryColumn[]).find((candidate) => candidate.href === column.href))
+      .filter((col):col is QueryColumn => col !== undefined);
 
     query.columns.length = 0;
-    _.each(columns, (column) => query.columns.push(column!));
+    columns.forEach((column) => query.columns.push(column));
   }
 
   private restoreSortBy(query:QueryResource, stubQuery:QueryResource, schema:SchemaResource) {
-    let sortBys = _.map((stubQuery.sortBy), (sortBy) => _.find((schema.sortBy.allowedValues as QuerySortByResource[]), (candidate) => candidate.href === sortBy.href)!);
-
-    sortBys = _.compact(sortBys);
+    const sortBys = stubQuery.sortBy
+      .map((sortBy) => (schema.sortBy.allowedValues as QuerySortByResource[]).find((candidate) => candidate.href === sortBy.href))
+      .filter((sb):sb is QuerySortByResource => sb !== undefined);
 
     query.sortBy.length = 0;
-    _.each(sortBys, (sortBy) => query.sortBy.push(sortBy));
+    sortBys.forEach((sortBy) => query.sortBy.push(sortBy));
   }
 
   private restoreGroupBy(query:QueryResource, stubQuery:QueryResource, schema:SchemaResource) {
-    const groupBy = _.find((schema.groupBy.allowedValues as QueryGroupByResource[]), (candidate) => stubQuery.groupBy && stubQuery.groupBy.href === candidate.href) as any;
+    const groupBy = (schema.groupBy.allowedValues as QueryGroupByResource[]).find((candidate) => stubQuery.groupBy && stubQuery.groupBy.href === candidate.href);
 
     query.groupBy = groupBy;
   }
 
   private restoreOtherProperties(query:QueryResource, stubQuery:QueryResource) {
-    _.without(Object.keys(stubQuery.$source), '_links', 'filters').forEach((property:any) => {
-      query[property] = stubQuery[property];
-    });
+    Object.keys(stubQuery.$source)
+      .filter((key) => key !== '_links' && key !== 'filters')
+      .forEach((property:string) => {
+        (query as Record<string, unknown>)[property] = (stubQuery as Record<string, unknown>)[property];
+      });
 
-    _.without(Object.keys(stubQuery.$source._links), 'columns', 'groupBy', 'sortBy').forEach((property:any) => {
-      query[property] = stubQuery[property];
-    });
+    Object.keys(stubQuery.$source._links)
+      .filter((key) => key !== 'columns' && key !== 'groupBy' && key !== 'sortBy')
+      .forEach((property:string) => {
+        (query as Record<string, unknown>)[property] = (stubQuery as Record<string, unknown>)[property];
+      });
   }
 }

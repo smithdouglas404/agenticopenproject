@@ -26,6 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { debounce } from 'lodash-es';
 import {
   AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, ViewChild,
 } from '@angular/core';
@@ -54,7 +55,7 @@ export class CodeBlockMacroModalComponent extends OpModalComponent implements Af
   // Codemirror instance
   public codeMirrorInstance:undefined|any;
 
-  public debouncedLanguageLoader = _.debounce(() => this.loadLanguageAsMode(this.language), 300);
+  public debouncedLanguageLoader = debounce(() => this.loadLanguageAsMode(this.language), 300);
 
   @ViewChild('codeMirrorPane', { static: true }) codeMirrorPane:ElementRef;
 

@@ -34,7 +34,7 @@ import FormPreviewController from '../../form-preview.controller';
 import {
   debounce,
   DebouncedFunc,
-} from 'lodash';
+} from 'lodash-es';
 
 export default class ProjectLifeCycleFormController extends FormPreviewController {
   private timezoneService:TimezoneService;
@@ -90,7 +90,7 @@ export default class ProjectLifeCycleFormController extends FormPreviewControlle
   }
 
   private updateFlatpickrCalendar() {
-    const dates:Date[] = _.compact(this.dateInputFields.map((field) => this.toDate(field.value)));
+    const dates:Date[] = this.dateInputFields.map((field) => this.toDate(field.value)).filter((d):d is Date => d != null);
     const ignoreNonWorkingDays = false;
     const mode = 'range';
 

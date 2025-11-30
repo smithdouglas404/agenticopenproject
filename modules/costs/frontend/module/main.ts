@@ -28,6 +28,7 @@ import { Injector, NgModule } from '@angular/core';
 import { OpenProjectPluginContext } from 'core-app/features/plugins/plugin-context';
 import { CostsByTypeDisplayField } from './wp-display/costs-by-type-display-field.module';
 import { CurrencyDisplayField } from './wp-display/currency-display-field.module';
+import { type WorkPackageAction } from 'core-app/features/work-packages/components/wp-table/context-menu-helper/wp-context-menu-helper.service';
 
 export function initializeCostsPlugin(injector:Injector) {
   window.OpenProject.getPluginContext().then((pluginContext:OpenProjectPluginContext) => {
@@ -35,23 +36,23 @@ export function initializeCostsPlugin(injector:Injector) {
     displayFieldService.addFieldType(CostsByTypeDisplayField, 'costs', ['costsByType']);
     displayFieldService.addFieldType(CurrencyDisplayField, 'currency', ['laborCosts', 'materialCosts', 'overallCosts']);
 
-    pluginContext.hooks.workPackageSingleContextMenu((params:any) => ({
+    pluginContext.hooks.workPackageSingleContextMenu((_params:object) => ({
       key: 'log_costs',
       icon: 'icon-projects',
-      indexBy(actions:any) {
-        const index = _.findIndex(actions, { key: 'log_time' });
+      indexBy(actions:WorkPackageAction[]) {
+        const index = actions.findIndex((action) => action.key === 'log_time');
         return index !== -1 ? index + 1 : actions.length;
       },
       resource: 'workPackage',
       link: 'logCosts',
     }));
 
-    pluginContext.hooks.workPackageTableContextMenu((params:any) => ({
+    pluginContext.hooks.workPackageTableContextMenu((_params:object) => ({
       key: 'log_costs',
       icon: 'icon-projects',
       link: 'logCosts',
-      indexBy(actions:any) {
-        const index = _.findIndex(actions, { link: 'logTime' });
+      indexBy(actions:WorkPackageAction[]) {
+        const index = actions.findIndex((action) => action.key === 'logTime');
         return index !== -1 ? index + 1 : actions.length;
       },
       text: I18n.t('js.button_log_costs'),

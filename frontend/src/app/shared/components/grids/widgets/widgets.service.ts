@@ -47,7 +47,7 @@ export class GridWidgetsService {
   private buildWidgets() {
     let registeredWidgets:WidgetRegistration[] = this.buildDefaultWidgets();
 
-    _.each(this.Hook.call('gridWidgets'), (registration:WidgetRegistration[]) => {
+    (this.Hook.call('gridWidgets') as WidgetRegistration[][]).forEach((registration:WidgetRegistration[]) => {
       registeredWidgets = registeredWidgets.concat(registration);
     });
 

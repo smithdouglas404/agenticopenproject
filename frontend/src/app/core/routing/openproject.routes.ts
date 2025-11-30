@@ -26,6 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { get, isEqual } from 'lodash-es';
 import { StateDeclaration, StateService, Transition, TransitionService, UIRouter } from '@uirouter/core';
 import { IToast, ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
@@ -139,7 +140,7 @@ export function uiRouterConfiguration(uiRouter:UIRouter, injector:Injector, modu
       raw: true,
       dynamic: true,
       is: (val:unknown) => typeof (val) === 'string',
-      equals: (a:any, b:any) => _.isEqual(a, b),
+      equals: (a:any, b:any) => isEqual(a, b),
     },
   );
 
@@ -152,7 +153,7 @@ export function uiRouterConfiguration(uiRouter:UIRouter, injector:Injector, modu
       raw: true,
       dynamic: true,
       is: (val:unknown) => typeof (val) === 'string',
-      equals: (a:unknown, b:unknown) => _.isEqual(a, b),
+      equals: (a:unknown, b:unknown) => isEqual(a, b),
     },
   );
 }
@@ -178,7 +179,7 @@ export function initializeUiRouterListeners(injector:Injector) {
 
     // Re-apply the body classes if the turbo load event is on the same page (e.g. when creating a child from the relations tab)
     if (stateService.href(uiRouter.globals.current) === window.location.pathname + window.location.search) {
-      bodyClass(_.get(uiRouter.globals.current, 'data.bodyClasses'), 'add');
+      bodyClass(get(uiRouter.globals.current, 'data.bodyClasses'), 'add');
     }
   });
 
@@ -201,17 +202,17 @@ export function initializeUiRouterListeners(injector:Injector) {
   // however the second parameter has the currently (e.g., parent) entering state chain.
   $transitions.onEnter({}, (transition:Transition, state:StateDeclaration) => {
     // Add body class when entering this state
-    bodyClass(_.get(state, 'data.bodyClasses'), 'add');
-    if (transition.from().data && _.get(state, 'data.menuItem') !== transition.from().data.menuItem) {
-      updateMenuItem(_.get(state, 'data.menuItem'), 'add');
+    bodyClass(get(state, 'data.bodyClasses'), 'add');
+    if (transition.from().data && get(state, 'data.menuItem') !== transition.from().data.menuItem) {
+      updateMenuItem(get(state, 'data.menuItem'), 'add');
     }
   });
 
   $transitions.onExit({}, (transition:Transition, state:StateDeclaration) => {
     // Remove body class when leaving this state
-    bodyClass(_.get(state, 'data.bodyClasses'), 'remove');
-    if (transition.to().data && _.get(state, 'data.menuItem') !== transition.to().data.menuItem) {
-      updateMenuItem(_.get(state, 'data.menuItem'), 'remove');
+    bodyClass(get(state, 'data.bodyClasses'), 'remove');
+    if (transition.to().data && get(state, 'data.menuItem') !== transition.to().data.menuItem) {
+      updateMenuItem(get(state, 'data.menuItem'), 'remove');
     }
   });
 
@@ -238,8 +239,8 @@ export function initializeUiRouterListeners(injector:Injector) {
     const hasProjectRoutes = toStateObject?.includes?.root;
     const projectIdentifier = toParams.projectPath as string || currentProject.identifier;
     if (hasProjectRoutes && !toParams.projects && projectIdentifier) {
-      const newParams = _.clone(toParams);
-      _.assign(newParams, { projectPath: projectIdentifier, projects: 'projects' });
+      const newParams = { ...toParams };
+      Object.assign(newParams, { projectPath: projectIdentifier, projects: 'projects' });
       return $state.target(toState, newParams, { location: 'replace' });
     }
 
@@ -265,7 +266,7 @@ export function initializeUiRouterListeners(injector:Injector) {
 
     // Remove and add any body class definitions for entering
     // and exiting states.
-    bodyClass(_.get(toState, 'data.bodyClasses'), 'add');
+    bodyClass(get(toState, 'data.bodyClasses'), 'add');
 
     // We need to distinguish between actions that should run on the initial page load
     // (ie. openining a new tab in the details view should focus on the element in the table)

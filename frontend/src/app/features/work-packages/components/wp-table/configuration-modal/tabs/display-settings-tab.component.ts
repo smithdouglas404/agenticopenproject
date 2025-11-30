@@ -1,5 +1,6 @@
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { TabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tab-portal-outlet';
+import { sortBy } from 'lodash-es';
 import { WorkPackageViewGroupByService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-group-by.service';
 import { WorkPackageViewHierarchiesService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-hierarchy.service';
 import { WorkPackageViewSumService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-sum.service';
@@ -62,7 +63,7 @@ export class WpTableConfigurationDisplaySettingsTabComponent implements TabCompo
 
   public updateGroup(href:string) {
     this.displayMode = 'grouped';
-    this.currentGroup = _.find(this.availableGroups, (group) => group.href === href) || null;
+    this.currentGroup = this.availableGroups.find((group) => group.href === href) || null;
   }
 
   ngOnInit() {
@@ -77,7 +78,7 @@ export class WpTableConfigurationDisplaySettingsTabComponent implements TabCompo
     void this.wpTableGroupBy
       .onReady()
       .then(() => {
-        this.availableGroups = _.sortBy(this.wpTableGroupBy.available, 'name');
+        this.availableGroups = sortBy(this.wpTableGroupBy.available, 'name');
         this.currentGroup = this.wpTableGroupBy.current || this.availableGroups[0];
       });
   }

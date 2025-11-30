@@ -28,6 +28,7 @@
 
 import { Injector } from '@angular/core';
 import { States } from 'core-app/core/states/states.service';
+import { difference } from 'lodash-es';
 import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { WorkPackageTimelineTableController } from '../container/wp-timeline-container.directive';
@@ -59,7 +60,7 @@ export class WorkPackageTimelineCellsRenderer {
   }
 
   public getCellsFor(wpId:string):WorkPackageTimelineCell[] {
-    return _.filter(this.cells, (cell) => cell.workPackageId === wpId) || [];
+    return Object.values(this.cells).filter((cell) => cell.workPackageId === wpId) || [];
   }
 
   /**
@@ -70,11 +71,11 @@ export class WorkPackageTimelineCellsRenderer {
     this.synchronizeCells();
 
     // Update all cells
-    _.each(this.cells, (cell) => this.refreshSingleCell(cell));
+    Object.values(this.cells).forEach((cell) => this.refreshSingleCell(cell));
   }
 
   public refreshCellsFor(wpId:string) {
-    _.each(this.getCellsFor(wpId), (cell) => this.refreshSingleCell(cell));
+    this.getCellsFor(wpId).forEach((cell) => this.refreshSingleCell(cell));
   }
 
   public refreshSingleCell(cell:WorkPackageTimelineCell, isDuplicatedCell?:boolean, withAlternativeLabels?:boolean) {
@@ -95,7 +96,7 @@ export class WorkPackageTimelineCellsRenderer {
     const currentlyActive:string[] = Object.keys(this.cells);
     const newCells:string[] = [];
 
-    _.each(this.wpTimeline.workPackageIdOrder, (renderedRow:RenderedWorkPackage) => {
+    this.wpTimeline.workPackageIdOrder.forEach((renderedRow:RenderedWorkPackage) => {
       const wpId = renderedRow.workPackageId;
 
       // Ignore extra rows not tied to a work package
@@ -120,7 +121,7 @@ export class WorkPackageTimelineCellsRenderer {
       newCells.push(identifier);
     });
 
-    _.difference(currentlyActive, newCells).forEach((identifier:string) => {
+    difference(currentlyActive, newCells).forEach((identifier:string) => {
       this.cells[identifier].clear();
       delete this.cells[identifier];
     });

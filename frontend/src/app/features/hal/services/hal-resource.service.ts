@@ -219,7 +219,7 @@ export class HalResourceService {
    * @returns {HalResource}
    */
   public createHalResource<T extends HalResource = HalResource>(source:any, loaded = true):T {
-    if (_.isNil(source)) {
+    if (source == null) {
       source = HalResource.getEmptyResource();
     }
 

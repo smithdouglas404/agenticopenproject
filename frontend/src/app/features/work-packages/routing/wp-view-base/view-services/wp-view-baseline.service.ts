@@ -41,6 +41,7 @@ import { DayResourceService } from 'core-app/core/state/days/day.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import moment, { Moment } from 'moment-timezone';
 import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
+import { isEqual } from 'lodash-es';
 
 export const DEFAULT_TIMESTAMP = 'PT0S';
 export const BASELINE_INCOMPATIBLE_FILTERS = [
@@ -154,7 +155,7 @@ export class WorkPackageViewBaselineService extends WorkPackageQueryStateService
   }
 
   public hasChanged(query:QueryResource) {
-    return !_.isEqual(query.timestamps, this.current);
+    return !isEqual(query.timestamps, this.current);
   }
 
   public applyToQuery(query:QueryResource):boolean {

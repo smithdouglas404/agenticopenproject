@@ -18,6 +18,7 @@ import { relationGroupClass, RelationRowBuilder } from './relation-row-builder';
 import { PrimaryRenderPass, RowRenderInfo } from '../primary-render-pass';
 import { States } from 'core-app/core/states/states.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
+import { clone } from 'lodash-es';
 
 export interface RelationRenderInfo extends RowRenderInfo {
   data:{
@@ -57,7 +58,7 @@ export class RelationsRenderPass {
     }
 
     // Render for each original row, clone it since we're modifying the tablepass
-    const rendered = _.clone(this.tablePass.renderedOrder);
+    const rendered = clone(this.tablePass.renderedOrder);
     rendered.forEach((row:RowRenderInfo) => {
       // We only care for rows that are natural work packages
       if (!row.workPackage) {
@@ -67,7 +68,7 @@ export class RelationsRenderPass {
       // If the work package has no relations, ignore
       const { workPackage } = row;
       const state = this.wpRelations.state(workPackage.id!);
-      if (!state.hasValue() || _.size(state.value) === 0) {
+      if (!state.hasValue() || Object.keys(state.value!).length === 0) {
         return;
       }
 

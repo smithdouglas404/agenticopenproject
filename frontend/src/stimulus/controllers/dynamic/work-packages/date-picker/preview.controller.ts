@@ -33,7 +33,8 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import {
   debounce,
   DebouncedFunc,
-} from 'lodash';
+  difference,
+} from 'lodash-es';
 
 export default class PreviewController extends DialogPreviewController {
   static values = {
@@ -250,7 +251,7 @@ export default class PreviewController extends DialogPreviewController {
   }
 
   private updateFlatpickrCalendar() {
-    const dates:Date[] = _.compact([this.currentStartDate, this.currentDueDate]);
+    const dates:Date[] = [this.currentStartDate, this.currentDueDate].filter((d):d is Date => d != null);
     const ignoreNonWorkingDays = this.currentIgnoreNonWorkingDays;
     const mode = this.mode();
 
@@ -271,9 +272,10 @@ export default class PreviewController extends DialogPreviewController {
       return this.toDate(flatPickrDates[0]);
     }
 
-    const fieldDates = _.compact([this.currentStartDate, this.currentDueDate])
+    const fieldDates = [this.currentStartDate, this.currentDueDate]
+                        .filter((d):d is Date => d != null)
                         .map((date) => this.timezoneService.utcDateToISODateString(date));
-    const diff = _.difference(flatPickrDates, fieldDates);
+    const diff = difference(flatPickrDates, fieldDates);
     return this.toDate(diff[0]);
   }
 
@@ -534,12 +536,12 @@ export default class PreviewController extends DialogPreviewController {
   }
 
   private focusOnOpen() {
-    const banner = document.querySelector('.wp-datepicker--banner') as HTMLElement;
+    const banner = document.querySelector<HTMLElement>('.wp-datepicker--banner')!;
     if (banner) {
       banner.setAttribute('tabindex', '-1');
       banner.focus();
     } else {
-      const tabs = document.querySelector('.wp-datepicker-dialog--UnderlineNav') as HTMLElement;
+      const tabs = document.querySelector<HTMLElement>('.wp-datepicker-dialog--UnderlineNav')!;
       tabs.setAttribute('tabindex', '-1');
       tabs.focus();
     }

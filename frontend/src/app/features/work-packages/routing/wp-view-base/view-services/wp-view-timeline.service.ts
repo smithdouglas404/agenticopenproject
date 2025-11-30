@@ -34,6 +34,7 @@ import { WorkPackageTimelineState } from 'core-app/features/work-packages/routin
 import { zoomLevelOrder } from 'core-app/features/work-packages/components/wp-table/timeline/wp-timeline';
 import { QueryResource, TimelineLabels, TimelineZoomLevel } from 'core-app/features/hal/resources/query-resource';
 import { WorkPackageQueryStateService } from './wp-view-base.service';
+import { isEqual } from 'lodash-es';
 
 @Injectable()
 export class WorkPackageViewTimelineService extends WorkPackageQueryStateService<WorkPackageTimelineState> {
@@ -64,7 +65,7 @@ export class WorkPackageViewTimelineService extends WorkPackageQueryStateService
   public hasChanged(query:QueryResource) {
     const visibilityChanged = this.isVisible !== query.timelineVisible;
     const zoomLevelChanged = this.zoomLevel !== query.timelineZoomLevel;
-    const labelsChanged = !_.isEqual(this.current.labels, query.timelineLabels);
+    const labelsChanged = !isEqual(this.current.labels, query.timelineLabels);
 
     return visibilityChanged || zoomLevelChanged || labelsChanged;
   }
@@ -95,7 +96,7 @@ export class WorkPackageViewTimelineService extends WorkPackageQueryStateService
   }
 
   public get labels() {
-    if (_.isEmpty(this.current.labels)) {
+    if (!this.current.labels || Object.keys(this.current.labels).length === 0) {
       return this.defaultLabels;
     }
 
@@ -106,10 +107,10 @@ export class WorkPackageViewTimelineService extends WorkPackageQueryStateService
     this.modify({ labels });
   }
 
-  public getNormalizedLabels(workPackage:WorkPackageResource) {
+  public getNormalizedLabels(_workPackage:WorkPackageResource) {
     const labels:TimelineLabels = this.defaultLabels;
 
-    _.each(this.current.labels, (attribute:string | null, positionAsString:string) => {
+    Object.entries(this.current.labels).forEach(([positionAsString, attribute]) => {
       // RR: Lodash typings declare the position as string. However, it is save to cast
       // to `keyof TimelineLabels` because `this.current.labels` is of type TimelineLabels.
       const position:keyof TimelineLabels = positionAsString as keyof TimelineLabels;

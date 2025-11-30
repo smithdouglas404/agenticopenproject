@@ -28,6 +28,7 @@
 //++
 
 import { HalResource } from "core-app/features/hal/resources/hal-resource";
+import { without } from 'lodash-es';
 
 export class GitlabUserResource extends HalResource {
   public get state() {
@@ -38,6 +39,6 @@ export class GitlabUserResource extends HalResource {
    * Exclude the schema _link from the linkable Resources.
    */
   public $linkableKeys():string[] {
-    return _.without(super.$linkableKeys(), 'schema');
+    return without(super.$linkableKeys(), 'schema');
   }
 }

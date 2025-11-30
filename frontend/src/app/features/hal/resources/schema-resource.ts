@@ -35,7 +35,7 @@ export class SchemaResource extends HalResource {
   }
 
   public get availableAttributes():string[] {
-    return _.keys(this.$source).filter((name) => !name.startsWith('_'));
+    return Object.keys(this.$source).filter((name) => !name.startsWith('_'));
   }
 
   // Find the attribute name with a matching (localized) name;

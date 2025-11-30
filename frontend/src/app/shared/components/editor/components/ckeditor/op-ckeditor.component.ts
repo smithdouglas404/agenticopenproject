@@ -39,6 +39,7 @@ import { CKEditorSetupService } from 'core-app/shared/components/editor/componen
 import { KeyCodes } from 'core-app/shared/helpers/keycodes';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
+import { debounce } from 'lodash-es';
 
 declare module 'codemirror';
 
@@ -111,7 +112,7 @@ export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, 
 
   // Debounce change listener for both CKE and codemirror
   // to read back changes as they happen
-  private debouncedEmitter = _.debounce(
+  private debouncedEmitter = debounce(
     () => {
       const val = this.getTransformedContent(false);
       this.contentChanged.emit(val);

@@ -29,7 +29,6 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { compact } from 'lodash';
 
 export default class SortByConfigController extends Controller {
   static targets = [
@@ -74,7 +73,7 @@ export default class SortByConfigController extends Controller {
       return null;
     });
 
-    return JSON.stringify(compact(filters));
+    return JSON.stringify(filters.filter(Boolean));
   }
 
   // Tries to find the parent form in the DOM. If present and the form contains a `page` field marked
@@ -267,12 +266,12 @@ export default class SortByConfigController extends Controller {
   }
 
   getAllSelectedFields(...excludedRows:HTMLElement[]):string[] {
-    return compact(this.inputRowTargets.map((row) => {
+    return this.inputRowTargets.map((row) => {
       if (!excludedRows.includes(row)) {
         return this.getSelectedField(row);
       }
       return null;
-    }));
+    }).filter((field):field is string => field !== null);
   }
 
   moveRowToBottom(row:HTMLElement):void {

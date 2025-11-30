@@ -135,7 +135,7 @@ export class WorkPackageCardDragAndDropService {
    * Update current order
    */
   private updateOrder(newOrder:string[]) {
-    newOrder = _.uniq(newOrder);
+    newOrder = Array.from(new Set(newOrder));
 
     Promise
       .all(newOrder.map((id) => this

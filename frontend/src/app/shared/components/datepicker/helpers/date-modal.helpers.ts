@@ -87,7 +87,8 @@ export function comparableDate(date?:DateOption):number|null {
 export function setDates(dates:DateOption|DateOption[], datePicker:DatePicker, enforceDate?:Date):void {
   const { currentMonth, currentYear, selectedDates } = datePicker.datepickerInstance;
 
-  const [newStart, newEnd] = _.castArray(dates);
+  const datesArray = Array.isArray(dates) ? dates : [dates];
+  const [newStart, newEnd] = datesArray;
   const [selectedStart, selectedEnd] = selectedDates;
 
   // In case the new times match the current times, do not try to update

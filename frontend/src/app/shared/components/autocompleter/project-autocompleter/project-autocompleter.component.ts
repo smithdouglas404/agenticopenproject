@@ -57,6 +57,7 @@ import {
 } from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocompleter-template.component';
 import { addFiltersToPath } from 'core-app/core/apiv3/helpers/add-filters-to-path';
 import { TOpAutocompleterResource } from 'core-app/shared/components/autocompleter/op-autocompleter/typings';
+import { keyBy } from 'lodash-es';
 
 export const projectsAutocompleterSelector = 'op-project-autocompleter';
 
@@ -219,7 +220,7 @@ export class ProjectAutocompleterComponent extends OpAutocompleterComponent<IPro
 
   // Todo: Reduce duplication with method from user-autocompleter
   protected buildFilteredURL(searchTerm?:string):URL {
-    const filterObject = _.keyBy(this.filters, 'name');
+    const filterObject = keyBy(this.filters, 'name');
     const searchFilters = ApiV3FilterBuilder.fromFilterObject(filterObject);
 
     if (searchTerm?.length) {

@@ -1,3 +1,4 @@
+import { get } from 'lodash-es';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import {
   Observable,
@@ -213,12 +214,12 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
   }
 
   private get isUserResource() {
-    const type = _.get(this.filter.currentSchema, 'values.type', null) as string;
+    const type = get(this.filter.currentSchema, 'values.type', null) as string;
     return type && type.indexOf('User') > 0;
   }
 
   private get isVersionResource() {
-    const type = _.get(this.filter.currentSchema, 'values.type', null) as string;
+    const type = get(this.filter.currentSchema, 'values.type', null) as string;
     return type && type.indexOf('Version') > 0;
   }
 }

@@ -1,3 +1,4 @@
+import { get } from 'lodash-es';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 
 export function halHref<T extends HalResource>(_index:number, item:T):string|null {
@@ -19,15 +20,15 @@ export function compareByName<T extends HalResource>(a:T|undefined|null, b:T|und
 
 export function trackByHrefAndProperty(propertyName:string) {
   return (i:number, item:HalResource) => {
-    const href:string = _.get(item, 'href') || '';
-    const prop:string = _.get(item, propertyName, 'none');
+    const href:string = get(item, 'href') || '';
+    const prop:string = get(item, propertyName, 'none');
 
     return `${href}#${propertyName}=${prop}`;
   };
 }
 
 export function trackByTrackingIdentifier(i:number, item:any) {
-  return _.get(item, 'trackingIdentifier', item?.href);
+  return get(item, 'trackingIdentifier', item?.href);
 }
 
 export function compareByHref<T extends HalResource>(a:T|undefined|null, b:T|undefined|null):boolean {

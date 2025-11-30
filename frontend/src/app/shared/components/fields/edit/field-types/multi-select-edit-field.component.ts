@@ -113,7 +113,7 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
    */
   public buildSelectedOption() {
     const value:HalResource[] = this.resource[this.name];
-    return value ? _.castArray(value).map((val) => this.findValueOption(val)) : [];
+    return this.ensureArray(value).map((val) => this.findValueOption(val));
   }
 
   public get selectedOption() {
@@ -126,8 +126,8 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
    */
   public set selectedOption(val:ValueOption[]) {
     this._selectedOption = val;
-    const mapper = (val:ValueOption) => {
-      const option = _.find(this.availableOptions, (o) => o.href === val.href) || this.nullOption;
+    const mapper = (v:ValueOption) => {
+      const option = this.availableOptions.find((o) => o.href === v.href) || this.nullOption;
 
       // Special case 'null' value, which angular
       // only understands in ng-options as an empty string.
@@ -138,7 +138,7 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
       return option;
     };
 
-    this.resource[this.name] = _.castArray(val).map((el) => mapper(el));
+    this.resource[this.name] = this.ensureArray(val).map((el) => mapper(el));
   }
 
   public onOpen() {
@@ -169,7 +169,7 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
     let result;
 
     if (option) {
-      result = _.find(this.availableOptions, (valueOption) => valueOption.href === option.href)!;
+      result = this.availableOptions.find((valueOption) => valueOption.href === option.href)!;
     }
 
     return result || this.nullOption;
@@ -227,7 +227,7 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
       this.currentValueInvalid = !!(
         // (If value AND)
         // MultiSelect AND there is no value which href is not in the options hrefs
-        (!_.some(this.value, (value:HalResource) => _.some(this.availableOptions, (option) => (option.href === value.href))))
+        (!this.value.some((value:HalResource) => this.availableOptions.some((option) => (option.href === value.href))))
       );
     } else {
       // If no value but required
@@ -269,5 +269,16 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
   private get isVersionResource() {
     const type = this.schema?.type;
     return type && type.indexOf('Version') > 0;
+  }
+
+  /**
+   * Ensures the value is an array. If value is already an array, returns it;
+   * if value is truthy, wraps it in an array; otherwise returns empty array.
+   */
+  private ensureArray<T>(value:T|T[]|null|undefined):T[] {
+    if (Array.isArray(value)) {
+      return value;
+    }
+    return value ? [value] : [];
   }
 }

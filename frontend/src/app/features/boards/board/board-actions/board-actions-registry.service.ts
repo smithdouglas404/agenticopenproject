@@ -24,7 +24,7 @@ export class BoardActionsRegistryService {
   }
 
   public available():ITileViewEntry[] {
-    return _.map(this.mapping, (service:BoardActionService, attribute:string) => ({
+    return Object.entries(this.mapping).map(([attribute, service]) => ({
       attribute,
       text: service.localizedName,
       icon: '',

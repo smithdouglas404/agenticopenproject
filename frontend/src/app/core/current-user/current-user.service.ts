@@ -80,7 +80,7 @@ export class CurrentUserService {
       .principalFilter$()
       .pipe(
         map((userFilter) => {
-          const filters:ApiV3ListFilter[] = _.compact([userFilter]);
+          const filters:ApiV3ListFilter[] = userFilter ? [userFilter] : [];
 
           if (projectContext) {
             filters.push(['context', '=', [projectContext === 'global' || projectContext === 'projects' ? 'g' : `w${projectContext}`]]);
@@ -101,7 +101,7 @@ export class CurrentUserService {
    * in the provided context.
    */
   public hasCapabilities$(action:string|string[], projectContext:string|null):Observable<boolean> {
-    const actions = _.castArray(action);
+    const actions = Array.isArray(action) ? action : [action];
     return this
       .capabilities$(actions, projectContext)
       .pipe(
@@ -118,12 +118,12 @@ export class CurrentUserService {
    * has any of the required capabilities in the provided context.
    */
   public hasAnyCapabilityOf$(actions:string|string[], projectContext:string|null):Observable<boolean> {
-    const actionsToFilter = _.castArray(actions);
+    const actionsToFilter = Array.isArray(actions) ? actions : [actions];
     return this
       .capabilities$(actionsToFilter, projectContext)
       .pipe(
         map((capabilities) => capabilities.reduce(
-          (acc, cap) => acc || !!actionsToFilter.find((action) => cap._links.action.href.endsWith(`/api/v3/actions/${action}`)),
+          (acc, cap) => acc || !!actionsToFilter.find((a) => cap._links.action.href.endsWith(`/api/v3/actions/${a}`)),
           false,
         )),
         distinctUntilChanged(),

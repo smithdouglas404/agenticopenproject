@@ -50,7 +50,7 @@ export class PrincipalRendererService {
     wrapper.appendChild(principals);
     container.appendChild(wrapper);
 
-    const valueForDisplay = _.take(users, maxCount);
+    const valueForDisplay = users.slice(0, maxCount);
     this.renderMultiple(
       principals,
       valueForDisplay,

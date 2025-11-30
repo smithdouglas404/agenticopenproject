@@ -25,6 +25,7 @@
 //
 // See COPYRIGHT and LICENSE files for more details.
 //++
+import { extend } from 'lodash-es';
 import moment from 'moment';
 import flatpickr from 'flatpickr';
 import { Instance } from 'flatpickr/dist/types/instance';
@@ -76,7 +77,7 @@ export class DatePicker {
         }
       });
 
-    const mergedOptions = _.extend({}, this.defaultOptions, options);
+    const mergedOptions = extend({}, this.defaultOptions, options);
 
     let datePickerInstances:Instance|Instance[];
     if (this.datepickerTarget) {

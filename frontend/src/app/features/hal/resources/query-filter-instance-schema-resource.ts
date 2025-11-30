@@ -26,6 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { merge } from 'lodash-es';
 import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { HalLink } from 'core-app/features/hal/hal-link/hal-link';
@@ -112,13 +113,13 @@ export class QueryFilterInstanceSchemaResource extends SchemaResource {
     const dependentSchema = this.dependency.forValue(operator.href!.toString());
     const resultingSchema = {};
 
-    _.merge(resultingSchema, staticSchema, dependentSchema);
+    merge(resultingSchema, staticSchema, dependentSchema);
 
     return new QueryFilterInstanceSchemaResource(this.injector, resultingSchema, true, this.halInitializer, 'QueryFilterInstanceSchema');
   }
 
   private definesAllowedValues() {
-    return _.some(this._dependencies[0].dependencies,
+    return this._dependencies[0].dependencies.some(
       (dependency:any) => dependency.values?._links?.allowedValues);
   }
 }

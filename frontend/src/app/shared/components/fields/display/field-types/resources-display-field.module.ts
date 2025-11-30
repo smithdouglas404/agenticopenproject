@@ -26,11 +26,12 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { isEmpty } from 'lodash-es';
 import { cssClassCustomOption, DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
 
 export class ResourcesDisplayField extends DisplayField {
   public isEmpty():boolean {
-    return _.isEmpty(this.value);
+    return isEmpty(this.value);
   }
 
   public get stringValue():string[] {
@@ -98,7 +99,7 @@ export class ResourcesDisplayField extends DisplayField {
    * Return the first two joined values, if any.
    */
   protected valueAbridged(values:any[]) {
-    const valueForDisplay = _.take(values, 2);
+    const valueForDisplay = values.slice(0, 2);
 
     if (values.length > 2) {
       valueForDisplay.push('... ');

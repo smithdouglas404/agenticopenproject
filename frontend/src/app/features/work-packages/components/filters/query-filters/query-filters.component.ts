@@ -148,14 +148,14 @@ export class QueryFiltersComponent extends UntilDestroyedMixin implements OnInit
   }
 
   public get isSecondSpacerVisible():boolean {
-    const hasSearch = !!_.find(this.filters, (f) => f.id === 'search');
-    const hasAvailableFilter = !!this.filters.find((f) => f.id !== 'search' && this.isFilterAvailable(f));
+    const hasSearch = this.filters.some((f) => f.id === 'search');
+    const hasAvailableFilter = this.filters.some((f) => f.id !== 'search' && this.isFilterAvailable(f));
 
     return hasSearch && hasAvailableFilter;
   }
 
   private updateRemainingFilters() {
-    this.remainingFilters = _.sortBy(this.wpTableFilters.remainingVisibleFilters(this.filters), 'name');
+    this.remainingFilters = [...this.wpTableFilters.remainingVisibleFilters(this.filters)].sort((a, b) => a.name.localeCompare(b.name));
   }
 
   private updateFilterFocus(index:number) {

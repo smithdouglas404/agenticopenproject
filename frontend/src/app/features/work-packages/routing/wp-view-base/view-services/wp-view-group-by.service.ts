@@ -34,6 +34,7 @@ import { QueryColumn } from 'core-app/features/work-packages/components/wp-query
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { QueryGroupByResource } from 'core-app/features/hal/resources/query-group-by-resource';
 import { WorkPackageQueryStateService } from './wp-view-base.service';
+import { isEqual } from 'lodash-es';
 
 @Injectable()
 export class WorkPackageViewGroupByService extends WorkPackageQueryStateService<QueryGroupByResource|null> {
@@ -49,7 +50,7 @@ export class WorkPackageViewGroupByService extends WorkPackageQueryStateService<
   public hasChanged(query:QueryResource) {
     const comparer = (groupBy:QueryColumn|HalResource|null|undefined) => (groupBy ? groupBy.href : null);
 
-    return !_.isEqual(
+    return !isEqual(
       comparer(query.groupBy),
       comparer(this.current),
     );
@@ -62,7 +63,7 @@ export class WorkPackageViewGroupByService extends WorkPackageQueryStateService<
   }
 
   public isGroupable(column:QueryColumn):boolean {
-    return !!_.find(this.available, (candidate) => candidate.id === column.id);
+    return this.available.some((candidate) => candidate.id === column.id);
   }
 
   public disable() {
@@ -70,7 +71,7 @@ export class WorkPackageViewGroupByService extends WorkPackageQueryStateService<
   }
 
   public setBy(column:QueryColumn) {
-    const groupBy = _.find(this.available, (candidate) => candidate.id === column.id);
+    const groupBy = this.available.find((candidate) => candidate.id === column.id);
 
     if (groupBy) {
       this.update(groupBy);

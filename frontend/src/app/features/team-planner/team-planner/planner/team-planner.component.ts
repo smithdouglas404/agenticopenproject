@@ -63,6 +63,7 @@ import {
   take,
   withLatestFrom,
 } from 'rxjs/operators';
+import { merge } from 'lodash-es';
 import { StateService } from '@uirouter/angular';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import interactionPlugin, {
@@ -523,7 +524,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
               center: 'title',
               right: 'prev,next today',
             },
-            views: _.merge(
+            views: merge(
               {},
               this.viewOptions,
               {

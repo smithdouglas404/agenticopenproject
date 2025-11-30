@@ -131,7 +131,7 @@ export class HalResourceNotificationService {
     }
 
     // Some older response may have a data attribute
-    if (_.get(response, 'data._type') === 'Error') {
+    if ((response as any)?.data?._type === 'Error') {
       errorBody = (response as any).data;
     }
 
@@ -165,8 +165,10 @@ export class HalResourceNotificationService {
   public showGeneralError(message?:unknown) {
     let error = this.I18n.t('js.error.internal');
 
-    if (typeof (message) === 'string' || _.has(message, 'toString')) {
-      error += ` ${(message as any).toString()}`;
+    const messageHasToString = typeof message === 'object' && message !== null && typeof (message as { toString?:unknown }).toString === 'function';
+
+    if (typeof (message) === 'string' || messageHasToString) {
+      error += ` ${(message as { toString:() => string }).toString()}`;
     }
 
     this.ToastService.addError(error);

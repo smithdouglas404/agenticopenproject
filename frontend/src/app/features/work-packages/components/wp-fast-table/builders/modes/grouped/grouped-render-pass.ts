@@ -1,6 +1,7 @@
 import { Injector } from '@angular/core';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
+import { isEqualWith } from 'lodash-es';
 import { collapsedRowClass } from 'core-app/features/work-packages/components/wp-fast-table/builders/modes/grouped/grouped-classes.constants';
 import { GroupSumsBuilder } from 'core-app/features/work-packages/components/wp-fast-table/builders/modes/grouped/group-sums-builder';
 import { GroupObject } from 'core-app/features/hal/resources/wp-collection-resource';
@@ -70,7 +71,7 @@ export class GroupedRenderPass extends PlainRenderPass {
    * The API sadly doesn't provide us with the information which group a WP belongs to.
    */
   private matchingGroup(workPackage:WorkPackageResource) {
-    return _.find(this.groups, (group:GroupObject) => {
+    return this.groups.find((group:GroupObject) => {
       let property = workPackage[groupByProperty(group)];
       // explicitly check for undefined as `false` (bool) is a valid value.
       if (property === undefined) {
@@ -79,14 +80,14 @@ export class GroupedRenderPass extends PlainRenderPass {
 
       // If the property is a multi-value
       // Compare the href's of all resources with the ones in valueLink
-      if (_.isArray(property)) {
+      if (Array.isArray(property)) {
         return this.matchesMultiValue(property as HalResource[], group);
       }
 
       /// / If it's a linked resource, compare the href,
       /// / which is an array of links the resource offers
       if (property?.href) {
-        return !!_.find(group._links.valueLink, (l:any):any => property.href === l.href);
+        return group._links.valueLink.some((l:any):any => property.href === l.href);
       }
 
       // Otherwise, fall back to simple value comparison.
@@ -108,9 +109,9 @@ export class GroupedRenderPass extends PlainRenderPass {
       return false;
     }
 
-    const joinedOrderedHrefs = (objects:any[]) => _.map(objects, (object) => object.href).sort().join(', ');
+    const joinedOrderedHrefs = (objects:any[]) => objects.map((object) => object.href).sort().join(', ');
 
-    return _.isEqualWith(
+    return isEqualWith(
       property,
       group.href,
       (a, b) => joinedOrderedHrefs(a) === joinedOrderedHrefs(b),

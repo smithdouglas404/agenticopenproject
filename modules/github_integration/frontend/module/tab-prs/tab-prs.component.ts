@@ -43,6 +43,7 @@ import {
   shareReplay,
 } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { sortBy } from 'lodash-es';
 
 @Component({
   selector: 'op-tab-prs',
@@ -71,7 +72,7 @@ export class TabPrsComponent implements OnInit {
       .githubPullRequests
       .ofWorkPackage(this.workPackage)
       .pipe(
-        map((elements) => _.sortBy(elements, 'updatedAt')),
+        map((elements) => sortBy(elements, 'updatedAt')),
         shareReplay(1),
       );
   }

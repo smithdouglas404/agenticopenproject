@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash-es';
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { DeviceService } from 'core-app/core/browser/device.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
@@ -71,6 +72,6 @@ export class InAppNotificationActorsLineComponent implements OnInit {
       })
       .filter((actor) => actor !== null) as PrincipalLike[];
 
-    this.actors = _.uniqBy(actors, (item) => item.href);
+    this.actors = uniqBy(actors, (item) => item.href);
   }
 }
