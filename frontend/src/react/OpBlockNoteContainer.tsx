@@ -28,8 +28,9 @@
  * ++
  */
 
-import { BlockNoteEditorOptions, BlockNoteSchema, filterSuggestionItems } from '@blocknote/core';
+import { BlockNoteEditorOptions, BlockNoteSchema } from '@blocknote/core';
 import { User } from '@blocknote/core/comments';
+import { filterSuggestionItems } from '@blocknote/core/extensions';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
@@ -48,7 +49,7 @@ interface CollaborativeUser {
 }
 
 export interface OpBlockNoteContainerProps {
-  inputField:HTMLInputElement;
+  inputField?:HTMLInputElement;
   inputText?:string;
   activeUser:User;
   readOnly:boolean;
@@ -58,11 +59,12 @@ export interface OpBlockNoteContainerProps {
   hocuspocusProvider?:HocuspocusProvider;
 }
 
-const schema = BlockNoteSchema.create().extend({
-  blockSpecs: {
-    openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
-  },
-});
+const schema = BlockNoteSchema.create();
+// .extend({
+//   blockSpecs: {
+//     openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
+//   },
+// });
 
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
@@ -159,11 +161,11 @@ export default function OpBlockNoteContainer({ inputField,
   const getCustomSlashMenuItems = (editor:EditorType) => {
     return [
       ...getDefaultReactSlashMenuItems(editor),
-      openProjectWorkPackageSlashMenu(editor),
+      // openProjectWorkPackageSlashMenu(editor),
     ];
   };
 
-  const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
+  const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField!);
   const theme = useOpTheme();
 
   if (connectionError) {
@@ -202,3 +204,4 @@ export default function OpBlockNoteContainer({ inputField,
     </>
   );
 }
+

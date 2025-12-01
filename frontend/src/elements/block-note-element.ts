@@ -29,46 +29,35 @@
  */
 
 import { User } from '@blocknote/core/comments';
-import type { HocuspocusProvider } from '@hocuspocus/provider';
-import { Controller } from '@hotwired/stimulus';
+import { HocuspocusProvider } from '@hocuspocus/provider';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import OpBlockNoteContainer from '../../../react/OpBlockNoteContainer';
+import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
 
-export default class extends Controller {
-  static targets = [
-    'blockNoteEditor',
-    'blockNoteInputField',
-  ];
+import mantineStyles from '@blocknote/mantine/style.css?url';
 
-  declare readonly blockNoteEditorTarget:HTMLElement;
-  declare readonly blockNoteInputFieldTarget:HTMLInputElement;
+class BlockNoteElement extends HTMLElement {
+  private mount:HTMLDivElement;
 
-  static values = {
-    inputText: String,
-    activeUser: Object,
-    readonly: Boolean,
-    openProjectUrl: String,
-    attachmentsUploadUrl: String,
-    attachmentsCollectionKey: String,
+  constructor() {
+    super();
 
-    collaborationEnabled: Boolean,
-  };
+    const shadowRoot = this.attachShadow({ mode: 'open' });
+    this.mount = document.createElement('div');
+    shadowRoot.appendChild(this.mount);
 
-  declare readonly inputTextValue:string;
-  declare readonly activeUserValue:User;
-  declare readonly readonlyValue:boolean;
-  declare readonly openProjectUrlValue:string;
-  declare readonly attachmentsUploadUrlValue:string;
-  declare readonly attachmentsCollectionKeyValue:string;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = mantineStyles;
+    shadowRoot.appendChild(link);
+  }
 
-  declare readonly collaborationEnabledValue:string;
+  connectedCallback() {
+    const root = createRoot(this.mount);
 
-  connect() {
-    const root = createRoot(this.blockNoteEditorTarget);
-
-    if (this.collaborationEnabledValue) {
+    const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
+    if (collaborationEnabled) {
       LiveCollaborationManager.onReady((hocuspocusProvider) => {
         root.render(this.BlockNoteReactContainer(hocuspocusProvider));
       });
@@ -79,14 +68,14 @@ export default class extends Controller {
 
   BlockNoteReactContainer(hocuspocusProvider?:HocuspocusProvider) {
     return React.createElement(OpBlockNoteContainer, {
-      inputField: this.blockNoteInputFieldTarget,
-      inputText: this.inputTextValue,
-      activeUser: this.activeUserValue,
-      readOnly: this.readonlyValue,
-      openProjectUrl: this.openProjectUrlValue,
-      attachmentsUploadUrl: this.attachmentsUploadUrlValue,
-      attachmentsCollectionKey: this.attachmentsCollectionKeyValue,
+      activeUser: this.getAttribute('active-user') as unknown as User,
+      readOnly: this.getAttribute('read-only') === 'true',
+      openProjectUrl: this.getAttribute('open-project-url') ?? '',
+      attachmentsUploadUrl: this.getAttribute('attachments-upload-url') ?? '',
+      attachmentsCollectionKey: this.getAttribute('attachments-collection-key') ?? '',
       hocuspocusProvider: hocuspocusProvider,
     });
   }
 }
+
+customElements.define('op-block-note', BlockNoteElement);
