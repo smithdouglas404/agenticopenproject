@@ -21,7 +21,7 @@
 #++
 sv:
   plugin_openproject_backlogs:
-    name: "OpenProject backlogs"
+    name: "Backloggar för OpenProject"
     description: "Modulen lägger till funktioner som gör det möjligt för agila team att arbeta med OpenProject i Scrum-projekt."
   activerecord:
     attributes:
@@ -55,7 +55,7 @@ sv:
     hours: "Timmar"
     impediment: "Hinder"
     label_versions_default_fold_state: "Visa ihopfällda versioner"
-    caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
+    caption_versions_default_fold_state: "Versioner kommer inte att utökas som standard när du visar backloggar. Var och en måste utökas manuellt."
     work_package_is_closed: "Arbetspaket är klart, när"
     label_is_done_status: "Status %{status_name} innebär klart"
     no_burndown_data: "Ingen Burndown data tillgänglig. Start- och slutdatum för sprint måste definieras."

@@ -7,14 +7,14 @@ sv:
     common:
       document_types:
         item_0:
-          name: Note
+          name: Anteckning
         item_1:
-          name: Idea
+          name: Idé
         item_2:
-          name: Proposal
+          name: Förslag
         item_3:
-          name: Specification
+          name: Specifikation
         item_4:
-          name: Report
+          name: Rapport
         item_5:
-          name: Documentation
+          name: Dokumentation
