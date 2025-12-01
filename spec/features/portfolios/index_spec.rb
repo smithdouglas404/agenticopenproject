@@ -188,8 +188,8 @@ RSpec.describe "Portfolios", "index", :js, with_ee: :portfolio_management do # T
 
           # The status bar shows a hover card on hover:
           page.find_test_selector("op-portfolios--sub-status-bar").hover
-          portfolios_page.expect_hover_card(portfolio_a, text: /3\ssub-items\s2\sOn track\s1\sAt risk/)
         end
+        portfolios_page.expect_hover_card(portfolio_a, text: /3\ssub-items\s2\sOn track\s1\sAt risk/)
       end
 
       it "does show an empty status bar if no sub-item has a status" do
@@ -204,8 +204,9 @@ RSpec.describe "Portfolios", "index", :js, with_ee: :portfolio_management do # T
           portfolios_page.expect_status_bar_percentage(portfolio_favorited, "not_set", "100.0", find_row: false)
 
           page.find_test_selector("op-portfolios--sub-status-bar").hover
-          portfolios_page.expect_hover_card(portfolio_favorited, text: /1\ssub-item\s1\sNot set/)
         end
+
+        portfolios_page.expect_hover_card(portfolio_favorited, text: /1\ssub-item\s1\sNot set/)
       end
     end
 
