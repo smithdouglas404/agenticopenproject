@@ -56,11 +56,9 @@ module Redmine::MenuManager::MenuHelper
   end
 
   def render_menu(menu, project = nil)
-    links = []
     @menu = menu
-    menu_items = first_level_menu_items_for(menu, project) do |node|
-      links << render_menu_node(node, project)
-    end
+    menu_items = first_level_menu_items_for(menu, project)
+    links = menu_items.map { render_menu_node(it, project) }
 
     first_level = any_item_selected?(select_leafs(menu_items, project)) || !current_menu_item_part_of_menu?(menu, project)
     classes = first_level ? "open" : "closed"
