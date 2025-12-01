@@ -3,24 +3,117 @@ title: OpenProject 17.0.0
 sidebar_navigation:
     title: 17.0.0
 release_version: 17.0.0
-release_date: 2025-11-27
+release_date: 2025-12-17
 ---
 
 # OpenProject 17.0.0
 
-Release date: 2025-11-27
+Release date: 2025-12-17
 
-We released OpenProject [OpenProject 17.0.0](https://community.openproject.org/versions/2233).
+We released [OpenProject 17.0.0](https://community.openproject.org/versions/2233).
 The release contains several bug fixes and we recommend updating to the newest version.
 In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
 
-## Important updates and breaking changes
+### Real-time documents collaboration
 
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
+text
+
+screenshot
+
+### Programs and portfolios for strategic structuring (Enterprise add-on)
+
+text
+
+screenshot
+
+### Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription
+
+text
+
+screenshot
+
+### Updated SharePoint integration with more restrictive permissions (Enterprise add-on)
+
+text
+
+screenshot
+
+### Redesigned project overview with new tabs, configurable widgets, and an improved layout
+
+text
+
+screenshot
+
+### Option to guard the privacy of users not working in the same project more strictly
+
+text
+
+screenshot
+
+### Updated invitation flow with Primer components
+
+text
+
+screenshot
+
+### Improved project creation flow with better template selection
+
+text
+
+screenshot
+
+### Smarter global search including type and status, improving precision in several autocompleters
+
+text
+
+screenshot
+
+### Accessibility improvements with ALT texts and improved chart colors
+
+text
+
+screenshot
+
+### Enhanced project attribute help texts with captions and direct editing
+
+text
+
+screenshot
+
+### Custom logo for mobile (Enterprise add-on)
+
+text
+
+### Support for non-nested long text fields in PDF exports
+
+text
+
+
+### New permission to export projects
+
+text
+
+
+### Updated tab order in the work package view (Meetings before GitHub, Watchers last)
+
+text
+
+screenshot
+
+
+## Important technical changes
+
+### Built-in OAuth application for easier external client setup
+
+text
+
+### Improved perceived performance of the project selector
+
+text
+
 
 <!--more-->
 
@@ -178,12 +271,13 @@ In these Release Notes, we will give an overview of important feature changes. A
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Alexander Aleschenko, Stefan Weiberg, Markus Preisinger.
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to  Alexander Aleschenko, Stefan Weiberg, and Markus Preisinger.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
+
+- [William](https://crowdin.com/profile/williamfromtw), for a great number of translations into Chinese Traditional.
+- [Pickart](https://crowdin.com/profile/fantasmak10), for a great number of translations into Catalan.
+- [Maxime77](https://crowdin.com/profile/maxime77), for a great number of translations into French.
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
 
