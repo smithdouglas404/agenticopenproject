@@ -223,11 +223,7 @@ module Redmine::MenuManager::MenuHelper
   def current_menu_item_part_of_menu?(menu, project = nil)
     return true if no_menu_item_wiki_prefix? || wiki_prefix?
 
-    all_menu_items_for(menu, project).each do |node|
-      return true if node.name == current_menu_item
-    end
-
-    false
+    all_menu_items_for(menu, project).any? { |node| node.name == current_menu_item }
   end
 
   def first_level_menu_items_for(menu, project = nil, &)
