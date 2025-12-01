@@ -50,7 +50,24 @@ screenshot
 
 ### Programs and portfolios for strategic structuring (Enterprise add-on)
 
-text
+OpenProject 17.0 introduces **hierarchical workspaces** to better organize large project landscapes. Customers of the Enterprise Premium plan can now structure related items — projects, programs, and portfolios — to align operational work with strategic goals.
+
+With this new hierarchy:
+
+- **Projects** represent operational work.
+- **Programs** group related projects into coordinated initiatives.
+- **Portfolios** provide a higher-level view across multiple programs and projects.
+
+Projects, programs, and portfolios all use the same familiar concept of an overview page with widgets, lifecycle dates and attributes. Portfolios and projects appear as top-level entries in the global navigation and project selector, while programs are accessed through their parent structures (for example via portfolios or workspace lists).
+
+Creating workspaces also becomes more consistent: administrators can define default templates for programs, portfolios, and projects so that new items follow the correct structure from the start. When users create new entries through the Subitems widget or other creation shortcuts, both the parent hierarchy and the appropriate template are prefilled automatically.
+
+A dedicated global permission now controls who may create programs and portfolios, ensuring that the new hierarchy can be introduced in a controlled way.
+
+This update lays the foundation for future portfolio-level and program-level capabilities in OpenProject.
+
+>[!NOTE]
+> This new hierarchy is especially valuable for organizations working with structured project management frameworks such as **PM²** or **PMflex**, where programs and portfolios play a central role.
 
 screenshot
 
