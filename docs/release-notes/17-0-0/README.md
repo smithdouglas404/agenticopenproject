@@ -19,7 +19,32 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 ### Real-time documents collaboration
 
-text
+OpenProject 17.0 introduces **real-time collaborative editing in the Documents module**. Multiple users can work on the same document simultaneously, with live cursors, continuous updates, and automatic saving. The new BlockNote editor replaces the previous CKEditor-based documents for all installations where real-time collaboration is enabled.
+
+Real-time collaboration requires a **running Hocuspocus server**:
+
+- **OpenProject Cloud**: Real-time collaboration is enabled automatically for all Cloud instances.
+- **Container-based on-premises installations** (Docker, Docker Compose, Helm/Kubernetes): Intended to work out of the box with 17.0. A Hocuspocus service will be automatically provided as part of the standard setup.
+- **Package-based installations** (DEB/RPM): Do not include Hocuspocus. These installations will continue using CKEditor-based documents unless administrators set up their own Hocuspocus server and configure OpenProject accordingly.
+
+When real-time editing is enabled, Documents support:
+
+- Live collaborative editing with visible cursors from all connected users.
+- Real-time updates in both edit and read-only mode.
+- Work package integration via slash commands:
+  - Link or embed work packages as rich preview blocks.
+  - Users without access see secure ghost references.
+- Continuously updating “last edited” timestamp.
+- List of connected users, including read-only viewers.
+- Automatic saving without a manual save button.
+- Improved document layout with breadcrumbs, editable title, type selector, connected user avatars, and last-updated indicator.
+- Inline file uploads by dragging files directly into the editor.
+- Files panel that updates instantly and supports deleting attachments.
+- Editor skeleton displayed while loading.
+- Unified document URL (`/documents/<id>`) for both editing and viewing.
+
+>[!NOTE]
+> If real-time collaboration is enabled but no functioning Hocuspocus server is reachable, OpenProject does not fall back to CKEditor. Instead, the document editor is temporarily hidden and an error banner is shown with an option to retry. Once the connection to the collaboration server is restored, the editor becomes available again automatically.
 
 screenshot
 
