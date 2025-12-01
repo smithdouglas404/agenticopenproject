@@ -49,8 +49,8 @@ interface CollaborativeUser {
 }
 
 export interface OpBlockNoteContainerProps {
-  inputField:HTMLInputElement;
-  inputText?:string;
+  // inputField:HTMLInputElement;
+  // inputText?:string;
   activeUser:User;
   readOnly:boolean;
   openProjectUrl:string;
@@ -67,9 +67,7 @@ const schema = BlockNoteSchema.create().extend({
 
 const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOpColorMode(); };
 
-export default function OpBlockNoteContainer({ inputField,
-                                               inputText,
-                                               activeUser,
+export default function OpBlockNoteContainer({ activeUser,
                                                readOnly,
                                                openProjectUrl,
                                                attachmentsUploadUrl,
@@ -105,15 +103,15 @@ export default function OpBlockNoteContainer({ inputField,
       ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   } else { // collaboration disabled
-    if (inputText) {
-      try {
-        const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
-        Y.applyUpdate(doc, update);
-      } catch (e) {
-        console.error('Failed to load document binary', e);
-        doc = new Y.Doc();
-      }
-    }
+    // if (inputText) {
+    //   try {
+    //     const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
+    //     Y.applyUpdate(doc, update);
+    //   } catch (e) {
+    //     console.error('Failed to load document binary', e);
+    //     doc = new Y.Doc();
+    //   }
+    // }
 
     editorParams = {
       schema,
@@ -173,11 +171,11 @@ export default function OpBlockNoteContainer({ inputField,
   };
 
   useEffect(() => {
-    const updateInput = () => {
-      const update = Y.encodeStateAsUpdate(doc);
-      const b64 = btoa(String.fromCharCode(...update));
-      inputField.value = b64;
-    };
+    // const updateInput = () => {
+    //   const update = Y.encodeStateAsUpdate(doc);
+    //   const b64 = btoa(String.fromCharCode(...update));
+    //   inputField.value = b64;
+    // };
 
     let connectionTimeout:ReturnType<typeof setTimeout> | null = null;
 
@@ -206,9 +204,9 @@ export default function OpBlockNoteContainer({ inputField,
 
       hocuspocusProvider.on('synced', editorReady);
       hocuspocusProvider.on('disconnect', handleDisconnect);
-    } else {
-      doc.on('update', updateInput);
-      setIsLoading(false);
+    // } else {
+    //   doc.on('update', updateInput);
+    //   setIsLoading(false);
     }
 
     return () => {
@@ -218,9 +216,9 @@ export default function OpBlockNoteContainer({ inputField,
         hocuspocusProvider.off('synced', editorReady);
         hocuspocusProvider.off('disconnect', handleDisconnect);
         hocuspocusProvider.destroy();
-      } else {
-        // disable Yjs update listener. Opposite of doc.on('update', ...);
-        doc.off('update', updateInput);
+      // } else {
+      //   // disable Yjs update listener. Opposite of doc.on('update', ...);
+      //   doc.off('update', updateInput);
       }
     };
   }, [hocuspocusProvider]);
