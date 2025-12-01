@@ -143,60 +143,110 @@ screenshot
 
 ### Option to guard the privacy of users not working in the same project more strictly
 
-text
+This release introduces a new global permission that allows administrators to **reduce the visibility of all users in the system**. 
+
+When enabled, project administrators only see:
+
+- users who share a project with them,
+- users in the same groups, or
+- users they explicitly invite by email (if permitted).
+
+This prevents unintended disclosure of user names across unrelated teams and helps organizations meet stricter privacy and compliance requirements.
+
+Existing permission configurations are automatically migrated so that **current behavior remains unchanged** unless administrators choose to restrict visibility.
 
 screenshot
 
 ### Updated invitation flow with Primer components
 
-text
+The user invitation dialog has been redesigned with Primer for a clearer and more consistent experience. The flow now shows only the projects where a user is allowed to invite members, improves autocompletion for users and emails, and displays errors inline instead of multi-step confirmations. This update also prepares the system for the new visibility rules introduced in this release.
 
 screenshot
 
 ### Improved project creation flow with better template selection
 
-text
+Creating new projects is now easier and more structured. The template selection has been moved to a **dedicated first step**, offering a clearer visual layout and better guidance. After choosing a template or a blank project, users proceed to the regular creation form.
+
+When using blank projects, required custom fields are shown in a separate final step. Project templates used for programs and portfolios are also prefilling properly when created from context (e.g., via the Subitems widget or the top navigation).
 
 screenshot
 
 ### Smarter global search including type and status, improving precision in several autocompleters
 
-text
+The global search now understands **work package type**, **status**, and **meta-status** (open/closed). This makes it much easier to find the right item in projects with many similarly named work packages.
+
+Examples:
+
+- Searching for *“bug login”* shows only work packages of type *Bug*.
+- Searching for *“foo new”* or *“foo open”* finds only items in an open status.
+
+These improvements also benefit several autocompleters throughout the application, such as the `#` and `##` work package quick-link references in comments and descriptions, helping users filter large datasets more precisely.
 
 screenshot
 
 ### Accessibility improvements with ALT texts and improved chart colors
 
-text
+OpenProject 17.0 continues the accessibility initiative with several enhancements:
+
+- Meaningful **ALT text** added to functional images (e.g., avatars, document previews).
+- Decorative images are now correctly marked to be skipped by screen readers.
+- Charts on the project overview include improved color contrast and descriptive summaries to support assistive technologies.
+- The Gantt chart is now hidden from screen readers to avoid confusing non-informational output.
+
+These improvements make OpenProject easier to navigate for users relying on screen readers or high-contrast environments.
 
 screenshot
 
 ### Enhanced project attribute help texts with captions and direct editing
 
-text
+Administrators can now manage **attribute help texts directly from each attribute** without navigating to the separate Help Texts section. A new **caption field** allows adding short clarifying text shown below input fields in forms to guide users more effectively.
+
+Help texts continue to appear in the familiar dialog triggered by the question-mark icon.
 
 screenshot
 
 ### Custom logo for mobile (Enterprise add-on)
 
-text
+Customers of the Enterprise Basic plan can now upload a dedicated **mobile logo** as part of their branded theme.
+
+Depending on screen size:
+
+- mobile logo only
+- desktop logo only
+- or both (automatically switching between them)
+
+...are shown.
+
+If no custom logo is provided, the OpenProject logo remains the default.
 
 ### Support for non-nested long text fields in PDF exports
 
-text
+Long text custom fields and descriptions included via macros such as:
 
+```
+workPackageValue:description  
+projectValue:"Field name"
+```
+
+... are now supported in PDF exports — including meetings, single work package exports, work package list reports, and project lists.
+
+When placed at the start of a line, long text is rendered fully. If inserted mid-sentence, the content moves to its own paragraph. Nested embedding (e.g., inside tables) is supported only for plain text; otherwise, a clear fallback message appears.
 
 ### New permission to export projects
 
-text
-
+A new permission allows administrators to control who may export project lists as XLS, CSV, or PDF. This helps manage server load and restrict data extraction to authorized users.
 
 ### Updated tab order in the work package view (Meetings before GitHub, Watchers last)
 
-text
+To reflect real-world usage patterns, the tab order in the work package view has been updated:
+
+1. Activity
+2. Relations
+3. Meetings (if enabled)
+4. GitLab / GitHub integrations (if enabled)
+5. Watchers
 
 screenshot
-
 
 ## Important technical changes
 
