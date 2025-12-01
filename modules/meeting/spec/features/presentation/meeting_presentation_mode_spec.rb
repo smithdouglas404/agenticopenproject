@@ -290,4 +290,17 @@ RSpec.describe "Meeting Presentation Mode",
       end
     end
   end
+
+  context "with a draft meeting" do
+    let!(:meeting) { create(:meeting, project:, state: :draft) }
+    let!(:agenda_item) { create(:meeting_agenda_item, meeting:) }
+
+    it "does not show the present button even with agenda items" do
+      show_page.visit!
+
+      within("#meetings-header-component") do
+        expect(page).to have_no_link("Present")
+      end
+    end
+  end
 end
