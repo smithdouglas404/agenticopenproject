@@ -130,7 +130,14 @@ screenshot
 
 ### Redesigned project overview with new tabs, configurable widgets, and an improved layout
 
-text
+OpenProject 17.0 introduces a **major redesign of the project overview**, making key information easier to understand and share.
+
+The page is now split into two tabs:
+
+- **Overview** — a clean, structured summary with fixed widgets such as description, status, members, subprojects, news, lifecycle dates, and project attributes.
+- **Dashboard** — the fully editable area for custom widgets, now without the previous right-hand panel.
+
+The redesign also introduces **new widgets** (Budget, Sub-items) and improves existing ones through updated Primer styling. Administrators can additionally decide whether specific **project attribute sections** appear in the sidebar or directly in the main Overview as dedicated widgets.
 
 screenshot
 
