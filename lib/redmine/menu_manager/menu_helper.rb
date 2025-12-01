@@ -430,7 +430,7 @@ module Redmine::MenuManager::MenuHelper
     badge = "".html_safe
 
     key = item.badge(project: @project)
-    if badge.present?
+    if key.present?
       badge += content_tag("span", I18n.t(key), class: "main-item--badge")
     end
     badge

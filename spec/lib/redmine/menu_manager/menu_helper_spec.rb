@@ -65,20 +65,45 @@ RSpec.describe Redmine::MenuManager::MenuHelper, type: :helper do
   current_user { build_stubbed(:user) }
 
   describe "#render_single_menu_node" do
-    let(:item) { Redmine::MenuManager::MenuItem.new(:testing, "/test", caption: "This is a test") }
-    let(:expected) do
-      <<~HTML
-        <a class="testing-menu-item op-menu--item-action" title="This is a test" data-test-selector="op-menu--item-action" href="/test">
-          <span class="op-menu--item-title">
-            <span class="ellipsis">This is a test</span>
-          </span>
-        </a>
-      HTML
+    let(:item) { Redmine::MenuManager::MenuItem.new(:testing, "/test", caption: "This is a test", badge:) }
+
+    context "without badge" do
+      let(:badge) { nil }
+
+      let(:expected) do
+        <<~HTML
+          <a class="testing-menu-item op-menu--item-action" title="This is a test" data-test-selector="op-menu--item-action" href="/test">
+            <span class="op-menu--item-title">
+              <span class="ellipsis">This is a test</span>
+            </span>
+          </a>
+        HTML
+      end
+
+      it "renders" do
+        expect(render_single_menu_node(item))
+          .to be_html_eql(expected)
+      end
     end
 
-    it "renders" do
-      expect(render_single_menu_node(item))
-        .to be_html_eql(expected)
+    context "with badge" do
+      let(:badge) { "label_me" }
+
+      let(:expected) do
+        <<~HTML
+          <a class="testing-menu-item op-menu--item-action" title="This is a test" data-test-selector="op-menu--item-action" href="/test">
+            <span class="op-menu--item-title op-menu--item-title_has-badge">
+              <span class="ellipsis">This is a test</span>
+              <span class="main-item--badge">me</span>
+            </span>
+          </a>
+        HTML
+      end
+
+      it "renders" do
+        expect(render_single_menu_node(item))
+          .to be_html_eql(expected)
+      end
     end
   end
 
