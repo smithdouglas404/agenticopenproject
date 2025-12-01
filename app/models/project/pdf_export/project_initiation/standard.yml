@@ -1,7 +1,7 @@
 page:
   page_size: "A4"
   margin_top: 80
-  margin_bottom: 60
+  margin_bottom: 80
   margin_left: 60
   margin_right: 60
   page_break_threshold: 140
@@ -29,7 +29,10 @@ page_heading:
 page_subheading:
   size: 12
   styles: [ "bold" ]
-  margin_bottom: 20
+  margin_bottom: 12
+
+page_head_margin:
+  margin_bottom: 18
 
 cover:
   header:
@@ -41,10 +44,10 @@ cover:
   footer:
     size: 10
     color: '414d5f'
-    offset: 30
+    offset: 50
   hero:
     padding_right: 144
-    padding_top: 120
+    padding_top: 110
     title:
       max_height: 30
       spacing: 10
@@ -117,10 +120,18 @@ project:
       align: "left"
     unordered_list:
       spacing: 1
+      padding_top: 6
+      padding_bottom: 6
+      padding_left: 20
+      padding_right: 20
     unordered_list_point:
       spacing: 4
     ordered_list:
       spacing: 1
+      padding_top: 6
+      padding_bottom: 6
+      padding_left: 20
+      padding_right: 20
     ordered_list_point:
       spacing: 4
       spanning: true
@@ -135,6 +146,10 @@ project:
       list_style_type: upper-roman
     task_list:
       spacing: 1
+      padding_top: 6
+      padding_bottom: 6
+      padding_left: 20
+      padding_right: 20
     task_list_point:
       spacing: 4
       checked: "☑"

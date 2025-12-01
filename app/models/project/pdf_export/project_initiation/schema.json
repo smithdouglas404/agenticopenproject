@@ -21,6 +21,9 @@
     "page_subheading": {
       "$ref": "#/$defs/page_heading"
     },
+    "page_head_margin": {
+      "$ref": "#/$defs/margin"
+    },
     "cover": {
       "$ref": "#/$defs/cover"
     },

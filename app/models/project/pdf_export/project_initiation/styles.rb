@@ -45,6 +45,10 @@ module Project::PDFExport::ProjectInitiation::Styles
       resolve_margin(@styles[:page_subheading])
     end
 
+    def page_head_margin
+      resolve_margin(@styles[:page_head_margin])
+    end
+
     def section_title
       resolve_font(@styles.dig(:section, :title))
     end

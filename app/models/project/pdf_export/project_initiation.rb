@@ -89,9 +89,11 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   def render_project_initiation
     pdf.title = heading
     write_cover_page! if with_cover?
-    write_project_initiation_heading
-    write_project_initiation_title
-    write_project_initiation_description
+    with_margin(styles.page_head_margin) do
+      write_project_initiation_heading
+      write_project_initiation_title
+      write_project_initiation_description
+    end
     write_project_initiation
     write_headers_footers
   end
