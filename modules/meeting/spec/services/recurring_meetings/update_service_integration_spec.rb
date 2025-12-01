@@ -135,6 +135,26 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
         expect(series.upcoming_instantiated_meetings.count).to eq 1
       end
     end
+
+    context "when the template is in draft mode",
+            with_good_job: RecurringMeetings::InitNextOccurrenceJob do
+      let(:params) do
+        { start_time: Time.zone.today + 2.days + 11.hours }
+      end
+
+      before do
+        series.template.update_column(:state, :draft)
+      end
+
+      it "reschedules, but does not init an occurrence (Bug #69175)" do
+        expect(service_result).to be_success
+
+        expect(series.upcoming_instantiated_meetings).to be_empty
+
+        series.reload
+        expect(series.start_time).to eq Time.zone.today + 2.days + 11.hours
+      end
+    end
   end
 
   describe "rescheduling mails" do

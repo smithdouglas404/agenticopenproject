@@ -174,6 +174,9 @@ module RecurringMeetings
       # Delete all scheduled jobs for this meeting
       GoodJob::Job.where(finished_at: nil, concurrency_key:).delete_all
 
+      # Don't init the next meeting in draft mode
+      return if recurring_meeting.template.draft?
+
       # Ensure we init the next meeting directly
       InitNextOccurrenceJob.perform_now(recurring_meeting, recurring_meeting.next_occurrence)
     end
