@@ -71,9 +71,39 @@ This update lays the foundation for future portfolio-level and program-level cap
 
 screenshot
 
-### Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription
+### Better meeting management with draft mode, presentation mode, multiple outcomes, and iCal subscription
 
-text
+OpenProject 17.0 introduces several great improvements that make meeting preparation and documentation more intuitive, structured, and efficient.
+
+#### Draft mode
+
+New meetings now open in **draft mode**, allowing moderators to prepare agendas, add participants, and structure content without sending invitations or updates prematurely.
+
+A banner clearly indicates draft mode, and invitations are only sent once the meeting is explicitly opened. Once the moderator explicitly opens the meeting, invitations can be sent and the usual update behaviour applies.
+
+screenshot
+
+#### Full-screen presentation mode
+
+The new **presentation mode** offers a distraction-free, full-screen view that focuses on the current agenda item. It shows the meeting title, agenda item details, and navigation controls in a clear layout, including:
+
+- a sticky header with the meeting title and exit button,
+- a sticky footer with progress, previous/next navigation and a running timer,
+- keyboard navigation using arrow keys.
+
+Unlike the standard view, changes made by participants are reflected **live** in presentation mode, so moderators and attendees always see the current state of the agenda without additional pop-ups.
+
+#### Multiple text-based outcomes per agenda item
+
+Agenda items can now hold **multiple text-based outcomes**. The **+ Outcome** action remains available while the meeting is *In progress* and allows moderators to record more than one result for the same item. The first outcome is labelled “Outcome”, additional ones are numbered (“Outcome 1”, “Outcome 2”, and so on). These outcomes are also supported in the PDF exports of meetings.
+
+### Unified “My meetings” iCal subscription
+
+To avoid duplicate or confusing calendar invites, users can now subscribe to **all their meetings** through a single iCal subscription URL from the **My meetings** page or settings. External calendars (for example Outlook, Apple Calendar, or Open-Xchange) stay in sync automatically. Individual *.ics files* remain available when needed, but sending them is now more clearly controlled via dedicated options when creating or updating meetings.
+
+#### Improved agenda item management
+
+Moderators can now move agenda items more efficiently between different sections. A new **Move to section** option in the “More” menu lets items be reassigned directly to the correct section or moved back to the backlog, which is particularly helpful in meetings with many sections or a large backlog.
 
 screenshot
 
