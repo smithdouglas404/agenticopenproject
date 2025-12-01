@@ -334,6 +334,6 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
   context "with unauthorized user" do
     let(:current_user) { create(:user) }
 
-    it_behaves_like "unauthorized access"
+    it_behaves_like "not found"
   end
 end
