@@ -109,7 +109,22 @@ screenshot
 
 ### Updated SharePoint integration with more restrictive permissions (Enterprise add-on)
 
-text
+Before OpenProject 17.0, the Microsoft 365 file storage integration was a single combined OneDrive/SharePoint integration available as an Enterprise add-on in the Professional plan.
+
+With this release, it is now split into **two separate integrations** — one for **OneDrive** and one for **SharePoint** — giving administrators clearer setup options and more flexibility.
+
+For the SharePoint integration, OpenProject 17.0 introduces support for Microsoft’s *Sites.Selected* permission model. This allows administrators to grant the OpenProject Entra ID application access only to specific SharePoint sites, instead of using the broader *`Files.ReadWrite.All`* permission required in earlier versions.
+
+This new option helps organizations meet stricter security and compliance requirements while preserving all existing functionality.
+
+When configuring SharePoint storage, administrators now benefit from:
+
+- Separate, clearer setup options for OneDrive and SharePoint.
+- Support for the *Sites.Selected* permission scope, requiring a SharePoint Site ID.
+- Improved helper texts and documentation links.
+- Enhanced validation and error messages during configuration.
+
+OpenProject continues to support both the legacy permission model and the new *Sites.Selected* approach, allowing administrators to choose whichever fits their security standards.
 
 screenshot
 
