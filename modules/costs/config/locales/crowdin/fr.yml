@@ -82,7 +82,7 @@ fr:
       models:
         time_entry:
           invalid_time: "doit être entre 00:00 et 23:59."
-          cannot_log_for_this_work_package: "Impossible d'enregistrer le temps consacré à ce lot de travaux."
+          cannot_log_for_this_work_package: "Impossible d'enregistrer le journal pour ce lot de travaux."
           duplicate_ongoing: "Une saisie de temps en cours existe déjà pour cet utilisateur."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Le lot de travaux #%{id} n'est pas une cible valide pour réaffecter les entrées de coût."
@@ -113,7 +113,7 @@ fr:
   caption_save_rate: "Enregistrer tarif"
   caption_set_rate: "Définir le tarif actuel"
   caption_show_locked: "Afficher les types verrouillés"
-  caption_log_time_dialog: "Consigner temps"
+  caption_log_time_dialog: "Sauvegarder le journal"
   description_date_for_new_rate: "Date pour le nouveau tarif"
   description_costs_settings: "Définissez le format souhaité pour les coûts dans tous les projets."
   description_time_settings: "Définissez les champs à remplir obligatoirement lors de l'enregistrement du temps de travail dans tous les projets."

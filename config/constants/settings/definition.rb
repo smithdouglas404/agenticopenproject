@@ -1010,11 +1010,13 @@ module Settings
       sendmail_arguments: {
         description: "Arguments to call sendmail with in case it is configured as outgoing email setup",
         format: :string,
+        writable: false,
         default: "-i"
       },
       sendmail_location: {
         description: "Location of sendmail to call if it is configured as outgoing email setup",
         format: :string,
+        writable: false,
         default: "/usr/sbin/sendmail"
       },
       # Allow separate error reporting for frontend errors

@@ -36,10 +36,10 @@ GIT
 
 GIT
   remote: https://github.com/opf/omniauth-openid-connect.git
-  revision: e923d9dd14fa4ca04b98720ac2185807b263f5ed
-  ref: e923d9dd14fa4ca04b98720ac2185807b263f5ed
+  revision: f0c1ecdb26e39017a9e929af75a166c772d960bb
+  ref: f0c1ecdb26e39017a9e929af75a166c772d960bb
   specs:
-    omniauth-openid-connect (0.4.1)
+    omniauth-openid-connect (0.4.2)
       addressable (~> 2.5)
       omniauth (~> 1.6)
       openid_connect (~> 2.2.0)
@@ -2003,7 +2003,7 @@ CHECKSUMS
   oj (3.16.11) sha256=2aab609d2bc896529bd3c70d737f591c13932a640ba6164a0f7e414efdb052b1
   okcomputer (1.19.0) sha256=8548935a82f725bdd8f2c329925a9f1a1bb2ce19ce26b47d7515665ee363b458
   omniauth (1.9.2)
-  omniauth-openid-connect (0.4.1)
+  omniauth-openid-connect (0.4.2)
   omniauth-openid_connect-providers (0.2.0)
   omniauth-saml (1.10.6) sha256=13dde22f4fd1beff0ef2d6dae576f7b68594f159990e8e886d8a02b32397afbd
   op-clamav-client (3.4.2) sha256=f28d697d11758a2ba3dc530cfdf4871a00ecd517631e8bac30dee30cd6012964

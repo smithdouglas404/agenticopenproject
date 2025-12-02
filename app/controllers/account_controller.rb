@@ -182,14 +182,14 @@ class AccountController < ApplicationController
   # to change the password.
   # When making changes here, also check MyController.change_password
   def change_password
-    # Retrieve user_id from session
-    @user = User.find(params[:password_change_user_id])
+    # Retrieve user login name from session
+    @user = User.find_by!(login: params[:password_change_user])
 
     change_password_flow(user: @user, params:, show_user_name: true) do
       password_authentication(@user.login, params[:new_password])
     end
   rescue ActiveRecord::RecordNotFound
-    Rails.logger.error "Failed to find user for change_password request: #{flash[:_password_change_user_id]}"
+    Rails.logger.error "Failed to find user for change_password request: #{flash[:_password_change_user]}"
     render_404
   end
 

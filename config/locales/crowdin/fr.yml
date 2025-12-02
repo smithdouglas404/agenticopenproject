@@ -324,7 +324,7 @@ fr:
     placeholder_version_select: "La sélection d'un lot de travaux ou d'un projet est requise en premier lieu"
     calculated_field_not_editable: "Attribut non modifiable. Cette valeur est calculée automatiquement."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required: "Marquez le champ personnalisé comme obligatoire. Il sera alors obligatoire de remplir le champ lors de la création de nouvelles ressources. Les ressources existantes ne nécessiteront pas de valeur lors de leur mise à jour."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Marquer le champ personnalisé comme disponible dans tous les projets existants et nouveaux."
       multi_select: "Permet à l'utilisateur d'assigner plusieurs valeurs à ce champ personnalisé."
@@ -1380,7 +1380,7 @@ fr:
               minimum: "devez inclure au moins un filtre pour le principal, le contexte ou l'identifiant avec l'opérateur '='."
         custom_field:
           at_least_one_custom_option: "Au moins une option doit être disponible."
-          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
+          previous_custom_field_recalculation_unprocessed: "Le recalcul des modifications précédentes pour ce champ personnalisé n'a pas encore été appliqué, veuillez réessayer dans quelques minutes."
           referenced_in_other_fields_html:
             one: "%{name} est utilisé dans le calcul des attributs du projet %{links}."
             other: "%{name} est utilisé dans les calculs des attributs du projet : %{links}."

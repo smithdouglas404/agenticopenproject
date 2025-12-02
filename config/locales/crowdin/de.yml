@@ -1374,7 +1374,7 @@ de:
               minimum: "müssen mindestens einen Filter für Principal, Kontext oder ID mit dem '=' Operator enthalten."
         custom_field:
           at_least_one_custom_option: "Mindestens ein Wert muss verfügbar sein."
-          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
+          previous_custom_field_recalculation_unprocessed: "Die Neuberechnung früherer Änderungen für dieses benutzerdefinierte Feld wurde noch nicht durchgeführt. Bitte versuchen Sie es in ein paar Minuten erneut."
           referenced_in_other_fields_html:
             one: "%{name} wird bei der Berechnung eines Projektattributs verwendet %{links}."
             other: "%{name} wird bei der Berechnung von Projektattribute verwendet %{links}."
@@ -4349,11 +4349,11 @@ de:
   text_custom_export_font_regular_instructions: >
     Dies ist die Schriftartdatei für normalen Text. Sie muss im TTF-Format vorliegen und ist erforderlich.
   text_custom_export_font_bold_instructions: >
-    Dies ist die Schriftdatei für fetten Text. Sie ist optional, und muss wenn angegeben im TTF-Format vorliegen.
+    Dies ist die Schriftdatei für fetten Text. Sie ist optional. Wenn angegeben, muss sie im TTF-Format vorliegen.
   text_custom_export_font_italic_instructions: >
-    Dies ist die Schriftdatei für kursiven Text. Sie ist optional, und muss wenn angegeben im TTF-Format vorliegen.
+    Dies ist die Schriftdatei für kursiven Text. Sie ist optional. Wenn angegeben, muss sie im TTF-Format vorliegen.
   text_custom_export_font_bold_italic_instructions: >
-    Dies ist die Schriftdatei für fett-kursiven Text. Sie ist optional, und muss wenn angegeben im TTF-Format vorliegen.
+    Dies ist die Schriftdatei für fett-kursiven Text. Sie ist optional. Wenn angegeben, muss sie im TTF-Format vorliegen.
   text_custom_favicon_instructions: >
     Dies ist das kleine Symbol, das in Ihrem Browser-Fenster/Tab neben dem Seitentitel angezeigt wird. Es muss ein quadratisches 32 x 32 Pixel großes PNG mit transparentem Hintergrund sein.
   text_custom_touch_icon_instructions: >

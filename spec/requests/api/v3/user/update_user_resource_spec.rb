@@ -314,7 +314,7 @@ RSpec.describe API::V3::Users::UsersAPI do
 
     it "returns an erroneous response" do
       send_request
-      expect(last_response).to have_http_status(:forbidden)
+      expect(last_response).to have_http_status(:not_found)
     end
   end
 end
