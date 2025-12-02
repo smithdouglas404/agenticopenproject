@@ -16,6 +16,10 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 ## Important feature changes
 
+Take a look at our release video showing the most important features introduced in OpenProject 16.6.0:
+
+![Release video of OpenProject 17.0](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_0_release.mp4)
+
 ### Real-time documents collaboration
 
 OpenProject 17.0 introduces **real-time collaborative editing in the Documents module**. Multiple users can work on the same document simultaneously, with live cursors, continuous updates, and automatic saving. The new BlockNote editor replaces the previous CKEditor-based documents for all installations where real-time collaboration is enabled.
@@ -33,7 +37,7 @@ When real-time editing is enabled, Documents support:
 - Work package integration via slash commands:
   - Link or embed work packages as rich preview blocks.
   - Users without access see secure ghost references.
-- Continuously updating “last edited” timestamp.
+- Continuously updating "last edited" timestamp.
 - List of connected users, including read-only viewers.
 - Automatic saving without a manual save button.
 - Improved document layout with breadcrumbs, editable title, type selector, connected user avatars, and last-updated indicator.
@@ -105,9 +109,7 @@ To avoid duplicate or confusing calendar invites, **users can now subscribe to a
 
 ### Updated SharePoint integration with more restrictive permissions (Enterprise add-on)
 
-Before OpenProject 17.0, the Microsoft 365 file storage integration was a single combined OneDrive/SharePoint integration available as an Enterprise add-on in the Professional plan.
-
-With this release, it is now split into **two separate integrations** — one for **OneDrive** and one for **SharePoint** — giving administrators clearer setup options and more flexibility.
+Before OpenProject 17.0, the Microsoft 365 file storage integration was a single combined OneDrive/SharePoint integration available as an Enterprise add-on in the Professional plan. With this release, it is now split into **two separate integrations** — one for **OneDrive** and one for **SharePoint** — giving administrators clearer setup options and more flexibility.
 
 For the SharePoint integration, OpenProject 17.0 introduces support for Microsoft’s *Sites.Selected* permission model. This allows administrators to grant the OpenProject Entra ID application access only to specific SharePoint sites, instead of using the broader *`Files.ReadWrite.All`* permission required in earlier versions.
 
