@@ -179,7 +179,7 @@ RSpec.describe Setting do
 
     it "raises an error for a non writable setting" do
       expect { described_class.smtp_openssl_verify_mode = "none" }
-        .to raise_error NoMethodError
+        .to raise_error Setting::NotWritableError
     end
 
     context "for a setting with an environment specific default value", :settings_reset do
