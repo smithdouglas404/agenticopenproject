@@ -42,7 +42,7 @@ class MeetingParticipant < ApplicationRecord
     accepted: "accepted",
     declined: "declined",
     tentative: "tentative",
-    delegated: "delegated",
+    # delegated: "delegated", # We currently do not support delegation
     unknown: "unknown" # this status is used for existing participants when introducing the field
   }
 
