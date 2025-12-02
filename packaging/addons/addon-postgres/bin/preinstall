@@ -121,7 +121,7 @@ install_postgres_server() {
                                         repo="https://download.postgresql.org/pub/repos/zypp/repo/pgdg-sles-17.repo"
                                         ;;
                                 15*)
-                                        repo="https://download.postgresql.org/pub/repos/zypp/repo/pgdg-sles-15-pg17.repo"
+                                        repo="https://download.postgresql.org/pub/repos/zypp/reporpms/SLES-15-x86_64/pgdg-suse-repo-latest.noarch.rpm"
                                         ;;
                                 *)
                                         repo=""
