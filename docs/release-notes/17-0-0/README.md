@@ -49,7 +49,7 @@ screenshot
 
 ### Programs and portfolios for strategic structuring (Enterprise add-on)
 
-OpenProject 17.0 introduces **hierarchical workspaces** to better organize large project landscapes. Customers of the Enterprise Premium plan can now structure related items — projects, programs, and portfolios — to align operational work with strategic goals.
+OpenProject 17.0 introduces hierarchical workspaces to better organize large project landscapes. Customers of the **Enterprise Premium plan** can now structure related items — **projects, programs, and portfolios** — to align operational work with strategic goals.
 
 With this new hierarchy:
 
@@ -57,7 +57,7 @@ With this new hierarchy:
 - **Programs** group related projects into coordinated initiatives.
 - **Portfolios** provide a higher-level view across multiple programs and projects.
 
-Projects, programs, and portfolios all use the same familiar concept of an overview page with widgets, lifecycle dates and attributes. Portfolios and projects appear as top-level entries in the global navigation and project selector, while programs are accessed through their parent structures (for example via portfolios or workspace lists).
+Projects, programs, and portfolios all use the same familiar concept of an overview page with widgets, lifecycle dates and attributes. Portfolios and projects appear as top-level entries in the global navigation and project selector, while programs are accessed through portfolios.
 
 Creating workspaces also becomes more consistent: administrators can define default templates for programs, portfolios, and projects so that new items follow the correct structure from the start. When users create new entries through the Subitems widget or other creation shortcuts, both the parent hierarchy and the appropriate template are prefilled automatically.
 
@@ -137,6 +137,14 @@ The redesign also introduces **new widgets** (Budget, Sub-items) and improves ex
 
 ![OpenProject Project home showing both the Overview tab and the Dashboard tab](openproject-17-0-home-dashboard-overview.jpg)
 
+### Improved project creation flow with better template selection
+
+Creating new projects is now easier and more structured. The template selection has been moved to a **dedicated first step**, offering a clearer visual layout and better guidance. After choosing a template or a blank project, users proceed to the regular creation form.
+
+When using blank projects, required custom fields are shown in a separate final step. Project templates used for programs and portfolios are also prefilling properly when created from context (e.g., via the Subitems widget or the top navigation).
+
+![OpenProject "New project" creation showing several pre-created templates to choose from, including a selected "Blank project". Below are buttons to "Cancel" and "Continue"](openproject-17-0-templates.png)
+
 ### Option to guard the privacy of users not working in the same project more strictly
 
 This release introduces a new global permission that allows administrators to **reduce the visibility of all users in the system**. 
@@ -159,14 +167,6 @@ The user invitation dialog has been redesigned with Primer for a clearer and mor
 
 screenshot
 
-### Improved project creation flow with better template selection
-
-Creating new projects is now easier and more structured. The template selection has been moved to a **dedicated first step**, offering a clearer visual layout and better guidance. After choosing a template or a blank project, users proceed to the regular creation form.
-
-When using blank projects, required custom fields are shown in a separate final step. Project templates used for programs and portfolios are also prefilling properly when created from context (e.g., via the Subitems widget or the top navigation).
-
-screenshot
-
 ### Smarter global search including type and status, improving precision in several autocompleters
 
 The global search now understands **work package type**, **status**, and **meta-status** (open/closed). This makes it much easier to find the right item in projects with many similarly named work packages.
@@ -177,7 +177,7 @@ Examples:
 - Searching for *bug new* shows only work packages of typ *Bug* and status *New*.
 - Searching for *open* shows only items in an open status.
 
-These improvements also benefit several autocompleters throughout the application, such as the `#` and `##` work package quick-link references in comments and descriptions, helping users filter large datasets more precisely.
+These improvements **also benefit several autocompleters throughout the application**, such as the `#` and `##` work package quick-link references in comments and descriptions, helping users filter large datasets more precisely.
 
 ![Global search bar in OpenProject, "bug new" is typed in and two work packages of type bug and status new are displayed](openproject-17-0-search.png)
 
@@ -185,7 +185,7 @@ These improvements also benefit several autocompleters throughout the applicatio
 
 OpenProject 17.0 continues the accessibility initiative with several enhancements:
 
-- Meaningful **ALT text** added to functional images (e.g., avatars, document previews).
+- Meaningful ALT text added to functional images (e.g., avatars, document previews).
 - Decorative images are now correctly marked to be skipped by screen readers.
 - Charts on the project overview include improved color contrast and descriptive summaries to support assistive technologies.
 - The Gantt chart is now hidden from screen readers to avoid confusing non-informational output.
@@ -194,7 +194,7 @@ These improvements make OpenProject easier to navigate for users relying on scre
 
 ### Enhanced project attribute help texts with captions and direct editing
 
-Administrators can now manage **attribute help texts directly from each project attribute or custom field** without navigating to the separate Help Texts section. Additionally, a new **caption field** allows adding short clarifying text shown below input fields in forms to guide users more effectively.
+Administrators can now **manage attribute help texts directly from each project attribute or custom field** without navigating to the separate *Attribute help texts* section. Additionally, a new **caption** field allows adding short clarifying text shown below input fields in forms to guide users more effectively.
 
 Help texts continue to appear in the familiar dialog triggered by the question-mark icon.
 
@@ -216,14 +216,14 @@ If no custom logo is provided, the OpenProject logo remains the default.
 
 ### Support for non-nested long text fields in PDF exports
 
-Long text custom fields and descriptions included via macros such as:
+Long text custom fields and descriptions included via macros such as the following are now supported in PDF exports:
 
 ```
 workPackageValue:description  
 projectValue:"Field name"
 ```
 
-... are now supported in PDF exports — including meetings, single work package exports, work package list reports, and project lists.
+This includes meetings, single work package exports, work package list reports, and project lists.
 
 When placed at the start of a line, long text is rendered fully. If inserted mid-sentence, the content moves to its own paragraph. Nested embedding (e.g., inside tables) is supported only for plain text; otherwise, a clear fallback message appears.
 
@@ -231,17 +231,15 @@ When placed at the start of a line, long text is rendered fully. If inserted mid
 
 A new permission allows administrators to control who may export project lists as XLS, CSV, or PDF. This helps manage server load and restrict data extraction to authorized users.
 
-### Updated tab order in the work package view (Meetings before GitHub, Watchers last)
+### Updated tab order in the work package view
 
-To reflect real-world usage patterns, the tab order in the work package view has been updated:
+To reflect usage patterns, the tab order in the work package view has been updated:
 
 1. Activity
 2. Relations
 3. Meetings (if enabled)
 4. GitLab / GitHub integrations (if enabled)
 5. Watchers
-
-screenshot
 
 ## Important technical changes
 
