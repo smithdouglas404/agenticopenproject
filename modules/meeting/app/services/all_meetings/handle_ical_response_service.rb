@@ -61,6 +61,7 @@ module AllMeetings
     def parsed_calendar
       @parsed_calendar ||= Icalendar::Calendar.parse(params[:ical_string]).first.tap do |calendar|
         raise ArgumentError, "No events found in the provided iCal data" if calendar&.events.blank?
+        raise ArgumentError, "Invalid METHOD in iCal data" unless calendar.ip_method&.upcase == "REPLY"
       end
     end
 

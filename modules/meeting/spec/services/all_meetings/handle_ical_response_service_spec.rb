@@ -45,6 +45,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
       end
     end
 
+    let(:ical_method) { "REPLY" }
     let(:uid) { meeting.uid }
     let(:participant_email) { user.mail }
     let(:attendee_string) do
@@ -57,7 +58,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
         PRODID:-//Google Inc//Google Calendar 70.9054//EN
         VERSION:2.0
         CALSCALE:GREGORIAN
-        METHOD:REPLY
+        METHOD:#{ical_method}
         BEGIN:VEVENT
         DTSTART:#{meeting.start_time.utc.strftime('%Y%m%dT%H%M%SZ')}
         DTEND:#{meeting.end_time.utc.strftime('%Y%m%dT%H%M%SZ')}
@@ -162,6 +163,17 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
         expect(subject).to be_failure
         expect(subject.message).to eq(I18n.t("meeting.ical_response.update_failed"))
         expect(subject.errors).to include("No events found in the provided iCal data")
+      end
+    end
+
+    context "when the iCal method is not REPLY" do
+      let(:ical_method) { "COUNTER" }
+      let(:partstat) { "ACCEPTED" }
+
+      it "returns an error" do
+        expect(subject).to be_failure
+        expect(subject.message).to eq(I18n.t("meeting.ical_response.update_failed"))
+        expect(subject.errors).to include("Invalid METHOD in iCal data")
       end
     end
 
