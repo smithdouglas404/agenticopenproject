@@ -30,7 +30,6 @@
 
 import { BlockNoteEditorOptions, BlockNoteSchema, filterSuggestionItems } from '@blocknote/core';
 import { User } from '@blocknote/core/comments';
-import * as blockNoteLocales from '@blocknote/core/locales';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
@@ -39,6 +38,7 @@ import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaborati
 import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
 import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
+import { BlockNoteLocaleResult, useBlockNoteLocale } from './hooks/useBlockNoteLocale';
 import { useCollaboration } from './hooks/useCollaboration';
 import { useOpTheme } from './hooks/useOpTheme';
 
@@ -72,12 +72,9 @@ export default function OpBlockNoteContainer({ inputField,
                                                attachmentsUploadUrl,
                                                attachmentsCollectionKey,
                                                hocuspocusProvider }:OpBlockNoteContainerProps) {
+  const { localeString, localeDictionary }:BlockNoteLocaleResult = useBlockNoteLocale(window.I18n.locale);
 
-  const userLocale = window.I18n.locale;
-  const blockNoteLocaleString = Object.keys(blockNoteLocales).includes(userLocale) ? userLocale : 'en';
-  const blockNoteLocale = blockNoteLocales[blockNoteLocaleString as keyof typeof blockNoteLocales];
-
-  initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: blockNoteLocaleString});
+  initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
 
   let doc = LiveCollaborationManager.ydoc;
 
@@ -95,7 +92,7 @@ export default function OpBlockNoteContainer({ inputField,
         } as unknown as CollaborativeUser,
         showCursorLabels: 'activity'
       },
-      dictionary: blockNoteLocale,
+      dictionary: localeDictionary,
       ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   } else { // collaboration disabled
@@ -119,7 +116,7 @@ export default function OpBlockNoteContainer({ inputField,
           color: '#333333',
         },
       },
-      dictionary: blockNoteLocale,
+      dictionary: localeDictionary,
       ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   }
