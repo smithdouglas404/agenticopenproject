@@ -101,7 +101,7 @@ Agenda items can now hold **multiple text-based outcomes**: The **+ Outcome** bu
 
 To avoid duplicate or confusing calendar invites, **users can now subscribe to all their meetings through a single iCal subscription URL** from the My meetings page or settings. External calendars (for example Outlook, Apple Calendar, or Open-Xchange) stay in sync automatically. Individual *.ics files* remain available when needed, but sending them is now more clearly controlled via dedicated options when creating or updating meetings.
 
-![My meetings page: Clicking on the More menu on the upper right corner opens a clickable option to "Subscribe to calendar"](openproject-17-0-meeting-subscribe-calendar-1.png)
+![My meetings page: Clicking on the More menu on the upper right corner opens a clickable option to "Subscribe to calendar"](openproject-17-0-meeting-subscribe-calendar.png)
 
 ### Updated SharePoint integration with more restrictive permissions (Enterprise add-on)
 
@@ -151,11 +151,11 @@ This prevents unintended disclosure of user names across unrelated teams and hel
 
 Existing permission configurations are automatically migrated so that **current behavior remains unchanged** unless administrators choose to restrict visibility.
 
-screenshot
+![Administration in OpenProject to set permissions for a global role, the permission to "View all users and groups" is checked](openproject-17-0-global-permission-view-all-users-and-groups.png)
 
 ### Updated invitation flow with Primer components
 
-The user invitation dialog has been redesigned with Primer for a clearer and more consistent experience. The flow now shows only the projects where a user is allowed to invite members, improves autocompletion for users and emails, and displays errors inline instead of multi-step confirmations. This update also prepares the system for the new visibility rules introduced in this release.
+The user invitation dialog has been redesigned with Primer for a clearer and more consistent experience. The flow now shows only the projects where a user is allowed to invite members, improves autocompletion for users and emails, and displays errors inline instead of multi-step confirmations. This update also prepares the system for the new [visibility rules introduced in this release](#option-to-guard-the-privacy-of-users-not-working-in-the-same-project-more-strictly).
 
 screenshot
 
@@ -173,12 +173,13 @@ The global search now understands **work package type**, **status**, and **meta-
 
 Examples:
 
-- Searching for *“bug login”* shows only work packages of type *Bug*.
-- Searching for *“foo new”* or *“foo open”* finds only items in an open status.
+- Searching for *bug* shows only work packages of type *Bug*.
+- Searching for *bug new* shows only work packages of typ *Bug* and status *New*.
+- Searching for *open* shows only items in an open status.
 
 These improvements also benefit several autocompleters throughout the application, such as the `#` and `##` work package quick-link references in comments and descriptions, helping users filter large datasets more precisely.
 
-screenshot
+![Global search bar in OpenProject, "bug new" is typed in and two work packages of type bug and status new are displayed](openproject-17-0-search.png)
 
 ### Accessibility improvements with ALT texts and improved chart colors
 
@@ -191,15 +192,13 @@ OpenProject 17.0 continues the accessibility initiative with several enhancement
 
 These improvements make OpenProject easier to navigate for users relying on screen readers or high-contrast environments.
 
-screenshot
-
 ### Enhanced project attribute help texts with captions and direct editing
 
-Administrators can now manage **attribute help texts directly from each attribute** without navigating to the separate Help Texts section. A new **caption field** allows adding short clarifying text shown below input fields in forms to guide users more effectively.
+Administrators can now manage **attribute help texts directly from each project attribute or custom field** without navigating to the separate Help Texts section. Additionally, a new **caption field** allows adding short clarifying text shown below input fields in forms to guide users more effectively.
 
 Help texts continue to appear in the familiar dialog triggered by the question-mark icon.
 
-screenshot
+![OpenProject administration for project attributes, showing a new tab "Attribute help texts" and a new field to add a "Caption"](openproject-17-0-attribute-help-texts-highlighted.png)
 
 ### Custom logo for mobile (Enterprise add-on)
 
