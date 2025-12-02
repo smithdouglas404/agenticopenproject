@@ -83,7 +83,7 @@ ru:
       all: "Все документы"
       types: "Типы"
       collaboration_settings: "Командная работа в режиме реального времени"
-    last_updated_at: "Last saved %{time}."
+    last_updated_at: "Последнее сохранение %{time}."
     active_editors: "Активные редакторы"
     active_editors_count: "%{count} активных редакторов"
     label_attachment_author: "Автор вложения"

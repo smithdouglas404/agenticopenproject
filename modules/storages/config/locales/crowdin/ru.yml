@@ -165,7 +165,7 @@ ru:
           group_does_not_exist: "%{group} не существует. Проверьте конфигурацию Nextcloud."
           insufficient_privileges: OpenProject не имеет достаточных прав для добавления %{user} в %{group}. Проверьте настройки группы в Nextcloud.
           not_allowed: Nextcloud блокирует запрос.
-          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
+          not_found: OpenProject не смог найти файл на Nextcloud. Пожалуйста, проверьте, не был ли он удален.
           unauthorized: OpenProject не смог синхронизироваться с Nextcloud. Пожалуйста, проверьте конфигурацию хранилища и Nextcloud.
           user_does_not_exist: "%{user} не существует в Nextcloud."
         one_drive_sync_service:
@@ -352,10 +352,10 @@ ru:
         sp_client_write_permission_missing: Похоже, что у клиента отсутствуют разрешения на запись в SharePoint. Пожалуйста, проверьте документацию по настройке Вашего хранилища.
         sp_existing_test_folder: Папка %{folder_name}, необходимая для тестирования, уже существует в SharePoint. Пожалуйста, удалите ее и попробуйте снова.
         sp_oauth_request_error: Запрос к SharePoint, связанный с пользователем, завершился неудачей. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
-        sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+        sp_oauth_request_unauthorized: Текущий пользователь не авторизован для доступа к удаленному файловому хранилищу. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
         sp_oauth_token_missing: OpenProject не может протестировать взаимодействие с SharePoint на уровне пользователя, поскольку пользователь еще не связал свою учетную запись с SharePoint.
         sp_tenant_id_missing: Настроенный идентификатор каталога (арендатора) отсутствует для SharePoint. Пожалуйста, проверьте конфигурацию.
-        sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
+        sp_unexpected_content: Неожиданное содержимое обнаружено в библиотеке документов SharePoint.
         unknown_error: Соединение не удалось подтвердить. Произошла неизвестная ошибка. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
       label_error: Ошибка
       label_failed: Ошибка
@@ -551,11 +551,9 @@ ru:
     upsell:
       one_drive:
         description: |-
-          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: OneDrive integration
+          Интегрируйте Ваш OneDrive как файловое хранилище в OpenProject. Загружайте файлы и связывайте их напрямую с пакетами работ в проекте.
+        title: Интеграция с OneDrive
       sharepoint:
         description: |-
-          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: SharePoint integration
+          Интегрируйте Ваш SharePoint как файловое хранилище в OpenProject. Загружайте файлы и связывайте их напрямую с пакетами работ в проекте.
+        title: Интеграция с SharePoint

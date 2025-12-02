@@ -164,9 +164,9 @@ ru:
         title: "Таблица токенов доступа"
     settings:
       new_project:
-        project_creation: "Project creation"
+        project_creation: "Создание проекта"
         notification_text_default: >
-          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
+          <p>Здравствуйте,</p> <p>Был создан новый проект: projectValue:name</p> <p>Спасибо</p>
     workflows:
       tabs:
         default_transitions: "Переходы по умолчанию"
@@ -190,12 +190,12 @@ ru:
       title: "Вложения в карантине"
       error_cannot_act_self: "Невозможно выполнить действия с собственными загруженными файлами."
   attribute_help_texts:
-    caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    caption: "Эта краткая версия будет отображаться в качестве заголовка атрибута."
+    note_public: "Любой текст и изображения, которые вы добавляете в это поле, видны всем аутентифицированным пользователям."
     text_overview: "В этом представлении можно создать пользовательскую текстовую справку для атрибутов представления. При ее наличии, она будет показана по клику по значку справки возле атрибута."
     show_preview: "Предпросмотр текста"
     add_new: "Добавить текст справки"
-    edit_field_name: "Edit help text for %{attribute_field_name}"
+    edit_field_name: "Редактировать текст справки для %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "Осуществляется повторный запуск задания, т.к. предыдущий завершился с ошибкой: %{message}"
@@ -318,24 +318,24 @@ ru:
           one: 1 подпункт
           other: "%{count} подпунктов"
       role_assignment:
-        title: Role Assignment
-        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
-        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
-        role_field_label: "Project Role"
-        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        title: Назначение ролей
+        description: Вы можете автоматически предоставить определенную роль проекта любому пользователю, назначенному на этот атрибут проекта, независимо от первоначальной роли этого пользователя в проекте.
+        warning: В зависимости от роли, выбранной ниже, пользователь, назначенный на этот атрибут проекта, может получить значительно больше прав, чем имел ранее, включая возможность добавлять новых участников и повышать свою роль.
+        role_field_label: "Роль в проекте"
+        role_field_caption: Эта роль проекта будет автоматически предоставлена любому пользователю, назначенному на этот атрибут проекта
         review_hint: >
-          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
-        review_button: Review users and permissions
+          Есть %{user_count} пользователей, которые уже назначены на этот атрибут проекта в различных проектах. Они могут получить дополнительные полномочия и быть добавлены в проекты, к которым раньше не имели доступа.
+        review_button: Просмотр пользователей и разрешений
         dialog:
-          title: "Overview of users and permissions"
-          change: Change
+          title: "Обзор пользователей и разрешений"
+          change: Изменить
           changes:
-            new_member: Will be added as a member
-            remove_member: Will be removed as a member
-            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
-            gain_role: Will gain role ‘%{new_role}’
-            lose_role: Will lose role ‘%{old_role}’
-            no_change: No changes
+            new_member: Будет добавлен как участник
+            remove_member: Будет удален как участник
+            gain_and_lose_role: Потеряет роль ‘%{old_role}’ и получит роль ‘%{new_role}’
+            gain_role: Получит роль '%{new_role}'
+            lose_role: Потеряет роль '%{old_role}'
+            no_change: Без изменений
     text_add_new_custom_field: >
       Прежде чем добавлять настраиваемые поля в проект, нужно создать их.
     is_enabled_globally: "Разрешено в глобальном масштабе"
@@ -346,7 +346,7 @@ ru:
     reorder_confirmation: "Внимание: Текущий порядок доступных значений будет утерян. Продолжить?"
     placeholder_version_select: "Сначала необходимо выбрать пакет работ или проект"
     calculated_field_not_editable: "Не редактируемый атрибут. Это значение рассчитывается автоматически."
-    no_role_assigment: "No role assignment"
+    no_role_assigment: "Роль не назначена"
     instructions:
       is_required: "Отметьте настраиваемое поле как обязательное. Это сделает обязательным его заполнение при создании новых ресурсов. Существующие ресурсы не будут требовать ввода значения при обновлении."
       is_required_for_project: "Отметьте, чтобы включить этот атрибут и сделать его необходимым во всех проектах. Это не может быть отменено для отдельных проектов. Существующие проекты не будут требовать этого значения при обновлении."
@@ -1244,10 +1244,10 @@ ru:
         project_creation_wizard_assignee_custom_field: "Назначенный при отправке"
         project_creation_wizard_notification_text: "Текст уведомления"
         project_creation_wizard_send_confirmation_email: "Подтверждающее письмо"
-        project_creation_wizard_status_when_submitted: "Status when submitted"
-        project_creation_wizard_work_package_comment: "Work package comment"
-        project_creation_wizard_work_package_type: "Work package type"
-        template: "Template"
+        project_creation_wizard_status_when_submitted: "Статус при отправке"
+        project_creation_wizard_work_package_comment: "Комментарий к пакету работ"
+        project_creation_wizard_work_package_type: "Тип пакета работ"
+        template: "Шаблон"
         templated: "Проект шаблона"
         templated_value:
           true: "помечено как шаблон"
@@ -1370,7 +1370,7 @@ ru:
         header_alerts: "Оповещения"
         button_update_look_and_feel: "Обновить оформление"
         button_update_alerts: "Обновить оповещения"
-        button_update_user_information: "Update profile"
+        button_update_user_information: "Обновить профиль"
         comments_sorting: "Отображение активности пакета работ, отсортированной по"
         disable_keyboard_shortcuts: "Отключить горячие клавиши"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1533,7 +1533,7 @@ ru:
               minimum: "необходимо включить хотя бы один фильтр для основного, контекста или id с оператором '='."
         custom_field:
           at_least_one_custom_option: "По крайней мере один параметр должен быть доступен."
-          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
+          previous_custom_field_recalculation_unprocessed: "Пересчет предыдущих изменений для этого пользовательского поля еще не был применен, пожалуйста, повторите попытку через несколько минут."
           referenced_in_other_fields_html:
             one: "%{name} используется для расчета атрибута проекта %{links}."
             few: "%{name} is used in project attribute calculations: %{links}."
@@ -1942,9 +1942,9 @@ ru:
       other: "Кроме того, возникли проблемы с полями:"
     field_erroneous_label: "Значение этого поля неверно: %{full_errors}. Пожалуйста, введите верное значение."
     messages:
-      must_be_template: "must be template"
-      unsupported_storage_type: "is not a supported storage type."
-      storage_error: "There was an error with the storage connection."
+      must_be_template: "должен быть шаблоном"
+      unsupported_storage_type: "не является поддерживаемым типом хранения."
+      storage_error: "Произошла ошибка при подключении к хранилищу."
       invalid_input: "The input is invalid."
   activity:
     item:
@@ -2078,7 +2078,7 @@ ru:
     subject: "Тема"
     slug: "Уникальный идентификатор"
     summary: "Сводка"
-    template: "Template"
+    template: "Шаблон"
     time_zone: "Часовой пояс"
     text: "Текст"
     title: "Заголовок"
@@ -2160,11 +2160,11 @@ ru:
   button_delete_permanently: "Удалить навсегда"
   button_delete_watcher: "Удаление наблюдателя %{name}"
   button_download: "Скачать"
-  button_disable: "Disable"
+  button_disable: "Отключить"
   button_duplicate: "Дублировать"
   button_duplicate_and_follow: "Скопировать и наблюдать"
   button_edit: "Правка"
-  button_enable: "Enable"
+  button_enable: "Включить"
   button_edit_associated_wikipage: "Редактировать связанную wiki-страницу: %{page_title}"
   button_expand_all: "Развернуть все"
   button_favorite: "Добавить в избранное"
@@ -2257,7 +2257,7 @@ ru:
     copy_options:
       dependencies_label: "Копировать из шаблона"
     blank_template:
-      label: "Blank project"
+      label: "Пустой проект"
       description: Start from scratch. Manually add project attributes, members and modules.
     blank_description: No description provided.
   create_portfolio:
@@ -3590,7 +3590,7 @@ ru:
   label_tag: "Тег"
   label_team_planner: "Менеджер команды"
   label_template: "Шаблон"
-  label_templates: "Templates"
+  label_templates: "Шаблоны"
   label_text: "Длинный текст"
   label_this_month: "в этом месяце"
   label_this_week: "на этой неделе"
@@ -4006,7 +4006,7 @@ ru:
   permission_add_project: "Создание проектов"
   permission_add_portfolios: "Создать портфолио"
   permission_add_programs: "Создать программу"
-  permission_add_project_from_template: "Create project from template"
+  permission_add_project_from_template: "Создать проект из шаблона"
   permission_add_portfolios_from_template: "Create portfolio from template"
   permission_add_programs_from_template: "Создание программы из шаблона"
   permission_add_work_package_attachments: "Добавить вложения"

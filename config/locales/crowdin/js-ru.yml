@@ -296,13 +296,13 @@ ru:
       warning: "Пожалуйста, не передайте этот URL другим пользователям. Любой пользователь с этой ссылкой сможет просматривать детали пакета работ без учетной записи или пароля."
       token_name_label: "Где вы будете использовать это?"
       token_name_placeholder: 'Введите имя, например «Телефон»'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
+      token_name_description_text: 'Если Вы подписаны на этот календарь с нескольких устройств, это имя поможет Вам различать их в списке <a href="%{myAccessTokensUrl}" target="_blank">токенов доступа</a>.'
       copy_url_label: "Копировать URL"
       ical_generation_error_text: "Произошла ошибка при генерации URL-адреса календаря."
       success_message: 'URL-адрес "%{name}" был успешно скопирован в ваш буфер обмена. Вставьте его в свой клиент календаря, чтобы завершить подписку.'
     label_activate: "Активировать"
     label_assignee: "Назначенный"
-    label_assignee_alt_text: "This work package is assigned to %{name}"
+    label_assignee_alt_text: "Этот пакет работ назначен %{name}"
     label_add_column_after: "Добавить столбец после"
     label_add_column_before: "Добавить столбец перед"
     label_add_columns: "Добавить столбец"
@@ -1134,7 +1134,7 @@ ru:
       current_project_and_all_descendants: "В этом проекте + подпроектах"
       current_project: "В этом проекте"
       recently_viewed: "Недавно просмотренные"
-      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
+      search_placeholder_expanded: "Поиск пакетов работ по темам, проекту, типу, статусу или идентификатору"
       title:
         all_projects: "все проекты"
         project_and_subprojects: "и все подпроекты"
@@ -1172,10 +1172,10 @@ ru:
       no_results: "Ни один проект не соответствует критериям поиска."
       no_favorite_results: "Ни один избранный проект не соответствует критериям поиска."
     include_workspaces:
-      search_placeholder: "Search..."
+      search_placeholder: "Поиск..."
       types:
-        program: "Program"
-        portfolio: "Portfolio"
+        program: "Программа"
+        portfolio: "Портфолио"
     baseline:
       toggle_title: "Базовый уровень"
       clear: "Очистить"

@@ -8,7 +8,7 @@ ru:
         title: "Подпункты"
         no_results: "Нет видимых потомков."
         view_all_subitems: "Отобразить все подпункты"
-        button_text: "Subitem"
+        button_text: "Подпункт"
       members:
         title: "Участники"
         no_results: "Нет видимых участников."
