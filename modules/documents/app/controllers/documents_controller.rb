@@ -89,7 +89,8 @@ class DocumentsController < ApplicationController
 
   def render_connection_recovery
     render_success_flash_message_via_turbo_stream(
-      message: I18n.t("documents.show_edit_view.connection_recovery_notice.description")
+      message: I18n.t("documents.show_edit_view.connection_recovery_notice.description"),
+      unique_key: "document-connection-recovery-notice-#{@document.id}"
     )
 
     respond_with_turbo_streams
