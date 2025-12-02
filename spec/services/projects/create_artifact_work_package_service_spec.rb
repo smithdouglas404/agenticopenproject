@@ -212,7 +212,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       end
 
       context "with another default language", with_settings: { default_language: :de } do
-        it "calls the nextcloud storage service using the localizd name" do
+        it "calls the nextcloud storage service using the localized name" do
           result = instance.call
           project = result.result
 
