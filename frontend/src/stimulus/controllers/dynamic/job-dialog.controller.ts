@@ -42,6 +42,7 @@ export default class AsyncJobDialogController extends ApplicationController {
     declare closeDialogIdValue:string;
     protected pathHelper:PathHelperService;
 
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     async connect(){
         const context = await window.OpenProject.getPluginContext();
         this.pathHelper = context.services.pathHelperService;
