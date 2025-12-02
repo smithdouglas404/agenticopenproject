@@ -273,6 +273,7 @@ module OpenProject
                                   request_headers)
 
         header = %{#{scheme} realm="#{scope_realm(scope)}"}
+        header << %{, scope="#{scope}"}                         if scope && scheme == "Bearer"
         header << %{, error="#{error}"}                         if error
         header << %{, error_description="#{error_description}"} if error && error_description
         header
