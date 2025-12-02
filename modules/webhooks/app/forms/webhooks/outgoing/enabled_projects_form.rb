@@ -36,21 +36,24 @@ module Webhooks
         alias :webhook :model
 
         form do |f|
-          f.select_panel(
+          f.select_tree_panel(
             name: :selected_project_ids,
             label: I18n.t(:"webhooks.outgoing.form.selected_project_ids.title"),
             title: I18n.t("types.edit.projects.select_projects"),
             visually_hide_label: true,
-            disabled: webhook.all_projects?,
-            select_variant: :multiple,
-            dynamic_label: true,
-            dynamic_label_prefix: I18n.t(:"webhooks.outgoing.form.selected_project_ids.title"),
-            src: url_helpers.enabled_projects_menu_admin_outgoing_webhooks_path(
-              select_variant: :multiple,
-              selected_project_ids: webhook.all_projects? ? [] : webhook.project_ids
-            ),
-            fetch_strategy: :remote
+            disabled: webhook.all_projects?
+            #   select_variant: :multiple,
+            #   dynamic_label: true,
+            #   dynamic_label_prefix: I18n.t(:"webhooks.outgoing.form.selected_project_ids.title"),
+            #   src: url_helpers.enabled_projects_menu_admin_outgoing_webhooks_path(
+            #     select_variant: :multiple,
+            #     selected_project_ids: webhook.all_projects? ? [] : webhook.project_ids
+            #   ),
+            #   fetch_strategy: :remote
           ) do |menu|
+            menu.with_content("FOOO") do
+              "FOOBAR CONTENT"
+            end
             # available_projects.each do |label, value|
             #   menu.with_item(
             #     label:,
