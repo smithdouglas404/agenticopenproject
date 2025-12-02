@@ -38,6 +38,7 @@ import {
 import { RecentItemsService } from 'core-app/core/recent-items.service';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
+import { NgOption } from '@ng-select/ng-select/index';
 
 interface SearchResultItem {
   id:string;
@@ -252,10 +253,8 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   // If Enter key is pressed before result list is loaded, wait for the results to come
   // in and then decide what to do. If a direct hit is present, follow that. Otherwise,
   // go to the search in the current scope.
-  public onEnterBeforeResultsLoaded():void {
-    this.markable$.pipe(
-      first((v) => v),
-    ).subscribe(() => {
+  public onEnterBeforeResultsLoaded(): void {
+    this.markable$.pipe(first()).subscribe(() => {
       if (this.selectedItem) {
         this.followSelectedItem();
       } else {
@@ -368,8 +367,16 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     const searchOptions = this.detailedSearchOptions();
     // If we have a direct hit, we choose it to be the selected element.
     this.selectedItem = results.find((wp) => wp.id?.toString() === query) || searchOptions[0];
-    const resultCount = results.length + searchOptions.length;
-    this.liveMessage = this.I18n.t('js.global_search.items_available', { count: resultCount });
+
+    if (this.selectedItem instanceof WorkPackageResource) {
+      this.liveMessage = this.I18n.t('js.global_search.direct_hit_available');
+      this.setMarkedOption();
+    }
+    else {
+      const resultCount = results.length + searchOptions.length;
+      this.liveMessage = this.I18n.t('js.global_search.items_available', { count: resultCount });
+    }
+
     return [
       ...searchOptions,
       ...results,
@@ -391,6 +398,40 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     searchOptions.push('all_projects');
 
     return searchOptions.map((suggestion:string) => ({ projectScope: suggestion, text: this.text[suggestion] }));
+  }
+
+  /*
+   * Set the marked ng-option within ng-select and apply the class to highlight marked options.
+   *
+   * ng-select differentiates between the selected and the marked option. The selected optinon is the option
+   * that is binded via ng-model. The marked option is the one that the user is currently selecting (via mouse or keyboard up/down).
+   * When hitting enter, the marked option is taken to be the new selected option. Ng-select will retain the index of the marked
+   * option between individual searches. The selected option has no influence on the marked option. This is problematic
+   * in our use case as the user might have:
+   *   * the mouse hovering (deliberately or not) over the search options which will mark that option.
+   *   * marked an option for a previous search but might then have decided to add/remove additional characters to the search.
+   *
+   * In both cases, whenever the user presses enter then, ng-select assigns the marked option to the ng-model.
+   *
+   * Our goal however is to either:
+   *  * mark the direct hit (id matches) if it available
+   *  * mark the first item if there is no direct hit
+   *
+   * And we need to update the marked option after every search.
+   *
+   * There is no way of doing this via the interface provided in the template. There is only [markFirst] and it neither allows us
+   * to mark a direct hit, nor does it reset after a search. We handle this then by selecting the desired element once the
+   * search results are back. We then set the marked option to be the selected option.
+   *
+   * In order to avoid flickering, a -markable modifyer class is unset/set before/after searching. This will unset the background until we
+   * have marked the element we wish to.
+   */
+  private setMarkedOption():void {
+
+    this.markable = true;
+    this.ngSelectComponent.ngSelectInstance.itemsList.markItem(this.selectedItem as NgOption);
+
+    this.cdRef.detectChanges();
   }
 
   private searchInScope(scope:string):void {
