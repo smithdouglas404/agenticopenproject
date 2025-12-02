@@ -16,7 +16,6 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 ## Important feature changes
 
-
 ### Real-time documents collaboration
 
 OpenProject 17.0 introduces **real-time collaborative editing in the Documents module**. Multiple users can work on the same document simultaneously, with live cursors, continuous updates, and automatic saving. The new BlockNote editor replaces the previous CKEditor-based documents for all installations where real-time collaboration is enabled.
@@ -79,33 +78,30 @@ OpenProject 17.0 introduces several great improvements that make meeting prepara
 
 New meetings now open in **draft mode**, allowing moderators to prepare agendas, add participants, and structure content without sending invitations or updates prematurely.
 
-A banner clearly indicates draft mode, and invitations are only sent once the meeting is explicitly opened. Once the moderator explicitly opens the meeting, invitations can be sent and the usual update behaviour applies.
+A banner clearly indicates draft mode, and invitations are only sent once the meeting is explicitly opened by clicking on the green "Open meeting" button. Only then, invitations can be sent and the usual update behaviour applies.
 
-screenshot
+![OpenProject meeting draft mode, indicated by a "Draft" status and a banner explaining draft mode. There is a green button "Open meeting in the upper right corner".](openproject-17-0-meeting-draft-mode.png)
 
 #### Full-screen presentation mode
 
 The new **presentation mode** offers a distraction-free, full-screen view that focuses on the current agenda item. It shows the meeting title, agenda item details, and navigation controls in a clear layout, including:
 
 - a sticky header with the meeting title and exit button,
-- a sticky footer with progress, previous/next navigation and a running timer,
-- keyboard navigation using arrow keys.
+- a sticky footer with progress, previous/next navigation and a running timer.
 
-Unlike the standard view, changes made by participants are reflected **live** in presentation mode, so moderators and attendees always see the current state of the agenda without additional pop-ups.
+Unlike the standard view, changes made by participants are reflected **live** in presentation mode, so moderators and attendees always see the current state of the agenda without additional pop-ups. Keyboard navigation using arrow keys is possible.
 
 #### Multiple text-based outcomes per agenda item
 
-Agenda items can now hold **multiple text-based outcomes**. The **+ Outcome** action remains available while the meeting is *In progress* and allows moderators to record more than one result for the same item. The first outcome is labelled “Outcome”, additional ones are numbered (“Outcome 1”, “Outcome 2”, and so on). These outcomes are also supported in the PDF exports of meetings.
+Agenda items can now hold **multiple text-based outcomes**: The **+ Outcome** button remains available while the meeting is *In progress* and allows moderators to record more than one result for the same item. The first outcome is labelled "Outcome", additional ones are numbered ("Outcome 1", "Outcome 2", and so on). These outcomes are also supported in the PDF exports of meetings.
 
-### Unified “My meetings” iCal subscription
+![OpenProject meeting which is in progess, below the first agenda item (a work package) are "Outcome 1" and "Outcome 2" displayed, and the + Outcome button is still available as well](openproject-17-0-meeting-multiple-outcomes.png)
 
-To avoid duplicate or confusing calendar invites, users can now subscribe to **all their meetings** through a single iCal subscription URL from the **My meetings** page or settings. External calendars (for example Outlook, Apple Calendar, or Open-Xchange) stay in sync automatically. Individual *.ics files* remain available when needed, but sending them is now more clearly controlled via dedicated options when creating or updating meetings.
+#### Unified “My meetings” iCal subscription
 
-#### Improved agenda item management
+To avoid duplicate or confusing calendar invites, **users can now subscribe to all their meetings through a single iCal subscription URL** from the My meetings page or settings. External calendars (for example Outlook, Apple Calendar, or Open-Xchange) stay in sync automatically. Individual *.ics files* remain available when needed, but sending them is now more clearly controlled via dedicated options when creating or updating meetings.
 
-Moderators can now move agenda items more efficiently between different sections. A new **Move to section** option in the “More” menu lets items be reassigned directly to the correct section or moved back to the backlog, which is particularly helpful in meetings with many sections or a large backlog.
-
-screenshot
+![My meetings page: Clicking on the More menu on the upper right corner opens a clickable option to "Subscribe to calendar"](openproject-17-0-meeting-subscribe-calendar-1.png)
 
 ### Updated SharePoint integration with more restrictive permissions (Enterprise add-on)
 
@@ -139,7 +135,7 @@ The page is now split into two tabs:
 
 The redesign also introduces **new widgets** (Budget, Sub-items) and improves existing ones through updated Primer styling. Administrators can additionally decide whether specific **project attribute sections** appear in the sidebar or directly in the main Overview as dedicated widgets.
 
-screenshot
+![OpenProject Project home showing both the Overview tab and the Dashboard tab](openproject-17-0-home-dashboard-overview.jpg)
 
 ### Option to guard the privacy of users not working in the same project more strictly
 
@@ -252,12 +248,11 @@ screenshot
 
 ### Built-in OAuth application for easier external client setup
 
-text
+OpenProject now includes a built-in OAuth application that simplifies authentication for external clients such as the mobile app. System administrators no longer need to manually create an OAuth configuration. The default application is available out of the box and can be used immediately for secure, user-based authentication.
 
 ### Improved perceived performance of the project selector
 
-text
-
+The project selector has been optimised to feel significantly faster, especially in instances with many projects. Instead of loading the full project tree at once, OpenProject now loads up to 300 projects initially and fetches additional entries dynamically during search. This reduces waiting times and improves responsiveness across the application.
 
 <!--more-->
 
