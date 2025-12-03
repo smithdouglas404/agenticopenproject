@@ -16,7 +16,7 @@
         "build": {
           "builder": "@angular-builders/custom-esbuild:application",
           "options": {
-            "plugins": ["./esbuild/plugins.ts", "./node_modules/esbuild-style-plugin"],
+            "plugins": ["./esbuild/plugins.ts", "./node_modules/esbuild-plugin-raw-css"],
             "allowedCommonJsDependencies": [
               "dom-plane",
               "pako",

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -62,6 +62,8 @@ import { SpotDropModalPortalComponent } from './components/drop-modal/drop-modal
     SpotTooltipComponent,
     SpotSelectorFieldComponent,
   ],
+
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 
 export class OpSpotModule {}

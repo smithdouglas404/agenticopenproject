@@ -1,19 +1,20 @@
-@for (option of options; track option) {
-  <label
-    [ngClass]="{ 'button': true, '-disabled': disabled, 'form--field-inline-button': true, '-active': value === option.value, 'spot-toggle--button': true }"
-    data-test-selector="spot-toggle--option"
-    [attr.data-qa-disabled]="disabled || undefined"
-    [attr.data-qa-active-toggle]="value === option.value"
-    >
-    <input
-      class="spot-toggle--option-input"
-      type="radio"
-      [disabled]="disabled"
-      [name]="name"
+<primer-segmented-control 
+  aria-label="FOOBAR"
+  [name]="name"
+  [disabled]="disabled"
+  [name]="name"
+  [disabled]="disabled"
+  [(ngModel)]="value"
+  (ngModelChange)="onToggle($event)"
+  ngDefaultControl>
+  @for (option of options; track option) {
+    <primer-segmented-control-item 
+      [label]="option.title"
       [value]="option.value"
-      [ngModel]="value"
-      (ngModelChange)="onToggle($event)"
-      />
-    {{ option.title }}
-  </label>
-}
+      data-test-selector="spot-toggle--option"
+      [attr.data-qa-disabled]="disabled || undefined"
+      [attr.data-qa-active-toggle]="value === option.value"
+    />
+  }
+</primer-segmented-control>
+{{value}}
