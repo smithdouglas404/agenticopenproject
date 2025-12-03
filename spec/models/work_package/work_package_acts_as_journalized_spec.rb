@@ -54,6 +54,10 @@ RSpec.describe WorkPackage do
 
     current_user { create(:user) }
 
+    it "makes a test" do
+
+    end
+
     context "for work package creation" do
       it { expect(Journal.for_work_package.count).to eq(1) }
 

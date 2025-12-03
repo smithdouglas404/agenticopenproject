@@ -89,6 +89,7 @@ RSpec.describe OpenProject::Bim::BcfXml::Importer do
 
   describe "#import!" do
     it "imports successfully" do
+      $stop = true
       expect(subject.import!).to be_present
     end
 
