@@ -48,7 +48,7 @@
           size: :large
         )
       ) do |component|
-        component.with_body { full_text }
+        component.with_body { helpers.format_text(description) }
         component.with_header(variant: :large)
       end %>
 </div>

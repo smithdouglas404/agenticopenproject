@@ -31,7 +31,13 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   widget_wrapper do
     if project.description.present?
-      helpers.format_text project, :description
+      render OpenProject::Common::AttributeComponent.new(
+        "project-#{project.id}-description",
+        I18n.t("activerecord.attributes.project.description"),
+        project.description,
+        lines: 15,
+        formatted: true
+      )
     else
       render(Primer::Beta::Text.new(color: :subtle)) { t(:"js.grid.widgets.project_description.no_results") }
     end

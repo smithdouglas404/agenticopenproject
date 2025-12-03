@@ -36,7 +36,13 @@ See COPYRIGHT and LICENSE files for more details.
         end
 
         flex.with_row do
-          format_text(project, :status_explanation)
+          render OpenProject::Common::AttributeComponent.new(
+            "project-#{project.id}-status-explanation",
+            I18n.t("activerecord.attributes.project.status_explanation"),
+            project.status_explanation,
+            lines: 5,
+            formatted: true
+          )
         end
 
         if project.project_creation_wizard_enabled

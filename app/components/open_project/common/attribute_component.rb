@@ -52,6 +52,10 @@ module OpenProject
         @formatted = formatted
       end
 
+      def render?
+        description.present?
+      end
+
       def short_text
         if multi_type?
           I18n.t(:label_preview_not_available)
