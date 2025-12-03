@@ -10,9 +10,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v5
       - name: Set SHORT_SHA
-        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+        run: |
+          SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
+          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
+          echo "DOCKER_TAG=${{ github.ref_name }}-$SHORT_SHA" >> $GITHUB_ENV
 
+          # also include SHA in version string
+          sed -ri "s/\"version\": \"(.*)\"/\"version\": \"\1-$SHORT_SHA\"/g" package.json
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -25,12 +32,41 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: .
           push: true
           tags: |
             openproject/hocuspocus:latest
-            openproject/hocuspocus:${{ github.ref_name }}-${{ env.SHORT_SHA }}
+            openproject/hocuspocus:${{ env.DOCKER_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Summarize build
         run: |
-          echo "Built \`openproject/hocuspocus:${{ github.ref_name }}-${{ env.SHORT_SHA }}\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Generate GHA token
+        id: generate-gha-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.DEPLOY_APP_ID }}
+          private-key: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+          owner: opf
+          repositories: saas-deploy
+
+      - name: Deploy EDGE
+        if: github.ref == 'refs/heads/dev'
+        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        with:
+          workflow: edge-deploy-shards.yml
+          repo: opf/saas-deploy
+          ref: master
+          inputs: '{ "hocuspocus_image_tag": "${{ env.DOCKER_TAG }}" }'
+          token: "${{ steps.generate-gha-token.outputs.token }}"
+
+      - name: Deploy STAGE
+        if: github.ref == 'refs/heads/release'
+        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        with:
+          workflow: stage-deploy-shards.yml
+          repo: opf/saas-deploy
+          ref: master
+          inputs: '{ "hocuspocus_image_tag": "${{ env.DOCKER_TAG }}" }'
+          token: "${{ steps.generate-gha-token.outputs.token }}"
