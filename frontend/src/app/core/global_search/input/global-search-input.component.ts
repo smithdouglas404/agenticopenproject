@@ -39,6 +39,7 @@ import { RecentItemsService } from 'core-app/core/recent-items.service';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 import { NgOption } from '@ng-select/ng-select/index';
+import { announce } from '@primer/live-region-element';
 
 interface SearchResultItem {
   id:string;
@@ -369,12 +370,12 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     this.selectedItem = results.find((wp) => wp.id?.toString() === query) || searchOptions[0];
 
     if (this.selectedItem instanceof WorkPackageResource) {
-      this.liveMessage = this.I18n.t('js.global_search.direct_hit_available');
+      announce(this.I18n.t('js.global_search.direct_hit_available'), { politeness: 'polite' });
       this.setMarkedOption();
     }
     else {
       const resultCount = results.length + searchOptions.length;
-      this.liveMessage = this.I18n.t('js.global_search.items_available', { count: resultCount });
+      announce(this.I18n.t('js.global_search.items_available', { count: resultCount }), { politeness: 'polite' });
     }
 
     return [

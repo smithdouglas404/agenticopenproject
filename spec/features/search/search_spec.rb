@@ -178,9 +178,8 @@ RSpec.describe "Search", :js, :selenium, with_settings: { per_page_options: "5" 
       input = page.find(".top-menu-search--input")
       input.set "Subject"
 
-      # Select ONLY the global search’s aria-live region, not ng-select's
       live_region = page.find(
-        ".top-menu-search > .sr-only[aria-live='polite']",
+        "live-region",
         visible: :all
       )
 
