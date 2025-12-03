@@ -121,7 +121,11 @@ RSpec.describe Grids::Widgets::News, type: :component do
       project.enabled_module_names -= %w[news]
     end
 
-    it_behaves_like "empty-state with action"
+    it "renders blankslate without action with not available text" do
+      expect(rendered_component).to have_test_selector("news-widget-no-permission")
+      expect(rendered_component).to have_text("This widget is not available.")
+      expect(rendered_component).to have_no_test_selector("news-widget-add-button")
+    end
   end
 
   context "when the user does not have permission to manage news" do

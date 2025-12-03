@@ -69,6 +69,12 @@ module Grids
       def can_manage_news?
         current_user.allowed_in_project?(:manage_news, project)
       end
+
+      def can_view_news?
+        return true unless project
+
+        project.enabled_modules.map(&:name).include?("news")
+      end
     end
   end
 end

@@ -28,29 +28,36 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 <%=
   widget_wrapper do |container|
-    if no_news?
-      render(Primer::Beta::Blankslate.new(test_selector: "news-widget-empty")) do |component|
-        component.with_visual_icon(icon: :megaphone)
-        component.with_heading(tag: :h3).with_content(title)
-        component.with_description { t("grids.widgets.empty") }
+    if can_view_news?
+      if no_news?
+        render(Primer::Beta::Blankslate.new(test_selector: "news-widget-empty")) do |component|
+          component.with_visual_icon(icon: :megaphone)
+          component.with_heading(tag: :h3).with_content(title)
+          component.with_description { t("grids.widgets.empty") }
 
-        if project.present? && can_manage_news?
-          component.with_primary_action(
-            tag: :a,
-            href: new_project_news_path(project),
-            test_selector: "news-widget-add-button",
-            scheme: :secondary
-          ) do |button|
-            button.with_leading_visual_icon(icon: :plus)
-            t(:label_news_singular)
+          if project.present? && can_manage_news?
+            component.with_primary_action(
+              tag: :a,
+              href: new_project_news_path(project),
+              test_selector: "news-widget-add-button",
+              scheme: :secondary
+            ) do |button|
+              button.with_leading_visual_icon(icon: :plus)
+              t(:label_news_singular)
+            end
+          end
+        end
+      else
+        newest.each do |item|
+          container.with_row do
+            render(Item.new(item:, project:))
           end
         end
       end
     else
-      newest.each do |item|
-        container.with_row do
-          render(Item.new(item:, project:))
-        end
+      render(Primer::Beta::Blankslate.new(test_selector: "news-widget-no-permission")) do |component|
+        component.with_heading(tag: :h3).with_content(title)
+        component.with_description { t("grids.widgets.not_available") }
       end
     end
   end
