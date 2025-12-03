@@ -95,7 +95,9 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
     switching_to_automatic_mode << work_package if work_package.schedule_automatically?
     result = WorkPackages::SetScheduleService.new(user:, work_package:, switching_to_automatic_mode:).call
 
-    result.self_and_dependent.each do |r|
+    result.self_and_dependent
+          .filter { it.result.changed? }
+          .each do |r|
       unless r.result.save
         result.success = false
         r.errors = r.result.errors
