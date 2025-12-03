@@ -215,7 +215,7 @@ RSpec.describe "Meeting Presentation Mode",
     end
 
     # 4. Close the presentation
-    click_link_or_button "Exit presentation"
+    page.find_test_selector("exit-presentation-button").click
 
     # Verify we're back on the show page
     expect(page).to have_current_path(project_meeting_path(project, meeting), ignore_query: true)
