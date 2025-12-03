@@ -161,6 +161,27 @@ RSpec.describe Projects::CreationWizard::CreateArtifactWorkPackageService do
       expect(artifact_work_package.description).to include(expected_link)
     end
 
+    it "sends only one notification for the work package comment" do
+      clear_enqueued_jobs
+      result = instance.call
+
+      project = result.result
+      artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+
+      expect(enqueued_jobs).to include(a_hash_including(job: Notifications::WorkflowJob))
+      workflow_jobs = enqueued_jobs.select { it[:job] == Notifications::WorkflowJob }
+
+      # There should be exactly 2 WorkflowJobs: one for the attachment journal,
+      # one for the work package journal
+      journals = workflow_jobs.pluck(:args)
+                              .map { |_state_arg, journal_arg, _send_notification| journal_arg["_aj_globalid"] }
+                              .map { |journal_gid| GlobalID::Locator.locate(journal_gid) }
+      expect(journals.pluck(:journable_type, :journable_id)).to contain_exactly(
+        [WorkPackage.name, artifact_work_package.id],
+        [Attachment.name, artifact_work_package.attachments.first.id]
+      )
+    end
+
     context "when artifact storage is internal" do
       it "attaches directly to the work package" do
         project.update(project_creation_wizard_artifact_export_type: "attachment")
@@ -406,7 +427,6 @@ RSpec.describe Projects::CreationWizard::CreateArtifactWorkPackageService do
         end
       end
     end
-
   end
 
   context "when contract is invalid" do

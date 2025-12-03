@@ -93,16 +93,22 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
     # This is necessary in bulk duplicate scenarios.
     switching_to_automatic_mode = []
     switching_to_automatic_mode << work_package if work_package.schedule_automatically?
-    result = WorkPackages::SetScheduleService.new(user:, work_package:, switching_to_automatic_mode:).call
+    rescheduling_result = WorkPackages::SetScheduleService.new(user:, work_package:, switching_to_automatic_mode:).call
 
-    result.self_and_dependent.each do |r|
+    persist_reschedule_changes(rescheduling_result)
+
+    rescheduling_result
+  end
+
+  def persist_reschedule_changes(rescheduling_result)
+    rescheduling_result.self_and_dependent
+          .filter { it.result.changed? }
+          .each do |r|
       unless r.result.save
-        result.success = false
+        rescheduling_result.success = false
         r.errors = r.result.errors
       end
     end
-
-    result
   end
 
   def set_user_as_watcher(work_package)
