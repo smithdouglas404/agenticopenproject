@@ -391,7 +391,7 @@ module Pages
       when :estimatedTime, :remainingTime
         ProgressEditField.new container, key
       when :project
-        ProjectEditField.new container, key
+        InlineProjectEditField.new container, key
       else
         EditField.new container, key
       end
