@@ -254,7 +254,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   // If Enter key is pressed before result list is loaded, wait for the results to come
   // in and then decide what to do. If a direct hit is present, follow that. Otherwise,
   // go to the search in the current scope.
-  public onEnterBeforeResultsLoaded(): void {
+  public onEnterBeforeResultsLoaded():void {
     this.markable$.pipe(first()).subscribe(() => {
       if (this.selectedItem) {
         this.followSelectedItem();
@@ -370,12 +370,12 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     this.selectedItem = results.find((wp) => wp.id?.toString() === query) || searchOptions[0];
 
     if (this.selectedItem instanceof WorkPackageResource) {
-      announce(this.I18n.t('js.global_search.direct_hit_available'), { politeness: 'polite' });
+      void announce(this.I18n.t('js.global_search.direct_hit_available'), { politeness: 'polite' });
       this.setMarkedOption();
     }
     else {
       const resultCount = results.length + searchOptions.length;
-      announce(this.I18n.t('js.global_search.items_available', { count: resultCount }), { politeness: 'polite' });
+      void announce(this.I18n.t('js.global_search.items_available', { count: resultCount }), { politeness: 'polite' });
     }
 
     return [
