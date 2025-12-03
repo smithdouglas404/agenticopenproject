@@ -4,7 +4,13 @@
   let-clear="clear"
   >
   <span class="d-flex">
-    <span class="ng-value-icon left" (click)="clear(item)">×</span>
+    <span
+      class="ng-value-icon left"
+      tabindex="0"
+      role="button"
+      (click)="clear(item)"
+      (keydown.enter)="clear(item)"
+    >×</span>
     <span class="ng-value-label d-flex gap-1">
       <span class="ellipsis">{{ item.name }}</span>
       @switch (item._type) {
