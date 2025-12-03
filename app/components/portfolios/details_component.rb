@@ -101,6 +101,18 @@ module Portfolios
       "portfolio-progress-hover-card-#{portfolio.id}"
     end
 
+    def has_budget?
+      true
+    end
+
+    def total_budget
+      number_to_currency(rand(20_000..35_000), precision: 0)
+    end
+
+    def spent_budget
+      number_to_currency(rand(1_000..12_500), precision: 0)
+    end
+
     private
 
     def all_descendants
