@@ -342,6 +342,10 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def login_back_url_params
+    params.permit(:parent_id, :template_id, :step, :next_section)
+  end
+
   def portfolio_management_feature_required? = params[:workspace_type].in?(%w[portfolio program])
 
   def portfolio_management_feature_missing?

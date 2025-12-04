@@ -36,8 +36,6 @@ RSpec.describe ProjectsController do
   let(:user) { admin }
 
   before do
-    allow(controller).to receive(:set_localization)
-
     login_as user
   end
 
@@ -223,6 +221,19 @@ RSpec.describe ProjectsController do
             expect(response).to have_http_status :forbidden
           end
         end
+      end
+    end
+
+    context "when not being logged in but login is required", with_settings: { login_required: true } do
+      let(:user) { User.anonymous }
+      let(:workspace_type) { "portfolio" }
+      let(:parent) { build_stubbed(:project) }
+      let(:template) { build_stubbed(:project) }
+
+      it "redirects to the sign in page with the parameters provided in the back url" do
+        expect(response).to be_redirect
+        expect(response).to redirect_to signin_path(back_url: new_project_url(parent_id: parent.id,
+                                                                              template_id: template.id))
       end
     end
   end
