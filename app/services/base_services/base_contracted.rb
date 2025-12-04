@@ -64,6 +64,7 @@ module BaseServices
         service_call = validate_contract(service_call) if service_call.success?
         service_call = after_validate(service_call) if service_call.success?
         service_call = persist(service_call) if service_call.success?
+        service_call = after_persist(service_call) if service_call.success?
         service_call = after_perform(service_call) if service_call.success?
 
         service_call
@@ -106,6 +107,11 @@ module BaseServices
     alias_method :after_save, :after_perform
 
     def persist(call)
+      # nothing for now but subclasses can override
+      call
+    end
+
+    def after_persist(call)
       # nothing for now but subclasses can override
       call
     end
