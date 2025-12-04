@@ -51,9 +51,10 @@ module Projects
         end
 
         def active_in_project?
-          @project_custom_field_project_mappings.any? do |mapping|
-            mapping.custom_field_id == @project_custom_field.id
-          end
+          @project_custom_field.is_for_all? ||
+            @project_custom_field_project_mappings.any? do |mapping|
+              mapping.custom_field_id == @project_custom_field.id
+            end
         end
 
         def toggle_path
@@ -70,7 +71,7 @@ module Projects
         end
 
         def toggle_enabled?
-          !@project_custom_field.required?
+          !@project_custom_field.is_for_all?
         end
 
         def toggle_data_attributes
