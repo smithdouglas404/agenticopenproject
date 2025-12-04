@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,37 +26,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-FactoryBot.define do
-  factory :project, parent: :workspace do
-    workspace_type { "project" }
+module Projects::Scopes
+  module AvailableTemplates
+    extend ActiveSupport::Concern
 
-    sequence(:name) { |n| "My Project No. #{n}" }
-    sequence(:identifier) { |n| "myproject_no_#{n}" }
-
-    factory :public_project do
-      public { true } # Remark: public defaults to true
-    end
-
-    factory :template_project do
-      sequence(:name) { |n| "Template project No. #{n}" }
-      sequence(:identifier) { |n| "template_no_#{n}" }
-      template
-    end
-
-    # Factories for
-    # * portfolio
-    # * program
-    # are in separate files.
-
-    factory :project_with_types do
-      with_types
-
-      factory :valid_project do
-        callback(:after_build) do |project|
-          project.types << build(:type_with_workflow)
-        end
+    class_methods do
+      def available_templates(workspace_type)
+        allowed_to(User.current, :copy_projects)
+           .active
+           .templated
+           .workspace_type(workspace_type)
       end
     end
   end

@@ -33,15 +33,19 @@ require "spec_helper"
 RSpec.describe Projects::TemplateSelectForm, type: :forms do
   include_context "with rendered form"
 
+  shared_let(:copy_project_role) { create(:project_role, permissions: %w[copy_projects]) }
+  shared_let(:user) { create(:user) }
+
   let(:model) { create(:project) }
   let(:params) { { template_id:, parent_id:, current_user:, workspace_type: model.workspace_type } }
-  let(:current_user) { create(:admin) }
 
   let(:template_id) { nil }
   let(:parent_id) { nil }
 
+  current_user { user }
+
   subject(:rendered_form) do
-    render_form
+    vc_render_form
     page
   end
 
@@ -63,11 +67,28 @@ RSpec.describe Projects::TemplateSelectForm, type: :forms do
   context "with templates" do
     shared_let(:templates) do
       [
-        create(:template_project, name: "Agile", description: "**Great for beginners.**"),
-        create(:template_project, name: "SAF€", description: nil),
-        create(:template_project, name: "PRINCE", description: "## His Majesty's Choice."),
-        create(:template_project, name: "The Portfolio", description: "Collect them all", workspace_type: "portfolio"),
-        create(:template_project, name: "The Program", description: "Collect some of them", workspace_type: "program")
+        create(:template_project,
+               name: "Agile",
+               description: "**Great for beginners.**",
+               members: { user => copy_project_role }),
+        create(:template_project,
+               name: "SAF€",
+               description: nil,
+               members: { user => copy_project_role }),
+        create(:template_project,
+               name: "PRINCE",
+               description: "## His Majesty's Choice.",
+               members: { user => copy_project_role }),
+        create(:template_project,
+               name: "The Portfolio",
+               description: "Collect them all",
+               workspace_type: "portfolio",
+               members: { user => copy_project_role }),
+        create(:template_project,
+               name: "The Program",
+               description: "Collect some of them",
+               workspace_type: "program",
+               members: { user => copy_project_role })
       ]
     end
 
