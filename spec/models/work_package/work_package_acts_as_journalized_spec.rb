@@ -54,8 +54,17 @@ RSpec.describe WorkPackage do
 
     current_user { create(:user) }
 
-    it "makes a test" do
-
+    # The below test currently fails with the following error:
+    # ERROR:  new row for relation "journals" violates check constraint "journals_validity_period_not_empty" (PG::CheckViolation)
+    # DETAIL:  Failing row contains (1178, WorkPackage, 481, 1252, , 2025-12-04 07:58:21.028586+00, 1, 2025-12-04 07:58:21.028586+00, Journal::WorkPackageJournal, 833, {}, empty, f).
+    it "can add multiple comments right after creation" do
+      work_package
+      User.execute_as current_user do
+        work_package.add_journal(user: current_user, notes: "First comment")
+        work_package.save_journals # <== THIS WORKS
+        work_package.add_journal(user: current_user, notes: "Second comment")
+        work_package.save_journals # <== THIS FAILS
+      end
     end
 
     context "for work package creation" do
