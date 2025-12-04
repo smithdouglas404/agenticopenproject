@@ -38,7 +38,7 @@ RSpec.describe "SCIM API Authentication" do
   let(:scim_client) { create(:scim_client, authentication_method: :oauth2_token, auth_provider_id: oidc_provider.id) }
 
   describe "GET /scim_v2/ServiceProviderConfig" do
-    context "with the feature flag and enterprise enabled", with_ee: [:scim_api], with_flag: { scim_api: true } do
+    context "with enterprise feature enabled", with_ee: [:scim_api] do
       context "with static token" do
         let(:oauth_access_token) { create(:oauth_access_token, resource_owner: service_account, scopes: ["scim_v2"]) }
         let!(:token) { oauth_access_token.plaintext_token }
@@ -157,23 +157,7 @@ RSpec.describe "SCIM API Authentication" do
       end
     end
 
-    context "with the feature flag disabled", with_ee: [:scim_api], with_flag: { scim_api: false } do
-      let(:oauth_access_token) { create(:oauth_access_token, resource_owner: service_account, scopes: ["scim_v2"]) }
-      let!(:token) { oauth_access_token.plaintext_token }
-
-      it do
-        get "/scim_v2/ServiceProviderConfig", {}, headers
-
-        response_body = JSON.parse(last_response.body)
-        expect(response_body).to eq(
-          { "detail" => "Requires authentication", "schemas" => ["urn:ietf:params:scim:api:messages:2.0:Error"],
-            "status" => "401" }
-        )
-        expect(last_response).to have_http_status(401)
-      end
-    end
-
-    context "with the enterprise feature missing", with_flag: { scim_api: true } do
+    context "with the enterprise feature missing" do
       let(:oauth_access_token) { create(:oauth_access_token, resource_owner: service_account, scopes: ["scim_v2"]) }
       let!(:token) { oauth_access_token.plaintext_token }
 

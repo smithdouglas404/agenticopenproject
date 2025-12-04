@@ -588,7 +588,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
 
   menu.push :scim_clients,
             { controller: "/admin/scim_clients", action: "index" },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.scim_api_active? },
+            if: ->(_) { User.current.admin? },
             parent: :authentication,
             caption: ScimClient.model_name.human(count: 2),
             enterprise_feature: "scim_api"
