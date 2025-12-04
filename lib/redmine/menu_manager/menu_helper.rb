@@ -198,17 +198,17 @@ module Redmine::MenuManager::MenuHelper
     link_text += content_tag(:span,
                              class: "#{menu_class}--item-title#{badge_class}",
                              lang: menu_item_locale(item)) do
-      title_text = "".html_safe + content_tag(:span, caption, class: "ellipsis") + badge_for(item)
+      title_text = content_tag(:span, caption, class: "ellipsis") + badge_for(item)
       if item.enterprise_feature.present? && !EnterpriseToken.allows_to?(item.enterprise_feature)
-        title_text += ("".html_safe + render(Primer::Beta::Octicon.new(icon: "op-enterprise-addons",
-                                                                       classes: "upsell-colored",
-                                                                       ml: 2)))
+        title_text += render(Primer::Beta::Octicon.new(icon: "op-enterprise-addons",
+                                                       classes: "upsell-colored",
+                                                       ml: 2))
       end
       title_text
     end
 
     if item.icon_after.present?
-      link_text += ("".html_safe + render(Primer::Beta::Octicon.new(icon: item.icon_after, classes: "trailing-icon")))
+      link_text += render(Primer::Beta::Octicon.new(icon: item.icon_after, classes: "trailing-icon"))
     end
 
     html_options = item.html_options(selected:)
