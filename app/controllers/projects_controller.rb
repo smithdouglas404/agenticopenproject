@@ -40,9 +40,6 @@ class ProjectsController < ApplicationController
                 only: %i[copy_form copy deactivate_work_package_attachments export_list_modal export_project_initiation_pdf]
   before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
-  before_action :not_authorized_on_feature_flag_inactive,
-                only: %i[new create],
-                if: :portfolio_management_feature_required?
   before_action :find_optional_parent, only: :new
   before_action :find_optional_template, only: %i[new create]
 
