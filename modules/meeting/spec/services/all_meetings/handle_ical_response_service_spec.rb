@@ -259,7 +259,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
       context "when accepting the invitation" do
         let(:partstat) { "ACCEPTED" }
 
-        it "updates the participant's status on the template" do
+        it "updates the participant's status on the occurence" do
           expect { subject }.to change {
             meeting.participants.find_by(user: user).participation_status
           }.from("needs_action").to("accepted")
@@ -270,14 +270,22 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
 
       context "when no meeting occurrence is found for the recurrence ID" do
         let(:partstat) { "ACCEPTED" }
+        let(:recurrence_date) { 2.years.from_now.change(usec: 0) }
 
         let(:additional_ical_properties) do
-          "RECURRENCE-ID:#{2.years.ago.utc.strftime('%Y%m%dT%H%M%SZ')}"
+          "RECURRENCE-ID:#{recurrence_date.utc.strftime('%Y%m%dT%H%M%SZ')}"
         end
 
-        it "returns an error" do
-          expect(subject).to be_failure
-          expect(subject.message).to eq(I18n.t("meeting.ical_response.meeting_not_found"))
+        it "creates an interim response for the not instantiated meeting" do
+          expect { subject }.to change(RecurringMeetingInterimResponse, :count).by(1)
+
+          expect(subject).to be_success
+
+          interim_response = RecurringMeetingInterimResponse.last
+          expect(interim_response.user).to eq(user)
+          expect(interim_response.recurring_meeting).to eq(recurring_meeting)
+          expect(interim_response.start_time).to eq(recurrence_date)
+          expect(interim_response.participation_status).to eq("accepted")
         end
       end
     end

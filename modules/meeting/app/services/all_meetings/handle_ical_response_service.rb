@@ -39,19 +39,50 @@ module AllMeetings
       super()
     end
 
-    def perform # rubocop:disable Metrics/AbcSize
-      return ServiceResult.failure(message: I18n.t("meeting.ical_response.meeting_not_found")) if meeting.nil?
+    def perform # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+      uid = ical_event.uid&.value_ical
+      recurrence_id = ical_event.recurrence_id&.value_ical
 
-      participant = meeting.participants.find_by!(user: user)
+      # First check if the UID belongs to a single meeeting
+      meeting = Meeting.visible(user).find_by(uid: uid)
 
-      if participant.update(participation_status: partstat, comment: comment)
-        ServiceResult.success(result: "hello")
+      if meeting
+        update_participation_status(meeting)
+        return ServiceResult.success
+      end
+
+      # No single meeting found, check for a recurring meeting
+      recurring_meeting = RecurringMeeting.visible(user).find_by(uid: uid)
+
+      if recurring_meeting.blank?
+        # No recurring meeting, we can leave
+        return ServiceResult.failure(message: I18n.t("meeting.ical_response.meeting_not_found"))
+      end
+
+      if recurrence_id.nil?
+        # No recurrence, so update participation on the template
+        update_participation_status(recurring_meeting.template)
+        return ServiceResult.success
+      end
+
+      # We do have a recurrence ID, so we need to find the scheduled meeting
+      scheduled_meeting = recurring_meeting.scheduled_meetings.find_by(start_time: recurrence_id)
+
+      if scheduled_meeting
+        # We have an instantiated meeting, so update that one
+        update_participation_status(scheduled_meeting.meeting)
       else
-        ServiceResult.failure(
-          message: I18n.t("meeting.ical_response.update_failed"),
-          errors: participant.errors.full_messages
+        # No instantiated meeting, so create an interim response
+        RecurringMeetingInterimResponse.create!(
+          user: user,
+          recurring_meeting: recurring_meeting,
+          start_time: recurrence_id,
+          participation_status: partstat,
+          comment: comment
         )
       end
+
+      ServiceResult.success
     rescue ArgumentError => e
       ServiceResult.failure(message: I18n.t("meeting.ical_response.update_failed"), errors: [e.message])
     end
@@ -69,26 +100,6 @@ module AllMeetings
       @ical_event ||= parsed_calendar.events.first
     end
 
-    def meeting # rubocop:disable Metrics/AbcSize
-      @meeting ||= begin
-        uid = ical_event.uid.value_ical
-        meeting = Meeting.visible(user).find_by(uid: uid)
-
-        if meeting
-          meeting
-        else
-          recurring_meeting = RecurringMeeting.visible(user).find_by(uid: uid)
-
-          if ical_event.recurrence_id
-            occurrence_time = ical_event.recurrence_id.value_ical
-            recurring_meeting.scheduled_meetings.find_by(start_time: occurrence_time)&.meeting
-          else
-            recurring_meeting.template
-          end
-        end
-      end
-    end
-
     def attendee
       @attendee ||= ical_event.attendee.find { it.value_ical == "mailto:#{user.mail}" }.tap do |attendee|
         raise ArgumentError, "No attendee found for mailto:#{user.mail}" unless attendee
@@ -101,6 +112,11 @@ module AllMeetings
 
     def comment
       attendee.ical_params["x-response-comment"]&.first || ical_event.comment&.first
+    end
+
+    def update_participation_status(meeting)
+      participant = meeting.participants.find_by!(user: user)
+      participant.update!(participation_status: partstat, comment: comment)
     end
   end
 end
