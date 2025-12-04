@@ -317,7 +317,7 @@ RSpec.describe "Admin Create a new file storage",
                                                  "Azure application or use an existing one for authentication.")
 
         # Access Management
-        wait_for { page }.to have_test_selector("access-management-label", text: "Access management")
+        wait_for { page }.to have_test_selector("access-management-label", text: "Folder and access management")
         expect(page).not_to have_test_selector("label-access_management_configured-status")
         expect(page).to have_text("Select the type of management of user access and folder creation.")
         expect(page).to have_test_selector("access-management-description",
@@ -358,19 +358,21 @@ RSpec.describe "Admin Create a new file storage",
       aggregate_failures "Access Management" do
         within_test_selector("storage-access-management-form") do
           expect(page).to have_test_selector("storage-access-management-description",
-                                             text: "Select the type of management of user access and folder " \
-                                                   "creation. We recommend to use the Automatically managed access " \
-                                                   "to have a more organised structure and guarantee access to all " \
-                                                   "relevant users.")
-          expect(page).to have_checked_field("Automatically managed access and folders")
-          expect(page).to have_unchecked_field("Manually managed access and folders")
+                                             text: "OpenProject can automatically create and manage project folders " \
+                                                   "when a file storage is added to a project. This can result in " \
+                                                   "a more organized folder structure and straightforward access " \
+                                                   "management that guarantees access to all relevant users")
 
-          choose "Manually managed access and folders"
+          expect(page).to have_checked_field("Enable automatically-managed access and folders")
+          expect(page).to have_unchecked_field("Only allow manually-managed access and folders")
+
+          choose "Only allow manually-managed access and folders"
           click_on "Save and continue"
         end
 
         wait_for { page }.to have_test_selector("label-access_management_configured-status", text: "Completed")
-        expect(page).to have_test_selector("access-management-description", text: "Manually managed access and folders")
+        expect(page).to have_test_selector("access-management-description",
+                                           text: "Only allow manually-managed access and folders")
       end
 
       aggregate_failures "OAuth Client" do
