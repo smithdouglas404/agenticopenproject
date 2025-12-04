@@ -1,8 +1,12 @@
 @if (!editing) {
   <div
-    (click)="startEditing()"
+    role="button"
+    tabindex="0"
+    class="group-edit-handler"
     [textContent]="name"
-    class="group-edit-handler">
+    (click)="startEditing()"
+    (keydown.enter)="startEditing()"
+    (keydown.space)="startEditing()">
   </div>
 }
 @if (editing) {

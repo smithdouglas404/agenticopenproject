@@ -1,10 +1,11 @@
 @if (!active) {
   @if (parent) {
     <a
-      [attr.title]="parent.name"
-      (click)="switchToFullscreenForWp(parent)"
+      href="#"
       class="op-wp-breadcrumb-parent nocut"
-      data-test-selector="op-wp-breadcrumb-parent">
+      data-test-selector="op-wp-breadcrumb-parent"
+      [attr.title]="parent.name"
+      (click)="switchToFullscreenForWp(parent)">
       <span [textContent]="parent.name"></span>
     </a>
   }
