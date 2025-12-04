@@ -44,7 +44,7 @@ class MeetingParticipant < ApplicationRecord
     tentative: "tentative",
     # delegated: "delegated", # We currently do not support delegation
     unknown: "unknown" # this status is used for existing participants when introducing the field
-  }
+  }, prefix: :participation
 
   def name
     user.present? ? user.name : I18n.t("user.deleted")
@@ -62,6 +62,6 @@ class MeetingParticipant < ApplicationRecord
 
   def copy_attributes
     # create a clean attribute set allowing to attach participants to different meetings
-    attributes.except("id", "meeting_id", "attended", "created_at", "updated_at")
+    attributes.except("id", "meeting_id", "attended", "created_at", "updated_at", "comment")
   end
 end

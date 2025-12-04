@@ -221,17 +221,17 @@ module Meetings
     def attendee_participation_status(participant) # rubocop:disable Metrics/PerceivedComplexity
       return nil if participant.participation_status.nil?
 
-      if participant.needs_action?
+      if participant.participation_needs_action?
         "NEEDS-ACTION"
-      elsif participant.accepted?
+      elsif participant.participation_accepted?
         "ACCEPTED"
-      elsif participant.declined?
+      elsif participant.participation_declined?
         "DECLINED"
-      elsif participant.tentative?
+      elsif participant.participation_tentative?
         "TENTATIVE"
-      elsif participant.delegated?
+      elsif participant.participation_delegated?
         "DELEGATED"
-      elsif participant.unknown?
+      elsif participant.participation_unknown?
         nil
       end
     end
