@@ -18,13 +18,7 @@ cd op-blocknote-hocuspocus
 npm install
 
 # Start the server with the appropriate environment variables setup
-ALLOWED_DOMAINS=your-openproject-domain.com SECRET=secret12345 npm run start
-```
-
-For the server to be able to reach to an OpenProject instance, it is necessary to set the environment variable `ALLOWED_DOMAINS`. It is a comma-separated list of domains (and it allows subdomain matching).
-
-```
-ALLOWED_DOMAINS=subdomain-openproject.example.com,top-level-openproject.com`
+SECRET=secret12345 npm run start
 ```
 
 The `SECRET` environment variable is a shared value between this application and OpenProject. Make sure to configure the same value in OpenProject - Settings Hocuspocus secret and in the `SECRET` environment variable of this project.
@@ -36,7 +30,6 @@ docker pull openproject/hocuspocus:latest
 
 docker run -d \
   -p 1234:1234 \
-  -e ALLOWED_DOMAINS=your-openproject-domain.com \
   -e SECRET=secret12345 \
   openproject/hocuspocus:latest
 ```

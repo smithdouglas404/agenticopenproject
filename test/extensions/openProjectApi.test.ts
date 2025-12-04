@@ -5,18 +5,14 @@ import { OpenProjectApi, createEditor } from "../../src/extensions/openProjectAp
 
 describe("OpenProjectApi", () => {
   let fetchMock: any;
-  let originalAllowedDomains: string | undefined;
 
   beforeEach(() => {
     fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
-    originalAllowedDomains = process.env.ALLOWED_DOMAINS;
-    process.env.ALLOWED_DOMAINS = 'test.api,example.com';
   });
 
   afterEach(() => {
     vi.unstubAllGlobals();
-    process.env.ALLOWED_DOMAINS = originalAllowedDomains;
   });
 
   describe("onAuthenticate", () => {
@@ -28,7 +24,7 @@ describe("OpenProjectApi", () => {
       ).rejects.toThrowError("Unauthorized: Token missing.");
     });
 
-    test("when the token is invalid", async () => {
+    test("when the token is invalid throw an error", async () => {
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
           // Invalid token, generated with a different secret
@@ -37,51 +33,15 @@ describe("OpenProjectApi", () => {
       ).rejects.toThrowError("Unsupported state or unable to authenticate data");
     });
 
-    test("when ALLOWED_DOMAINS is not configured throw an error", async () => {
-      delete process.env.ALLOWED_DOMAINS;
-
-      await expect(() =>
-        new OpenProjectApi().onAuthenticate({
-          token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
-        } as unknown as onAuthenticatePayload)
-      ).rejects.toThrowError("Unauthorized: No allowed domains configured.");
-    });
-
     test("when the resourceUrl has invalid format throw an error", async () => {
+      fetchMock.mockResolvedValueOnce({ throws: new TypeError("is not a valid URL") });
+
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
           token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
           documentName: "not a valid url",
         } as unknown as onAuthenticatePayload)
-      ).rejects.toThrowError("Unauthorized: Invalid base URL format.");
-    });
-
-    test("when the resourceUrl domain is not in ALLOWED_DOMAINS throw an error", async () => {
-      await expect(() =>
-        new OpenProjectApi().onAuthenticate({
-          token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
-          documentName: "https://malicious.com/something/1",
-        } as unknown as onAuthenticatePayload)
-      ).rejects.toThrowError("Unauthorized: Invalid base URL domain.");
-    });
-
-    test("when the resourceUrl subdomain matches ALLOWED_DOMAINS it should be accepted", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({}),
-      });
-
-      const data = {
-        context: {},
-        connectionConfig: {},
-        token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
-        documentName: "https://subdomain.test.api/api/v3/documents/1",
-      } as unknown as onAuthenticatePayload;
-
-      await new OpenProjectApi().onAuthenticate(data);
-
-      expect(data.context.resourceUrl).toEqual("https://subdomain.test.api/api/v3/documents/1");
+      ).rejects.toThrowError("Unauthorized: Invalid token or document access denied.");
     });
 
     test("when the server does not authorize the request throw an error", async () => {
