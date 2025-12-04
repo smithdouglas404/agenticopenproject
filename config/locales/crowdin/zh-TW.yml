@@ -4178,7 +4178,7 @@ zh-TW:
   setting_emails_salutation: "郵件稱呼"
   setting_oauth_allow_remapping_of_existing_users: "允許重新對應現有使用者"
   setting_sendmail_location: "Sendmail 的執行位置"
-  setting_sendmail_arguments: "Arguments for sendmail"
+  setting_sendmail_arguments: "Sendmail 的參數"
   setting_smtp_enable_starttls_auto: "如果可用將自動使用 STARTTLS"
   setting_smtp_ssl: "SSL 連線"
   setting_smtp_address: "SMTP 伺服器"
@@ -4342,8 +4342,8 @@ zh-TW:
   setting_working_days: "工作日"
   settings:
     errors:
-      not_writable: "The setting is not writable and can only be changed by a sysadmin."
-      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
+      not_writable: "此設定不可寫入，只能由系統管理員變更。"
+      failed_to_update: "設定「'%{name}」 無法更新： %{message}"
     authentication:
       login: "登入"
       registration: "註冊"
