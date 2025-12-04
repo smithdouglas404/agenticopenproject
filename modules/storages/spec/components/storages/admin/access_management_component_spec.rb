@@ -51,7 +51,7 @@ RSpec.describe Storages::Admin::AccessManagementComponent, type: :component do
     let(:storage) { create(:one_drive_storage, :as_automatically_managed) }
 
     it "renders the access management description" do
-      expect(page).to have_text("Enable automatically-manage access and folders")
+      expect(page).to have_text("Enable automatically-managed access and folders")
       expect(page).to have_test_selector("label-access_management_configured-status", text: "Completed")
     end
   end

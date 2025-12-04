@@ -363,7 +363,7 @@ RSpec.describe "Admin Create a new file storage",
                                                    "a more organized folder structure and straightforward access " \
                                                    "management that guarantees access to all relevant users")
 
-          expect(page).to have_checked_field("Enable automatically-manage access and folders")
+          expect(page).to have_checked_field("Enable automatically-managed access and folders")
           expect(page).to have_unchecked_field("Only allow manually-managed access and folders")
 
           choose "Only allow manually-managed access and folders"
