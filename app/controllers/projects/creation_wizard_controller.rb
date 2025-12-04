@@ -50,7 +50,7 @@ class Projects::CreationWizardController < ApplicationController
 
   def update # rubocop:disable Metrics/AbcSize
     service_call = Projects::UpdateService
-      .new(user: current_user, model: @project)
+      .new(user: current_user, model: @project, contract_options: { project_attributes_only: true })
       .call(permitted_params.project)
 
     if service_call.success?
