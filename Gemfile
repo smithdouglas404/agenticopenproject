@@ -149,7 +149,7 @@ gem "structured_warnings", "~> 0.5.0"
 # don't require by default, instead load on-demand when actually configured
 gem "airbrake", "~> 13.0.0", require: false
 
-gem "markly", "~> 0.14" # another markdown parser like commonmarker, but with AST support used in PDF export
+gem "markly", "~> 0.15" # another markdown parser like commonmarker, but with AST support used in PDF export
 gem "md_to_pdf", git: "https://github.com/opf/md-to-pdf", ref: "6c565541bfa390c58d90d49aa9b487777704fc66"
 gem "prawn", "~> 2.4"
 gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues/1346 resolved.
@@ -198,7 +198,7 @@ gem "aws-sdk-s3", "~> 1.205"
 
 gem "openproject-token", "~> 8.2.0"
 
-gem "plaintext", "~> 0.3.2"
+gem "plaintext", "~> 0.3.7"
 
 gem "ruby-progressbar", "~> 1.13.0", require: false
 
@@ -356,7 +356,7 @@ group :development, :test do
   gem "rubocop-factory_bot", require: false
   gem "rubocop-openproject", require: false
   gem "rubocop-performance", require: false
-  gem "rubocop-rails", "= 2.33.3", require: false # 2.33.4 has issues with Rails/ActionControllerFlashBeforeRender
+  gem "rubocop-rails", "2.34.2", require: false # 2.33.4 has issues with Rails/ActionControllerFlashBeforeRender
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
 
