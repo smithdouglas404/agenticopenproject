@@ -13,6 +13,8 @@
       [ngClass]="['spot-drop-modal--body', 'spot-container' ]"
       [class.spot-drop-modal--body_not-full-screen]="notFullscreen"
       (click)="onBodyClick($event)"
+      (keydown.enter)="$event.preventDefault(); onBodyClick($event)"
+      (keydown.space)="$event.preventDefault(); onBodyClick($event)"
       cdkTrapFocus
       tabindex="0"
       >

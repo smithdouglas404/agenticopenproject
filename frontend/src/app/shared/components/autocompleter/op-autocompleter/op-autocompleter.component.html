@@ -222,7 +222,11 @@
 
 <ng-template let-item let-search="search" let-clear="clear" #defaultLabel>
   @if (resource === 'work_packages') {
-    <span class="ng-value-icon left" (click)="clear(item)">×</span>
+    <span class="ng-value-icon left"
+          tabindex="0"
+          (click)="clear(item)"
+          (keydown.enter)="clear(item)"
+          (keydown.space)="clear(item)">×</span>
     @if (item.id) {
       <span
         class="ng-value-label"
@@ -234,7 +238,11 @@
   }
 
   @if (resource !== 'work_packages') {
-    <span class="ng-value-icon left" (click)="clear(item)">×</span>
+    <span class="ng-value-icon left"
+          tabindex="0"
+          (click)="clear(item)"
+          (keydown.enter)="clear(item)"
+          (keydown.space)="clear(item)">×</span>
     <span
       [ngOptionHighlight]="search"
       [ngClass]=" additionalClassProperty ? item[additionalClassProperty] : ''"
