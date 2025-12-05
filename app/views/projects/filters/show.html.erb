@@ -1,0 +1,5 @@
+<%=
+  turbo_frame_tag "projects_filters" do
+    render(Projects::ProjectsFiltersComponent.new(query: @query))
+  end
+%>

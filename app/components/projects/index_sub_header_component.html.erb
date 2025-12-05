@@ -59,7 +59,13 @@
         end
 
         subheader.with_bottom_pane_component(mt: 0) do
-          render(Projects::ProjectsFiltersComponent.new(query: @query))
+          helpers.turbo_frame_tag "projects_filters",
+                                  src: projects_filters_path(
+                                    **params.permit(:filters, :columns, :sortBy, :id, :query_id)
+                                  ),
+                                  target: "_top",
+                                  data: { turbo: false },
+                                  loading: :lazy
         end
       end %>
 <% end %>

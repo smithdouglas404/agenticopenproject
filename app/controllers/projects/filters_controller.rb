@@ -27,52 +27,23 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 # ++
-module Queries
-  module Loading
-    private
 
-    def load_query(duplicate:)
-      ::Queries::Factory.find(params[:query_id],
-                              query_class:,
-                              params: permitted_query_params,
-                              user: current_user,
-                              duplicate:)
-    end
+class Projects::FiltersController < ApplicationController
+  # include QueriesHelper
+  include Queries::Loading
 
-    def load_query_or_deny_access
-      @query = load_query(duplicate: false)
+  before_action :require_admin # to be adapted
+  before_action :load_query_or_deny_access
 
-      render_403 unless @query
-    end
+  def show
+    render layout: nil
+  end
 
-    def build_query_or_deny_access
-      @query = load_query(duplicate: true)
+  private
 
-      render_403 unless @query
-    end
-
-    def permitted_query_params
-      query_params = {}
-
-      if params[:query]
-        query_params.merge!(params.require(:query).permit(:name))
-      end
-
-      query_params.merge!(::Queries::ParamsParser.parse(params))
-
-      query_params.with_indifferent_access
-    end
-
-    def query_class
-      controller_name = self.class.name.demodulize
-
-      model_name = if controller_name == "QueriesController"
-                     self.class.name.deconstantize
-                   else
-                     controller_name.chomp("Controller")
-                   end
-
-      "#{model_name.singularize}Query".constantize
-    end
+  # Overwrite method in Queries::Loading
+  # as the default of using the controller name does not apply.
+  def query_class
+    ::ProjectQuery
   end
 end

@@ -272,6 +272,7 @@ Rails.application.routes.draw do
 
   namespace :projects do
     resource :menu, only: %i[show]
+    resource :filters, only: %i[show]
   end
 
   %w[portfolio project program].each do |workspace_type|
