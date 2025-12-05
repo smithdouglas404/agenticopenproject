@@ -63,11 +63,11 @@ If you are creating a meeting from a global module you will first need to select
 > - 90min
 > - 1:30
 
-Click the **Create meeting** button to save your changes. A new meeting will be created. It will initially be in the **draft mode**, as indicated by the status message and the corresponding  banner. You can then proceed to add more details to the meeting.
+Click the **Create meeting** button to save your changes. A new meeting will be created. It will initially be in **draft mode**, as indicated by the status message and the corresponding  banner. You can then proceed to add more details to the meeting.
 
 ### Meeting draft mode 
 
-**Draft mode** allows you to prepare the meeting in advance. You can structure or refine agenda items and work on the material without initiating the meeting. This mode enables internal meeting preparation.
+**Draft mode** allows you to prepare the meeting in advance. You can structure or refine agenda items and work on the material without initiating the meeting. This mode enables internal meeting preparation and allows freely adjusting meeting participants without them being notified at this stage.
 
 In draft mode, the meeting status indicator does not have drop-down options. No email notifications or invites are sent out in draft mode.
 
@@ -79,7 +79,7 @@ Once you are done editing the draft, click the **Open meeting** button in the to
 
 ![A button to end the draft mode and mark a meeting as open in OpenProject](openproject_userguide_meetings_open_meeting_button.png)
 
-This will open a dialogue, in which you can choose whether an invite and updates should be sent out to meeting participants or not. Depending on your choice, a banner will explain what action will follow. 
+This will open a dialog, in which you can choose whether an invite and updates should be sent out to meeting participants or not. Depending on your choice, a banner will explain what action will follow. 
 
 ![A dialogue opened after exiting a meetings draft mode in OpenProject showing options to notify meeting participants or not](openproject_userguide_meetings_open_meeting_button_invite_options_dialogue.png)
 
@@ -274,7 +274,7 @@ During a meeting, stakeholders will often take certain decisions, add useful inf
 
 ![Button to add an agenda outcome in OpenProject meetings](openproject_userguide_meetings_agenda_outcome_button.png)
 
-An editor will appear, allowing you to enter and format text, similar to editing a wiki page. 
+An editor will appear, allowing you to enter and format text, similar to editing an agenda item. 
 
 ![Editor to enter or edit agenda item outcomes in OpenProject meetings](openproject_userguide_meetings_agenda_outcome_form.png)
 
@@ -325,7 +325,7 @@ Read more about [subscribing to a calendar](../../calendar/#subscribe-to-a-calen
 ## Change meeting status
 You can change the status of a meeting depending on whether you are preparing it, running it, or finalizing it.
 
-[**Draft mode**](#meeting-draft-mode) is used while preparing a meeting before it is opened. In this mode you can outline the agenda, add or adjust items, and work on the content without running the meeting yet. Draft mode is intended for internal preparation and does not represent the start of the meeting.
+[**Draft mode**](#meeting-draft-mode) is used while preparing a meeting before it is opened. In this mode you can outline the agenda, add or adjust items, work on the content, and adjust participants without running the meeting yet. Draft mode is intended for internal preparation and does not represent the start of the meeting.
 
 Once the preparation stage is finalized, meetings in OpenProject transition to an active phase and can have three different statuses: Open, In Progress, and Closed. Depending on the meeting status, different options are available, such as editing the agenda, adding outcomes, or finalizing the meeting. You can transition between these statuses using the meeting status button  with a drop-down menu under the meeting name or in the right-hand pane.
 
@@ -381,7 +381,7 @@ Once a meeting has been closed, it can no longer be edited. Project  members wit
 ## Present a meeting
 
 
-**Presentation mode** is available when you want to show the meeting content in a clean, non-editable view. This mode is intended for presenting the agenda or meeting material to participants during or before the meeting without the distraction of editing actions. 
+**Presentation mode** is available when you want to show the meeting content in a clean, non-editable view. This mode is intended for presenting the agenda or meeting material to participants during or before the meeting without distractions. However, agenda items can be edited in presentation mode if needed.
 
 Presentation mode can be used regardless of the meeting status (open, in progress or closed). However, a presentation mode is not available in a draft mode or for a meeting template (recurring meetings).
 
