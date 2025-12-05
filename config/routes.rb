@@ -519,6 +519,7 @@ Rails.application.routes.draw do
 
   namespace :portfolios do
     resource :menu, only: %i[show]
+    resource :filters, only: %i[show]
   end
 
   resources :project_phases, only: [] do

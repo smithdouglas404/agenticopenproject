@@ -72,5 +72,18 @@ module Portfolios
     def show_new_portfolio_button?
       @current_user.allowed_globally?(:add_portfolios)
     end
+
+    def skeleton_height
+      # This is an approximation.
+      # * 100 for the padding and the filter seletion
+      # * 40 per filters and their bottom margin. But the height of the filters vary unfortunately.
+      "#{100 + (@query.filters.count * 40)}px"
+    end
+
+    def skeleton_classes
+      # Mimik the behaviour of the filter section.
+      # Have it expanded if filters are present. Hide it otherwise.
+      "op-filters-form #{'-expanded' if params[:filters]}"
+    end
   end
 end

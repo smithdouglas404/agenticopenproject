@@ -33,7 +33,21 @@
         end
 
         subheader.with_bottom_pane_component(mt: 0) do
-          render(Projects::ProjectsFiltersComponent.new(query: @query))
+          helpers.turbo_frame_tag(
+            "portfolios_filters",
+            src: portfolios_filters_path(
+              **params.permit(:filters, :columns, :sortBy, :id, :query_id)
+            ),
+            target: "_top",
+            data: { turbo: false }
+          ) do
+            render Primer::Alpha::SkeletonBox.new(
+              width: "100%",
+              height: skeleton_height,
+              mt: 3,
+              classes: skeleton_classes
+            )
+          end
         end
       end %>
 <% end %>

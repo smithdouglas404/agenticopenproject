@@ -117,7 +117,7 @@ module Projects
     end
 
     def skeleton_classes
-      # Mimick the behaviour of the filter section.
+      # Mimik the behaviour of the filter section.
       # Have it expanded if filters are present. Hide it otherwise.
       "op-filters-form #{'-expanded' if params[:filters]}"
     end

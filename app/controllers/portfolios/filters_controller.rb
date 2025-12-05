@@ -28,12 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-class Projects::FiltersController < ApplicationController
+class Portfolios::FiltersController < ApplicationController
   include Queries::Loading
 
-  # This is a part of the projects list page which is public. Checks within filters will
-  # prevent sensitive information to be displayed wrongfully.
-  no_authorization_required! :show
+  authorization_checked! :show
+
+  before_action :authorize_portfolio_access
+  before_action :not_authorized_on_feature_flag_inactive
   before_action :load_query_or_deny_access
 
   def show
@@ -41,6 +42,15 @@ class Projects::FiltersController < ApplicationController
   end
 
   private
+
+  def authorize_portfolio_access
+    render_403 unless User.current.allowed_globally?(:add_portfolios) ||
+                      Project.portfolio.allowed_to(User.current, :view_project).any?
+  end
+
+  def not_authorized_on_feature_flag_inactive
+    render_403 unless OpenProject::FeatureDecisions.portfolio_models_active?
+  end
 
   # Overwrite method in Queries::Loading
   # as the default of using the controller name does not apply.
