@@ -52,7 +52,8 @@ module Portfolios
       {
         controller: "filter--filters-form",
         "filter--filters-form-perform-turbo-requests-value": true,
-        "filter--filters-form-clear-button-id-value": clear_button_id
+        "filter--filters-form-clear-button-id-value": clear_button_id,
+        "filter--filters-form-display-filters-value": params[:filters]
       }
     end
 

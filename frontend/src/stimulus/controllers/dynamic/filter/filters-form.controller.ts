@@ -99,9 +99,6 @@ export default class FiltersFormController extends Controller {
   }
 
   connect() {
-    const urlParams = new URLSearchParams(window.location.search);
-    this.displayFiltersValue = urlParams.has('filters');
-
     const clearButton = document.getElementById(this.clearButtonIdValue);
     clearButton?.addEventListener('click', (event:MouseEvent) => this.clearInputWithButton(event));
   }
@@ -162,13 +159,20 @@ export default class FiltersFormController extends Controller {
     this.removeChangeListener(target);
   }
 
+  filterFormTargetConnected()  {
+    // Didn't really change, but we need to ensure that the visibility of the target is correct.
+    // This is caused by there first being a skeleton form, which allows the user to already
+    // toggle the visibility.
+    this.displayFiltersValueChanged();
+  }
+
+
   toggleDisplayFilters() {
     this.displayFiltersValue = !this.displayFiltersValue;
   }
 
   showDisplayFilters() {
     this.displayFiltersValue = true;
-    this.displayFiltersValueChanged();
   }
 
   displayFiltersValueChanged() {
@@ -209,6 +213,8 @@ export default class FiltersFormController extends Controller {
   }
 
   private addChangeListener(target:HTMLElement) {
+    if (!this.performTurboRequestsValue) { return; }
+
     if (target instanceof HTMLInputElement) {
       target.addEventListener('input', this.boundListener);
     } else {
@@ -217,6 +223,8 @@ export default class FiltersFormController extends Controller {
   }
 
   private removeChangeListener(target:HTMLElement) {
+    if (!this.performTurboRequestsValue) { return; }
+
     if (target instanceof HTMLInputElement) {
       target.removeEventListener('input', this.boundListener);
     } else {
