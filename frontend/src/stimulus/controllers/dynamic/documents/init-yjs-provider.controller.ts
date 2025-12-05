@@ -53,4 +53,8 @@ export default class extends Controller {
       })
     );
   }
+
+  disconnect():void {
+    LiveCollaborationManager.destroy();
+  }
 }
