@@ -105,7 +105,7 @@ Within the same menu you also have the following options:
 
 - Send email to all participants
 
-- End meeting series (this option is only displayed of no occurrence of the meeting series has been closed before)
+- End meeting series (this option is only displayed if the series has not been ended before)
 
 - Delete meeting series
 
