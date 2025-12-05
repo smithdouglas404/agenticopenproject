@@ -26,9 +26,6 @@ export abstract class GridPageComponent implements OnInit, OnDestroy {
       .gridInitialization
       .initialize(this.gridScopePath())
       .subscribe((grid) => {
-
-        this.filterDisabledWidgets(grid);
-
         this.grid = grid;
         this.cdRef.detectChanges();
       });
@@ -39,11 +36,4 @@ export abstract class GridPageComponent implements OnInit, OnDestroy {
   }
 
   protected abstract gridScopePath():string;
-
-  // Remove "news" widget when news module is disabled
-  private filterDisabledWidgets(grid: GridResource): void {
-    if (!this.currentProject.hasModule('news')) {
-      grid.widgets = grid.widgets.filter(w => w.identifier !== 'news');
-    }
-  }
 }

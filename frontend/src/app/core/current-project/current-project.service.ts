@@ -36,7 +36,6 @@ export class CurrentProjectService {
   private currentId:string|null = null;
   private currentName:string|null = null;
   private currentIdentifier:string|null = null;
-  private currentEnabledModules: string[] = [];
 
   constructor(
     private PathHelper:PathHelperService,
@@ -77,10 +76,6 @@ export class CurrentProjectService {
     return this.currentIdentifier;
   }
 
-  public hasModule(name: string): boolean {
-    return this.currentEnabledModules.includes(name);
-  }
-
   /**
    * Detect the current project from its meta tag.
    */
@@ -95,26 +90,5 @@ export class CurrentProjectService {
       this.currentName = null;
       this.currentIdentifier = null;
     }
-    this.loadEnabledModules();
-  }
-
-  private loadEnabledModules() {
-    if (!this.currentId) {
-      this.currentEnabledModules = [];
-      return;
-    }
-
-    this.apiV3Service.projects
-      .id(this.currentId)
-      .get()
-      .subscribe(
-        (project: any) => {
-          const modules = project?._embedded?.enabledModules || [];
-          this.currentEnabledModules = modules.map((m: any) => m.name);
-        },
-        () => {
-          this.currentEnabledModules = [];
-        }
-      );
   }
 }
