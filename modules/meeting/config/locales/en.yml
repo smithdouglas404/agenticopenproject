@@ -286,7 +286,6 @@ en:
     blankslate:
       title: "There are no meetings to display"
       desc: "You can create a new meeting or change filter criteria"
-      action: "Create meeting"
     label_export_pdf: "Export PDF"
     export:
       your_meeting_export: "Meeting is being exported"
