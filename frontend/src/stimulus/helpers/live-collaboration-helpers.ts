@@ -37,7 +37,7 @@ type Listener = (provider:HocuspocusProvider) => void;
 class LiveCollaborationManagerClass {
   ydocInstance:Doc|null = null;
   yjsProviderInstance:HocuspocusProvider|null = null;
-  
+
   private listeners:Listener[] = [];
 
   /**
@@ -49,7 +49,7 @@ class LiveCollaborationManagerClass {
     this.yjsProviderInstance = provider;
     this.listeners.forEach((listener) => listener(this.yjsProviderInstance!));
   }
-  
+
   /**
    * Gets a shared Y.Doc instance
    */
@@ -57,6 +57,14 @@ class LiveCollaborationManagerClass {
     this.ydocInstance ??= new Y.Doc();
 
     return this.ydocInstance;
+  }
+
+  /**
+   * Cleans up the shared Y.Doc instance.
+   * This method should be called when a collaboration session is ended
+   */
+  destroy():void {
+    this.ydocInstance = null;
   }
 
   /**
