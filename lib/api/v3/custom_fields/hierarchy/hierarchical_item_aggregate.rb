@@ -45,6 +45,8 @@ module API
           end
 
           def title
+            return nil if root?
+
             ::CustomFields::Hierarchy::HierarchicalItemFormatter.default.format(item:)
           end
 
