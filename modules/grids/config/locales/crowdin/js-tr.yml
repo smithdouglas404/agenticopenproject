@@ -52,6 +52,7 @@ tr:
           title: 'İş paketleri tablosu'
         work_packages_graph:
           title: 'İş paketleri grafiği'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Takvim'
         work_packages_overview:

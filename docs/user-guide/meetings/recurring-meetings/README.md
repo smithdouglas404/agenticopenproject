@@ -126,11 +126,9 @@ Within the same menu you also have the following options:
 
 ### Move an agenda item to next meeting
 
-In addition to all the options available for [editing one-time meetings](../one-time-meetings), within a single meeting of a recurring meeting series you can move an agenda item to next meeting. 
+In addition to all the options available when clicking on the three-dot **More** (⋯) menu for an agenda item in when [editing one-time meetings](../one-time-meetings), you will see one additional option to move the agenda item to the next meeting occurrence in the series.
 
-To do that click the **More** (three dots) icon next to an agenda item and select **Move to next meeting**.
-
-![Move an agenda item to next meeting in OpenProject recurring meetings](openproject_userguide_meetings_recurring_meeting_move_agenda_item_to_next_meeting.png)
+![Move an agenda item to next meeting in OpenProject recurring meetings](meeting-more-menu-agenda-item-recurring.png)
 
 ## Meeting backlogs for recurring meetings
 

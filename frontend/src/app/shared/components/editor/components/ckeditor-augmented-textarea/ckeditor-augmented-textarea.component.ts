@@ -86,6 +86,8 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
 
   @Input() public showAttachments = true;
 
+  @Input() public primerized = false;
+
   @Input() public storageKey?:string;
 
   // Output save requests (ctrl+enter and cmd+enter)

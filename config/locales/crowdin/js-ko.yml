@@ -297,12 +297,13 @@ ko:
       warning: "다른 사용자와 이 URL을 공유하지 마세요. 이 링크가 있으면 누구든지 계정이나 암호 없이 작업 패키지 세부 정보를 볼 수 있습니다."
       token_name_label: "이 항목을 어디서 사용하실건가요?"
       token_name_placeholder: '이름을 입력하세요. 예: "휴대폰"'
-      token_name_description_text: '여러 장치에서 이 캘린더를 구독하는 경우 이 이름은 <a href="my/access_token", target="_blank">액세스 토큰</a> 목록에서 장치를 구분하는 데 도움이 됩니다.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "URL 복사"
       ical_generation_error_text: "캘린더 URL을 생성하는 중에 오류가 발생했습니다."
       success_message: '"%{name}" URL이 클립보드에 복사되었습니다. 구독을 완료하려면 캘린더 클라이언트에 붙여넣으세요.'
     label_activate: "활성화"
     label_assignee: "담당자"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "다음 뒤에 열 추가"
     label_add_column_before: "다음 앞에 열 추가"
     label_add_columns: "열 추가"
@@ -1122,6 +1123,7 @@ ko:
       current_project_and_all_descendants: "이 프로젝트 + 하위 프로젝트에서"
       current_project: "이 프로젝트에서"
       recently_viewed: "최근에 조회됨"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "모든 프로젝트"
         project_and_subprojects: "그리고 모든 하위 프로젝트"
@@ -1158,6 +1160,11 @@ ko:
         does_not_match_search: "프로젝트가 검색 기준과 일치하지 않습니다."
       no_results: "검색 기준과 일치하는 프로젝트가 없습니다."
       no_favorite_results: "검색 기준과 일치하는 프로젝트 즐겨찾기가 없습니다."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "기준선"
       clear: "선택 취소"

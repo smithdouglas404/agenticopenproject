@@ -43,6 +43,8 @@ export default class extends ApplicationController {
 
   declare readonly csrfToken:string;
 
+  private isSubmittingOutcomeForm = false;
+
   connect():void {
     useMeta(this, { suffix: false });
 
@@ -60,6 +62,10 @@ export default class extends ApplicationController {
   interceptOutcomeFormSubmission(event:SubmitEvent):void {
     event.preventDefault();
 
+    if (this.isSubmittingOutcomeForm) {
+      return;
+    }
+
     const form = event.target as HTMLFormElement;
     const outcomeContainer = form.closest('.op-meeting-agenda-item--outcomes');
 
@@ -71,6 +77,8 @@ export default class extends ApplicationController {
       }
     }
 
+    this.isSubmittingOutcomeForm = true;
+
     void this.turboRequests.request(form.action, {
       method: form.method.toUpperCase(),
       headers: {
@@ -78,6 +86,8 @@ export default class extends ApplicationController {
         Accept: 'text/vnd.turbo-stream.html',
       },
       body: new FormData(form),
+    }).finally(() => {
+      this.isSubmittingOutcomeForm = false;
     });
   }
 
@@ -102,6 +112,7 @@ export default class extends ApplicationController {
   private handleClick(url:string, method:string):void {
     if (hasUnsavedChanges()) {
       if (window.confirm(I18n.t('js.text_are_you_sure_to_cancel'))) {
+        window.OpenProject.pageState = 'pristine';
         this.sendRequest(url, method);
       }
     } else {

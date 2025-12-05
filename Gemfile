@@ -65,7 +65,7 @@ gem "scimitar", "~> 2.13"
 gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.8.0"
-gem "closure_tree", "~> 9.2.0"
+gem "closure_tree", "~> 9.3.0"
 gem "rubytree", "~> 2.1.0"
 
 gem "addressable", "~> 2.8.0"
@@ -123,7 +123,7 @@ gem "multi_json", "~> 1.17.0"
 gem "oj", "~> 3.16.12"
 
 gem "daemons"
-gem "good_job", "= 3.99.1" # update should be done manually in sync with saas-openproject version.
+gem "good_job", "~> 4.12.0" # update should be done manually in sync with saas-openproject version.
 
 gem "rack-protection", "~> 3.2.0"
 
@@ -149,7 +149,7 @@ gem "structured_warnings", "~> 0.5.0"
 # don't require by default, instead load on-demand when actually configured
 gem "airbrake", "~> 13.0.0", require: false
 
-gem "markly", "~> 0.14" # another markdown parser like commonmarker, but with AST support used in PDF export
+gem "markly", "~> 0.15" # another markdown parser like commonmarker, but with AST support used in PDF export
 gem "md_to_pdf", git: "https://github.com/opf/md-to-pdf", ref: "6c565541bfa390c58d90d49aa9b487777704fc66"
 gem "prawn", "~> 2.4"
 gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues/1346 resolved.
@@ -176,7 +176,7 @@ group :production do
   gem "redis", "~> 5.4.0"
 end
 
-gem "i18n-js", "~> 4.2.3"
+gem "i18n-js", "~> 4.2.4"
 gem "rails-i18n", "~> 8.0.0"
 
 gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
@@ -192,13 +192,13 @@ gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
 gem "fog-aws"
 
-gem "aws-sdk-core", "~> 3.235"
+gem "aws-sdk-core", "~> 3.239"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.202"
+gem "aws-sdk-s3", "~> 1.205"
 
-gem "openproject-token", "~> 8.0.0"
+gem "openproject-token", "~> 8.2.0"
 
-gem "plaintext", "~> 0.3.2"
+gem "plaintext", "~> 0.3.7"
 
 gem "ruby-progressbar", "~> 1.13.0", require: false
 
@@ -225,12 +225,14 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.86.1", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.87.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.1.0"
+gem "view_component", "~> 4.1.1"
 # Lookbook
 gem "lookbook", "2.3.13"
+
+gem "inline_svg", "~> 1.10.0"
 
 # Require factory_bot for usage with openproject plugins testing
 gem "factory_bot", "~> 6.5.6", require: false
@@ -242,7 +244,7 @@ gem "turbo-rails", "~> 2.0.20"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
-gem "httpx", "~> 1.6.2"
+gem "httpx", "~> 1.6.3"
 
 # Brings actual deep freezing to most ruby objects
 gem "ice_nine"
@@ -282,7 +284,7 @@ group :test do
   gem "rails-controller-testing", "~> 1.0.2"
 
   gem "capybara", "~> 3.40.0"
-  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.14.0"
+  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.15.0"
   gem "capybara-screenshot", "~> 1.0.17"
   gem "cuprite", "~> 0.17.0"
   gem "rspec-wait"
@@ -303,7 +305,7 @@ group :test do
 
   gem "equivalent-xml", "~> 0.6"
   gem "json_spec", "~> 1.1.4"
-  gem "shoulda-matchers", "~> 6.0", require: nil
+  gem "shoulda-matchers", "~> 7.0", require: nil
 
   gem "parallel_tests", "~> 4.0"
 end
@@ -354,7 +356,7 @@ group :development, :test do
   gem "rubocop-factory_bot", require: false
   gem "rubocop-openproject", require: false
   gem "rubocop-performance", require: false
-  gem "rubocop-rails", "= 2.33.3", require: false # 2.33.4 has issues with Rails/ActionControllerFlashBeforeRender
+  gem "rubocop-rails", "2.34.2", require: false # 2.33.4 has issues with Rails/ActionControllerFlashBeforeRender
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
 
@@ -363,16 +365,16 @@ group :development, :test do
   gem "erblint-github", require: false
 
   # Brakeman scanner
-  gem "brakeman", "~> 7.1.0"
+  gem "brakeman", "~> 7.1.1"
 
   # i18n-tasks helps find and manage missing and unused translations.
-  gem "i18n-tasks", "~> 1.0.13", require: false
+  gem "i18n-tasks", "~> 1.1.0", require: false
 
   # Active Record Doctor helps to keep the database in good shape.
   gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem "bootsnap", "~> 1.18.0", require: false
+gem "bootsnap", "~> 1.19.0", require: false
 
 # API gems
 gem "grape", "~> 2.4.0"
@@ -415,6 +417,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.29.0"
-gem "openproject-octicons_helper", "~>19.29.0"
-gem "openproject-primer_view_components", "~>0.75.2"
+gem "openproject-octicons", "~>19.31.1"
+gem "openproject-octicons_helper", "~>19.31.1"
+gem "openproject-primer_view_components", "~>0.78.1"

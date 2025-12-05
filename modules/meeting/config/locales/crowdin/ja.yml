@@ -113,7 +113,7 @@ ja:
   label_meeting_new_dynamic: "新しい一度限りの会議"
   label_meeting_new_recurring: "定期的な会議の作成"
   label_meeting_create: "会議を作成"
-  label_meeting_copy: "会議をコピー"
+  label_meeting_duplicate: "Duplicate meeting"
   label_meeting_edit: "会議を編集"
   label_meeting_agenda: "アジェンダ"
   label_meeting_minutes: "議事録"
@@ -125,7 +125,8 @@ ja:
   label_meeting_date_time: "日付/時刻"
   label_meeting_date_and_time: "日付と時刻"
   label_meeting_diff: "差分"
-  label_meeting_send_updates: "メールカレンダーの更新を送信する"
+  label_meeting_send_updates: "Send email calendar invite and updates"
+  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
   label_recurring_meeting: "定期的な会議"
   label_recurring_meeting_part_of: "一連の会議の一部"
   label_recurring_meeting_new: "新しい繰り返しの会議"
@@ -133,7 +134,7 @@ ja:
   label_template: "テンプレート"
   label_recurring_meeting_view: "一連の会議を表示する"
   label_recurring_meeting_create: "開く"
-  label_recurring_meeting_copy: "ワンタイムでコピー"
+  label_recurring_meeting_duplicate: "Duplicate as a one-time meeting"
   label_recurring_meeting_cancel: "この予定をキャンセル"
   label_recurring_meeting_delete: "予定を削除"
   label_recurring_meeting_restore: "この予定を復元"
@@ -329,9 +330,9 @@ ja:
             Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
-            すべての参加者は、更新されたカレンダーの招待状をメールで受信します。
+            All participants will receive updated calendar invites via email when you add or remove participants.
           disabled: >
-            メールカレンダーの更新は無効になっています。参加者は変更を知らせるメールを受信しません。
+            Participants will not receive an email informing them of changes to meeting date, time or participants.
         occurrence:
           enabled: >
             ミーティングシリーズのメールカレンダーの更新が有効になっています．すべての参加者は，この発生に対するあなたの変更を通知する更新されたカレンダー招待を受け取ります。
@@ -342,6 +343,16 @@ ja:
             ミーティングシリーズでは，メールカレンダーの更新が有効になります． すべての参加者は、更新されたカレンダー招待状を受け取り、このテンプレートまたは個々のオカレンダーへの変更を通知します。
           disabled: >
             ミーティングシリーズのメールカレンダーの更新は無効になっています． 参加者は、このテンプレートまたは個々のオカレンスへの変更を通知するメールを受信しません。
+    presentation_mode:
+      title: "Presentation Mode"
+      button_present: "Present"
+      exit: "Exit presentation"
+      current_item: "Current item"
+      total_items: "%{current} of %{total}"
+      previous: "Previous"
+      next: "Next"
+      no_items: "No agenda items"
+      no_items_flash: "There are no agenda items to present."
   meeting_section:
     untitled_title: "タイトルなしセクション"
     delete_confirmation: "セクションを削除すると、そのすべての議題項目も削除されます。これを実行してもよろしいですか？"
@@ -372,7 +383,9 @@ ja:
       label_view_template: "テンプレートを表示"
       label_edit_template: "テンプレートを編集"
       banner_html: >
-        あなたは現在、会議シリーズのテンプレートを編集しています: %{link}。このシリーズで会議が新しく開催されるたびに、このテンプレートが使用されます。変更は、過去または既に作成された会議には影響しません。
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+      draft_banner_html: >
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
     frequency:
       x_daily:
         other: "%{count} 日ごと"
@@ -521,6 +534,7 @@ ja:
   label_meeting_series_details: "ミーティングシリーズの詳細"
   label_meeting_details_edit: "会議詳細を編集"
   label_meeting_state: "会議のステータス"
+  label_meeting_state_draft: "Draft"
   label_meeting_state_open: "開く"
   label_meeting_state_closed: "終了"
   label_meeting_state_agenda_created: "アジェンダが作成されました"
@@ -531,12 +545,19 @@ ja:
   label_meeting_reopen_action: "会議を再開する"
   label_meeting_close_action: "会議を終了する"
   label_meeting_in_progress_action: "会議を開始"
+  label_meeting_open_action: "Open meeting"
+  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
   text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
   text_meeting_closed_description: "この会議は終了しています。これ以上、議題項目の追加/削除はできません。"
   text_meeting_in_progress_description: "議題を変更したり、各項目のアウトカムを記録したり、参加者の出席を追跡することができます。 ミーティングが完了すると、ミーティングをクローズとしてマークしてロックできます。"
   text_meeting_open_dropdown_description: "既存の結果は残りますが、ユーザーは新しい結果を追加することはできません。"
   text_meeting_in_progress_dropdown_description: "会議中に取られた情報のニーズや意思決定などの成果を記録します。"
   text_meeting_closed_dropdown_description: "この会議は終了しました。これ以上、議題や結果を変更することはできません。"
+  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
+  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
+  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
+  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
   text_meeting_not_editable_anymore: "この会議はもう編集できません。"
   text_meeting_not_present_anymore: "この会議は削除されました。別の会議を選択してください。"
   label_add_work_package_to_meeting_dialog_title: "会議の選択"

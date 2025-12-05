@@ -1,7 +1,7 @@
 /*
  * -- copyright
  * OpenProject is an open source project management software.
- * Copyright (C) 2023 the OpenProject GmbH
+ * Copyright (C) the OpenProject GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3.
@@ -28,82 +28,72 @@
  * ++
  */
 
-import { BlockNoteEditorOptions, BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from '@blocknote/core';
+import { BlockNoteEditorOptions, BlockNoteSchema, filterSuggestionItems } from '@blocknote/core';
 import { User } from '@blocknote/core/comments';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
-import { getDefaultOpenProjectSlashMenuItems, initOpenProjectApi, openProjectWorkPackageBlockSpec } from 'op-blocknote-extensions';
-import { useEffect, useState } from 'react';
-import * as Y from 'yjs';
 import { IUploadFile } from 'core-app/core/upload/upload.service';
+import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
+import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
+import { firstValueFrom } from 'rxjs';
+import * as Y from 'yjs';
+import { BlockNoteLocaleResult, useBlockNoteLocale } from './hooks/useBlockNoteLocale';
+import { useCollaboration } from './hooks/useCollaboration';
+import { useOpTheme } from './hooks/useOpTheme';
+
+interface CollaborativeUser {
+  name:string;
+  color:string;
+}
 
 export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
   inputText?:string;
-  hocuspocusUrl:string;
-  oauthToken:string,
   activeUser:User;
-  documentName:string;
-  documentId:string;
+  readOnly:boolean;
   openProjectUrl:string;
   attachmentsUploadUrl:string;
+  attachmentsCollectionKey:string;
+  hocuspocusProvider?:HocuspocusProvider;
 }
 
-const schema = BlockNoteSchema.create({
+const schema = BlockNoteSchema.create().extend({
   blockSpecs: {
-    ...defaultBlockSpecs,
     openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
   },
 });
 
-const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOpColorMode(); };
-
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
-                                               hocuspocusUrl,
-                                               oauthToken,
                                                activeUser,
-                                               documentName,
-                                               documentId,
+                                               readOnly,
                                                openProjectUrl,
-                                               attachmentsUploadUrl }:OpBlockNoteContainerProps) {
-  const [isLoading, setIsLoading] = useState(true);
+                                               attachmentsUploadUrl,
+                                               attachmentsCollectionKey,
+                                               hocuspocusProvider }:OpBlockNoteContainerProps) {
+  const { localeString, localeDictionary }:BlockNoteLocaleResult = useBlockNoteLocale(window.I18n.locale);
 
-  initOpenProjectApi({ baseUrl: openProjectUrl });
+  initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
 
-  let doc = new Y.Doc();
+  let doc = LiveCollaborationManager.ydoc;
 
-  const collaborationEnabled = Boolean(hocuspocusUrl && documentName && oauthToken && activeUser);
-  let hocuspocusProvider:HocuspocusProvider | null = null;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let editorParams:Partial<BlockNoteEditorOptions<any, any, any>>;
-  if(collaborationEnabled) {
-    const url = new URL(hocuspocusUrl);
-    url.searchParams.set('document_id', documentId);
-    url.searchParams.set('openproject_base_path', openProjectUrl);
-
-    hocuspocusProvider = new HocuspocusProvider({
-      url: url.toString(),
-      name: documentName,
-      token: oauthToken,
-      document: doc
-    });
-
+  let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
+  if(hocuspocusProvider) {
     editorParams = {
       schema,
       collaboration: {
         provider: hocuspocusProvider,
         fragment: doc.getXmlFragment('document-store'),
         user: {
+          id: activeUser.id,
           name: activeUser.username,
           color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
-        },
+        } as unknown as CollaborativeUser,
         showCursorLabels: 'activity'
       },
-      uploadFile,
+      dictionary: localeDictionary,
+      ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   } else { // collaboration disabled
     if (inputText) {
@@ -126,13 +116,22 @@ export default function OpBlockNoteContainer({ inputField,
           color: '#333333',
         },
       },
-      uploadFile,
+      dictionary: localeDictionary,
+      ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   }
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
 
+  function isReadyForAttachmentUpload():boolean {
+    return (
+      attachmentsCollectionKey !== undefined &&
+      attachmentsCollectionKey !== '' &&
+      attachmentsUploadUrl !== undefined &&
+      attachmentsUploadUrl !== ''
+    );
+  }
   const fileToIUploadFile = (file:File):IUploadFile => ({
     file: file
   });
@@ -142,11 +141,15 @@ export default function OpBlockNoteContainer({ inputField,
     try {
       const service = pluginContext.services.attachmentsResourceService;
       const iUploadFile = fileToIUploadFile(file);
-      const result = await service.addAttachments('documents', attachmentsUploadUrl, [iUploadFile]).toPromise();
+      const result = await firstValueFrom(
+        service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile])
+      );
 
-      return result?.[0]._links.downloadLocation.href ?? '';
+      return result?.[0]._links.staticDownloadLocation.href ?? '';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch(error:any) {
       const toastService = pluginContext.services.notifications;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       toastService.addError(error);
 
       return '';
@@ -154,46 +157,40 @@ export default function OpBlockNoteContainer({ inputField,
   }
 
   const getCustomSlashMenuItems = (editor:EditorType) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return [
       ...getDefaultReactSlashMenuItems(editor),
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      ...getDefaultOpenProjectSlashMenuItems(editor),
+      openProjectWorkPackageSlashMenu(editor),
     ];
   };
 
-  useEffect(() => {
-    const updateInput = () => {
-      const update = Y.encodeStateAsUpdate(doc);
-      const b64 = btoa(String.fromCharCode(...update));
-      inputField.value = b64;
-    };
+  const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
+  const theme = useOpTheme();
 
-    if(collaborationEnabled && hocuspocusProvider) {
-      hocuspocusProvider.on('synced', () => setIsLoading(false));
-      hocuspocusProvider.on('disconnect', () => setIsLoading(true));
-    } else {
-      doc.on('update', updateInput);
-      setIsLoading(false);
-    }
-
-    return () => {
-      if (collaborationEnabled && hocuspocusProvider) {
-        hocuspocusProvider.destroy();
-      } else {
-        // disable Yjs update listener. Opposite of doc.on('update', ...);
-        doc.off('update', updateInput);
-      }
-    };
-  }, []);
+  if (connectionError) {
+    return (
+      <div
+        id="documents-show-edit-view-connection-error-notice-component"
+        data-controller="documents--connection-error-handler"
+      />
+    );
+  }
 
   return (
     <>
-      {isLoading ? <div>Loading...</div>
+      {isLoading ? <div>
+        <div className={'mb-3'}>
+          <div style={{width: '25%', height: '40px'}} className={'SkeletonBox'}/>
+        </div>
+        <div className={'mb-3'}>
+          <div style={{width: '100%', height: '150px'}} className={'SkeletonBox'}/>
+        </div>
+      </div>
         :
         <BlockNoteView
           editor={editor}
-          theme={detectTheme()}
+          slashMenu={false}
+          theme={theme}
+          editable={!readOnly}
           className={'block-note-editor-container'}
         >
           <SuggestionMenuController

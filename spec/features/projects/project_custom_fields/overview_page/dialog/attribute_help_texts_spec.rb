@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../shared_context"
 
-RSpec.describe "Edit project custom fields on project overview page", "attribute help texts", :js, :selenium do
+RSpec.describe "Edit project custom fields on project overview page", "attribute help texts", :js do
   include_context "with seeded projects, members and project custom fields"
   include API::V3::Utilities::PathHelper
 

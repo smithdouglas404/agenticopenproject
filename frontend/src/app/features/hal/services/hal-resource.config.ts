@@ -67,7 +67,7 @@ import { SchemaResource } from 'core-app/features/hal/resources/schema-resource'
 import { MeetingResource } from 'core-app/features/hal/resources/meeting-resource';
 import { ActivityCommentResource } from '../resources/activity-comment-resource';
 
-const halResourceDefaultConfig:{ [typeName:string]:HalResourceFactoryConfigInterface } = {
+const halResourceDefaultConfig:Record<string, HalResourceFactoryConfigInterface> = {
   WorkPackage: {
     cls: WorkPackageResource,
     attrTypes: {

@@ -162,6 +162,11 @@ lt:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -185,12 +190,12 @@ lt:
       title: "Į karantiną patalpinti priedai"
       error_cannot_act_self: "Negalima atlikti veiksmų su savo įkeltais failais."
   attribute_help_texts:
-    note_public: "Bet koks tekstas ir piešinukai, kuriuos jūs pridedate prie šio lauko, yra viešai matomas visiems prisijungusiems naudotojams!"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "Šioje peržiūroje Jūs galite kurti pritaikytus pagalbos tekstus atributams. Kai nustatyti, šie tekstai gali būti rodomi paspaudžiant pagalbos piktogramą šalia atitinkamo atributo."
-    label_plural: "Atributų pagalbos tekstai"
     show_preview: "Peržiūrėti tekstą"
     add_new: "Pridėti pagalbos tekstą"
-    edit: "Redaguoti pagalbos tekstą atributui: %{attribute_caption}"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "Vykdant užduotį buvo rasta klaida, tačiau bandoma dar kartą. Klaida buvo: %{message}"
@@ -302,7 +307,7 @@ lt:
         placeholder:
           label: "Item label"
           short: "Short name"
-          score: "Score"
+          weight: "Weight"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -310,6 +315,25 @@ lt:
           zero: no sub-items
           one: 1 sub-item
           other: "%{count} sub-items"
+      role_assignment:
+        title: Role Assignment
+        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
+        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
+        role_field_label: "Project Role"
+        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        review_hint: >
+          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
+        review_button: Review users and permissions
+        dialog:
+          title: "Overview of users and permissions"
+          change: Change
+          changes:
+            new_member: Will be added as a member
+            remove_member: Will be removed as a member
+            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
+            gain_role: Will gain role ‘%{new_role}’
+            lose_role: Will lose role ‘%{old_role}’
+            no_change: No changes
     text_add_new_custom_field: >
       Norėdami pridėti naujus pritaikytus laukelius prie projekto, pirmiausia reikia juos sukurti. Tik tada yra galimybė juos pridėti prie šio projekto.
     is_enabled_globally: "Yra įgalintas globaliai"
@@ -320,9 +344,10 @@ lt:
     reorder_confirmation: "Dėmesio: Dabartinė galimų reikšmių tvarka bus prarasta. Tęsti?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Pažymėti savo lauką kaip privalomą. Taip bus privaloma jį užpildyti kuriant ar atnaujinant esamus resursus."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Pažymėti savo lauką kaip prieinamą visuose esamuose ir naujuose projektuose."
       multi_select: "Allows the user to assign multiple values to this custom field."
       searchable: "Įtraukti lauko reikšmes naudojant globalios paieškos funkcionalumą."
@@ -337,12 +362,12 @@ lt:
       no_results_content_text: Sukurti naują pasirinktinį lauką
   calculated_values:
     error_dialog:
-      title: "Error with Calculated Value"
+      title: "Error with Calculated value"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
-      mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
+      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
+      mathematical: "The mathematical formula leads to an error. Please review the project calculation attribute and try again."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
   concatenation:
     single: "arba"
   danger_dialog:
@@ -366,6 +391,7 @@ lt:
       int?: "must be an integer."
       key?: "is missing."
       not_found: "not found."
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
@@ -388,7 +414,7 @@ lt:
       depth: "Depth"
       item: "Item"
       label: "Label"
-      score: "Score"
+      weight: "Weight"
       short: "Short name"
       parent: "Tėvas"
       blueprint: "Pattern blueprint"
@@ -424,6 +450,21 @@ lt:
   incoming_mails:
     ignore_filenames: >
       Nurodykite sąrašą, kurį reikia ignoruoti apdorojant įeinančių laiškų priedus (pvz. parašus ar piešinius). Įveskite po vieną failo pavadinimą eilutėje.
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+      sub_items_html:
+        one: "<strong>1</strong> sub-item"
+        few: "<strong>%{count}</strong> sub-items"
+        many: "<strong>%{count}</strong> sub-items"
+        other: "<strong>%{count}</strong> sub-items"
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -435,12 +476,15 @@ lt:
       work_package_categories: "Darbo paketai: kategorijos"
       work_package_file_links: "Darbo paketai: failų nuorodos"
       work_package_shares: "Work packages: shares"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "Naikinimas suplanuotas ir vykdomas fone. Jums bus pranešta apie rezultatą."
       schedule_failed: "Projekto negalima ištrinti: %{errors}"
-      failed: "Projekto %{name} naikinimas nepavyko"
-      failed_text: "Projekto %{name} užsakytas naikinimas nepavyko. Projektas liko suarchyvuotas."
-      completed: "Projekto %{name} naikinimas baigtas"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "Prašymas naikinti projektą „%{name}“ buvo užbaigtas."
       completed_text_children: "Papildomai buvo ištrinti ir šie subprojektai:"
     index:
@@ -483,6 +527,16 @@ lt:
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Pokyčio identifikatorius
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "Įjungti visus"
         label_disable_all: "Išjungti visus"
@@ -532,8 +586,31 @@ lt:
         no_results_title_text: Šis projektas papildomos vietos diske nenaudoja.
       work_package_priorities:
         new_label: "New priority"
+      creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "unavailable"
+        label_request_submission: "Request submission"
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
       button_edit: Edit project status
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes saved and artifact work package created successfully."
+      progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "Pakeistas sąrašas įrašytas kaip naujas sąrašas"
@@ -1012,18 +1089,12 @@ lt:
     deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
-        other: 'Naudotojo duomenys (pvz., el. paštas, nustatymai, darbo paketai, wiki įrašai) bus ištrinti kiek įmanoma. Tačiau duomenys, kaip darbo paketai, viki įrašai, negali būti ištrinti nepaveikiant kitų naudotojų darbo. Taigi, tokie duomenys priskiriami ištrinto naudotojo paskyrai „Ištrintas naudotojas“. Kadangi kiekvieno ištrinto naudotojo duomenys priskiriami tam pačiam naudotojui, nėra įmanoma išskirti atskirų ištrintojo naudotojo duomenų.'
-        self: 'Jūsų naudotojo duomenys (pvz., el. paštas, nustatymai, darbo paketai, wiki įrašai) bus ištrinti kiek įmanoma. Tačiau duomenys, kaip darbo paketai, viki įrašai, negali būti ištrinti nepaveikiant kitų naudotojų darbo. Taigi, tokie duomenys priskiriami ištrinto naudotojo paskyrai „Ištrintas naudotojas“. Kadangi kiekvieno ištrinto naudotojo duomenys priskiriami tam pačiam naudotojui, nebus įmanoma išskirti jūsų ir kitų ištrintų naudotojų duomenų.'
-      heading: "Ištrinti paskyrą %{name}"
-      info:
-        other: "Paskyros ištrynimas yra negrįžtamas veiksmas."
-        self: "Jūsų paskyros ištrynimas yra negrįžtamas veiksmas."
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "Paskyra bus ištrinta iš aplikacijos. Naudotojas nebegalės prisijungti su savo prisijungimo duomenimis. Jis gali pasirinkti galimybę vėl tapti šios aplikacijos naudotoju pasinaudodamas suteikta galimybe."
-        self: "Jūsų paskyra bus ištrinta iš sistemos. Jūs nebegalėsite prisijungti su savo prisijungimo duomenimis. Jei panorėsite vėl tapti šios sistemos naudotojų, galite pasinaudoti suteikta galimybe."
-      login_verification:
-        other: "Įveskite prisijungimą %{name}, kad patvirtintumėte naikinimą. Nurodžius, jūsų paprašys patvirtinti jūsų slaptažodį."
-        self: "Įveskite jūsų prisijungimo %{name}, kad patvirtintumėte naikinimą. Įvedus, jūsų bus paprašyta patvirtinti jūsų slaptažodį."
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       Jūsų paskyra dar neaktyvuota. Norėdami aktyvuoti, paspauskite nuorodą, kuri buvo nusiųsta į Jūsų nurodytą el. pašto dėžutę.
     error_inactive_manual_activation: >
@@ -1056,6 +1127,7 @@ lt:
       attribute_help_text:
         attribute_name: "Atributas"
         help_text: "Pagalbos tekstas"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIM clients"
       calculated_value_error:
@@ -1153,6 +1225,7 @@ lt:
         identifier: "Identifikatorius"
         latest_activity_at: "Naujausia veikla"
         parent: "Priklauso projektui"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "Matomumas"
           true: "vieša"
@@ -1167,6 +1240,13 @@ lt:
           off_track: "Pasiklydęs"
           finished: "Baigtas"
           discontinued: "Nutrauktas"
+        project_creation_wizard_assignee_custom_field: "Assignee when submitted"
+        project_creation_wizard_notification_text: "Notification text"
+        project_creation_wizard_send_confirmation_email: "Confirmation email"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Work package type"
+        template: "Template"
         templated: "Šabloninis projektas"
         templated_value:
           true: "pažymėta kaip šablonas"
@@ -1178,6 +1258,8 @@ lt:
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Skiltis
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Laikotarpis"
         definition: "Definition"
@@ -1287,6 +1369,7 @@ lt:
         header_alerts: "Alerts"
         button_update_look_and_feel: "Update look and feel"
         button_update_alerts: "Update alerts"
+        button_update_user_information: "Update profile"
         comments_sorting: "Display work package activity sorted by"
         disable_keyboard_shortcuts: "Disable keyboard shortcuts"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1395,8 +1478,6 @@ lt:
         inclusion: "nenustatyta kaip viena iš leidžiamų reikšmių."
         inclusion_nested: "nėra nustatytas į vieną iš leidžiamų reikšmių kelyje „%{path}“."
         invalid: " neteisingas."
-        invalid_characters: "contains invalid characters."
-        not_allowed_custom_fields_referenced: "contains custom fields that are not allowed: %{custom_fields}."
         invalid_url: "nėra tinkamas URL."
         invalid_url_scheme: "nėra palaikomos protokolas (leidžiamas: %{allowed_schemes})."
         less_than_or_equal_to: "turi būti mažesnis arba lygus %{count}."
@@ -1408,7 +1489,8 @@ lt:
         not_a_datetime: "nėra tinkama data ir laikas."
         not_a_number: "nėra skaičius."
         not_allowed: "netinkamas dėl trūkstamų teisių."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "nėra sveikasis skaičius."
         not_an_iso_date: "nėra tinkama data. Reikalingas formatas: YYYY-MM-DD."
         not_same_project: "nepriklauso tam pačiam projektui."
@@ -1451,11 +1533,19 @@ lt:
               minimum: "turite įtraukti bent vieną nario, konteksto ar id filtrą su „=“ operatoriumi."
         custom_field:
           at_least_one_custom_option: "Turi būti prieinama bent viena savybė."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} is used in project attribute calculation %{links}."
             few: "%{name} is used in project attribute calculations: %{links}."
             many: "%{name} is used in project attribute calculations: %{links}."
             other: "%{name} is used in project attribute calculations: %{links}."
+          attributes:
+            formula:
+              blank: "Formula can't be blank."
+              invalid: "Formula is invalid."
+              invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
+              not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
+              format: "%{message}"
         custom_fields_project:
           attributes:
             project_ids:
@@ -1525,9 +1615,11 @@ lt:
         project:
           archived_ancestor: "Projektas turi suarchyvuotą protėvį."
           foreign_wps_reference_version: "Darbų paketai iš kitų projektų medžių turi nuorodas į versijas šiame projekte arba jo subprojektuose."
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "Jūs neturite teisių, kurių reikia norint archyvuoti visus sub-projektus. Prašome susisiekti su administratoriumi."
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "vis dar naudojama darbų paketuose: %{types}"
             enabled_modules:
@@ -1699,8 +1791,7 @@ lt:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "Darbo paketas yra tik skaitymo būsenoje, taigi jo atributų keisti negalima."
@@ -1765,7 +1856,11 @@ lt:
           other: "%{count} klaidos (-a, -ų) neleido, kad šis %{model} būtų išsaugotas"
     models:
       attachment: "Failas"
-      attribute_help_text: "Atributo pagalbos tekstas"
+      attribute_help_text:
+        one: "Attribute help text"
+        few: "Attribute help texts"
+        many: "Attribute help texts"
+        other: "Attribute help texts"
       auth_provider:
         one: "Authentication provider"
         few: "Authentication providers"
@@ -1846,6 +1941,11 @@ lt:
       many: "Papildomai buvo problema su šiais laukais:"
       other: "Papildomai buvo problema su šiais laukais:"
     field_erroneous_label: "Šis laukelis netinkamas: %{full_errors}\nPrašome įvesti tinkamą reikšmę."
+    messages:
+      must_be_template: "must be template"
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "%{datetime} sukūrė %{user}"
@@ -1978,6 +2078,7 @@ lt:
     subject: "Tema"
     slug: "Slug"
     summary: "Santrauka"
+    template: "Template"
     time_zone: "Laiko juosta"
     text: "Tekstas"
     title: "Pavadinimas"
@@ -2048,6 +2149,7 @@ lt:
   button_collapse_all: "Sutraukti visus"
   button_configure: "Konfigūruoti"
   button_continue: "Tęsti"
+  button_complete: "Complete"
   button_copy: "Kopijuoti"
   button_copy_to_clipboard: "Kopijuoti į iškarpinę"
   button_copy_link_to_clipboard: "Kopijuoti nuorodą į iškarpinę"
@@ -2058,9 +2160,11 @@ lt:
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Pašalinti stebėtoją vardu %{name}"
   button_download: "Atsiųsti"
+  button_disable: "Disable"
   button_duplicate: "Dublikuoti"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Redaguoti"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Išskleisti visus"
   button_favorite: "Pridėti prie mėgstamų"
@@ -2075,6 +2179,7 @@ lt:
   button_print: "Spausdinti"
   button_quote: "Cituoti"
   button_remove: Pašalinti
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Pervardinti"
   button_replace: "Pakeisti"
@@ -2147,9 +2252,25 @@ lt:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "Naudoti šabloną"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "Copy from template"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Create new wiki page"
   create_wiki_page_button: "Wiki puslapis"
   date:
@@ -2349,11 +2470,11 @@ lt:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
-      calculated_values: Calculated Values
+      calculated_values: Calculated values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
-      custom_field_hierarchies: Custom fields of type hierarchy
+      custom_field_hierarchies: Hierarchies
       customize_life_cycle: Customize Life Cycle
       date_alerts: Date Alerts
       define_custom_style: Custom theme and logo
@@ -2363,12 +2484,14 @@ lt:
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
       placeholder_users: Placeholder Users
+      portfolio_management: Portfolio management
       project_list_sharing: Project List Sharing
       readonly_work_packages: Readonly Work Packages
       scim_api: SCIM server API
       sso_auth_providers: Single Sign-On
       team_planner_view: Team Planner View
       virus_scanning: Antivirus Scanning
+      weighted_item_lists: Weighted item lists
       work_package_query_relation_columns: Work Package Query Relation Columns
       work_package_sharing: Share work packages with external users
       work_package_subject_generation: Work Package Subject Generation
@@ -2415,15 +2538,17 @@ lt:
       readonly_work_packages:
         description: "Mark work packages as read-only for specific statuses."
       custom_field_hierarchies:
-        description: "Hierarchy custom fields allow organizing hierarchical structures in work packages by making use of multi-level select lists."
+        description: "Hierarchy custom fields allow organizing hierarchical structures in work packages and projects by making use of multi-level select lists."
       date_alerts:
         description: "Su datos įspėjimais jus informuos apie ateinančias pradžios ir pabaigos datas, kad niekada nepraleistumėte ar nepamirštumėte svarbių terminų."
+      weighted_item_lists:
+        description: "Weighted item lists allow you to create a list with underlying numeric values associated."
       work_package_sharing:
         description: "Bendrinkite darbo paketus su naudotojais, kurie nėra projekto nariai."
       project_list_sharing:
         description: "Share project lists with individual users."
       calculated_values:
-        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "Calculated values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Pastaba: panaudotas logotipas bus viešai prieinamas."
@@ -2452,6 +2577,8 @@ lt:
       internal_comments_inline:
         title: "Write internal comments only a small group can see"
         description: " "
+      portfolio_management:
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -2659,7 +2786,7 @@ lt:
       attribute_not_found: "attribute not found: %{attribute}"
       model_not_found: "invalid attribute model: %{model}"
       resource_not_found: "resource not found: %{resource}"
-      rich_text_unsupported: "Rich text embedding currently not supported in export"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: h
       days: d
@@ -2737,6 +2864,7 @@ lt:
       new_features:
         header: "Skaitykite apie naujas savybes ir produkto atnaujinimus."
         learn_about: "Learn more about all new features"
+        missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
@@ -2840,7 +2968,7 @@ lt:
         static_token_name: "API žetonas"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "Administratorius neįjungė iCalendar prenumeratų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
         empty_text_hint: "Norėdami pridėti iCalendar žetoną, prenumeruokite naują ar esamą kalendorių iš projekto kalendoriaus modulio. Jūs turite turėti reikiamas teises."
       oauth:
@@ -2981,7 +3109,7 @@ lt:
   label_select_main_menu_item: Pasirinkti naują pagrindinio meniu punktą
   label_required_disk_storage: "Reikalinga vieta diske"
   label_send_invitation: Siųsti pakvietimą
-  label_calculated_value: "Calculated Value"
+  label_calculated_value: "Calculated value"
   label_change_parent: "Keisti pirmtaką"
   label_change_plural: "Pakeitimai"
   label_change_properties: "Pakeisti nustatymus"
@@ -3163,7 +3291,7 @@ lt:
   label_invite_user: "Pakviesti vartotoją"
   label_item: "Item"
   label_item_plural: "Items"
-  label_scored_list: "Scored list"
+  label_weighted_item_list: "Weighted item list"
   label_share: "Dalintis"
   label_share_project_list: "Share project list"
   label_share_work_package: "Dalintis darbo paketu"
@@ -3198,7 +3326,8 @@ lt:
   label_lock_user: "Užrakinti vartotoją"
   label_logged_as: "Prisijungęs kaip"
   label_login: "Prisijungti"
-  label_custom_logo: "Savo sukurtas logotipas"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Savas eksporto logotipas"
   label_custom_export_cover: "Savas eksporto viršelio fonas"
   label_custom_export_footer: "Custom export footer image"
@@ -3323,6 +3452,7 @@ lt:
   label_planning: "Planavimas"
   label_please_login: "Prašome prisijungti"
   label_plugins: "Papildiniai"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Moduliai ir priedai"
   label_precedes: "ankstesnis"
   label_preferences: "Parinktys"
@@ -3343,11 +3473,15 @@ lt:
   label_project_attribute_manage_link: "Valdyti projekto atributus"
   label_project_count: "Bendras projektų skaičius"
   label_project_copy_notifications: "Vykstant projekto kopijavimui siųsti pranešimus į el. paštą"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Naujausi projektai"
   label_project_default_type: "Leisti tuščią tipą"
   label_project_hierarchy: "Projekto hierarchija"
   label_project_mappings: "Projektai"
   label_project_new: "Naujas projektas"
+  label_project_initiation_request: "New project initiation request"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "Projektai"
   label_project_list_plural: "Projektų sąrašai"
   label_project_life_cycle: "Project life cycle"
@@ -3397,6 +3531,7 @@ lt:
   label_repository_remove: "Remove repository"
   label_repository_root: "Repozitorijos šaknis"
   label_repository_plural: "Repozitorijos"
+  label_request_submission: "Request submission"
   label_required: "reikalingas"
   label_requires: "turi turėti"
   label_result_plural: "Rezultatai"
@@ -3447,6 +3582,7 @@ lt:
   label_subproject: "Sub-projektas"
   label_subproject_new: "Naujas sub-projektas"
   label_subproject_plural: "Sub-projektai"
+  label_subitems: "Subitems"
   label_subtask_plural: "Darbo dalys"
   label_summary: "Santrauka"
   label_system: "Sistema"
@@ -3454,6 +3590,8 @@ lt:
   label_table_of_contents: "Turinys"
   label_tag: "Žymė"
   label_team_planner: "Komandos planuotojas"
+  label_template: "Template"
+  label_templates: "Templates"
   label_text: "Ilgas tekstas"
   label_this_month: "šis mėnuo"
   label_this_week: "ši savaitė"
@@ -3869,6 +4007,9 @@ lt:
   permission_add_project: "Kurti projektus"
   permission_add_portfolios: "Create portfolios"
   permission_add_programs: "Create programs"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Prisegti priedus"
   permission_add_work_package_attachments_explanation: "Leidžia pridėti priedus be darbo paketo keitimo teisių"
   permission_add_internal_comments: "Write internal comments"
@@ -3914,6 +4055,7 @@ lt:
   permission_edit_timelines: "Redaguoti tvarkaraščius"
   permission_edit_wiki_pages: "Redaguoti wiki puslapius"
   permission_export_work_packages: "Eksportuoti darbų paketus"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Eksportuoti wiki puslapius"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
@@ -3980,8 +4122,19 @@ lt:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
+      title: "Archive project"
       are_you_sure: "Ar Jūs tikrai norite suarchyvuoti projektą '%{name}'?"
       archived: "Suarchyvuotas"
     count:
@@ -4008,6 +4161,7 @@ lt:
       title: Pakeisti projekto identifikatorių
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Jūsų projektas šiuo metu yra kuriamas pagal šabloninį projektą. Kai tik naujasis projektas bus pasiekiamas, jums pranešime el. pašto žinute.
       use_template: "Naudoti šabloną"
@@ -4173,6 +4327,7 @@ lt:
   setting_emails_salutation: "Kreiptis į naudotojus e-laiškuose su"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Sendmail vykdomojo failo lokacija"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Automatiškai naudoti STARTTLS, jei galima"
   setting_smtp_ssl: "Naudoti SSL jungtį"
   setting_smtp_address: "SMTP serveris"
@@ -4261,6 +4416,8 @@ lt:
   setting_mail_handler_body_delimiter_regex: "Sutrumpinti laiškus, atitinkančius šią reguliarią išraišką"
   setting_mail_handler_ignore_filenames: "Ignoruoti laiško priedai"
   setting_new_project_user_role_id: "Vaidmuo suteiktas naudotojui, kuris nėra administratorius ir kuris kuria projektą"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "Aktyvios savybių klasės"
   setting_password_count_former_banned: "Vėliausiai uždraustų pakartotinai naudoti slaptažodžių skaičius"
   setting_password_days_valid: "Dienų skaičius, po kurio versti pasikeisti slaptažodį"
@@ -4307,7 +4464,7 @@ lt:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Seanso galiojimo laikas po neaktyvumo"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Vertė, mažesnė už 5, išjungia"
   setting_session_ttl_enabled: "Sesija baigiasi"
   setting_start_of_week: "Savaitė prasideda"
@@ -4333,6 +4490,9 @@ lt:
   setting_work_package_list_default_highlighted_attributes: "Atributai, kuriuos numatyta paryškinti"
   setting_working_days: "Darbo dienos"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Prisijungimo vardas"
       registration: "Registration"
@@ -4405,9 +4565,62 @@ lt:
       new:
         heading: "Naujas atributas"
         description: "Šio projekto atributo pakeitimas matysis visuose projektuose, kur jis įjungtas. Privalomų atributų negalima išjungti konkrečiame projekte."
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
+    project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
+      name:
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
+      submission:
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "Project life cycle"
-      heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "Pridėti"
       label_add_description: "Add project phase definition"
       filter:
@@ -4481,7 +4694,7 @@ lt:
   text_project_custom_field_html: >
     Enterprise versija pridės šiuos papildomus priedus projekto saviems laukams: <br> <ul> <li><b>Galimybė pridėti savo laukus į jūsų projekto sąrašą ir kurti projekto projektų portfolio vaizdą</b></li> </ul>
   text_custom_logo_instructions: >
-    Baltas logotipas su permatomu fonu yra rekomenduojamas. Gariausiems rezultatams pasiekti tradiciniuose ir retina ekranuose, būkite įsitikinę, kad paveikslėlio dimensijos yra 460px 60px.
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Tai logotipas, kuris rodomas jūsų PDF eksportuose. Tai turi būti PNG arba JPEG piešinio failas. Rekomenduojamas juodas arba spalvotas logotipas ant permatomo balto fono.
   text_custom_export_cover_instructions: >
@@ -4557,6 +4770,7 @@ lt:
     Pastaba: įjungus bus rodomas ženkliukas su jūsų diegimo būsena <a href="%{information_panel_path}">%{information_panel_label}</a> administravimo skydelyje. Rodoma tik administratoriams. <br/> Ženkliukas palygins jūsų OpenProject versiją su oficialia OpenProject laidų duomenų baze ir praneš, jei yra atnaujinimų dėl žinomų saugumo problemų. Daugiau informacijos, ką daro šis tikrinimas, kokią reikia pateikti informaciją ir kaip šį tikrinimą išjungti, rasite <a href="%{more_info_url}">konfigūravimo dokumentacijoje</a>.
   text_own_membership_delete_confirmation: "Jūs ketinate pašalinti keletą ar visus leidimus ir gali būti, kad nebegalėsite redaguoti šio projekto po to.\nAr jūs tikrai norite tęsti?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Į papildinių katalogą galima rašyti"
   text_powered_by: "Parengta pagal %{link}"
   text_project_identifier_info: "Leidžiamos tik mažosios raidės (a-z), skaitmenys, paprasti (-) ir žemi brūkšneliai (_). Taip pat privalo prasidėti mažąja raide."
@@ -4870,6 +5084,8 @@ lt:
       multiple_errors: "Buvo pažeista daug laukelio apribojimų."
       unable_to_create_attachment: "Nepavyko sukurti priedo"
       unable_to_create_attachment_permissions: "Priedas negali būti išsaugotas dėl teisių failų sistemoje trūkumo"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "Duotas kontekstas nėra nuoroda į resursą."
         unsupported_context: "Duotas resursas nėra palaikomas kaip kontekstas."
@@ -4884,8 +5100,10 @@ lt:
     resources:
       schema: "Schema"
     undisclosed:
-      parent: Nerodomas -- pasirinktas tėvinis projektas yra nematomas nes trūksta teisių.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Nerodoma - tėvas nematomas dėl teisių trūkumo.
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Išankstinė autorizacija"

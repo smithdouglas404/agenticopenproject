@@ -297,12 +297,13 @@ it:
       warning: "Sei pregato di non condividerlo con altri utenti. Chiunque abbia questo link potrà visualizzare i dettagli del pacchetto di lavoro senza un profilo o una password."
       token_name_label: "Dove lo userai?"
       token_name_placeholder: 'Digita un nome, ad esempio "Telefono"'
-      token_name_description_text: 'Se ti iscrivi a questo calendario da più dispositivi, questo nome ti aiuterà a distinguerli nel tuo elenco di <a href="my/access_token", target="_blank">token di accesso</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copia URL"
       ical_generation_error_text: "Si è verificato un errore nella creazione dell'URL del calendario."
       success_message: 'L''URL "%{name}" è stato copiato con successo negli appunti. Incollalo nel tuo client di calendario per completare l''iscrizione.'
     label_activate: "Attiva"
     label_assignee: "Assegnatario"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Aggiungi colonna dopo"
     label_add_column_before: "Aggiungi colonna prima"
     label_add_columns: "Aggiungi colonne"
@@ -1126,6 +1127,7 @@ it:
       current_project_and_all_descendants: "In questo progetto + sottoprogetti"
       current_project: "In questo progetto"
       recently_viewed: "Visualizzati di recente"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "tutti i progetti"
         project_and_subprojects: "e tutti i sottoprogetti"
@@ -1136,7 +1138,7 @@ it:
       timeline: "Gantt"
     invite_user_modal:
       invite: "Invita"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "Crea un utente segnaposto"
     exclusion_info:
       modal:
         title: "Stato escluso dai totali della gerarchia"
@@ -1162,6 +1164,11 @@ it:
         does_not_match_search: "Il progetto non corrisponde ai criteri di ricerca."
       no_results: "Nessun progetto corrisponde ai tuoi criteri di ricerca"
       no_favorite_results: "Nessun progetto preferito corrisponde ai tuoi criteri di ricerca."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Base di riferimento"
       clear: "Pulisci"

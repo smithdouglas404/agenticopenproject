@@ -17,6 +17,7 @@ export interface HoverCardOptions {
 export interface AvatarOptions {
   hide:boolean;
   size:AvatarSize;
+  imageAltText?:string;
 }
 
 export interface NameOptions {
@@ -107,7 +108,7 @@ export class PrincipalRendererService {
       container.dataset.testSelector = 'op-principal';
     }
     container.classList.add('op-principal');
-    const type = typeFromHref(hrefFromPrincipal(principal)) as PrincipalType;
+    const type = typeFromHref(hrefFromPrincipal(principal))!;
 
     if (!avatar.hide) {
       const el = this.renderAvatar(principal, avatar, hoverCard, type);
@@ -179,10 +180,9 @@ export class PrincipalRendererService {
 
     image.src = url;
     image.title = principal.name;
-    image.alt = principal.name;
+    image.alt = options.imageAltText ?? principal.name;
     image.onload = () => {
       fallback.replaceWith(image);
-      // eslint-disable-next-line no-param-reassign
       (fallback as unknown) = undefined;
     };
   }

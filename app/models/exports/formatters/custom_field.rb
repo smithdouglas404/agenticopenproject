@@ -58,7 +58,7 @@ module Exports
           value == nil ? false : value
         when "text"
           object.typed_custom_value_for(custom_field)
-        when "hierarchy", "scored_list"
+        when "hierarchy", "weighted_item_list"
           HierarchyFormatter.new.format(object, custom_field)
         else
           object.formatted_custom_value_for(custom_field)

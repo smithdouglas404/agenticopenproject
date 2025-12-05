@@ -297,12 +297,13 @@ ms:
       warning: "Sila jangan kongsi URL ini dengan pengguna lain. Sesiapa sahaja yang mempunyai pautan ini akan boleh melihat butiran pakej kerja tanpa akaun atau kata laluan."
       token_name_label: "Dimanakah anda akan menggunakan ini?"
       token_name_placeholder: 'Taip nama, cth. "Telefon"'
-      token_name_description_text: 'Jika anda melanggan kalendar ini dari pelbagai peranti, nama ini akan membantu anda membezakan antara mereka dalam senarai <a href="my/access_token", target="_blank">token akses</a> anda.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Salin URL"
       ical_generation_error_text: "Ralat berlaku semasa menjana URL kalendar."
       success_message: '"%{name}" URL berjaya disalin ke papan klip anda. Sisipkan ia dalam kalendar pelanggan anda untuk lengkapkan langganan.'
     label_activate: "Aktifkan"
     label_assignee: "Penerima tugasan"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Tambah kolum selepas"
     label_add_column_before: "Tambah kolum sebelum"
     label_add_columns: "Tambah kolum"
@@ -1122,6 +1123,7 @@ ms:
       current_project_and_all_descendants: "Dalam projek ini + subprojek"
       current_project: "Dalam projek ini"
       recently_viewed: "Dilihat baru-baru ini"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "semua projek"
         project_and_subprojects: "dan semua subprojek"
@@ -1158,6 +1160,11 @@ ms:
         does_not_match_search: "Projek tidak sepadan dengan kriteria carian."
       no_results: "Tiada projek yang sepadan dengan kriteria carian anda."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Garis panduan asas"
       clear: "Kosongkan"

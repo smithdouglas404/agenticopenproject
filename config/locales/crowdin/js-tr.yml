@@ -297,12 +297,13 @@ tr:
       warning: "Bu adresi başkalarıyla paylaşmayın. Bu adrese sahip olan birisi iş paketini hesabı ya da parolası olmaksızın görüntüleyebilecektir."
       token_name_label: "Bunu nerede kullanacaksınız?"
       token_name_placeholder: 'Bir ad yazın, örneğin "Telefon"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Adresi kopyala"
       ical_generation_error_text: "Takvim adresi üretilirken bir hata oldu."
       success_message: '"%{name}" adresi başarıyla panonuza koplandı. Aboneliği tamamlamak için takvim istemcinize yapıştırın.'
     label_activate: "Etkinleştir"
     label_assignee: "Atanan"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Sonrasına sütun ekle"
     label_add_column_before: "Öncesine sütun ekle"
     label_add_columns: "Sütunlar ekle"
@@ -1126,6 +1127,7 @@ tr:
       current_project_and_all_descendants: "Bu projede + alt projelerde"
       current_project: "Bu projede"
       recently_viewed: "Son görüntülenenler"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "tüm projeler"
         project_and_subprojects: "ve tüm alt projeler"
@@ -1162,6 +1164,11 @@ tr:
         does_not_match_search: "Proje arama kriterleriyle eşleşmiyor."
       no_results: "Arama kriterleriniz ile eşleşen proje yok"
       no_favorite_results: "Arama kriterleriniz ile eşleşen favori proje yok."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Referens Zamanı"
       clear: "Temizle"

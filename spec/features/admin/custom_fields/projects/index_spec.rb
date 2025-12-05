@@ -168,7 +168,7 @@ RSpec.describe "List project custom fields", :js do
           end
         end
 
-        context "with fields of type calculated value" do
+        context "with fields of type calculated value", with_ee: %i[calculated_values] do
           let!(:calculated_value_project_custom_field) do
             create(:calculated_value_project_custom_field,
                    name: "Calculated value field",

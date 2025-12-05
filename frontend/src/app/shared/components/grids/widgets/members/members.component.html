@@ -10,4 +10,15 @@
     [resource]="resource" />
 </widget-header>
 
-<turbo-frame [id]="frameId" [src]="src" loading="lazy" />
+<div class="op-widget-box--body">
+  @if ({hasCapability: hasCapability$ | async}; as context) {
+    @if (context.hasCapability === false) {
+      <div class="op-toast -error">
+        <span [textContent]="text.missing_permission"></span>
+      </div>
+    }
+    @if (context.hasCapability === true) {
+      <turbo-frame [id]="frameId" [src]="src" loading="lazy" />
+    }
+  }
+</div>

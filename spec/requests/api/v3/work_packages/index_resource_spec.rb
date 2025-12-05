@@ -244,7 +244,7 @@ RSpec.describe "API v3 Work package resource",
       end
     end
 
-    shared_examples_for "when providing timestamps", with_ee: %i[baseline_comparison] do
+    context "when providing timestamps", with_ee: %i[baseline_comparison] do
       subject do
         get path
         last_response
@@ -901,6 +901,10 @@ RSpec.describe "API v3 Work package resource",
         before do
           work_package.update_column(:project_id, project2.id)
           current_journal.data.update_column(:project_id, project2.id)
+
+          allow(project2)
+            .to receive(:visible?)
+                  .and_return(true)
         end
 
         it "finds the work package" do
@@ -1053,7 +1057,7 @@ RSpec.describe "API v3 Work package resource",
               .to be_json_eql("The original work package".to_json)
                     .at_path("_embedded/elements/0/_embedded/attributesByTimestamp/0/subject")
             expect(subject.body)
-              .to be_json_eql(project2.name.to_json)
+              .to be_json_eql(I18n.t(:"api_v3.undisclosed.project").to_json)
                     .at_path("_embedded/elements/0/_embedded/attributesByTimestamp/0/_links/project/title")
           end
         end
@@ -1345,14 +1349,6 @@ RSpec.describe "API v3 Work package resource",
           end
         end
       end
-    end
-
-    context "without large_instance_wp_allowed_to_sql active", with_settings: { large_instance_wp_allowed_to_sql: false } do
-      it_behaves_like "when providing timestamps"
-    end
-
-    context "with large_instance_wp_allowed_to_sql active", with_settings: { large_instance_wp_allowed_to_sql: true } do
-      it_behaves_like "when providing timestamps"
     end
   end
 end

@@ -32,15 +32,25 @@ require "spec_helper"
 
 RSpec.describe "Portfolios",
                "creation",
-               :js do
+               :js,
+               with_ee: :portfolio_management do # TODO: test without enterprise feature
   shared_let(:user_with_permissions) do
     create(:user,
            global_permissions: :add_portfolios)
   end
   # Role granted to creator on portfolio creation to be able to access the portfolio.
   shared_let(:default_project_role) { create(:project_role) }
+  shared_let(:add_subproject_role) { create(:project_role, permissions: %i[add_subprojects]) }
+
+  let!(:root_portfolio) do
+    create(:portfolio, name: "Root portfolio", members: { user_with_permissions => add_subproject_role })
+  end
+  let!(:other_portfolio) do
+    create(:portfolio, name: "Other portfolio")
+  end
 
   let(:projects_page) { Pages::Projects::Index.new }
+  let(:parent_field) { FormFields::SelectFormField.new :parent }
 
   current_user { user_with_permissions }
 
@@ -49,19 +59,28 @@ RSpec.describe "Portfolios",
     projects_page.create_new_workspace
 
     expect(page).to have_heading "New portfolio"
-    # This should be an
-    #   expect(page).to have_no_field "Subproject of"
-    # But this leads to a false negative. Even with the field being there, is the
-    # expectation passed.
-    expect(page).to have_no_content "Subproject of"
 
+    # Step 1: Select workspace type (blank portfolio)
+    click_on "Continue"
+
+    # Step 2: Fill in project details
     fill_in "Name", with: "Foo bar"
-    click_on "Create"
+
+    # No parent field since portfolios are always root elements
+    expect(page)
+      .not_to have_combo_box "Subproject of"
+
+    click_on "Complete"
 
     expect_and_dismiss_flash type: :success, message: "Successful creation."
 
     expect(page).to have_current_path /\/projects\/foo-bar\/?/
     expect(page).to have_content "Foo bar"
+
+    portfolio = Project.last
+    expect(portfolio.workspace_type).to eq "portfolio"
+    expect(portfolio.identifier).to eq "foo-bar"
+    expect(portfolio.parent).to be_nil
   end
 
   context "without the necessary permissions to create portfolios", with_flag: { portfolio_models: true } do

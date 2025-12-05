@@ -297,12 +297,13 @@ zh-CN:
       warning: "请不要与其他用户共享此 URL 。拥有这个链接的任何人都可以在没有帐户或密码的情况下查看工作包的详细信息。"
       token_name_label: "您将在哪里使用它？"
       token_name_placeholder: '输入名称，例如“Phone”'
-      token_name_description_text: '如果您从多个设备订阅此日历，此名称将有助于在<a href="my/access_token", target="_blank">访问令牌</a>列表中区分它们。'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "复制链接"
       ical_generation_error_text: "生成日历 URL 时出错。"
       success_message: 'URL“%{name}”已成功复制到剪贴板。请将其粘贴到日历客户端中以完成订阅。'
     label_activate: "激活"
     label_assignee: "指定"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "之后添加列"
     label_add_column_before: "在之前添加列"
     label_add_columns: "添加列"
@@ -1122,6 +1123,7 @@ zh-CN:
       current_project_and_all_descendants: "在当前项目和子项目中"
       current_project: "在当前项目中"
       recently_viewed: "最近浏览"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "所有项目"
         project_and_subprojects: "和所有子项目"
@@ -1158,6 +1160,11 @@ zh-CN:
         does_not_match_search: "项目不符合搜索条件。"
       no_results: "没有项目符合您的搜索条件。"
       no_favorite_results: "没有收藏的项目符合您的搜索条件。"
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "基线"
       clear: "清除"

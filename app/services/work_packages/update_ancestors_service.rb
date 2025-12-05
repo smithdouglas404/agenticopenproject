@@ -74,6 +74,13 @@ class WorkPackages::UpdateAncestorsService < BaseServices::BaseCallable
       end
   end
 
+  def changes?(work_package)
+    changes_before = work_package.changes
+    yield
+    changes_after = work_package.changes
+    changes_before != changes_after
+  end
+
   def save_updated_work_packages(updated_work_packages)
     updated_initiators, updated_ancestors = updated_work_packages.partition { initiator?(it) }
 

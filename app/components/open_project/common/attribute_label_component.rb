@@ -31,6 +31,8 @@
 module OpenProject
   module Common
     class AttributeLabelComponent < ApplicationComponent
+      include AttributeHelpTextsHelper
+
       def initialize(
         attribute:,
         model:,
@@ -50,10 +52,7 @@ module OpenProject
         )
 
         @required = required
-
-        @help_text = ::AttributeHelpText.for(model)
-          &.cached(current_user)
-          &.[](AttributeHelpText.normalize_value_for(:attribute_name, attribute))
+        @help_text = help_text_for(model, attribute, current_user:)
       end
     end
   end

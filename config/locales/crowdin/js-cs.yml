@@ -297,12 +297,13 @@ cs:
       warning: "Prosím, nesdílejte tuto URL s ostatními uživateli. Kdokoli s tímto odkazem bude moci zobrazit podrobnosti o pracovním balíčku bez účtu nebo hesla."
       token_name_label: "Kde to použijete?"
       token_name_placeholder: 'Zadejte jméno, např. "Telefon"'
-      token_name_description_text: 'Pokud se přihlásíte k odběru tohoto kalendáře z více zařízení, toto jméno vám pomůže rozlišit mezi nimi v seznamu <a href="my/access_token", target="_blank">přístupových tokenů</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Kopírovat URL"
       ical_generation_error_text: "Při generování adresy URL kalendáře došlo k chybě."
       success_message: 'URL "%{name}" byla úspěšně zkopírována do vaší schránky. Vložte ji do vašeho klienta kalendáře pro dokončení odběru.'
     label_activate: "Aktivovat"
     label_assignee: "Řešitel"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Přidat sloupec za"
     label_add_column_before: "Přidat sloupec před"
     label_add_columns: "Přidat sloupce"
@@ -1134,6 +1135,7 @@ cs:
       current_project_and_all_descendants: "V tomto projektu + podprojektech"
       current_project: "V tomto projektu"
       recently_viewed: "Nedávno zobrazené"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "všechny projekty"
         project_and_subprojects: "a všechny podprojekty"
@@ -1170,6 +1172,11 @@ cs:
         does_not_match_search: "Projekt neodpovídá kritériím vyhledávání."
       no_results: "Žádný projekt neodpovídá vašim kritériím vyhledávání."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Směrný plán"
       clear: "Vyčistit"

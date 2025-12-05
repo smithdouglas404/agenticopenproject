@@ -43,6 +43,6 @@ RSpec.describe Grids::WidgetBoxComponent, type: :component do
   end
 
   it "renders turbo-frame around content" do
-    expect(rendered_component).to have_element :"turbo-frame", id: "cool_widget"
+    expect(rendered_component).to have_element :"turbo-frame", id: "cool_widget", target: "_top"
   end
 end

@@ -64,7 +64,7 @@ uk:
       meeting_participant:
         invited: "Запрошені"
         attended: "Відвідано"
-        participation_status: "Participation status"
+        participation_status: "Статус участі"
     errors:
       models:
         meeting_participant:
@@ -119,7 +119,7 @@ uk:
   label_meeting_new_dynamic: "Нова одноразова нарада"
   label_meeting_new_recurring: "Нова повторювана нарада"
   label_meeting_create: "Створити нараду"
-  label_meeting_copy: "Копіювати нараду"
+  label_meeting_duplicate: "Дублювати нараду"
   label_meeting_edit: "Редагувати збори"
   label_meeting_agenda: "Порядок денний"
   label_meeting_minutes: "Хвилини"
@@ -131,7 +131,8 @@ uk:
   label_meeting_date_time: "Дата, час"
   label_meeting_date_and_time: "Дата й час"
   label_meeting_diff: "Відмінність"
-  label_meeting_send_updates: "Надсилати оновлення з календаря електронною поштою"
+  label_meeting_send_updates: "Надіслати запрошення та оновлення календаря електронною поштою"
+  label_meeting_send_updates_caption: "Надіслати електронні запрошення всім учасникам цієї наради"
   label_recurring_meeting: "Повторювана нарада"
   label_recurring_meeting_part_of: "Частина серії нарад"
   label_recurring_meeting_new: "Нова повторювана нарада"
@@ -139,7 +140,7 @@ uk:
   label_template: "Шаблон"
   label_recurring_meeting_view: "Переглянути серію нарад"
   label_recurring_meeting_create: "Відкрити"
-  label_recurring_meeting_copy: "Копіювати як одноразову"
+  label_recurring_meeting_duplicate: "Дублювати як одноразову зустріч"
   label_recurring_meeting_cancel: "Скасувати це повторення"
   label_recurring_meeting_delete: "Видалити повторення"
   label_recurring_meeting_restore: "Відновити це повторення"
@@ -228,7 +229,7 @@ uk:
       open_my_meetings_link: "Перейдіть до Моїх нарад"
       series:
         title: "[%{project_name}] – серія нарад «%{title}»"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} запрошує вас на нову серію нарад «%{title}»"
       series_updated:
         title: "[%{project_name}]: серію нарад «%{title}» оновлено"
         summary: "Серію нарад «%{title}» оновив(-ла) %{actor}"
@@ -344,9 +345,9 @@ uk:
             Надсилання електронною поштою оновлень із календаря вимкнено. Якщо ви додасте нових учасників чи вилучите наявних, учасники не отримають листа з інформацією про це.
         onetime:
           enabled: >
-            Усі учасники отримуватимуть електронною поштою оновлені запрошення з календаря, що інформуватимуть їх про зміни, які ви вносите.
+            Усі учасники отримають оновлені запрошення в календарі електронною поштою, коли ви додасте або видалите учасників.
           disabled: >
-            Надсилання електронною поштою оновлень із календаря вимкнено. Учасники не отримають листа з інформацією про зміни, які ви вносите.
+            Учасники не отримають електронного листа з повідомленням про зміни дати, часу чи учасників зустрічі.
         occurrence:
           enabled: >
             Надсилання електронною поштою оновлень із календаря ввімкнено для цієї серії нарад. Усі учасники отримають оновлені запрошення з календаря, що міститимуть інформацію про зміни, які ви вносите в цю нараду серії.
@@ -357,6 +358,16 @@ uk:
             Надсилання електронною поштою оновлень із календаря ввімкнено для цієї серії нарад. Усі учасники отримають оновлені запрошення з календаря, що міститимуть інформацію про зміни, які ви вносите в цей шаблон або окремі наради серії.
           disabled: >
             Надсилання електронною поштою оновлень із календаря вимкнено для цієї серії нарад. Учасники не отримають електронного листа з інформацією про зміни, які ви вносите в цей шаблон або окремі наради серії.
+    presentation_mode:
+      title: "Режим презентації"
+      button_present: "Презентувати"
+      exit: "Exit presentation"
+      current_item: "Поточний елемент"
+      total_items: "%{current} з %{total}"
+      previous: "Попереднє"
+      next: "Next"
+      no_items: "No agenda items"
+      no_items_flash: "There are no agenda items to present."
   meeting_section:
     untitled_title: "Розділ без назви"
     delete_confirmation: "Видалення цього розділу також призведе до видалення його елементів порядку денного. Ви впевнені?"
@@ -387,7 +398,9 @@ uk:
       label_view_template: "Переглянути шаблон"
       label_edit_template: "Редагувати шаблон"
       banner_html: >
-        Ви редагуєте шаблон серії нарад: %{link}. Кожна нова нарада в серії буде створюватиметься на основі цього шаблона. Зміни не вплинуть на завершені або вже створені наради.
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+      draft_banner_html: >
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
     frequency:
       x_daily:
         one: "Щодня"
@@ -513,7 +526,7 @@ uk:
   label_agenda_item_work_package: "Пакет робіт пункту порядку денного"
   label_section_rename: "Перейменувати розділ"
   label_agenda_outcome: "Результат"
-  label_agenda_new_outcome: "New outcome"
+  label_agenda_new_outcome: "Новий результат"
   label_agenda_outcome_actions: "Дії з результатами порядку денного"
   label_agenda_outcome_edit: "Редагувати результат"
   label_agenda_outcome_delete: "Вилучити результат"
@@ -542,6 +555,7 @@ uk:
   label_meeting_series_details: "Деталі серії нарад"
   label_meeting_details_edit: "Редагувати інформацію про зустріч"
   label_meeting_state: "Статус наради"
+  label_meeting_state_draft: "Draft"
   label_meeting_state_open: "Відкрито"
   label_meeting_state_closed: "Закрито"
   label_meeting_state_agenda_created: "Порядок денний створено"
@@ -552,12 +566,19 @@ uk:
   label_meeting_reopen_action: "Відкрити зустріч знову"
   label_meeting_close_action: "Закрити зустріч"
   label_meeting_in_progress_action: "Почати нараду"
+  label_meeting_open_action: "Open meeting"
+  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
   text_meeting_open_description: "Ви можете додавати/вилучати пункти порядку денного й учасників. Коли порядок денний буде готовий, позначте його як поточний, щоб задокументувати результати."
   text_meeting_closed_description: "Це закрита нарада. Ви більше не можете додавати або вилучати пункти порядку денного."
   text_meeting_in_progress_description: "Ви можете змінювати порядок денний, документувати результати для кожного пункту й відстежувати відвідування учасниками. Після завершення наради можна позначити її як закриту, щоб заблокувати."
   text_meeting_open_dropdown_description: "Усі наявні результати будуть і надалі доступні, але користувачі не зможуть додавати нові."
   text_meeting_in_progress_dropdown_description: "Результати документа, такі як потреби в інформації або рішення, прийняті під час наради."
   text_meeting_closed_dropdown_description: "Це закрита нарада. Ви більше не можете змінювати пункти порядку денного або результати."
+  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
+  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
+  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
+  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
   text_meeting_not_editable_anymore: "Цю нараду більше не можна редагувати."
   text_meeting_not_present_anymore: "Цю нараду видалено. Виберіть іншу нараду."
   label_add_work_package_to_meeting_dialog_title: "Вибрати нараду"

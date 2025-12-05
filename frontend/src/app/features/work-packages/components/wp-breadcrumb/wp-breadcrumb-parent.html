@@ -2,8 +2,7 @@
   @if (parent) {
     <a
       [attr.title]="parent.name"
-      uiSref="work-packages.show"
-      [uiParams]="{ workPackageId: parent.id }"
+      (click)="switchToFullscreenForWp(parent)"
       class="op-wp-breadcrumb-parent nocut"
       data-test-selector="op-wp-breadcrumb-parent">
       <span [textContent]="parent.name"></span>

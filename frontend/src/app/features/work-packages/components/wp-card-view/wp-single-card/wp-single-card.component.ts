@@ -104,6 +104,8 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
     baseLineIconAdded: this.I18n.t('js.baseline.icon_tooltip.added'),
     baseLineIconChanged: this.I18n.t('js.baseline.icon_tooltip.changed'),
     baseLineIconRemoved: this.I18n.t('js.baseline.icon_tooltip.removed'),
+    assigneeAlt:(assignee:string) =>
+      this.I18n.t('js.label_assignee_alt_text', { name: assignee }),
   };
 
   public isNewResource = isNewResource;
@@ -140,7 +142,7 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
             return this.uiRouterGlobals.params.workPackageId === this.workPackage.id;
           }
 
-          return this.wpTableSelection.isSelected(this.workPackage.id as string);
+          return this.wpTableSelection.isSelected(this.workPackage.id!);
         }),
       )
       .subscribe((selected) => {
@@ -167,7 +169,7 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
     event.preventDefault();
   }
 
-  public cardClasses():{ [className:string]:boolean } {
+  public cardClasses():Record<string, boolean> {
     const base = 'op-wp-single-card';
 
     return {
@@ -178,7 +180,6 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
       [`${base}_inline`]: this.showAsInlineCard,
       [`${base}_closed`]: this.isClosed,
       [`${base}_ghosted`]: this.showAsGhost,
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       [`${base}-${this.workPackage.id}`]: !!this.workPackage.id,
       [`${base}_${this.orientation}`]: true,
     };
@@ -193,17 +194,14 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
     return this.baselineMode;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public wpTypeAttribute(wp:WorkPackageResource):string {
     return wp.type.name;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public wpSubject(wp:WorkPackageResource):string {
     return wp.subject;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public wpProjectName(wp:WorkPackageResource):string {
     return wp.project?.name;
   }
@@ -228,7 +226,6 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
     return this.bcfSnapshotPath(wp) !== null;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public bcfSnapshotPath(wp:WorkPackageResource):string|null {
     return wp.bcfViewpoints && wp.bcfViewpoints.length > 0 ? `${wp.bcfViewpoints[0].href}/snapshot` : null;
   }
@@ -240,7 +237,6 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
     return '';
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private attributeHighlighting(type:string, wp:WorkPackageResource):string {
     return Highlighting.inlineClass(type, wp.type.id!);
   }

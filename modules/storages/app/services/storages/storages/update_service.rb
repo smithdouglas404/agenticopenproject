@@ -40,6 +40,7 @@ module Storages
         service_call
       end
 
+      # rubocop:disable Metrics/AbcSize
       def handle_sharepoint_storage(service_call)
         return service_call unless model.automatically_managed? && model.automatically_managed_changed?
 
@@ -47,11 +48,13 @@ module Storages
 
         if list_result.success?
           model.managed_drive_id = list_result.result.id
+          model.managed_drive_name = list_result.result.name
           service_call
         else
           service_call.add_error(list_result.errors)
         end
       end
+      # rubocop:enable Metrics/AbcSize
 
       def after_perform(service_call)
         storage = service_call.result

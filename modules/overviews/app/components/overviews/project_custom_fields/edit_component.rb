@@ -34,6 +34,7 @@ module Overviews
       include ApplicationHelper
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
+      include CustomFieldHierarchyTreeViewHelper
 
       attr_reader :wrapper_id
 

@@ -32,16 +32,16 @@ require "spec_helper"
 
 RSpec.describe Queries::Documents::Filters::TypeFilter do
   it_behaves_like "basic query filter" do
-    let(:class_key) { :category_id }
+    let(:class_key) { :type_id }
     let(:type) { :list }
     let(:model) { Document }
-    let(:attribute) { :category_id }
+    let(:attribute) { :type_id }
     let(:values) { ["3"] }
     let(:admin) { build_stubbed(:admin) }
     let(:user) { build_stubbed(:user) }
 
     before do
-      allow(DocumentCategory).to receive(:pluck).with(:name, :id).and_return([["Foo", "1234"]])
+      allow(DocumentType).to receive(:pluck).with(:name, :id).and_return([["Foo", "1234"]])
     end
 
     describe "#allowed_values" do

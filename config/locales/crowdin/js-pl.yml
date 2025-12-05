@@ -297,12 +297,13 @@ pl:
       warning: "Nie udostępniaj tego adresu URL innym użytkownikom. Każda osoba mająca ten link będzie mogła wyświetlić szczegóły pakietu roboczego bez konieczności posiadania konta lub hasła."
       token_name_label: "Gdzie będziesz go używać?"
       token_name_placeholder: 'Wpisz nazwę, np. „Telefon”'
-      token_name_description_text: 'Jeśli subskrybujesz ten kalendarz na wielu urządzeniach, nazwa ta pomoże Ci rozróżnić je na liście <a href="my/access_token", target="_blank">tokenów dostępu</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Kopiuj adres URL"
       ical_generation_error_text: "Podczas generowania adresu URL kalendarza wystąpił błąd."
       success_message: 'Adres URL „%{name}” został skopiowany do schowka. Wklej go w kliencie kalendarza, aby dokonać subskrypcji.'
     label_activate: "Aktywuj"
     label_assignee: "Przypisana osoba"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Dodaj kolumnę po"
     label_add_column_before: "Dodaj kolumnę przed"
     label_add_columns: "Dodaj kolumny"
@@ -1134,6 +1135,7 @@ pl:
       current_project_and_all_descendants: "W tym projekcie + pod projekcie"
       current_project: "W tym projekcie"
       recently_viewed: "Ostatnio wyświetlane"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "Wszystkie projekty"
         project_and_subprojects: "i wszystkie podprojekty"
@@ -1170,6 +1172,11 @@ pl:
         does_not_match_search: "Projekt nie spełnia kryteriów wyszukiwania."
       no_results: "Żaden projekt nie spełnia kryteriów wyszukiwania."
       no_favorite_results: "Żaden ulubiony projekt nie spełnia kryteriów wyszukiwania."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Linia odniesienia"
       clear: "Wyczyść"

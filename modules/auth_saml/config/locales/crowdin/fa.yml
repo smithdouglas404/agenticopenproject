@@ -111,7 +111,7 @@ fa:
       idp_sso_service_url: >
         آدرس سرور ارائه دهنده احراز هویت.
       idp_slo_service_url: >
-        آدرس سرور ارائه دهنده احراز هویت.
+        The URL of the identity provider logout endpoint.
       idp_cert: >
         گواهی عمومی ارائه دهنده هویت با قالب X509 PEM را وارد کنید. می توانید چندین گواهی را با جدا کردن آنها با یک خط جدید وارد کنید.
       name_identifier_format: >

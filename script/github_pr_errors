@@ -672,7 +672,7 @@ class Formatter
   end
 
   def reset_test_database_command
-    "bin/rails db:drop db:create db:migrate RAILS_ENV=test"
+    "rm -f db/structure.sql; bin/rails db:drop db:create db:migrate RAILS_ENV=test"
   end
 
   def precompile_assets_command

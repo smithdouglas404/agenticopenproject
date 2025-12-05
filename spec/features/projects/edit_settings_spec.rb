@@ -230,7 +230,7 @@ RSpec.describe "Projects", "editing settings", :js do
     end
   end
 
-  describe "attribute help texts", :selenium do
+  describe "attribute help texts" do
     let(:general_page) { Pages::Projects::Settings::General.new(project) }
 
     context "without attribute help texts defined" do
@@ -271,7 +271,7 @@ RSpec.describe "Projects", "editing settings", :js do
         general_page.expect_field_label_with_help_text "Subproject of"
       end
 
-      it "shows help text link next to status button" do
+      it "shows help text link next to status button", :selenium do
         within_section "Project status" do
           button = find_button("Edit project status")
           expect(page).to have_link accessible_name: "Show help text", right_of: button

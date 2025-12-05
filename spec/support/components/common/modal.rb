@@ -37,9 +37,16 @@ module Components
       include Capybara::RSpecMatchers
       include Flash::Expectations
       include RSpec::Matchers
+      include WaitHelpers
 
-      def expect_title(text)
-        expect(page).to have_modal(text)
+      def expect_modal(title, wait: Capybara.default_max_wait_time)
+        expect_title(title, wait:)
+        modal = find(:modal, title, wait:)
+        wait_for_size_animation_completion(modal)
+      end
+
+      def expect_title(text, wait: Capybara.default_max_wait_time)
+        expect(page).to have_modal(text, wait:)
       end
 
       def expect_open

@@ -23,7 +23,7 @@
         </cdk-virtual-scroll-viewport>
       } @else {
         <div class="op-ian-center--loading-indicator">
-          <img [src]="image.no_notification" class="op-ian-center-loading-image"/>
+          <img [src]="image.no_notification" class="op-ian-center-loading-image" alt=""/>
           <p class="op-ian-center-loading-text">
             <span [textContent]="noNotificationText((totalCount$ | async) > 0)"></span>
           </p>
@@ -44,6 +44,7 @@
     } @else {
       <div class="op-ian-center--loading-indicator">
         <img [src]="image.loading"
+          alt=""
           class="op-ian-center-loading-image"
           data-test-selector="op-ian-center--loading-indicator"/>
       </div>

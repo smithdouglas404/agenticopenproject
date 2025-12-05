@@ -80,8 +80,10 @@ class AddViewAllPrincipalsPermissionToExistingRoles < ActiveRecord::Migration[8.
     return [] if project_roles_with_manage_members.empty?
 
     # Find all users who have manage_members permission in any project
-    Member.joins(member_roles: :role)
+    # but avoid selecting PlaceholderUser
+    Member.joins(:principal, member_roles: :role)
           .where(member_roles: { roles: { id: project_roles_with_manage_members.pluck(:id) } })
+          .where.not("users.type": "PlaceholderUser")
           .pluck(:user_id)
           .uniq
   end

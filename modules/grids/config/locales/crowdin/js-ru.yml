@@ -30,7 +30,7 @@ ru:
         project_status_beta:
           title: 'Статус проекта (BETA)'
         subprojects:
-          title: 'Подпункты'
+          title: 'Подпроекты'
         project_favorites:
           title: 'Избранные проекты'
           no_results: 'В настоящее время у вас нет избранных проектов. Нажмите на значок звезды в панели управления проекта, чтобы добавить его в избранное.'
@@ -52,6 +52,7 @@ ru:
           title: 'Таблица пакетов работ'
         work_packages_graph:
           title: 'Диаграмма по пакетам работ'
+          summary: "%{chartType} диаграмма показывает пакеты работ, которые %{description}."
         work_packages_calendar:
           title: 'Календарь'
         work_packages_overview:

@@ -29,7 +29,7 @@
 #++
 
 class My::LocaleForm < ApplicationForm
-  include ApplicationHelper
+  include Redmine::I18n
 
   form do |f|
     f.select_list(

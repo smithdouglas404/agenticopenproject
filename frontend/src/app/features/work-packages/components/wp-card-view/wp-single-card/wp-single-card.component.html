@@ -2,11 +2,15 @@
   class="op-wp-single-card"
   data-test-selector="op-wp-single-card"
   data-tour-selector="op-wp-single-card"
+  role="button"
+  tabindex="0"
   [attr.data-qa-draggable]="draggable || undefined"
   [attr.data-qa-selected]="selected || undefined"
   [ngClass]="cardClasses()"
   [title]="cardTitle()"
   (click)="cardClicked.emit({ workPackageId: workPackage.id, event: $event })"
+  (keydown.enter)="cardClicked.emit({ workPackageId: workPackage.id, event: $event })"
+  (keydown.space)="cardClicked.emit({ workPackageId: workPackage.id, event: $event })"
   (dblclick)="cardDblClicked.emit({ workPackageId: workPackage.id, event: $event })"
   (contextmenu)="cardContextMenu.emit({ workPackageId: workPackage.id, event: $event })"
   >
@@ -121,7 +125,8 @@
       @if (this.cardCoverImageShown(workPackage) && !showAsInlineCard) {
         <img
           [src]="this.bcfSnapshotPath(workPackage)"
-          class="op-wp-single-card--content-cover-image">
+          class="op-wp-single-card--content-cover-image"
+          alt="">
       }
       <div class="op-wp-single-card--content-status-baseline">
         @if (showStatusButton) {
@@ -154,6 +159,7 @@
         <op-principal [principal]="workPackage.assignee"
           [hideName]="true"
           [link]="false"
+          avatarImageAltText="{{ text.assigneeAlt(workPackage.assignee.name) }}"
           size="mini"
           class="op-wp-single-card--content-assignee"
           data-test-selector="op-wp-single-card--content-assignee"

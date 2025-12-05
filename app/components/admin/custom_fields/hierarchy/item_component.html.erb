@@ -38,12 +38,12 @@ See COPYRIGHT and LICENSE files for more details.
             render(Primer::OpenProject::DragHandle.new(draggable: true))
           end
           item_information.with_column(mr: 2) do
-            render(Primer::Beta::Link.new(href: custom_field_item_path(@root.custom_field_id, model), underline: false)) do
+            render(Primer::Beta::Link.new(href: item_link, underline: false)) do
               render(Primer::Beta::Text.new(font_weight: :bold)) { model.label }
             end
           end
 
-          label_addition = secondary_text
+          label_addition = model.suffix
           if label_addition.present?
             item_information.with_column(mr: 2) do
               render(Primer::Beta::Text.new(color: :subtle)) { label_addition }

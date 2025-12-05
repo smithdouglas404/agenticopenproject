@@ -41,7 +41,7 @@ See COPYRIGHT and LICENSE files for more details.
           render(
             Primer::Forms::FormList.new(
               Projects::Settings::NameForm.new(f),
-              Projects::Settings::RelationsForm.new(f),
+              Projects::Settings::RelationsForm.new(f, invisible: params[:parent_id].present?),
               Projects::Settings::CustomFieldsForm.new(f)
             )
           )

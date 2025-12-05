@@ -52,6 +52,7 @@ zh-CN:
           title: '工作包表'
         work_packages_graph:
           title: '工作包图'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: '日历'
         work_packages_overview:

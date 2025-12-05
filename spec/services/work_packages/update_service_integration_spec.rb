@@ -33,7 +33,11 @@ require "spec_helper"
 RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
   shared_let(:type) { create(:type_standard) }
   shared_let(:milestone_type) { create(:type_milestone) }
-  shared_let(:project_types) { [type, milestone_type] }
+  shared_let(:autosubject_type) do
+    create(:type, name: "Autosubject",
+                  patterns: { subject: { blueprint: "\#{{id}} by {{author}} - {{status}}", enabled: true } })
+  end
+  shared_let(:project_types) { [type, milestone_type, autosubject_type] }
   shared_let(:project) do
     create(:project, types: project_types)
   end
@@ -1198,6 +1202,38 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
         TABLE
       end
     end
+
+    context "with work packages having automatically generated subjects, " \
+            "when the work package is automatically scheduled, has a child and no dates" do
+      before_all do
+        set_factory_default(:type, autosubject_type)
+      end
+
+      let_work_packages(<<~TABLE)
+        hierarchy              | MTWTFSS        | scheduling mode | predecessors
+        new_parent_predecessor | XXXX           | manual          |
+        new_parent             |     XXXX       | automatic       | new_parent_predecessor
+        work_package           |                | automatic       |
+          child                |                | automatic       | child_predecessor
+        child_predecessor      |                | manual          |
+      TABLE
+      let(:attributes) { { parent: new_parent } }
+
+      it "sets child start date to be soonest start (after new grandparent predecessor), " \
+         "and grandparent and work package start and due dates to be same as child start date" do
+        expect(subject).to be_success
+        expect(work_package.reload.parent).to eq new_parent
+        expect(subject.all_results.map(&:id)).to contain_exactly(child.id, work_package.id, new_parent.id)
+
+        expect_work_packages(subject.all_results + [new_parent_predecessor], <<~TABLE)
+          identifier             | MTWTFSS | scheduling mode
+          new_parent_predecessor | XXXX      | manual
+          new_parent             |     X     | automatic
+          work_package           |     X     | automatic
+          child                  |     [     | automatic
+        TABLE
+      end
+    end
   end
 
   context "when updating child dates" do
@@ -1222,6 +1258,33 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
           |   parent           |  XXXX   | automatic
           |     child          |  XXXX   | automatic
           |       work_package |  XXXX   | manual
+        TABLE
+      end
+    end
+
+    context "with work packages having automatically generated subjects" do
+      before_all do
+        set_factory_default(:type, autosubject_type)
+      end
+
+      let_work_packages(<<~TABLE)
+        | hierarchy      | MTWTFSS | scheduling mode
+        | parent         | XXX     | automatic
+        |   child        | XX      | manual
+        |   work_package |   X     | manual
+      TABLE
+
+      let(:attributes) { { start_date: _table.thursday, due_date: _table.friday } }
+
+      it "updates the dates of the parent" do
+        expect(subject).to be_success
+        expect(subject.all_results.pluck(:id)).to contain_exactly(work_package.id, parent.id)
+
+        expect_work_packages_after_reload([parent, child, work_package], <<~TABLE)
+          | identifier     | MTWTFSS | scheduling mode
+          | parent         | XXXXX   | automatic
+          |   child        | XX      | manual
+          |   work_package |    XX   | manual
         TABLE
       end
     end
@@ -1675,6 +1738,25 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
           work_package   |    XXX  | manual
         TABLE
       end
+    end
+  end
+
+  context "with work packages having automatically generated subjects" do
+    before_all do
+      set_factory_default(:type, autosubject_type)
+    end
+
+    shared_let(:work_package, reload: true) { create(:work_package, type: autosubject_type) }
+    let(:attributes) { { description: "new description" } }
+
+    it "updates the subject along with the requested updates" do
+      expect(subject).to be_success
+      expect(subject.result).to eq(work_package)
+
+      expect(work_package.reload).to have_attributes(
+        description: "new description",
+        subject: "##{work_package.id} by #{user.name} - #{default_status.name}"
+      )
     end
   end
 

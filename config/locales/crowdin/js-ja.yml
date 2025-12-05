@@ -298,12 +298,13 @@ ja:
       warning: "このURLを他のユーザーと共有しないでください。このリンクを持つ誰でもアカウントやパスワードなしでワークパッケージの詳細を表示することができます。"
       token_name_label: "どこで使うのですか？？"
       token_name_placeholder: '名前を入力してください。例："電話"'
-      token_name_description_text: '複数のデバイスからこのカレンダーを購読する場合、この名前は、<a href="my/access_token", target="_blank">アクセストークンリストで</a>それらを区別するのに役立ちます。'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "URLをコピー"
       ical_generation_error_text: "カレンダーのURL生成時にエラーが発生しました。"
       success_message: 'URL "%{name}" がクリップボードにコピーされました。カレンダークライアントに貼り付けて購読を完了してください。'
     label_activate: "有効にする"
     label_assignee: "担当者"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "後に列を追加"
     label_add_column_before: "前に列を追加"
     label_add_columns: "列を追加"
@@ -1123,6 +1124,7 @@ ja:
       current_project_and_all_descendants: "このプロジェクトと子プロジェクトでは"
       current_project: "このプロジェクトでは"
       recently_viewed: "最近閲覧した記事"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "すべてのプロジェクト"
         project_and_subprojects: "すべてのプロジェクトで"
@@ -1159,6 +1161,11 @@ ja:
         does_not_match_search: "プロジェクトが検索条件に一致しません。"
       no_results: "検索条件に一致するプロジェクトはありません。"
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "ベースライン"
       clear: "クリア"

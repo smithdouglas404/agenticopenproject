@@ -45,6 +45,12 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
   end
 
   def update
+    # FIXME: submitted format of form parameters are not configurable for the tree view component. Hence, we
+    # need to process it before giving them in standard format to the update service.
+    if @custom_field.hierarchical_list?
+      process_hierarchy_params
+    end
+
     service_call = ::Projects::UpdateService
                     .new(
                       user: current_user,
@@ -54,7 +60,11 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
                     .call(permitted_params.project)
 
     if service_call.success?
-      update_sidebar_component
+      if field_shown_in_sidebar?(@custom_field)
+        update_sidebar_component
+      else
+        update_widgets_component
+      end
     else
       handle_errors(service_call.result, @custom_field)
     end
@@ -63,6 +73,16 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
   end
 
   private
+
+  def process_hierarchy_params
+    values = params.dig(:project, :custom_field_values)
+
+    ids = Array(values).reject(&:empty?).map do |value|
+      MultiJson.load(value, symbolize_keys: true)[:value]
+    end
+
+    params[:project][:custom_field_values] = { @custom_field.id.to_s => ids.one? ? ids.first : ids }
+  end
 
   def find_project_custom_field
     @custom_field = @project.available_custom_fields.find(params[:id])
@@ -81,5 +101,15 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
     update_via_turbo_stream(
       component: Overviews::ProjectCustomFields::SidePanelComponent.new(project: @project)
     )
+  end
+
+  def update_widgets_component
+    update_via_turbo_stream(
+      component: Grids::ProjectAttributeWidgets.new(@project)
+    )
+  end
+
+  def field_shown_in_sidebar?(custom_field)
+    CustomFieldSection.find(custom_field.custom_field_section_id).shown_in_overview_sidebar?
   end
 end

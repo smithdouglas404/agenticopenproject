@@ -99,7 +99,7 @@ module CustomFieldsHelper
                         id: field_id,
                         multiple: custom_field.multi_value?,
                         include_blank: I18n.t(:label_no_change_option))
-    when "hierarchy", "scored_list"
+    when "hierarchy", "weighted_item_list"
       base_options = []
       result = CustomFields::Hierarchy::HierarchicalItemService.new
         .get_descendants(item: custom_field.hierarchy_root, include_self: false)

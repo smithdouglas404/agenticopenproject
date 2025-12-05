@@ -33,6 +33,7 @@ module Admin
     module Hierarchy
       class ChangeItemParentDialogComponent < ApplicationComponent
         include OpTurbo::Streamable
+        include CustomFieldHierarchyTreeViewHelper
 
         TEST_SELECTOR = "op-custom-fields--change-item-parent-dialog"
 
@@ -49,31 +50,14 @@ module Admin
         def form_arguments
           {
             id: form_id,
-            url: change_parent_custom_field_item_path(custom_field_id: @custom_field.id, id: @hierarchy_item.id),
+            url:,
             model: form_model,
             method: :post
           }
         end
 
-        def hierarchy_items
-          hashed_hierarchy = @custom_field.hierarchy_root.hash_tree
-          hashed_hierarchy.keys.first.label = @custom_field.name
-
-          hashed_hierarchy
-        end
-
-        def add_sub_tree(tree, hierarchy_hash)
-          hierarchy_hash.each do |item, child_hash|
-            if child_hash.empty?
-              tree.with_leaf(**item_options(item))
-            else
-              expanded = current?(item) || child_hash.any? { |child, _| current?(child) }
-
-              tree.with_sub_tree(expanded:, **item_options(item)) do |sub_tree|
-                add_sub_tree(sub_tree, child_hash)
-              end
-            end
-          end
+        def hierarchy_service
+          @hierarchy_service ||= ::CustomFields::Hierarchy::HierarchicalItemService.new
         end
 
         private
@@ -82,22 +66,13 @@ module Admin
           CustomField::Hierarchy::Forms::NewParentFormModel.new(new_parent: [])
         end
 
-        def item_options(item)
-          {
-            label: item.label,
-            current: current?(item),
-            value: item.id,
-            select_variant: :single,
-            disabled: disabled?(item)
-          }
-        end
-
-        def current?(item)
-          item.id == @hierarchy_item.id
-        end
-
-        def disabled?(item)
-          item.id == @hierarchy_item.id || item.id == @hierarchy_item.parent.id
+        def url
+          if @custom_field.is_a?(ProjectCustomField)
+            change_parent_admin_settings_project_custom_field_item_path(project_custom_field_id: @custom_field.id,
+                                                                        id: @hierarchy_item.id)
+          else
+            change_parent_custom_field_item_path(custom_field_id: @custom_field.id, id: @hierarchy_item.id)
+          end
         end
       end
     end

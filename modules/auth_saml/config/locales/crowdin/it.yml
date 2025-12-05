@@ -56,7 +56,7 @@ it:
       label_mapping: Mappatura
       label_requested_attribute_for: "Attributo richiesto per: %{attribute}"
       no_results_table: Nessun fornitore di identità SAML è stato ancora definito.
-      notice_created: A new SAML identity provider was successfully created.
+      notice_created: È stato creato con successo un nuovo provider di identità SAML.
       plural: Fornitori di identità SAML
       singular: Fornitore di identità SAML
       requested_attributes: Attributi richiesti
@@ -111,7 +111,7 @@ it:
       idp_sso_service_url: >
         L'URL dell'endpoint di login del fornitore di identità.
       idp_slo_service_url: >
-        L'URL dell'endpoint di login del fornitore di identità.
+        The URL of the identity provider logout endpoint.
       idp_cert: >
         Inserisca il certificato pubblico in formato X509 PEM del fornitore di identità. Puoi inserire più certificati separandoli su righe diverse.
       name_identifier_format: >

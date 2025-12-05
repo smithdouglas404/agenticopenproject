@@ -244,6 +244,11 @@ is expected to be named `groups`, but you can change this if desired.
 The default behaviour of OpenProject is to create a new group for each unknown group listed in this claim. It will match existing groups by their name before creating a new group. You can later rename groups created this way in the group management UI, they will still be linked
 to the ID with which they are referenced in OpenID Connect claims and recognized that way.
 
+Once this option is enabled, the identity provider becomes fully responsible for managing group assignments. Each time a user logs in through this provider, only the group memberships declared by the identity provider will be assigned to that user. Any group memberships not declared by the identity provider will be removed.
+
+> [!IMPORTANT]
+> There are no exceptions — even if a different assignment was previously configured in OpenProject, it will be overwritten if it is not set in the identity provider.
+
 ##### Matching groups with regular expressions
 
 For advanced use cases, it's possible to filter which groups will be imported into OpenProject and which part of the group name will be considered.
@@ -445,7 +450,7 @@ OPENPROJECT_OPENID__CONNECT_KEYCLOAK_USERINFO__ENDPOINT="/realms/<REALM>/protoco
 OPENPROJECT_OPENID__CONNECT_KEYCLOAK_END__SESSION__ENDPOINT="http://keycloak.example.com/realms/<REALM>/protocol/openid-connect/logout"
 
 # Optional: space separated list of grant types supported by the provider
-OPENPROJECT_OPENID__CONNECT_KEYCLOAK_GRANT_TYPES_SUPPORTED="authorization_code urn:ietf:params:oauth:grant-type:token-exchange"
+OPENPROJECT_OPENID__CONNECT_KEYCLOAK_GRANT__TYPES__SUPPORTED="authorization_code urn:ietf:params:oauth:grant-type:token-exchange"
 
 # Host name of Keycloak, required if endpoint information are not absolute URLs
 OPENPROJECT_OPENID__CONNECT_KEYCLOAK_HOST="<Hostname of the keycloak server>"

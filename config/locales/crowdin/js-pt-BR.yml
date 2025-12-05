@@ -296,12 +296,13 @@ pt-BR:
       warning: "Não compartilhe este URL com outros usuários. Qualquer pessoa com este link poderá visualizar os detalhes do pacote de trabalho sem uma conta ou senha."
       token_name_label: "Onde você usará isto?"
       token_name_placeholder: 'Digite um nome, por ex.: "Telefone"'
-      token_name_description_text: 'Se você assinar este calendário em vários dispositivos, este nome ajudará na distinção entre eles em sua lista de <a href="my/access_token", target="_blank">tokens de acesso</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copiar URL"
       ical_generation_error_text: "Ocorreu um erro ao gerar o URL do calendário."
       success_message: 'O URL "%{name}" foi copiado com sucesso para sua área de transferência. Cole-o em seu cliente de calendário para concluir a assinatura.'
     label_activate: "Ativar"
     label_assignee: "Atribuído para"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Adicionar coluna depois"
     label_add_column_before: "Adicionar coluna antes"
     label_add_columns: "Adicionar colunas"
@@ -1125,6 +1126,7 @@ pt-BR:
       current_project_and_all_descendants: "Neste projeto + subprojetos"
       current_project: "Neste projeto"
       recently_viewed: "Visualizado recentemente"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "todos os projetos"
         project_and_subprojects: "e todos os subprojetos"
@@ -1161,6 +1163,11 @@ pt-BR:
         does_not_match_search: "O projeto não corresponde ao critério de pesquisa"
       no_results: "Nenhum projeto corresponde ao seu critério de busca."
       no_favorite_results: "Nenhum projeto favorito corresponde aos seus critérios de busca."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Linha base"
       clear: "Remover"

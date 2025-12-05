@@ -46,9 +46,7 @@ RSpec.describe "Upload attachment to documents",
            member_with_permissions: { project => %i[view_documents] },
            notification_settings: [build(:notification_setting, all: true)])
   end
-  let!(:category) do
-    create(:document_category)
-  end
+  let!(:document_type) { create(:document_type, :experimental) }
   let(:project) { create(:project) }
   let(:attachments) { Components::Attachments.new }
   let(:image_fixture) { UploadedFile.load_from("spec/fixtures/files/image.png") }
@@ -57,6 +55,11 @@ RSpec.describe "Upload attachment to documents",
 
   before do
     login_as(user)
+
+    # This is here while we don't have a setting defined for enabling/disabling collaboration
+    # rubocop:disable RSpec/AnyInstance
+    allow_any_instance_of(Primer::OpenProject::Forms::BlockNoteEditor).to receive(:collaboration_enabled).and_return(false)
+    # rubocop:enable RSpec/AnyInstance
   end
 
   shared_examples "can upload an image in CKEditor" do
@@ -65,7 +68,7 @@ RSpec.describe "Upload attachment to documents",
 
       expect(page).to have_css('[data-test-selector="new-document"]', wait: 10)
       SeleniumHubWaiter.wait
-      select(category.name, from: "Category")
+      select(document_type.name, from: "Type")
       fill_in "Title", with: "New documentation"
 
       # adding an image via the attachments-list
@@ -154,18 +157,13 @@ RSpec.describe "Upload attachment to documents",
     it "is possible to upload attachments from the editor" do
       expect(page).to have_no_css("img[alt='image.png']")
       editor.open_add_image_dialog
+
       expect do
         attach_file(image_fixture.path, make_visible: true) do
           find(:button, text: "Upload image").click
         end
         expect(page).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
       end.to change { document.attachments.count }.by(1)
-
-      click_on "Save"
-      expect_flash(message: "Successful update.")
-
-      visit edit_document_path(document)
-      expect(page).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
     end
   end
 
@@ -186,13 +184,42 @@ RSpec.describe "Upload attachment to documents",
     end
   end
 
+  shared_examples "with attachments list in the sidebar" do
+    it "is possible to upload attachments from the sidebar" do
+      expect(page).to have_no_content("image.png")
+      expect do
+        attachments_list.drag_enter
+        attachments_list.drop(image_fixture.path)
+        expect(page).to have_no_css("op-toast") # wait for upload to finish
+        attachments_list.expect_attached("image.png")
+      end.to change { document.attachments.count }.by(1)
+    end
+
+    context "when an attachment is present" do
+      let!(:attachment) { create(:attachment, filename: "test.jpg", container: document) }
+
+      before do
+        visit document_path(document)
+      end
+
+      it "is possible to delete attachments from the sidebar" do
+        attachments_list.expect_attached("test.jpg")
+        expect do
+          attachments_list.delete("test.jpg")
+          attachments_list.expect_empty
+        end.to change { document.attachments.count }.by(-1)
+      end
+    end
+  end
+
   context "for collaborative documents", with_flag: { block_note_editor: true } do
-    let(:experimental_category) { create(:document_category, name: "Experimental", project:) }
-    let(:document) { create(:document, category: experimental_category, project:) }
+    let(:document) { create(:document, project:) }
     let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
+    let(:attachments_list) { Components::AttachmentsList.new }
 
     before do
-      visit edit_document_path(document)
+      DocumentType.destroy_all
+      visit document_path(document)
       expect(page).to have_css(".document-form--long-description") # rubocop:disable RSpec/ExpectInHook
       expect(page).not_to have_element("opce-ckeditor-augmented-textarea") # rubocop:disable RSpec/ExpectInHook
     end
@@ -200,11 +227,13 @@ RSpec.describe "Upload attachment to documents",
     context "with internal uploads" do
       it_behaves_like "can upload an image in BlockNote"
       it_behaves_like "with non-whitelisted file types"
+      it_behaves_like "with attachments list in the sidebar"
     end
 
     context "with uploads to an external storage", :with_direct_uploads do
       it_behaves_like "can upload an image in BlockNote"
       it_behaves_like "with non-whitelisted file types"
+      it_behaves_like "with attachments list in the sidebar"
     end
   end
 end

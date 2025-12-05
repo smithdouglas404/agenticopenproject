@@ -52,7 +52,24 @@ module Redmine
              validate: false,
              autosave: true
 
-          validation_options = options[:validate_on] ? { on: options[:validate_on] } : {}
+          validation_options = {}
+
+          if options[:validate_on]
+            validation_options[:on] = options[:validate_on]
+          end
+
+          if options[:validate_except_on]
+            validation_options[:except_on] = options[:validate_except_on]
+          end
+
+          if options[:validate_if]
+            validation_options[:if] = options[:validate_if]
+          end
+
+          if options[:validate_unless]
+            validation_options[:unless] = options[:validate_unless]
+          end
+
           validate :validate_custom_values, **validation_options
           send :include, Redmine::Acts::Customizable::InstanceMethods
 
@@ -162,19 +179,20 @@ module Redmine
           custom_field_values.reject(&:admin_only?)
         end
 
-        def custom_value_for(c)
-          field_id = (c.is_a?(CustomField) ? c.id : c.to_i)
-          values = custom_field_values.select { |v| v.custom_field_id == field_id }
+        def custom_value_for(custom_field)
+          raise ArgumentError, "Expected a CustomField, got #{custom_field.class}" unless custom_field.is_a?(CustomField)
 
-          if values.size > 1
+          values = custom_field_values.select { |v| v.custom_field_id == custom_field.id }
+
+          if custom_field.multi_value?
             values.sort_by { |v| v.id.to_i } # need to cope with nil
           else
             values.first
           end
         end
 
-        def typed_custom_value_for(c)
-          cvs = custom_value_for(c)
+        def typed_custom_value_for(custom_field)
+          cvs = custom_value_for(custom_field)
 
           case cvs
           when Array
@@ -186,8 +204,8 @@ module Redmine
           end
         end
 
-        def formatted_custom_value_for(c)
-          cvs = custom_value_for(c)
+        def formatted_custom_value_for(custom_field)
+          cvs = custom_value_for(custom_field)
 
           case cvs
           when Array
@@ -223,11 +241,7 @@ module Redmine
         end
 
         def custom_values_to_validate
-          if persisted?
-            @custom_values_to_validate ||= []
-          else
-            custom_field_values
-          end
+          @custom_values_to_validate ||= persisted? ? [] : custom_field_values
         end
 
         def custom_values_to_validate=(custom_values)
@@ -237,7 +251,7 @@ module Redmine
         def validate_custom_values
           custom_values_to_validate
             .uniq
-            .reject(&:marked_for_destruction?)
+            .reject { |cv| cv.marked_for_destruction? || cv.calculated_value? }
             .select(&:invalid?)
             .each { |custom_value| add_custom_value_errors! custom_value }
         end
@@ -246,24 +260,31 @@ module Redmine
           self.custom_values_to_validate = custom_field_values
         end
 
+        def deactivate_custom_field_validations!
+          self.custom_values_to_validate = []
+        end
+
         # Build the changes hash similar to ActiveRecord::Base#changes,
         # but for the custom field values that have been changed.
-        def custom_field_changes
-          custom_field_values.reduce({}) do |cfv_changes, cfv|
-            next cfv_changes unless cfv.changed?
+        def custom_field_changes # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+          all_fields_grouped = custom_field_values.group_by(&:custom_field)
 
-            # In order to construct a valid changes hash, we need to find the old value if it exists.
-            # Otherwise, set it to nil.
-            cfv_was = custom_value_was_for(cfv)
-            value_was = cfv_was&.value
+          all_fields_grouped.each_with_object({}) do |(custom_field, new_custom_field_values), changes|
+            old_value = custom_value_was_for(custom_field)
+
+            # Skip when only setting the default value
+            next if old_value.blank? && new_custom_field_values.all?(&:default?)
+
+            new_value = if custom_field.multi_value?
+                          new_custom_field_values.filter_map(&:value).sort
+                        else
+                          new_custom_field_values.first&.value
+                        end
 
             # Skip when the old value equals the new value (no change happened).
-            next cfv_changes if value_was == cfv.value
+            next if old_value == new_value
 
-            # Skip when the new value is the default value
-            next cfv_changes if value_was.nil? && cfv.default?
-
-            cfv_changes.merge("custom_field_#{cfv.custom_field_id}" => [value_was, cfv.value])
+            changes["custom_field_#{custom_field.id}"] = [old_value, new_value]
           end
         end
 
@@ -271,10 +292,17 @@ module Redmine
           changed + custom_field_changes.keys
         end
 
-        def custom_value_was_for(custom_value)
-          custom_values.find do |cv|
-            cv.marked_for_destruction? &&
-            cv.custom_field_id == custom_value.custom_field_id
+        def custom_value_was_for(custom_field)
+          if custom_field.multi_value?
+            all_old_custom_field_values(custom_field).filter_map(&:value).sort
+          else
+            all_old_custom_field_values(custom_field).first&.value
+          end
+        end
+
+        def all_old_custom_field_values(custom_field)
+          custom_values.select do |cv|
+            (cv.marked_for_destruction? || !cv.new_record?) && cv.custom_field_id == custom_field.id
           end
         end
 
@@ -378,7 +406,7 @@ module Redmine
         def define_custom_field_getter(custom_field)
           define_singleton_method custom_field.attribute_getter do
             custom_values = Array(custom_value_for(custom_field)).map do |custom_value|
-              custom_value ? custom_value.typed_value : nil
+              custom_value&.typed_value
             end
 
             if custom_field.multi_value?

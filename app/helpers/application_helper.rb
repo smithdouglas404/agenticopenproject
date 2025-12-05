@@ -333,16 +333,6 @@ module ApplicationHelper
     theme_options
   end
 
-  def highlight_default_language(lang_options)
-    lang_options.map do |(language_name, code)|
-      if code == Setting.default_language
-        [I18n.t("settings.language_name_being_default", language_name:), code, { disabled: true, checked: true }]
-      else
-        [language_name, code]
-      end
-    end
-  end
-
   def labelled_tabular_form_for(record, options = {}, &)
     options.reverse_merge!(builder: TabularFormBuilder, html: {})
     options[:html][:class] = "form" unless options[:html].has_key?(:class)
@@ -361,15 +351,15 @@ module ApplicationHelper
     hidden_field_tag("back_url", CGI.escape(back_url), id: nil) if back_url.present?
   end
 
-  def back_url_to_current_page_hidden_field_tag
-    back_url = params[:back_url]
+  def back_url_to_current_page
+    back_url = params[:back_url] if params.present?
     if back_url.present?
       back_url = back_url.to_s
-    elsif request.get? and params.present?
+    elsif request.get? && params.present?
       back_url = request.url
     end
 
-    hidden_field_tag("back_url", back_url) if back_url.present?
+    back_url
   end
 
   def check_all_links(form_name)
@@ -452,10 +442,10 @@ module ApplicationHelper
     end
   end
 
-  # To avoid the menu flickering, disable it
-  # by default unless we're in test mode
-  def initial_menu_styles(side_displayed)
-    Rails.env.test? || !side_displayed ? "" : "display:none"
+  # To avoid FOUC (menu flickering / dark mode on logout), hide page
+  # wrapper on load except in test environment.
+  def initial_menu_styles
+    Rails.env.test? || "display:none"
   end
 
   def initial_menu_classes(side_displayed, show_decoration)
@@ -476,21 +466,6 @@ module ApplicationHelper
 
   def permitted_params
     PermittedParams.new(params, current_user)
-  end
-
-  # Returns the language name in its own language for a given locale
-  #
-  # @param lang_code [String] the locale for the desired language, like `en`,
-  #   `de`, `fil`, `zh-CN`, and so on.
-  # @return [String] the language name translated in its own language
-  def translate_language(lang_code)
-    # rename in-context translation language name for the language select box
-    if lang_code.to_sym == Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE &&
-      ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
-      [Redmine::I18n::IN_CONTEXT_TRANSLATION_NAME, lang_code.to_s]
-    else
-      [I18n.t("cldr.language_name", locale: lang_code), lang_code.to_s]
-    end
   end
 
   def link_to_content_update(name, options = {}, html_options = {}, &)

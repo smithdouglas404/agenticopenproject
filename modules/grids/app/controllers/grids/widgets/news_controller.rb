@@ -29,4 +29,9 @@
 #++
 
 class Grids::Widgets::NewsController < Grids::WidgetController
+  # skip authorization check as it would lead to a 403 if news module is
+  # disabled. When loaded through turbo, this causes the page to display a full
+  # 403 error page.
+  skip_before_action :load_and_authorize_in_optional_project
+  before_action :find_optional_project
 end

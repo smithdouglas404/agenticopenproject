@@ -34,6 +34,11 @@ module API
       include API::Decorators::Sql::Hal
 
       class << self
+        # Implementing same interface as API::Decorators::Single, but not asking for any external eagerloading,
+        # since this class generates its own SQL.
+        def to_eager_load = []
+        def to_preload = []
+
         def ctes(walker_result)
           cte = {
             projection: walker_result.projection_scope

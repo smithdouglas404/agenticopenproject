@@ -369,8 +369,8 @@ class User < Principal
 
   # Does the backend storage allow this user to change their password?
   def change_password_allowed?
-    return false if uses_external_authentication? ||
-      OpenProject::Configuration.disable_password_login?
+    return false if OpenProject::Configuration.disable_password_login?
+    return false if uses_external_authentication? && current_password.nil?
 
     ldap_auth_source_id.blank?
   end
@@ -542,6 +542,30 @@ class User < Principal
     OpenProject::LocaleHelper.with_locale_for(user, &)
   ensure
     User.current = previous_user
+  end
+
+  # Temporarily elevates a user's permissions to admin for the duration
+  # of the given block.
+  #
+  # This method ensures that any changes to the user's admin status are
+  # safely reverted after the block is executed, regardless of whether
+  # an exception is raised within the block.
+  #
+  # Saving of the user is attempted to be prevented but this might not be foolproof.
+  # Saving the user within the block should be avoided to prevent undesired side effects.
+  #
+  # @param user [User] The user that requires temporary admin elevation.
+  def self.execute_as_admin(user)
+    previous_user_admin_state = user.admin
+    previous_user_readonly_state = user.readonly?
+    user.admin = true
+    user.reset_permission_caches
+    user.readonly!
+    yield
+  ensure
+    user.admin = previous_user_admin_state
+    user.reset_permission_caches
+    user.instance_variable_set(:@readonly, previous_user_readonly_state)
   end
 
   ##

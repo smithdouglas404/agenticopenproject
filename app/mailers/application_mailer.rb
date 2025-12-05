@@ -45,6 +45,38 @@ class ApplicationMailer < ActionMailer::Base
   default from: Proc.new { Setting.mail_from }
 
   class << self
+    ##
+    # Provide an easy way to get the default from address
+    # which is overridden for SaaS for tenant specific from addresses
+    #
+    # @return [String] the default from address
+    def mail_from
+      default[:from].call
+    end
+
+    ##
+    # Provide an easy way to get the default reply_to address
+    # which is overridden for SaaS for tenant specific from addresses
+    #
+    # @return [String] the default from address
+    def reply_to
+      if default[:reply_to]
+        default[:reply_to].call
+      else
+        mail_from
+      end
+    end
+
+    ##
+    # Return the email address of reply to
+    #
+    # @return [String] the default from address
+    def reply_to_address
+      address = reply_to
+      # Extract email from "Name <email>" format if present
+      address[/<(.+)>/, 1] || address
+    end
+
     def host
       if OpenProject::Configuration.rails_relative_url_root.blank?
         Setting.host_name
@@ -53,9 +85,7 @@ class ApplicationMailer < ActionMailer::Base
       end
     end
 
-    def protocol
-      Setting.protocol
-    end
+    delegate :protocol, to: :Setting
 
     def default_url_options
       options = super.merge(host:, protocol:)
@@ -178,7 +208,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def header_host_value
-    host = Setting.mail_from.to_s.gsub(%r{\A.*@}, "")
+    host = ApplicationMailer.mail_from.to_s.gsub(%r{\A.*@}, "")
     host = "#{::Socket.gethostname}.openproject" if host.empty?
     host
   end

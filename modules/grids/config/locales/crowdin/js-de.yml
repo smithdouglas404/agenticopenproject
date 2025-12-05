@@ -52,6 +52,7 @@ de:
           title: 'Arbeitspaket-Tabelle'
         work_packages_graph:
           title: 'Arbeitspaket-Graph'
+          summary: "%{chartType} Tabelle mit Arbeitspaketen, die %{description} sind."
         work_packages_calendar:
           title: 'Kalender'
         work_packages_overview:

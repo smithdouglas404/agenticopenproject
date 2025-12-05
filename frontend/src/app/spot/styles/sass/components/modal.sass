@@ -17,7 +17,7 @@
   max-width: calc(100vw - 2rem)
   max-height: calc(#{var(--app-height)} - 2rem)
 
-  @media #{$spot-mq-mobile}
+  @media screen and (max-width: $breakpoint-sm)
     width: calc(100vw - 2rem)
     max-height: calc(#{var(--app-height)} - 5rem)
     overflow-y: auto
@@ -30,8 +30,13 @@
     width: 60rem
     min-height: 40vh
 
+  &_auto-size
+    @media screen and (min-width: $breakpoint-sm)
+      width: auto
+      min-height: auto
+
   &_full-screen-when-narrow
-    @media #{$spot-mq-mobile}
+    @media screen and (max-width: $breakpoint-sm)
       width: 100dvw
       height: 100dvh
       max-height: unset

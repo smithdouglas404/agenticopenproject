@@ -296,12 +296,13 @@ ro:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copiază URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'URL-ul "%{name}" a fost copiat cu succes în clipboard-ul tău. Lipiți-l în clientul calendar pentru a finaliza abonamentul.'
     label_activate: "Activează"
     label_assignee: "Executant"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Adaugă coloană după"
     label_add_column_before: "Adaugă coloană înainte"
     label_add_columns: "Adaugă coloane"
@@ -1129,6 +1130,7 @@ ro:
       current_project_and_all_descendants: "In acest proiect + subproiecte"
       current_project: "În acest proiect"
       recently_viewed: "Vizualizate recent"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "toate proiectele"
         project_and_subprojects: "si toate subproiectele"
@@ -1165,6 +1167,11 @@ ro:
         does_not_match_search: "Proiectul nu corespunde criteriilor de căutare."
       no_results: "Niciun proiect nu corespunde criteriilor de căutare."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Referință"
       clear: "Șterge"

@@ -87,9 +87,13 @@ RSpec.describe "Global role: Global Create project",
       projects_page.visit!
       projects_page.create_new_workspace
 
+      # Step 1: Select workspace type (blank project)
+      click_on "Continue"
+
+      # Step 2: Fill in project details
       fill_in "Name", with: "New project name"
 
-      click_on "Create"
+      click_on "Complete"
 
       expect(page).to have_current_path "/projects/new-project-name"
     end

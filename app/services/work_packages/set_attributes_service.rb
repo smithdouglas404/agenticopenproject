@@ -299,9 +299,16 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
     # Better return and keep dates unified to have only one meaningful error.
     return if work_package_now_milestone?
 
-    # do a reschedule call to get the work package dates from the rescheduled children
+    # do a reschedule call to get the work package dates from the (potentially)
+    # rescheduled children.
+    #
+    # This happens for instance when a work package with a child gets a new
+    # parent having a predecessor. If the child is in automatic mode, it could
+    # be forced to move to a date after the grandparent's predecessor, forcing
+    # the parent to also move to the same dates. These dates are known only
+    # after the child is properly rescheduled.
     service = WorkPackages::SetScheduleService.new(user: User.current, work_package:, switching_to_automatic_mode: [work_package])
-    service.call(work_package.changes.keys.map(&:to_sym)).result
+    service.call(work_package.changed_attribute_keys).result
   end
 
   def update_dates_from_self

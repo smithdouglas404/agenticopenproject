@@ -30,10 +30,9 @@
 
 require "spec_helper"
 
-RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: {
-  calculated_value_project_attribute: true,
-  scored_list_custom_fields: true
-} do
+RSpec.describe ActsAsCustomizable::CalculatedValue,
+               with_ee: %i[calculated_values],
+               with_flag: { calculated_value_project_attribute: true } do
   using CustomFieldFormulaReferencing
   include CalculatedValues::ErrorsHelper
 
@@ -385,10 +384,10 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: {
       end
     end
 
-    context "when using scored lists" do
-      let(:cf_list) { build_stubbed(:scored_list_project_custom_field) }
+    context "when using weighted item lists" do
+      let(:cf_list) { build_stubbed(:weighted_item_list_project_custom_field) }
       let(:cf1) { build_stubbed(:calculated_value_project_custom_field) }
-      let(:hierarchy_item) { create(:hierarchy_item, score: 7) }
+      let(:hierarchy_item) { create(:hierarchy_item, weight: 7) }
 
       let(:enabled_custom_field_ids) { [cf_list, cf1].map(&:id) }
       let(:custom_field_values) do
@@ -405,7 +404,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: {
         end
       end
 
-      it "calculates values using the score of the selected entry" do
+      it "calculates values using the weight of the selected entry" do
         instance.calculate_custom_fields([cf1])
         expect(instance).to have_received(:custom_field_values=)
                               .with(cf1.id => 2 * 7).once

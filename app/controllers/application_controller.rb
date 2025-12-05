@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
   include Accounts::UserLogin
   include Accounts::Authorization
   include Accounts::EnterpriseGuard
-  include ::OpenProject::Authentication::SessionExpiry
+  include ::OpenProject::Authentication::SessionExpiration
   include AdditionalUrlHelpers
   include OpenProjectErrorHelper
   include Security::DefaultUrlOptions
@@ -258,6 +258,8 @@ class ApplicationController < ActionController::Base
   # Find project by project_id if given
   def find_optional_project
     @project = Project.find(params[:project_id]) if params[:project_id].present?
+  rescue ActiveRecord::RecordNotFound
+    render_404
   end
 
   # Finds and sets @project based on @object.project

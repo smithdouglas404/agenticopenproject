@@ -52,6 +52,7 @@ pl:
           title: 'Tabela pakietów roboczych'
         work_packages_graph:
           title: 'Wykres pakietów roboczych'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Kalendarz'
         work_packages_overview:

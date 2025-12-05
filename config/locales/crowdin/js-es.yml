@@ -297,12 +297,13 @@ es:
       warning: "No comparta esta URL con otros usuarios. Cualquiera que tenga este enlace podrá ver los detalles del paquete de trabajo sin necesidad de una cuenta o contraseña."
       token_name_label: "¿Dónde lo utilizará?"
       token_name_placeholder: 'Escriba un nombre, por ejemplo «Teléfono».'
-      token_name_description_text: 'Si se suscribe a este calendario desde varios dispositivos, este nombre le ayudará a distinguirlos en su lista de <a href="my/access_token", target="_blank">tokens de acceso</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copiar URL"
       ical_generation_error_text: "Se ha producido un error al generar la URL del calendario."
       success_message: 'La URL «%{name}» se ha copiado correctamente en su portapapeles. Péguela en su cliente de calendario para completar la suscripción.'
     label_activate: "Activar"
     label_assignee: "Asignado a"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Añadir columna a la derecha"
     label_add_column_before: "Añadir columna a la izquierda"
     label_add_columns: "Añadir columnas"
@@ -1126,6 +1127,7 @@ es:
       current_project_and_all_descendants: "En este proyecto + subproyectos"
       current_project: "En este proyecto"
       recently_viewed: "Vistos recientemente"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "todos los proyectos"
         project_and_subprojects: "y todos los subproyectos"
@@ -1136,7 +1138,7 @@ es:
       timeline: "Gantt"
     invite_user_modal:
       invite: "Invitar"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "Crear usuario de marcador de posición"
     exclusion_info:
       modal:
         title: "Estado excluido de los totales de jerarquía"
@@ -1162,6 +1164,11 @@ es:
         does_not_match_search: "El proyecto no coincide con los criterios de búsqueda."
       no_results: "Ningún producto coincide con tu criterio de búsqueda"
       no_favorite_results: "Ningún proyecto favorito coincide con sus criterios de búsqueda."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Referencia"
       clear: "Despejar"

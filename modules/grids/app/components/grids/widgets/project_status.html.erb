@@ -38,6 +38,12 @@ See COPYRIGHT and LICENSE files for more details.
         flex.with_row do
           format_text(project, :status_explanation)
         end
+
+        if project.project_creation_wizard_enabled
+          flex.with_row(mt: 2) do
+            render(Projects::CreationWizardStatusComponent.new(project:, current_user:))
+          end
+        end
       end
     end
   end

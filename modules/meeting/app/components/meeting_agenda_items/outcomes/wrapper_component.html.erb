@@ -1,6 +1,6 @@
 <%=
   component_wrapper do
-    flex_layout(classes: "gap-2") do |flex|
+    flex_layout(pt: 2, classes: "gap-2") do |flex|
       outcomes.each.with_index do |outcome, i|
         flex.with_row do
           render(MeetingAgendaItems::Outcomes::OutcomeComponent.new(meeting_outcome: outcome, index: i))

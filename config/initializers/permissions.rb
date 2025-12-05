@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -35,23 +35,47 @@ Rails.application.reloader.to_prepare do
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     contract_actions: { projects: %i[create] }
+                     contract_actions: { projects: %i[create] },
+                     dependencies: :add_project_from_template
 
       map.permission :add_portfolios,
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     contract_actions: { portfolios: %i[create] },
+                     dependencies: :add_portfolios_from_template
 
       map.permission :add_programs,
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     contract_actions: { programs: %i[create] },
+                     dependencies: :add_programs_from_template
+
+      map.permission :add_project_from_template,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? },
+                     contract_actions: { projects: %i[create] }
+
+      map.permission :add_portfolios_from_template,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? }
+
+      map.permission :add_programs_from_template,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? }
 
       map.permission :archive_project,
                      {
-                       "projects/archive": %i[create]
+                       "projects/archive": %i[create dialog]
                      },
                      permissible_on: :project,
                      require: :member
@@ -112,7 +136,7 @@ Rails.application.reloader.to_prepare do
                      require: :loggedin
 
       map.permission :view_project,
-                     { projects: [:show] },
+                     { projects: %i[show] },
                      permissible_on: :project,
                      public: true
 
@@ -127,6 +151,12 @@ Rails.application.reloader.to_prepare do
                        "projects/settings/storage": %i[show],
                        "projects/settings/work_packages": %i[show],
                        "projects/settings/work_packages/internal_comments": %i[show update],
+                       "projects/settings/creation_wizard": %i[show disable_dialog toggle refresh_submission_form
+                                                               update_name_settings update_submission_settings
+                                                               update_artifact_export_settings
+                                                               toggle_project_custom_field
+                                                               disable_all_of_section enable_all_of_section],
+                       "projects/settings/subitems": %i[show update],
                        "projects/templated": %i[create destroy],
                        "projects/identifier": %i[show update],
                        "projects/status": %i[update destroy]
@@ -147,8 +177,17 @@ Rails.application.reloader.to_prepare do
                      permissible_on: :project,
                      dependencies: :view_project
 
+      map.permission :export_projects,
+                     {
+                       projects: %i[export_list_modal export_project_initiation_pdf]
+                     },
+                     permissible_on: :project,
+                     dependencies: :view_project
+
       map.permission :edit_project_attributes,
-                     {},
+                     {
+                       "projects/creation_wizard": %i[show update help_text]
+                     },
                      permissible_on: :project,
                      require: :member,
                      dependencies: :view_project_attributes,
@@ -290,7 +329,8 @@ Rails.application.reloader.to_prepare do
 
       wpt.permission :add_work_packages,
                      {
-                       work_package_relations: %i[new create]
+                       work_package_relations: %i[new create],
+                       work_packages: %i[new]
                      },
                      permissible_on: :project,
                      dependencies: :view_work_packages,
@@ -313,7 +353,10 @@ Rails.application.reloader.to_prepare do
                      contract_actions: { work_packages: %i[move] }
 
       wpt.permission :copy_work_packages,
-                     { "work_packages/moves": %i[new create] },
+                     {
+                       "work_packages/moves": %i[new create],
+                       work_packages: %i[copy]
+                     },
                      permissible_on: %i[work_package project],
                      require: :loggedin,
                      dependencies: :view_work_packages,

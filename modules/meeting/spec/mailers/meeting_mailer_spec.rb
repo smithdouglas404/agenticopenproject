@@ -72,7 +72,7 @@ RSpec.describe MeetingMailer do
       expect(mail.subject).to include(meeting.project.name)
       expect(mail.subject).to include(meeting.title)
       expect(mail.to).to contain_exactly(watcher1.mail)
-      expect(mail.from).to eq([Setting.mail_from])
+      expect(mail.from).to eq([ApplicationMailer.reply_to_address])
     end
 
     it "renders the text body" do
@@ -164,7 +164,7 @@ RSpec.describe MeetingMailer do
       expect(mail.subject).to include(meeting.project.name)
       expect(mail.subject).to include(meeting.title)
       expect(mail.to).to contain_exactly(watcher1.mail)
-      expect(mail.from).to eq([Setting.mail_from])
+      expect(mail.from).to eq([ApplicationMailer.reply_to_address])
     end
 
     describe "text body" do
@@ -214,7 +214,7 @@ RSpec.describe MeetingMailer do
       expect(mail.subject).to include(meeting.project.name)
       expect(mail.subject).to include(meeting.title)
       expect(mail.to).to contain_exactly(author.mail)
-      expect(mail.from).to eq([Setting.mail_from])
+      expect(mail.from).to eq([ApplicationMailer.reply_to_address])
     end
 
     describe "text body" do

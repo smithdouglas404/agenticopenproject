@@ -88,6 +88,10 @@ export class ConfigurationService {
     return this.systemPreference('maximumAttachmentFileSize');
   }
 
+  public get maximumApiV3PageSize():number {
+    return this.systemPreference('maximumAPIV3PageSize');
+  }
+
   public get perPageOptions():number[] {
     return this.systemPreference('perPageOptions');
   }

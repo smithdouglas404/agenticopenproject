@@ -43,10 +43,11 @@ RSpec.describe "Role updating", :js do
     it "allows removing permissions" do
       expect do
         visit edit_role_path(role)
-        uncheck "Create project"
+        uncheck "Create projects", exact: true
 
         click_button "Save"
 
+        expect_and_dismiss_flash(message: "Successful update.")
         role.reload
       end
         .to change(role, :permissions)

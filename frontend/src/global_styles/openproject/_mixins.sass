@@ -222,8 +222,9 @@ $scrollbar-size: 10px
     padding-bottom: 0
 
 @mixin extended-content--top
-  #content-body
-    padding-top: 0
+  @media screen and (min-width: $breakpoint-sm)
+    #content-body
+      padding-top: 0
 
 @mixin extended-content--left
   #content-body,
@@ -387,3 +388,9 @@ $scrollbar-size: 10px
   @media (hover: hover)
     &:hover
       border-color: var(--borderColor-default) !important
+
+@mixin line-clamp($value)
+  display: -webkit-box
+  -webkit-line-clamp: $value
+  -webkit-box-orient: vertical
+  overflow: hidden
