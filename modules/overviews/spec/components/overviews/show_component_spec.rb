@@ -151,4 +151,24 @@ RSpec.describe Overviews::ShowComponent, type: :component do
       end
     end
   end
+
+  context "when checking news widget visibility", with_flag: { new_project_overview: true } do
+    let(:user) { create(:admin) }
+
+    context "when the news module is enabled" do
+      let(:project) { build(:project, enabled_module_names: %w(news)) }
+
+      it "renders the news widget" do
+        expect(rendered_component).to have_css("#grids-widgets-news-box")
+      end
+    end
+
+    context "when the news module is disabled" do
+      let(:project) { create(:project, enabled_module_names: []) }
+
+      it "does not render the news widget" do
+        expect(rendered_component).to have_no_css("#grids-widgets-news-box")
+      end
+    end
+  end
 end
