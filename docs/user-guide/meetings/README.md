@@ -104,7 +104,7 @@ You will be guided through creating an iCal subscription token:
 
 2. Copy the generated iCal meeting subscription URL. This URL is shown only once and allows anyone with it to view your meetings.
 
-![](openproject_userguide_meetings_subscription_token.png)
+![iCal meeting subscription URL shown when subscribing to a meetings calendar in OpenProject](openproject_userguide_meetings_subscription_token.png)
 
 3. Add this URL to your external calendar to subscribe to your OpenProject meetings.
 
