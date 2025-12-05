@@ -255,7 +255,7 @@ iCalendar meeting tokens allow users to subscribe to all their meetings and view
 
 This list will be empty if you have no calendar subscriptions yet. Once you subscribe to a meetings calendar, a list of all the iCalendar meetin tokens will appear here. 
 
-To subscribe click the **Subscribe to calendar** button directly in your account settings or in the [meetings module](../meetings/#meetings-overview/). 
+To subscribe click the **Subscribe to calendar** button directly in your account settings or in the [meetings module](../meetings/#subscribe-to-meetings). 
 
 ![A "subscribe to calendar" button to subscribe to OpenProject meetings under account settings](openproject_account_settings_access_tokens_subscribe_button.png)
 
