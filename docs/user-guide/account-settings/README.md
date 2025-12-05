@@ -253,7 +253,7 @@ You will then see a message informing you that the the token und the iCal URL ar
 ### iCalendar for meetings
 iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients. 
 
-This list will be empty if you have no calendar subscriptions yet. Once you subscribe to a meetings calendar, a list of all the iCalendar meetin tokens will appear here. 
+This list will be empty if you have no calendar subscriptions yet. Once you subscribe to a meetings calendar, a list of all the iCalendar meeting tokens will appear here. 
 
 To subscribe click the **Subscribe to calendar** button directly in your account settings or in the [meetings module](../meetings/#subscribe-to-meetings). 
 
@@ -363,4 +363,4 @@ OpenProject uses Gravatar as default profile image. It displays a preview of you
 Also, you can upload a **Custom Avatar** by choosing a Avatar to be uploaded from a file. Press the blue **Update** button to change your profile picture.
 
 > [!TIP]
-> The optimum size to upload a new profile picture is 128 by 128 pixel. Larger files will be cropped.
+> The optimum size to upload a new profile picture is 128 by 128 pixels. Larger files will be cropped.
