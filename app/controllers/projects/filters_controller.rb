@@ -32,7 +32,9 @@ class Projects::FiltersController < ApplicationController
   # include QueriesHelper
   include Queries::Loading
 
-  before_action :require_admin # to be adapted
+  # This is a part of the projects list page which is public. Checks within filters will
+  # prevent sensitive information to be displayed wrongfully.
+  no_authorization_required! :show
   before_action :load_query_or_deny_access
 
   def show
