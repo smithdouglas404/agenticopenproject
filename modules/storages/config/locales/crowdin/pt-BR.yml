@@ -96,12 +96,6 @@ pt-BR:
       manual: Pasta existente gerenciada manualmente
     remove_project:
       deletion_failure_flash: Falha ao remover o projeto do armazenamento. %{error}
-      dialog:
-        automatically_managed_appendix: Além disso, neste caso, este armazenamento tenha uma pasta de projeto gerenciado automaticamente, este e seus arquivos serão excluídos para sempre.
-        confirmation_text: Confirme se você entende e deseja remover este armazenamento de arquivos do projeto
-        heading_text: Remover projeto de %{storage}
-        text: Esta ação é permanente e removerá todos os links entre os pacotes de trabalho deste projeto e os arquivos e pastas desse armazenamento.
-        title: Remover projeto do armazenamento
       label: Remover projeto
   services:
     attributes:
@@ -226,12 +220,13 @@ pt-BR:
     confirm_replace_oauth_application: Esta ação irá redefinir suas credenciais atuais do OAuth. Depois de confirmar, você precisará inserir suas credenciais novamente no provedor de armazenamento, e todos os usuários remotos terão que autorizar o OpenProject novamente. Tem certeza de que deseja continuar?
     confirm_replace_oauth_client: Esta ação irá redefinir as suas credenciais atuais do OAuth. Após a confirmação, você precisará inserir novas credenciais do provedor de armazenamento e todos os usuários terão que autorizar novamente o acesso em %{provider_type}. Tem certeza de que deseja continuar?
     delete_warning:
-      project_storage_delete_result_1: Remover todos os links dos pacotes de trabalho deste projeto para arquivos e pastas desse armazenamento.
-      project_storage_delete_result_2: Caso este armazenamento tenha uma pasta de projeto gerenciado automaticamente, este e seus arquivos serão excluídos para sempre.
-      storage: 'Tem certeza de que deseja excluir %{file_storage}? Isso irá:'
-      storage_delete_result_1: Remover todas as configurações de armazenamento para todos os projetos que utilizam este armazenamento.
-      storage_delete_result_2: Remover todos os links do pacotes de trabalho de todos os projetos para arquivos e pastas desse armazenamento.
-      storage_delete_result_3: Caso este armazenamento tenha pastas de projeto gerenciadas automaticamente, estas, e os seus arquivos, serão excluídos para sempre.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Agrupar pastas
@@ -242,17 +237,23 @@ pt-BR:
     error_invalid_provider_type: Selecione um provedor de armazenamento válido.
     file_storage_view:
       access_management:
-        automatic_management: Acesso e pastas gerenciados automaticamente
-        automatic_management_description: Deixe o OpenProject criar automaticamente pastas por projeto e gerenciar o acesso dos usuários. Esta ação é recomendado para garantir que cada membro da equipe sempre tenha as permissões de acesso corretas.
-        description: Escolha o tipo de gerenciamento de acesso do usuário e criação de pasta. Recomendamos usar o acesso gerenciado automaticamente para obter uma estrutura mais organizada e garantir o acesso a todos os usuários relevantes.
-        manual_management: Acesso e pastas gerenciados manualmente
-        manual_management_description: Você pode criar e gerenciar manualmente pastas por projeto por conta própria. No entanto, será necessário garantir manualmente que os usuários relevantes tenham acesso.
+        automatic_management: Enable automatically-managed access and folders
+        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
+        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
+        manual_management: Only allow manually-managed access and folders
+        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
         setup_incomplete: Escolha o tipo de gerenciamento de acesso do usuário e criação de pastas.
-        subtitle: Gerenciamento de acesso
+        subtitle: Folder and access management
       access_management_section: Acesso e pastas do projeto
       automatically_managed_folders: Pastas gerenciadas automaticamente
       general_information: Informações gerais
       oauth_configuration: Configuração de OAuth
+      one_drive:
+        access_management:
+          automatic_management: Enable automatically-managed access and folders
+          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
+          manual_management: Only allow manually-managed access and folders
+          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OAuth OpenProject
       project_folders: Pastas do projeto
@@ -496,7 +497,7 @@ pt-BR:
         title: Estamos definindo suas permissões na pasta do projeto.
     page_titles:
       file_storages:
-        delete: Excluir armazenamento de arquivos
+        delete: Delete file storage?
         subtitle: Adicione um armazenamento de arquivos externo para carregar, vincular e gerenciar arquivos em pacotes de trabalho.
       managed_project_folders:
         subtitle: |-
@@ -510,6 +511,8 @@ pt-BR:
       project_storage_members:
         subtitle: Verifique o status da conexão para o armazenamento %{storage_name_link} de todos os membros do projeto
         title: Status da conexão dos membros
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'As permissões de arquivos em armazenamentos externos são aplicadas apenas a pastas e arquivos dentro das pastas de projetos gerenciadas automaticamente. Observe que nem todas as permissões de arquivos são compatíveis com todos os provedores de armazenamento. Consulte a documentação sobre <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>permissões de armazenamento de arquivos</a> para mais informações.'
     provider_types:
       label: Tipo de provedor

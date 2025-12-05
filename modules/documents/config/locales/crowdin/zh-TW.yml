@@ -64,16 +64,16 @@ zh-TW:
     document_type_actions: "文件類型動作"
     text_collaboration_disabled_notice:
       description: |-
-        Unable to open document because real-time text collaboration is disabled.
-        Please contact your administrator to enable real-time text collaboration if you want to access this document.
+        由於即時文字協作已停用，因此無法開啟文件。
+        如果您要存取此文件，請聯絡您的管理員啟用即時文字協作。
     show_edit_view:
       connection_error_notice:
         description: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
+          由於即時文字協作伺服器無法連線，因此無法開啟文件。
+          如果問題仍然存在，請聯絡管理員。
         action: 再試一次
       connection_recovery_notice:
-        description: "The connection to the real-time text collaboration server has been restored."
+        description: "與即時文字協作伺服器的連線已恢復。"
     index_page:
       name: "名稱"
       type: "類型"
@@ -82,8 +82,8 @@ zh-TW:
     menu:
       all: "所有文件"
       types: "類型"
-      collaboration_settings: "Real-time collaboration"
-    last_updated_at: "Last saved %{time}."
+      collaboration_settings: "即時協作"
+    last_updated_at: "最後儲存 %{time}。"
     active_editors: "活躍的編輯者"
     active_editors_count: "%{count} 活躍的編輯"
     label_attachment_author: "附件作者"
@@ -110,34 +110,34 @@ zh-TW:
       collaboration_settings:
         page_header:
           description: |-
-            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
-            It requires a working %{hocuspocus_server_link} to function.
+            啟用時，即時協作可讓多位使用者同時編輯一份文件。
+            它需要工作中的 %{hocuspocus_server_link} 才能運作。
         banner:
-          none_writable: These values are configured via environment variables and cannot be edited here.
-          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+          none_writable: 這些值透過環境變數設定，無法在此編輯。
+          some_unwritable: 某些值透過環境變數設定，無法在此編輯。
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The address of the working Hocuspocus server."
+          label: "Hocuspocus 伺服器 URL"
+          caption: "工作中的 Hocuspocus 伺服器位址。"
         hocuspocus_server_secret:
-          label: "Client secret"
-          caption: "Paste the secret provided by the Hocuspocus server."
-        hocuspocus_server: Hocuspocus server
+          label: "用戶端密碼"
+          caption: "貼上 Hocuspocus 伺服器提供的秘碼。"
+        hocuspocus_server: Hocuspocus 伺服器
       enable_text_collaboration:
-        heading: Real-time collaboration is not enabled
+        heading: 未啟用即時協作
         description: |-
-          Once enabled, multiple users will be able to work together on a document at the same time.
-          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
-          Hocuspocus server.
-        primary_action: Enable real-time collaboration
-        success: Real-time collaboration has been enabled.
+          一旦啟用，多位使用者將可同時共同處理一份文件。
+          所有新文件都將基於新的編輯器 (BlockNote)，並需要與
+          Hocuspocus 伺服器建立工作連接。
+        primary_action: 實現即時協作
+        success: 已啟用即時協作。
       disable_text_collaboration_dialog:
-        title: Disable real-time collaboration
-        heading: Disable real-time collaboration?
+        title: 停用即時協作
+        heading: 停用即時協作？
         confirmation_message: |-
-          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
-          real-time collaboration and the BlockNote editor in this instance.
-        confirmation_checkbox_message: I understand that I might permanently lose data
-        success: Real-time collaboration has been disabled.
+          所有現有文件可能無法存取。請僅在您確定要停用
+          即時協作和 BlockNote 編輯器的情況下才執行此操作。
+        confirmation_checkbox_message: 我瞭解我可能會永久遺失資料
+        success: 即時協作已停用。
   label_document_added: "文件已新增"
   label_document_new: "建立新文件"
   label_document_plural: "文件"

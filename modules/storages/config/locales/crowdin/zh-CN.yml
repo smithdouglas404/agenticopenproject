@@ -96,12 +96,6 @@ zh-CN:
       manual: 手动管理现有文件夹
     remove_project:
       deletion_failure_flash: 无法从存储中删除此项目。 %{error}
-      dialog:
-        automatically_managed_appendix: 而且，在这种情况下，这个存储有一个自动托管的项目文件夹，它和它的文件将被永久删除。
-        confirmation_text: 请确认您已理解并要从此项目中删除此文件存储
-        heading_text: 从 %{storage} 中删除项目
-        text: 此操作不可逆，将从此项目的工作包中删除所有链接到该存储的文件和文件夹。
-        title: 从存储中删除项目
       label: 删除项目
   services:
     attributes:
@@ -226,12 +220,13 @@ zh-CN:
     confirm_replace_oauth_application: 此操作将重置当前的 OAuth 凭据。确认后，您必须在存储提供商处重新输入凭据，并且所有远程用户都必须再次针对 OpenProject 进行授权。您确定要继续吗？
     confirm_replace_oauth_client: 此操作将重置当前的 OAuth 凭据。确认后，您必须输入存储提供商的新凭据，并且所有用户都必须再次针对 %{provider_type} 进行授权。您确定要继续吗？
     delete_warning:
-      project_storage_delete_result_1: 从此项目的工作包中移除该存储区的文件和文件夹的所有链接。
-      project_storage_delete_result_2: 如果这个存储库具有自动托管的项目文件夹，那么该文件夹及其文件将被永久删除。
-      storage: '确定要删除 %{file_storage} 吗？此操作将：'
-      storage_delete_result_1: 删除所有使用此存储的项目的所有存储设置。
-      storage_delete_result_2: 从所有项目的工作包中删除所有链接到该存储的文件和文件夹。
-      storage_delete_result_3: 如果此存储具有自动托管的项目文件夹，这些文件夹及其包含的文件将被永久删除。
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: 组文件夹
@@ -242,17 +237,23 @@ zh-CN:
     error_invalid_provider_type: 请选择一个有效的存储源。
     file_storage_view:
       access_management:
-        automatic_management: 自动管理访问和文件夹
-        automatic_management_description: 让 OpenProject 自动为每个项目创建文件夹，并管理其用户访问权限。建议这样做，因为这样可以确保每个团队成员始终拥有正确的访问权限。
-        description: 选择用户访问和文件夹创建的管理类型。我们建议使用 "自动管理访问"，以获得更有组织的结构，并确保所有相关用户都能访问。
-        manual_management: 手动管理访问和文件夹
-        manual_management_description: 自己手动创建和管理每个项目的文件夹。您需要手动确保相关用户拥有访问权限。
+        automatic_management: Enable automatically-managed access and folders
+        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
+        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
+        manual_management: Only allow manually-managed access and folders
+        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
         setup_incomplete: 选择用户访问和文件夹创建的管理类型。
-        subtitle: 访问管理
+        subtitle: Folder and access management
       access_management_section: 访问和项目文件夹
       automatically_managed_folders: 自动托管的文件夹
       general_information: 一般信息
       oauth_configuration: OAuth 配置
+      one_drive:
+        access_management:
+          automatic_management: Enable automatically-managed access and folders
+          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
+          manual_management: Only allow manually-managed access and folders
+          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: 项目文件夹
@@ -494,7 +495,7 @@ zh-CN:
         title: 我们正在设置您对项目文件夹的权限。
     page_titles:
       file_storages:
-        delete: 删除文件存储
+        delete: Delete file storage?
         subtitle: 添加外部文件存储以便在工作包中上传、链接和管理文件。
       managed_project_folders:
         subtitle: |-
@@ -508,6 +509,8 @@ zh-CN:
       project_storage_members:
         subtitle: 检查所有项目成员的存储区 %{storage_name_link} 的连接状态。
         title: 成员连接状态
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: '外部存储器上的文件权限仅适用于自动管理的项目文件夹内的文件夹和文件。请注意，并非所有存储提供商都支持所有文件权限。更多信息请查看<a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>文件存储权限</a>文档。'
     provider_types:
       label: 提供商类型

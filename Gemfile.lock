@@ -36,10 +36,10 @@ GIT
 
 GIT
   remote: https://github.com/opf/omniauth-openid-connect.git
-  revision: f0c1ecdb26e39017a9e929af75a166c772d960bb
-  ref: f0c1ecdb26e39017a9e929af75a166c772d960bb
+  revision: 825d06235b64f6bc872bba709f1c2d48fd5cede4
+  ref: 825d06235b64f6bc872bba709f1c2d48fd5cede4
   specs:
-    omniauth-openid-connect (0.4.2)
+    omniauth-openid-connect (0.5.0)
       addressable (~> 2.5)
       omniauth (~> 1.6)
       openid_connect (~> 2.2.0)
@@ -426,12 +426,14 @@ GEM
       descendants_tracker (~> 0.0.1)
     color_conversion (0.1.2)
     colored2 (4.0.3)
-    commonmarker (2.5.0)
+    commonmarker (2.6.0)
       rb_sys (~> 0.9)
-    commonmarker (2.5.0-aarch64-linux)
-    commonmarker (2.5.0-aarch64-linux-musl)
-    commonmarker (2.5.0-x86_64-linux)
-    commonmarker (2.5.0-x86_64-linux-musl)
+    commonmarker (2.6.0-aarch64-linux)
+    commonmarker (2.6.0-aarch64-linux-musl)
+    commonmarker (2.6.0-arm64-darwin)
+    commonmarker (2.6.0-x86_64-darwin)
+    commonmarker (2.6.0-x86_64-linux)
+    commonmarker (2.6.0-x86_64-linux-musl)
     compare-xml (0.66)
       nokogiri (~> 1.8)
     concurrent-ruby (1.3.5)
@@ -883,7 +885,7 @@ GEM
       actionview
       openproject-octicons (= 19.31.1)
       railties
-    openproject-primer_view_components (0.78.0)
+    openproject-primer_view_components (0.78.1)
       actionview (>= 7.2.0)
       activesupport (>= 7.2.0)
       openproject-octicons (>= 19.30.1)
@@ -1242,12 +1244,12 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.1)
-    rake-compiler-dock (1.9.1)
+    rake-compiler-dock (1.10.0)
     rb-fsevent (0.11.2)
     rb-inotify (0.11.1)
       ffi (~> 1.0)
-    rb_sys (0.9.117)
-      rake-compiler-dock (= 1.9.1)
+    rb_sys (0.9.119)
+      rake-compiler-dock (= 1.10.0)
     rbtrace (0.5.2)
       ffi (>= 1.0.6)
       msgpack (>= 0.4.3)
@@ -1572,7 +1574,7 @@ DEPENDENCIES
   climate_control
   closure_tree (~> 9.3.0)
   colored2
-  commonmarker (~> 2.5.0)
+  commonmarker (~> 2.6.0)
   compare-xml (~> 0.66)
   costs!
   csv (~> 3.3)
@@ -1657,7 +1659,7 @@ DEPENDENCIES
   openproject-octicons (~> 19.31.1)
   openproject-octicons_helper (~> 19.31.1)
   openproject-openid_connect!
-  openproject-primer_view_components (~> 0.78.0)
+  openproject-primer_view_components (~> 0.78.1)
   openproject-recaptcha!
   openproject-reporting!
   openproject-storages!
@@ -1828,11 +1830,13 @@ CHECKSUMS
   coercible (1.0.0) sha256=5081ad24352cc8435ce5472bc2faa30260c7ea7f2102cc6a9f167c4d9bffaadc
   color_conversion (0.1.2) sha256=99bea5fa412e1527a11389975aa6ad445ff8528ebae202c11d08c45ea2b94c96
   colored2 (4.0.3) sha256=63e1038183976287efc43034f5cca17fb180b4deef207da8ba78d051cbce2b37
-  commonmarker (2.5.0) sha256=fc84f9e01b271298691a7cfc298cbbaadb893395dc92e9b51644675abff248b5
-  commonmarker (2.5.0-aarch64-linux) sha256=5812585cbd6081483331a750b0227cd0b6d951b76103bab10ee116aa58d7e526
-  commonmarker (2.5.0-aarch64-linux-musl) sha256=b72636814379033e20d77433f8a0df6c3446fbd9557ba029445d59c53cd693af
-  commonmarker (2.5.0-x86_64-linux) sha256=9b0d79a883a5df132291c181253cbe31254e6c5c6f131dc7e7a321f872b10db9
-  commonmarker (2.5.0-x86_64-linux-musl) sha256=3ac20d8de38260d02306e3a539b90d136818998bcfb203114f7054ad7fdb7b37
+  commonmarker (2.6.0) sha256=2af2bff39bcf6e52198dca86172f4c691e661eac88667958a40a718106a0f254
+  commonmarker (2.6.0-aarch64-linux) sha256=41038a1d4ffe5ac71a2bfbcb9bb2ba569fff6a2b410cecc7cded1a679497cb76
+  commonmarker (2.6.0-aarch64-linux-musl) sha256=4b1c1f27e7e433776f0811b29a1380bff00be343ebcf97cbf5d5e407a19c08ba
+  commonmarker (2.6.0-arm64-darwin) sha256=1e154955c5e32735bec7d5779e0fb1d21e55f46bcfcd43399ec1cbfc105030a0
+  commonmarker (2.6.0-x86_64-darwin) sha256=4e139f919fc761147263c7e0a19750c0fe3717e577e7e1b793e6cdb7596c4f94
+  commonmarker (2.6.0-x86_64-linux) sha256=cddae70929aea45c6a8aa72bfc02d15029611b0e88fee965d0151bc9453fd8bb
+  commonmarker (2.6.0-x86_64-linux-musl) sha256=10159e84446362daa92380f0f68fd3818affa86527f0f098d0d08ac49941538e
   compare-xml (0.66) sha256=e21aa5c0f69ef1177eced997c688fd4df989084e74a1b612257af32e1dd05319
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
   connection_pool (2.5.5) sha256=e54ff92855753df1fd7c59fa04a398833355f27dd14c074f8c83a05f72a716ad
@@ -2014,7 +2018,7 @@ CHECKSUMS
   oj (3.16.12) sha256=ad9fad6a06dabcf4cfe6a420690a4375377685c16eee0ae88e8d38a43ed7b556
   okcomputer (1.19.0) sha256=8548935a82f725bdd8f2c329925a9f1a1bb2ce19ce26b47d7515665ee363b458
   omniauth (1.9.2)
-  omniauth-openid-connect (0.4.2)
+  omniauth-openid-connect (0.5.0)
   omniauth-openid_connect-providers (0.2.0)
   omniauth-saml (1.10.6) sha256=13dde22f4fd1beff0ef2d6dae576f7b68594f159990e8e886d8a02b32397afbd
   op-clamav-client (3.4.2) sha256=f28d697d11758a2ba3dc530cfdf4871a00ecd517631e8bac30dee30cd6012964
@@ -2037,7 +2041,7 @@ CHECKSUMS
   openproject-octicons (19.31.1) sha256=8f357d4bf5967f7bdc76e0cfe45bf8834d25a2b34327477f21c040835cdadcfa
   openproject-octicons_helper (19.31.1) sha256=ad4250cf57c06ada9226500891a0c7506556f025bee66ecfb37fe1c6606bc1de
   openproject-openid_connect (1.0.0)
-  openproject-primer_view_components (0.78.0) sha256=089455b39ee0f94dbfdcf61c15f300d1be957bdff74381312c8fbd9c0d65acb2
+  openproject-primer_view_components (0.78.1) sha256=aead310868ecd2fb2c7c9d9ce733f4d9fab9a95427304ec1d104832b416f2757
   openproject-recaptcha (1.0.0)
   openproject-reporting (1.0.0)
   openproject-storages (1.0.0)
@@ -2166,10 +2170,10 @@ CHECKSUMS
   railties (8.0.4) sha256=8203d853dcffab4abcdd05c193f101676a92068075464694790f6d8f72d5cb47
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.3.1) sha256=8c9e89d09f66a26a01264e7e3480ec0607f0c497a861ef16063604b1b08eb19c
-  rake-compiler-dock (1.9.1) sha256=e73720a29aba9c114728ce39cc0d8eef69ba61d88e7978c57bac171724cd4d53
+  rake-compiler-dock (1.10.0) sha256=dd62ee19df2a185a3315697e560cfa8cc9129901332152851e023fab0e94bf11
   rb-fsevent (0.11.2) sha256=43900b972e7301d6570f64b850a5aa67833ee7d87b458ee92805d56b7318aefe
   rb-inotify (0.11.1) sha256=a0a700441239b0ff18eb65e3866236cd78613d6b9f78fea1f9ac47a85e47be6e
-  rb_sys (0.9.117) sha256=755feaf6c640baceca7a9362dfb0ae87ff4ff16e3566d9ef86533896eb85cb59
+  rb_sys (0.9.119) sha256=64393fa148e402e1b79b64496d2aabfc7df79da6b822b8bb48dc1141eaf40b4b
   rbtrace (0.5.2) sha256=a2d7d222ab81363aaa0e91337ddbf70df834885d401a80ea0339d86c71f31895
   rbtree3 (0.7.1) sha256=ab60ead728a5491b70df4f4065e180b18dbab5319f817ce1dbf5dd906f26d8ba
   rdoc (6.15.1) sha256=28bfac73cd8b226a8079f53a564ceaccdb5b4480e34335100001570ddb1a481a

@@ -64,7 +64,7 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
     # Required to satisfy the Users::UpdateContract#at_least_one_admin_is_active
     shared_let(:default_admin) { create(:admin) }
     shared_let(:current_user) do
-      create(:user, global_permissions: [:manage_user])
+      create(:user, global_permissions: %i[manage_user view_all_principals])
     end
 
     describe "empty payload" do
@@ -334,6 +334,6 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
   context "with unauthorized user" do
     let(:current_user) { create(:user) }
 
-    it_behaves_like "unauthorized access"
+    it_behaves_like "not found"
   end
 end

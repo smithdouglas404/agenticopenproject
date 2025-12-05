@@ -33,7 +33,7 @@ sv:
         label_activity_show_only_changes: "Visa endast ändringar"
         label_sort_asc: "Newest at the bottom"
         label_sort_desc: "Newest on top"
-        label_type_to_comment: "Add a comment. Type @ to notify people."
+        label_type_to_comment: "Lägg till en kommentar. Skriv @ för att meddela personer."
         label_submit_comment: "Submit comment"
         label_who: Vem?
         changed_on: "ändrad den"
@@ -85,11 +85,11 @@ sv:
         title: "Add Enterprise token"
         type_token_text: "Type support token text"
         token_placeholder: "Paste your Enterprise edition support token here"
-      add_token: "Upload an Enterprise edition support token"
+      add_token: "Ladda upp en supporttoken för Enterprise-utgåvan"
       replace_token: "Ersätta din nuvarande support-nyckel"
-      order: "Order Enterprise on-premises edition"
-      paste: "Paste your Enterprise edition support token"
-      required_for_feature: "This add-on is only available with an active Enterprise edition support token."
+      order: "Beställ Enterprise on-premise-utgåva"
+      paste: "Klistra in din supporttoken för Enterprise utgåvan"
+      required_for_feature: "Detta tillägg är endast tillgängligt med en aktiv supporttoken för Enterprise utgåvan."
       enterprise_link: "För mer information, klicka här."
       start_trial: "Starta fri provperiod"
       book_now: "Boka nu"
@@ -120,7 +120,7 @@ sv:
         one_time_hint: "This is the only time you will see the client secret. Make sure to copy it now."
       created_token_dialog_component:
         title: "Token created"
-        heading: "A token has been generated"
+        heading: "En token har genererats"
         label_token: "Token"
         one_time_hint: "This is the only time you will see this token. Make sure to copy it now."
       delete_scim_client_dialog_component:
@@ -234,7 +234,7 @@ sv:
         när de först autentiserar med OpenProject.
         Lämna detta avmarkerat för att endast tillåta befintliga konton i OpenProject att autentisera via LDAP!
     connection_encryption: "Kryptering av anslutning"
-    encryption_details: "LDAPS / STARTTLS options"
+    encryption_details: "LDAPS / STARTTLS alternativ"
     system_account: "Systemkonto"
     system_account_legend: |
       OpenProject kräver skrivskyddad åtkomst via ett systemkonto för att söka upp användare och grupper i ditt LDAP-träd.
@@ -248,16 +248,16 @@ sv:
       plain: "inga"
       simple_tls: "LDAPS"
       start_tls: "STARTTLS"
-      plain_description: "Opens an unencrypted connection to the LDAP server. Not recommended for production."
-      simple_tls_description: "Use LDAPS. Requires a separate port on the LDAP server. This mode is often deprecated, we recommend using STARTTLS whenever possible."
-      start_tls_description: "Sends a STARTTLS command after connecting to the standard LDAP port. Recommended for encrypted connections."
+      plain_description: "Öppnar en okrypterad anslutning till LDAP-servern. Rekommenderas inte för produktion."
+      simple_tls_description: "Använd LDAPS. Kräver en separat port på LDAP-servern. Detta läge är ofta föråldrat, vi rekommenderar att du använder STARTTLS när det är möjligt."
+      start_tls_description: "Skickar ett STARTTLS-kommando efter anslutning till standard LDAP-port. Rekommenderas för krypterade anslutningar."
       section_more_info_link_html: >
         Det här avsnittet gäller anslutningssäkerheten för denna LDAP-autentiseringskälla. För mer information, besök <a href="%{link}">Net:LDAP-dokumentation</a>.
     tls_options:
-      verify_peer: "Verify SSL certificate"
+      verify_peer: "Verifiera SSL-certifikat"
       verify_peer_description_html: >
         Enables strict SSL verification of the certificate trusted chain. <br> <strong>Warning:</strong> Unchecking this option disables SSL verification of the LDAP server certificate. This exposes your connection to Man in the Middle attacks.
-      tls_certificate_description: "If the LDAP server certificate is not in the trust sources of this system, you can add it manually here. Enter a PEM X509 certifiate string."
+      tls_certificate_description: "Om LDAP-servercertifikatet inte finns i de betrodda källorna till detta system, kan du lägga till det manuellt här. Ange en PEM X509-certifierad sträng."
   forums:
     show:
       no_results_title_text: Det finns för närvarande inga inlägg i forumet.
@@ -349,16 +349,16 @@ sv:
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required: "Markera det anpassade fältet som obligatoriskt. Detta gör det obligatoriskt att fylla i fältet när du skapar nya resurser. Befintliga resurser kräver inget värde när de uppdateras."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Mark the custom field as available in all existing and new projects."
+      is_for_all: "Markera det anpassade fältet som tillgängligt i alla befintliga och nya projekt."
       multi_select: "Allows the user to assign multiple values to this custom field."
-      searchable: "Include the field values when using the global search functionality."
+      searchable: "Inkludera fältvärden när du använder den globala sökfunktionaliteten."
       searchable_for_project: "Check to make this attribute available as a filter in project lists."
-      editable: "Allow the field to be editable by users themselves."
+      editable: "Tillåt att fältet kan redigeras av användarna själva."
       admin_only: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
       is_filter: >
-        Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+        Tillåt att det anpassade fältet används i ett filter i vyer för arbetspaket. Observera att endast med 'För alla projekt' valda visas det anpassade fältet i globala vyer.
       formula: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Det finns för närvarande inga anpassade fält.
@@ -374,8 +374,8 @@ sv:
   concatenation:
     single: "eller"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Knappen för att fortsätta är nu aktiv."
+    confirmation_live_message_unchecked: "Knappen för att fortsätta är nu inaktiv. Du måste markera kryssrutan för att fortsätta."
   op_dry_validation:
     or: "eller"
     errors:
@@ -487,7 +487,7 @@ sv:
       failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
       completed: "Deletion of project '%{name}' completed"
       completed_text: "Begäran om att ta bort projekt '%{name}' har slutförts."
-      completed_text_children: "Additionally, the following subprojects have been deleted:"
+      completed_text_children: "Dessutom har följande delprojekt tagits bort:"
     index:
       open_as_gantt: "Öppna som Gantt-vy"
       no_results_title_text: Det finns för närvarande inga projekt
@@ -570,7 +570,7 @@ sv:
         actions:
           label_enable_single: "Active in this project, click to disable"
           label_disable_single: "Inactive in this project, click to enable"
-          remove_from_project: "Remove from project"
+          remove_from_project: "Ta bort från projekt"
         is_required_blank_slate:
           heading: Required in all projects
           description: This project attribute is activated in all projects since the "Required in all projects" option is checked. It cannot be deactivated for individual projects.
@@ -705,7 +705,7 @@ sv:
       notice_reset_token: "En ny %{type}-token har skapats. Din åtkomst-token är:"
       token_value_warning: "Notera: Detta är den enda gång du kommer se denna token, var säker på att kopiera den nu."
       no_results_title_text: "Det finns för närvarande inga tillgängliga åtkomstnycklar."
-      notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
+      notice_api_token_revoked: "API-token har tagits bort. För att skapa en ny token använd knappen i API-avsnittet."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
   news:
@@ -729,7 +729,7 @@ sv:
       title: "Sessionskontrollering"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Du kan inte ta bort din nuvarande session."
-      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
+      deletion_warning: "Är du säker på att du vill återkalla denna session? Du kommer att loggas ut på den här enheten."
     groups:
       member_in_these_groups: "This user is currently a member of the following groups:"
       no_results_title_text: This user is currently not a member in any group.
@@ -809,7 +809,7 @@ sv:
         Den kan användas för att markera arbetspaket i tabellen.
     admin:
       default:
-        caption: Making this priority default will override the previous default priority.
+        caption: Att göra denna prioritet standard kommer att åsidosätta föregående standard prioritet.
   reactions:
     action_title: "React"
     add_reaction: "Lägg till reaktion"
@@ -853,7 +853,7 @@ sv:
   themes:
     dark: "Mörk"
     light: "Ljust"
-    sync_with_os: "Automatic (match OS color mode)"
+    sync_with_os: "Automatisk (matchar OS-färgläge)"
   types:
     index:
       no_results_title_text: Det finns för närvarande inga typer.
@@ -863,9 +863,9 @@ sv:
         tab: "Ställ in formulär"
       projects:
         tab: Projekt
-        enable_all: Enable for all projects
+        enable_all: Aktivera för alla projekt
         select_projects: Välj projekt
-        select_projects_description: Select the projects in which you would like to use this type.
+        select_projects_description: Välj de projekt där du vill använda den här typen.
       settings:
         tab: "Inställningar"
         type_color_text: The selected color distinguishes different types in Gantt charts or work packages tables. It is therefore recommended to use a strong color.
@@ -971,9 +971,9 @@ sv:
         The current types of the work packages aren't enabled in the target project. Please enable the types in the target project if you'd like them to remain unchanged. Otherwise, select an available type in the target project from the list.
     sharing:
       missing_workflow_warning:
-        title: "Workflow missing for work package sharing"
-        message: "No workflow is configured for the 'Work package editor' role. Without a workflow, the shared with user cannot alter the status of the work package. Workflows can be copied. Select a source type (e.g. 'Task') and source role (e.g. 'Member'). Then select the target types. To start with, you could select all the types as targets. Finally, select the 'Work package editor' role as the target and press 'Copy'. After having thus created the defaults, fine tune the workflows as you do for every other role."
-        link_message: "Configure the workflows in the administration."
+        title: "Arbetsflöde saknas för delning av arbetspaket"
+        message: "Inget arbetsflöde är konfigurerat för 'Work package editor'-rollen. Utan ett arbetsflöde kan den delade användaren inte ändra arbetspaketets status. Arbetsflöden kan kopieras. Välj en källtyp (t.ex. 'Task') och källroll (t.ex. 'Medlem'). Välj sedan måltyper. Till att börja med kan du välja alla typer som mål. Slutligen väljer du rollen \"Arbetspaket editor\" som mål och trycker på \"Kopiera\". Efter att ha skapat standardinställningarna, finjustera arbetsflödena som du gör för varje annan roll."
+        link_message: "Konfigurera arbetsflödena i administrationen."
     templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
@@ -1025,7 +1025,7 @@ sv:
       new_child: "Skapa nytt barn"
       new_child_description: "Creates a related work package as a sub-item of the current (parent) work package"
       child: "Child"
-      child_description: "Makes the related work package a sub-item of the current (parent) work package"
+      child_description: "Gör det relaterade arbetspaketet till en underpost till det aktuella (överordnade) arbetspaketet"
       parent: "Överordnad"
       parent_description: "Makes the related work package a parent of the current (child) work package"
       label_closest: "Närmast"
@@ -1333,7 +1333,7 @@ sv:
         user: "Användare"
       user:
         admin: "Administratör"
-        auth_source: "Authentication source"
+        auth_source: "Källa för autentisering"
         ldap_auth_source: "LDAP-anslutning"
         identity_url: "Identity URL"
         current_password: "Nuvarande lösenord"
@@ -1361,8 +1361,8 @@ sv:
           You can choose to disable default <a href="%{href}">keyboard shortcuts</a> if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
         dismissed_enterprise_banners: "Hidden enterprise banners"
         impaired: "Tillgänglighetsläge"
-        auto_hide_popups: "Automatically hide success banners"
-        auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
+        auto_hide_popups: "Dölj automatiskt framgångsbanners"
+        auto_hide_popups_caption: "När detta är aktiverat försvinner de gröna framgångsbanderollerna automatiskt efter 5 sekunder."
         warn_on_leaving_unsaved: "Varna mig när jag lämnar ett arbetspaket med osparade ändringar"
         increase_theme_contrast: "Increase theme contrast"
         increase_contrast: "Increase contrast"
@@ -1373,7 +1373,7 @@ sv:
         force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Färgläge"
         time_zone: "Tidszon"
-        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "I vissa lägen skrivs anpassade temafärger över av tillgänglighets- och läsbarhetsskäl. Välj Light-läge för fullt stöd för anpassade teman."
         daily_reminders: "Dagliga påminnelser"
         workdays: "Arbetsdagar"
       users/invitation/form_model:
@@ -1393,9 +1393,9 @@ sv:
         begin_insertion: "Början av införandet"
         begin_deletion: "Början av raderingen"
         children: "Underelement"
-        derived_done_ratio: "Total % complete"
-        derived_remaining_hours: "Total remaining work"
-        derived_remaining_time: "Total remaining work"
+        derived_done_ratio: "Totalt % klart"
+        derived_remaining_hours: "Totalt återstående arbete"
+        derived_remaining_time: "Totalt återstående arbete"
         done_ratio: "% Complete"
         duration: "Varaktighet"
         end_insertion: "Slutet av införandet"
@@ -1474,7 +1474,8 @@ sv:
         not_a_datetime: "är inte en giltig datumtid."
         not_a_number: "är inte ett nummer."
         not_allowed: "är inte tillåtet på grund av saknade behörigheter."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "är inte ett heltal."
         not_an_iso_date: "är inte ett giltigt datum. Använd formatet ÅÅÅÅ-MM-DD."
         not_same_project: "tillhör inte samma projekt."
@@ -1495,7 +1496,7 @@ sv:
         unknown_property_nested: "has the unknown path '%{path}'."
         unremovable: "kan inte tas bort."
         url_not_secure_context: >
-          is not providing a "Secure Context". Either use HTTPS or a loopback address, such as localhost.
+          tillhandahåller inte en "Secure Context". Använd antingen HTTPS eller en loopback-adress, som localhost.
         wrong_length: "har fel längd (måste vara %{count} tecken)."
       models:
         ldap_auth_source:
@@ -1507,7 +1508,7 @@ sv:
           attributes:
             content_type:
               blank: "The content type of the file cannot be blank."
-              not_allowlisted: "The file was rejected by an automatic filter. '%{value}' is not allowed for upload."
+              not_allowlisted: "Filen avvisades av ett automatiskt filter. '%{value}' är inte tillåtet för uppladdning."
               format: "%{message}"
         capability:
           context:
@@ -1517,7 +1518,7 @@ sv:
               minimum: "need to include at least one filter for principal, context or id with the '=' operator."
         custom_field:
           at_least_one_custom_option: "Minst ett alternativ måste vara tillgängligt."
-          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
+          previous_custom_field_recalculation_unprocessed: "Omräkningen av tidigare ändringar för detta anpassade fält har inte tillämpats ännu, försök igen om några minuter."
           referenced_in_other_fields_html:
             one: "%{name} is used in project attribute calculation %{links}."
             other: "%{name} is used in project attribute calculations: %{links}."
@@ -1547,7 +1548,7 @@ sv:
               fragment_present: "kan inte innehålla ett fragment."
               invalid_uri: "måste vara en giltig URI."
               relative_uri: "måste vara en absolut URI."
-              secured_uri: 'is not providing a "Secure Context". Either use HTTPS or a loopback address, such as localhost.'
+              secured_uri: 'tillhandahåller inte en "Secure Context". Använd antingen HTTPS eller en loopback-adress, som localhost.'
               forbidden_uri: "är förbjudet av servern."
             scopes:
               not_match_configured: "matchar inte tillgängliga omfattningar."
@@ -1665,12 +1666,12 @@ sv:
             to_id:
               format: "The selected work package %{message}"
               error_not_found: "could not be found."
-              error_readonly: "cannot be changed for existing relations."
+              error_readonly: "kan inte ändras för befintliga relationer."
               error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
               format: "The selected work package %{message}"
               error_not_found: "could not be found."
-              error_readonly: "cannot be changed for existing relations."
+              error_readonly: "kan inte ändras för befintliga relationer."
               error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM leverantör är inte tillgänglig"
@@ -1725,8 +1726,8 @@ sv:
           attributes:
             id:
               format: "%{message}"
-              cannot_add_child_because_of_lack_of_permission: "Cannot add child because you don't have permissions to edit the selected work package."
-              blank: "ID can't be blank."
+              cannot_add_child_because_of_lack_of_permission: "Kan inte lägga till barn eftersom du inte har behörighet att redigera det valda arbetspaketet."
+              blank: "ID kan inte vara tomt."
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -1750,7 +1751,7 @@ sv:
               cannot_be_in_another_project: "kan inte vara i ett annat projekt."
               not_a_valid_parent: "är ogiltig."
             schedule_manually:
-              cannot_be_automatically_scheduled: "cannot be set to false (automatically scheduled) as it has no predecessors or children."
+              cannot_be_automatically_scheduled: "kan inte sättas till false (automatiskt schemalagd) eftersom den inte har några föregångare eller underordnade."
             start_date:
               violates_relationships: "kan endast anges till %{soonest_start} eller senare för att inte skada arbetspaketets relationer."
               cannot_be_null: "can not be set to null as finish date and duration are known."
@@ -1765,11 +1766,11 @@ sv:
               only_same_project_categories_allowed: "Kategorin för ett arbetspaket måste tillhöra samma projekt som arbetspaketet."
               does_not_exist: "Den angivna kategorin finns inte."
             estimated_hours:
-              not_a_number: "is not a valid duration."
+              not_a_number: "är inte en giltig varaktighet."
               cant_be_inferior_to_remaining_work: "cannot be lower than Remaining work."
               must_be_set_when_remaining_work_and_percent_complete_are_set: "required when Remaining work and % Complete are set."
             remaining_hours:
-              not_a_number: "is not a valid duration."
+              not_a_number: "är inte en giltig varaktighet."
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
@@ -1879,7 +1880,7 @@ sv:
       status: "Arbetspaketstatus"
       token/api:
         one: Åtkomstnyckel
-        other: Access tokens
+        other: Åtkomstnycklar
       type: "Typ"
       user: "Användare"
       version: "Version"
@@ -1974,7 +1975,7 @@ sv:
     default_columns: "Standardkolumnerna"
     description: "Beskrivning"
     derived_due_date: "Derived finish date"
-    derived_estimated_hours: "Total work"
+    derived_estimated_hours: "Totalt arbete"
     derived_start_date: "Derived start date"
     direction: "Direction"
     display_sums: "Visa summor"
@@ -1984,7 +1985,7 @@ sv:
     estimated_time: "Arbete"
     email: "E-post"
     entity_type: "Entity"
-    expires_at: "Expires on"
+    expires_at: "Förfaller den"
     firstname: "Förnamn"
     filter: "Filter"
     group: "Grupp"
@@ -2112,7 +2113,7 @@ sv:
   button_download: "Ladda ner"
   button_disable: "Disable"
   button_duplicate: "Duplicera"
-  button_duplicate_and_follow: "Duplicate and follow"
+  button_duplicate_and_follow: "Duplicera och följ"
   button_edit: "Redigera"
   button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
@@ -2129,6 +2130,7 @@ sv:
   button_print: "Skriv ut"
   button_quote: "Citat"
   button_remove: Ta bort
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Ta bort påminnelse"
   button_rename: "Ändra namn"
   button_replace: "Ersätt"
@@ -2455,7 +2457,7 @@ sv:
       work_package_sharing:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
-        description: "Share project lists with individual users."
+        description: "Dela projektlistor med enskilda användare."
       calculated_values:
         description: "Calculated values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
@@ -2470,7 +2472,7 @@ sv:
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
       scim_api:
         title: "SCIM-klienter"
-        description: "Automate user management in OpenProject by seamlessly integrating external identity services like Microsoft Entra or Keycloak through our SCIM Server API. Available starting with the Enterprise corporate plan."
+        description: "Automatisera användarhantering i OpenProject genom att sömlöst integrera externa identitetstjänster som Microsoft Entra eller Keycloak genom vårt SCIM Server API. Tillgänglig från och med Företagsplanen."
       sso_auth_providers:
         title: "Single Sign-On (SSO)"
         description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
@@ -2487,7 +2489,7 @@ sv:
         title: "Write internal comments only a small group can see"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -2549,7 +2551,7 @@ sv:
   error_custom_option_not_found: "Alternativet finns inte."
   error_enterprise_plan_needed: "You need the %{plan} enterprise plan to perform this action."
   error_enterprise_activation_user_limit: "Ditt konto kunde inte aktiveras (begränsning för antal användare har uppnåtts). Kontakta administratören för att få tillgång."
-  error_enterprise_token_invalid_domain: "The Enterprise edition is not active. Your Enterprise token's domain (%{actual}) does not match the system's host name (%{expected})."
+  error_enterprise_token_invalid_domain: "Enterprise utgåvan är inte aktiv. Din Enterprise token domän (%{actual}) matchar inte systemets värdnamn (%{expected})."
   error_failed_to_delete_entry: "Det gick inte ta bort denna post."
   error_in_dependent: "Fel vid försök att ändra beroende objekt: %{dependent_class} #%{related_id} - %{related_subject}: %{error}"
   error_in_new_dependent: "Error attempting to create dependent object: %{dependent_class} - %{related_subject}: %{error}"
@@ -2775,15 +2777,15 @@ sv:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Versionen innehåller flera nya funktioner och förbättringar, t. ex:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Beräknade värden för projektutvärdering och poängsättning (Enterprise tillägg).
+            line_1: Projekt attribut typ hierarki.
+            line_2: Prestandauppdateringar med stor inverkan.
+            line_3: Ny indexsida för modulen Dokument.
+            line_4: Möjlighet att ändra förälder till ett anpassat fält.
     links:
-      upgrade_enterprise_edition: "Upgrade to Enterprise edition"
+      upgrade_enterprise_edition: "Uppgradera till Enterprise utgåvan"
       postgres_migration: "Migrera din installation till PostgreSQL"
       user_guides: "Användarguider"
       faq: "Vanliga frågor (FAQ)"
@@ -2851,7 +2853,7 @@ sv:
     admin:
       mail_notification: "E-postaviseringar"
       mails_and_notifications: "Emails and notifications"
-      aggregation: "Aggregation"
+      aggregation: "Aggregering"
       api_and_webhooks: "API och webhooks"
     quick_add:
       label: "Lägg till…"
@@ -3119,7 +3121,7 @@ sv:
   label_enumerations: "Textvärden"
   label_enterprise: "Företag"
   label_enterprise_active_users: "%{current}/%{limit} tilldelade aktiva användare"
-  label_enterprise_edition: "Enterprise edition"
+  label_enterprise_edition: "Enterprise utgåva"
   label_enterprise_support: "Enterprise support"
   label_environment: "Miljö"
   label_estimates_and_progress: "Estimates and progress"
@@ -3190,7 +3192,7 @@ sv:
   label_index_by_title: "Index efter titel"
   label_information: "Information"
   label_information_plural: "Information"
-  label_installation_guides: "Installation guides"
+  label_installation_guides: "Installationsguider"
   label_integer: "Heltal"
   label_interface: "Gränssnitt"
   label_internal: "Intern"
@@ -3746,9 +3748,9 @@ sv:
   mail_body_incoming_email_error_logs: "Loggar"
   mail_body_lost_password: "För att ändra ditt lösenord, klicka på följande länk:"
   mail_password_change_not_possible:
-    title: "Password change not possible"
-    body: "Your account at %{app_title} is connected to an external authentication provider (%{name})."
-    subtext: "Passwords for external account cannot be changed in the application. Please use the lost password functionality of your authentication provider."
+    title: "Lösenordsändring är inte möjlig"
+    body: "Ditt konto på %{app_title} är anslutet till en extern autentiseringsleverantör (%{name})."
+    subtext: "Lösenord för externa konton kan inte ändras i programmet. Använd funktionen för borttappat lösenord hos din autentiseringsleverantör."
   mail_body_register: "Välkommen till %{app_title}. Aktivera ditt konto genom att klicka på den här länken:"
   mail_body_register_header_title: "Projektmedlem inbjudningsmejl"
   mail_body_register_user: "Hej %{name},"
@@ -3840,9 +3842,9 @@ sv:
   notice_locking_conflict: "Informationen har uppdaterats av minst en annan användare under tiden."
   notice_locking_conflict_additional_information: "Uppdatering(ar) kom från %{users}."
   notice_locking_conflict_reload_page: "Vänligen ladda om sidan, granska ändringarna och tilldela dina uppdateringar igen."
-  notice_locking_conflict_warning: "This page has been updated by someone else. To not lose your edits, copy them locally and reload to view the updated version."
-  notice_locking_conflict_danger: "Could not save your changes because of conflicting modifications. To not lose your edits, copy them locally and reload to view the updated version."
-  notice_locking_conflict_action_button: "Discard changes and reload"
+  notice_locking_conflict_warning: "Denna sida har uppdaterats av någon annan. För att inte förlora dina redigeringar, kopiera dem lokalt och ladda om för att visa den uppdaterade versionen."
+  notice_locking_conflict_danger: "Kunde inte spara dina ändringar på grund av motstridiga ändringar. För att inte förlora dina ändringar, kopiera dem lokalt och ladda om för att visa den uppdaterade versionen."
+  notice_locking_conflict_action_button: "Ignorera ändringar och ladda om"
   notice_member_added: Lade till %{name} i projektet.
   notice_members_added: Lade till %{number} användare till projektet.
   notice_member_removed: "Tog bort %{user} från projektet."
@@ -3931,7 +3933,7 @@ sv:
   permission_comment_news: "Kommentera nyhet"
   permission_commit_access: "Läs- och skrivbehörighet till databasen (incheckning)"
   permission_copy_projects: "Kopiera projekt"
-  permission_copy_work_packages: "Duplicate work packages"
+  permission_copy_work_packages: "Duplicera arbetspaket"
   permission_create_backup: "Skapa säkerhetskopior"
   permission_delete_work_package_watchers: "Ta bort bevakare"
   permission_delete_work_packages: "Ta bort arbetspaket"
@@ -3955,7 +3957,7 @@ sv:
   permission_edit_project_attributes: "Edit project attributes"
   permission_edit_project_phases: "Edit project phases"
   permission_edit_reportings: "Redigera rapporter"
-  permission_edit_time_entries: "Edit time logs for other users"
+  permission_edit_time_entries: "Redigera tidsloggar för andra användare"
   permission_edit_timelines: "Redigera tidslinjer"
   permission_edit_wiki_pages: "Redigera wiki-sidor"
   permission_export_work_packages: "Exportera arbetspaket"
@@ -3965,8 +3967,8 @@ sv:
   permission_invite_members_by_email_explanation: >
     Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Lista bifogade filer"
-  permission_log_own_time: "Log own time"
-  permission_log_time: "Log time for other users"
+  permission_log_own_time: "Logga egen tid"
+  permission_log_time: "Loggtid för andra användare"
   permission_manage_forums: "Hantera forum"
   permission_manage_categories: "Hantera kategorier för arbetspaket"
   permission_manage_dashboards: "Manage dashboards"
@@ -4047,14 +4049,14 @@ sv:
       other: "%{count} projekt"
     destroy:
       title: "Ta bort projekt"
-      heading: "Permanently delete this project?"
+      heading: "Ta bort detta projekt permanent?"
       confirmation_message_for_subprojects_html:
         zero: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+          Du håller på att permanent radera all data som rör projektet <strong>%{name}</strong>.
         one: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+          Du håller på att permanent radera all data som rör projektet <strong>%{name}</strong> och detta delprojekt:
         other: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
+          Du håller på att permanent radera all data som rör projektet <strong>%{name}</strong> och dessa delprojekt:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Projektfas: Valfri"
@@ -4077,7 +4079,7 @@ sv:
   project_module_news: "Nyheter"
   project_module_repository: "Versionsarkiv"
   project_module_wiki: "Wiki"
-  permission_header_for_project_module_work_package_tracking: "Work packages and Gantt charts"
+  permission_header_for_project_module_work_package_tracking: "Arbetspaket och Gantt-diagram"
   query:
     attribute_and_direction: "%{attribute} (%{direction})"
   #possible query parameters (e.g. issue queries),
@@ -4179,7 +4181,7 @@ sv:
       oauth_application_details_link_text: "Go to settings page"
       setup_documentation_details: "If you need help configuring a new file storage please check the documentation: "
       setup_documentation_details_link_text: "File storages setup"
-      show_warning_details: "To use this file storage remember to activate the module and the specific storage in the project settings of each desired project."
+      show_warning_details: "Kom ihåg att aktivera modulen och den specifika lagringsenheten i projektinställningarna för varje projekt för att använda den här fillagringen."
     subversion:
       existing_title: "Befintligt Subversion-arkiv"
       existing_introduction: "Om du har ett befintlig Subversion-arkiv, kan du länka det med OpenProject för att komma åt den inifrån programmet."
@@ -4199,8 +4201,8 @@ sv:
     warnings:
       cannot_annotate: "Den här filen kan inte kommenteras."
   scheduling:
-    manual: "set to Manual"
-    automatic: "set to Automatic"
+    manual: "inställd på Manuell"
+    automatic: "inställd på Automatisk"
   search_input_placeholder: "Sök ..."
   setting_allowed_link_protocols: "Allowed link protocols"
   setting_allowed_link_protocols_text_html: >-
@@ -4231,6 +4233,7 @@ sv:
   setting_emails_salutation: "Address user in emails with"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Sökväg till sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Använd STARTTLS om det går"
   setting_smtp_ssl: "Använd SSL-anslutning"
   setting_smtp_address: "SMTP-server"
@@ -4306,7 +4309,7 @@ sv:
     In <b>work-based</b> mode, % Complete can be freely set to any value. If you optionally enter a value for Work, Remaining work will automatically be derived. In <b>status-based</b> mode, each status has a % Complete value associated with it. Changing status will change % Complete.
   setting_work_package_properties: "Egenskaper för arbetspaket"
   setting_work_package_startdate_is_adddate: "Använda aktuellt datum som startdatum för nya arbetspaket"
-  setting_work_packages_projects_export_limit: "Work packages / Projects export limit"
+  setting_work_packages_projects_export_limit: "Exportgräns för arbetspaket/projekt"
   setting_journal_aggregation_time_minutes: "User actions aggregated within"
   setting_log_requesting_user: "Logga användarnamn, namn och E-postadress för alla anrop"
   setting_login_required: "Autentisering krävs"
@@ -4393,6 +4396,9 @@ sv:
   setting_work_package_list_default_highlighted_attributes: "Standardattribut för inline-markering"
   setting_working_days: "Arbetsdagar"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Användarnamn"
       registration: "Registrering"
@@ -4444,7 +4450,7 @@ sv:
         type: "Hel rad efter typ"
         priority: "Hel rad per prioritet"
     icalendar:
-      enable_subscriptions_text_html: Allows users with the necessary permissions to subscribe to OpenProject calendars and access work package information via an external calendar client. <strong>Note:</strong> Please read about <a href="%{link}" target="_blank">iCalendar subscriptions</a> to understand potential security risks before enabling this.
+      enable_subscriptions_text_html: Tillåter användare med nödvändiga rättigheter att prenumerera på OpenProject kalendrar och få tillgång till information om arbetspaket via en extern kalenderklient. <strong>Obs:</strong> Läs om <a href="%{link}" target="_blank">iCalendar-prenumerationer</a> för att förstå potentiella säkerhetsrisker innan du aktiverar detta.
     language_name_being_default: "%{language_name} (default)"
     notifications:
       events_explanation: "Governs for which event an email is sent out. Work packages are excluded from this list as the notifications for them can be configured specifically for every user."
@@ -4592,7 +4598,7 @@ sv:
   text_custom_field_hint_activate_per_project_and_type: >
     Anpassade fält behöver aktiveras per arbetspaketstyp och per projekt.
   text_project_custom_field_html: >
-    The Enterprise edition will add these additional add-ons for projects' custom fields: <br> <ul> <li><b>Add custom fields for projects to your Project list to create a project portfolio view</b></li> </ul>
+    Enterprise utgåvan kommer att lägga till dessa ytterligare tillägg för projekt egna fält: <br> <ul> <li><b>Lägg till anpassade fält för projekt i din projektlista för att skapa en projektportfölj visa</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
@@ -4670,6 +4676,7 @@ sv:
     Obs: om aktiverad, kommer detta att visa ett märke med din installationsstatus i administrationspanelen <a href="%{information_panel_path}">%{information_panel_label}</a> och på startsidan. Det visas endast för administratörer. <br/> Emblemet kommer att kontrollera din nuvarande OpenProject-version mot den officiella OpenProject-utgåvans databas för att varna dig om eventuella uppdateringar eller kända sårbarheter. För mer information om vad kontrollen ger, vilka uppgifter som behövs för att tillhandahålla tillgängliga uppdateringar, och hur du inaktiverar denna kontroll, besök <a href="%{more_info_url}">konfigurationsdokumentationen</a>.
   text_own_membership_delete_confirmation: "Du håller på att ta bort några eller alla av dina behörigheter och kommer därefter inte längre att kunna redigera detta projekt. Är du säker på att du vill fortsätta?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Katalogen \"Plugin assets\" skrivbar"
   text_powered_by: "Drivs av %{link}"
   text_project_identifier_info: "Bara gemena bokstäver (a-z), siffror, bindestreck och understreck tillåts och måste dessutom börja med en gemen bokstav."
@@ -4791,14 +4798,14 @@ sv:
   warning_user_limit_reached_admin: >
     Adding additional users will exceed the current limit. Please <a href="%{upgrade_url}">upgrade your plan</a> to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
-    You reached your user limit (%{current}/%{max} active users). Please contact sales@openproject.com to upgrade your Enterprise edition plan and add additional users.
+    Du har nått din användargräns (%{current}/%{max} aktiva användare). Kontakta sales@openproject.com för att uppgradera din plan för Enterprise utgåvan och lägga till ytterligare användare.
   warning_protocol_mismatch_html: >
 
   warning_bar:
     https_mismatch:
-      title: "HTTPS mode setup mismatch"
+      title: "HTTPS-läge stämmer inte överens"
       text_html: >
-        Your application is running with HTTPS mode set to <code>%{set_protocol}</code>, but the request is an <code>%{actual_protocol}</code> request. This will result in errors! You will need to set the following configuration value: <code>%{setting_value}</code>. Please see <a href="%{more_info_path}">the installation documentation</a> on how to set this configuration.
+        Ditt program körs med HTTPS-läge inställt på <code>%{set_protocol}</code>, men begäran är en <code>%{actual_protocol}</code> begäran. Detta kommer att resultera i fel! Du måste ange följande konfigurationsvärde: <code>%{setting_value}</code>. Se <a href="%{more_info_path}">installationsdokumentationen</a> om hur du ställer in denna konfiguration.
     hostname_mismatch:
       title: "Hostname setting mismatch"
       text_html: >
@@ -4896,12 +4903,12 @@ sv:
       additional_privileges_group: "Might have additional privileges (as group member)"
       additional_privileges_project_or_group: "Might have additional privileges (as project or group member)"
     project_queries:
-      publishing_denied: "You do not have permission to make project lists public."
+      publishing_denied: "Du har inte behörighet att göra projektlistor offentliga."
       access_warning: "Users will only see the projects they have access to. Sharing project lists does not impact individual project permissions."
       user_details:
-        owner: "List owner"
-        can_view_because_public: "Can already view because list is shared with everyone"
-        can_manage_public_lists: "Can edit due to global permissions"
+        owner: "Listägare"
+        can_view_because_public: "Kan redan se eftersom listan delas med alla"
+        can_manage_public_lists: "Kan redigera på grund av globala behörigheter"
       public_flag:
         label: "Share with everyone at %{instance_name}"
         caption: "Everyone can view this project list. Those with global edit permissions can modify it."
@@ -4921,12 +4928,12 @@ sv:
         message: "Sharing project lists with individual users is an enterprise add-on."
   working_days:
     info: >
-      Days that are not selected are skipped when scheduling work packages and project life cycles (and not included in the day count). These can be overridden at a work-package level.
+      Dagar som inte är valda hoppas över vid schemaläggning av arbetspaket och projektlivscykler (och ingår inte i dagräkningen). Dessa kan åsidosättas på arbetspaketnivå.
     instance_wide_info: >
       Dates added to the list below are considered non-working and skipped when scheduling work packages.
     change_button: "Change working days"
     warning: >
-      Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+      Att ändra vilka veckodagar som anses vara arbetsdagar eller icke-arbetsdagar kan påverka start- och slutdagar för alla arbetspaket och livscykler i alla projekt i detta fall.
     journal_note:
       changed: _**Working days** changed (%{changes})._
       days:
@@ -4949,7 +4956,7 @@ sv:
       code_429: "Too many requests. Please try again later."
       code_500: "Ett internt fel har inträffat."
       code_500_outbound_request_failure: "An outbound request to another resource has failed with status code %{status_code}."
-      code_500_missing_enterprise_token: "The request can not be handled due to invalid or missing Enterprise token."
+      code_500_missing_enterprise_token: "Begäran kan inte hanteras på grund av ogiltig eller saknad Enterprise token."
       bad_request:
         emoji_reactions_activity_type_not_supported: "This activity type does not support emoji reactions."
         invalid_link: "The link under key '%{key}' is not valid."
@@ -5153,11 +5160,11 @@ sv:
   you: du
   link: länk
   plugin_openproject_auth_plugins:
-    name: "OpenProject Auth Plugins"
+    name: "OpenProject Auth plugins"
     description: "Integration of OmniAuth strategy providers for authentication in OpenProject."
   plugin_openproject_auth_saml:
     name: "OmniAuth SAML / Single-Sign On"
-    description: "Adds the OmniAuth SAML provider to OpenProject"
+    description: "Lägger till OmniAuth SAML-leverantören till OpenProject"
   enterprise_plans:
     legacy_enterprise: "Enterprise Plan"
   token:

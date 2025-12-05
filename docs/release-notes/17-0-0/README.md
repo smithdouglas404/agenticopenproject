@@ -22,6 +22,13 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
+### Removal of special semver
+
+We removed the `special` fragment of the semantic version of OpenProject. This has not been in use.
+Unless you are relying on this value in one of your plugins, you can ignore this change.
+
+Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
+
 <!--more-->
 
 ## Bug fixes and changes

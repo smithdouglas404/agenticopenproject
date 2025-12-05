@@ -96,12 +96,6 @@ de:
       manual: Vorhandener Ordner manuell verwaltet
     remove_project:
       deletion_failure_flash: Das Projekt konnte nicht vom Dateispeicher entfernt werden. %{error}
-      dialog:
-        automatically_managed_appendix: Falls dieser Speicher einen automatisch verwalteten Projektordner enthält, werden dieser und seine Dateien für immer gelöscht.
-        confirmation_text: Bitte bestätigen Sie die Entfernung des Dateispeichers aus diesem Projekt
-        heading_text: Projekt von %{storage} entfernen
-        text: Diese Aktion ist unumkehrbar und entfernt alle Verknüpfungen von Arbeitspaketen dieses Projekts zu Dateien und Ordnern dieses Speichers.
-        title: Projekt von Speicherung abtrennen
       label: Projekt entfernen
   services:
     attributes:
@@ -226,12 +220,13 @@ de:
     confirm_replace_oauth_application: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie die Anmeldedaten beim Speicheranbieter erneut eingeben und alle Remote-Benutzer müssen sich erneut gegenüber OpenProject autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     confirm_replace_oauth_client: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie neue Anmeldedaten vom Speicheranbieter eingeben und alle Benutzer müssen sich erneut für %{provider_type} autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     delete_warning:
-      project_storage_delete_result_1: Entfernen Sie alle Links von Arbeitspaketen dieses Projekts zu Dateien und Ordnern dieses Speichers.
-      project_storage_delete_result_2: Falls dieser Speicher einen automatisch verwalteten Projektordner hat, werden dieser und seine Dateien unwiderbringlich gelöscht.
-      storage: 'Sind Sie sicher, dass Sie %{file_storage} löschen möchten? Dies wird:'
-      storage_delete_result_1: Alle eingerichteten Projektdateispeicher, die diesen Dateispeicher verwenden, werden gelöscht.
-      storage_delete_result_2: Alle Dateiverknüpfungen aus Arbeitspaketen sämtlicher Projekte zu Dateien und Ordnern auf diesem Dateispeicher werden gelöscht.
-      storage_delete_result_3: Hat dieser Dateispeicher automatisch verwaltete Projektordner, so werden diese und die enthaltenen Dateien permanent gelöscht.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Gruppenordner
@@ -242,17 +237,23 @@ de:
     error_invalid_provider_type: Bitte wählen Sie einen gültigen Dateispeicheranbieter aus.
     file_storage_view:
       access_management:
-        automatic_management: Automatisch verwaltete Zugriffe und Ordner
-        automatic_management_description: Lassen Sie OpenProject Ordner pro Projekt automatisch erstellen. Dies wird empfohlen, da mit dieser Option jedes Teammitglied immer über die richtigen Zugriffsrechte verfügt.
-        description: Wählen Sie die Art der Verwaltung des Benutzerzugriffs und der Ordnererstellung. Wir empfehlen, die Option Automatisch verwalteter Zugriff zu verwenden, um eine besser organisierte Struktur zu erhalten und den Zugriff für alle relevanten Benutzer zu gewährleisten.
-        manual_management: Manuell verwaltete Zugriffe und Ordner
-        manual_management_description: Erstellen und verwalten Sie Ordner pro Projekt manuell. Sie müssen händisch sicherstellen, dass die entsprechenden Benutzer Zugriff haben.
+        automatic_management: Enable automatically-managed access and folders
+        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
+        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
+        manual_management: Only allow manually-managed access and folders
+        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
         setup_incomplete: Wählen Sie die Art der Verwaltung des Benutzerzugriffs und der Ordnererstellung.
-        subtitle: Zugriffsverwaltung
+        subtitle: Folder and access management
       access_management_section: Zugriff und Projektordner
       automatically_managed_folders: Automatisch verwaltete Projektordner
       general_information: Allgemeine Informationen
       oauth_configuration: OAuth-Konfiguration
+      one_drive:
+        access_management:
+          automatic_management: Enable automatically-managed access and folders
+          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
+          manual_management: Only allow manually-managed access and folders
+          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Projektordner
@@ -496,7 +497,7 @@ de:
         title: Wir richten Ihre Berechtigungen für den Projektordner ein.
     page_titles:
       file_storages:
-        delete: Dateispeicher löschen
+        delete: Delete file storage?
         subtitle: Fügen Sie einen externen Dateispeicher hinzu, um Dateien in Arbeitspaketen hochzuladen, zu verlinken und zu verwalten.
       managed_project_folders:
         subtitle: |-
@@ -510,6 +511,8 @@ de:
       project_storage_members:
         subtitle: Überprüfen Sie den Verbindungsstatus für den Speicher- %{storage_name_link} aller Projektmitglieder.
         title: Verbindungsstatus der Mitglieder
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'Dateiberechtigungen auf externen Speichern werden nur auf Ordner und Dateien in automatisch verwalteten Projektordnern angewendet. Beachten Sie, dass nicht alle Dateiberechtigungen von allen Speicheranbietern unterstützt werden. Weitere Informationen finden Sie in der Dokumentation zu <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>Dateispeicherberechtigungen</a>.'
     provider_types:
       label: Anbieter-Typ

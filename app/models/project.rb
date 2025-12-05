@@ -216,9 +216,10 @@ class Project < ApplicationRecord
 
   scopes :activated_in_storage,
          :allowed_to,
+         :assignable_parents,
          :available_custom_fields,
-         :visible,
-         :assignable_parents
+         :available_templates,
+         :visible
 
   scope :has_module, ->(mod) {
     where(["#{Project.table_name}.id IN (SELECT em.project_id FROM #{EnabledModule.table_name} em WHERE em.name=?)", mod.to_s])

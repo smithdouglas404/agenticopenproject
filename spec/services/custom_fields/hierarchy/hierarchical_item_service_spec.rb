@@ -34,33 +34,56 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
   subject(:service) { described_class.new }
 
   context "with ListItemContract" do
-    let!(:custom_field) { create(:custom_field, field_format: "hierarchy", hierarchy_root: nil) }
-    let!(:invalid_custom_field) { create(:custom_field, field_format: "text", hierarchy_root: nil) }
+    let!(:custom_field) do
+      create(:custom_field, field_format: "hierarchy", hierarchy_root: nil).tap do |cf|
+        service.generate_root(cf).value!
+        cf.reload
+      end
+    end
     let!(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
 
-    let!(:root) { service.generate_root(custom_field).value! }
+    let(:root) { custom_field.hierarchy_root }
     let!(:luke) { service.insert_item(contract_class:, parent: root, label: "luke", short: "LS").value! }
     let!(:mara) { service.insert_item(contract_class:, parent: luke, label: "mara").value! }
 
     describe "#generate_root" do
-      context "with valid hierarchy root" do
+      # no tree needed for this section, but creation would fail due to non-existing root
+      let!(:luke) { nil }
+      let!(:mara) { nil }
+
+      context "with valid hierarchy custom field" do
+        let!(:custom_field) { create(:custom_field, field_format: "hierarchy", hierarchy_root: nil) }
+
         it "creates a root item successfully" do
           expect(service.generate_root(custom_field)).to be_success
         end
       end
 
-      it "requires a custom field of type hierarchy" do
-        result = service.generate_root(invalid_custom_field).failure
+      context "with invalid custom field type" do
+        let!(:custom_field) { create(:custom_field, field_format: "text", hierarchy_root: nil) }
 
-        expect(result.errors[:custom_field]).to eq(["format 'text' is unsupported."])
+        it "requires a custom field of type hierarchy" do
+          result = service.generate_root(custom_field).failure
+
+          expect(result.errors[:custom_field]).to eq(["format 'text' is unsupported."])
+        end
       end
 
       context "with persistence of hierarchy root fails" do
+        let!(:custom_field) { create(:custom_field, field_format: "hierarchy", hierarchy_root: nil) }
+
         it "fails to create a root item" do
           allow(CustomField::Hierarchy::Item)
             .to receive(:create)
                   .and_return(instance_double(CustomField::Hierarchy::Item, new_record?: true, errors: "some errors"))
 
+          result = service.generate_root(custom_field)
+          expect(result).to be_failure
+        end
+      end
+
+      context "with already existing hierarchy root" do
+        it "fails to create a root item" do
           result = service.generate_root(custom_field)
           expect(result).to be_failure
         end
@@ -151,6 +174,61 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
 
           expect(result).to be_success
           expect(root.reload.position_cache).to eq(27)
+        end
+
+        context "if the item or its descendants were assigned as a custom value" do
+          let(:wp_type) { create(:type_task) }
+          let(:project) { create(:project, types: [wp_type]) }
+          let(:work_package) { create(:work_package, project:, type: wp_type) }
+          let(:work_package_with_child_value) { create(:work_package, project:, type: wp_type) }
+          let(:work_package_with_another_value) { create(:work_package, project:, type: wp_type) }
+          let(:value_for_work_package) do
+            create(:work_package_custom_value, custom_field:, customized: work_package, value: luke.id)
+          end
+          let(:value_for_work_package_with_child_value) do
+            create(:work_package_custom_value, custom_field:, customized: work_package_with_child_value, value: mara.id)
+          end
+          let(:value_for_work_package_with_another_value) do
+            create(:work_package_custom_value,
+                   custom_field:,
+                   customized: work_package_with_another_value,
+                   value: leia.id)
+          end
+
+          let!(:custom_field) do
+            create(:hierarchy_wp_custom_field, projects: [project], types: [wp_type], hierarchy_root: nil).tap do |cf|
+              service.generate_root(cf).value!
+              cf.reload
+            end
+          end
+          let!(:leia) { service.insert_item(contract_class:, parent: root, label: "leia", short: "LO").value! }
+
+          before do
+            value_for_work_package
+            value_for_work_package_with_child_value
+            value_for_work_package_with_another_value
+          end
+
+          it "removes the custom values of the deleted item from the work package" do
+            result = service.delete_branch(item: luke)
+
+            expect(result).to be_success
+            expect(work_package.reload.custom_value_for(custom_field).value).to be_nil
+          end
+
+          it "removes the custom values of descendants of the deleted item from the work package" do
+            result = service.delete_branch(item: luke)
+
+            expect(result).to be_success
+            expect(work_package_with_child_value.reload.custom_value_for(custom_field).value).to be_nil
+          end
+
+          it "does not remove custom values of items that are unrelated" do
+            result = service.delete_branch(item: luke)
+
+            expect(result).to be_success
+            expect(work_package_with_another_value.reload.custom_value_for(custom_field).value).to eq(leia.id.to_s)
+          end
         end
       end
 

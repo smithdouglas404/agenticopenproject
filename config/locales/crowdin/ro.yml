@@ -1483,7 +1483,8 @@ ro:
         not_a_datetime: "nu este o dată-ora validă."
         not_a_number: "nu este un număr."
         not_allowed: "nu este valabilă din cauza lipsei de permisiuni."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "nu este un întreg."
         not_an_iso_date: "nu este o dată validă. Formatul necesar: AAAA-MM-ZZ."
         not_same_project: "nu aparține aceluiași proiect."
@@ -2155,6 +2156,7 @@ ro:
   button_print: "Tipărește"
   button_quote: "Citare"
   button_remove: Eliminare
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Redenumește"
   button_replace: "Înlocuiește"
@@ -2533,7 +2535,7 @@ ro:
         title: "Scrie comentarii interne pe care doar un grup restrâns le poate vedea"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -4281,6 +4283,7 @@ ro:
   setting_emails_salutation: "Adresează utilizator în e-mailuri cu"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Locația executabilului \"sendmail\""
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Utilizează automat STARTTLS dacă este disponibil"
   setting_smtp_ssl: "Utilizează conexiunea SSL"
   setting_smtp_address: "Server SMTP"
@@ -4443,6 +4446,9 @@ ro:
   setting_work_package_list_default_highlighted_attributes: "Atributele evidențiate implicit în linie"
   setting_working_days: "Zile lucrătoare"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Autentificare"
       registration: "Registration"
@@ -4720,6 +4726,7 @@ ro:
     Notă: dacă este activată, aceasta va afișa o insignă cu starea instalării în fereastra <a href="%{information_panel_path}">%{information_panel_label}</a> panoul de administrare și pe pagina principală. Aceasta este afișată numai pentru administratori. <br/> Insigna va verifica versiunea curentă a OpenProject în raport cu baza de date oficială a versiunilor OpenProject pentru a alerta cu privire la orice actualizări sau vulnerabilități cunoscute. Pentru mai multe informații despre ce oferă verificarea, ce date sunt necesare pentru a furniza actualizările disponibile și cum să dezactivezi această verificare, te rog să vizitezi <a href="%{more_info_url}">documentația de configurare</a>.
   text_own_membership_delete_confirmation: "Sunteţi cale de a elimina unele sau toate permisiunile şi e posibil să nu mai puteți edita acest proiect după aceea. \nSunteţi sigur că doriţi să continuaţi?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Se poate scrie în directorul de resurse pentru module"
   text_powered_by: "Propulsat de %{link}"
   text_project_identifier_info: "Doar litere mici (a-z), numere, cratime şi linii de subliniere sunt permise, trebuie să înceapă cu o literă mică."

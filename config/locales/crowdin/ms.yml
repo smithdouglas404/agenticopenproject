@@ -1463,7 +1463,8 @@ ms:
         not_a_datetime: "bukan tarikh masa yang sah."
         not_a_number: "bukan nombor."
         not_allowed: "adalah tidak sah kerana kekurangan kebenaran."
-        not_json: "bukan objek JSON yang sah."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "bukan sebuah integer."
         not_an_iso_date: "bukan tarikh yang sah. Format yang diperlukan: TTTT-BB-HH."
         not_same_project: "tidak tergolong dalam projek yang sama."
@@ -2101,6 +2102,7 @@ ms:
   button_print: "Cetak"
   button_quote: "Petikan"
   button_remove: Keluarkan
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Buang peringatan"
   button_rename: "Namakan semula"
   button_replace: "Gantikan"
@@ -2439,7 +2441,7 @@ ms:
         title: "Write internal comments only a small group can see"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         other: "%{count} days left of %{trial_plan} trial token"
@@ -4181,6 +4183,7 @@ ms:
   setting_emails_salutation: "Menggelar pengguna dalam e-mel dengan"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Lokasi sendmail boleh dilaksanakan"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Gunakan STARTTLS secara automatik jika tersedia"
   setting_smtp_ssl: "Guna sambungan SSL"
   setting_smtp_address: "Server SMTP"
@@ -4343,6 +4346,9 @@ ms:
   setting_work_package_list_default_highlighted_attributes: "Atribut disorot sebaris default"
   setting_working_days: "Hari bekerja"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Log masuk"
       registration: "Registration"
@@ -4620,6 +4626,7 @@ ms:
     Perhatian: jika dibenarkan, ini akan paparkan lambang bersertaan status pemasangan di <a href="%{information_panel_path}">%{information_panel_label}</a> panel pentadbiran, dan di halaman utama. Ia hanya akan dipaparkan ke para pentadbir sahaja. <br/> Lambang tersebut akan menyemak versi OpenProject terkini anda terhadap pangkalan data keluaran rasmi OpenProject untuk memaklumkan anda tentang sebarang kemas kini atau kelemahan yang diketahui. Untuk maklumat lanjut bagi penyediaan semakan, data apa yang diperlukan untuk menyediakan kemas kini tersedia, dan bagaimana untuk menyahaktifkan semakan ini, sila kunjungi <a href="%{more_info_url}">dokumentasi konfigurasi</a>.
   text_own_membership_delete_confirmation: "Anda akan mengeluarkan beberapa atau semua kebenaran anda dan mungkin tidak lagi dapat mengedit projek ini selepas itu.\nAdakah anda pasti anda ingin teruskan?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Aset plugin direktori yang boleh ditulis"
   text_powered_by: "Dikuasakan oleh %{link}"
   text_project_identifier_info: "Hanya huruf kecil (a-z), nombor, sengkang dan tanda garis bawah adalah dibenarkan, mesti mula dengan huruf kecil."

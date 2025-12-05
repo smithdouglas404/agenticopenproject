@@ -111,7 +111,7 @@ zh-TW:
       idp_sso_service_url: >
         身分提供商登入端點的 URL。
       idp_slo_service_url: >
-        The URL of the identity provider logout endpoint.
+        身份提供者登出端點的 URL。
       idp_cert: >
         輸入身分提供者的 X509 PEM 格式公開憑證。您可以輸入多個憑證，並以換行分隔。
       name_identifier_format: >

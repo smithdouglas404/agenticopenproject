@@ -113,6 +113,7 @@ See COPYRIGHT and LICENSE files for more details.
       data-value="sendmail"
       <%= "hidden" unless Setting.email_delivery_method == :sendmail %>>
       <div class="form--field"><%= setting_text_field :sendmail_location %></div>
+      <div class="form--field"><%= setting_text_field :sendmail_arguments %></div>
     </div>
     <div
       data-show-when-value-selected-target="effect"

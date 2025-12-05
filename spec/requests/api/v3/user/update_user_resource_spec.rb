@@ -232,7 +232,7 @@ RSpec.describe API::V3::Users::UsersAPI do
         end
 
         context "with non-admin permissions" do
-          let(:current_user) { create(:user, global_permissions: [:manage_user]) }
+          let(:current_user) { create(:user, global_permissions: %i[manage_user view_all_principals]) }
           let(:parameters) do
             {
               login: "new.login",
@@ -315,7 +315,7 @@ RSpec.describe API::V3::Users::UsersAPI do
   end
 
   describe "user with global manage_user permission" do
-    shared_let(:global_manage_user) { create(:user, global_permissions: :manage_user) }
+    shared_let(:global_manage_user) { create(:user, global_permissions: %i[manage_user view_all_principals]) }
     let(:current_user) { global_manage_user }
 
     it_behaves_like "update flow"
@@ -363,7 +363,7 @@ RSpec.describe API::V3::Users::UsersAPI do
 
     it "returns an erroneous response" do
       send_request
-      expect(last_response).to have_http_status(:forbidden)
+      expect(last_response).to have_http_status(:not_found)
     end
   end
 end

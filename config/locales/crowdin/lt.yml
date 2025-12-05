@@ -1489,7 +1489,8 @@ lt:
         not_a_datetime: "nėra tinkama data ir laikas."
         not_a_number: "nėra skaičius."
         not_allowed: "netinkamas dėl trūkstamų teisių."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "nėra sveikasis skaičius."
         not_an_iso_date: "nėra tinkama data. Reikalingas formatas: YYYY-MM-DD."
         not_same_project: "nepriklauso tam pačiam projektui."
@@ -2178,6 +2179,7 @@ lt:
   button_print: "Spausdinti"
   button_quote: "Cituoti"
   button_remove: Pašalinti
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Pervardinti"
   button_replace: "Pakeisti"
@@ -2576,7 +2578,7 @@ lt:
         title: "Write internal comments only a small group can see"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -4325,6 +4327,7 @@ lt:
   setting_emails_salutation: "Kreiptis į naudotojus e-laiškuose su"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Sendmail vykdomojo failo lokacija"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Automatiškai naudoti STARTTLS, jei galima"
   setting_smtp_ssl: "Naudoti SSL jungtį"
   setting_smtp_address: "SMTP serveris"
@@ -4487,6 +4490,9 @@ lt:
   setting_work_package_list_default_highlighted_attributes: "Atributai, kuriuos numatyta paryškinti"
   setting_working_days: "Darbo dienos"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Prisijungimo vardas"
       registration: "Registration"
@@ -4764,6 +4770,7 @@ lt:
     Pastaba: įjungus bus rodomas ženkliukas su jūsų diegimo būsena <a href="%{information_panel_path}">%{information_panel_label}</a> administravimo skydelyje. Rodoma tik administratoriams. <br/> Ženkliukas palygins jūsų OpenProject versiją su oficialia OpenProject laidų duomenų baze ir praneš, jei yra atnaujinimų dėl žinomų saugumo problemų. Daugiau informacijos, ką daro šis tikrinimas, kokią reikia pateikti informaciją ir kaip šį tikrinimą išjungti, rasite <a href="%{more_info_url}">konfigūravimo dokumentacijoje</a>.
   text_own_membership_delete_confirmation: "Jūs ketinate pašalinti keletą ar visus leidimus ir gali būti, kad nebegalėsite redaguoti šio projekto po to.\nAr jūs tikrai norite tęsti?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Į papildinių katalogą galima rašyti"
   text_powered_by: "Parengta pagal %{link}"
   text_project_identifier_info: "Leidžiamos tik mažosios raidės (a-z), skaitmenys, paprasti (-) ir žemi brūkšneliai (_). Taip pat privalo prasidėti mažąja raide."

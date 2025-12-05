@@ -88,54 +88,34 @@ module WorkPackages::Scopes
           WHERE entity_id IS NULL
         SQL
 
-        # Remove those entries from before that are
-        # * entity (WorkPackage) specific AND
-        # * have the same project as a non-entity specific entry.
-        # That is the case if a work package is shared with a user
-        # while the user is already a member in the project.
-        # Since the allowed_to filtering is already specific to the permissions, that removal is safe.
-        entity_member_projects_without_duplicates = Arel.sql(<<~SQL.squish)
-          SELECT * FROM entity_member_projects
-          WHERE NOT EXISTS (
-            SELECT 1 FROM project_member_projects
-            WHERE project_member_projects.id = entity_member_projects.id
-          )
-        SQL
-
         # Take all work packages allowed by either project-wide or entity-specific membership.
-        # But now remove all those that are in a project for which an entity-specific membership exists that is not
-        # for that entity (work package).
-        # An alternative way of formulating this would be by comparing
-        # * That the project_id matches AND
-        # * the entity_id matches OR the entity_id is null
-        #  ```
-        #   SELECT * from work_packages
-        # 	WHERE EXISTS (
-        # 	  SELECT 1 FROM allowed_projects projects
-        #     WHERE projects.id = work_packages.project_id
-        #     AND (projects.entity_id = work_packages.id OR projects.entity_id IS NULL)
-        # 	)
-        # ```
-        # Postgresql however sometimes turns to a sequential scan with the query above.
+        # PostgreSQL however sometimes turns to a sequential scan with the query above.
         #
-        # Index scans can still happen in the combination of the CTE with the check outside of the
-        # CTEs for the existence of any record.
-        # This is particularly likely in case AR.exists? is used which adds a LIMIT 1
+        # It is currently unclear if index scans can still happen in the combination of the CTE with the check
+        # outside of the CTEs for the existence of any record.
+        # This happened in the past, before changing this CTE to a UNION, in case AR.exists? is used which adds a LIMIT 1
         # to the query. In this case, there is a known shortcoming that PostgreSQL's query planner
         # will make poor choices
         # (https://www.postgresql.org/message-id/flat/CA%2BU5nMLbXfUT9cWDHJ3tpxjC3bTWqizBKqTwDgzebCB5bAGCgg%40mail.gmail.com).
         #
         # Once AR supports adding materialization hints (https://github.com/rails/rails/pull/54322), the inner
         # `allowed` CTE can be abandoned as it is only used for being able to provide such a hint.
+        # Having the inner materialized CTE has no known negative side effects which is why it is kept.
         allowed_by_projects_and_work_packages = Arel.sql(<<~SQL.squish)
           WITH allowed AS MATERIALIZED (
-            SELECT id from work_packages
-            WHERE project_id in (SELECT id FROM member_projects)
-            AND NOT EXISTS (
-              SELECT 1 FROM entity_member_projects_without_duplicates
-              WHERE entity_member_projects_without_duplicates.id = work_packages.project_id
-              AND entity_member_projects_without_duplicates.entity_id != work_packages.id
-            )
+            SELECT
+              work_packages.id
+            FROM
+              work_packages
+            JOIN project_member_projects ON project_member_projects.id	= work_packages.project_id
+
+            UNION
+
+            SELECT
+              work_packages.id
+            FROM
+              work_packages
+            JOIN entity_member_projects ON entity_member_projects.entity_id = work_packages.id
           )
 
           SELECT * from allowed
@@ -144,7 +124,6 @@ module WorkPackages::Scopes
         with(member_projects: Arel.sql(allowed_via_project_or_work_package_membership.to_sql),
              entity_member_projects:,
              project_member_projects:,
-             entity_member_projects_without_duplicates:,
              allowed_by_projects_and_work_packages:)
           .where(<<~SQL.squish)
             EXISTS (

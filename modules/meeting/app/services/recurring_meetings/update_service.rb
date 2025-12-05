@@ -35,7 +35,7 @@ module RecurringMeetings
     protected
 
     def validate_params
-      @old_schedule = model.full_schedule_in_words
+      @old_schedule_model = model.dup
       @old_location = model.template.location
       super
     end
@@ -159,11 +159,16 @@ module RecurringMeetings
         .participants
         .invited
         .find_each do |participant|
+        # Generate old schedule in each participant's locale
+        old_schedule = User.execute_as(participant.user) do
+          @old_schedule_model.full_schedule_in_words
+        end
+
         MeetingSeriesMailer.updated(
           recurring_meeting,
           participant.user,
           User.current,
-          changes: { old_schedule: @old_schedule, old_location: @old_location }
+          changes: { old_schedule:, old_location: @old_location }
         ).deliver_now
       end
     end

@@ -302,7 +302,7 @@ zh-TW:
       success_message: 'URL“%{name}”已成功複製到剪貼板。請將其粘貼到日曆客戶端中以完成訂閱。'
     label_activate: "啟用"
     label_assignee: "執行者"
-    label_assignee_alt_text: "This work package is assigned to %{name}"
+    label_assignee_alt_text: "本工作包分配給 %{name}"
     label_add_column_after: "在後面增加一欄"
     label_add_column_before: "在前面增加一欄"
     label_add_columns: "增加欄位"
@@ -1122,7 +1122,7 @@ zh-TW:
       current_project_and_all_descendants: "目前專案和子專案"
       current_project: "目前專案"
       recently_viewed: "最近檢視"
-      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
+      search_placeholder_expanded: "依主題、專案、類型、狀態或 ID 搜尋工作套件"
       title:
         all_projects: "所有專案"
         project_and_subprojects: "含子專案"
@@ -1160,10 +1160,10 @@ zh-TW:
       no_results: "沒有符合搜尋條件"
       no_favorite_results: "沒有符合您搜尋條件的收藏專案。"
     include_workspaces:
-      search_placeholder: "Search..."
+      search_placeholder: "搜尋……"
       types:
-        program: "Program"
-        portfolio: "Portfolio"
+        program: "方案"
+        portfolio: "專案組合"
     baseline:
       toggle_title: "差異線"
       clear: "清除"

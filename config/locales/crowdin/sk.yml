@@ -1492,7 +1492,8 @@ sk:
         not_a_datetime: "nie je platný dátum a čas."
         not_a_number: "nie je číslo."
         not_allowed: "je neplatné kvôli chýbajúcim oprávneniam."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "nie je celé číslo."
         not_an_iso_date: "nie je platný dátum. Požadovaný formát: RRRR-MM-DD."
         not_same_project: "nepodlieha rovnakému projektu."
@@ -2181,6 +2182,7 @@ sk:
   button_print: "Tlač"
   button_quote: "Citovať"
   button_remove: Vymazať
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Premenovať"
   button_replace: "Nahradiť"
@@ -2579,7 +2581,7 @@ sk:
         title: "Write internal comments only a small group can see"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -4330,6 +4332,7 @@ sk:
   setting_emails_salutation: "Address user in emails with"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Umiestnenie sendmail spustiteľného programu"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Automaticky použiť STARTTLS, ak je k dispozícii"
   setting_smtp_ssl: "Použiť SSL pripojenie"
   setting_smtp_address: "SMTP server"
@@ -4492,6 +4495,9 @@ sk:
   setting_work_package_list_default_highlighted_attributes: "Predvolené inline zvýraznené atribúty"
   setting_working_days: "Working days"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Prihlasovacie meno"
       registration: "Registration"
@@ -4769,6 +4775,7 @@ sk:
     Poznámka: Ak je táto možnosť povolená, zobrazí sa v štýle <a href="%{information_panel_path}">%{information_panel_label}</a> na panely správcu, a na domovskej stránke. Zobrazuje sa iba administrátorom. <br/> Znak skontroluje vašu aktuálnu verziu OpenProject s oficiálnou verziu databázy OpenProject, ktorá vás upozorní na akékoľvek aktualizácie alebo známe chyby. Ďalšie informácie o tom, čo daná kontrola poskytuje, aké údaje sú potrebné na poskytovanie dostupných aktualizácií a ako zakázať túto kontrolu, prosím navštívte <a href="%{more_info_url}">dokumentáciu konfigurácie</a>.
   text_own_membership_delete_confirmation: "Chystáte sa odstrániť jedno respektíve viac vašich povolení, pričom po aplikovaní zmien môžte stratiť možnosť naďalej upravovať nastavenia projektu. Naozaj chcete pokračovať?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Povolený zápis do priečinka pre pluginy"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Sú povolené len malé písmená (a-z), čísla, pomlčky a podčiarkovníky, hodnota musí začínať malým písmenom."

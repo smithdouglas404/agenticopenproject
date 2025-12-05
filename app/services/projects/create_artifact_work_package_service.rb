@@ -102,7 +102,7 @@ module Projects
         .call(
           container: artifact_work_package,
           project_storage:,
-          file_path: project.project_creation_wizard_artifact_name,
+          file_path: artifact_storage_folder_name,
           file_data: StringIO.new(export.content),
           filename: export.title
         )
@@ -112,6 +112,13 @@ module Projects
       end
 
       service_call
+    end
+
+    def artifact_storage_folder_name
+      I18n.t(project.project_creation_wizard_artifact_name,
+             locale: Setting.default_language,
+             default: :project_initiation_request,
+             scope: "settings.project_initiation_request.name.options")
     end
 
     def send_notification_email

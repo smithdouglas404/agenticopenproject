@@ -42,7 +42,7 @@ FactoryBot.define do
     factory :template_project do
       sequence(:name) { |n| "Template project No. #{n}" }
       sequence(:identifier) { |n| "template_no_#{n}" }
-      templated { true }
+      template
     end
 
     # Factories for

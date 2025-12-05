@@ -37,7 +37,8 @@ module Admin
 
       settings_form do |sf|
         sf.text_field(
-          name: :app_title
+          name: :app_title,
+          input_width: :medium
         )
 
         sf.text_field(

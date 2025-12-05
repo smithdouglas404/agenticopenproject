@@ -1,7 +1,7 @@
 <%=
   flex_layout(**archived_style) do |flex|
     flex.with_row(mb: 2) do
-      flex_layout(align_items: :center) do |header|
+      flex_layout(classes: "op-portfolios--details-header") do |header|
         header.with_column(mr: 2) do
           if archived?
             render(Primer::Beta::Text.new(classes: "portfolio-name")) do
@@ -69,7 +69,7 @@
       end
     end
 
-    flex.with_row(mb: 2) do
+    flex.with_row(classes: "op-portfolios--description", mb: 2) do
       if @portfolio.description.blank?
         render(Primer::Beta::Text.new(color: :muted)) { t("create_project.blank_description") }
       else
@@ -78,7 +78,7 @@
     end
 
     flex.with_row do
-      flex_layout(align_items: :center) do |footer|
+      flex_layout(classes: "op-portfolios--details-footer") do |footer|
         unless archived?
           footer.with_column(mr: 3) do
             render(
@@ -97,26 +97,6 @@
                 test_selector: "op-portfolios--favorite-button"
               )
             )
-          end
-
-          if has_subportfolios?
-            footer.with_column(mr: 3) do
-              concat(
-                render(
-                  Primer::Beta::Octicon.new(
-                    icon: workspace_icon("portfolio"),
-                    align_self: :center,
-                    "aria-label": t("portfolio.count", count: all_subportfolios.count),
-                    mr: 1
-                  )
-                )
-              )
-              concat(
-                render(Primer::Beta::Text.new) do
-                  t("portfolio.count", count: all_subportfolios.count)
-                end
-              )
-            end
           end
 
           footer.with_column(mr: 3) do

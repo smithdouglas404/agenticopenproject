@@ -1471,7 +1471,8 @@ ca:
         not_a_datetime: "no és una data-i-hora vàlida."
         not_a_number: "no és un número."
         not_allowed: "és invàlid perquè falten permisos."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "no és un enter."
         not_an_iso_date: "no és una data vàlida. Format requerit: AAAA-MM-DD."
         not_same_project: "no pertany al mateix projecte."
@@ -2126,6 +2127,7 @@ ca:
   button_print: "Imprimir"
   button_quote: "Citar"
   button_remove: Suprimir
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Renombrar"
   button_replace: "Substitueix"
@@ -2484,7 +2486,7 @@ ca:
         title: "Write internal comments only a small group can see"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -4224,6 +4226,7 @@ ca:
   setting_emails_salutation: "Address user in emails with"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Localització de l'executable de sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Utilitza STARTTLS automàticament si està disponible"
   setting_smtp_ssl: "Utilitza una connexió SSL"
   setting_smtp_address: "Servidor SMTP"
@@ -4386,6 +4389,9 @@ ca:
   setting_work_package_list_default_highlighted_attributes: "Atributs de destacament en línia per defecte"
   setting_working_days: "Dies laborals"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Entrar"
       registration: "Registration"
@@ -4663,6 +4669,7 @@ ca:
     Nota: si està activat, es mostra un indicador amb l'estat de la teva instal·lació <a href="%{information_panel_path}">%{information_panel_label}</a> en el panell d'administració i a la pàgina inicial. Només es mostra als administradors. <br/> L'indicador comprova la teva versió d'OpenProject actual amb la versió oficial i t'avisa si hi ha actualitzacions o qualsevol vulnerabilitat. Per a més informació en quina informació es proveïx, quines dades són necessàries per actualitzacions i com desactivar aquesta funció, si us plau, visita <a href="%{more_info_url}">la documentació de configuració</a>.
   text_own_membership_delete_confirmation: "Estàs a punt d'eliminar algun o tots els teus permisos i potser no podreu editar més aquest projecte.\nEstàs segur que vols continuar?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Es pot escriure als complements actius"
   text_powered_by: "Desenvolupat per %{link}"
   text_project_identifier_info: "Només es permeten lletres minúscules (a-z), números, guions i guions baixos, i ha de començar amb una lletra minúscula."

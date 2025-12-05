@@ -1461,7 +1461,8 @@ id:
         not_a_datetime: "bukan tanggal waktu yang valid."
         not_a_number: "harus diisi angka."
         not_allowed: "tidak valid karena tidak ada izin."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "harus bilangan bulat."
         not_an_iso_date: "is not a valid date. Required format: YYYY-MM-DD."
         not_same_project: "harus berasal dari proyek yang sama."
@@ -2099,6 +2100,7 @@ id:
   button_print: "Cetak"
   button_quote: "Kutipan"
   button_remove: Remove
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Ubah nama"
   button_replace: "Ganti"
@@ -2437,7 +2439,7 @@ id:
         title: "Write internal comments only a small group can see"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         other: "%{count} days left of %{trial_plan} trial token"
@@ -4177,6 +4179,7 @@ id:
   setting_emails_salutation: "Address user in emails with"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Location of the sendmail executable"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Automatically use STARTTLS if available"
   setting_smtp_ssl: "Use SSL connection"
   setting_smtp_address: "SMTP server"
@@ -4339,6 +4342,9 @@ id:
   setting_work_package_list_default_highlighted_attributes: "Default inline highlighted attributes"
   setting_working_days: "Hari kerja"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Login"
       registration: "Registration"
@@ -4616,6 +4622,7 @@ id:
     Catatan: jika diaktifkan, ini akan menampilkan lencana dengan status pemasangan Anda di panel administrasi <a href="%{information_panel_path}">%{information_panel_label}</a>, dan di beranda. Ini hanya ditampilkan kepada administrator. <br/> Lencana akan memeriksa versi OpenProject Anda saat ini dengan database rilis OpenProject resmi untuk memberi tahu Anda tentang pembaruan atau kerentanan yang diketahui. Untuk informasi lebih lanjut tentang apa yang diberikan pemeriksaan, data apa yang diperlukan untuk menyediakan pembaruan yang tersedia, dan cara menonaktifkan pemeriksaan ini, silakan kunjungi <a href="%{more_info_url}">dokumentasi konfigurasi</a>.
   text_own_membership_delete_confirmation: "Anda akan menghapus hak akses Anda dan mungkin Anda tidak dapat lagi mengedit Project ini. Apakah Anda yakin Anda ingin melanjutkan?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin aset direktori, bisa ditulisi"
   text_powered_by: "Didukung oleh %{link}"
   text_project_identifier_info: "Hanya huruf kecil (a-z), angka, garis dan garis bawah yang diperbolehkan, harus diawali dengan huruf kecil."

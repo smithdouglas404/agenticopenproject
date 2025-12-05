@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,30 +26,52 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-# Destroy confirmation dialog used when removing a storage from a project from within the project
-# by going to "Some project" -> Project settings -> Files.
-module Storages
-  module ProjectStorages
-    module Projects
-      class DestroyConfirmationDialogComponent < ApplicationComponent
-        include OpTurbo::Streamable
+require "spec_helper"
 
-        TEST_SELECTOR = "op-project-storages--delete-dialog"
+RSpec.describe "project export", :js do
+  shared_let(:project) { create(:project) }
 
-        def initialize(storage:)
-          super
-          @project_storage = storage
-        end
+  let(:wiki_page1) do
+    build(:wiki_page, title: "Some title!")
+  end
 
-        def form_arguments
-          {
-            action: project_settings_project_storage_path(project_id: @project_storage.project, id: @project_storage),
-            method: :delete
-          }
-        end
-      end
+  let(:current_user) { create(:admin) }
+
+  before do
+    @download_list = DownloadList.new
+
+    login_as(current_user)
+
+    project.wiki.pages << wiki_page1
+
+    project.wiki.save!
+
+    visit project_wiki_path(project, "Some title!")
+  end
+
+  after do
+    DownloadList.clear
+  end
+
+  subject { @download_list.refresh_from(page).latest_downloaded_content } # rubocop:disable RSpec/InstanceVariable
+
+  it "exports the wiki" do
+    page.find_test_selector("wiki-more-dropdown-menu").click
+    page.find_test_selector("export-button").click
+
+    page.find_test_selector("markdown-export").click
+
+    wait_for_network_idle
+
+    begin
+      perform_enqueued_jobs
+    rescue StandardError
+      # nothing
     end
+
+    result = expect(subject)
+    result.to have_text(wiki_page1.title)
   end
 end

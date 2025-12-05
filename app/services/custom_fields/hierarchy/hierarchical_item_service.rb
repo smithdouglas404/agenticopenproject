@@ -90,8 +90,17 @@ module CustomFields
         # list and nil)
         item_ids = item.self_and_descendant_ids
         custom_field = item.root&.custom_field
-        if item.destroy
+
+        ActiveRecord::Base.transaction do
+          unless item.destroy
+            raise ActiveRecord::Rollback
+          end
+
           update_calculated_values_for_hierarchy(item_ids:, custom_field:)
+          remove_assigned_custom_values(custom_field_id: custom_field.id, item_ids:)
+        end
+
+        if item.destroyed?
           Success()
         else
           Failure(item.errors)
@@ -200,6 +209,14 @@ module CustomFields
 
         update_position_cache(item.root)
         Success(item.reload)
+      end
+
+      def remove_assigned_custom_values(custom_field_id:, item_ids:)
+        CustomValue
+          .where(custom_field_id:, value: item_ids)
+          .delete_all
+      rescue ActiveRecord::ActiveRecordError
+        raise ActiveRecord::Rollback
       end
 
       def update_item_attributes(item:, attributes:)

@@ -1466,7 +1466,8 @@ de:
         not_a_datetime: "ist kein gültiges Datum."
         not_a_number: "ist keine Zahl."
         not_allowed: "ist ungültig aufgrund fehlender Berechtigungen."
-        not_json: "ist kein gültiges JSON-Objekt."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "ist keine ganzzahlige Zahl."
         not_an_iso_date: "ist kein gültiges Datum - Erwartetes Format: YYY-MM-DD."
         not_same_project: "gehört nicht zum selben Projekt."
@@ -2121,6 +2122,7 @@ de:
   button_print: "Drucken"
   button_quote: "Zitieren"
   button_remove: Entfernen
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Erinnerung entfernen"
   button_rename: "Umbenennen"
   button_replace: "Ersetzen"
@@ -2479,7 +2481,7 @@ de:
         title: "Interne Kommentare schreiben, die nur für ausgewählte Mitglieder sichtbar ist."
         description: " "
       portfolio_management:
-        description: Organisieren Sie Ihre Arbeit effektiv, indem Sie Portfolios und Programme mit dem Portfolio-Management-Modul erstellen.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "Ein Tag des %{trial_plan} Test-Token verbleibend"
@@ -4225,6 +4227,7 @@ de:
   setting_emails_salutation: "Anrede der Benutzer in E-Mails"
   setting_oauth_allow_remapping_of_existing_users: "Neuzuordnung von Authentifizierungsprovidern der Benutzer erlauben"
   setting_sendmail_location: "Systempfad zu sendmail"
+  setting_sendmail_arguments: "Befehlszeilenargumente für sendmail"
   setting_smtp_enable_starttls_auto: "Automatisch STARTTLS verwenden, falls vorhanden"
   setting_smtp_ssl: "Benutzen Sie eine SSL-Verbindung"
   setting_smtp_address: "SMTP-Server"
@@ -4387,6 +4390,9 @@ de:
   setting_work_package_list_default_highlighted_attributes: "Voreinstellung Inline Hervorherbung"
   setting_working_days: "Arbeitstage"
   settings:
+    errors:
+      not_writable: "Diese Einstellung ist nicht schreibbar und kann nur außerhalb der Anwendung von einem Systemadministrator geändert werden."
+      failed_to_update: "Die Einstellung '%{name}' konnte nicht aktualisiert werden: %{message}"
     authentication:
       login: "Anmelden"
       registration: "Registrierung"
@@ -4666,6 +4672,7 @@ de:
     Hinweis: Wenn aktiviert, wird dies eine Plakette mit dem Status Ihrer Installation in der <a href="%{information_panel_path}">%{information_panel_label}</a> unter Administration und auf der Startseite anzeigen. Es wird nur Administratoren gezeigt. <br/> Die Plakette überprüft Ihre aktuelle OpenProject-Version gegen die offizielle Release Datenbank, um Sie über Updates oder bekannten Sicherheitslücken zu informieren. Für die Überprüfung der Version werden Daten benötigt, um verfügbare Updates für Ihre Umgebung zurückzugeben. Für mehr Informationen über die Plakette, welche Daten sie benötigt und wie Sie diese Überprüfung deaktivieren können, besuchen Sie bitte <a href="%{more_info_url}">die Konfigurationsdokumentation</a>.
   text_own_membership_delete_confirmation: "Sie sind dabei, einige oder alle Ihre Berechtigungen zu entfernen. Es ist möglich, dass Sie danach das Projekt nicht mehr ansehen oder bearbeiten dürfen.\nSind Sie sicher, dass Sie dies tun möchten?"
   text_permanent_delete_confirmation_checkbox_label: "Ich verstehe, dass diese Löschung nicht rückgängig gemacht werden kann"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Verzeichnis für Plugin-Assets beschreibbar"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Kleinbuchstaben (a-z), Ziffern, Binde- und Unterstriche erlaubt. Muss mit einem Kleinbuchstaben beginnen."

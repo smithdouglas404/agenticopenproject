@@ -1488,7 +1488,8 @@ pl:
         not_a_datetime: "nie jest poprawną datą i czasem."
         not_a_number: "nie jest liczbą."
         not_allowed: "jest nieprawidłowy ze względu na brak uprawnień."
-        not_json: "nie jest prawidłowym obiektem JSON."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "nie jest liczbą całkowitą."
         not_an_iso_date: "wprowadzono nieprawidłową datę. Wymagany format: RRRR-MM-DD."
         not_same_project: "nie należy do tego samego projektu."
@@ -2177,6 +2178,7 @@ pl:
   button_print: "Drukuj"
   button_quote: "Cytat"
   button_remove: Usuń
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Usuń przypomnienie"
   button_rename: "Zmień nazwę"
   button_replace: "Zastąp"
@@ -2575,7 +2577,7 @@ pl:
         title: "Pisz komentarze wewnętrzne, które może zobaczyć tylko niewielka grupa"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "Pozostał jeden dzień próbnego tokena %{trial_plan}"
@@ -4324,6 +4326,7 @@ pl:
   setting_emails_salutation: "Zwracaj się do użytkownika w wiadomościach e-mail za pomocą"
   setting_oauth_allow_remapping_of_existing_users: "Zezwalaj na zmiany mapowania istniejących użytkowników"
   setting_sendmail_location: "Lokalizacja pliku wykonywalnego sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Automatycznie użyj STARTTLS, jeśli jest dostępny"
   setting_smtp_ssl: "Użyj połączenia SSL"
   setting_smtp_address: "Serwer SMTP"
@@ -4486,6 +4489,9 @@ pl:
   setting_work_package_list_default_highlighted_attributes: "Domyślnie wyróżniane atrybuty wyświetlane w treści"
   setting_working_days: "Dni robocze"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Nazwa użytkownika"
       registration: "Rejestracja"
@@ -4763,6 +4769,7 @@ pl:
     Uwaga: jeśli opcja jest włączona, w panelu administracyjnym <a href="%{information_panel_path}">%{information_panel_label}</a> oraz na stronie głównej wyświetlona zostanie plakietka ze statusem instalacji. Jest ona wyświetlana tylko administratorom. <br/> Plakietka uruchomi kontrolę bieżącej wersji OpenProject w porównaniu do oficjalnej bazy danych wersji OpenProject, aby ostrzec o wszelkich aktualizacjach lub znanych lukach. Więcej informacji na temat tego, co zapewnia kontrola, jakie dane są potrzebne do podania dostępnych aktualizacji i jak wyłączyć tę kontrolę zawiera <a href="%{more_info_url}">dokumentacja konfiguracji</a>.
   text_own_membership_delete_confirmation: "Chcesz usunąć niektóre lub wszystkie swoje uprawnienia, przez które możesz nie być w stanie edytować tego projektu.\nCzy na pewno chcesz kontynuować?"
   text_permanent_delete_confirmation_checkbox_label: "Rozumiem, że tego usunięcia nie można cofnąć"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin assets directory writable"
   text_powered_by: "Napędzany przez %{link}"
   text_project_identifier_info: "Tylko małe litery (a-z), cyfry, myślniki i podkreślenia są dozwolone, oraz musi zaczynać się małą literą."

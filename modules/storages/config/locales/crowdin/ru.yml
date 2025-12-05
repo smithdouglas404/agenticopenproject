@@ -96,12 +96,6 @@ ru:
       manual: Существующая папка управляется вручную
     remove_project:
       deletion_failure_flash: Не удалось удалить проект из хранилища. %{error}
-      dialog:
-        automatically_managed_appendix: Кроме того, в данном случае в этом хранилище есть автоматически управляемая папка проекта, она и её файлы будут удалены навсегда.
-        confirmation_text: Пожалуйста, подтвердите, что Вы понимаете и хотите удалить это файловое хранилище из данного проекта
-        heading_text: Удалить проект из %{storage}
-        text: Это действие необратимо и удалит все ссылки из пакетов работ этого проекта на файлы и папки этого хранилища.
-        title: Удалить проект из хранилища
       label: Удалить проект
   services:
     attributes:
@@ -226,12 +220,13 @@ ru:
     confirm_replace_oauth_application: Это действие приведет к сбросу текущих учетных данных OAuth. После подтверждения вам придется повторно ввести учетные данные у поставщика хранилища, и всем удаленным пользователям придется снова авторизоваться в OpenProject. Вы уверены, что хотите продолжить?
     confirm_replace_oauth_client: Это действие приведет к сбросу текущих учетных данных OAuth. После подтверждения вам нужно будет ввести новые учетные данные от поставщика хранилища, и всем пользователям придется снова авторизоваться в %{provider_type}. Вы уверены, что хотите продолжить?
     delete_warning:
-      project_storage_delete_result_1: Удалить все ссылки из пакетов работ этого проекта в файлы и папки этого хранилища.
-      project_storage_delete_result_2: В случае, если хранилище имеет автоматически управляемую папку проекта, она и ее файлы будут удалены навсегда.
-      storage: 'Вы уверены, что хотите удалить %{file_storage}? Это будет:'
-      storage_delete_result_1: Удалить все настройки хранилища для всех проектов, использующих это хранилище.
-      storage_delete_result_2: Удалить все ссылки из пакетов работ всех проектов в файлы и папки этого хранилища.
-      storage_delete_result_3: В случае, если хранилище имеет автоматически управляемые папки проектов, они и содержащиеся в них файлы будут удалены навсегда.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Папки группы
@@ -242,17 +237,23 @@ ru:
     error_invalid_provider_type: Пожалуйста, выберите допустимого поставщика хранилища.
     file_storage_view:
       access_management:
-        automatic_management: Автоматически управляемый доступ и папки
-        automatic_management_description: Разрешить OpenProject автоматически создавать папки для каждого проекта и управлять доступом пользователей к ним. Это рекомендуется, так как гарантирует, что каждый член команды всегда будет иметь правильные права на доступ.
-        description: Выберите тип управления доступом пользователя и созданием папок. Мы рекомендуем использовать "автоматически управляемый доступ" для более организованной структуры и гарантировать доступ всем необходимым пользователям.
-        manual_management: Вручную управляемый доступ и папки
-        manual_management_description: Создавайте и управляйте папками для каждого проекта вручную. Вам нужно будет вручную обеспечить доступ соответствующим пользователям.
+        automatic_management: Enable automatically-managed access and folders
+        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
+        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
+        manual_management: Only allow manually-managed access and folders
+        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
         setup_incomplete: Выберите тип управления доступом пользователя и созданием папок.
-        subtitle: Управление доступом
+        subtitle: Folder and access management
       access_management_section: Доступ и папки проекта
       automatically_managed_folders: Автоматически управляемые папки
       general_information: Информация общего характера
       oauth_configuration: Конфигурация OAuth
+      one_drive:
+        access_management:
+          automatic_management: Enable automatically-managed access and folders
+          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
+          manual_management: Only allow manually-managed access and folders
+          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Папки проекта
@@ -500,7 +501,7 @@ ru:
         title: Мы настраиваем ваши права доступа к папке проекта.
     page_titles:
       file_storages:
-        delete: Удалить хранилище файлов
+        delete: Delete file storage?
         subtitle: Добавьте внешнее хранилище файлов для загрузки, чтобы связывать и управлять файлами в пакетах работ.
       managed_project_folders:
         subtitle: |-
@@ -514,6 +515,8 @@ ru:
       project_storage_members:
         subtitle: Проверьте статус подключения для хранилища %{storage_name_link} всех участников проекта.
         title: Статус подключения участников
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'Разрешения для файлов во внешних хранилищах применяются только к папкам и файлам в автоматически управляемых папках проекта. Обратите внимание, что не все разрешения для файлов поддерживаются всеми поставщиками хранилищ. Для получения дополнительной информации ознакомьтесь с документацией по <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>разрешениям на хранение файлов</a>.'
     provider_types:
       label: Тип поставщика

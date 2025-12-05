@@ -1461,7 +1461,8 @@ zh-CN:
         not_a_datetime: "不是有效的日期时间。"
         not_a_number: "不是一个数字。"
         not_allowed: "没有权限使用。"
-        not_json: "不是一个有效的 JSON 对象。"
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "不是一个整数。"
         not_an_iso_date: "不是有效日期。所需格式：YYYY-MM-DD。"
         not_same_project: "不属于同一个项目。"
@@ -2099,6 +2100,7 @@ zh-CN:
   button_print: "打印"
   button_quote: "引用"
   button_remove: 移除
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "删除提醒"
   button_rename: "重命名"
   button_replace: "替换"
@@ -2437,7 +2439,7 @@ zh-CN:
         title: "编写只有小部分群体能看见的内部评论"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         other: "%{trial_plan} 试用令牌剩余 %{count} 天"
@@ -4175,6 +4177,7 @@ zh-CN:
   setting_emails_salutation: "电子邮件中的用户地址"
   setting_oauth_allow_remapping_of_existing_users: "允许重新映射现有用户"
   setting_sendmail_location: "Sendmail 的执行位置"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "如果可用，自动使用 STARTTLS"
   setting_smtp_ssl: "使用 SSL 连接"
   setting_smtp_address: "SMTP 服务器"
@@ -4337,6 +4340,9 @@ zh-CN:
   setting_work_package_list_default_highlighted_attributes: "默认内联突出显示属性"
   setting_working_days: "工作日"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "登录"
       registration: "注册"
@@ -4614,6 +4620,7 @@ zh-CN:
     注：如果启用，这会在 <a href="%{information_panel_path}">%{information_panel_label}</a> 管理面板中和首页上显示一个包含您的安装状态的徽章。徽章仅向管理员显示。<br/>徽章将根据官方的 OpenProject 版本数据库检查您当前的 OpenProject 版本，提醒您是否存在任何更新或已知漏洞。如需详细了解检查可以提供哪些信息，需要哪些数据来提供可用更新，以及如何禁用此检查，请访问<a href="%{more_info_url}">配置文档</a>。
   text_own_membership_delete_confirmation: "您要移除部分或全部权限，并且可能无法在此后编辑这个项目。\n您确定要继续吗？"
   text_permanent_delete_confirmation_checkbox_label: "我理解这种删除不可逆转"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "插件资产目录可写"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "只有小写字母 (a-z)、 数字、 短划线和下划线被允许，必须以小写字母开头。"

@@ -87,5 +87,9 @@ FactoryBot.define do
       created_at { 2.years.ago }
       updated_at { 2.years.ago }
     end
+
+    trait :template do
+      templated { true }
+    end
   end
 end

@@ -182,8 +182,11 @@ RSpec.describe "Meeting Presentation Mode",
       click_link_or_button "Save"
     end
 
-    expect(page).to have_text("Hello there")
-    expect(page).to have_no_text("First Item")
+    # Wait for the edit form to close and the notes to be visible
+    within_test_selector("meeting-presentation-agenda-item") do
+      expect(page).to have_text("Hello there")
+      expect(page).to have_no_text("First Item")
+    end
 
     # 3. Manage outcomes: add, edit, and delete
     # Add an outcome
@@ -215,7 +218,7 @@ RSpec.describe "Meeting Presentation Mode",
     end
 
     # 4. Close the presentation
-    click_link_or_button "Exit presentation"
+    page.find_test_selector("exit-presentation-button").click
 
     # Verify we're back on the show page
     expect(page).to have_current_path(project_meeting_path(project, meeting), ignore_query: true)

@@ -96,12 +96,6 @@ zh-TW:
       manual: 手動管理現有資料夾
     remove_project:
       deletion_failure_flash: 從儲存裝置移除專案失敗. %{error}
-      dialog:
-        automatically_managed_appendix: 此外，在這種情況下，此儲存空間有一個自動管理的專案資料夾，此資料夾及其檔案將永遠刪除。
-        confirmation_text: 請確認您瞭解並希望從本專案中移除此檔案儲存空間
-        heading_text: 從 %{storage} 移除專案
-        text: 此動作是不可逆轉的，並會移除此專案的工作套件到該儲存的檔案和資料夾的所有連結。
-        title: 從儲存庫中移除專案
       label: 移除專案
   services:
     attributes:
@@ -226,12 +220,13 @@ zh-TW:
     confirm_replace_oauth_application: 此操作將重設目前的 OAuth 憑證。 確認後，您必須在儲存空間提供商重新輸入憑證，並且所有遠端使用者都必須再次針對 OpenProject 進行授權。 您確定要繼續嗎？
     confirm_replace_oauth_client: 此操作將重設目前的 OAuth 憑證。 確認後，您必須輸入儲存提供者的新憑證，並且所有使用者都必須再次針對 %{provider_type} 進行授權。 您確定要繼續嗎？
     delete_warning:
-      project_storage_delete_result_1: 移除此專案中所有工作套件與該儲存空間檔案及資料夾的連結。
-      project_storage_delete_result_2: 如果此儲存空間具有自動管理的專案資料夾，則該資料夾及其檔案將永久刪除。
-      storage: '您確定要刪除 %{file_storage} 嗎？這將：'
-      storage_delete_result_1: 刪除使用此儲存的所有項目的所有儲存設定。
-      storage_delete_result_2: 移除所有專案中工作套件與該儲存空間檔案及資料夾的所有連結。
-      storage_delete_result_3: 如果此儲存空間具有自動管理的專案資料夾，則該資料夾及其檔案將永久刪除。
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: 群組資料夾
@@ -242,17 +237,23 @@ zh-TW:
     error_invalid_provider_type: 請選擇有效的儲存空間提供商。
     file_storage_view:
       access_management:
-        automatic_management: 自動管理的專案文件夾
-        automatic_management_description: 讓 OpenProject 自動為每個專案建立資料夾並管理其使用者存取權限。建議這樣做，因為它可以確保每個團隊成員始終擁有正確的存取權限。
-        description: 選擇使用者存取和資料夾建立的管理類型。 我們建議使用自動管理存取以獲得更有組織的結構並保證對所有相關使用者的存取。
-        manual_management: 手動管理的存取和資料夾
-        manual_management_description: 您自己手動建立和管理每個專案的資料夾。 您需要手動確保相關使用者俱有存取權限。
+        automatic_management: Enable automatically-managed access and folders
+        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
+        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
+        manual_management: Only allow manually-managed access and folders
+        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
         setup_incomplete: 選擇使用者存取和資料夾建立的管理類型。
-        subtitle: 存取管理
+        subtitle: Folder and access management
       access_management_section: 存取和專案資料夾
       automatically_managed_folders: 自動管理文件夾
       general_information: 基本資訊
       oauth_configuration: OAuth 設定
+      one_drive:
+        access_management:
+          automatic_management: Enable automatically-managed access and folders
+          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
+          manual_management: Only allow manually-managed access and folders
+          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject 開放授權 (OAuth) 
       project_folders: 專案資料夾
@@ -346,10 +347,10 @@ zh-TW:
         sp_client_write_permission_missing: 客戶在 SharePoint 中似乎缺少寫入權限。請檢查您的儲存空間設定文件。
         sp_existing_test_folder: 用於測試的資料夾 %{folder_name} 已存在於 SharePoint 中。請將其刪除後再試一次。
         sp_oauth_request_error: 綁定至使用者的 SharePoint 請求失敗。請檢查伺服器日誌以取得更多資訊。
-        sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+        sp_oauth_request_unauthorized: 目前的使用者未獲授權存取遠端檔案儲存空間。請檢查伺服器日誌以取得進一步資訊。
         sp_oauth_token_missing: 由於使用者尚未連結其 SharePoint 帳號，OpenProject 無法測試使用者層級的與 SharePoint 之間的通訊。
         sp_tenant_id_missing: 已設定的 SharePoint 目錄（租用戶）Id 遺失。請檢查設定。
-        sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
+        sp_unexpected_content: 在 SharePoint 文件庫中發現意外內容。
         unknown_error: 連線無法驗證。發生未知錯誤。請檢查伺服器日誌以瞭解進一步資訊。
       label_error: 錯誤
       label_failed: 損壞
@@ -494,7 +495,7 @@ zh-TW:
         title: 我們正在設定您在專案資料夾上的權限。
     page_titles:
       file_storages:
-        delete: 刪除儲存區
+        delete: Delete file storage?
         subtitle: 新增外部檔案存儲空間，以便上傳、連結和管理工作套件中的文件。
       managed_project_folders:
         subtitle: |-
@@ -509,6 +510,8 @@ zh-TW:
       project_storage_members:
         subtitle: 檢查所有專案成員存儲區 %{storage_name_link} 的連線狀態。
         title: 成員連線狀態
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: '外部存儲器上的文件權限僅適用於自動管理的項目文件夾內的文件夾和文件。請注意，並非所有存儲提供商都支持所有文件權限。更多信息請查看<a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>文件存儲權限</a>文檔。'
     provider_types:
       label: 提供商類型
@@ -546,11 +549,11 @@ zh-TW:
     upsell:
       one_drive:
         description: |-
-          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: OneDrive integration
+          整合您的 OneDrive 磁碟機作為 OpenProject 的檔案儲存空間。上傳檔案並直接連結至專案中的
+          工作套件。
+        title: OneDrive 整合
       sharepoint:
         description: |-
-          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: SharePoint integration
+          將您的 SharePoint 網站整合為 OpenProject 的檔案儲存空間。上傳檔案並將其直接連結至專案中的
+          工作套件。
+        title: SharePoint 整合

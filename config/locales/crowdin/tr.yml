@@ -1474,7 +1474,8 @@ tr:
         not_a_datetime: "geçerli bir zaman değil."
         not_a_number: "bir sayı değil."
         not_allowed: "Eksik izinler nedeniyle geçersiz."
-        not_json: "geçerli bir JSON nesnesi değildir."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "bir tamsayı değil."
         not_an_iso_date: "geçerli bir tarih değil. Gerekli biçim:: YYYY-AA-GG."
         not_same_project: "aynı projeye ait değil."
@@ -2129,6 +2130,7 @@ tr:
   button_print: "Yazdır"
   button_quote: "Alıntı"
   button_remove: Kaldır
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Hatırlatmayı kaldır"
   button_rename: "Yeniden adlandır"
   button_replace: "Değiştir"
@@ -2487,7 +2489,7 @@ tr:
         title: "Sadece küçük bir grubun görebileceği iç yorumlar yazın"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "%{trial_plan} deneme anahtarının son bir günü kaldı"
@@ -4231,6 +4233,7 @@ tr:
   setting_emails_salutation: "E-postalarda kullanıcıya şu şekilde hitap edin"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Çalıştırılabilir sendmail aracının yolu"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "STARTTLS varsa otomatik olarak kullan"
   setting_smtp_ssl: "SSL bağlantısı kullan"
   setting_smtp_address: "SMTP sunucusu"
@@ -4393,6 +4396,9 @@ tr:
   setting_work_package_list_default_highlighted_attributes: "Varsayılan satır içi vurgulanan özellikler"
   setting_working_days: "İş günleri"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Oturum aç"
       registration: "Üye Olma"
@@ -4670,6 +4676,7 @@ tr:
     Not: Etkinleştirildiğinde, bu, <a href="%{information_panel_path}">%{information_panel_label}</a> yönetim panelinde ve giriş sayfasında yükleme durumunuzla birlikte bir rozet görüntüler. Sadece yöneticilere gösterilir. <br/> Rozet, mevcut OpenProject sürümünüzü resmi OpenProject sürüm veritabanına karşı kontrol eder ve sizi herhangi bir güncelleme veya bilinen güvenlik açığı hakkında uyarır. Çekin sağladığı, mevcut güncellemeleri sağlamak için hangi verilerin gerekli olduğu ve bu kontrolün nasıl devre dışı bırakılacağı hakkında daha fazla bilgi için lütfen <a href="%{more_info_url}">yapılandırma belgelerini</a> ziyaret edin.
   text_own_membership_delete_confirmation: "İzinlerinizden bazılarını veya tümünü kaldırmak üzeresiniz ve bundan sonra bu projeyi düzenleyemeyebilirsiniz. Devam etmek istediğine emin misin?"
   text_permanent_delete_confirmation_checkbox_label: "Bu silme işleminin geri alınamayacağını anlıyorum"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin assets dizini yazılabilir"
   text_powered_by: "%{link} tarafından destekleniyor"
   text_project_identifier_info: "Yalnızca küçük harfler (a-z), sayılar, tire ve alt tire kullanılabilir ve mutlaka küçük harfle başlamalıdır."

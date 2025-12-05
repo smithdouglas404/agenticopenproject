@@ -1464,7 +1464,8 @@ ja:
         not_a_datetime: "は有効な日時ではありません。"
         not_a_number: "は数値にしてください。"
         not_allowed: "権限がないため無効です。"
-        not_json: "は有効な JSON オブジェクトではありません。"
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "は整数にしてください。"
         not_an_iso_date: "は有効な日付ではありません。必要な形式: YYYY-MM-dd。"
         not_same_project: "は同じプロジェクトに属していません。"
@@ -2102,6 +2103,7 @@ ja:
   button_print: "印刷"
   button_quote: "引用"
   button_remove: 削除
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "リマインダーを削除"
   button_rename: "名称変更"
   button_replace: "置き換え"
@@ -2440,7 +2442,7 @@ ja:
         title: "内部コメントはグループ内のメンバーのみ閲覧できます"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         other: "%{count} 日後 %{trial_plan} トライアルトークンです"
@@ -4183,6 +4185,7 @@ ja:
   setting_emails_salutation: "メール中のアドレス ユーザー"
   setting_oauth_allow_remapping_of_existing_users: "既存のユーザーの再マッピングを許可する"
   setting_sendmail_location: "Sendmail の実行可能ファイルの場所"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "利用可能な場合、STARTTLS を自動的に使用する"
   setting_smtp_ssl: "SSL接続を使用する"
   setting_smtp_address: "SMTPサーバ"
@@ -4345,6 +4348,9 @@ ja:
   setting_work_package_list_default_highlighted_attributes: "デフォルトのインライン強調表示属性"
   setting_working_days: "営業日"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "ログイン"
       registration: "参加登録"
@@ -4622,6 +4628,7 @@ ja:
     602/5000 注：有効にすると、<a href="%{information_panel_path}">%{information_panel_label}</a>管理パネルとホームページに、インストールステータスのバッジが表示されます。 管理者のみに表示されます。 <br/>バッジは、最新のOpenProjectバージョンを公式のOpenProjectリリースデータベースと照合して、アップデートや既知の脆弱性について警告します。 チェックの内容、利用可能なアップデートを提供するために必要なデータ、およびこのチェックを無効にする方法の詳細については、<a href="%{more_info_url}">設定ドキュメント</a>をご覧ください。
   text_own_membership_delete_confirmation: "一部またはすべての権限を自分自身から剥奪しようとしているため、このプロジェクトを編集できなくなる可能性があります。\n本当に続けますか？"
   text_permanent_delete_confirmation_checkbox_label: "私は、この削除は取り消すことができないことを理解しています。"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "プラグインの「assets」ディレクトリが書き込み可能"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "アルファベット小文字(a-z)・数字・ハイフン・アンダースコアが使えます。アルファベット小文字で始まる必要があります。"

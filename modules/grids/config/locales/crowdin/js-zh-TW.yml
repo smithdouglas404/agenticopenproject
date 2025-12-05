@@ -52,7 +52,7 @@ zh-TW:
           title: '工作套件表單'
         work_packages_graph:
           title: '工作套件關聯圖'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "%{chartType} 圖表，顯示符合 %{description} 條件的工作套件。"
         work_packages_calendar:
           title: '行事曆'
         work_packages_overview:

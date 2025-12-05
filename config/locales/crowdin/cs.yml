@@ -1492,7 +1492,8 @@ cs:
         not_a_datetime: "není platný čas."
         not_a_number: "není číslo."
         not_allowed: "je neplatný z důvodu chybějících oprávnění."
-        not_json: "není platný objekt JSON."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "není celé číslo."
         not_an_iso_date: "není platné datum. Požadovaný formát: RRRR-MM-DD."
         not_same_project: "nepatří do stejného projektu."
@@ -2181,6 +2182,7 @@ cs:
   button_print: "Tisk"
   button_quote: "Citovat"
   button_remove: Odstranit
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Odstranit připomenutí"
   button_rename: "Přejmenovat"
   button_replace: "Nahradit"
@@ -2579,7 +2581,7 @@ cs:
         title: "Write internal comments only a small group can see"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -4330,6 +4332,7 @@ cs:
   setting_emails_salutation: "Oslovujte  uživatele v e-mailech s"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Umístění spustitelného souboru sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Automaticky použít STARTTLS, pokud je dostupné"
   setting_smtp_ssl: "Použít připojení SSL"
   setting_smtp_address: "Server SMTP"
@@ -4492,6 +4495,9 @@ cs:
   setting_work_package_list_default_highlighted_attributes: "Výchozí inline zvýrazněné atributy"
   setting_working_days: "Pracovní dny"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Přihlášení"
       registration: "Registration"
@@ -4769,6 +4775,7 @@ cs:
     Poznámka: Pokud je povoleno, bude zobrazen odznak se stavem instalace v <a href="%{information_panel_path}">%{information_panel_label}</a> administrativním panelu, a na domovské stránce. Zobrazuje se pouze administrátorům. <br/> Odznak zkontroluje vaši aktuální verzi OpenProject proti oficiální databázi OpenProject release, aby vás upozornil na jakékoliv aktualizace nebo známá slabá místa. Pro více informací o tom, co kontrola stanoví, jaké údaje jsou potřebné k poskytnutí dostupných aktualizací, a jak tuto kontrolu zakázat, navštivte <a href="%{more_info_url}">konfigurační dokumentaci</a>.
   text_own_membership_delete_confirmation: "Chystáte se odebrat si některá nebo všechna svá oprávnění, potom již nemusíte být schopni upravit tento projekt.\nOpravdu chcete pokračovat?"
   text_permanent_delete_confirmation_checkbox_label: "Beru na vědomí, že toto vymazání nelze vzít zpět."
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Zapisovatelný adresář aktiv pluginu"
   text_powered_by: "Běží na %{link}"
   text_project_identifier_info: "Jsou povolena pouze malá písmena (a-z), číslice, pomlčky a podtržítka. Musí začínat malým písmenem."
