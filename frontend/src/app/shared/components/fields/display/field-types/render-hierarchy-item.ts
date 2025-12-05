@@ -68,6 +68,11 @@ function spansFromAncestors(ancestors:CollectionResource):HTMLSpanElement[] {
         short.textContent = `(${el.short})`;
         short.className = 'color-fg-subtle';
         spans.push(short);
+      } else if (el.weight !== null) {
+        const weight = document.createElement('span');
+        weight.textContent = `(${el.weight})`;
+        weight.className = 'color-fg-subtle';
+        spans.push(weight);
       }
     });
 

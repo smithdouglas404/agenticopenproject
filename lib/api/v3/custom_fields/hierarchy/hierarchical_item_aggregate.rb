@@ -40,9 +40,28 @@ module API
             @depth = depth
           end
 
+          def weight
+            weight_formatter.format(item:)
+          end
+
+          def title
+            ::CustomFields::Hierarchy::HierarchicalItemFormatter.default.format(item:)
+          end
+
           private
 
           attr_accessor :item
+
+          def weight_formatter
+            @weight_formatter ||= ::CustomFields::Hierarchy::HierarchicalItemFormatter
+                                    .new(path: false,
+                                         label: false,
+                                         suffix: true,
+                                         suffix_parentheses: false,
+                                         number_length_limit: 9,
+                                         number_integer_digit_limit: 8,
+                                         number_precision: 4)
+          end
         end
       end
     end
