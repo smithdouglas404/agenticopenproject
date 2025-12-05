@@ -30,27 +30,6 @@ export class OpenProjectApi implements Extension {
     }
     const decryptedToken = decryptToken(token);
 
-    const allowedDomains = process.env.ALLOWED_DOMAINS?.split(',') || [];
-    if (allowedDomains.length <= 0) {
-      throw new Error('Unauthorized: No allowed domains configured.');
-    }
-
-    try {
-      const url = new URL(resourceUrl);
-      const isAllowed = allowedDomains.some(domain =>
-        url.hostname === domain.trim() || url.hostname.endsWith('.' + domain.trim())
-      );
-
-      if (!isAllowed) {
-        throw new Error('Unauthorized: Invalid base URL domain.');
-      }
-    } catch (error) {
-      if (error instanceof TypeError) {
-        throw new Error('Unauthorized: Invalid base URL format.');
-      }
-      throw error;
-    }
-
     const response = await fetch(resourceUrl, {
       method: "GET",
       headers: {
@@ -64,7 +43,6 @@ export class OpenProjectApi implements Extension {
     }
     const jsonData = await response.json() as ApiResponseDocument;
 
-    // data.documentName = resourceUrl;
     data.context.resourceUrl = resourceUrl;
     data.context.token = decryptedToken;
     if (!jsonData._links?.update) {
