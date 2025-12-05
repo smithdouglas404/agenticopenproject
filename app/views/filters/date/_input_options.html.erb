@@ -2,6 +2,8 @@
   value_format = ""
   if [">t-", "<t-", "t-", "<t+", ">t+", "t+"].include? selected_operator
     value_format = "days"
+  elsif ["w", ">w-", "<w-", "w-", "<w+", ">w+", "w+"].include? selected_operator
+    value_format = "weeks"
   elsif selected_operator == "=d"
     value_format = "on-date"
   elsif selected_operator == "<>d"
@@ -14,6 +16,9 @@
   <%= render partial: "filters/date/days",
              locals: { filter: filter,
                        value: value_format == "days" ? filter.values.first : "" } %>
+  <%= render partial: "filters/date/weeks",
+             locals: { filter: filter,
+                       value: value_format == "weeks" ? filter.values.first : "" } %>
   <%= render partial: "filters/date/on_date",
              locals: { filter: filter,
                        value: value_format == "on-date" ? filter.values.first : "" } %>

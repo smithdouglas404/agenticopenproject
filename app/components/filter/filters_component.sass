@@ -23,14 +23,22 @@
       // visibility for datetime_past value selectors
       &.between-dates
         >.on-date,
+        >.weeks,
         >.days
           display: none
       &.on-date
         >.between-dates,
+        >.weeks,
         >.days
           display: none
       &.days
         >.on-date,
+        >.weeks,
+        >.between-dates
+          display: none
+      &.weeks
+        >.on-date,
+        >.days,
         >.between-dates
           display: none
 

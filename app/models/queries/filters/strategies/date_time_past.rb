@@ -30,7 +30,7 @@
 
 module Queries::Filters::Strategies
   class DateTimePast < Queries::Filters::Strategies::Integer
-    self.supported_operators = [">t-", "<t-", "t-", "t", "w", "=d", "<>d"]
+    self.supported_operators = [">t-", "<t-", "t-", "t", ">w-", "<w-", "w-", "w", "=d", "<>d"]
     self.default_operator = ">t-"
 
     def validate

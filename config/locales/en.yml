@@ -2459,6 +2459,11 @@ en:
       day:
         one: "day"
         other: "days"
+      week:
+        one: "week"
+        few: "weeks"
+        many: "weeks"
+        other: "weeks"
 
   description_active: "Active?"
   description_attachment_toggle: "Show/Hide attachments"
@@ -3331,6 +3336,12 @@ en:
   label_in: "in"
   label_in_less_than: "in less than"
   label_in_more_than: "in more than"
+  label_in_less_than_weeks: "in less than weeks"
+  label_in_more_than_weeks: "in more than weeks"
+  label_in_weeks: "in weeks"
+  label_less_than_weeks_ago: "less than weeks ago"
+  label_more_than_weeks_ago: "more than weeks ago"
+  label_weeks_ago: "weeks ago"
   label_inactive: "Inactive"
   label_incoming_emails: "Incoming emails"
   label_includes: "includes"

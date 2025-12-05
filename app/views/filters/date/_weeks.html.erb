@@ -1,0 +1,15 @@
+<div class="weeks">
+  <div class="form--field-container">
+    <div class="form--text-field-container -xslim">
+        <span class="inline-label">
+          <%= number_field_tag :value,
+                               value,
+                               id: "#{filter.name}_value",
+                               class: "advanced-filters--text-field -slim",
+                               "data-filter--filters-form-target": "weeks",
+                               "data-filter-name": filter.name %>
+          <label for="<%= "#{filter.name}_value" %>" class="form-label -transparent"><%= t("datetime.units.week.other") %></label>
+         </span>
+    </div>
+  </div>
+</div>
