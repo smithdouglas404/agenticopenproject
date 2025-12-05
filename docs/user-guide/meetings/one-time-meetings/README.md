@@ -219,7 +219,7 @@ Do not forget to save the changes by clicking the **Save** button. Cancel will b
 > [!TIP]
 > If someone else edits or updates the current meeting page at the same time and saves their changes, you and all other users on the same page will be notified of this with a small banner at the top of the page. Click the **Reload** button to load the updated version of the page. 
 >
-> If you are in the [presentation mode](presentation-mode), changes will load automatically, without the banner being displayed.
+> If you are in the [presentation mode](#present-a-meeting), changes will load automatically, without the banner being displayed.
 
 ![Banner notifying that a meeting has been updated while a user is editing it in OpenProject meetings module](openproject_userguide_meetings_page_update_reload_button.png)
 
