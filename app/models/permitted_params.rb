@@ -514,6 +514,7 @@ class PermittedParams
           :content_right_to_left,
           :custom_field_section_id,
           :allow_non_open_versions,
+          :has_comment,
           { custom_options_attributes: %i(id value default_value position) },
           { type_ids: [] }
         ],

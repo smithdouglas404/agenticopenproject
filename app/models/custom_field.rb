@@ -78,6 +78,7 @@ class CustomField < ApplicationRecord
 
   validates :multi_value, absence: true, unless: :multi_value_possible?
   validates :allow_non_open_versions, absence: true, unless: :allow_non_open_versions_possible?
+  validates :has_comment, absence: true, unless: :can_have_comment?
 
   before_validation :check_searchability
   after_destroy :destroy_help_text
@@ -345,6 +346,10 @@ class CustomField < ApplicationRecord
 
   def allow_non_open_versions_possible?
     version?
+  end
+
+  def can_have_comment?
+    is_a?(ProjectCustomField) && field_format.in?(%w[bool date float int list user version])
   end
 
   ##
