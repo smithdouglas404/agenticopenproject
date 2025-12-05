@@ -115,7 +115,7 @@ Within the same menu you also have the following options:
 
 To edit a single meeting within recurring meeting series you have to open it first by clicking the **Open** button next to the meeting. It will then be displayed under *Agenda opened* section on the recurring meeting index page, where you can click the meeting date and time. 
 
-![Select a meeting occurrence on a recurring meetings series index page](opEnproject_userguide_meetings_edit_meeting_occurence_link.png)
+![Select a meeting occurrence on a recurring meetings series index page](openproject_userguide_meetings_edit_meeting_occurence_link.png)
 
 This will open the specific meeting page. You can then edit the meeting by using same functions as for [editing one-time meetings](../one-time-meetings), including adding sections and agenda points, documenting agenda item outcomes, inviting participants and adding attachments.
 
