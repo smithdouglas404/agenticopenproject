@@ -51,7 +51,9 @@
             end
           end
 
-          flex_container.with_column { active_editors }
+          flex_container.with_column do
+            render(Primer::Beta::Link.new(href: "#", muted: true)) { active_editors }
+          end
         end
       )
 

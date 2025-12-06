@@ -33,8 +33,7 @@ require_module_spec_helper
 
 RSpec.describe "Show/Edit Document View",
                :js,
-               :selenium,
-               with_flag: { block_note_editor: true } do
+               :selenium do
   shared_let(:project) { create(:project) }
   shared_let(:member_role) { create(:existing_project_role, permissions: %i[view_documents manage_documents]) }
   shared_let(:member) { create(:user, member_with_roles: { project => member_role }) }
@@ -60,7 +59,7 @@ RSpec.describe "Show/Edit Document View",
 
     aggregate_failures "can see live users" do
       within_test_selector("live-events") do
-        expect(page).to have_content("1 active editors")
+        expect(page).to have_content("1 active editor")
       end
     end
 

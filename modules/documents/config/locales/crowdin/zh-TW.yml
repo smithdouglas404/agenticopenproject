@@ -85,7 +85,8 @@ zh-TW:
       collaboration_settings: "即時協作"
     last_updated_at: "最後儲存 %{time}。"
     active_editors: "活躍的編輯者"
-    active_editors_count: "%{count} 活躍的編輯"
+    active_editors_count:
+      other: "%{count} active editors"
     label_attachment_author: "附件作者"
     label_categories: "類別"
     new_category: "新增類別"

@@ -4613,7 +4613,7 @@ ru:
         status_when_submitted_caption: "Статус, в который перейдет созданный пакет работ после отправки запроса."
         send_confirmation_email: "Отправить подтверждение по электронной почте пользователю, подавшему запрос на инициирование проекта"
         assignee: "Назначенный при отправке"
-        assignee_caption: "Пользователь или группа, назначенная на этот атрибут проекта, также станет назначенным в новом пакете работ."
+        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
         confirmation_email_text: "Текст письма подтверждения"
         confirmation_email_default: "Здравствуйте,\n\nВы подали запрос на инициирование проекта **%{project_name}**. Сейчас он ожидает рассмотрения.\nЩелкните по ссылке ниже, чтобы получить доступ к пакету работ с Вашим запросом."
         work_package_comment: "Комментарий к пакету работ"

@@ -84,7 +84,9 @@ de:
       collaboration_settings: "Echtzeit-Kollaboration"
     last_updated_at: "Zuletzt aktualisiert %{time}."
     active_editors: "Aktive Bearbeiter"
-    active_editors_count: "%{count} aktive Bearbeiter"
+    active_editors_count:
+      one: "1 active editor"
+      other: "%{count} active editors"
     label_attachment_author: "Autor des Dokuments"
     label_categories: "Kategorien"
     new_category: "Neue Kategorie"

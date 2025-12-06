@@ -85,7 +85,10 @@ ro:
       collaboration_settings: "Real-time collaboration"
     last_updated_at: "Last saved %{time}."
     active_editors: "Active editors"
-    active_editors_count: "%{count} active editors"
+    active_editors_count:
+      one: "1 active editor"
+      few: "%{count} active editors"
+      other: "%{count} active editors"
     label_attachment_author: "Autorul anexei"
     label_categories: "Categorii"
     new_category: "Categorie nouă"

@@ -4465,7 +4465,7 @@ zh-TW:
         status_when_submitted_caption: "提交請求後，產生的工作套件將轉換到的狀態。"
         send_confirmation_email: "向提交專案啟動請求的使用者傳送確認電子郵件"
         assignee: "提交時的執行者"
-        assignee_caption: "被指派給此專案屬性的使用者或群組，也將成為新工作套件的指派對象。"
+        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
         confirmation_email_text: "確認電子郵件文字"
         confirmation_email_default: "您已提交 %{project_name} 的專案啟動請求，目前正等待審核。\n請點擊下方連結以存取包含您請求的工作套件。"
         work_package_comment: "工作套件留言"

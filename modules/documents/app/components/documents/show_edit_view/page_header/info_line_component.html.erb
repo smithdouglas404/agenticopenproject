@@ -32,7 +32,7 @@
 <%=
   component_wrapper do
     flex_layout(tag: :div, align_items: :center, test_selector: "document-info-line") do |flex|
-      flex.with_column(hide: :sm, mr: 2) do
+      flex.with_column(hide: :sm, mr: 3) do
         render(Primer::Alpha::ActionMenu.new(select_variant: :single)) do |menu|
           menu.with_show_button do |button|
             button.with_trailing_visual_icon(icon: :"triangle-down")
@@ -52,7 +52,7 @@
         end
       end
 
-      flex.with_column(mr: 2) do
+      flex.with_column(mr: 3) do
         render(Documents::ShowEditView::PageHeader::LiveUsersComponent.new)
       end
 

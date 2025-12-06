@@ -85,7 +85,8 @@ ko:
       collaboration_settings: "Real-time collaboration"
     last_updated_at: "Last saved %{time}."
     active_editors: "Active editors"
-    active_editors_count: "%{count} active editors"
+    active_editors_count:
+      other: "%{count} active editors"
     label_attachment_author: "첨부 파일 작성자"
     label_categories: "카테고리"
     new_category: "새 카테고리"

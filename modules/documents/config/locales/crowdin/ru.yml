@@ -85,7 +85,11 @@ ru:
       collaboration_settings: "Командная работа в режиме реального времени"
     last_updated_at: "Последнее сохранение %{time}."
     active_editors: "Активные редакторы"
-    active_editors_count: "%{count} активных редакторов"
+    active_editors_count:
+      one: "1 active editor"
+      few: "%{count} active editors"
+      many: "%{count} active editors"
+      other: "%{count} active editors"
     label_attachment_author: "Автор вложения"
     label_categories: "Категории"
     new_category: "Новая категория"

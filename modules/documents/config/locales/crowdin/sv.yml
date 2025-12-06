@@ -85,7 +85,9 @@ sv:
       collaboration_settings: "Samarbete i realtid"
     last_updated_at: "Senast sparad %{time}."
     active_editors: "Aktiva redigerare"
-    active_editors_count: "%{count} aktiva redigerare"
+    active_editors_count:
+      one: "1 active editor"
+      other: "%{count} active editors"
     label_attachment_author: "Författare för bilaga"
     label_categories: "Kategorier"
     new_category: "Ny kategori"
