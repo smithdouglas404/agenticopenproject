@@ -264,8 +264,8 @@ es:
           Cualquier información sobre la reunión que no figure en la plantilla se perderá. ¿Desea continuar?
         confirm_button: "Cancelar repetición"
     blankslate:
-      title: "No hay reuniones que mostrar"
-      desc: "No hay reuniones que cumplan los criterios del filtro activo."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Exportar PDF"
     export:
       your_meeting_export: "Se está exportando la reunión"

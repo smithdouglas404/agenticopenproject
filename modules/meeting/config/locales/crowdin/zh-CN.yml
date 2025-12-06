@@ -259,8 +259,8 @@ zh-CN:
           任何不在模板中的会议信息都将丢失。 您想要继续吗？
         confirm_button: "取消事件"
     blankslate:
-      title: "无会议显示"
-      desc: "没有符合主动筛选条件的会议。"
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "导出 PDF"
     export:
       your_meeting_export: "会议正在导出"

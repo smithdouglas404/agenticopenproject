@@ -264,8 +264,8 @@ fr:
           Toutes les informations relatives à la réunion qui ne figurent pas dans le modèle seront perdues. Voulez-vous continuer ?
         confirm_button: "Annuler l'occurrence"
     blankslate:
-      title: "Aucune réunion à afficher"
-      desc: "Aucune réunion ne répond aux critères du filtre actif."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Exporter au format PDF"
     export:
       your_meeting_export: "La réunion est en cours d'exportation"

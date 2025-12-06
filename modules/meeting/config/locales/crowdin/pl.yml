@@ -274,8 +274,8 @@ pl:
           Wszelkie informacje o spotkaniu, które nie znajdują się w szablonie, zostaną utracone. Czy chcesz kontynuować?
         confirm_button: "Anuluj wystąpienie"
     blankslate:
-      title: "Brak spotkań do wyświetlenia"
-      desc: "Nie ma spotkań spełniających kryteria aktywnego filtru."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Wyeksportuj PDF"
     export:
       your_meeting_export: "Spotkanie jest eksportowane"

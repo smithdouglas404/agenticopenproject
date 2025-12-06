@@ -264,8 +264,8 @@ nl:
           Any meeting information not in the template will be lost. Do you want to continue?
         confirm_button: "Cancel occurrence"
     blankslate:
-      title: "Geen vergaderingen om weer te geven"
-      desc: "Er zijn geen vergaderingen die voldoen aan de actieve filtercriteria."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Exporteren als PDF"
     export:
       your_meeting_export: "Meeting wordt geëxporteerd"

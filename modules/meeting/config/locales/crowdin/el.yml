@@ -264,8 +264,8 @@ el:
           Any meeting information not in the template will be lost. Do you want to continue?
         confirm_button: "Cancel occurrence"
     blankslate:
-      title: "Δεν υπάρχουν συναντήσεις για εμφάνιση"
-      desc: "Δεν υπάρχουν συναντήσεις που να πληρούν τα ενεργά κριτήρια φίλτρου."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Εξαγωγή σε PDF"
     export:
       your_meeting_export: "Η συνάντηση εξάγεται"

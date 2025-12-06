@@ -259,8 +259,8 @@ zh-TW:
           任何不在範本中的會議資訊將會遺失。 要繼續嗎？
         confirm_button: "取消事件"
     blankslate:
-      title: "沒有可顯示的會議"
-      desc: "沒有符合篩選條件的會議。"
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "匯出 PDF"
     export:
       your_meeting_export: "正在進行會議匯出作業"

@@ -259,8 +259,8 @@ ja:
           テンプレートにない会議情報は失われます。 続けますか？
         confirm_button: "発生をキャンセル"
     blankslate:
-      title: "表示する会議がありません"
-      desc: "条件を満たす会議はありません。"
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "PDF形式でエクスポート"
     export:
       your_meeting_export: "ミーティングはエクスポートされています"

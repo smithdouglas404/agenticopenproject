@@ -274,8 +274,8 @@ cs:
           Veškeré informace o schůzce, které nejsou v šabloně, budou ztraceny. Chcete pokračovat?
         confirm_button: "Zrušit výskyt"
     blankslate:
-      title: "Nic k zobrazení"
-      desc: "There are no meetings that meet the active filter criteria."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Exportovat PDF"
     export:
       your_meeting_export: "Meeting is being exported"

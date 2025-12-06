@@ -274,8 +274,8 @@ uk:
           Будь-яку інформацію про нараду, відсутню в шаблоні, буде втрачено. Продовжити?
         confirm_button: "Скасувати нараду"
     blankslate:
-      title: "Немає нарад"
-      desc: "Немає нарад, які відповідають критеріям активного фільтра."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Експорт PDF"
     export:
       your_meeting_export: "Нарада експортується"

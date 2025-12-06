@@ -264,8 +264,8 @@ de:
           Sämtliche Inhalte der Besprechung, die nicht aus der Vorlage entstammen, werden gelöscht und verloren werden. Möchten Sie fortfahren?
         confirm_button: "Besprechung absagen"
     blankslate:
-      title: "Keine Besprechungen anzuzeigen"
-      desc: "Es gibt keine Besprechungen, die die Kriterien des aktiven Filters erfüllen."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "PDF exportieren"
     export:
       your_meeting_export: "Besprechung wird exportiert"

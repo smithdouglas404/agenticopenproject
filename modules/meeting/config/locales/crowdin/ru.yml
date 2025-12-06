@@ -274,8 +274,8 @@ ru:
           Любая информация о совещании, не включенная в шаблон, будет потеряна. Вы хотите продолжить?
         confirm_button: "Отменить событие"
     blankslate:
-      title: "Нет совещаний для отображения"
-      desc: "Нет совещаний, удовлетворяющих критериям активного фильтра."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Экспорт в PDF"
     export:
       your_meeting_export: "Совещание экспортируется"

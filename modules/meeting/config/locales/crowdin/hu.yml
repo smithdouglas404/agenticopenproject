@@ -264,8 +264,8 @@ hu:
           Any meeting information not in the template will be lost. Do you want to continue?
         confirm_button: "Cancel occurrence"
     blankslate:
-      title: "Nincsenek megjelenítendő megbeszélések"
-      desc: "Nincsenek olyan megbeszélések, amelyek megfelelnek az aktív szűrési kritériumoknak."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "PDF exportálása"
     export:
       your_meeting_export: "Megbeszélés exportálás alatt..."

@@ -264,8 +264,8 @@ pt-PT:
           Qualquer informação da reunião que não esteja no modelo será perdida. Pretende continuar?
         confirm_button: "Cancelar ocorrência"
     blankslate:
-      title: "Não há reuniões a apresentar"
-      desc: "Não existem reuniões que cumpram os critérios do filtro ativo."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Exportar PDF"
     export:
       your_meeting_export: "A reunião está a ser exportada"

@@ -264,8 +264,8 @@ sv:
           All mötesinformation som inte finns i mallen kommer att gå förlorad. Vill du fortsätta?
         confirm_button: "Avbryt förekomst"
     blankslate:
-      title: "Inga möten att visa"
-      desc: "Det finns inga möten som uppfyller kriterierna för aktivt filter."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Exportera PDF"
     export:
       your_meeting_export: "Mötet håller på att exporteras"

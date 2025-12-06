@@ -264,8 +264,8 @@ tr:
           Şablonda yer almayan tüm toplantı bilgileri kaybolacaktır. Devam etmek istiyor musunuz?
         confirm_button: "Bu toplantıyı iptal et"
     blankslate:
-      title: "Gösterilecek toplantı yok"
-      desc: "Aktif filtre kriterlerini karşılayan herhangi bir toplantı bulunmamaktadır."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "PDF olarak dışa aktar"
     export:
       your_meeting_export: "Toplantı dışa aktarılıyor"

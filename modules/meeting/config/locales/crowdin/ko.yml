@@ -259,8 +259,8 @@ ko:
           템플릿에 없는 미팅 정보는 모두 손실됩니다. 계속하시겠습니까?
         confirm_button: "항목 취소"
     blankslate:
-      title: "표시할 미팅 없음"
-      desc: "활성 필터 기준을 충족하는 미팅이 없습니다."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "PDF 내보내기"
     export:
       your_meeting_export: "미팅을 내보내는 중입니다"

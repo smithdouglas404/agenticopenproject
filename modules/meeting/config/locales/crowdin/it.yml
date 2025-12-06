@@ -264,8 +264,8 @@ it:
           Qualsiasi informazione sulla riunione non contenuta nel modello andrà persa. Vuole continuare?
         confirm_button: "Cancella l'occorrenza"
     blankslate:
-      title: "Nessuna riunione da visualizzare"
-      desc: "Non ci sono riunioni che soddisfano i criteri del filtro attivo."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Esporta PDF"
     export:
       your_meeting_export: "Riunione in corso di esportazione"
