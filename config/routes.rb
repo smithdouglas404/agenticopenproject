@@ -274,11 +274,12 @@ Rails.application.routes.draw do
     resource :menu, only: %i[show]
   end
 
-  # Extracted from the resources definition right below so that the
-  # default parameters can be defined.
-  resources :projects,
-            only: %i[new create],
-            defaults: { workspace_type: "project" }
+  %w[portfolio project program].each do |workspace_type|
+    resources workspace_type.pluralize,
+              only: %i[new create],
+              defaults: { workspace_type: },
+              controller: workspace_type.pluralize
+  end
 
   resources :projects, except: %i[new create show edit update] do
     scope module: "projects" do
@@ -507,14 +508,6 @@ Rails.application.routes.draw do
           constraints: { rev: /[\w.-]+/, repo_path: /.*/ },
           as: "show_revisions_path"
     end
-  end
-
-  # Portfolio and program creation is handled by the projects controller
-  %w[portfolio program].each do |workspace_type|
-    resources workspace_type.pluralize,
-              only: %i[new create],
-              defaults: { workspace_type: },
-              controller: "projects"
   end
 
   resources :portfolios,

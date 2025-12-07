@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,19 +26,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 require "spec_helper"
 
-RSpec.describe PortfoliosController, with_flag: { portfolio_models: true } do
+RSpec.describe ProgramsController, with_flag: { portfolio_models: true } do
   shared_let(:admin) { create(:admin) }
-  shared_let(:restricted_user) { create(:user) }
+  shared_let(:add_programs_user) { create(:user, global_permissions: [:add_programs]) }
+  shared_let(:no_permission_user) { create(:user) }
 
   let(:user) { admin }
 
+  current_user { user }
+
   describe "#new" do
     before do
-      login_as user
       get :new, params: { parent_id: parent&.id, template_id: template&.id, workspace_type: }
     end
 
@@ -86,7 +88,7 @@ RSpec.describe PortfoliosController, with_flag: { portfolio_models: true } do
       end
     end
 
-    let(:workspace_type) { "portfolio" }
+    let(:workspace_type) { "program" }
 
     let(:template) { nil }
     let(:parent) { nil }
@@ -104,8 +106,8 @@ RSpec.describe PortfoliosController, with_flag: { portfolio_models: true } do
       end
     end
 
-    context "as a non-admin with global add_portfolios permission" do
-      let(:user) { create(:user, global_permissions: [:add_portfolios]) }
+    context "as a non-admin with global add_programs permission" do
+      let(:user) { add_programs_user }
 
       context "with flag enabled", with_flag: { portfolio_models: true } do
         it_behaves_like "successful request"
@@ -119,8 +121,8 @@ RSpec.describe PortfoliosController, with_flag: { portfolio_models: true } do
       end
     end
 
-    context "as a non-admin without add_portfolios permission" do
-      let(:user) { create(:user) }
+    context "as a non-admin without add_programs permission" do
+      let(:user) { no_permission_user }
 
       context "with flag enabled", with_flag: { portfolio_models: true } do
         it "returns 403 Not Authorized" do
@@ -132,89 +134,49 @@ RSpec.describe PortfoliosController, with_flag: { portfolio_models: true } do
 
     context "when not being logged in but login is required", with_settings: { login_required: true } do
       let(:user) { User.anonymous }
-      let(:workspace_type) { "portfolio" }
+      let(:workspace_type) { "program" }
       let(:parent) { build_stubbed(:project) }
       let(:template) { build_stubbed(:project) }
 
       it "redirects to the sign in page with the parameters provided in the back url" do
         expect(response).to be_redirect
-        expect(response).to redirect_to signin_path(back_url: new_portfolio_url(parent_id: parent.id,
-                                                                                template_id: template.id))
+        expect(response).to redirect_to signin_path(back_url: new_program_url(parent_id: parent.id,
+                                                                              template_id: template.id))
       end
     end
   end
 
-  describe "#index" do
-    shared_let(:portfolio_a) { create(:portfolio, name: "Portfolio A", public: false, active: true) }
-    shared_let(:portfolio_b) { create(:portfolio, name: "Portfolio B", public: false, active: true) }
-    shared_let(:portfolio_c) { create(:portfolio, name: "Portfolio C", public: true, active: true) }
-    shared_let(:portfolio_d) { create(:portfolio, name: "Portfolio D", public: true, active: false) }
+  describe "#create" do
+    let(:project) { build_stubbed(:project) }
+    let(:service_result) { ServiceResult.success(result: project) }
+    let(:parent) { nil }
 
     before do
-      login_as(user)
-      get "index"
+      creation_service = instance_double(Projects::CreateService, call: service_result)
+
+      allow(Projects::CreateService)
+        .to receive(:new)
+              .with(user:)
+              .and_return(creation_service)
+
+      post :create, params: { project: { name: "New Program" }, parent_id: parent&.id }
     end
 
-    shared_examples_for "successful index" do
-      it "is success" do
-        expect(response).to be_successful
-      end
+    context "as a non-admin without global add_programs permission", with_flag: { portfolio_models: true } do
+      let(:user) { no_permission_user }
 
-      it "renders the index template" do
-        expect(response).to render_template "index"
-      end
-    end
-
-    shared_examples_for "forbidden index request" do
-      it "returns 403 Forbidden" do
+      it "returns 403 Not Authorized" do
         expect(response).not_to be_successful
         expect(response).to have_http_status :forbidden
       end
     end
 
-    context "without the portfolio feature flag set", with_flag: { portfolio_models: false } do
-      it_behaves_like "forbidden index request"
-    end
+    context "as a non-admin with global add_programs permission", with_flag: { portfolio_models: true } do
+      let(:user) { add_programs_user }
 
-    context "with the portfolio feature flag set" do
-      it_behaves_like "successful index"
-
-      it "includes active portfolios in the result" do
-        query = assigns(:query)
-        expect(query).to be_a_new(ProjectQuery)
-        expect(query).to be_valid
-
-        expect(query.results.portfolio).to eq([portfolio_a, portfolio_b, portfolio_c])
-      end
-
-      context "with a user who does not have permission to see the portfolio module" do
-        let(:user) { restricted_user }
-
-        it_behaves_like "forbidden index request"
-      end
-
-      context "with a user who has permission to see the portfolio module" do
-        context "when the user has the global add_portfolios permission" do
-          let(:user) { create(:user, global_permissions: [:add_portfolios]) }
-
-          it_behaves_like "successful index"
-        end
-
-        context "when the user has a view_project permission on an active portfolio" do
-          let(:user) do
-            create(:user, member_with_permissions: { portfolio_a => [:view_project] })
-          end
-
-          it_behaves_like "successful index"
-        end
-
-        context "when the user has a view_project permission on an inactive portfolio" do
-          let(:user) do
-            create(:user, member_with_permissions: { portfolio_d => [:view_project] })
-          end
-
-          it_behaves_like "forbidden index request"
-        end
+      it "redirects to project show", :aggregate_failures do
+        expect(response).to redirect_to project_path(project)
+        expect(flash[:notice]).to eq I18n.t(:notice_successful_create)
       end
     end
   end

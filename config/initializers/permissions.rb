@@ -39,7 +39,7 @@ Rails.application.reloader.to_prepare do
                      dependencies: :add_project_from_template
 
       map.permission :add_portfolios,
-                     { projects: %i[new create] },
+                     { portfolios: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
                      visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
@@ -47,7 +47,7 @@ Rails.application.reloader.to_prepare do
                      dependencies: :add_portfolios_from_template
 
       map.permission :add_programs,
-                     { projects: %i[new create] },
+                     { programs: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
                      visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
@@ -62,13 +62,13 @@ Rails.application.reloader.to_prepare do
                      contract_actions: { projects: %i[create] }
 
       map.permission :add_portfolios_from_template,
-                     { projects: %i[new create] },
+                     { portfolios: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
                      visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? }
 
       map.permission :add_programs_from_template,
-                     { projects: %i[new create] },
+                     { programs: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
                      visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? }
