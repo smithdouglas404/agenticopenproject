@@ -90,7 +90,7 @@ RSpec.describe Projects::Exports::Formatters::BudgetSpentRatio do
         allow(project_budgets_double).to receive(:total_ratio).and_return(42.7)
         instance = described_class.new(:budget_spent_ratio)
 
-        expect(instance.format(project)).to eq("43%")
+        expect(instance.format(project)).to eq(0.43)
       end
     end
   end

@@ -130,13 +130,13 @@ RSpec.describe "Create project custom fields in sections", :js do
     context "when trying to create calculated value field" do
       context "without the feature flag", with_flag: { calculated_value_project_attribute: false } do
         it "prevents creation" do
-          cf_index_page.expect_not_having_create_item "Calculated Value"
+          cf_index_page.expect_not_having_create_item "Calculated value"
         end
       end
 
       context "with the feature flag", with_flag: { calculated_value_project_attribute: true } do
         before do
-          cf_index_page.click_to_create_new_custom_field "Calculated Value"
+          cf_index_page.click_to_create_new_custom_field "Calculated value"
         end
 
         context "without calculated_values enterprise feature" do

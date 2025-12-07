@@ -477,8 +477,6 @@ The Project Manager (PM) must ensure that the objectives, approach, requirements
 
 ![Fig. 9.10 Manage Quality inputs/outputs and main roles](09.10.png)
 
-### 
-
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
 | Quality Management | Project <br> Charter | Quality <br> Management <br> Plan | Quality Review <br> Reports <br> Audit Reports | Quality Review Checklist <br> Phase-exit Review <br> Checklist <br> Project Logs | Project-End Report <br> Project Acceptance <br> Note |

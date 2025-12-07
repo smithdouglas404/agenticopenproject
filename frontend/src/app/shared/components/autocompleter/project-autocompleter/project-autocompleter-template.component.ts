@@ -31,8 +31,18 @@ import {
   Component,
   TemplateRef,
   ViewChild,
+  inject,
 } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { IAutocompleterTemplateComponent } from 'core-app/shared/components/autocompleter/op-autocompleter/op-autocompleter.component';
+import {
+  toDOMString,
+  versionsIconData,
+  briefcaseIconData,
+  SVGData,
+} from '@openproject/octicons-angular';
+import { IProjectAutocompleteItem } from './project-autocomplete-item';
 
 @Component({
   templateUrl: './project-autocompleter-template.component.html',
@@ -42,4 +52,42 @@ import { IAutocompleterTemplateComponent } from 'core-app/shared/components/auto
 export class ProjectAutocompleterTemplateComponent implements IAutocompleterTemplateComponent {
   @ViewChild('optionTemplate') optionTemplate:TemplateRef<Element>;
   @ViewChild('labelTemplate') labelTemplate?:TemplateRef<Element>;
+
+  readonly I18n = inject(I18nService);
+  readonly sanitizer = inject(DomSanitizer);
+
+  shouldShowWorkspaceTypeBadge(project:IProjectAutocompleteItem):boolean {
+    return !!project._type && project._type !== 'Project';
+  }
+
+  workspaceTypeIconWithLabel(project:IProjectAutocompleteItem):SafeHtml {
+    const workspaceType = project._type;
+    if (!workspaceType) {
+      return '';
+    }
+
+    const iconData = this.workspaceTypeSVGData(workspaceType);
+    if (!iconData) {
+      return '';
+    }
+
+    const htmlString = toDOMString(iconData, 'small', { 'aria-hidden': 'true', class: 'octicon' });
+    const translatedTypeName = this.I18n.t(`js.include_workspaces.types.${workspaceType.toLowerCase()}`);
+    const iconWithText = htmlString + ' ' + translatedTypeName;
+    return this.sanitizer.bypassSecurityTrustHtml(iconWithText);
+  }
+
+  private workspaceTypeSVGData(workspaceType:string):SVGData|undefined {
+    switch (workspaceType) {
+      case 'Program': {
+        return versionsIconData;
+      }
+      case 'Portfolio': {
+        return briefcaseIconData;
+      }
+      default: {
+        return undefined;
+      }
+    }
+  }
 }

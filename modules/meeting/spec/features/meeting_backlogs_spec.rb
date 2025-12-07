@@ -204,6 +204,45 @@ RSpec.describe "Meeting Backlogs", :js do
         show_page.click_on_backlog
         show_page.expect_empty_backlog
       end
+
+      it "shows a confirmation dialog when moving items with unsaved changes" do
+        # Moving item to backlog with unsaved changes for a backlog item
+        show_page.visit!
+
+        show_page.add_agenda_item_to_backlog do
+          fill_in "Title", with: "Backlog item"
+        end
+
+        agenda_item = MeetingAgendaItem.find(meeting_agenda_item.id)
+        backlog_item = MeetingAgendaItem.find_by(title: "Backlog item")
+
+        show_page.edit_agenda_item(backlog_item, save: false) do
+          fill_in "Title", with: "Unsaved edit"
+        end
+        show_page.expect_backlog_count(1)
+
+        dismiss_confirm do
+          show_page.select_action(agenda_item, I18n.t(:label_agenda_item_move_to_backlog))
+        end
+
+        show_page.expect_backlog_count(1)
+        show_page.expect_item_edit_form(backlog_item, visible: true)
+
+        click_on "Cancel"
+
+        # Moving item to current meeting with unsaved changes for a meeting item
+        show_page.edit_agenda_item(agenda_item, save: false) do
+          fill_in "Title", with: "Unsaved edit"
+        end
+        show_page.expect_backlog_count(1)
+
+        dismiss_confirm do
+          show_page.select_action(backlog_item, I18n.t(:label_agenda_item_move_to_current_meeting))
+        end
+
+        show_page.expect_backlog_count(1)
+        show_page.expect_item_edit_form(agenda_item, visible: true)
+      end
     end
   end
 
@@ -465,7 +504,7 @@ RSpec.describe "Meeting Backlogs", :js do
   describe "outcomes" do
     let!(:meeting_agenda_item) { create(:meeting_agenda_item, meeting:) }
     let(:field) do
-      TextEditorField.new(page, "Outcome", selector: test_selector("meeting-outcome-input"))
+      TextEditorField.new(page, "New outcome", selector: test_selector("meeting-outcome-input-for-#{meeting_agenda_item.id}"))
     end
 
     before do

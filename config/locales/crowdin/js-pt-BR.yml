@@ -296,12 +296,13 @@ pt-BR:
       warning: "Não compartilhe este URL com outros usuários. Qualquer pessoa com este link poderá visualizar os detalhes do pacote de trabalho sem uma conta ou senha."
       token_name_label: "Onde você usará isto?"
       token_name_placeholder: 'Digite um nome, por ex.: "Telefone"'
-      token_name_description_text: 'Se você assinar este calendário em vários dispositivos, este nome ajudará na distinção entre eles em sua lista de <a href="my/access_token", target="_blank">tokens de acesso</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copiar URL"
       ical_generation_error_text: "Ocorreu um erro ao gerar o URL do calendário."
       success_message: 'O URL "%{name}" foi copiado com sucesso para sua área de transferência. Cole-o em seu cliente de calendário para concluir a assinatura.'
     label_activate: "Ativar"
     label_assignee: "Atribuído para"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Adicionar coluna depois"
     label_add_column_before: "Adicionar coluna antes"
     label_add_columns: "Adicionar colunas"
@@ -1125,6 +1126,7 @@ pt-BR:
       current_project_and_all_descendants: "Neste projeto + subprojetos"
       current_project: "Neste projeto"
       recently_viewed: "Visualizado recentemente"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "todos os projetos"
         project_and_subprojects: "e todos os subprojetos"
@@ -1134,71 +1136,8 @@ pt-BR:
       list: "Tabela"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Voltar"
       invite: "Convidar"
-      title:
-        invite: "Convidar usuário"
-        invite_to_project: "Convide %{type} para %{project}"
-        User: "usuário"
-        Group: "grupo"
-        PlaceholderUser: "usuário do espaço reservado"
-        invite_principal_to_project: "Convide %{principal} para %{project}"
-      project:
-        label: "Projeto"
-        required: "Selecione um projeto"
-        lacking_permission: "Você não tem permissões para atribuir usuários para o projeto selecionado, favor selecionar outro."
-        lacking_permission_info: "Você não possui permissão para atribuir usuários ao projeto que você está atualmente. Você precisa selecionar um diferente. "
-        next_button: "Próxima"
-        no_results: "Nenhum projeto foi encontrado"
-        no_invite_rights: "Você não tem permissão para convidar membros para este projeto"
-      type:
-        required: "Selecione o tipo a ser convidado"
-        user:
-          title: "Usuário"
-          description: "Permissões baseadas no papel atribuído no projeto selecionado"
-        group:
-          title: "Grupo"
-          description: "Permissões baseadas no papel atribuído no projeto selecionado"
-        placeholder:
-          title: "Usuário do espaço reservado"
-          title_no_ee: "Usuário do espaço reservado (complemento apenas da edição Enterprise)"
-          description: "Não possui acesso ao projeto e nenhum e-mail é enviado."
-          description_no_ee: 'Não possui acesso ao projeto e nenhum e-mail é enviado. <br>Confira a <a href="%{eeHref}" target="_blank">edição Enterprise</a>'
-      principal:
-        label:
-          name_or_email: "Nome ou endereço de e-mail"
-          name: "Nome"
-        already_member_message: "Já é um membro de %{project}"
-        no_results_user: "Nenhum usuário foi encontrado"
-        invite_user: "Convite:"
-        no_results_placeholder: "Nenhum espaço reservado encontrado"
-        create_new_placeholder: "Criar novo espaço reservado:"
-        no_results_group: "Nenhum grupo encontrado"
-        next_button: "Próxima"
-        required:
-          user: "Selecione um usuário"
-          placeholder: "Selecione um espaço reservado"
-          group: "Selecione um grupo"
-      role:
-        label: "Papel em %{project}"
-        no_roles_found: "Nenhum papel encontrado"
-        description: >-
-          Esta é a função que o usuário receberá ao ingressar em seu projeto. A função define quais ações  podem ser realizadas e quais informações podem ser visualizadas. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Saiba mais sobre as funções e permissões. </a>
-        required: "Selecione um papel"
-        next_button: "Próxima"
-      message:
-        label: "Mensagem de convite"
-        description: "Enviaremos um e-mail para o usuário, à qual você pode adicionar uma mensagem pessoal por aqui. Uma explicação para o convite pode se útil, ou talvez algumas informações sobre o projeto para ajudá-lo a começar."
-        next_button: "Avançar"
-      summary:
-        next_button: "Enviar convite"
-      success:
-        title: "%{principal} foi convidado!"
-        description:
-          user: "O usuário agora pode entrar para acessar %{project}. Enquanto isso, você já pode planejar com este usuário e atribuir pacotes de trabalho por exemplo."
-          placeholder: "O espaço reservado agora pode ser usado em %{project}. Enquanto isso, você já pode planejar com este usuário e atribuir pacotes de trabalho por exemplo."
-          group: "O grupo agora faz parte de %{project}. Enquanto isso, você já pode planejar com este grupo e atribuir pacotes de trabalho por exemplo."
-        next_button: "Continuar"
+      placeholder_add_tag: "Criar usuário de espaço reservado"
     exclusion_info:
       modal:
         title: "Status excluído dos totais da hierarquia"
@@ -1224,6 +1163,11 @@ pt-BR:
         does_not_match_search: "O projeto não corresponde ao critério de pesquisa"
       no_results: "Nenhum projeto corresponde ao seu critério de busca."
       no_favorite_results: "Nenhum projeto favorito corresponde aos seus critérios de busca."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Linha base"
       clear: "Remover"

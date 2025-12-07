@@ -32,7 +32,7 @@ vi:
         drive: ID Ổ đĩa
         host: Máy chủ
         name: Tên
-        password: Application password
+        password: Mật khẩu ứng dụng
         provider_type: Loại nhà cung cấp
         tenant: ID Thư mục (người thuê)
     errors:
@@ -96,12 +96,6 @@ vi:
       manual: Thư mục hiện có được quản lý thủ công
     remove_project:
       deletion_failure_flash: Không thể xóa dự án khỏi bộ lưu trữ. %{error}
-      dialog:
-        automatically_managed_appendix: Ngoài ra, trong trường hợp này, bộ lưu trữ này có một thư mục dự án được quản lý tự động, thư mục này và các tệp trong đó sẽ bị xóa vĩnh viễn.
-        confirmation_text: Vui lòng xác nhận bạn hiểu và muốn xóa bộ lưu trữ tệp này khỏi dự án này
-        heading_text: Xóa dự án khỏi %{storage}
-        text: Hành động này là không thể đảo ngược và sẽ xóa tất cả các liên kết từ các gói công việc của dự án này tới các tệp và thư mục của bộ lưu trữ đó.
-        title: Remove project from storage
       label: Xóa dự án
   services:
     attributes:
@@ -114,6 +108,12 @@ vi:
         remove_user_from_group: 'Xóa người dùng khỏi nhóm:'
         rename_project_folder: 'Đổi tên thư mục dự án được quản lý:'
       one_drive_sync_service:
+        create_folder: 'Tạo thư mục dự án được quản lý:'
+        ensure_root_folder_permissions: 'Thiết lập quyền cho thư mục cơ sở:'
+        hide_inactive_folders: 'Ẩn bước các thư mục không hoạt động:'
+        remote_folders: 'Đọc nội dung của thư mục nhóm:'
+        rename_project_folder: 'Đổi tên thư mục dự án được quản lý:'
+      sharepoint_sync_service:
         create_folder: 'Tạo thư mục dự án được quản lý:'
         ensure_root_folder_permissions: 'Thiết lập quyền cho thư mục cơ sở:'
         hide_inactive_folders: 'Ẩn bước các thư mục không hoạt động:'
@@ -159,6 +159,7 @@ vi:
           group_does_not_exist: "%{group} không tồn tại. Kiểm tra cấu hình phiên bản Nextcloud của bạn."
           insufficient_privileges: OpenProject không có đủ quyền để thêm %{user} vào %{group}. Kiểm tra cài đặt nhóm của bạn trong Nextcloud.
           not_allowed: Nextcloud chặn yêu cầu.
+          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProject không thể đồng bộ với Nextcloud. Hãy kiểm tra cấu hình lưu trữ và Nextcloud.
           user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
         one_drive_sync_service:
@@ -171,6 +172,23 @@ vi:
             remote_folders:
               request_error: OpenProject không thể truy cập ổ đĩa %{drive_id} của bạn. Vui lòng kiểm tra xem cấu hình lưu trữ của bạn có đúng không.
             rename_project_folder:
+              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              forbidden: OpenProject không có quyền truy cập vào %{current_path} để đổi tên nó.
+              not_found: "Không tìm thấy %{current_path}."
+            set_folders_permissions:
+              permission_not_set: không thể thiết lập quyền trên %{path}.
+          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          not_allowed: OpenProject không được phép truy cập ổ đĩa OneDrive của bạn. Vui lòng kiểm tra các quyền được thiết lập trên Ứng dụng Azure.
+          unauthorized: OpenProject không thể đồng bộ với OneDrive. Hãy kiểm tra cấu hình lưu trữ và ứng dụng Azure..
+          user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: '%{folder_name} đã tồn tại ở %{parent_location}.'
+              not_found: "Không tìm thấy %{parent_location}."
+            hide_inactive_folders:
+              permission_not_set: không thể thiết lập quyền trên %{path}.
+            rename_project_folder:
               conflict: OpenProject không thể đổi tên thư mục %{current_path} thành %{project_folder_name} vì đã có một thư mục có cùng tên
               forbidden: OpenProject không có quyền truy cập vào %{current_path} để đổi tên nó.
               not_found: "Không tìm thấy %{current_path}."
@@ -178,6 +196,7 @@ vi:
               permission_not_set: không thể thiết lập quyền trên %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: OpenProject không được phép truy cập ổ đĩa OneDrive của bạn. Vui lòng kiểm tra các quyền được thiết lập trên Ứng dụng Azure.
+          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
           unauthorized: OpenProject không thể đồng bộ với OneDrive. Hãy kiểm tra cấu hình lưu trữ và ứng dụng Azure..
           user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
         upload_link_service:
@@ -201,12 +220,13 @@ vi:
     confirm_replace_oauth_application: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập lại thông tin xác thực tại nhà cung cấp lưu trữ và tất cả người dùng từ xa sẽ phải xác thực lại với OpenProject. Bạn có chắc chắn muốn tiếp tục không?
     confirm_replace_oauth_client: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập thông tin mới từ nhà cung cấp lưu trữ và tất cả người dùng sẽ phải xác thực lại với %{provider_type}. Bạn có chắc chắn muốn tiếp tục không?
     delete_warning:
-      project_storage_delete_result_1: Xóa tất cả liên kết từ các gói công việc của dự án này đến các tệp và thư mục của lưu trữ đó.
-      project_storage_delete_result_2: Trong trường hợp lưu trữ này có thư mục dự án được quản lý tự động, thư mục này và các tệp của nó sẽ bị xóa vĩnh viễn.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
-      storage_delete_result_1: Xóa tất cả cấu hình lưu trữ cho tất cả các dự án sử dụng lưu trữ này.
-      storage_delete_result_2: Xóa tất cả liên kết từ các gói công việc của tất cả các dự án đến các tệp và thư mục của lưu trữ đó.
-      storage_delete_result_3: Trong trường hợp lưu trữ này có các thư mục dự án được quản lý tự động, các thư mục này và các tệp chứa bên trong sẽ bị xóa vĩnh viễn.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Group Folders
@@ -217,17 +237,23 @@ vi:
     error_invalid_provider_type: Vui lòng chọn một nhà cung cấp lưu trữ hợp lệ.
     file_storage_view:
       access_management:
-        automatic_management: Quản lý và thư mục tự động
-        automatic_management_description: Để OpenProject tạo thư mục cho từng dự án tự động và quản lý quyền truy cập của người dùng. Điều này được khuyến nghị vì nó đảm bảo rằng mỗi thành viên trong nhóm luôn có quyền truy cập đúng.
-        description: Chọn loại quản lý quyền truy cập của người dùng và tạo thư mục. Chúng tôi khuyến nghị sử dụng quản lý tự động để có cấu trúc tổ chức hơn và đảm bảo quyền truy cập cho tất cả người dùng liên quan.
-        manual_management: Quản lý và thư mục thủ công
-        manual_management_description: Tạo và quản lý thư mục cho từng dự án thủ công. Bạn sẽ cần phải đảm bảo rằng các người dùng liên quan có quyền truy cập.
+        automatic_management: Enable automatically-managed access and folders
+        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
+        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
+        manual_management: Only allow manually-managed access and folders
+        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
         setup_incomplete: Chọn loại quản lý quyền truy cập và tạo thư mục.
-        subtitle: Quản lý quyền truy cập
+        subtitle: Folder and access management
       access_management_section: Quyền truy cập và thư mục dự án
       automatically_managed_folders: Thư mục được quản lý tự động
       general_information: Thông tin chung
       oauth_configuration: OAuth configuration
+      one_drive:
+        access_management:
+          automatic_management: Enable automatically-managed access and folders
+          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
+          manual_management: Only allow manually-managed access and folders
+          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Thư mục dự án
@@ -249,10 +275,10 @@ vi:
         ampf_configuration:
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
-          drive_contents: Drive has expected content
+          drive_contents: Drive content
           files_request: Fetching group folder files
           group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder has expected content
+          group_folder_contents: Group folder content
           group_folder_presence: Group folder exists
           header: Các thư mục dự án được quản lý tự động
           userless_access: Server-side request authentication
@@ -275,7 +301,7 @@ vi:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL máy chủ
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -321,9 +347,10 @@ vi:
         sp_client_write_permission_missing: The client seems to have write permissions missing in SharePoint. Please check the setup documentation for your storage.
         sp_existing_test_folder: The folder %{folder_name} needed for testing already exists in SharePoint. Please delete it and try again.
         sp_oauth_request_error: The user-bound request to SharePoint failed. Please check the server logs for further information.
+        sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         sp_oauth_token_missing: OpenProject cannot test the user level communication with SharePoint as the user did not yet link their SharePoint account.
         sp_tenant_id_missing: The configured directory (tenant) id is missing for SharePoint. Please check the configuration.
-        sp_unexpected_content: Unexpected content found in the SharePoint drive.
+        sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
         unknown_error: Kết nối không thể được xác thực. Đã xảy ra lỗi không xác định. Vui lòng kiểm tra nhật ký máy chủ để biết thêm thông tin.
       label_error: Lỗi
       label_failed: Failed
@@ -468,7 +495,7 @@ vi:
         title: Chúng tôi đang thiết lập quyền của bạn trên thư mục dự án.
     page_titles:
       file_storages:
-        delete: Xóa lưu trữ tệp
+        delete: Delete file storage?
         subtitle: Thêm một lưu trữ tệp bên ngoài để tải lên, liên kết và quản lý tệp trong các gói công việc.
       managed_project_folders:
         subtitle: |-
@@ -482,6 +509,8 @@ vi:
       project_storage_members:
         subtitle: Kiểm tra trạng thái kết nối của lưu trữ %{storage_name_link} đối với tất cả các thành viên dự án.
         title: Trạng thái kết nối của các thành viên
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'Quyền trên các lưu trữ bên ngoài chỉ được áp dụng cho các thư mục và tệp trong các thư mục dự án được quản lý tự động. Lưu ý rằng không phải tất cả các quyền tệp đều được hỗ trợ bởi tất cả các nhà cung cấp lưu trữ. Vui lòng kiểm tra tài liệu về <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>quyền lưu trữ tệp</a> để biết thêm thông tin.'
     provider_types:
       label: Loại nhà cung cấp
@@ -496,6 +525,7 @@ vi:
         name: OneDrive
         name_placeholder: 'ví dụ: OneDrive'
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: ID Ứng dụng OAuth Azure (khách hàng)
         label_oauth_client_secret: Giá trị Bí mật khách hàng OAuth Azure
         name: SharePoint
@@ -510,13 +540,19 @@ vi:
         label: Use access token obtained during user log in
       manual:
         helptext: OpenProject will exchange a token with the identity provider for the given audience.
-        label: Manually specify audience for which to exchange access token
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Thêm một lưu trữ để thấy chúng ở đây.
       heading: Bạn chưa có lưu trữ nào.
     successful_storage_connection: Storage connected successfully! Remember to activate the storage in the Projects tab for each desired project to use it.
     upsell:
-      description: |-
-        Integrate your OneDrive as a file storage with OpenProject. Upload files and link them directly to
-        work packages in a project.
-      title: OneDrive integration
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

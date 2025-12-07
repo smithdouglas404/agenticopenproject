@@ -43,7 +43,7 @@ module Storages
             let(:depth) { Float::INFINITY }
             let(:input_data) { Input::FilePathToIdMap.build(folder:, depth:).value! }
 
-            it_behaves_like "adapter file_path_to_id_map_query: basic query setup"
+            it_behaves_like "storage adapter: query call signature", "file_path_to_id_map"
 
             context "with parent folder being root", vcr: "sharepoint/file_path_to_id_map_query_root" do
               let(:folder) { "#{base_drive}:/" }
@@ -138,7 +138,7 @@ module Storages
               let(:folder) { "#{base_drive}:01ANJ53WZVLARJSRFKOFF3HLYZPMPUK6HI " }
               let(:error_source) { Internal::DriveItemQuery }
 
-              it_behaves_like "adapter file_path_to_id_map_query: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
           end
         end

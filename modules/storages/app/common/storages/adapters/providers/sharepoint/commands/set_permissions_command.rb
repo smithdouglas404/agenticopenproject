@@ -36,11 +36,7 @@ module Storages
           class SetPermissionsCommand < Base
             include Dry::Monads::Do.for(:call)
 
-            PermissionUpdateData = ::Data.define(:role,
-                                                 :permission_ids,
-                                                 :user_ids,
-                                                 :drive_id,
-                                                 :item_id) do
+            PermissionUpdateData = ::Data.define(:role, :permission_ids, :user_ids, :drive_id, :item_id) do
               def create? = permission_ids.empty? && user_ids.any?
 
               def delete? = permission_ids.any? && user_ids.empty?
@@ -99,8 +95,7 @@ module Storages
             end
 
             def role_to_user_map(input_data)
-              input_data.user_permissions
-                        .each_with_object({ read: [], write: [] }) do |user_permission_set, map|
+              input_data.user_permissions.each_with_object({ read: [], write: [] }) do |user_permission_set, map|
                 if user_permission_set[:permissions].include?(:write_files)
                   map[:write] << user_permission_set[:user_id]
                 elsif user_permission_set[:permissions].include?(:read_files)

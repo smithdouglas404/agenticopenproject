@@ -2,11 +2,12 @@ name: Package
 on: 
   push:
     branches:
-      - feature/package-via-github-actions
-      - dev
+      - packaging/*
       - release/*
       - stable/*
   workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *' # Daily at 03:00
 
 jobs:
   build:
@@ -33,7 +34,7 @@ jobs:
           - el:9
           - sles:15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup

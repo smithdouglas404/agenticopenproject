@@ -190,7 +190,7 @@ fr:
           without_type: "Créer un lot de travaux"
           with_type: "Créer un lot de travaux (Type : %{typename})"
         embedded_table:
-          button: "Intégrer le lot de travaux"
+          button: "Intégrer le tableau du lot de travaux"
           text: "[Placeholder] Tableau du lot de travaux intégré"
         embedded_calendar:
           text: "[Placeholder] Calendrier embarqué"
@@ -239,7 +239,7 @@ fr:
       more_values_not_shown: "Il y a %{total} résultats supplémentaires, effectuez une recherche pour filtrer les résultats."
       description:
         text_open_filter: "Ouvrir ce filtre avec la touche « ALT » et les touches fléchées."
-        text_close_filter: "Pour sélectionner une entrée, laissez le focus par exemple en appuyant sur Entrée. Pour quitter sans filtre, sélectionnez la première entrée (vide)."
+        text_close_filter: "Pour sélectionner une entrée, laissez le focus par exemple en appuyant sur enter. Pour quitter sans filtre, sélectionnez la première entrée (vide)."
       noneElement: "(aucun)"
       time_zone_converted:
         two_values: "%{from} - %{to} dans votre heure locale."
@@ -297,12 +297,13 @@ fr:
       warning: "Veillez à ne pas partager pas cette adresse URL avec d'autres utilisateurs. Quiconque disposant de ce lien sera en mesure de voir les détails du lot de travaux sans nécessité d'avoir un compte ou de saisir un mot de passe."
       token_name_label: "Où comptez-vous l'utiliser ?"
       token_name_placeholder: 'Saisissez un nom, par exemple « Téléphone »'
-      token_name_description_text: 'Si vous vous abonnez à ce calendrier à partir de plusieurs appareils, ce nom vous aidera à les distinguer dans votre liste de <a href="my/access_token", target="_blank">jetons d''accès</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copier l'URL"
       ical_generation_error_text: "Une erreur s'est produite lors de la génération de l'URL du calendrier."
       success_message: 'L''adresse URL « %{name} » a été copiée avec succès dans votre presse-papiers. Collez-la dans votre client de calendrier pour compléter l''abonnement.'
     label_activate: "Activer"
     label_assignee: "Assigné"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Ajouter une colonne après"
     label_add_column_before: "Ajouter une colonne avant"
     label_add_columns: "Ajouter des colonnes"
@@ -387,7 +388,7 @@ fr:
     label_manage_columns: "Gérer et réorganiser les colonnes"
     label_me: "moi"
     label_meeting_agenda: "Ordre du jour"
-    label_meeting_minutes: "Compte-rendu"
+    label_meeting_minutes: "Minutes"
     label_menu_collapse: "réduire"
     label_menu_expand: "développer"
     label_more_than_ago: "il y a plus de quelques jours"
@@ -687,7 +688,7 @@ fr:
           first_day: "Premier jour"
           last_day: "Dernier jour"
     text_are_you_sure: "Êtes-vous sûr ?"
-    text_are_you_sure_to_cancel: "Vous avez des modifications non enregistrées sur cette page. Êtes-vous sûr de vouloir les supprimer ?"
+    text_are_you_sure_to_cancel: "Vous avez des modifications non enregistrées sur cette page. Voulez-vous vraiment les supprimer ?"
     breadcrumb: "Fil d'Ariane"
     text_data_lost: "Toutes les données saisies seront perdues."
     text_user_wrote: "%{value} écrit:"
@@ -944,8 +945,8 @@ fr:
         hierarchy_disabled_by_group_by: "Le mode hiérarchie est désactivé, car les résultats sont groupés par %{column}."
         sort_ascending: "Trier par ordre croissant"
         sort_descending: "Trier par ordre décroissant"
-        move_column_left: "Déplacer la colonne à gauche"
-        move_column_right: "Déplacer la colonne à droite"
+        move_column_left: "Déplacer la colonne de gauche"
+        move_column_right: "Déplacer le colonne de droite"
         hide_column: "Masquer la colonne"
         insert_columns: "Insérer des colonnes"
         filters: "Filtres"
@@ -983,7 +984,7 @@ fr:
         configure_button: "Configurer le tableau du lot de travaux"
         summary: "Tableau avec lignes de lots de travaux et colonnes d’attributs de lots de travaux."
         text_inline_edit: "La plupart des cellules de ce tableau sont des boutons qui activent la fonctionnalité d'édition en ligne de l’attribut."
-        text_sort_hint: "Avec les liens dans les entêtes de tableau, vous pouvez trier, regrouper, réorganiser, supprimer et ajouter des colonnes."
+        text_sort_hint: "Avec les liens dans les en-têtes de tableau vous pouvez trier, regrouper, réorganiser, supprimer et ajouter des colonnes."
         text_select_hint: "Les boîtes de sélection doivent être ouvertes avec la touche « ALT » et les flèches directionelles."
       table_configuration:
         button: "Configurer ce tableau du lot de travaux"
@@ -1003,7 +1004,7 @@ fr:
           none: "Pas de surlignement"
           inline: "Attribut(s) en surbrillance"
           inline_all: "Tous les attributs"
-          entire_row_by: "Ligne entière selon"
+          entire_row_by: "Ligne entière par"
           status: "Statut"
           priority: "Priorité"
           type: "Type"
@@ -1012,7 +1013,7 @@ fr:
           automatic: "Automatique"
           manually: "Manuellement"
           warning: "Vous perdrez votre tri précédent lors de l'activation du mode de tri automatique."
-        columns_help_text: "Utilisez le champ de saisie ci-dessus pour ajouter des colonnes à votre vue de tableau. Vous pouvez glisser-déposer les colonnes pour les réorganiser."
+        columns_help_text: "Utilisez le champ de saisie ci-dessus pour ajouter des colonnes à votre vue table. Vous pouvez glisser-déposer les colonnes pour les réorganiser."
         relation_filters:
           filter_work_packages_by_relation_type: "Filtrer les lots de travaux par type de relation"
       tabs:
@@ -1126,6 +1127,7 @@ fr:
       current_project_and_all_descendants: "Dans ce projet + sous-projets"
       current_project: "Pour ce projet"
       recently_viewed: "Consultés récemment"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "tous les projets"
         project_and_subprojects: "et tous les sous-projets"
@@ -1135,71 +1137,8 @@ fr:
       list: "Tableau"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Retour"
       invite: "invite"
-      title:
-        invite: "Inviter utilisateur"
-        invite_to_project: "Inviter %{type} à %{project}"
-        User: "utilisateur"
-        Group: "groupe"
-        PlaceholderUser: "utilisateur fictif"
-        invite_principal_to_project: "Inviter %{principal} à %{project}"
-      project:
-        label: "Projet"
-        required: "Veuillez sélectionner un projet"
-        lacking_permission: "Veuillez sélectionner un projet différent car vous n'avez pas les autorisations nécessaires pour assigner des utilisateurs au projet actuellement sélectionné."
-        lacking_permission_info: "Vous n'avez pas la permission d'affecter des utilisateurs au projet dans lequel vous vous trouvez. Vous devez en sélectionner un autre."
-        next_button: "Suivante"
-        no_results: "Aucun projet trouvé"
-        no_invite_rights: "Vous n'êtes pas autorisé à inviter des membres à ce projet"
-      type:
-        required: "Veuillez sélectionner le type d'invité"
-        user:
-          title: "Utilisateur"
-          description: "Permissions basées sur le rôle attribué dans le projet sélectionné"
-        group:
-          title: "Groupe"
-          description: "Permissions basées sur le rôle attribué dans le projet sélectionné"
-        placeholder:
-          title: "Utilisateur de remplacement"
-          title_no_ee: "Utilisateur fictif (add-on de la version Entreprise uniquement)"
-          description: "N'a pas d'accès au projet et aucun e-mail n'est envoyé."
-          description_no_ee: 'N''a pas accès au projet et aucun courriel n''est envoyé. <br>Consultez la <a href="%{eeHref}" target="_blank">version Entreprise</a>.'
-      principal:
-        label:
-          name_or_email: "Nom ou adresse e-mail"
-          name: "Nom"
-        already_member_message: "Déjà membre de %{project}"
-        no_results_user: "Aucun utilisateur n'a été trouvé"
-        invite_user: "Invité :"
-        no_results_placeholder: "Aucuns utilisateurs fictifs n'a été trouvé"
-        create_new_placeholder: "Créer un nouveau utilisateur fictif :"
-        no_results_group: "Aucun groupe n'a été trouvé"
-        next_button: "Suivante"
-        required:
-          user: "Veuillez sélectionner un utilisateur"
-          placeholder: "Veuillez sélectionner un utilisateur fictif"
-          group: "Veuillez sélectionner un groupe"
-      role:
-        label: "Rôle dans %{project}"
-        no_roles_found: "Aucun rôle trouvé."
-        description: >-
-          C'est le rôle que l'utilisateur recevra quand il rejoindra votre projet. Le rôle définit quelles actions il est autorisé à entreprendre et quelles informations il peut voir. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> En savoir plus sur les rôles et les permissions. </a>
-        required: "Veuillez sélectionner un rôle"
-        next_button: "Suivante"
-      message:
-        label: "Message d'invitation"
-        description: "Nous enverrons un e-mail à l'utilisateur, auquel vous pourrez ajouter un message personnel ici. Une explication concernant l'invitation pourrait être utile, ou peut-être quelques informations concernant le projet pour les aider à démarrer."
-        next_button: "Suivant"
-      summary:
-        next_button: "Envoyer une invitation"
-      success:
-        title: "%{principal} a été invité !"
-        description:
-          user: "L'utilisateur peut maintenant se connecter pour accéder à %{project}. En attendant, vous pouvez déjà planifier avec cet utilisateur et assigner des lots de travaux par exemple."
-          placeholder: "Le utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux par exemple."
-          group: "Le groupe fait maintenant partie du %{project}. Entre-temps, vous pouvez déjà planifier avec ce groupe et l'assigner des lots de travaux par exemple."
-        next_button: "Continuer"
+      placeholder_add_tag: "Créer un utilisateur fictif"
     exclusion_info:
       modal:
         title: "Statut exclu des totaux de la hiérarchie"
@@ -1225,6 +1164,11 @@ fr:
         does_not_match_search: "Le projet ne correspond pas aux critères de recherche."
       no_results: "Aucun projet ne correspond à vos critères de recherche."
       no_favorite_results: "Aucun projet favori ne correspond à vos critères de recherche."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Référence"
       clear: "Effacer"
@@ -1233,7 +1177,7 @@ fr:
       show_changes_since: "Afficher les modifications depuis"
       help_description: "Fuseau horaire de référence pour la Référence."
       time_description: "Dans votre fuseau horaire : %{datetime}"
-      time: "Heure"
+      time: "Heure "
       from: "De"
       to: "À"
       drop_down:

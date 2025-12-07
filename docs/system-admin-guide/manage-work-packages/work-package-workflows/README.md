@@ -11,17 +11,24 @@ keywords: work package workflows
 
 A **workflow** in OpenProject is defined as the allowed transitions between status for a role and a type, i.e. which status changes can a certain role implement depending on the work package type.
 
-This means, a certain type of work package, e.g. a Task, can have the following workflows: News -> In Progress -> Closed -> On Hold -> Rejected -> Closed. This workflow can be different depending on the [role in a project](../../users-permissions/roles-permissions).
+This means, a certain type of work package, e.g. a Task, can have the following workflows: News → In Progress → Closed → On Hold → Rejected → Closed. This workflow can be different depending on the [role in a project](../../users-permissions/roles-permissions).
 
 ## Edit workflows
 
-To edit a workflow:
+To edit a workflow, first decide if you want to edit default transitions that apply to all users (depending only on the role) or for the specific cases where a user is the author or the assignee. Three tabs on top of the screen allow you to choose this:
+
+![Tabs to select between default transitions, when the user is the author or when the user is the asignee](admin_workflow_tabs.png)
+
+Once you are in the right tab:
 
 1. Select the **role** from the dropdown menu for which you want to edit the workflow.
 2. Select the **work package type** from the dropdown menu for which you want to edit the workflow.
 3. Check if you **only want the statuses that are used by this type** to be displayed (this option is disabled per default, but you can always activate it).
-   **Note**: If you have created a [new status](../work-package-status) and want to add it to a workflow of a certain work package type, you need to deselect this option. Only this way also status that are not (yet) used by this type will appear in the list and can be added to a workflow.
 4. Click the **Edit** button.
+
+> [!NOTE]
+> If you have created a [new status](../work-package-status) and want to add it to a workflow of a certain work package type, you need to deselect this option. Only this way also status that are not (yet) used by this type will appear in the list and can be added to a workflow.
+
 
 ![System-admin-guide-work-package-workflows](System-admin-guide-work-package-workflows.png)
 

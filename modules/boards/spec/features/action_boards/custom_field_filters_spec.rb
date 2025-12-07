@@ -144,7 +144,7 @@ RSpec.describe "Custom field filter in boards",
 
     # Expect custom field to be unchanged
     work_package.reload
-    cv = work_package.custom_value_for(custom_field).typed_value
-    expect(cv).to eq "B"
+    cv = work_package.custom_value_for(custom_field).map(&:typed_value)
+    expect(cv).to eq ["B"]
   end
 end

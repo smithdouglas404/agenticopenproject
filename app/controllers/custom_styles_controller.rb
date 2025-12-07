@@ -36,6 +36,7 @@ class CustomStylesController < ApplicationController
   menu_item :custom_style
 
   UNGUARDED_ACTIONS = %i[logo_download
+                         logo_mobile_download
                          favicon_download
                          touch_icon_download].freeze
 
@@ -102,6 +103,10 @@ class CustomStylesController < ApplicationController
     file_download(:logo_path)
   end
 
+  def logo_mobile_download
+    file_download(:logo_mobile_path)
+  end
+
   def export_logo_download
     file_download(:export_logo_path)
   end
@@ -124,6 +129,10 @@ class CustomStylesController < ApplicationController
 
   def logo_delete
     file_delete(:remove_logo)
+  end
+
+  def logo_mobile_delete
+    file_delete(:remove_logo_mobile)
   end
 
   def export_logo_delete
@@ -224,6 +233,7 @@ class CustomStylesController < ApplicationController
   def custom_style_params
     params.expect(custom_style: %i[
                     logo remove_logo
+                    logo_mobile remove_logo_mobile
                     export_logo remove_export_logo
                     export_cover remove_export_cover
                     export_footer remove_export_footer
@@ -254,6 +264,6 @@ class CustomStylesController < ApplicationController
     end
 
     @custom_style.send(remove_method)
-    redirect_to custom_style_path
+    redirect_to custom_style_path, status: :see_other
   end
 end

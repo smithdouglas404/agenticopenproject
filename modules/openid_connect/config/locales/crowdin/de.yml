@@ -43,6 +43,10 @@ de:
               response_is_not_successful: " antwortet mit %{status}."
               response_is_not_json: " gibt kein gültiges JSON zurück."
               response_misses_required_attributes: " gibt die erforderlichen Attribute nicht zurück. Fehlende Attribute sind: %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: Geben Sie den Namen des SSO-Anbieters %{name} ein, um die Löschung zu bestätigen.
@@ -126,8 +130,8 @@ de:
       label_advanced_configuration: Erweiterte Konfiguration
       label_configuration_details: Metadaten
       label_client_details: Details der Anwendung
-      label_attribute_mapping: Attributzuordnung
-      notice_created: A new OpenID provider was successfully created.
+      label_attribute_mapping: Zuordnen von Attributen
+      notice_created: Ein neuer OpenID-Anbieter wurde erfolgreich erstellt.
       client_details_description: Konfigurationsdetails von OpenProject als OIDC-Client
       no_results_table: Noch keine Anbieter definiert.
       plural: OpenID-Anbieter

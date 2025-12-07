@@ -3,13 +3,4 @@ fr:
     label_home: "Accueil %{workspace_type}"
     label_dashboard: "Tableau de bord"
     label_overview: 'Vue d''ensemble'
-    widgets:
-      subitems:
-        in_this_portfolio: "Dans ce portefeuille"
-        in_this_program: "Dans ce programme"
-        in_this_project: "Dans ce projet"
-        no_visible_children: "Il n'y a pas d'enfants visibles."
-      members:
-        title: "Derniers membres"
-        view_all_members: "Afficher tous les membres"
   permission_manage_overview: 'Gérer la page d''aperçu'

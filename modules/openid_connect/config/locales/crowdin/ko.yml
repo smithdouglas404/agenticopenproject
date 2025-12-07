@@ -43,6 +43,10 @@ ko:
               response_is_not_successful: " - 응답 상태는 %{status}입니다."
               response_is_not_json: " - JSON 본문을 반환하지 않습니다."
               response_misses_required_attributes: " - 필수 특성을 반환하지 않습니다. 누락된 특성: %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: 삭제를 확인하려면 공급자 이름 %{name}(을)를 입력하세요.
@@ -127,7 +131,7 @@ ko:
       label_configuration_details: 메타데이터
       label_client_details: 클라이언트 세부 정보
       label_attribute_mapping: 특성 매핑
-      notice_created: A new OpenID provider was successfully created.
+      notice_created: 새로운 OpenID 공급자가 생성되었습니다.
       client_details_description: OIDC 클라이언트인 OpenProject의 구성 세부 정보
       no_results_table: 아직 정의된 공급자가 없습니다.
       plural: OpenID 공급자

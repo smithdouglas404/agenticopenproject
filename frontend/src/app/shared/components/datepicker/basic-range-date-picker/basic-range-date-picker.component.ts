@@ -232,12 +232,10 @@ export class OpBasicRangeDatePickerComponent implements OnInit, ControlValueAcce
     this.onTouched = fn;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private resolveDateStringToArray(dates:string):string[] {
     return dates.split(` ${rangeSeparator} `).map((date) => date.trim());
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private resolveDateArrayToString(dates:string[]):string {
     return dates.join(` ${rangeSeparator} `);
   }

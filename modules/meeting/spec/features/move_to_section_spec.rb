@@ -89,6 +89,21 @@ RSpec.describe "Move agenda items to section", :js do
         show_page.expect_agenda_item_in_section(title: "Item to move", section: section2)
       end
 
+      it "shows a confirmation dialog when moving items with unsaved changes" do
+        another_item = create(:meeting_agenda_item, meeting:, meeting_section: section1, title: "Another item")
+        show_page.visit!
+
+        show_page.edit_agenda_item(another_item, save: false) do
+          fill_in "Title", with: "Unsaved edit"
+        end
+
+        dismiss_confirm do
+          show_page.select_action(agenda_item, I18n.t(:label_agenda_item_move_to_section))
+        end
+
+        show_page.expect_item_edit_form(another_item, visible: true)
+      end
+
       it "doesn't show the current section in the options list" do
         show_page.visit!
         show_page.expect_agenda_item_in_section(title: "Item to move", section: section1)
@@ -319,6 +334,64 @@ RSpec.describe "Move agenda items to section", :js do
         end
 
         first_occurrence_page.expect_series_backlog collapsed: false
+      end
+
+      it "doesn't show template sections when moving from series backlog (Bug #68649)" do
+        template = recurring_meeting.template
+        create(:meeting_section, meeting: template, title: "Template section 1")
+        create(:meeting_section, meeting: template, title: "Template section 2")
+
+        backlog_item = create(:meeting_agenda_item,
+                              meeting: template,
+                              meeting_section: template.backlog,
+                              title: "Series backlog item")
+
+        first_occurrence_page.visit!
+        first_occurrence_page.click_on_backlog
+        first_occurrence_page.select_action(backlog_item, I18n.t(:label_agenda_item_move_to_section))
+
+        expect(page).to have_css("#move-to-section-dialog")
+
+        within("#move-to-section-dialog") do
+          autocompleter = page.find("opce-autocompleter")
+          search_autocomplete autocompleter,
+                              query: "",
+                              results_selector: "#move-to-section-dialog"
+
+          expect(page).to have_css(".ng-option", text: "Occurrence section 1")
+          expect(page).to have_css(".ng-option", text: "Occurrence section 2")
+
+          expect(page).to have_no_css(".ng-option", text: "Template section 1")
+          expect(page).to have_no_css(".ng-option", text: "Template section 2")
+
+          expect(page).to have_no_css(".ng-option", text: "Series backlog")
+        end
+      end
+    end
+
+    context "when template has multiple sections" do
+      let(:template) { recurring_meeting.template }
+      let!(:section1) { create(:meeting_section, meeting: template, title: "Template section 1") }
+      let!(:section2) { create(:meeting_section, meeting: template, title: "Template section 2") }
+      let!(:agenda_item) do
+        create(:meeting_agenda_item, meeting: template, meeting_section: section1, title: "Template item")
+      end
+      let(:template_page) { Pages::Meetings::Show.new(template) }
+
+      it "allows moving items from one section to another in templates (Regression #68426)" do
+        template_page.visit!
+        template_page.select_action(agenda_item, I18n.t(:label_agenda_item_move_to_section))
+
+        within("#move-to-section-dialog") do
+          select_autocomplete page.find("opce-autocompleter"),
+                              query: "Template section 2",
+                              select_text: "Template section 2",
+                              results_selector: "#move-to-section-dialog"
+          click_button "Save"
+        end
+
+        template_page.expect_agenda_item_in_section(title: agenda_item.title, section: section2)
+        template_page.expect_no_agenda_item_in_section(title: agenda_item.title, section: section1)
       end
     end
   end

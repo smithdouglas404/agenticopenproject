@@ -40,14 +40,77 @@ module Overviews
         super
 
         @project_custom_field = project_custom_field
-        @project_custom_field_values = project_custom_field_values
+        @project_custom_field_values = Array(project_custom_field_values)
         @project = project
       end
 
       private
 
+      def allowed_to_edit?
+        User.current.allowed_in_project?(:edit_project_attributes, @project)
+      end
+
+      def authorized_edit_wrapper
+        if calculated_value? && allowed_to_edit?
+          calculated_field_wrapper
+        elsif allowed_to_edit?
+          editable_wrapper
+        else
+          Primer::Beta::Text.new
+        end
+      end
+
+      def editable_wrapper
+        Primer::Beta::Text.new(
+          tag: :div,
+          classes: "project-custom-field-clickable",
+          data: {
+            controller: "project-custom-field-edit async-dialog",
+            "project-custom-field-edit-url-value": edit_project_custom_field_path(project_id: @project.id,
+                                                                                  id: @project_custom_field.id),
+            action: "click->project-custom-field-edit#openEditDialog " \
+                    "keydown.enter->project-custom-field-edit#openEditDialog " \
+                    "keydown.space->project-custom-field-edit#openEditDialog " \
+                    "project-custom-field-edit:open-dialog->async-dialog#handleOpenDialog"
+          },
+          aria: {
+            label: [
+              I18n.t(:label_edit_x, x: @project_custom_field.name),
+              I18n.t(:label_value_x, x: accessible_value_text)
+            ].join(", ")
+          },
+          role: "button",
+          tabindex: 0,
+          test_selector: "project-custom-field-edit-button-#{@project_custom_field.id}"
+        )
+      end
+
+      def calculated_field_wrapper
+        Primer::Beta::Text.new(
+          tag: :div,
+          id: calculated_value_tooltip_id,
+          classes: "project-custom-field-non-editable",
+          aria: {
+            disabled: true,
+            label: [
+              @project_custom_field.name,
+              I18n.t(:label_value_x, x: accessible_value_text)
+            ].join(", ")
+          },
+          tabindex: 0
+        )
+      end
+
+      def required?
+        @project_custom_field.required? && !@project_custom_field.calculated_value?
+      end
+
       def not_set?
-        @project_custom_field_values.empty? || @project_custom_field_values.all? { |cf_value| cf_value.value.blank? }
+        @project_custom_field_values.none?(&:value?)
+      end
+
+      def calculated_value?
+        @project_custom_field.calculated_value?
       end
 
       def calculation_error?
@@ -72,6 +135,19 @@ module Overviews
         end
       end
 
+      def render_calculated_value_tooltip
+        render Primer::Alpha::Tooltip.new(
+          for_id: calculated_value_tooltip_id,
+          type: :description,
+          text: I18n.t("custom_fields.calculated_field_not_editable"),
+          direction: :s
+        )
+      end
+
+      def calculated_value_tooltip_id
+        calculated_value? ? "calculated-field-tooltip-#{@project_custom_field.id}" : nil
+      end
+
       def render_value
         case @project_custom_field.field_format
         when "link"
@@ -81,32 +157,28 @@ module Overviews
         when "user"
           render_user
         else
-          render(Primer::Beta::Text.new) do
-            @project_custom_field_values&.map do |cf_value|
-              format_value(cf_value.value, @project_custom_field)
-            end&.join(", ")
-          end
+          render_custom_field_values
         end
       end
 
       def render_long_text
         render OpenProject::Common::AttributeComponent.new("dialog-cf-#{@project_custom_field.id}",
                                                            @project_custom_field.name,
-                                                           @project_custom_field_values&.first&.value,
+                                                           @project_custom_field_values.first&.value,
                                                            lines: 3)
       end
 
       def render_user
         if @project_custom_field.multi_value?
           flex_layout do |avatar_container|
-            @project_custom_field_values&.each do |cf_value|
+            @project_custom_field_values.each do |cf_value|
               avatar_container.with_row do
                 render_avatar(cf_value.typed_value)
               end
             end
           end
         else
-          render_avatar(@project_custom_field_values&.first&.typed_value)
+          render_avatar(@project_custom_field_values.first&.typed_value)
         end
       end
 
@@ -115,7 +187,7 @@ module Overviews
       end
 
       def render_link
-        href = @project_custom_field_values&.first&.value
+        href = @project_custom_field_values.first&.value
         link = Addressable::URI.parse(href)
         return href unless link
 
@@ -123,6 +195,23 @@ module Overviews
         render(Primer::Beta::Link.new(href:, rel: "noopener noreferrer", target:)) do
           href
         end
+      end
+
+      def render_custom_field_values
+        render(Primer::Beta::Text.new) { custom_field_values }
+      end
+
+      def accessible_value_text
+        return I18n.t("placeholders.default") if not_set?
+        custom_field_values
+      end
+
+      def custom_field_values
+        return @custom_field_values if defined?(@custom_field_values)
+
+        values = @project_custom_field_values.map { |v| format_value(v.value, @project_custom_field) }
+
+        @custom_field_values = @project_custom_field.multi_value? ? values.join(", ") : values.first
       end
     end
   end

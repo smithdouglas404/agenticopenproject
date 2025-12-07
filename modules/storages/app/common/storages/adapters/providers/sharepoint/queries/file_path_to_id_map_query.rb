@@ -34,13 +34,7 @@ module Storages
       module Sharepoint
         module Queries
           class FilePathToIdMapQuery < Base
-            FOLDER_FIELDS = %w[id
-                               name
-                               parentReference
-                               webUrl
-                               fileSystemInfo
-                               createdBy
-                               lastModifiedBy].freeze
+            FOLDER_FIELDS = %w[id name parentReference webUrl fileSystemInfo createdBy lastModifiedBy].freeze
 
             def initialize(*)
               super

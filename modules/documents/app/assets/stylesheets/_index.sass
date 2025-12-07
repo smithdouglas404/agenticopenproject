@@ -1,3 +1,5 @@
+$blocknote-max-width: 800px
+
 .document-form--long-description
   .ck-content
     min-height: 30vh
@@ -8,11 +10,13 @@
     gap: 10px
     height: 100%
     max-width: none
-    padding: 10px
+    padding: 0
     width: 100%
     > .bn-editor
       height: 100%
-      max-width: 700px
+      max-width: $blocknote-max-width
       min-height: 80vh
       overflow: auto
       width: 100%
+      background-color: transparent
+      padding-inline: 0 // No inline padding necessary given transparent background

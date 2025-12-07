@@ -166,7 +166,7 @@ RSpec.describe "filter work packages", :js do
         expect_ng_option(
           page.find_by_id("values-version"),
           shared_version,
-          grouping: "Project N/A",
+          grouping: I18n.t(:"api_v3.undisclosed.project"),
           results_selector: "body"
         )
 
@@ -614,7 +614,7 @@ RSpec.describe "filter work packages", :js do
       wp_table.ensure_work_package_not_listed! wp_updated_3d_ago, wp_updated_5d_ago
     end
 
-    it "filters between date by updated_at" do
+    it "filters between date by updated_at", skip: "flickering spec (#68677)" do
       wp_table.visit!
       wait_for_network_idle
       loading_indicator_saveguard

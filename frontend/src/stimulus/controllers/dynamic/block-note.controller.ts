@@ -28,11 +28,13 @@
  * ++
  */
 
+import { User } from '@blocknote/core/comments';
+import type { HocuspocusProvider } from '@hocuspocus/provider';
 import { Controller } from '@hotwired/stimulus';
+import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import OpBlockNoteContainer from '../../../react/OpBlockNoteContainer';
-import { User } from '@blocknote/core/comments';
 
 export default class extends Controller {
   static targets = [
@@ -40,41 +42,51 @@ export default class extends Controller {
     'blockNoteInputField',
   ];
 
-  static values = {
-    inputText: String,
-    users: Array,
-    activeUser: Object,
-    hocuspocusUrl: String,
-    hocuspocusAccessToken: String,
-    documentId: String,
-    openProjectUrl: String,
-  };
-
   declare readonly blockNoteEditorTarget:HTMLElement;
   declare readonly blockNoteInputFieldTarget:HTMLInputElement;
+
+  static values = {
+    inputText: String,
+    activeUser: Object,
+    readonly: Boolean,
+    openProjectUrl: String,
+    attachmentsUploadUrl: String,
+    attachmentsCollectionKey: String,
+
+    collaborationEnabled: Boolean,
+  };
+
   declare readonly inputTextValue:string;
-  declare readonly usersValue:User[];
   declare readonly activeUserValue:User;
-  declare readonly hocuspocusUrlValue:string;
-  declare readonly hocuspocusAccessTokenValue:string;
-  declare readonly documentIdValue:string;
+  declare readonly readonlyValue:boolean;
   declare readonly openProjectUrlValue:string;
+  declare readonly attachmentsUploadUrlValue:string;
+  declare readonly attachmentsCollectionKeyValue:string;
+
+  declare readonly collaborationEnabledValue:string;
 
   connect() {
     const root = createRoot(this.blockNoteEditorTarget);
-    root.render(this.BlockNoteReactContainer());
+
+    if (this.collaborationEnabledValue) {
+      LiveCollaborationManager.onReady((hocuspocusProvider) => {
+        root.render(this.BlockNoteReactContainer(hocuspocusProvider));
+      });
+    } else {
+      root.render(this.BlockNoteReactContainer());
+    }
   }
 
-  BlockNoteReactContainer() {
+  BlockNoteReactContainer(hocuspocusProvider?:HocuspocusProvider) {
     return React.createElement(OpBlockNoteContainer, {
       inputField: this.blockNoteInputFieldTarget,
       inputText: this.inputTextValue,
-      users: this.usersValue,
       activeUser: this.activeUserValue,
-      hocuspocusUrl: this.hocuspocusUrlValue,
-      hocuspocusAccessToken: this.hocuspocusAccessTokenValue,
-      documentId: this.documentIdValue,
+      readOnly: this.readonlyValue,
       openProjectUrl: this.openProjectUrlValue,
+      attachmentsUploadUrl: this.attachmentsUploadUrlValue,
+      attachmentsCollectionKey: this.attachmentsCollectionKeyValue,
+      hocuspocusProvider: hocuspocusProvider,
     });
   }
 }

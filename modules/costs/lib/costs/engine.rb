@@ -235,7 +235,7 @@ module Costs
              current_user.allowed_in_project?(:view_cost_entries, represented.project) ||
              current_user.allowed_in_project?(:view_own_cost_entries, represented.project)
            } do
-        next unless represented.persisted? && represented.project.costs_enabled?
+        next unless represented.persisted? && represented.project&.costs_enabled?
 
         {
           href: cost_reports_path(represented.project_id,

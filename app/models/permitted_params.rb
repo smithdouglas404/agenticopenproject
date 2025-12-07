@@ -225,6 +225,12 @@ class PermittedParams
     user additional_params
   end
 
+  def user_invitation
+    params
+      .require(:user_invitation)
+      .permit(:project_id, :principal_type, :id_or_email, :role_id, :message)
+  end
+
   def type(args = {})
     permitted = permitted_attributes(:type, args)
 
@@ -297,7 +303,7 @@ class PermittedParams
 
   def new_project
     params
-      .expect(project: %i[name parent_id workspace_type])
+      .expect(project: %i[name description parent_id workspace_type])
       .merge(custom_field_values(:project))
   end
 
@@ -454,6 +460,7 @@ class PermittedParams
           type
           attribute_name
           help_text
+          caption
         ),
         ldap_auth_source: %i(
           name

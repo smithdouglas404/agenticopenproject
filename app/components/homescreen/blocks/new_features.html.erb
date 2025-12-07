@@ -13,19 +13,21 @@
             <% end %>
           </ul>
         </div>
-        <img
-          class="widget-box--teaser-image op-new-features--teaser-image"
-          role="presentation"
-          src="<%= asset_path(feature_teaser_image) %>"
-          alt="">
+        <% if has_image? %>
+          <img
+            class="widget-box--teaser-image op-new-features--teaser-image"
+            role="presentation"
+            src="<%= asset_path(feature_teaser_image) %>"
+            alt="">
+        <% end %>
       </div>
 
       <%= helpers.static_link_to :current_release_notes, label: learn_more_link_text %>
     </div>
   <% else %>
     <%=
-      render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) do
-        "Missing teaser data for the next release. Please add it to #{base_i18n_key}"
+      render(Primer::Beta::Text.new(mb: 3)) do
+        I18n.t("homescreen.blocks.new_features.missing")
       end
     %>
   <% end %>

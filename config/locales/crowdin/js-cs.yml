@@ -297,12 +297,13 @@ cs:
       warning: "Prosím, nesdílejte tuto URL s ostatními uživateli. Kdokoli s tímto odkazem bude moci zobrazit podrobnosti o pracovním balíčku bez účtu nebo hesla."
       token_name_label: "Kde to použijete?"
       token_name_placeholder: 'Zadejte jméno, např. "Telefon"'
-      token_name_description_text: 'Pokud se přihlásíte k odběru tohoto kalendáře z více zařízení, toto jméno vám pomůže rozlišit mezi nimi v seznamu <a href="my/access_token", target="_blank">přístupových tokenů</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Kopírovat URL"
       ical_generation_error_text: "Při generování adresy URL kalendáře došlo k chybě."
       success_message: 'URL "%{name}" byla úspěšně zkopírována do vaší schránky. Vložte ji do vašeho klienta kalendáře pro dokončení odběru.'
     label_activate: "Aktivovat"
     label_assignee: "Řešitel"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Přidat sloupec za"
     label_add_column_before: "Přidat sloupec před"
     label_add_columns: "Přidat sloupce"
@@ -1134,6 +1135,7 @@ cs:
       current_project_and_all_descendants: "V tomto projektu + podprojektech"
       current_project: "V tomto projektu"
       recently_viewed: "Nedávno zobrazené"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "všechny projekty"
         project_and_subprojects: "a všechny podprojekty"
@@ -1143,71 +1145,8 @@ cs:
       list: "Tabulka"
       timeline: "Ganttův diagram"
     invite_user_modal:
-      back: "Zpět"
       invite: "Pozvat"
-      title:
-        invite: "Pozvat uživatele"
-        invite_to_project: "Pozvat %{type} do %{project}"
-        User: "uživatel"
-        Group: "Skupina"
-        PlaceholderUser: "placeholder uživatel"
-        invite_principal_to_project: "Pozvat %{principal} do %{project}"
-      project:
-        label: "Projekt"
-        required: "Vyberte projekt"
-        lacking_permission: "Vyberte jiný projekt, protože nemáte oprávnění pro přiřazení uživatelů k aktuálně vybranému."
-        lacking_permission_info: "Chybí vám oprávnění k přiřazení uživatelů k projektu, ve kterém se právě nacházíte. Musíte vybrat jiný."
-        next_button: "Další"
-        no_results: "Nebyly nalezeny žádné projekty"
-        no_invite_rights: "Nejste oprávněni pozvat členy do tohoto projektu"
-      type:
-        required: "Vyberte prosím typ, který chcete pozvat"
-        user:
-          title: "Uživatel"
-          description: "Oprávnění založená na přiřazené roli ve vybraném projektu"
-        group:
-          title: "Skupina"
-          description: "Oprávnění založená na přiřazené roli ve vybraném projektu"
-        placeholder:
-          title: "placeholder uživatel"
-          title_no_ee: "placeholder uživatel (pouze funkce Enterprise Edition)"
-          description: "Nemá přístup k projektu a nejsou odesílány žádné e-maily."
-          description_no_ee: 'Nemá přístup k projektu a nejsou odeslány žádné e-maily. <br>Podívejte se na <a href="%{eeHref}" target="_blank">Enterprise Edition</a>'
-      principal:
-        label:
-          name_or_email: "Jméno nebo e-mailová adresa"
-          name: "Jméno"
-        already_member_message: "Už jsi členem %{project}"
-        no_results_user: "Nebyli nalezeni žádní uživatelé"
-        invite_user: "Pozvat"
-        no_results_placeholder: "Nebyly nalezeny žádné placeholdery"
-        create_new_placeholder: "Vytvořit nový placeholder"
-        no_results_group: "Nebyly nalezeny žádné skupiny"
-        next_button: "Další"
-        required:
-          user: "Vyberte prosím uživatele"
-          placeholder: "Vyberte prosím placeholder"
-          group: "Zvolte prosím skupinu."
-      role:
-        label: "Role v %{project}"
-        no_roles_found: "Nebyly nalezeny žádné role."
-        description: >-
-          Toto je role, kterou uživatel obdrží, když se připojí k vašemu projektu. Role vymezuje, která změny mohou provádět a jaké informace mohou vidět. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Další informace o rolích a oprávněních. </a>
-        required: "Vyberte prosím roli"
-        next_button: "Další"
-      message:
-        label: "Pozvánka"
-        description: "Pošleme uživateli e-mail, ke kterému můžete přidat osobní zprávu. Vysvětlení pozvánky by mohlo být užitečné, nebo pár informací o projektu, které by jim pomohly začít."
-        next_button: "Další"
-      summary:
-        next_button: "Odeslat pozvánku"
-      success:
-        title: "%{principal} byl pozván!"
-        description:
-          user: "Uživatel se nyní může přihlásit do %{project}. Mezitím již můžete s tímto uživatelem plánovat a přiřazovat například pracovní balíčky."
-          placeholder: "Zástupného uživatele lze nyní použít v %{project}. Mezitím již můžete plánovat s tímto uživatelem a přiřadit mu například pracovní balíčky."
-          group: "Skupina je nyní součástí %{project}. Mezitím již můžete s touto skupinou plánovat a přiřadit například pracovní balíčky."
-        next_button: "Pokračovat"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status vyloučen z součtů hierarchie"
@@ -1233,6 +1172,11 @@ cs:
         does_not_match_search: "Projekt neodpovídá kritériím vyhledávání."
       no_results: "Žádný projekt neodpovídá vašim kritériím vyhledávání."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Směrný plán"
       clear: "Vyčistit"

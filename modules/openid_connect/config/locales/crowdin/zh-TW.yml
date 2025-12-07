@@ -43,6 +43,10 @@ zh-TW:
               response_is_not_successful: " 回應 %{status}。"
               response_is_not_json: " 沒有回傳JSON正文"
               response_misses_required_attributes: " 未返回所需的屬性。缺少的屬性有： %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: 輸入提供者名稱 %{name} 確認刪除。

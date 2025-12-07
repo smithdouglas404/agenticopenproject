@@ -297,12 +297,13 @@ lt:
       warning: "Prašome nesidalinti šiuo URL su kitais naudotojais. Bet kas su šia nuoroda galės peržiūrėti darbo paketo detales be paskyros ar slaptažodžio."
       token_name_label: "Kur jūs tai naudosite?"
       token_name_placeholder: 'Įrašykite pavadinimą, pvz. „Telefonas“'
-      token_name_description_text: 'Jei prenumeruojate kalendorių iš kelių įrenginių, šis pavadinimas padės atskirti juos jūsų <a href="my/access_token", target="_blank">prieigos žetonų</a> sąraše.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Kopijuoti URL"
       ical_generation_error_text: "Kuriant kalendoriaus URL įvyko klaida."
       success_message: 'URL „%{name}“ buvo sėkmingai nukopijuotas į jūsų iškarpinę. Įkelkite jį į jūsų kalendoriaus klientą, kad baigtumėte prenumeratą.'
     label_activate: "Aktyvuoti"
     label_assignee: "Paskirtas"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Pridėti stulpelį po"
     label_add_column_before: "Pridėti stulpelį prieš"
     label_add_columns: "Pridėti stulpelių"
@@ -1134,6 +1135,7 @@ lt:
       current_project_and_all_descendants: "Šiame projekte + subprojektuose"
       current_project: "Šiame projekte"
       recently_viewed: "Neseniai žiūrėtos"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "visi projektai"
         project_and_subprojects: "ir visi subprojektai"
@@ -1143,71 +1145,8 @@ lt:
       list: "Stalas"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Atgal"
       invite: "Pakviesti"
-      title:
-        invite: "Pakviesti vartotoją"
-        invite_to_project: "Pakviesti %{type} į %{project}"
-        User: "naudotojas"
-        Group: "grupė"
-        PlaceholderUser: "statytinis naudotojas"
-        invite_principal_to_project: "Pakviesti %{principal} į %{project}"
-      project:
-        label: "Projektas"
-        required: "Pasirinkite projektą"
-        lacking_permission: "Prašome pasirinkti kitą projektą, nes dabar pasirinktame jūs neturite teisių priskirti naudotojus."
-        lacking_permission_info: "Jums trūksta teisių priskirti naudotojus projekte, kuriame dabar esate. Turėtumėte pasirinkti kitą projektą."
-        next_button: "Kitas"
-        no_results: "Nerasta jokių projektų"
-        no_invite_rights: "Jums neleidžiama kviesti narių į projektą"
-      type:
-        required: "Prašome pasirinkti kokio tipo dalyvį kviesti"
-        user:
-          title: "Naudotojas"
-          description: "Teisės, suteiktos pagal pasirinktame projekte turimą vaidmenį"
-        group:
-          title: "Grupė"
-          description: "Teisės, suteiktos pagal pasirinktame projekte turimą rolę"
-        placeholder:
-          title: "Statytinis naudotojas"
-          title_no_ee: "Statytiniai naudotojai (Enterprise versijos priedas)"
-          description: "Neturi prieigos prie projekto ir jokie el. pašto laiškai nebuvo išsiųsti."
-          description_no_ee: 'Neturi prieigos prie projekto ir jokie el. pašto laiškai nebuvo išsiųsti. <br>Pabandykite <a href="%{eeHref}" target="_blank">Enterprise versiją</a>'
-      principal:
-        label:
-          name_or_email: "Vardas arba elektroninio pašto adresas"
-          name: "Vardas"
-        already_member_message: "Jau yra %{project} narys"
-        no_results_user: "Nerasta jokių naudotojų"
-        invite_user: "Pakviesti:"
-        no_results_placeholder: "Nerasta jokių statytinių naudotojų"
-        create_new_placeholder: "Kurti naują statytinį naudotoją:"
-        no_results_group: "Nerasta jokių grupių"
-        next_button: "Kitas"
-        required:
-          user: "Parinkite naudotoją"
-          placeholder: "Prašome parinkti statytinį naudotoją"
-          group: "Prašome parinkti grupę"
-      role:
-        label: "Vaidmuo projekte %{project}"
-        no_roles_found: "Nerasta jokių vaidmenų"
-        description: >-
-          Tai yra vaidmuo, kurį naudotojas gaus, kai prisijungs prie jūsų projekto. Vaidmuo nurodo, kokius veiksmus leidžiama atlikti ir kokią informaciją galima matyti. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Sužinokite daugiau apie vaidmenis ir teises. </a>
-        required: "Prašome parinkti vaidmenį"
-        next_button: "Kitas"
-      message:
-        label: "Kvietimo pranešimas"
-        description: "Mes siųsime el. pašto laišką naudotojui, į kurį jūs galite pridėti asmeninį pranešimą. Paaiškinimas, kodėl šis pranešimas buvo atsiųstas, galėtų būti naudingas gavėjui. Taipogi šiek tiek informacijos apie projektą galbūt galėtų padėti pradėti darbą su projektu."
-        next_button: "Kitas"
-      summary:
-        next_button: "Siųsti pakvietimą"
-      success:
-        title: "%{principal} buvo pakviestas!"
-        description:
-          user: "Naudotojas gali prisijungti ir pasiekti %{project}. Tuo pačiu, jūs jau galite planuoti darbus su šiuo naudotoju ir pavyzdžiui priskirti jam darbo užduotis."
-          placeholder: "Statytinis naudotojas gali prisijungti ir pasiekti %{project}. Tuo pačiu, jūs jau galite planuoti darbus su šiuo naudotoju ir pavyzdžiui priskirti jam darbo užduotis."
-          group: "Grupė jau tapo %{project} dalimi. Tuo pačiu, jūs jau galite planuoti darbus su šia grupe ir pavyzdžiui priskirti jai darbo užduotis."
-        next_button: "Tęsti"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1233,6 +1172,11 @@ lt:
         does_not_match_search: "Projektas neatitinka paieškos kriterijaus."
       no_results: "Nei vienas projektas neatitinka jūsų paieškos kriterijaus."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Bazinė linija"
       clear: "Išvalyti"

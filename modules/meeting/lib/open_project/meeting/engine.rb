@@ -44,7 +44,7 @@ module OpenProject::Meeting
         permission :view_meetings,
                    {
                      meetings: %i[index show check_for_updates download_ics
-                                  generate_pdf_dialog history],
+                                  presentation generate_pdf_dialog history],
                      "meetings/menus": %i[show],
                      work_package_meetings_tab: %i[index count],
                      recurring_meetings: %i[index show new create download_ics]
@@ -88,7 +88,7 @@ module OpenProject::Meeting
                    require: :member
         permission :manage_agendas,
                    {
-                     meetings: %i[change_state],
+                     meetings: %i[change_state exit_draft_mode_dialog exit_draft_mode],
                      meeting_agenda_items: %i[new cancel_new create edit cancel_edit update destroy drop move
                                               move_to_next_meeting move_to_next_meeting_dialog
                                               move_to_section move_to_section_dialog],
@@ -126,6 +126,7 @@ module OpenProject::Meeting
            :meetings,
            { tab: :meetings },
            skip_permissions_check: true,
+           after: :relations,
            if: ->(_project) {
              User.current.allowed_in_any_project?(:view_meetings)
            },
@@ -165,29 +166,22 @@ module OpenProject::Meeting
       end
     end
 
-    initializer "openproject-meetings.feature_decisions" do
-      OpenProject::FeatureDecisions.add :meeting_ical_subscription,
-                                        description: "Allows users to subscribe to all of their meetings via iCalendar"
-    end
-
     activity_provider :meetings, class_name: "Activities::MeetingActivityProvider", default: false
 
     patches [:Project]
     patch_with_namespace :BasicData, :SettingSeeder
 
     replace_principal_references "Meeting" => %i[author_id],
-                                 "MeetingAgenda" => %i[author_id],
-                                 "MeetingMinutes" => %i[author_id],
                                  "MeetingAgendaItem" => %i[author_id presenter_id],
+                                 "MeetingOutcome" => :author_id,
                                  "MeetingParticipant" => :user_id,
-                                 "MeetingOutcome" => :author_id
+                                 "RecurringMeeting" => :author_id
 
     extend_api_response(:v3, :work_packages, :work_package,
                         &::OpenProject::Meeting::Patches::API::WorkPackageRepresenter.extension)
 
     add_api_endpoint "API::V3::Root" do
       mount ::API::V3::Meetings::MeetingsAPI
-      mount ::API::V3::Meetings::MeetingContentsAPI
     end
 
     config.to_prepare do
@@ -222,18 +216,6 @@ module OpenProject::Meeting
 
     add_api_path :attachments_by_meeting do |id|
       "#{meeting(id)}/attachments"
-    end
-
-    add_api_path :attachments_by_meeting_content do |id|
-      "#{meeting_content(id)}/attachments"
-    end
-
-    add_api_path :attachments_by_meeting_agenda do |id|
-      attachments_by_meeting_content id
-    end
-
-    add_api_path :attachments_by_meeting_minutes do |id|
-      attachments_by_meeting_content id
     end
   end
 end

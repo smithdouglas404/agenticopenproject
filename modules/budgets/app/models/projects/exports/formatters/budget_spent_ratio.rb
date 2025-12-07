@@ -38,7 +38,12 @@ module Projects::Exports::Formatters
       return unless project.module_enabled?("budgets") && User.current.allowed_in_project?(:view_budgets, project)
 
       project_budgets = ::Budgets::Patches::Projects::RowComponentPatch::ProjectBudgets.new(project)
-      number_to_percentage(project_budgets.total_ratio, precision: 0) if project_budgets
+
+      (project_budgets.total_ratio.to_f / 100).ceil(2) if project_budgets&.total_ratio
+    end
+
+    def format_options
+      { number_format: percentage_format }
     end
   end
 end

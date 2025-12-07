@@ -38,13 +38,13 @@ module Redmine::MenuManager::MenuHelper
   delegate :current_menu_item, to: :controller
 
   # Renders the application main menu
-  def render_main_menu(menu, project = nil)
+  def render_main_menu(menu, project = nil) # rubocop:disable Metrics/PerceivedComplexity
     # Fall back to project_menu when project exists (not during project creation)
     if menu.nil? && project && project.persisted?
       menu = :project_menu
     end
 
-    if !menu
+    if menu.blank? || menu == :none
       # For some global pages such as home
       nil
     elsif menu == :project_menu && project && project.persisted?
@@ -62,7 +62,7 @@ module Redmine::MenuManager::MenuHelper
       links << render_menu_node(node, project)
     end
 
-    first_level = any_item_selected?(select_leafs(menu_items)) || !current_menu_item_part_of_menu?(menu, project)
+    first_level = any_item_selected?(select_leafs(menu_items, project)) || !current_menu_item_part_of_menu?(menu, project)
     classes = first_level ? "open" : "closed"
 
     if links.present?
@@ -75,14 +75,14 @@ module Redmine::MenuManager::MenuHelper
     end
   end
 
-  def select_leafs(items)
-    items.select { |item| item.children.empty? }
+  def select_leafs(items, project)
+    items.reject { |item| has_allowed_children?(item, project) }
   end
 
   def render_menu_node(node, project = nil)
     return "" unless allowed_node?(node, User.current, project)
 
-    if node.has_children? || !node.child_menus.nil?
+    if has_allowed_children?(node, project) || !node.child_menus.nil?
       render_menu_node_with_children(node, project)
     else
       render_single_node_or_partial(node, project)
@@ -198,17 +198,17 @@ module Redmine::MenuManager::MenuHelper
     link_text += content_tag(:span,
                              class: "#{menu_class}--item-title#{badge_class}",
                              lang: menu_item_locale(item)) do
-      title_text = "".html_safe + content_tag(:span, caption, class: "ellipsis") + badge_for(item)
-      if item.enterprise_feature.present? && !EnterpriseToken.allows_to?(item.enterprise_feature)
-        title_text += ("".html_safe + render(Primer::Beta::Octicon.new(icon: "op-enterprise-addons",
-                                                                       classes: "upsell-colored",
-                                                                       ml: 2)))
+      title_text = content_tag(:span, caption, class: "ellipsis") + badge_for(item)
+      if item.enterprise_feature_missing?
+        title_text += render(Primer::Beta::Octicon.new(icon: "op-enterprise-addons",
+                                                       classes: "upsell-colored",
+                                                       ml: 2))
       end
       title_text
     end
 
     if item.icon_after.present?
-      link_text += ("".html_safe + render(Primer::Beta::Octicon.new(icon: item.icon_after, classes: "trailing-icon")))
+      link_text += render(Primer::Beta::Octicon.new(icon: item.icon_after, classes: "trailing-icon"))
     end
 
     html_options = item.html_options(selected:)
@@ -371,6 +371,12 @@ module Redmine::MenuManager::MenuHelper
       # outside a project, all menu items allowed
       true
     end
+  end
+
+  def has_allowed_children?(node, project)
+    user = User.current
+
+    node.has_children? && node.children.any? { allowed_node?(it, user, project) }
   end
 
   def allowed_project_node?(node, project, user)

@@ -2,38 +2,6 @@
 # frozen_string_literal: true
 
 require "optparse"
-require "net/http"
-require "json"
-
-def latest_release_major_minor
-  uri = URI("https://api.github.com/repos/opf/openproject/releases/latest")
-  res = Net::HTTP.get_response(uri)
-  if res.is_a?(Net::HTTPSuccess)
-    tag_name = JSON.parse(res.body)["tag_name"]
-    tag_name[/^v?(\d+\.\d+)/, 1]
-  end
-rescue StandardError
-  puts "Error getting latest release major: #{$!}"
-  nil
-end
-
-def generate_matrix
-  latest_version = latest_release_major_minor
-  return nil unless latest_version
-
-  {
-    "include" => [
-      {
-        "branch" => "dev",
-        "tag" => "dev"
-      },
-      {
-        "branch" => "release/#{latest_version}",
-        "tag" => "#{latest_version}-rc"
-      }
-    ]
-  }
-end
 
 class Tag
   def initialize(tag)
@@ -60,17 +28,10 @@ class Tag
         "type=semver,pattern={{major}},value=#{version}"
       ]
     elsif rc?
-      latest_major_minor = latest_release_major_minor
-      tags = [
+      [
         "type=raw,value=#{major}.#{minor}-rc",
         "type=raw,value=#{major}-rc"
       ]
-      if latest_major_minor && latest_major_minor == [major, minor].join(".")
-        tags << [
-          "type=raw,value=rc"
-        ]
-      end
-      tags
     else
       ["type=raw,value=#{version}"]
     end
@@ -120,39 +81,24 @@ def main # rubocop:disable Metrics/AbcSize
     opts.on("--version", "Output first tag as version") do
       options[:version] = true
     end
-    opts.on("--matrix", "Generate matrix for GitHub Actions workflow") do
-      options[:matrix] = true
-    end
     opts.on("-h", "--help", "Prints this help") do
       puts opts
       exit
     end
   end.parse!
 
-  if options[:matrix]
-    matrix = generate_matrix
-    if matrix
-      output = JSON.generate(matrix)
-      puts output
-      write_to_github_output("matrix", output)
-    else
-      puts "Error: Could not generate matrix"
-      exit 1
-    end
+  tag = Tag.new(ARGV.first)
+  if options[:version]
+    output = tag.version
+    puts output
+    write_to_github_output("version", output)
+  elsif options[:format_for_docker]
+    output = tag.to_semver_docker_tags.join("\n")
+    puts output
+    write_to_github_output("docker_tags", output)
   else
-    tag = Tag.new(ARGV.first)
-    if options[:version]
-      output = tag.version
-      puts output
-      write_to_github_output("version", output)
-    elsif options[:format_for_docker]
-      output = tag.to_semver_docker_tags.join("\n")
-      puts output
-      write_to_github_output("docker_tags", output)
-    else
-      puts "Error: Must specify either --version, --format-for-docker, or --matrix"
-      exit 1
-    end
+    puts "Error: Must specify either --version or --format-for-docker"
+    exit 1
   end
 end
 

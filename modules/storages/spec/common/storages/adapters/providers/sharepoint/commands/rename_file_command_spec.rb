@@ -42,7 +42,7 @@ module Storages
             let(:input_data) { Input::RenameFile.build(location: file_id, new_name: name).value! }
             let(:base_drive) { "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY8CfNaHr_0ERYs5kgmEWFrX" }
 
-            it_behaves_like "adapter rename_file_command: basic command setup"
+            it_behaves_like "storage adapter: command call signature", "rename_file"
 
             context "when renaming a folder", vcr: "sharepoint/rename_file_success" do
               let(:file_id) { "#{base_drive}:01ANJ53W7XPDQZRCOJK5CJC2M72EB6WKEG" }
@@ -63,7 +63,7 @@ module Storages
               let(:name) { "this_will_not_happen.png" }
               let(:error_source) { described_class }
 
-              it_behaves_like "adapter rename_file_command: not found"
+              it_behaves_like "storage adapter: error response", :not_found
             end
           end
         end

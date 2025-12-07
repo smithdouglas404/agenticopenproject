@@ -73,7 +73,7 @@ el:
     button_continue: "Συνέχεια"
     button_copy: "Αντιγραφή"
     button_copy_to_clipboard: "Αντιγραφή στο πρόχειρο"
-    button_copy_link_to_clipboard: "Copy link to clipboard"
+    button_copy_link_to_clipboard: "Αντιγραφή συνδέσμου στο πρόχειρο"
     button_copy_to_other_project: "Duplicate in another project"
     button_custom-fields: "Προσαρμοσμένα πεδία"
     button_delete: "Διαγραφή"
@@ -89,7 +89,7 @@ el:
     button_show_view: "Προβολή πλήρης οθόνης"
     button_log_time: "Ιστορικό χρόνου"
     button_start_timer: "Start timer"
-    button_stop_timer: "Stop timer"
+    button_stop_timer: "Διακοπή χρονόμετρου"
     button_more: "Περισσότερα"
     button_open_details: "Άνοιγμα προβολής λεπτομερειών"
     button_close_details: "Κλείσιμο προβολής λεπτομερειών"
@@ -296,12 +296,13 @@ el:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copy URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Ενεργοποίηση"
     label_assignee: "Ανάθεση σε"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Προσθήκη στήλης μετά"
     label_add_column_before: "Προσθήκη στήλης πριν"
     label_add_columns: "Προσθέστε στήλη"
@@ -901,7 +902,7 @@ el:
         percentageDone: "Ποσοστό ολοκλήρωσης"
         priority: "Προτεραιότητα"
         projectName: "Έργο"
-        remainingWork: "Remaining work"
+        remainingWork: "Υπολειπόμενες Ώρες"
         remainingWorkAlternative: "Υπολειπόμενες ώρες"
         responsible: "Υπεύθυνος"
         startDate: "Ημερομηνία έναρξης"
@@ -915,7 +916,7 @@ el:
         version: "Έκδοση"
         work: "Work"
         workAlternative: "Εκτιμώμενος χρόνος"
-        remainingTime: "Remaining work"
+        remainingTime: "Υπολειπόμενες Ώρες"
       default_queries:
         manually_sorted: "New manually sorted query"
         latest_activity: "Τελευταία δραστηριότητα"
@@ -1125,6 +1126,7 @@ el:
       current_project_and_all_descendants: "Σε αυτό το έργο + υποέργα"
       current_project: "Σε αυτό το έργο"
       recently_viewed: "Recently viewed"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "όλα τα έργα"
         project_and_subprojects: "και όλα τα υποέργα"
@@ -1134,71 +1136,8 @@ el:
       list: "Πίνακας"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Επιστροφή"
       invite: "Πρόσκληση"
-      title:
-        invite: "Προσκαλέστε χρήστη"
-        invite_to_project: "Προσκαλέστε %{type} στο %{project}"
-        User: "χρήστης"
-        Group: "ομάδα"
-        PlaceholderUser: "placeholder χρήστης"
-        invite_principal_to_project: "Πρόσκληση %{principal} στο %{project}"
-      project:
-        label: "Έργο"
-        required: "Παρακαλούμε επιλέξτε ένα έργο"
-        lacking_permission: "Παρακαλώ επιλέξτε ένα διαφορετικό πρότζεκτ καθώς δεν έχετε δικαιώματα να εγγράψετε τους χρήστες στο επιλεγμένο."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Επόμενο"
-        no_results: "Δεν βρέθηκαν έργα"
-        no_invite_rights: "You are not allowed to invite members to this project"
-      type:
-        required: "Παρακαλώ επιλέξτε τον τύπο που θα προσκληθεί"
-        user:
-          title: "Χρήστης"
-          description: "Permissions based on the assigned role in the selected project"
-        group:
-          title: "Ομάδα"
-          description: "Permissions based on the assigned role in the selected project"
-        placeholder:
-          title: "Placeholder χρήστης"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Όνομα ή διεύθυνση email"
-          name: "Όνομα"
-        already_member_message: "Ήδη μέλος του %{project}"
-        no_results_user: "Δεν βρέθηκαν χρήστες"
-        invite_user: "Πρόσκληση:"
-        no_results_placeholder: "Δεν βρέθηκαν placeholders"
-        create_new_placeholder: "Δημιουργία νέου placeholder:"
-        no_results_group: "Δεν βρέθηκαν ομάδες"
-        next_button: "Επόμενο"
-        required:
-          user: "Παρακαλώ επιλέξτε ένα χρήστη"
-          placeholder: "Παρακαλώ επιλέξτε ένα placeholder"
-          group: "Παρακαλούμε επιλέξτε μια ομάδα"
-      role:
-        label: "Ρόλος στο %{project}"
-        no_roles_found: "Δεν βρέθηκε κανένας ρόλος"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Παρακαλούμε επιλέξτε ένα ρόλο"
-        next_button: "Επόμενο"
-      message:
-        label: "Μήνυμα πρόσκλησης"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Επόμενο"
-      summary:
-        next_button: "Αποστολή πρόσκλησης"
-      success:
-        title: "%{principal} προσκλήθηκε!"
-        description:
-          user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          placeholder: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          group: "Η ομάδα είναι τώρα μέρος του %{project}. Εν τω μεταξύ, μπορείτε να προγραμματίσετε ήδη με αυτή την ομάδα και να αντιστοιχίσετε πακέτα εργασίας."
-        next_button: "Συνέχεια"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1224,6 +1163,11 @@ el:
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Baseline"
       clear: "Εκκαθάριση"

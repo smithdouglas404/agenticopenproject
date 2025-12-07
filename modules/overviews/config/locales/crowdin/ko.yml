@@ -3,13 +3,4 @@ ko:
     label_home: "%{workspace_type} 홈"
     label_dashboard: "대시보드"
     label_overview: '개요'
-    widgets:
-      subitems:
-        in_this_portfolio: "이 포트폴리오 내"
-        in_this_program: "이 프로젝트 내"
-        in_this_project: "이 프로젝트 내"
-        no_visible_children: "표시되는 자식이 없습니다."
-      members:
-        title: "최신 멤버"
-        view_all_members: "모든 멤버 보기"
   permission_manage_overview: '개요 페이지 관리'

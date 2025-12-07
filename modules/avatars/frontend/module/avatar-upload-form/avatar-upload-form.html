@@ -24,7 +24,7 @@
 @if (avatarPreviewUrl) {
   <fieldset class="preview">
     <legend class="preview--legend" [textContent]="text.preview"></legend>
-    <img [src]="avatarPreviewUrl" class="avatars--local-avatar-preview" />
+    <img [src]="avatarPreviewUrl" class="avatars--local-avatar-preview" alt="{{ text.preview }}"/>
   </fieldset>
 }
 

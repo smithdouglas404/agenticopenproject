@@ -251,33 +251,33 @@ ja:
                 item_0:
                   subject: 最初の下書きの開発
                   description: |-
-                    ## Goal
+                    ## 目標
 
-                    *   Create a useful overview of the results
-                    *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
-                    *   Identify the fundamental boundary conditions of the project
+                    * 使いやすい結果の概要を作成する
+                    * 何が完了したか確認し，結果をまとめる
+                    * すべての関連する結果に関して顧客と会話する
+                    * プロジェクトの基本的な境界条件について認識する
 
-                    ## Description
+                    ## 概要
 
-                    *   Each topic gets its own overview which will be used as a catalogue of results
-                    *   This overview informs all participants about the decisions made
-                    *   ...
+                    * それぞれのトピックについてまとめて，結果のカタログにする
+                    *このまとめには決断を下したすべての参加者を加える
+                    * …
                 item_1:
                   subject: 結果の概要
                   description: |-
-                    ## Goal
+                    ## 目標
 
-                    *   Create a useful overview of the results
-                    *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
-                    *   Identify the fundamental boundary conditions of the project
+                    * 使いやすい結果の概要を作成する
+                    * 何が完了したか確認し，結果をまとめる
+                    * すべての関連する結果に関して顧客と会話する
+                    * プロジェクトの基本的な境界条件について認識する
 
-                    ## Description
+                    ## 概要
 
-                    *   Each topic gets its own overview which will be used as a catalogue of results
-                    *   This overview informs all participants about the decisions made
-                    *   ...
+                    * それぞれのトピックについてまとめて，結果のカタログにする
+                    *このまとめには決断を下したすべての参加者を加える
+                    * …
             item_3:
               subject: 予備計画の経過
               description: この型は階層的に &quot;Clash&quot; と &quot;Request&quot;型の親であるため、一般的なノートを表します。

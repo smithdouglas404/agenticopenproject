@@ -162,6 +162,16 @@ zh-CN:
         expired: "已于 %{date} 到期"
         revoked: "已于 %{date} 撤销"
         title: "访问令牌表"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
+    workflows:
+      tabs:
+        default_transitions: "默认转换"
+        user_author: "用户是作者"
+        user_assignee: "用户是指派人"
   authentication:
     login_and_registration: "登录和注册"
   announcements:
@@ -180,12 +190,12 @@ zh-CN:
       title: "被隔离的附件"
       error_cannot_act_self: "无法对自己上传的文件执行操作。"
   attribute_help_texts:
-    note_public: "您添加到此字段的任何文本和图像对所有已登录用户都是公开可见的！"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "在此视图中, 您可以为属性视图创建自定义帮助文本。定义后, 可以通过单击属性旁边的帮助图标来显示帮助文本。"
-    label_plural: "属性帮助文本"
     show_preview: "预览文本"
     add_new: "添加帮助文本"
-    edit: "编辑%{attribute_caption} 的帮助文本"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "作业发生错误，但正在重试。错误为：%{message}"
@@ -297,7 +307,7 @@ zh-CN:
         placeholder:
           label: "项目标签"
           short: "短名"
-          score: "分数"
+          weight: "重量"
       notice:
         remember_items_and_projects: "请记住，在相应的选项卡中为此自定义字段设置条目和项目。"
       hierarchy:
@@ -305,6 +315,25 @@ zh-CN:
           zero: 无子项目
           one: 1 个子项目
           other: "%{count} 个子项目"
+      role_assignment:
+        title: Role Assignment
+        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
+        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
+        role_field_label: "Project Role"
+        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        review_hint: >
+          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
+        review_button: Review users and permissions
+        dialog:
+          title: "Overview of users and permissions"
+          change: Change
+          changes:
+            new_member: Will be added as a member
+            remove_member: Will be removed as a member
+            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
+            gain_role: Will gain role ‘%{new_role}’
+            lose_role: Will lose role ‘%{old_role}’
+            no_change: No changes
     text_add_new_custom_field: >
       要向项目添加新的自定义字段，您需要先创建字段，然后才能将其添加到此项目中。
     is_enabled_globally: "已全局启用"
@@ -314,9 +343,11 @@ zh-CN:
     reorder_alphabetical: "按字母顺序重新排序"
     reorder_confirmation: "警告：可用值的当前顺序将丢失。是否继续？"
     placeholder_version_select: "需要先选择工作包或项目"
+    calculated_field_not_editable: "不可编辑属性。此值是自动计算的。"
+    no_role_assigment: "No role assignment"
     instructions:
-      is_required: "将自定义字段标记为必填项。这将使在创建新资源或更新现有资源时，填写该字段成为强制要求。"
-      is_required_for_project: "选中可启用此属性，并使其成为所有项目的必选项。单个项目不能停用该属性。"
+      is_required: "将自定义字段标记为必填。这将在创建新资源时强制要求填写该字段。更新现有资源时，不会强制要求填写该值。"
+      is_required_for_project: "勾选以启用此属性，并在所有项目中将其设为必填。该属性无法在单个项目中停用。更新现有项目时，已存在的项目将无需填写该值。"
       is_for_all: "将自定义字段标记为在所有现有项目和新项目中可用。"
       multi_select: "允许用户为该自定义字段赋予多个值。"
       searchable: "使用全局搜索功能时包含字段值。"
@@ -334,58 +365,59 @@ zh-CN:
       title: "计算值错误"
     errors:
       unknown: "发生未知错误。请检查此计算值的公式。"
-      mathematical: "计算过程中发生数学错误。"
-      missing_value: 该计算值需要属性 "%{custom_field_name}"，但该属性为空。
-      disabled_value: 该计算值需要属性 "%{custom_field_name}"，但它在项目中已禁用。
+      mathematical: "数学公式导致错误。请检查项目计算属性并重试。"
+      missing_value: 属性“%{custom_field_name}”为此计算值的必填项，但当前为空。
+      disabled_value: 属性“%{custom_field_name}”为此计算值的必填项，但在项目中已停用。
   concatenation:
     single: "或"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "继续按钮现已激活。"
+    confirmation_live_message_unchecked: "继续按钮现已失效。您需要勾选复选框才能继续。"
   op_dry_validation:
     or: "或"
     errors:
       array?: "必须为一个数组。"
-      decimal?: "必须为一个小数。"
-      defined: "不可被定义。"
+      decimal?: "必须为小数。"
+      defined: "不得定义。"
       eql?: "必须等于 %{left}。"
-      filled?: "必须填写。"
-      greater_or_equal_zero: "必须大于或等于 0。"
+      filled?: "必须填写"
+      greater_or_equal_zero: "必须大于或等于 0"
       gteq?: "必须大于或等于 %{num}。"
       hash?: "必须是一个哈希值。"
       included_in?:
         arg:
           default: "必须是其中之一： %{list}。"
           range: "必须是其中之一： %{list_left} - %{list_right}。"
-      int?: "必须为一个整数。"
-      key?: "已缺失。"
+      int?: "必须为整数。"
+      key?: "缺失。"
       not_found: "未找到。"
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
-          workflow_missing: "没有自己的工作流。"
+          workflow_missing: "无独立工作流。"
         custom_field:
-          format_not_supported: "不支持 '%{field_format}' 格式。"
+          format_not_supported: "格式 '%{field_format}' 不受支持。"
         item:
-          root_item: "不能为根项。"
-          not_persisted: "必须是已存在的项。"
+          root_item: "不能为根项目。"
+          not_persisted: "必须是已存在的项目。"
         label:
           not_unique: "在同一层级内必须是唯一的。"
         short:
-          not_unique: "在同一层级内必须是唯一的。"
+          not_unique: "必须在同一层级级别中保持唯一。"
         parent:
-          not_descendant: "必须是层次结构根的后代"
+          not_descendant: "必须是层级根节点的后代。"
       str?: "必须是一个字符串。"
       type?: "必须是 %{type}。"
     rules:
       copy_workflow_from: "工作流副本的类型"
       enabled: "已启用"
-      depth: "深度"
+      depth: "深"
       item: "条目"
       label: "标签"
-      score: "分数"
+      weight: "权重"
       short: "简称"
       parent: "父级"
-      blueprint: "模式蓝图"
+      blueprint: "图案蓝图"
   global_search:
     title:
       all_projects: '在所有项目中搜索“%{search_term}”'
@@ -418,6 +450,18 @@ zh-CN:
   incoming_mails:
     ignore_filenames: >
       指定在处理收到的邮件的附件（例如，签名或图标）时要忽略的名称列表。每行输入一个文件名。
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+      sub_items_html:
+        other: "<strong>%{count}</strong> sub-items"
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -429,12 +473,15 @@ zh-CN:
       work_package_categories: "工作包：类别"
       work_package_file_links: "工作包：文件链接"
       work_package_shares: "工作包：共享"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "删除已安排并且将在后台执行。您将收到结果通知。"
       schedule_failed: "项目不能删除: %{errors}"
-      failed: "项目 %{name} 删除失败"
-      failed_text: "删除项目 %{name} 的请求已失败。该项目仍位于存档中。"
-      completed: "项目 %{name} 删除完成"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "删除项目“%{name}”的请求已完成。"
       completed_text_children: "此外，下列子项目已被删除："
     index:
@@ -477,6 +524,16 @@ zh-CN:
         description: >
           根据项目成员的角色和相关权限，项目只对他们可见。子项目不会受到影响并且有自己的设置。
       change_identifier: 更改标识符
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        portfolio_template_label: "Template for portfolios"
+        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
       actions:
         label_enable_all: "全部启用"
         label_disable_all: "全部禁用"
@@ -520,12 +577,37 @@ zh-CN:
       versions:
         no_results_title_text: 目前这个项目没有版本。
         no_results_content_text: 创建一个新的版本
+        work_packages_graph: 工作包图
+        show_work_packages: 显示工作包
       storage:
         no_results_title_text: 此项目没有已记录的额外磁盘空间消耗。
       work_package_priorities:
         new_label: "新优先级"
+      creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "unavailable"
+        label_request_submission: "Request submission"
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
       button_edit: 编辑项目状态
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes saved and artifact work package created successfully."
+      progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "已将修改后的列表保存为新列表"
@@ -647,6 +729,57 @@ zh-CN:
     memberships:
       no_results_title_text: 该用户当前非项目成员。
     open_profile: "人员详情"
+    invite_user_modal:
+      invite: "邀请"
+      title:
+        invite: "邀请用户"
+        invite_to_project: "邀请%{type}加入 %{project}"
+        invite_principal_to_project: "邀请 %{principal} 加入 %{project}"
+      project:
+        label: "项目"
+        required: "请选择一个项目"
+        next_button: "下一个"
+        no_results: "没有找到项目"
+        no_invite_rights: "您无权邀请成员加入此项目"
+      type:
+        required: "请选择要邀请的类型"
+        user:
+          title: "邀请用户访问 %{project_name}"
+          description: "基于所选项目中指定角色的权限"
+        group:
+          title: "邀请小组访问 %{project_name}"
+          description: "基于所选项目中指定角色的权限"
+        placeholder_user:
+          title: "将占位符用户添加到 %{project_name}"
+          title_no_ee: "占位符用户（Enterprise edition 附加功能）"
+          description: "无法访问该项目并且未发送电子邮件。"
+        already_member_message: "已经是 %{project} 的成员"
+      principal:
+        no_results_user: "没有找到用户"
+        invite_user: "邀请："
+        no_results_placeholder: "没有找到占位符"
+        create_new_placeholder: "创建新的占位符："
+        no_results_group: "没有找到组"
+        invite_to_project: "邀请访问 %{project_name}"
+        required:
+          user: "请选择一个用户"
+          placeholder: "请选择一个占位符"
+          group: "请选择一个组"
+      role:
+        label: "%{project} 中的角色"
+        no_roles_found: "没有找到角色"
+        description: >
+          这是用户在加入您的项目时将获得的角色。角色定义了允许其执行哪些操作以及允许其查看哪些信息。[详细了解角色和权限](docs_url)。
+        required: "请选择一个角色"
+      message:
+        label: "邀请消息"
+        description: "我们将向用户发送一封电子邮件，您可以在此处添加要向其发送的个人消息。提供邀请说明可能会很有用，您也可以添加一些有关该项目的信息以帮助他们开始。"
+      summary:
+        next_button: "发送邀请"
+      success_message:
+        user: "该用户现在可以登录以访问 %{project}。同时，您已经可以与该用户一起制定计划并分配工作包等。"
+        placeholder_user: "现在可以在 %{project} 中使用占位符。同时，您已经可以与该用户一起制定计划并分配工作包等。"
+        group: "该组现已加入 %{project}。同时，您已经可以与该组一起制定计划并分配工作包等。"
   page:
     text: "文本"
   placeholder_users:
@@ -928,18 +1061,12 @@ zh-CN:
     deletion_pending: "帐户已安排删除。请注意，此流程在后台进行。可能需要一些时间才能完全删除用户。"
     deletion_info:
       data_consequences:
-        other: '创建的用户数据 (如电子邮件，首选项，工作包，维基条目) 将尽可能的删除。但是，请注意不会删除像工作包和维基条目类这些会影响其他用户工作的数据。这种数据因此会重新分配到称为"删除用户"的帐户。因为每个已删除帐户的数据被重新分配给此帐户，所以不可能区分不同用户所创建的数据。'
-        self: '你创建的数据 (如电子邮件，首选项，工作包，维基条目) 将尽可能的删除。但是，请注意不会删除像工作包和维基条目类这些会影响其他用户工作的数据。这种数据因此会重新分配到称为"删除用户"的帐户。因为每个已删除帐户的数据被重新分配给此帐户，所以不可能区分不同用户所创建的数据。'
-      heading: "删除帐户 %{name}"
-      info:
-        other: "删除用户帐户是不可逆的动作。"
-        self: "删除您的用户帐户是不可逆的动作。"
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "将从系统中删除该帐户。因此，用户将不再能够用他当前的凭据登录。用户可以选择由该应用程序允许的方式再次成为此应用程序的用户。"
-        self: "将从系统中删除您的帐户。因此，您将不再能够使用您的当前凭据登录。如果你选择再次成为此应用程序的用户，你可以通过此应用程序所允许的方式进行。"
-      login_verification:
-        other: "输入登录名 %{name} 以验证删除。提交后，系统将要求您确认您的密码。"
-        self: "输入您的登录名 %{name} 以验证删除。提交后，系统将要求您确认您的密码。"
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       您的帐户尚未激活。要激活您的帐户，请单击通过电子邮件发送到您的链接。
     error_inactive_manual_activation: >
@@ -972,6 +1099,7 @@ zh-CN:
       attribute_help_text:
         attribute_name: "属性"
         help_text: "帮助文本"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIM 客户端"
       calculated_value_error:
@@ -1069,6 +1197,7 @@ zh-CN:
         identifier: "标识符"
         latest_activity_at: "最近一次活动"
         parent: "父项目"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "可见性"
           true: "公开"
@@ -1083,6 +1212,13 @@ zh-CN:
           off_track: "偏离计划"
           finished: "已完成"
           discontinued: "已中断"
+        project_creation_wizard_assignee_custom_field: "Assignee when submitted"
+        project_creation_wizard_notification_text: "Notification text"
+        project_creation_wizard_send_confirmation_email: "Confirmation email"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Work package type"
+        template: "Template"
         templated: "模板项目"
         templated_value:
           true: "保存为模板"
@@ -1094,6 +1230,8 @@ zh-CN:
       project_custom_field:
         is_required: "在所有项目中应用"
         custom_field_section: 单元
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "日期范围"
         definition: "定义"
@@ -1203,6 +1341,7 @@ zh-CN:
         header_alerts: "提醒"
         button_update_look_and_feel: "更新外观和风格"
         button_update_alerts: "更新提醒"
+        button_update_user_information: "Update profile"
         comments_sorting: "显示工作包活动排序方式"
         disable_keyboard_shortcuts: "禁用键盘快捷键"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1224,6 +1363,9 @@ zh-CN:
         mode_guideline: "某些模式将覆盖自定义主题颜色，以提升无障碍性和可读性。请选择“浅色”模式，以实现对自定义主题的全面支持。"
         daily_reminders: "每日提醒"
         workdays: "工作日"
+      users/invitation/form_model:
+        principal_type: "邀请类型"
+        id_or_email: "用户名或电子邮件地址"
       version:
         effective_date: "完成日期"
         sharing: "共享"
@@ -1308,8 +1450,6 @@ zh-CN:
         inclusion: "未设置为允许的值之一。"
         inclusion_nested: "未设置为路径“%{path}”中允许的值之一。"
         invalid: "是无效的。"
-        invalid_characters: "包含无效字符。"
-        not_allowed_custom_fields_referenced: "包含不允许使用的自定义字段： %{custom_fields}。"
         invalid_url: "不是有效的 URL。"
         invalid_url_scheme: "不是受支持的协议（允许：%{allowed_schemes}）。"
         less_than_or_equal_to: "必须小于或等于 %{count}。"
@@ -1321,7 +1461,8 @@ zh-CN:
         not_a_datetime: "不是有效的日期时间。"
         not_a_number: "不是一个数字。"
         not_allowed: "没有权限使用。"
-        not_json: "不是一个有效的 JSON 对象。"
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "不是一个整数。"
         not_an_iso_date: "不是有效日期。所需格式：YYYY-MM-DD。"
         not_same_project: "不属于同一个项目。"
@@ -1364,8 +1505,16 @@ zh-CN:
               minimum: "需要包含至少一个采用“=”运算符的主体、上下文或 ID 筛选器。"
         custom_field:
           at_least_one_custom_option: "至少有需要一个可用选项。"
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             other: "%{name} 用于项目特性计算中：%{links}。"
+          attributes:
+            formula:
+              blank: "公式不能为空。"
+              invalid: "公式无效。"
+              invalid_characters: "仅允许使用数值、数学运算符以及整数、浮点数、计算值和加权列表类型的项目属性。"
+              not_allowed_custom_fields_referenced: "属性 %{custom_fields} 无法使用，因为存在循环引用：一个属性依赖于另一个属性。"
+              format: "%{message}"
         custom_fields_project:
           attributes:
             project_ids:
@@ -1435,9 +1584,11 @@ zh-CN:
         project:
           archived_ancestor: "该项目有一个已存档的上级。"
           foreign_wps_reference_version: "非子级项目中的工作包会引用此项目或其子级的版本。"
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "您没有归档所有子项目所需的权限。请联系管理员。"
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "仍在使用的工作包: %{types}"
             enabled_modules:
@@ -1609,8 +1760,7 @@ zh-CN:
               cant_exceed_work: "不能高于工时。"
               must_be_set_when_work_is_set: "设置“工时”时必填。"
               must_be_set_when_work_and_percent_complete_are_set: "设置“工时”和“完成%”时必填。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                如果已设置“工时”，且“完成百分比”为 100% 时，必须为 0h 。
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 当“工时”为空，且“完成%”为 100% 时，必须为空。
           readonly_status: "工作包处于只读状态，因此无法更改其属性。"
@@ -1669,7 +1819,8 @@ zh-CN:
           other: "%{count} 个错误使得 %{model} 无法保存"
     models:
       attachment: "文件"
-      attribute_help_text: "属性帮助文本"
+      attribute_help_text:
+        other: "Attribute help texts"
       auth_provider:
         other: "身份验证提供方"
       category: "类别"
@@ -1717,6 +1868,11 @@ zh-CN:
     header_additional_invalid_fields:
       other: "此外，以下字段也有问题："
     field_erroneous_label: "这个字段是无效的：%{full_errors}\n请输入一个有效的值。"
+    messages:
+      must_be_template: "must be template"
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "由 %{user} 创建于 %{datetime} "
@@ -1843,6 +1999,7 @@ zh-CN:
     subject: "主题"
     slug: "缩写"
     summary: "摘要"
+    template: "Template"
     time_zone: "时区"
     text: "文本"
     title: "标题"
@@ -1913,6 +2070,7 @@ zh-CN:
   button_collapse_all: "全部折叠"
   button_configure: "配置"
   button_continue: "继续"
+  button_complete: "Complete"
   button_copy: "复制"
   button_copy_to_clipboard: "复制到剪贴板"
   button_copy_link_to_clipboard: "复制链接到剪贴板"
@@ -1923,9 +2081,11 @@ zh-CN:
   button_delete_permanently: "永久删除"
   button_delete_watcher: "删除关注者 %{name}"
   button_download: "下载"
+  button_disable: "Disable"
   button_duplicate: "复制"
   button_duplicate_and_follow: "复制并跟踪"
   button_edit: "编辑"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "编辑关联的 WiKi 页面：%{page_title}"
   button_expand_all: "全部展开"
   button_favorite: "添加至收藏夹"
@@ -1940,6 +2100,7 @@ zh-CN:
   button_print: "打印"
   button_quote: "引用"
   button_remove: 移除
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "删除提醒"
   button_rename: "重命名"
   button_replace: "替换"
@@ -2012,9 +2173,25 @@ zh-CN:
     copy_options:
       dependencies_label: "从项目复制"
   create_project:
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "使用模板"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "从模板复制"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "创建新的 Wiki 页面"
   create_wiki_page_button: "Wiki 页面"
   date:
@@ -2158,7 +2335,7 @@ zh-CN:
       conditional_highlighting: 条件高亮
       internal_comments: 内部评论
       custom_actions: 自定义操作
-      custom_field_hierarchies: 类型层次结构的自定义字段
+      custom_field_hierarchies: 层级
       customize_life_cycle: 自定义生命周期
       date_alerts: 日期提醒
       define_custom_style: 自定义主题和 Logo
@@ -2168,12 +2345,14 @@ zh-CN:
       nextcloud_sso: Nextcloud存储的单点登录(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 文件存储
       placeholder_users: 占位符用户
+      portfolio_management: Portfolio management
       project_list_sharing: 项目列表共享
       readonly_work_packages: 只读工作包
       scim_api: SCIM 服务器 API
       sso_auth_providers: 单点登录
       team_planner_view: 工作组规划器视图
       virus_scanning: 反病毒扫描
+      weighted_item_lists: 加权项目列表
       work_package_query_relation_columns: 工作包查询关系列
       work_package_sharing: 与外部用户共享工作包
       work_package_subject_generation: 工作包主题生成
@@ -2220,15 +2399,17 @@ zh-CN:
       readonly_work_packages:
         description: "标记工作包为只读的特定状态。"
       custom_field_hierarchies:
-        description: "层次结构自定义字段允许通过使用多层次选择列表来组织工作包中的层次结构。"
+        description: "层级自定义字段通过使用多级选择列表，支持在工作包和项目中构建层级结构。"
       date_alerts:
         description: "通过日期提醒，您将收到即将开始或完成日期的通知，以免错过或忘记重要截止日期。"
+      weighted_item_lists:
+        description: "加权项目列表允许您创建带有关联数值的列表。"
       work_package_sharing:
         description: "与非此项目成员的用户共享工作包。"
       project_list_sharing:
         description: "与个人用户共享项目列表。"
       calculated_values:
-        description: "通过计算值，您可以使用基于数值、其他项目属性和自定义字段的属性创建数学公式。"
+        description: "计算值功能允许您使用数值及其他项目属性、自定义字段，创建基于数学公式的属性。"
       define_custom_style:
         title: "自定义颜色主题和 Logo"
         more_info: "注：使用的 Logo 将可公开访问。"
@@ -2257,6 +2438,8 @@ zh-CN:
       internal_comments_inline:
         title: "编写只有小部分群体能看见的内部评论"
         description: " "
+      portfolio_management:
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         other: "%{trial_plan} 试用令牌剩余 %{count} 天"
@@ -2461,7 +2644,7 @@ zh-CN:
       attribute_not_found: "属性未找到： %{attribute}"
       model_not_found: "属性模型无效： %{model}"
       resource_not_found: "未找到资源： %{resource}"
-      rich_text_unsupported: "导出时不支持富文本嵌入功能"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: 时
       days: 天
@@ -2511,6 +2694,9 @@ zh-CN:
       selected: "已选择"
     include_sub_items: "包含子条目"
     no_results_text: "无结果"
+  toggle_switch:
+    label_on: "开启"
+    label_off: "关闭"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2536,16 +2722,17 @@ zh-CN:
       new_features:
         header: "了解新功能和产品更新。"
         learn_about: "详细了解所有新功能"
+        missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            此版本包含各种新功能和改进，例如：
+            此版本包含多项新功能和改进，例如：
           new_features_list:
-            line_0: 在“会议”选项卡中将工作包添加到会议小节。
-            line_1: 通过“提高对比度”复选框更方便地选择颜色模式。
-            line_2: 按最后更新时间筛选项目。
-            line_3: 从深层链接跳转到高亮显示的目标元素。
-            line_4: 通过更易操作的危险对话框确认关键操作。
+            line_0: 项目评估和评分的计算值（Enterprise 附加组件）。
+            line_1: 项目特性类型层次结构。
+            line_2: 可以产生重大影响的性能更新。
+            line_3: '“文档”模块的新索引页面。'
+            line_4: 可以更改自定义字段条目的父项。
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2639,7 +2826,7 @@ zh-CN:
         static_token_name: "API 令牌"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar 令牌允许用户[订阅OpenProject日历](docs_url)，并查看来自外部客户端的最新工作包信息。'
+        text_hint_link: "iCalendar 令牌允许用户[订阅OpenProject日历](docs_url)，并查看来自外部客户端的最新工作包信息。"
         disabled_text: "管理员未启用 iCalendar 订阅。请联系管理员以使用此功能。"
         empty_text_hint: "要添加 iCalendar 令牌，请从项目的日历模块中订阅新的或现有日历。您必须拥有必要的权限。"
       oauth:
@@ -2870,6 +3057,7 @@ zh-CN:
   label_duplicate: "重复"
   label_duplicates: "复制"
   label_edit: "编辑"
+  label_edit_attribute: "编辑属性"
   label_edit_x: "编辑：%{x}"
   label_enable_multi_select: "切换多选"
   label_enabled_project_custom_fields: "启用自定义字段"
@@ -2961,7 +3149,7 @@ zh-CN:
   label_invite_user: "邀请用户"
   label_item: "条目"
   label_item_plural: "条目"
-  label_scored_list: "评分列表"
+  label_weighted_item_list: "加权项目列表"
   label_share: "共享"
   label_share_project_list: "共享项目列表"
   label_share_work_package: "共享工作包"
@@ -2996,7 +3184,8 @@ zh-CN:
   label_lock_user: "锁定用户"
   label_logged_as: "登录用户名"
   label_login: "登录"
-  label_custom_logo: "自定义徽标"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "自定义导出徽标"
   label_custom_export_cover: "自定义导出封面背景"
   label_custom_export_footer: "自定义导出页脚图像"
@@ -3121,6 +3310,7 @@ zh-CN:
   label_planning: "规划"
   label_please_login: "请登录"
   label_plugins: "插件"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "模块和插件"
   label_precedes: "之前"
   label_preferences: "首选项"
@@ -3141,11 +3331,15 @@ zh-CN:
   label_project_attribute_manage_link: "管理项目属性"
   label_project_count: "项目总数"
   label_project_copy_notifications: "在项目复制期间发送电子邮件通知"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "最新的项目"
   label_project_default_type: "允许为空类型"
   label_project_hierarchy: "项目层次结构"
   label_project_mappings: "项目"
   label_project_new: "新的项目"
+  label_project_initiation_request: "New project initiation request"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "项目"
   label_project_list_plural: "项目列表"
   label_project_life_cycle: "项目生命周期"
@@ -3195,6 +3389,7 @@ zh-CN:
   label_repository_remove: "移除存储库"
   label_repository_root: "存储库根"
   label_repository_plural: "存储库"
+  label_request_submission: "Request submission"
   label_required: "必填"
   label_requires: "要求"
   label_result_plural: "结果"
@@ -3245,6 +3440,7 @@ zh-CN:
   label_subproject: "子项目"
   label_subproject_new: "新的子项目"
   label_subproject_plural: "子项目"
+  label_subitems: "Subitems"
   label_subtask_plural: "子任务"
   label_summary: "摘要"
   label_system: "系统"
@@ -3252,6 +3448,8 @@ zh-CN:
   label_table_of_contents: "目录"
   label_tag: "标记"
   label_team_planner: "工作组规划器"
+  label_template: "模板"
+  label_templates: "Templates"
   label_text: "长文本"
   label_this_month: "这个月"
   label_this_week: "这一周"
@@ -3296,6 +3494,7 @@ zh-CN:
   label_user_search: "搜索用户"
   label_user_settings: "用户设置"
   label_users_settings: "用户设置"
+  label_value_x: "值: %{x}"
   label_version_new: "新版本"
   label_version_edit: "编辑版本"
   label_version_plural: "版本"
@@ -3658,6 +3857,9 @@ zh-CN:
   permission_add_project: "创建项目"
   permission_add_portfolios: "创建项目组合"
   permission_add_programs: "创建计划"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "添加附件"
   permission_add_work_package_attachments_explanation: "允许在没有编辑工作包权限的情况下添加附件"
   permission_add_internal_comments: "写内部评论"
@@ -3703,7 +3905,11 @@ zh-CN:
   permission_edit_timelines: "编辑时间线"
   permission_edit_wiki_pages: "编辑维基页面"
   permission_export_work_packages: "导出工作包"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "导出维基页面"
+  permission_invite_members_by_email: "通过电子邮件邀请成员"
+  permission_invite_members_by_email_explanation: >
+    允许用户通过电子邮件邀请新会员。邀请用户将收到一封包含链接的电子邮件来设置密码并激活他们的帐户。 依赖于管理会员的权限
   permission_list_attachments: "列出附件"
   permission_log_own_time: "记录自己的时间"
   permission_log_time: "记录其他用户的时间"
@@ -3733,6 +3939,9 @@ zh-CN:
   permission_share_work_packages: "共享工作包"
   permission_manage_types: "选择类型"
   permission_manage_own_reminders: "创建个人提醒事项"
+  permission_view_all_principals: "查看所有用户和组"
+  permission_view_all_principals_explanation: >
+    允许用户在系统中查看所有用户和组，即使他们不是任何加入的项目或组的成员。
   permission_view_project: "查看项目"
   permission_view_changesets: "查看 OpenProject 存储库修订"
   permission_view_internal_comments: "查看内部评论"
@@ -3763,8 +3972,19 @@ zh-CN:
   permission_edit_project_query: "编辑项目查询"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
+      title: "归档项目"
       are_you_sure: "是否确定想要归档项目 '%{name}'？"
       archived: "已存档"
     count:
@@ -3791,6 +4011,7 @@ zh-CN:
       title: 更改项目的标识符
     not_available: "项目 N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         您的项目正在从选定的模板项目进行创建。一旦项目可用，您将会收到邮件通知。
       use_template: "使用模板"
@@ -3956,6 +4177,7 @@ zh-CN:
   setting_emails_salutation: "电子邮件中的用户地址"
   setting_oauth_allow_remapping_of_existing_users: "允许重新映射现有用户"
   setting_sendmail_location: "Sendmail 的执行位置"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "如果可用，自动使用 STARTTLS"
   setting_smtp_ssl: "使用 SSL 连接"
   setting_smtp_address: "SMTP 服务器"
@@ -4044,6 +4266,8 @@ zh-CN:
   setting_mail_handler_body_delimiter_regex: "清空符合此正则表达式的电子邮件"
   setting_mail_handler_ignore_filenames: "忽略的邮件附件"
   setting_new_project_user_role_id: "给创建项目的非管理员用户的角色"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "基本字符类型"
   setting_password_count_former_banned: "禁止重复使用最近使用密码的数量"
   setting_password_days_valid: "强制更改密码的天数"
@@ -4090,7 +4314,7 @@ zh-CN:
   setting_self_registration_manual_activation: "自动激活帐户"
   setting_self_registration_manual_activation_caption: >
     用户可以自行注册。 他们的帐户会处于待处理状态，直到管理员或拥有全局权限的用户激活它们为止。
-  setting_session_ttl: "在处于非活动状态后会话过期时间"
+  setting_session_ttl: ""
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"
@@ -4116,6 +4340,9 @@ zh-CN:
   setting_work_package_list_default_highlighted_attributes: "默认内联突出显示属性"
   setting_working_days: "工作日"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "登录"
       registration: "注册"
@@ -4188,9 +4415,62 @@ zh-CN:
       new:
         heading: "新建属性"
         description: "对该项目属性的更改将反映在启用该属性的所有项目中。不能按项目禁用必填属性。"
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
+    project_initiation_request:
+      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
+      name:
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
+      submission:
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "项目生命周期"
-      heading_description: "项目生命周期定义了可以用于您的项目规划并将出现在每个项目的概览页面中的项目阶段。 这些属性可以启用或禁用，但不能在项目一级重新排序。"
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "添加"
       label_add_description: "添加项目阶段定义"
       filter:
@@ -4264,7 +4544,7 @@ zh-CN:
   text_project_custom_field_html: >
     企业版将为项目的自定义字段添加以下其他附加组件：<br> <ul> <li><b>在项目列表中添加项目自定义字段，以创建项目组合视图</b></li> </ul>
   text_custom_logo_instructions: >
-    建议使用透明背景的白色Logo。为了在普通及Retina显示屏上获得最佳效果，请确保图像尺寸为460像素 × 60像素。
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     这是在 PDF 导出文件中显示的徽标。它需要为 PNG 或 JPEG 图像文件。建议使用带有透明或白色背景的黑色或彩色徽标。
   text_custom_export_cover_instructions: >
@@ -4340,6 +4620,7 @@ zh-CN:
     注：如果启用，这会在 <a href="%{information_panel_path}">%{information_panel_label}</a> 管理面板中和首页上显示一个包含您的安装状态的徽章。徽章仅向管理员显示。<br/>徽章将根据官方的 OpenProject 版本数据库检查您当前的 OpenProject 版本，提醒您是否存在任何更新或已知漏洞。如需详细了解检查可以提供哪些信息，需要哪些数据来提供可用更新，以及如何禁用此检查，请访问<a href="%{more_info_url}">配置文档</a>。
   text_own_membership_delete_confirmation: "您要移除部分或全部权限，并且可能无法在此后编辑这个项目。\n您确定要继续吗？"
   text_permanent_delete_confirmation_checkbox_label: "我理解这种删除不可逆转"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "插件资产目录可写"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "只有小写字母 (a-z)、 数字、 短划线和下划线被允许，必须以小写字母开头。"
@@ -4650,6 +4931,8 @@ zh-CN:
       multiple_errors: "违反了多个字段的约束。"
       unable_to_create_attachment: "无法创建附件"
       unable_to_create_attachment_permissions: "由于缺少文件系统权限，无法保存附件"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "所提供的上下文环境并不是指向资源的链接。"
         unsupported_context: "所提供的资源不被上下文环境所支持。"
@@ -4664,8 +4947,10 @@ zh-CN:
     resources:
       schema: "方案"
     undisclosed:
-      parent: 未公开 - 由于缺少权限，所选父项不可见。
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: 未公开 - 由于缺少权限，上级不可见。
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "预授权"

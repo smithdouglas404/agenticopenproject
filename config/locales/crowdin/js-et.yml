@@ -234,7 +234,7 @@ et:
       embedded_table_loading: "The embedded view could not be loaded: %{message}"
     enumeration_activities: "Tegevused (ajajälgimine)"
     enumeration_doc_categories: "Dokumentide kategooriad"
-    enumeration_work_package_priorities: "Tööpakettide prioriteedid"
+    enumeration_work_package_priorities: "Teemade prioriteedid"
     filter:
       more_values_not_shown: "There are %{total} more results, search to filter results."
       description:
@@ -297,12 +297,13 @@ et:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copy URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Aktiveerimine"
     label_assignee: "Määratud tegija"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Add column after"
     label_add_column_before: "Add column before"
     label_add_columns: "Lisa veergusid"
@@ -317,7 +318,7 @@ et:
     label_all: "kõik"
     label_all_projects: "Kõik projektid"
     label_all_uppercase: "Kõik"
-    label_all_work_packages: "kõik tööpaketid"
+    label_all_work_packages: "kõik teemad"
     label_and: "ja"
     label_ascending: "Kasvav"
     label_author: "Author: %{user}"
@@ -329,7 +330,7 @@ et:
     label_board_sticky: "Külgejääv"
     label_change: "Muuda"
     label_create: "Loo uus"
-    label_create_work_package: "Lisa uus tööpakett"
+    label_create_work_package: "Lisa uus teema"
     label_created_by: "Autor"
     label_current: "current"
     label_date: "Kuupäev"
@@ -455,9 +456,9 @@ et:
     label_value_derived_from_children: "(value derived from children)"
     label_children_derived_duration: "Work package's children derived duration"
     label_warning: "Hoiatus"
-    label_work_package: "Tööpakett"
+    label_work_package: "Teema"
     label_work_package_parent: "Parent work package"
-    label_work_package_plural: "Tööpaketid"
+    label_work_package_plural: "Teemad"
     label_watch: "Vaata"
     label_watch_work_package: "Watch work package"
     label_watcher_added_successfully: "Watcher successfully added!"
@@ -789,7 +790,7 @@ et:
       activate_asc: "activate to apply an ascending sort"
       activate_dsc: "activate to apply a descending sort"
       activate_no: "activate to remove the sort"
-    text_work_packages_destroy_confirmation: "Oled kindel, et soovid valitud tööpaketti(d) kustutada?"
+    text_work_packages_destroy_confirmation: "Oled Sa kindel oma soovis valitud teema(d) kustutada?"
     text_query_destroy_confirmation: "Are you sure you want to delete the selected view?"
     tl_toolbar:
       zooms: "Suumi tase"
@@ -855,13 +856,13 @@ et:
         modification_label: "Modified within the comparison time period"
         column_incompatible: "This column does not show changes in Baseline mode."
       filters:
-        title: "Filtreeri tööpakette"
+        title: "Filtreeri teemasid"
         baseline_incompatible: "This filter attribute is not taken into consideration in Baseline mode."
         baseline_warning: "Baseline mode is on but some of your active filters are not included in the comparison."
       inline_create:
         title: "Click here to add a new work package to this list"
       create:
-        title: "Uus tööpakett"
+        title: "Uus teema"
         header: "New %{type}"
         header_no_type: "New work package (Type not yet set)"
         header_with_parent: "New %{type} (Child of %{parent_type} #%{id})"
@@ -1126,6 +1127,7 @@ et:
       current_project_and_all_descendants: "In this project + subprojects"
       current_project: "In this project"
       recently_viewed: "Recently viewed"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "all projects"
         project_and_subprojects: "and all subprojects"
@@ -1135,71 +1137,8 @@ et:
       list: "Table"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Tagasi"
       invite: "Invite"
-      title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        User: "user"
-        Group: "group"
-        PlaceholderUser: "placeholder user"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
-      project:
-        label: "Projekt"
-        required: "Please select a project"
-        lacking_permission: "Please select a different project since you lack permissions to assign users to the currently selected."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Järgmine"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
-      type:
-        required: "Please select the type to be invited"
-        user:
-          title: "Kasutaja"
-          description: "Permissions based on the assigned role in the selected project"
-        group:
-          title: "Grupp"
-          description: "Permissions based on the assigned role in the selected project"
-        placeholder:
-          title: "Placeholder user"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Name or email address"
-          name: "Nimi"
-        already_member_message: "Already a member of %{project}"
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
-        next_button: "Järgmine"
-        required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
-      role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Please select a role"
-        next_button: "Järgmine"
-      message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Järgmine"
-      summary:
-        next_button: "Saada kutse"
-      success:
-        title: "%{principal} was invited!"
-        description:
-          user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          placeholder: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
-        next_button: "Jätka"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1225,6 +1164,11 @@ et:
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Baseline"
       clear: "Tühjenda"

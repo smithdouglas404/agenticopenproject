@@ -90,7 +90,7 @@ ja:
     button_show_view: "全画面表示"
     button_log_time: "時間を記録"
     button_start_timer: "Start timer"
-    button_stop_timer: "Stop timer"
+    button_stop_timer: "タイマー停止"
     button_more: "続き"
     button_open_details: "詳細表示を開く"
     button_close_details: "詳細表示を閉じる"
@@ -211,7 +211,7 @@ ja:
           empty_state_description: '休業日が定義されていません。「休業日を追加」ボタンをクリックして日付を追加してください。'
           new_date: "(新)"
         add_non_working_day: "休業日を追加"
-        already_added_error: "この日付の非稼働日はすでに存在します。一意の日付に対して作成できる非稼働日は1つだけです。"
+        already_added_error: "この日付の非営業日はすでに存在します。一意の日付に対して作成できる非営業日は1つだけです。"
         change_button: "保存して再スケジュール"
         change_title: "営業日を変更する"
         removed_title: "以下の日を非稼働日リストから削除します："
@@ -298,12 +298,13 @@ ja:
       warning: "このURLを他のユーザーと共有しないでください。このリンクを持つ誰でもアカウントやパスワードなしでワークパッケージの詳細を表示することができます。"
       token_name_label: "どこで使うのですか？？"
       token_name_placeholder: '名前を入力してください。例："電話"'
-      token_name_description_text: '複数のデバイスからこのカレンダーを購読する場合、この名前は、<a href="my/access_token", target="_blank">アクセストークンリストで</a>それらを区別するのに役立ちます。'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "URLをコピー"
       ical_generation_error_text: "カレンダーのURL生成時にエラーが発生しました。"
       success_message: 'URL "%{name}" がクリップボードにコピーされました。カレンダークライアントに貼り付けて購読を完了してください。'
     label_activate: "有効にする"
     label_assignee: "担当者"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "後に列を追加"
     label_add_column_before: "前に列を追加"
     label_add_columns: "列を追加"
@@ -615,17 +616,17 @@ ja:
         global:
           immediately:
             title: "参加"
-            description: "自分が関与しているワークパッケージのすべてのアクティビティに関する通知（アサイニー、アカウンタブル、ウォッチャー）。"
+            description: "自分が関与しているワークパッケージのすべてのアクティビティに関する通知（担当、責任、ウォッチャー）。"
           delayed:
             title: "不参加"
             description: "全プロジェクトにおける活動の追加通知。"
           date_alerts:
             title: "日付アラート"
-            description: "あなたが関与している（アサイニー、アカウンタブル、ウォッチャー）オープンワークパッケージの重要な日付が近づくと自動通知。"
+            description: "あなたが関与している（担当、責任、ウォッチャー）オープンワークパッケージの重要な日付が近づくと自動通知。"
           overdue: 期限を過ぎた場合
         project_specific:
           title: "プロジェクト固有の通知設定"
-          description: "これらのプロジェクト固有の設定は、上記のデフォルト設定を上書きする。"
+          description: "これらのプロジェクト固有の設定は、上記のデフォルト設定を上書きします。"
           add: "プロジェクトの設定を追加する"
           already_selected: "このプロジェクトはすでに選ばれている"
           remove: "プロジェクトの設定を削除する"
@@ -668,19 +669,19 @@ ja:
         immediate:
           title: "電子メールのリマインダーを送信"
           mentioned: "@mentionするとすぐに"
-          personal_reminder: "個人的なリマインダーを受け取ったら直ちに"
+          personal_reminder: "個人的なリマインダーを受け取ったとき"
         alerts:
           title: "その他の項目（ワークパッケージではないもの）に対する電子メールアラート"
           explanation: >
             本日の通知はワークパッケージに限定されています。これらのイベントが通知に含まれるようになるまで、Eメールアラートを受信し続けることを選択できます：
           news_added: "ニュースが追加されました。"
           news_commented: "ニュースへのコメント"
-          document_added: "追加された書類"
+          document_added: "ドキュメントの追加"
           forum_messages: "新しいフォーラムメッセージ"
           wiki_page_added: "Wikiページが追加されました。"
           wiki_page_updated: "Wikiページが更新されました。"
-          membership_added: "メンバーシップが追加されました"
-          membership_updated: "メンバーシップ更新"
+          membership_added: "メンバーシップの追加"
+          membership_updated: "メンバーシップの更新"
         title: "電子メールによるリマインダー"
         pause:
           label: "毎日のEメールリマインダーを一時停止する"
@@ -763,7 +764,7 @@ ja:
       update_relation: "クリックして関係のタイプを変更"
       show_relations: "関連するタスクを表示"
       add_predecessor: "先行を追加"
-      add_successor: "後継者を加える"
+      add_successor: "後継の要素を加える"
       remove: "関係を削除"
       save: "関係を保存"
       abort: "中止"
@@ -927,7 +928,7 @@ ja:
         overdue: "期限の過ぎたもの"
         summary: "サマリ"
         shared_with_users: "ユーザーと共有"
-        shared_with_me: "私と共有"
+        shared_with_me: "共有された項目"
       jump_marks:
         pagination: "表のページ設定に移動する"
         label_pagination: "ここをクリックすると、ワークパッケージ表をスキップしてページ設定に移動します"
@@ -1123,6 +1124,7 @@ ja:
       current_project_and_all_descendants: "このプロジェクトと子プロジェクトでは"
       current_project: "このプロジェクトでは"
       recently_viewed: "最近閲覧した記事"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "すべてのプロジェクト"
         project_and_subprojects: "すべてのプロジェクトで"
@@ -1132,71 +1134,8 @@ ja:
       list: "表"
       timeline: "ガント"
     invite_user_modal:
-      back: "戻る"
       invite: "招待"
-      title:
-        invite: "ユーザを招待"
-        invite_to_project: "%{type} を %{project} に招待する"
-        User: "ユーザー"
-        Group: "グループ"
-        PlaceholderUser: "プレースホルダー ユーザー"
-        invite_principal_to_project: "%{principal} を %{project} に招待する"
-      project:
-        label: "プロジェクト"
-        required: "プロジェクトを選択してください"
-        lacking_permission: "現在選択されているプロジェクトにユーザーを割り当てる権限がないため、別のプロジェクトを選択してください。"
-        lacking_permission_info: "現在参加しているプロジェクトにユーザーを割り当てる権限がありません。別のプロジェクトを選択する必要があります。"
-        next_button: "次へ"
-        no_results: "プロジェクトが見つかりませんでした"
-        no_invite_rights: "このプロジェクトにメンバーを招待することは許可されていません"
-      type:
-        required: "招待するタイプを選択してください"
-        user:
-          title: "ユーザ"
-          description: "選択したプロジェクトで割り当てられたロールに基づく権限"
-        group:
-          title: "グループ"
-          description: "選択したプロジェクトで割り当てられたロールに基づく権限"
-        placeholder:
-          title: "プレースホルダー ユーザー"
-          title_no_ee: "プレースホルダユーザ（Enterprise版のみのアドオン）"
-          description: "プロジェクトにアクセスできず、電子メールも送信されません。"
-          description_no_ee: 'プロジェクトにはアクセスできず、メールも送信されません。<br><a href="%{eeHref}" target="_blank">エンタープライズ版を</a>チェック'
-      principal:
-        label:
-          name_or_email: "名前またはメールアドレス"
-          name: "名称"
-        already_member_message: "既に %{project} のメンバーです"
-        no_results_user: "ユーザーが見つかりませんでした"
-        invite_user: "招待:"
-        no_results_placeholder: "プレースホルダが見つかりません"
-        create_new_placeholder: "新しいプレースホルダを作成:"
-        no_results_group: "グループが見つかりませんでした"
-        next_button: "次へ"
-        required:
-          user: "ユーザーを選択してください"
-          placeholder: "プレースホルダを選択してください"
-          group: "グループを選択してください"
-      role:
-        label: "%{project} でのロール"
-        no_roles_found: "ロールが見つかりません"
-        description: >-
-          これはユーザがプロジェクトに参加する際に与えられるロールです。ロールによって、どのようなアクションが許可され、どのような情報を見ることが許可されるかが定義されます。 <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> ロールと権限の詳細については、こちらをご覧ください。 </a>
-        required: "ロールを選択してください"
-        next_button: "次へ"
-      message:
-        label: "招待メッセージ"
-        description: "私たちはユーザーに電子メールを送信します。ここに個人的なメッセージを追加することができます。招待状に関する説明や、プロジェクトに関するちょっとした情報などを添えていただくと、より効果的です。"
-        next_button: "次へ"
-      summary:
-        next_button: "招待状を送信"
-      success:
-        title: "%{principal} が招待されました！"
-        description:
-          user: "ユーザはログインして %{project} にアクセスできるようになりました。一方で、そのユーザを使って計画を立てたり、ワークパッケージを割り当てたりすることができます。"
-          placeholder: "プレースホルダーを %{project} で使用できるようになりました。一方で、そのユーザを使って計画を立てたり、ワークパッケージを割り当てたりすることができます。"
-          group: "グループは %{project} の一部になりました。一方で、そのグループを使って計画を立てたり、ワークパッケージを割り当てたりすることができます。"
-        next_button: "続行"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "階層合計から除外される状態"
@@ -1222,11 +1161,16 @@ ja:
         does_not_match_search: "プロジェクトが検索条件に一致しません。"
       no_results: "検索条件に一致するプロジェクトはありません。"
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "ベースライン"
       clear: "クリア"
       apply: "適用"
-      header_description: "過去のいずれかの時点からこのリストに加えられた変更を強調する。"
+      header_description: "過去の選択した時点からこのリストに加えられた変更をハイライト"
       show_changes_since: "以降の変更を表示する"
       help_description: "ベースラインの基準タイムゾーン。"
       time_description: "現地時間: %{datetime}"

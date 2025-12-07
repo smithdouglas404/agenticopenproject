@@ -27,7 +27,7 @@
 //++
 
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit,
 } from '@angular/core';
 import { WorkPackageViewHighlightingService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-highlighting.service';
 import { CardViewOrientation } from 'core-app/features/work-packages/components/wp-card-view/wp-card-view.component';
@@ -57,7 +57,7 @@ import { WorkPackageViewOutputs } from 'core-app/features/work-packages/routing/
       [showEmptyResultsBox]="true"
       [showInfoButton]="true"
       [shrinkOnMobile]="true" />
-    
+
     @if (showResizer) {
       <div
         class="hidden-for-mobile hide-when-print">
@@ -73,7 +73,7 @@ import { WorkPackageViewOutputs } from 'core-app/features/work-packages/routing/
   ],
   standalone: false,
 })
-export class WorkPackagesGridComponent implements WorkPackageViewOutputs {
+export class WorkPackagesGridComponent implements WorkPackageViewOutputs, OnInit {
   @Input() public configuration:WorkPackageTableConfiguration;
 
   @Input() public showResizer = false;

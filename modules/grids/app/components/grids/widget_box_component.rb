@@ -73,7 +73,7 @@ module Grids
       @system_arguments[:id] ||= "#{key}-box"
 
       @turbo_enabled = turbo_enabled
-      @turbo_frame_arguments = { tag: :"turbo-frame", id: key }
+      @turbo_frame_arguments = { tag: :"turbo-frame", id: key, target: "_top" }
       @turbo_frame_arguments[:style] = "display:contents"
 
       @list_arguments = { tag: :ul }

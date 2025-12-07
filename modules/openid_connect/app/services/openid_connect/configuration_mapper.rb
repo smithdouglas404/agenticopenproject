@@ -61,6 +61,7 @@ module OpenIDConnect
         "userinfo_endpoint" => extract_url(options, "userinfo_endpoint"),
         "end_session_endpoint" => extract_url(options, "end_session_endpoint"),
         "jwks_uri" => extract_url(options, "jwks_uri"),
+        "grant_types_supported" => options["grant_types_supported"],
         "mapping_login" => options.dig("attribute_map", "login"),
         "mapping_email" => options.dig("attribute_map", "email"),
         "mapping_first_name" => options.dig("attribute_map", "first_name"),

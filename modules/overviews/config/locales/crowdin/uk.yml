@@ -3,13 +3,4 @@ uk:
     label_home: "Головна робочого простору «%{workspace_type}»"
     label_dashboard: "Панель керування"
     label_overview: 'Огляд'
-    widgets:
-      subitems:
-        in_this_portfolio: "У цьому портфелі"
-        in_this_program: "У цій програмі"
-        in_this_project: "У цьому проєкті"
-        no_visible_children: "Немає видимих дочірніх об’єктів."
-      members:
-        title: "Останні учасники"
-        view_all_members: "Переглянути всіх учасників"
   permission_manage_overview: 'Керування сторінкою огляду'

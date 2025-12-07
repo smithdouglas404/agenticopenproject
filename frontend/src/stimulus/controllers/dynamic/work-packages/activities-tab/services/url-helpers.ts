@@ -28,12 +28,10 @@
  * ++
  */
 
-/* eslint-disable no-unused-vars */
 export enum ActivityAnchorType {
   Comment = 'comment',
   Activity = 'activity',
 }
-/* eslint-enable no-unused-vars */
 
 export interface ActivityAnchor {
   type:ActivityAnchorType;

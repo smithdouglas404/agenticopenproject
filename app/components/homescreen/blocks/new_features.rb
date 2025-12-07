@@ -36,7 +36,7 @@ module Homescreen
       end
 
       def feature_teaser_image
-        "#{feature_version}_features.svg"
+        "#{feature_version}_features.png"
       end
 
       def new_features_header
@@ -53,7 +53,7 @@ module Homescreen
       end
 
       def new_features
-        I18n.t("#{base_i18n_key}.new_features_list")
+        I18n.t("#{base_i18n_key}.new_features_list").values
       end
 
       def teaser_exists?
@@ -62,6 +62,10 @@ module Homescreen
 
       def base_i18n_key
         "homescreen.blocks.new_features.#{feature_version}"
+      end
+
+      def has_image?
+        helpers.has_rails_asset?(feature_teaser_image)
       end
 
       private

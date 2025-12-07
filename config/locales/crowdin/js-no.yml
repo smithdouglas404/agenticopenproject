@@ -297,12 +297,13 @@
       warning: "Ikke del denne URL-adressen med andre brukere. Alle med denne lenken vil kunne se arbeidspakkedetaljer uten konto eller passord."
       token_name_label: "Hvor kommer du til å bruke dette?"
       token_name_placeholder: 'Skriv inn et navn, f.eks. "Telefon"'
-      token_name_description_text: 'Hvis du abonnerer på denne kalenderen fra flere enheter, vil dette navnet hjelpe deg med å skille dem fra i listen <a href="my/access_token", target="_blank">tilgangsnøkkel</a> listen.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Kopier URL"
       ical_generation_error_text: "Det oppstod en feil ved generering av kalenderURL."
       success_message: 'URL-adressen "%{name}" ble vellykket kopiert til utklippstavlen. Lim den inn i kalenderklienten for å fullføre abonnementet.'
     label_activate: "Aktiver"
-    label_assignee: "Utførende"
+    label_assignee: "Deltaker"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Legg til kolonne etter"
     label_add_column_before: "Legg til kolonne før"
     label_add_columns: "Legg til kolonner"
@@ -603,7 +604,7 @@
           mentioned:
             title: "Nevnt"
             description: "Motta en melding hver gang noen nevner meg hvor som helst"
-          assignee: "Utførende"
+          assignee: "Deltaker"
           responsible: "Ansvarlig"
           shared: "Delt"
           watched: "Overvåker"
@@ -615,13 +616,13 @@
         global:
           immediately:
             title: "Deltar"
-            description: "Varsler for alle aktiviteter i arbeidspakker du er involvert i (utførende, ansvarlig eller overvåker)."
+            description: "Varsler for alle aktiviteter i arbeidspakker du er involvert i (oppdragstaker, ansvarlig eller overvåker)."
           delayed:
             title: "Ikke-deltakende"
             description: "Melding om ytterligere aktiviteter i alle prosjekter."
           date_alerts:
             title: "Dato varsler"
-            description: "Automatiske varsler når viktige datoer nærmer seg for åpne arbeidspakker du er med i (utførende, ansvarlig eller overvåker)."
+            description: "Automatiske varsler når viktige datoer nærmer seg for åpne arbeidspakker du er med i (oppdragstaker, ansvarlig eller overvåker)."
           overdue: Når forfalt
         project_specific:
           title: "Prosjekt-spesifikke varslingsinnstillinger"
@@ -888,7 +889,7 @@
         estimatesAndTime: "Estimater og tid"
         other: "Øvrig"
       properties:
-        assignee: "Utførende"
+        assignee: "Deltaker"
         author: "Forfatter"
         createdAt: "Opprettet"
         description: "Beskrivelse"
@@ -1126,6 +1127,7 @@
       current_project_and_all_descendants: "I dette prosjektet + underprosjekter"
       current_project: "I dette prosjektet"
       recently_viewed: "Nylig sett"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "alle prosjekter"
         project_and_subprojects: "og alle underprosjekter"
@@ -1135,71 +1137,8 @@
       list: "Tabell"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Tilbake"
       invite: "Inviter"
-      title:
-        invite: "Inviter bruker"
-        invite_to_project: "Inviter %{type} til %{project}"
-        User: "bruker"
-        Group: "gruppe"
-        PlaceholderUser: "plassholder bruker"
-        invite_principal_to_project: "Inviter %{principal} til %{project}"
-      project:
-        label: "Prosjekt"
-        required: "Velg et prosjekt"
-        lacking_permission: "Velg et annet prosjekt da du mangler tillatelser for å tildele brukere til de valgte alternativene."
-        lacking_permission_info: "Du mangler tillatelse til å tilordne brukere til prosjektet du er i. Du må velge et annet."
-        next_button: "Neste"
-        no_results: "Ingen prosjekter ble funnet"
-        no_invite_rights: "Du har ikke lov til å invitere medlemmer til dette prosjektet"
-      type:
-        required: "Velg typen som skal inviteres"
-        user:
-          title: "Bruker"
-          description: "Tillatelser basert på den tilordnede rollen i det valgte prosjektet"
-        group:
-          title: "Gruppe"
-          description: "Tillatelser basert på den tilordnede rollen i det valgte prosjektet"
-        placeholder:
-          title: "Plassholder bruker"
-          title_no_ee: "Midlertidig bruker (kun tillegg for Enterprise-utgave)"
-          description: "Har ikke tilgang til prosjektet og ingen e-poster blir sendt ut."
-          description_no_ee: 'Har ikke tilgang til prosjektet og ingen e-poster har blitt sendt ut. <br>Sjekk ut <a href="%{eeHref}" target="_blank">Enterprise-utgaven</a>'
-      principal:
-        label:
-          name_or_email: "Navn eller e-postadresse"
-          name: "Navn"
-        already_member_message: "Allerede et medlem av %{project}"
-        no_results_user: "Ingen brukere ble funnet"
-        invite_user: "Inviter:"
-        no_results_placeholder: "Ingen plassholdere ble funnet"
-        create_new_placeholder: "Opprett ny plassholder:"
-        no_results_group: "Ingen grupper ble funnet"
-        next_button: "Neste"
-        required:
-          user: "Vennligst velg en bruker"
-          placeholder: "Vennligst velg en plassholder"
-          group: "Velg en gruppe"
-      role:
-        label: "Rolle i %{project}"
-        no_roles_found: "Ingen roller ble funnet"
-        description: >-
-          Dette er rollen brukeren vil få når de blir med i prosjektet. Rollen definerer hvilke tiltak de har lov til å ta, og hvilken informasjon de har lov til å se. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Lær mer om roller og tillatelser. </a>
-        required: "Vennligst velg en rolle"
-        next_button: "Neste"
-      message:
-        label: "Melding i invitasjon"
-        description: "Vi vil sende en e-post til brukeren, som du kan skrive en personlig melding til her. En forklaring på invitasjonen kan være nyttig, eller kanskje en litt informasjon om prosjektet for å hjelpe dem i gang."
-        next_button: "Neste"
-      summary:
-        next_button: "Send invitasjon"
-      success:
-        title: "%{principal} ble invitert!"
-        description:
-          user: "Brukeren kan nå logge inn for å få tilgang til %{project}. Selv så kan du allerede planlegge med den brukeren og tilknytte arbeidspakker for forekomst."
-          placeholder: "Plassholderen kan nå brukes i %{project}. Samtidig kan du allerede planlegge med den brukeren og tilordne arbeidspakker i forekomsten."
-          group: "Gruppen er nå en del av %{project}. Dette betyr at du allerede kan planlegge med den gruppen og tildele arbeidspakker for forekomst."
-        next_button: "Fortsett"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status ekskludert fra hierarkiske summer"
@@ -1225,6 +1164,11 @@
         does_not_match_search: "Prosjektet samsvarer ikke med søkekriteriene."
       no_results: "Ingen treff på dine søkekriterier."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Grunnlinje"
       clear: "Nullstill"

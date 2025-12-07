@@ -43,6 +43,10 @@ pt-BR:
               response_is_not_successful: " respondeu com %{status}."
               response_is_not_json: " não retornou o conteúdo em formato JSON."
               response_misses_required_attributes: " não retornou os atributos obrigatórios. Os atributos ausentes são: %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: Digite o nome do provedor %{name} para confirmar a exclusão.
@@ -127,7 +131,7 @@ pt-BR:
       label_configuration_details: Metadados
       label_client_details: Detalhes do cliente
       label_attribute_mapping: Mapeamento de atributos
-      notice_created: A new OpenID provider was successfully created.
+      notice_created: Um novo provedor OpenID foi criado com sucesso.
       client_details_description: Detalhes de configuração do OpenProject como cliente OIDC
       no_results_table: Nenhum provedor foi definido.
       plural: Provedores OpenID

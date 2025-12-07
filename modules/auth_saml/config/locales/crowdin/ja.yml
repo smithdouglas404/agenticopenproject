@@ -111,7 +111,7 @@ ja:
       idp_sso_service_url: >
         IDプロバイダのログイン・エンドポイントのURL。
       idp_slo_service_url: >
-        IDプロバイダのログイン・エンドポイントのURL。
+        The URL of the identity provider logout endpoint.
       idp_cert: >
         ID プロバイダの X509 PEM 形式の公開証明書を入力します。改行で区切ることで、複数の証明書を入力できます。
       name_identifier_format: >

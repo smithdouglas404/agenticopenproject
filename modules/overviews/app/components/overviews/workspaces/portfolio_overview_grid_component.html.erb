@@ -28,10 +28,12 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Grids::WidgetGridComponent.new(align_boxes_start: true)) do |grid|
-    grid.with_widget(Overviews::Widgets::DescriptionComponent, @portfolio)
-    grid.with_widget(Overviews::Widgets::ProjectStatusComponent, @portfolio)
-    grid.with_widget(Overviews::Widgets::SubitemsComponent, @portfolio)
-    grid.with_widget(Overviews::Widgets::MembersComponent, @portfolio)
+  render(Grids::WidgetGridComponent.new) do |grid|
+    grid.with_widget(Grids::Widgets::Description, @portfolio)
+    grid.with_widget(Grids::Widgets::ProjectStatus, @portfolio)
+    grid.with_widget(Grids::Widgets::Subitems, @portfolio)
+    grid.with_widget(Grids::Widgets::Members, @portfolio)
+
+    grid.with_widget(Grids::ProjectAttributeWidgets, @portfolio)
   end
 %>

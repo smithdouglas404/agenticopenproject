@@ -3,13 +3,4 @@ pt-PT:
     label_home: "%{workspace_type} casa"
     label_dashboard: "Painel de controlo"
     label_overview: 'Síntese'
-    widgets:
-      subitems:
-        in_this_portfolio: "Nesta carteira"
-        in_this_program: "Neste programa"
-        in_this_project: "Neste projeto"
-        no_visible_children: "Não há filhos visíveis."
-      members:
-        title: "Membros mais recentes"
-        view_all_members: "Ver todos os membros"
   permission_manage_overview: 'Gerir página de visão geral'

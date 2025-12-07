@@ -3,13 +3,4 @@ pl:
     label_home: "Strona główna %{workspace_type}"
     label_dashboard: "Pulpit nawigacyjny"
     label_overview: 'Przegląd'
-    widgets:
-      subitems:
-        in_this_portfolio: "W tym portfolio"
-        in_this_program: "W tym programie"
-        in_this_project: "W tym projekcie"
-        no_visible_children: "Nie ma żadnych widocznych elementów podrzędnych."
-      members:
-        title: "Ostatni członkowie"
-        view_all_members: "Zobacz wszystkich członków"
   permission_manage_overview: 'Zarządzanie stroną przeglądową'

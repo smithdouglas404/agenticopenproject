@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -176,6 +176,10 @@ Rails.application.routes.draw do
       as: "custom_style_logo",
       constraints: { filename: /[^\/]*/ }
 
+  get "custom_style/:digest/logo_mobile/:filename" => "custom_styles#logo_mobile_download",
+      as: "custom_style_logo_mobile",
+      constraints: { filename: /[^\/]*/ }
+
   get "custom_style/:digest/export_logo/:filename" => "custom_styles#export_logo_download",
       as: "custom_style_export_logo",
       constraints: { filename: /[^\/]*/ }
@@ -204,6 +208,9 @@ Rails.application.routes.draw do
       delete "options/:option_id", to: "custom_fields#delete_option", as: :delete_option_of
 
       post :reorder_alphabetical
+
+      get :attribute_help_text
+      put :update_attribute_help_text
     end
 
     scope module: :admin do
@@ -270,10 +277,10 @@ Rails.application.routes.draw do
   # Extracted from the resources definition right below so that the
   # default parameters can be defined.
   resources :projects,
-            only: %i[new],
+            only: %i[new create],
             defaults: { workspace_type: "project" }
 
-  resources :projects, except: %i[new show edit update] do
+  resources :projects, except: %i[new create show edit update] do
     scope module: "projects" do
       namespace "settings" do
         resource :general, only: %i[show update], controller: "general" do
@@ -281,6 +288,18 @@ Rails.application.routes.draw do
           post :toggle_public
         end
         resource :modules, only: %i[show update]
+        resource :subitems, only: %i[show update]
+        resource :creation_wizard, controller: "creation_wizard", only: %i[show] do
+          get :disable_dialog
+          post :toggle
+          post :update_name_settings
+          post :update_submission_settings
+          post :update_artifact_export_settings
+          get :refresh_submission_form
+          post :toggle_project_custom_field
+          put :enable_all_of_section
+          put :disable_all_of_section
+        end
         resource :project_custom_fields, only: %i[show] do
           member do
             post :toggle
@@ -315,13 +334,22 @@ Rails.application.routes.draw do
       end
 
       resource :templated, only: %i[create destroy], controller: "templated"
-      resource :archive, only: %i[create destroy], controller: "archive"
+      resource :archive, only: %i[create destroy], controller: "archive" do
+        collection do
+          get :dialog
+        end
+      end
       resource :identifier, only: %i[show update], controller: "identifier"
       resource :status, only: %i[update destroy], controller: "status"
+      resource :creation_wizard, only: %i[show update], controller: "creation_wizard" do
+        get :help_text, on: :member
+      end
     end
 
     member do
       get "settings", to: redirect("projects/%{id}/settings/general/")
+
+      get "export_project_initiation", to: "projects#export_project_initiation_pdf"
 
       get :copy, to: "projects#copy_form"
       post :copy
@@ -386,7 +414,7 @@ Rails.application.routes.draw do
     # work as a catchall for everything under /wiki
     get "wiki" => "wiki#show"
 
-    resources :work_packages, only: [] do
+    resources :work_packages, only: %i[index show] do
       collection do
         get "/report/:detail" => "work_packages/reports#report_details"
         get "/report" => "work_packages/reports#report"
@@ -394,14 +422,16 @@ Rails.application.routes.draw do
         get "/export_dialog" => "work_packages#export_dialog"
       end
 
+      get "/copy" => "work_packages#copy", on: :member, as: "copy"
+      get "/new" => "work_packages#new", on: :collection, as: "new"
+
+      get "(/:tab)" => "work_packages#show", on: :member, as: "",
+          constraints: { id: /\d+/, state: /(?!(shares|copy|dialog)).+/ }
+
       # states managed by client-side routing on work_package#index
-      get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog)).+/ }
+      get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog|new)).+/ }
 
       get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
-      get "/new" => "work_packages#index", on: :collection, as: "new"
-
-      # state for show view in project context
-      get "(/*state)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(dialog)).+/ }
     end
 
     namespace :work_packages do
@@ -452,42 +482,47 @@ Rails.application.routes.draw do
       get "(/revisions/:rev)/diff(/*repo_path)",
           action: :diff,
           format: "html",
-          constraints: { rev: /[\w.\-]+/, repo_path: /.*/ }
+          constraints: { rev: /[\w.-]+/, repo_path: /.*/ }
 
       get "(/revisions/:rev)/:format/*repo_path",
           action: :entry,
           format: /raw/,
-          rev: /[\w.\-]+/
+          rev: /[\w.-]+/
 
       %w{diff annotate changes entry browse}.each do |action|
         get "(/revisions/:rev)/#{action}(/*repo_path)",
             format: "html",
             action:,
-            constraints: { rev: /[\w.\-]+/, repo_path: /.*/ },
+            constraints: { rev: /[\w.-]+/, repo_path: /.*/ },
             as: "#{action}_revision"
       end
 
-      get "/revision(/:rev)", rev: /[\w.\-]+/,
+      get "/revision(/:rev)", rev: /[\w.-]+/,
                               action: :revision,
                               as: "show_revision"
 
       get "(/revisions/:rev)(/*repo_path)",
           action: :show,
           format: "html",
-          constraints: { rev: /[\w.\-]+/, repo_path: /.*/ },
+          constraints: { rev: /[\w.-]+/, repo_path: /.*/ },
           as: "show_revisions_path"
     end
   end
 
-  resources :portfolios,
-            only: %i[new],
-            defaults: { workspace_type: "portfolio" },
-            controller: "projects"
+  # Portfolio and program creation is handled by the projects controller
+  %w[portfolio program].each do |workspace_type|
+    resources workspace_type.pluralize,
+              only: %i[new create],
+              defaults: { workspace_type: },
+              controller: "projects"
+  end
 
-  resources :programs,
-            only: %i[new],
-            defaults: { workspace_type: "program" },
-            controller: "projects"
+  resources :portfolios,
+            only: %i[index]
+
+  namespace :portfolios do
+    resource :menu, only: %i[show]
+  end
 
   resources :project_phases, only: [] do
     member do
@@ -527,6 +562,7 @@ Rails.application.routes.draw do
     end
 
     delete "design/logo" => "custom_styles#logo_delete", as: "custom_style_logo_delete"
+    delete "design/logo_mobile" => "custom_styles#logo_mobile_delete", as: "custom_style_logo_mobile_delete"
     delete "design/export_logo" => "custom_styles#export_logo_delete", as: "custom_style_export_logo_delete"
     delete "design/export_cover" => "custom_styles#export_cover_delete", as: "custom_style_export_cover_delete"
     delete "design/export_footer" => "custom_styles#export_footer_delete", as: "custom_style_export_footer_delete"
@@ -637,7 +673,15 @@ Rails.application.routes.draw do
           get :new_link
           post :link
           delete :unlink
+
+          get :role_assignment
+          post :update_role_assignment
+          get :role_assignment_preview_dialog
+
+          get :attribute_help_text
+          put :update_attribute_help_text
         end
+
         resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
           member do
             get :change_parent, action: :change_parent_dialog
@@ -649,6 +693,7 @@ Rails.application.routes.draw do
           end
         end
       end
+
       resources :project_custom_field_sections, controller: "/admin/settings/project_custom_field_sections",
                                                 only: %i[create update destroy] do
         member do
@@ -715,7 +760,7 @@ Rails.application.routes.draw do
     get "/bulk" => "bulk#destroy"
   end
 
-  resources :work_packages, only: [:index] do
+  resources :work_packages, only: %i[index show new] do
     concerns :shareable
 
     get "hover_card" => "work_packages/hover_card#show", on: :member
@@ -797,12 +842,13 @@ Rails.application.routes.draw do
     get "/split_view/get_relations_counter" => "work_packages/split_view#get_relations_counter",
         on: :member
 
+    get "/copy" => "work_packages#copy", on: :member, as: "copy"
+    get "(/:tab)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|new|copy)).+/ }
+
     # states managed by client-side (angular) routing on work_package#show
     get "/" => "work_packages#index", on: :collection, as: "index"
     get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
-    get "/new" => "work_packages#index", on: :collection, as: "new", state: "new"
-    # We do not want to match the work package export routes
-    get "(/*state)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|split_view)).+/ }
+
     get "/share_upsell" => "work_packages#share_upsell", on: :collection, as: "share_upsell"
     get "/edit" => "work_packages#show", on: :member, as: "edit"
   end
@@ -821,6 +867,11 @@ Rails.application.routes.draw do
 
   resources :users, constraints: { id: /(\d+|me)/ }, except: :edit do
     resources :memberships, controller: "users/memberships", only: %i[update create destroy]
+
+    collection do
+      get "/invite" => "users/invite#start_dialog"
+      post "/invite/step" => "users/invite#step"
+    end
 
     member do
       get "/hover_card" => "users/hover_card#show"
@@ -1008,6 +1059,9 @@ Rails.application.routes.draw do
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
+  if Rails.env.development? || OpenProject::Configuration.good_job_engine_basic_auth.present?
     mount GoodJob::Engine => "good_job"
   end
 end

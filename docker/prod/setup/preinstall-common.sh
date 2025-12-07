@@ -28,15 +28,16 @@ apt-get update -qq
 apt-get upgrade -y
 
 apt-get install -yq --no-install-recommends \
-	file \
 	curl \
+	file \
 	gnupg2 \
+	lsb-release
 
 # install node + npm
 curl -s https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${ARCHITECTURE}.tar.gz | tar xzf - -C /usr/local --strip-components=1
 
-curl -sSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-echo 'deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main' > /etc/apt/sources.list.d/pgdg.list
+wget --quiet -O- https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/postgrsql.gpg -
+echo "deb [signed-by=/usr/share/keyrings/postgrsql.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
 apt-get update -qq
 apt-get install -yq --no-install-recommends \

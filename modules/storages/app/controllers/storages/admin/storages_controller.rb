@@ -51,7 +51,7 @@ module Storages
                     only: %i[show_oauth_application destroy edit edit_host edit_storage_audience confirm_destroy update
                              change_health_notifications_enabled replace_oauth_application]
       before_action :ensure_valid_wizard_parameters, only: [:new]
-      before_action :require_ee_token_for_one_drive, only: [:new]
+      before_action :require_ee_token, only: [:new]
 
       menu_item :external_file_storages
 
@@ -80,7 +80,9 @@ module Storages
         @target_step = @wizard.prepare_next_step
       end
 
-      def upsell; end
+      def upsell
+        @provider_type = Storage.provider_types[params.fetch(:provider, "one_drive")]
+      end
 
       def edit
         @wizard = storage_wizard(@storage)
@@ -272,9 +274,9 @@ module Storages
         end
       end
 
-      def require_ee_token_for_one_drive
+      def require_ee_token
         if (@provider_type || @storage).disallowed_by_enterprise_token?
-          redirect_to action: :upsell
+          redirect_to action: :upsell, provider: @provider_type.short_provider_name
         end
       end
 

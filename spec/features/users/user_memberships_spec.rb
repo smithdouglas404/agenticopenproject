@@ -50,7 +50,7 @@ RSpec.describe "user memberships through user page", :js, :selenium do
         # Check if user with global role is there
         principal_page.visit!
         principal_page.open_global_roles_tab!
-        principal_page.expect_global_roles([global_role.name])
+        principal_page.expect_global_roles([GlobalRole.standard.name, global_role.name])
 
         # Remove the global role from the user
         principal_page.remove_global_role!(global_role.id)
@@ -59,11 +59,11 @@ RSpec.describe "user memberships through user page", :js, :selenium do
 
         # Verify that it is gone
         retry_block do
-          principal_page.expect_global_roles([])
+          principal_page.expect_global_roles([GlobalRole.standard.name])
         end
       end
     end
   end
 
-  it_behaves_like "global user principal membership management flows", :manage_user
+  it_behaves_like "global user principal membership management flows", %i[manage_user view_all_principals]
 end

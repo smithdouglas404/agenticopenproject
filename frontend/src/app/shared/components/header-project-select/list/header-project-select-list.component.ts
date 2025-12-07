@@ -19,6 +19,14 @@ import { IProjectData } from 'core-app/shared/components/searchable-project-list
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { getMetaContent } from 'core-app/core/setup/globals/global-helpers';
+import {
+  toDOMString,
+  briefcaseIconData,
+  SVGData,
+  versionsIconData,
+} from '@openproject/octicons-angular';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: '[op-header-project-select-list]',
@@ -51,6 +59,8 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
     include_all_selected: this.I18n.t('js.include_projects.tooltip.include_all_selected'),
   };
 
+  public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
+
   constructor(
     readonly I18n:I18nService,
     readonly pathHelper:PathHelperService,
@@ -59,6 +69,8 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
     readonly elementRef:ElementRef,
     readonly cdRef:ChangeDetectorRef,
     readonly currentProjectService:CurrentProjectService,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    readonly sanitizer:DomSanitizer
   ) { }
 
   ngOnInit():void {
@@ -68,7 +80,7 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
         // and we can actually find the element and scroll to it.
         requestAnimationFrame(() => {
           const itemAction = (this.elementRef.nativeElement as HTMLElement)
-            .querySelectorAll(`.spot-list--item-action[data-project-id="${selectedItemID || ''}"]`);
+            .querySelectorAll(`.spot-list--item-action[data-project-id="${selectedItemID ?? ''}"]`);
           itemAction[0]?.scrollIntoView();
         });
       });
@@ -78,7 +90,6 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes:SimpleChanges) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (changes.displayMode || changes.projects || changes.favorited) {
       this.updateProjectFilter();
     }
@@ -107,13 +118,40 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
   }
 
   extendedUrl(projectId:string|null):string {
-    const currentMenuItem = document.querySelector<HTMLMetaElement>('meta[name="current_menu_item"]')!;
+    const currentMenuItem = getMetaContent('current_menu_item');
     const url = projectId === null ? window.appBasePath : this.pathHelper.projectPath(projectId);
 
     if (!currentMenuItem) {
       return url;
     }
 
-    return `${url}?jump=${encodeURIComponent(currentMenuItem.content)}`;
+    return `${url}?jump=${encodeURIComponent(currentMenuItem)}`;
+  }
+
+  workspaceTypeIconWithLabel(project:IProjectData):SafeHtml {
+    const workspaceType = project._type.toLowerCase();
+    const iconData = this.workspaceTypeSVGData(workspaceType);
+    if (!iconData) {
+      return '';
+    }
+
+    const htmlString = toDOMString(iconData, 'small', { 'aria-hidden': 'true', class: 'octicon' });
+    const translatedTypeName = this.I18n.t(`js.include_workspaces.types.${workspaceType}`);
+    const iconWithText = htmlString + ' ' + translatedTypeName;
+    return this.sanitizer.bypassSecurityTrustHtml(iconWithText);
+  }
+
+  private workspaceTypeSVGData(workspaceType:string):SVGData|undefined{
+    switch (workspaceType) {
+      case 'program': {
+        return versionsIconData;
+      }
+      case 'portfolio': {
+        return briefcaseIconData;
+      }
+      default: {
+        return undefined; // Case fallthrough for eslint
+      }
+    }
   }
 }

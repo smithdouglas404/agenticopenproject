@@ -39,6 +39,7 @@ class MeetingAgendaItemsController < ApplicationController
   before_action :set_meeting_agenda_item,
                 except: %i[new cancel_new create]
   before_action :set_current_occurrence,
+                :set_presentation_mode,
                 only: %i[new cancel_new edit cancel_edit create update destroy drop move move_to_section_dialog]
   before_action :authorize
   before_action :check_recurring_meeting_param, only: %i[move_to_next_meeting]
@@ -81,7 +82,9 @@ class MeetingAgendaItemsController < ApplicationController
 
   def edit
     if @meeting_agenda_item.editable?
-      update_item_via_turbo_stream(state: :edit, display_notes_input: params[:display_notes_input],
+      update_item_via_turbo_stream(state: :edit,
+                                   display_notes_input: params[:display_notes_input],
+                                   presentation_mode: @presentation_mode,
                                    current_occurrence: @current_occurrence)
     else
       update_all_via_turbo_stream
@@ -92,7 +95,9 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def cancel_edit
-    update_item_via_turbo_stream(state: :show, current_occurrence: @current_occurrence)
+    update_item_via_turbo_stream(state: :show,
+                                 current_occurrence: @current_occurrence,
+                                 presentation_mode: @presentation_mode)
 
     respond_with_turbo_streams
   end
@@ -131,10 +136,8 @@ class MeetingAgendaItemsController < ApplicationController
     respond_with_turbo_streams
   end
 
-  def update # rubocop:disable Metrics/AbcSize
-    call = ::MeetingAgendaItems::UpdateService
-      .new(user: current_user, model: @meeting_agenda_item)
-      .call(meeting_agenda_item_params)
+  def update
+    call = update_agenda_item(meeting_agenda_item_params)
 
     if call.success?
       unless @meeting_agenda_item.meeting_section.backlog?
@@ -142,11 +145,14 @@ class MeetingAgendaItemsController < ApplicationController
         update_header_component_via_turbo_stream
         update_sidebar_details_component_via_turbo_stream
       end
-      update_item_via_turbo_stream(current_occurrence: @current_occurrence)
+      update_item_via_turbo_stream(current_occurrence: @current_occurrence,
+                                   presentation_mode: @presentation_mode)
       update_section_header_via_turbo_stream(meeting_section: @meeting_agenda_item.meeting_section)
     else
       # show errors
-      update_item_via_turbo_stream(state: :edit, current_occurrence: @current_occurrence)
+      update_item_via_turbo_stream(state: :edit,
+                                   current_occurrence: @current_occurrence,
+                                   presentation_mode: @presentation_mode)
       render_base_error_in_flash_message_via_turbo_stream(call.errors)
     end
 
@@ -182,28 +188,28 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def drop
-    meeting_agenda_item_section = @meeting_agenda_item.meeting_section
+    @meeting = @current_occurrence if @current_occurrence.present?
 
     call = if @target_id.nil?
-             ::MeetingAgendaItems::UpdateService
-               .new(user: current_user, model: @meeting_agenda_item)
-               .call(meeting: @current_occurrence, meeting_section: nil)
+             update_agenda_item(meeting: @current_occurrence, meeting_section: nil)
            else
              ::MeetingAgendaItems::DropService
                .new(user: current_user, meeting_agenda_item: @meeting_agenda_item)
                .call(target_id: @target_id, position: @position)
            end
 
-    handle_agenda_item_update_on_move(call, meeting_agenda_item_section, current_occurrence: @current_occurrence)
+    handle_agenda_item_update_on_move(call)
   end
 
   def move
-    call = ::MeetingAgendaItems::UpdateService
-      .new(user: current_user, model: @meeting_agenda_item)
-      .call(move_to: params[:move_to]&.to_sym)
+    @meeting = @current_occurrence if @current_occurrence.present?
+
+    call = update_agenda_item(move_to: params[:move_to]&.to_sym)
 
     if call.success?
-      move_item_within_section_via_turbo_stream(current_occurrence: @current_occurrence)
+      update_agenda_via_turbo_stream
+      update_header_component_via_turbo_stream
+      update_backlog_via_turbo_stream(collapsed: ActiveModel::Type::Boolean.new.cast(params[:collapsed]))
     else
       generic_call_failure_response(call)
     end
@@ -222,9 +228,7 @@ class MeetingAgendaItemsController < ApplicationController
     next_occurrence = init_next_meeting_occurrence
     return if next_occurrence.nil?
 
-    update_call = ::MeetingAgendaItems::UpdateService
-      .new(user: current_user, model: @meeting_agenda_item)
-      .call(meeting_id: next_occurrence.id, meeting_section: nil)
+    update_call = update_agenda_item(meeting_id: next_occurrence.id, meeting_section: nil)
 
     if update_call.success?
       render_success_flash_message_via_turbo_stream(
@@ -249,17 +253,21 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def move_to_section
-    meeting_agenda_item_section = @meeting_agenda_item.meeting_section
     meeting_section = MeetingSection.find_by(id: params[:meeting_agenda_item][:meeting_section_id])
+    @meeting = meeting_section.meeting unless meeting_section.backlog?
 
-    call = ::MeetingAgendaItems::UpdateService
-             .new(user: current_user, model: @meeting_agenda_item)
-             .call(meeting_section:)
+    call = update_agenda_item(meeting_section:)
 
-    handle_agenda_item_update_on_move(call, meeting_agenda_item_section, current_occurrence: nil)
+    handle_agenda_item_update_on_move(call)
   end
 
   private
+
+  def update_agenda_item(params)
+    ::MeetingAgendaItems::UpdateService
+      .new(user: current_user, model: @meeting_agenda_item)
+      .call(params)
+  end
 
   def init_next_meeting_occurrence
     return @next_occurrence if @next_occurrence.present?
@@ -297,6 +305,10 @@ class MeetingAgendaItemsController < ApplicationController
 
   def set_current_occurrence
     @current_occurrence = Meeting.find_by(id: params[:current_occurrence])
+  end
+
+  def set_presentation_mode
+    @presentation_mode = ActiveModel::Type::Boolean.new.cast(params[:presentation_mode])
   end
 
   def meeting_agenda_item_params
@@ -363,20 +375,10 @@ class MeetingAgendaItemsController < ApplicationController
     [old_section, current_section, section_changed]
   end
 
-  def handle_agenda_item_update_on_move(call, meeting_agenda_item_section, current_occurrence:)
+  def handle_agenda_item_update_on_move(call)
     if call.success?
-      old_section, current_section, section_changed = assign_drop_results(call, meeting_agenda_item_section)
-
-      if section_changed
-        move_item_to_other_section_via_turbo_stream(
-          old_section:,
-          current_section:,
-          collapsed: ActiveModel::Type::Boolean.new.cast(params[:collapsed]),
-          current_occurrence:
-        )
-      else
-        move_item_within_section_via_turbo_stream(current_occurrence:)
-      end
+      update_all_via_turbo_stream
+      update_backlog_via_turbo_stream(collapsed: ActiveModel::Type::Boolean.new.cast(params[:collapsed]))
     else
       generic_call_failure_response(call)
     end

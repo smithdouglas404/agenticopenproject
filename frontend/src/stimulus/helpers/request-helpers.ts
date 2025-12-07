@@ -29,6 +29,8 @@
  */
 
 import { FetchRequest, FetchResponse, Options } from '@rails/request.js';
+import { hideElement, showElement } from 'core-app/shared/helpers/dom-helpers';
+import invariant from 'tiny-invariant';
 
 export function post(url:string|URL, options?:Options) {
   const request = new FetchRequest('post', url, options);
@@ -36,10 +38,12 @@ export function post(url:string|URL, options?:Options) {
 }
 
 function withAjaxIndicator(request:Promise<FetchResponse>) {
-  jQuery('#ajax-indicator').show();
+  const ajaxIndicator = document.querySelector<HTMLElement>('#ajax-indicator');
+  invariant(ajaxIndicator, 'Expected an Element with id ajax-indicator to be present');
+  showElement(ajaxIndicator);
 
   return request.then((response) => {
-    jQuery('#ajax-indicator').hide();
+    hideElement(ajaxIndicator);
     return response;
   });
 }

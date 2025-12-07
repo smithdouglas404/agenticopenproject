@@ -3,13 +3,4 @@ es:
     label_home: "Inicio %{workspace_type}"
     label_dashboard: "Panel de control"
     label_overview: 'Resumen'
-    widgets:
-      subitems:
-        in_this_portfolio: "En este portafolio"
-        in_this_program: "En este programa"
-        in_this_project: "En este proyecto"
-        no_visible_children: "No hay subelementos visibles."
-      members:
-        title: "Nuevos miembros"
-        view_all_members: "Ver todos los miembros"
   permission_manage_overview: 'Administrar la página de resumen'

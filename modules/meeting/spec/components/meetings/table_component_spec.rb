@@ -53,7 +53,7 @@ RSpec.describe Meetings::TableComponent, type: :component do
 
     it_behaves_like "rendering Box", row_count: 1
     it_behaves_like "rendering Border Box Grid headings"
-    it_behaves_like "rendering Blank Slate", heading: "No meetings to display"
+    it_behaves_like "rendering Blank Slate", heading: "There are no meetings to display"
   end
 
   context "with meetings" do

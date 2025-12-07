@@ -68,8 +68,8 @@ module Storages
             register(:general_information, SharepointContract)
           end
 
-          namespace("validators") do
-            register(:connection, Validators::ConnectionValidator)
+          namespace("models") do
+            register(:managed_folder_identifier, ManagedFolderIdentifier)
           end
 
           namespace("queries") do
@@ -82,6 +82,15 @@ module Storages
             register(:upload_link, Queries::UploadLinkQuery)
             register(:user, OneDrive::Queries::UserQuery)
             register(:file_path_to_id_map, Queries::FilePathToIdMapQuery)
+          end
+
+          namespace("services") do
+            register(:upkeep_managed_folders, Services::CreateManagedFoldersService)
+            register(:upkeep_managed_folder_permissions, Services::SetPermissionsOnManagedFoldersService)
+          end
+
+          namespace("validators") do
+            register(:connection, Validators::ConnectionValidator)
           end
         end
       end

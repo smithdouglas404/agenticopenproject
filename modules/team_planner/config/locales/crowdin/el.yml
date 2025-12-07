@@ -5,7 +5,7 @@ el:
     description: "Provides team planner views."
   permission_view_team_planner: "View team planner"
   permission_manage_team_planner: "Manage team planner"
-  project_module_team_planner_view: "Team planners"
+  project_module_team_planner_view: "Προγράμματα ομάδων"
   ee:
     feature_names:
       team_planner_view: "Προγραμματισμός Ομάδας"

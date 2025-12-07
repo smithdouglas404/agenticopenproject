@@ -7,16 +7,12 @@
         <wp-breadcrumb class="wp-show--header-container--breadcrumb"
           [workPackage]="workPackage"
          />
-        <op-back-button class="wp-show--header-container--back-button"
-          linkClass="work-packages-back-button"
-           />
         <div class="subject-header wp-show--header-container--subject">
-          <wp-subject />
+          <wp-subject [workPackage]="workPackage" />
         </div>
         <ul id="toolbar-items" class="toolbar-items hide-when-print wp-show--header-container--toolbar-items">
           <li class="toolbar-item hidden-for-tablet">
-            <wp-create-button [allowed]="['work_package.addChild', 'work_package.copy']"
-              [stateName$]="stateName$" />
+            <wp-create-button [routedFromAngular]="routedFromAngular" />
           </li>
           @if (displayShareButton$ | async) {
             <li class="toolbar-item"
@@ -70,10 +66,16 @@
       <div class="work-packages-full-view--split-right work-packages-tab-view--overflow">
         <div class="work-packages--panel-inner">
           <span class="sr-only" tabindex="-1"  [textContent]="focusAnchorLabel"></span>
-          <op-wp-tabs [workPackage]="workPackage" [view]="'full'" />
+          <op-wp-tabs [workPackage]="workPackage"
+                      [currentTabId]="activeTab"
+                      [view]="'full'"
+                      [routedFromAngular]="routedFromAngular"/>
           <div class="tabcontent"
-            data-notification-selector='notification-scroll-container'
-            ui-view>
+            data-notification-selector='notification-scroll-container'>
+            <op-wp-tab
+              [workPackageId]="workPackage.id!"
+              [tabIdentifier]="activeTab"
+            ></op-wp-tab>
           </div>
         </div>
         <div class="work-packages-full-view--resizer hidden-for-mobile hide-when-print">

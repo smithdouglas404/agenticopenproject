@@ -43,6 +43,10 @@ es:
               response_is_not_successful: " responde con %{status}."
               response_is_not_json: " no devuelve el cuerpo JSON."
               response_misses_required_attributes: " no devuelve los atributos requeridos. Los atributos que faltan son: %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: Escriba el nombre del proveedor %{name} para confirmar la eliminación.
@@ -127,7 +131,7 @@ es:
       label_configuration_details: Metadatos
       label_client_details: Detalles del cliente
       label_attribute_mapping: Asignación de atributos
-      notice_created: A new OpenID provider was successfully created.
+      notice_created: Se ha creado correctamente un nuevo proveedor de OpenID.
       client_details_description: Detalles de configuración de OpenProject como cliente OIDC
       no_results_table: Aún no se han definido proveedores.
       plural: Proveedores de OpenID

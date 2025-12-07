@@ -84,7 +84,8 @@ RSpec.describe(
                            manage_files_in_project
                            manage_file_links
                            view_project_attributes
-                           edit_project_attributes])
+                           edit_project_attributes
+                           select_project_custom_fields])
   end
   shared_let(:new_project_role) { create(:project_role, permissions: %i[]) }
 
@@ -209,6 +210,90 @@ RSpec.describe(
           end
         end
 
+        context "with calculated custom fields",
+                with_ee: %i[calculated_values],
+                with_flag: { calculated_value_project_attribute: true } do
+          using CustomFieldFormulaReferencing
+          let(:integer_custom_field) { create(:integer_project_custom_field, projects: [source]) }
+          let(:calculated_custom_field) do
+            create(:calculated_value_project_custom_field, :skip_validations,
+                   projects: [source],
+                   formula: "#{integer_custom_field} * 2")
+          end
+
+          before do
+            source.custom_field_values = { integer_custom_field.id => 5 }
+            source.save!
+            source.calculate_custom_fields([calculated_custom_field])
+            source.save!
+          end
+
+          it "copies the custom fields and recalculates values" do
+            expect(subject).to be_success
+
+            expect(project_copy.project_custom_fields).to contain_exactly(integer_custom_field, calculated_custom_field)
+
+            integer_cv = project_copy.custom_values.reload.find_by(custom_field: integer_custom_field)
+            expect(integer_cv).to be_present
+            expect(integer_cv.value).to eq "5"
+
+            calculated_cv = project_copy.custom_values.reload.find_by(custom_field: calculated_custom_field)
+            expect(calculated_cv).to be_present
+            expect(calculated_cv.value).to eq "10"
+          end
+
+          it "recalculates values when referenced custom field is changed during copy" do
+            target_project_params[:custom_field_values] = { integer_custom_field.id => 8 }
+
+            expect(subject).to be_success
+
+            expect(project_copy.project_custom_fields).to contain_exactly(integer_custom_field, calculated_custom_field)
+
+            integer_cv = project_copy.custom_values.reload.find_by(custom_field: integer_custom_field)
+            expect(integer_cv).to be_present
+            expect(integer_cv.value).to eq "8"
+
+            calculated_cv = project_copy.custom_values.reload.find_by(custom_field: calculated_custom_field)
+            expect(calculated_cv).to be_present
+            expect(calculated_cv.value).to eq "16"
+          end
+
+          context "with calculation errors",
+                  with_ee: %i[calculated_values],
+                  with_flag: { calculated_value_project_attribute: true } do
+            let(:calculated_custom_field) do
+              create(:calculated_value_project_custom_field, :skip_validations,
+                     projects: [source],
+                     formula: "#{integer_custom_field.id} / 0")
+            end
+
+            it "copies the custom fields and errors are recreated during recalculation" do
+              expect(subject).to be_success
+
+              expect(project_copy.project_custom_fields).to contain_exactly(
+                integer_custom_field,
+                calculated_custom_field
+              )
+
+              integer_cv = project_copy.custom_values.reload.find_by(custom_field: integer_custom_field)
+              expect(integer_cv).to be_present
+              expect(integer_cv.value).to eq "5"
+
+              calculated_cv = project_copy.custom_values.reload.find_by(custom_field: calculated_custom_field)
+              expect(calculated_cv).to be_present
+              # The calculated value remains blank as it cannot be calculated (division by zero)
+              expect(calculated_cv.value).to be_blank
+
+              error = project_copy.calculated_value_errors.find_by(custom_field: calculated_custom_field)
+              expect(error).to be_present
+
+              expect(error.error_code).to eq("ERROR_MATHEMATICAL")
+            end
+          end
+        end
+      end
+
+      describe "work_package_custom_fields" do
         context "with disabled work package custom field" do
           it "is still disabled in the copy" do
             custom_field = create(:text_wp_custom_field)
@@ -312,6 +397,28 @@ RSpec.describe(
       end
       # rubocop:enable RSpec/ExampleLength
       # rubocop:enable RSpec/MultipleExpectations
+
+      context "with project_creation_wizard_artifact_export_storage set" do
+        before do
+          source.project_creation_wizard_artifact_export_storage = source_automatic_project_storage.id.to_s
+          source.save!
+        end
+
+        it "updates the reference to the copied project storage" do
+          expect(subject).to be_success
+
+          automatic_project_storage_copy = project_copy.project_storages.find_by(storage: storage1)
+          expect(project_copy.project_creation_wizard_artifact_export_storage).to eq(automatic_project_storage_copy.id.to_s)
+          expect(project_copy.project_creation_wizard_artifact_export_storage).not_to eq(source.project_creation_wizard_artifact_export_storage)
+        end
+      end
+
+      context "without project_creation_wizard_artifact_export_storage set" do
+        it "does not set project_creation_wizard_artifact_export_storage in the copy" do
+          expect(subject).to be_success
+          expect(project_copy.project_creation_wizard_artifact_export_storage).to be_nil
+        end
+      end
 
       it_behaves_like "copies public attribute"
       it_behaves_like "copies custom fields"

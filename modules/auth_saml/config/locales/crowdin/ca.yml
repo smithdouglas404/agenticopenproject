@@ -105,13 +105,13 @@ ca:
       metadata_xml: >
         El vostre proveïdor d'identitat proporciona una baixada XML de metadades.
       limit_self_registration: >
-        Si s'activa, els usuaris només poden registrar-se utilitzant aquest proveïdor en cas que la configuració de registre per part dels mateixos usuaris ho permet.
+        Si s'activa, els usuaris només poden registrar-se utilitzant aquest proveïdor en cas que la configuració de registre per part dels propis usuaris ho permet.
       sp_entity_id: >
         L'ID de l'entitat del proveïdor de serveis (SP). De vegades també es fa referència a l'audiència. Aquest és l'identificador únic del client de la instància OpenProject.
       idp_sso_service_url: >
-        L'URL del punt d'inici de sessió del proveïdor d'identitat.
-      idp_slo_service_url: >
         L'URL del punt d'inici de sessió del proveïdor d'identitat
+      idp_slo_service_url: >
+        The URL of the identity provider logout endpoint.
       idp_cert: >
         Introduïu el certificat públic formatat per X509 PEM del proveïdor d'identitat. Podeu introduir diversos certificats separant-los amb una línia nova.
       name_identifier_format: >

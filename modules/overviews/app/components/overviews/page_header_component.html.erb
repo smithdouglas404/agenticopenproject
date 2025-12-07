@@ -1,7 +1,7 @@
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title(variant: :medium) { page_title }
-    header.with_breadcrumbs(breadcrumb_items)
+    header.with_breadcrumbs(nil)
 
     header.with_action_icon_button(
       icon: favorited? ? "star-fill" : "star",
@@ -30,13 +30,21 @@
         end
       end
 
+      if allowed_to_export_project_initiation_pdf?
+        menu.with_item(
+          label: t(:label_project_initiation_export_pdf, project_creation_name: project_creation_wizard_name(project)),
+          href: helpers.export_project_initiation_project_path(project, format: :pdf),
+          data: { turbo: false }
+        ) do |item|
+          item.with_leading_visual_icon(icon: :download)
+        end
+      end
+
       if allowed_to_archive?
         menu.with_item(
           label: t(:label_archive_project),
-          href: helpers.project_archive_path(project, status: "", name: project.name),
-          content_arguments: {
-            data: { turbo_method: :post, confirm: t("project.archive.are_you_sure", name: project.name) }
-          }
+          href: helpers.dialog_project_archive_path(project),
+          content_arguments: { data: { turbo_stream: true } }
         ) do |item|
           item.with_leading_visual_icon(icon: :lock)
         end
@@ -48,19 +56,21 @@
         tab_nav.with_tab(
           test_selector: "project-overview-tab",
           selected: current_page?(project_overview_path),
-          href: helpers.project_overview_path,
+          href: helpers.project_overview_path
         ) do |t|
           t.with_icon(icon: :"op-view-split")
           t.with_text { I18n.t("overviews.label_overview") }
         end
 
-        tab_nav.with_tab(
-          test_selector: "project-dashboard-tab",
-          selected: current_page?(dashboard_project_overview_path),
-          href: helpers.dashboard_project_overview_path,
-        ) do |t|
-          t.with_icon(icon: :"op-view-list")
-          t.with_text { I18n.t("overviews.label_dashboard") }
+        if current_user.allowed_in_project?(:view_project, project)
+          tab_nav.with_tab(
+            test_selector: "project-dashboard-tab",
+            selected: current_page?(dashboard_project_overview_path),
+            href: helpers.dashboard_project_overview_path
+          ) do |t|
+            t.with_icon(icon: :"op-view-list")
+            t.with_text { I18n.t("overviews.label_dashboard") }
+          end
         end
       end
     end

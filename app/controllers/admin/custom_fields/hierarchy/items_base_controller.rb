@@ -61,24 +61,19 @@ module Admin
 
         def create
           item_service
-            .insert_item(contract_class: create_contract, **item_input)
+            .insert_item(contract_class: create_contract, **insert_item_input)
             .either(
               lambda { |item| redirect_to action: :new, position: item.sort_order + 1 },
               lambda do |validation_result|
-                add_errors_to_form(validation_result)
+                add_errors_to_new_form(validation_result)
                 render :new
               end
             )
         end
 
         def update
-          input = item_input
           item_service
-            .update_item(contract_class: update_contract,
-                         item: @active_item,
-                         label: input[:label],
-                         short: input[:short],
-                         score: input[:score])
+            .update_item(contract_class: update_contract, **update_item_input)
             .either(
               ->(*) { redirect_to action: :show, id: @active_item.parent, status: :see_other },
               lambda do |validation_result|
@@ -141,13 +136,23 @@ module Admin
           ::CustomFields::Hierarchy::HierarchicalItemService.new
         end
 
-        def item_input # rubocop:disable Metrics/AbcSize
-          input = { parent: @active_item, label: params[:label] }
-          input[:short] = params[:short] if params[:short].present?
-          input[:score] = params[:score] if params[:score].present?
-          input[:sort_order] = params[:sort_order].to_i if params[:sort_order].present?
+        def insert_item_input
+          {
+            parent: @active_item,
+            label: params[:label],
+            short: params[:short],
+            weight: params[:weight],
+            before: params[:sort_order]
+          }
+        end
 
-          input
+        def update_item_input
+          {
+            item: @active_item,
+            label: params[:label],
+            short: params[:short],
+            weight: params[:weight]
+          }
         end
 
         def new_parent_params
@@ -158,8 +163,8 @@ module Admin
           case @custom_field.field_format
           when "hierarchy"
             ::CustomFields::Hierarchy::InsertListItemContract
-          when "scored_list"
-            ::CustomFields::Hierarchy::InsertScoredItemContract
+          when "weighted_item_list"
+            ::CustomFields::Hierarchy::InsertWeightedItemContract
           else
             raise ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"
           end
@@ -169,22 +174,25 @@ module Admin
           case @custom_field.field_format
           when "hierarchy"
             ::CustomFields::Hierarchy::UpdateListItemContract
-          when "scored_list"
-            ::CustomFields::Hierarchy::UpdateScoredItemContract
+          when "weighted_item_list"
+            ::CustomFields::Hierarchy::UpdateWeightedItemContract
           else
             raise ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"
           end
         end
 
-        def add_errors_to_form(validation_result)
-          @new_item = ::CustomField::Hierarchy::Item.new(**item_input)
+        def add_errors_to_new_form(validation_result)
+          attributes = insert_item_input
+          attributes[:sort_order] = attributes.delete(:before)
+
+          @new_item = ::CustomField::Hierarchy::Item.new(**attributes)
           validation_result.errors(full: true).to_h.each do |attribute, errors|
             @new_item.errors.add(attribute, errors.join(", "))
           end
         end
 
         def add_errors_to_edit_form(validation_result)
-          @active_item.assign_attributes(**validation_result.to_h.slice(:label, :short, :score))
+          @active_item.assign_attributes(**validation_result.to_h.slice(:label, :short, :weight))
 
           validation_result.errors(full: true).to_h.each do |attribute, errors|
             @active_item.errors.add(attribute, errors.join(", "))

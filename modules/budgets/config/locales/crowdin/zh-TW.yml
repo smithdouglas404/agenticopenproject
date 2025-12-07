@@ -52,8 +52,8 @@ zh-TW:
   button_add_cost_type: "新增費用類別"
   button_cancel_edit_budget: "取消編輯預算"
   button_cancel_edit_costs: "取消編輯花費"
-  caption_labor: "勞力"
-  caption_labor_costs: "實際勞力成本\n"
+  caption_labor: "人工"
+  caption_labor_costs: "實際人工成本"
   caption_material_costs: "實際單位成本"
   budgets_title: "預算"
   events:

@@ -39,10 +39,10 @@ class Meeting::AddToSection < ApplicationForm
         decorated: true,
         defaultData: false,
         multiple: false,
-        focus_directly: false,
         disabled: meeting.blank?,
         placeholder: placeholder_text,
-        append_to: append_to_container
+        append_to: append_to_container,
+        openDirectly: @move_to_section
       }
     ) do |select|
       items.each do |item|
@@ -55,12 +55,13 @@ class Meeting::AddToSection < ApplicationForm
     end
   end
 
-  def initialize(wrapper_id: nil, occurrence: nil, item: nil)
+  def initialize(wrapper_id: nil, occurrence: nil, item: nil, move_to_section: true)
     super()
 
     @wrapper_id = wrapper_id
-    @occurrence = occurrence
+    @occurrence = meeting == occurrence ? nil : occurrence
     @selected_section = item&.meeting_section
+    @move_to_section = move_to_section
   end
 
   private
@@ -71,11 +72,13 @@ class Meeting::AddToSection < ApplicationForm
     @wrapper_id.nil? ? "body" : "##{@wrapper_id}"
   end
 
-  def items # rubocop:disable Metrics/AbcSize
+  def items # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     items = []
-    items.concat(meeting.sections) if meeting.present? && !meeting.templated?
-    items.concat(@occurrence.sections) if @occurrence.present? && @occurrence != meeting
-    items.push(meeting.backlog) if meeting.present?
+
+    items.concat(meeting.sections) if meeting.present? && @occurrence.nil?
+    items.concat(@occurrence.sections) if @occurrence.present?
+    items.push(meeting.backlog) if meeting.present? && !meeting.template? && meeting.backlog.present?
+
     items.reject! { |i| i == @selected_section } if @selected_section.present?
 
     items
@@ -109,10 +112,10 @@ class Meeting::AddToSection < ApplicationForm
   end
 
   def caption
-    I18n.t("label_section_selection_caption") if @occurrence.nil?
+    I18n.t("label_section_selection_caption") unless @move_to_section
   end
 
   def input_width
-    @occurrence.present? ? nil : :large
+    @move_to_section ? nil : :large
   end
 end

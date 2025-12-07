@@ -30,15 +30,14 @@
 
 module Constraints
   class ProjectIdentifier
-    RESERVED = Project::RESERVED_IDENTIFIERS
-    private_constant :RESERVED
+    REGEX = /(?!#{Regexp.union(Project::RESERVED_IDENTIFIERS)}\z)[\w-]+/
 
-    REGEX = /\A(?!#{Regexp.union(RESERVED)}\z)[\w-]+\z/
-    private_constant :REGEX
+    REGEX_ANCHORED = /\A#{REGEX}\z/
+    private_constant :REGEX_ANCHORED
 
     def self.matches?(request)
       project_id = request.path_parameters[:project_id] || request.params[:project_id]
-      REGEX === project_id
+      REGEX_ANCHORED === project_id
     end
   end
 end

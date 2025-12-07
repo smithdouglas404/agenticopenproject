@@ -85,6 +85,18 @@ class MeetingAgendaItem < ApplicationRecord
     end
   end
 
+  def display_title
+    if visible_work_package?
+      work_package.to_s
+    elsif linked_work_package?
+      I18n.t(:label_agenda_item_undisclosed_wp, id: work_package_id)
+    elsif deleted_work_package?
+      I18n.t(:label_agenda_item_deleted_wp)
+    else
+      title
+    end
+  end
+
   def delete_default_section_if_last_item_deleted
     return if meeting_section.nil? || meeting.sections.count > 1 || meeting_section.backlog?
 
@@ -124,11 +136,7 @@ class MeetingAgendaItem < ApplicationRecord
   end
 
   def editable?
-    !(meeting&.closed? || deleted_work_package?)
-  end
-
-  def modifiable?
-    !(meeting&.closed? || (deleted_work_package? && work_package_id.present?))
+    !meeting&.closed?
   end
 
   def copy_attributes

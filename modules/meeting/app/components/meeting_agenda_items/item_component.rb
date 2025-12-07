@@ -42,7 +42,8 @@ module MeetingAgendaItems
       container: nil,
       display_notes_input: nil,
       first_and_last: [],
-      current_occurrence: nil
+      current_occurrence: nil,
+      presentation_mode: false
     )
       super
 
@@ -52,10 +53,14 @@ module MeetingAgendaItems
       @container = container
       @first_and_last = first_and_last
       @current_occurrence = current_occurrence
+      @presentation_mode = presentation_mode
     end
 
-    def wrapper_uniq_by
-      @meeting_agenda_item.id
+    ##
+    # This wrapper key is used for identifying the agenda item
+    # through anchor hashes.
+    def wrapper_key
+      "meeting-agenda-item-#{@meeting_agenda_item.id}"
     end
 
     def call
@@ -77,7 +82,8 @@ module MeetingAgendaItems
       {
         meeting_agenda_item: @meeting_agenda_item,
         display_notes_input: (@display_notes_input if @state == :edit),
-        current_occurrence: @current_occurrence
+        current_occurrence: @current_occurrence,
+        presentation_mode: @presentation_mode
       }.compact
     end
 
@@ -89,6 +95,7 @@ module MeetingAgendaItems
       {
         pl: 0,
         scheme: :default,
+        classes: "op-meeting-agenda-item-wrapper",
         data: {
           id: @meeting_agenda_item.id,
           "draggable-id": @meeting_agenda_item.id,

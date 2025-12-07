@@ -573,7 +573,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
       end
     end
 
-    describe "with calculated value CFs" do
+    describe "with calculated value CFs", with_ee: %i[calculated_values] do
       describe "with value set by user" do
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
@@ -662,7 +662,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
           overview_page.visit_page
 
           # Remove value that is used in a formula:
-          overview_page.open_edit_dialog_for_section(section_for_input_fields)
+          overview_page.open_edit_dialog_for_custom_field(float_project_custom_field)
           page.fill_in(float_project_custom_field.name, with: "")
           page.click_on "Save"
 
@@ -680,7 +680,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
           end
 
           # Change the value so that the calculation succeeds.
-          overview_page.open_edit_dialog_for_section(section_for_input_fields)
+          overview_page.open_edit_dialog_for_custom_field(float_project_custom_field)
           page.fill_in(float_project_custom_field.name, with: "0.2")
           page.click_on "Save"
 
@@ -856,6 +856,31 @@ RSpec.describe "Show project custom fields on project overview page", :js do
               expect(page).to have_text "User field"
               expect(page).to have_text I18n.t("placeholders.default")
             end
+          end
+        end
+      end
+    end
+
+    describe "with weighted item list CF", with_ee: %i[weighted_item_lists] do
+      let!(:weighted_item_list) do
+        create(:weighted_item_list_project_custom_field,
+               projects: [project],
+               name: "Weighted item list",
+               project_custom_field_section: section_for_input_fields,
+               possible_values: %w[Ten])
+      end
+      let!(:item) { create(:hierarchy_item, weight: 10, label: "Ten") }
+
+      before do
+        create(:custom_value, :skip_validations, customized: project, custom_field: weighted_item_list, value: item.id.to_s)
+      end
+
+      it "shows the correct value for the project custom field" do
+        overview_page.visit_page
+
+        overview_page.within_project_attributes_sidebar do
+          overview_page.within_custom_field_container(weighted_item_list) do
+            expect(page).to have_text "Ten"
           end
         end
       end

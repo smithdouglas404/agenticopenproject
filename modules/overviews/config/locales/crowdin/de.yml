@@ -3,13 +3,4 @@ de:
     label_home: "%{workspace_type}-Startseite"
     label_dashboard: "Dashboard"
     label_overview: 'Übersicht'
-    widgets:
-      subitems:
-        in_this_portfolio: "In diesem Portfolio"
-        in_this_program: "In diesem Programm"
-        in_this_project: "In diesem Projekt"
-        no_visible_children: "Es gibt keine sichtbaren Kinder."
-      members:
-        title: "Neueste Mitglieder"
-        view_all_members: "Alle Mitglieder anzeigen"
   permission_manage_overview: 'Übersichtsseite verwalten'

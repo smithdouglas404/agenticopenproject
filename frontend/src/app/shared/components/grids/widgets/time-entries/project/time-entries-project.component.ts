@@ -31,7 +31,7 @@ export class WidgetTimeEntriesProjectComponent extends WidgetTimeEntriesListComp
     super(injector, timezone, i18n, pathHelper, confirmDialog, cdr);
   }
 
-  protected dmFilters():Array<[string, FilterOperator, [string]]> {
+  protected dmFilters():[string, FilterOperator, [string]][] {
     return [['spentOn', '>t-', ['7']] as [string, FilterOperator, [string]],
       ['project_id', '=', [this.currentProject.id]] as [string, FilterOperator, [string]]];
   }

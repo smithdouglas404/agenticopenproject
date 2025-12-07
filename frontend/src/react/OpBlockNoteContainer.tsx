@@ -1,7 +1,7 @@
 /*
  * -- copyright
  * OpenProject is an open source project management software.
- * Copyright (C) 2023 the OpenProject GmbH
+ * Copyright (C) the OpenProject GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3.
@@ -28,155 +28,174 @@
  * ++
  */
 
-import { BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from '@blocknote/core';
+import { BlockNoteEditorOptions, BlockNoteSchema, filterSuggestionItems } from '@blocknote/core';
+import { User } from '@blocknote/core/comments';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
-import { initOpenProjectApi, getDefaultOpenProjectSlashMenuItems, openProjectWorkPackageBlockSpec } from 'op-blocknote-extensions';
-import { useEffect, useState } from 'react';
-import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
 import { HocuspocusProvider } from '@hocuspocus/provider';
+import { IUploadFile } from 'core-app/core/upload/upload.service';
+import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
+import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
+import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
-import {
-  DefaultThreadStoreAuth,
-  YjsThreadStore,
-} from '@blocknote/core/comments';
-import { User } from '@blocknote/core/comments';
+import { BlockNoteLocaleResult, useBlockNoteLocale } from './hooks/useBlockNoteLocale';
+import { useCollaboration } from './hooks/useCollaboration';
+import { useOpTheme } from './hooks/useOpTheme';
+
+interface CollaborativeUser {
+  name:string;
+  color:string;
+}
 
 export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
   inputText?:string;
-  hocuspocusUrl:string;
-  hocuspocusAccessToken:string;
-  users:User[];
   activeUser:User;
-  documentId:string;
+  readOnly:boolean;
   openProjectUrl:string;
+  attachmentsUploadUrl:string;
+  attachmentsCollectionKey:string;
+  hocuspocusProvider?:HocuspocusProvider;
 }
 
-const schema = BlockNoteSchema.create({
+const schema = BlockNoteSchema.create().extend({
   blockSpecs: {
-    ...defaultBlockSpecs,
-    openProjectWorkPackage: openProjectWorkPackageBlockSpec,
+    openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
   },
 });
 
-const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOpColorMode(); };
-
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
-                                               users,
                                                activeUser,
-                                               hocuspocusUrl,
-                                               hocuspocusAccessToken,
-                                               documentId,
-                                               openProjectUrl }:OpBlockNoteContainerProps) {
-  initOpenProjectApi({ baseUrl: openProjectUrl});
+                                               readOnly,
+                                               openProjectUrl,
+                                               attachmentsUploadUrl,
+                                               attachmentsCollectionKey,
+                                               hocuspocusProvider }:OpBlockNoteContainerProps) {
+  const { localeString, localeDictionary }:BlockNoteLocaleResult = useBlockNoteLocale(window.I18n.locale);
 
-  const [isLoading, setIsLoading] = useState(true);
+  initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
 
-  let collaboration:any;
-  let comments:any;
-  const collaborationEnabled = Boolean(hocuspocusUrl && documentId && hocuspocusAccessToken && activeUser);
-  let hocuspocusProvider:HocuspocusProvider | null = null;
-  let threadStore:any;
-  if(collaborationEnabled) {
-    const doc = new Y.Doc();
-    hocuspocusProvider = new HocuspocusProvider({
-      url: hocuspocusUrl,
-      name: documentId,
-      token: hocuspocusAccessToken,
-      document: doc
-    });
-    const cursorColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-    collaboration = {
-      provider: hocuspocusProvider,
-      fragment: doc.getXmlFragment('document-store'),
-      user: {
-        name: activeUser.username,
-        color: cursorColor,
+  let doc = LiveCollaborationManager.ydoc;
+
+  let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
+  if(hocuspocusProvider) {
+    editorParams = {
+      schema,
+      collaboration: {
+        provider: hocuspocusProvider,
+        fragment: doc.getXmlFragment('document-store'),
+        user: {
+          id: activeUser.id,
+          name: activeUser.username,
+          color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
+        } as unknown as CollaborativeUser,
+        showCursorLabels: 'activity'
       },
-      showCursorLabels: 'activity'
+      dictionary: localeDictionary,
+      ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
-    threadStore = new YjsThreadStore(
-      activeUser.id,
-      doc.getMap('threads'),
-      new DefaultThreadStoreAuth(activeUser.id, 'editor'),
-    );
-    comments = {
-      threadStore: threadStore,
+  } else { // collaboration disabled
+    if (inputText) {
+      try {
+        const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
+        Y.applyUpdate(doc, update);
+      } catch (e) {
+        console.error('Failed to load document binary', e);
+        doc = new Y.Doc();
+      }
+    }
+
+    editorParams = {
+      schema,
+      collaboration: {
+        provider: null,
+        fragment: doc.getXmlFragment('document-store'),
+        user: {
+          name: activeUser.username,
+          color: '#333333',
+        },
+      },
+      dictionary: localeDictionary,
+      ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   }
 
-  let editor:any;
-  if(collaborationEnabled) {
-    const resolveUsers = async (userIds:string[]) => {
-      return users.filter((user) => userIds.includes(user.id));
-    };
-
-    editor = useCreateBlockNote(
-      {
-        resolveUsers,
-        collaboration,
-        schema,
-        comments
-      },
-      [activeUser, threadStore]
-    );
-  } else {
-    editor = useCreateBlockNote(
-      { schema },
-    );
-  };
+  const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
+
+  function isReadyForAttachmentUpload():boolean {
+    return (
+      attachmentsCollectionKey !== undefined &&
+      attachmentsCollectionKey !== '' &&
+      attachmentsUploadUrl !== undefined &&
+      attachmentsUploadUrl !== ''
+    );
+  }
+  const fileToIUploadFile = (file:File):IUploadFile => ({
+    file: file
+  });
+
+  async function uploadFile(file:File) {
+    const pluginContext = await window.OpenProject.getPluginContext();
+    try {
+      const service = pluginContext.services.attachmentsResourceService;
+      const iUploadFile = fileToIUploadFile(file);
+      const result = await firstValueFrom(
+        service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile])
+      );
+
+      return result?.[0]._links.staticDownloadLocation.href ?? '';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch(error:any) {
+      const toastService = pluginContext.services.notifications;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      toastService.addError(error);
+
+      return '';
+    }
+  }
 
   const getCustomSlashMenuItems = (editor:EditorType) => {
     return [
       ...getDefaultReactSlashMenuItems(editor),
-      ...getDefaultOpenProjectSlashMenuItems(editor),
+      openProjectWorkPackageSlashMenu(editor),
     ];
   };
 
-  useEffect(() => {
-    async function prepareEditor() {
-      if(collaborationEnabled && hocuspocusProvider) {
-        hocuspocusProvider.on('synced', async () => {
-          console.log('BlockNote collaboration synced');
-          setIsLoading(false);
-        });
-        hocuspocusProvider.on('disconnect', () => {
-          console.error('BlockNote collaboration disconnected');
-          setIsLoading(true);
-        });
-      } else {
-        const blocks = await editor.tryParseMarkdownToBlocks(inputText || '');
-        editor.replaceBlocks(editor.document, blocks);
-        setIsLoading(false);
-      }
-    }
-    void prepareEditor();
-    return  ()  => {
-      if (hocuspocusProvider) {
-        hocuspocusProvider.destroy();
-      }
-    };
-  }, []);
+  const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
+  const theme = useOpTheme();
+
+  if (connectionError) {
+    return (
+      <div
+        id="documents-show-edit-view-connection-error-notice-component"
+        data-controller="documents--connection-error-handler"
+      />
+    );
+  }
 
   return (
     <>
-      {isLoading ? <div>Loading...</div>
+      {isLoading ? <div>
+        <div className={'mb-3'}>
+          <div style={{width: '25%', height: '40px'}} className={'SkeletonBox'}/>
+        </div>
+        <div className={'mb-3'}>
+          <div style={{width: '100%', height: '150px'}} className={'SkeletonBox'}/>
+        </div>
+      </div>
         :
         <BlockNoteView
           editor={editor}
-          theme={detectTheme()}
-          onChange={async (editor) => {
-            const content = await editor.blocksToMarkdownLossy();
-            inputField.value = content;
-          }}
+          slashMenu={false}
+          theme={theme}
+          editable={!readOnly}
           className={'block-note-editor-container'}
         >
           <SuggestionMenuController
             triggerCharacter="/"
-            getItems={async (query:string) => filterSuggestionItems(getCustomSlashMenuItems(editor), query)}
+            getItems={async (query:string) => Promise.resolve(filterSuggestionItems(getCustomSlashMenuItems(editor), query))}
           />
         </BlockNoteView>
       }

@@ -61,18 +61,20 @@ function getCSSVariable(variable:string) {
   return getComputedStyle(document.body).getPropertyValue(variable).trim();
 }
 
-const EMPHASIS_COLORS = PRIMER_COLORS
-  .map((color) => getCSSVariable(`--display-${color}-scale-6`));
+function getEmphasisColors() {
+  return PRIMER_COLORS.map((color) => getCSSVariable(`--display-${color}-scale-6`));
+}
 
-const MUTED_COLORS = PRIMER_COLORS
-  .map((color) => getCSSVariable(`--display-${color}-scale-2`));
+function getMutedColors() {
+  return PRIMER_COLORS.map((color) => getCSSVariable(`--display-${color}-scale-2`));
+}
 
 function getEmphasisColor(i:number) {
-  return EMPHASIS_COLORS[i % EMPHASIS_COLORS.length];
+  return getEmphasisColors()[i % PRIMER_COLORS.length];
 }
 
 function getMutedColor(i:number) {
-  return MUTED_COLORS[i % MUTED_COLORS.length];
+  return getMutedColors()[i % PRIMER_COLORS.length];
 }
 
 function colorizeDefaultDataset(dataset:ChartDataset, i:number) {
@@ -96,6 +98,25 @@ function assignColorsForDataset(dataset:ChartDataset, i:number):number {
   return i;
 }
 
+function colorizeMultiDataset(dataset:ChartDataset, i:number) {
+  const backgroundColors:string[] = [];
+  const borderColors:string[] = [];
+
+  // Instead of directly counting the index up, all elements of that dataset will get the same colour
+  // Only at the end, we increase so that the next dataset is in a different colour
+  // See https://community.openproject.org/wp/68364
+  for (const _ of dataset.data) {
+    backgroundColors.push(getMutedColor(i));
+    borderColors.push(getEmphasisColor(i));
+  }
+
+  dataset.backgroundColor = backgroundColors;
+  dataset.borderColor = borderColors;
+  dataset.borderWidth = 1;
+
+  return i+1;
+}
+
 function getColorizer() {
   let i = 0;
 
@@ -114,9 +135,14 @@ const plugin:Plugin<ChartType, PrimerColorsPluginOptions> = {
     }
 
     const { data: { datasets } } = chart.config;
-    const colorizer = getColorizer();
-
-    datasets.forEach(colorizer);
+    if (datasets.length === 1) {
+      const colorizer = getColorizer();
+      datasets.forEach(colorizer);
+    } else {
+      datasets.forEach((dataset:ChartDataset, index = 0) => {
+        colorizeMultiDataset(dataset, index);
+      });
+    }
   },
 };
 

@@ -98,6 +98,6 @@ A GitHub action will enforce the [CLA](https://www.openproject.org/legal/contrib
 
 * [Development environment](development-environment)
 * [Developing Plugins](create-openproject-plugin)
-* [Running Tests](running-tests)
+* [Running Tests](testing)
 * [API Documentation](../api)
 * [Report a Bug](report-a-bug)

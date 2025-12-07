@@ -133,7 +133,7 @@ RSpec.describe "my", :js do
         fill_in "user[mail]", with: "foo@mail.com"
         fill_in "user[firstname]", with: "Foo"
         fill_in "user[lastname]", with: "Bar"
-        click_on "Save"
+        click_on "Update profile"
       end
 
       context "when confirmation disabled",
@@ -199,7 +199,7 @@ RSpec.describe "my", :js do
         expect(page).to have_text(I18n.t("user.text_change_disabled_for_ldap_login"), count: 3)
 
         fill_in "Hobbies", with: "Ruby, DCS"
-        click_on "Save"
+        click_on "Update profile"
 
         expect(page).to have_content I18n.t(:notice_account_updated)
 

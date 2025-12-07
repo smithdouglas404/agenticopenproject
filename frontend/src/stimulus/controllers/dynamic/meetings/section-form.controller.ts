@@ -31,7 +31,7 @@
 import * as Turbo from '@hotwired/turbo';
 import { Controller } from '@hotwired/stimulus';
 import { useMeta } from 'stimulus-use';
-import { appendCollapsedState } from '../../../helpers/collapsible-helper';
+import { appendCollapsedState } from '../../../helpers/meetings-helpers';
 
 export default class extends Controller {
   static values = {
