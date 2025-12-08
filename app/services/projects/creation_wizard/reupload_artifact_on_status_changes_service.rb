@@ -130,21 +130,5 @@ module Projects::CreationWizard
     def create_pdf_export!
       Project::PDFExport::ProjectInitiation.new(project).export!
     end
-
-    def pdf_attachment
-      export = create_pdf_export!
-      file = OpenProject::Files.create_uploaded_file(
-        name: export.title,
-        content_type: export.mime_type,
-        content: export.content,
-        binary: true
-      )
-
-      Attachment.new(
-        container: nil,
-        author: current_user,
-        file:
-      )
-    end
   end
 end
