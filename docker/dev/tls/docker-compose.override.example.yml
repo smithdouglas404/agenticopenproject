@@ -15,3 +15,4 @@ services:
           - hocuspocus.local
           - minio.local
           - minioadmin.local
+          - jira-software.local
