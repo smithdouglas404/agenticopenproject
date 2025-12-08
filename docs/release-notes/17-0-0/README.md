@@ -16,7 +16,7 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 ## Important feature changes
 
-Take a look at our release video showing the most important features introduced in OpenProject 17.0.0:
+Take a look at our release video showing the most important features introduced in OpenProject 16.6.0:
 
 ![Release video of OpenProject 17.0](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_0_release.mp4)
 
@@ -111,7 +111,7 @@ To avoid duplicate or confusing calendar invites, **users can now subscribe to a
 
 Before OpenProject 17.0, the Microsoft 365 file storage integration was a single combined OneDrive/SharePoint integration available as an Enterprise add-on in the Professional plan. With this release, it is now split into **two separate integrations** — one for **OneDrive** and one for **SharePoint** — giving administrators clearer setup options and more flexibility.
 
-For the SharePoint integration, OpenProject 17.0 introduces support for Microsoft’s *Sites.Selected* permission model. This allows administrators to grant the OpenProject Entra ID application access only to specific SharePoint sites, instead of using the broader *`Files.ReadWrite.All`* permission required in earlier versions.
+For the SharePoint integration, OpenProject 17.0 introduces support for Microsoft's *Sites.Selected* permission model. This allows administrators to grant the OpenProject Entra ID application access only to specific SharePoint sites, instead of using the broader *`Files.ReadWrite.All`* permission required in earlier versions.
 
 This new option helps organizations meet stricter security and compliance requirements while preserving all existing functionality.
 
@@ -132,10 +132,10 @@ OpenProject 17.0 introduces a **major redesign of the project overview**, making
 
 The page is now split into two tabs:
 
-- **Overview** — a clean, structured summary with fixed widgets such as description, status, members, subprojects, news, lifecycle dates, and project attributes.
+- **Overview** — a clean, structured summary with fixed widgets such as description, status, members, subitems, news, lifecycle dates, and project attributes.
 - **Dashboard** — the fully editable area for custom widgets, now without the previous right-hand panel.
 
-The redesign also introduces **new widgets** (Budget, Sub-items) and improves existing ones through updated Primer styling. Administrators can additionally decide whether specific **project attribute sections** appear in the sidebar or directly in the main Overview as dedicated widgets.
+The redesign also introduces a **new widget for Subitems** and improves existing ones through updated Primer styling. Administrators can additionally decide whether specific **project attribute sections** appear in the sidebar or directly in the main Overview as dedicated widgets.
 
 ![OpenProject Project home showing both the Overview tab and the Dashboard tab](openproject-17-0-home-dashboard-overview.jpg)
 
@@ -187,7 +187,7 @@ These improvements **also benefit several autocompleters throughout the applicat
 
 OpenProject 17.0 continues the accessibility initiative with several enhancements:
 
-- Meaningful ALT text added to functional images (e.g., avatars, document previews).
+- Meaningful ALT text added to functional images (e.g., avatars).
 - Decorative images are now correctly marked to be skipped by screen readers.
 - Charts on the project overview include improved color contrast and descriptive summaries to support assistive technologies.
 - The Gantt chart is now hidden from screen readers to avoid confusing non-informational output.
@@ -196,7 +196,7 @@ These improvements make OpenProject easier to navigate for users relying on scre
 
 ### Enhanced project attribute help texts with captions and direct editing
 
-Administrators can now **manage attribute help texts directly from each project attribute or custom field** without navigating to the separate *Attribute help texts* section. Additionally, a new **caption** field allows adding short clarifying text shown below input fields in forms to guide users more effectively.
+Administrators can now **manage attribute help texts directly from each project attribute or custom field** without navigating to the separate *Attribute help texts* section. Additionally, a new **caption** field allows adding short clarifying text shown below input fields in forms to guide users more effectively. Please note that for now, this only applies for project attributes, not for (work package) custom fields.
 
 Help texts continue to appear in the familiar dialog triggered by the question-mark icon.
 
