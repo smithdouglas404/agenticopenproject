@@ -117,8 +117,7 @@ RSpec.describe IncomingEmails::DispatchService do
       allow(service).to receive_messages(
         mail_from_system?: false,
         ignored_by_header?: false,
-        ignored_user?: false,
-        mail_with_ics_attachment?: false
+        ignored_user?: false
       )
 
       expect(service.send(:ignore_mail?)).to be_falsey
@@ -179,46 +178,6 @@ RSpec.describe IncomingEmails::DispatchService do
 
       it "returns false" do
         expect(service.send(:ignored_by_header?)).to be_falsey
-      end
-    end
-  end
-
-  describe "#mail_with_ics_attachment?" do
-    context "when the mail has no attachments and no part" do
-      it "returns false" do
-        allow(email).to receive(:attachments).and_return([])
-        allow(email).to receive(:multipart?).and_return(false)
-
-        expect(service.send(:mail_with_ics_attachment?)).to be_falsey
-      end
-    end
-
-    context "when the mail has a text/calendar attachment" do
-      let(:email) do
-        Mail.new do
-          from "somebody@example.com"
-          add_file filename: "reponse.ics", content: "BEGIN:VCALENDAR..."
-        end
-      end
-
-      it "logs a message and returns true" do
-        expect(service).to receive(:log).with(/ignoring email with calendar attachment from .*/)
-        expect(service.send(:mail_with_ics_attachment?)).to be_truthy
-      end
-    end
-
-    context "when the mail has a text/calendar part" do
-      let(:email) do
-        Mail.new do
-          from "somebody@example.com"
-          part content_type: "text/plain", body: "This is the body"
-          part content_type: "text/calendar", body: "BEGIN:VCALENDAR...", method: "REPLY"
-        end
-      end
-
-      it "logs a message and returns true" do
-        expect(service).to receive(:log).with(/ignoring email with calendar attachment from .*/)
-        expect(service.send(:mail_with_ics_attachment?)).to be_truthy
       end
     end
   end
