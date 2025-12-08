@@ -16,7 +16,7 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 ## Important feature changes
 
-Take a look at our release video showing the most important features introduced in OpenProject 16.6.0:
+Take a look at our release video showing the most important features introduced in OpenProject 17.0.0:
 
 ![Release video of OpenProject 17.0](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_0_release.mp4)
 
