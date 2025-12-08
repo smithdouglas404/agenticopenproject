@@ -245,6 +245,19 @@ To reflect usage patterns, the tab order in the work package view has been updat
 
 ## Important technical changes
 
+### PostgreSQL update to 17.0
+
+The docker and packaged installations are now using PostgreSQL 17.0 by default. Note that there is no automatic upgrade for your cluster if you are running older versions of PostgreSQL. Please see [our database migration guide](../../installation-and-operations/misc/migration-to-postgresql17/) on how to upgrade to newer versions of PostgreSQL.
+
+For packaged installations using SLES 12 and 15, automatic installation of PostgreSQL has been removed due to incompatible repositories being used. Please [follow the official documentation](https://www.postgresql.org/about/news/installing-postgresql-on-sles-15-just-got-easier-and-better-2814/) on how to upgrade your database for these distributions.
+
+### Removal of special semver
+
+We removed the `special` fragment of the semantic version of OpenProject. This has not been in use.
+Unless you are relying on this value in one of your plugins, you can ignore this change.
+
+Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
+
 ### Built-in OAuth application for easier external client setup
 
 OpenProject now includes a built-in OAuth application that simplifies authentication for external clients such as the mobile app. System administrators no longer need to manually create an OAuth configuration. The default application is available out of the box and can be used immediately for secure, user-based authentication.
