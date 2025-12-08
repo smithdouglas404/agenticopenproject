@@ -536,6 +536,61 @@ RSpec.describe(
         end
       end
 
+      context "with member having an excluded role" do
+        let(:only_args) { %w[members] }
+
+        let!(:user_with_excluded_role) { create(:user) }
+        let!(:user_with_kept_role) { create(:user) }
+        let!(:excluded_role) { create(:project_role, name: "Template Manager") }
+        let!(:kept_role) { create(:project_role, name: "Developer") }
+
+        before do
+          source.update!(excluded_role_ids_on_copy: [excluded_role.id])
+
+          Members::CreateService
+            .new(user: current_user, contract_class: EmptyContract)
+            .call(principal: user_with_excluded_role, roles: [excluded_role], project: source)
+
+          Members::CreateService
+            .new(user: current_user, contract_class: EmptyContract)
+            .call(principal: user_with_kept_role, roles: [kept_role], project: source)
+        end
+
+        it "excludes members with the excluded role" do
+          expect(source.users).to include(user_with_excluded_role, user_with_kept_role)
+
+          expect(subject).to be_success
+
+          # User with excluded role should not be copied
+          expect(project_copy.users).not_to include(user_with_excluded_role)
+
+          # User with kept role should be copied
+          expect(project_copy.users).to include(user_with_kept_role)
+          member = Member.find_by(user_id: user_with_kept_role.id, project_id: project_copy.id)
+          expect(member.roles).to contain_exactly(kept_role)
+        end
+
+        context "when a member has multiple roles, one excluded and one not" do
+          let!(:user_with_both_roles) { create(:user) }
+
+          before do
+            Members::CreateService
+              .new(user: current_user, contract_class: EmptyContract)
+              .call(principal: user_with_both_roles, roles: [excluded_role, kept_role], project: source)
+          end
+
+          it "copies the member but only with the non-excluded role" do
+            expect(subject).to be_success
+
+            # User should be copied but only with the kept role
+            expect(project_copy.users).to include(user_with_both_roles)
+            member = Member.find_by(user_id: user_with_both_roles.id, project_id: project_copy.id)
+            expect(member.roles).to contain_exactly(kept_role)
+            expect(member.roles).not_to include(excluded_role)
+          end
+        end
+      end
+
       context "with work_packages" do
         let(:only_args) { %w[work_packages] }
 
