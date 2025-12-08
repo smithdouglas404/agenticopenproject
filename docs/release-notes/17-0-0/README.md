@@ -28,7 +28,7 @@ Real-time collaboration requires a **running Hocuspocus server**:
 
 - **OpenProject Cloud**: Real-time collaboration is enabled automatically for all Cloud instances.
 - **Container-based on-premises installations** (Docker, Docker Compose, Helm/Kubernetes): Intended to work out of the box with 17.0. A Hocuspocus service will be automatically provided as part of the standard setup.
-- **Package-based installations** (DEB/RPM): Do not include Hocuspocus. These installations will continue using CKEditor-based documents unless administrators set up their own Hocuspocus server and configure OpenProject accordingly.
+- **Package-based installations** (DEB/RPM): Does not include Hocuspocus. These installations will continue using CKEditor-based documents unless administrators set up their own Hocuspocus server and configure OpenProject accordingly.
 
 When real-time editing is enabled, Documents support:
 
@@ -80,7 +80,7 @@ OpenProject 17.0 introduces several great improvements that make meeting prepara
 
 #### Draft mode
 
-New meetings now open in **draft mode**, allowing moderators to prepare agendas, add participants, and structure content without sending invitations or updates prematurely.
+New meetings now open in **draft mode**, allowing moderators to prepare agendas, add participants, and structure content before sending out invitations or updates.
 
 A banner clearly indicates draft mode, and invitations are only sent once the meeting is explicitly opened by clicking on the green "Open meeting" button. Only then, invitations can be sent and the usual update behaviour applies.
 
@@ -97,7 +97,7 @@ Unlike the standard view, changes made by participants are reflected **live** in
 
 #### Multiple text-based outcomes per agenda item
 
-Agenda items can now hold **multiple text-based outcomes**: The **+ Outcome** button remains available while the meeting is *In progress* and allows moderators to record more than one result for the same item. The first outcome is labelled "Outcome", additional ones are numbered ("Outcome 1", "Outcome 2", and so on). These outcomes are also supported in the PDF exports of meetings.
+Agenda items can now hold **multiple text-based outcomes**: The **+ Outcome** button remains available while the meeting is *In progress* and allows moderators to record more than one result for the same item. The first outcome is labelled "Outcome", additional ones are numbered ("Outcome 1", "Outcome 2", and so on). These outcomes are also supported in the PDF exports of meetings. This feature is a preparation for future improvements, such as [creating work packages as outcomes](https://community.openproject.org/work_packages/62093).
 
 ![OpenProject meeting which is in progess, below the first agenda item (a work package) are "Outcome 1" and "Outcome 2" displayed, and the + Outcome button is still available as well](openproject-17-0-meeting-multiple-outcomes.png)
 
@@ -149,17 +149,17 @@ When using blank projects, required custom fields are shown in a separate final 
 
 ### Option to guard the privacy of users not working in the same project more strictly
 
-This release introduces a new global permission that allows administrators to **reduce the visibility of all users in the system**. 
+This release introduces a new global permission that allows administrators to **allow the visibility of all users in the system**. This global permission was previously enabled by default, allowing all users with "Manage members" permission in a project to list all users globally.
 
-When enabled, project administrators only see:
+When this global permission is _not_ assigned, project administrators only see:
 
 - users who share a project with them,
-- users in the same groups, or
+- users in the same groups as them, or
 - users they explicitly invite by email (if permitted).
 
-This prevents unintended disclosure of user names across unrelated teams and helps organizations meet stricter privacy and compliance requirements.
+This prevents unintended disclosure of user names across unrelated teams and helps organizations meet stricter privacy and compliance requirements, especially when multiple unrelated teams are working together inside one installation of OpenProject.
 
-Existing permission configurations are automatically migrated so that **current behavior remains unchanged** unless administrators choose to restrict visibility.
+Existing permission configurations are automatically migrated so that **current behavior remains unchanged** unless administrators choose to restrict visibility. A migrated global role has been created and assigned to all users that previously had "Manage members", to not interrupt any existing workflows.
 
 ![Administration in OpenProject to set permissions for a global role, the permission to "View all users and groups" is checked](openproject-17-0-global-permission-view-all-users-and-groups.png)
 
