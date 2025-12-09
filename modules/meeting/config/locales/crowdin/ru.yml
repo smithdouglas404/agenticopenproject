@@ -274,8 +274,8 @@ ru:
           Любая информация о совещании, не включенная в шаблон, будет потеряна. Вы хотите продолжить?
         confirm_button: "Отменить событие"
     blankslate:
-      title: "There are no meetings to display"
-      desc: "You can create a new meeting or change filter criteria"
+      title: "Нет совещаний для отображения"
+      desc: "Вы можете создать новое совещание или изменить критерии фильтра"
     label_export_pdf: "Экспорт в PDF"
     export:
       your_meeting_export: "Совещание экспортируется"
@@ -520,6 +520,9 @@ ru:
   label_agenda_item_move_to_bottom: "В конец"
   label_agenda_item_move_up: "Вверх"
   label_agenda_item_move_down: "Вниз"
+  label_agenda_item_duplicate: "Duplicate"
+  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
   label_agenda_item_add_notes: "Добавить заметки"
   label_agenda_item_add_outcome: "Добавить итог"
   label_agenda_item_work_package_add: "Добавить пакет работ"
@@ -593,6 +596,8 @@ ru:
   text_agenda_item_not_editable_anymore: "Этот пункт повестки больше не редактируется."
   text_agenda_item_move_next_meeting: "Этот элемент будет перемещен на следующую встречу на %{date} в %{time}."
   text_agenda_item_moved_to_next_meeting: "Пункт повестки дня перенесен на следующее совещание на %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Этот пакет работ пока не включен в повестку предстоящего совещания."
   text_agenda_item_move_next_meeting_cancelled: "Не удалось переместить на следующее совещание, так как оно было отменено."
   text_work_package_add_to_meeting_hint: 'Используйте кнопку "Добавить к совещанию", чтобы добавить этот пакет работ к предстоящему совещанию.'

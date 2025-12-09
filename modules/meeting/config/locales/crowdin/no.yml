@@ -506,6 +506,9 @@
   label_agenda_item_move_to_bottom: "Flytt til bunnen"
   label_agenda_item_move_up: "Flytt opp"
   label_agenda_item_move_down: "Flytt ned"
+  label_agenda_item_duplicate: "Duplicate"
+  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
   label_agenda_item_add_notes: "Legg til notater"
   label_agenda_item_add_outcome: "Add outcome"
   label_agenda_item_work_package_add: "Add work package"
@@ -579,6 +582,8 @@
   text_agenda_item_not_editable_anymore: "Denne dagsorden er ikke redigerbar lenger."
   text_agenda_item_move_next_meeting: "This item will be moved to the next meeting on %{date} at %{time}."
   text_agenda_item_moved_to_next_meeting: "Agenda item moved to the next meeting, on %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Denne arbeidspakken er ikke planlagt i en kommende møteagenda ennå."
   text_agenda_item_move_next_meeting_cancelled: "Unable to move to the next meeting since it has been cancelled."
   text_work_package_add_to_meeting_hint: 'Bruk knappen "Legg til i møte" for å legge til denne arbeidspakken til et kommende møte.'

@@ -499,6 +499,9 @@ vi:
   label_agenda_item_move_to_bottom: "Chuyển đến dưới cùng"
   label_agenda_item_move_up: "Di chuyển lên"
   label_agenda_item_move_down: "Dịch xuống"
+  label_agenda_item_duplicate: "Duplicate"
+  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
   label_agenda_item_add_notes: "Thêm ghi chú"
   label_agenda_item_add_outcome: "Add outcome"
   label_agenda_item_work_package_add: "Add work package"
@@ -572,6 +575,8 @@ vi:
   text_agenda_item_not_editable_anymore: "Mục chương trình nghị sự này không còn có thể chỉnh sửa nữa."
   text_agenda_item_move_next_meeting: "This item will be moved to the next meeting on %{date} at %{time}."
   text_agenda_item_moved_to_next_meeting: "Agenda item moved to the next meeting, on %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Gói công việc này chưa được lên lịch trong chương trình nghị sự cuộc họp sắp tới."
   text_agenda_item_move_next_meeting_cancelled: "Unable to move to the next meeting since it has been cancelled."
   text_work_package_add_to_meeting_hint: 'Sử dụng nút "Thêm vào cuộc họp" để thêm gói công việc này vào một cuộc họp sắp tới.'

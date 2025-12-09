@@ -87,9 +87,9 @@ ru:
     active_editors: "Активные редакторы"
     active_editors_count:
       one: "1 active editor"
-      few: "%{count} active editors"
-      many: "%{count} active editors"
-      other: "%{count} active editors"
+      few: "%{count} активных редактора"
+      many: "%{count} активных редакторов"
+      other: "%{count} активных редакторов"
     label_attachment_author: "Автор вложения"
     label_categories: "Категории"
     new_category: "Новая категория"

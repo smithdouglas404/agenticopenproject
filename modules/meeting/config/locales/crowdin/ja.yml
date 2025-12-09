@@ -499,6 +499,9 @@ ja:
   label_agenda_item_move_to_bottom: "一番下へ移動"
   label_agenda_item_move_up: "上へ"
   label_agenda_item_move_down: "下へ移動"
+  label_agenda_item_duplicate: "Duplicate"
+  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
   label_agenda_item_add_notes: "注記の追加"
   label_agenda_item_add_outcome: "結果を追加"
   label_agenda_item_work_package_add: "ワークパッケージの追加"
@@ -572,6 +575,8 @@ ja:
   text_agenda_item_not_editable_anymore: "この議題項目はもう編集できません。"
   text_agenda_item_move_next_meeting: "このアイテムは、 %{date} の %{time} の次のミーティングに移動されます。"
   text_agenda_item_moved_to_next_meeting: "議題アイテムが %{date}の次のミーティングに移動されました"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "このワークパッケージは、まだ今後の会議の議題に予定されていません。"
   text_agenda_item_move_next_meeting_cancelled: "次回の会議がキャンセルされたため、移動できない。"
   text_work_package_add_to_meeting_hint: '「会議に追加」ボタンを使用して、このワークパッケージを今後の会議に追加してください。'

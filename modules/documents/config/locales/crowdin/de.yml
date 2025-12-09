@@ -82,7 +82,7 @@ de:
       all: "Alle Dokumente"
       types: "Typen"
       collaboration_settings: "Echtzeit-Kollaboration"
-    last_updated_at: "Zuletzt aktualisiert %{time}."
+    last_updated_at: "Zuletzt gespeichert %{time}."
     active_editors: "Aktive Bearbeiter"
     active_editors_count:
       one: "1 active editor"

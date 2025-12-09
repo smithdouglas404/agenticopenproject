@@ -459,8 +459,8 @@ ru:
         placeholder: Поиск портфолио
       sub_items_html:
         one: "<strong>1</strong> подпункт"
-        few: "<strong>%{count}</strong> sub-items"
-        many: "<strong>%{count}</strong> sub-items"
+        few: "<strong>%{count}</strong> подпункта"
+        many: "<strong>%{count}</strong> подпунктов"
         other: "<strong>%{count}</strong> подпунктов"
     lists:
       active: "Активные портфолио"
@@ -1490,8 +1490,8 @@ ru:
         not_a_datetime: "дата и время не являются допустимыми."
         not_a_number: "не является числом."
         not_allowed: "неверно, ввиду отсутствия прав."
-        not_json: "is not parseable as JSON."
-        not_json_object: "is not a JSON object."
+        not_json: "не может быть разобран как JSON."
+        not_json_object: "не является объектом JSON."
         not_an_integer: "не является целым числом."
         not_an_iso_date: "недопустимая дата. Требуемый формат: гггг-мм-дд."
         not_same_project: "не принадлежит тому же проекту."
@@ -2180,7 +2180,7 @@ ru:
   button_print: "Печать"
   button_quote: "Цитата"
   button_remove: Удалить
-  button_remove_permanently: "Remove permanently"
+  button_remove_permanently: "Удалить навсегда"
   button_remove_reminder: "Удалить напоминание"
   button_rename: "Переименовать"
   button_replace: "Заменить"
@@ -2579,7 +2579,7 @@ ru:
         title: "Напишите внутренние комментарии только небольшой группы"
         description: " "
       portfolio_management:
-        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
+        description: Приведите Ваши проекты в соответствии с Вашими стратегическими целями, организовав их в портфолио и программы.
     teaser:
       title:
         one: "Остался день для пробного токена %{trial_plan}"
@@ -4328,7 +4328,7 @@ ru:
   setting_emails_salutation: "Адрес пользователя в письмах с"
   setting_oauth_allow_remapping_of_existing_users: "Разрешить перераспределение существующих пользователей"
   setting_sendmail_location: "Расположение исполняемого файла sendmail"
-  setting_sendmail_arguments: "Arguments for sendmail"
+  setting_sendmail_arguments: "Аргументы для sendmail"
   setting_smtp_enable_starttls_auto: "Автоматически использовать STARTTLS, если таковые имеются"
   setting_smtp_ssl: "Использовать SSL-подключение"
   setting_smtp_address: "SMTP сервер"
@@ -4492,8 +4492,8 @@ ru:
   setting_working_days: "Рабочие дни"
   settings:
     errors:
-      not_writable: "The setting is not writable and can only be changed by a sysadmin."
-      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
+      not_writable: "Эта настройка недоступна для записи и может быть изменена только администратором."
+      failed_to_update: "Настройка '%{name}' не может быть обновлена: %{message}"
     authentication:
       login: "Входное имя"
       registration: "Регистрация"
@@ -4771,7 +4771,7 @@ ru:
     Примечание: Если этот параметр включен, значок с вашим статусом установки будет отображен в панели администрирования <a href="%{information_panel_path}">%{information_panel_label}</a> и на домашней странице. Он отображается только администраторам. <br/> Знак будет проверять текущую версию OpenProject в официальной базе данных релизов OpenProject для оповещения вас о каких-либо обновлениях или известных уязвимостях. Для дополнительной информации, необходимой для проверки доступных обновлений, и о том как отключить эту проверку, пожалуйста, посетите <a href="%{more_info_url}">конфигурации документации</a>.
   text_own_membership_delete_confirmation: "Вы собираетесь удалить все или некоторые разрешения, доступные Вам. Вы не сможете редактировать проект после этого действия. Вы уверены?"
   text_permanent_delete_confirmation_checkbox_label: "Я понимаю, что это удаление невозможно отменить"
-  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "Я понимаю, что это удаление не может быть отменено"
   text_plugin_assets_writable: "Папка активов дополнения(plugin) доступна для записи"
   text_powered_by: "С использованием %{link}"
   text_project_identifier_info: "Разрешены только строчные буквы (a-z), цифры, тире и знаки подчеркивания, начинать с буквы нижнего регистра."

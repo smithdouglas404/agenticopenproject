@@ -499,6 +499,9 @@ zh-TW:
   label_agenda_item_move_to_bottom: "移到底部"
   label_agenda_item_move_up: "向上移 "
   label_agenda_item_move_down: "向下移 "
+  label_agenda_item_duplicate: "Duplicate"
+  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
   label_agenda_item_add_notes: "新增註記"
   label_agenda_item_add_outcome: "新增結果"
   label_agenda_item_work_package_add: "新增工作套件"
@@ -572,6 +575,8 @@ zh-TW:
   text_agenda_item_not_editable_anymore: "本次會議已不可編輯。"
   text_agenda_item_move_next_meeting: "本項目將移至 %{date} %{time}的下次會議上討論。"
   text_agenda_item_moved_to_next_meeting: "議程項目移至下次會議討論： %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "該工作套件尚未被安排到即將舉行的會議議程中。"
   text_agenda_item_move_next_meeting_cancelled: "由於下次會議已被取消，因此無法轉到下次會議。"
   text_work_package_add_to_meeting_hint: '使用"增加到會議"按鈕將此工作套件新增到即將舉行的會議。'
