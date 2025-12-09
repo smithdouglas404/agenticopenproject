@@ -202,7 +202,7 @@ RSpec.describe Projects::CreationWizard::ReuploadArtifactOnStatusChangesService,
           .to have_received(:call)
           .with(container: work_package,
                 project_storage:,
-                file_path: "project_mandate",
+                file_path: "Project mandate",
                 filename: /.*_Project_mandate_#{status_new.name}_#{date}_\d+-\d+.pdf/,
                 file_data: instance_of(StringIO))
       end

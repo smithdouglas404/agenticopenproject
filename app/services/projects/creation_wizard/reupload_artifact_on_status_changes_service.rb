@@ -32,16 +32,17 @@ module Projects::CreationWizard
   class ReuploadArtifactOnStatusChangesService
     include Contracted
     include ProjectHelper
+    include ArtifactExporter
     include Rails.application.routes.url_helpers
     prepend Projects::Concerns::UpdateDemoData
 
-    attr_reader :current_user, :work_package
+    attr_reader :current_user, :artifact_work_package
 
-    delegate :project, to: :work_package
+    delegate :project, to: :artifact_work_package
 
     def initialize(current_user:, work_package:)
       @current_user = current_user
-      @work_package = work_package
+      @artifact_work_package = work_package
     end
 
     def call!(changes:)
@@ -55,7 +56,7 @@ module Projects::CreationWizard
     end
 
     def update_is_artifact_work_package?
-     project.project_creation_wizard_artifact_work_package_id.to_s == work_package.id.to_s
+      project.project_creation_wizard_artifact_work_package_id.to_s == artifact_work_package.id.to_s
     end
 
     private
@@ -63,9 +64,9 @@ module Projects::CreationWizard
     def update_artifact
       call = store_artifact
       if call.success?
-        Rails.logger.debug { "Updated artifact for creation wizard in ##{work_package.id}" }
+        Rails.logger.debug { "Updated artifact for creation wizard in ##{artifact_work_package.id}" }
       else
-        Rails.logger.error("Failed to process artifact change for work package ##{work_package.id}: ##{call.message}")
+        Rails.logger.error("Failed to process artifact change for ##{artifact_work_package.id}: ##{call.message}")
       end
     end
 
@@ -81,31 +82,6 @@ module Projects::CreationWizard
       upload_artifact_to_storage
     end
 
-    def store_attachment_locally?
-      project.project_creation_wizard_artifact_export_type == "attachment"
-    end
-
-    def upload_artifact_to_storage
-      export = create_pdf_export!
-
-      Storages::UploadFileService
-        .call(
-          container: work_package,
-          project_storage:,
-          file_path: project.project_creation_wizard_artifact_name,
-          file_data: StringIO.new(export.content),
-          filename: export.title
-        )
-    end
-
-    def project_storage
-      return @project_storage if defined?(@project_storage)
-
-      @project_storage = project
-        .project_storages
-        .find_by(id: project.project_creation_wizard_artifact_export_storage)
-    end
-
     def add_attachment_locally
       export = create_pdf_export!
       file = OpenProject::Files.create_uploaded_file(
@@ -115,7 +91,7 @@ module Projects::CreationWizard
         binary: true
       )
 
-      attachment = work_package.attachments.create(
+      attachment = artifact_work_package.attachments.create(
         author: current_user,
         file:
       )
@@ -125,10 +101,6 @@ module Projects::CreationWizard
       else
         ServiceResult.failure(result: attachment, errors: attachment.errors)
       end
-    end
-
-    def create_pdf_export!
-      Project::PDFExport::ProjectInitiation.new(project).export!
     end
   end
 end
