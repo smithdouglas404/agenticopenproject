@@ -24,7 +24,6 @@ Below you will find a complete list of all changes and bug fixes.
 - Bugfix: Error when creating a new work package after the previous one is opened in details view \[[#67980](https://community.openproject.org/wp/67980)\]
 - Bugfix: OpenID Connect: Claims escaped twice \[[#69079](https://community.openproject.org/wp/69079)\]
 - Bugfix: Disable editing of sendmail attributes through UI \[[#69577](https://community.openproject.org/wp/69577)\]
-- Changed: Restrict editing of user email addresses to superadmins, rather than "Manage user" permissions \[[#69578](https://community.openproject.org/wp/69578)\]
 
 
 <!-- END AUTOMATED SECTION -->
