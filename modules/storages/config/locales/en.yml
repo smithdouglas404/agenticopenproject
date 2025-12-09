@@ -130,6 +130,7 @@ en:
       messages:
         error: An unexpected error occurred. Please check OpenProject logs for more information or contact an administrator
         unauthorized: OpenProject could not authenticate with the Storage Provider. Please ensure that you have access to it.
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
       models:
         copy_project_folders_service:
           conflict: The folder %{destination_path} already exists. Interrupting process to avoid overwrites.

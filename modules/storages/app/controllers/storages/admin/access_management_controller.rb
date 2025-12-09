@@ -69,6 +69,7 @@ class Storages::Admin::AccessManagementController < ApplicationController
     end
 
     service_result.on_failure do
+      @storage.errors.merge!(service_result.errors)
       update_via_turbo_stream(component: Storages::Admin::Forms::AccessManagementFormComponent.new(@storage, in_wizard: true))
       respond_with_turbo_streams
     end
@@ -82,6 +83,7 @@ class Storages::Admin::AccessManagementController < ApplicationController
     end
 
     service_result.on_failure do
+      @storage.errors.merge!(service_result.errors)
       update_via_turbo_stream(component: Storages::Admin::Forms::AccessManagementFormComponent.new(@storage))
     end
 
