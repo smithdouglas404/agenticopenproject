@@ -73,7 +73,11 @@ Under the *Items* tab you can specify which hierarchy items should be selectable
 
 ![Items tab for a hierarchy custom field in OpenProject administration](openproject_system_guide_hierarchy_field_add_item_button.png)
 
-You can then specify labels and short names for each of the items you want to add. The short name can be used e.g. for an abbreviation of a name or another associated short description. The short name is optional and will be displayed next to the item label in brackets. 
+You can then specify **labels** and **short names** for each item you want to add. The short name can be used, for example, as an abbreviation or an alternative description. It is optional and will be displayed next to the item label in brackets.
+
+> [!TIP]
+>
+> Short names are searchable in work package forms. This is especially useful when a custom field has many items, making it easier to find the right one quickly.
 
 ![Add an item to the hierarchy custom field in OpenProject administration](openproject_system_guide_hierarchy_field_add_item_form.png)
 
