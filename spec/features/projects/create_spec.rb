@@ -116,6 +116,7 @@ RSpec.describe "Projects", "creation",
       create(:list_project_custom_field,
              name: "List CF",
              is_required: true,
+             is_for_all: true,
              multi_value: true,
              project_custom_field_section:)
     end
@@ -177,6 +178,7 @@ RSpec.describe "Projects", "creation",
       create(:version_project_custom_field,
              name: "Version CF",
              is_required: true,
+             is_for_all: true,
              multi_value: true,
              project_custom_field_section:)
     end
@@ -258,7 +260,14 @@ RSpec.describe "Projects", "creation",
                                            project_custom_field_section:)
       end
 
-      it "renders required custom fields for new" do
+      shared_let(:required_but_inactive_custom_field) do
+        create(:text_project_custom_field,
+               name: "Required inactive",
+               is_required: true,
+               project_custom_field_section:)
+      end
+
+      it "renders activated required custom fields for new" do
         visit new_project_path
 
         expect(page).to have_heading "New project"
@@ -275,7 +284,12 @@ RSpec.describe "Projects", "creation",
         expect(page).to have_text("3 of 3")
         expect(page).to have_field "Required Foo *"
         expect(page).to have_field "Required User *"
+
+        # Optional fields should not be shown
         expect(page).to have_no_field "Optional Foo"
+
+        # Inactive fields, even if required, should not be shown
+        expect(page).to have_no_field "Required Inactive *"
       end
     end
 

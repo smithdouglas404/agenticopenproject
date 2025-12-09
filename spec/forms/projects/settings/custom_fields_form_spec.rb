@@ -34,25 +34,48 @@ RSpec.describe Projects::Settings::CustomFieldsForm,
                type: :forms,
                with_ee: %i[calculated_values],
                with_flag: { calculated_value_project_attribute: true } do
-  let(:string_project_custom_field) { create(:string_project_custom_field, name: "String field", is_required: true) }
-  let(:boolean_project_custom_field) { create(:boolean_project_custom_field, name: "Boolean field", is_required: true) }
-  let(:text_project_custom_field) { create(:text_project_custom_field, name: "Text field", is_required: true) }
-  let(:integer_project_custom_field) { create(:integer_project_custom_field, name: "Integer field", is_required: true) }
-  let(:float_project_custom_field) { create(:float_project_custom_field, name: "Float field", is_required: true) }
-  let(:date_project_custom_field) { create(:date_project_custom_field, name: "Date field", is_required: true) }
+  let(:string_project_custom_field) do
+    create(:string_project_custom_field, name: "String field", is_required: true, is_for_all: true)
+  end
+  let(:boolean_project_custom_field) do
+    create(:boolean_project_custom_field, name: "Boolean field", is_required: true, is_for_all: true)
+  end
+  let(:text_project_custom_field) do
+    create(:text_project_custom_field, name: "Text field", is_required: true, is_for_all: true)
+  end
+  let(:integer_project_custom_field) do
+    create(:integer_project_custom_field, name: "Integer field", is_required: true, is_for_all: true)
+  end
+  let(:float_project_custom_field) do
+    create(:float_project_custom_field, name: "Float field", is_required: true, is_for_all: true)
+  end
+  let(:date_project_custom_field) do
+    create(:date_project_custom_field, name: "Date field", is_required: true, is_for_all: true)
+  end
   let(:list_project_custom_field) do
-    create(:list_project_custom_field, name: "List field", is_required: true, possible_values: ["eins", "zwei", "drei"])
+    create(:list_project_custom_field,
+           name: "List field",
+           is_required: true,
+           is_for_all: true,
+           possible_values: %w[eins zwei drei])
   end
   let(:multi_list_project_custom_field) do
     create(:list_project_custom_field,
            name: "Multi-list field",
            is_required: true,
+           is_for_all: true,
            multi_value: true,
-           possible_values: ["uno", "due", "tre", "quattro"])
+           possible_values: %w[uno due tre quattro])
   end
-  let(:version_project_custom_field) { create(:version_project_custom_field, name: "Version field", is_required: true) }
-  let(:user_project_custom_field) { create(:user_project_custom_field, name: "User field", is_required: true) }
-  let(:link_project_custom_field) { create(:link_project_custom_field, name: "Link field", is_required: true) }
+  let(:version_project_custom_field) do
+    create(:version_project_custom_field, name: "Version field", is_required: true, is_for_all: true)
+  end
+  let(:user_project_custom_field) do
+    create(:user_project_custom_field, name: "User field", is_required: true, is_for_all: true)
+  end
+  let(:link_project_custom_field) do
+    create(:link_project_custom_field, name: "Link field", is_required: true, is_for_all: true)
+  end
   let!(:calculated_project_custom_field) do
     create(:calculated_value_project_custom_field, name: "Calculated field", is_required: true, is_for_all: true)
   end
@@ -135,7 +158,7 @@ RSpec.describe Projects::Settings::CustomFieldsForm,
     end
   end
 
-  it "does not render the required calculated field" do
+  it "does not render the activated and required calculated field" do
     expect(page).to have_no_text("Calculated field")
     expect(page).to have_no_field("Calculated field", disabled: true)
   end

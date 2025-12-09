@@ -45,6 +45,7 @@ module Projects
       def custom_fields
         @custom_fields ||= model
           .available_custom_fields
+          .for_all
           .required
       end
     end
