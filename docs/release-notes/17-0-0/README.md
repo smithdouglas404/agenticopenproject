@@ -49,7 +49,7 @@ When real-time editing is enabled, Documents support:
 >[!NOTE]
 > If real-time collaboration is enabled but no functioning Hocuspocus server is reachable, OpenProject does not fall back to CKEditor. Instead, the document editor is temporarily hidden and an error banner is shown with an option to retry. Once the connection to the collaboration server is restored, the editor becomes available again automatically.
 
-screenshot
+![OpenProject Documents module showing a document "Planning of the year 2026" with 3 active editors](openproject-documents-collaboration-1.png)
 
 ### Programs and portfolios for strategic structuring (Enterprise add-on)
 
@@ -215,6 +215,13 @@ Depending on screen size:
 ...are shown.
 
 If no custom logo is provided, the OpenProject logo remains the default.
+
+### Required project attributes
+
+Project attributes now have a separate **Required** setting. This works in the same way as for work package custom fields and controls whether a value is mandatory when editing a project. It is independent from the existing **For all projects** option, which still defines whether the attribute is activated in every project.
+
+>[!NOTE]
+> When upgrading to OpenProject 17.0, all project attributes that are configured **For all projects** are automatically set to **Required** so that existing mandatory fields keep their behavior.
 
 ### Support for non-nested long text fields in PDF exports
 
