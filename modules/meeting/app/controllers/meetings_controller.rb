@@ -433,7 +433,10 @@ class MeetingsController < ApplicationController
   end
 
   def find_meeting
-    @meeting = Meeting
+    scope = @project ? @project.meetings : Meeting.all
+
+    @meeting = scope
+      .visible
       .includes([:project, :author, { participants: :user }, :sections, { agenda_items: :outcomes }])
       .find(params[:id])
   end

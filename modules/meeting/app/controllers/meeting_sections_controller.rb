@@ -204,7 +204,7 @@ class MeetingSectionsController < ApplicationController
   private
 
   def set_meeting
-    @meeting = Meeting.find(params[:meeting_id])
+    @meeting = Meeting.visible.find(params[:meeting_id])
     @project = @meeting.project # required for authorization via before_action
   end
 
@@ -219,11 +219,14 @@ class MeetingSectionsController < ApplicationController
   end
 
   def set_meeting_section
-    @meeting_section = MeetingSection.find(params[:id])
+    @meeting_section = @meeting.sections.find(params[:id])
   end
 
   def set_current_occurrence
-    @current_occurrence = Meeting.find_by(id: params[:current_occurrence])
+    @current_occurrence = @project
+      .meetings
+      .visible
+      .find_by(id: params[:current_occurrence])
   end
 
   def set_collapsed_state
