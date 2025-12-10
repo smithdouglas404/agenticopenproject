@@ -50,7 +50,7 @@ gem 'rails_autolink', '~> 1.1.6'
 gem 'will_paginate', '~> 3.0'
 gem 'acts_as_list', '~> 0.3.0'
 
-gem 'awesome_nested_set', github: 'finnlabs/awesome_nested_set', branch: 'v2.1.6-rails4'
+# gem 'awesome_nested_set'#, github: 'collectiveidea/awesome_nested_set', branch: 'v2.1.6-rails4'
 
 gem 'color-tools', '~> 1.3.0', require: 'color'
 
@@ -79,7 +79,7 @@ gem 'daemons'
 
 # include custom rack-protection for now until rkh/rack-protection is fixed and released
 # (see https://community.openproject.org/work_packages/3029)
-gem 'rack-protection', git: 'https://github.com/finnlabs/rack-protection.git', ref: '5a7d1bd'
+# gem 'rack-protection', git: 'https://github.com/finnlabs/rack-protection.git', ref: '5a7d1bd'
 
 # Rack::Attack is a rack middleware to protect your web app from bad clients.
 # It allows whitelisting, blacklisting, throttling, and tracking based on arbitrary properties of the request.
@@ -150,11 +150,11 @@ group :test do
   # also add to development group, so "spec" rake task gets loaded
   gem 'rspec-rails', '~> 3.3.0', group: :development
   gem 'rspec-activemodel-mocks'
-  gem 'rspec-example_disabler', git: 'https://github.com/finnlabs/rspec-example_disabler.git'
+  # gem 'rspec-example_disabler', git: 'https://github.com/finnlabs/rspec-example_disabler.git'
   gem 'rspec-legacy_formatters'
   gem 'capybara', '~> 2.3.0'
   gem 'capybara-screenshot', '~> 1.0.4'
-  gem 'capybara-select2', github: 'goodwill/capybara-select2'
+  # gem 'capybara-select2', github: 'goodwill/capybara-select2'
   gem 'capybara-ng', '~> 0.2.1'
   gem 'selenium-webdriver', '~> 2.45.0'
   gem 'timecop', '~> 0.7.1'
@@ -166,7 +166,7 @@ group :test do
   gem 'shoulda-matchers', '~> 2.8', require: nil
   gem 'json_spec'
   gem 'activerecord-tableless', '~> 1.0'
-  gem 'codecov', require: nil
+  # gem 'codecov', require: nil
   gem 'equivalent-xml', '~> 0.5.1'
 end
 

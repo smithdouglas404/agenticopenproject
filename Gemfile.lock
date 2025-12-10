@@ -1,34 +1,4 @@
 GIT
-  remote: git://github.com/finnlabs/awesome_nested_set.git
-  revision: 787a9cdcd4d11f9c09f4800520f5968c740110f4
-  branch: v2.1.6-rails4
-  specs:
-    awesome_nested_set (2.1.6)
-      activerecord (>= 3.0.0)
-
-GIT
-  remote: git://github.com/goodwill/capybara-select2.git
-  revision: c0826f33707b85fd39a838c6909ee12d0bff64a1
-  specs:
-    capybara-select2 (1.0.1)
-      capybara
-      rspec
-
-GIT
-  remote: https://github.com/finnlabs/rack-protection.git
-  revision: 5a7d1bd2f05ca75faf7909c8cc978732a0080898
-  ref: 5a7d1bd
-  specs:
-    rack-protection (1.5.2)
-      rack
-
-GIT
-  remote: https://github.com/finnlabs/rspec-example_disabler.git
-  revision: deb9c38e3f4e3688724583ac1ff58e1ae8aba409
-  specs:
-    rspec-example_disabler (0.0.1)
-
-GIT
   remote: https://github.com/rails/prototype_legacy_helper.git
   revision: a2cd95c3e3c1a4f7a9566efdab5ce59c886cb05f
   specs:

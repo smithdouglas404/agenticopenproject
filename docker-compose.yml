@@ -1,0 +1,32 @@
+services:
+  db:
+    platform: "linux/amd64"
+    image: postgres:13.23
+    environment:
+      POSTGRES_DB: openproject
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: openproject
+    image: openproject:latest
+    platform: "linux/arm64"
+    # ports:
+    #   - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/openproject
+      RAILS_ENV: production
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+
+volumes:
+  postgres_data:
+  bundle_cache:
