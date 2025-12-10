@@ -84,7 +84,7 @@ module Portfolios
     def skeleton_classes
       # Mimik the behaviour of the filter section.
       # Have it expanded if filters are present. Hide it otherwise.
-      "op-filters-form #{'-expanded' if params[:filters]}"
+      "op-filters-form op-filters-form_top-margin #{'-expanded' if params[:filters]}"
     end
   end
 end
