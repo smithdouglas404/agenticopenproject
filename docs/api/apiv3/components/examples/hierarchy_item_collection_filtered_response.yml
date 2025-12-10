@@ -10,6 +10,8 @@ value:
         id: 1338
         label: Stormtroopers
         short: ST
+        weight: null
+        formattedWeight: null
         depth: 1
         _links:
           self:
@@ -27,6 +29,8 @@ value:
         id: 1340
         label: ST-377
         short: null
+        weight: null
+        formattedWeight: null
         depth: 2
         _links:
           self:
@@ -44,6 +48,8 @@ value:
         id: 1341
         label: ST-422
         short: null
+        weight: null
+        formattedWeight: null
         depth: 2
         _links:
           self:

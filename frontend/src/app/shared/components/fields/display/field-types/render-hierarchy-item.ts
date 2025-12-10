@@ -70,7 +70,7 @@ function spansFromAncestors(ancestors:CollectionResource):HTMLSpanElement[] {
         spans.push(short);
       } else if (el.weight !== null) {
         const weight = document.createElement('span');
-        weight.textContent = `(${el.weight})`;
+        weight.textContent = `(${el.formattedWeight})`;
         weight.className = 'color-fg-subtle';
         spans.push(weight);
       }

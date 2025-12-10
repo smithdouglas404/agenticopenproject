@@ -33,14 +33,16 @@ module API
         class HierarchicalItemAggregate
           attr_accessor :depth
 
-          delegate :id, :label, :short, :parent, :children, :root?, to: :item
+          delegate :id, :label, :short, :weight, :parent, :children, :root?, to: :item
 
           def initialize(item:, depth:)
             @item = item
             @depth = depth
           end
 
-          def weight
+          def formatted_weight
+            return nil if weight.nil?
+
             weight_formatter.format(item:)
           end
 

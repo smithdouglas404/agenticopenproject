@@ -46,6 +46,8 @@ module API
 
           property :weight, render_nil: true
 
+          property :formatted_weight, render_nil: true
+
           property :depth,
                    render_nil: true,
                    exec_context: :decorator,
