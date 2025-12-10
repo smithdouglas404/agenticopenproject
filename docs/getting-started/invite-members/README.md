@@ -16,7 +16,8 @@ In order to see a project and work in it, you have to be a member of a project. 
 
 </div>
 
-> **Note**: If you are not a member of a project, you do not see the project in the Project selection nor in the project list.
+> [!NOTE]
+> If you are not a member of a project, you do not see the project in the Project selection nor in the project or portfolio lists.
 
 | Topic                                                        | Content                                                      |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -72,9 +73,25 @@ In the header menu that is always present, you find a **plus** icon that allows 
 
 ![Button to invite new users in the header navigation of OpenProject](openproject_getting_started_invite_new_user_header_navigation.png)
 
-Once you click the **Invite user**, a dialogue will open. Here you can select the project, to which you want to invite new members and which roles they get.
+Once you click the **Invite user**, a dialogue will open. Here you can select the project, to which project you want to invite new members. Select whether the permissions assigned to the new user should be based on an existing user role, group or a [placeholder user](../../system-admin-guide/users-permissions/placeholder-users/) permissions.
 
 ![Pop up form to invite new user in OpenProject](openproject_getting_started_invite_new_user_popover_form.png)
+
+Click **Continue** to proceed. 
+
+![Form to specify user and permissions when inviting new users to a project in OpenProject](openproject_getting_started_invite_new_user_popover_form_invitation_message.png)
+
+If you selected *User* or *Group* in the previous step, you can either select an existing user in your instance from the dropdown list of enter an email address to invite a new one. You can then assign a specific role to that user within the project and provide context by adding an invitation message.
+
+> [!TIP]
+>
+> If you do not have a global permission to **View all users and groups **, you will not see all users of your instance.  The selection is limited to users who you share a project with or are in the same group with. 
+
+If you chose to add a *Placeholder user*, you can enter the name of a user to assigned a role. 
+
+![Form to add a placeholder user to a project in OpenProject](openproject_getting_started_invite_new_user_popover_form_placeholder_user.png)
+
+Click **Invite** to trigger an invitation. 
 
 **Invite within a work package**
 
