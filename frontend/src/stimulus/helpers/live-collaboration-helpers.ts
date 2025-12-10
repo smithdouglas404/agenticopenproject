@@ -46,6 +46,7 @@ class LiveCollaborationManagerClass {
    * @returns void
    */
   initializeYjsProvider(provider:HocuspocusProvider) {
+    this.destroyYjsProvider(); // Clean up old state first
     this.yjsProviderInstance = provider;
     this.listeners.forEach((listener) => listener(this.yjsProviderInstance!));
   }
@@ -60,11 +61,27 @@ class LiveCollaborationManagerClass {
   }
 
   /**
-   * Cleans up the shared Y.Doc instance.
+   * Cleans up the shared Y.Doc instance and provider.
    * This method should be called when a collaboration session is ended
    */
   destroy():void {
-    this.ydocInstance = null;
+    this.destroyYjsProvider();
+    this.destroyYdoc();
+    this.listeners = [];
+  }
+
+  private destroyYjsProvider():void {
+    if (this.yjsProviderInstance) {
+      this.yjsProviderInstance.destroy();
+      this.yjsProviderInstance = null;
+    }
+  }
+
+  private destroyYdoc():void {
+    if (this.ydocInstance) {
+      this.ydocInstance.destroy();
+      this.ydocInstance = null;
+    }
   }
 
   /**

@@ -44,14 +44,14 @@ export default class extends Controller {
   declare readonly documentNameValue:string;
 
   connect():void {
-    LiveCollaborationManager.initializeYjsProvider(
-      new HocuspocusProvider({
-        url: this.hocuspocusUrlValue,
-        name: this.documentNameValue,
-        token: this.oauthTokenValue,
-        document: LiveCollaborationManager.ydoc,
-      })
-    );
+    const provider = new HocuspocusProvider({
+      url: this.hocuspocusUrlValue,
+      name: this.documentNameValue,
+      token: this.oauthTokenValue,
+      document: LiveCollaborationManager.ydoc,
+    });
+
+    LiveCollaborationManager.initializeYjsProvider(provider);
   }
 
   disconnect():void {

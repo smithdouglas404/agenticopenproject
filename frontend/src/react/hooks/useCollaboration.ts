@@ -81,7 +81,6 @@ function useCollaborationProvider(
     return () => {
       provider.off('synced', onSynced);
       provider.off('disconnect', onDisconnect);
-      provider.destroy();
     };
   }, [provider, onSynced, onDisconnect]);
 }
