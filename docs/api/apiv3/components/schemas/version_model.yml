@@ -125,3 +125,5 @@ example:
   status: open
   sharing: system
   customField14: '1234567890'
+  createdAt: "2025-12-10T13:37:00Z"
+  updatedAt: "2025-12-10T13:37:00Z"
