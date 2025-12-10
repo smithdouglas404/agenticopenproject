@@ -42,7 +42,7 @@ export default class extends ApplicationController {
   declare readonly usersTarget:HTMLElement;
   declare readonly popoverTarget:HTMLElement;
 
-  private provider:HocuspocusProvider|undefined;
+  private provider:HocuspocusProvider|null = null;
   private currentUsers = new Map<number, LiveUser>();
 
   connect() {
@@ -57,8 +57,11 @@ export default class extends ApplicationController {
 
   disconnect() {
     this.currentUsers.clear();
+
     this.provider?.off('awarenessUpdate', this.onAwarenessUpdate);
-    this.provider?.on('stateless', this.onStateless);
+    this.provider?.off('stateless', this.onStateless);
+
+    this.provider = null;
   }
 
   toggle_popover() {
