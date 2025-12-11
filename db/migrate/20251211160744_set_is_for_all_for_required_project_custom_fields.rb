@@ -28,45 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Migration
-  module Utils
-    UpdateResult = Struct.new(:row, :updated)
+require Rails.root.join("db/migrate/migration_utils/utils")
 
-    def say_with_time_silently(message, &)
-      say_with_time message do
-        suppress_messages(&)
-      end
-    end
+class SetIsForAllForRequiredProjectCustomFields < ActiveRecord::Migration[8.0]
+  include Migration::Utils
 
-    def in_configurable_batches(klass, default_batch_size: 1000)
-      batches = ENV["OPENPROJECT_MIGRATION_BATCH_SIZE"]&.to_i || default_batch_size
-
-      yield klass.in_batches(of: batches)
-    end
-
-    def remove_index_if_exists(table_name, index_name)
-      if index_name_exists? table_name, index_name
-        remove_index table_name, name: index_name
-      end
-    end
-
-    ##
-    # Executes the given SQL query while passing in sanitized parameters.
+  def change
+    # With WP-69399, project custom fields support both required and is_for_all as separate flags.
+    # Before, there was only is_required, which implied is_for_all.
     #
-    # @param query [String] SQL query including parameter references like `:param`
-    # @param params [Hash] Hash containing values for referenced parameters
-    #
-    # @raise [ActiveRecord::ActiveRecordError] If the query fails
-    # @return [PG::Result]
-    #
-    # Example:
-    #
-    #   execute_sql "select id from users where mail = :email", email: params[:email]
-    #
-    def execute_sql(query, params = {})
-      query = ActiveRecord::Base.sanitize_sql [query, params]
-
-      ActiveRecord::Base.connection.execute query
+    # Take all project custom fields that are required and set is_for_all to true:
+    required_pcfs = ProjectCustomField.where(is_required: true)
+    in_configurable_batches(required_pcfs) do |batch|
+      batch.update_all(is_for_all: true)
     end
   end
 end
