@@ -44,6 +44,8 @@ gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
 
+gem "connection_pool", "~> 2.5.5"
+
 gem "rdoc", ">= 2.4.2"
 
 gem "doorkeeper", "~> 5.8.0"
