@@ -51,10 +51,10 @@ class ProjectEditField < SelectField
 
       if workspace_badge
         expect(option).to have_octicon
-        expect(option).to have_primer_text(workspace_badge, color: :muted)
+        expect(option).to have_primer_text(workspace_badge, class: "description")
       else
         expect(option).to have_no_octicon
-        expect(option).to have_no_primer_text(color: :muted)
+        expect(option).to have_no_primer_text(class: "description")
       end
     end
   end
