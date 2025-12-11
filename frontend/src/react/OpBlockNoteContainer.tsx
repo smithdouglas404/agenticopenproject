@@ -45,6 +45,10 @@ export interface OpBlockNoteContainerProps {
   hocuspocusProvider?:HocuspocusProvider;
 }
 
+// Extract style objects to constants to prevent recreation on every render
+const SKELETON_TITLE_STYLE = { width: '25%', height: '40px' };
+const SKELETON_CONTENT_STYLE = { width: '100%', height: '150px' };
+
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
                                                activeUser,
@@ -53,23 +57,22 @@ export default function OpBlockNoteContainer({ inputField,
                                                attachmentsUploadUrl,
                                                attachmentsCollectionKey,
                                                hocuspocusProvider }:OpBlockNoteContainerProps) {
-  let doc:Y.Doc;
-
-  if(hocuspocusProvider) {
-    doc = hocuspocusProvider.document;
-  } else { // collaboration disabled (for test environments)
-    doc = new Y.Doc();
-
-    if (inputText) {
-      try {
-        const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
-        Y.applyUpdate(doc, update);
-      } catch (e) {
-        console.error('Failed to load document binary', e);
-        doc = new Y.Doc();
+  // Initialize Y.Doc based on whether collaboration is enabled
+  const doc:Y.Doc = hocuspocusProvider
+    ? hocuspocusProvider.document
+    : (() => {
+      const newDoc = new Y.Doc();
+      if (inputText) {
+        try {
+          const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
+          Y.applyUpdate(newDoc, update);
+        } catch (e) {
+          console.error('Failed to load document binary', e);
+          return new Y.Doc();
+        }
       }
-    }
-  }
+      return newDoc;
+    })();
 
   const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
 
@@ -77,10 +80,10 @@ export default function OpBlockNoteContainer({ inputField,
     return (
       <div>
         <div className={'mb-3'}>
-          <div style={{ width: '25%', height: '40px' }} className={'SkeletonBox'} />
+          <div style={SKELETON_TITLE_STYLE} className={'SkeletonBox'} />
         </div>
         <div className={'mb-3'}>
-          <div style={{ width: '100%', height: '150px' }} className={'SkeletonBox'} />
+          <div style={SKELETON_CONTENT_STYLE} className={'SkeletonBox'} />
         </div>
       </div>
     );

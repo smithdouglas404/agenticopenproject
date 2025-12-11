@@ -35,6 +35,7 @@ import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlock
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
 import * as Y from 'yjs';
+import { useEffect, useMemo } from 'react';
 import { useBlockNoteAttachments } from '../hooks/useBlockNoteAttachments';
 import { useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
 import { useOpTheme } from '../hooks/useOpTheme';
@@ -60,6 +61,16 @@ const schema = BlockNoteSchema.create().extend({
   },
 });
 
+// Helper function to generate deterministic color from user ID
+function generateUserColor(userId:string):string {
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    hash = userId.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const color = Math.abs(hash) % 16777215;
+  return '#' + color.toString(16).padStart(6, '0');
+}
+
 export function BlockNoteEditor({
   activeUser,
   readOnly,
@@ -72,52 +83,57 @@ export function BlockNoteEditor({
   const { localeString, localeDictionary } = useBlockNoteLocale(window.I18n.locale);
   const { enabled: attachmentsEnabled, uploadFile } = useBlockNoteAttachments(attachmentsCollectionKey, attachmentsUploadUrl);
 
-  initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
+  // Initialize extensions once on mount or when dependencies change
+  useEffect(() => {
+    initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
+  }, [openProjectUrl, localeString]);
 
-  let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
-
-  if(hocuspocusProvider) {
-    editorParams = {
-      schema,
-      collaboration: {
-        provider: hocuspocusProvider,
-        fragment: doc.getXmlFragment('document-store'),
-        user: {
-          id: activeUser.id,
-          name: activeUser.username,
-          color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
-        } as unknown as CollaborativeUser,
-        showCursorLabels: 'activity'
-      },
-      dictionary: localeDictionary,
-      ...(attachmentsEnabled && { uploadFile }),
-    };
-  } else {
-    editorParams = {
-      schema,
-      collaboration: {
-        provider: null,
-        fragment: doc.getXmlFragment('document-store'),
-        user: {
-          name: activeUser.username,
-          color: '#333333',
+  // Memoize editor parameters to avoid recreation on every render
+  const editorParams = useMemo<Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>>(() => {
+    if (hocuspocusProvider) {
+      return {
+        schema,
+        collaboration: {
+          provider: hocuspocusProvider,
+          fragment: doc.getXmlFragment('document-store'),
+          user: {
+            id: activeUser.id,
+            name: activeUser.username,
+            color: generateUserColor(activeUser.id),
+          } as unknown as CollaborativeUser,
+          showCursorLabels: 'activity'
         },
-      },
-      dictionary: localeDictionary,
-      ...(attachmentsEnabled && { uploadFile }),
-    };
-  }
+        dictionary: localeDictionary,
+        ...(attachmentsEnabled && { uploadFile }),
+      };
+    } else {
+      return {
+        schema,
+        collaboration: {
+          provider: null,
+          fragment: doc.getXmlFragment('document-store'),
+          user: {
+            name: activeUser.username,
+            color: '#333333',
+          },
+        },
+        dictionary: localeDictionary,
+        ...(attachmentsEnabled && { uploadFile }),
+      };
+    }
+  }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile]);
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
   const theme = useOpTheme();
 
-  const getCustomSlashMenuItems = (editor:EditorType) => {
-    return [
-      ...getDefaultReactSlashMenuItems(editor),
-      openProjectWorkPackageSlashMenu(editor),
+  // Memoize slash menu items to avoid recreation on every render
+  const getCustomSlashMenuItems = useMemo(() => {
+    return (editorInstance:EditorType) => [
+      ...getDefaultReactSlashMenuItems(editorInstance),
+      openProjectWorkPackageSlashMenu(editorInstance),
     ];
-  };
+  }, []);
 
   return (
     <>

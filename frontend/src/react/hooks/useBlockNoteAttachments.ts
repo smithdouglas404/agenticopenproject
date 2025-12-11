@@ -29,6 +29,7 @@
  */
 
 import { IUploadFile } from 'core-app/core/upload/upload.service';
+import { useCallback } from 'react';
 import { firstValueFrom } from 'rxjs';
 
 export interface BlockNoteAttachmentsResult {
@@ -47,11 +48,8 @@ export function useBlockNoteAttachments(
     attachmentsUploadUrl !== ''
   );
 
-  if (!enabled) {
-    return { enabled };
-  }
-
-  async function uploadFile(file:File):Promise<string> {
+  // Memoize uploadFile function to prevent recreation on every render
+  const uploadFile = useCallback(async (file:File):Promise<string> => {
     const pluginContext = await window.OpenProject.getPluginContext();
     try {
       const service = pluginContext.services.attachmentsResourceService;
@@ -69,6 +67,10 @@ export function useBlockNoteAttachments(
 
       return '';
     }
+  }, [attachmentsCollectionKey, attachmentsUploadUrl]);
+
+  if (!enabled) {
+    return { enabled };
   }
 
   return { enabled, uploadFile };
