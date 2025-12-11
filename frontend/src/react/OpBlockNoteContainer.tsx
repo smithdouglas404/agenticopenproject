@@ -34,7 +34,6 @@ import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { IUploadFile } from 'core-app/core/upload/upload.service';
-import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
 import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
@@ -76,10 +75,12 @@ export default function OpBlockNoteContainer({ inputField,
 
   initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
 
-  let doc = LiveCollaborationManager.ydoc;
+  let doc:Y.Doc;
 
   let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
   if(hocuspocusProvider) {
+    doc = hocuspocusProvider.document;
+
     editorParams = {
       schema,
       collaboration: {
@@ -95,7 +96,9 @@ export default function OpBlockNoteContainer({ inputField,
       dictionary: localeDictionary,
       ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
-  } else { // collaboration disabled
+  } else { // collaboration disabled (for test environments)
+    doc = new Y.Doc();
+
     if (inputText) {
       try {
         const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
