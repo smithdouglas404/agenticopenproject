@@ -29,22 +29,26 @@
  */
 
 import { HocuspocusProvider } from '@hocuspocus/provider';
+import type { Doc } from 'yjs';
 
 type Listener = (provider:HocuspocusProvider) => void;
 
 class LiveCollaborationManagerClass {
   yjsProviderInstance:HocuspocusProvider|null = null;
+  yjsDocInstance:Doc|null = null;
 
   private listeners:Listener[] = [];
 
   /**
    * Initializes the YJS Provider
    * @param provider The provider to use
+   * @param doc The Y.Doc instance to use
    * @returns void
    */
-  initializeYjsProvider(provider:HocuspocusProvider) {
+  initializeYjsProvider(provider:HocuspocusProvider, doc:Doc) {
     this.destroyYjsProvider(); // Clean up old state first
     this.yjsProviderInstance = provider;
+    this.yjsDocInstance = doc;
     this.listeners.forEach((listener) => listener(this.yjsProviderInstance!));
   }
 
@@ -54,13 +58,16 @@ class LiveCollaborationManagerClass {
    */
   destroy():void {
     this.destroyYjsProvider();
-    this.listeners = [];
   }
 
   private destroyYjsProvider():void {
     if (this.yjsProviderInstance) {
       this.yjsProviderInstance.destroy();
       this.yjsProviderInstance = null;
+    }
+    if (this.yjsDocInstance) {
+      this.yjsDocInstance.destroy();
+      this.yjsDocInstance = null;
     }
   }
 

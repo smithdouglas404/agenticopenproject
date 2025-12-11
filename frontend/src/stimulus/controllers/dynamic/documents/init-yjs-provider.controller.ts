@@ -54,7 +54,7 @@ export default class extends Controller {
       document: ydoc,
     });
 
-    LiveCollaborationManager.initializeYjsProvider(provider);
+    LiveCollaborationManager.initializeYjsProvider(provider, ydoc);
   }
 
   disconnect():void {

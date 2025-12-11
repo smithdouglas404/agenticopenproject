@@ -99,7 +99,7 @@ function useLocalDocumentSync(doc:Y.Doc, inputField:HTMLInputElement, enabled:bo
 
     return () => {
       doc.off('update', updateInput);
-      doc.destroy(); // Clean up Y.Doc on unmount
+      doc.destroy();
     };
   }, [doc, inputField, enabled]);
 }
