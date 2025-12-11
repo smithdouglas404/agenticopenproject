@@ -254,7 +254,7 @@ RSpec.describe "Persisted lists on projects index page",
       projects_page.open_filters
       projects_page.filter_by_membership("yes")
 
-      wait_for_reload # chnaging filters is still done via page reload
+      wait_for_reload # changing filters is still done via page reload
 
       # Since the query is static, no save button an no menu item is shown
       projects_page.expect_no_notification("Save")
@@ -584,6 +584,71 @@ RSpec.describe "Persisted lists on projects index page",
           value: list_custom_field.possible_values.first.value
         )
       end
+    end
+
+    it "allows saving queries via the header save button" do
+      projects_page.visit!
+      projects_page.set_sidebar_filter("Active projects")
+
+      expect_angular_frontend_initialized
+
+      # Modify the query
+      projects_page.open_filters
+      projects_page.filter_by_membership("yes")
+
+      # The "Save as" button and label should be visible
+      projects_page.expect_header_save_button
+      projects_page.expect_save_as_label
+
+      # Save the query via the header save button and the inline form
+      projects_page.save_query_via_header
+      projects_page.fill_in_the_name("My filtered projects")
+      projects_page.click_on "Save"
+
+      wait_for_network_idle
+
+      # The "Save as" button should not be visible after saving the query.
+      projects_page.expect_no_header_save_button
+
+      # The new query should be saved and selected
+      projects_page.expect_sidebar_filter("My filtered projects", selected: true)
+
+      # The filters should be stored
+      projects_page.expect_filter_count(2)
+      projects_page.expect_filter_set("active")
+      projects_page.expect_filter_set("member_of")
+
+      # Modify the saved query and save it again
+      projects_page.open_filters
+      projects_page.set_filter(list_custom_field.column_name,
+                               list_custom_field.name,
+                               "is (OR)",
+                               [list_custom_field.possible_values.first.value])
+      wait_for_reload
+
+      # The "Save" button and label should be visible
+      projects_page.expect_header_save_button
+      projects_page.expect_save_label
+
+      # Save the query
+      projects_page.save_query_via_header
+      wait_for_reload
+
+      # The "Save" button should not be visible after saving the query.
+      projects_page.expect_no_header_save_button
+
+      # Reload the query and verify all filters were saved
+      projects_page.set_sidebar_filter("Active projects")
+      projects_page.set_sidebar_filter("My filtered projects")
+
+      # All filters should be stored
+      projects_page.expect_filter_count(3)
+      projects_page.expect_filter_set "member_of"
+      projects_page.expect_filter_set "active"
+      projects_page.expect_filter_set(
+        list_custom_field.column_name,
+        value: list_custom_field.possible_values.first.value
+      )
     end
 
     it "cannot access another user`s list" do

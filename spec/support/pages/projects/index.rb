@@ -351,6 +351,19 @@ module Pages
         wait_for_network_idle
       end
 
+      def save_query_via_header
+        page.find('[data-test-selector="header-save-button"]').click
+        wait_for_network_idle
+      end
+
+      def expect_header_save_button
+        expect(page).to have_css('[data-test-selector="header-save-button"]')
+      end
+
+      def expect_no_header_save_button
+        expect(page).to have_no_css('[data-test-selector="header-save-button"]')
+      end
+
       def save_query_as(name)
         click_more_menu_item("Save as")
 
@@ -359,8 +372,12 @@ module Pages
         click_on "Save"
       end
 
-      def expect_can_only_save_as_label
+      def expect_save_as_label
         expect(page).to have_text(I18n.t("lists.can_be_saved_as"))
+      end
+
+      def expect_save_label
+        expect(page).to have_text(I18n.t("lists.can_be_saved"))
       end
 
       def fill_in_the_name(name)
