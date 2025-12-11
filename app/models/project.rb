@@ -126,6 +126,7 @@ class Project < ApplicationRecord
 
   store_attribute :settings, :deactivate_work_package_attachments, :boolean
   store_attribute :settings, :enabled_internal_comments, :boolean
+  store_attribute :settings, :excluded_role_ids_on_copy, :json, default: []
 
   acts_as_favoritable
 

@@ -28,23 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require Rails.root.join("db/migrate/migration_utils/permission_adder")
+module Projects::Settings::Template
+  class SettingsComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
 
-class AddFromTemplatePermissionsToRolesWithAddPermissions < ActiveRecord::Migration[8.0]
-  def up
-    ::Migration::MigrationUtils::PermissionAdder.add(:add_project, :add_project_from_template)
-    ::Migration::MigrationUtils::PermissionAdder.add(:add_programs, :add_programs_from_template)
-    ::Migration::MigrationUtils::PermissionAdder.add(:add_portfolios, :add_portfolios_from_template)
-  end
+    def initialize(project)
+      super
 
-  def down
-    # Remove the permissions that were added
-    RolePermission.delete_by(
-      permission: %w(
-        add_project_from_template
-        add_programs_from_template
-        add_portfolios_from_template
-      )
-    )
+      @project = project
+    end
   end
 end

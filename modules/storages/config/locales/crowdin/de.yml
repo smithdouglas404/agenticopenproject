@@ -242,23 +242,23 @@ de:
     error_invalid_provider_type: Bitte wählen Sie einen gültigen Dateispeicheranbieter aus.
     file_storage_view:
       access_management:
-        automatic_management: Enable automatically-managed access and folders
-        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
-        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
-        manual_management: Only allow manually-managed access and folders
-        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+        automatic_management: Automatisch verwaltete Zugriffe und Ordner
+        automatic_management_description: Jedes Projekt kann beim Hinzufügen eines Speichers entscheiden, ob es automatisch verwaltete oder den manuelle Ordner- und Zugriffsverwaltung verwenden möchte.
+        description: OpenProject kann automatisch Projektordner erstellen und verwalten, wenn eine Dateiablage zu einem Projekt hinzugefügt wird. Dies führt zu einer übersichtlicheren Ordnerstruktur und einer unkomplizierten Zugriffsverwaltung, die den Zugriff für alle relevanten Benutzer gewährleistet.
+        manual_management: Nur manuell verwaltete Zugriffe und Ordner zulassen
+        manual_management_description: Für Projekte, die diesen Speicher verwenden, wird die Option der automatischen Verwaltung nicht angeboten. Die Ordner und der Zugriff müssen manuell verwaltet werden.
         setup_incomplete: Wählen Sie die Art der Verwaltung des Benutzerzugriffs und der Ordnererstellung.
-        subtitle: Folder and access management
+        subtitle: Ordner- und Zugriffsverwaltung
       access_management_section: Zugriff und Projektordner
       automatically_managed_folders: Automatisch verwaltete Projektordner
       general_information: Allgemeine Informationen
       oauth_configuration: OAuth-Konfiguration
       one_drive:
         access_management:
-          automatic_management: Enable automatically-managed access and folders
-          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
-          manual_management: Only allow manually-managed access and folders
-          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+          automatic_management: Automatisch verwaltete Zugriffe und Ordner aktivieren
+          automatic_management_description: Jedes Projekt, das diesen Dateispeicher verwendet, muss zwangsläufig den automatisch verwalteten Ansatz für die Ordner- und Zugriffsverwaltung verwenden. Die Projekte können die manuelle Verwaltung nicht nutzen.
+          manual_management: Nur manuell verwaltete Zugriffe und Ordner zulassen
+          manual_management_description: Für Projekte, die diesen Speicher verwenden, wird die Option der automatischen Verwaltung nicht angeboten. Die Ordner und der Zugriff müssen manuell verwaltet werden.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Projektordner

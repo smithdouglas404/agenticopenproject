@@ -535,6 +535,14 @@ de:
         portfolio_template_label: "Vorlage für Portfolios"
         portfolio_template_caption: "Wählen Sie eine Portfoliovorlage, die als Standard für neue Teilportfolios verwendet werden soll."
         no_template: "Keine vordefinierte Vorlage"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "Alles aktivieren"
         label_disable_all: "Alles deaktivieren"
@@ -2479,7 +2487,7 @@ de:
         title: "Interne Kommentare schreiben, die nur für ausgewählte Mitglieder sichtbar ist."
         description: " "
       portfolio_management:
-        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
+        description: Richten Sie Ihre Projekte an Ihren strategischen Zielen aus, indem Sie sie in Portfolios und Programmen organisieren.
     teaser:
       title:
         one: "Ein Tag des %{trial_plan} Test-Token verbleibend"
@@ -2767,17 +2775,17 @@ de:
         #We need to include the version to invalidate outdated translations in other locales
         "17_0":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
-            line_0: Real-time documents collaboration.
-            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
-            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
-            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
-            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
-            line_5: Option to guard the privacy of users not working in the same project more strictly.
-            line_6: Improved project creation flow with better template selection.
-            line_7: Smarter global search including type and status, improving precision in several autocompleters.
-            line_8: Accessibility improvements with ALT texts and improved chart colors.
+            line_0: Zusammenarbeit an Dokumenten in Echtzeit.
+            line_1: Strukturierung zusammenhängender Projekte in Programme und Portfolios, um sie auf strategische Ziele auszurichten (Enterprise Add-on).
+            line_2: Bessere Verwaltung von Besprechungen mit Entwurfsmodus, Präsentationsmodus, verbesserten Ergebnissen und iCal-Abonnement.
+            line_3: Aktualisierte SharePoint-Integration mit flexibleren Berechtigungen (Enterprise Add-on).
+            line_4: Neu gestaltete Projektübersicht mit neuen Tabs, konfigurierbaren Widgets und einem verbesserten Layout.
+            line_5: Option zum Trennen der Sichtbarkeit von Benutzern innerhalb der Instanz, die nicht am selben Projekt oder derselben Gruppe arbeiten.
+            line_6: Verbesserter Ablauf der Projekterstellung mit neuer Vorlagenauswahl.
+            line_7: Eine intelligentere Suche, die Typ und Status einschließt, verbessert die Präzision in der globalen Suche und in Auswahlfeldern.
+            line_8: Verbesserungen der Zugänglichkeit mit ALT-Texten und verbesserten Diagrammfarben.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
@@ -3907,9 +3915,6 @@ de:
   permission_add_project: "Projekte erstellen"
   permission_add_portfolios: "Portfolios erstellen"
   permission_add_programs: "Programme erstellen"
-  permission_add_project_from_template: "Projekt aus Vorlage erstellen"
-  permission_add_portfolios_from_template: "Portfolio aus Vorlage erstellen"
-  permission_add_programs_from_template: "Programm aus Vorlage erstellen"
   permission_add_work_package_attachments: "Anhänge hinzufügen"
   permission_add_work_package_attachments_explanation: "Erlaubt das Hinzufügen von Anhängen ohne die Berechtigung, das Arbeitspaket selbst zu bearbeiten"
   permission_add_internal_comments: "Interne Kommentare schreiben"
@@ -3927,6 +3932,7 @@ de:
   permission_comment_news: "Nachricht kommentieren"
   permission_commit_access: "Lese- und Schreibzugriff auf Projektarchiv (Commit)"
   permission_copy_projects: "Projekte kopieren"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Arbeitspakete duplizieren"
   permission_create_backup: "Backups erstellen"
   permission_delete_work_package_watchers: "Beobachter löschen"
@@ -4478,7 +4484,8 @@ de:
               label: "Seitenleiste"
               description: "Fügen Sie alle Projektattribute in einem Abschnitt in der rechten Seitenleiste der Projektübersicht hinzu."
     project_initiation_request:
-      header_description: "OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} wurde eingereicht"
         submitted_description: "Klicken Sie auf die Schaltfläche unten, um zum Arbeitspaket für den Einreichungsprozess zu gelangen."
@@ -4516,7 +4523,7 @@ de:
         status_when_submitted_caption: "Der Status, in den das erstellte Arbeitspaket übergeht, sobald der Antrag eingereicht wird."
         send_confirmation_email: "Senden Sie eine Bestätigungs-E-Mail an den Benutzer, der den Projektinitiierungsantrag gestellt hat"
         assignee: "Zuweisung bei Einreichung"
-        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
+        assignee_caption_html: "Der Benutzer oder die Gruppe, die diesem Projektattribut zugewiesen ist, wird auch der Zugewiesene des neuen Arbeitspakets. Diese Liste enthält nur aktive Projektattribute vom Typ <i>Benutzer</i>."
         confirmation_email_text: "Text der Bestätigungs-E-Mail"
         confirmation_email_default: "Hallo,\n\nSie haben einen Antrag auf Projektinitiierung für **%{project_name}** eingereicht. Dieser wartet nun auf seine Überprüfung.\nKlicken Sie auf den untenstehenden Link, um das Arbeitspaket mit Ihrem Antrag aufzurufen."
         work_package_comment: "Arbeitspaket-Kommentar"
