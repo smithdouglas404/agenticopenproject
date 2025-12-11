@@ -18,14 +18,6 @@
             end
           end
 
-          if storage.errors.any?
-            access_management_row.with_row(mb: 3) do
-              render(Primer::Alpha::Banner.new(icon: :stop, scheme: :danger)) do
-                storage.errors.full_messages.join("\n")
-              end
-            end
-          end
-
           access_management_row.with_row(mb: 2) do
             render(Storages::Admin::AccessManagementForm.new(form, storage:))
           end
