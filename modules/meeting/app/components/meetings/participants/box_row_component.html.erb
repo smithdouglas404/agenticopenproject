@@ -18,6 +18,8 @@
               href: user_path(@participant.user),
               underline: false,
               font_weight: :bold,
+              test_selector: "participant_user_link_#{@participant.user_id}",
+              classes: "op-principal--name",
               data: {
                 "hover-card-url" => hover_card_user_path(@participant.user),
                 "hover-card-trigger-target" => "trigger"
