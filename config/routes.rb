@@ -73,6 +73,8 @@ Rails.application.routes.draw do
   get "/auth/:provider", to: proc { [404, {}, [""]] }, as: "omni_auth_start"
   match "/auth/:provider/callback", to: "omni_auth_login#callback", as: "omni_auth_callback", via: %i[get post]
 
+  get "/.well-known/oauth-protected-resource", to: "oauth_metadata#protected_resource", as: :protected_resource_metadata
+
   # In case assets are actually delivered by a node server (e.g. in test env)
   # forward requests to the proxy
   if FrontendAssetHelper.assets_proxied?
@@ -290,6 +292,9 @@ Rails.application.routes.draw do
         end
         resource :modules, only: %i[show update]
         resource :subitems, only: %i[show update]
+        resource :template, only: %i[show update], controller: "template" do
+          post :toggle_template, on: :member
+        end
         resource :creation_wizard, controller: "creation_wizard", only: %i[show] do
           get :disable_dialog
           post :toggle

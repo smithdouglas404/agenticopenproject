@@ -539,6 +539,14 @@ ru:
         portfolio_template_label: "Шаблон для портфолио"
         portfolio_template_caption: "Выберите шаблон портфолио, который будет использоваться по умолчанию для новых подпунктов этого типа."
         no_template: "Нет предопределенного шаблона"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "Включить всё"
         label_disable_all: "Выключить всё"
@@ -2867,15 +2875,19 @@ ru:
         learn_about: "Узнайте больше о всех новых функциях"
         missing: "Нет выделенных функций."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
-            Релиз содержит различные новые функции и улучшения, такие как:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Рассчитанные значения для оценки проектов и подсчета баллов.
-            line_1: Иерархия типов атрибутов проекта.
-            line_2: Улучшение производительности.
-            line_3: Новая главная страница модуля "Документы".
-            line_4: Возможность изменения родительского элемента настраиваемого поля.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -4008,9 +4020,6 @@ ru:
   permission_add_project: "Создание проектов"
   permission_add_portfolios: "Создать портфолио"
   permission_add_programs: "Создать программу"
-  permission_add_project_from_template: "Создать проект из шаблона"
-  permission_add_portfolios_from_template: "Создать портфолио из шаблона"
-  permission_add_programs_from_template: "Создание программы из шаблона"
   permission_add_work_package_attachments: "Добавить вложения"
   permission_add_work_package_attachments_explanation: "Позволяет добавлять вложения без права редактирования пакетов работ"
   permission_add_internal_comments: "Написать внутренние комментарии"
@@ -4028,6 +4037,7 @@ ru:
   permission_comment_news: "Комментировать новость"
   permission_commit_access: "Возможность чтения/записи в репозиторий (commit)"
   permission_copy_projects: "Копировать проект"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Дублировать пакеты работ"
   permission_create_backup: "Создание резервных копий"
   permission_delete_work_package_watchers: "Удалить наблюдателей"
@@ -4577,7 +4587,8 @@ ru:
               label: "Боковая панель"
               description: "Добавьте все атрибуты проекта в область на правой боковой панели в обзоре проекта."
     project_initiation_request:
-      header_description: "OpenProject может сгенерировать пошаговый мастер, чтобы помочь менеджерам проектов заполнить запрос на инициацию проекта. Вы можете выбрать, какие атрибуты проекта должны быть включены и что делать с выходным документом."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} был отправлен"
         submitted_description: "Нажмите на кнопку ниже, чтобы перейти к пакету работ для процесса подачи заявки."

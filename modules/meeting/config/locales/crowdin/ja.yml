@@ -353,6 +353,9 @@ ja:
       next: "Next"
       no_items: "No agenda items"
       no_items_flash: "There are no agenda items to present."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "タイトルなしセクション"
     delete_confirmation: "セクションを削除すると、そのすべての議題項目も削除されます。これを実行してもよろしいですか？"

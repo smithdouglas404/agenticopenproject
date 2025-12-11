@@ -536,6 +536,14 @@ it:
         portfolio_template_label: "Template for portfolios"
         portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "Abilita tutto"
         label_disable_all: "Disabilita tutto"
@@ -2772,15 +2780,19 @@ it:
         learn_about: "Scopri di più su tutte le nuove funzionalità"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
-            Questa versione contiene diverse nuove funzionalità e miglioramenti, come ad esempio:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Valori calcolati per la valutazione e il punteggio del progetto (componente aggiuntivo Enterprise).
-            line_1: Gerarchia dei tipi di attributi del progetto.
-            line_2: Aggiornamenti delle prestazioni di grande impatto.
-            line_3: Nuova pagina indice per il modulo Documenti.
-            line_4: Possibilità di cambiare il genitore di un elemento di campo personalizzato.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "Aggiorna ad Enterprise edition"
       postgres_migration: "Migrazione dell'installazione su PostgreSQL"
@@ -3910,9 +3922,6 @@ it:
   permission_add_project: "Crea progetti"
   permission_add_portfolios: "Crea più portfolio"
   permission_add_programs: "Crea programmi"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Aggiungi allegati"
   permission_add_work_package_attachments_explanation: "Consente di aggiungere allegati senza l'autorizzazione Modifica macro-attività"
   permission_add_internal_comments: "Scrivere commenti interni"
@@ -3930,6 +3939,7 @@ it:
   permission_comment_news: "Commentare le novità"
   permission_commit_access: "Accesso in lettura/scrittura all'archivio (commit)"
   permission_copy_projects: "Copiare progetti"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Duplica macro-attività"
   permission_create_backup: "Crea backup"
   permission_delete_work_package_watchers: "Eliminare osservatori"
@@ -4481,7 +4491,8 @@ it:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."

@@ -58,7 +58,10 @@ module Projects::Copy
     def create_membership(member) # rubocop:disable Metrics/AbcSize
       # only copy non inherited roles
       # inherited roles will be added when copying the group membership
-      role_ids = member.member_roles.reject(&:inherited?).map(&:role_id)
+      role_ids = member.member_roles
+                       .reject(&:inherited?)
+                       .reject { |mr| excluded_role_ids.include?(mr.role_id) }
+                       .map(&:role_id)
       return if role_ids.empty?
 
       # There should only be zero or one members in this new project
@@ -77,6 +80,10 @@ module Projects::Copy
           .new(user: User.current, contract_class: EmptyContract)
           .call(attributes)
       end
+    end
+
+    def excluded_role_ids
+      @excluded_role_ids ||= Array(source.excluded_role_ids_on_copy).map(&:to_i)
     end
   end
 end

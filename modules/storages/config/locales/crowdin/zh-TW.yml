@@ -220,13 +220,13 @@ zh-TW:
     confirm_replace_oauth_application: 此操作將重設目前的 OAuth 憑證。 確認後，您必須在儲存空間提供商重新輸入憑證，並且所有遠端使用者都必須再次針對 OpenProject 進行授權。 您確定要繼續嗎？
     confirm_replace_oauth_client: 此操作將重設目前的 OAuth 憑證。 確認後，您必須輸入儲存提供者的新憑證，並且所有使用者都必須再次針對 %{provider_type} 進行授權。 您確定要繼續嗎？
     delete_warning:
-      project_storage: Are you sure you want to remove %{file_storage} from this project?
-      project_storage_delete_result_1: All links to corresponding files and folders will be removed
-      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
-      storage: Are you sure you want to delete %{file_storage} as an external file storage?
-      storage_delete_result_1: The storage will be removed from all projects currently using it
-      storage_delete_result_2: All links to corresponding files and folders will be removed
-      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
+      project_storage: 您確定要從此專案中移除 %{file_storage}？
+      project_storage_delete_result_1: 所有相應檔案和資料夾的連結將被移除
+      project_storage_delete_result_2: 自動管理的專案資料夾及其中的所有檔案都會刪除
+      storage: 您確定要刪除 %{file_storage} 作為外部檔案儲存空間嗎？
+      storage_delete_result_1: 儲存空間將從目前使用的所有專案中移除
+      storage_delete_result_2: 所有相應檔案和資料夾的連結將被移除
+      storage_delete_result_3: 自動管理的專案資料夾及其中的所有檔案都會刪除
     dependencies:
       nextcloud:
         group_folders_app: 群組資料夾
@@ -237,23 +237,23 @@ zh-TW:
     error_invalid_provider_type: 請選擇有效的儲存空間提供商。
     file_storage_view:
       access_management:
-        automatic_management: Enable automatically-managed access and folders
-        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
-        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
-        manual_management: Only allow manually-managed access and folders
-        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+        automatic_management: 啟用自動管理存取和資料夾
+        automatic_management_description: 每個專案在新增儲存空間時，都能決定他們是要使用自動管理方式，或是手動方式來管理資料夾和存取。
+        description: 當檔案儲存被加入專案時，OpenProject 可以自動建立並管理專案資料夾。這可以產生更有組織的資料夾結構和直接的存取管理，保證所有相關使用者都能存取。
+        manual_management: 只允許手動管理存取權限和資料夾
+        manual_management_description: 使用此儲存空間的專案無法選擇自動管理方式。資料夾和存取必須手動管理。
         setup_incomplete: 選擇使用者存取和資料夾建立的管理類型。
-        subtitle: Folder and access management
+        subtitle: 資料夾和存取管理
       access_management_section: 存取和專案資料夾
       automatically_managed_folders: 自動管理文件夾
       general_information: 基本資訊
       oauth_configuration: OAuth 設定
       one_drive:
         access_management:
-          automatic_management: Enable automatically-managed access and folders
-          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
-          manual_management: Only allow manually-managed access and folders
-          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+          automatic_management: 啟用自動管理存取和資料夾
+          automatic_management_description: 使用此檔案儲存的每個專案都必須使用自動管理的方式來管理資料夾和存取。他們無法手動執行。
+          manual_management: 只允許手動管理存取權限和資料夾
+          manual_management_description: 使用此儲存空間的專案無法選擇自動管理方式。資料夾和存取必須手動管理。
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject 開放授權 (OAuth) 
       project_folders: 專案資料夾
@@ -495,7 +495,7 @@ zh-TW:
         title: 我們正在設定您在專案資料夾上的權限。
     page_titles:
       file_storages:
-        delete: Delete file storage?
+        delete: 刪除檔案儲存空間？
         subtitle: 新增外部檔案存儲空間，以便上傳、連結和管理工作套件中的文件。
       managed_project_folders:
         subtitle: |-
@@ -511,7 +511,7 @@ zh-TW:
         subtitle: 檢查所有專案成員存儲區 %{storage_name_link} 的連線狀態。
         title: 成員連線狀態
       project_storages:
-        delete: Remove file storage from project?
+        delete: 從專案中移除檔案儲存空間？
     permission_header_explanation: '外部存儲器上的文件權限僅適用於自動管理的項目文件夾內的文件夾和文件。請注意，並非所有存儲提供商都支持所有文件權限。更多信息請查看<a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>文件存儲權限</a>文檔。'
     provider_types:
       label: 提供商類型

@@ -126,7 +126,8 @@ RSpec.describe "SCIM API Authentication" do
         context "when scim_v2 scope is missing in token" do
           let(:token_scope) { "api_v3" }
           let(:expected_www_auth_header) do
-            'Bearer realm="OpenProject API", scope="scim_v2", error="insufficient_scope", ' \
+            'Bearer realm="OpenProject API", resource_metadata="http://test.host/.well-known/oauth-protected-resource", ' \
+              'scope="scim_v2", error="insufficient_scope", ' \
               'error_description="Requires scope scim_v2 to access this resource."'
           end
 
@@ -140,7 +141,8 @@ RSpec.describe "SCIM API Authentication" do
 
         context "when token_sub does not match a service_account" do
           let(:expected_www_auth_header) do
-            'Bearer realm="OpenProject API", scope="scim_v2", error="invalid_token", ' \
+            'Bearer realm="OpenProject API", resource_metadata="http://test.host/.well-known/oauth-protected-resource", ' \
+              'scope="scim_v2", error="invalid_token", ' \
               'error_description="The user identified by the token is not known"'
           end
 

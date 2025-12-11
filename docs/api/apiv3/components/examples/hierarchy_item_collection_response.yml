@@ -10,6 +10,8 @@ value:
         id: 1337
         label: null
         short: null
+        weight: null
+        formattedWeight: null
         depth: 0
         _links:
           self:
@@ -26,6 +28,8 @@ value:
         id: 1338
         label: Stormtroopers
         short: ST
+        weight: null
+        formattedWeight: null
         depth: 1
         _links:
           self:
@@ -44,6 +48,8 @@ value:
         id: 1340
         label: ST-377
         short: null
+        weight: null
+        formattedWeight: null
         depth: 2
       - _hint: hierarchy item shortened for brevity
   _links:

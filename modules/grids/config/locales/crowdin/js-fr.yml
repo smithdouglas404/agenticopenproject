@@ -52,7 +52,7 @@ fr:
           title: 'Tableau des lots de travaux'
         work_packages_graph:
           title: 'Graphique des lots de travaux'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "%{chartType} graphique montrant les paquets de travail qui sont %{description}."
         work_packages_calendar:
           title: 'Calendrier'
         work_packages_overview:

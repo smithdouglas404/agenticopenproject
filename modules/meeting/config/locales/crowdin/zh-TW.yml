@@ -259,8 +259,8 @@ zh-TW:
           任何不在範本中的會議資訊將會遺失。 要繼續嗎？
         confirm_button: "取消事件"
     blankslate:
-      title: "There are no meetings to display"
-      desc: "You can create a new meeting or change filter criteria"
+      title: "沒有會議要顯示"
+      desc: "您可以建立新的會議或變更篩選條件"
     label_export_pdf: "匯出 PDF"
     export:
       your_meeting_export: "正在進行會議匯出作業"
@@ -353,6 +353,9 @@ zh-TW:
       next: "下一頁"
       no_items: "沒有議程項目"
       no_items_flash: "沒有要提出的議程項目。"
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "無標題章節"
     delete_confirmation: "刪除該章節也會刪除其所有的議程項目。您確定要這麼做？"
@@ -499,9 +502,9 @@ zh-TW:
   label_agenda_item_move_to_bottom: "移到底部"
   label_agenda_item_move_up: "向上移 "
   label_agenda_item_move_down: "向下移 "
-  label_agenda_item_duplicate: "Duplicate"
-  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
+  label_agenda_item_duplicate: "複製"
+  label_agenda_item_duplicate_in_next: "在下次出現時重複"
+  label_agenda_item_duplicate_in_next_title: "下次發生時會重複嗎？"
   label_agenda_item_add_notes: "新增註記"
   label_agenda_item_add_outcome: "新增結果"
   label_agenda_item_work_package_add: "新增工作套件"
@@ -575,8 +578,8 @@ zh-TW:
   text_agenda_item_not_editable_anymore: "本次會議已不可編輯。"
   text_agenda_item_move_next_meeting: "本項目將移至 %{date} %{time}的下次會議上討論。"
   text_agenda_item_moved_to_next_meeting: "議程項目移至下次會議討論： %{date}"
-  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
-  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "您確定要在下次會議中加入此議程項目的副本， %{date} ，網址為 %{time}? 結果不會重複。"
+  text_agenda_item_duplicated_in_next_meeting: "與下次會議重複的議程項目， %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "該工作套件尚未被安排到即將舉行的會議議程中。"
   text_agenda_item_move_next_meeting_cancelled: "由於下次會議已被取消，因此無法轉到下次會議。"
   text_work_package_add_to_meeting_hint: '使用"增加到會議"按鈕將此工作套件新增到即將舉行的會議。'

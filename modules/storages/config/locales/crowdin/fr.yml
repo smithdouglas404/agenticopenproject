@@ -159,7 +159,7 @@ fr:
           group_does_not_exist: "%{group} n'existe pas. Vérifiez la configuration de votre instance Nextcloud."
           insufficient_privileges: OpenProject n'a pas assez de privilèges pour ajouter %{user} au groupe %{group}. Vérifiez les paramètres de votre groupe dans Nextcloud.
           not_allowed: Nextcloud bloque la demande.
-          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
+          not_found: OpenProject n'a pas pu trouver le fichier sur le fournisseur de stockage Nextcloud. Veuillez vérifier s'il n'a pas été supprimé.
           unauthorized: OpenProject n'a pas pu se synchroniser avec Nextcloud. Veuillez vérifier votre espace de stockage et la configuration de Nextcloud.
           user_does_not_exist: "%{user} n'existe pas dans Nextcloud."
         one_drive_sync_service:
@@ -220,13 +220,13 @@ fr:
     confirm_replace_oauth_application: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier sur OpenProject. Êtes-vous sûr de vouloir continuer ?
     confirm_replace_oauth_client: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier auprès de %{provider_type} . Êtes-vous sûr de vouloir continuer ?
     delete_warning:
-      project_storage: Are you sure you want to remove %{file_storage} from this project?
-      project_storage_delete_result_1: All links to corresponding files and folders will be removed
-      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
-      storage: Are you sure you want to delete %{file_storage} as an external file storage?
-      storage_delete_result_1: The storage will be removed from all projects currently using it
-      storage_delete_result_2: All links to corresponding files and folders will be removed
-      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
+      project_storage: Êtes-vous sûr de vouloir retirer %{file_storage} de ce projet ?
+      project_storage_delete_result_1: Tous les liens vers les fichiers et dossiers correspondants seront supprimés
+      project_storage_delete_result_2: Le dossier du projet géré automatiquement et tous les fichiers qu'il contient seront supprimés
+      storage: Êtes-vous sûr de vouloir supprimer %{file_storage} en tant que stockage de fichiers externes ?
+      storage_delete_result_1: Le stockage sera retiré de tous les projets qui l'utilisent actuellement.
+      storage_delete_result_2: Tous les liens vers les fichiers et dossiers correspondants seront supprimés
+      storage_delete_result_3: Le dossier du projet géré automatiquement et tous les fichiers qu'il contient seront supprimés.
     dependencies:
       nextcloud:
         group_folders_app: Dossiers de groupe
@@ -237,23 +237,23 @@ fr:
     error_invalid_provider_type: Veuillez sélectionner un fournisseur de stockage valide.
     file_storage_view:
       access_management:
-        automatic_management: Enable automatically-managed access and folders
-        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
-        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
-        manual_management: Only allow manually-managed access and folders
-        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+        automatic_management: Activer la gestion automatique des accès et des dossiers
+        automatic_management_description: Chaque projet pourra décider, lorsqu'un espace de stockage lui est ajouté, s'il souhaite une approche manuelle ou automatique de la gestion des dossiers et des accès.
+        description: OpenProject peut créer et gérer automatiquement des dossiers de projet lorsqu'un stockage de fichiers est ajouté à un projet. Cela peut se traduire par une structure de dossiers plus organisée et une gestion d'accès simple qui garantit l'accès à tous les utilisateurs concernés.
+        manual_management: N'autoriser que les accès et les dossiers gérés manuellement
+        manual_management_description: Les projets utilisant ce stockage ne pourront pas bénéficier de l'approche de gestion automatique. Les dossiers et l'accès doivent être gérés manuellement.
         setup_incomplete: Sélectionnez le type de gestion de l'accès des utilisateurs et de la création de dossiers.
-        subtitle: Folder and access management
+        subtitle: Gestion des dossiers et des accès
       access_management_section: Dossiers d'accès et de projets
       automatically_managed_folders: Dossiers gérés automatiquement
       general_information: Informations générales
       oauth_configuration: Configuration OAuth
       one_drive:
         access_management:
-          automatic_management: Enable automatically-managed access and folders
-          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
-          manual_management: Only allow manually-managed access and folders
-          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+          automatic_management: Activer la gestion automatique des accès et des dossiers
+          automatic_management_description: Chaque projet utilisant ce stockage de fichiers devra nécessairement utiliser l'approche de gestion automatique des dossiers et des accès. Ils ne peuvent pas le faire manuellement.
+          manual_management: N'autoriser que les accès et les dossiers gérés manuellement
+          manual_management_description: Les projets utilisant ce stockage ne pourront pas bénéficier de l'approche de gestion automatique. Les dossiers et l'accès doivent être gérés manuellement.
       one_drive_oauth: OAuth Azure
       openproject_oauth: OAuth OpenProject
       project_folders: Dossiers du projet
@@ -349,10 +349,10 @@ fr:
         sp_client_write_permission_missing: Le client semble ne pas avoir les autorisations d'écriture. Veuillez vérifier la documentation d'installation de votre espace de stockage.
         sp_existing_test_folder: Le dossier %{folder_name} requis pour le test existe déjà. Veuillez le supprimer et réessayer.
         sp_oauth_request_error: La requête liée à l'utilisateur vers SharePoint a échoué. Veuillez consulter les journaux du serveur pour obtenir plus d'informations.
-        sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+        sp_oauth_request_unauthorized: L'utilisateur actuel n'est pas autorisé à accéder au stockage de fichiers à distance. Veuillez consulter les journaux du serveur pour plus d'informations.
         sp_oauth_token_missing: OpenProject ne peut pas tester la communication au niveau utilisateur avec OneDrive/SharePoint, car l'utilisateur n'a pas encore lié son compte Microsoft.
         sp_tenant_id_missing: L'identifiant de répertoire (locataire) configuré est manquant pour SharePoint. Veuillez vérifier la configuration.
-        sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
+        sp_unexpected_content: Contenu inattendu trouvé dans la bibliothèque de documents SharePoint.
         unknown_error: La connexion n'a pas pu être validée. Une erreur inconnue s'est produite. Veuillez consulter les journaux du serveur pour en savoir plus.
       label_error: Erreur
       label_failed: Échec
@@ -497,7 +497,7 @@ fr:
         title: Nous configurons vos permissions sur le dossier du projet.
     page_titles:
       file_storages:
-        delete: Delete file storage?
+        delete: Supprimer l'espace de stockage de fichiers ?
         subtitle: Ajouter un stockage de fichiers externe pour télécharger, lier et gérer les fichiers dans les lots de travaux.
       managed_project_folders:
         subtitle: |-
@@ -512,7 +512,7 @@ fr:
         subtitle: Vérifiez l'état de la connexion pour l'espace de stockage %{storage_name_link} de tous les membres du projet.
         title: Statut de connexion des membres
       project_storages:
-        delete: Remove file storage from project?
+        delete: Supprimer le stockage de fichiers d'un projet ?
     permission_header_explanation: Les droits d'accès aux fichiers sur les supports de stockage externes ne sont appliqués qu'aux dossiers et aux fichiers contenus dans les dossiers de projet gérés automatiquement. Notez que toutes les droits sur les fichiers ne sont pas pris en charge par tous les fournisseurs de stockage. Veuillez consulter la documentation sur <a target='_blank' href='https://www.openproject.org/fr/docs/system-admin-guide/users-permissions/roles-permissions/'>les autorisations de stockage de fichiers</a> pour plus d'informations.
     provider_types:
       label: Type de fournisseur
@@ -542,7 +542,7 @@ fr:
         label: Utiliser le jeton d'accès obtenu lors de la connexion de l'utilisateur
       manual:
         helptext: OpenProject échangera un jeton avec le fournisseur d'identité pour l'audience donnée.
-        label: Manually specify audience for which to exchange access token (Recommended)
+        label: Spécifier manuellement l'audience pour laquelle le jeton d'accès doit être échangé (recommandé)
     storage_list_blank_slate:
       description: Ajoutez un stockage pour les voir ici.
       heading: Vous n'avez pas encore d'espace de stockage.
@@ -550,11 +550,10 @@ fr:
     upsell:
       one_drive:
         description: |-
-          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: OneDrive integration
+          Intégrez votre disque OneDrive en tant que stockage de fichiers avec OpenProject. Téléchargez des fichiers et liez-les directement à
+          work packages dans un projet.
+        title: Intégration de OneDrive
       sharepoint:
         description: |-
-          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: SharePoint integration
+          Intégrez votre OneDrive/SharePoint en tant qu'espace de stockage de fichiers avec OpenProject. Téléversez des fichiers et liez-les directement aux lots de travaux d'un projet.
+        title: Intégration de SharePoint

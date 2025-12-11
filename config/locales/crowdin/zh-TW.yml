@@ -536,6 +536,14 @@ zh-TW:
         portfolio_template_label: "模板化的專案組合"
         portfolio_template_caption: "選擇範本組合，作為此類型新子項的預設值。"
         no_template: "沒有預先定義的範本"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "全部啟用"
         label_disable_all: "全部停用"
@@ -1461,8 +1469,8 @@ zh-TW:
         not_a_datetime: "不是有效的日期時間。"
         not_a_number: "不是數字"
         not_allowed: "是無效的因為缺少權限"
-        not_json: "is not parseable as JSON."
-        not_json_object: "is not a JSON object."
+        not_json: "無法解析為 JSON。"
+        not_json_object: "不是 JSON 物件。"
         not_an_integer: "不是整數"
         not_an_iso_date: "不是有效日期。所需格式：YYYY-MM-DD。"
         not_same_project: "不屬於相同的專案"
@@ -2100,7 +2108,7 @@ zh-TW:
   button_print: "列印"
   button_quote: "引言"
   button_remove: 刪除
-  button_remove_permanently: "Remove permanently"
+  button_remove_permanently: "永久移除"
   button_remove_reminder: "移除提醒"
   button_rename: "重新命名"
   button_replace: "取代"
@@ -2439,7 +2447,7 @@ zh-TW:
         title: "只讓少數人能看到的內部備註"
         description: " "
       portfolio_management:
-        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
+        description: 透過將專案組織成投資組合與計畫，讓你的專案與策略目標保持一致。
     teaser:
       title:
         other: "%{count} %{trial_plan} 試用令牌所剩天數"
@@ -2724,15 +2732,19 @@ zh-TW:
         learn_about: "進一步瞭解所有新功能"
         missing: "目前還沒有突出顯示的功能。"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
             該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: 專案評估和評分的計算值（企業附加元件）。
-            line_1: 專案屬性類型層級。
-            line_2: 影響力極大的效能更新。
-            line_3: 文件模組新增索引頁。
-            line_4: 可更改自訂欄位項目的父項。
+            line_0: 即時文件協作。
+            line_1: 有能力將相關專案架構為計畫和組合，使其專注於策略目標（企業附加元件）。
+            line_2: 透過草稿模式、簡報模式、增強成果和 iCal 訂閱功能，提供更佳的會議管理。
+            line_3: 更新 SharePoint 整合，提供更多限制性權限 (企業附加元件)。
+            line_4: 重新設計的專案總覽，新增標籤、可設定的小工具，並改善版面設計。
+            line_5: 可選擇更嚴格地保護不在同一專案中工作的使用者的隱私。
+            line_6: 改善專案建立流程，提供更好的範本選擇。
+            line_7: 更聰明的全局搜尋，包括類型和狀態，提高多種自動完成工具的精確度。
+            line_8: 改善 ALT 文字的可讀性，並改善圖表顏色。
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -3858,9 +3870,6 @@ zh-TW:
   permission_add_project: "建立專案"
   permission_add_portfolios: "建立投資組合"
   permission_add_programs: "建立方案"
-  permission_add_project_from_template: "從範本建立專案"
-  permission_add_portfolios_from_template: "從範本建立專案組合"
-  permission_add_programs_from_template: "從範本建立方案"
   permission_add_work_package_attachments: "新增附件"
   permission_add_work_package_attachments_explanation: "允許在沒有編輯工作套件權限的情況下新增附件"
   permission_add_internal_comments: "撰寫內部留言"
@@ -3878,6 +3887,7 @@ zh-TW:
   permission_comment_news: "在「最新消息」留言"
   permission_commit_access: "讀/寫 權限版本庫 (Commit)"
   permission_copy_projects: "複製專案"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "複製工作套件"
   permission_create_backup: "建立備份"
   permission_delete_work_package_watchers: "刪除監看者"
@@ -4429,7 +4439,8 @@ zh-TW:
               label: "側邊欄"
               description: "將所有專案屬性加入專案總覽中右側面板內的區段。"
     project_initiation_request:
-      header_description: "OpenProject 可以產生一個逐步的精靈來幫助專案經理填寫專案啟動請求。您可以選擇應該包含哪些專案屬性，以及如何處理輸出文件。"
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} 已提交"
         submitted_description: "請點擊下方的按鈕，以前往提交流程的工作套件。"
@@ -4465,7 +4476,7 @@ zh-TW:
         status_when_submitted_caption: "提交請求後，產生的工作套件將轉換到的狀態。"
         send_confirmation_email: "向提交專案啟動請求的使用者傳送確認電子郵件"
         assignee: "提交時的執行者"
-        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
+        assignee_caption_html: "被指派到此專案屬性的使用者或群組，將同時成為新工作套件的受指派人。此清單僅包含類型為 <i>User</i> 的啟用中專案屬性。"
         confirmation_email_text: "確認電子郵件文字"
         confirmation_email_default: "您已提交 %{project_name} 的專案啟動請求，目前正等待審核。\n請點擊下方連結以存取包含您請求的工作套件。"
         work_package_comment: "工作套件留言"
@@ -4623,7 +4634,7 @@ zh-TW:
     注：如果啓用，這會在 <a href="%{information_panel_path}">%{information_panel_label}</a> 管理面板中和首頁上顯示一個包含您的安裝狀態的徽章。徽章僅向管理員顯示。<br/>徽章將根據官方的 OpenProject 版本數據庫檢查您當前的 OpenProject 版本，提醒您是否存在任何更新或已知漏洞。如需詳細瞭解檢查可以提供哪些信息，需要哪些數據來提供可用更新，以及如何禁用此檢查，請訪問<a href="%{more_info_url}">配置文檔</a>。
   text_own_membership_delete_confirmation: "您將要刪除部分或全部權限, 之後可能無法再編輯此專案。\n是否要繼續？"
   text_permanent_delete_confirmation_checkbox_label: "我了解此刪除無法逆轉"
-  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "我了解此移除無法逆轉"
   text_plugin_assets_writable: "Plugin 資產目錄可寫"
   text_powered_by: "由 %{link} 提供"
   text_project_identifier_info: "僅允許小寫字母(a-z)、數字、破折號(-) 及底線(_)，且必須以小寫字母開頭。"
