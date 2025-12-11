@@ -162,4 +162,31 @@ RSpec.describe Projects::Settings::CustomFieldsForm,
     expect(page).to have_no_text("Calculated field")
     expect(page).to have_no_field("Calculated field", disabled: true)
   end
+
+  context "for a model without custom values set" do
+    let(:model) { build(:project) }
+
+    let!(:required_inactive_field) do
+      create(:string_project_custom_field, name: "Required inactive field", is_required: true, is_for_all: false)
+    end
+    let!(:optional_active_field) do
+      create(:string_project_custom_field, name: "Optional active field", is_required: false, is_for_all: true)
+    end
+    let!(:required_active_field) do
+      create(:string_project_custom_field, name: "Required active field", is_required: true, is_for_all: true)
+    end
+
+    include_context "with rendered form"
+
+    it "only renders required, activated fields" do
+      expect(page).to have_no_text("Required inactive field")
+      expect(page).to have_no_field("Required inactive field", disabled: true)
+
+      expect(page).to have_no_text("Optional active field")
+      expect(page).to have_no_field("Optional active field", disabled: true)
+
+      expect(page).to have_text("Required active field")
+      expect(page).to have_field("Required active field", required: true)
+    end
+  end
 end
