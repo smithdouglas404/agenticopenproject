@@ -29,13 +29,10 @@
  */
 
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import type { Doc } from 'yjs';
-import * as Y from 'yjs';
 
 type Listener = (provider:HocuspocusProvider) => void;
 
 class LiveCollaborationManagerClass {
-  ydocInstance:Doc|null = null;
   yjsProviderInstance:HocuspocusProvider|null = null;
 
   private listeners:Listener[] = [];
@@ -52,21 +49,11 @@ class LiveCollaborationManagerClass {
   }
 
   /**
-   * Gets a shared Y.Doc instance
-   */
-  get ydoc():Doc {
-    this.ydocInstance ??= new Y.Doc();
-
-    return this.ydocInstance;
-  }
-
-  /**
-   * Cleans up the shared Y.Doc instance and provider.
+   * Cleans up the collaboration provider instance.
    * This method should be called when a collaboration session is ended
    */
   destroy():void {
     this.destroyYjsProvider();
-    this.destroyYdoc();
     this.listeners = [];
   }
 
@@ -74,13 +61,6 @@ class LiveCollaborationManagerClass {
     if (this.yjsProviderInstance) {
       this.yjsProviderInstance.destroy();
       this.yjsProviderInstance = null;
-    }
-  }
-
-  private destroyYdoc():void {
-    if (this.ydocInstance) {
-      this.ydocInstance.destroy();
-      this.ydocInstance = null;
     }
   }
 
