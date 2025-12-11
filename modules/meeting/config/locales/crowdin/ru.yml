@@ -368,6 +368,9 @@ ru:
       next: "Следующий"
       no_items: "Нет пунктов повестки дня"
       no_items_flash: "На повестке дня нет никаких вопросов."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "Раздел без названия"
     delete_confirmation: "Удаление раздела также удалит все пункты его повестки дня. Вы уверены, что хотите это сделать?"

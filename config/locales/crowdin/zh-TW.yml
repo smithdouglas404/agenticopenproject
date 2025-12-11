@@ -2726,17 +2726,17 @@ zh-TW:
         #We need to include the version to invalidate outdated translations in other locales
         "17_0":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: Real-time documents collaboration.
-            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
-            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
-            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
-            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
-            line_5: Option to guard the privacy of users not working in the same project more strictly.
-            line_6: Improved project creation flow with better template selection.
-            line_7: Smarter global search including type and status, improving precision in several autocompleters.
-            line_8: Accessibility improvements with ALT texts and improved chart colors.
+            line_0: 即時文件協作。
+            line_1: 有能力將相關專案架構為計畫和組合，使其專注於策略目標（企業附加元件）。
+            line_2: 透過草稿模式、簡報模式、增強成果和 iCal 訂閱功能，提供更佳的會議管理。
+            line_3: 更新 SharePoint 整合，提供更多限制性權限 (企業附加元件)。
+            line_4: 重新設計的專案總覽，新增標籤、可設定的小工具，並改善版面設計。
+            line_5: 可選擇更嚴格地保護不在同一專案中工作的使用者的隱私。
+            line_6: 改善專案建立流程，提供更好的範本選擇。
+            line_7: 更聰明的全局搜尋，包括類型和狀態，提高多種自動完成工具的精確度。
+            line_8: 改善 ALT 文字的可讀性，並改善圖表顏色。
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -3862,9 +3862,6 @@ zh-TW:
   permission_add_project: "建立專案"
   permission_add_portfolios: "建立投資組合"
   permission_add_programs: "建立方案"
-  permission_add_project_from_template: "從範本建立專案"
-  permission_add_portfolios_from_template: "從範本建立專案組合"
-  permission_add_programs_from_template: "從範本建立方案"
   permission_add_work_package_attachments: "新增附件"
   permission_add_work_package_attachments_explanation: "允許在沒有編輯工作套件權限的情況下新增附件"
   permission_add_internal_comments: "撰寫內部留言"
@@ -3882,6 +3879,7 @@ zh-TW:
   permission_comment_news: "在「最新消息」留言"
   permission_commit_access: "讀/寫 權限版本庫 (Commit)"
   permission_copy_projects: "複製專案"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "複製工作套件"
   permission_create_backup: "建立備份"
   permission_delete_work_package_watchers: "刪除監看者"
@@ -4433,7 +4431,8 @@ zh-TW:
               label: "側邊欄"
               description: "將所有專案屬性加入專案總覽中右側面板內的區段。"
     project_initiation_request:
-      header_description: "OpenProject 可以產生一個逐步的精靈來幫助專案經理填寫專案啟動請求。您可以選擇應該包含哪些專案屬性，以及如何處理輸出文件。"
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} 已提交"
         submitted_description: "請點擊下方的按鈕，以前往提交流程的工作套件。"

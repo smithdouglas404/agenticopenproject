@@ -3916,9 +3916,6 @@
   permission_add_project: "Opprett prosjekt"
   permission_add_portfolios: "Create portfolios"
   permission_add_programs: "Create programs"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Legg til vedlegg"
   permission_add_work_package_attachments_explanation: "Tillater å legge til vedlegg uten å redigere arbeidspakke-tillatelse"
   permission_add_internal_comments: "Write internal comments"
@@ -3936,6 +3933,7 @@
   permission_comment_news: "Kommenter nyheter"
   permission_commit_access: "Lese/skrive tilgang til kodelageret (standard)"
   permission_copy_projects: "Kopier prosjekter"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Duplicate work packages"
   permission_create_backup: "Opprett sikkerhetskopier"
   permission_delete_work_package_watchers: "Slett overvåkere"
@@ -4487,7 +4485,8 @@
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."

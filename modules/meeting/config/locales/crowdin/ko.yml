@@ -353,6 +353,9 @@ ko:
       next: "Next"
       no_items: "No agenda items"
       no_items_flash: "There are no agenda items to present."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "제목 없는 섹션"
     delete_confirmation: "이 섹션을 삭제하면 모든 의제 항목도 삭제됩니다. 계속하시겠습니까?"

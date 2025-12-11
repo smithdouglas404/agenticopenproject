@@ -358,6 +358,9 @@ fr:
       next: "Suivante"
       no_items: "Aucun point à l'ordre du jour"
       no_items_flash: "Il n'y a pas de point à l'ordre du jour."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "Section sans titre"
     delete_confirmation: "Supprimer la section supprimera également tous les éléments de l'ordre du jour qui s'y rapportent. Voulez-vous vraiment continuer ?"

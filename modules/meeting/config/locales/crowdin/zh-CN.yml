@@ -353,6 +353,9 @@ zh-CN:
       next: "Next"
       no_items: "No agenda items"
       no_items_flash: "There are no agenda items to present."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "无标题章节"
     delete_confirmation: "删除该属性也会删除其在所有项目中的值。您确定要这样做吗？"

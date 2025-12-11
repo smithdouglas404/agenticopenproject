@@ -358,6 +358,9 @@ sv:
       next: "Nästa"
       no_items: "Inga punkter på dagordningen"
       no_items_flash: "Det finns inga punkter på dagordningen att presentera."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "Namnlös sektion"
     delete_confirmation: "Om du tar bort avsnittet tas även alla dess agendapunkter bort. Är du säker på att du vill göra det här?"

@@ -3867,9 +3867,6 @@ ja:
   permission_add_project: "プロジェクトの作成"
   permission_add_portfolios: "ポートフォリオを作成"
   permission_add_programs: "プログラムの作成"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "添付ファイルを追加"
   permission_add_work_package_attachments_explanation: "ワークパッケージの編集権限なしで添付ファイルを追加できます"
   permission_add_internal_comments: "内部コメントの追加"
@@ -3887,6 +3884,7 @@ ja:
   permission_comment_news: "ニュースへのコメント"
   permission_commit_access: "リポジトリに読み取り/書き込みアクセス (コミット)"
   permission_copy_projects: "プロジェクトのコピー"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "ワークパッケージの重複"
   permission_create_backup: "バックアップの作成"
   permission_delete_work_package_watchers: "ウォッチャーの削除"
@@ -4438,7 +4436,8 @@ ja:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."

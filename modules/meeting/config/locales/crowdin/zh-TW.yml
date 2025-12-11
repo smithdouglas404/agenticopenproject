@@ -353,6 +353,9 @@ zh-TW:
       next: "下一頁"
       no_items: "沒有議程項目"
       no_items_flash: "沒有要提出的議程項目。"
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "無標題章節"
     delete_confirmation: "刪除該章節也會刪除其所有的議程項目。您確定要這麼做？"

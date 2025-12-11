@@ -3867,9 +3867,6 @@ ko:
   permission_add_project: "프로젝트 만들기"
   permission_add_portfolios: "포트폴리오 만들기"
   permission_add_programs: "프로그램 만들기"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "첨부 파일 추가"
   permission_add_work_package_attachments_explanation: "작업 패키지 편집 권한 없이 첨부 파일 추가를 허용합니다."
   permission_add_internal_comments: "내부 코멘트 작성"
@@ -3887,6 +3884,7 @@ ko:
   permission_comment_news: "뉴스에 코멘트 달기"
   permission_commit_access: "리포지토리(커밋)에 대한 읽기/쓰기 액세스"
   permission_copy_projects: "프로젝트 복사"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "작업 패키지 복제"
   permission_create_backup: "백업 만들기"
   permission_delete_work_package_watchers: "주시자 삭제"
@@ -4436,7 +4434,8 @@ ko:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."
