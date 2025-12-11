@@ -70,7 +70,7 @@ RSpec.describe ProjectCustomFieldProjectMappings::BulkUpdateService do
     context "with admin permissions" do
       let(:user) { create(:admin) }
 
-      it "bulk enables/disables all (non-mandatory) fields of the section, including invisible ones" do
+      it "bulk enables/disables all (non-for_all) fields of the section, including invisible ones" do
         expect(project.project_custom_fields).to contain_exactly(visible_activated_project_custom_field)
 
         expect(instance.call(action: :enable)).to be_success
@@ -85,7 +85,7 @@ RSpec.describe ProjectCustomFieldProjectMappings::BulkUpdateService do
 
         expect(instance.call(action: :disable)).to be_success
 
-        # mandatory fields cannot be disabled, even not by admins
+        # for_all fields cannot be disabled, even not by admins
         expect(project.reload.project_custom_fields).to contain_exactly(visible_activated_project_custom_field)
       end
     end
