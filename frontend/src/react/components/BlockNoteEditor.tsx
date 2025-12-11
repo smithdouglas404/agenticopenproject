@@ -33,11 +33,10 @@ import { User } from '@blocknote/core/comments';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { IUploadFile } from 'core-app/core/upload/upload.service';
 import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
-import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
-import { BlockNoteLocaleResult, useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
+import { useBlockNoteAttachments } from '../hooks/useBlockNoteAttachments';
+import { useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
 import { useOpTheme } from '../hooks/useOpTheme';
 
 interface CollaborativeUser {
@@ -70,7 +69,9 @@ export function BlockNoteEditor({
   hocuspocusProvider,
   doc,
 }:BlockNoteEditorProps) {
-  const { localeString, localeDictionary }:BlockNoteLocaleResult = useBlockNoteLocale(window.I18n.locale);
+  const { localeString, localeDictionary } = useBlockNoteLocale(window.I18n.locale);
+  const { enabled: attachmentsEnabled, uploadFile } = useBlockNoteAttachments(attachmentsCollectionKey, attachmentsUploadUrl);
+
   initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
 
   let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
@@ -89,7 +90,7 @@ export function BlockNoteEditor({
         showCursorLabels: 'activity'
       },
       dictionary: localeDictionary,
-      ...(isReadyForAttachmentUpload() && { uploadFile }),
+      ...(attachmentsEnabled && { uploadFile }),
     };
   } else {
     editorParams = {
@@ -103,46 +104,13 @@ export function BlockNoteEditor({
         },
       },
       dictionary: localeDictionary,
-      ...(isReadyForAttachmentUpload() && { uploadFile }),
+      ...(attachmentsEnabled && { uploadFile }),
     };
   }
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
   const theme = useOpTheme();
-
-  function isReadyForAttachmentUpload():boolean {
-    return (
-      attachmentsCollectionKey !== undefined &&
-      attachmentsCollectionKey !== '' &&
-      attachmentsUploadUrl !== undefined &&
-      attachmentsUploadUrl !== ''
-    );
-  }
-
-  const fileToIUploadFile = (file:File):IUploadFile => ({
-    file: file
-  });
-
-  async function uploadFile(file:File) {
-    const pluginContext = await window.OpenProject.getPluginContext();
-    try {
-      const service = pluginContext.services.attachmentsResourceService;
-      const iUploadFile = fileToIUploadFile(file);
-      const result = await firstValueFrom(
-        service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile])
-      );
-
-      return result?.[0]._links.staticDownloadLocation.href ?? '';
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch(error:any) {
-      const toastService = pluginContext.services.notifications;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      toastService.addError(error);
-
-      return '';
-    }
-  }
 
   const getCustomSlashMenuItems = (editor:EditorType) => {
     return [
