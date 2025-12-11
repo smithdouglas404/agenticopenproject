@@ -140,8 +140,11 @@ div.autocomplete
   height: initial !important
   min-height: initial !important
 
-  .ng-value-label
+  .ng-value-label:not(:has(> *))
     display: initial !important
+
+  .ng-value-label:has(> *)
+    min-width: 0
 
   .ng-placeholder
     // Fix overflow by providing a max width to the input

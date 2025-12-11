@@ -84,7 +84,10 @@ Capybara.add_selector :primer_text, locator_type: [String] do
   # `node_filter` applies the filter on the elements returned by the query so
   # that error message can list them if none matches.
   node_filter :color do |node, color|
-    actual = node[:class].scan(/(?<=color-fg-)[\w-]+/)
+    class_attr = node[:class]
+    next false unless class_attr
+
+    actual = class_attr.scan(/(?<=color-fg-)[\w-]+/)
     color = color.to_s
 
     actual.include?(color).tap do |res|
@@ -101,11 +104,10 @@ end
 Capybara.add_selector :octicon, locator_type: [String, Symbol] do
   label "Octicon"
 
-  xpath do |locator|
-    xpath = XPath.descendant(:svg)
-    xpath = builder(xpath).add_attribute_conditions(class: "octicon")
-    xpath = builder(xpath).add_attribute_conditions(class: "octicon-#{locator.to_s.downcase}") if locator
-    xpath
+  css do |locator|
+    css_selector = "svg.octicon"
+    css_selector += ".octicon-#{locator.to_s.downcase}" if locator
+    css_selector
   end
 
   expression_filter(:size, valid_values: [Numeric, *Primer::Beta::Octicon::SIZE_OPTIONS]) do |expr, size|

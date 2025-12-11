@@ -32,7 +32,20 @@
             ></svg>
           }
           @if (portfolioModelsEnabled) {
-            <span class="color-fg-muted" [innerHTML]="workspaceTypeIconWithLabel(project)"></span>
+            @switch (project._type) {
+              @case ('Portfolio') {
+                <span class="color-fg-muted">
+                  <svg briefcase-icon size="small" />
+                  {{ this.I18n.t('js.include_workspaces.types.portfolio') }}
+                </span>
+              }
+              @case ('Program') {
+                <span class="color-fg-muted">
+                  <svg versions-icon size="small" />
+                  {{ this.I18n.t('js.include_workspaces.types.program') }}
+                </span>
+              }
+            }
           }
         </span>
         @if (currentProjectService.id === project.id.toString()) {
@@ -60,7 +73,20 @@
           >
             <span>{{ project.name }}</span>
             @if (portfolioModelsEnabled) {
-              <span class="color-fg-muted" [innerHTML]="workspaceTypeIconWithLabel(project)"></span>
+              @switch (project._type) {
+                @case ('Portfolio') {
+                  <span class="color-fg-muted">
+                    <svg briefcase-icon size="small" />
+                    {{ this.I18n.t('js.include_workspaces.types.portfolio') }}
+                  </span>
+                }
+                @case ('Program') {
+                  <span class="color-fg-muted">
+                    <svg versions-icon size="small" />
+                    {{ this.I18n.t('js.include_workspaces.types.program') }}
+                  </span>
+                }
+              }
             }
           </span>
         </span>
