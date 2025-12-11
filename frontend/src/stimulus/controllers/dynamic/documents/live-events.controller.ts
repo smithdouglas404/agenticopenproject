@@ -69,7 +69,11 @@ export default class extends ApplicationController {
   }
 
   private onAwarenessUpdate = (data:onAwarenessUpdateParameters) => {
-    const changed = this.updateUsers(data.states);
+    const awarenessStates = data.states;
+
+    if (awarenessStates.length === 0) return;
+
+    const changed = this.updateUsers(awarenessStates);
     if (changed) {
       this.triggerUpdateUsersUI();
     }
