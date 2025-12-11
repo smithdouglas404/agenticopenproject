@@ -536,6 +536,14 @@ zh-TW:
         portfolio_template_label: "模板化的專案組合"
         portfolio_template_caption: "選擇範本組合，作為此類型新子項的預設值。"
         no_template: "沒有預先定義的範本"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "全部啟用"
         label_disable_all: "全部停用"

@@ -292,6 +292,9 @@ Rails.application.routes.draw do
         end
         resource :modules, only: %i[show update]
         resource :subitems, only: %i[show update]
+        resource :template, only: %i[show update], controller: "template" do
+          post :toggle_template, on: :member
+        end
         resource :creation_wizard, controller: "creation_wizard", only: %i[show] do
           get :disable_dialog
           post :toggle
