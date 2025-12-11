@@ -50,7 +50,7 @@ module Meetings
     end
 
     def elements
-      @elements ||= @meeting.participants.sort
+      @elements ||= @meeting.participants.sort_by(&:status_sorting_value)
     end
 
     def count

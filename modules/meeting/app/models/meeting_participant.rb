@@ -58,6 +58,16 @@ class MeetingParticipant < ApplicationRecord
     to_s.downcase <=> other.to_s.downcase
   end
 
+  def status_sorting_value
+    case participation_status
+    when "accepted" then 1
+    when "tentative" then 2
+    when "declined" then 3
+    else # needs-action and unknown
+      4
+    end
+  end
+
   alias :to_s :name
 
   def copy_attributes
