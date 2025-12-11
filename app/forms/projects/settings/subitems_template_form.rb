@@ -42,27 +42,6 @@ module Projects
 
       form do |f|
         if project.portfolio?
-          portfolio_template = assignments.detect(&:portfolio?)
-
-          f.select_list(
-            name: :portfolio_template,
-            scope_name_to_model: false,
-            label: I18n.t("projects.settings.subitems.portfolio_template_label"),
-            caption: I18n.t("projects.settings.subitems.portfolio_template_caption"),
-            input_width: :large,
-            include_blank: I18n.t("projects.settings.subitems.no_template")
-          ) do |list|
-            available_templates
-              .workspace_type(:portfolio)
-              .find_each do |template|
-              list.option(
-                value: template.id,
-                label: template.name,
-                selected: template.id == portfolio_template&.template_id
-              )
-            end
-          end
-
           program_template = assignments.detect(&:program?)
 
           f.select_list(
