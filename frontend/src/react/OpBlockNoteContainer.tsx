@@ -28,23 +28,11 @@
  * ++
  */
 
-import { BlockNoteEditorOptions, BlockNoteSchema, filterSuggestionItems } from '@blocknote/core';
 import { User } from '@blocknote/core/comments';
-import { BlockNoteView } from '@blocknote/mantine';
-import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { IUploadFile } from 'core-app/core/upload/upload.service';
-import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
-import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
-import { BlockNoteLocaleResult, useBlockNoteLocale } from './hooks/useBlockNoteLocale';
+import { BlockNoteEditor } from './components/BlockNoteEditor';
 import { useCollaboration } from './hooks/useCollaboration';
-import { useOpTheme } from './hooks/useOpTheme';
-
-interface CollaborativeUser {
-  name:string;
-  color:string;
-}
 
 export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
@@ -57,12 +45,6 @@ export interface OpBlockNoteContainerProps {
   hocuspocusProvider?:HocuspocusProvider;
 }
 
-const schema = BlockNoteSchema.create().extend({
-  blockSpecs: {
-    openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
-  },
-});
-
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
                                                activeUser,
@@ -71,31 +53,10 @@ export default function OpBlockNoteContainer({ inputField,
                                                attachmentsUploadUrl,
                                                attachmentsCollectionKey,
                                                hocuspocusProvider }:OpBlockNoteContainerProps) {
-  const { localeString, localeDictionary }:BlockNoteLocaleResult = useBlockNoteLocale(window.I18n.locale);
-
-  initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
-
   let doc:Y.Doc;
 
-  let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
   if(hocuspocusProvider) {
     doc = hocuspocusProvider.document;
-
-    editorParams = {
-      schema,
-      collaboration: {
-        provider: hocuspocusProvider,
-        fragment: doc.getXmlFragment('document-store'),
-        user: {
-          id: activeUser.id,
-          name: activeUser.username,
-          color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
-        } as unknown as CollaborativeUser,
-        showCursorLabels: 'activity'
-      },
-      dictionary: localeDictionary,
-      ...(isReadyForAttachmentUpload() && { uploadFile }),
-    };
   } else { // collaboration disabled (for test environments)
     doc = new Y.Doc();
 
@@ -108,66 +69,22 @@ export default function OpBlockNoteContainer({ inputField,
         doc = new Y.Doc();
       }
     }
-
-    editorParams = {
-      schema,
-      collaboration: {
-        provider: null,
-        fragment: doc.getXmlFragment('document-store'),
-        user: {
-          name: activeUser.username,
-          color: '#333333',
-        },
-      },
-      dictionary: localeDictionary,
-      ...(isReadyForAttachmentUpload() && { uploadFile }),
-    };
   }
-
-  const editor = useCreateBlockNote(editorParams, [activeUser]);
-  type EditorType = typeof editor;
-
-  function isReadyForAttachmentUpload():boolean {
-    return (
-      attachmentsCollectionKey !== undefined &&
-      attachmentsCollectionKey !== '' &&
-      attachmentsUploadUrl !== undefined &&
-      attachmentsUploadUrl !== ''
-    );
-  }
-  const fileToIUploadFile = (file:File):IUploadFile => ({
-    file: file
-  });
-
-  async function uploadFile(file:File) {
-    const pluginContext = await window.OpenProject.getPluginContext();
-    try {
-      const service = pluginContext.services.attachmentsResourceService;
-      const iUploadFile = fileToIUploadFile(file);
-      const result = await firstValueFrom(
-        service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile])
-      );
-
-      return result?.[0]._links.staticDownloadLocation.href ?? '';
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch(error:any) {
-      const toastService = pluginContext.services.notifications;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      toastService.addError(error);
-
-      return '';
-    }
-  }
-
-  const getCustomSlashMenuItems = (editor:EditorType) => {
-    return [
-      ...getDefaultReactSlashMenuItems(editor),
-      openProjectWorkPackageSlashMenu(editor),
-    ];
-  };
 
   const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
-  const theme = useOpTheme();
+
+  if (isLoading) {
+    return (
+      <div>
+        <div className={'mb-3'}>
+          <div style={{ width: '25%', height: '40px' }} className={'SkeletonBox'} />
+        </div>
+        <div className={'mb-3'}>
+          <div style={{ width: '100%', height: '150px' }} className={'SkeletonBox'} />
+        </div>
+      </div>
+    );
+  }
 
   if (connectionError) {
     return (
@@ -179,29 +96,14 @@ export default function OpBlockNoteContainer({ inputField,
   }
 
   return (
-    <>
-      {isLoading ? <div>
-        <div className={'mb-3'}>
-          <div style={{width: '25%', height: '40px'}} className={'SkeletonBox'}/>
-        </div>
-        <div className={'mb-3'}>
-          <div style={{width: '100%', height: '150px'}} className={'SkeletonBox'}/>
-        </div>
-      </div>
-        :
-        <BlockNoteView
-          editor={editor}
-          slashMenu={false}
-          theme={theme}
-          editable={!readOnly}
-          className={'block-note-editor-container'}
-        >
-          <SuggestionMenuController
-            triggerCharacter="/"
-            getItems={async (query:string) => Promise.resolve(filterSuggestionItems(getCustomSlashMenuItems(editor), query))}
-          />
-        </BlockNoteView>
-      }
-    </>
+    <BlockNoteEditor
+      activeUser={activeUser}
+      readOnly={readOnly}
+      openProjectUrl={openProjectUrl}
+      attachmentsUploadUrl={attachmentsUploadUrl}
+      attachmentsCollectionKey={attachmentsCollectionKey}
+      hocuspocusProvider={hocuspocusProvider}
+      doc={doc}
+    />
   );
 }
