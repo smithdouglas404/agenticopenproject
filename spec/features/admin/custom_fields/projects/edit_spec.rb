@@ -89,6 +89,25 @@ RSpec.describe "Edit project custom fields", :js do
       end
     end
 
+    it "shows checkboxes for 'Required', 'Admin-only' and 'For all projects' attributes" do
+      expect(page).to have_unchecked_field("custom_field_is_required")
+      expect(page).to have_unchecked_field("custom_field_admin_only")
+      expect(page).to have_unchecked_field("custom_field_is_for_all")
+
+      check("custom_field_is_required")
+      check("custom_field_admin_only")
+      check("custom_field_is_for_all")
+
+      click_on("Save")
+
+      expect(page).to have_text("Successful update")
+
+      boolean_project_custom_field.reload
+      expect(boolean_project_custom_field.is_required).to be_truthy
+      expect(boolean_project_custom_field.admin_only).to be_truthy
+      expect(boolean_project_custom_field.is_for_all).to be_truthy
+    end
+
     it "prevents saving a project custom field with an empty name" do
       original_name = boolean_project_custom_field.name
 
