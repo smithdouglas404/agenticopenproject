@@ -29,12 +29,12 @@
   ++#
 %>
 
-<% if @document.collaborative? %>
-  <% if Setting.real_time_text_collaboration_enabled? %>
+<% if true %>
+  <% if true %>
     <%=
       render(
         Documents::ShowEditView::BlockNoteEditorComponent.new(
-          @document, project: @project, oauth_token: @oauth_token, state: @state, readonly: @readonly
+          @document, project: @project, oauth_token: @oauth_token, state: :edit, readonly: @readonly
         )
       )
     %>

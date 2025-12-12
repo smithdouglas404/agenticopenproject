@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "jsx": "react-jsx",
-    "types": []
+    "types": ["react", "node", "esbuild-style-plugin"]
   },
   "files": [
     "src/main.ts",
@@ -16,9 +16,5 @@
   "include": [
     "src/stimulus/controllers/**/*.ts",
     "src/**/*.d.ts"
-  ],
-  "types": [
-    "node",
-    "react"
   ]
 }
