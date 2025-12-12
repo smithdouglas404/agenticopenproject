@@ -1,9 +1,12 @@
-const path = require('node:path');
-const fs = require('node:fs');
-const _ = require('lodash');
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { camelCase, upperFirst } from 'lodash-es';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const LINKED_PLUGINS_MODULE_TEMPLATE = (plugins) => {
-  const importableName = (name) => _.upperFirst(_.camelCase(name));
+  const importableName = (name) => upperFirst(camelCase(name));
   const frontendPlugins = plugins.map(([name]) => [name, importableName(name)]);
 
   return `

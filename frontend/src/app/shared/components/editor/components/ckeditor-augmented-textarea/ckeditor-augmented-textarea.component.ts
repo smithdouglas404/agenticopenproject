@@ -58,7 +58,7 @@ import { fromEvent, Subscription } from 'rxjs';
 import { AttachmentCollectionResource } from 'core-app/features/hal/resources/attachment-collection-resource';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { navigator } from '@hotwired/turbo';
-import { uniqueId } from 'lodash';
+import { clone, differenceBy, uniqueId } from 'lodash-es';
 
 @Component({
   templateUrl: './ckeditor-augmented-textarea.html',
@@ -279,7 +279,7 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
 
   private setupAttachmentRemovalSignal(editor:ICKEditorInstance) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-    this.attachments = _.clone((this.halResource as HalResource).attachments.elements);
+    this.attachments = clone((this.halResource as HalResource).attachments.elements);
 
     this
       .states
@@ -290,7 +290,7 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
         filter((resource) => !!resource),
       )
       .subscribe((resource:HalResource&{ attachments:AttachmentCollectionResource }) => {
-        const missingAttachments = _.differenceBy(
+        const missingAttachments = differenceBy(
           this.attachments,
           resource.attachments.elements,
           (attachment:HalResource) => attachment.id,
@@ -303,7 +303,7 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
           editor.model.fire('op:attachment-removed', removedUrls);
         }
 
-        this.attachments = _.clone(resource.attachments.elements);
+        this.attachments = clone(resource.attachments.elements);
       });
   }
 

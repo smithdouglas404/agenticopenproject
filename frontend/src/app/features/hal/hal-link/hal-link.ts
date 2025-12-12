@@ -99,8 +99,8 @@ export class HalLink implements HalLinkInterface {
       throw new Error(`The link ${this.href} is not templated.`);
     }
 
-    let href = _.clone(this.href) || '';
-    _.each(templateValues, (value:string, key:string) => {
+    let href = this.href || '';
+    Object.entries(templateValues).forEach(([key, value]) => {
       const regexp = new RegExp(`{${key}}`);
       href = href.replace(regexp, value);
     });
@@ -125,7 +125,7 @@ export class HalLink implements HalLinkInterface {
   public $callable():CallableHalLink {
     const linkFunc:any = (...params:any[]) => this.$fetch(...params);
 
-    _.extend(linkFunc, {
+    Object.assign(linkFunc, {
       $link: this,
       href: this.href,
       title: this.title,

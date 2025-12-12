@@ -167,7 +167,7 @@ export class WorkPackageEmbeddedTableComponent extends WorkPackageEmbeddedBaseCo
       .catch((error) => {
         this.error = this.I18n.t(
           'js.error.embedded_table_loading',
-          { message: _.get(error, 'message', error) },
+          { message: error?.message || error },
         );
         this.onError.emit(error);
       });

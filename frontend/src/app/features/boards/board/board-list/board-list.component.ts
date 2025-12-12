@@ -200,7 +200,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
         this.untilDestroyed(),
       )
       .subscribe((selectionState) => {
-        const selected = Object.keys(_.pickBy(selectionState.selected, (option, _) => option === true));
+        const selected = Object.keys(selectionState.selected).filter((key) => selectionState.selected[key] === true);
 
         const focused = this.wpViewFocusService.focusedWorkPackage;
 

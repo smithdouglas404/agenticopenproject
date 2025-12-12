@@ -28,7 +28,7 @@ export class WorkPackageFilterValues {
   ) {}
 
   applyDefaultsFromFilters(change:WorkPackageChangeset|Record<string, unknown>):void {
-    _.each(this.filters, (filter) => {
+    this.filters.forEach((filter) => {
       // Exclude filters specified in constructor
       if (this.excluded.includes(filter.id)) {
         return;
@@ -41,7 +41,7 @@ export class WorkPackageFilterValues {
       if (filter.id === 'project') {
         if (operator !== '=') return;
 
-        const projectFilter = _.find(filter.values, (resource:HalResource|string) => {
+        const projectFilter = filter.values.find((resource:HalResource|string) => {
           return ((resource instanceof HalResource) ? resource.href : resource) === this.currentProject.apiv3Path;
         });
         this.setValue(change, 'project', projectFilter || filter.values[0]);
@@ -137,7 +137,7 @@ export class WorkPackageFilterValues {
    */
   private filterAlreadyApplied(change:WorkPackageChangeset|Record<string, unknown>, filter:{ id:string, values:unknown[] }):boolean {
     const value:unknown = change instanceof WorkPackageChangeset ? change.projectedResource[filter.id] : change[filter.id];
-    const current = _.castArray(value);
+    const current = Array.isArray(value) ? value : [value];
 
     for (let i = 0; i < filter.values.length; i++) {
       for (let j = 0; j < current.length; j++) {

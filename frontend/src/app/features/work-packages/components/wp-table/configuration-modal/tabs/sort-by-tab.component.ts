@@ -72,7 +72,7 @@ export class WpTableConfigurationSortByTabComponent implements TabComponent, OnI
     }
 
     sortElements = sortElements.map((object) => this.getMatchingSort(object.column.href!, object.direction));
-    this.wpTableSortBy.update(_.compact(sortElements));
+    this.wpTableSortBy.update(sortElements.filter((el):el is QuerySortByResource => el !== undefined));
   }
 
   ngOnInit() {
@@ -87,11 +87,13 @@ export class WpTableConfigurationSortByTabComponent implements TabComponent, OnI
 
         // For whatever reason, even though the UI doesn't implement it,
         // QuerySortByResources are doubled for each column (one for asc/desc direction)
-        this.allColumns = _.uniqBy(allColumns, 'href');
+        this.allColumns = allColumns.filter((col, index, self) =>
+          index === self.findIndex((c) => c.href === col.href),
+        );
 
         this.getManualSortingOption();
 
-        _.each(this.wpTableSortBy.current, (sort) => {
+        this.wpTableSortBy.current.forEach((sort) => {
           if (!sort.column.href!.endsWith('/parent')) {
             this.sortationObjects.push(
               new SortModalObject({ name: sort.column.name, href: sort.column.href },
@@ -109,7 +111,7 @@ export class WpTableConfigurationSortByTabComponent implements TabComponent, OnI
   }
 
   public updateSelection(sort:SortModalObject, selected:string | null) {
-    sort.column = _.find(this.allColumns, (column) => column.href === selected) || this.emptyColumn;
+    sort.column = this.allColumns.find((column) => column.href === selected) || this.emptyColumn;
     this.updateUsedColumns();
   }
 
@@ -118,7 +120,10 @@ export class WpTableConfigurationSortByTabComponent implements TabComponent, OnI
       .filter((o) => o.column !== null)
       .map((object:SortModalObject) => object.column);
 
-    this.availableColumns = _.sortBy(_.differenceBy(this.allColumns, usedColumns, 'href'), 'name');
+    const usedHrefs = new Set(usedColumns.map((col) => col.href));
+    this.availableColumns = this.allColumns
+      .filter((col) => !usedHrefs.has(col.href))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
 
   public updateSortingMode(mode:SortingMode) {
@@ -126,7 +131,7 @@ export class WpTableConfigurationSortByTabComponent implements TabComponent, OnI
   }
 
   private getMatchingSort(column:string, direction:string) {
-    return _.find(this.wpTableSortBy.available, (sort) => sort.column.href === column && sort.direction.href === direction);
+    return this.wpTableSortBy.available.find((sort) => sort.column.href === column && sort.direction.href === direction);
   }
 
   private fillUpSortElements() {

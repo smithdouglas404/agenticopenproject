@@ -40,6 +40,7 @@ import { QueryFilterResource } from 'core-app/features/hal/resources/query-filte
 import { WorkPackageQueryStateService } from './wp-view-base.service';
 import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { differenceBy, isEqual } from 'lodash-es';
 
 @Injectable()
 export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<QueryFilterInstanceResource[]> {
@@ -159,8 +160,7 @@ export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<
   public instantiate(filterOrId:QueryFilterResource|string):QueryFilterInstanceResource {
     const id = (filterOrId instanceof QueryFilterResource) ? filterOrId.id : filterOrId;
 
-    const schema = _.find(
-      this.availableSchemas,
+    const schema = this.availableSchemas.find(
       (schema) => (schema.filter.allowedValues as HalResource)[0].id === id,
     )!;
 
@@ -207,7 +207,7 @@ export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<
    * @param filters
    */
   public isComplete(filters:QueryFilterInstanceResource[]):boolean {
-    return _.every(filters, (filter) => filter.isCompletelyDefined());
+    return filters.every((filter) => filter.isCompletelyDefined());
   }
 
   /**
@@ -217,7 +217,7 @@ export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<
   public hasChanged(query:QueryResource) {
     const comparer = (filter:HalResource[]) => filter.map((el) => el.$source);
 
-    return !_.isEqual(
+    return !isEqual(
       comparer(query.filters),
       comparer(this.rawFilters),
     );
@@ -253,7 +253,7 @@ export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<
    * @param id Identifier of the filter
    */
   public findIndex(id:string):number {
-    return _.findIndex(this.current, (f) => f.id === id);
+    return this.current.findIndex((f) => f.id === id);
   }
 
   public applyToQuery(query:QueryResource):boolean {
@@ -289,7 +289,7 @@ export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<
     const invisibleFilters = new Set(this.hidden);
     invisibleFilters.delete('search');
 
-    return _.reject(this.current, (filter) => invisibleFilters.has(filter.id));
+    return this.current.filter((filter) => !invisibleFilters.has(filter.id));
   }
 
   /**
@@ -319,7 +319,7 @@ export class WorkPackageViewFiltersService extends WorkPackageQueryStateService<
    * Get all filters that are not in the current active set
    */
   private remainingFilters(filters = this.rawFilters) {
-    return _.differenceBy(this.availableFilters, filters, (filter) => filter.id);
+    return differenceBy(this.availableFilters, filters, (filter) => filter.id);
   }
 
   isAvailable(el:QueryFilterInstanceResource):boolean {

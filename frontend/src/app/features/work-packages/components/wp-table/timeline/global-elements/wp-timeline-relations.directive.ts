@@ -131,7 +131,7 @@ export class WorkPackageTableTimelineRelations extends UntilDestroyedMixin imple
       )
       .subscribe((list) => {
         // ... make sure that the corresponding relations are loaded ...
-        const wps = _.compact(list.map((row) => row.workPackageId) as string[]);
+        const wps = list.map((row) => row.workPackageId).filter((id):id is string => id !== null && id !== undefined);
         void this.wpRelations.requireAll(wps);
       });
 
@@ -162,13 +162,13 @@ export class WorkPackageTableTimelineRelations extends UntilDestroyedMixin imple
   private renderWorkPackagesRelations(workPackageIds:string[]) {
     workPackageIds.forEach((workPackageId) => {
       const workPackageWithRelation = this.workPackagesWithRelations[workPackageId];
-      if (_.isNil(workPackageWithRelation)) {
+      if (workPackageWithRelation == null) {
         return;
       }
 
       this.removeRelationElementsForWorkPackage(workPackageId);
-      const relations = _.values(workPackageWithRelation);
-      const relationsList = _.values(relations);
+      const relations = Object.values(workPackageWithRelation);
+      const relationsList = Object.values(relations);
       relationsList.forEach((relation) => {
         if (!(relation.type === 'precedes'
           || relation.type === 'follows')) {
@@ -197,7 +197,7 @@ export class WorkPackageTableTimelineRelations extends UntilDestroyedMixin imple
   }
 
   private renderElements() {
-    const wpIdsWithRelations:string[] = _.keys(this.workPackagesWithRelations);
+    const wpIdsWithRelations:string[] = Object.keys(this.workPackagesWithRelations);
     this.renderWorkPackagesRelations(wpIdsWithRelations);
   }
 

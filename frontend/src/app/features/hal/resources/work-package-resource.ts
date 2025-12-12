@@ -42,6 +42,7 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { AttachmentCollectionResource } from 'core-app/features/hal/resources/attachment-collection-resource';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
+import { truncate } from 'lodash-es';
 import { TypeResource } from 'core-app/features/hal/resources/type-resource';
 import { RelationResource } from 'core-app/features/hal/resources/relation-resource';
 import { StatusResource } from 'core-app/features/hal/resources/status-resource';
@@ -187,7 +188,7 @@ export class WorkPackageBaseResource extends HalResource {
   }
 
   public truncatedSubject(length = 40):string {
-    return length <= 0 ? this.subject : _.truncate(this.subject, { length: length });
+    return length <= 0 ? this.subject : truncate(this.subject, { length });
   }
 
   public get isLeaf():boolean {
@@ -229,7 +230,7 @@ export class WorkPackageBaseResource extends HalResource {
       resources[name] = linked ? linked.$update() : Promise.reject(undefined);
     });
 
-    const promise = Promise.all(_.values(resources));
+    const promise = Promise.all(Object.values(resources));
     promise.then(() => {
       this.wpCacheService.touch(this.id!);
     });
@@ -244,7 +245,8 @@ export class WorkPackageBaseResource extends HalResource {
     this.attachments = new AttachmentCollectionResource(
       this.injector,
       // Attachments MAY be an array if we're building from a form
-      _.get(attachments, '$source', attachments),
+      // Replace _.get with optional chaining/default
+      (attachments && typeof attachments === 'object' && '$source' in attachments ? attachments.$source : attachments),
       false,
       this.halInitializer,
       'HalResource',
@@ -255,7 +257,7 @@ export class WorkPackageBaseResource extends HalResource {
    * Exclude the schema _link from the linkable Resources.
    */
   public $linkableKeys():string[] {
-    return _.without(super.$linkableKeys(), 'schema');
+    return super.$linkableKeys().filter((k) => k !== 'schema');
   }
 
   /**

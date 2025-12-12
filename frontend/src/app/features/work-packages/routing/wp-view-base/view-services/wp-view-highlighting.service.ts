@@ -6,6 +6,7 @@ import { BannersService } from 'core-app/core/enterprise/banners.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { WorkPackageCollectionResource } from 'core-app/features/hal/resources/wp-collection-resource';
 import { QuerySchemaResource } from 'core-app/features/hal/resources/query-schema-resource';
+import { isEqual } from 'lodash-es';
 import {
   WorkPackageViewHighlight,
 } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-table-highlight';
@@ -42,7 +43,7 @@ export class WorkPackageViewHighlightingService extends WorkPackageQueryStateSer
     }
 
     // 3. Is name in selected attributes ?
-    return !!_.find(this.current.selectedAttributes, (attr:HalResource) => attr.id === name);
+    return this.current.selectedAttributes?.some((attr:HalResource) => attr.id === name) ?? false;
   }
 
   public get current():WorkPackageViewHighlight {
@@ -69,7 +70,7 @@ export class WorkPackageViewHighlightingService extends WorkPackageQueryStateSer
 
   public hasChanged(query:QueryResource) {
     return query.highlightingMode !== this.current.mode
-      || !_.isEqual(query.highlightedAttributes, this.current.selectedAttributes);
+      || !isEqual(query.highlightedAttributes, this.current.selectedAttributes);
   }
 
   public applyToQuery(query:QueryResource):boolean {
@@ -82,7 +83,7 @@ export class WorkPackageViewHighlightingService extends WorkPackageQueryStateSer
   }
 
   private filteredValue(value:WorkPackageViewHighlight):WorkPackageViewHighlight {
-    if (_.isEmpty(value.selectedAttributes)) {
+    if (!value.selectedAttributes || value.selectedAttributes.length === 0) {
       value.selectedAttributes = undefined;
     }
 

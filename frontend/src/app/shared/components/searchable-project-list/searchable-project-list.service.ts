@@ -15,6 +15,7 @@ import { ID } from '@datorama/akita';
 import { IProjectData } from './project-data';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
+import { uniqBy } from 'lodash-es';
 
 const UNDISCLOSED_ANCESTOR = 'urn:openproject-org:api:v3:undisclosed';
 
@@ -329,7 +330,7 @@ export class SearchableProjectListService {
     return forkJoin(extraFetches).pipe(
       map((collections) => collections.map((collection) => collection._embedded.elements)),
       map((collections) => projects.concat(...collections)),
-      map((allProjects) => _.uniqBy(allProjects, (p) => p.id)),
+      map((allProjects) => uniqBy(allProjects, (p) => p.id)),
     );
   }
 

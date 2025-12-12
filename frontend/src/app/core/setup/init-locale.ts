@@ -79,15 +79,12 @@ export function initializeLocale() {
     },
   );
 
-  const localeImports = _
-    .chain([userLocale, instanceLocale])
-    .uniq()
-    .map(
-      (locale) => import(/* webpackChunkName: "locale" */ `../../../locales/${locale}.json`)
-        .then((imported:{ default:object }) => {
-          i18n.store(imported.default);
-        }),
-      )
-    .value();
+  const locales = Array.from(new Set([userLocale, instanceLocale]));
+  const localeImports = locales.map(
+    (locale) => import(/* webpackChunkName: "locale" */ `../../../locales/${locale}.json`)
+      .then((imported:{ default:object }) => {
+        i18n.store(imported.default);
+      }),
+  );
   return Promise.all(localeImports);
 }

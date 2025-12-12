@@ -1,3 +1,4 @@
+import { get } from 'lodash-es';
 import { EditFieldHandler } from 'core-app/shared/components/fields/edit/editing-portal/edit-field-handler';
 import { ElementRef, Injectable, Injector } from '@angular/core';
 import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
@@ -75,11 +76,11 @@ export class CustomTextEditFieldService extends EditFieldHandler {
   }
 
   public get rawText() {
-    return _.get(this.textValue, 'raw', '');
+    return get(this.textValue, 'raw', '');
   }
 
   public get htmlText() {
-    return _.get(this.textValue, 'html', '');
+    return get(this.textValue, 'html', '');
   }
 
   public get textValue() {

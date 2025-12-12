@@ -39,7 +39,7 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { AttributeHelpTextsService } from './attribute-help-text.service';
 import { AttributeHelpTextModalService } from './attribute-help-text-modal.service';
-import { uniqueId } from 'lodash';
+import { generateId } from 'core-app/shared/helpers/dom-helpers';
 
 export const attributeHelpTextSelector = 'attribute-help-text';
 
@@ -63,7 +63,7 @@ export class AttributeHelpTextComponent implements OnInit {
 
   isLoading = false;
 
-  readonly tooltipId = uniqueId('tooltip-');
+  readonly tooltipId = generateId('tooltip');
 
   readonly text = {
     open_dialog: this.I18n.t('js.help_texts.show_modal'),

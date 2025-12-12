@@ -10,6 +10,7 @@ import {
 import {
   DraggableOption,
 } from 'core-app/shared/components/autocompleter/draggable-autocomplete/draggable-autocomplete.component';
+import { keyBy } from 'lodash-es';
 
 @Component({
   templateUrl: './columns-tab.component.html',
@@ -20,7 +21,7 @@ export class WpTableConfigurationColumnsTabComponent implements TabComponent, On
 
   public availableColumns = this.wpTableColumns.all;
 
-  public availableColumnsMap:Record<string, QueryColumn> = _.keyBy(this.availableColumns, (c) => c.id);
+  public availableColumnsMap:Record<string, QueryColumn> = keyBy(this.availableColumns, (c) => c.id);
 
   public selectedColumns:DraggableOption[] = this.wpTableColumns.getColumns().map((c) => this.column2Like(c));
 

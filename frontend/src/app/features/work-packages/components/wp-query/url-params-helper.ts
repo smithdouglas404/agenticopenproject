@@ -37,6 +37,7 @@ import { ApiV3Filter, ApiV3FilterBuilder, FilterOperator } from 'core-app/shared
 import { PaginationService } from 'core-app/shared/components/table-pagination/pagination-service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { QueryFilterResource } from 'core-app/features/hal/resources/query-filter-resource';
+import { merge } from 'lodash-es';
 
 export interface QueryPropsFilter {
   n:string;
@@ -112,20 +113,21 @@ export class UrlParamsHelperService {
     }
 
     const parts:string[] = [];
-    _.each(params, (value, key) => {
+    Object.entries(params).forEach(([key, value]) => {
       if (value === undefined || value === null) {
         return;
       }
       if (!Array.isArray(value)) {
-        value = [value];
+        value = [value] as unknown[];
       }
 
-      _.each(value, (v) => {
+      (value as unknown[]).forEach((v) => {
+        let encodedValue = v;
         if (v !== null && typeof v === 'object') {
-          v = JSON.stringify(v);
+          encodedValue = JSON.stringify(v);
         }
         parts.push(`${encodeURIComponent(key)}=${
-          encodeURIComponent(v)}`);
+          encodeURIComponent(String(encodedValue))}`);
       });
     });
 
@@ -139,7 +141,7 @@ export class UrlParamsHelperService {
     const paramsData:QueryProps = {
       c: query.columns.map((column) => column.id),
       hi: !!query.showHierarchies,
-      g: _.get(query.groupBy, 'id', ''),
+      g: query.groupBy?.id || '',
       dr: query.displayRepresentation,
       is: query.includeSubprojects,
       ...this.encodeSums(query),
@@ -156,7 +158,7 @@ export class UrlParamsHelperService {
     }
 
     if (typeof extender === 'object') {
-      return JSON.stringify(_.merge(paramsData, extender));
+      return JSON.stringify(merge(paramsData, extender));
     }
 
     return JSON.stringify(paramsData);
@@ -229,7 +231,7 @@ export class UrlParamsHelperService {
     if (query.timelineVisible) {
       paramsData.tv = query.timelineVisible;
 
-      if (!_.isEmpty(query.timelineLabels)) {
+      if (query.timelineLabels && Object.keys(query.timelineLabels).length > 0) {
         paramsData.tll = JSON.stringify(query.timelineLabels);
       }
 
@@ -291,7 +293,7 @@ export class UrlParamsHelperService {
       queryData.showHierarchies = properties.hi;
     }
 
-    queryData.groupBy = _.get(properties, 'g', '');
+    queryData.groupBy = properties.g || '';
 
     // Filters
     if (properties.f) {
@@ -303,7 +305,7 @@ export class UrlParamsHelperService {
           // the array check is only there for backwards compatibility reasons.
           // Nowadays, it will always be an array;
           const vs = Array.isArray(urlFilter.v) ? urlFilter.v : [urlFilter.v];
-          _.extend(attributes, { values: vs });
+          Object.assign(attributes, { values: vs });
         }
         const filterData:any = {};
         filterData[urlFilter.n] = attributes;
@@ -364,7 +366,7 @@ export class UrlParamsHelperService {
 
     queryData.includeSubprojects = !!query.includeSubprojects;
     queryData.showHierarchies = !!query.showHierarchies;
-    queryData.groupBy = _.get(query.groupBy, 'id', '');
+    queryData.groupBy = query.groupBy?.id || '';
 
     // Filters
     queryData.filters = this.buildV3GetFiltersAsJson(query.filters, contextual);
@@ -373,7 +375,7 @@ export class UrlParamsHelperService {
     queryData.sortBy = this.buildV3GetSortByFromQuery(query);
     queryData.timestamps = query.timestamps.join(',');
 
-    return _.extend(additionalParams, queryData) as Partial<QueryRequestParams>;
+    return Object.assign({}, additionalParams, queryData) as Partial<QueryRequestParams>;
   }
 
   public queryFilterValueToParam(value:HalResource|string|boolean):string {
@@ -411,9 +413,9 @@ export class UrlParamsHelperService {
     const newFilters = filters.map((filter:QueryFilterInstanceResource) => {
       const id = this.buildV3GetFilterIdFromFilter(filter);
       const operator = this.buildV3GetOperatorIdFromFilter(filter);
-      const values = this.buildV3GetValuesFromFilter(filter).map((value) => {
-        _.each(replacements, (val:string, key:string) => {
-          value = value.replace(`{${key}}`, val);
+      const values = this.buildV3GetValuesFromFilter(filter).map((value:string) => {
+        Object.entries(replacements).forEach(([key, val]) => {
+          value = value.replace(`{${key}}`, val as string);
         });
 
         return value;
@@ -454,9 +456,9 @@ export class UrlParamsHelperService {
 
   public buildV3GetValuesFromFilter(filter:QueryFilterInstanceResource|QueryFilterResource) {
     if (filter.values) {
-      return _.map(filter.values, (v:any) => this.queryFilterValueToParam(v));
+      return filter.values.map((v:any) => this.queryFilterValueToParam(v));
     }
-    return _.map(filter._links.values, (v:any) => idFromLink(v.href as string));
+    return filter._links.values.map((v:any) => idFromLink(v.href as string));
   }
 
   private buildV3GetOperatorIdFromFilter(filter:QueryFilterInstanceResource) {

@@ -269,7 +269,7 @@ export class WorkPackageTimelineTableController extends UntilDestroyedMixin impl
       // Update all cells
       this.cellsRenderer.refreshAllCells();
 
-      _.each(this.renderers, (cb, key) => {
+      Object.entries(this.renderers).forEach(([key, cb]) => {
         debugLog(`Refreshing timeline member ${key}`);
         cb(this._viewParameters);
       });
@@ -490,7 +490,7 @@ export class WorkPackageTimelineTableController extends UntilDestroyedMixin impl
       const pixelPerDay = getPixelPerDayForZoomLevel(zoomLevel);
       const visibleDays = timelineWidthInPx / pixelPerDay;
 
-      if (visibleDays >= daysSpan || zoomLevel === _.last(zoomLevelOrder)) {
+      if (visibleDays >= daysSpan || zoomLevel === zoomLevelOrder.at(-1)) {
         // Zoom level is enough
         const previousZoomLevel = this._viewParameters.settings.zoomLevel;
 

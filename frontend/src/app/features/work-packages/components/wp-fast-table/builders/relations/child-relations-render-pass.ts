@@ -3,6 +3,7 @@ import { RowRenderInfo } from '../primary-render-pass';
 import {
   RelationsRenderPass,
 } from 'core-app/features/work-packages/components/wp-fast-table/builders/relations/relations-render-pass';
+import { clone } from 'lodash-es';
 
 export class ChildRelationsRenderPass extends RelationsRenderPass {
   renderType = 'child_relations';
@@ -16,7 +17,7 @@ export class ChildRelationsRenderPass extends RelationsRenderPass {
     }
 
     // Render for each original row, clone it since we're modifying the tablepass
-    const rendered = _.clone(this.tablePass.renderedOrder);
+    const rendered = clone(this.tablePass.renderedOrder);
     rendered.forEach((row:RowRenderInfo) => {
       // We only care for rows that are natural work packages
       if (!row.workPackage) {

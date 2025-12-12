@@ -54,7 +54,7 @@ export class TimeEntryResource extends HalResource {
    * Exclude the schema _link from the linkable Resources.
    */
   public $linkableKeys():string[] {
-    return _.without(super.$linkableKeys(), 'schema');
+    return super.$linkableKeys().filter((k) => k !== 'schema');
   }
 }
 

@@ -102,12 +102,12 @@ export class ErrorResource extends HalResource {
       columns = this.errors;
     }
 
-    return _.flatten(columns.map((resource:ErrorResource) => {
+    return columns.map((resource:ErrorResource) => {
       if (resource.errorIdentifier === v3ErrorIdentifierMultipleErrors) {
         return this.extractMultiError(resource)[0];
       }
       return resource.details.attribute;
-    }));
+    }).flat();
   }
 
   public getMessagesPerAttribute():Record<string, string[]> {
@@ -116,7 +116,7 @@ export class ErrorResource extends HalResource {
     if (this.details) {
       perAttribute[this.details.attribute] = [this.message];
     } else {
-      _.forEach(this.errors, (error:any) => {
+      this.errors?.forEach((error:any) => {
         if (error.errorIdentifier === v3ErrorIdentifierMultipleErrors) {
           const [attribute, messages] = this.extractMultiError(error);
           const current = perAttribute[attribute] || [];

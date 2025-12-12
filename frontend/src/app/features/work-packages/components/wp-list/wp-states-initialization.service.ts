@@ -89,8 +89,8 @@ export class WorkPackageStatesInitializationService {
   public updateStatesFromForm(query:QueryResource, form:QueryFormResource) {
     const schema:QuerySchemaResource = form.schema as any;
 
-    _.each(schema.filtersSchemas.elements, (schema) => {
-      this.states.schemas.get(schema.href!).putValue(schema as any);
+    schema.filtersSchemas.elements.forEach((filterSchema) => {
+      this.states.schemas.get(filterSchema.href!).putValue(filterSchema as any);
     });
 
     this.wpTableFilters.initializeFilters(query, schema);
@@ -108,7 +108,7 @@ export class WorkPackageStatesInitializationService {
     this.querySpace.tableRendered.clear('Clearing rendered data before upgrading query space');
 
     if (results.schemas) {
-      _.each(results.schemas.elements, (schema:SchemaResource) => {
+      results.schemas.elements.forEach((schema:SchemaResource) => {
         this.states.schemas.get(schema.href!).putValue(schema);
       });
     }

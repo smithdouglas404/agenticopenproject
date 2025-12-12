@@ -87,11 +87,11 @@ export class PaginationService {
   }
 
   public getMaxVisiblePageOptions() {
-    return _.get(this.paginationOptions, 'maxVisiblePageOptions', DEFAULT_PAGINATION_OPTIONS.maxVisiblePageOptions);
+    return this.paginationOptions?.maxVisiblePageOptions ?? DEFAULT_PAGINATION_OPTIONS.maxVisiblePageOptions;
   }
 
   public getOptionsTruncationSize() {
-    return _.get(this.paginationOptions, 'optionsTruncationSize', DEFAULT_PAGINATION_OPTIONS.optionsTruncationSize);
+    return this.paginationOptions?.optionsTruncationSize ?? DEFAULT_PAGINATION_OPTIONS.optionsTruncationSize;
   }
 
   public setPerPage(perPage:number) {

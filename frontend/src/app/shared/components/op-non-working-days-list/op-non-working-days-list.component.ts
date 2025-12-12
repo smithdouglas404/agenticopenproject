@@ -1,3 +1,4 @@
+import { difference, uniqBy } from 'lodash-es';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -201,8 +202,7 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
     this.dayService.requireNonWorkingYear$(fetchInfo.start)
       .subscribe(
         (days:IDay[]) => {
-          this.nonWorkingDays = _
-            .uniqBy([...this.nonWorkingDays, ...days], (el) => el.date)
+          this.nonWorkingDays = uniqBy([...this.nonWorkingDays, ...days], (el) => el.date)
             .filter((el:INonWorkingDay) => !this.nonWorkingDays.find((existing) => existing.id === el.id && existing._destroy));
           this.originalNonWorkingDays = [...this.nonWorkingDays];
           const events = this.mapToCalendarEvents(this.nonWorkingDays);
@@ -271,7 +271,7 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
   }
 
   private workingDaysModified():boolean {
-    return _.difference(this.workingDays, this.originalWorkingDays).length > 0
-      || _.difference(this.originalWorkingDays, this.workingDays).length > 0;
+    return difference(this.workingDays, this.originalWorkingDays).length > 0
+      || difference(this.originalWorkingDays, this.workingDays).length > 0;
   }
 }

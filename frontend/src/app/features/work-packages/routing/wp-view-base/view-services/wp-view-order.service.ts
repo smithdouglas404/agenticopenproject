@@ -26,6 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { isEmpty, sortBy } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { InputState } from '@openproject/reactivestates';
@@ -172,7 +173,7 @@ export class WorkPackageViewOrderService extends WorkPackageQueryStateService<Qu
       const { value } = this.positions;
 
       // Remove empty or stale values given we can reload them
-      if ((_.isEmpty(value) || this.positions.isValueOlderThan(60000))) {
+      if ((isEmpty(value) || this.positions.isValueOlderThan(60000))) {
         this.positions.clear('Clearing old positions value');
       }
 
@@ -210,7 +211,7 @@ export class WorkPackageViewOrderService extends WorkPackageQueryStateService<Qu
       return upstreamOrder;
     }
     const positions = this.positions.value!;
-    return _.sortBy(upstreamOrder, (wp) => {
+    return sortBy(upstreamOrder, (wp) => {
       const pos = positions[wp.id!];
       return pos !== undefined ? pos : MAX_ORDER;
     });

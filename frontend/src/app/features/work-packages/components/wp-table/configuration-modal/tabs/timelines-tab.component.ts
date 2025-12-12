@@ -11,6 +11,7 @@ import { QueryColumn } from 'core-app/features/work-packages/components/wp-query
 import { zoomLevelOrder } from 'core-app/features/work-packages/components/wp-table/timeline/wp-timeline';
 import { TimelineLabels, TimelineZoomLevel } from 'core-app/features/hal/resources/query-resource';
 import { StateService } from '@uirouter/angular';
+import { clone } from 'lodash-es';
 
 @Component({
   templateUrl: './timelines-tab.component.html',
@@ -90,7 +91,7 @@ export class WpTableConfigurationTimelinesTabComponent implements TabComponent, 
 
     // Current label models
     const { labels } = this.wpTableTimeline;
-    this.labels = _.clone(labels);
+    this.labels = clone(labels);
     this.availableLabels = Object.keys(this.labels);
 
     // Available labels

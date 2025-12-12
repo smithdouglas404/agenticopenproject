@@ -380,7 +380,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
     }
 
     if (Array.isArray(this.model)) {
-      return this.model.map((el) => (_.isObject(el) ? el[this.inputBindValue as 'id'] : el) as string);
+      return this.model.map((el) => (el !== null && typeof el === 'object' ? el[this.inputBindValue as 'id'] : el) as string);
     }
 
     return this.model[this.inputBindValue as 'id'] as string;
@@ -591,7 +591,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
 
   protected defaultCompareWithFunction():null|((a:unknown, b:unknown) => boolean) {
     return (a, b) => {
-      if (this.bindValue && !_.isObject(b)) {
+      if (this.bindValue && !(b !== null && typeof b === 'object')) {
         return (a as Record<string, unknown>)[this.bindValue] === b;
       }
 

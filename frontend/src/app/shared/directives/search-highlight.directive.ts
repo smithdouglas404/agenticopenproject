@@ -1,3 +1,4 @@
+import { escape } from 'lodash-es';
 import {
   AfterViewChecked,
   Directive,
@@ -44,7 +45,7 @@ export class OpSearchHighlightDirective implements AfterViewChecked {
     const end = content.slice(startIndex + query.length);
 
     const newNode = document.createElement('span');
-    newNode.innerHTML = `${_.escape(start)}<span class="op-search-highlight">${_.escape(result)}</span>${_.escape(end)}`;
+    newNode.innerHTML = `${escape(start)}<span class="op-search-highlight">${escape(result)}</span>${escape(end)}`;
     el.replaceChild(newNode, textNode);
   }
 

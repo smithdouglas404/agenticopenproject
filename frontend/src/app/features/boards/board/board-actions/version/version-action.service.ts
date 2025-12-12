@@ -1,3 +1,4 @@
+import { get } from 'lodash-es';
 import { Injectable } from '@angular/core';
 import { Board } from 'core-app/features/boards/board/board';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
@@ -45,7 +46,7 @@ export class BoardVersionActionService extends CachedBoardActionService {
   localizedName = this.I18n.t('js.work_packages.properties.version');
 
   public canAddToQuery(query:QueryResource):Promise<boolean> {
-    const formLink = _.get(query, 'results.createWorkPackage.href', null);
+    const formLink = get(query, 'results.createWorkPackage.href', null);
 
     if (!formLink) {
       return Promise.resolve(false);

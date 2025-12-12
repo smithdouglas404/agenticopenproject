@@ -135,7 +135,7 @@ describe('WorkPackage', () => {
     });
 
     it('when the work package has an `addAttachment` link', () => {
-      workPackage.$links.addAttachment = _.noop as any;
+      workPackage.$links.addAttachment = (() => {}) as any;
 
       expect(workPackage.canAddAttachments).toEqual(true);
     });

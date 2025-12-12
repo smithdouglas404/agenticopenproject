@@ -7,6 +7,7 @@ import {
 } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
 import { Constructor } from '@angular/cdk/schematics';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
+import { escapeRegExp } from 'lodash-es';
 
 export type ICKEditorType = 'full'|'constrained';
 export type ICKEditorMacroType = 'none'|'resource'|'full'|boolean|string[];
@@ -113,7 +114,7 @@ export class CKEditorSetupService {
 
     const allowedLinkProtocols = this.configurationService.allowedLinkProtocols;
     if (allowedLinkProtocols) {
-      config.link = { allowedProtocols: allowedLinkProtocols.map((el:string) => _.escapeRegExp(el)) };
+      config.link = { allowedProtocols: allowedLinkProtocols.map((el:string) => escapeRegExp(el)) };
     }
 
     return config;
