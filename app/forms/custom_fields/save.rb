@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,26 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  class CustomFieldFormatDependent
-    CONFIG = {
-      possibleValues: [:only, %w[list]],
-      formula: [:only, %w[calculated_value]],
-      enterpriseBanner: [:only, %w[hierarchy]]
-    }.freeze
+module CustomFields
+  class Save < ApplicationForm
+    attr_reader :label, :system_arguments
 
-    attr_reader :format
-
-    def initialize(format)
-      @format = format
+    form do |f|
+      f.submit(scheme: :primary, name: :submit, label:, **system_arguments)
     end
 
-    def visible?(target_name)
-      operator, formats = CONFIG[target_name.to_sym]
+    def initialize(label: I18n.t(:button_save), **system_arguments)
+      super()
 
-      fail ArgumentError, "Unknown target name #{target_name}" unless formats
-
-      operator == :only ? format.in?(formats) : !format.in?(formats)
+      @label = label
+      @system_arguments = system_arguments
     end
   end
 end

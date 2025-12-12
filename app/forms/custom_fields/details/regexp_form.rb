@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -21,31 +23,24 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  class CustomFieldFormatDependent
-    CONFIG = {
-      possibleValues: [:only, %w[list]],
-      formula: [:only, %w[calculated_value]],
-      enterpriseBanner: [:only, %w[hierarchy]]
-    }.freeze
+module CustomFields
+  module Details
+    class RegexpForm < BaseForm
+      supports_formats except: %i[list bool date user version hierarchy calculated_value]
 
-    attr_reader :format
-
-    def initialize(format)
-      @format = format
-    end
-
-    def visible?(target_name)
-      operator, formats = CONFIG[target_name.to_sym]
-
-      fail ArgumentError, "Unknown target name #{target_name}" unless formats
-
-      operator == :only ? format.in?(formats) : !format.in?(formats)
+      form do |f|
+        f.text_field(
+          name: :regexp,
+          label: attribute_name(:regexp),
+          size: 50,
+          caption: I18n.t(:text_regexp_info)
+        )
+      end
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -21,31 +23,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  class CustomFieldFormatDependent
-    CONFIG = {
-      possibleValues: [:only, %w[list]],
-      formula: [:only, %w[calculated_value]],
-      enterpriseBanner: [:only, %w[hierarchy]]
-    }.freeze
-
-    attr_reader :format
-
-    def initialize(format)
-      @format = format
-    end
-
-    def visible?(target_name)
-      operator, formats = CONFIG[target_name.to_sym]
-
-      fail ArgumentError, "Unknown target name #{target_name}" unless formats
-
-      operator == :only ? format.in?(formats) : !format.in?(formats)
+module CustomFields
+  module Details
+    class AdminOnlyForm < BaseForm
+      form do |f|
+        f.check_box(
+          name: :admin_only,
+          label: attribute_name(:admin_only),
+          caption: I18n.t("custom_fields.instructions.admin_only")
+        )
+      end
     end
   end
 end

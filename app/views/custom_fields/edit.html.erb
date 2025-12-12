@@ -37,14 +37,17 @@ See COPYRIGHT and LICENSE files for more details.
   <%= error_messages_for "custom_field" %>
 
   <% content_controller "admin--custom-fields",
-                        "admin--custom-fields-format-config-value": OpenProject::CustomFieldFormatDependent.stimulus_config,
                         "admin--custom-fields-format-value": @custom_field.field_format %>
 
-  <%= labelled_tabular_form_for @custom_field,
-                                as: :custom_field,
-                                url: custom_field_path(@custom_field),
-                                html: { method: :put, id: "custom_field_form" } do |f| %>
-    <%= render partial: "form", locals: { f: f } %>
-    <%= styled_button_tag t(:button_save), class: "-primary -with-icon icon-checkmark" %>
+  <%=
+    settings_primer_form_with(
+      model: @custom_field,
+      scope: :custom_field,
+      url: custom_field_path(@custom_field),
+      html: { id: "custom_field_form" }
+    ) do |f|
+  %>
+    <%= render partial: "form", locals: { f: } %>
+    <%= render CustomFields::Save.new(f) %>
   <% end %>
 <% end %>

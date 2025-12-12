@@ -383,7 +383,7 @@ en:
       multi_select: "Allows the user to assign multiple values to this custom field."
       searchable: "Include the field values when using the global search functionality."
       searchable_for_project: "Check to make this attribute available as a filter in project lists."
-      editable: "Allow the field to be editable by users themselves."
+      editable: "Allow the field to be editable by users themselves.stom "
       admin_only: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
       is_filter: >
         Allow the custom field to be used in a filter in work package views.
