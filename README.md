@@ -75,7 +75,7 @@ See [COPYRIGHT](COPYRIGHT) and [LICENSE](LICENSE) files for details.
 
 ### Icons
 
-Thanks to Vincent Le Moign and his fabulous Minicons icons on [webalys.com](http://www.webalys.com/minicons/icons-free-pack.php).
+Thanks to Vincent Le Moign and his fabulous Minicons icons on: [webalys.com](http://www.webalys.com/minicons/icons-free-pack.php).
 
 ### OpenProject icon font
 
