@@ -35,6 +35,8 @@ class Projects::ProjectsFiltersComponent < Filter::FilterComponent
       .sort_by(&:human_name)
   end
 
+  def turbo_requests? = true
+
   private
 
   def allowed_filter?(filter)

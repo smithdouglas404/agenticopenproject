@@ -37,7 +37,7 @@ class Projects::FiltersController < ApplicationController
   before_action :load_query_or_deny_access
 
   def show
-    render layout: nil
+    render Projects::ProjectsFiltersComponent.new(query: @query), layout: false
   end
 
   private
