@@ -37,6 +37,8 @@ export default class CustomFieldsController extends Controller {
     'dragContainer',
     'submitButton',
 
+    'template',
+    'table',
     'customOptionDefaults',
     'customOptionRow',
 
@@ -44,10 +46,12 @@ export default class CustomFieldsController extends Controller {
   ];
 
   static values = {
+    itemCount: Number,
     hierarchyEnabled: Boolean,
     format: String,
   };
 
+  declare itemCountValue:number;
   declare readonly formatValue:string;
   declare readonly hierarchyEnabledValue:boolean;
 
@@ -57,9 +61,15 @@ export default class CustomFieldsController extends Controller {
   declare readonly submitButtonTarget:HTMLButtonElement;
   declare readonly hasSubmitButtonTarget:boolean;
 
+  declare readonly templateTarget:HTMLElement;
+  declare readonly tableTarget:HTMLTableElement;
+
   declare readonly customOptionDefaultsTargets:HTMLInputElement[];
-  declare readonly customOptionRowTargets:HTMLTableRowElement[];
   declare readonly enterpriseBannerTarget:HTMLElement;
+
+  get customOptionRows() {
+    return [...this.tableTarget.tBodies[0].rows];
+  }
 
   connect() {
     if (this.hasDragContainerTarget) {
@@ -71,9 +81,9 @@ export default class CustomFieldsController extends Controller {
 
   moveRowUp(event:{ target:HTMLElement }) {
     const row = event.target.closest('tr')!;
-    const idx = this.customOptionRowTargets.indexOf(row);
+    const idx = this.customOptionRows.indexOf(row);
     if (idx > 0) {
-      this.customOptionRowTargets[idx - 1].before(row);
+      this.customOptionRows[idx - 1].before(row);
     }
 
     return false;
@@ -81,9 +91,10 @@ export default class CustomFieldsController extends Controller {
 
   moveRowDown(event:{ target:HTMLElement }) {
     const row = event.target.closest('tr')!;
-    const idx = this.customOptionRowTargets.indexOf(row);
-    if (idx < this.customOptionRowTargets.length - 1) {
-      this.customOptionRowTargets[idx + 1].after(row);
+    const idx = this.customOptionRows.indexOf(row);
+     
+    if (idx < this.customOptionRows.length - 1) {
+      this.customOptionRows[idx + 1].after(row);
     }
 
     return false;
@@ -91,7 +102,7 @@ export default class CustomFieldsController extends Controller {
 
   moveRowToTheTop(event:{ target:HTMLElement }) {
     const row = event.target.closest('tr')!;
-    const first = this.customOptionRowTargets[0];
+    const first = this.customOptionRows[0];
 
     if (first && first !== row) {
       first.before(row);
@@ -102,7 +113,7 @@ export default class CustomFieldsController extends Controller {
 
   moveRowToTheBottom(event:{ target:HTMLElement }) {
     const row = event.target.closest('tr')!;
-    const last = this.customOptionRowTargets[this.customOptionRowTargets.length - 1];
+    const last = this.customOptionRows[this.customOptionRows.length - 1];
 
     if (last && last !== row) {
       last.after(row);
@@ -112,47 +123,27 @@ export default class CustomFieldsController extends Controller {
   }
 
   removeOption(event:MouseEvent) {
-    const self = event.target as HTMLAnchorElement;
-    if (self.href === '#' || self.href.endsWith('/0')) {
-      const row = self.closest('tr');
+    const self = event.target as HTMLButtonElement;
+    const row = self.closest('tr');
 
-      if (row && this.customOptionRowTargets.length > 1) {
-        row.remove();
-      }
-
-      event.preventDefault();
-      event.stopImmediatePropagation();
+    if (row && this.customOptionRows.length > 1) {
+      row.remove();
     }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  
     return true; // send off deletion
   }
 
   addOption() {
-    const count = this.customOptionRowTargets.length;
-    const last = this.customOptionRowTargets[count - 1];
-    const dup = last.cloneNode(true) as HTMLElement;
+    const newRow = this.templateTarget.cloneNode(true);
+    this.tableTarget.append(newRow);
 
-    const input = dup.querySelector('.custom-option-value input') as HTMLInputElement;
+    const addedRow = this.tableTarget.lastChild as HTMLElement;
+    addedRow.outerHTML = addedRow.outerHTML.replace(/INDEX/g, this.itemCountValue.toString());
 
-    input.setAttribute('name', `custom_field[custom_options_attributes][${count}][value]`);
-    input.setAttribute('id', `custom_field_custom_options_attributes_${count}_value`);
-    input.value = '';
-
-    dup
-      .querySelector('.custom-option-id')
-      ?.remove();
-
-    const defaultValueCheckbox = dup.querySelector('input[type="checkbox"]') as HTMLInputElement;
-    const defaultValueHidden = dup.querySelector('input[type="hidden"]') as HTMLInputElement;
-
-    defaultValueHidden.setAttribute('name', `custom_field[custom_options_attributes][${count}][default_value]`);
-    defaultValueHidden.removeAttribute('id');
-    defaultValueCheckbox.setAttribute('name', `custom_field[custom_options_attributes][${count}][default_value]`);
-    defaultValueCheckbox.setAttribute('id', `custom_field_custom_options_attributes_${count}_default_value`);
-    defaultValueCheckbox.checked = false;
-
-    last.insertAdjacentElement('afterend', dup);
-
-    return false;
+    this.itemCountValue += 1;
   }
 
   uncheckOtherDefaults(event:{ target:HTMLElement }) {

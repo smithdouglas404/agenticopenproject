@@ -46,7 +46,8 @@ See COPYRIGHT and LICENSE files for more details.
   <%= render CustomFields::DetailsComponent.new(@custom_field) %>
 <% else %>
   <% content_controller "admin--custom-fields",
-                        "admin--custom-fields-format-value": @custom_field.field_format %>
+                        "admin--custom-fields-format-value": @custom_field.field_format,
+                        "admin--custom-fields-item-count-value": @custom_field.custom_options.size %>
 
   <%=
     settings_primer_form_with(

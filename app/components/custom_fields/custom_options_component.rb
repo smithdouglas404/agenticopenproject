@@ -23,35 +23,43 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
 module CustomFields
-  module Details
-    class ProjectAttributeSectionForm < BaseForm
-      form do |f|
-        f.select_list(
-          name: :custom_field_section_id,
-          label: ProjectCustomField.human_attribute_name(:custom_field_section),
-          required: true
-        ) do |list|
-          available_attribute_sections.each do |label, value|
-            list.option(label:, value:)
-          end
-        end
-      end
+  class CustomOptionsComponent < ApplicationComponent
+    extend Dry::Initializer
 
-      def render?
-        super && model.is_a?(ProjectCustomField)
-      end
+    option :form
+    option :custom_field
 
-      private
+    attr_reader :custom_options, :template_object
 
-      def available_attribute_sections
-        ProjectCustomFieldSection.pluck(:name, :id)
-      end
+    def initialize(...)
+      super
+
+      @custom_options = @custom_field.custom_options
+      @template_object = @custom_options.build
+    end
+
+    private
+
+    def table
+      @table ||= CustomOptions::TableComponent.new(
+        rows: custom_options,
+        form:,
+        custom_field:,
+        table_arguments: {
+          id: "custom_options",
+          data: { admin__custom_fields_target: "table" }
+        }
+      )
+    end
+
+    def template_row
+      CustomOptions::RowComponent.new(row: template_object, row_counter: nil, table:, templated: true)
     end
   end
 end

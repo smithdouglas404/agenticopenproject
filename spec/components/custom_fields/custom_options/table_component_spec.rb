@@ -23,35 +23,43 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module CustomFields
-  module Details
-    class ProjectAttributeSectionForm < BaseForm
-      form do |f|
-        f.select_list(
-          name: :custom_field_section_id,
-          label: ProjectCustomField.human_attribute_name(:custom_field_section),
-          required: true
-        ) do |list|
-          available_attribute_sections.each do |label, value|
-            list.option(label:, value:)
-          end
-        end
-      end
+require "rails_helper"
 
-      def render?
-        super && model.is_a?(ProjectCustomField)
-      end
+RSpec.describe CustomFields::CustomOptions::TableComponent, type: :component do
+  def render_component(...)
+    render_inline(described_class.new(...))
+  end
 
-      private
+  let(:form) { instance_double(Primer::Forms::Builder, fields_for: "") }
+  let(:custom_field) { create(:custom_field) }
 
-      def available_attribute_sections
-        ProjectCustomFieldSection.pluck(:name, :id)
-      end
+  subject(:rendered_component) do
+    render_component(rows: custom_options, form:, custom_field:)
+  end
+
+  context "with no custom options" do
+    let(:custom_options) { create_list(:custom_option, 0, custom_field:) }
+
+    it "renders headers" do
+      expect(rendered_component).to have_css "th .generic-table--sort-header", text: "Value"
+      expect(rendered_component).to have_css "th .generic-table--sort-header", text: "Default"
+    end
+
+    it "renders 1 row" do
+      expect(rendered_component).to have_css "tbody tr", count: 1
+    end
+  end
+
+  context "with custom options" do
+    let(:custom_options) { create_list(:custom_option, 2, custom_field:) }
+
+    it "renders 2 rows" do
+      expect(rendered_component).to have_css "tbody tr", count: 2
     end
   end
 end

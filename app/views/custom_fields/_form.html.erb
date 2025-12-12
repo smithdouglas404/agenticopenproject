@@ -48,38 +48,9 @@ See COPYRIGHT and LICENSE files for more details.
     )
   %>
 
-
-
-    <fieldset class="form--fieldset" > <%# format_dependent.attributes(:possibleValues) %>
-      <legend class="form--fieldset-legend"><%= I18n.t("activerecord.attributes.custom_field.possible_values") %></legend>
-      <% if @custom_field.persisted? %>
-        <div class="form--toolbar">
-          <span class="form--toolbar-item">
-            <%= link_to t("custom_fields.reorder_alphabetical"),
-                        { action: :reorder_alphabetical },
-                        data: {
-                          turbo_method: :post,
-                          turbo_confirm: t("custom_fields.reorder_confirmation")
-                        } %>
-          </span>
-        </div>
-      <% end %>
-      <div class="form--field">
-        <%= render partial: "custom_fields/custom_options", locals: { custom_field: @custom_field, f: f } %>
-        <%=
-          render Primer::Beta::Button.new(
-            scheme: :link,
-            test_selector: "add-custom-option",
-            data: { action: "admin--custom-fields#addOption" },
-            mt: 2
-          ) do |button|
-            button.with_leading_visual_icon(icon: :plus)
-            t(:button_add)
-          end
-        %>
-      </div>
-    </fieldset>  
-
+  <%= I18n.t("activerecord.attributes.custom_field.possible_values") %>
+  <%# format_dependent.attributes(:possibleValues) %>
+  <%= render(CustomFields::CustomOptionsComponent.new(form: f, custom_field: @custom_field)) %>
 
   <%= call_hook(:view_custom_fields_form_upper_box, custom_field: @custom_field, form: f) %>
 </section>

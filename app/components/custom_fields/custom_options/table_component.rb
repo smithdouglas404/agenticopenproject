@@ -23,34 +23,46 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
 module CustomFields
-  module Details
-    class ProjectAttributeSectionForm < BaseForm
-      form do |f|
-        f.select_list(
-          name: :custom_field_section_id,
-          label: ProjectCustomField.human_attribute_name(:custom_field_section),
-          required: true
-        ) do |list|
-          available_attribute_sections.each do |label, value|
-            list.option(label:, value:)
-          end
-        end
+  module CustomOptions
+    class TableComponent < ::TableComponent
+      options :form
+      options :custom_field
+
+      columns :value, :default_value
+
+      def row_class
+        RowComponent
       end
 
-      def render?
-        super && model.is_a?(ProjectCustomField)
+      def headers
+        [
+          ["value", { caption: CustomOption.human_attribute_name(:value) }],
+          ["default_value", { caption: t(:label_default) }]
+        ]
       end
 
-      private
+      def sortable?
+        false
+      end
 
-      def available_attribute_sections
-        ProjectCustomFieldSection.pluck(:name, :id)
+      def inline_create_link
+        render(
+          Primer::Beta::IconButton.new(
+            scheme: :invisible,
+            icon: :plus,
+            tooltip_direction: :e,
+            aria: { label: t(:button_add) },
+            data: { action: "admin--custom-fields#addOption" },
+            test_selector: "add-custom-option",
+            mt: 2
+          )
+        )
       end
     end
   end
