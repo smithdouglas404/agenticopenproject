@@ -3014,6 +3014,7 @@ nl:
   label_board_plural: "Borden"
   label_branch: "Branch"
   label_browse: "Bladeren"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Bulk bewerken van geselecteerd werkpakketten"
   label_bundled: "(Meegeleverde)"
   label_calendar: "Kalender"

@@ -2971,6 +2971,7 @@ vi:
   label_board_plural: "Các bảng"
   label_branch: "Nhánh"
   label_browse: "Duyệt"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Chỉnh sửa các work package đã chọn"
   label_bundled: "(Tích hợp sẵn)"
   label_calendar: "Lịch"

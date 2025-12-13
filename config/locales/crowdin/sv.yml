@@ -3018,6 +3018,7 @@ sv:
   label_board_plural: "Tavlor"
   label_branch: "Gren"
   label_browse: "Bläddra"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Redigera markerade arbetspaket i bulk"
   label_bundled: "(Bundlad)"
   label_calendar: "Kalender"

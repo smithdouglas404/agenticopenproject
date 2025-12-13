@@ -3017,6 +3017,7 @@
   label_board_plural: "Tavler"
   label_branch: "Gren"
   label_browse: "Bla gjennom"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Masseredigering av valgte arbeidspakker"
   label_bundled: "(Pakket)"
   label_calendar: "Kalender"

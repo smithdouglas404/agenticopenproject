@@ -2971,6 +2971,7 @@ th:
   label_board_plural: "Boards"
   label_branch: "สาขา"
   label_browse: "เรียกดู"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "แก้ไขชุดภารกิจที่เลือกพร้อมกัน"
   label_bundled: "(Bundled)"
   label_calendar: "ปฏิทิน"

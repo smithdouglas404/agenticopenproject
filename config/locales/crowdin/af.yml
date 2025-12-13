@@ -3018,6 +3018,7 @@ af:
   label_board_plural: "Boards"
   label_branch: "Tak"
   label_browse: "Blaai"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Grootmaat redigeer geselekteerde werkspakkette"
   label_bundled: "(Bundled)"
   label_calendar: "Kalender"

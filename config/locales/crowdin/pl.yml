@@ -3108,6 +3108,7 @@ pl:
   label_board_plural: "Tablice"
   label_branch: "Branch"
   label_browse: "Przeglądaj"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Edycja wybranych zadań zbiorczo"
   label_bundled: "(W zestawie)"
   label_calendar: "Kalendarz"

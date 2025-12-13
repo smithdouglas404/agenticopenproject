@@ -3015,6 +3015,7 @@ it:
   label_board_plural: "Bacheche"
   label_branch: "Ramo"
   label_browse: "Naviga"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Modifica in blocco le macro-attività selezionate"
   label_bundled: "(Raccolto)"
   label_calendar: "Calendario"

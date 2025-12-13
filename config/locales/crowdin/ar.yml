@@ -3206,6 +3206,7 @@ ar:
   label_board_plural: "لوحات"
   label_branch: "فرع"
   label_browse: "تصفّح"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "تحرير كل مجموعات العمل المحددة"
   label_bundled: "(Bundled)"
   label_calendar: "التقويم"

@@ -3018,6 +3018,7 @@ eo:
   label_board_plural: "Tabuloj"
   label_branch: "Branĉo"
   label_browse: "Foliumi"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Grupa redakto de laborpakaĵoj"
   label_bundled: "(Pakita)"
   label_calendar: "Kalendaro"

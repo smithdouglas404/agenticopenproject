@@ -3015,6 +3015,7 @@ pt-PT:
   label_board_plural: "Quadros"
   label_branch: "Ramo"
   label_browse: "Navegador"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Edição em massa de pacotes de trabalho selecionados"
   label_bundled: "(Empacotado)"
   label_calendar: "Calendários"

@@ -3018,6 +3018,7 @@ ne:
   label_board_plural: "बोर्डहरु"
   label_branch: "Branch"
   label_browse: "Browse"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Bulk edit selected work packages"
   label_bundled: "(बन्डल)"
   label_calendar: "Calendar"

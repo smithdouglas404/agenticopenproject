@@ -3110,6 +3110,7 @@ ru:
   label_board_plural: "Доски"
   label_branch: "Ветка"
   label_browse: "Обзор"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Массовое изменение выбранных пакетов работ"
   label_bundled: "(В комплекте)"
   label_calendar: "Календарь"

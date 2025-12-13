@@ -3015,6 +3015,7 @@ ca:
   label_board_plural: "Taulells"
   label_branch: "Branca"
   label_browse: "Navegar"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Edició massiva de paquets de treball"
   label_bundled: "(Integrat)"
   label_calendar: "Calendari"

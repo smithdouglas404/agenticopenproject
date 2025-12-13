@@ -2970,6 +2970,7 @@ ja:
   label_board_plural: "ボード"
   label_branch: "分岐"
   label_browse: "閲覧"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "選択したワークパッケージを一括編集"
   label_bundled: "(バンドル)"
   label_calendar: "カレンダー"

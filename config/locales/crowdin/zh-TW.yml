@@ -783,7 +783,7 @@ zh-TW:
         required: "請選擇角色"
       message:
         label: "邀請訊息"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
+        description: "我們將會寄出一封電子郵件給使用者，你可以在此加入個人訊息。提供邀請的說明或一些與專案相關的資訊，可能有助於他們開始使用。"
       summary:
         next_button: "發送邀請函"
       success_message:
@@ -2967,6 +2967,7 @@ zh-TW:
   label_board_plural: "看板"
   label_branch: "分支"
   label_browse: "瀏覽"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "整批編輯選取的工作套件"
   label_bundled: "(已附帶)"
   label_calendar: "行事曆"

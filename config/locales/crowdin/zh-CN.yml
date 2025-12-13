@@ -2967,6 +2967,7 @@ zh-CN:
   label_board_plural: "面板"
   label_branch: "分支"
   label_browse: "浏览"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "批量编辑所选工作包"
   label_bundled: "(捆绑包)"
   label_calendar: "日历"

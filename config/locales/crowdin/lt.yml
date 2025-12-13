@@ -3109,6 +3109,7 @@ lt:
   label_board_plural: "Lentos"
   label_branch: "Šaka"
   label_browse: "Naršyti"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Masiškai redaguoti pasirinktus darbų paketus"
   label_bundled: "(Įtrauktas)"
   label_calendar: "Kalendorius"

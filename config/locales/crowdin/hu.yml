@@ -3017,6 +3017,7 @@ hu:
   label_board_plural: "Táblák"
   label_branch: "Branch"
   label_browse: "böngész"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "A kiválasztott feladatcsoportok tömeges szerkesztése"
   label_bundled: "(Csomagban)"
   label_calendar: "Naptár"

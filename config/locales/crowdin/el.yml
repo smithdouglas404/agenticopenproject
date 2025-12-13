@@ -3014,6 +3014,7 @@ el:
   label_board_plural: "Πίνακες"
   label_branch: "Κλάδος"
   label_browse: "Περιήγηση"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Μαζική επεξεργασία επιλεγμένων πακέτων εργασίας"
   label_bundled: "(Πακεταρισμένο)"
   label_calendar: "Ημερολόγιο"

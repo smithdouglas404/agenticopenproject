@@ -2969,6 +2969,7 @@ ms:
   label_board_plural: "Board"
   label_branch: "Cabang"
   label_browse: "Melayari"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Edit secara pukal pakej kerja yang dipilih"
   label_bundled: "(Terkumpul)"
   label_calendar: "Kalendar"

@@ -3018,6 +3018,7 @@ bg:
   label_board_plural: "Табла"
   label_branch: "Клон"
   label_browse: "Преглед"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Групово редактиране на избраните работни пакети"
   label_bundled: "(Bundled)"
   label_calendar: "Календар"

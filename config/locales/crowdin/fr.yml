@@ -3016,6 +3016,7 @@ fr:
   label_board_plural: "Tableaux"
   label_branch: "Branche"
   label_browse: "Parcourir"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Edition en masse des Lots de Travaux selectionnés"
   label_bundled: "(Inclus)"
   label_calendar: "Calendrier"

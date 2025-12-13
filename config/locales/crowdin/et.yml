@@ -3018,6 +3018,7 @@ et:
   label_board_plural: "Boards"
   label_branch: "Haru"
   label_browse: "Sirvi"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Muuda valitud teemasid korraga"
   label_bundled: "(Bundled)"
   label_calendar: "Kalender"

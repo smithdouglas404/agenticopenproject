@@ -3015,6 +3015,7 @@ es:
   label_board_plural: "Tableros"
   label_branch: "Sucursal"
   label_browse: "Explorar"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Edición masiva de paquetes de trabajo"
   label_bundled: "(Agrupado)"
   label_calendar: "Calendario"

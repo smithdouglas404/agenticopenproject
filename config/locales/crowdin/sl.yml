@@ -3111,6 +3111,7 @@ sl:
   label_board_plural: "Table"
   label_branch: "Podružnica"
   label_browse: "Brskanje"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Skupno urejanje izbranih delovnih paketov"
   label_bundled: "(V paketu)"
   label_calendar: "Koledar"

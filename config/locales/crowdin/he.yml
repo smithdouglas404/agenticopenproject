@@ -3112,6 +3112,7 @@ he:
   label_board_plural: "לוחות"
   label_branch: "ענף"
   label_browse: "עיון"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "חבילות עבודה עריכה בצובר שנבחרו"
   label_bundled: "(Bundled)"
   label_calendar: "לוח שנה"

@@ -3018,6 +3018,7 @@ eu:
   label_board_plural: "Boards"
   label_branch: "Branch"
   label_browse: "Browse"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Bulk edit selected work packages"
   label_bundled: "(Bundled)"
   label_calendar: "Egutegia"

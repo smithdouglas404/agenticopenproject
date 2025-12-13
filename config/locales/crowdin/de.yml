@@ -3010,6 +3010,7 @@ de:
   label_board_plural: "Boards"
   label_branch: "Zweig"
   label_browse: "Codebrowser"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Alle ausgewählten Arbeitspakete bearbeiten"
   label_bundled: "(Gebündelt)"
   label_calendar: "Kalender"

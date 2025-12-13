@@ -3112,6 +3112,7 @@ sk:
   label_board_plural: "Nástenky"
   label_branch: "Vetva"
   label_browse: "Prechádzať"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Hromadne upraviť vybrané pracovné balíčky"
   label_bundled: "(Bundled)"
   label_calendar: "Kalendár"

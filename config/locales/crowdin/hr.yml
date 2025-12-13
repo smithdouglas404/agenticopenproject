@@ -3065,6 +3065,7 @@ hr:
   label_board_plural: "Boards"
   label_branch: "Grana"
   label_browse: "Pregledaj"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Višestruko uređivanje odabranih radnih paketa"
   label_bundled: "(Bundled)"
   label_calendar: "Kalendar"

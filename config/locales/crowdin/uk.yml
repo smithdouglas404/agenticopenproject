@@ -3106,6 +3106,7 @@ uk:
   label_board_plural: "Дошки"
   label_branch: "Гілка"
   label_browse: "Огляд"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Масове редагування вибраних робочих пакетів"
   label_bundled: "(В комплекті)"
   label_calendar: "Календар"

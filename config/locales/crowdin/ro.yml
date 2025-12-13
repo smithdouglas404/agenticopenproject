@@ -3065,6 +3065,7 @@ ro:
   label_board_plural: "Panouri"
   label_branch: "Ramură"
   label_browse: "Răsfoire"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Editare în masă a pachetelor de lucru selectate"
   label_bundled: "(la pachet)"
   label_calendar: "Calendar"

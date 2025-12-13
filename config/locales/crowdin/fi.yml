@@ -3018,6 +3018,7 @@ fi:
   label_board_plural: "Taulut"
   label_branch: "Haara"
   label_browse: "Selaus"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Muokkaa valittuja tehtäviä"
   label_bundled: "(Bundled)"
   label_calendar: "Kalenteri"

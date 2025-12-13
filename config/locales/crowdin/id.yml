@@ -2967,6 +2967,7 @@ id:
   label_board_plural: "Papan"
   label_branch: "Branch"
   label_browse: "Browse"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Edit masal Paket-Penugasan yang dipilih"
   label_bundled: "(dibundel)"
   label_calendar: "Kalender"

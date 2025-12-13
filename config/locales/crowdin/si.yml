@@ -3018,6 +3018,7 @@ si:
   label_board_plural: "පුවරු"
   label_branch: "ශාඛාව"
   label_browse: "පිරික්සන්න"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "තොග සංස්කරණය තෝරාගත් වැඩ පැකේජ"
   label_bundled: "(මිටි)"
   label_calendar: "දින දර්ශනය"
