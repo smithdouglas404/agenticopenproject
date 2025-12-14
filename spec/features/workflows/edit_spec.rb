@@ -56,7 +56,7 @@ RSpec.describe "Workflow edit" do
     click_button "Edit"
 
     within "#workflow_form_always" do
-      check "status_#{statuses[1].id}_#{statuses[2].id}_"
+      check "status_#{statuses[1].id}_#{statuses[2].id}"
     end
 
     click_button "Save"
@@ -65,18 +65,18 @@ RSpec.describe "Workflow edit" do
 
     within "#workflow_form_always" do
       expect(page)
-        .to have_field "status_#{statuses[0].id}_#{statuses[1].id}_", checked: true
+        .to have_field "status_#{statuses[0].id}_#{statuses[1].id}", checked: true
       expect(page)
-        .to have_field "status_#{statuses[1].id}_#{statuses[2].id}_", checked: true
+        .to have_field "status_#{statuses[1].id}_#{statuses[2].id}", checked: true
 
       expect(page)
-        .to have_field "status_#{statuses[0].id}_#{statuses[2].id}_", checked: false
+        .to have_field "status_#{statuses[0].id}_#{statuses[2].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[1].id}_#{statuses[0].id}_", checked: false
+        .to have_field "status_#{statuses[1].id}_#{statuses[0].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[2].id}_#{statuses[0].id}_", checked: false
+        .to have_field "status_#{statuses[2].id}_#{statuses[0].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[2].id}_#{statuses[1].id}_", checked: false
+        .to have_field "status_#{statuses[2].id}_#{statuses[1].id}", checked: false
 
       expect(Workflow.where(type_id: type.id, role_id: role.id).count).to be 2
 
@@ -95,7 +95,7 @@ RSpec.describe "Workflow edit" do
     click_button "Edit"
 
     within "#workflow_form_author" do
-      check "status_#{statuses[2].id}_#{statuses[1].id}_"
+      check "status_#{statuses[2].id}_#{statuses[1].id}"
     end
 
     click_button "Save"
@@ -104,18 +104,18 @@ RSpec.describe "Workflow edit" do
 
     within "#workflow_form_author" do
       expect(page)
-        .to have_field "status_#{statuses[2].id}_#{statuses[1].id}_", checked: true
+        .to have_field "status_#{statuses[2].id}_#{statuses[1].id}", checked: true
 
       expect(page)
-        .to have_field "status_#{statuses[0].id}_#{statuses[1].id}_", checked: false
+        .to have_field "status_#{statuses[0].id}_#{statuses[1].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[1].id}_#{statuses[2].id}_", checked: false
+        .to have_field "status_#{statuses[1].id}_#{statuses[2].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[0].id}_#{statuses[2].id}_", checked: false
+        .to have_field "status_#{statuses[0].id}_#{statuses[2].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[1].id}_#{statuses[0].id}_", checked: false
+        .to have_field "status_#{statuses[1].id}_#{statuses[0].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[2].id}_#{statuses[0].id}_", checked: false
+        .to have_field "status_#{statuses[2].id}_#{statuses[0].id}", checked: false
 
       expect(Workflow.where(type_id: type.id, role_id: role.id).count).to be 2
 
@@ -136,7 +136,7 @@ RSpec.describe "Workflow edit" do
     click_button "Edit"
 
     within "#workflow_form_assignee" do
-      check "status_#{statuses[2].id}_#{statuses[0].id}_"
+      check "status_#{statuses[2].id}_#{statuses[0].id}"
     end
 
     click_button "Save"
@@ -145,18 +145,18 @@ RSpec.describe "Workflow edit" do
 
     within "#workflow_form_assignee" do
       expect(page)
-        .to have_field "status_#{statuses[2].id}_#{statuses[0].id}_", checked: true
+        .to have_field "status_#{statuses[2].id}_#{statuses[0].id}", checked: true
 
       expect(page)
-        .to have_field "status_#{statuses[0].id}_#{statuses[1].id}_", checked: false
+        .to have_field "status_#{statuses[0].id}_#{statuses[1].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[1].id}_#{statuses[2].id}_", checked: false
+        .to have_field "status_#{statuses[1].id}_#{statuses[2].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[0].id}_#{statuses[2].id}_", checked: false
+        .to have_field "status_#{statuses[0].id}_#{statuses[2].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[1].id}_#{statuses[0].id}_", checked: false
+        .to have_field "status_#{statuses[1].id}_#{statuses[0].id}", checked: false
       expect(page)
-        .to have_field "status_#{statuses[2].id}_#{statuses[1].id}_", checked: false
+        .to have_field "status_#{statuses[2].id}_#{statuses[1].id}", checked: false
 
       expect(Workflow.where(type_id: type.id, role_id: role.id).count).to be 2
 
