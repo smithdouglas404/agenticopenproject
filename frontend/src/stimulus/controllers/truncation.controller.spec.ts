@@ -212,6 +212,13 @@ describe('TruncationController', () => {
   });
 
   describe('expander visibility', () => {
+    // Helper to wait for ResizeObserver to process updates
+    const waitForResize = async () => {
+      // Wait multiple frames to ensure ResizeObserver has fired
+      await nextFrame();
+      await nextFrame();
+    };
+
     it('hides expander when content is not truncated', async () => {
       const shortTextTemplate = `
         <div data-controller="truncation" data-truncation-expanded-value="false">
@@ -227,7 +234,7 @@ describe('TruncationController', () => {
       `;
 
       appendTemplate(shortTextTemplate);
-      await nextFrame();
+      await waitForResize();
 
       const expander = document.querySelector<HTMLElement>('[data-truncation-target="expander"]')!;
 
@@ -250,11 +257,137 @@ describe('TruncationController', () => {
       `;
 
       appendTemplate(longTextTemplate);
-      await nextFrame();
+      await waitForResize();
 
       const expander = document.querySelector<HTMLElement>('[data-truncation-target="expander"]')!;
 
       // When content is truncated, expander should be visible
+      expect(expander.hidden).toBeFalse();
+    });
+  });
+
+  describe('resize() method', () => {
+    it('calls update() when resize is triggered', async () => {
+      const template = `
+        <div data-controller="truncation" data-truncation-expanded-value="false">
+          <div data-truncation-target="truncate" style="width: 100px; overflow: hidden;">
+            <span class="Truncate-text" style="display: inline-block; white-space: nowrap;">
+              Test text
+            </span>
+          </div>
+          <div data-truncation-target="expander">
+            <button type="button">Toggle</button>
+          </div>
+        </div>
+      `;
+
+      appendTemplate(template);
+      await nextFrame();
+
+      const controller:any = Stimulus.getControllerForElementAndIdentifier(
+        document.querySelector('[data-controller="truncation"]')!,
+        'truncation',
+      );
+
+      // Spy on the private update method to verify resize() calls it
+      const updateSpy = spyOn<any>(controller, 'update').and.callThrough();
+
+      controller.resize();
+
+      expect(updateSpy).toHaveBeenCalledWith();
+    });
+
+    it('updates expander visibility when content dimensions change', async () => {
+      const template = `
+        <div data-controller="truncation" data-truncation-expanded-value="false">
+          <div data-truncation-target="truncate" style="width: 100px; overflow: hidden;">
+            <span class="Truncate-text" style="display: inline-block; white-space: nowrap;">
+              Test
+            </span>
+          </div>
+          <div data-truncation-target="expander">
+            <button type="button">Toggle</button>
+          </div>
+        </div>
+      `;
+
+      appendTemplate(template);
+      await nextFrame();
+
+      const controller:any = Stimulus.getControllerForElementAndIdentifier(
+        document.querySelector('[data-controller="truncation"]')!,
+        'truncation',
+      );
+      const expander = document.querySelector<HTMLElement>('[data-truncation-target="expander"]')!;
+      const truncateText = document.querySelector<HTMLElement>('.Truncate-text')!;
+
+      // Mock scrollWidth and clientWidth to simulate truncation state
+      const originalScrollWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'scrollWidth');
+      const originalClientWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientWidth');
+
+      // Simulate not truncated: scrollWidth === clientWidth
+      Object.defineProperty(truncateText, 'scrollWidth', { configurable: true, value: 100 });
+      Object.defineProperty(truncateText, 'clientWidth', { configurable: true, value: 100 });
+      controller.resize();
+
+      expect(expander.hidden).toBeTrue();
+
+      // Simulate truncated: scrollWidth > clientWidth
+      Object.defineProperty(truncateText, 'scrollWidth', { configurable: true, value: 200 });
+      Object.defineProperty(truncateText, 'clientWidth', { configurable: true, value: 100 });
+      controller.resize();
+
+      expect(expander.hidden).toBeFalse();
+
+      // Simulate not truncated again
+      Object.defineProperty(truncateText, 'scrollWidth', { configurable: true, value: 50 });
+      Object.defineProperty(truncateText, 'clientWidth', { configurable: true, value: 50 });
+      controller.resize();
+
+      expect(expander.hidden).toBeTrue();
+
+      // Restore original descriptors
+      if (originalScrollWidth) {
+        Object.defineProperty(HTMLElement.prototype, 'scrollWidth', originalScrollWidth);
+      }
+      if (originalClientWidth) {
+        Object.defineProperty(HTMLElement.prototype, 'clientWidth', originalClientWidth);
+      }
+    });
+
+    it('keeps expander visible when expanded even if not truncated', async () => {
+      const template = `
+        <div data-controller="truncation" data-truncation-expanded-value="false">
+          <div data-truncation-target="truncate" style="width: 200px; overflow: hidden;">
+            <span class="Truncate-text" style="display: inline-block; white-space: nowrap;">
+              Short
+            </span>
+          </div>
+          <div data-truncation-target="expander">
+            <button type="button">Toggle</button>
+          </div>
+        </div>
+      `;
+
+      appendTemplate(template);
+      await nextFrame();
+
+      const controller:any = Stimulus.getControllerForElementAndIdentifier(
+        document.querySelector('[data-controller="truncation"]')!,
+        'truncation',
+      );
+      const expander = document.querySelector<HTMLElement>('[data-truncation-target="expander"]')!;
+
+      // Initially short text, expander should be hidden
+      controller.resize();
+
+      expect(expander.hidden).toBeTrue();
+
+      // Expand the text
+      controller.expandedValue = true;
+      await nextFrame();
+
+      // When expanded, expander should remain visible even if not truncated
       expect(expander.hidden).toBeFalse();
     });
   });
