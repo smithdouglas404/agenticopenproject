@@ -37,21 +37,25 @@ const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve))
 describe('TruncationController', () => {
   let Stimulus:Application;
   let fixturesElement:HTMLElement;
+  let originalI18n:any;
 
   beforeEach(() => {
     fixturesElement = document.createElement('div');
     document.body.appendChild(fixturesElement);
 
-    // Mock I18n global
-    (window as any).I18n = {
-      t: (key:string) => {
-        const translations:Record<string, string> = {
-          'js.label_expand_text': 'Expand text',
-          'js.label_collapse_text': 'Collapse text',
-        };
-        return translations[key] || key;
-      },
-    };
+    // Save original I18n and configure translations
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    originalI18n = (window as any).I18n;
+    if (originalI18n && typeof originalI18n.store === 'function') {
+      originalI18n.store({
+        en: {
+          js: {
+            label_expand_text: 'Expand text',
+            label_collapse_text: 'Collapse text',
+          },
+        },
+      });
+    }
   });
 
   beforeEach(async () => {
@@ -258,6 +262,10 @@ describe('TruncationController', () => {
   afterEach(() => {
     fixturesElement.remove();
     Stimulus.stop();
-    delete (window as any).I18n;
+    // Restore original I18n
+    if (originalI18n) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      (window as any).I18n = originalI18n;
+    }
   });
 });
