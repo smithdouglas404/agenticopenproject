@@ -33,6 +33,7 @@ import { Controller } from '@hotwired/stimulus';
 export default class TableHighlightingController extends Controller<HTMLTableElement> {
   private thead:HTMLTableSectionElement|null = null;
   private colgroup:HTMLTableColElement|null = null;
+  private abortController:AbortController|null = null;
 
   connect():void {
     this.thead = this.element.tHead;
@@ -42,15 +43,15 @@ export default class TableHighlightingController extends Controller<HTMLTableEle
       return;
     }
 
-    this.thead.addEventListener('mouseenter', this.onEnter, true);
-    this.thead.addEventListener('mouseleave', this.onLeave, true);
+    this.abortController = new AbortController();
+    const { signal } = this.abortController;
+
+    this.thead.addEventListener('mouseenter', this.onEnter, { capture: true, signal });
+    this.thead.addEventListener('mouseleave', this.onLeave, { capture: true, signal });
   }
 
   disconnect():void {
-    if (!this.thead) return;
-
-    this.thead.removeEventListener('mouseenter', this.onEnter, true);
-    this.thead.removeEventListener('mouseleave', this.onLeave, true);
+    this.abortController?.abort();
 
     this.thead = null;
     this.colgroup = null;
