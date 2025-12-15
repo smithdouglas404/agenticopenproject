@@ -189,7 +189,7 @@ To add this project attribute to a specific project click the **+Add projects** 
 To define field caption and help text click on a project attribute and navigate to **Attribute help text** tab. Here you can define the following:
 
 - **Caption** - a short text that will be displayed as project attribute caption to provide context.
-- **Help text** - a longer text that will be shown when a user hovers over a question mark next to the project attribute name. Here you can provide more detailed explanation. 
+- **Help text** - a longer text that will be shown when a user hovers over a question mark next to the project attribute name. Here you can provide more detailed explanation. This is a required field.
 - **Attachments** - attach files or images to illustrate a project attribute. 
 
 > [!IMPORTANT]
