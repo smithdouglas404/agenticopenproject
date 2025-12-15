@@ -184,7 +184,7 @@ To add this project attribute to a specific project click the **+Add projects** 
 >
 > It is not possible to add or remove a project attribute, if a project attribute is set to be required.
 
-## Define help texts
+## Define project attribute help text
 
 To define field caption and help text click on a project attribute and navigate to **Attribute help text** tab. Here you can define the following:
 

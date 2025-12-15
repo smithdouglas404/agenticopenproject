@@ -175,3 +175,19 @@ To **edit an existing custom field** select the appropriate tab and click on the
 To **delete** a custom field, click on the delete icon next to the respective custom field in the list.
 
 ![Edit or delete a custom field in OpenProject administration](system-admin-edit-delete-custom-field.png)
+
+## Define custom field help text
+
+To define field caption and help text click on an existing custom field and navigate to **Attribute help texts** tab. Here you can define the following:
+
+- **Caption** - a short text that will be displayed as a custom field caption to provide context.
+- **Help text** - a longer text that will be shown when a user hovers over a question mark next to the custom field name. Here you can provide more detailed explanation. This is a required field.
+- **Attachments** - attach files or images to illustrate a custom field. 
+
+> [!IMPORTANT]
+>
+> Any text and images you add here will be publicly visible to all logged in users. 
+
+
+
+![Work package custom field detailed view, showing *Attribute help texts* tab in OpenProject administration](open_project_system_admin_guide_custom_field_attribute_text.png)
