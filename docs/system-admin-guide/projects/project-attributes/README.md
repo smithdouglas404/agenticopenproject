@@ -91,7 +91,7 @@ This is an example of new project attribute with a format *Text*.
 - **Admin-only**: If you enable this, the project attribute will only be visible to administrators. All other users will not see it, even if it is activated in a project.
 - **Searchable**: Checking this makes this project attribute (and its value) available as a filter in project lists.
 
-Once you create a project attribute, you can [enable it for specific projects](#enable-project-attributes) and [define help text](#define-help-texts).
+Once you create a project attribute, you can [enable it for specific projects](#enable-project-attributes) and [define help text](#define-project-attribute-help-text).
 
 ## Project attribute formats
 
