@@ -19,7 +19,9 @@ properties:
     type: integer
     description: Hierarchy item identifier
   label:
-    type: string
+    type:
+      - "string"
+      - "null"
     description: The label of the hierarchy item
   short:
     type:
@@ -76,7 +78,7 @@ properties:
             - $ref: './link.yml'
             - description: |-
                 A hierarchy item that is a child of the current hierarchy item
-                
+
                 **Resource**: HierarchyItem
       branch:
         allOf:
