@@ -185,6 +185,9 @@
   "optionalDependencies": {
     "fsevents": "*"
   },
+  "overrides": {
+    "y-prosemirror": "https://github.com/brunopagno/y-prosemirror#v1.3.7-patched"
+  },
   "browser": {
     "fs": false,
     "path": false,
