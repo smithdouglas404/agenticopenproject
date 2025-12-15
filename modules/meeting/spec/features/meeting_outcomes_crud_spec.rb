@@ -136,7 +136,7 @@ RSpec.describe "Meeting Outcomes CRUD", :js do
         show_page.add_outcome_from_menu(item) do
           field.expect_active!
           field.set_value "Can't hold it back anymore"
-          click_link_or_button "Save"
+          field.submit_by_enter
         end
 
         show_page.expect_outcome "Let it go, let it go"
