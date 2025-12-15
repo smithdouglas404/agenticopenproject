@@ -48,8 +48,7 @@ RSpec.describe SubprojectTemplateAssignment do
 
   describe "enums" do
     it "defines workspace_type enum" do
-      expect(described_class.workspace_types).to eq({ "project" => "project", "program" => "program",
-                                                      "portfolio" => "portfolio" })
+      expect(described_class.workspace_types).to eq({ "project" => "project", "program" => "program" })
     end
 
     it "allows setting workspace_type to project" do
@@ -63,20 +62,16 @@ RSpec.describe SubprojectTemplateAssignment do
       expect(assignment.workspace_type).to eq("program")
       expect(assignment).to be_program
     end
-
-    it "allows setting workspace_type to portfolio" do
-      assignment = build(:subproject_template_assignment, workspace_type: :portfolio)
-      expect(assignment.workspace_type).to eq("portfolio")
-      expect(assignment).to be_portfolio
-    end
   end
 
   describe "validations" do
+    let(:workspace_type) { "project" }
+
     subject(:assignment) do
       build(:subproject_template_assignment,
             project:,
             template:,
-            workspace_type: "project")
+            workspace_type:)
     end
 
     it { is_expected.to validate_presence_of(:project_id) }
@@ -139,6 +134,31 @@ RSpec.describe SubprojectTemplateAssignment do
         end
       end
     end
+
+    describe "workspace_type" do
+      context "for 'project'" do
+        it "is valid" do
+          expect(assignment).to be_valid
+        end
+      end
+
+      context "for 'program'" do
+        let(:workspace_type) { "program" }
+
+        it "is valid" do
+          expect(assignment).to be_valid
+        end
+      end
+
+      context "for 'portfolio'" do
+        let(:workspace_type) { "portfolio" }
+
+        it "is invalid" do
+          expect(assignment).not_to be_valid
+          expect(assignment.errors.symbols_for(:workspace_type)).to match [:inclusion]
+        end
+      end
+    end
   end
 
   describe "cascading deletes" do
@@ -181,14 +201,6 @@ RSpec.describe SubprojectTemplateAssignment do
       expect(assignment).to be_valid
       expect(assignment.workspace_type).to eq("program")
       expect(assignment.template.workspace_type).to eq("program")
-      expect(assignment.template).to be_templated
-    end
-
-    it "creates a valid assignment with :for_portfolio trait" do
-      assignment = create(:subproject_template_assignment, :for_portfolio)
-      expect(assignment).to be_valid
-      expect(assignment.workspace_type).to eq("portfolio")
-      expect(assignment.template.workspace_type).to eq("portfolio")
       expect(assignment.template).to be_templated
     end
   end
