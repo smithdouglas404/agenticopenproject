@@ -245,17 +245,14 @@ module Redmine::MenuManager::MenuHelper
   def render_unattached_children_menu(node, project)
     return nil unless node.child_menus
 
-    "".html_safe.tap do |child_html|
-      unattached_children = node.child_menus.call(project)
-      # Tree nodes support #each so we need to do object detection
-      if unattached_children.is_a? Array
-        unattached_children.each do |child|
-          child_html << content_tag(:li, render_unattached_menu_item(child, project))
-        end
-      else
-        raise Redmine::MenuManager::MenuError, ":child_menus must be an array of MenuItems"
-      end
+    unattached_children = node.child_menus.call(project)
+    unless unattached_children.is_a?(Array)
+      raise Redmine::MenuManager::MenuError, ":child_menus must be an array of MenuItems"
     end
+
+    safe_join(unattached_children.map do |child|
+      content_tag(:li, render_unattached_menu_item(child, project))
+    end)
   end
 
   def render_unattached_menu_item(menu_item, project)
