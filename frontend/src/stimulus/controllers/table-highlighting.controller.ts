@@ -42,15 +42,16 @@ export default class TableHighlightingController extends Controller<HTMLTableEle
       return;
     }
 
-    this.thead.addEventListener('mouseenter', this.onEnter, true);
-    this.thead.addEventListener('mouseleave', this.onLeave, true);
+    // N.B. Using capture phase to enable event delegation on th elements
+    this.thead.addEventListener('mouseenter', this.onEnter, { capture: true });
+    this.thead.addEventListener('mouseleave', this.onLeave, { capture: true });
   }
 
   disconnect():void {
     if (!this.thead) return;
 
-    this.thead.removeEventListener('mouseenter', this.onEnter, true);
-    this.thead.removeEventListener('mouseleave', this.onLeave, true);
+    this.thead.removeEventListener('mouseenter', this.onEnter, { capture: true });
+    this.thead.removeEventListener('mouseleave', this.onLeave, { capture: true });
 
     this.thead = null;
     this.colgroup = null;
