@@ -77,11 +77,9 @@ See COPYRIGHT and LICENSE files for more details.
               </caption>
               <colgroup>
                 <col data-highlight="false">
-                <col>
-                <col>
-                <col>
-                <col>
-                <col>
+                <% @roles.each do |role| %>
+                  <col>
+                <% end %>
               </colgroup>
               <thead>
                 <tr>
