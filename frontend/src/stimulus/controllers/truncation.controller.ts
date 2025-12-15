@@ -53,7 +53,8 @@ export default class TruncationController extends Controller<HTMLElement> {
   }
 
   expanderTargetConnected(_target:HTMLElement) {
-    const { signal } = this.abortController = new AbortController();
+    this.abortController = new AbortController();
+    const { signal } = this.abortController;
     this.expanderButton.addEventListener('click', () => this.expanderClicked(), { signal });
   }
 
