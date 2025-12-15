@@ -208,7 +208,7 @@ jobs:
             ${{ needs.setup.outputs.registry_image }}
       - name: Restore vendor/bundle
         id: restore-vendor-bundle
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             vendor/bundle
@@ -243,7 +243,7 @@ jobs:
           docker rm bundle
       - name: Save vendor/bundle
         id: save-vendor-bundle
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             vendor/bundle
