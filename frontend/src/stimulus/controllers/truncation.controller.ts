@@ -65,7 +65,7 @@ export default class TruncationController extends Controller<HTMLElement> {
     this.expanderButton.setAttribute('aria-label', value ? I18n.t('js.label_collapse_text') : I18n.t('js.label_expand_text'));
     this.expanderButton.setAttribute('aria-expanded', String(value));
     this.truncateTarget.classList.toggle('Truncate--expanded', value);
-    this.update(); // belt and braces: this will most likely happen anyway thanks to resize;
+    this.update(); // Redundant call to ensure state consistency; the resize observer will likely trigger this anyway.
   }
 
   get truncateText():HTMLElement {
