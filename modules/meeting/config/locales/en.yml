@@ -394,6 +394,14 @@ en:
     placeholder_title: "New section"
     empty_text: "Drag items here or create a new one"
 
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
+
   recurring_meeting:
     time_zone_difference_banner:
       title: "Time zone difference"
