@@ -69,8 +69,9 @@ end
 Capybara.add_selector :primer_text, locator_type: [String] do
   label "Primer Text"
 
-  xpath do |locator, **|
+  xpath do |locator, **options|
     xpath = XPath.descendant(:span)
+    xpath = xpath[XPath.attr(:class).contains_word(options[:class])] if options[:class]
     unless locator.nil?
       locator = locator.to_s
       xpath = xpath[XPath.string.n.is(locator)]

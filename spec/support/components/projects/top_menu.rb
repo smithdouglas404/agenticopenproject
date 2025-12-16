@@ -109,10 +109,10 @@ module Components
 
           if workspace_badge
             expect(item).to have_octicon
-            expect(item).to have_primer_text(workspace_badge, color: :muted)
+            expect(item).to have_primer_text(workspace_badge, class: "description")
           else
             expect(item).to have_no_octicon
-            expect(item).to have_no_primer_text(color: :muted)
+            expect(item).to have_no_primer_text(class: "description")
           end
         end
       end
