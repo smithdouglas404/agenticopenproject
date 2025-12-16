@@ -47,13 +47,33 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
   describe "#where clause" do
     subject { WorkPackage.joins(instance.joins + [:project]).where(instance.where) }
 
-    let(:project)   { create(:project, name: "Phoenix") }
-    let(:epic_type) { create(:type, name: "Epic") }
-    let(:bug_type)  { create(:type, name: "Bug") }
-    let(:task_type) { create(:type, name: "Task") }
-    let!(:epic_work_package)  { create(:work_package, project:, type: epic_type, subject: "Epic Gorilla work package ething") }
-    let!(:bug_work_package)   { create(:work_package, project:, type: bug_type,  subject: "Bug Gorilla work package bthing") }
-    let!(:task_work_package)  { create(:work_package, project:, type: task_type, subject: "Task work package tthing") }
+    shared_let(:open_status) { create(:status, name: "In Progress", is_closed: false) }
+    shared_let(:closed_status) { create(:status, name: "Done", is_closed: true) }
+    shared_let(:project)   { create(:project, name: "Phoenix") }
+    shared_let(:epic_type) { create(:type, name: "Epic") }
+    shared_let(:bug_type)  { create(:type, name: "Bug") }
+    shared_let(:task_type) { create(:type, name: "Task") }
+    shared_let(:epic_work_package) do
+      create(:work_package,
+             project:,
+             type: epic_type,
+             status: open_status,
+             subject: "Gorilla work package ething")
+    end
+    shared_let(:bug_work_package) do
+      create(:work_package,
+             project:,
+             type: bug_type,
+             status: open_status,
+             subject: "Gorilla work package bthing")
+    end
+    shared_let(:task_work_package) do
+      create(:work_package,
+             project:,
+             type: task_type,
+             status: open_status,
+             subject: "Work package tthing")
+    end
 
     context "when searching by work package type name" do
       let(:values) { ["epic"] }
@@ -153,10 +173,8 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
     end
 
     context "when searching by status" do
-      let(:open_status)   { create(:status, name: "In Progress", is_closed: false) }
-      let(:closed_status) { create(:status, name: "Done",        is_closed: true) }
-      let!(:open_work_package)   { create(:work_package, project:, status: open_status,   subject: "wide work package") }
-      let!(:closed_work_package) { create(:work_package, project:, status: closed_status, subject: "narrow work package") }
+      shared_let(:open_work_package)   { create(:work_package, project:, status: open_status,   subject: "wide work package") }
+      shared_let(:closed_work_package) { create(:work_package, project:, status: closed_status, subject: "narrow work package") }
 
       context "when searching for status name 'In Progress'" do
         let(:values) { ["In Progress"] }

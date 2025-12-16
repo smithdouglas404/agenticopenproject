@@ -361,6 +361,13 @@ ja:
     delete_confirmation: "セクションを削除すると、そのすべての議題項目も削除されます。これを実行してもよろしいですか？"
     placeholder_title: "新しいセクション"
     empty_text: "アイテムをここにドラッグするか、新しいアイテムを作成してください"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "タイムゾーンの差"

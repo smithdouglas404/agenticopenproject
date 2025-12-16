@@ -512,7 +512,7 @@ zh-TW:
       header_relations: 專案關係
       button_update_details: 更新詳細資料
       button_update_status_description: 更新狀態說明
-      button_update_parent_project: 更新父專案
+      button_update_parent_project: 更新上層專案
       public_warning: >
         這個專案是公開的。任何有權訪問這個實例的人，都能依據其角色和相關權限來檢視和與這個專案互動。子專案不受影響，並且有其自己的設定。
       public_confirmation:
@@ -533,8 +533,6 @@ zh-TW:
         project_template_caption: "選取範本專案作為此類型新子項的預設值。"
         program_template_label: "方案範本"
         program_template_caption: "選擇範本程式，作為此類型新子項的預設值。"
-        portfolio_template_label: "模板化的專案組合"
-        portfolio_template_caption: "選擇範本組合，作為此類型新子項的預設值。"
         no_template: "沒有預先定義的範本"
       template:
         menu_title: "範本"
@@ -783,7 +781,7 @@ zh-TW:
         required: "請選擇角色"
       message:
         label: "邀請訊息"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
+        description: "我們將會寄出一封電子郵件給使用者，你可以在此加入個人訊息。提供邀請的說明或一些與專案相關的資訊，可能有助於他們開始使用。"
       summary:
         next_button: "發送邀請函"
       success_message:
@@ -2967,6 +2965,7 @@ zh-TW:
   label_board_plural: "看板"
   label_branch: "分支"
   label_browse: "瀏覽"
+  label_builtin: "內建"
   label_bulk_edit_selected_work_packages: "整批編輯選取的工作套件"
   label_bundled: "(已附帶)"
   label_calendar: "行事曆"
@@ -4559,6 +4558,8 @@ zh-TW:
     企業版將為項目的自定義字段添加以下其他附加組件：<br> <ul> <li><b>在項目列表中添加項目自定義字段，以創建項目組合視圖</b></li> </ul>
   text_custom_logo_instructions: >
     標誌會自動縮放以適應頁首 (Header) 空間。為了達到最佳效果，請上傳一個白色標誌，並置於透明的 130×47 像素圖像上。您可以在該圖像內部添加任意多您想要的間距。
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     這是出現在 PDF 匯出中的Logo。 它必須是 PNG 或 JPEG 影像檔。 建議在透明或白色背景上使用黑色或彩色標誌。
   text_custom_export_cover_instructions: >

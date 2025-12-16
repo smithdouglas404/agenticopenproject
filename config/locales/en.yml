@@ -579,8 +579,6 @@ en:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
         menu_title: "Template"
@@ -3168,6 +3166,7 @@ en:
   label_board_plural: "Boards"
   label_branch: "Branch"
   label_browse: "Browse"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Bulk edit selected work packages"
   label_bundled: "(Bundled)"
   label_calendar: "Calendar"
@@ -4874,6 +4873,10 @@ en:
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header.
     For best results, upload a white logo on a transparent 130×47px image.
+    You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header.
+    For best results, upload a white logo on a transparent 130×33px image.
     You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     This is the logo that appears in your PDF exports.

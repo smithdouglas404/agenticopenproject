@@ -50,7 +50,7 @@ See COPYRIGHT and LICENSE files for more details.
       <%= check_all_links module_id %>
     <% end %>
 
-    <% section.with_collapsible_content(classes: "-columns-2") do %>
+    <% section.with_collapsible_content(classes: "-columns-2", data: { controller: "checkable" }) do %>
       <% Array(mod_permissions).each do |permission| %>
         <% next if permission.global? && !show_global_role %>
         <div class="form--field">
@@ -58,7 +58,8 @@ See COPYRIGHT and LICENSE files for more details.
             <label class="form--label-with-check-box">
               <%= styled_check_box_tag "role[permissions][]",
                                        permission.name,
-                                       (role.permissions && role.permissions.include?(permission.name)) %>
+                                       (role.permissions && role.permissions.include?(permission.name)),
+                                       data: { checkable_target: "checkbox" } %>
               <%= t(:"permission_#{permission.name}") %>
             </label>
           </div>

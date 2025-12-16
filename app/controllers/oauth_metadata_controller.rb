@@ -29,9 +29,24 @@
 #++
 
 class OAuthMetadataController < ApplicationController
-  no_authorization_required! :protected_resource
+  no_authorization_required! :authorization_server, :protected_resource
 
   skip_before_action :check_if_login_required
+
+  def authorization_server
+    grant_types = Doorkeeper.configuration.grant_flows
+    grant_types += ["refresh_token"] if Doorkeeper.configuration.refresh_token_enabled?
+    render json: {
+      issuer: local_issuer,
+      authorization_endpoint: oauth_authorization_url,
+      token_endpoint: oauth_token_url,
+      introspection_endpoint: oauth_introspect_url,
+      scopes_supported: Doorkeeper.configuration.scopes.to_a,
+      response_types_supported: response_types(Doorkeeper.configuration.grant_flows),
+      grant_types_supported: grant_types,
+      service_documentation: OpenProject::Static::Links.url_for(:oauth_applications)
+    }
+  end
 
   def protected_resource
     render json: {
@@ -45,6 +60,17 @@ class OAuthMetadataController < ApplicationController
   end
 
   private
+
+  def response_types(grant_types)
+    grant_types.filter_map do |grant|
+      case grant
+      when "authorization_code"
+        "code"
+      when "implicit"
+        "token"
+      end
+    end
+  end
 
   def authorization_servers
     OpenIDConnect::Provider.where(available: true).map(&:issuer) + [local_issuer]

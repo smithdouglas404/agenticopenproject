@@ -40,7 +40,9 @@ See COPYRIGHT and LICENSE files for more details.
 
 <div id="workflow_form_<%= name %>" class="generic-table--container">
   <div class="generic-table--results-container">
-    <table class="generic-table workflow-table transitions-<%= name %>">
+    <table
+      class="generic-table workflow-table transitions-<%= name %>"
+      data-controller="checkable">
       <thead class="-sticky">
         <tr>
           <th></th>
@@ -51,7 +53,7 @@ See COPYRIGHT and LICENSE files for more details.
                   <%= t(:label_new_statuses_allowed) %>
                 </span>
                 <span class="workflow-table--check-all">
-                  (<%= check_all_links "workflow_form_#{name}" %>)
+                  <%= check_all_links "workflow_form_#{name}" %>
                 </span>
               </div>
             </div>
@@ -61,14 +63,27 @@ See COPYRIGHT and LICENSE files for more details.
           <th class="-table-border-bottom  -table-border-right"></th>
           <% for new_status in @statuses %>
               <th class="workflow-table--current-status -table-border-top -table-border-bottom">
-                <%= link_to_function(
-                      icon_wrapper("icon-context icon-checkmark", t(:label_check_uncheck_all_in_column).to_s),
-                      "OpenProject.helpers.toggleCheckboxesBySelector('table.transitions-#{name} input.new-status-#{new_status.id}')",
-                      class: "no-decoration-on-hover",
-                      title: t(:label_check_uncheck_all_in_column).to_s,
-                      alt: t(:label_check_uncheck_all_in_column).to_s
-                    ) %>
-                <%= h new_status.name %>
+                <%= render(Primer::BaseComponent.new(tag: :div, display: :inline_flex, align_items: :center)) do %>
+                  <%=
+                    render(
+                      Primer::Beta::IconButton.new(
+                        scheme: :invisible,
+                        size: :small,
+                        icon: :check,
+                        tooltip_direction: :sw,
+                        aria: {
+                          label: t(:label_check_uncheck_all_in_column)
+                        },
+                        data: {
+                          action: "checkable#toggleSelection",
+                          checkable_key_param: "newStatus",
+                          checkable_value_param: new_status.id
+                        }
+                      )
+                    )
+                  %>
+                  <%= render(Primer::Beta::Text.new(ml: 1)) { new_status.name } %>
+                <% end %>
               </th>
           <% end %>
         </tr>
@@ -77,19 +92,42 @@ See COPYRIGHT and LICENSE files for more details.
         <% for old_status in @statuses %>
           <tr class="-table-border-left">
             <td class="workflow-table--current-status -table-border-right">
-              <%= link_to_function(
-                    icon_wrapper("icon-context icon-checkmark", t(:label_check_uncheck_all_in_row).to_s),
-                    "OpenProject.helpers.toggleCheckboxesBySelector('table.transitions-#{name} input.old-status-#{old_status.id}')",
-                    class: "no-decoration-on-hover",
-                    title: t(:label_check_uncheck_all_in_row).to_s,
-                    alt: t(:label_check_uncheck_all_in_row).to_s
-                  ) %>
-              <%= h old_status.name %>
+              <%= render(Primer::BaseComponent.new(tag: :div, display: :inline_flex, align_items: :center)) do %>
+                <%=
+                  render(
+                    Primer::Beta::IconButton.new(
+                      scheme: :invisible,
+                      size: :small,
+                      icon: :check,
+                      tooltip_direction: :sw,
+                      aria: {
+                        label: t(:label_check_uncheck_all_in_row)
+                      },
+                      data: {
+                        action: "checkable#toggleSelection",
+                        checkable_key_param: "oldStatus",
+                        checkable_value_param: old_status.id
+                      }
+                    )
+                  )
+                %>
+                <%= render(Primer::Beta::Text.new(ml: 1)) { old_status.name } %>
+              <% end %>
             </td>
             <% for new_status in @statuses -%>
               <td>
-                <%= check_box_tag "status[#{old_status.id}][#{new_status.id}][]", name, workflows.detect { |w| w.old_status_id == old_status.id && w.new_status_id == new_status.id },
-                                  class: "old-status-#{old_status.id} new-status-#{new_status.id}" %>
+                <%=
+                  check_box_tag(
+                    "status[#{old_status.id}][#{new_status.id}][]",
+                    name,
+                    workflows.detect { |w| w.old_status_id == old_status.id && w.new_status_id == new_status.id },
+                    data: {
+                      checkable_target: "checkbox",
+                      old_status: old_status.id,
+                      new_status: new_status.id
+                    }
+                  )
+                %>
               </td>
             <% end -%>
           </tr>

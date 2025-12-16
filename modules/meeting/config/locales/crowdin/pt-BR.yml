@@ -366,6 +366,13 @@ pt-BR:
     delete_confirmation: "Excluir a seção também excluirá todos os itens da pauta. Tem certeza de que deseja fazer isso?"
     placeholder_title: "Nova seção"
     empty_text: "Arraste itens para cá ou crie um novo."
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Diferença de fuso horário"

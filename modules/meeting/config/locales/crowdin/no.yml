@@ -366,6 +366,13 @@
     delete_confirmation: "Hvis du sletter denne delen, slettes også dets verdier i alle prosjekter. Er du sikker på at du vil gjøre dette?"
     placeholder_title: "Ny seksjon"
     empty_text: "Dra punkter hit eller opprett et nytt"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Time zone difference"

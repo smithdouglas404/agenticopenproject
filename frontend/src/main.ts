@@ -2,6 +2,7 @@ import { OpenProjectModule } from 'core-app/app.module';
 import { enableProdMode } from '@angular/core';
 
 import 'core-app/core/setup/init-jquery';
+import 'core-app/core/setup/init-js-patches';
 
 import { initializeLocale } from 'core-app/core/setup/init-locale';
 import { environment } from './environments/environment';

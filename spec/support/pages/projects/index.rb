@@ -49,7 +49,7 @@ module Pages
                                project.name
                              end
 
-            expect(page).to have_text(displayed_name)
+            expect(page).to have_text(displayed_name, normalize_ws: true)
           end
         end
       end

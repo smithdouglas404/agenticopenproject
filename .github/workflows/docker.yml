@@ -103,7 +103,7 @@ jobs:
           ./docker/prod/setup/precompile-assets.sh
           # public/assets will be saved as artifact, so temporarily copying config file there as well
           cp config/frontend_assets.manifest.json public/assets/frontend_assets.manifest.json
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           path: public/
           name: public-assets-${{ inputs.tag }}-${{ github.sha }}
@@ -163,7 +163,7 @@ jobs:
         run: |
           cp ./docker/prod/Dockerfile ./Dockerfile
       - name: Download precompiled public assets
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: public-assets-${{ inputs.tag }}-${{ github.sha }}
           path: public/
@@ -208,7 +208,7 @@ jobs:
             ${{ needs.setup.outputs.registry_image }}
       - name: Restore vendor/bundle
         id: restore-vendor-bundle
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             vendor/bundle
@@ -243,7 +243,7 @@ jobs:
           docker rm bundle
       - name: Save vendor/bundle
         id: save-vendor-bundle
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             vendor/bundle
@@ -292,7 +292,7 @@ jobs:
           digest="${{ steps.push.outputs.digest }}"
           touch "/tmp/digests/${digest#sha256:}"
       - name: Upload digest
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: digests-${{ inputs.tag }}-${{ matrix.target }}-${{ matrix.digest }}
           path: /tmp/digests/*
@@ -308,13 +308,13 @@ jobs:
       - build
     steps:
       - name: Merge digests
-        uses: actions/upload-artifact/merge@v5
+        uses: actions/upload-artifact/merge@v6
         with:
           pattern: "digests-${{ inputs.tag }}-${{ matrix.target }}-${{ matrix.digest }}*"
           overwrite: true
           name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
       - name: Download digests
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
           path: /tmp/digests

@@ -361,6 +361,13 @@ zh-TW:
     delete_confirmation: "刪除該章節也會刪除其所有的議程項目。您確定要這麼做？"
     placeholder_title: "新增章節"
     empty_text: "將項目拖曳至此處或建立新項目"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "時區差異"

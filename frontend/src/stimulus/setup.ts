@@ -37,6 +37,8 @@ import DisableWhenClickedController from 'core-stimulus/controllers/disable-when
 import HighlightTargetElementController from 'core-stimulus/controllers/highlight-target-element.controller';
 import SelectAutosizeController from 'core-stimulus/controllers/select-autosize.controller';
 import OpZenModeController from 'core-stimulus/controllers/zen-mode.controller';
+import CheckAllController from 'core-stimulus/controllers/check-all.controller';
+import CheckableController from 'core-stimulus/controllers/checkable.controller';
 
 declare global {
   interface Window {
@@ -79,6 +81,8 @@ OpenProjectStimulusApplication.preregister('external-links', ExternalLinksContro
 OpenProjectStimulusApplication.preregister('highlight-target-element', HighlightTargetElementController);
 OpenProjectStimulusApplication.preregister('select-autosize', SelectAutosizeController);
 OpenProjectStimulusApplication.preregister('editable-page-header-title', EditablePageHeaderTitleController);
+OpenProjectStimulusApplication.preregister('check-all', CheckAllController);
+OpenProjectStimulusApplication.preregister('checkable', CheckableController);
 
 const instance = OpenProjectStimulusApplication.start();
 window.Stimulus = instance;

@@ -391,7 +391,7 @@ ro:
         arg:
           default: "must be one of: %{list}."
           range: "must be one of: %{list_left} - %{list_right}."
-      int?: "trebuie să fie un număr întreg."
+      int?: "trebuie să fie un întreg."
       key?: "is missing."
       not_found: "nu a fost găsit."
       respond_to?: "does not implement required method."
@@ -536,8 +536,6 @@ ro:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
         menu_title: "Template"
@@ -590,7 +588,7 @@ ro:
       versions:
         no_results_title_text: În acest moment nu există versiuni pentru acest proiect.
         no_results_content_text: Creează versiune nouă
-        work_packages_graph: Graficul pachetelor de lucru
+        work_packages_graph: Grafic pachete de lucru
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Acest proiect nu consumă spațiu suplimentar pe disc.
@@ -733,7 +731,7 @@ ro:
     sessions:
       session_name: "%{browser_name} %{browser_version} pe %{os_name}"
       browser: "Browser"
-      expires: "Expirare"
+      expires: "Expiră"
       last_connection: "Last connection"
       device: "Dispozitiv / OS"
       unknown_browser: "browser necunoscut"
@@ -759,13 +757,13 @@ ro:
       title:
         invite: "Invită utilizator"
         invite_to_project: "Invită %{type} la %{project}"
-        invite_principal_to_project: "Invitați %{principal} la %{project}"
+        invite_principal_to_project: "Invită %{principal} la %{project}"
       project:
         label: "Proiect"
         required: "Te rog selectează un proiect"
         next_button: "Înainte"
         no_results: "Nu au fost găsite proiecte"
-        no_invite_rights: "Nu aveți voie să invitați membri în acest proiect"
+        no_invite_rights: "Nu ai voie să inviți membrii în acest proiect"
       type:
         required: "Te rog selectează tipul de invitat"
         user:
@@ -782,8 +780,8 @@ ro:
       principal:
         no_results_user: "Nu au fost găsiți utilizatori"
         invite_user: "Invită"
-        no_results_placeholder: "Nu au fost găsiți spații libere"
-        create_new_placeholder: "Creați un nou spațiu rezervat:"
+        no_results_placeholder: "Nu au fost găsiți placeholder-i"
+        create_new_placeholder: "Creează un nou substituent:"
         no_results_group: "Nu au fost găsite grupuri"
         invite_to_project: "Invite to %{project_name}"
         required:
@@ -802,9 +800,9 @@ ro:
       summary:
         next_button: "Trimite invitație"
       success_message:
-        user: "Utilizatorul se poate autentifica acum pentru a accesa %{project}. Între timp, puteți deja să planificați cu acel utilizator și să atribuiți pachete de lucru, de exemplu."
-        placeholder_user: "Marca de poziție poate fi utilizată acum în %{project}. Între timp, puteți deja să planificați cu acel utilizator și să atribuiți pachete de lucru, de exemplu."
-        group: "Grupul este acum o parte din %{project}. Între timp, puteți deja să planificați cu acest grup și să atribuiți pachete de lucru, de exemplu."
+        user: "Utilizatorul se poate autentifica acum pentru a accesa %{project}. Între timp, poți deja să planifici cu acel utilizator și să atribui pachete de lucru, de exemplu."
+        placeholder_user: "Placeholder-ul poate fi utilizat acum în %{project}. Între timp, poți deja să planifici cu acel utilizator și să atribui pachete de lucru, de exemplu."
+        group: "Grupul este acum o parte din %{project}. Între timp, poți deja să planifici cu acest grup și să atribui pachete de lucru, de exemplu."
   page:
     text: "Text"
   placeholder_users:
@@ -1395,7 +1393,7 @@ ro:
         workdays: "Zile lucrătoare"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Numele și adresa dvs. de e-mail."
+        id_or_email: "Numele sau adresa e-mail"
       version:
         effective_date: "Dată finalizare"
         sharing: "Distribuire"
@@ -2535,7 +2533,7 @@ ro:
       placeholder_users:
         title: Utilizatori Placeholder
         description: >
-          Utilizatorii de tip substituție sunt o modalitate de a atribui pachete de lucru utilizatorilor care nu fac parte din proiectul tău. Acesta poate fi utilă într-o serie de scenarii; de exemplu, dacă trebuie să urmărești sarcinile pentru o resursă care nu este încă numită sau disponibilă, sau dacă nu vrei să acorzi acestei persoane acces la OpenProject dar totuși vrei să urmărești sarcinile care le-au fost atribuite.
+          Utilizatorii de tip placeholder sunt o modalitate de a atribui pachete de lucru utilizatorilor care nu fac parte din proiectul tău. Acesta poate fi utilă într-o serie de scenarii; de exemplu, dacă trebuie să urmărești sarcinile pentru o resursă care nu este încă numită sau disponibilă, sau dacă nu vrei să acorzi acestei persoane acces la OpenProject dar totuși vrei să urmărești sarcinile care le-au fost atribuite.
       internal_comments:
         title: Comentarii interne
         description: "Comentariile interne permit unei echipe interne să comunice între ele în mod privat, acestea sunt vizibile doar pentru anumite roluri de proiect și nu vor fi niciodată vizibile public."
@@ -3065,6 +3063,7 @@ ro:
   label_board_plural: "Panouri"
   label_branch: "Ramură"
   label_browse: "Răsfoire"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Editare în masă a pachetelor de lucru selectate"
   label_bundled: "(la pachet)"
   label_calendar: "Calendar"
@@ -3415,7 +3414,7 @@ ro:
   label_permissions_report: "Raport drepturi"
   label_personalize_page: "Personalizare pagină"
   label_placeholder_user: "Utilizator placeholder"
-  label_placeholder_user_new: "Utilizator nou"
+  label_placeholder_user_new: "Utilizator placeholder nou"
   label_placeholder_user_plural: "Utilizatori de tip Placeholder"
   label_planning: "Planificare"
   label_please_login: "Te rog să te autentifici"
@@ -3979,7 +3978,7 @@ ro:
   permission_archive_project: "Arhivare proiect"
   permission_create_user: "Create users"
   permission_manage_user: "Editează utilizatori"
-  permission_manage_placeholder_user: "Creați, editați și ștergeți utilizatori de tip placeholder"
+  permission_manage_placeholder_user: "Creează, editează și șterge utilizatori de tip placeholder"
   permission_add_subprojects: "Creează subproiecte"
   permission_add_work_package_watchers: "Adaugă observatori"
   permission_assign_versions: "Atribuie versiuni"
@@ -4106,7 +4105,7 @@ ro:
       one: "un proiect"
       other: "%{count} proiecte"
     destroy:
-      title: "Ștergeți proiectul"
+      title: "Șterge proiectul"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4662,6 +4661,8 @@ ro:
     Ediția Enterprise va adăuga aceste add-on-uri suplimentare pentru câmpurile personalizate ale proiectelor: <br> <ul> <li><b>Adăugă câmpuri personalizate pentru proiecte la lista de proiecte pentru a crea o vizualizare a portofoliului de proiecte</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     This is the logo that appears in your PDF exports. It needs to be a PNG or JPEG image file. A black or colored logo on transparent or white background is recommended.
   text_custom_export_cover_instructions: >
