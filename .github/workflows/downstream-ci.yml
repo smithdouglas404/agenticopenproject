@@ -64,7 +64,7 @@ jobs:
             exit 0
           fi
 
-          PAYLOAD=$(printf '{"ref": "%s", "inputs": {"core_ref": "%s"}}' "$REF" "$CORE_REF")
+          PAYLOAD=$(jq -n --arg ref "$REF" --arg core_ref "$CORE_REF" '{"ref": $ref, "inputs": {"core_ref": $core_ref}}')
           OUTPUT_FILE=/tmp/request-output
 
           echo "Triggering $WORKFLOW_ID workflow on $REPOSITORY branch '$REF', which will check out core branch '$CORE_REF'"

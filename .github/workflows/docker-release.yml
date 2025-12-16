@@ -23,15 +23,18 @@ jobs:
           ref: ${{ github.ref }}
       - name: Compute tags and branch
         id: compute
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_TAG: ${{ inputs.tag }}
         run: |
-          if [[ ${{ github.event_name }} == 'push' ]]; then
+          if [[ "$EVENT_NAME" == 'push' ]]; then
             # Tag push e.g. refs/tags/v16.3.0 => v16.3.0
             TAG_REF="${GITHUB_REF#refs/tags/}"
             BRANCH_REF="$GITHUB_REF"
-          elif [[ ${{ github.event_name }} == 'workflow_dispatch' && -n "${{ inputs.tag }}" ]]; then
+          elif [[ "$EVENT_NAME" == 'workflow_dispatch' && -n "$INPUT_TAG" ]]; then
             # Manual dispatch with tag
-            TAG_REF="${{ inputs.tag }}"
-            BRANCH_REF="${{ inputs.tag }}"
+            TAG_REF="$INPUT_TAG"
+            BRANCH_REF="$INPUT_TAG"
           else
             # Fallback to dev
             TAG_REF="dev"
@@ -61,8 +64,10 @@ jobs:
           TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
           REPOSITORY: opf/helm-charts
           WORKFLOW_ID: core_release.yml
+          TAG: ${{ needs.compute-inputs.outputs.tag }}
         run: |
+          PAYLOAD=$(jq -n --arg tag "$TAG" '{"ref": "main", "inputs": {"tag": $tag}}')
           curl -i --fail-with-body -H"authorization: Bearer $TOKEN" \
             -XPOST -H"Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/$REPOSITORY/actions/workflows/$WORKFLOW_ID/dispatches \
-            -d '{"ref": "main", "inputs": { "tag" : "${{ needs.compute-inputs.outputs.tag }}" }}'
+            -d "$PAYLOAD"
