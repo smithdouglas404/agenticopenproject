@@ -43,7 +43,7 @@
     component.with_main(classes: "op-document-view--main") do
       flex_layout(align_items: :center) do |flex|
         flex.with_row(classes: "op-document-view--header") do
-          render Documents::ShowEditView::PageHeaderComponent.new(document, project:, state:)
+          render Documents::ShowEditView::PageHeaderComponent.new(document, project:, state:, readonly:)
         end
 
         flex.with_row(classes: "op-document-view--editor") do
@@ -65,7 +65,7 @@
       px: 3,
       classes: "op-document-view--sidebar"
     ) do
-      render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document)
+      render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document, readonly:)
     end
   end
 %>

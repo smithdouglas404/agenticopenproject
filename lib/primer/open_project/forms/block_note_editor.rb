@@ -34,6 +34,7 @@ module Primer
       # :nodoc:
       class BlockNoteEditor < Primer::Forms::BaseComponent
         include ::OpenProject::StaticRouting::UrlHelpers
+        include FrontendAssetHelper
 
         attr_reader :input,
                     :value,
@@ -41,6 +42,7 @@ module Primer
                     :active_user,
                     :attachments_upload_url,
                     :attachments_collection_key,
+                    :blocknote_stylesheet_url,
                     :collaboration_enabled
 
         delegate :name, to: :@input
@@ -56,6 +58,7 @@ module Primer
           }
           @attachments_upload_url = attachments_upload_url
           @attachments_collection_key = attachments_collection_key
+          @blocknote_stylesheet_url = variable_asset_path("blocknote.css")
 
           @collaboration_enabled = true
         end

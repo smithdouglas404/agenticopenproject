@@ -573,7 +573,7 @@ module Pages::Meetings
     end
 
     def expect_available_participants(count:)
-      expect(page).to have_link(class: "op-principal--name", count:)
+      expect(page).to have_link(class: "meeting-participant-user-link", count:)
     end
 
     def close_meeting

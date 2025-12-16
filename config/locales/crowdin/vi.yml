@@ -534,8 +534,6 @@ vi:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
         menu_title: "Template"
@@ -784,7 +782,7 @@ vi:
         required: "Vui lòng chọn một vai trò"
       message:
         label: "Tin nhắn mời"
-        description: "Chúng tôi sẽ gửi email đến người dùng, bạn có thể thêm một tin nhắn cá nhân tại đây. Một lời giải thích về lời mời có thể hữu ích, hoặc có thể là một chút thông tin về dự án để giúp họ bắt đầu."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Gửi lời mời"
       success_message:
@@ -2971,6 +2969,7 @@ vi:
   label_board_plural: "Các bảng"
   label_branch: "Nhánh"
   label_browse: "Duyệt"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Chỉnh sửa các work package đã chọn"
   label_bundled: "(Tích hợp sẵn)"
   label_calendar: "Lịch"
@@ -4565,6 +4564,8 @@ vi:
     Phiên bản Enterprise sẽ thêm các phần bổ sung cho các trường tùy chỉnh của dự án: <br> <ul> <li><b>Thêm các trường tùy chỉnh cho dự án vào danh sách Dự án của bạn để tạo cái nhìn tổng quan về danh mục dự án</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Đây là logo xuất hiện trong các bản xuất PDF của bạn. Nó cần phải là tệp hình ảnh PNG hoặc JPEG. Logo màu đen hoặc có màu trên nền trong suốt hoặc trắng được khuyến nghị.
   text_custom_export_cover_instructions: >

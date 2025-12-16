@@ -43,10 +43,5 @@ FactoryBot.define do
       workspace_type { "program" }
       template { association(:project, templated: true, workspace_type: :program) }
     end
-
-    trait :for_portfolio do
-      workspace_type { "portfolio" }
-      template { association(:project, templated: true, workspace_type: :portfolio) }
-    end
   end
 end

@@ -536,8 +536,6 @@ tr:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
         menu_title: "Template"
@@ -792,7 +790,7 @@ tr:
         required: "Lütfen bir rol seçin."
       message:
         label: "Davet Mesajı"
-        description: "Kullanıcıya, buradan kişisel bir mesaj ekleyebileceğiniz bir e-posta göndereceğiz. Davet için bir açıklama yararlı olabilir veya belki de başlamalarına yardımcı olacak projeyle ilgili bir parça bilgi olabilir."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Davet gönder"
       success_message:
@@ -3018,6 +3016,7 @@ tr:
   label_board_plural: "Panolar"
   label_branch: "Dal"
   label_browse: "Gözat"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Seçilen çalışma paketlerini toplu halde düzenle"
   label_bundled: "(Birlikte) sepetlemek "
   label_calendar: "Takvim"
@@ -4612,6 +4611,8 @@ tr:
     Enterprise sürümü, projelerin özel alanları için şu ek eklentileri ekleyecektir: <br> <ul> <li><b>Bir proje portföy görünümü oluşturmak için Projeler için özel alanları Proje listenize ekleyin</b></li > </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Bu, PDF dışa aktarımlarınızda görünen logodur. Bir PNG veya JPEG görüntü dosyası olması gerekir. Şeffaf veya beyaz arka plan üzerinde siyah veya renkli bir logo önerilir.
   text_custom_export_cover_instructions: >

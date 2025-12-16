@@ -534,8 +534,6 @@ pt-BR:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
         menu_title: "Template"
@@ -790,7 +788,7 @@ pt-BR:
         required: "Selecione um papel"
       message:
         label: "Mensagem de convite"
-        description: "Enviaremos um e-mail para o usuário, à qual você pode adicionar uma mensagem pessoal por aqui. Uma explicação para o convite pode se útil, ou talvez algumas informações sobre o projeto para ajudá-lo a começar."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Enviar Convite"
       success_message:
@@ -3015,6 +3013,7 @@ pt-BR:
   label_board_plural: "Quadros"
   label_branch: "Ramo"
   label_browse: "Explorar"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Editar em lote os pacotes de trabalho selecionados"
   label_bundled: "(Empacotado)"
   label_calendar: "Calendário"
@@ -4610,6 +4609,8 @@ pt-BR:
     A edição Enterprise (Edição corporativa) contará com estes complementos adicionais para campos personalizados dos Projetos: <br> <ul> <li><b>Adicionar campos personalizados para projetos a sua Lista de projetos para criar uma visão do portfólio de projetos</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Este é o logotipo que aparece nas exportações de PDF. O arquivo de imagem precisa ser PNG ou JPEG. Recomenda-se um logotipo colorido ou preto em plano de fundo transparente ou branco.
   text_custom_export_cover_instructions: >

@@ -42,10 +42,6 @@ class Projects::Settings::SubitemsController < Projects::SettingsController
       update_template_assignment("program", params[:program_template])
     end
 
-    if params.key?(:portfolio_template)
-      update_template_assignment("portfolio", params[:portfolio_template])
-    end
-
     flash[:notice] = I18n.t(:notice_successful_update)
     redirect_to project_settings_subitems_path(@project)
   end

@@ -116,6 +116,10 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
     end
   end
 
+  it "fulfills the documented schema" do
+    expect(generated).to match_json_schema.from_docs("project_model")
+  end
+
   it { is_expected.to include_json("Project".to_json).at_path("_type") }
 
   describe "properties" do
@@ -163,8 +167,22 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
       let(:value) { project.public }
     end
 
-    it_behaves_like "property", :favorited do
-      let(:value) { true }
+    describe "favorited" do
+      it_behaves_like "property", :favorited do
+        let(:value) { true }
+      end
+
+      it "is not cached" do
+        representer.to_json
+
+        allow(project)
+          .to receive(:favorited_by?)
+                .and_return(!favorited)
+
+        expect(representer.to_json)
+          .to be_json_eql((!favorited).to_json)
+                .at_path("favorited")
+      end
     end
 
     it_behaves_like "formattable property", :description do

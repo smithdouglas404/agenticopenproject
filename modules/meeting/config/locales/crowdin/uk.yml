@@ -274,8 +274,8 @@ uk:
           Будь-яку інформацію про нараду, відсутню в шаблоні, буде втрачено. Продовжити?
         confirm_button: "Скасувати нараду"
     blankslate:
-      title: "There are no meetings to display"
-      desc: "You can create a new meeting or change filter criteria"
+      title: "Зустрічей не знайдено"
+      desc: "Створіть зустріч або змініть параметри фільтра"
     label_export_pdf: "Експорт PDF"
     export:
       your_meeting_export: "Нарада експортується"
@@ -361,13 +361,13 @@ uk:
     presentation_mode:
       title: "Режим презентації"
       button_present: "Презентувати"
-      exit: "Exit presentation"
+      exit: "Завершити режим показу"
       current_item: "Поточний елемент"
       total_items: "%{current} з %{total}"
       previous: "Попереднє"
-      next: "Next"
-      no_items: "No agenda items"
-      no_items_flash: "There are no agenda items to present."
+      next: "Наступний"
+      no_items: "Не має плану зустрічі"
+      no_items_flash: "Не доданий план зустрічі."
     ical_response:
       update_failed: "Could not update participation status."
       meeting_not_found: "Meeting not found for the given UID."
@@ -376,6 +376,13 @@ uk:
     delete_confirmation: "Видалення цього розділу також призведе до видалення його елементів порядку денного. Ви впевнені?"
     placeholder_title: "Новий розділ"
     empty_text: "Перетягніть елементи сюди або створіть новий"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Різниця в датах через часовий пояс"

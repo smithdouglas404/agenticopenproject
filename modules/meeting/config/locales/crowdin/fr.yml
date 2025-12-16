@@ -366,6 +366,13 @@ fr:
     delete_confirmation: "Supprimer la section supprimera également tous les éléments de l'ordre du jour qui s'y rapportent. Voulez-vous vraiment continuer ?"
     placeholder_title: "Nouvelle section"
     empty_text: "Faites glisser des éléments ici ou créez-en un nouveau"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Différence de fuseau horaire"

@@ -21,7 +21,7 @@
         end
 
         unless archived?
-          header.with_column(mr: 2, test_selector: "op-portfolios--status") do
+          header.with_column(mr: 2, test_selector: "op-portfolios--status", flex_shrink: 0) do
             render(
               Projects::StatusButtonComponent.new(
                 user: @current_user,
@@ -34,7 +34,7 @@
         end
 
         if render_sub_status_bar?
-          header.with_column(classes: "op-portfolios--progress") do
+          header.with_column(classes: "op-portfolios--progress", flex_shrink: 0) do
             render(
               Primer::Beta::ProgressBar.new(
                 size: :large,

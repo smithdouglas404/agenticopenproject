@@ -361,6 +361,13 @@ vi:
     delete_confirmation: "Xóa phần này cũng sẽ xóa tất cả các mục chương trình nghị sự của nó. Bạn có chắc chắn muốn làm điều này không?"
     placeholder_title: "Phần mới"
     empty_text: "Kéo các mục vào đây hoặc tạo một cái mới"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Time zone difference"

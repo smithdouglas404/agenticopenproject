@@ -376,6 +376,13 @@ ru:
     delete_confirmation: "Удаление раздела также удалит все пункты его повестки дня. Вы уверены, что хотите это сделать?"
     placeholder_title: "Новый раздел"
     empty_text: "Перенесите элементы сюда или создайте новые"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Разница часового пояса"

@@ -361,6 +361,13 @@ ko:
     delete_confirmation: "이 섹션을 삭제하면 모든 의제 항목도 삭제됩니다. 계속하시겠습니까?"
     placeholder_title: "새 섹션"
     empty_text: "항목을 여기에 끌어오거나 새로 만들기"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "표준 시간대 차이"

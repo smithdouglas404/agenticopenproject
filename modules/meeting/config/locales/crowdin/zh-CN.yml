@@ -361,6 +361,13 @@ zh-CN:
     delete_confirmation: "删除该属性也会删除其在所有项目中的值。您确定要这样做吗？"
     placeholder_title: "新建章节"
     empty_text: "拖动项目到此处或创建一个新项目"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "时差"

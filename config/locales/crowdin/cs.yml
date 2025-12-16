@@ -537,8 +537,6 @@ cs:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
         menu_title: "Template"
@@ -805,7 +803,7 @@ cs:
         required: "Vyberte prosím roli"
       message:
         label: "Pozvánka"
-        description: "Pošleme uživateli e-mail, ke kterému můžete přidat osobní zprávu. Vysvětlení pozvánky by mohlo být užitečné, nebo pár informací o projektu, které by jim pomohly začít."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Odeslat pozvánku"
       success_message:
@@ -3112,6 +3110,7 @@ cs:
   label_board_plural: "Tabule"
   label_branch: "Větev"
   label_browse: "Procházet"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Hromadná úprava vybraných pracovních balíčků"
   label_bundled: "(vlevo)"
   label_calendar: "Kalendář"
@@ -4711,6 +4710,8 @@ cs:
     Enterprise edice přidá tyto další doplňky do vlastních polí projektů: <br> <ul> <li><b>Přidá vlastní pole pro projekty do seznamu projektů a vytvoří tak projektové portfolio</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Toto je logo, které se zobrazí ve vašem PDF exportu. Musí se jednat o PNG nebo JPEG obrázek. Doporučuje se černé nebo barevné logo na průhledném nebo bílém pozadí.
   text_custom_export_cover_instructions: >

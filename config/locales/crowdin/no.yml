@@ -535,8 +535,6 @@
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
         menu_title: "Template"
@@ -791,7 +789,7 @@
         required: "Vennligst velg en rolle"
       message:
         label: "Melding i invitasjon"
-        description: "Vi vil sende en e-post til brukeren, som du kan skrive en personlig melding til her. En forklaring på invitasjonen kan være nyttig, eller kanskje en litt informasjon om prosjektet for å hjelpe dem i gang."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Send invitasjon"
       success_message:
@@ -3017,6 +3015,7 @@
   label_board_plural: "Tavler"
   label_branch: "Gren"
   label_browse: "Bla gjennom"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Masseredigering av valgte arbeidspakker"
   label_bundled: "(Pakket)"
   label_calendar: "Kalender"
@@ -4613,6 +4612,8 @@
     Enterprise utgaven vil legge til disse ekstra utvidelsene for prosjektets egendefinerte felter: <br> <ul> <li><b>Legg til egendefinerte felt for prosjekter i din prosjektliste for å opprette en prosjektporteføljevisning</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Dette er logoen som vises i din PDF-eksport. Det må være en PNG eller JPEG bildefil. En svart eller farget logo på gjennomsiktig eller hvit bakgrunn anbefales.
   text_custom_export_cover_instructions: >

@@ -376,6 +376,13 @@ lt:
     delete_confirmation: "Ištrynus skiltį taipogi bus ištrinti ir visi jos plano elementai. Ar tikrai norite tai padaryti?"
     placeholder_title: "Nauja skiltis"
     empty_text: "Tempkite elementus čia arba sukurtkite naują"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Time zone difference"

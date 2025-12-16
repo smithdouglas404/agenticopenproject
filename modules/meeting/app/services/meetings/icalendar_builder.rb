@@ -117,6 +117,9 @@ module Meetings
 
       # Add single events for all occurrences
       add_instantiated_occurrences(recurring_meeting: recurring_meeting)
+
+      # add single events for leftover interim responses
+      add_virtual_occurences_for_interim_responses(recurring_meeting: recurring_meeting)
     end
 
     def add_single_recurring_occurrence(scheduled_meeting:) # rubocop:disable Metrics/AbcSize
@@ -181,6 +184,11 @@ module Meetings
         .includes(meeting: [:project], recurring_meeting: [:project])
         .group_by(&:recurring_meeting_id)
 
+      @interim_responses_cache = RecurringMeetingInterimResponse
+        .where(recurring_meeting: recurring_meetings)
+        .includes(:user)
+        .group_by(&:recurring_meeting_id)
+
       @series_cache_loaded = true
     end
 
@@ -197,10 +205,12 @@ module Meetings
       end
     end
 
-    def add_attendees(event:, meeting:)
+    def add_attendees(event:, meeting:, override_participation_status: {})
       meeting.participants.includes(:user).find_each do |participant|
         user = participant.user
         next unless user
+
+        participant = override_participation_status.fetch(participant.user_id, participant)
 
         address = Icalendar::Values::CalAddress.new(
           "mailto:#{user.mail}",
@@ -292,6 +302,36 @@ module Meetings
       end
     end
 
+    def add_virtual_occurences_for_interim_responses(recurring_meeting:) # rubocop:disable Metrics/AbcSize
+      interim_responses_for(recurring_meeting).each do |start_time, responses|
+        calendar.event do |e|
+          e.uid = recurring_meeting.uid
+          e.summary = recurring_meeting.title
+
+          url = url_helpers.recurring_meeting_url(recurring_meeting)
+          e.url = url
+          e.description = I18n.t(:text_meeting_ics_meeting_series_description, url:)
+          e.organizer = ical_organizer
+
+          e.created = recurring_meeting.template.created_at.utc
+          e.last_modified = [recurring_meeting.template.updated_at, recurring_meeting.updated_at].max.utc
+          e.sequence = recurring_meeting.template.lock_version
+
+          e.dtstart = ical_datetime(start_time, timezone: recurring_meeting.time_zone)
+          e.dtend = ical_datetime(start_time + recurring_meeting.template.duration.hours, timezone: recurring_meeting.time_zone)
+          e.location = recurring_meeting.template.location.presence
+          e.recurrence_id = ical_datetime(start_time, timezone: recurring_meeting.time_zone)
+
+          add_attendees(
+            event: e,
+            meeting: recurring_meeting.template,
+            override_participation_status: responses.index_by(&:user_id)
+          )
+          e.status = "CONFIRMED"
+        end
+      end
+    end
+
     def set_excluded_recurrence_dates(event:, recurring_meeting:)
       event.exdate = if series_cache_loaded?
                        @excluded_dates_cache[recurring_meeting.id] || []
@@ -313,6 +353,16 @@ module Meetings
           .instantiated
           .includes(meeting: [:project], recurring_meeting: [:project])
       end
+    end
+
+    def interim_responses_for(recurring_meeting)
+      if series_cache_loaded?
+        @interim_responses_cache[recurring_meeting.id] || []
+      else
+        recurring_meeting
+          .recurring_meeting_interim_responses
+          .includes(:user)
+      end.group_by(&:start_time)
     end
   end
 end

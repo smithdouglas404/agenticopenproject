@@ -339,7 +339,7 @@ GEM
     awesome_nested_set (3.8.0)
       activerecord (>= 4.0.0, < 8.1)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1188.0)
+    aws-partitions (1.1194.0)
     aws-sdk-core (3.239.2)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -351,7 +351,7 @@ GEM
     aws-sdk-kms (1.118.0)
       aws-sdk-core (~> 3, >= 3.239.1)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.205.0)
+    aws-sdk-s3 (1.206.0)
       aws-sdk-core (~> 3, >= 3.234.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
@@ -437,7 +437,7 @@ GEM
     compare-xml (0.66)
       nokogiri (~> 1.8)
     concurrent-ruby (1.3.5)
-    connection_pool (3.0.2)
+    connection_pool (2.5.5)
     cookiejar (0.3.4)
     cose (1.3.1)
       cbor (~> 0.5.9)
@@ -628,7 +628,7 @@ GEM
       mini_mime (~> 1.1)
       representable (~> 3.0)
       retriable (~> 3.1)
-    google-apis-gmail_v1 (0.46.0)
+    google-apis-gmail_v1 (0.47.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-env (2.3.1)
       base64 (~> 0.2)
@@ -732,7 +732,7 @@ GEM
       reline (>= 0.4.2)
     iso8601 (0.13.0)
     jmespath (1.6.2)
-    json (2.16.0)
+    json (2.18.0)
     json-jwt (1.17.0)
       activesupport (>= 4.2)
       aes_key_wrap
@@ -742,7 +742,7 @@ GEM
       faraday-follow_redirects
     json-schema (4.3.1)
       addressable (>= 2.8)
-    json_schemer (2.4.0)
+    json_schemer (2.5.0)
       bigdecimal
       hana (~> 1.3)
       regexp_parser (~> 2.0)
@@ -891,7 +891,7 @@ GEM
       activesupport (>= 7.2.0)
       openproject-octicons (>= 19.30.1)
       view_component (>= 3.1, < 5.0)
-    openproject-token (8.2.0)
+    openproject-token (8.3.0)
       activemodel
     openssl (3.3.1)
     openssl-signature_algorithm (1.3.0)
@@ -1559,7 +1559,7 @@ DEPENDENCIES
   auto_strip_attributes (~> 2.5)
   awesome_nested_set (~> 3.8.0)
   aws-sdk-core (~> 3.239)
-  aws-sdk-s3 (~> 1.205)
+  aws-sdk-s3 (~> 1.206)
   axe-core-rspec
   bcrypt (~> 3.1.6)
   bootsnap (~> 1.19.0)
@@ -1577,6 +1577,7 @@ DEPENDENCIES
   colored2
   commonmarker (~> 2.6.0)
   compare-xml (~> 0.66)
+  connection_pool (~> 2.5.5)
   costs!
   csv (~> 3.3)
   cuprite (~> 0.17.0)
@@ -1618,7 +1619,7 @@ DEPENDENCIES
   ice_cube (~> 0.17.0)
   ice_nine
   inline_svg (~> 1.10.0)
-  json_schemer (~> 2.4.0)
+  json_schemer (~> 2.5.0)
   json_spec (~> 1.1.4)
   ladle
   launchy (~> 3.1.0)
@@ -1665,7 +1666,7 @@ DEPENDENCIES
   openproject-reporting!
   openproject-storages!
   openproject-team_planner!
-  openproject-token (~> 8.2.0)
+  openproject-token (~> 8.3.0)
   openproject-two_factor_authentication!
   openproject-webhooks!
   openproject-xls_export!
@@ -1796,10 +1797,10 @@ CHECKSUMS
   auto_strip_attributes (2.6.0) sha256=a7e2e0cf744de2bcd947fd68014220702bcc88c81274c1cd9ce6f7316aae39b0
   awesome_nested_set (3.8.0) sha256=469daff411d80291dbb80d1973133e498048a7afc2519c545f62d2cdebc60eda
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
-  aws-partitions (1.1188.0) sha256=dff035be9381b37a71295f88608640323de6d0e25c83a1b1932390b03a08af9a
+  aws-partitions (1.1194.0) sha256=dcc6c65735f4266b9cb14feee67afd2d345e01e5b87697f91ddc06e7603b0811
   aws-sdk-core (3.239.2) sha256=a6801845ee0bdb061a3f9fb488136f3a585d51ff05b77063a9e228c9539cf239
   aws-sdk-kms (1.118.0) sha256=c9c751596d4f1502adac857c90010f00a9a52370b78e170acb198af7fa716fbd
-  aws-sdk-s3 (1.205.0) sha256=dcffbd495dfd2d6ba5bc86e7b0c58facb982aae298b328e5f199ece38dea2ee9
+  aws-sdk-s3 (1.206.0) sha256=85f9e4681bbcf105c4659da30deeb535ea7c36aa2a43b61cb665f6b957d12aed
   aws-sdk-sns (1.109.0) sha256=71bb33691a8a88a485cefe4fba30dfef352104d82c14c665396534dcde39b811
   aws-sigv4 (1.12.1) sha256=6973ff95cb0fd0dc58ba26e90e9510a2219525d07620c8babeb70ef831826c00
   axe-core-api (4.11.0) sha256=3d9c94e3c8f8f9b8f154a3ce036b3dec2dabf7bb7de5e51d663b18bd8a0d691b
@@ -1840,7 +1841,7 @@ CHECKSUMS
   commonmarker (2.6.0-x86_64-linux-musl) sha256=10159e84446362daa92380f0f68fd3818affa86527f0f098d0d08ac49941538e
   compare-xml (0.66) sha256=e21aa5c0f69ef1177eced997c688fd4df989084e74a1b612257af32e1dd05319
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
-  connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
+  connection_pool (2.5.5) sha256=e54ff92855753df1fd7c59fa04a398833355f27dd14c074f8c83a05f72a716ad
   cookiejar (0.3.4) sha256=11b16acfc4baf7a0f463c21a6212005e04e25f5554d4d9f24d97f3492dfda0df
   cose (1.3.1) sha256=d5d4dbcd6b035d513edc4e1ab9bc10e9ce13b4011c96e3d1b8fe5e6413fd6de5
   costs (1.0.0)
@@ -1920,7 +1921,7 @@ CHECKSUMS
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
   good_job (4.12.1) sha256=a8a981baf2ac9c40a85412d92ce2bf7a5e6d35d9dadb0900db57780583eafebb
   google-apis-core (1.0.2) sha256=ba4579aaadc902d6cc7bc8db88f566ab00f5e31ea87ab41e9f9a032c470f2629
-  google-apis-gmail_v1 (0.46.0) sha256=9586b8398400e8a49b43728cab94737c102ac95ebe96bde5b52ac229eeea7196
+  google-apis-gmail_v1 (0.47.0) sha256=3064434b6da55b85e2828ce4bb0f4d04e8cfd187a4ab262ceb1dcb01f98e49ef
   google-cloud-env (2.3.1) sha256=0faac01eb27be78c2591d64433663b1a114f8f7af55a4f819755426cac9178e7
   google-logging-utils (0.2.0) sha256=675462b4ea5affa825a3442694ca2d75d0069455a1d0956127207498fca3df7b
   google-protobuf (4.32.1) sha256=d9ec3f52a283802055647af5d824dcdfe0a791c6ecbad6a514442f40759015e7
@@ -1962,10 +1963,10 @@ CHECKSUMS
   irb (1.15.3) sha256=4349edff1efa7ff7bfd34cb9df74a133a588ba88c2718098b3b4468b81184aaa
   iso8601 (0.13.0) sha256=298c2b15b7be5fa95a1372813d36a2257656cd8e906dfbc1f5cb409851425aa2
   jmespath (1.6.2) sha256=238d774a58723d6c090494c8879b5e9918c19485f7e840f2c1c7532cf84ebcb1
-  json (2.16.0) sha256=ca5630320bb5ca23ebfd0bac84532fab56eb357575653b815b9df42c051e1525
+  json (2.18.0) sha256=b10506aee4183f5cf49e0efc48073d7b75843ce3782c68dbeb763351c08fd505
   json-jwt (1.17.0) sha256=6ff99026b4c54281a9431179f76ceb81faa14772d710ef6169785199caadc4cc
   json-schema (4.3.1) sha256=d5e68dc32b94408d0b06ad04f9382ccbb6fe5a44910e066f8547f56c471a7825
-  json_schemer (2.4.0) sha256=56cb6117bb5748d925b33ad3f415b513d41d25d0bbf57fe63c0a78ff05597c24
+  json_schemer (2.5.0) sha256=2f01fb4cce721a4e08dd068fc2030cffd0702a7f333f1ea2be6e8991f00ae396
   json_spec (1.1.5) sha256=7a77b97a92c787e2aa3fbc4a1239afc3342c781151dc98cfb81461b3b7cad10f
   jwt (3.1.2) sha256=af6991f19a6bb4060d618d9add7a66f0eeb005ac0bc017cd01f63b42e122d535
   ladle (1.0.1) sha256=e8586964108c798d48bf57d2a65bd5602e8e5223a176b6602a0fb36c0bda90dc
@@ -2047,7 +2048,7 @@ CHECKSUMS
   openproject-reporting (1.0.0)
   openproject-storages (1.0.0)
   openproject-team_planner (1.0.0)
-  openproject-token (8.2.0) sha256=96d17e10f2c920e92a2e318d4f4e6557a4079ecd4c3121bd322bc75c01e6fb73
+  openproject-token (8.3.0) sha256=67fcbc2319e050e4b64ee970477769a8589c5e94ec4be842cdd554ff715db7b7
   openproject-two_factor_authentication (1.0.0)
   openproject-webhooks (1.0.0)
   openproject-xls_export (1.0.0)

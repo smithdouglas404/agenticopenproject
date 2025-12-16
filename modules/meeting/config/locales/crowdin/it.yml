@@ -366,6 +366,13 @@ it:
     delete_confirmation: "L'eliminazione della sezione eliminerà anche tutti i suoi elementi dell'ordine del giorno. Continuare?"
     placeholder_title: "Nuova sezione"
     empty_text: "Trascina gli elementi qui o creane una nuova"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Differenza di fuso orario"

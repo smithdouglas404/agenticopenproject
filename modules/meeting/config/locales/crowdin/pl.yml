@@ -376,6 +376,13 @@ pl:
     delete_confirmation: "Usunięcie sekcji spowoduje również usunięcie wszystkich jej elementów punktów planu spotkania. Czy na pewno chcesz to zrobić?"
     placeholder_title: "Nowa sekcja"
     empty_text: "Przeciągnij elementy tutaj lub utwórz nowe"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Różnica strefy czasowej"

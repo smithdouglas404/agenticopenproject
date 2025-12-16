@@ -44,6 +44,8 @@ gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
 
+gem "connection_pool", "~> 2.5.5"
+
 gem "rdoc", ">= 2.4.2"
 
 gem "doorkeeper", "~> 5.8.0"
@@ -107,7 +109,7 @@ gem "svg-graph", "~> 2.2.0"
 
 gem "date_validator", "~> 0.12.0"
 gem "email_validator", "~> 2.2.3"
-gem "json_schemer", "~> 2.4.0"
+gem "json_schemer", "~> 2.5.0"
 gem "ruby-duration", "~> 3.2.0"
 
 gem "mail", "2.9.0"
@@ -194,9 +196,9 @@ gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.239"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.205"
+gem "aws-sdk-s3", "~> 1.206"
 
-gem "openproject-token", "~> 8.2.0"
+gem "openproject-token", "~> 8.3.0"
 
 gem "plaintext", "~> 0.3.7"
 

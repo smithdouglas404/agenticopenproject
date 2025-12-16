@@ -534,8 +534,6 @@ ko:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
         menu_title: "Template"
@@ -784,7 +782,7 @@ ko:
         required: "역할을 선택하십시오"
       message:
         label: "초대 메시지"
-        description: "사용자에게 이메일이 전송될 것입니다. 여기에 개인 메시지를 추가할 수도 있습니다. 초대에 관한 유용한 설명을 넣거나, 프로젝트를 시작하는 데 도움이 되는 정보를 넣을 수 있습니다."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "초대장 보내기"
       success_message:
@@ -2971,6 +2969,7 @@ ko:
   label_board_plural: "보드"
   label_branch: "브랜치"
   label_browse: "찾아보기"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "선택된 작업 패키지 일괄 편집"
   label_bundled: "(번들)"
   label_calendar: "달력"
@@ -4562,6 +4561,8 @@ ko:
     Enterprise Edition은 프로젝트의 사용자 지정 필드에 대해 다음과 같은 기타 추가 기능을 추가합니다: <br> <ul> <li><b>프로젝트 목록에 프로젝트에 대한 사용자 지정 필드를 추가하여 프로젝트 포트폴리오 보기 만들기</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     PDF 내보내기에서 표시되는 로고입니다. PNG 또는 JPEG 이미지 파일이어야 합니다. 투명 또는 흰색 바탕에 검은색 또는 컬러 로고를 사용하는 것이 좋습니다.
   text_custom_export_cover_instructions: >

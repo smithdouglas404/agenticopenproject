@@ -366,6 +366,13 @@ sv:
     delete_confirmation: "Om du tar bort avsnittet tas även alla dess agendapunkter bort. Är du säker på att du vill göra det här?"
     placeholder_title: "Ny sektion"
     empty_text: "Dra objekt hit eller skapa en ny"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Skillnad i tidszon"

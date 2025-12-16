@@ -536,8 +536,6 @@ ru:
         project_template_caption: "Выберите шаблон проекта, который будет использоваться по умолчанию для новых подпунктов этого типа."
         program_template_label: "Шаблон для программ"
         program_template_caption: "Выберите шаблон программы, который будет использоваться по умолчанию для новых подпунктов этого типа."
-        portfolio_template_label: "Шаблон для портфолио"
-        portfolio_template_caption: "Выберите шаблон портфолио, который будет использоваться по умолчанию для новых подпунктов этого типа."
         no_template: "Нет предопределенного шаблона"
       template:
         menu_title: "Template"
@@ -804,7 +802,7 @@ ru:
         required: "Пожалуйста, выберите роль"
       message:
         label: "Сообщение о приглашении"
-        description: "Мы отправим пользователю электронное письмо, к которому вы можете что-нибудь добавить. Приглашение облегчит им начало работы, если у них будет немного информации о проекте."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Отправить приглашение"
       success_message:
@@ -3110,6 +3108,7 @@ ru:
   label_board_plural: "Доски"
   label_branch: "Ветка"
   label_browse: "Обзор"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Массовое изменение выбранных пакетов работ"
   label_bundled: "(В комплекте)"
   label_calendar: "Календарь"
@@ -4707,6 +4706,8 @@ ru:
     Корпоративная версия добавит эти дополнительные дополнения для пользовательских полей проектов: <br> <ul> <li><b>Добавить пользовательские поля для проектов в ваш список проектов, чтобы создать представление портфолио проекта</b></li> </ul>
   text_custom_logo_instructions: >
     Логотип автоматически масштабируется, чтобы соответствовать заголовку. Для достижения наилучших результатов загрузите белый логотип на прозрачном фоне размером 130×47px. Вы можете добавить столько интервалов внутри этого изображения, сколько захотите.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Это логотип, который отображается при экспорте в формате PDF. Это должен быть файл изображения в формате PNG или JPEG. Рекомендуется использовать черный или цветной логотип на прозрачном или белом фоне.
   text_custom_export_cover_instructions: >

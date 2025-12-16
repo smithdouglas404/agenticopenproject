@@ -429,6 +429,86 @@ RSpec.describe Meetings::IcalendarBuilder,
     end
   end
 
+  context "with a recurring meeting and interim responses" do
+    let(:project) { create(:project) }
+    let(:user1) do
+      create(:user, firstname: "John", lastname: "Doe", member_with_permissions: { project => [:view_meetings] })
+    end
+    let(:user2) do
+      create(:user, firstname: "John", lastname: "Doe", member_with_permissions: { project => [:view_meetings] })
+    end
+
+    let(:recurring_meeting) do
+      create(:recurring_meeting,
+             start_time: Time.zone.parse("2025-08-25 09:00"),
+             iterations: 10,
+             project: project,
+             end_after: :iterations,
+             time_zone: timezone.tzinfo.name).tap do |recurring_meeting|
+        create(:meeting_participant, :invitee, meeting: recurring_meeting.template, user: user1, participation_status: :accepted)
+        create(:meeting_participant, :invitee, meeting: recurring_meeting.template, user: user2, participation_status: :tentative)
+      end
+    end
+
+    let!(:interim_response) do
+      RecurringMeetingInterimResponse.create!(
+        recurring_meeting:,
+        user: user2,
+        start_time: recurring_meeting.start_time + 1.week,
+        participation_status: :declined
+      )
+    end
+
+    let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
+
+    subject(:builder) { described_class.new(timezone:) }
+
+    context "when using the cache" do
+      before do
+        builder.preload_for_recurring_meetings(recurring_meetings: [recurring_meeting])
+      end
+
+      it "preloads the correct caches" do
+        builder.add_series_event(recurring_meeting:)
+
+        expect(builder.instance_variable_get(:@interim_responses_cache)).to eq(
+          recurring_meeting.id => [interim_response]
+        )
+
+        expect(builder.instance_variable_get(:@series_cache_loaded)).to be true
+      end
+    end
+
+    it "builds the correct events with correct participation statuses" do
+      builder.add_series_event(recurring_meeting:)
+
+      # expect(parsed_calendar.events.size).to eq(2)
+      recurring_event = parsed_calendar.events.find { |e| e.rrule.present? && e.recurrence_id.blank? }
+      expect(recurring_event).to be_present
+      expect(recurring_event.dtstart).to eq(recurring_meeting.start_time)
+
+      # attendance for the recurring event is from the template
+      user1_attendee = recurring_event.attendee.find { |a| a.to_s.include?(user1.mail) }
+      expect(user1_attendee.ical_params["partstat"]).to eq(["ACCEPTED"])
+      user2_attendee = recurring_event.attendee.find { |a| a.to_s.include?(user2.mail) }
+      expect(user2_attendee.ical_params["partstat"]).to eq(["TENTATIVE"])
+
+      # no meeting has been instantiated but to properly display the response to the single meeting,
+      # we have stored the interim response and from those we are building up the single recurrence event
+      single_recurrence_event = parsed_calendar.events.find { |e| e.recurrence_id.present? }
+      expect(single_recurrence_event).to be_present
+      expect(single_recurrence_event.dtstart).to eq(interim_response.start_time)
+
+      # user 1 has not changed his status for the single occurrence
+      user1_single = single_recurrence_event.attendee.find { |a| a.to_s.include?(user1.mail) }
+      expect(user1_single.ical_params["partstat"]).to eq(["ACCEPTED"])
+
+      # user 2 has declined the single occurrence via interim response
+      user2_single = single_recurrence_event.attendee.find { |a| a.to_s.include?(user2.mail) }
+      expect(user2_single.ical_params["partstat"]).to eq(["DECLINED"])
+    end
+  end
+
   context "for timezone component" do
     let(:meeting) { create(:meeting, start_time: Time.zone.parse("2025-10-01 10:00")) }
     let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }

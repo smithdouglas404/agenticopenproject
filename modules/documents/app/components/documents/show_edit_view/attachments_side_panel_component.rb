@@ -36,11 +36,13 @@ module Documents
       include AttachmentsHelper
       include DocumentsHelper
 
-      options allow_uploading: true
+      options :readonly
 
       alias_method :document, :model
 
       private
+
+      def allow_uploading? = !readonly
 
       def current_user
         User.current

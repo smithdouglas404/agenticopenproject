@@ -58,7 +58,7 @@ class Projects::Settings::TemplateController < Projects::SettingsController
       .call(templated: ActiveRecord::Type::Boolean.new.cast(params[:value]))
 
     render_error_flash_message_via_turbo_stream(message: call.message) if call.failure?
-    update_via_turbo_stream(component: Projects::Settings::Template::SettingsComponent.new(@project))
+    update_via_turbo_stream(component: Projects::Settings::Template::SettingsComponent.new(@project.reload))
 
     respond_with_turbo_streams do |format|
       format.html { project_settings_template_path(@project) }
