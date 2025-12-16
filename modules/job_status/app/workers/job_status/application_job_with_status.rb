@@ -102,7 +102,7 @@ module JobStatus
     ##
     # Fetch user started the job
     def user_reference
-      @user_reference ||= arguments&.first&.try(:user) || User.current
+      @user_reference ||= arguments&.first&.dig(:user) || User.current
     end
 
     ##
