@@ -28,54 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Meetings
-  # rubocop:disable OpenProject/AddPreviewForViewComponent
-  class IndexSubHeaderComponent < ApplicationComponent
-    # rubocop:enable OpenProject/AddPreviewForViewComponent
-    include ApplicationHelper
+class Projects::FiltersController < ApplicationController
+  include Queries::Loading
 
-    def initialize(query:, params:, project: nil)
-      super
-      @query = query
-      @project = project
-      @params = params
-    end
+  # This is a part of the projects list page which is public. Checks within filters will
+  # prevent sensitive information to be displayed wrongfully.
+  no_authorization_required! :show
+  before_action :load_query_or_deny_access
 
-    def render_create_button?
-      if @project
-        User.current.allowed_in_project?(:create_meetings, @project)
-      else
-        User.current.allowed_in_any_project?(:create_meetings)
-      end
-    end
+  def show
+    render Projects::ProjectsFiltersComponent.new(query: @query), layout: false
+  end
 
-    def id
-      "add-meeting-button"
-    end
+  private
 
-    def accessibility_label_text
-      I18n.t(:label_meeting_new)
-    end
-
-    def label_text
-      I18n.t(:label_meeting)
-    end
-
-    def upcoming_query?
-      filter = @query.filters.find { |f| f.name == :time }
-      filter ? !filter.past? : true
-    end
-
-    def dynamic_path(upcoming: true)
-      polymorphic_path([@project, :meetings], current_params.merge(upcoming:))
-    end
-
-    def current_params
-      @current_params ||= params.slice(:filters, :page, :per_page).permit!
-    end
-
-    def filters_expanded?
-      params[:filters].present?
-    end
+  # Overwrite method in Queries::Loading
+  # as the default of using the controller name does not apply.
+  def query_class
+    ::ProjectQuery
   end
 end

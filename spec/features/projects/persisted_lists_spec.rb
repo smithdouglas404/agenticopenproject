@@ -106,6 +106,7 @@ RSpec.describe "Persisted lists on projects index page",
                                              at_risk_project)
 
         projects_page.expect_filters_container_hidden
+        projects_page.open_filters
         projects_page.expect_filter_set "active"
       end
     end
@@ -130,6 +131,7 @@ RSpec.describe "Persisted lists on projects index page",
                                                  at_risk_project)
 
         projects_page.expect_filters_container_hidden
+        projects_page.open_filters
         projects_page.expect_filter_set "member_of"
       end
     end
@@ -156,6 +158,7 @@ RSpec.describe "Persisted lists on projects index page",
                                                  at_risk_project)
 
         projects_page.expect_filters_container_hidden
+        projects_page.open_filters
         projects_page.expect_filter_set "active"
       end
     end
@@ -174,6 +177,7 @@ RSpec.describe "Persisted lists on projects index page",
                                                  at_risk_project)
 
         projects_page.expect_filters_container_hidden
+        projects_page.open_filters
         projects_page.expect_filter_set "project_status_code"
       end
     end
@@ -192,6 +196,7 @@ RSpec.describe "Persisted lists on projects index page",
                                                  at_risk_project)
 
         projects_page.expect_filters_container_hidden
+        projects_page.open_filters
         projects_page.expect_filter_set "project_status_code"
       end
     end
@@ -210,6 +215,7 @@ RSpec.describe "Persisted lists on projects index page",
                                                  off_track_project)
 
         projects_page.expect_filters_container_hidden
+        projects_page.open_filters
         projects_page.expect_filter_set "project_status_code"
       end
     end
@@ -428,6 +434,8 @@ RSpec.describe "Persisted lists on projects index page",
       projects_page.set_sidebar_filter("Persisted query")
 
       projects_page.expect_filters_container_hidden
+
+      projects_page.open_filters
       projects_page.expect_filter_set "cf_#{custom_field.id}"
     end
   end
@@ -561,11 +569,12 @@ RSpec.describe "Persisted lists on projects index page",
       projects_page.visit!
       projects_page.set_sidebar_filter(my_projects_list.name)
       wait_for_reload
+      projects_page.open_filters
+
       retry_block do
         projects_page.expect_filter_set("project_status_code", value: "On track")
       end
 
-      projects_page.open_filters
       projects_page.set_filter(list_custom_field.column_name,
                                list_custom_field.name,
                                "is (OR)",
@@ -577,6 +586,8 @@ RSpec.describe "Persisted lists on projects index page",
       projects_page.set_sidebar_filter(my_projects_list.name)
 
       wait_for_reload
+      projects_page.open_filters
+
       retry_block do
         projects_page.expect_filter_set("project_status_code", value: "On track")
         projects_page.expect_filter_set(
@@ -643,6 +654,7 @@ RSpec.describe "Persisted lists on projects index page",
 
       # All filters should be stored
       projects_page.expect_filter_count(3)
+      projects_page.open_filters
       projects_page.expect_filter_set "member_of"
       projects_page.expect_filter_set "active"
       projects_page.expect_filter_set(
@@ -709,6 +721,7 @@ RSpec.describe "Persisted lists on projects index page",
       projects_page.expect_no_columns "Latest activity at"
 
       # Keeps only the 'I am member' filter as the cf does not exist and latest_activity_at is admin only.
+      projects_page.open_filters
       projects_page.expect_filter_count 1
       projects_page.expect_filter_set("member_of")
 
