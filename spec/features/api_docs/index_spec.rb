@@ -51,6 +51,15 @@ RSpec.describe "REST API docs index page", :js, :selenium do
       expect(find("openapi-explorer").shadow_root).to have_css("#api-title", text: "OpenProject API V3 (Stable)")
     end
 
+    it "doesn't change the path to base url" do
+      visit_docs_page
+
+      # wait for script to complete
+      expect(page).to have_text "OpenProject API V3 (Stable)"
+
+      expect(page).to have_current_path("#{api_docs_url}#?route=overview") # fragment is added
+    end
+
     context "when APIv3 documentation is disabled (from Administration > API > Enable docs page)",
             with_settings: { apiv3_docs_enabled: false } do
       it "renders a 404" do
