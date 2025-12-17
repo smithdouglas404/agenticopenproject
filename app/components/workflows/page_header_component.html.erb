@@ -32,21 +32,22 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_title { title }
     header.with_breadcrumbs(breadcrumb_items)
 
-    header.with_action_button(
-      tag: :a,
-      mobile_icon: :copy,
-      mobile_label: t(:button_copy),
-      size: :medium,
-      href: copy_workflows_path,
-      aria: { label: I18n.t(:button_copy) },
-      title: I18n.t(:button_copy)
-    ) do |button|
-      button.with_leading_visual_icon(icon: :copy)
-      t(:button_copy)
+    if @state != :copy
+      header.with_action_button(
+        tag: :a,
+        mobile_icon: :copy,
+        mobile_label: t(:button_copy),
+        size: :medium,
+        href: copy_workflows_path,
+        aria: { label: I18n.t(:button_copy) },
+        title: I18n.t(:button_copy)
+      ) do |button|
+        button.with_leading_visual_icon(icon: :copy)
+        t(:button_copy)
+      end
     end
 
-    case @state
-    when :show
+    if @state != :edit
       header.with_action_button(
         tag: :a,
         mobile_icon: :pencil,
@@ -59,7 +60,9 @@ See COPYRIGHT and LICENSE files for more details.
         button.with_leading_visual_icon(icon: :pencil)
         t(:button_edit)
       end
-    else
+    end
+
+    if @state != :show
       header.with_action_button(
         tag: :a,
         mobile_icon: :info,
