@@ -28,8 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class AddsChildrenCountToHierarchyItems < ActiveRecord::Migration[8.0]
-  def change
-    add_column :hierarchical_items, :children_count, :integer, default: 0
+class UpdateHierarchyItemChildrenCounts < ActiveRecord::Migration[8.0]
+  def up
+    CustomFields::UpdateHierarchyItemChildrenCountsJob.perform_later
   end
+
+  def down; end
 end

@@ -28,8 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class AddsChildrenCountToHierarchyItems < ActiveRecord::Migration[8.0]
-  def change
-    add_column :hierarchical_items, :children_count, :integer, default: 0
+module CustomFields
+  class UpdateHierarchyItemChildrenCountsJob < ApplicationJob
+    def perform(*)
+      CustomField::Hierarchy::Item.counter_culture_fix_counts
+    end
   end
 end
