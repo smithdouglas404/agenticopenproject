@@ -80,23 +80,23 @@ RSpec.describe Webhooks::Outgoing::Webhooks::RowComponent, type: :component do
     end
   end
 
-  describe "Event Resources" do
+  describe "Events" do
     let(:column) { :events }
     let(:webhook) { create(:webhook, event_names:) }
 
     context "when no events are enabled" do
       let(:event_names) { [] }
 
-      it "renders 'No event resources'" do
+      it "renders 'No events'" do
         expect(rendered_component).to have_octicon :"alert-fill"
-        expect(rendered_component).to have_primer_text "No event resources", color: "attention"
+        expect(rendered_component).to have_primer_text "No events", color: "attention"
       end
     end
 
     context "when some events are enabled" do
       let(:event_names) { ["project:created", "work_package_comment:comment"] }
 
-      it "renders resource list", :aggregate_failures do
+      it "renders events list grouped by Resource", :aggregate_failures do
         expect(rendered_component).to have_list do |list|
           expect(list).to have_list_item count: 2
           expect(list).to have_list_item "Projects (created)"

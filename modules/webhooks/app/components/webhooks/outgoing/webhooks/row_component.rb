@@ -24,7 +24,7 @@ module ::Webhooks
         end
 
         def events
-          return render_warning(t(:"webhooks.outgoing.label_x_event_resources", count: 0).capitalize) if event_names.empty?
+          return render_warning(t(:"webhooks.outgoing.label_x_events", count: 0).capitalize) if event_names.empty?
 
           event_names
             .map { OpenProject::Webhooks::EventResources.lookup_resource_name(it) }
