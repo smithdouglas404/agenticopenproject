@@ -28,10 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects
+module Projects::CreationWizard
   class CreateArtifactWorkPackageService < ::BaseServices::BaseContracted
     include Contracted
     include ProjectHelper
+    include ArtifactExporter
     include Rails.application.routes.url_helpers
     prepend Projects::Concerns::UpdateDemoData
 
@@ -92,20 +93,7 @@ module Projects
         return service_call
       end
 
-      upload_artifact_to_storage(service_call)
-    end
-
-    def upload_artifact_to_storage(service_call)
-      export = create_pdf_export!
-
-      storage_call = Storages::UploadFileService
-        .call(
-          container: artifact_work_package,
-          project_storage:,
-          file_path: artifact_storage_folder_name,
-          file_data: StringIO.new(export.content),
-          filename: export.title
-        )
+      storage_call = upload_artifact_to_storage
 
       storage_call.on_failure do
         service_call.merge!(storage_call, without_success: true)
@@ -114,27 +102,12 @@ module Projects
       service_call
     end
 
-    def artifact_storage_folder_name
-      I18n.t(project.project_creation_wizard_artifact_name,
-             locale: Setting.default_language,
-             default: :project_initiation_request,
-             scope: "settings.project_initiation_request.name.options")
-    end
-
     def send_notification_email
       return unless project.project_creation_wizard_send_confirmation_email
 
       ProjectArtifactsMailer
         .creation_wizard_submitted(user, project, artifact_work_package)
         .deliver_later
-    end
-
-    def project_storage
-      return @project_storage if defined?(@project_storage)
-
-      @project_storage = project
-        .project_storages
-        .find_by(id: project.project_creation_wizard_artifact_export_storage)
     end
 
     def create_artifact_work_package
@@ -181,10 +154,6 @@ module Projects
              wizard_name: project_creation_wizard_name(project))
     end
 
-    def store_attachment_locally?
-      project.project_creation_wizard_artifact_export_type == "attachment"
-    end
-
     def assigned_to_id
       project.custom_value_for(assignee_custom_field).value
     end
@@ -198,10 +167,6 @@ module Projects
 
       @assignee_custom_field = project.available_custom_fields
                                       .find_by(id: project.project_creation_wizard_assignee_custom_field_id)
-    end
-
-    def create_pdf_export!
-      Project::PDFExport::ProjectInitiation.new(project).export!
     end
 
     def pdf_attachment

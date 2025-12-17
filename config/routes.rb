@@ -73,6 +73,9 @@ Rails.application.routes.draw do
   get "/auth/:provider", to: proc { [404, {}, [""]] }, as: "omni_auth_start"
   match "/auth/:provider/callback", to: "omni_auth_login#callback", as: "omni_auth_callback", via: %i[get post]
 
+  get "/.well-known/oauth-authorization-server", to: "oauth_metadata#authorization_server", as: :authorization_server_metadata
+  get "/.well-known/oauth-protected-resource", to: "oauth_metadata#protected_resource", as: :protected_resource_metadata
+
   # In case assets are actually delivered by a node server (e.g. in test env)
   # forward requests to the proxy
   if FrontendAssetHelper.assets_proxied?
@@ -274,11 +277,12 @@ Rails.application.routes.draw do
     resource :menu, only: %i[show]
   end
 
-  # Extracted from the resources definition right below so that the
-  # default parameters can be defined.
-  resources :projects,
-            only: %i[new create],
-            defaults: { workspace_type: "project" }
+  %w[portfolio project program].each do |workspace_type|
+    resources workspace_type.pluralize,
+              only: %i[new create],
+              defaults: { workspace_type: },
+              controller: workspace_type.pluralize
+  end
 
   resources :projects, except: %i[new create show edit update] do
     scope module: "projects" do
@@ -289,6 +293,9 @@ Rails.application.routes.draw do
         end
         resource :modules, only: %i[show update]
         resource :subitems, only: %i[show update]
+        resource :template, only: %i[show update], controller: "template" do
+          post :toggle_template, on: :member
+        end
         resource :creation_wizard, controller: "creation_wizard", only: %i[show] do
           get :disable_dialog
           post :toggle
@@ -507,14 +514,6 @@ Rails.application.routes.draw do
           constraints: { rev: /[\w.-]+/, repo_path: /.*/ },
           as: "show_revisions_path"
     end
-  end
-
-  # Portfolio and program creation is handled by the projects controller
-  %w[portfolio program].each do |workspace_type|
-    resources workspace_type.pluralize,
-              only: %i[new create],
-              defaults: { workspace_type: },
-              controller: "projects"
   end
 
   resources :portfolios,

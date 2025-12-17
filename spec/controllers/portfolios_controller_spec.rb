@@ -36,7 +36,115 @@ RSpec.describe PortfoliosController, with_flag: { portfolio_models: true } do
 
   let(:user) { admin }
 
-  describe "index.html" do
+  describe "#new" do
+    before do
+      login_as user
+      get :new, params: { parent_id: parent&.id, template_id: template&.id, workspace_type: }
+    end
+
+    shared_examples_for "successful requests" do
+      context "without a parent" do
+        let(:parent) { nil }
+
+        context "without a template" do
+          let(:template) { nil }
+
+          it_behaves_like "successful request"
+        end
+
+        context "with a template" do
+          let(:template) { create(:template_project) }
+
+          it_behaves_like "successful request"
+        end
+      end
+
+      context "with a parent" do
+        let(:parent) { create(:project) }
+
+        context "without a template" do
+          let(:template) { nil }
+
+          it_behaves_like "successful request"
+        end
+
+        context "with a template" do
+          let(:template) { create(:template_project) }
+
+          it_behaves_like "successful request"
+        end
+      end
+    end
+
+    shared_examples_for "successful request" do
+      it "renders 'new'", :aggregate_failures do
+        expect(response).to be_successful
+        expect(assigns(:new_project)).to be_a_new(Project)
+        expect(assigns(:parent)).to eq parent
+        expect(assigns(:template)).to eq template
+        expect(response).to render_template "new"
+      end
+    end
+
+    let(:workspace_type) { "portfolio" }
+
+    let(:template) { nil }
+    let(:parent) { nil }
+
+    context "as an admin" do
+      context "with flag enabled", with_flag: { portfolio_models: true } do
+        it_behaves_like "successful request"
+      end
+
+      context "with flag disabled", with_flag: { portfolio_models: false } do
+        it "returns 403 Not Authorized" do
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :forbidden
+        end
+      end
+    end
+
+    context "as a non-admin with global add_portfolios permission" do
+      let(:user) { create(:user, global_permissions: [:add_portfolios]) }
+
+      context "with flag enabled", with_flag: { portfolio_models: true } do
+        it_behaves_like "successful request"
+      end
+
+      context "with flag disabled", with_flag: { portfolio_models: false } do
+        it "returns 403 Not Authorized" do
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :forbidden
+        end
+      end
+    end
+
+    context "as a non-admin without add_portfolios permission" do
+      let(:user) { create(:user) }
+
+      context "with flag enabled", with_flag: { portfolio_models: true } do
+        it "returns 403 Not Authorized" do
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :forbidden
+        end
+      end
+    end
+
+    context "when not being logged in but login is required", with_settings: { login_required: true } do
+      let(:user) { User.anonymous }
+      let(:workspace_type) { "portfolio" }
+      let(:parent) { build_stubbed(:project) }
+      let(:template) { build_stubbed(:project) }
+
+      it "redirects to the sign in page with the parameters provided in the back url" do
+        expect(response).to be_redirect
+        expect(response).to redirect_to signin_path(back_url: new_portfolio_url(parent_id: parent.id,
+                                                                                template_id: template.id))
+      end
+    end
+  end
+
+  describe "#index" do
     shared_let(:portfolio_a) { create(:portfolio, name: "Portfolio A", public: false, active: true) }
     shared_let(:portfolio_b) { create(:portfolio, name: "Portfolio B", public: false, active: true) }
     shared_let(:portfolio_c) { create(:portfolio, name: "Portfolio C", public: true, active: true) }

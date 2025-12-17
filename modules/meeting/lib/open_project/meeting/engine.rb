@@ -91,6 +91,7 @@ module OpenProject::Meeting
                      meetings: %i[change_state exit_draft_mode_dialog exit_draft_mode],
                      meeting_agenda_items: %i[new cancel_new create edit cancel_edit update destroy drop move
                                               move_to_next_meeting move_to_next_meeting_dialog
+                                              duplicate_in_next_meeting duplicate_in_next_meeting_dialog
                                               move_to_section move_to_section_dialog],
                      meeting_sections: %i[new cancel_new create edit cancel_edit update destroy drop move
                                           clear_backlog clear_backlog_dialog]

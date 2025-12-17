@@ -50,7 +50,13 @@ class Projects::CreationWizardStatusComponent < ApplicationComponent
   end
 
   def render?
-    project.project_creation_wizard_enabled
+    return false unless project.project_creation_wizard_enabled
+
+    if artifact_id
+      current_user.allowed_in_project?(:view_work_packages, project)
+    else
+      current_user.allowed_in_project?(:edit_project_attributes, project)
+    end
   end
 
   private

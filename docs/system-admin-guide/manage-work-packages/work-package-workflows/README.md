@@ -34,7 +34,7 @@ Once you are in the right tab:
 
 You will be able to adapt the following:
 
-1. Adapt which **status changes** are allowed by the selected role for the selected work package type. Read the transitions from the Rows (Current status) to the columns (New status allowed), e.g. a status transition from NEW to IN PROGRESS and back would be allowed. Make sure to allow the "way back" in most cases, e.g. back from IN PROGRESS to NEW, to make sure you will be able to correct mistakes.
+1. Adapt which status changes are allowed by the selected role for the selected work package type. The matrix shows the **current status on the Y axis (rows)** and the **new status allowed on the X axis (columns)**. Read transitions from the rows to the columns, e.g., if the cell at the intersection of **NEW (row)** and **IN PROGRESS (column)** is checked, a transition from **NEW → IN PROGRESS** is allowed.  If you want the role to be able to change statuses in **both directions** (e.g., from **NEW → IN PROGRESS** and from **IN PROGRESS → NEW**), make sure both corresponding cells are checked. In most workflows, allowing the “way back” (e.g., back from **IN PROGRESS** to **NEW**) is important so that mistakes can be corrected.
 2. In addition, you can specify if this role is allowed to make specific status changes if the user who has been assigned this role also is the **author of the work package**.
 3. Also you can set additional status transitions allowed if the user is the **assignee to a work package**.
 4. Don’t forget to save your changes.

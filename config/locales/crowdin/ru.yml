@@ -459,8 +459,8 @@ ru:
         placeholder: Поиск портфолио
       sub_items_html:
         one: "<strong>1</strong> подпункт"
-        few: "<strong>%{count}</strong> sub-items"
-        many: "<strong>%{count}</strong> sub-items"
+        few: "<strong>%{count}</strong> подпункта"
+        many: "<strong>%{count}</strong> подпунктов"
         other: "<strong>%{count}</strong> подпунктов"
     lists:
       active: "Активные портфолио"
@@ -536,9 +536,15 @@ ru:
         project_template_caption: "Выберите шаблон проекта, который будет использоваться по умолчанию для новых подпунктов этого типа."
         program_template_label: "Шаблон для программ"
         program_template_caption: "Выберите шаблон программы, который будет использоваться по умолчанию для новых подпунктов этого типа."
-        portfolio_template_label: "Шаблон для портфолио"
-        portfolio_template_caption: "Выберите шаблон портфолио, который будет использоваться по умолчанию для новых подпунктов этого типа."
         no_template: "Нет предопределенного шаблона"
+      template:
+        menu_title: "Шаблон"
+        title: "Настройки шаблона"
+        enable_failed: "Не удалось включить режим шаблона."
+        members:
+          excluded_roles_label: "Роли, которые нужно исключить при применении шаблона"
+          excluded_roles_caption: >
+            При создании нового проекта по этому шаблону роли, выбранные выше, будут опущены. Это позволит Вам выбрать, какие участники будут исключены на основании их ролей в проекте. В этом случае пользователи смогут обращаться к шаблону для просмотра, не получая доступа к новым проектам, созданным на его основе.
       actions:
         label_enable_all: "Включить всё"
         label_disable_all: "Выключить всё"
@@ -796,7 +802,7 @@ ru:
         required: "Пожалуйста, выберите роль"
       message:
         label: "Сообщение о приглашении"
-        description: "Мы отправим пользователю электронное письмо, к которому вы можете что-нибудь добавить. Приглашение облегчит им начало работы, если у них будет немного информации о проекте."
+        description: "Мы отправим пользователю письмо, к которому Вы можете добавить личное сообщение здесь. Возможно, будет полезно пояснение к приглашению или немного информации о проекте, чтобы помочь им начать работу."
       summary:
         next_button: "Отправить приглашение"
       success_message:
@@ -1490,8 +1496,8 @@ ru:
         not_a_datetime: "дата и время не являются допустимыми."
         not_a_number: "не является числом."
         not_allowed: "неверно, ввиду отсутствия прав."
-        not_json: "is not parseable as JSON."
-        not_json_object: "is not a JSON object."
+        not_json: "не может быть разобран как JSON."
+        not_json_object: "не является объектом JSON."
         not_an_integer: "не является целым числом."
         not_an_iso_date: "недопустимая дата. Требуемый формат: гггг-мм-дд."
         not_same_project: "не принадлежит тому же проекту."
@@ -2180,7 +2186,7 @@ ru:
   button_print: "Печать"
   button_quote: "Цитата"
   button_remove: Удалить
-  button_remove_permanently: "Remove permanently"
+  button_remove_permanently: "Удалить навсегда"
   button_remove_reminder: "Удалить напоминание"
   button_rename: "Переименовать"
   button_replace: "Заменить"
@@ -2579,7 +2585,7 @@ ru:
         title: "Напишите внутренние комментарии только небольшой группы"
         description: " "
       portfolio_management:
-        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
+        description: Приведите Ваши проекты в соответствии с Вашими стратегическими целями, организовав их в портфолио и программы.
     teaser:
       title:
         one: "Остался день для пробного токена %{trial_plan}"
@@ -2867,15 +2873,19 @@ ru:
         learn_about: "Узнайте больше о всех новых функциях"
         missing: "Нет выделенных функций."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
             Релиз содержит различные новые функции и улучшения, такие как:
           new_features_list:
-            line_0: Рассчитанные значения для оценки проектов и подсчета баллов.
-            line_1: Иерархия типов атрибутов проекта.
-            line_2: Улучшение производительности.
-            line_3: Новая главная страница модуля "Документы".
-            line_4: Возможность изменения родительского элемента настраиваемого поля.
+            line_0: Совместная работа с документами в режиме реального времени.
+            line_1: Возможность структурировать связанные проекты в программы и портфели, чтобы направить их на достижение стратегических целей.
+            line_2: Улучшенное управление совещаниями с режимом черновика, режимом презентации, улучшенными результатами и подпиской на iCal.
+            line_3: Обновленная интеграция с SharePoint с более строгими разрешениями.
+            line_4: Переработанный обзор проекта с новыми вкладками, настраиваемыми виджетами и улучшенным макетом.
+            line_5: Возможность более строго охранять конфиденциальность пользователей, не работающих в одном проекте.
+            line_6: Улучшенный процесс создания проекта с более удобным выбором шаблона.
+            line_7: Более удобный глобальный поиск, включая тип и статус, улучшение точности нескольких автозаполнений.
+            line_8: Улучшена доступность текстов ALT и улучшены цвета графиков.
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -3098,6 +3108,7 @@ ru:
   label_board_plural: "Доски"
   label_branch: "Ветка"
   label_browse: "Обзор"
+  label_builtin: "Встроенный"
   label_bulk_edit_selected_work_packages: "Массовое изменение выбранных пакетов работ"
   label_bundled: "(В комплекте)"
   label_calendar: "Календарь"
@@ -4008,9 +4019,6 @@ ru:
   permission_add_project: "Создание проектов"
   permission_add_portfolios: "Создать портфолио"
   permission_add_programs: "Создать программу"
-  permission_add_project_from_template: "Создать проект из шаблона"
-  permission_add_portfolios_from_template: "Создать портфолио из шаблона"
-  permission_add_programs_from_template: "Создание программы из шаблона"
   permission_add_work_package_attachments: "Добавить вложения"
   permission_add_work_package_attachments_explanation: "Позволяет добавлять вложения без права редактирования пакетов работ"
   permission_add_internal_comments: "Написать внутренние комментарии"
@@ -4028,6 +4036,7 @@ ru:
   permission_comment_news: "Комментировать новость"
   permission_commit_access: "Возможность чтения/записи в репозиторий (commit)"
   permission_copy_projects: "Копировать проект"
+  permission_copy_projects_explanation: "В шаблонных проектах это разрешение имеет второстепенную функцию - оно позволяет создавать новые проекты, основанные на шаблоне."
   permission_copy_work_packages: "Дублировать пакеты работ"
   permission_create_backup: "Создание резервных копий"
   permission_delete_work_package_watchers: "Удалить наблюдателей"
@@ -4328,7 +4337,7 @@ ru:
   setting_emails_salutation: "Адрес пользователя в письмах с"
   setting_oauth_allow_remapping_of_existing_users: "Разрешить перераспределение существующих пользователей"
   setting_sendmail_location: "Расположение исполняемого файла sendmail"
-  setting_sendmail_arguments: "Arguments for sendmail"
+  setting_sendmail_arguments: "Аргументы для sendmail"
   setting_smtp_enable_starttls_auto: "Автоматически использовать STARTTLS, если таковые имеются"
   setting_smtp_ssl: "Использовать SSL-подключение"
   setting_smtp_address: "SMTP сервер"
@@ -4492,8 +4501,8 @@ ru:
   setting_working_days: "Рабочие дни"
   settings:
     errors:
-      not_writable: "The setting is not writable and can only be changed by a sysadmin."
-      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
+      not_writable: "Эта настройка недоступна для записи и может быть изменена только администратором."
+      failed_to_update: "Настройка '%{name}' не может быть обновлена: %{message}"
     authentication:
       login: "Входное имя"
       registration: "Регистрация"
@@ -4577,7 +4586,8 @@ ru:
               label: "Боковая панель"
               description: "Добавьте все атрибуты проекта в область на правой боковой панели в обзоре проекта."
     project_initiation_request:
-      header_description: "OpenProject может сгенерировать пошаговый мастер, чтобы помочь менеджерам проектов заполнить запрос на инициацию проекта. Вы можете выбрать, какие атрибуты проекта должны быть включены и что делать с выходным документом."
+      header_description: >
+        OpenProject может создать пошаговый мастер, который поможет руководителям проектов заполнить запрос на инициацию проекта. Вы можете выбрать, какие атрибуты проекта должны быть включены, и в результате создать артефакт в формате PDF.
       status:
         submitted: "%{wizard_name} был отправлен"
         submitted_description: "Нажмите на кнопку ниже, чтобы перейти к пакету работ для процесса подачи заявки."
@@ -4613,7 +4623,7 @@ ru:
         status_when_submitted_caption: "Статус, в который перейдет созданный пакет работ после отправки запроса."
         send_confirmation_email: "Отправить подтверждение по электронной почте пользователю, подавшему запрос на инициирование проекта"
         assignee: "Назначенный при отправке"
-        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
+        assignee_caption_html: "Пользователь или группа, назначенная этому атрибуту проекта, также станет получателем нового пакета работ. Этот список включает активные атрибуты проекта только типа <i>Пользователь</i>."
         confirmation_email_text: "Текст письма подтверждения"
         confirmation_email_default: "Здравствуйте,\n\nВы подали запрос на инициирование проекта **%{project_name}**. Сейчас он ожидает рассмотрения.\nЩелкните по ссылке ниже, чтобы получить доступ к пакету работ с Вашим запросом."
         work_package_comment: "Комментарий к пакету работ"
@@ -4696,6 +4706,8 @@ ru:
     Корпоративная версия добавит эти дополнительные дополнения для пользовательских полей проектов: <br> <ul> <li><b>Добавить пользовательские поля для проектов в ваш список проектов, чтобы создать представление портфолио проекта</b></li> </ul>
   text_custom_logo_instructions: >
     Логотип автоматически масштабируется, чтобы соответствовать заголовку. Для достижения наилучших результатов загрузите белый логотип на прозрачном фоне размером 130×47px. Вы можете добавить столько интервалов внутри этого изображения, сколько захотите.
+  text_custom_logo_mobile_instructions: >
+    Логотип автоматически масштабируется, чтобы соответствовать заголовку. Для достижения наилучших результатов загрузите белый логотип на прозрачном фоне размером 130×33px. Вы можете добавить столько интервалов внутри этого изображения, сколько захотите.
   text_custom_export_logo_instructions: >
     Это логотип, который отображается при экспорте в формате PDF. Это должен быть файл изображения в формате PNG или JPEG. Рекомендуется использовать черный или цветной логотип на прозрачном или белом фоне.
   text_custom_export_cover_instructions: >
@@ -4771,7 +4783,7 @@ ru:
     Примечание: Если этот параметр включен, значок с вашим статусом установки будет отображен в панели администрирования <a href="%{information_panel_path}">%{information_panel_label}</a> и на домашней странице. Он отображается только администраторам. <br/> Знак будет проверять текущую версию OpenProject в официальной базе данных релизов OpenProject для оповещения вас о каких-либо обновлениях или известных уязвимостях. Для дополнительной информации, необходимой для проверки доступных обновлений, и о том как отключить эту проверку, пожалуйста, посетите <a href="%{more_info_url}">конфигурации документации</a>.
   text_own_membership_delete_confirmation: "Вы собираетесь удалить все или некоторые разрешения, доступные Вам. Вы не сможете редактировать проект после этого действия. Вы уверены?"
   text_permanent_delete_confirmation_checkbox_label: "Я понимаю, что это удаление невозможно отменить"
-  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "Я понимаю, что это удаление не может быть отменено"
   text_plugin_assets_writable: "Папка активов дополнения(plugin) доступна для записи"
   text_powered_by: "С использованием %{link}"
   text_project_identifier_info: "Разрешены только строчные буквы (a-z), цифры, тире и знаки подчеркивания, начинать с буквы нижнего регистра."

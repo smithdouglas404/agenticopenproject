@@ -52,8 +52,11 @@
                 "input": "src/backlogs.scss",
                 "bundleName": "backlogs"
               },
+              {
+                "input": "node_modules/@blocknote/mantine/src/style.css",
+                "bundleName": "blocknote"
+              },
               "src/styles.scss",
-              "node_modules/@blocknote/mantine/src/style.css",
               "node_modules/codemirror/lib/codemirror.css",
               "src/vendor/jquery-ui-1.14.1/jquery-ui.css",
               "src/vendor/jquery-ui-1.14.1/jquery-ui.structure.css",

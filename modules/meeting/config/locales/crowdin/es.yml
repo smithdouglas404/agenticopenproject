@@ -358,11 +358,21 @@ es:
       next: "Next"
       no_items: "No agenda items"
       no_items_flash: "There are no agenda items to present."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "Sección sin título"
     delete_confirmation: "Al eliminar esta sección también se eliminarán todos sus puntos de agenda. ¿Seguro que desea hacerlo?"
     placeholder_title: "Nueva sección"
     empty_text: "Arrastre los elementos aquí o cree uno nuevo"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Diferencia de zona horaria"
@@ -506,6 +516,9 @@ es:
   label_agenda_item_move_to_bottom: "Mover al final"
   label_agenda_item_move_up: "Mover hacia arriba"
   label_agenda_item_move_down: "Mover hacia abajo"
+  label_agenda_item_duplicate: "Duplicate"
+  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
   label_agenda_item_add_notes: "Añadir notas"
   label_agenda_item_add_outcome: "Añadir resultado"
   label_agenda_item_work_package_add: "Añadir paquete de trabajo"
@@ -579,6 +592,8 @@ es:
   text_agenda_item_not_editable_anymore: "Este punto de la agenda ya no es editable."
   text_agenda_item_move_next_meeting: "Este punto se trasladará a la próxima reunión el %{date} a las %{time}."
   text_agenda_item_moved_to_next_meeting: "Punto del orden del día movido a la próxima reunión, el %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Este paquete de trabajo no está todavía programado en ninguna agenda de próximas reuniones."
   text_agenda_item_move_next_meeting_cancelled: "No se puede mover a la próxima reunión, ya que ha sido cancelada."
   text_work_package_add_to_meeting_hint: 'Utilice el botón "Añadir a la reunión" para añadir este paquete de trabajo a una próxima reunión.'

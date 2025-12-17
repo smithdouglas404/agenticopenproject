@@ -49,14 +49,6 @@ OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   description: "Allows the use of calculated values as a project attribute.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :oidc_group_sync,
-                                  description: "Allows to synchronize groups from OpenID Connect providers",
-                                  force_active: true
-
-OpenProject::FeatureDecisions.add :scim_api,
-                                  description: "Enables SCIM API.",
-                                  force_active: true
-
 OpenProject::FeatureDecisions.add :beta_widgets,
                                   description: "Enables BETA versions of widgets."
 
@@ -67,10 +59,6 @@ OpenProject::FeatureDecisions.add :minutes_styling_meeting_pdf,
 OpenProject::FeatureDecisions.add :portfolio_models,
                                   description: "Enables the creation and management of portfolio and program work spaces.",
                                   force_active: true
-
-OpenProject::FeatureDecisions.add :create_from_template_permissions,
-                                  description: "Enables the currently unused " \
-                                               '"Create Project, Portfolio, Program from template" permission.'
 
 OpenProject::FeatureDecisions.add :new_project_overview,
                                   description: "Enables the new project overview experience.",

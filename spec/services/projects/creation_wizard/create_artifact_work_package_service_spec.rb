@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Projects::CreateArtifactWorkPackageService do
+RSpec.describe Projects::CreationWizard::CreateArtifactWorkPackageService do
   shared_let(:status_new) { create(:status, name: "New") }
   shared_let(:type) { create(:type, name: "Project initiation") }
   shared_let(:user_custom_field) { create(:user_project_custom_field, name: "Project Manager") }

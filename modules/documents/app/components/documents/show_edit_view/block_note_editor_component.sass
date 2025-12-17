@@ -1,4 +1,4 @@
-.controller-documents
+.controller-documents:has(.op-document-view)
   @include extended-content--top
   @include extended-content--bottom
 
@@ -14,6 +14,9 @@
 
 .op-document-view
   height: 100%
+
+  .PageHeader
+    margin-bottom: var(--base-size-8) // Compensate for .bn-editor padding-top increase to maintain visual spacing
 
   &--main,
   &--sidebar

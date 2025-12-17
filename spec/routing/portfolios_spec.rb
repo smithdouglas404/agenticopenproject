@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,25 +26,32 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-require Rails.root.join("db/migrate/migration_utils/permission_adder")
+require "spec_helper"
 
-class AddFromTemplatePermissionsToRolesWithAddPermissions < ActiveRecord::Migration[8.0]
-  def up
-    ::Migration::MigrationUtils::PermissionAdder.add(:add_project, :add_project_from_template)
-    ::Migration::MigrationUtils::PermissionAdder.add(:add_programs, :add_programs_from_template)
-    ::Migration::MigrationUtils::PermissionAdder.add(:add_portfolios, :add_portfolios_from_template)
+RSpec.describe PortfoliosController do
+  describe "index" do
+    it do
+      expect(get("/portfolios")).to route_to(
+        controller: "portfolios", action: "index"
+      )
+    end
   end
 
-  def down
-    # Remove the permissions that were added
-    RolePermission.delete_by(
-      permission: %w(
-        add_project_from_template
-        add_programs_from_template
-        add_portfolios_from_template
+  describe "new" do
+    it do
+      expect(get("/portfolios/new")).to route_to(
+        controller: "portfolios", action: "new", workspace_type: "portfolio"
       )
-    )
+    end
+  end
+
+  describe "create" do
+    it do
+      expect(post("/portfolios")).to route_to(
+        controller: "portfolios", action: "create", workspace_type: "portfolio"
+      )
+    end
   end
 end

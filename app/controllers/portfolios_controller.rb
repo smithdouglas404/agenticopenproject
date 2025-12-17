@@ -32,16 +32,11 @@
 #
 # Note that _some_ actions (such as #new) are handled by the project controller since portfolios behave mostly like
 # projects in these cases.
-class PortfoliosController < ApplicationController
-  include OpTurbo::ComponentStream
-
-  include QueriesHelper
-  include Queries::Loading
-
-  authorization_checked! :index
-
+class PortfoliosController < ProjectsController
   before_action :authorize_portfolio_access, only: %i[index]
   before_action :not_authorized_on_feature_flag_inactive
+
+  skip_before_action :load_query_or_deny_access # skip using the superclass's before action because the next must be called first
   before_action :set_default_query, only: %i[index] # Must be called before `load_query_or_deny_access`
   before_action :load_query_or_deny_access, only: %i[index]
 
@@ -91,9 +86,5 @@ class PortfoliosController < ApplicationController
   def authorize_portfolio_access
     render_403 unless User.current.allowed_globally?(:add_portfolios) ||
                        Project.portfolio.allowed_to(User.current, :view_project).any?
-  end
-
-  def not_authorized_on_feature_flag_inactive
-    render_403 unless OpenProject::FeatureDecisions.portfolio_models_active?
   end
 end

@@ -45,6 +45,10 @@ module Documents
         def other_document_types
           DocumentType.where.not(id: document.type_id).pluck(:name, :id)
         end
+
+        def allowed_to_manage_documents?
+          User.current.allowed_in_project?(:manage_documents, document.project)
+        end
       end
     end
   end

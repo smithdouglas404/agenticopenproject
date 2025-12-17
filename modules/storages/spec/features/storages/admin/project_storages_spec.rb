@@ -382,7 +382,7 @@ RSpec.describe "Admin lists project mappings for a storage",
         current_page = 3
         visit admin_settings_storage_project_storages_path(storage, page: current_page)
 
-        project = project_storages_index_page.project_in_first_row(column_text_separator: "\t")
+        project = project_storages_index_page.project_in_first_row
         project_storages_index_page.click_menu_item_of("Remove project", project)
 
         # The original DeleteService would try to remove actual files from actual storages,

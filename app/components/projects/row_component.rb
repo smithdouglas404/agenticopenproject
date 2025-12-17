@@ -434,8 +434,11 @@ module Projects
       # Only show icon and type for non-project workspaces
       return unless project.workspace_type.in?(["portfolio", "program"])
 
-      render(Primer::Beta::Text.new(color: :muted)) do
-        icon = render(Primer::Beta::Octicon.new(icon: helpers.workspace_icon(project.workspace_type)))
+      render(Primer::Beta::Text.new(classes: "description")) do
+        icon = render(Primer::Beta::Octicon.new(
+                        icon: helpers.workspace_icon(project.workspace_type),
+                        size: :xsmall
+                      ))
         safe_join([icon, " ", I18n.t(:"label_#{project.workspace_type}")])
       end
     end

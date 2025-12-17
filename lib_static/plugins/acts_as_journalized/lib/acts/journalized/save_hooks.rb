@@ -67,6 +67,7 @@ module Acts::Journalized
 
         if create_call.success? && create_call.result
           OpenProject::Notifications.send(OpenProject::Events::JOURNAL_CREATED,
+                                          changes: previous_changes,
                                           journal: create_call.result,
                                           send_notification: Journal::NotificationConfiguration.active?)
         end

@@ -42,10 +42,6 @@ properties:
     required:
       - self
       - categories
-      - types
-      - versions
-      - memberships
-      - workPackages
     properties:
       update:
         allOf:
