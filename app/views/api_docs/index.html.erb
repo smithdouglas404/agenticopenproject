@@ -1,5 +1,15 @@
 <%= nonced_javascript_include_tag variable_asset_path("openapi-explorer.js"), skip_pipeline: true %>
 
+<%= nonced_javascript_tag do %>
+  (function() {
+    // TODO: remove as soon as openapi-explorer with https://github.com/Authress-Engineering/openapi-explorer/pull/292 is released
+    const originalPushState = history.pushState;
+    history.pushState = function(state, title, url) {
+      return originalPushState.call(this, state, title, URL.parse(url, location.href).href);
+    };
+  })();
+<% end %>
+
 <%=
   content_tag(
     "openapi-explorer",
