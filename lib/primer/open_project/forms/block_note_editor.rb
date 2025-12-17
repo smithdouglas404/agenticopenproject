@@ -60,7 +60,7 @@ module Primer
           @attachments_upload_url = attachments_upload_url
           @attachments_collection_key = attachments_collection_key
           @blocknote_stylesheet_url = variable_asset_path("blocknote.css")
-          @shadow_dom_stylesheet_url = variable_asset_path("shadow-dom-primer.css")
+          @shadow_dom_stylesheet_url = variable_asset_path("styles.css")
 
           @collaboration_enabled = true
         end
