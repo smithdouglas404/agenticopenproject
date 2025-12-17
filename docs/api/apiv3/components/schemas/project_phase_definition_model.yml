@@ -25,11 +25,15 @@ properties:
   startGate:
     type: boolean
   startGateName:
-    type: [string, null]
+    type:
+      - "string"
+      - "null"
   finishGate:
     type: boolean
   finishGateName:
-    type: [string, null]
+    type:
+      - "string"
+      - "null"
   createdAt:
     type: string
     format: date-time
