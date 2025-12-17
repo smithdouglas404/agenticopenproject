@@ -30,19 +30,17 @@
 
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
+import { Application } from '@hotwired/stimulus';
+import ConnectionErrorHandlerController from 'core-stimulus/controllers/dynamic/documents/connection-error-handler.controller';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { ShadowDomWrapper } from 'op-blocknote-extensions';
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { createRoot } from 'react-dom/client';
-import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
-import blockNoteStylesContent from './block-note-element-styles';
-import { Application } from '@hotwired/stimulus';
 import { environment } from '../environments/environment';
-import ConnectionErrorHandlerController from 'core-stimulus/controllers/dynamic/documents/connection-error-handler.controller';
-
-const blockNoteStyleSheet = new CSSStyleSheet();
-blockNoteStyleSheet.replaceSync(blockNoteStylesContent);
+import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
+import { blockNoteStylesheet } from './block-note-element-styles';
+import { primerStyleSheet } from './shadow-dom-styles';
 
 class BlockNoteElement extends HTMLElement {
   private mount:HTMLDivElement;
@@ -69,15 +67,9 @@ class BlockNoteElement extends HTMLElement {
       shadowRoot.appendChild(link);
     }
 
-    const shadowDomStylesheetUrl = this.getAttribute('shadow-dom-stylesheet-url');
-    if (shadowDomStylesheetUrl) {
-      const link = document.createElement('link');
-      link.setAttribute('rel', 'stylesheet');
-      link.setAttribute('href', shadowDomStylesheetUrl);
-      shadowRoot.appendChild(link);
-    }
-
-    shadowRoot.adoptedStyleSheets = [blockNoteStyleSheet];
+    // Apply Primer styles (for components like Banner) and BlockNote-specific styles
+    // Using adoptedStyleSheets for synchronous application (no FOUC)
+    shadowRoot.adoptedStyleSheets = [primerStyleSheet, blockNoteStylesheet];
   }
 
   connectedCallback() {

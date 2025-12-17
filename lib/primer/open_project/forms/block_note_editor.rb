@@ -43,7 +43,6 @@ module Primer
                     :attachments_upload_url,
                     :attachments_collection_key,
                     :blocknote_stylesheet_url,
-                    :shadow_dom_stylesheet_url,
                     :collaboration_enabled
 
         delegate :name, to: :@input
@@ -60,7 +59,6 @@ module Primer
           @attachments_upload_url = attachments_upload_url
           @attachments_collection_key = attachments_collection_key
           @blocknote_stylesheet_url = variable_asset_path("blocknote.css")
-          @shadow_dom_stylesheet_url = variable_asset_path("shadow-dom-primer.css")
 
           @collaboration_enabled = true
         end

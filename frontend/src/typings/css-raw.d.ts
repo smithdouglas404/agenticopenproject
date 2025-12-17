@@ -1,7 +1,7 @@
 /*
  * -- copyright
  * OpenProject is an open source project management software.
- * Copyright (C) 2023 the OpenProject GmbH
+ * Copyright (C) the OpenProject GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3.
@@ -29,35 +29,29 @@
  */
 
 /**
- * Shadow DOM styles for BlockNote editor
+ * Type declarations for raw CSS/SCSS imports.
  *
- * Note: These styles are kept in a TypeScript constant to avoid build configuration complexity.
- * Primer component styles (Banner, SkeletonBox, etc.) are loaded via shadow-dom-primer.scss bundle.
+ * These enable importing CSS files as raw strings for use with adoptedStyleSheets:
+ *
+ *   import styles from './styles.css?raw';
+ *   const sheet = new CSSStyleSheet();
+ *   sheet.replaceSync(styles);
+ *   shadowRoot.adoptedStyleSheets = [sheet];
+ *
+ * The ?raw suffix is handled by the cssRawPlugin in esbuild/plugins.ts
  */
-const blockNoteStylesContent = `
-.block-note-editor-container {
-  align-items: center;
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 10px;
-  height: 100%;
-  max-width: none;
-  padding: 0;
+
+declare module '*.css?raw' {
+  const content:string;
+  export default content;
 }
 
-.block-note-editor-container > .bn-editor {
-  height: 100%;
-  max-width: 800px;
-  min-height: 80vh;
-  overflow: auto;
-  width: 100%;
-  background-color: transparent;
-  padding-top: 10px;
-  padding-inline: 0;
+declare module '*.scss?raw' {
+  const content:string;
+  export default content;
 }
-`;
 
-const blockNoteStylesheet = new CSSStyleSheet();
-blockNoteStylesheet.replaceSync(blockNoteStylesContent);
-
-export { blockNoteStylesheet };
+declare module '*.sass?raw' {
+  const content:string;
+  export default content;
+}

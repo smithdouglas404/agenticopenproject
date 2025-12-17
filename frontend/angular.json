@@ -56,10 +56,6 @@
                 "input": "node_modules/@blocknote/mantine/src/style.css",
                 "bundleName": "blocknote"
               },
-              {
-                "input": "src/shadow-dom-primer.scss",
-                "bundleName": "shadow-dom-primer"
-              },
               "src/styles.scss",
               "node_modules/codemirror/lib/codemirror.css",
               "src/vendor/jquery-ui-1.14.1/jquery-ui.css",

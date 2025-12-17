@@ -29,14 +29,24 @@
  */
 
 /**
- * Primer styles for Shadow DOM components
+ * Shared stylesheets for Shadow DOM components.
  *
- * This stylesheet is loaded into Shadow DOM components that need Primer styles.
- * CSS custom properties (design tokens) and CSS rules are both included since
- * Shadow DOM encapsulation prevents inheritance of rules from the main document.
+ * These use constructable stylesheets (adoptedStyleSheets) which:
+ * - Parse CSS once and share across all Shadow DOM instances (memory efficient)
+ * - Apply styles synchronously (no FOUC)
+ * - Don't require separate CSS file downloads
  *
- * Note: This duplicates some styles from the main bundle, but is acceptable
- * for pages that are not frequently accessed (e.g., document editor).
+ * Usage:
+ *   import { primerStyleSheet } from './shadow-dom-styles';
+ *   shadowRoot.adoptedStyleSheets = [primerStyleSheet];
  */
 
-@import "global_styles/vendor/primer";
+// Import Primer styles as raw CSS string (compiled from SCSS at build time)
+import primerStyles from '../global_styles/vendor/_primer.sass?raw';
+
+// Create shared constructable stylesheet for Primer
+// This is parsed once and shared across all Shadow DOM instances
+const primerStyleSheet = new CSSStyleSheet();
+primerStyleSheet.replaceSync(primerStyles);
+
+export { primerStyleSheet };
