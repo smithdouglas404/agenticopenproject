@@ -116,6 +116,10 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
     end
   end
 
+  it "fulfills the documented schema" do
+    expect(generated).to match_json_schema.from_docs("project_model")
+  end
+
   it { is_expected.to include_json("Project".to_json).at_path("_type") }
 
   describe "properties" do

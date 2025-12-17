@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,30 +26,32 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-# Destroy confirmation dialog used when removing a storage from a project from within the project
-# by going to "Some project" -> Project settings -> Files.
-module Storages
-  module ProjectStorages
-    module Projects
-      class DestroyConfirmationDialogComponent < ApplicationComponent
-        include OpTurbo::Streamable
+module MeetingAgendaItems
+  class DuplicateInNextMeetingDialogComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
 
-        TEST_SELECTOR = "op-project-storages--delete-dialog"
+    def initialize(agenda_item:, datetime:)
+      super
 
-        def initialize(storage:)
-          super
-          @project_storage = storage
-        end
+      @agenda_item = agenda_item
+      @datetime = datetime
+    end
 
-        def form_arguments
-          {
-            action: project_settings_project_storage_path(project_id: @project_storage.project, id: @project_storage),
-            method: :delete
-          }
-        end
-      end
+    private
+
+    def dialog_id = "duplicate-in-next-meeting-dialog"
+
+    def title = I18n.t(:label_agenda_item_duplicate_in_next_title)
+
+    def confirmation_message
+      I18n.t(
+        :text_agenda_item_duplicate_in_next_meeting,
+        date: format_date(@datetime),
+        time: format_time(@datetime, include_date: false)
+      )
     end
   end
 end

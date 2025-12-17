@@ -55,6 +55,15 @@ module Admin
           self.class.menu_id(item: model)
         end
 
+        def secondary_text
+          ::CustomFields::Hierarchy::HierarchicalItemFormatter
+            .new(label: false,
+                 number_length_limit: 42,
+                 number_integer_digit_limit: 40,
+                 number_precision: 40)
+            .format(item: model)
+        end
+
         def item_link
           if project_custom_field_context?
             admin_settings_project_custom_field_item_path(custom_field_id, model)

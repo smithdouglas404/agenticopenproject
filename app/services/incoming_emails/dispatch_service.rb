@@ -41,6 +41,7 @@ module IncomingEmails
     # Registry for mail handlers
     def self.handlers
       @handlers ||= [
+        IncomingEmails::Handlers::MeetingResponse,
         IncomingEmails::Handlers::MessageReply,
         IncomingEmails::Handlers::WorkPackage
       ]
@@ -202,7 +203,7 @@ module IncomingEmails
     end
 
     def ignore_mail?
-      mail_from_system? || ignored_by_header? || ignored_user? || mail_with_ics_attachment?
+      mail_from_system? || ignored_by_header? || ignored_user?
     end
 
     def mail_from_system?
@@ -247,16 +248,6 @@ module IncomingEmails
       unless @user.active?
         log "ignoring email from non-active user [#{@user.login}]"
         true
-      end
-    end
-
-    def mail_with_ics_attachment?
-      if email.attachments.any? { |a| a.content_type.start_with?("text/calendar") } ||
-          (email.multipart? && email.parts.any? { |part| part.content_type.start_with?("text/calendar") })
-        log "ignoring email with calendar attachment from [#{sender_email}]"
-        true
-      else
-        false
       end
     end
 

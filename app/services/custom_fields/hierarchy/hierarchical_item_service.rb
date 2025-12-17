@@ -115,6 +115,14 @@ module CustomFields
         Success(item.self_and_ancestors.reverse)
       end
 
+      # Gets all nodes in a tree from the item/node back to the root without the item/node itself.
+      # Ordered from root to leaf
+      # @param item [CustomField::Hierarchy::Item] the parent of the node
+      # @return [Success(Array<CustomField::Hierarchy::Item>)]
+      def get_ancestors(item:)
+        Success(item.ancestors.reverse)
+      end
+
       # Gets all descendant nodes in a tree starting from the item/node.
       # @param item [CustomField::Hierarchy::Item] the node
       # @param include_self [Boolean] flag

@@ -1480,7 +1480,8 @@ fi:
         not_a_datetime: "ei ole kelvollinen aika."
         not_a_number: "ei ole numero."
         not_allowed: "is invalid because of missing permissions."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "ei ole kokonaisluku."
         not_an_iso_date: "ei ole kelvollinen päivämäärä. Vaadittava muoto: VVVV-KK-PP."
         not_same_project: "ei kuulu samaan projektiin."
@@ -2135,6 +2136,7 @@ fi:
   button_print: "Tulosta"
   button_quote: "Siteeraa"
   button_remove: Poista
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Nimeä uudelleen"
   button_replace: "Korvaa"
@@ -4611,6 +4613,8 @@ fi:
     The Enterprise edition will add these additional add-ons for projects' custom fields: <br> <ul> <li><b>Add custom fields for projects to your Project list to create a project portfolio view</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     This is the logo that appears in your PDF exports. It needs to be a PNG or JPEG image file. A black or colored logo on transparent or white background is recommended.
   text_custom_export_cover_instructions: >
@@ -4686,6 +4690,7 @@ fi:
     Note: if enabled, this will display a badge with your installation status in the <a href="%{information_panel_path}">%{information_panel_label}</a> administration panel, and on the home page. It is displayed to administrators only. <br/> The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit <a href="%{more_info_url}">the configuration documentation</a>.
   text_own_membership_delete_confirmation: "Olet aikeissa poistaa yhden tai useamman käyttöoikeuden ja et ehkä voi enää muokata tätä projektia sen jälkeen. Haluatko varmasti jatkaa?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin varat hakemisto kirjoitettavissa"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Vain pienet kirjaimet (a-z), numerot, väliviivat ja alaviivat ovat sallittuja. Ensimmäisenä tulee olla pieni kirjain."

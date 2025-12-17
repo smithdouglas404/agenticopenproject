@@ -36,8 +36,9 @@ class CustomField::Hierarchy::Item < ApplicationRecord
 
   scope :including_children, -> { includes(children: :children) }
 
-  def to_s = suffix.empty? ? label : "#{label} #{suffix}"
+  def to_s = formatter.format(item: self)
 
+  # @deprecated Use [CustomFields::Hierarchy::HierarchicalItemFormatter] instead.
   def ancestry_path(include_shorts_and_weights: false)
     path = self_and_ancestors.filter_map(&:label).reverse.join(" / ")
 
@@ -46,9 +47,16 @@ class CustomField::Hierarchy::Item < ApplicationRecord
     suffix.empty? ? path : "#{path} #{suffix}"
   end
 
+  # @deprecated Use [CustomFields::Hierarchy::HierarchicalItemFormatter] instead.
   def suffix
     return "" if short.nil? && weight.nil?
 
     "(#{short || weight})"
+  end
+
+  private
+
+  def formatter
+    CustomFields::Hierarchy::HierarchicalItemFormatter.default
   end
 end

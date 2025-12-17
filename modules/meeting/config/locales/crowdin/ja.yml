@@ -227,9 +227,9 @@ ja:
         header_occurrence: "キャンセル: ミーティング発生'%{title}'"
         header_series: "キャンセル: ミーティングシリーズ '%{title}'"
         summary_occurrence: "%{title}'の発生は %{actor}によってキャンセルされました。"
-        summary_series: "ミーティングシリーズ '%{title}' は %{actor}によりキャンセルされました。"
-        summary: "'%{title}' は %{actor}によってキャンセルされた。"
-        date_time: "予定日時"
+        summary_series: "ミーティングシリーズ '%{title}' は、 %{actor} によってキャンセルされました。"
+        summary: "'%{title}' は %{actor} によってキャンセルされました。"
+        date_time: "スケジュールされた日時"
       updated:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
@@ -256,11 +256,11 @@ ja:
         title: "ミーティングのキャンセル"
         heading: "このミーティングをキャンセルしますか？"
         confirmation_message_html: >
-          テンプレートにない会議情報は失われます。 続行しますか？
+          テンプレートにない会議情報は失われます。 続けますか？
         confirm_button: "発生をキャンセル"
     blankslate:
-      title: "表示する会議がありません"
-      desc: "条件を満たす会議はありません。"
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "PDF形式でエクスポート"
     export:
       your_meeting_export: "ミーティングはエクスポートされています"
@@ -353,11 +353,21 @@ ja:
       next: "Next"
       no_items: "No agenda items"
       no_items_flash: "There are no agenda items to present."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "タイトルなしセクション"
     delete_confirmation: "セクションを削除すると、そのすべての議題項目も削除されます。これを実行してもよろしいですか？"
     placeholder_title: "新しいセクション"
     empty_text: "アイテムをここにドラッグするか、新しいアイテムを作成してください"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "タイムゾーンの差"
@@ -440,7 +450,7 @@ ja:
       confirm_button: "この予定をキャンセル"
     end_series_dialog:
       title: "一連の会議を終了"
-  notice_successful_notification: "参加者全員にカレンダー更新の電子メールを送信"
+  notice_successful_notification: "すべての出席者にカレンダーの更新をメールしました"
   notice_timezone_missing: タイムゾーンが設定されていない場合、%{zone} が使用されます。タイムゾーンを選択するには、ここをクリックしてください。
   notice_meeting_updated: "このページは他の誰かによって更新されました。変更を表示するには再読み込みしてください。"
   permission_create_meetings: "会議を作成"
@@ -499,6 +509,9 @@ ja:
   label_agenda_item_move_to_bottom: "一番下へ移動"
   label_agenda_item_move_up: "上へ"
   label_agenda_item_move_down: "下へ移動"
+  label_agenda_item_duplicate: "Duplicate"
+  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
   label_agenda_item_add_notes: "注記の追加"
   label_agenda_item_add_outcome: "結果を追加"
   label_agenda_item_work_package_add: "ワークパッケージの追加"
@@ -519,7 +532,7 @@ ja:
     このバックログは、このワンタイムミーティングに固有のものです．アイテムをドラッグして追加またはミーティングの議題から削除することができます．
   label_agenda_backlog_clear_title: "議題のバックログをクリアしますか？"
   text_agenda_backlog_clear_description: >
-    現在アジェンダバックログにあるすべての項目を削除してもよろしいですか？このアクションは元に戻せません。
+    議題のバックログ内のすべての項目を削除してもよろしいですか？この操作は取り消せません。
   label_series_backlog: "シリーズバックログ"
   text_series_backlog: >
     バックログはこのシリーズのすべての出現と共有されます。 項目をドラッグして、特定のミーティングから項目を追加または削除できます。
@@ -551,7 +564,7 @@ ja:
   text_meeting_closed_description: "この会議は終了しています。これ以上、議題項目の追加/削除はできません。"
   text_meeting_in_progress_description: "議題を変更したり、各項目のアウトカムを記録したり、参加者の出席を追跡することができます。 ミーティングが完了すると、ミーティングをクローズとしてマークしてロックできます。"
   text_meeting_open_dropdown_description: "既存の結果は残りますが、ユーザーは新しい結果を追加することはできません。"
-  text_meeting_in_progress_dropdown_description: "会議中に必要な情報や決定事項などの成果を文書化する。"
+  text_meeting_in_progress_dropdown_description: "会議中に取られた情報のニーズや意思決定などの成果を記録します。"
   text_meeting_closed_dropdown_description: "この会議は終了しました。これ以上、議題や結果を変更することはできません。"
   text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
   text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
@@ -572,6 +585,8 @@ ja:
   text_agenda_item_not_editable_anymore: "この議題項目はもう編集できません。"
   text_agenda_item_move_next_meeting: "このアイテムは、 %{date} の %{time} の次のミーティングに移動されます。"
   text_agenda_item_moved_to_next_meeting: "議題アイテムが %{date}の次のミーティングに移動されました"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "このワークパッケージは、まだ今後の会議の議題に予定されていません。"
   text_agenda_item_move_next_meeting_cancelled: "次回の会議がキャンセルされたため、移動できない。"
   text_work_package_add_to_meeting_hint: '「会議に追加」ボタンを使用して、このワークパッケージを今後の会議に追加してください。'

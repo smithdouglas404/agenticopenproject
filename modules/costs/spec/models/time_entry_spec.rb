@@ -663,5 +663,64 @@ RSpec.describe TimeEntry do
             comments: "lorem")
     end
     let!(:custom_field) { create(:time_entry_custom_field, :string, is_required: false) }
+
+    context "with a required custom field" do
+      let!(:custom_field) { create(:time_entry_custom_field, :string, is_required: true) }
+
+      before do
+        new_model_instance.activate_custom_field_validations!
+      end
+
+      context "for a new not-ongoing entry" do
+        let!(:new_model_instance) do
+          build(:time_entry, entity: work_package, spent_on: date, hours:, user:, ongoing: false)
+        end
+
+        it "validates presence of the custom field" do
+          new_model_instance.custom_field_values = { custom_field.id => nil }
+          expect(new_model_instance).not_to be_valid
+
+          new_model_instance.custom_field_values = { custom_field.id => "Some value" }
+          expect(new_model_instance).to be_valid
+        end
+      end
+
+      context "for a new ongoing entry" do
+        let!(:new_model_instance) do
+          build(:time_entry, entity: work_package, spent_on: date, hours:, user:, ongoing: true)
+        end
+
+        it "does not validate presence of the custom field" do
+          new_model_instance.custom_field_values = { custom_field.id => nil }
+          expect(new_model_instance).to be_valid
+        end
+      end
+
+      context "for a persisted not-ongoing entry" do
+        let!(:new_model_instance) do
+          create(:time_entry, entity: work_package, spent_on: date, hours:, user:, ongoing: false)
+        end
+
+        it "validates presence of the custom field" do
+          new_model_instance.custom_field_values = { custom_field.id => nil }
+
+          expect(new_model_instance).not_to be_valid
+
+          new_model_instance.custom_field_values = { custom_field.id => "Some value" }
+          expect(new_model_instance).to be_valid
+        end
+      end
+
+      context "for a persisted ongoing entry" do
+        let!(:new_model_instance) do
+          create(:time_entry, entity: work_package, spent_on: date, hours:, user:, ongoing: true)
+        end
+
+        it "validates presence of the custom field" do
+          new_model_instance.custom_field_values = { custom_field.id => nil }
+          expect(new_model_instance).not_to be_valid
+        end
+      end
+    end
   end
 end

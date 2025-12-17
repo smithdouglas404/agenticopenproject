@@ -1516,7 +1516,8 @@ ar:
         not_a_datetime: "is not a valid date time."
         not_a_number: "ليس رقماً."
         not_allowed: "is invalid because of missing permissions."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "ليس عدداً صحيحاً."
         not_an_iso_date: "ليس تاريخًا صالحًا. الشكل المطلوب: YYYY-MM-DD."
         not_same_project: "لا ينتمي إلى نفس المشروع."
@@ -2239,6 +2240,7 @@ ar:
   button_print: "طباعة"
   button_quote: "اقتباس"
   button_remove: إزالة
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "اعادة التّسمية"
   button_replace: "Replace"
@@ -4805,6 +4807,8 @@ ar:
     ستضيف النسخة المؤسسية هذه الإضافات الإضافية للحقول المخصصة للمشاريع: <br> <ul> <li><b>إضافة حقول مخصصة للمشاريع إلى قائمة مشروعك لإنشاء عرض محفظة المشاريع</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     This is the logo that appears in your PDF exports. It needs to be a PNG or JPEG image file. A black or colored logo on transparent or white background is recommended.
   text_custom_export_cover_instructions: >
@@ -4880,6 +4884,7 @@ ar:
     Note: if enabled, this will display a badge with your installation status in the <a href="%{information_panel_path}">%{information_panel_label}</a> administration panel, and on the home page. It is displayed to administrators only. <br/> The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit <a href="%{more_info_url}">the configuration documentation</a>.
   text_own_membership_delete_confirmation: "أنت على وشك إزالة بعض أو كافة الأذونات الخاصة بك، وقد لن تكون قادراً على تحرير هذا المشروع بعد ذلك. هل أنت متأكد من أنك تريد المتابعة؟"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "دليل أصول البرنامج المساعدة القابل للكتابة"
   text_powered_by: "بواسطة %{link}"
   text_project_identifier_info: "يتم السماح فقط رسائل الحالة الأدنى (أ-ي) وأرقام، والشرطات وتسطير، يجب أن تبدأ بحرف حالة الأدنى."

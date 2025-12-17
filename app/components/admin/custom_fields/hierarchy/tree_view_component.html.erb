@@ -36,6 +36,9 @@ See COPYRIGHT and LICENSE files for more details.
       item == @active_item || @hierarchy_service.descendant_of?(item: @active_item, parent: item).success?
     end
 
-    populate_tree_view(tree_view, @custom_field, item_options: { expanded_fn:, href_fn:, current_fn: })
+    item_formatter = standard_tree_view_item_formatter
+    label_fn = lambda { |item| item_formatter.format(item:) }
+
+    populate_tree_view(tree_view, @custom_field, item_options: { expanded_fn:, href_fn:, current_fn:, label_fn: })
   end
 %>

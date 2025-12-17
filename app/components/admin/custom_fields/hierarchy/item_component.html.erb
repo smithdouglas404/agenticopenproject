@@ -43,7 +43,7 @@ See COPYRIGHT and LICENSE files for more details.
             end
           end
 
-          label_addition = model.suffix
+          label_addition = secondary_text
           if label_addition.present?
             item_information.with_column(mr: 2) do
               render(Primer::Beta::Text.new(color: :subtle)) { label_addition }
