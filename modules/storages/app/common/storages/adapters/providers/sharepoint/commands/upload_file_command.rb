@@ -72,8 +72,11 @@ module Storages
             end
 
             def upload_file_content(http, upload_url, file_content)
+              file_size = file_content.bytesize
+              content_range_header = file_size.zero? ? "bytes 0-0/0" : "bytes 0-#{file_size - 1}/#{file_size}"
+
               handle_response(
-                http.put(upload_url, body: file_content, headers: { "Content-Range" => content_range_header(file_content) })
+                http.put(upload_url, body: file_content, headers: { "Content-Range" => content_range_header })
               )
             end
 
@@ -90,11 +93,6 @@ module Storages
             def composite_folder_id(drive_id, location)
               item_id = location.root? ? nil : location
               "#{drive_id}#{SharepointStorage::IDENTIFIER_SEPARATOR}#{item_id}"
-            end
-
-            def content_range_header(file_content)
-              file_size = file_content.bytesize
-              file_size.zero? ? "bytes 0-0/0" : "bytes 0-#{file_size - 1}/#{file_size}"
             end
 
             def handle_response(response)
