@@ -104,6 +104,8 @@ module Storages
             private
 
             def delete_created_folder(folder)
+              return if folder.nil?
+
               Input::DeleteFolder.build(location: folder.location).bind do |input_data|
                 Registry.resolve("nextcloud.commands.delete_folder").call(storage:, auth_strategy:, input_data:)
               end
