@@ -32,6 +32,7 @@ import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { useEffect, useRef } from 'react';
 import * as Y from 'yjs';
+import { DocumentLoadingSkeleton } from './components/DocumentLoadingSkeleton';
 import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
 import { fetchConnectionTemplate } from './helpers/connection-template-fetcher';
 import { useCollaboration } from './hooks/useCollaboration';
@@ -47,9 +48,6 @@ export interface OpBlockNoteContainerProps {
   hocuspocusProvider?:HocuspocusProvider;
   errorContainer?:HTMLElement;
 }
-
-const SKELETON_TITLE_STYLE = { width: '25%', height: '40px' };
-const SKELETON_CONTENT_STYLE = { width: '100%', height: '150px' };
 
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
@@ -94,16 +92,7 @@ export default function OpBlockNoteContainer({ inputField,
   }, [connectionError, errorContainer]);
 
   if (isLoading) {
-    return (
-      <div>
-        <div className={'mb-3'}>
-          <div style={SKELETON_TITLE_STYLE} className={'SkeletonBox'} />
-        </div>
-        <div className={'mb-3'}>
-          <div style={SKELETON_CONTENT_STYLE} className={'SkeletonBox'} />
-        </div>
-      </div>
-    );
+    return <DocumentLoadingSkeleton />;
   }
 
   if (connectionError) {
