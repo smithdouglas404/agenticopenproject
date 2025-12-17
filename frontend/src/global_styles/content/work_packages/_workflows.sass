@@ -51,21 +51,6 @@
         max-width: 220px
         @include text-shortener
 
-    thead
-      th
-        padding: 0 6px
-      .workflow-table--header
-        text-align: right
-        display: flex
-        span
-          flex-basis: 50%
-      .workflow-table--check-all
-        font-size: 12px
-        font-style: italic
-        text-transform: none
-        a:hover
-          text-decoration: underline
-
     .generic-table--sort-header-outer:hover
       background: none
 
@@ -73,7 +58,7 @@
   td:first-child:not(:has(.workflow-table--turned-header)),
   th:first-child
     position: sticky
-    left: -1rem
+    left: 0
     background: var(--body-background)
     z-index: 2
     box-shadow: 0 2px 4px rgba(0,0,0,0.08)

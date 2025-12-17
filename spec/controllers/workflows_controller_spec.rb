@@ -79,7 +79,7 @@ RSpec.describe WorkflowsController do
   current_user { build_stubbed(:admin) }
 
   describe "#index" do
-    let(:counts) { instance_double(Hash) }
+    let(:counts) { [] }
 
     before do
       allow(Workflow)
@@ -94,9 +94,29 @@ RSpec.describe WorkflowsController do
         .to be_successful
     end
 
-    it "assigns the workflows by type and role" do
-      expect(assigns[:workflow_counts])
-        .to eql counts
+    context "when counts is empty" do
+      it "assigns the workflows by type and role" do
+        expect(assigns[:workflow_counts]).to eql counts
+      end
+
+      it "assigns roles" do
+        expect(assigns[:roles]).to be_nil
+      end
+    end
+
+    context "when counts is present" do
+      let(:type) { build_stubbed(:type) }
+      let(:project_role) { build_stubbed(:project_role) }
+      let(:global_role) { build_stubbed(:global_role) }
+      let(:counts) { [[type, [[project_role, 25], [global_role, 0]]]] }
+
+      it "assigns the workflows by type and role" do
+        expect(assigns[:workflow_counts]).to eql counts
+      end
+
+      it "assigns roles" do
+        expect(assigns[:roles]).to contain_exactly(project_role, global_role)
+      end
     end
   end
 
