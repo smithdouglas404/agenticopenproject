@@ -256,7 +256,7 @@ To reflect usage patterns, the tab order in the work package view has been updat
 
 Our packaged-installations were previously being fetched from `dl.packager.io`, hosted by our package provider. Starting with 17.0, the package source has been changed to `packages.openproject.com`. This new package source includes previous releases of 16.X.
 
-To update your local package sources, please remove the package repositories from your file-system and re-add them following the "Major upgrades" section of [our upgrading installation guide](../../installation-and-operations/operation/upgrading/). This does not the actual upgrade of the OpenProject application.
+To update your local package sources, please remove the package repositories from your file-system and re-add them, following the "Major upgrades" section of [our upgrading installation guide](../../installation-and-operations/operation/upgrading/). This does not affect the actual upgrade of the OpenProject application.
 
 
 
