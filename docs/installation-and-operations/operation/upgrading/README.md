@@ -106,7 +106,7 @@ Then follow the first steps of the [installation guide](../../installation/packa
 
 After following the steps to update the package source, updating the openproject package and running `openproject configure`, your system will be up to date.
 
-In case you experience issues, please note the exact steps you took, copy the output of all commands you ran and open a post in our [installation support forum](https://community.openproject.org/projects/openproject/forums/9), or as an enterprise customer, reaching out to [our customer support](mailto:support@openproject.org).
+In case you experience issues, please note the exact steps you took, copy the output of all commands you ran and open a post in our [installation support forum](https://community.openproject.org/projects/openproject/forums/9), or as an Enterprise customer, reaching out to [our customer support](mailto:support@openproject.org).
 
 ### Running openproject configure
 
