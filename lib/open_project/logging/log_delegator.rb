@@ -28,7 +28,9 @@ module OpenProject
 
           # Set current contexts
           context[:level] ||= context[:exception] ? :error : :info
-          context[:current_user] ||= User.current
+          if current_user
+            context[:current_user] ||= current_user
+          end
 
           registered_handlers.values.each do |handler|
             handler.call message, context
@@ -102,6 +104,14 @@ module OpenProject
           payload = context.slice(%i[current_user project reference]).compact
           extended = OpenProject::Logging.extend_payload!(payload, context)
           OpenProject::Logging.formatter.call extended
+        end
+
+        def current_user
+          User.current if users_table_exists?
+        end
+
+        def users_table_exists?
+          User.connection.data_source_exists?(User.table_name)
         end
       end
     end
