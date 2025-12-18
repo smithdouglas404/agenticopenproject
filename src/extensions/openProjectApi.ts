@@ -13,6 +13,10 @@ export const editorSchema = BlockNoteSchema.create().extend({
   },
 });
 
+function printLog(message:string) {
+  console.log(`[${new Date().toISOString()}] ${message}`);
+}
+
 export function createEditor() {
   return ServerBlockNoteEditor.create({ schema: editorSchema });
 }
@@ -58,7 +62,7 @@ export class OpenProjectApi implements Extension {
   async onLoadDocument(data: onLoadDocumentPayload) {
     const { resourceUrl } = data.context;
 
-    console.log(`GET ${resourceUrl}`);
+    printLog(`GET ${resourceUrl}`);
 
     const response = await fetch(resourceUrl, {
       method: "GET",
@@ -78,6 +82,8 @@ export class OpenProjectApi implements Extension {
       const update = new Uint8Array(Buffer.from(jsonData.contentBinary, 'base64'));
       Y.applyUpdate(data.document, update);
     }
+
+    return data.document;
   }
 
   /**
@@ -95,7 +101,7 @@ export class OpenProjectApi implements Extension {
       return;
     }
 
-    console.log(`PATCH ${resourceUrl}`);
+    printLog(`PATCH ${resourceUrl}`);
 
     const base64Data = Buffer.from(Y.encodeStateAsUpdate(data.document)).toString("base64");
 
