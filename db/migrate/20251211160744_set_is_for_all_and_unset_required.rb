@@ -27,31 +27,31 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects
-  module Settings
-    class CustomFieldsForm < ApplicationForm
-      include ::CustomFields::CustomFieldRendering
 
-      form do |f|
-        render_custom_fields(form: f)
-      end
+require Rails.root.join("db/migrate/migration_utils/utils")
 
-      def additional_custom_field_input_arguments
-        { wrapper_id: nil }
-      end
+class SetIsForAllAndUnsetRequired < ActiveRecord::Migration[8.0]
+  include Migration::Utils
 
-      private
+  def up
+    # With WP-69399, project custom fields support both required and is_for_all as separate flags.
+    # Before, there was only is_required, which implied is_for_all.
+    #
+    # Take all project custom fields that are required and set is_for_all to true:
+    ProjectCustomField
+      .where(is_required: true)
+      .update_all(is_for_all: true)
 
-      def custom_fields
-        @custom_fields ||= begin
-          enabled_custom_fields = model.enabled_custom_field_ids.presence || ProjectCustomField.for_all.select(:id)
+    # Additionally, bool and calculated value can no longer be required.
 
-          model
-            .available_custom_fields
-            .where(id: enabled_custom_fields)
-            .required
-        end
-      end
-    end
+    CustomField
+      .where(field_format: %w(bool calculated_value))
+      .update_all(is_required: false)
+  end
+
+  def down
+    # Down migration can only partly reconstruct the data
+    ProjectCustomField
+      .update_all(is_for_all: false)
   end
 end

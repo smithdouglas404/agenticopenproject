@@ -437,8 +437,8 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
         create(:project_custom_field_project_mapping, project: public_wp_share_project)
         .project_custom_field
       end
-      shared_let(:required_cf) do
-        create(:string_project_custom_field, is_required: true)
+      shared_let(:for_all_cf) do
+        create(:string_project_custom_field, is_for_all: true)
       end
 
       shared_let(:current_user) do
@@ -508,22 +508,22 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
           )
         end
 
-        it "returns the required_cf only for the other_project as a member " \
+        it "returns the for_all_cf only for the other_project as a member " \
            "with view_project_attributes" do
           expect(subject).not_to have_json_path(
-            "_embedded/elements/0/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/0/#{for_all_cf.attribute_name(:camel_case)}"
           )
           expect(subject).not_to have_json_path(
-            "_embedded/elements/1/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/1/#{for_all_cf.attribute_name(:camel_case)}"
           )
           expect(subject).not_to have_json_path(
-            "_embedded/elements/2/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/2/#{for_all_cf.attribute_name(:camel_case)}"
           )
           expect(subject).not_to have_json_path(
-            "_embedded/elements/3/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/3/#{for_all_cf.attribute_name(:camel_case)}"
           )
           expect(subject).to have_json_path(
-            "_embedded/elements/4/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/4/#{for_all_cf.attribute_name(:camel_case)}"
           )
         end
       end

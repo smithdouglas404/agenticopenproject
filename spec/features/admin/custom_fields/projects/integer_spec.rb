@@ -27,31 +27,17 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects
-  module Settings
-    class CustomFieldsForm < ApplicationForm
-      include ::CustomFields::CustomFieldRendering
 
-      form do |f|
-        render_custom_fields(form: f)
-      end
+require "spec_helper"
+require_relative "shared_context"
 
-      def additional_custom_field_input_arguments
-        { wrapper_id: nil }
-      end
+RSpec.describe "Edit project custom fields", :js do
+  include_context "with seeded project custom fields"
 
-      private
+  let(:custom_field) { integer_project_custom_field }
 
-      def custom_fields
-        @custom_fields ||= begin
-          enabled_custom_fields = model.enabled_custom_field_ids.presence || ProjectCustomField.for_all.select(:id)
-
-          model
-            .available_custom_fields
-            .where(id: enabled_custom_fields)
-            .required
-        end
-      end
-    end
-  end
+  it_behaves_like "prevents access on insufficient permissions"
+  it_behaves_like "has breadcrumb and tabs"
+  it_behaves_like "shows checkboxes for configuration"
+  it_behaves_like "editing the field"
 end

@@ -27,28 +27,21 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
-module Admin::CustomFields::CalculatedValues
-  class DetailsComponent < ApplicationComponent
-    include ApplicationHelper
-    include EnterpriseHelper
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
 
-    alias_method :custom_field, :model
+class AddUniquenessForRoleNames < ActiveRecord::Migration[8.0]
+  disable_ddl_transaction!
 
-    private
+  def up
+    execute <<~SQL.squish
+      UPDATE roles SET name = roles.name || ' ' || counter.rn
+      FROM (SELECT id, row_number() OVER (PARTITION BY LOWER(name) ORDER BY id) AS rn FROM roles) AS counter
+      WHERE roles.id = counter.id AND counter.rn > 1;
+    SQL
 
-    def form_url
-      if custom_field.new_record?
-        admin_settings_project_custom_fields_path
-      else
-        admin_settings_project_custom_field_path(custom_field)
-      end
-    end
+    add_index :roles, "LOWER(name)", unique: true, algorithm: :concurrently
+  end
 
-    def form_method
-      custom_field.new_record? ? :post : :put
-    end
+  def down
+    remove_index :roles, column: "LOWER(name)", algorithm: :concurrently
   end
 end

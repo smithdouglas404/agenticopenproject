@@ -27,31 +27,21 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects
-  module Settings
-    class CustomFieldsForm < ApplicationForm
-      include ::CustomFields::CustomFieldRendering
 
-      form do |f|
-        render_custom_fields(form: f)
-      end
+class AddUniquenessForTypeNames < ActiveRecord::Migration[8.0]
+  disable_ddl_transaction!
 
-      def additional_custom_field_input_arguments
-        { wrapper_id: nil }
-      end
+  def up
+    execute <<~SQL.squish
+      UPDATE types SET name = types.name || ' ' || counter.rn
+      FROM (SELECT id, row_number() OVER (PARTITION BY LOWER(name) ORDER BY id) AS rn FROM types) AS counter
+      WHERE types.id = counter.id AND counter.rn > 1;
+    SQL
 
-      private
+    add_index :types, "LOWER(name)", unique: true, algorithm: :concurrently
+  end
 
-      def custom_fields
-        @custom_fields ||= begin
-          enabled_custom_fields = model.enabled_custom_field_ids.presence || ProjectCustomField.for_all.select(:id)
-
-          model
-            .available_custom_fields
-            .where(id: enabled_custom_fields)
-            .required
-        end
-      end
-    end
+  def down
+    remove_index :types, column: "LOWER(name)", algorithm: :concurrently
   end
 end

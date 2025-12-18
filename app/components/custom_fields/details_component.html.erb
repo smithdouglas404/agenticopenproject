@@ -1,16 +1,16 @@
 <%=
-  with_enterprise_banner_guard(enterprise_addon[:key], variant: :large, image: enterprise_addon[:image]) do
+  with_enterprise_banner_guard(enterprise_addon_key, image: enterprise_addon_image, inactive_guard: no_enterprise_feature?, variant: :large) do
     component_wrapper do
       flex_layout do |content|
-        if persisted_cf_has_no_items_or_projects?
+        if show_top_banner?
           content.with_row(mb: 3) do
             render Primer::Alpha::Banner.new(
               scheme: :default,
               icon: :info,
               dismiss_scheme: :hide,
-              test_selector: "op-custom-fields--new-hierarchy-banner"
+              test_selector: "op-custom-fields--top-banner"
             ) do
-              I18n.t("custom_fields.admin.notice.remember_items_and_projects")
+              top_banner_text
             end
           end
         end
