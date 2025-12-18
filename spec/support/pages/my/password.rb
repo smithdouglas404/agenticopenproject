@@ -32,7 +32,7 @@ require "support/pages/page"
 
 module Pages
   module My
-    class PasswordPage < ::Pages::Page
+    class Password < ::Pages::Page
       def path
         "/my/password"
       end

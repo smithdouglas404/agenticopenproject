@@ -17,7 +17,7 @@ end
 
 RSpec.describe "Reordering custom options of a list custom field", :js, :selenium do
   let(:user) { create(:admin) }
-  let(:cf_page) { Pages::CustomFields::IndexPage.new }
+  let(:cf_page) { Pages::CustomFields::Index.new }
 
   let!(:custom_field) do
     create(

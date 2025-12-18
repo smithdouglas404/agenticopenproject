@@ -32,7 +32,7 @@ require "support/pages/page"
 
 module Pages
   module CustomFields
-    class IndexPage < Page
+    class Index < Page
       def path
         "/custom_fields"
       end

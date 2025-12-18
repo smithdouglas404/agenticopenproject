@@ -32,7 +32,7 @@ require "support/pages/page"
 
 module Pages
   module CustomFields
-    class NewPage < Page
+    class New < Page
       def path
         "/custom_fields/new?type=#{@type}"
       end

@@ -33,7 +33,7 @@ require "support/pages/custom_fields/index_page"
 
 RSpec.describe "work package list custom fields", :js do
   let(:user) { create(:admin) }
-  let(:cf_page) { Pages::CustomFields::IndexPage.new }
+  let(:cf_page) { Pages::CustomFields::Index.new }
 
   before do
     login_as user

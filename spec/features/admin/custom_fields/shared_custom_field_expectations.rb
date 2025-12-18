@@ -29,7 +29,7 @@
 # ++
 
 RSpec.shared_examples_for "list custom fields" do |type|
-  let(:cf_page) { Pages::CustomFields::IndexPage.new }
+  let(:cf_page) { Pages::CustomFields::Index.new }
   let(:user) { create(:admin) }
 
   current_user { user }
@@ -94,7 +94,7 @@ RSpec.shared_examples_for "list custom fields" do |type|
 end
 
 RSpec.shared_examples_for "hierarchy custom fields on index page" do |type|
-  let(:cf_page) { Pages::CustomFields::IndexPage.new }
+  let(:cf_page) { Pages::CustomFields::Index.new }
   let(:user) { create(:admin) }
 
   current_user { user }
@@ -126,7 +126,7 @@ RSpec.shared_examples_for "hierarchy custom fields on index page" do |type|
 end
 
 RSpec.shared_examples_for "expected fields for the custom field's format" do |type, format|
-  let(:cf_page) { Pages::CustomFields::IndexPage.new }
+  let(:cf_page) { Pages::CustomFields::Index.new }
   let(:user) { create(:admin) }
 
   current_user { user }

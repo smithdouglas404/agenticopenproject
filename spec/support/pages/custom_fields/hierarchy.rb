@@ -32,7 +32,7 @@ require "support/pages/page"
 
 module Pages
   module CustomFields
-    class HierarchyPage < Page
+    class Hierarchy < Page
       def path
         case @tab
         when "items"
