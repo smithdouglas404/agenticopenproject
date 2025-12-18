@@ -39,6 +39,12 @@ module Pages
             "/admin/settings/project_custom_fields"
           end
 
+          def visit_page(customizable_name)
+            fail "Only Project type is expected" unless customizable_name == "Projects"
+
+            visit!
+          end
+
           def expect_add_project_attribute_submenu(close_dialog: true)
             wait_for_network_idle
 

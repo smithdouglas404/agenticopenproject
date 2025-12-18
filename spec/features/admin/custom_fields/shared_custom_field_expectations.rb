@@ -35,7 +35,7 @@ RSpec.shared_examples_for "list custom fields" do |type|
   current_user { user }
 
   before do
-    cf_page.visit_tab type
+    cf_page.visit_page type
   end
 
   it "has the options in the right order" do
@@ -100,7 +100,7 @@ RSpec.shared_examples_for "hierarchy custom fields on index page" do |type|
   current_user { user }
 
   before do
-    cf_page.visit_tab type
+    cf_page.visit_page type
   end
 
   context "with an active enterprise token with custom_field_hierarchies feature", with_ee: [:custom_field_hierarchies] do
@@ -132,7 +132,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format" do |ty
   current_user { user }
 
   before do
-    cf_page.visit_tab type
+    cf_page.visit_page type
   end
 
   def expect_page_to_have_texts(*text)
