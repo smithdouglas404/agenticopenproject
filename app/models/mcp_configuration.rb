@@ -28,42 +28,5 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  class Mcp < ::API::RootAPI
-    CONFIGURATION_IDENTIFIER = "mcp_server"
-
-    include ::API::AppsignalAPI
-
-    default_format :json
-
-    error_representer ::API::Mcp::ErrorRepresenter, :json
-    authentication_scope OpenProject::Authentication::Scope::MCP_SCOPE
-
-    helpers do
-      def server_config
-        @server_config ||= McpConfiguration.find_or_initialize_by(identifier: CONFIGURATION_IDENTIFIER)
-      end
-    end
-
-    post "/" do
-      if !OpenProject::FeatureDecisions.mcp_server_active? || !EnterpriseToken.allows_to?(:mcp_server) || !server_config.enabled?
-        status 404
-        return "MCP server is not available."
-      end
-
-      server = MCP::Server.new(
-        name: "openproject_mcp",
-        title: server_config.title,
-        # description: server_config.description, # not yet supported by mcp gem
-        version: "1.0.0",
-        tools: McpTools.enabled.map(&:tool),
-        server_context: { user_id: User.current.id }
-      )
-
-      status 200
-
-      # HACK: Grape is JSON-serializing whatever we return here, but handle_json already returns serialized JSON
-      JSON.parse server.handle_json(request.body.read)
-    end
-  end
+class McpConfiguration < ApplicationRecord
 end

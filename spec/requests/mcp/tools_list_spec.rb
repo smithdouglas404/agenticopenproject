@@ -49,6 +49,14 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
   end
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
+  let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
+  let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name) }
+
+  before do
+    server_config.save!
+    tool_config.save!
+  end
+
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP result response"
 
@@ -57,6 +65,8 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
 
       tool = parsed_results.fetch("tools").find { |t| t.fetch("name") == "search_project" }
       expect(tool).not_to be_nil
+      expect(tool.fetch("title")).to eq(tool_config.title)
+      expect(tool.fetch("description")).to eq(tool_config.description)
     end
 
     context "when not passing a Bearer token" do
@@ -73,6 +83,15 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
       let(:access_token) { create(:oauth_access_token, scopes: "api_v3") }
 
       it_behaves_like "MCP unauthenticated response"
+    end
+
+    context "when the MCP server is disabled via configuration" do
+      let(:server_config) { create(:mcp_configuration, identifier: "mcp_server", enabled: false) }
+
+      it "responds in a 404" do
+        subject
+        expect(last_response).to have_http_status(404)
+      end
     end
   end
 

@@ -57,6 +57,14 @@ RSpec.describe "MCP search_project tool", with_flag: { mcp_server: true } do
   let!(:project_a) { create(:project, identifier: "abc", name: "The ABC Project", status_code: :on_track) }
   let!(:project_b) { create(:project, identifier: "def", name: "The DEF Project", status_code: :off_track) }
 
+  let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
+  let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name) }
+
+  before do
+    server_config.save!
+    tool_config.save!
+  end
+
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP response with structured content"
 
@@ -138,6 +146,12 @@ RSpec.describe "MCP search_project tool", with_flag: { mcp_server: true } do
         subject
         expect(parsed_results.fetch("structuredContent")).to be_empty
       end
+    end
+
+    context "when the tool is disabled via configuration" do
+      let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name, enabled: false) }
+
+      it_behaves_like "MCP error response"
     end
   end
 

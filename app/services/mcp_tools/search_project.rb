@@ -29,12 +29,15 @@
 #++
 
 module McpTools
-  class SearchProject < MCP::Tool
+  class SearchProject < Base
     # TODO: The mcp gem does not support pagination, so we only limit the number of results for now
     MAX_SIZE = 100
-    tool_name "search_project"
-    description "Search projects matching all of the passed input parameters. Parameters not passed are ignored. " \
-                "Results are limited to a maximum of #{MAX_SIZE} projects."
+
+    default_title "Search projects"
+    default_description "Search projects matching all of the passed input parameters. " \
+                        "Parameters not passed are ignored. Results are limited to a maximum of #{MAX_SIZE} projects."
+
+    name "search_project"
 
     input_schema(
       properties: {
@@ -52,23 +55,12 @@ module McpTools
     class << self
       def call(name: nil, identifier: nil, status_code: nil)
         query = { name:, identifier:, status_code: }.compact
-        result = if query.present?
-                   projects = projects_for_query(query)
-                   projects.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user: User.current) }
-                 else
-                   []
-                 end
-
-        if Rails.env.development?
-          # We are only validating the output during development, so we can see errors during dev, but do not break the
-          # API in production due to minor schema differences.
-          output_schema.validate_result(result.to_json)
+        if query.present?
+          projects = projects_for_query(query)
+          projects.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user: User.current) }
+        else
+          []
         end
-
-        MCP::Tool::Response.new(
-          [{ type: "text", text: result.to_json }],
-          structured_content: result
-        )
       end
 
       private
