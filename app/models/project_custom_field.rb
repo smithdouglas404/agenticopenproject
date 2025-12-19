@@ -107,4 +107,8 @@ class ProjectCustomField < CustomField
       unique_by: %i[custom_field_id project_id]
     )
   end
+
+  def visible?(project:, user: User.current)
+    user.admin? || (!admin_only && user.allowed_in_project?(:view_project_attributes, project))
+  end
 end
