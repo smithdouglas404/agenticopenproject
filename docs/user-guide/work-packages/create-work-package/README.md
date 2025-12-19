@@ -3,7 +3,7 @@ sidebar_navigation:
   title: Create work packages
   priority: 990
 description: How to create Work packages in OpenProject.
-keywords: create work packages
+keywords: create work package, new work package, add work package
 ---
 
 # Create Work packages
@@ -15,28 +15,42 @@ keywords: create work packages
 
 ## Create Work packages
 
-There are two ways to create new Work packages:
+There are several ways to create work packages in OpenProject:
 
-- Work packages can be [created in-line in the Work package table](#create-a-work-package-in-the-table-view) (just like Excel) to quickly create multiple Work packages.
-- Work packages can be [created in a split screen](#create-a-work-package-in-the-split-screen-view) which allows you to specify detailed information from the start.
+- [Through the header navigation](#create-a-work-package-via-header-navigation). 
+- [In-line in the Work package table](#create-a-work-package-in-the-table-view) to quickly create multiple Work packages.
+- [In a split screen](#create-a-work-package-in-the-split-screen-view) which allows you to specify detailed information from the start.
 
-Work packages always belong to a project. Therefore, you first need to [select a project](../../../getting-started/projects/#open-an-existing-project).
+### Create a Work package via header navigation
 
-Then, navigate to the Work package module in the project navigation.
+You can create a work package from anywhere within application by clicking the green **+** button in the header navigation and directly selecting a work package type.
 
-![work packages module](1566302949658.png)
+![Button to create work packages from the header navigation of OpenProject ](openproject_user_guide_work_package_create_new_wp_button_header_navigation.png)
+
+### Create a Work package in work packages module
+
+You can also create work package directly from within the work package module (either within a specific project, or from the global module level). 
+
+[Select a project](../../../getting-started/projects/#open-an-existing-project) and navigate to the Work package module in the project module menu on the left. Alternatively select the work packages global module.
+
+![Work packages module highlighted in the project menu in OpenProject](openproject_user_guide_work_package_module.png)
+
+Click the **+ Create** button above the the work packages table and select the type of work package you want to create. 
+
+![Button to create a new work package above the work packages table view in OpenProject](openproject_user_guide_work_package_create_new_wp_button_wp_table.png)
+
 
 ### Create a Work package in the table view
 
 To create new Work packages directly in line in the table view, click on the **+ Create new Work package** link below the table.
 
-![create split screen](create-split-screen.png)
+![Link at the bottom of the work packages table to creat a new work package directly in the table view in OpenProject](openproject_user_guide_work_package_create_new_link.png)
 
-The new Work package appears in a green row. Type in the subject of the Work package, change attributes, such as Type or Status directly in the table and hit Enter to save the changes.
+The new Work package appears in a highlighted row in the table. Type in the subject of the Work package, change attributes, such as Type or Status directly in the table and hit Enter to save the changes.
 
-![create work package list](1566303144875.png)
+![Form to create a new work package directly in a work package table in OpenProject](openproject_user_guide_work_package_create_new_wp_inline_form.png)
 
-This way, you can quickly and easily create new Work packages in the table, just like Excel.
+This way, you can quickly and easily create new Work packages in the table, just like in Excel.
 
 ### Create a Work package in the split screen view
 
