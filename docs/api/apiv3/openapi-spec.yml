@@ -879,6 +879,8 @@ components:
       "$ref": "./components/schemas/query_create_form.yml"
     Query_FilterModel:
       "$ref": "./components/schemas/query_filter_model.yml"
+    Query_Filter_Instance_Model:
+      "$ref": "./components/schemas/query_filter_instance_model.yml"
     Query_Filter_Instance_SchemaModel:
       "$ref": "./components/schemas/query_filter_instance_schema_model.yml"
     Query_Filter_Instance_SchemasModel:
