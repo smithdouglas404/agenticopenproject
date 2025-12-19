@@ -359,8 +359,8 @@ de:
       no_items: "Keine Tagesordnungspunkte"
       no_items_flash: "Es sind keine Tagesordnungspunkte vorhanden."
     ical_response:
-      update_failed: "Could not update participation status."
-      meeting_not_found: "Meeting not found for the given UID."
+      update_failed: "Teilnahmestatus konnte nicht aktualisiert werden."
+      meeting_not_found: "Besprechung für die angegebene UID nicht gefunden."
   meeting_section:
     untitled_title: "Unbenannter Abschnitt"
     delete_confirmation: "Wenn Sie den Abschnitt löschen, werden auch alle zugehörigen Tagesordnungspunkte gelöscht. Möchten Sie fortfahren?"
@@ -368,11 +368,11 @@ de:
     empty_text: "Neue Agendapunkte hierhin bewegen oder neu erstellen"
   meeting_participant:
     participation_status:
-      needs_action: "No response"
-      accepted: "Accepted"
-      declined: "Declined"
-      tentative: "Maybe"
-      unknown: "Unknown"
+      needs_action: "Keine Antwort"
+      accepted: "Akzeptiert"
+      declined: "Abgelehnt"
+      tentative: "Vielleicht"
+      unknown: "Unbekannt"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Unterschiedliche Zeitzone"
@@ -597,7 +597,7 @@ de:
   text_work_package_has_no_upcoming_meeting_agenda_items: "Dieses Arbeitspaket ist bisher in keiner anstehenden Besprechung enthalten."
   text_agenda_item_move_next_meeting_cancelled: "Der Tagesordnungspunkt konnte nicht in die nächste Besprechung verschoben werden da diese abgesagt wurde."
   text_work_package_add_to_meeting_hint: 'Über den Button "Zur Besprechung hinzufügen" können Sie dieses Arbeitspaket zu einer zukünftigen Besprechung hinzuzufügen.'
-  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
+  text_work_package_has_no_past_meeting_agenda_items: "Dieses Arbeitspaket wurde in einer früheren Besprechung nicht als Tagesordnungspunkt hinzugefügt."
   text_email_updates_muted: "E-Mail-Kalenderaktualisierungen sind deaktiviert. Die Teilnehmer erhalten keine aktualisierten Einladungen per E-Mail, wenn Sie Änderungen vornehmen."
   text_email_updates_enabled: "E-Mail-Kalenderaktualisierungen sind aktiviert. Alle Teilnehmenden erhalten aktualisierte Einladungen per E-Mail, wenn Sie Änderungen vornehmen."
   my_account:

@@ -122,7 +122,7 @@ zh-TW:
     errors:
       messages:
         error: 發生意外錯誤。請檢查 OpenProject 記錄以獲得更多資訊，或聯絡管理員
-        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
+        forbidden: OpenProject 無法存取所要求的資源。請檢查您在儲存服務提供者上的權限設定。
         unauthorized: OpenProject 無法驗證儲存服務提供商。請確認您有存取權。
       models:
         copy_project_folders_service:

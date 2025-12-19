@@ -346,17 +346,28 @@ zh-CN:
     calculated_field_not_editable: "不可编辑属性。此值是自动计算的。"
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "将自定义字段标记为必填。这将在创建新资源时强制要求填写该字段。更新现有资源时，不会强制要求填写该值。"
-      is_required_for_project: "勾选以启用此属性，并在所有项目中将其设为必填。该属性无法在单个项目中停用。更新现有项目时，已存在的项目将无需填写该值。"
-      is_for_all: "将自定义字段标记为在所有现有项目和新项目中可用。"
-      multi_select: "允许用户为该自定义字段赋予多个值。"
-      searchable: "使用全局搜索功能时包含字段值。"
-      searchable_for_project: "选中可将此属性作为项目列表中的过滤器。"
-      editable: "允许用户自行编辑该字段。"
-      admin_only: "选中使此属性仅对管理员可见。没有管理员权限的用户将无法查看或编辑该属性。"
-      is_filter: >
-        允许在工作包视图中使用自定义字段。 请注意，只有选择了“所有项目”时，自定义字段才会显示在全局视图中。
-      formula: "添加数值或输入 / 以搜索特性或数学运算符。"
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: 目前没有自定义字段。
       no_results_content_text: 创建新的自定义字段
@@ -573,9 +584,9 @@ zh-CN:
           label_enable_single: "在此项目中处于活动状态，点击禁用"
           label_disable_single: "在此项目中未启用，点击启用"
           remove_from_project: "从项目移除"
-        is_required_blank_slate:
-          heading: 所有项目中需要
-          description: 此项目属性已在所有项目中激活，因为选中了“所有项目中需要”的选项。它在单个项目中不能被停用。
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: 目前有可用的类型。
         form:
@@ -1255,7 +1266,7 @@ zh-CN:
         work_packages: "工作包"
         workspace_type: "工作空间类型"
       project_custom_field:
-        is_required: "在所有项目中应用"
+        is_required: "Required"
         custom_field_section: 单元
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1542,6 +1553,8 @@ zh-CN:
               invalid_characters: "仅允许使用数值、数学运算符以及整数、浮点数、计算值和加权列表类型的项目属性。"
               not_allowed_custom_fields_referenced: "属性 %{custom_fields} 无法使用，因为存在循环引用：一个属性依赖于另一个属性。"
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -4433,6 +4446,7 @@ zh-CN:
     passwords: "密码"
     project_attributes:
       heading: "项目属性"
+      label_for_all_projects: "All projects"
       label_new_attribute: "项目属性"
       label_new_section: "单元"
       label_edit_section: "编辑标题"

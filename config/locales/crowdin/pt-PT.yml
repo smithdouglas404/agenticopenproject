@@ -347,17 +347,28 @@ pt-PT:
     calculated_field_not_editable: "Atributo não editável. Este valor é calculado automaticamente."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Marque o campo personalizado como disponível em todos os projetos existentes e novos."
-      multi_select: "Permite que o utilizador atribua vários valores a este campo personalizado."
-      searchable: "Inclua os valores dos campos ao utilizar a funcionalidade de pesquisa global."
-      searchable_for_project: "Selecione para tornar este atributo disponível como um filtro nas listas de projetos."
-      editable: "Permita que o campo seja editável pelos próprios utilizadores."
-      admin_only: "Selecione para tornar este atributo visível apenas para os administradores. Os utilizadores sem direitos de administrador não o poderão ver ou editar."
-      is_filter: >
-        Permita que o campo personalizado seja utilizado num filtro nas vistas do pacote de trabalho. Note que apenas com a opção "Para todos os projetos" selecionada, o campo personalizado irá aparecer nas vistas globais.
-      formula: "Adicione valores numéricos ou escreva / para procurar um atributo ou um operador matemático."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Atualmente, não existem campos personalizados.
       no_results_content_text: Criar um novo campo personalizado
@@ -575,9 +586,9 @@ pt-PT:
           label_enable_single: "Ativo neste projeto, clique para desativar"
           label_disable_single: "Inativo neste projeto, clique para ativar"
           remove_from_project: "Remover do projeto"
-        is_required_blank_slate:
-          heading: Necessário em todos os projetos
-          description: Este atributo de projeto é ativado em todos os projetos, uma vez que a opção "Necessário em todos os projetos" está assinalada. Não pode ser desativado para projetos individuais.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Atualmente, não existem tipos disponíveis.
         form:
@@ -1265,7 +1276,7 @@ pt-PT:
         work_packages: "Pacotes de trabalho"
         workspace_type: "Tipo da área de trabalho"
       project_custom_field:
-        is_required: "Obrigatório para todos os projetos"
+        is_required: "Required"
         custom_field_section: Secção
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1553,6 +1564,8 @@ pt-PT:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -4485,6 +4498,7 @@ pt-PT:
     passwords: "Senhas"
     project_attributes:
       heading: "Atributos do projeto"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Atributo do projeto"
       label_new_section: "Secção"
       label_edit_section: "Editar título"

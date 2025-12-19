@@ -348,17 +348,28 @@ zh-TW:
     calculated_field_not_editable: "不可編輯屬性。此值會自動計算。"
     no_role_assigment: "無角色指派"
     instructions:
-      is_required: "將自訂欄位標記為必填。這將使您在建立新資源時必須填寫該欄位。更新現有資源時則不需要填寫值。"
-      is_required_for_project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。現有專案更新時將不需要此值。"
-      is_for_all: "將客製欄位標記為「所有現有專案」和「新專案」中可用。"
-      multi_select: "允許使用者為此自訂欄位指定多個值。"
-      searchable: "使用全域搜尋功能時包含此欄位。"
-      searchable_for_project: "勾選可使此屬性在專案清單中作為篩選條件。"
-      editable: "允許使用者自行編輯此欄位"
-      admin_only: "勾選可使此屬性只對管理員可見。沒有管理員權限的使用者將無法檢視或編輯。"
-      is_filter: >
-        允許在工作套件檢視中的篩選條件使用客製欄位。請注意，僅在選擇「所有專案」的情況下，客製欄位才會出現在所有檢視中。
-      formula: "請輸入數值，或輸入「/」來搜尋屬性或數學運算符號。"
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: 目前沒有自定義的欄位
       no_results_content_text: 建立一個新的自定義欄位
@@ -510,8 +521,8 @@ zh-TW:
       header_details: 基本訊息
       header_status: 專案狀態
       header_relations: 專案關係
-      button_update_details: 更新詳細資料
-      button_update_status_description: 更新狀態說明
+      button_update_details: 更新
+      button_update_status_description: 更新專案狀態及說明
       button_update_parent_project: 更新上層專案
       public_warning: >
         這個專案是公開的。任何有權訪問這個實例的人，都能依據其角色和相關權限來檢視和與這個專案互動。子專案不受影響，並且有其自己的設定。
@@ -575,9 +586,9 @@ zh-TW:
           label_enable_single: "於此專案使用，請按一下停用"
           label_disable_single: "於此專案未使用，請按一下啟用"
           remove_from_project: "從專案移除"
-        is_required_blank_slate:
-          heading: 所有專案都需要
-          description: 由於已勾選「所有專案都需要」選項，因此所有專案都會啟用此專案屬性。個別專案無法停用。
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: 目前沒有可用的類型
         form:
@@ -712,15 +723,15 @@ zh-TW:
       no_results_content_text: 新增一個消息
   roles:
     permissions:
-      section_check_all_label: "Assign all %{module} permissions"
-      section_uncheck_all_label: "Unassign all %{module} permissions"
+      section_check_all_label: "指定所有 %{module} 權限"
+      section_uncheck_all_label: "取消指定所有 %{module} 權限"
     report:
-      matrix_caption: "Permissions matrix for %{module} module"
-      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
-      matrix_check_all_label: "Assign all %{module} permissions to all roles"
-      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
-      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
-      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
+      matrix_caption: "%{module} 模組的權限矩陣"
+      matrix_checkbox_label: "將 %{permission} 權限指定給 %{role} 角色"
+      matrix_check_all_label: "將所有 %{module} 權限指派給所有角色"
+      matrix_uncheck_all_label: "取消指定所有角色的所有 %{module} 權限"
+      matrix_check_uncheck_all_in_row_label_html: "切換 <em>%{permission}</em>所有角色的權限"
+      matrix_check_uncheck_all_in_col_label_html: "切換所有 %{module} 的權限 <em>%{role}</em>角色"
   users:
     autologins:
       prompt: "保持登入%{num_days}"
@@ -913,14 +924,14 @@ zh-TW:
       no_results_content_text: 新增一個 wiki 頁面
   workflows:
     form:
-      matrix_caption: "Workflow matrix"
-      matrix_caption_assignee: "Workflow matrix for assignee"
-      matrix_caption_author: "Workflow matrix for author"
-      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
-      matrix_check_all_label: "Allow all transitions"
-      matrix_uncheck_all_label: "Disallow all transitions"
-      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
-      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
+      matrix_caption: "工作流程矩陣"
+      matrix_caption_assignee: "指派對象的工作流程矩陣"
+      matrix_caption_author: "作者工作流程矩陣"
+      matrix_checkbox_label: "允許從 %{old_status} 過渡到 %{new_status}"
+      matrix_check_all_label: "允許所有轉換"
+      matrix_uncheck_all_label: "禁止所有轉換"
+      matrix_check_uncheck_all_in_row_label_html: "切換從 <em>%{old_status}</em>到所有新狀態"
+      matrix_check_uncheck_all_in_col_label_html: "從所有舊狀態切換轉換到 <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: 目前沒有工作流程
@@ -1255,7 +1266,7 @@ zh-TW:
         work_packages: "工作套件"
         workspace_type: "工作區類型"
       project_custom_field:
-        is_required: "所有專案都需要"
+        is_required: "Required"
         custom_field_section: 區段
       subproject_template_assignment:
         workspace_type: "工作區類型"
@@ -1542,6 +1553,8 @@ zh-TW:
               invalid_characters: "只允許數值、數學運算符號以及整數、浮點數、計算值和加權列表類型的專案屬性。"
               not_allowed_custom_fields_referenced: "不能使用屬性 %{custom_fields} ，因為這會導致循環引用；一個屬性依賴於另一個屬性。"
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -4436,6 +4449,7 @@ zh-TW:
     passwords: "密碼"
     project_attributes:
       heading: "專案屬性"
+      label_for_all_projects: "All projects"
       label_new_attribute: "專案屬性"
       label_new_section: "區段"
       label_edit_section: "編輯標題"

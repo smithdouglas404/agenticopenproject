@@ -349,17 +349,28 @@ vi:
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Đánh dấu trường tùy chỉnh là khả dụng trong tất cả các dự án hiện có và mới."
-      multi_select: "Allows the user to assign multiple values to this custom field."
-      searchable: "Bao gồm giá trị trường khi sử dụng chức năng tìm kiếm toàn cầu."
-      searchable_for_project: "Bao gồm giá trị trường khi sử dụng chức năng tìm kiếm toàn cầu."
-      editable: "Cho phép trường có thể chỉnh sửa bởi người dùng tự mình."
-      admin_only: "Tích để chỉ hiển thị thuộc tính này cho người quản trị. Người dùng không có quyền quản trị sẽ không thể xem hoặc chỉnh sửa thuộc tính này."
-      is_filter: >
-        Cho phép trường tùy chỉnh được sử dụng trong bộ lọc trong chế độ xem gói công việc. Lưu ý rằng chỉ khi 'Cho tất cả các dự án' được chọn, trường tùy chỉnh mới xuất hiện trong các chế độ xem toàn cầu.
-      formula: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Không có hiện tại không có trường tùy chỉnh.
       no_results_content_text: Tạo trường tùy chỉnh mới
@@ -576,9 +587,9 @@ vi:
           label_enable_single: "Kích hoạt trong dự án này, nhấp để tắt"
           label_disable_single: "Không kích hoạt trong dự án này, nhấp để bật"
           remove_from_project: "Xóa khỏi dự án"
-        is_required_blank_slate:
-          heading: Bắt buộc trong tất cả các dự án
-          description: Thuộc tính dự án này được kích hoạt trong tất cả các dự án vì tùy chọn "Bắt buộc trong tất cả các dự án" đã được chọn. Nó không thể bị vô hiệu hóa cho các dự án cá nhân.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Không có phân loại.
         form:
@@ -1259,7 +1270,7 @@ vi:
         work_packages: "Work Packages"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Yêu cầu cho tất cả các dự án"
+        is_required: "Required"
         custom_field_section: Phần
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1546,6 +1557,8 @@ vi:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -4442,6 +4455,7 @@ vi:
     passwords: "Mật khẩu"
     project_attributes:
       heading: "Các thuộc tính dự án"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Thuộc tính dự án"
       label_new_section: "Phần"
       label_edit_section: "Chỉnh sửa tiêu đề"

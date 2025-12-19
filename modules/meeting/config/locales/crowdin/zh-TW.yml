@@ -590,7 +590,7 @@ zh-TW:
   text_work_package_has_no_upcoming_meeting_agenda_items: "該工作套件尚未被安排到即將舉行的會議議程中。"
   text_agenda_item_move_next_meeting_cancelled: "由於下次會議已被取消，因此無法轉到下次會議。"
   text_work_package_add_to_meeting_hint: '使用"增加到會議"按鈕將此工作套件新增到即將舉行的會議。'
-  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
+  text_work_package_has_no_past_meeting_agenda_items: "此工作套件未被新增為過去會議中的議程項目。"
   text_email_updates_muted: "將停止電子郵件通知「行事曆更新」。當您變更時，參與者將不會透過電子郵件收到更新的邀請。"
   text_email_updates_enabled: "已啟用電子郵件行事曆更新。當您作出變更時，所有參與者都會透過電子郵件收到更新的邀請。"
   my_account:
