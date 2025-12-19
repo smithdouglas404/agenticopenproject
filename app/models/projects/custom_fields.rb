@@ -47,7 +47,7 @@ module Projects::CustomFields
     def available_custom_fields
       return all_visible_custom_fields if new_record?
 
-      project_custom_fields.select { it.visible?(project: self) }
+      all_visible_custom_fields.where(id: project_custom_field_project_mappings.select(:custom_field_id))
     end
 
     # Note:

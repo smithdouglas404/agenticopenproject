@@ -69,9 +69,20 @@ module Projects
 
     # We don't return the project row
     # but the [project, level] array from the helper
+    #
+    # The projects are also wrapped with the eager loading wrapper so that custom fields can be eager loaded.
     def rows
       @rows ||= begin
-        projects_enumerator = ->(model) { to_enum(:projects_with_levels_order_sensitive, model).to_a }
+        projects_enumerator = ->(model) {
+          projects = if has_custom_field_column?
+                       API::V3::Projects::ProjectEagerLoadingWrapper.wrap(model, eager_loaded: %i[custom_fields])
+                     else
+                       model
+                     end
+
+          to_enum(:projects_with_levels_order_sensitive, projects).to_a
+        }
+
         instance_exec(model, &projects_enumerator)
       end
     end
@@ -167,7 +178,6 @@ module Projects
       if has_custom_field_column?
         scope = scope
                   .includes(:custom_values,
-                            :project_custom_fields,
                             :calculated_value_errors)
       end
 
