@@ -44,29 +44,32 @@ RSpec.describe "REST API docs index page", :js, :selenium do
   context "with authenticated user" do
     current_user { create(:user) }
 
+    let(:api_docs_text) { "OpenProject API V3 (Stable)" }
+    let(:root_text) { "OpenProject community" }
+
     it "displays the docs rendered by openapi-explorer" do
       visit_docs_page
 
       # web component are harder to test with capybara
-      expect(find("openapi-explorer").shadow_root).to have_css("#api-title", text: "OpenProject API V3 (Stable)")
+      expect(find("openapi-explorer").shadow_root).to have_css("#api-title", text: api_docs_text)
     end
 
     it "doesn't change the path to base url" do
       visit_docs_page
-      expect(page).to have_text "OpenProject API V3 (Stable)"
+      expect(page).to have_text api_docs_text
 
       expect(page).to have_current_path("#{api_docs_url}#?route=overview") # fragment is added
     end
 
     it "allows navigating back to docs" do
       visit_docs_page
-      expect(page).to have_text "OpenProject API V3 (Stable)"
+      expect(page).to have_text api_docs_text
 
       click_link "Home"
-      expect(page).to have_no_text "OpenProject API V3 (Stable)"
+      expect(page).to have_no_text api_docs_text
 
       page.go_back
-      expect(page).to have_text "OpenProject API V3 (Stable)"
+      expect(page).to have_text api_docs_text
     end
 
     context "when APIv3 documentation is disabled (from Administration > API > Enable docs page)",
