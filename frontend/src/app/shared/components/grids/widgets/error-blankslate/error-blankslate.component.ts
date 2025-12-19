@@ -26,32 +26,32 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Directive, inject } from '@angular/core';
-import { AbstractWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-widget.component';
-import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+/* eslint-disable @angular-eslint/component-selector */
 
-@Directive()
-export abstract class AbstractTurboWidgetComponent extends AbstractWidgetComponent {
-  protected readonly currentProject = inject(CurrentProjectService);
-  protected readonly pathHelper = inject(PathHelperService);
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { IconModule } from 'core-app/shared/components/icon/icon.module';
+import { BlankslateActionComponent, BlankslateComponent, BlankslateDescriptionComponent, BlankslateHeadingComponent, BlankslateIconComponent } from './blankslate.component';
 
-  abstract readonly frameId:string;
-  abstract readonly name:string;
+@Component({
+  selector: 'error-blankslate',
+  templateUrl: './error-blankslate.component.html',
+  imports: [
+    BlankslateComponent,
+    BlankslateIconComponent,
+    BlankslateHeadingComponent,
+    BlankslateDescriptionComponent,
+    BlankslateActionComponent,
+    IconModule
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ErrorBlankSlateComponent {
+  readonly name = input<string>();
+  readonly message = input<string>();
+  readonly actionText = input<string>();
+  readonly action = output<void>();
 
-  protected get src():string {
-    if (this.currentProject.identifier) {
-      return this.pathHelper.projectWidgetPath(this.currentProject.identifier, this.name);
-    } else {
-      return this.pathHelper.widgetPath(this.name);
-    }
-  }
-
-  public override get isEditable():boolean {
-    return false;
-  }
-
-  removeWidget() {
-    alert("REMOVING WIDGET");
+  onActionClick(_event:Event) {
+    this.action.emit();
   }
 }

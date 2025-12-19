@@ -86,6 +86,8 @@ import {
 } from 'core-app/shared/components/grids/widgets/project-favorites/widget-project-favorites.component';
 import { IconModule } from 'core-app/shared/components/icon/icon.module';
 import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openproject-enterprise.module';
+import { WidgetTurboFrameComponent } from './widgets/widget-turbo-frame/widget-turbo-frame.component';
+import { ErrorBlankSlateComponent } from './widgets/error-blankslate/error-blankslate.component';
 
 @NgModule({
   imports: [
@@ -107,6 +109,9 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
     // Support for inline editig fields
     OpenprojectFieldsModule,
     IconModule,
+
+    ErrorBlankSlateComponent,
+    WidgetTurboFrameComponent,
   ],
   providers: [
     GridWidgetsService,

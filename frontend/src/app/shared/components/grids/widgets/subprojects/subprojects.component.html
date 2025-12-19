@@ -6,4 +6,4 @@
     [resource]="resource" />
 </widget-header>
 
-<turbo-frame [id]="frameId" [src]="src" loading="lazy" />
+<widget-turbo-frame [id]="frameId" [name]="widgetName" [src]="src" (errorAction)="removeWidget()" />

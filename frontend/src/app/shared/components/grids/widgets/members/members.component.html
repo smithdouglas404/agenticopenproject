@@ -10,15 +10,13 @@
     [resource]="resource" />
 </widget-header>
 
-<div class="op-widget-box--body">
-  @if ({hasCapability: hasCapability$ | async}; as context) {
-    @if (context.hasCapability === false) {
-      <div class="op-toast -error">
-        <span [textContent]="text.missing_permission"></span>
-      </div>
-    }
-    @if (context.hasCapability === true) {
-      <turbo-frame [id]="frameId" [src]="src" loading="lazy" />
-    }
+@if ({hasCapability: hasCapability$ | async}; as context) {
+  @if (true) {
+    <div class="op-widget-box--body">
+      <error-blankslate [name]="widgetName" [message]="text.missing_permission" error-text="foobar" />
+    </div>
   }
-</div>
+  @if (false) {
+    <widget-turbo-frame [id]="frameId" [name]="widgetName" [src]="src" (errorAction)="removeWidget()" />
+  }
+}
