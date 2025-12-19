@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -23,46 +23,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-class Queries::Serialization::Selects
-  include Queries::Selects::AvailableSelects
-
-  def load(serialized_selects)
-    return [] if serialized_selects.nil?
-
-    load_custom_field_context(serialized_selects)
-
-    serialized_selects.map do |o|
-      select_for(o.to_sym)
+module Queries::Selects::Shared::CustomFieldSelect
+  def self.included(base)
+    base.extend(ClassMethods)
+    base.class_eval do
+      class_attribute :custom_field_context
     end
   end
 
-  def dump(selects)
-    selects.map { |s| s.attribute.to_s }
-  end
-
-  def registered_and_available
-    ::Queries::Register
-      .selects[klass]
-      .select(&:available?)
-  end
-
-  def initialize(klass)
-    @klass = klass
-  end
-
-  attr_reader :klass
-
-  private
-
-  def load_custom_field_context(serialized_selects)
-    cf_ids = serialized_selects.filter_map { |s| s[/\Acf_(\d+)\z/, 1] }
-    return if cf_ids.empty?
-
-    Queries::Projects::CustomFieldContext.preload_custom_fields(cf_ids)
+  module ClassMethods
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,43 +26,44 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-class Queries::Serialization::Selects
-  include Queries::Selects::AvailableSelects
+RSpec::Matchers.define :have_a_query_limit do |expected|
+  supports_block_expectations
 
-  def load(serialized_selects)
-    return [] if serialized_selects.nil?
+  match do |block|
+    query_count(&block) <= expected
+  end
 
-    load_custom_field_context(serialized_selects)
+  failure_message do |_actual|
+    "Expected a maximum of #{expected} queries, got #{@recorder.count}:\n\n#{@recorder.message}"
+  end
 
-    serialized_selects.map do |o|
-      select_for(o.to_sym)
+  def query_count(&)
+    @recorder = ActiveRecord::QueryRecorder.new(&)
+    @recorder.count
+  end
+end
+
+module ActiveRecord
+  class QueryRecorder
+    attr_reader :log
+
+    def initialize(&)
+      @log = []
+      ActiveSupport::Notifications.subscribed(method(:callback), "sql.active_record", &)
     end
-  end
 
-  def dump(selects)
-    selects.map { |s| s.attribute.to_s }
-  end
+    def callback(_name, _start, _finish, _message_id, values)
+      return if %w(CACHE SCHEMA).include?(values[:name])
 
-  def registered_and_available
-    ::Queries::Register
-      .selects[klass]
-      .select(&:available?)
-  end
+      @log << values[:sql]
+    end
 
-  def initialize(klass)
-    @klass = klass
-  end
+    delegate :count, to: :@log
 
-  attr_reader :klass
-
-  private
-
-  def load_custom_field_context(serialized_selects)
-    cf_ids = serialized_selects.filter_map { |s| s[/\Acf_(\d+)\z/, 1] }
-    return if cf_ids.empty?
-
-    Queries::Projects::CustomFieldContext.preload_custom_fields(cf_ids)
+    def message
+      @log.join("\n\n")
+    end
   end
 end
