@@ -171,4 +171,22 @@ RSpec.describe "Workflow edit" do
       assert !w.assignee
     end
   end
+
+  it "allows navigating to Workflow summary page" do
+    within ".PageHeader-actions" do
+      click_on "Summary"
+    end
+
+    expect(page).to have_heading "Summary"
+    expect(page).to have_current_path(workflows_path)
+  end
+
+  it "allows navigating to Workflow copy page" do
+    within ".PageHeader-actions" do
+      click_on "Copy"
+    end
+
+    expect(page).to have_heading "Copy workflow"
+    expect(page).to have_current_path(copy_workflows_path)
+  end
 end

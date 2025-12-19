@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,15 +26,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-require "spec_helper"
+require "rails_helper"
 
-RSpec.describe "Workflow copy" do
-  let(:role) { create(:project_role) }
-  let(:type) { create(:type) }
+RSpec.describe "Workflow summary", :js do
+  let(:role) { create(:project_role, name: "Hauptrolle") }
+  let(:type) { create(:type, name: "Ungeziefer") }
   let(:admin)  { create(:admin) }
-  let(:statuses) { (1..2).map { |_i| create(:status) } }
+  let(:statuses) { (1..3).map { create(:status) } }
   let!(:workflow) do
     create(:workflow, role_id: role.id,
                       type_id: type.id,
@@ -47,18 +47,15 @@ RSpec.describe "Workflow copy" do
   current_user { admin }
 
   before do
-    visit url_for(controller: "/workflows", action: :copy)
+    visit url_for(controller: "/workflows", action: :show)
   end
 
-  it "shows existing types and roles" do
-    select(role.name, from: :source_role_id)
-    within("#source_role_id") do
-      expect(page).to have_content(role.name)
-      expect(page).to have_content("--- #{I18n.t(:actionview_instancetag_blank_option)} ---")
-    end
-    within("#source_type_id") do
-      expect(page).to have_content(type.name)
-      expect(page).to have_content("--- #{I18n.t(:actionview_instancetag_blank_option)} ---")
+  it "displays a simple summary" do
+    expect(page).to have_heading "Summary"
+
+    within :table do
+      expect(page).to have_selector :row, "Ungeziefer"
+      expect(page).to have_selector :columnheader, "Hauptrolle"
     end
   end
 
@@ -71,12 +68,12 @@ RSpec.describe "Workflow copy" do
     expect(page).to have_current_path(edit_workflows_path)
   end
 
-  it "allows navigating to Workflow summary page" do
+  it "allows navigating to Workflow copy page" do
     within ".PageHeader-actions" do
-      click_on "Summary"
+      click_on "Copy"
     end
 
-    expect(page).to have_heading "Summary"
-    expect(page).to have_current_path(workflows_path)
+    expect(page).to have_heading "Copy workflow"
+    expect(page).to have_current_path(copy_workflows_path)
   end
 end
