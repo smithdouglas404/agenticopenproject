@@ -29,4 +29,7 @@
 #++
 
 class Grids::Widgets::MembersController < Grids::WidgetController
+  def show
+    render_widget Grids::Widgets::Members.new(@project, current_user:)
+  end
 end
