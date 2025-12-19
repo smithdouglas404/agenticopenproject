@@ -164,7 +164,7 @@ module Projects
                   .with_latest_activity
       end
 
-      if query.selects.any? { it.is_a?(Queries::Projects::Selects::CustomField) }
+      if has_custom_field_column?
         scope = scope
                   .includes(:custom_values,
                             :project_custom_fields,
@@ -212,6 +212,10 @@ module Projects
 
     def sorted_by_lft?
       query.orders.first&.attribute == :lft
+    end
+
+    def has_custom_field_column?
+      query.selects.any? { it.is_a?(Queries::Projects::Selects::CustomField) }
     end
   end
 end
