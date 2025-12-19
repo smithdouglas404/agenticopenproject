@@ -368,8 +368,8 @@ class CustomField < ApplicationRecord
     return nil unless calculated_value?
 
     # Use a ruby finder to avoid hitting the database with N+1 queries on the project list page,
-    # the errors are eager loaded via the Queries::Projects::CustomFieldContext.
-    calculated_value_errors.find { it.customized_id == customized.id }
+    # the errors are eager loaded via the Projects::TableComponent
+    customized.calculated_value_errors.find { it.custom_field_id == id }
   end
 
   private

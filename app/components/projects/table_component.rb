@@ -164,8 +164,15 @@ module Projects
                   .with_latest_activity
       end
 
+      if query.selects.any? { it.is_a?(Queries::Projects::Selects::CustomField) }
+        scope = scope
+                  .includes(:custom_values,
+                            :project_custom_fields,
+                            :calculated_value_errors)
+      end
+
       scope
-        .includes(:custom_values, :enabled_modules)
+        .includes(:enabled_modules)
         .paginate(page: helpers.page_param(params), per_page: helpers.per_page_param(params))
     end
 
