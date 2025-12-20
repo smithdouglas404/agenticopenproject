@@ -98,47 +98,47 @@ hu:
       confirmation_message_html: "Ez véglegesen törli a dokumentumot és az összes csatolt fájlt. Biztos, hogy ezt szeretné?"
     delete_document_type_dialog:
       title: Ddokumentumtípus törlése
-      heading: Delete this document type?
+      heading: Törli a dokumentumtípust?
       confirmation_message: |-
-        The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
-      select_reassign_to_label: Reassign documents to
+        A "%{type_name}" típus jelenleg nincs használatban. A típus törlése nem lesz hatással a meglévő dokumentumokra.
+      select_reassign_to_label: A dokumentumok újbóli hozzárendelése
       reassign_message:
-        one: The type "%{type_name}" is currently being used in %{document_count} document. Please select which type to reassign them to.
-        other: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+        one: A "%{type_name}" típus jelenleg %{document_count} dokumentumban van használatban. Kérjük, válassza ki, hogy melyik típushoz kívánja újból hozzárendelni.
+        other: A "%{type_name}" típus jelenleg %{document_count} dokumentumban van használatban. Kérjük, válassza ki, hogy melyik típushoz kívánja azokat újból hozzárendelni.
       at_least_one_type_required:
-        title: Cannot delete document type
-        heading: Cannot delete the last document type
-        message: There must always be at least one document type configured. Create another one first if you want to delete this one.
+        title: Nem lehet törölni a dokumentumtípust
+        heading: Nem lehet törölni az utolsó dokumentumtípust
+        message: Legalább egy dokumentumtípust mindig be kell állítani. Először hozzon létre egy másikat, ha ezt törölni szeretné.
     admin:
       collaboration_settings:
         page_header:
           description: |-
-            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
-            It requires a working %{hocuspocus_server_link} to function.
+            Ha engedélyezve van, a valós idejű együttműködés lehetővé teszi, hogy több felhasználó egyszerre szerkesszen egy dokumentumot.
+            Ehhez egy működő %{hocuspocus_server_link} kiszolgálóra van szükség.
         banner:
-          none_writable: These values are configured via environment variables and cannot be edited here.
-          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+          none_writable: Ezek az értékek környezeti változókon keresztül vannak beállításra, és itt nem szerkeszthetők.
+          some_unwritable: Egyes értékek környezeti változókon keresztül vannak beállítva, és itt nem szerkeszthetők.
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The address of the working Hocuspocus server."
+          label: "Hocuspocus szerver URL címe"
+          caption: "A működő Hocuspocus-kiszolgáló címe."
         hocuspocus_server_secret:
-          label: "Client secret"
+          label: "Kliens szerver"
           caption: "Paste the secret provided by the Hocuspocus server."
         hocuspocus_server: Hocuspocus szerver
       enable_text_collaboration:
-        heading: Real-time collaboration is not enabled
+        heading: A valós idejű együttműködés nem engedélyezett
         description: |-
-          Once enabled, multiple users will be able to work together on a document at the same time.
-          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
-          Hocuspocus server.
-        primary_action: Enable real-time collaboration
-        success: Real-time collaboration has been enabled.
+          Ha engedélyezve van, több felhasználó egyszerre dolgozhat egy dokumentumon.
+          Minden új dokumentum egy új szerkesztőn (BlockNote) fog alapulni, és működő kapcsolatot igényel a
+          Hocuspocus szerverrel.
+        primary_action: Valós idejű együttműködés engedélyezése
+        success: A valós idejű együttműködés engedélyezve.
       disable_text_collaboration_dialog:
         title: Valós idejű együttműködés letiltása
         heading: Valós idejű együttműködés letiltása?
         confirmation_message: |-
-          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
-          real-time collaboration and the BlockNote editor in this instance.
+          Minden meglévő dokumentum elérhetetlenné válhat. Kérjük, csak akkor tegye ezt, ha biztos benne, hogy ezen példány esetében le akarja tiltani a
+          valós idejű együttműködést és a BlockNote szerkesztőt.
         confirmation_checkbox_message: Tudomásul veszem, hogy véglegesen elveszíthetem az adatokat
         success: A valós idejű együttműködés letiltásra került.
   label_document_added: "Dokumentum hozzáadva"

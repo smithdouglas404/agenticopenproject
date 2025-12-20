@@ -349,27 +349,27 @@ zh-TW:
     no_role_assigment: "無角色指派"
     instructions:
       is_required:
-        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        all: "將自訂欄位標記為必填。這將使您在建立新資源時必須填寫該欄位。更新現有資源時則不需要填寫值。"
+        project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。現有專案更新時將不需要此值。"
       is_for_all:
-        all: "Mark the custom field as available in all existing and new projects."
-        project: "Mark the attribute as available in all existing and new projects."
+        all: "將自訂欄位標記為在所有現有和新專案中都可用。"
+        project: "在所有現有和新專案中將屬性標示為可用。"
       multi_select:
-        all: "Allows the user to assign multiple values to this custom field."
-        project: "Allows the user to assign multiple values to this attribute."
+        all: "允許使用者為此自訂欄位指定多個值。"
+        project: "允許使用者為此屬性指定多個值。"
       searchable:
-        all: "Include the field values when using the global search functionality."
-        project: "Check to make this attribute available as a filter in project lists."
+        all: "使用全區域搜尋功能時，包含欄位值。"
+        project: "勾選可使此屬性在專案清單中作為篩選條件。"
       editable:
-        all: "Allow the field to be editable by users themselves."
+        all: "允許使用者自行編輯欄位。"
       admin_only:
-        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
-        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+        all: "勾選使自訂欄位僅對管理員可見。沒有管理權限的使用者將無法檢視或編輯。"
+        project: "勾選可使此屬性只對管理員可見。沒有管理員權限的使用者將無法檢視或編輯。"
       is_filter:
         all: >
-          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+          允許在工作套件檢視的篩選器中使用自訂欄位。請注意，只有選取「針對所有專案」時，自訂欄位才會顯示在全區域檢視中。
       formula:
-        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+        project: "加入數值或輸入 / 搜尋屬性或數學運算符號。"
     tab:
       no_results_title_text: 目前沒有自定義的欄位
       no_results_content_text: 建立一個新的自定義欄位
@@ -587,8 +587,8 @@ zh-TW:
           label_disable_single: "於此專案未使用，請按一下啟用"
           remove_from_project: "從專案移除"
         is_for_all_blank_slate:
-          heading: For all projects
-          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+          heading: 對所有的專案
+          description: 由於已勾選「適用於所有專案」選項，因此所有專案都啟用此專案屬性。個別專案無法停用。
       types:
         no_results_title_text: 目前沒有可用的類型
         form:
@@ -1266,7 +1266,7 @@ zh-TW:
         work_packages: "工作套件"
         workspace_type: "工作區類型"
       project_custom_field:
-        is_required: "Required"
+        is_required: "必填"
         custom_field_section: 區段
       subproject_template_assignment:
         workspace_type: "工作區類型"
@@ -1554,7 +1554,7 @@ zh-TW:
               not_allowed_custom_fields_referenced: "不能使用屬性 %{custom_fields} ，因為這會導致循環引用；一個屬性依賴於另一個屬性。"
               format: "%{message}"
             required:
-              cannot_be_true: "cannot be set to true."
+              cannot_be_true: "不能設定為 true。"
         custom_fields_project:
           attributes:
             project_ids:
@@ -4449,7 +4449,7 @@ zh-TW:
     passwords: "密碼"
     project_attributes:
       heading: "專案屬性"
-      label_for_all_projects: "All projects"
+      label_for_all_projects: "所有專案"
       label_new_attribute: "專案屬性"
       label_new_section: "區段"
       label_edit_section: "編輯標題"

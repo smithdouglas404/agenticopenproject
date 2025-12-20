@@ -556,7 +556,7 @@ pt-BR:
       date_alerts:
         milestone_date: "Data de marco"
         overdue: "Atrasado"
-        overdue_since: "for %{difference_in_days}."
+        overdue_since: "por %{difference_in_days}."
         property_today: "é hoje."
         property_is: "está em %{difference_in_days}."
         property_was: "há %{difference_in_days}."
