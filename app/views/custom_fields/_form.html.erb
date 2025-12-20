@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 
 <% format_dependent = OpenProject::CustomFieldFormatDependent.new(@custom_field.field_format) %>
 
@@ -159,8 +159,8 @@ See COPYRIGHT and LICENSE files for more details.
 </section>
 
 <section class="form--section">
-  <% case @custom_field.class.name
-     when "WorkPackageCustomField" %>
+  <% case @custom_field.class.name %>
+  <% when "WorkPackageCustomField" %>
     <div class="form--field">
       <%= f.check_box :is_required %>
       <div class="form--field-instructions">
