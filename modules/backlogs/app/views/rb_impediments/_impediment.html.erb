@@ -35,9 +35,9 @@ See COPYRIGHT and LICENSE files for more details.
                    "prevent_edit"
                  end
 %>
-<div class="model work_package impediment <%= color_contrast_class(impediment) %> <%= prevent_edit %> <%= mark_if_closed(impediment) %><%= color_contrast_class(impediment) %>"
-     id="work_package_<%= impediment.id %>"
-     <%= build_inline_style(impediment) %>>
+<div class="<%= class_names("model", "work_package", "impediment", color_contrast_class(impediment), prevent_edit, mark_if_closed(impediment)) %>"
+     id="<%= "work_package_#{impediment.id}" %>"
+     style="<%= build_inline_style(impediment) %>">
   <div class="id">
     <div class="t"><%= work_package_link_or_empty(impediment) %></div>
     <div class="v"><%= id_or_empty(impediment) %></div>
@@ -59,7 +59,7 @@ See COPYRIGHT and LICENSE files for more details.
     <div class="t"><%= assignee_name_or_empty(impediment) %></div>
     <div class="v"><%= assignee_id_or_empty(impediment) %></div>
   </div>
-  <div class="remaining_hours editable<%= " empty" if remaining_hours(impediment).blank? %>"
+  <div class="<%= class_names("remaining_hours", "editable", { empty: remaining_hours(impediment).blank? }) %>"
        fieldname="remaining_hours"
        fieldlabel="<%= WorkPackage.human_attribute_name(:remaining_hours) %>"
        field_id="<%= impediment.id %>"><%= remaining_hours(impediment) %></div>
