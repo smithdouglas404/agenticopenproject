@@ -42,6 +42,6 @@ See COPYRIGHT and LICENSE files for more details.
 <%= labelled_tabular_form_for @role, :url => { :action => 'update' }, :html => {:id => 'role_form'}, :as => :role do |f| %>
   <%= hidden_field_tag :id, @role.id %>
   <%= render partial: 'form', locals: { f: f , role: @role } %>
-  <br/>
+  <br>
   <%= styled_button_tag t(:button_save), class: '-with-icon icon-checkmark' %>
 <% end %>

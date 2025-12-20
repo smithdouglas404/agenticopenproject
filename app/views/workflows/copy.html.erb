@@ -45,7 +45,7 @@ See COPYRIGHT and LICENSE files for more details.
               ) %>
         </div>
         <div class="form--select-container -middle">
-          <label class="form--label" for='source_role_id'><%= Role.model_name.human %></label>
+          <label class="form--label" for="source_role_id"><%= Role.model_name.human %></label>
           <%= select_tag(
                 "source_role_id",
                 "<option value=\"\">--- #{t(:actionview_instancetag_blank_option)} ---</option>".html_safe +
@@ -68,7 +68,7 @@ See COPYRIGHT and LICENSE files for more details.
                          size: 20, class: "form--select" %>
         </div>
         <div class="form--select-container -middle">
-          <label class="form--label" for='target_role_ids'><%= Role.model_name.human %></label>
+          <label class="form--label" for="target_role_ids"><%= Role.model_name.human %></label>
           <%= select_tag "target_role_ids",
                          "<option value=\"\" disabled=\"disabled\">--- #{t(:actionview_instancetag_blank_option)} ---</option>".html_safe +
                              options_from_collection_for_select(@roles, "id", "name", @target_roles && @target_roles.map(&:id)),
