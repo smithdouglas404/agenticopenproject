@@ -46,7 +46,7 @@ module RbCommonHelper
   def color_style(task)
     background_color = get_backlogs_preference(task.assigned_to, :task_color)
 
-    "style=\"background-color:#{background_color};\"".html_safe
+    "background-color:#{background_color};"
   end
 
   def color_contrast_class(task)

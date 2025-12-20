@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++ # %>
 
 <% html_title @sprint.name %>
 <%=
@@ -54,7 +54,7 @@ See COPYRIGHT and LICENSE files for more details.
   <% end %>
   </div>
 </div>
-<div id='rb'>
+<div id="rb">
   <div id="taskboard">
     <table id="board_header" cellspacing="0">
       <tr>
@@ -89,7 +89,7 @@ See COPYRIGHT and LICENSE files for more details.
         <tr class="<%= story_html_id_or_empty(story) %>">
           <td>
             <div class="story <%= mark_if_closed(story) %>" id="<%= story_html_id_or_empty(story) %>">
-              <div class='story-bar'>
+              <div class="story-bar">
                 <div class="status">
                   <%= story.status.name %>
                 </div>
@@ -98,7 +98,7 @@ See COPYRIGHT and LICENSE files for more details.
                 </div>
               </div>
               <div class="subject"><%= story.subject %></div>
-              <div class='story-footer'>
+              <div class="story-footer">
                 <div class="assigned_to_id">
                   <% if story.assigned_to.present? %>
                     <%= link_to_user(story.assigned_to) %>

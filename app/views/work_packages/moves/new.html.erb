@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++ # %>
 
 <% html_title @copy ? t(:button_duplicate) : t(:button_move), t("activerecord.models.work_package") %>
 
@@ -120,7 +120,7 @@ See COPYRIGHT and LICENSE files for more details.
             <% end %>
           </div>
           <div class="form--field">
-            <label class="form--label" for='status_id'><%= WorkPackage.human_attribute_name(:status) %></label>
+            <label class="form--label" for="status_id"><%= WorkPackage.human_attribute_name(:status) %></label>
             <div class="form--field-container">
               <%= styled_select_tag(
                     "status_id",
@@ -130,7 +130,7 @@ See COPYRIGHT and LICENSE files for more details.
             </div>
           </div>
           <div class="form--field">
-            <label class="form--label" for='version_id'><%= WorkPackage.human_attribute_name(:version) %></label>
+            <label class="form--label" for="version_id"><%= WorkPackage.human_attribute_name(:version) %></label>
             <div class="form--field-container">
               <%= styled_select_tag(
                     "version_id",
@@ -140,7 +140,7 @@ See COPYRIGHT and LICENSE files for more details.
             </div>
           </div>
           <div class="form--field">
-            <label class="form--label" for='priority_id'><%= WorkPackage.human_attribute_name(:priority) %></label>
+            <label class="form--label" for="priority_id"><%= WorkPackage.human_attribute_name(:priority) %></label>
             <div class="form--field-container">
               <%= styled_select_tag(
                     "priority_id",
@@ -150,7 +150,7 @@ See COPYRIGHT and LICENSE files for more details.
             </div>
           </div>
           <div class="form--field">
-            <label class="form--label" for='assigned_to_id'><%= WorkPackage.human_attribute_name(:assigned_to) %></label>
+            <label class="form--label" for="assigned_to_id"><%= WorkPackage.human_attribute_name(:assigned_to) %></label>
             <div class="form--field-container">
               <%= styled_select_tag(
                     "assigned_to_id",
@@ -161,7 +161,7 @@ See COPYRIGHT and LICENSE files for more details.
             </div>
           </div>
           <div class="form--field">
-            <label class="form--label" for='responsible_id'><%= WorkPackage.human_attribute_name(:responsible) %></label>
+            <label class="form--label" for="responsible_id"><%= WorkPackage.human_attribute_name(:responsible) %></label>
             <div class="form--field-container">
               <%= styled_select_tag(
                     "responsible_id",
@@ -182,7 +182,7 @@ See COPYRIGHT and LICENSE files for more details.
         </div>
         <div class="grid-content medium-6">
           <div class="form--field">
-            <label class="form--label" for='start_date'><%= WorkPackage.human_attribute_name(:start_date) %></label>
+            <label class="form--label" for="start_date"><%= WorkPackage.human_attribute_name(:start_date) %></label>
             <div class="form--field-container -visible-overflow">
               <%= angular_component_tag "opce-basic-single-date-picker",
                                         inputs: {
@@ -192,7 +192,7 @@ See COPYRIGHT and LICENSE files for more details.
             </div>
           </div>
           <div class="form--field">
-            <label class="form--label" for='due_date'><%= WorkPackage.human_attribute_name(:due_date) %></label>
+            <label class="form--label" for="due_date"><%= WorkPackage.human_attribute_name(:due_date) %></label>
             <div class="form--field-container -visible-overflow">
               <%= angular_component_tag "opce-basic-single-date-picker",
                                         inputs: {

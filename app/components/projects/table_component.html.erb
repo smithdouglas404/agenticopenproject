@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,16 +25,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 <%= component_wrapper(tag: "turbo-frame") do %>
   <div class="project-list-page--table" data-controller="table-action-menu">
     <div class="generic-table--flex-container">
-      <div class="generic-table--container <%= container_class %>">
+      <div class="<%= class_names("generic-table--container", container_class) %>">
         <div class="generic-table--results-container">
-          <table class="generic-table" data-controller="table-highlighting" <%= table_id ? "id=\"#{table_id}\"".html_safe : "" %>>
+          <table class="generic-table" data-controller="table-highlighting"<% if table_id %> id="<%= table_id %>"<% end %>>
             <colgroup>
               <% columns.each do |column| %>
-                <col <%= "opHighlightCol" unless column.attribute == :hierarchy %>>
+                <col <% if column.attribute == :hierarchy %>data-highlight="false"<% end %>>
               <% end %>
               <col>
             </colgroup>
