@@ -40,6 +40,20 @@ export function getMetaContent<T extends string|null>(
   return content as string|T;
 }
 
+export function getMetaValues(name:string):Record<string, string> {
+  const entries = getMetaContent(name)
+    .split(";")
+    .filter((entry) => entry.trim() !== "" && entry.includes("="))
+    .map((entry):[string, string] => {
+      const equalIndex = entry.indexOf("=");
+      const key = entry.substring(0, equalIndex).trim();
+      const value = entry.substring(equalIndex + 1).trim();
+      return [key, value];
+    });
+
+  return Object.fromEntries(entries);
+}
+
 export function getMetaValue(name:string, key:string):string;
 export function getMetaValue<T extends string|null>(name:string, key:string, defaultValue:T):T;
 export function getMetaValue<T extends string|null>(
@@ -47,6 +61,6 @@ export function getMetaValue<T extends string|null>(
   key:string,
   defaultValue?:T
 ):string|T {
-  const value = getMetaElement(name)?.dataset[key] ?? defaultValue ?? '';
+  const value = getMetaValues(name)[key] ?? defaultValue ?? '';
   return value as string|T;
 }

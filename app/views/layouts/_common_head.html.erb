@@ -1,4 +1,4 @@
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <%= output_title_and_meta_tags %>
 <%= appsignal_frontend_tag %>
@@ -8,15 +8,9 @@
 <meta name="app_base_path" content="<%= relative_url_root %>">
 <base href="<%= relative_url_root %>/">
 <% if @project %>
-  <meta name="current_project"
-        data-project-name="<%= h @project.name %>"
-        data-project-id="<%= @project.id %>"
-        data-project-identifier="<%= @project.identifier %>">
+  <%= current_project_meta_tag(@project) %>
 <% end %>
-<meta name="current_user"
-      data-name="<%= User.current.name %>"
-      data-logged-in="<%= User.current.logged? %>"
-      data-id="<%= User.current.id %>">
+<%= current_user_meta_tag(current_user) %>
 
 <% if Setting.demo_projects_available %><meta name="demo_projects_available" content="true"><% end %>
 <% if Setting.boards_demo_data_available %><meta name="boards_demo_data_available" content="true"><% end %>
