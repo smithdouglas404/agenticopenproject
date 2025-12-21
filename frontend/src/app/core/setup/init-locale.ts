@@ -28,16 +28,15 @@
 
 import moment from 'moment';
 import { I18n } from 'i18n-js';
-import { getMetaElement } from './globals/global-helpers';
+import { getMetaValues } from './globals/global-helpers';
 
 export function initializeLocale() {
-  const meta = getMetaElement('openproject_initializer');
-  const getInitializerValue = (key:string, defaultValue = '') => meta?.dataset[key] ?? defaultValue;
-  const userLocale = getInitializerValue('locale', 'en');
-  const defaultLocale = getInitializerValue('defaultlocale', 'en');
-  const instanceLocale = getInitializerValue('instancelocale', 'en');
-  const firstDayOfWeek = parseInt(getInitializerValue('firstdayofweek'), 10); // properties of meta.dataset are exposed in lowercase
-  const firstWeekOfYear = parseInt(getInitializerValue('firstweekofyear'), 10); // properties of meta.dataset are exposed in lowercase
+  const values = getMetaValues('openproject_initializer');
+  const userLocale = values.locale || 'en';
+  const defaultLocale = values.defaultLocale || 'en';
+  const instanceLocale = values.instanceLocale || 'en';
+  const firstDayOfWeek = parseInt(values.firstDayOfWeek, 10);
+  const firstWeekOfYear = parseInt(values.firstWeekOfYear, 10);
 
   const i18n = new I18n();
   i18n.locale = userLocale;
