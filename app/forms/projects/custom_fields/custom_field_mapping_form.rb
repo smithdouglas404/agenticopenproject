@@ -39,6 +39,7 @@ module Projects::CustomFields
           visually_hide_label: true,
           validation_message: project_ids_error_message,
           autocomplete_options: {
+            appendTo: "##{Admin::CustomFields::CustomFieldProjects::NewCustomFieldProjectsFormModalComponent::DIALOG_ID}",
             with_search_icon: true,
             openDirectly: false,
             focusDirectly: false,
