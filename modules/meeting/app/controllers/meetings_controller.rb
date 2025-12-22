@@ -355,6 +355,7 @@ class MeetingsController < ApplicationController
              .call({ state: "open", notify: meeting_params[:notify] == "1" })
 
     if call.success?
+      deliver_invitation_mails
       update_all_via_turbo_stream
       update_backlog_via_turbo_stream(collapsed: nil)
 
@@ -366,6 +367,21 @@ class MeetingsController < ApplicationController
   end
 
   private
+
+  def deliver_invitation_mails
+    return false unless @meeting.notify?
+
+    @meeting
+      .participants
+      .invited
+      .find_each do |participant|
+      MeetingMailer.invited(
+        @meeting,
+        participant.user,
+        User.current
+      ).deliver_later
+    end
+  end
 
   def load_query
     query = ParamsToQueryService.new(

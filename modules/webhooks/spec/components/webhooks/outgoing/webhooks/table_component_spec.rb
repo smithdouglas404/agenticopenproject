@@ -28,44 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Projects::Filters::CustomFieldContext
-  class << self
-    def custom_field_class
-      ::ProjectCustomField
+require "rails_helper"
+
+RSpec.describe Webhooks::Outgoing::Webhooks::TableComponent, type: :component do
+  def render_component(...)
+    render_inline(described_class.new(...))
+  end
+
+  subject(:rendered_component) do
+    render_component(rows: webhooks)
+  end
+
+  context "with no webhooks" do
+    let(:webhooks) { create_list(:webhook, 0) }
+
+    it_behaves_like "rendering generic table", expected_headers_count: 6, expected_rows_count: 1
+
+    it "renders 'no webhooks' message" do
+      expect(rendered_component).to have_selector(:row, text: "No webhooks have been defined yet.")
     end
+  end
 
-    def model
-      ::Project
-    end
+  context "with webhooks" do
+    let(:webhooks) { create_list(:webhook, 2) }
 
-    def custom_fields(_context)
-      custom_field_class.visible
-    end
-
-    def where_subselect_joins(custom_field)
-      <<~SQL.squish
-        LEFT OUTER JOIN #{cv_db_table}
-          ON #{cv_db_table}.customized_type='Project'
-          AND #{cv_db_table}.customized_id=#{project_db_table}.id
-          AND #{cv_db_table}.custom_field_id=#{custom_field.id}
-        INNER JOIN project_custom_field_project_mappings
-          ON project_custom_field_project_mappings.project_id = #{project_db_table}.id
-          AND project_custom_field_project_mappings.custom_field_id = #{custom_field.id}
-      SQL
-    end
-
-    def where_subselect_conditions
-      # Allow searching projects only with :view_project_attributes permission
-      allowed_project_ids = Project.allowed_to(User.current, :view_project_attributes)
-                                   .select(:id)
-      <<~SQL.squish
-        #{project_db_table}.id IN (#{allowed_project_ids.to_sql})
-      SQL
-    end
-
-    private
-
-    def cv_db_table = CustomValue.table_name
-    def project_db_table = Project.table_name
+    it_behaves_like "rendering generic table", expected_headers_count: 6, expected_rows_count: 2
   end
 end

@@ -41,10 +41,10 @@ module Admin
           end
         end
 
-        def initialize(item:, show_edit_form: false)
+        def initialize(item:, custom_field:, show_edit_form: false)
           super(item)
           @show_edit_form = show_edit_form
-          @root = item.root || item.parent.root
+          @custom_field = custom_field
         end
 
         def wrapper_uniq_by
@@ -74,16 +74,18 @@ module Admin
         def show_form? = @show_edit_form || model.new_record?
 
         def children_count
-          I18n.t("custom_fields.admin.hierarchy.subitems", count: model.children.count)
+          I18n.t("custom_fields.admin.hierarchy.subitems", count: model.children_count)
         end
+
+        def label_addition = model.suffix
 
         private
 
         def project_custom_field_context?
-          @root.custom_field.is_a?(ProjectCustomField)
+          @project_custom_field_context ||= @custom_field.is_a?(ProjectCustomField)
         end
 
-        def custom_field_id = @root.custom_field_id
+        def custom_field_id = @custom_field.id
       end
     end
   end

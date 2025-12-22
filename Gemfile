@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -83,7 +85,7 @@ gem "htmldiff"
 gem "stringex", "~> 2.8.5"
 
 # CommonMark markdown parser with GFM extension
-gem "commonmarker", "~> 2.5.0"
+gem "commonmarker", "~> 2.6.0"
 
 # HTML pipeline for transformations on text formatter output
 # such as sanitization or additional features
@@ -149,7 +151,7 @@ gem "structured_warnings", "~> 0.5.0"
 # don't require by default, instead load on-demand when actually configured
 gem "airbrake", "~> 13.0.0", require: false
 
-gem "markly", "~> 0.14" # another markdown parser like commonmarker, but with AST support used in PDF export
+gem "markly", "~> 0.14" # another Markdown parser like commonmarker, but with AST support used in PDF export
 gem "md_to_pdf", git: "https://github.com/opf/md-to-pdf", ref: "6c565541bfa390c58d90d49aa9b487777704fc66"
 gem "prawn", "~> 2.4"
 gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues/1346 resolved.
@@ -246,7 +248,7 @@ gem "turbo-rails", "~> 2.0.20"
 # happenning in failing tests when WebMock or VCR stub cannot be found.
 gem "httpx", "~> 1.6.3"
 
-# Brings actual deep freezing to most ruby objects
+# Brings actual deep-freezing to most ruby objects
 gem "ice_nine"
 
 group :test do
@@ -393,6 +395,9 @@ gem "disposable", "~> 0.6.2"
 
 # Used for formula evaluation of calculated values
 gem "dentaku", "~> 3.5"
+
+# Used for more powerful counter caches
+gem "counter_culture", "~> 3.11"
 
 group :postgres do
   gem "pg", "~> 1.6.2"

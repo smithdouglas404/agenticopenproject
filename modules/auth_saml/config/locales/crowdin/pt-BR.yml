@@ -111,7 +111,7 @@ pt-BR:
       idp_sso_service_url: >
         O URL do endpoint do login do provedor de identidade.
       idp_slo_service_url: >
-        The URL of the identity provider logout endpoint.
+        A URL do ponto final de logout do provedor de identidade.
       idp_cert: >
         Digite o certificado público no formato PEM X509 do provedor de identidade. Você pode adicionar vários certificados, separando-os por uma nova linha.
       name_identifier_format: >

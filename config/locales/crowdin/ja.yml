@@ -347,17 +347,28 @@ ja:
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "既存および新規のすべてのプロジェクトで利用可能なカスタムフィールドとしてマークします。"
-      multi_select: "ユーザーがこのカスタムフィールドに複数の値を割り当てることを許可します。"
-      searchable: "グローバル検索機能を使用する場合は、フィールド値を含めます。"
-      searchable_for_project: "この属性をプロジェクト リストでフィルタとして使用できるようにする場合チェックします。"
-      editable: "ユーザー自身がフィールドを編集できるようにする。"
-      admin_only: "この属性を管理者にのみ表示する場合チェックします。管理者権限を持たないユーザーは、管理者権限を持つユーザーがこの属性を表示または編集できません。"
-      is_filter: >
-        ワークパッケージビューのフィルタでカスタム項目を使用できるようにします。 「すべてのプロジェクトについて」が選択されている場合のみ、カスタムフィールドはグローバルビューに表示されます。
-      formula: "数値またはタイプ / を追加して属性または数学演算子を検索します。"
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: 現在、カスタム フィールドはありません。
       no_results_content_text: 新しいカスタム フィールドを作成
@@ -574,9 +585,9 @@ ja:
           label_enable_single: "このプロジェクトでアクティブになっています。クリックして無効にします"
           label_disable_single: "このプロジェクトでは無効になっています。クリックして有効にします"
           remove_from_project: "プロジェクトから削除"
-        is_required_blank_slate:
-          heading: すべてのプロジェクトで必須
-          description: このプロジェクト属性は、「すべてのプロジェクトで必須」オプションがチェックされているため、すべてのプロジェクトで有効になります。個々のプロジェクトで無効にすることはできません。
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: 現在、有効な種類はありません。
         form:
@@ -709,6 +720,17 @@ ja:
     index:
       no_results_title_text: 現在、報告するニュースはありません。
       no_results_content_text: ニュース項目を追加
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "ログインしたまま %{num_days}"
@@ -763,9 +785,9 @@ ja:
         already_member_message: "既に %{project} のメンバーです"
       principal:
         no_results_user: "ユーザーが見つかりませんでした"
-        invite_user: "招待:"
+        invite_user: "招待："
         no_results_placeholder: "プレースホルダが見つかりません"
-        create_new_placeholder: "新しいプレースホルダを作成:"
+        create_new_placeholder: "新しいプレースホルダを作成："
         no_results_group: "グループが見つかりませんでした"
         invite_to_project: "Invite to %{project_name}"
         required:
@@ -901,6 +923,16 @@ ja:
     print_hint: このwikiページの内容をナビゲーションバーなしで表示します。
     index:
       no_results_content_text: 新しいWikiページを追加
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: 現在、ワークフローはありません。
@@ -1236,7 +1268,7 @@ ja:
         work_packages: "ワークパッケージ"
         workspace_type: "ワークスペースのタイプ"
       project_custom_field:
-        is_required: "すべてのプロジェクトに必要"
+        is_required: "Required"
         custom_field_section: セクション
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1522,6 +1554,8 @@ ja:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -4417,6 +4451,7 @@ ja:
     passwords: "パスワード"
     project_attributes:
       heading: "プロジェクトの属性"
+      label_for_all_projects: "All projects"
       label_new_attribute: "プロジェクトの属性"
       label_new_section: "セクション"
       label_edit_section: "タイトルの編集"
@@ -4560,6 +4595,8 @@ ja:
     Enterpriseエディションでは、プロジェクトのカスタムフィールド用に以下のアドオンが追加されます:<br> <ul> <li><b>プロジェクトのカスタムフィールドをプロジェクトリストに追加して、プロジェクトポートフォリオビューを作成します。</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     これは、PDFエクスポートに表示されるロゴです。PNGまたはJPEG画像ファイルである必要があります。 透明または白背景の黒または色のロゴをお勧めします。
   text_custom_export_cover_instructions: >

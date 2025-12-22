@@ -64,6 +64,8 @@ Capybara.add_selector :primer_label, locator_type: [String, Symbol] do
   describe_expression_filters do |scheme: nil, **|
     " with scheme #{scheme.inspect}" if scheme
   end
+
+  filter_set(:capybara_accessible_selectors, %i[aria described_by])
 end
 
 Capybara.add_selector :primer_text, locator_type: [String] do
@@ -100,6 +102,8 @@ Capybara.add_selector :primer_text, locator_type: [String] do
   describe_expression_filters do |color: nil, **|
     " with color #{color.inspect}" if color
   end
+
+  filter_set(:capybara_accessible_selectors, %i[aria described_by])
 end
 
 Capybara.add_selector :octicon, locator_type: [String, Symbol] do
@@ -118,11 +122,11 @@ Capybara.add_selector :octicon, locator_type: [String, Symbol] do
 
   describe_expression_filters do |size: nil, **|
     desc = +""
-    if size.present?
-      desc << size.is_a?(Numeric) ? " with size #{size}px" : " with #{size} size"
-    end
+    desc << (size.is_a?(Numeric) ? " with size #{size}px" : " with #{size.inspect} size") if size.present?
     desc
   end
+
+  filter_set(:capybara_accessible_selectors, %i[aria described_by])
 end
 
 module Capybara

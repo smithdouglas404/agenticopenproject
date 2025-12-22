@@ -2,21 +2,21 @@ pt-BR:
   grids:
     label_widget_in_grid: "Widget contido na Grade %{grid_name}"
     widgets:
-      empty: "This widget is currently empty."
-      not_available: "This widget is not available."
+      empty: "Este widget está vazio no momento."
+      not_available: "Este widget não está disponível."
       subitems:
         title: "Subitens"
         no_results: "Não há filhos visíveis."
         view_all_subitems: "Visualizar todos os subitens"
         button_text: "Subitem"
       members:
-        title: "Members"
+        title: "Membros"
         no_results: "Nenhum membro visível."
         view_all_members: "Visualizar todos os membros"
-        show_members_count: "Show all %{count} members"
+        show_members_count: "Mostrar todos os %{count} membros"
         x_more:
-          one: "and one more member."
-          other: "and %{count} more members."
+          one: "um\ne mais um membro.\n\nOutros\ne mais %{count} membros."
+          other: "um\ne mais um membro.\n\nOutros\ne mais %{count} membros."
       news:
         no_results: "Nada de novo para relatar."
   activerecord:

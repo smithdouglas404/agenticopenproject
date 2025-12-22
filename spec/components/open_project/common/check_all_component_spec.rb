@@ -78,6 +78,14 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
     it "sets aria-controls attribute on 'Uncheck all'" do
       expect(rendered_component).to have_button "Uncheck all", aria: { controls: "foo" }
     end
+
+    it "applies an ID to 'Check all'" do
+      expect(subject).to have_button id: "foo-check-all"
+    end
+
+    it "applies an ID to 'Uncheck all'" do
+      expect(subject).to have_button id: "foo-uncheck-all"
+    end
   end
 
   context "when :checkable_id is nil" do
@@ -113,6 +121,14 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
       expect(rendered_component).to have_button "Uncheck all" do |button|
         expect(button["aria-controls"]).to be_nil
       end
+    end
+
+    it "applies an ID to 'Check all'" do
+      expect(subject).to have_button id: /check-all-component-([\w-]+)-check-all/
+    end
+
+    it "applies an ID to 'Uncheck all'" do
+      expect(subject).to have_button id: /check-all-component-([\w-]+)-uncheck-all/
     end
   end
 end

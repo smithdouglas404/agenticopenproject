@@ -61,7 +61,7 @@ jobs:
     steps:
       - name: Trigger Helm charts release
         env:
-          TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
+          TOKEN: ${{ secrets.OPENPROJECTCI_HELM_CHARTS_TRIGGER_TOKEN }}
           REPOSITORY: opf/helm-charts
           WORKFLOW_ID: core_release.yml
           TAG: ${{ needs.compute-inputs.outputs.tag }}
