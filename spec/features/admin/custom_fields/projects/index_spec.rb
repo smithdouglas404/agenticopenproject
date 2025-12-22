@@ -269,6 +269,12 @@ RSpec.describe "List project custom fields", :js do
         within_project_custom_field_container(boolean_project_custom_field) do
           expect(page).to have_text("1 project")
         end
+
+        for_all_cf = create(:project_custom_field, :integer, is_for_all: true)
+        cf_index_page.visit!
+        within_project_custom_field_container(for_all_cf) do
+          expect(page).to have_text("All projects")
+        end
       end
 
       describe "deleting custom fields" do

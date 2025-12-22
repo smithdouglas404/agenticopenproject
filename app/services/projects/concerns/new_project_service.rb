@@ -93,7 +93,7 @@ module Projects::Concerns
       # although the user explicitly provided a blank value. In order to not patch `acts_as_customizable`
       # further, we simply identify these custom values and deactivate the custom field.
 
-      custom_field_ids = new_project.custom_values.select { |cv| cv.value.blank? && !cv.required? }.pluck(:custom_field_id)
+      custom_field_ids = new_project.custom_values.select { |cv| cv.value.blank? && !cv.is_for_all? }.pluck(:custom_field_id)
       custom_field_project_mappings = new_project.project_custom_field_project_mappings
 
       custom_field_project_mappings
@@ -104,11 +104,11 @@ module Projects::Concerns
     end
 
     def build_missing_project_custom_field_project_mappings(project)
-      # Activate all custom fields (via mapping table) that are required or
-      # have a value provided by the user, but no mapping exists.
+      # Activate all custom fields (via mapping table) that have no mapping, but are either
+      # intended for all projects, or have a value provided by the user.
 
       custom_field_ids = project.custom_values
-        .select { |cv| cv.value? || cv.required? }
+        .select { |cv| cv.value? || cv.is_for_all? }
         .pluck(:custom_field_id).uniq
       activated_custom_field_ids = project.project_custom_field_project_mappings.pluck(:custom_field_id).uniq
 

@@ -90,10 +90,11 @@ RSpec.shared_examples_for "APIv3 workspace update" do
   end
 
   describe "custom fields" do
-    context "with a required custom field" do
+    context "with a required for_all custom field" do
       let!(:required_custom_field) do
         create(:text_project_custom_field,
                name: "Department",
+               is_for_all: true,
                is_required: true)
       end
 
@@ -195,6 +196,19 @@ RSpec.shared_examples_for "APIv3 workspace update" do
         expect(workspace.project_custom_fields)
           .to contain_exactly(custom_field)
       end
+
+      context "when the field is for_all, but not required" do
+        let!(:for_all_custom_field) do
+          create(:text_project_custom_field,
+                 name: "Department",
+                 is_for_all: true)
+        end
+
+        it "automatically activates the cf for workspace even if no value was provided" do
+          expect(workspace.project_custom_fields)
+            .to contain_exactly(for_all_custom_field, custom_field)
+        end
+      end
     end
 
     context "with an admin only custom field" do
@@ -275,6 +289,31 @@ RSpec.shared_examples_for "APIv3 workspace update" do
           it "does not activate the cf for workspace" do
             expect(workspace.reload.project_custom_fields)
               .to be_empty
+          end
+        end
+
+        context "and when the custom field is forced active (is_for_all)" do
+          let(:admin_only_custom_field) do
+            create(:text_project_custom_field, admin_only: true, is_for_all: true)
+          end
+          let(:body) do
+            {
+              name: "Updated workspace name"
+            }
+          end
+
+          it "responds with 200 OK" do
+            expect(last_response).to have_http_status(:ok)
+          end
+
+          it "does not set the cf value" do
+            expect(workspace.reload.typed_custom_value_for(admin_only_custom_field))
+              .to be_nil
+          end
+
+          it "does activate the cf for workspace" do
+            expect(workspace.reload.project_custom_fields)
+              .to contain_exactly(admin_only_custom_field)
           end
         end
       end

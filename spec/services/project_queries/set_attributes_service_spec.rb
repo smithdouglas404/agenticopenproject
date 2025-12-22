@@ -65,9 +65,13 @@ RSpec.describe ProjectQueries::SetAttributesService, type: :model do
               .and_return(scope)
 
       allow(scope)
-        .to receive(:find_by)
-              .with(id: cf.id.to_s)
-              .and_return(cf)
+        .to receive(:includes)
+              .with(:calculated_value_errors)
+              .and_return(scope)
+
+      allow(scope)
+        .to receive(:where)
+              .and_return([cf])
 
       allow(scope)
         .to receive(:pluck)

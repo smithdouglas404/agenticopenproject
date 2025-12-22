@@ -27,7 +27,10 @@ sv:
       no_results_table: Inga webhooks har definierats ännu.
       label_add_new: Lägg till ny webhook
       label_edit: Redigera webhook
-      label_event_resources: Händelseresurser
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Skapad"
         updated: "Uppdaterad"

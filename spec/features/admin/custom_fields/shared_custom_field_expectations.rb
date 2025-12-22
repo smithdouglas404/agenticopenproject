@@ -256,10 +256,10 @@ RSpec.shared_examples_for "expected fields for the custom field's format" do |ty
       end
 
       expect_page_to_have_texts(
-        label_default_value, label_is_required
+        label_default_value
       )
       expect_page_not_to_have_texts(
-        label_min_length, label_max_length, label_regexp, label_multi_value,
+        label_min_length, label_max_length, label_regexp, label_multi_value, label_is_required,
         label_allow_non_open_versions, label_possible_values, label_ee_banner_hierarchy
       )
     end

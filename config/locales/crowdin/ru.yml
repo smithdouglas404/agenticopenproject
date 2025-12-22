@@ -348,17 +348,28 @@ ru:
     calculated_field_not_editable: "Не редактируемый атрибут. Это значение рассчитывается автоматически."
     no_role_assigment: "Роль не назначена"
     instructions:
-      is_required: "Отметьте настраиваемое поле как обязательное. Это сделает обязательным его заполнение при создании новых ресурсов. Существующие ресурсы не будут требовать ввода значения при обновлении."
-      is_required_for_project: "Отметьте, чтобы включить этот атрибут и сделать его необходимым во всех проектах. Это не может быть отменено для отдельных проектов. Существующие проекты не будут требовать этого значения при обновлении."
-      is_for_all: "Отметьте пользовательское поле как доступное во всех существующих и новых проектах."
-      multi_select: "Позволяет пользователю присвоить несколько значений этому пользовательскому полю."
-      searchable: "Включать значения полей при использовании функции глобального поиска."
-      searchable_for_project: "Установите флажок, чтобы сделать этот атрибут доступным в качестве фильтра в списках проектов."
-      editable: "Разрешить редактирование поля самими пользователями."
-      admin_only: "Установите флажок, чтобы сделать этот атрибут видимым только для администраторов. Пользователи без прав администратора не смогут просматривать или редактировать его."
-      is_filter: >
-        Разрешить использование пользовательского поля в фильтре в представлениях рабочих пакетов. Обратите внимание, что пользовательское поле будет отображаться в глобальных представлениях только при выборе параметра "Для всех проектов".
-      formula: "Добавьте числовые значения или введите / для поиска атрибута или математического оператора."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Нет настраиваемых полей.
       no_results_content_text: Создать новое настраиваемое поле
@@ -578,9 +589,9 @@ ru:
           label_enable_single: "Активно в этом проекте, нажмите для отключения"
           label_disable_single: "Неактивно в этом проекте, нажмите для включения"
           remove_from_project: "Удалить из проекта"
-        is_required_blank_slate:
-          heading: Требуется во всех проектах
-          description: Этот атрибут проекта активирован во всех проектах, поскольку установлен флажок «Требуется во всех проектах». Его нельзя отключить для отдельных проектов.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: На данный момент доступных типов нет.
         form:
@@ -731,6 +742,17 @@ ru:
     index:
       no_results_title_text: На данный момент новостей для отчета нет.
       no_results_content_text: Добавить новость
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "Оставаться в системе %{num_days}"
@@ -925,6 +947,16 @@ ru:
     print_hint: Это позволит напечатать содержимое этой страницы wiki без каких-либо навигационных меню.
     index:
       no_results_content_text: Добавить новую wiki-страницу
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: В данный момент рабочих потоков нет.
@@ -1263,7 +1295,7 @@ ru:
         work_packages: "Задачи"
         workspace_type: "Тип рабочего пространства"
       project_custom_field:
-        is_required: "Требуется для всех проектов"
+        is_required: "Required"
         custom_field_section: Раздел
       subproject_template_assignment:
         workspace_type: "Тип рабочего пространства"
@@ -1552,6 +1584,8 @@ ru:
               invalid_characters: "Допускаются только числовые значения, математические операторы и атрибуты проекта типа integer, float, calculated value и weighted list."
               not_allowed_custom_fields_referenced: "Атрибут %{custom_fields} не может быть использован, потому что это приводит к циклической ссылке, один атрибут зависит от другого."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -4561,6 +4595,7 @@ ru:
     passwords: "Пароли"
     project_attributes:
       heading: "Атрибуты проекта"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Атрибут проекта"
       label_new_section: "Раздел"
       label_edit_section: "Переименовать"
@@ -4704,6 +4739,8 @@ ru:
     Корпоративная версия добавит эти дополнительные дополнения для пользовательских полей проектов: <br> <ul> <li><b>Добавить пользовательские поля для проектов в ваш список проектов, чтобы создать представление портфолио проекта</b></li> </ul>
   text_custom_logo_instructions: >
     Логотип автоматически масштабируется, чтобы соответствовать заголовку. Для достижения наилучших результатов загрузите белый логотип на прозрачном фоне размером 130×47px. Вы можете добавить столько интервалов внутри этого изображения, сколько захотите.
+  text_custom_logo_mobile_instructions: >
+    Логотип автоматически масштабируется, чтобы соответствовать заголовку. Для достижения наилучших результатов загрузите белый логотип на прозрачном фоне размером 130×33px. Вы можете добавить столько интервалов внутри этого изображения, сколько захотите.
   text_custom_export_logo_instructions: >
     Это логотип, который отображается при экспорте в формате PDF. Это должен быть файл изображения в формате PNG или JPEG. Рекомендуется использовать черный или цветной логотип на прозрачном или белом фоне.
   text_custom_export_cover_instructions: >
