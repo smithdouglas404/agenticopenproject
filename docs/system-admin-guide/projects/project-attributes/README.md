@@ -79,16 +79,28 @@ You can pick from multiple [project attribute formats](#project-attribute-format
 
 ![Create a new project attribute type in OpenProject administration](open_project_system_admin_guide_project_attributes_add_button.png)
 
-This is an example of new project attribute with a format *Text*. 
+This is an example of new project attribute with a format *List*. 
 
 ![Create a new attribute form in OpenProject administration](open_project_system_guide_project_attributes_new_attribute.png)
 
 - **Name**: This is the name that will be visible in the [Project overview](../../../user-guide/project-overview) page, if the custom field is activated on that project.
+
 - **Section:** If there are sections, you can pick where this new project attribute should appear. [Learn about sections](#sections) for more information.
+
 - **Allow multi-select**: Allows the user to assign multiple values to this custom field.
+
 - **Possible values**: Add, define, arrange or remove possible values for this project attribute.
-- **Required for all projects**: Checking this makes this project attribute required for all projects. It cannot be deactivated at a project level.
+
+- **Required**: Checking this enables this project attribute and makes it required for all projects. It cannot be deactivated at a project level. Existing projects will not require a value when being updated.
+
+  > [!IMPORTANT]
+  >
+  > Project attributes of type **Boolean** and **Calculated value** can **NOT** be set to be required. 
+
+- **For all projects**: Mark the attribute as available in all existing and new projects.
+
 - **Admin-only**: If you enable this, the project attribute will only be visible to administrators. All other users will not see it, even if it is activated in a project.
+
 - **Searchable**: Checking this makes this project attribute (and its value) available as a filter in project lists.
 
 Once you create a project attribute, you can [enable it for specific projects](#enable-project-attributes) and [define help text](#define-project-attribute-help-text).
@@ -97,7 +109,7 @@ Once you create a project attribute, you can [enable it for specific projects](#
 
 There are multiple format options for project attributes in OpenProject. You can select one of the following formats:
 
-- **Boolean** - creates a project attribute, that is either true or false. It is represented by a checkbox that can be checked or unchecked.
+- **Boolean** - creates a project attribute, that is either true or false. It is represented by a checkbox that can be checked or unchecked. 
 - **Calculated value** (Enterprise add-on) - creates a project attribute that enables automatic computations based on formulas using numeric project attributes, for example from **Weighted item lists**.
 - **Date** - creates a project attribute, which allows selecting dates from a date picker.
 - **Float** - creates a project attribute for rational numbers.
