@@ -40,6 +40,7 @@ import * as Y from 'yjs';
 import { useBlockNoteAttachments } from '../hooks/useBlockNoteAttachments';
 import { useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
 import { useOpTheme } from '../hooks/useOpTheme';
+import { OpFormattingToolbar } from './OpFormattingToolbar';
 
 interface CollaborativeUser {
   name:string;
@@ -120,6 +121,7 @@ export function OpBlockNoteEditor({
       <BlockNoteView
         editor={editor}
         slashMenu={false}
+        formattingToolbar={false}
         theme={theme}
         editable={!readOnly}
         className={'block-note-editor-container'}
@@ -128,6 +130,7 @@ export function OpBlockNoteEditor({
           triggerCharacter="/"
           getItems={async (query:string) => Promise.resolve(filterSuggestionItems(getCustomSlashMenuItems(editor), query))}
         />
+        <OpFormattingToolbar />
       </BlockNoteView>
     </>
   );
