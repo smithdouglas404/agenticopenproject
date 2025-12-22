@@ -28,9 +28,9 @@ zh-TW:
       label_add_new: 新增 Webhook
       label_edit: 編輯 Webhook
       label_x_events:
-        one: "1 event"
-        other: "%{count} events"
-        zero: "No events"
+        one: "1 個事件"
+        other: "%{count} 個事件"
+        zero: "沒有事件"
       events:
         created: "已建立"
         updated: "已更新"
