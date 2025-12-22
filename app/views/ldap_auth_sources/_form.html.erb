@@ -36,7 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% if @ldap_auth_source.new_record? %>
   <div class="op-toast -info">
-    <a title="close" class="op-toast--close icon-context icon-close"></a>
+    <button type="button" aria-label="<%= t(:button_close) %>" class="op-toast--close icon-context icon-close"></button>
     <div class="op-toast--content">
       <%=
         link_translate(
