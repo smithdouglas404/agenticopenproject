@@ -15,8 +15,8 @@ pt-BR:
         view_all_members: "Visualizar todos os membros"
         show_members_count: "Mostrar todos os %{count} membros"
         x_more:
-          one: "um\ne mais um membro.\n\nOutros\ne mais %{count} membros."
-          other: "um\ne mais um membro.\n\nOutros\ne mais %{count} membros."
+          one: "e mais um membro."
+          other: "e mais %{count} membros."
       news:
         no_results: "Nada de novo para relatar."
   activerecord:
