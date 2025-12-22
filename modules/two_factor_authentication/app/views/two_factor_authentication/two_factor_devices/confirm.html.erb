@@ -15,10 +15,10 @@
   <div class="form--field -required -wide-label">
     <%= styled_label_tag "otp", t(:field_otp) %>
     <div class="form--field-container">
-      <%= styled_text_field_tag "otp", nil, required: true, autocomplete: "off", size: 6, maxlength: 6, tabindex: 1, autofocus: true %>
+      <%= styled_text_field_tag "otp", nil, required: true, autocomplete: "off", size: 6, maxlength: 6, autofocus: true %>
     </div>
   </div>
   <div class="login-form--footer">
-    <input type="submit" name="login" value="<%= t "button_continue" %>" class="button -primary button_no-margin" tabindex="2">
+    <input type="submit" name="login" value="<%= t "button_continue" %>" class="button -primary button_no-margin">
   </div>
 <% end %>
