@@ -61,6 +61,7 @@ import {
 import {
   ProjectPhaseAutocompleterComponent,
 } from './project-phase-autocompleter/project-phase-autocompleter.component';
+import { IconModule } from 'core-app/shared/components/icon/icon.module';
 
 export const OPENPROJECT_AUTOCOMPLETE_COMPONENTS = [
   CreateAutocompleterComponent,
@@ -95,6 +96,7 @@ export const OPENPROJECT_AUTOCOMPLETE_COMPONENTS = [
     DynamicModule,
     OpenprojectPrincipalRenderingModule,
     InviteUserButtonModule,
+    IconModule,
   ],
   exports: OPENPROJECT_AUTOCOMPLETE_COMPONENTS,
   declarations: OPENPROJECT_AUTOCOMPLETE_COMPONENTS,

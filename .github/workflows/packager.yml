@@ -49,6 +49,7 @@ jobs:
           target: ${{ matrix.target }}
           version: ${{ steps.setup.outputs.version }}
           debug: true
+          cache_prefix: ${{ github.ref_name }}
           env: |
             DATABASE_URL=postgres://app:p4ssw0rd@127.0.0.1:5432/app
       - name: Publish

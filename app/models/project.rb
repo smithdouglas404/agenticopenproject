@@ -47,7 +47,7 @@ class Project < ApplicationRecord
   IDENTIFIER_MAX_LENGTH = 100
 
   # reserved identifiers
-  RESERVED_IDENTIFIERS = %w[new menu queries export_list_modal].freeze
+  RESERVED_IDENTIFIERS = %w[new menu queries filters export_list_modal].freeze
 
   enum :workspace_type, {
     project: "project",
@@ -126,6 +126,7 @@ class Project < ApplicationRecord
 
   store_attribute :settings, :deactivate_work_package_attachments, :boolean
   store_attribute :settings, :enabled_internal_comments, :boolean
+  store_attribute :settings, :excluded_role_ids_on_copy, :json, default: []
 
   acts_as_favoritable
 

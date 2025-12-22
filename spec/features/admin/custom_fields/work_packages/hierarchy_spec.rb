@@ -60,7 +60,7 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
 
     # region Edit the details of the custom field
 
-    expect(page).to have_test_selector("op-custom-fields--new-hierarchy-banner")
+    expect(page).to have_test_selector("op-custom-fields--top-banner")
     expect(page).to have_css(".PageHeader-title", text: hierarchy_name)
 
     # Now, that was the wrong name, so I can change it to the correct one
@@ -140,7 +140,7 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
 
     # And is the blue banner gone, now that I have added some items?
     hierarchy_page.switch_tab "Details"
-    expect(page).not_to have_test_selector("op-custom-fields--new-hierarchy-banner")
+    expect(page).not_to have_test_selector("op-custom-fields--top-banner")
 
     # Finally, we delete the custom field ... I'm done with this ...
     custom_field_index_page.visit!

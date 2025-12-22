@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
+  EventEmitter, inject,
   Input,
   OnInit,
   Output,
@@ -43,6 +43,9 @@ import { BaselineMode, getBaselineState } from 'core-app/features/work-packages/
 import {
   CombinedDateDisplayField,
 } from 'core-app/shared/components/fields/display/field-types/combined-date-display.field';
+import {
+  KeepTabService
+} from 'core-app/features/work-packages/components/wp-single-view-tabs/keep-tab/keep-tab.service';
 
 @Component({
   selector: 'wp-single-card',
@@ -92,6 +95,18 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
 
   @Output() cardContextMenu = new EventEmitter<{ workPackageId:string, event:MouseEvent }>();
 
+  readonly pathHelper = inject(PathHelperService);
+  readonly I18n = inject(I18nService);
+  readonly $state = inject(StateService);
+  readonly uiRouterGlobals = inject(UIRouterGlobals);
+  readonly wpTableSelection = inject(WorkPackageViewSelectionService);
+  readonly wpTableFocus = inject(WorkPackageViewFocusService);
+  readonly cardView = inject(WorkPackageCardViewService);
+  readonly cdRef = inject(ChangeDetectorRef);
+  readonly timezoneService = inject(TimezoneService);
+  readonly schemaCache = inject(SchemaCacheService);
+  readonly keepTabService = inject(KeepTabService);
+
   public uiStateLinkClass:string = uiStateLinkClass;
 
   public selected = false;
@@ -113,21 +128,6 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
   public tooltipPosition = SpotDropAlignmentOption.BottomLeft;
 
   combinedDateDisplayField = CombinedDateDisplayField;
-
-  constructor(
-    readonly pathHelper:PathHelperService,
-    readonly I18n:I18nService,
-    readonly $state:StateService,
-    readonly uiRouterGlobals:UIRouterGlobals,
-    readonly wpTableSelection:WorkPackageViewSelectionService,
-    readonly wpTableFocus:WorkPackageViewFocusService,
-    readonly cardView:WorkPackageCardViewService,
-    readonly cdRef:ChangeDetectorRef,
-    readonly timezoneService:TimezoneService,
-    readonly schemaCache:SchemaCacheService,
-  ) {
-    super();
-  }
 
   ngOnInit():void {
     // Update selection state
@@ -207,7 +207,7 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
   }
 
   public fullWorkPackageLink(wp:WorkPackageResource):string {
-    return this.$state.href('work-packages.show', { workPackageId: wp.id });
+    return this.keepTabService.currentShowHref(wp.id!);
   }
 
   public cardHighlightingClass(wp:WorkPackageResource):string {

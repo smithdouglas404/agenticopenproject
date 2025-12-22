@@ -99,7 +99,7 @@ RSpec.describe "Show/Edit Document View",
       editor = FormFields::Primerized::BlockNoteEditorInput.new
       editor.fill_in_with_content("This is the new **content**.")
 
-      expect(page).to have_content("This is the new content.")
+      expect(editor.text).to include("This is the new **content**.")
     end
   end
 

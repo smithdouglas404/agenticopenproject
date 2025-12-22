@@ -75,7 +75,7 @@ uk:
   label_yes: "Так"
   label_budget_totals: "Загальні суми"
   label_budget_details: "Деталі бюджету"
-  notice_budget_conflict: "Робочі пакети повинні бути з одного проекту."
+  notice_budget_conflict: "Робочі задачі повинні бути з одного проекту."
   notice_no_budgets_available: "Немає доступних бюджетів."
   permission_edit_budgets: "Редагувати бюджети"
   permission_view_budgets: "Переглянути бюджети"

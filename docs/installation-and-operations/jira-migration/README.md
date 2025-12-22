@@ -68,6 +68,10 @@ You can migrate Confluence content into OpenProject using Markdown export and ma
 
 This approach preserves most layout elements and is recommended for documentation or knowledge base content.
 
+> [!TIP]
+>
+> This approach is only suitable for very few wiki pages. For a comprehensive Confluence migration, consider using our recommended alternative: migrating your Confluence spaces to [XWiki](https://migration.xwiki.com/en/Alternatives/xwiki-vs-confluence ), our open source partner for advanced and large-scale wiki and knowledge-base migrations. XWiki provides a more complete and scalable path when moving extensive Confluence content. [Find out more](https://www.openproject.org/alternative-atlassian-jira-data-center/).
+
 ### 5. Community-developed JIRA importer
 
 A community-developed tool, the [OpenProject JIRA Importer](https://github.com/dotnetfactory/openproject-jira-importer) provides additional import capabilities.

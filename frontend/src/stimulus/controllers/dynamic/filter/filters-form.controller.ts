@@ -76,8 +76,6 @@ export default class FiltersFormController extends Controller {
 
   declare readonly hasFilterFormToggleTarget:boolean;
 
-  autoReloadTargets:HTMLElement[];
-
   static values = {
     displayFilters: { type: Boolean, default: false },
     outputFormat: { type: String, default: 'params' },
@@ -91,58 +89,98 @@ export default class FiltersFormController extends Controller {
   declare performTurboRequestsValue:boolean;
   declare readonly clearButtonIdValue:string;
   declare urlPathNameValue:string;
+  declare hasFilterFormTarget:boolean;
+
+  private formLoadedResolver:(() => void)|null = () => null;
+
+  filterFormLoaded = new Promise<void>((resolve) => {
+    this.formLoadedResolver = resolve;
+  });
 
   private boundListener = this.sendForm.bind(this);
 
   initialize() {
     // Initialize runs anytime an element with a controller connected to the DOM for the first time
     this.sendForm = debounce(this.boundListener, 300);
-    this.autoReloadTargets = [
-      ...this.simpleValueTargets,
-      ...this.operatorTargets,
-      ...this.filterValueContainerTargets,
-      ...this.filterValueSelectTargets,
-      ...this.daysTargets,
-      ...this.singleDayTargets,
-    ];
   }
 
   connect() {
-    const urlParams = new URLSearchParams(window.location.search);
-    this.displayFiltersValue = urlParams.has('filters');
-
     const clearButton = document.getElementById(this.clearButtonIdValue);
     clearButton?.addEventListener('click', (event:MouseEvent) => this.clearInputWithButton(event));
-
-    // Auto-register change event listeners for all fields
-    // to keep DOM cleaner.
-    if (this.performTurboRequestsValue) {
-      this.autoReloadTargets.forEach((target) => {
-        if (target instanceof HTMLInputElement) {
-          target.addEventListener('input', this.boundListener);
-        } else {
-          target.addEventListener('change', this.boundListener);
-        }
-      });
-    }
   }
 
   disconnect() {
     const clearButton = document.getElementById(this.clearButtonIdValue);
     clearButton?.removeEventListener('click', (event:MouseEvent) => this.clearInputWithButton(event));
+  }
 
-    // Auto-deregister change event listeners for all fields
-    // to keep DOM cleaner.
-    if (this.performTurboRequestsValue) {
-      this.autoReloadTargets.forEach((target) => {
-        if (target instanceof HTMLInputElement) {
-          target.removeEventListener('input', this.boundListener);
-        } else {
-          target.removeEventListener('change', this.boundListener);
-        }
-      });
+  addFilterSelectTargetConnected() {
+    // This is used as an indicator that the filter form is loaded. Other targets could have been used
+    // as well.
+    if (this.formLoadedResolver) {
+      this.formLoadedResolver();
+      this.formLoadedResolver = null;
     }
   }
+
+  // Register and deregister change/input listeners on input elements to reload the page's frames on user input.
+  // Using the target's methods rather than the shorter version in the controllers connect and disconnect function
+  // as the filters themselves might be loaded later. If that is the case, they would not be known on connect.
+  simpleValueTargetConnected(target:HTMLElement) {
+    this.addChangeListener(target);
+  }
+
+  operatorTargetConnected(target:HTMLElement) {
+    this.addChangeListener(target);
+  }
+
+  filterValueContainerTargetConnected(target:HTMLElement) {
+    this.addChangeListener(target);
+  }
+
+  filterValueSelectTargetConnected(target:HTMLElement) {
+    this.addChangeListener(target);
+  }
+
+  daysTargetConnected(target:HTMLElement) {
+    this.addChangeListener(target);
+  }
+
+  singleDayTargetConnected(target:HTMLElement) {
+    this.addChangeListener(target);
+  }
+
+  simpleValueTargetDisconnected(target:HTMLElement) {
+    this.removeChangeListener(target);
+  }
+
+  operatorTargetDisconnected(target:HTMLElement) {
+    this.removeChangeListener(target);
+  }
+
+  filterValueContainerTargetDisconnected(target:HTMLElement) {
+    this.removeChangeListener(target);
+  }
+
+  filterValueSelectTargetDisconnected(target:HTMLElement) {
+    this.removeChangeListener(target);
+  }
+
+  daysTargetDisconnected(target:HTMLElement) {
+    this.removeChangeListener(target);
+  }
+
+  singleDayTargetDisconnected(target:HTMLElement) {
+    this.removeChangeListener(target);
+  }
+
+  filterFormTargetConnected()  {
+    // Didn't really change, but we need to ensure that the visibility of the target is correct.
+    // This is caused by there first being a skeleton form, which allows the user to already
+    // toggle the visibility.
+    this.displayFiltersValueChanged();
+  }
+
 
   toggleDisplayFilters() {
     this.displayFiltersValue = !this.displayFiltersValue;
@@ -150,7 +188,6 @@ export default class FiltersFormController extends Controller {
 
   showDisplayFilters() {
     this.displayFiltersValue = true;
-    this.displayFiltersValueChanged();
   }
 
   displayFiltersValueChanged() {
@@ -169,7 +206,9 @@ export default class FiltersFormController extends Controller {
   }
 
   toggleFilterFormVisible() {
-    this.filterFormTarget.classList.toggle('-expanded', this.displayFiltersValue);
+    if (this.hasFilterFormTarget) {
+      this.filterFormTarget.classList.toggle('-expanded', this.displayFiltersValue);
+    }
   }
 
   toggleMultiSelect({ params: { filterName } }:{ params:{ filterName:string } }) {
@@ -185,6 +224,26 @@ export default class FiltersFormController extends Controller {
         this.setSelectOptions(multiSelect, valueToSelect);
       }
       valueContainer.classList.toggle('multi-value');
+    }
+  }
+
+  private addChangeListener(target:HTMLElement) {
+    if (!this.performTurboRequestsValue) { return; }
+
+    if (target instanceof HTMLInputElement) {
+      target.addEventListener('input', this.boundListener);
+    } else {
+      target.addEventListener('change', this.boundListener);
+    }
+  }
+
+  private removeChangeListener(target:HTMLElement) {
+    if (!this.performTurboRequestsValue) { return; }
+
+    if (target instanceof HTMLInputElement) {
+      target.removeEventListener('input', this.boundListener);
+    } else {
+      target.removeEventListener('change', this.boundListener);
     }
   }
 

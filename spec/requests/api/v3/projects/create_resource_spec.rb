@@ -119,11 +119,109 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
   end
 
   describe "custom fields" do
-    context "with a required custom field" do
+    context "with an optional custom field" do
+      shared_let(:optional_custom_field) do
+        create(:text_project_custom_field,
+               name: "Department",
+               is_for_all: true)
+      end
+
+      shared_examples "creates a project with an empty custom value" do
+        it "responds with 201" do
+          expect(last_response).to have_http_status(:created)
+        end
+
+        it "returns the newly created project" do
+          expect(last_response.body)
+            .to be_json_eql("Project".to_json)
+                  .at_path("_type")
+
+          expect(last_response.body)
+            .to be_json_eql("Project name".to_json)
+                  .at_path("name")
+        end
+
+        it "creates a project with an empty custom field value" do
+          project = Project.last
+          expect(project.typed_custom_value_for(optional_custom_field))
+            .to eq("")
+        end
+
+        it "automatically activates the cf for project" do
+          expect(Project.last.project_custom_fields)
+            .to contain_exactly(optional_custom_field)
+        end
+      end
+
+      context "when no custom field value is provided" do
+        let(:body) do
+          {
+            identifier: "new_project_identifier",
+            name: "Project name"
+          }.to_json
+        end
+
+        it_behaves_like "creates a project with an empty custom value"
+      end
+
+      context "when the custom field is provided but empty" do
+        let(:body) do
+          {
+            identifier: "new_project_identifier",
+            name: "Project name",
+            optional_custom_field.attribute_name(:camel_case) => {
+              raw: ""
+            }
+          }.to_json
+        end
+
+        it_behaves_like "creates a project with an empty custom value"
+      end
+
+      context "when the custom field value is provided and valid" do
+        let(:body) do
+          {
+            identifier: "new_project_identifier",
+            name: "Project name",
+            optional_custom_field.attribute_name(:camel_case) => {
+              raw: "Engineering"
+            }
+          }.to_json
+        end
+
+        it "responds with 201" do
+          expect(last_response).to have_http_status(:created)
+        end
+
+        it "returns the newly created project" do
+          expect(last_response.body)
+            .to be_json_eql("Project".to_json)
+                  .at_path("_type")
+
+          expect(last_response.body)
+            .to be_json_eql("Project name".to_json)
+                  .at_path("name")
+        end
+
+        it "creates a project with the custom field value" do
+          project = Project.last
+          expect(project.typed_custom_value_for(optional_custom_field))
+            .to eq("Engineering")
+        end
+
+        it "automatically activates the cf for project if the value was provided" do
+          expect(Project.last.project_custom_fields)
+            .to contain_exactly(optional_custom_field)
+        end
+      end
+    end
+
+    context "with a required for_all custom field" do
       shared_let(:required_custom_field) do
         create(:text_project_custom_field,
                name: "Department",
-               is_required: true)
+               is_required: true,
+               is_for_all: true)
       end
 
       context "when no custom field value is provided" do

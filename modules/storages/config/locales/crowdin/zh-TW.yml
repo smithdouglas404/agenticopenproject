@@ -242,23 +242,23 @@ zh-TW:
     error_invalid_provider_type: 請選擇有效的儲存空間提供商。
     file_storage_view:
       access_management:
-        automatic_management: Enable automatically-managed access and folders
-        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
-        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
-        manual_management: Only allow manually-managed access and folders
-        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+        automatic_management: 啟用自動管理存取和資料夾
+        automatic_management_description: 每個專案在新增儲存空間時，都能決定他們是要使用自動管理方式，或是手動方式來管理資料夾和存取。
+        description: 當檔案儲存被加入專案時，OpenProject 可以自動建立並管理專案資料夾。這可以產生更有組織的資料夾結構和直接的存取管理，保證所有相關使用者都能存取。
+        manual_management: 只允許手動管理存取權限和資料夾
+        manual_management_description: 使用此儲存空間的專案無法選擇自動管理方式。資料夾和存取必須手動管理。
         setup_incomplete: 選擇使用者存取和資料夾建立的管理類型。
-        subtitle: Folder and access management
+        subtitle: 資料夾和存取管理
       access_management_section: 存取和專案資料夾
       automatically_managed_folders: 自動管理文件夾
       general_information: 基本資訊
       oauth_configuration: OAuth 設定
       one_drive:
         access_management:
-          automatic_management: Enable automatically-managed access and folders
-          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
-          manual_management: Only allow manually-managed access and folders
-          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+          automatic_management: 啟用自動管理存取和資料夾
+          automatic_management_description: 使用此檔案儲存的每個專案都必須使用自動管理的方式來管理資料夾和存取。他們無法手動執行。
+          manual_management: 只允許手動管理存取權限和資料夾
+          manual_management_description: 使用此儲存空間的專案無法選擇自動管理方式。資料夾和存取必須手動管理。
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject 開放授權 (OAuth) 
       project_folders: 專案資料夾

@@ -348,17 +348,28 @@ ru:
     calculated_field_not_editable: "Не редактируемый атрибут. Это значение рассчитывается автоматически."
     no_role_assigment: "Роль не назначена"
     instructions:
-      is_required: "Отметьте настраиваемое поле как обязательное. Это сделает обязательным его заполнение при создании новых ресурсов. Существующие ресурсы не будут требовать ввода значения при обновлении."
-      is_required_for_project: "Отметьте, чтобы включить этот атрибут и сделать его необходимым во всех проектах. Это не может быть отменено для отдельных проектов. Существующие проекты не будут требовать этого значения при обновлении."
-      is_for_all: "Отметьте пользовательское поле как доступное во всех существующих и новых проектах."
-      multi_select: "Позволяет пользователю присвоить несколько значений этому пользовательскому полю."
-      searchable: "Включать значения полей при использовании функции глобального поиска."
-      searchable_for_project: "Установите флажок, чтобы сделать этот атрибут доступным в качестве фильтра в списках проектов."
-      editable: "Разрешить редактирование поля самими пользователями."
-      admin_only: "Установите флажок, чтобы сделать этот атрибут видимым только для администраторов. Пользователи без прав администратора не смогут просматривать или редактировать его."
-      is_filter: >
-        Разрешить использование пользовательского поля в фильтре в представлениях рабочих пакетов. Обратите внимание, что пользовательское поле будет отображаться в глобальных представлениях только при выборе параметра "Для всех проектов".
-      formula: "Добавьте числовые значения или введите / для поиска атрибута или математического оператора."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Нет настраиваемых полей.
       no_results_content_text: Создать новое настраиваемое поле
@@ -536,9 +547,15 @@ ru:
         project_template_caption: "Выберите шаблон проекта, который будет использоваться по умолчанию для новых подпунктов этого типа."
         program_template_label: "Шаблон для программ"
         program_template_caption: "Выберите шаблон программы, который будет использоваться по умолчанию для новых подпунктов этого типа."
-        portfolio_template_label: "Шаблон для портфолио"
-        portfolio_template_caption: "Выберите шаблон портфолио, который будет использоваться по умолчанию для новых подпунктов этого типа."
         no_template: "Нет предопределенного шаблона"
+      template:
+        menu_title: "Шаблон"
+        title: "Настройки шаблона"
+        enable_failed: "Не удалось включить режим шаблона."
+        members:
+          excluded_roles_label: "Роли, которые нужно исключить при применении шаблона"
+          excluded_roles_caption: >
+            При создании нового проекта по этому шаблону роли, выбранные выше, будут опущены. Это позволит Вам выбрать, какие участники будут исключены на основании их ролей в проекте. В этом случае пользователи смогут обращаться к шаблону для просмотра, не получая доступа к новым проектам, созданным на его основе.
       actions:
         label_enable_all: "Включить всё"
         label_disable_all: "Выключить всё"
@@ -572,9 +589,9 @@ ru:
           label_enable_single: "Активно в этом проекте, нажмите для отключения"
           label_disable_single: "Неактивно в этом проекте, нажмите для включения"
           remove_from_project: "Удалить из проекта"
-        is_required_blank_slate:
-          heading: Требуется во всех проектах
-          description: Этот атрибут проекта активирован во всех проектах, поскольку установлен флажок «Требуется во всех проектах». Его нельзя отключить для отдельных проектов.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: На данный момент доступных типов нет.
         form:
@@ -725,6 +742,17 @@ ru:
     index:
       no_results_title_text: На данный момент новостей для отчета нет.
       no_results_content_text: Добавить новость
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "Оставаться в системе %{num_days}"
@@ -796,7 +824,7 @@ ru:
         required: "Пожалуйста, выберите роль"
       message:
         label: "Сообщение о приглашении"
-        description: "Мы отправим пользователю электронное письмо, к которому вы можете что-нибудь добавить. Приглашение облегчит им начало работы, если у них будет немного информации о проекте."
+        description: "Мы отправим пользователю письмо, к которому Вы можете добавить личное сообщение здесь. Возможно, будет полезно пояснение к приглашению или немного информации о проекте, чтобы помочь им начать работу."
       summary:
         next_button: "Отправить приглашение"
       success_message:
@@ -919,6 +947,16 @@ ru:
     print_hint: Это позволит напечатать содержимое этой страницы wiki без каких-либо навигационных меню.
     index:
       no_results_content_text: Добавить новую wiki-страницу
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: В данный момент рабочих потоков нет.
@@ -1257,7 +1295,7 @@ ru:
         work_packages: "Задачи"
         workspace_type: "Тип рабочего пространства"
       project_custom_field:
-        is_required: "Требуется для всех проектов"
+        is_required: "Required"
         custom_field_section: Раздел
       subproject_template_assignment:
         workspace_type: "Тип рабочего пространства"
@@ -1546,6 +1584,8 @@ ru:
               invalid_characters: "Допускаются только числовые значения, математические операторы и атрибуты проекта типа integer, float, calculated value и weighted list."
               not_allowed_custom_fields_referenced: "Атрибут %{custom_fields} не может быть использован, потому что это приводит к циклической ссылке, один атрибут зависит от другого."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2865,15 +2905,19 @@ ru:
         learn_about: "Узнайте больше о всех новых функциях"
         missing: "Нет выделенных функций."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
             Релиз содержит различные новые функции и улучшения, такие как:
           new_features_list:
-            line_0: Рассчитанные значения для оценки проектов и подсчета баллов.
-            line_1: Иерархия типов атрибутов проекта.
-            line_2: Улучшение производительности.
-            line_3: Новая главная страница модуля "Документы".
-            line_4: Возможность изменения родительского элемента настраиваемого поля.
+            line_0: Совместная работа с документами в режиме реального времени.
+            line_1: Возможность структурировать связанные проекты в программы и портфели, чтобы направить их на достижение стратегических целей.
+            line_2: Улучшенное управление совещаниями с режимом черновика, режимом презентации, улучшенными результатами и подпиской на iCal.
+            line_3: Обновленная интеграция с SharePoint с более строгими разрешениями.
+            line_4: Переработанный обзор проекта с новыми вкладками, настраиваемыми виджетами и улучшенным макетом.
+            line_5: Возможность более строго охранять конфиденциальность пользователей, не работающих в одном проекте.
+            line_6: Улучшенный процесс создания проекта с более удобным выбором шаблона.
+            line_7: Более удобный глобальный поиск, включая тип и статус, улучшение точности нескольких автозаполнений.
+            line_8: Улучшена доступность текстов ALT и улучшены цвета графиков.
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -3096,6 +3140,7 @@ ru:
   label_board_plural: "Доски"
   label_branch: "Ветка"
   label_browse: "Обзор"
+  label_builtin: "Встроенный"
   label_bulk_edit_selected_work_packages: "Массовое изменение выбранных пакетов работ"
   label_bundled: "(В комплекте)"
   label_calendar: "Календарь"
@@ -4006,9 +4051,6 @@ ru:
   permission_add_project: "Создание проектов"
   permission_add_portfolios: "Создать портфолио"
   permission_add_programs: "Создать программу"
-  permission_add_project_from_template: "Создать проект из шаблона"
-  permission_add_portfolios_from_template: "Создать портфолио из шаблона"
-  permission_add_programs_from_template: "Создание программы из шаблона"
   permission_add_work_package_attachments: "Добавить вложения"
   permission_add_work_package_attachments_explanation: "Позволяет добавлять вложения без права редактирования пакетов работ"
   permission_add_internal_comments: "Написать внутренние комментарии"
@@ -4026,6 +4068,7 @@ ru:
   permission_comment_news: "Комментировать новость"
   permission_commit_access: "Возможность чтения/записи в репозиторий (commit)"
   permission_copy_projects: "Копировать проект"
+  permission_copy_projects_explanation: "В шаблонных проектах это разрешение имеет второстепенную функцию - оно позволяет создавать новые проекты, основанные на шаблоне."
   permission_copy_work_packages: "Дублировать пакеты работ"
   permission_create_backup: "Создание резервных копий"
   permission_delete_work_package_watchers: "Удалить наблюдателей"
@@ -4552,6 +4595,7 @@ ru:
     passwords: "Пароли"
     project_attributes:
       heading: "Атрибуты проекта"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Атрибут проекта"
       label_new_section: "Раздел"
       label_edit_section: "Переименовать"
@@ -4575,7 +4619,8 @@ ru:
               label: "Боковая панель"
               description: "Добавьте все атрибуты проекта в область на правой боковой панели в обзоре проекта."
     project_initiation_request:
-      header_description: "OpenProject может сгенерировать пошаговый мастер, чтобы помочь менеджерам проектов заполнить запрос на инициацию проекта. Вы можете выбрать, какие атрибуты проекта должны быть включены и что делать с выходным документом."
+      header_description: >
+        OpenProject может создать пошаговый мастер, который поможет руководителям проектов заполнить запрос на инициацию проекта. Вы можете выбрать, какие атрибуты проекта должны быть включены, и в результате создать артефакт в формате PDF.
       status:
         submitted: "%{wizard_name} был отправлен"
         submitted_description: "Нажмите на кнопку ниже, чтобы перейти к пакету работ для процесса подачи заявки."
@@ -4611,7 +4656,7 @@ ru:
         status_when_submitted_caption: "Статус, в который перейдет созданный пакет работ после отправки запроса."
         send_confirmation_email: "Отправить подтверждение по электронной почте пользователю, подавшему запрос на инициирование проекта"
         assignee: "Назначенный при отправке"
-        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
+        assignee_caption_html: "Пользователь или группа, назначенная этому атрибуту проекта, также станет получателем нового пакета работ. Этот список включает активные атрибуты проекта только типа <i>Пользователь</i>."
         confirmation_email_text: "Текст письма подтверждения"
         confirmation_email_default: "Здравствуйте,\n\nВы подали запрос на инициирование проекта **%{project_name}**. Сейчас он ожидает рассмотрения.\nЩелкните по ссылке ниже, чтобы получить доступ к пакету работ с Вашим запросом."
         work_package_comment: "Комментарий к пакету работ"
@@ -4694,6 +4739,8 @@ ru:
     Корпоративная версия добавит эти дополнительные дополнения для пользовательских полей проектов: <br> <ul> <li><b>Добавить пользовательские поля для проектов в ваш список проектов, чтобы создать представление портфолио проекта</b></li> </ul>
   text_custom_logo_instructions: >
     Логотип автоматически масштабируется, чтобы соответствовать заголовку. Для достижения наилучших результатов загрузите белый логотип на прозрачном фоне размером 130×47px. Вы можете добавить столько интервалов внутри этого изображения, сколько захотите.
+  text_custom_logo_mobile_instructions: >
+    Логотип автоматически масштабируется, чтобы соответствовать заголовку. Для достижения наилучших результатов загрузите белый логотип на прозрачном фоне размером 130×33px. Вы можете добавить столько интервалов внутри этого изображения, сколько захотите.
   text_custom_export_logo_instructions: >
     Это логотип, который отображается при экспорте в формате PDF. Это должен быть файл изображения в формате PNG или JPEG. Рекомендуется использовать черный или цветной логотип на прозрачном или белом фоне.
   text_custom_export_cover_instructions: >

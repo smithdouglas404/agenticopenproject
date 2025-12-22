@@ -297,13 +297,13 @@ fr:
       warning: "Veillez à ne pas partager pas cette adresse URL avec d'autres utilisateurs. Quiconque disposant de ce lien sera en mesure de voir les détails du lot de travaux sans nécessité d'avoir un compte ou de saisir un mot de passe."
       token_name_label: "Où comptez-vous l'utiliser ?"
       token_name_placeholder: 'Saisissez un nom, par exemple « Téléphone »'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
+      token_name_description_text: 'Si vous vous abonnez à ce calendrier à partir de plusieurs appareils, ce nom vous permettra de les distinguer dans votre liste de <a href="%{myAccessTokensUrl}" target="_blank">jetons d''accès.</a>'
       copy_url_label: "Copier l'URL"
       ical_generation_error_text: "Une erreur s'est produite lors de la génération de l'URL du calendrier."
       success_message: 'L''adresse URL « %{name} » a été copiée avec succès dans votre presse-papiers. Collez-la dans votre client de calendrier pour compléter l''abonnement.'
     label_activate: "Activer"
     label_assignee: "Assigné"
-    label_assignee_alt_text: "This work package is assigned to %{name}"
+    label_assignee_alt_text: "Ce lot de travail est attribué à %{name}"
     label_add_column_after: "Ajouter une colonne après"
     label_add_column_before: "Ajouter une colonne avant"
     label_add_columns: "Ajouter des colonnes"
@@ -345,6 +345,7 @@ fr:
     label_collapse: "Replier"
     label_collapsed: "replié"
     label_collapse_all: "Tout replier"
+    label_collapse_text: "Collapse text"
     label_comment: "Commentaire"
     label_committed_at: "%{committed_revision_link} le %{date}"
     label_committed_link: "révision %{revision_identifier} soumise"
@@ -357,6 +358,7 @@ fr:
     label_expand: "Déplier"
     label_expanded: "déplié"
     label_expand_all: "Tout déplier"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Déplier le menu du projet"
     label_export: "Exporter"
     label_export_preparing: "L'export est en cours de préparation et sera téléchargé sous peu."
@@ -555,7 +557,7 @@ fr:
       date_alerts:
         milestone_date: "Date jalon"
         overdue: "En retard"
-        overdue_since: "depuis %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "a lieu aujourd'hui."
         property_is: "a lieu dans %{difference_in_days}."
         property_was: "avait lieu il y a %{difference_in_days}."
@@ -1127,7 +1129,7 @@ fr:
       current_project_and_all_descendants: "Dans ce projet + sous-projets"
       current_project: "Pour ce projet"
       recently_viewed: "Consultés récemment"
-      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
+      search_placeholder_expanded: "Recherchez des lots de travaux par sujet, projet, type, statut ou identifiant"
       title:
         all_projects: "tous les projets"
         project_and_subprojects: "et tous les sous-projets"
@@ -1165,10 +1167,10 @@ fr:
       no_results: "Aucun projet ne correspond à vos critères de recherche."
       no_favorite_results: "Aucun projet favori ne correspond à vos critères de recherche."
     include_workspaces:
-      search_placeholder: "Search..."
+      search_placeholder: "Rechercher..."
       types:
-        program: "Program"
-        portfolio: "Portfolio"
+        program: "Programme"
+        portfolio: "Portefeuille"
     baseline:
       toggle_title: "Référence"
       clear: "Effacer"

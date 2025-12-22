@@ -44,6 +44,7 @@ class WorkflowsController < ApplicationController
 
   def show
     @workflow_counts = Workflow.count_by_type_and_role
+    @roles = @workflow_counts.first&.last&.map(&:first)
   end
 
   def edit

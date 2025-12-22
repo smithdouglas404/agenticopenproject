@@ -63,9 +63,9 @@ module CustomFieldHierarchyTreeViewHelper
       value: item.id,
       select_variant: options[:select_variant] || :none,
       checked: options[:checked_fn]&.call(item) || false,
-      current: options[:current_fn]&.call(item) || false,
-      disabled: options[:disabled_fn]&.call(item) || false,
-      expanded: options[:expanded_fn]&.call(item) || false,
+      current: options[:current] == item,
+      disabled: options[:disabled]&.include?(item) || false,
+      expanded: options[:expanded]&.include?(item) || false,
       href: options[:href_fn]&.call(item)
     }
   end
