@@ -29,4 +29,7 @@
 #++
 
 class Grids::Widgets::SubitemsController < Grids::WidgetController
+  def show
+    render_widget Grids::Widgets::Subitems.new(@project, current_user:)
+  end
 end

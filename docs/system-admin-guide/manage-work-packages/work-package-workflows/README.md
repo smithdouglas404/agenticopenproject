@@ -49,6 +49,14 @@ You can copy an existing workflow by clicking **Copy** in the workflow overview.
 
 You will then be able to determine which existing workflow should be copied to which other workflow.
 
+For example, select the source type (e.g. 'Task') and source role (e.g. 'Member') to copy the workflow from. Afterwards, select the target (e.g. 'Task') and lastly the role which will be 'Work package editor' to copy the workflow for:
+
+![Example for copying a work package workflow in OpenProject administration](System-admin-guide-work-package-workflows_copy_form.png)
+
+You can also choose to use the workflows for the source type and role as the blueprint for multiple target types at the same time.
+
+The copy of a workflow can later on be altered to better reflect the desired transitions between statuses for the edit role. You can also create the desired workflows from scratch.
+
 ## View the workflow summary
 
 You can get a summary of the allowed status transitions of a work package type for a role by clicking on **Summary** in the workflow overview.
