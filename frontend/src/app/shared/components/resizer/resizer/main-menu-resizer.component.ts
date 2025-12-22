@@ -26,14 +26,11 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, signal } from '@angular/core';
 import { ResizeDelta } from 'core-app/shared/components/resizer/resizer.component';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { MainMenuToggleService } from 'core-app/core/main-menu/main-menu-toggle.service';
-import {
-  debounceTime,
-  distinctUntilChanged,
-} from 'rxjs/operators';
+import { I18nService } from 'core-app/core/i18n/i18n.service';
 
 @Component({
   selector: 'opce-main-menu-resizer',
@@ -41,14 +38,15 @@ import {
   template: `
     <op-resizer class="main-menu--resizer"
                 [customHandler]="true"
-                [cursorClass]="'col-resize'"
+                cursorClass="col-resize"
                 (resizeFinished)="resizeEnd()"
                 (resizeStarted)="resizeStart()"
                 (move)="resizeMove($event)">
       <button
         class="spot-link main-menu--navigation-toggler"
-        [attr.title]="toggleTitle"
-        [class.open]="isOpen"
+        [attr.aria-label]="ariaLabel()"
+        [attr.aria-expanded]="isOpen()"
+        [class.open]="isOpen()"
         (click)="toggleService.toggleNavigation($event)"
       >
         <span class="resize-handle"><svg op-resizer-vertical-lines-icon size="small"></svg></span>
@@ -59,53 +57,54 @@ import {
   `,
   standalone: false,
 })
-export class MainMenuResizerComponent extends UntilDestroyedMixin implements OnInit {
-  public toggleTitle:string;
+export class MainMenuResizerComponent extends UntilDestroyedMixin {
+  readonly toggleService = inject(MainMenuToggleService);
+  readonly I18n = inject(I18nService);
+  readonly elementRef = inject(ElementRef);
 
-  private resizeEvent = 'main-menu-resize';
+  private readonly resizeEvent = 'main-menu-resize';
+  private readonly elementWidth = signal<number>(0);
+  private readonly mainMenu = document.querySelector('#main-menu')!;
 
-  private elementWidth:number;
+  readonly isOpen = signal<boolean>(this.toggleService.showNavigation);
+  readonly isResizing = signal<boolean>(false);
+  readonly ariaLabel = computed(() =>
+    this.isResizing()
+      ? this.text.menu_resize
+      : this.isOpen()
+        ? this.text.menu_collapse
+        : this.text.menu_expand
+  );
 
-  private mainMenu = document.querySelector('#main-menu')!;
+  text = {
+    menu_expand: this.I18n.t('js.label_expand_project_menu'),
+    menu_collapse: this.I18n.t('js.label_hide_project_menu'),
+    menu_resize: this.I18n.t('js.label_resize_project_menu')
+  };
 
-  public moving = false;
-
-  public isOpen:boolean;
-
-  constructor(
-    readonly toggleService:MainMenuToggleService,
-    readonly cdRef:ChangeDetectorRef,
-    readonly elementRef:ElementRef,
-  ) {
+  constructor() {
     super();
-  }
 
-  ngOnInit() {
-    this.isOpen = this.toggleService.showNavigation;
-
-    // Listen on sidebar changes and toggle resizer classes, if necessary
-    this.toggleService.changeData$
-      .pipe(
-        distinctUntilChanged(),
-        this.untilDestroyed(),
-        debounceTime(50),
-      )
-      .subscribe(() => {
-        this.isOpen = this.toggleService.showNavigation;
-        this.cdRef.detectChanges();
+    effect(() => {
+      const subscription = this.toggleService.changeData$.subscribe(() => {
+        this.isOpen.set(this.toggleService.showNavigation);
       });
+
+      return () => subscription.unsubscribe();
+    });
   }
 
   public resizeStart() {
-    this.elementWidth = this.mainMenu.clientWidth;
+    this.elementWidth.set(this.mainMenu.clientWidth);
+    this.isResizing.set(true);
   }
 
   public resizeMove(deltas:ResizeDelta) {
-    this.toggleService.saveWidth(this.elementWidth + deltas.absolute.x);
+    this.toggleService.saveWidth(this.elementWidth() + deltas.absolute.x);
   }
 
   public resizeEnd() {
-    const event = new Event(this.resizeEvent);
-    window.dispatchEvent(event);
+    this.isResizing.set(false);
+    window.dispatchEvent(new Event(this.resizeEvent));
   }
 }
