@@ -49,14 +49,6 @@ OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   description: "Allows the use of calculated values as a project attribute.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :oidc_group_sync,
-                                  description: "Allows to synchronize groups from OpenID Connect providers",
-                                  force_active: true
-
-OpenProject::FeatureDecisions.add :scim_api,
-                                  description: "Enables SCIM API.",
-                                  force_active: true
-
 OpenProject::FeatureDecisions.add :beta_widgets,
                                   description: "Enables BETA versions of widgets."
 

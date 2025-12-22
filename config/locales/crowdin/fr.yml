@@ -1510,7 +1510,8 @@ fr:
         not_a_datetime: "n'est pas une heure valide."
         not_a_number: "n'est pas un nombre."
         not_allowed: "est invalide en raison d’autorisations insuffisantes."
-        not_json: "n'est pas un objet JSON valide."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "n'est pas un entier."
         not_an_iso_date: "n’est pas une date valide. Format requis : AAAA-MM-JJ."
         not_same_project: "n'appartient pas au même projet."
@@ -2167,6 +2168,7 @@ fr:
   button_print: "Imprimer"
   button_quote: "Citer"
   button_remove: Supprimer
+  button_remove_permanently: "Supprimer définitivement"
   button_remove_reminder: "Supprimer le rappel"
   button_rename: "Renommer"
   button_replace: "Remplacer"
@@ -4721,6 +4723,7 @@ fr:
     Remarque : si cette option est activée, un badge indiquant l'état de votre installation s'affichera dans le panneau <a href="%{information_panel_path}">%{information_panel_label}</a> administration et sur la page d'accueil. Il n'est affiché que pour les administrateurs. <br/>Le badge vérifiera votre version actuelle d'OpenProject par rapport à la base de données officielle d'OpenProject pour vous avertir de toute mise à jour ou vulnérabilité connue. Pour plus d'informations sur ce que la vérification fournit, quelles données sont nécessaires pour fournir les mises à jour disponibles, et comment désactiver cette vérification, veuillez visiter <a href="%{more_info_url}">la documentation de configuration</a>.
   text_own_membership_delete_confirmation: "Vous êtes sur le point de retirer tout ou partie de vos permissions et ne pourrez peut-être plus modifier le projet par la suite.\nÊtes vous sûr de vouloir continuer?"
   text_permanent_delete_confirmation_checkbox_label: "Je comprends que cette suppression ne peut pas être annulée"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Répertoire des « plugin assets » est accessible en écriture"
   text_powered_by: "Propulsé par %{link}"
   text_project_identifier_info: "Seulement les lettres en minuscule (a-z), les nombres, les tirets et les underscores sont autorisés, il est obligatoire de commencer avec une lettre en minuscule."

@@ -1511,7 +1511,8 @@ hu:
         not_a_datetime: "ez nem érvényes dátum."
         not_a_number: "ez nem egy szám."
         not_allowed: "hiányzó engedélyek miatt érvénytelen."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "ez nem egy szám."
         not_an_iso_date: "nem érvényes dátum. A szükséges formátum ÉÉÉÉ-HH-NN."
         not_same_project: "nem azonos projekthez tartozik."
@@ -2168,6 +2169,7 @@ hu:
   button_print: "Nyomtatás"
   button_quote: "Idéz"
   button_remove: Eltávolítás
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Átnevezés"
   button_replace: "Csere"
@@ -4721,6 +4723,7 @@ hu:
     Megjegyzés: ha engedélyezve van, akkor a telepítési állapotot jelző jelvény jelenik meg a <a href="%{information_panel_path}">%{information_panel_label} </a> adminisztrációs panelen és a kezdőlapon. Csak a rendszergazdák számára jelenik meg. <br/> A jelvény ellenőrzi az aktuális OpenProject verziót a hivatalos OpenProject kiadási adatbázishoz képest, hogy figyelmeztesse Önt minden frissítésre vagy ismert biztonsági résre. Ha többet szeretne megtudni arról, hogy mit tartalmaz az ellenőrzés, milyen adatokra van szükség az elérhető frissítésekhez, és hogyan tilthatja le ezt az ellenőrzést, keresse fel a <a href="%{more_info_url}"> konfigurációs dokumentációt </a>.
   text_own_membership_delete_confirmation: "Értesítem arról, hogy eltávolít néhány vagy az összes jogosultságot, és ezt követően már nem lehet szerkeszteni ezt a projektet. Biztosan folytatni kívánja?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin eszközök könyvtára írható"
   text_powered_by: "Készítette %{link}"
   text_project_identifier_info: "Csak kisbetű (a-z), számok, kötőjelek és aláhúzásjelek van engedélyezve, és kisbetűvel kell kezdődnie."

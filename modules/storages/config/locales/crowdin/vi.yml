@@ -96,12 +96,6 @@ vi:
       manual: Thư mục hiện có được quản lý thủ công
     remove_project:
       deletion_failure_flash: Không thể xóa dự án khỏi bộ lưu trữ. %{error}
-      dialog:
-        automatically_managed_appendix: Ngoài ra, trong trường hợp này, bộ lưu trữ này có một thư mục dự án được quản lý tự động, thư mục này và các tệp trong đó sẽ bị xóa vĩnh viễn.
-        confirmation_text: Vui lòng xác nhận bạn hiểu và muốn xóa bộ lưu trữ tệp này khỏi dự án này
-        heading_text: Xóa dự án khỏi %{storage}
-        text: Hành động này là không thể đảo ngược và sẽ xóa tất cả các liên kết từ các gói công việc của dự án này tới các tệp và thư mục của bộ lưu trữ đó.
-        title: Remove project from storage
       label: Xóa dự án
   services:
     attributes:
@@ -128,6 +122,7 @@ vi:
     errors:
       messages:
         error: Đã xảy ra lỗi không mong muốn. Vui lòng kiểm tra nhật ký OpenProject để biết thêm thông tin hoặc liên hệ với quản trị viên
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject could not authenticate with the Storage Provider. Please ensure that you have access to it.
       models:
         copy_project_folders_service:
@@ -226,12 +221,13 @@ vi:
     confirm_replace_oauth_application: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập lại thông tin xác thực tại nhà cung cấp lưu trữ và tất cả người dùng từ xa sẽ phải xác thực lại với OpenProject. Bạn có chắc chắn muốn tiếp tục không?
     confirm_replace_oauth_client: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập thông tin mới từ nhà cung cấp lưu trữ và tất cả người dùng sẽ phải xác thực lại với %{provider_type}. Bạn có chắc chắn muốn tiếp tục không?
     delete_warning:
-      project_storage_delete_result_1: Xóa tất cả liên kết từ các gói công việc của dự án này đến các tệp và thư mục của lưu trữ đó.
-      project_storage_delete_result_2: Trong trường hợp lưu trữ này có thư mục dự án được quản lý tự động, thư mục này và các tệp của nó sẽ bị xóa vĩnh viễn.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
-      storage_delete_result_1: Xóa tất cả cấu hình lưu trữ cho tất cả các dự án sử dụng lưu trữ này.
-      storage_delete_result_2: Xóa tất cả liên kết từ các gói công việc của tất cả các dự án đến các tệp và thư mục của lưu trữ đó.
-      storage_delete_result_3: Trong trường hợp lưu trữ này có các thư mục dự án được quản lý tự động, các thư mục này và các tệp chứa bên trong sẽ bị xóa vĩnh viễn.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Group Folders
@@ -500,7 +496,7 @@ vi:
         title: Chúng tôi đang thiết lập quyền của bạn trên thư mục dự án.
     page_titles:
       file_storages:
-        delete: Xóa lưu trữ tệp
+        delete: Delete file storage?
         subtitle: Thêm một lưu trữ tệp bên ngoài để tải lên, liên kết và quản lý tệp trong các gói công việc.
       managed_project_folders:
         subtitle: |-
@@ -514,6 +510,8 @@ vi:
       project_storage_members:
         subtitle: Kiểm tra trạng thái kết nối của lưu trữ %{storage_name_link} đối với tất cả các thành viên dự án.
         title: Trạng thái kết nối của các thành viên
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'Quyền trên các lưu trữ bên ngoài chỉ được áp dụng cho các thư mục và tệp trong các thư mục dự án được quản lý tự động. Lưu ý rằng không phải tất cả các quyền tệp đều được hỗ trợ bởi tất cả các nhà cung cấp lưu trữ. Vui lòng kiểm tra tài liệu về <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>quyền lưu trữ tệp</a> để biết thêm thông tin.'
     provider_types:
       label: Loại nhà cung cấp

@@ -46,12 +46,15 @@ See COPYRIGHT and LICENSE files for more details.
         ) do |tree_view|
           parent = @hierarchy_item.parent
           descendants = hierarchy_service.get_descendants(item: @hierarchy_item).value!
+          item_formatter = standard_tree_view_item_formatter
+          label_fn = lambda { |item| item_formatter.format(item:) }
 
           item_options = {
             select_variant: :single,
             expanded: [parent],
             current: @hierarchy_item,
-            disabled: [parent] + descendants
+            disabled: [parent] + descendants,
+            label_fn:
           }
 
           populate_tree_view(tree_view, @custom_field, show_root: true, item_options:)

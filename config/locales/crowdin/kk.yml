@@ -1512,7 +1512,8 @@ kk:
         not_a_datetime: "is not a valid date time."
         not_a_number: "is not a number."
         not_allowed: "is invalid because of missing permissions."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "is not an integer."
         not_an_iso_date: "is not a valid date. Required format: YYYY-MM-DD."
         not_same_project: "doesn't belong to the same project."
@@ -2169,6 +2170,7 @@ kk:
   button_print: "Print"
   button_quote: "Quote"
   button_remove: Remove
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Rename"
   button_replace: "Replace"
@@ -4723,6 +4725,7 @@ kk:
     Note: if enabled, this will display a badge with your installation status in the <a href="%{information_panel_path}">%{information_panel_label}</a> administration panel, and on the home page. It is displayed to administrators only. <br/> The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit <a href="%{more_info_url}">the configuration documentation</a>.
   text_own_membership_delete_confirmation: "You are about to remove some or all of your permissions and may no longer be able to edit this project after that.\nAre you sure you want to continue?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin assets directory writable"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Only lower case letters (a-z), numbers, dashes and underscores are allowed, must start with a lower case letter."

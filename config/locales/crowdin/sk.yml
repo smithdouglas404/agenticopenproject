@@ -1530,7 +1530,8 @@ sk:
         not_a_datetime: "nie je platný dátum a čas."
         not_a_number: "nie je číslo."
         not_allowed: "je neplatné kvôli chýbajúcim oprávneniam."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "nie je celé číslo."
         not_an_iso_date: "nie je platný dátum. Požadovaný formát: RRRR-MM-DD."
         not_same_project: "nepodlieha rovnakému projektu."
@@ -2221,6 +2222,7 @@ sk:
   button_print: "Tlač"
   button_quote: "Citovať"
   button_remove: Vymazať
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Premenovať"
   button_replace: "Nahradiť"
@@ -4820,6 +4822,7 @@ sk:
     Poznámka: Ak je táto možnosť povolená, zobrazí sa v štýle <a href="%{information_panel_path}">%{information_panel_label}</a> na panely správcu, a na domovskej stránke. Zobrazuje sa iba administrátorom. <br/> Znak skontroluje vašu aktuálnu verziu OpenProject s oficiálnou verziu databázy OpenProject, ktorá vás upozorní na akékoľvek aktualizácie alebo známe chyby. Ďalšie informácie o tom, čo daná kontrola poskytuje, aké údaje sú potrebné na poskytovanie dostupných aktualizácií a ako zakázať túto kontrolu, prosím navštívte <a href="%{more_info_url}">dokumentáciu konfigurácie</a>.
   text_own_membership_delete_confirmation: "Chystáte sa odstrániť jedno respektíve viac vašich povolení, pričom po aplikovaní zmien môžte stratiť možnosť naďalej upravovať nastavenia projektu. Naozaj chcete pokračovať?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Povolený zápis do priečinka pre pluginy"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Sú povolené len malé písmená (a-z), čísla, pomlčky a podčiarkovníky, hodnota musí začínať malým písmenom."

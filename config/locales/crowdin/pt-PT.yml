@@ -1509,7 +1509,8 @@ pt-PT:
         not_a_datetime: "não é uma data/hora válida."
         not_a_number: "não é um número."
         not_allowed: "é inválido devido a permissões em falta."
-        not_json: "não é um objeto JSON válido."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "não é um número inteiro."
         not_an_iso_date: "não é uma data válida. Formato exigido: AAAA-MM-DD."
         not_same_project: "não pertence ao mesmo projeto."
@@ -2166,6 +2167,7 @@ pt-PT:
   button_print: "Imprimir"
   button_quote: "Citar"
   button_remove: Remover
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remover lembrete"
   button_rename: "Alterar o nome"
   button_replace: "Substituir"
@@ -4717,6 +4719,7 @@ pt-PT:
     Nota: se ativo, irá mostrar um emblema com o estado da sua instalação no painel de administração <a href="%{information_panel_path}">%{information_panel_label}</a> e na página inicial. Só é mostrado a administradores. <br/> O emblema verificará a sua versão atual do OpenProject em relação à base de dados oficial da versão do OpenProject para o alertar sobre quaisquer atualizações ou vulnerabilidades conhecidas. Para obter mais informações sobre o que a verificação fornece, quais os dados que são necessários para fornecer atualizações disponíveis e como desativar esta verificação, visite <a href="%{more_info_url}">the configuration documentation</a>.
   text_own_membership_delete_confirmation: "Está prestes a eliminar parcial ou totalmente as suas permissões. É possível que não possa editar o projeto após esta acção.\nTem a certeza de que deseja continuar?"
   text_permanent_delete_confirmation_checkbox_label: "Compreendo que esta eliminação não pode ser anulada"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "É possíver escrever na pasta de ativos dos módulos de extensão"
   text_powered_by: "Desenvolvido por %{link}"
   text_project_identifier_info: "Apenas letras minúsculas (a-z), números, traços e underscores são permitidos, deve começar com uma letra minúscula."

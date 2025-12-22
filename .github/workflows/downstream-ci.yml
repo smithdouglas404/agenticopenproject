@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Trigger SaaS Tests
         env:
-          TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
+          TOKEN: ${{ secrets.OPENPROJECTCI_GH_SAAS_WORKFLOW_PAT }}
           REPOSITORY: opf/saas-openproject
           WORKFLOW_ID: test-saas.yml
           EVENT_NAME: ${{ github.event_name }}

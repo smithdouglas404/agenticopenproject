@@ -96,12 +96,6 @@ cs:
       manual: Ručně spravovaná stávající složka
     remove_project:
       deletion_failure_flash: Nepodařilo se odstranit projekt z úložiště. %{error}
-      dialog:
-        automatically_managed_appendix: Also, in this case this storage has an automatically managed project folder, this and its files will be deleted forever.
-        confirmation_text: Please, confirm you understand and want to remove this file storage from this project
-        heading_text: Odstranit projekt z %{storage}
-        text: This action is irreversible and will remove all links from work packages of this project to files and folders of that storage.
-        title: Remove project from storage
       label: Odstranit projekt
   services:
     attributes:
@@ -128,6 +122,7 @@ cs:
     errors:
       messages:
         error: Došlo k neočekávané chybě. Zkontrolujte prosím OpenProject logy pro více informací nebo kontaktujte správce
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject se nemohl autentizovat s poskytovatelem úložiště. Ujistěte se, že k němu máte přístup.
       models:
         copy_project_folders_service:
@@ -226,12 +221,13 @@ cs:
     confirm_replace_oauth_application: Tato akce obnoví aktuální OAuth přihlašovací údaje. Po potvrzení budete muset znovu zadat přihlašovací údaje u poskytovatele úložiště a všichni vzdálení uživatelé budou muset znovu autorizovat proti OpenProject Jste si jisti, že chcete pokračovat?
     confirm_replace_oauth_client: This action will reset the current OAuth credentials. After confirming you will have to enter new credentials from the storage provider and all users will have to authorize against %{provider_type} again. Are you sure you want to proceed?
     delete_warning:
-      project_storage_delete_result_1: Odstraňte všechny odkazy z pracovních balíčků tohoto projektu do souborů a složek tohoto úložiště.
-      project_storage_delete_result_2: V případě, že toto úložiště automaticky spravuje složky projektů, budou tyto a jejich obsažené soubory navždy smazány.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
-      storage_delete_result_1: Odstranit všechna nastavení úložiště pro všechny projekty používající toto úložiště.
-      storage_delete_result_2: Odstraňte všechny odkazy z pracovních balíčků všech projektů do souborů a složek tohoto úložiště.
-      storage_delete_result_3: V případě, že toto úložiště automaticky spravuje složky projektů, budou tyto a jejich obsažené soubory navždy smazány.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Group Folders
@@ -506,7 +502,7 @@ cs:
         title: Nastavujeme vaše oprávnění do složky projektu.
     page_titles:
       file_storages:
-        delete: Odstranit úložiště souborů
+        delete: Delete file storage?
         subtitle: Přidejte externí úložiště souborů pro nahrávání, propojení a správu souborů v pracovních balíčcích.
       managed_project_folders:
         subtitle: |-
@@ -520,6 +516,8 @@ cs:
       project_storage_members:
         subtitle: Zkontrolujte stav připojení úložiště %{storage_name_link} všech členů projektu.
         title: Stav připojení členů
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'File permissions on external storages are applied only to folders and files within automatically managed project folders. Note that not all file permissions are supported by all storage providers. Please check the documentation on <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>file storage permissions</a> for more information.'
     provider_types:
       label: Typ poskytovatele

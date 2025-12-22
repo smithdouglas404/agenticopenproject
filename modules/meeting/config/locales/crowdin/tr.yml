@@ -264,8 +264,8 @@ tr:
           Şablonda yer almayan tüm toplantı bilgileri kaybolacaktır. Devam etmek istiyor musunuz?
         confirm_button: "Bu toplantıyı iptal et"
     blankslate:
-      title: "Gösterilecek toplantı yok"
-      desc: "Aktif filtre kriterlerini karşılayan herhangi bir toplantı bulunmamaktadır."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "PDF olarak dışa aktar"
     export:
       your_meeting_export: "Toplantı dışa aktarılıyor"
@@ -358,11 +358,21 @@ tr:
       next: "Next"
       no_items: "No agenda items"
       no_items_flash: "There are no agenda items to present."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "İsimsiz bölüm"
     delete_confirmation: "Bölümün silinmesi tüm gündem maddelerini de silecektir. Bunu yapmak istediğinizden emin misiniz?"
     placeholder_title: "Yeni bölüm"
     empty_text: "Maddeleri buraya sürükleyin ya da yeni bir tane oluşturun"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Saat dilimi farkı"
@@ -506,6 +516,9 @@ tr:
   label_agenda_item_move_to_bottom: "En aşağı taşı"
   label_agenda_item_move_up: "Yukarı taşı"
   label_agenda_item_move_down: "Aşağı taşı"
+  label_agenda_item_duplicate: "Duplicate"
+  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
   label_agenda_item_add_notes: "Not ekle"
   label_agenda_item_add_outcome: "Sonuç ekle"
   label_agenda_item_work_package_add: "İş paketi ekle"
@@ -579,10 +592,12 @@ tr:
   text_agenda_item_not_editable_anymore: "Bu takvim maddesi artık düzenlenemez."
   text_agenda_item_move_next_meeting: "Bu madde %{date} tarihindeki %{time} saatli bir sonraki toplantıya taşınacaktır."
   text_agenda_item_moved_to_next_meeting: "Gündem maddesi %{date} tarihli sonraki toplantıya taşındı"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Bu iş paketi henüz yaklaşan bir toplantı gündemine alınmamıştır."
   text_agenda_item_move_next_meeting_cancelled: "Toplantı iptal edildiği için sonraki toplantıya taşınamadı."
   text_work_package_add_to_meeting_hint: 'Bu iş paketini yaklaşan bir toplantıya eklemek için "Toplantıya ekle" düğmesini kullanın.'
-  text_work_package_has_no_past_meeting_agenda_items: "Bu iş paketinden daha önceki bir toplantıda bahsedilmemişti."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Email calendar updates are muted. Participants will not receive updated invites via email when you make changes."
   text_email_updates_enabled: "Email calendar updates are enabled. All participants will receive updated invites via email when you make changes."
   my_account:
