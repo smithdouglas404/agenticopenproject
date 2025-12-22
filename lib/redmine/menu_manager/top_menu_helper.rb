@@ -36,7 +36,7 @@ module Redmine::MenuManager::TopMenuHelper
   include Redmine::MenuManager::TopMenu::ModuleMenu
 
   def render_top_menu_left
-    content_tag :ul, class: "op-app-menu op-app-menu_drop-left" do
+    tag.nav class: "op-app-menu op-app-menu_drop-left" do
       safe_join top_menu_left_menu_items
     end
   end
