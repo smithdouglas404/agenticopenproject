@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Trigger Flavours workflow
         env:
-          TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
+          TOKEN: ${{ secrets.OPENPROJECTCI_FLAVOUR_TRIGGER_TOKEN }}
           REPOSITORY: opf/openproject-flavours
           WORKFLOW_ID: ci.yml
           # Use environment variable to prevent command injection
