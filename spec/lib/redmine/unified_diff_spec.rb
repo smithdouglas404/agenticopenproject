@@ -383,4 +383,39 @@ RSpec.describe Redmine::UnifiedDiff do
         .to eq 1
     end
   end
+
+  describe "frozen string handling" do
+    context "when diff line has no offsets" do
+      let(:diff) do
+        <<~DIFF
+          --- old.txt Wed Nov 11 14:24:58 2009
+          +++ new.txt Wed Nov 11 14:25:02 2009
+          @@ -1,3 +1,3 @@
+           unchanged line
+          -old line
+          +new line
+        DIFF
+      end
+
+      it "handles frozen strings without raising FrozenError" do
+        # Find a line with nil offsets (unchanged line)
+        diff_line = instance.first.find { |line| line.offsets.nil? }
+
+        # Ensure we have a line with nil offsets
+        expect(diff_line).not_to be_nil
+        expect(diff_line.offsets).to be_nil
+
+        # Calling html_line methods should not raise a FrozenError
+        # when line_to_html_raw returns a frozen string directly (offsets is nil)
+        # The fix (adding .dup before .force_encoding in line_to_html) prevents this
+        expect { diff_line.html_line }.not_to raise_error
+        expect { diff_line.html_line_left }.not_to raise_error
+        expect { diff_line.html_line_right }.not_to raise_error
+
+        # Verify the output is correct and properly encoded
+        expect(diff_line.html_line).to be_a(String)
+        expect(diff_line.html_line.encoding).to eq(Encoding::UTF_8)
+      end
+    end
+  end
 end
