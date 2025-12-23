@@ -162,7 +162,7 @@ A dashboard is defined as an overview page in a software. In OpenProject, you ha
 
 1. You have the [My page](#my-page), which shows your personal customized [widgets](#widget) on one page, for example a calendar or work package reports.
 
-2. You have the [project overview](#project-overview) dashboard, which gives you an overview of your project. Please note that only project admins can add and remove widgets to the project overview.
+2. You have the [project home page](#project-home) dashboard, which gives you an overview of your project. Please note that only project admins can add and remove widgets to the project overview.
 
 In addition to those overview dashboard options, you can create a [custom query](#custom-query) to save a filtered work package view, which might serve you as kind of a dashboard as well.
 
