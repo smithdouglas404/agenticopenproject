@@ -42,7 +42,7 @@ class WorkPackageRelationsTabController < ApplicationController
         render(component, layout: false)
       end
       format.turbo_stream do
-        replace_via_turbo_stream(component:)
+        replace_via_turbo_stream(component:, method: "morph")
         render turbo_stream: turbo_streams
       end
     end

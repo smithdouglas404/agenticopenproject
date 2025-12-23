@@ -37,11 +37,18 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
 
   shared_let(:custom_field) { create(:text_project_custom_field) }
   shared_let(:invisible_custom_field) { create(:project_custom_field, admin_only: true) }
+  shared_let(:integer_custom_field) { create(:integer_project_custom_field) }
 
-  shared_let(:project) { create(:project, name: "Plain project", identifier: "plain-project") }
+  shared_let(:project) do
+    create(:project, name: "Plain project", identifier: "plain-project") do |project|
+      project.custom_field_values = { integer_custom_field.id => 41 }
+      project.save!
+    end
+  end
   shared_let(:public_project) do
     create(:project, name: "Public Pr", identifier: "public-pr", public: true) do |project|
-      project.custom_field_values = { invisible_custom_field.id => "Secret CF" }
+      project.custom_field_values = { invisible_custom_field.id => "Secret CF", integer_custom_field.id => 42 }
+      project.save!
     end
   end
   shared_let(:development_project) { create(:project, name: "Development project", identifier: "development-project") }
@@ -168,9 +175,9 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
 
       # Test visibility of 'more' menu list items
       projects_page.activate_menu_of(parent_project) do |menu|
-        expect(menu).to have_text("Add to favorites")
         expect(menu).to have_text("Unarchive")
         expect(menu).to have_text("Delete")
+        expect(menu).to have_no_text("Add to favorites")
         expect(menu).to have_no_text("Archive")
         expect(menu).to have_no_text("Copy")
         expect(menu).to have_no_text("Settings")
@@ -663,12 +670,50 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
       projects_page.expect_projects_not_listed(public_project)
 
       # Applies the filters to the filters section
-      projects_page.toggle_filters_section
       projects_page.expect_filter_set "active"
       projects_page.expect_filter_set "name_and_identifier"
 
       # Columns are taken from the default set as defined by the setting
       projects_page.expect_columns("Name", "Created on", "Status")
+    end
+  end
+
+  context "when filtering via calculated values",
+          with_ee: %i[calculated_values],
+          with_flag: { calculated_value_project_attribute: true } do
+    let(:projects_with_calculated_value) do
+      [project, public_project]
+    end
+
+    let!(:calculated_value) do
+      create(:calculated_value_project_custom_field,
+             :skip_validations,
+             name: "Calculated value",
+             formula: "1.5 * {{cf_#{integer_custom_field.id}}}",
+             projects: projects_with_calculated_value)
+    end
+
+    let(:filters) do
+      JSON.dump([{ active: { operator: "=", values: ["t"] } },
+                 { "cf_#{calculated_value.id}": { operator: ">=", values: ["63"] } }])
+    end
+
+    before do
+      login_as(admin) # permitted user necessary to perform the calculations
+
+      projects_with_calculated_value.each do |proj|
+        proj.calculate_custom_fields([calculated_value])
+        proj.save!
+      end
+
+      Setting.enabled_projects_columns += [calculated_value.column_name]
+    end
+
+    it "allows filtering by the calculated value" do
+      visit "#{projects_page.path}?filters=#{filters}"
+
+      projects_page.expect_projects_not_listed(project, development_project)
+      projects_page.expect_projects_listed(public_project)
     end
   end
 

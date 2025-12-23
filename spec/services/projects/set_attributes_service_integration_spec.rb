@@ -36,14 +36,14 @@ RSpec.describe Projects::SetAttributesService, "integration", type: :model do
   end
   let(:contract) { Projects::CreateContract }
   let(:instance) { described_class.new(user:, model: project, contract_class: contract) }
-  let(:attributes) { {} }
+  let(:attributes) { { workspace_type: "project" } }
   let(:project) { Project.new }
   let(:service_result) do
     instance.call(attributes)
   end
 
   describe "with a project name starting with numbers" do
-    let(:attributes) { { name: "100 Project A" } }
+    let(:attributes) { super().merge(name: "100 Project A") }
 
     it "creates an identifier including the numbers" do
       expect(service_result).to be_success

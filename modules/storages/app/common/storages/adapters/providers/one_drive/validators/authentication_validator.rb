@@ -45,7 +45,6 @@ module Storages
 
             def validate
               register_checks(:existing_token, :user_bound_request)
-
               oauth_token
               user_bound_request
             end

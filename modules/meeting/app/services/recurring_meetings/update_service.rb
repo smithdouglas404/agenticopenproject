@@ -35,7 +35,8 @@ module RecurringMeetings
     protected
 
     def validate_params
-      @old_schedule = model.full_schedule_in_words
+      @old_schedule_model = model.dup
+      @old_location = model.template.location
       super
     end
 
@@ -47,7 +48,7 @@ module RecurringMeetings
       if should_reschedule?(recurring_meeting)
         reschedule_future_occurrences(recurring_meeting)
         reschedule_init_job(recurring_meeting)
-        send_rescheduled_mail(recurring_meeting)
+        send_updated_mail(recurring_meeting)
       end
 
       cleanup_cancelled_schedules(recurring_meeting)
@@ -150,7 +151,7 @@ module RecurringMeetings
       end
     end
 
-    def send_rescheduled_mail(recurring_meeting)
+    def send_updated_mail(recurring_meeting)
       return unless recurring_meeting.notify?
 
       recurring_meeting
@@ -158,12 +159,17 @@ module RecurringMeetings
         .participants
         .invited
         .find_each do |participant|
-        MeetingSeriesMailer.rescheduled(
+        # Generate old schedule in each participant's locale
+        old_schedule = User.execute_as(participant.user) do
+          @old_schedule_model.full_schedule_in_words
+        end
+
+        MeetingSeriesMailer.updated(
           recurring_meeting,
           participant.user,
           User.current,
-          changes: { old_schedule: @old_schedule }
-        ).deliver_later
+          changes: { old_schedule:, old_location: @old_location }
+        ).deliver_now
       end
     end
 
@@ -172,6 +178,9 @@ module RecurringMeetings
 
       # Delete all scheduled jobs for this meeting
       GoodJob::Job.where(finished_at: nil, concurrency_key:).delete_all
+
+      # Don't init the next meeting in draft mode
+      return if recurring_meeting.template.draft?
 
       # Ensure we init the next meeting directly
       InitNextOccurrenceJob.perform_now(recurring_meeting, recurring_meeting.next_occurrence)

@@ -62,8 +62,23 @@ module Exports::PDF::Common::Common
            mime_type: "application/pdf"
   end
 
-  def error(message)
-    raise ::Exports::ExportError.new message
+  def error(pdf_error, custom_message = nil)
+    message = custom_message || I18n.t(:error_pdf_failed_to_export, error: pdf_error.message)
+    result = ::Exports::ExportError.new message
+    result.set_backtrace pdf_error.backtrace
+    raise result
+  end
+
+  def with_padding(opts, &)
+    with_vertical_padding(opts) do
+      pdf.indent(opts[:left_padding] || 0, opts[:right_padding] || 0, &)
+    end
+  end
+
+  def with_vertical_padding(opts)
+    pdf.move_down(opts[:top_padding]) if opts.key?(:top_padding)
+    yield
+    pdf.move_down(opts[:bottom_padding]) if opts.key?(:bottom_padding)
   end
 
   def with_margin(opts, &)
@@ -108,6 +123,13 @@ module Exports::PDF::Common::Common
     pdf.table(data, options.merge({ column_widths: }), &) unless data.empty?
   end
 
+  def draw_header_text_multilines(lines, left, top, text_style)
+    starting_position = top
+    lines.each do |line|
+      starting_position -= draw_text_multiline_part(line, text_style, left, starting_position)
+    end
+  end
+
   def draw_text_multiline_center(text:, text_style:, left:, available_width:, top:, max_lines:)
     lines = wrap_to_lines(text, available_width, text_style, max_lines)
     starting_position = top
@@ -115,6 +137,22 @@ module Exports::PDF::Common::Common
       line_width = measure_text_width(line, text_style)
       line_x = (available_width - line_width) / 2
       starting_position += draw_text_multiline_part(line, text_style, left + line_x, starting_position)
+    end
+  end
+
+  def draw_header_text_multiline_left(text:, text_style:, available_width:, top:, max_lines:)
+    lines = wrap_to_lines(text, available_width, text_style, max_lines)
+    starting_position = top
+    lines.each do |line|
+      starting_position -= draw_text_multiline_part(line, text_style, 0, starting_position)
+    end
+  end
+
+  def draw_footer_text_multiline_left(text:, text_style:, available_width:, top:, max_lines:)
+    lines = wrap_to_lines(text, available_width, text_style, max_lines)
+    starting_position = top
+    lines.reverse_each do |line|
+      starting_position += draw_text_multiline_part(line, text_style, 0, starting_position)
     end
   end
 
@@ -128,7 +166,7 @@ module Exports::PDF::Common::Common
     previous_color = pdf.stroke_color
     previous_line_width = pdf.line_width
     @pdf.stroke do
-      pdf.stroke_color = color
+      pdf.stroke_color = color if color
       pdf.line_width = height
       pdf.horizontal_line left, right, at: top
     end
@@ -141,6 +179,7 @@ module Exports::PDF::Common::Common
     @pdf.save_font do
       @pdf.font(opts[:font], opts) if opts[:font]
       @pdf.fill_color = opts[:color] if opts[:color]
+      opts[:style] = opts[:styles][0] if opts[:styles]
       @pdf.draw_text(text, opts)
     end
     pdf.fill_color = color_before
@@ -300,6 +339,10 @@ module Exports::PDF::Common::Common
     pdf.page_number + @page_count - (with_cover? ? 1 : 0)
   end
 
+  def total_page_nr
+    @total_page_nr - (with_cover? ? 1 : 0) if @total_page_nr
+  end
+
   def write_horizontal_line(y_position, height, color, left_padding: 0)
     draw_horizontal_line(
       y_position,
@@ -337,6 +380,43 @@ module Exports::PDF::Common::Common
     value
   end
 
+  def prawn_draw_horizontal_border(color, width, left, right, at)
+    pdf.save_graphics_state do
+      pdf.stroke_color color if color
+      pdf.line_width width if width
+      pdf.stroke_horizontal_line left, right, at: at
+    end
+  end
+
+  def prawn_draw_vertical_border(color, width, bottom, top, at)
+    pdf.save_graphics_state do
+      pdf.stroke_color color if color
+      pdf.line_width width if width
+      pdf.stroke_vertical_line bottom, top, at: at
+    end
+  end
+
+  def prawn_draw_text_box(text_fragments, text_style, margin_style, padding_style, border_style)
+    with_margin(margin_style) do
+      pdf.bounding_box([pdf.bounds.left, pdf.cursor], width: pdf.bounds.width) do
+        with_padding(padding_style) do
+          pdf.formatted_text(text_fragments, text_style)
+        end
+        prawn_draw_box_borders(pdf.bounds, border_style)
+      end
+    end
+  end
+
+  def prawn_draw_box_borders(bounds, border_style) # rubocop:disable Metrics/AbcSize
+    borders = border_style[:borders]
+    colors = border_style[:border_colors]
+    widths = border_style[:border_widths]
+    prawn_draw_horizontal_border(colors[0], widths[0], bounds.left, bounds.right, bounds.top) if borders.include?(:top)
+    prawn_draw_vertical_border(colors[1], widths[1], bounds.bottom, bounds.top, bounds.right) if borders.include?(:right)
+    prawn_draw_horizontal_border(colors[2], widths[2], bounds.left, bounds.right, bounds.bottom) if borders.include?(:bottom)
+    prawn_draw_vertical_border(colors[3], widths[3], bounds.bottom, bounds.top, bounds.left) if borders.include?(:left)
+  end
+
   def write_optional_page_break
     space_from_bottom = pdf.y - pdf.bounds.bottom
     if space_from_bottom < styles.page_break_threshold
@@ -357,8 +437,16 @@ module Exports::PDF::Common::Common
     make_link_anchor(work_package.id, escape_tags(value))
   end
 
+  def prawn_color(color)
+    color&.hexcode&.sub("#", "") || "F0F0F0"
+  end
+
+  def status_prawn_color(status)
+    prawn_color(status&.color)
+  end
+
   def wp_status_prawn_color(work_package)
-    work_package.status.color&.hexcode&.sub("#", "") || "F0F0F0"
+    status_prawn_color(work_package.status)
   end
 
   def add_pdf_table_anchors(prawn_table)

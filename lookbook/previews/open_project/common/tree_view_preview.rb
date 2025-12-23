@@ -1,5 +1,33 @@
 # frozen_string_literal: true
 
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
 module OpenProject
   module Common
     # @hidden
@@ -12,7 +40,7 @@ module OpenProject
       # @param leading_icon [Boolean] toggle
       # @param trailing_icon [Boolean] toggle
       def default(expanded: true, select_variant: :none, select_strategy: :descendants, leading_icon: true, trailing_icon: true)
-        render(Primer::OpenProject::TreeView.new) do |component|
+        render(Primer::Alpha::TreeView.new) do |component|
           component.with_sub_tree(label: "OpenProject",
                                   expanded: expanded,
                                   select_variant: select_variant,
@@ -55,7 +83,7 @@ module OpenProject
       # @param select_variant [Symbol] select [multiple, none]
       # @param select_strategy [Symbol] select [self, descendants]
       def multi_select(expanded: true, select_variant: :multiple, select_strategy: :descendants)
-        render(Primer::OpenProject::TreeView.new) do |component|
+        render(Primer::Alpha::TreeView.new) do |component|
           component.with_sub_tree(label: "Europe",
                                   expanded: expanded,
                                   select_variant: select_variant,
@@ -85,7 +113,7 @@ module OpenProject
       # @display min_height 200px
       # @param expanded [Boolean] toggle
       def file_tree(expanded: true)
-        render(Primer::OpenProject::FileTreeView.new) do |component|
+        render(Primer::Alpha::FileTreeView.new) do |component|
           component.with_directory(label: "src", expanded: expanded) do |dir|
             dir.with_trailing_visual_icon(icon: :"diff-modified")
 

@@ -27,7 +27,10 @@ zh-TW:
       no_results_table: 尚未定義任何webhooks 。
       label_add_new: 新增 Webhook
       label_edit: 編輯 Webhook
-      label_event_resources: 活動資源
+      label_x_events:
+        one: "1 個事件"
+        other: "%{count} 個事件"
+        zero: "沒有事件"
       events:
         created: "已建立"
         updated: "已更新"
@@ -43,7 +46,7 @@ zh-TW:
         enabled_text: 'Webhook 會針對下列定義的事件發出有效負載。'
         disabled_text: '點擊編輯按鈕以啟用 Webhook。'
       deliveries:
-        no_results_table: 在過去的幾天中，此 Webhook 未進行任何交付。
+        no_results_table: 過去幾天內，此 webhook 沒有任何傳送記錄。
         title: '最近推送記錄'
         time: '配送時間'
       form:

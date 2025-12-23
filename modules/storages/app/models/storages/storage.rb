@@ -50,20 +50,19 @@ module Storages
     has_many :project_storages, dependent: :destroy, class_name: "Storages::ProjectStorage"
     has_many :projects, through: :project_storages
     has_one :oauth_client, as: :integration, dependent: :destroy
-    # TODO: Are we using this? - 2025-07-14 @mereghost
     has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
     has_many :remote_identities, as: :integration, dependent: :destroy
 
     validates :host, uniqueness: { allow_nil: true }
     validates :name, uniqueness: true
 
-    scope :visible, ->(user = User.current) do
+    scope :visible, lambda { |user = User.current|
       if user.allowed_in_any_project?(:manage_files_in_project)
         all
       else
         where(project_storages: ProjectStorage.where(project: Project.allowed_to(user, :view_file_links)))
       end
-    end
+    }
 
     scope :not_enabled_for_project, ->(project) { where.not(id: project.project_storages.pluck(:storage_id)) }
 
@@ -91,6 +90,7 @@ module Storages
       def short_provider_name = raise Errors::SubclassResponsibility
 
       def allowed_by_enterprise_token? = true
+
       def disallowed_by_enterprise_token? = !allowed_by_enterprise_token?
 
       # TODO: Compatibility Method To be Removed once all references are removed - 2025-07-14 @mereghost
@@ -104,6 +104,10 @@ module Storages
         split_reason = text.split(/[|:]/)
         split_reason[index].strip if split_reason.length > index
       end
+
+      def non_confidential_provider_fields
+        %i[automatically_managed health_notifications_enabled]
+      end
     end
 
     delegate :short_provider_name, :allowed_by_enterprise_token?, :disallowed_by_enterprise_token?, to: :class
@@ -113,6 +117,12 @@ module Storages
     def oauth_access_granted?(user)
       (user.authentication_provider.is_a?(OpenIDConnect::Provider) && authenticate_via_idp?) ||
         OAuthClientToken.exists?(user:, oauth_client:)
+    end
+
+    # For the time being, all Storages support OAuth redirect.
+    # If a storage does not support OAuth redirect, it should override this method.
+    def supports_oauth_redirect?
+      true
     end
 
     def health_notifications_should_be_sent?
@@ -170,6 +180,16 @@ module Storages
 
     def provider_fields_defaults = raise Errors::SubclassResponsibility
 
+    def non_confidential_configuration
+      provider_fields.symbolize_keys
+                     .slice(*self.class.non_confidential_provider_fields)
+                     .merge(
+                       host:,
+                       oauth_client_id: oauth_client&.client_id,
+                       oauth_application_client_id: oauth_application&.uid
+                     )
+    end
+
     def provider_type_nextcloud?
       is_a?(NextcloudStorage)
     end
@@ -179,7 +199,7 @@ module Storages
     end
 
     def provider_type_share_point?
-      is_a?(SharePointStorage)
+      is_a?(SharepointStorage)
     end
 
     def health_reason_identifier
@@ -193,6 +213,11 @@ module Storages
     def extract_origin_user_id(token)
       auth_strategy = Adapters::Input::Strategy.build(key: :bearer_token, token: token.access_token)
       Adapters::Registry.resolve("#{self}.queries.user").call(auth_strategy:, storage: self).fmap { it[:id] }
+    end
+
+    def typed_label
+      type = I18n.t("storages.provider_types.#{short_provider_name}.name")
+      "#{name} (#{type})"
     end
   end
 end

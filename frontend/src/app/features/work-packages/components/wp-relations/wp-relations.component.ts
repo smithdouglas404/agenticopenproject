@@ -92,7 +92,7 @@ export class WorkPackageRelationsComponent extends UntilDestroyedMixin implement
         this.untilDestroyed(),
       )
       .subscribe(() => {
-        this.updateRelationsTab();
+        this.updateRelationsTabAndCounter();
       });
 
     /*
@@ -109,11 +109,6 @@ export class WorkPackageRelationsComponent extends UntilDestroyedMixin implement
     document.addEventListener('turbo:submit-end', this.turboFrameListener);
   }
 
-  public updateCounter() {
-    const url = this.PathHelper.workPackageUpdateCounterPath(this.workPackage.id!, 'relations');
-    void this.turboRequests.request(url);
-  }
-
   private async updateFrontendData(event:CustomEvent) {
     if (event) {
       // A turbo:submit-end event *has* a `formSubmission` property, but I do not
@@ -124,7 +119,7 @@ export class WorkPackageRelationsComponent extends UntilDestroyedMixin implement
 
       if (updateWorkPackage) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (event.detail && event.detail.success) {
+        if (event.detail?.success) {
           // Update the work package
           void this.apiV3Service
             .work_packages
@@ -134,19 +129,18 @@ export class WorkPackageRelationsComponent extends UntilDestroyedMixin implement
           // Refetch relations
           await this.wpRelations.require(this.workPackage.id!, true);
           this.halEvents.push(this.workPackage, { eventType: 'updated' });
-
-          this.updateCounter();
         }
       }
     }
   }
 
-  private updateRelationsTab() {
+  private updateRelationsTabAndCounter() {
     void this.turboRequests.requestStream(this.turboFrameSrc)
       .then((result) => {
         renderStreamMessage(result.html);
       });
 
-    this.updateCounter();
+    const url = this.PathHelper.workPackageUpdateCounterPath(this.workPackage.id!, 'relations');
+    void this.turboRequests.request(url);
   }
 }

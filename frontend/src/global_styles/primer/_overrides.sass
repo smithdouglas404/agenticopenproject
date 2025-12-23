@@ -73,7 +73,10 @@ ul.SegmentedControl,
     --overlay-width: 640px !important
 
   &-body_autocomplete_height
-    min-height: 300px
+    min-height: 320px
+
+  &--size-xlarge-maximized-empty-footer
+    min-height: 534px
 
 // For some specific cases like progress form in small screens,
 // we need to change the direction of elements to column,
@@ -84,16 +87,19 @@ ul.SegmentedControl,
       flex-direction: column
       row-gap: 1rem
 
-.Button.op-app-header--primer-button,
-.Button.op-app-header--primer-button svg
-  align-self: center
-  color: var(--header-item-font-color)
-
 .Button.op-app-header--primer-button
+  align-self: center
   min-width: var(--control-medium-size)
 
   &:hover
     color: var(--header-item-font-hover-color)
+
+  &:not(.Button--primary),
+  &:not(.Button--primary) svg
+    color: var(--header-item-font-color)
+
+  svg
+    align-self: center
 
 // Prototypical CKEditor adjustments to better match Primer styles
 .ck-editor-primer-adjusted
@@ -130,3 +136,15 @@ ul.SegmentedControl,
   // we override ordering to display help text after the asterisk
   > .op-attribute-help-text
     order: 1
+
+.Truncate
+  &.Truncate--expanded
+    max-width: none
+    min-width: 0
+    overflow: visible
+    white-space: normal
+
+    .Truncate-text
+      white-space: normal
+      overflow: visible
+      text-overflow: clip

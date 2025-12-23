@@ -74,7 +74,10 @@ RSpec.describe Storages::FileLinks::CopyFileLinksService, :webmock do
 
     let(:remote_source_info) do
       source_links.map do |link|
-        Storages::StorageFileInfo.new(status: "ok", status_code: 200, id: link.origin_id, name: link.origin_name,
+        Storages::StorageFileInfo.new(status: "ok",
+                                      status_code: 200,
+                                      id: link.origin_id,
+                                      name: link.origin_name,
                                       location: File.join(source_storage.managed_project_folder_path, link.origin_name))
       end
     end
@@ -100,12 +103,64 @@ RSpec.describe Storages::FileLinks::CopyFileLinksService, :webmock do
                                               .and_return(Success(path_to_ids))
     end
 
-    it "create links to the newly copied files" do
+    it "creates links to the newly copied files" do
       expect { service.call }.to change(Storages::FileLink, :count).by(5)
 
       Storages::FileLink.last(5).each do |link|
         expect(link.origin_id).to match /_target$/
         expect(link.storage_id).to eq(target.id)
+      end
+    end
+
+    context "when one file_link points to a deleted file" do
+      before do
+        link = source_links[-1]
+        remote_source_info[-1] = Storages::StorageFileInfo.new(status: "Forbidden",
+                                                               status_code: 403,
+                                                               id: link.origin_id,
+                                                               name: nil,
+                                                               location: nil)
+
+        path_to_ids.delete(File.join(target_storage.managed_project_folder_path, link.origin_name))
+      end
+
+      it "creates 4 links to the newly copied files and one to the deleted one" do
+        expect { service.call }.to change(Storages::FileLink, :count).by(5)
+
+        last_5_links = Storages::FileLink.last(5)
+        last_5_links.each do |link|
+          expect(link.storage_id).to eq(target.id)
+        end
+        last_5_links_origin_ids = last_5_links.pluck(:origin_id)
+        expect(last_5_links_origin_ids.count { |link| link =~ /_target$/ }).to eq(4)
+        expect(last_5_links_origin_ids.count { |link| link !~ /_target$/ }).to eq(1)
+      end
+    end
+
+    context "when one file_link points to a file outside of managed project folder" do
+      before do
+        link = source_links[-1]
+        location = File.join("/", link.origin_name)
+        old_location = File.join(target_storage.managed_project_folder_path, link.origin_name)
+        remote_source_info[-1] = Storages::StorageFileInfo.new(status: "ok",
+                                                               status_code: 200,
+                                                               id: link.origin_id,
+                                                               name: link.origin_name,
+                                                               location:)
+
+        path_to_ids.delete(old_location)
+      end
+
+      it "creates 4 links to the newly copied files and one to the file outside of managed project folder" do
+        expect { service.call }.to change(Storages::FileLink, :count).by(5)
+
+        last_5_links = Storages::FileLink.last(5)
+        last_5_links.each do |link|
+          expect(link.storage_id).to eq(target.id)
+        end
+        last_5_links_origin_ids = last_5_links.pluck(:origin_id)
+        expect(last_5_links_origin_ids.count { |link| link =~ /_target$/ }).to eq(4)
+        expect(last_5_links_origin_ids.count { |link| link !~ /_target$/ }).to eq(1)
       end
     end
   end

@@ -3,6 +3,7 @@ import { renderStreamMessage } from '@hotwired/turbo';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 import { TurboHelpers } from 'core-turbo/helpers';
+import { getMetaContent } from '../setup/globals/global-helpers';
 
 @Injectable({ providedIn: 'root' })
 export class TurboRequestsService {
@@ -31,9 +32,12 @@ export class TurboRequestsService {
       init.signal = controller.signal;
     }
 
-    const defaultHeaders = {
+    const defaultHeaders:{'X-Authentication-Scheme':string, 'X-CSRF-Token'?:string} = {
       'X-Authentication-Scheme': 'Session',
     };
+    if(init.method && !(init.method === 'GET' || init.method === 'HEAD')) {
+      defaultHeaders['X-CSRF-Token'] = getMetaContent('csrf-token');
+    }
 
     init.headers = {
       ...defaultHeaders,
@@ -98,9 +102,6 @@ export class TurboRequestsService {
       {
         method: form.method,
         body: formData,
-        headers: {
-          'X-CSRF-Token': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content,
-        },
       },
       true,
       requestId || requestUrlWithParams,

@@ -69,7 +69,7 @@ module ScimV2
           raise_result_errors_for_scim(
             Groups::UpdateService
               .new(user: User.current, model: group)
-              .call(user_ids: scim_resource.members&.map(&:value))
+              .call(replace_user_ids: scim_resource.members&.map(&:value))
           )
           group.reload
           group.to_scim(
@@ -89,7 +89,7 @@ module ScimV2
           raise_result_errors_for_scim(
             Groups::UpdateService
               .new(user: User.current, model: group)
-              .call(user_ids:)
+              .call(replace_user_ids: user_ids)
           )
           group.reload
           group.to_scim(

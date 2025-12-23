@@ -31,9 +31,9 @@ pt-PT:
         spent: "Gasto"
         spent_on: "Data"
         logged_by: "Registado por"
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: Registado para
+        entity_id: Registado para
+        entity_gid: Registado para
       cost_type:
         unit: "Nome da Unidade"
         unit_plural: "Nome da unidade no plural"
@@ -61,9 +61,9 @@ pt-PT:
         start_time: Hora de início
         end_time: Hora de fim
         time: Hora
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: Registado para
+        entity_id: Registado para
+        entity_gid: Registado para
     models:
       time_entry:
         one: "Entrada de hora"
@@ -101,7 +101,7 @@ pt-PT:
   button_log_time: "Registo"
   button_add_activity: "Atividade"
   button_add_time_entry: "Tempo de registro"
-  button_stop_timer: "Stop timer"
+  button_stop_timer: "Parar temporizador"
   caption_booked_on_project: "Marcado no projeto"
   caption_default: "Predefinido"
   caption_default_rate_history_for: "História de taxa padrão para %{user}"
@@ -180,7 +180,7 @@ pt-PT:
   label_day: "Dia"
   label_today_capitalized: "Hoje"
   label_view_mode_switcher: "Mudar vista"
-  label_timer_since: "Started at %{time}"
+  label_timer_since: "Iniciado em %{time}"
   placeholder_activity_select_work_package_first: A seleção do pacote de trabalho é necessária em primeiro lugar
   notice_something_wrong: "Ocorreu um erro. Por favor, tente novamente."
   notice_successful_restore: "Restauração bem-sucedida."
@@ -188,7 +188,7 @@ pt-PT:
   notice_cost_logged_successfully: "Custo unitário registado com êxito."
   notice_different_time_zones: "Este utilizador tem um fuso horário diferente (%{tz}). A hora será registada utilizando o fuso horário do mesmo."
   notice_time_entry_update_failed: "Não foi possível atualizar o registo de tempo. Erros: %{errors}"
-  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Não foi possível eliminar o registo de tempo. Erros: %{errors}"
   permission_edit_cost_entries: "Editar custos unitários marcados"
   permission_edit_own_cost_entries: "Editar custos unitários próprios marcados"
   permission_edit_hourly_rates: "Editar taxas horárias"

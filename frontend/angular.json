@@ -26,18 +26,16 @@
               "jquery",
               "contra/emitter",
               "crossvent",
-              "chart.js",
               "create-point-cb",
               "core-vendor/enjoyhint",
-              "tablesorter",
-              "chartjs-plugin-datalabels"
+              "tablesorter"
             ],
             "preserveSymlinks": true,
             "outputPath": {
               "base": "../public/assets/frontend",
               "browser": ""
             },
-            "index": "src/index2.html",
+            "index": false,
             "browser": "src/main.ts",
             "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
@@ -54,8 +52,11 @@
                 "input": "src/backlogs.scss",
                 "bundleName": "backlogs"
               },
+              {
+                "input": "node_modules/@blocknote/mantine/src/style.css",
+                "bundleName": "blocknote"
+              },
               "src/styles.scss",
-              "node_modules/@blocknote/mantine/dist/style.css",
               "node_modules/codemirror/lib/codemirror.css",
               "src/vendor/jquery-ui-1.14.1/jquery-ui.css",
               "src/vendor/jquery-ui-1.14.1/jquery-ui.structure.css",
@@ -65,13 +66,26 @@
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/assets/sass"
-              ]
+              ],
+              "sass": {
+                "silenceDeprecations": [
+                  "color-functions",
+                  "global-builtin",
+                  "import",
+                  "mixed-decls"
+                ]
+              }
             },
             "scripts": [
               {
                 "input": "node_modules/jquery/dist/jquery.min.js",
                 "inject": false,
                 "bundleName": "jquery"
+              },
+              {
+                "input": "node_modules/openapi-explorer/dist/browser/openapi-explorer.min.js",
+                "inject": false,
+                "bundleName": "openapi-explorer"
               }
             ]
           },
@@ -98,12 +112,14 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "define": { "process.env.NODE_ENV": "'production'" }
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "define": { "process.env.NODE_ENV": "'development'" }
             }
           },
           "defaultConfiguration": "production"

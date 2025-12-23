@@ -36,10 +36,7 @@ module Storages
         private_class_method :new
 
         def self.build(destination:, method:, contract: UploadLinkContract.new)
-          contract.call(destination:, method:).to_monad.fmap do |it|
-            params = it.to_h
-            new(URI(params[:destination]), params[:method])
-          end
+          contract.call(destination: URI(destination), method:).to_monad.fmap { new(**it.to_h) }
         end
       end
     end

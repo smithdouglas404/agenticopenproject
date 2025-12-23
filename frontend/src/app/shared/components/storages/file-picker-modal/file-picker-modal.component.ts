@@ -46,7 +46,7 @@ import { FileLinksResourceService } from 'core-app/core/state/file-links/file-li
 import { isDirectory, storageLocaleString } from 'core-app/shared/components/storages/functions/storages.functions';
 import { StorageFilesResourceService } from 'core-app/core/state/storage-files/storage-files.service';
 import {
-  StorageFileListItem,
+  StorageFileListItem, StorageFileListItemCheckbox,
 } from 'core-app/shared/components/storages/storage-file-list-item/storage-file-list-item';
 import {
   FilePickerBaseModalComponent,
@@ -192,11 +192,17 @@ export class FilePickerModalComponent extends FilePickerBaseModalComponent {
       this.enterDirectoryCallback(file),
       false,
       this.tooltip(file),
-      {
-        selected: this.selection.has(file.id as string),
-        changeSelection: () => { this.changeSelection(file); },
-      },
+      this.hasCheckbox(file),
     );
+  }
+
+  private hasCheckbox(file:IStorageFile):StorageFileListItemCheckbox|undefined {
+    if (file.mimeType !== 'application/x-op-drive') {
+      return {
+        selected: this.selection.has(file.id as string),
+        changeSelection: () => { this.changeSelection(file); }
+      };
+    } else { return; }
   }
 
   private isAlreadyLinked(file:IStorageFile):boolean {

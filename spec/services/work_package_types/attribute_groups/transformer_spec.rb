@@ -90,7 +90,7 @@ RSpec.describe WorkPackageTypes::AttributeGroups::Transformer do
             query: {
               "columns[]" => %w[id subject],
               "filters" => "[]",
-              "sortBy" => "[['id', 'asc']]",
+              "sortBy" => JSON.dump(["id:asc"]),
               "groupBy" => ""
             }.to_json
           }

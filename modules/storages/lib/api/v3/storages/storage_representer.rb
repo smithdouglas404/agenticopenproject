@@ -40,12 +40,12 @@ module API::V3::Storages
 
   URN_STORAGE_TYPE_NEXTCLOUD = "#{::API::V3::URN_PREFIX}storages:Nextcloud".freeze
   URN_STORAGE_TYPE_ONE_DRIVE = "#{::API::V3::URN_PREFIX}storages:OneDrive".freeze
-  URN_STORAGE_TYPE_SHARE_POINT = "#{::API::V3::URN_PREFIX}storages:SharePoint".freeze
+  URN_STORAGE_TYPE_SHARE_POINT = "#{::API::V3::URN_PREFIX}storages:Sharepoint".freeze
 
   STORAGE_TYPE_MAP = {
     URN_STORAGE_TYPE_NEXTCLOUD => Storages::NextcloudStorage.name,
     URN_STORAGE_TYPE_ONE_DRIVE => Storages::OneDriveStorage.name,
-    URN_STORAGE_TYPE_SHARE_POINT => Storages::SharePointStorage.name
+    URN_STORAGE_TYPE_SHARE_POINT => Storages::SharepointStorage.name
   }.freeze
 
   STORAGE_TYPE_URN_MAP = STORAGE_TYPE_MAP.invert.freeze
@@ -98,6 +98,11 @@ module API::V3::Storages
              skip_render: ->(represented:, **) { !represented.provider_type_nextcloud? },
              getter: ->(represented:, **) { represented.provider_type_nextcloud? && represented.storage_audience },
              setter: ->(fragment:, represented:, **) { represented.storage_audience = fragment }
+
+    property :tokenExchangeScope,
+             skip_render: ->(represented:, **) { !represented.provider_type_nextcloud? },
+             getter: ->(represented:, **) { represented.provider_type_nextcloud? && represented.token_exchange_scope },
+             setter: ->(fragment:, represented:, **) { represented.token_exchange_scope = fragment }
 
     property :applicationPassword,
              skip_render: ->(*) { true },

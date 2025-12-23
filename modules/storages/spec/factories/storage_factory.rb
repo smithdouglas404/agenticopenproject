@@ -94,6 +94,13 @@ FactoryBot.define do
     authentication_method { "two_way_oauth2" }
     storage_audience { nil }
 
+    trait :with_oauth_configured do
+      after(:create) do |storage, _evaluator|
+        create(:oauth_client, integration: storage)
+        create(:oauth_application, integration: storage)
+      end
+    end
+
     trait :oidc_sso_enabled do
       storage_audience { "nextcloud" }
       authentication_method { "oauth2_sso" }
@@ -107,7 +114,7 @@ FactoryBot.define do
     trait :as_automatically_managed do
       automatic_management_enabled { true }
       username { "OpenProject" }
-      password { ENV.fetch("NEXTCLOUD_LOCAL_GROUP_USER_PASSWORD", "Password123") }
+      password { "Password123" }
     end
   end
 
@@ -128,6 +135,7 @@ FactoryBot.define do
 
     name { "Nextcloud Local" }
     host { "https://nextcloud.local/" }
+    password { ENV.fetch("NEXTCLOUD_LOCAL_AMPF_PASSWORD", "MISSING_NEXTCLOUD_AMPF_PASSWORD") }
 
     initialize_with do
       Storages::NextcloudStorage.create_or_find_by(attributes.except(:oauth_client, :oauth_application))
@@ -161,6 +169,12 @@ FactoryBot.define do
              integration: storage,
              user: evaluator.oauth_client_token_user,
              origin_user_id: evaluator.origin_user_id)
+    end
+
+    trait :as_automatically_managed do
+      automatic_management_enabled { true }
+      username { "OpenProject" }
+      password { ENV.fetch("NEXTCLOUD_LOCAL_AMPF_PASSWORD", "AMPF_PASSWORD_NOT_SET") }
     end
   end
 
@@ -208,7 +222,8 @@ FactoryBot.define do
 
     after(:create) do |storage, evaluator|
       create(:oauth_client,
-             client_id: ENV.fetch("ONE_DRIVE_TEST_OAUTH_CLIENT_ID", "MISSING_ONE_DRIVE_TEST_OAUTH_CLIENT_ID"),
+             client_id: ENV.fetch("ONE_DRIVE_TEST_OAUTH_CLIENT_ID",
+                                  "MISSING_ONE_DRIVE_TEST_OAUTH_CLIENT_ID"),
              client_secret: ENV.fetch("ONE_DRIVE_TEST_OAUTH_CLIENT_SECRET",
                                       "MISSING_ONE_DRIVE_TEST_OAUTH_CLIENT_SECRET"),
              integration: storage)
@@ -224,38 +239,45 @@ FactoryBot.define do
     end
   end
 
-  factory :share_point_storage,
+  factory :sharepoint_storage,
           parent: :storage,
-          class: "::Storages::SharePointStorage" do
+          class: "::Storages::SharepointStorage" do
     host { "https://openproject.sharepoint.com/sites/ProjectX" }
     automatically_managed { false }
 
     trait :with_tenant_id do
       tenant_id { SecureRandom.uuid }
     end
-  end
 
-  factory :share_point_dev_storage, parent: :storage, class: "::Storages::SharePointStorage" do
-    tenant_id { ENV.fetch("SHARE_POINT_TEST_TENANT_ID", "e36f1dbc-fdae-427e-b61b-0d96ddfb81a4") }
-    host { ENV.fetch("SHARE_POINT_TEST_HOST", "https://ymt6d.sharepoint.com/sites/OPTest") }
-
-    transient do
-      oauth_client_token_user { association :user }
+    trait :as_automatically_managed do
+      automatically_managed { true }
     end
 
-    after(:create) do |storage, evaluator|
-      create(:oauth_client,
-             client_id: ENV.fetch("SHARE_POINT_TEST_OAUTH_CLIENT_ID", "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_ID"),
-             client_secret: ENV.fetch("SHARE_POINT_TEST_OAUTH_CLIENT_SECRET", "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_SECRET"),
-             integration: storage)
+    trait :sandbox do
+      tenant_id { ENV.fetch("SHAREPOINT_TEST_TENANT_ID", "e36f1dbc-fdae-427e-b61b-0d96ddfb81a4") }
+      host { ENV.fetch("SHAREPOINT_TEST_HOST", "https://ymt6d.sharepoint.com/sites/OPTest") }
 
-      create(:oauth_client_token,
-             oauth_client: storage.oauth_client,
-             user: evaluator.oauth_client_token_user,
-             access_token: ENV.fetch("SHARE_POINT_TEST_OAUTH_CLIENT_ACCESS_TOKEN", "SHARE_POINT_TEST_OAUTH_CLIENT_ACCESS_TOKEN"),
-             refresh_token: ENV.fetch("SHARE_POINT_TEST_OAUTH_CLIENT_REFRESH_TOKEN",
-                                      "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_REFRESH_TOKEN"),
-             token_type: "bearer")
+      transient do
+        oauth_client_token_user { association :user }
+      end
+
+      after(:create) do |storage, evaluator|
+        create(:oauth_client,
+               client_id: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_ID",
+                                    "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_ID"),
+               client_secret: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_SECRET",
+                                        "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_SECRET"),
+               integration: storage)
+
+        create(:oauth_client_token,
+               oauth_client: storage.oauth_client,
+               user: evaluator.oauth_client_token_user,
+               access_token: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_ACCESS_TOKEN",
+                                       "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_ACCESS_TOKEN"),
+               refresh_token: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_REFRESH_TOKEN",
+                                        "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_REFRESH_TOKEN"),
+               token_type: "bearer")
+      end
     end
   end
 end

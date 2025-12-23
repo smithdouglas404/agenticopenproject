@@ -24,7 +24,7 @@ If you want to add a common pattern, manually register the controller under `fro
 If you want to add a stimulus controller from plugin code, you can do so by manually adding it to the preregister:
 
 ```typescript
-import { OpenProjectStimulusApplication } from 'core-app/stimulus/app';
+import { OpenProjectStimulusApplication } from 'core-stimulus/openproject-stimulus-application';
 import { MyTestControllerClass } from './test/foo/my-test.controller';
   
 
@@ -69,7 +69,7 @@ OpenProjectStimulusApplication.preregisterDynamic(
 );
 ```
 
-This ensures that the controller is loaded only when it is needed, and not at application startup. The controller will then be engaded when the `data-controller` attribute is present in the DOM through the same mechanism as for the core dynamic controllers.
+This ensures that the controller is loaded only when it is needed, and not at application startup. The controller will then be enabled when the `data-controller` attribute is present in the DOM through the same mechanism as for the core dynamic controllers.
 
 ### Requiring a page controller
 

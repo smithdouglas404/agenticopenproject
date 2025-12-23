@@ -123,7 +123,7 @@ zh-CN:
       2fa_from_webauthn: 请提供 WebAuthn 设备 <strong>%{device_name}</strong>.如果是 USB 设备，请确保插入并使用它。然后点击登录按钮。
       webauthn:
         title: "WebAuthn 认证"
-        description: 注册 FIDO2 设备（如 Yubikey）或您移动设备的安全隔区。
+        description: 注册 FIDO2 设备（如 YubiKey）或您的移动设备的安全隔区。
         further_steps: 选择名称后，可以点击“继续”按钮。浏览器将提示您出示 WebAuthn 设备。完成后，设备注册即告完成。
       totp:
         title: "基于应用程序的身份验证"

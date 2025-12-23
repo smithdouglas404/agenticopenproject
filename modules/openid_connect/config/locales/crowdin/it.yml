@@ -7,18 +7,18 @@ it:
   activerecord:
     attributes:
       openid_connect/group_link:
-        oidc_group_name: OpenID group identifier
+        oidc_group_name: Identificatore gruppo OpenID
       openid_connect/provider:
         name: Nome
         slug: Identificatore univoco
         display_name: Visualizza nome
         client_id: ID Client
         client_secret: Chiave segreta del client
-        groups_claim: Groups claim
-        group_regexes: Patterns (regular expressions)
+        groups_claim: Claim gruppi
+        group_regexes: Pattern (espressioni regolari)
         secret: Segreto
         scope: Ambito
-        sync_groups: Synchronize groups
+        sync_groups: Sincronizza gruppi
         grant_types_supported: Tipi di autorizzazioni supportate
         limit_self_registration: Limita registrazione autonoma
         authorization_endpoint: Endpoint di autorizzazione
@@ -43,6 +43,10 @@ it:
               response_is_not_successful: " risponde con %{status}."
               response_is_not_json: " non restituisce il corpo JSON."
               response_misses_required_attributes: " non restituisce gli attributi richiesti. Attributi mancanti: %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: Inserisci il nome del fornitore %{name} per confermare l'eliminazione.
@@ -57,16 +61,27 @@ it:
   openid_connect:
     menu_title: OpenID provider
     delete_title: "Elimina fornitore OpenID Connect"
-    group_links_heading: OpenID Connect group links
+    group_links_heading: Link di gruppo OpenID Connect
+    groups:
+      match_preview_component:
+        title: Nomi di gruppo estratti
+        placeholder_none: Nessun gruppo corrisponde al modello.
+      match_preview_dialog_component:
+        description: Questo ti consente di testare il tuo modello di espressione regolare su dati di esempio per verificare che i nomi dei gruppi che vuoi estrarre vengano effettivamente estratti correttamente. Puoi modificare qui il modello, ma la stringa di test e le corrispondenze non verranno salvate con la configurazione.
+        group_names_label: Nomi dei gruppi di test
+        group_names_description: Inserisci un nome di gruppo per riga come appare nella claim OIDC, per vedere come i tuoi modelli di espressione regolare li influenzano.
+        show_button: Prova il modello
+        title: Prova l'espressione regolare
     instructions:
-      redirect_url: Questo è l'URL di reindirizzamento che il fornitore OpenID Connect deve utilizzare per reindirizzare a OpenProject dopo un accesso riuscito.
       endpoint_url: L'URL dell'endpoint fornito dal fornitore OpenID Connect
-      group_regexes: One regular expression pattern per line. Please read [the documentation](docs_url) for more information on how to do this.
-      group_regexes_detail: Optionally define patterns using regular expressions to match group names from the groups claim. For example, entering a pattern like <code>^Level1/Level2/([\w/]+)$</code> will extract the group “Groupname/SubGroup” from a response including “Level1/Level2/GroupName/SubGroup”. If no pattern matches, the group is ignored. Leave empty to synchronize all groups using their full group name.
-      group_sync: Automatically extract and synchronise group membership information from the identity provider.
-      groups_claim: Specify the name of the claim that's expected to indicate the group names that the user is a member of.
+      group_regexes: Una espressione regolare per riga. Consulta la [documentazione](docs_url) per maggiori informazioni.
+      group_regexes_detail: Facoltativamente, definisci pattern utilizzando espressioni regolari per trovare nomi di gruppo dal claim dei gruppi. Ad esempio, inserendo un pattern come <code>^Level1/Level2/([\w/]+)$</code> verrà estratto il gruppo “Groupname/SubGroup” da una risposta che include “Level1/Level2/GroupName/SubGroup”. Se nessun pattern corrisponde, il gruppo viene ignorato. Lascia vuoto per sincronizzare tutti i gruppi utilizzando il loro nome completo.
+      group_regexes_testing: "Fai clic su 'Prova il modello' per verificare il tuo modello di espressione regolare sui dati di esempio OIDC userinfo."
+      group_sync: Estrai e sincronizza automaticamente le informazioni di appartenenza al gruppo dal fornitore di identità.
+      groups_claim: Specifica il nome della richiesta che dovrebbe indicare i nomi dei gruppi di cui l'utente è membro.
       metadata_none: Non ho queste informazioni
       metadata_url: Ho un URL endpoint di ricerca
+      oidc_information: Questi valori sono necessari per configurare il provider OpenID Connect.
       client_id: Questo è l'ID client che ti viene assegnato dal tuo fornitore OpenID Connect
       client_secret: Questa è la chiave segreta del client che ti viene assegnata dal tuo fornitore OpenID Connect
       limit_self_registration: Se l'opzione è abilitata, gli utenti possono registrarsi utilizzando questo fornitore solo se la configurazione da parte del fornitore lo consente.
@@ -108,7 +123,7 @@ it:
       label_edit: Modifica provider OpenID %{name}
       label_empty_title: Nessun fornitore OpenID configurato.
       label_empty_description: Aggiungi fornitori per vederli qui.
-      label_group_mapping: Group mapping
+      label_group_mapping: Mappatura gruppi
       label_metadata: Endpoint di ricerca di OpenID Connect
       label_automatic_configuration: Configurazione automatica
       label_optional_configuration: Configurazione opzionale
@@ -116,12 +131,13 @@ it:
       label_configuration_details: Metadati
       label_client_details: Dettagli client
       label_attribute_mapping: Mappatura attributi
+      notice_created: È stato creato con successo un nuovo provider OpenID.
       client_details_description: Dettagli di configurazione di OpenProject come client OIDC
       no_results_table: Non è stato definito alcun provider.
       plural: OpenID provider
       singular: Provider OpenID
       section_texts:
-        group_mapping: Map group names provided by the identity provider to groups in OpenProject.
+        group_mapping: Mappa i nomi dei gruppi forniti dal fornitore di identità con i gruppi in OpenProject.
         metadata: Precompila la configurazione utilizzando un URL dell'endpoint di ricerca OpenID Connect
         metadata_form_banner: La modifica dell'endpoint di ricerca può sovrascrivere i valori dei metadati precompilati esistenti.
         metadata_form_title: Endpoint di ricerca di OpenID Connect
@@ -133,7 +149,7 @@ it:
         claims: Effettua ulteriori richieste per l'ID token o la risposta userinfo.
       side_panel:
         information_component:
-          backchannel_logout_url: Backchannel logout URL
+          backchannel_logout_url: URL di logout backchannel
     setting_instructions:
       limit_self_registration: >
         Se abilitato, gli utenti possono registrarsi esclusivamente utilizzando questo fornitore, se l'impostazione di registrazione autonoma lo consente.

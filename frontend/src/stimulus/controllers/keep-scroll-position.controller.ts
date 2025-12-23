@@ -70,7 +70,9 @@ export default class KeepScrollPositionController extends ApplicationController 
       const content = document.getElementById('content-body');
 
       if (content) {
-        content.scrollTop = parseInt(lastKnownPos, 10);
+        setTimeout(() => {
+          content.scrollTop = parseInt(lastKnownPos, 10);
+        }, 25); // Magic number - unsure why, but fixes the issue of not scrolling on reload
       }
     }
 

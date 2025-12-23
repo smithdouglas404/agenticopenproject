@@ -30,6 +30,8 @@
 
 class WorkPackages::SetAttributesService
   class DeriveProgressValuesBase
+    include WorkPackages::SetAttributesService::ProgressValuesCalculations
+
     attr_reader :work_package
 
     def initialize(work_package)
@@ -176,12 +178,6 @@ class WorkPackages::SetAttributesService
       if rounded != remaining_work && remaining_work_valid?
         self.remaining_work = rounded
       end
-    end
-
-    def remaining_work_from_percent_complete_and_work
-      completed_work = work * percent_complete / 100.0
-      remaining_work = (work - completed_work).round(2)
-      remaining_work.clamp(0.0, work)
     end
   end
 end

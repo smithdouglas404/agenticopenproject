@@ -29,7 +29,7 @@ The project status is displayed in different OpenProject modules.
 
 Click **[Project lists](../../projects/project-lists/)** button at the bottom of the *All projects* dropdown menu in the header navigation to open the project lists, which displays all your projects including their status.
 
-!["Project lists" button at the bottom of the All projects dropdown menu in the header navigation of Openproject](openproject_userguide_projects_project_lists_button.png)
+!["Project lists" button at the bottom of the All projects dropdown menu in the header navigation of OpenProject](openproject_userguide_projects_project_lists_button.png)
 
 ![Project list displaying project status column and project status filters in OpenProject](openproject_userguide_projects_project_lists_status_column.png)
 

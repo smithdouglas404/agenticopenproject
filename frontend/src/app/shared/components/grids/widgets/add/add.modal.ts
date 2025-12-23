@@ -27,7 +27,7 @@ export class AddGridWidgetModalComponent extends OpModalComponent implements OnI
     cancel_button: this.i18n.t('js.button_cancel'),
   };
 
-  public chosenWidget:WidgetRegistration;
+  public chosenWidget?:WidgetRegistration;
 
   public eeShowBanners = false;
 
@@ -54,12 +54,12 @@ export class AddGridWidgetModalComponent extends OpModalComponent implements OnI
     return this.eligibleWidgets.sort((a, b) => a.title.localeCompare(b.title));
   }
 
-  public select($event:MouseEvent, widget:WidgetRegistration) {
+  public select(event:MouseEvent, widget:WidgetRegistration) {
     this.chosenWidget = widget;
-    this.closeMe($event);
+    this.closeMe(event);
   }
 
-  public trackWidgetBy(widget:WidgetRegistration) {
+  public trackWidgetBy(_index:number, widget:WidgetRegistration) {
     return widget.identifier;
   }
 

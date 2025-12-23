@@ -35,7 +35,8 @@ module DemoData
 
     self.needs = WorkPackageSeeder.needs + [
       BasicData::ProjectRoleSeeder,
-      BasicData::GlobalRoleSeeder
+      BasicData::GlobalRoleSeeder,
+      BasicData::ProjectPhaseDefinitionSeeder
     ]
 
     def seed_data!
@@ -54,6 +55,7 @@ module DemoData
     # override to add additional seeders
     def project_content_seeder_classes
       [
+        DemoData::ProjectPhaseSeeder,
         DemoData::WikiSeeder,
         DemoData::WorkPackageSeeder,
         DemoData::WorkPackageBoardSeeder,
@@ -152,8 +154,7 @@ module DemoData
       seed_data.lookup("types") || []
     end
 
-    def project_attributes
-      parent = Project.find_by(identifier: project_data.lookup("parent"))
+    def project_attributes # rubocop:disable Metrics/AbcSize
       {
         name: project_data.lookup("name"),
         identifier: project_data.lookup("identifier"),
@@ -162,7 +163,8 @@ module DemoData
         description: project_data.lookup("description"),
         enabled_module_names: project_data.lookup("modules"),
         types: Type.all,
-        parent:
+        parent: Project.find_by(identifier: project_data.lookup("parent")),
+        workspace_type: "project"
       }
     end
   end

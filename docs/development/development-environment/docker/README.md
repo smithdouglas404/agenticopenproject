@@ -242,7 +242,7 @@ As an overview, you need to take the following, additional steps:
 
 1. Set up a local certificate authority and reverse proxy
 2. Extract created root certificate and install it into system and browsers
-3. Amend docker containers with labels for proxy
+3. Amend docker containers with labels for reverse proxy
 
 At the end you will be running two separate docker-compose stacks:
 
@@ -378,12 +378,38 @@ docker compose --project-directory docker/dev/tls up -d
 
 It will take a couple of seconds to start, as there is a health check in the step container.
 
-### Amend docker services
+### Amend Docker services for local TLS
 
-The docker services of the `docker-compose.yml` need additional information to be able to run in the local setup with
-TLS support. Basically, you need to tell `traefik` for which docker compose service it needs to create a HTTP router.
-There is an example compose file (see `docker/dev/tls/docker-compose.core-override.example.yml`), which contents you can
-take over to your custom `docker-compose.override.yml` in the repository root.
+When running the local setup with TLS, some services in `docker-compose.yml` require additional
+configuration so that `traefik` knows which requests to route.
+
+You need to specify, for each service, the `traefik` labels that define its HTTP router.
+An example configuration is provided in `docker/dev/tls/docker-compose.core-override.example.yml`.
+Copy its contents into your own `docker-compose.override.yml` in the repository root, and adjust hostnames if necessary.
+
+Ensure that both the `backend` and `frontend` services:
+- are attached to the same `networks` as `traefik`
+- have the appropriate `traefik` labels
+
+Example:
+
+```yaml
+frontend:
+  networks:
+    - external
+  labels:
+    - "traefik.enable=true"
+  ...
+
+backend:
+  networks:
+    - external
+  labels:
+    - "traefik.enable=true"
+  ...
+```
+This ensures that traefik will route HTTPS requests for `openproject.local` and `openproject-assets.local` to the
+correct containers in your local setup.
 
 In addition, we need to alter the environmental variables used in the new overrides. So we need to amend the `.env` file
 like that:
@@ -396,7 +422,7 @@ OPENPROJECT_DEV_URL=https://${OPENPROJECT_DEV_HOST}
 After amending the override file and the `.env`, ensure that you restart the stack.
 
 ```shell
-docker compose up -d frontend
+docker compose up -d backend
 ```
 
 ### Adding a new service
@@ -424,6 +450,26 @@ suspended and continued at a later time. To fix it, restart your proxy stack.
 docker compose --project-directory docker/dev/tls down
 docker compose --project-directory docker/dev/tls up -d
 ```
+
+#### Blank page on `openproject.local`
+
+A blank page on `openproject.local`  can indicate that compilation is either in progress or has failed. To investigate, check the frontend container output:
+```shell
+docker compose logs frontend`
+```
+Sometimes compilation errors can occur due to broken node_modules state(for example after switching branches or partial installations). It can be resolved by removing node_modules and installing from scratch:
+```shell
+rm -rf frontend/node_modules/
+docker compose run --rm frontend npm install
+```
+
+Then restart both the frontend service:
+```shell
+docker compose restart frontend
+```
+
+If the issue persists, clear your browser cache and reload the page.
+Cached assets from a previous build may prevent the updated frontend from loading correctly.
 
 ## GitLab CE Service
 
@@ -492,6 +538,35 @@ docker compose up -d frontend
 ```
 
 Upon setting up all the things correctly, we can see a login with `keycloak` option in login page of `OpenProject`.
+
+
+## MinIO Service (local S3 storage backend)
+
+Within `docker/dev/minio` a compose file is provided for running a local MinIO instance with TLS support which can be used as a S3 storage for uploading files. 
+When running with TLS support, the MinIO instance will be accessible on `https://minio.local` and a management UI (MinIO Console) will be available on `https://minioadmin.local/`.
+
+### Running the MinIO Instance
+
+MinIO is a S3 compatible data store which can be used for simulating uploads of files to S3.
+
+Start up the docker compose service for MinIO:
+
+```shell
+docker compose --project-directory docker/dev/minio up -d
+```
+This will automatically create a bucket named `openproject-uploads` which is used to store uploaded files.
+
+If you want to use TLS support, make sure to copy and uncomment the MinIO configuration environment variables in `docker/dev/tls/docker-compose.core.override.example.yml` to your `docker-compose.override.yml` file in the project root directory. If you want to use MinIO without TLS support, make sure to copy the environment variables from `docker/dev/minio/docker-compose.core-override.example.yml` to your `docker-compose.override.yml` file (in the project root directory). 
+After that, hard restart the `backend` service to apply the changes: 
+
+```
+docker compose down backend
+docker compose up backend
+```
+
+Another option is to use the MinIO service running in docker with OpenProject running locally. To do this, adapt the environment variables in `docker/dev/minio/docker-compose.core.override.example.yml` to your `.env` file and restart the OpenProject after that.
+
+After uploading a file, by e.g. adding an image to a work package, you should be able to see the file in the MinIO Console (a graphical Management UI accessible in the browser). With the TLS setup you can access the MinIO Console on `https://minioadmin.local/`, without TLS it is available on `http://localhost:9001`. For login credentials see `docker/dev/minio/docker-compose.yml`.
 
 ## Local files
 

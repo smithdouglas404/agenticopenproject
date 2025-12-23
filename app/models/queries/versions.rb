@@ -31,6 +31,7 @@
 module Queries::Versions
   ::Queries::Register.register(VersionQuery) do
     filter Filters::SharingFilter
+    filter Filters::NameFilter
 
     order Orders::DefaultOrder
   end

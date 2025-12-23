@@ -31,17 +31,57 @@
 Rails.application.config.to_prepare do
   Scimitar.service_provider_configuration = Scimitar::ServiceProviderConfiguration.new(
     patch: Scimitar::Supportable.supported,
-    authenticationSchemes: [Scimitar::AuthenticationScheme.bearer]
+    authenticationSchemes: OpenProjectScimitar::AUTHENTICATION_SCHEMES
   )
   Scimitar.engine_configuration = Scimitar::EngineConfiguration.new(
-    application_controller_mixin: ScimV2::ScimControllerMixins
+    custom_authenticator: lambda do
+      if !EnterpriseToken.allows_to?(:scim_api)
+        plan = OpenProject::Token.lowest_plan_for(:scim_api)
+        error = Scimitar::ErrorResponse.new(
+          status: 403,
+          detail: "This endpoint requires an enterprise subscription of at least #{plan}"
+        )
+        return handle_scim_error(error)
+      end
+
+      warden = request.env["warden"]
+      user = warden.authenticate(scope: :scim_v2)
+      if user.nil?
+        if controller_path != "scimitar/service_provider_configurations" ||
+           # It means authorization credentials were provided in ways expected by OpenProject, but the credentials were wrong.
+           # So, no user found.
+           warden.winning_strategy.present?
+          throw(:warden)
+        else
+          limited_service_provider_configuration = {
+            meta: Scimitar::Meta.new(
+              resourceType: "ServiceProviderConfig",
+              created: Time.zone.now,
+              lastModified: Time.zone.now,
+              version: "1"
+            ),
+            schemas: ["urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig"],
+            authenticationSchemes: OpenProjectScimitar::AUTHENTICATION_SCHEMES
+          }
+          render json: limited_service_provider_configuration
+          return
+        end
+      else
+        User.current = user
+        # Only a ServiceAccount associated with a ScimClient can use SCIM Server API
+        unless User.current.respond_to?(:service) && User.current.service.is_a?(ScimClient)
+          return handle_scim_error(Scimitar::AuthenticationError.new)
+        end
+      end
+      true
+    end
   )
 
   Scimitar::Schema::User.singleton_class.class_eval do
-    prepend ScimitarSchemaExtension::User
+    prepend OpenProjectScimitar::User
   end
 
   Scimitar::Schema::Group.singleton_class.class_eval do
-    prepend ScimitarSchemaExtension::Group
+    prepend OpenProjectScimitar::Group
   end
 end

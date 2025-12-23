@@ -50,7 +50,7 @@ class Widget::Filters::WorkPackage < Widget::Filters::Base
                                     searchKey: "subjectOrId"
                                   },
                                   id: "#{filter_class.underscore_name}_select_1",
-                                  class: "filter-value"
+                                  class: "filter-value advanced-filters--ng-select"
 
       content_tag(:span, class: "inline-label") do
         label + box

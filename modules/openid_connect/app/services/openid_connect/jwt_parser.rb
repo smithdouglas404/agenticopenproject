@@ -87,7 +87,7 @@ module OpenIDConnect
 
       provider = OpenIDConnect::Provider.where(available: true).where("options->>'issuer' = ?", issuer).first
       return Failure("The access token issuer is unknown") if provider.blank?
-      return Failure("Unable to validate issuer signature, can't fetch JWKS") if provider.jwks_uri.blank?
+      return Failure("Unable to validate issuer signature, OpenID Connect provider has no JWKS URI.") if provider.jwks_uri.blank?
 
       Success(provider)
     end

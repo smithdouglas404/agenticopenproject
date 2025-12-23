@@ -31,9 +31,9 @@ it:
         spent: "Trascorso"
         spent_on: "Data"
         logged_by: "Registrato da"
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: Registrato per
+        entity_id: Registrato per
+        entity_gid: Registrato per
       cost_type:
         unit: "Nome dell'unità"
         unit_plural: "Nome unità pluralizzato"
@@ -61,9 +61,9 @@ it:
         start_time: Ora di inizio
         end_time: Ora di fine
         time: Ora
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: Registrato per
+        entity_id: Registrato per
+        entity_gid: Registrato per
     models:
       time_entry:
         one: "Voce tempo"
@@ -101,7 +101,7 @@ it:
   button_log_time: "Registra"
   button_add_activity: "Attività"
   button_add_time_entry: "Registra l'orario effettuato"
-  button_stop_timer: "Stop timer"
+  button_stop_timer: "Ferma il timer"
   caption_booked_on_project: "Prenotato su progetto"
   caption_default: "Predefinito"
   caption_default_rate_history_for: "Cronologia tariffe predefinite per %{user}"
@@ -180,7 +180,7 @@ it:
   label_day: "Giorno"
   label_today_capitalized: "Oggi"
   label_view_mode_switcher: "Cambia vista"
-  label_timer_since: "Started at %{time}"
+  label_timer_since: "Iniziato ore %{time}"
   placeholder_activity_select_work_package_first: Prima è necessario selezionare la macro-attività
   notice_something_wrong: "Qualcosa è andato storto. Si prega di riprovare."
   notice_successful_restore: "Ripristino eseguito con successo."
@@ -188,7 +188,7 @@ it:
   notice_cost_logged_successfully: "Costo unitario registrato con successo."
   notice_different_time_zones: "Questo utente ha un fuso orario diverso (%{tz}). L'ora verrà registrata utilizzando il suo fuso orario."
   notice_time_entry_update_failed: "Impossibile aggiornare la voce oraria. Errori: %{errors}"
-  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Impossibile eliminare la voce oraria. Errori: %{errors}"
   permission_edit_cost_entries: "Modifica unità di costo riservate"
   permission_edit_own_cost_entries: "Modifica le proprie unità di costo riservate"
   permission_edit_hourly_rates: "Modifica tariffe orarie"

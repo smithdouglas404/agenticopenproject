@@ -49,23 +49,18 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
     fill_in "Name", with: hierarchy_name
     click_on "Save"
 
-    new_custom_field_page.expect_and_dismiss_flash(message: "Successful creation.")
+    expect(page).to have_text("Successful creation.")
 
-    custom_field_index_page.expect_current_path("tab=WorkPackageCustomField")
-    expect(page).to have_list_item(hierarchy_name)
+    CustomField.find_by(name: hierarchy_name).tap do |custom_field|
+      hierarchy_page.add_custom_field_state(custom_field)
+    end
+    hierarchy_page.expect_current_path
 
     # endregion
 
     # region Edit the details of the custom field
 
-    CustomField.find_by(name: hierarchy_name).tap do |custom_field|
-      hierarchy_page.add_custom_field_state(custom_field)
-    end
-
-    click_on hierarchy_name
-    hierarchy_page.expect_current_path
-
-    expect(page).to have_test_selector("op-custom-fields--new-hierarchy-banner")
+    expect(page).to have_test_selector("op-custom-fields--top-banner")
     expect(page).to have_css(".PageHeader-title", text: hierarchy_name)
 
     # Now, that was the wrong name, so I can change it to the correct one
@@ -87,8 +82,8 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
 
     within("sub-header") { click_on "Item" }
     expect(page).not_to have_test_selector("op-custom-fields--hierarchy-items-blankslate")
-    fill_in "Label", with: "Stormtroopers"
-    fill_in "Short", with: "ST"
+    fill_in "Item label", with: "Stormtroopers"
+    fill_in "Short name", with: "ST"
     click_on "Save"
     expect(page).not_to have_test_selector("op-custom-fields--hierarchy-items-blankslate")
     expect(page).to have_test_selector("op-custom-fields--hierarchy-item", count: 1)
@@ -99,14 +94,14 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
     expect(page).to have_test_selector("op-custom-fields--new-item-form")
 
     # Can I add the same item again?
-    fill_in "Label", with: "Stormtroopers"
+    fill_in "Item label", with: "Stormtroopers"
     click_on "Save"
     within_test_selector("op-custom-fields--new-item-form") do
       expect(page).to have_css(".FormControl-inlineValidation", text: "Label must be unique within the same hierarchy level")
     end
 
     # Is the form cancelable?
-    fill_in "Label", with: "Dark Troopers"
+    fill_in "Item label", with: "Dark Troopers"
     click_on "Cancel"
     expect(page).not_to have_test_selector("op-custom-fields--new-item-form")
     expect(page).to have_test_selector("op-custom-fields--hierarchy-item", count: 1)
@@ -118,7 +113,7 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
 
     # What happens if I added a wrong item?
     click_on "Item"
-    fill_in "Label", with: "Phoenix Squad"
+    fill_in "Item label", with: "Phoenix Squad"
     click_on "Save"
     expect(page).to have_test_selector("op-custom-fields--hierarchy-item", count: 2)
     expect(page).to have_test_selector("op-custom-fields--hierarchy-item", text: "Phoenix Squad")
@@ -145,7 +140,7 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
 
     # And is the blue banner gone, now that I have added some items?
     hierarchy_page.switch_tab "Details"
-    expect(page).not_to have_test_selector("op-custom-fields--new-hierarchy-banner")
+    expect(page).not_to have_test_selector("op-custom-fields--top-banner")
 
     # Finally, we delete the custom field ... I'm done with this ...
     custom_field_index_page.visit!
@@ -178,8 +173,8 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
     click_on "Add sub-item"
 
     expect(page).to have_test_selector("op-custom-fields--new-item-form")
-    fill_in "Label", with: "Snowtroopers"
-    fill_in "Short", with: "SnT"
+    fill_in "Item label", with: "Snowtroopers"
+    fill_in "Short name", with: "SnT"
     click_on "Save"
 
     expect(page).to have_test_selector("op-custom-fields--hierarchy-item", count: 1)
@@ -195,13 +190,14 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
     let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
     let(:custom_field) { create(:wp_custom_field, name: "Hogwarts", field_format: "hierarchy", hierarchy_root: nil) }
     let!(:root) { service.generate_root(custom_field).value! }
-    let!(:ravenclaw) { service.insert_item(parent: root, label: "Ravenclaw").value! }
-    let!(:slytherin) { service.insert_item(parent: root, label: "Slytherin").value! }
-    let!(:hufflepuff) { service.insert_item(parent: root, label: "Hufflepuff").value! }
-    let!(:gryffindor) { service.insert_item(parent: root, label: "Gryffindor").value! }
-    let!(:luna) { service.insert_item(parent: ravenclaw, label: "Luna Lovegood").value! }
-    let!(:harry) { service.insert_item(parent: gryffindor, label: "Harry Potter").value! }
-    let!(:hermione) { service.insert_item(parent: gryffindor, label: "Hermione Granger").value! }
+    let(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
+    let!(:ravenclaw) { service.insert_item(contract_class:, parent: root, label: "Ravenclaw").value! }
+    let!(:slytherin) { service.insert_item(contract_class:, parent: root, label: "Slytherin").value! }
+    let!(:hufflepuff) { service.insert_item(contract_class:, parent: root, label: "Hufflepuff").value! }
+    let!(:gryffindor) { service.insert_item(contract_class:, parent: root, label: "Gryffindor").value! }
+    let!(:luna) { service.insert_item(contract_class:, parent: ravenclaw, label: "Luna Lovegood").value! }
+    let!(:harry) { service.insert_item(contract_class:, parent: gryffindor, label: "Harry Potter").value! }
+    let!(:hermione) { service.insert_item(contract_class:, parent: gryffindor, label: "Hermione Granger").value! }
     let(:tree_view) { Components::TreeView.new }
 
     before do

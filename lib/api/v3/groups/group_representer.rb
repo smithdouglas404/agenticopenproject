@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -31,6 +33,7 @@ module API
     module Groups
       class GroupRepresenter < ::API::V3::Principals::PrincipalRepresenter
         include API::Decorators::LinkedResource
+        extend ::API::V3::Utilities::CustomFieldInjector::RepresenterClass
 
         def _type
           "Group"
@@ -55,7 +58,11 @@ module API
         associated_resources :users,
                              as: :members,
                              skip_render: -> { !current_user.allowed_in_any_project?(:manage_members) },
-                             uncacheable_link: true
+                             uncacheable_link: true,
+                             setter: ->(fragment:, **) do
+                               ids = parse_link_ids_from_fragment(fragment, :user)
+                               represented[:replace_user_ids] = ids
+                             end
       end
     end
   end

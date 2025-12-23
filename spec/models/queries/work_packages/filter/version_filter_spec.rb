@@ -123,5 +123,63 @@ RSpec.describe Queries::WorkPackages::Filter::VersionFilter do
           .to contain_exactly(version1)
       end
     end
+
+    describe "#available_operators" do
+      it "includes the version status operators" do
+        expect(instance.available_operators).to include(
+          Queries::Operators::Versions::OpenStatus,
+          Queries::Operators::Versions::ClosedStatus,
+          Queries::Operators::Versions::LockedStatus
+        )
+      end
+    end
+
+    describe "#operator_strategy" do
+      context "for open status operator" do
+        let(:operator) { "o" }
+
+        it "returns OpenStatus operator" do
+          expect(instance.operator_strategy).to eq(Queries::Operators::Versions::OpenStatus)
+        end
+      end
+
+      context "for closed status operator" do
+        let(:operator) { "c" }
+
+        it "returns ClosedStatus operator" do
+          expect(instance.operator_strategy).to eq(Queries::Operators::Versions::ClosedStatus)
+        end
+      end
+
+      context "for locked status operator" do
+        let(:operator) { "l" }
+
+        it "returns LockedStatus operator" do
+          expect(instance.operator_strategy).to eq(Queries::Operators::Versions::LockedStatus)
+        end
+      end
+    end
+
+    describe "#joins" do
+      context "for status operators" do
+        %w[o c l].each do |op|
+          context "with operator '#{op}'" do
+            let(:operator) { op }
+
+            it "returns :version" do
+              expect(instance.joins).to eq(:version)
+            end
+          end
+        end
+      end
+
+      context "for other operators" do
+        let(:operator) { "=" }
+
+        it "returns nil" do
+          expect(instance.joins).to be_nil
+        end
+      end
+    end
   end
 end

@@ -28,6 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+require "icalendar"
 require_relative "../spec_helper"
 
 RSpec.describe MeetingSeriesMailer do
@@ -49,6 +50,7 @@ RSpec.describe MeetingSeriesMailer do
   let(:i18n) do
     Class.new do
       include Redmine::I18n
+
       public :format_date, :format_time
     end
   end
@@ -61,13 +63,13 @@ RSpec.describe MeetingSeriesMailer do
   end
 
   describe "template_completed" do
-    let(:mail) { described_class.template_completed(series, recipient, author) }
+    let(:mail) { described_class.invited(series, recipient, author) }
 
     it "renders the headers" do
       expect(mail.subject).to include(series.project.name)
       expect(mail.subject).to include(series.title)
       expect(mail.to).to contain_exactly(recipient.mail)
-      expect(mail.from).to eq([Setting.mail_from])
+      expect(mail.from).to eq([ApplicationMailer.reply_to_address])
     end
 
     it "renders the text body" do
@@ -87,32 +89,36 @@ RSpec.describe MeetingSeriesMailer do
     end
   end
 
-  describe "rescheduled" do
-    let(:changes) { { old_schedule: "some old schedule" } }
-    let(:mail) { described_class.rescheduled(series, recipient, author, changes:) }
+  describe "updated" do
+    let(:changes) { { old_schedule: "some old schedule", old_location: "some old location" } }
+    let(:mail) { described_class.updated(series, recipient, author, changes:) }
 
     it "renders the headers" do
       expect(mail.subject).to include(series.project.name)
       expect(mail.subject).to include(series.title)
       expect(mail.to).to contain_exactly(recipient.mail)
-      expect(mail.from).to eq([Setting.mail_from])
+      expect(mail.from).to eq([ApplicationMailer.reply_to_address])
     end
 
     it "renders the text body" do
       User.execute_as(recipient) do
         check_series_mail_content(mail.text_part.body)
-        expect(mail.text_part.body).to include("has changed the schedule")
+        expect(mail.text_part.body).to include("has been updated")
         expect(mail.text_part.body).to include("some old schedule")
+        expect(mail.text_part.body).to include("some old location")
         expect(mail.text_part.body).to include(series.full_schedule_in_words)
+        expect(mail.text_part.body).to include(series.location)
       end
     end
 
     it "renders the html body" do
       User.execute_as(recipient) do
         check_series_mail_content(mail.html_part.body)
-        expect(mail.html_part.body).to include("has changed the schedule")
+        expect(mail.html_part.body).to include("has been updated")
         expect(mail.html_part.body).to include("some old schedule")
+        expect(mail.text_part.body).to include("some old location")
         expect(mail.html_part.body).to include(series.full_schedule_in_words)
+        expect(mail.text_part.body).to include(series.location)
       end
     end
 
@@ -122,7 +128,7 @@ RSpec.describe MeetingSeriesMailer do
   end
 
   describe "icalendar attachment" do
-    let(:mail) { described_class.template_completed(series, recipient, author) }
+    let(:mail) { described_class.invited(series, recipient, author) }
     let(:ical) { mail.parts.detect { |x| !x.multipart? } }
     let(:parsed) { Icalendar::Event.parse(ical.body.raw_source) }
     let(:entry) { parsed.first }
@@ -131,15 +137,15 @@ RSpec.describe MeetingSeriesMailer do
       expect(parsed).to be_a Array
       expect(parsed.length).to eq 1
 
-      expect(entry.summary).to eq "[My project] Recurring Standup"
-      expect(entry.description).to eq "[My project] Meeting series: Recurring Standup"
+      expect(entry.summary).to eq "Recurring Standup"
+      expect(entry.description).to eq "Link to meeting series: http://#{Setting.host_name}/recurring_meetings/#{series.id}"
       expect(entry.location).to eq(series.template&.location.presence)
     end
   end
 
   context "with a recipient with another time zone" do
     let!(:preference) { recipient.pref.update(time_zone: "Asia/Tokyo") }
-    let(:mail) { described_class.template_completed(series, recipient, author) }
+    let(:mail) { described_class.invited(series, recipient, author) }
 
     it "renders the mail with the correct locale" do
       expect(mail.text_part.body).to include(tokyo_offset)

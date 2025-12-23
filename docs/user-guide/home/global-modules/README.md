@@ -13,7 +13,7 @@ To access the **Global modules** side menu, simply click on the logo in the head
 
 ![Navigating to global modules menu in OpenProject](open_project_user_guide_global_modules_menu.png)
 
-You can also use the grid icon in the left corner to access the **Global modules** side menu.
+You can also use the grid icon in the top left corner to access the **Global modules** side menu.
 
 ![Navigating to global modules menu in OpenProject via grid icon](open_project_user_guide_global_modules_menu_grid_icon.png)
 
@@ -81,7 +81,7 @@ You can also create a new calendar directly from the global modules menu by clic
 
 ![Creating a new calendar from the Calendars global module](openproject_global_modules_add_calendar.png)
 
-Here you can name the calendar, select a project to which the calendar should belong  and set it to be public or favored. Find out more about editing calendars [here](../../calendar).
+Here you can name the calendar, select a project to which the calendar should belong  and set it to be public or favorited. Find out more about editing calendars [here](../../calendar).
 
 ## Team planners
 
@@ -93,7 +93,7 @@ You can also create a new team planner directly from the global modules menu by 
 
 ![Creating a new team planner from the Team planners global module](openproject_global_modules_add_team_planner.png)
 
-You can name the new team planner, select a project to which it should belong and set to be public or favored. Find out more about editing team planners [here](../../team-planner).
+You can name the new team planner, select a project to which it should belong and set to be public or favorited. Find out more about editing team planners [here](../../team-planner).
 
 ## Boards
 

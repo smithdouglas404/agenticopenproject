@@ -35,11 +35,12 @@ RSpec.describe CustomField::OrderStatements do
   context "when hierarchy", with_ee: [:custom_field_hierarchies] do
     let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
     let(:item) { custom_field.hierarchy_root }
+    let(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
 
     subject(:custom_field) { create(:hierarchy_wp_custom_field) }
 
     before do
-      service.insert_item(parent: item, label: "Test")
+      service.insert_item(contract_class:, parent: item, label: "Test")
     end
 
     describe "#order_statement" do

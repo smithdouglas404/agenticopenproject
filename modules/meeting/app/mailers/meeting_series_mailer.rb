@@ -28,7 +28,7 @@
 #++
 
 class MeetingSeriesMailer < UserMailer
-  def template_completed(series, user, actor)
+  def invited(series, user, actor)
     @actor = actor
     @series = series
     @template = series.template
@@ -43,7 +43,7 @@ class MeetingSeriesMailer < UserMailer
     end
   end
 
-  def rescheduled(series, user, actor, changes:)
+  def updated(series, user, actor, changes:)
     @actor = actor
     @series = series
     @user = user
@@ -52,7 +52,7 @@ class MeetingSeriesMailer < UserMailer
     set_headers(series)
 
     with_attached_ics(series, user) do
-      subject = I18n.t("meeting.email.series_rescheduled.title", title: series.title, project_name: series.project.name)
+      subject = I18n.t("meeting.email.series_updated.title", title: series.title, project_name: series.project.name)
       mail(to: user, subject:)
     end
   end

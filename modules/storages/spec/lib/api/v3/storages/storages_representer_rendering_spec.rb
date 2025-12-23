@@ -265,6 +265,26 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
           end
         end
       end
+
+      describe "tokenExchangeScope" do
+        it_behaves_like "no property", :tokenExchangeScope
+
+        context "when the storage is configured for SSO authentication" do
+          let(:storage) { create(:nextcloud_storage, :oidc_sso_enabled, token_exchange_scope: "a-scope") }
+
+          it_behaves_like "property", :tokenExchangeScope do
+            let(:value) { "a-scope" }
+          end
+        end
+
+        context "when the storage is configured for SSO authentication, but has an empty scope" do
+          let(:storage) { create(:nextcloud_storage, :oidc_sso_enabled, token_exchange_scope: "") }
+
+          it_behaves_like "property", :tokenExchangeScope do
+            let(:value) { "" }
+          end
+        end
+      end
     end
 
     it_behaves_like "common file storage links"

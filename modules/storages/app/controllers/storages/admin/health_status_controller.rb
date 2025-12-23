@@ -78,6 +78,7 @@ module Storages
         {
           storage: @storage.name,
           storage_type: @storage.to_s,
+          configuration: @storage.non_confidential_configuration,
           ran_at: timestamp
         }.merge(@report.to_h).to_yaml(stringify_names: true)
       end

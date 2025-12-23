@@ -17,7 +17,8 @@ zh-CN:
       new_folder: "新文件夹"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "存储"
       information:
         authentication_error: "无法对 %{storageType} 的请求进行身份验证，这是一个错误。"

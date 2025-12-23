@@ -54,11 +54,11 @@ module OpenIDConnect
       private
 
       def process_oidc_group(oidc_group_name)
-        oidc_group_name = filter_and_name_group(oidc_group_name)
+        oidc_group_name = group_matcher.call(oidc_group_name)
         return nil if oidc_group_name.nil?
 
         group = find_group(oidc_group_name)
-        update_group_users(group) { |user_ids| (user_ids + [@user.id]).uniq }
+        update_group_users(group, added: @user.id)
 
         membership = group.group_users.find_by(user: @user)
         membership.oidc_group_memberships.find_or_create_by!(auth_provider: authentication_provider)
@@ -68,19 +68,7 @@ module OpenIDConnect
 
       def remove_groups_except(keep_groups)
         (@user.groups - keep_groups).each do |group|
-          update_group_users(group) { |user_ids| user_ids - [@user.id] }
-        end
-      end
-
-      def filter_and_name_group(group_name)
-        matcher = authentication_provider.group_matchers.find { |m| m.match?(group_name) }
-        return nil if matcher.nil?
-
-        match = matcher.match(group_name)
-        if match.size > 1
-          match[1..].join.presence
-        else
-          group_name
+          update_group_users(group, removed: @user.id)
         end
       end
 
@@ -94,18 +82,21 @@ module OpenIDConnect
         group_link.group
       end
 
-      def update_group_users(group)
-        ActiveRecord::Base.transaction do
-          current_user_ids = group.group_users.lock.pluck(:user_id)
-          new_user_ids = yield current_user_ids
-          @result.merge!(
-            ::Groups::UpdateService.new(user: User.system, model: group).call(user_ids: new_user_ids)
+      def update_group_users(group, added: nil, removed: nil)
+        @result.merge!(
+          ::Groups::UpdateService.new(user: User.system, model: group).call(
+            add_user_ids: Array(added),
+            remove_user_ids: Array(removed)
           )
-        end
+        )
       end
 
       def authentication_provider
         @user.authentication_provider # TODO: should we find that differently? (risk of multiple auth providers)
+      end
+
+      def group_matcher
+        @group_matcher ||= GroupMatchService.new(authentication_provider.group_matchers)
       end
     end
   end

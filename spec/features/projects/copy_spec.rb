@@ -67,13 +67,25 @@ RSpec.describe "Projects copy", :js,
     end
     let!(:project_custom_field_section) { create(:project_custom_field_section, name: "Section A") }
     let!(:project_custom_field) do
-      create(:text_project_custom_field, name: "Required Foo", is_required: true, project_custom_field_section:)
+      create(:text_project_custom_field,
+             name: "Required Foo",
+             is_for_all: true,
+             is_required: true,
+             project_custom_field_section:)
     end
     let!(:optional_project_custom_field) do
-      create(:text_project_custom_field, name: "Optional Foo", is_required: false, project_custom_field_section:)
+      create(:text_project_custom_field,
+             name: "Optional Foo",
+             is_for_all: true,
+             is_required: false,
+             project_custom_field_section:)
     end
     let!(:optional_project_custom_field_with_default) do
-      create(:text_project_custom_field, is_required: false, default_value: "foo", project_custom_field_section:)
+      create(:text_project_custom_field,
+             is_for_all: true,
+             is_required: false,
+             default_value: "foo",
+             project_custom_field_section:)
     end
     let!(:wp_custom_field) do
       create(:text_wp_custom_field)
@@ -168,6 +180,7 @@ RSpec.describe "Projects copy", :js,
       let!(:required_user_custom_field) do
         create(:user_project_custom_field, name: "Required User",
                                            is_required: true,
+                                           is_for_all: true,
                                            project_custom_field_section:)
       end
 
@@ -342,9 +355,7 @@ RSpec.describe "Projects copy", :js,
       end
 
       context "with non-admin user" do
-        it "does not show invisible fields in the form and but still activates them" do
-          pending "Admin-only project attributes currently prevent users from creating projects (OP#64479)"
-
+        it "does not show invisible fields in the form but still activates them" do
           expect(page).to have_heading "Copy project \"#{project.name}\""
 
           expect(page).to have_no_content "Text for Admins only"
@@ -459,7 +470,7 @@ RSpec.describe "Projects copy", :js,
 
         overview_page.within_project_attributes_sidebar do
           # User has no permission to edit project attributes.
-          expect(page).to have_no_css("[data-test-selector='project-custom-field-section-edit-button']")
+          expect(page).to have_no_css("[data-test-selector*='project-custom-field-edit-button']")
           # The custom fields are still copied from the parent project.
           expect(page).to have_content(project_custom_field.name)
           expect(page).to have_content("some text cf")

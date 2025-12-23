@@ -42,12 +42,14 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
-import { AddTagFn } from '@ng-select/ng-select/lib/ng-select.component';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { Subject } from 'rxjs';
 import { compareByHref } from 'core-app/shared/helpers/angular/tracking-functions';
 import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-redundant-type-constituents
+type AddTagFn = (term:string) => any | Promise<any>;
 
 export interface CreateAutocompleterValueOption {
   name:string;
@@ -86,7 +88,7 @@ export class CreateAutocompleterComponent extends UntilDestroyedMixin implements
 
   @Output() public onChange = new EventEmitter<HalResource>();
 
-  @Output() public onKeydown = new EventEmitter<JQuery.TriggeredEvent>();
+  @Output() public onKeydown = new EventEmitter<KeyboardEvent>();
 
   @Output() public onOpen = new EventEmitter<void>();
 
@@ -110,7 +112,7 @@ export class CreateAutocompleterComponent extends UntilDestroyedMixin implements
 
   public groupByFn = (_item:HalResource):string | null => null;
 
-  public text:{ [key:string]:string } = {};
+  public text:Record<string, string> = {};
 
   public createAllowed:boolean|AddTagFn = false;
 
@@ -156,7 +158,7 @@ export class CreateAutocompleterComponent extends UntilDestroyedMixin implements
     this.onClose.emit();
   }
 
-  public keyPressed(event:JQuery.TriggeredEvent) {
+  public keyPressed(event:KeyboardEvent) {
     this.onKeydown.emit(event);
   }
 

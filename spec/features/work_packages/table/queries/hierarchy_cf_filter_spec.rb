@@ -43,8 +43,9 @@ RSpec.describe "Work package filtering by hierarchy custom field", :js, with_ee:
     end
   end
   let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
-  let!(:luke) { service.insert_item(parent: hierarchy_root, label: "luke").value! }
-  let!(:leia) { service.insert_item(parent: hierarchy_root, label: "leia").value! }
+  let(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
+  let!(:luke) { service.insert_item(contract_class:, parent: hierarchy_root, label: "luke").value! }
+  let!(:leia) { service.insert_item(contract_class:, parent: hierarchy_root, label: "leia").value! }
 
   let!(:wp_luke) do
     create(:work_package, project:, subject: "Luke's wp").tap do |wp|
@@ -75,7 +76,7 @@ RSpec.describe "Work package filtering by hierarchy custom field", :js, with_ee:
 
         # Filtering by hierarchy (=)
 
-        filters.add_filter_by(hierarchy_cf.name, "is", [luke.label], hierarchy_cf.attribute_name(:camel_case))
+        filters.add_filter_by(hierarchy_cf.name, "is (OR)", [luke.label], hierarchy_cf.attribute_name(:camel_case))
 
         wp_table.ensure_work_package_not_listed!(wp_leia)
         wp_table.expect_work_package_listed(wp_luke)
@@ -96,7 +97,7 @@ RSpec.describe "Work package filtering by hierarchy custom field", :js, with_ee:
     end
 
     context "when equals with descendants" do
-      let!(:grogu) { service.insert_item(parent: luke, label: "Grogu").value! }
+      let!(:grogu) { service.insert_item(contract_class:, parent: luke, label: "Grogu").value! }
       let!(:wp_grogu) do
         create(:work_package, project:, subject: "Grogu's wp").tap do |wp|
           wp.custom_field_values = { hierarchy_cf.id => grogu.id }

@@ -14,7 +14,7 @@ x-defaults: &defaults
   build:
     context: .
     args:
-      OPENPROJECT_ANGULAR_BUILD: "fast"
+      DEBIAN_BASE: bookworm
   restart: unless-stopped
   env_file:
     - .env.pullpreview

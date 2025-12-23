@@ -8,6 +8,7 @@ get:
         Currently supported filters are:
 
         + sharing: filters versions by how they are shared within the server (*none*, *descendants*, *hierarchy*, *tree*, *system*).
+        + name: filters versions by their name.
       example: '[{ "sharing": { "operator": "*", "values": ["system"] }" }]'
       in: query
       name: filters
@@ -37,7 +38,7 @@ get:
                   elements:
                     - _links:
                         availableInProjects:
-                          href: "/api/v3/versions/11/projects"
+                          href: "/api/v3/versions/11/workspaces"
                         definingProject:
                           href: "/api/v3/projects/12"
                         self:
@@ -54,7 +55,7 @@ get:
                       status: Open
                     - _links:
                         availableInProjects:
-                          href: "/api/v3/versions/12/projects"
+                          href: "/api/v3/versions/12/workspaces"
                         definingProject:
                           href: "/api/v3/projects/11"
                         self:
@@ -71,7 +72,7 @@ get:
                       status: Closed
                     - _links:
                         availableInProjects:
-                          href: "/api/v3/versions/13/projects"
+                          href: "/api/v3/versions/13/workspaces"
                         definingProject:
                           href: "/api/v3/projects/13"
                         self:

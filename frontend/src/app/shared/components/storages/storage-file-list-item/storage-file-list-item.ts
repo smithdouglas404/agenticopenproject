@@ -31,7 +31,7 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { IFileIcon } from 'core-app/shared/components/storages/icons.mapping';
 import { getIconForMimeType, isDirectory } from 'core-app/shared/components/storages/functions/storages.functions';
 
-interface StorageFileListItemCheckbox {
+export interface StorageFileListItemCheckbox {
   selected:boolean;
   changeSelection?:() => void;
 }

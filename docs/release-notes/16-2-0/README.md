@@ -207,7 +207,7 @@ When a comment is added to a work package, it now triggers a webhook. This enabl
 - Feature: Reminders: Upon setting a work package reminder, present the reminder time in relative humanized format \[[#64695](https://community.openproject.org/wp/64695)\]
 - Feature: Select custom field format at the index page of custom fields &amp; project attributes \[[#64800](https://community.openproject.org/wp/64800)\]
 - Feature: Make OpenProject the organizer of the meeting \[[#64849](https://community.openproject.org/wp/64849)\]
-- Feature: Reorganise Primerized project copy, create forms; Improve copy options display \[[#65026](https://community.openproject.org/wp/65026)\]
+- Feature: Reorganize Primerized project copy, create forms; Improve copy options display \[[#65026](https://community.openproject.org/wp/65026)\]
 - Feature: Change default color of sidebar in light mode \[[#65091](https://community.openproject.org/wp/65091)\]
 - Feature: Change position of search and create button in top bar \[[#65324](https://community.openproject.org/wp/65324)\]
 - Feature: Limit access to SCIM clients UI to enterprise customers \[[#65339](https://community.openproject.org/wp/65339)\]

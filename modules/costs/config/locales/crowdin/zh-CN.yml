@@ -31,9 +31,9 @@ zh-CN:
         spent: "已支出"
         spent_on: "日期"
         logged_by: "记录者为"
-        entity: 已登录
-        entity_id: 已登录
-        entity_gid: 已登录
+        entity: 已记录
+        entity_id: 已记录
+        entity_gid: 已记录
       cost_type:
         unit: "单位名称"
         unit_plural: "单位名称（复数）"
@@ -61,9 +61,9 @@ zh-CN:
         start_time: 开始时间
         end_time: 结束时间
         time: 时间
-        entity: 已登录
-        entity_id: 已登录
-        entity_gid: 已登录
+        entity: 已记录
+        entity_id: 已记录
+        entity_gid: 已记录
     models:
       time_entry:
         other: "时间记录"
@@ -176,7 +176,7 @@ zh-CN:
   label_day: "天"
   label_today_capitalized: "今天"
   label_view_mode_switcher: "更改视图"
-  label_timer_since: "开始于 %{time}"
+  label_timer_since: "%{time} 开始"
   placeholder_activity_select_work_package_first: 首先需要选择工作包
   notice_something_wrong: "出错了。请重试。"
   notice_successful_restore: "成功恢复。"

@@ -100,6 +100,7 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "parsing" do
           "href" => "urn:openproject-org:api:v3:storages:authenticationMethod:OAuth2SSO"
         }
         parsed_hash["storageAudience"] = "the-new-storage-audience"
+        parsed_hash["tokenExchangeScope"] = "one-scope two-scope"
       end
 
       it "parses the authentication method" do
@@ -108,6 +109,10 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "parsing" do
 
       it "parses the storage audience" do
         expect(parsed.storage_audience).to eq("the-new-storage-audience")
+      end
+
+      it "parses the token exchange scope" do
+        expect(parsed.token_exchange_scope).to eq("one-scope two-scope")
       end
     end
 

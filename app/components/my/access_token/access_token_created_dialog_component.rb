@@ -35,14 +35,20 @@ module My
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
-      def initialize(token_value:)
+      attr_reader :token
+
+      def initialize(token:)
         super
 
-        @token_value = token_value
+        @token = token
       end
 
       def id
-        "access-token-created-dialog"
+        "#{token.model_name.element}-created-dialog"
+      end
+
+      def i18n_scope
+        [:my, :access_token, :created_dialog, token.model_name.i18n_key]
       end
     end
   end

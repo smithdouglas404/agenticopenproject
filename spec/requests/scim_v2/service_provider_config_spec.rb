@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "SCIM API ServiceProviderConfig", with_ee: [:scim_api] do
+RSpec.describe "SCIM API ServiceProviderConfig" do
   let(:oidc_provider_slug) { "keycloak" }
   let(:oidc_provider) { create(:oidc_provider, slug: oidc_provider_slug) }
   let(:headers) { { "CONTENT_TYPE" => "application/scim+json", "HTTP_AUTHORIZATION" => "Bearer #{token.plaintext_token}" } }
@@ -41,35 +41,64 @@ RSpec.describe "SCIM API ServiceProviderConfig", with_ee: [:scim_api] do
   before { token }
 
   describe "GET /scim_v2/ServiceProviderConfig" do
-    context "with the feature flag enabled", with_flag: { scim_api: true } do
-      it "responds with ServiceProviderConfig information" do
+    context "with enterprise token supporting scim_api", with_ee: [:scim_api] do
+      it "responds with full ServiceProviderConfig information if authorization is correct" do
         get "/scim_v2/ServiceProviderConfig", {}, headers
 
         response_body = JSON.parse(last_response.body)
-        expect(response_body).to include({ "authenticationSchemes" => [{ "description" => "Authentication scheme using the OAuth Bearer Token Standard",
+        expect(response_body).to include("authenticationSchemes" => [{ "description" => "Bearer Token can be obtained in 3 different ways(https://www.openproject.org/docs/system-admin-guide/authentication/scim/#step-3-choose-an-authentication-method)",
+
+                                                                       "name" => "OAuth Bearer Token",
+                                                                       "type" => "oauthbearertoken" }],
+                                         "bulk" => { "supported" => false },
+                                         "changePassword" => { "supported" => false },
+                                         "etag" => { "supported" => false },
+                                         "filter" => { "maxResults" => 100,
+                                                       "supported" => true },
+                                         "patch" => { "supported" => true },
+                                         "schemas" => ["urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig"],
+                                         "sort" => { "supported" => false })
+      end
+
+      context "when authorization header contains an invalid token" do
+        let(:token) { object_double(Doorkeeper::AccessToken.new, plaintext_token: "123123") }
+
+        it "responds with 401 Unauthorized" do
+          get "/scim_v2/ServiceProviderConfig", {}, headers
+
+          expect(last_response).to have_http_status(401)
+          expect(last_response.body).to eq("invalid_token")
+        end
+      end
+
+      context "when there is no authorization header at all" do
+        let(:token) { object_double(Doorkeeper::AccessToken.new, plaintext_token: "123123") }
+
+        it "responds with limited ServiceProviderConfig information" do
+          get "/scim_v2/ServiceProviderConfig", {}, { "CONTENT_TYPE" => "application/scim+json" }
+
+          expect(last_response).to have_http_status(200)
+          response_body = JSON.parse(last_response.body)
+          expect(response_body.keys).to eq(["meta", "schemas", "authenticationSchemes"])
+          expect(response_body).to include("authenticationSchemes" => [{ "description" => "Bearer Token can be obtained in 3 different ways(https://www.openproject.org/docs/system-admin-guide/authentication/scim/#step-3-choose-an-authentication-method)",
                                                                          "name" => "OAuth Bearer Token",
                                                                          "type" => "oauthbearertoken" }],
-                                           "bulk" => { "supported" => false },
-                                           "changePassword" => { "supported" => false },
-                                           "etag" => { "supported" => false },
-                                           "filter" => { "maxResults" => 100,
-                                                         "supported" => true },
-                                           "patch" => { "supported" => true },
-                                           "schemas" => ["urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig"],
-                                           "sort" => { "supported" => false } })
+                                           "schemas" => ["urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig"])
+        end
       end
     end
 
-    context "with the feature flag disabled", with_flag: { scim_api: false } do
+    context "with enterprise token not supporting scim_api", with_ee: [] do
       it do
         get "/scim_v2/ServiceProviderConfig", {}, headers
 
         response_body = JSON.parse(last_response.body)
         expect(response_body).to eq(
-          { "detail" => "Requires authentication", "schemas" => ["urn:ietf:params:scim:api:messages:2.0:Error"],
-            "status" => "401" }
+          { "detail" => "This endpoint requires an enterprise subscription of at least corporate",
+            "schemas" => ["urn:ietf:params:scim:api:messages:2.0:Error"],
+            "status" => "403" }
         )
-        expect(last_response).to have_http_status(401)
+        expect(last_response).to have_http_status(403)
       end
     end
   end

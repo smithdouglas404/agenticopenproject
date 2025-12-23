@@ -17,7 +17,8 @@ vi:
       new_folder: "New folder"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Lưu trữ"
       information:
         authentication_error: "The request to %{storageType} could not be authenticated, that's an error."

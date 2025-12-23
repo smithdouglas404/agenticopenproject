@@ -40,7 +40,7 @@ module WorkPackageTypes
     end
 
     def resolve(work_package)
-      @tokens = @mapper.tokens_for_type(work_package.type)
+      @tokens, = @mapper.partitioned_tokens_for_type(work_package.type)
 
       @pattern_tokens.inject(@pattern) do |pattern, token|
         pattern.gsub(token.pattern, get_value(work_package, token))
@@ -61,27 +61,22 @@ module WorkPackageTypes
       end
     end
 
-    def nil_replacement(attribute_resolver)
-      if attribute_resolver.context == :work_package
-        "[#{attribute_resolver.label}]"
+    def nil_replacement(attribute_token)
+      if attribute_token.context == :work_package
+        "[#{attribute_token.label}]"
       else
-        "[#{attribute_resolver.label_with_context}]"
+        "[#{attribute_token.label_with_context}]"
       end
     end
 
     def stringify(value, nil_fallback)
       case value
-      when Date, Time, DateTime
-        value.strftime("%Y-%m-%d")
-      when Array
-        compact = value.compact
-        compact.empty? ? nil_fallback : compact.join(", ")
       when NilClass
         nil_fallback
       when :attribute_not_available
         ATTRIBUTE_PLACEHOLDER
       else
-        value.to_s
+        value
       end
     end
   end

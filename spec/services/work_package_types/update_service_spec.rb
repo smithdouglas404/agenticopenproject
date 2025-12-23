@@ -29,20 +29,20 @@
 #++
 
 require "spec_helper"
-require "services/shared_type_service"
 require "services/base_services/behaves_like_update_service"
 
 module WorkPackageTypes
   RSpec.describe UpdateService, type: :service do
     shared_let(:user) { create(:admin) }
+    shared_let(:cf1) { create(:work_package_custom_field, field_format: "text") }
+    shared_let(:cf2) { create(:work_package_custom_field, field_format: "text") }
+    shared_let(:cf3) { create(:work_package_custom_field, field_format: "text") }
 
     let(:model) { create(:type, name: "Types-R-Us") }
     let(:type) { model }
     let(:service_call) { service.call(params) }
 
     subject(:service) { described_class.new(user:, model:) }
-
-    it_behaves_like "type service"
 
     it_behaves_like "BaseServices update service" do
       let(:factory) { :type }
@@ -60,10 +60,143 @@ module WorkPackageTypes
     it "defaults to the UpdateSettingsContract" do
       params = { patterns: { subject: { blueprint: "{{author}}", enabled: true } } }
 
-      # NOTE: This still applies changes to the model... which is far from ideal - 2025-06-23 @mereghost
       result = service.call(params)
       expect(result).to be_failure
       expect(result.errors.full_messages).to be_present
+    end
+
+    context "when updating attribute groups" do
+      let(:contract_class) { UpdateFormConfigurationContract }
+      let(:params) do
+        { attribute_groups: [
+          { "type" => "attribute",
+            "name" => "group1",
+            "attributes" => [{ "key" => cf1.attribute_name }, { "key" => cf2.attribute_name }] },
+          { "type" => "attribute",
+            "name" => "groups",
+            "attributes" => [{ "key" => cf2.attribute_name }] }
+        ] }
+      end
+
+      subject(:service) { described_class.new(user:, model:, contract_class:) }
+
+      it "doesn't change the type if no attribute group is passed" do
+        service_result = service.call({})
+        expect(service_result.result).to eq(type)
+      end
+
+      it "set the attribute groups to the default value if empty" do
+        allow(type).to receive(:reset_attribute_groups).and_call_original
+        service_result = service.call(attribute_groups: [])
+
+        expect(service_result).to be_success
+        expect(type).to have_received(:reset_attribute_groups)
+      end
+
+      it "set the attribute groups to the passed values" do
+        service_result = service.call(params)
+
+        expect(service_result).to be_success
+        group1, groups = *type.reload.attribute_groups
+
+        expect(group1.key).to eq("group1")
+        expect(group1.attributes).to contain_exactly(cf1.attribute_name, cf2.attribute_name)
+        expect(groups.key).to eq("groups")
+        expect(groups.attributes).to contain_exactly(cf2.attribute_name)
+      end
+    end
+
+    describe "custom field handling" do
+      let(:contract_class) { UpdateFormConfigurationContract }
+      let(:params) do
+        { attribute_groups: [
+          { "type" => "attribute",
+            "name" => "group1",
+            "attributes" => [{ "key" => cf1.attribute_name }, { "key" => cf2.attribute_name }] }
+        ] }
+      end
+
+      it "enables the custom fields" do
+        service.call(params)
+
+        expect(type.reload.custom_field_ids).to contain_exactly(cf1.id, cf2.id)
+      end
+
+      context "when a project already uses the type" do
+        before { type.projects = create_list(:project, 2) }
+
+        it "does not automatically enable the custom field" do
+          expect { service.call(params) }
+            .not_to change { Project.where(id: type.project_ids).map(&:work_package_custom_field_ids) }
+                      .from([[], []])
+        end
+
+        it "does not tries to change the project in case all custom fields are already added" do
+          type.custom_field_ids = [cf1.id, cf2.id]
+
+          expect { service.call(params) }
+            .not_to change { Project.where(id: type.project_ids).map(&:work_package_custom_field_ids) }
+                      .from([[], []])
+        end
+      end
+    end
+
+    describe "query group handling" do
+      let(:query_params) do
+        statuses = create_list(:status, 2)
+        sort_by = JSON::dump(["status:desc"])
+        filters = JSON::dump([{ "status_id" => { "operator" => "=", "values" => statuses.map { it.id.to_s } } }])
+
+        { "sortBy" => sort_by, "filters" => filters }
+      end
+
+      let(:query_group_params) do
+        { "type" => "query", "name" => "group1", "query" => JSON.dump(query_params) }
+      end
+
+      let(:params) { { attribute_groups: [query_group_params] } }
+      let(:contract_class) { UpdateFormConfigurationContract }
+
+      it "assigns the fully parsed query to the type attribute groups" do
+        expect(service.call(params)).to be_success
+
+        query_group = type.attribute_groups.first
+        expect(query_group.query).to be_a(Query)
+        query = query_group.query
+        expect(query.filters.length).to eq(1)
+        expect(query.filters[0].name).to eq(:status_id)
+      end
+    end
+
+    context "when adding the type to a project" do
+      let(:projects) { create_list(:project, 2) }
+      let(:active_project) { create(:project) }
+      let(:new_project) { create(:project) }
+      let(:project_ids) do
+        { project_ids: [*[active_project, new_project].map { it.id.to_s }, ""] }
+      end
+      let(:contract_class) { UpdateProjectsContract }
+
+      before do
+        groups = { attribute_groups: [
+          { "type" => "attribute",
+            "name" => "group1",
+            "attributes" => [{ "key" => cf1.attribute_name }, { "key" => cf2.attribute_name }] }
+        ] }
+
+        type.projects << active_project
+        described_class.new(model:, user:, contract_class: UpdateFormConfigurationContract).call(groups)
+      end
+
+      it "enables the custom field on the newly added project" do
+        expect { service.call(project_ids) }.to change { Project.find(new_project.id).work_package_custom_field_ids }
+                                                  .from([]).to([cf1.id, cf2.id])
+      end
+
+      it "does not enable the custom fields on the already added project" do
+        expect { service.call(project_ids) }.not_to change { Project.find(active_project.id).work_package_custom_field_ids }
+                                                      .from([])
+      end
     end
   end
 end

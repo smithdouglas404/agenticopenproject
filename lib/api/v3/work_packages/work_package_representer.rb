@@ -31,6 +31,7 @@ module API
     module WorkPackages
       class WorkPackageRepresenter < ::API::Decorators::Single
         include API::Decorators::LinkedResource
+        include API::V3::Workspaces::LinkedResource
         include API::Decorators::DateProperty
         include API::Decorators::FormattableProperty
         include API::Caching::CachedRepresenter
@@ -270,10 +271,10 @@ module API
 
         link :addChild,
              cache_if: -> { add_work_packages_allowed? } do
-          next if represented.milestone? || represented.new_record?
+          next if represented.milestone? || represented.new_record? || represented.project.nil?
 
           {
-            href: api_v3_paths.work_packages_by_project(represented.project.identifier),
+            href: api_v3_paths.work_packages_by_workspace(represented.project.identifier),
             method: :post,
             title: "Add child of #{represented.subject}"
           }
@@ -308,7 +309,10 @@ module API
              cache_if: -> { view_time_entries_allowed? } do
           next if represented.new_record?
 
-          filters = [{ work_package_id: { operator: "=", values: [represented.id.to_s] } }]
+          filters = [
+            { entity_type: { operator: "=", values: ["WorkPackage"] } },
+            { entity_id: { operator: "=", values: [represented.id.to_s] } }
+          ]
 
           {
             href: api_v3_paths.path_for(:time_entries, filters:),
@@ -485,7 +489,7 @@ module API
 
         associated_resource :priority
 
-        associated_resource :project
+        associated_project
 
         resource :project_phase,
                  link_cache_if: -> { any_phase_active_in_project? && view_project_phase_allowed? },
@@ -577,8 +581,7 @@ module API
                                 }
                               else
                                 {
-                                  href: nil,
-                                  title: nil
+                                  href: nil
                                 }
                               end
                             },
@@ -672,10 +675,10 @@ module API
 
           @view_own_time_entries_allowed = if represented.new_record?
                                              current_user.allowed_in_any_work_package?(:view_own_time_entries,
-                                                                                         in_project: represented.project)
-                                             else
-                                               current_user.allowed_in_work_package?(:view_own_time_entries, represented)
-                                             end
+                                                                                       in_project: represented.project)
+                                           else
+                                             current_user.allowed_in_work_package?(:view_own_time_entries, represented)
+                                           end
         end
 
         def log_time_allowed?
@@ -721,7 +724,7 @@ module API
         end
 
         def any_phase_active_in_project?
-          represented.project.phases.any?(&:active?)
+          represented.project&.phases&.any?(&:active?)
         end
 
         def relations

@@ -21,7 +21,7 @@
 #++
 de:
   plugin_budgets_engine:
-    name: 'Budgets'
+    name: "Budgets"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ de:
         type: "Kostentyp"
         labor_budget: "Geplante Personaleinzelkosten"
         material_budget: "Geplante Stückkosten"
+        base_amount: "Grundbetrag"
       work_package:
         budget_subject: "Budgettitel"
     models:
@@ -61,13 +62,19 @@ de:
   help_currency_format: "Format der angezeigten Währungswerte. %n wird mit dem Zahlenwert ersetzt, %u mit der Währung."
   help_override_rate: "Hier einen Wert eingeben um den Standardwert zu Überschreiben."
   label_budget: "Budget"
-  label_budget_new: "Neues Budget"
-  label_budget_plural: "Budgets"
+  label_budget_available: "Verfügbares Budget"
   label_budget_id: "Budget #%{id}"
+  label_budget_new: "Neues Budget"
+  label_budget_planned: "Geplantes Budget"
+  label_budget_plural: "Budgets"
+  label_budget_spent: "Ausgegebenes Budget"
+  label_budget_spent_ratio: "Anteil verbrauchtes Budget"
   label_deliverable: "Budget"
-  label_example_placeholder: 'z. B. %{decimal}'
+  label_example_placeholder: "z. B. %{decimal}"
   label_view_all_budgets: "Alle Budgets anzeigen"
   label_yes: "Ja"
+  label_budget_totals: "Summe"
+  label_budget_details: "Budgetdetails"
   notice_budget_conflict: "Arbeitspakete müssen dem gleichen Projekt angehören."
   notice_no_budgets_available: "Kein Budget verfügbar."
   permission_edit_budgets: "Budgets bearbeiten"

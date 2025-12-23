@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -114,6 +116,8 @@ Rails.application.configure do
   # Set email preview locations to rspec
   config.action_mailer.preview_paths << Rails.root.join("spec/mailers/previews")
 
+  # Used with `bin/safari_browser_stack` for testing Safari on Browser Stack
+  # Allow Browser Stack local server when assets are proxied
   config.hosts << "bs-local.com" if ENV["OPENPROJECT_DISABLE_DEV_ASSET_PROXY"].present?
 
   if ENV["OPENPROJECT_DEV_EXTRA_HOSTS"].present?

@@ -44,6 +44,10 @@ module Meetings
         MeetingMailer
           .cancelled(meeting, participant.user, User.current)
           .deliver_now
+      rescue StandardError => e
+        Rails.logger.error do
+          "Failed to deliver meeting cancellation for meeting #{meeting.id} to #{participant.user.mail}: #{e.message}"
+        end
       end
     end
 

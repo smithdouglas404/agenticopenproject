@@ -28,26 +28,39 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= component_wrapper do %>
-  <div class="attributes-group" id="api-token-section">
+  <div class="attributes-group">
     <div class="attributes-group--header">
       <div class="attributes-group--header-container">
-        <h3 class="attributes-group--header-text"><%= t("my_account.access_tokens.api.title") %></h3>
+        <h3 class="attributes-group--header-text"><%= t(:title, scope: i18n_scope) %></h3>
       </div>
     </div>
     <div>
-      <p>
-        <%= t("my_account.access_tokens.api.text_hint") %>
-      </p>
-      <% if Setting.rest_api_enabled? %>
-        <% if @api_tokens.any? %>
-          <%= render My::AccessToken::API::TableComponent.new(rows: @api_tokens) %>
+      <p> <%= t(:text_hint, scope: i18n_scope) %> </p>
+      <% if token_available? %>
+        <% if @tokens.any? %>
+          <%= render My::AccessToken::API::TableComponent.new(rows: @tokens) %>
         <% end %>
-        <%= render My::AccessToken::NewAccessTokenComponent.new %>
+        <%= render(
+              Primer::Beta::Button.new(
+                tag: :a,
+                mt: 3,
+                scheme: :secondary,
+                test_selector: "#{token_type.model_name.element}-token-add",
+                href: dialog_my_access_tokens_path(token_type: token_type.model_name.element),
+                data: { turbo_stream: true },
+                aria: { label: t(:add_button, scope: i18n_scope) },
+                role: "button",
+                title: t(:add_button, scope: i18n_scope)
+              )
+            ) do |button|
+              button.with_leading_visual_icon(icon: add_button_icon)
+              t(:add_button, scope: i18n_scope)
+            end %>
       <% else %>
         <div tabindex="0" class="-info op-toast">
           <div role="alert" aria-atomic="true" class="op-toast--content">
             <p>
-              <span><%= t("my_account.access_tokens.api.disabled_text") %></span>
+              <span><%= t(:disabled_text, scope: i18n_scope) %></span>
             </p>
           </div>
         </div>

@@ -14,7 +14,7 @@
   width: 100vw
 
   @media screen and (max-width: $breakpoint-md)
-    grid-template-columns: minmax(0, auto) auto 1fr
+    grid-template-columns: minmax(0, auto) 1fr auto
 
   @media screen and (max-width: $breakpoint-sm)
     position: fixed
@@ -44,6 +44,9 @@
   &--center
     grid-area: center
     justify-content: center
+
+    @media screen and (max-width: $breakpoint-md)
+      justify-content: flex-end
 
   &--end
     grid-area: end

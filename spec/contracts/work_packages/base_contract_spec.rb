@@ -651,6 +651,15 @@ RSpec.describe WorkPackages::BaseContract do
       it_behaves_like "contract is valid"
     end
 
+    context "with inexact calculated remaining work value - Bug #66592 " \
+            "(work = 0.25h, % complete = 75% => remaining work = 0.06h)" do
+      let(:estimated_hours) { 0.25 }
+      let(:remaining_hours) { 0.06 }
+      let(:done_ratio) { 75 }
+
+      it_behaves_like "contract is valid"
+    end
+
     context "when all three set with inconsistent values" do
       let(:estimated_hours) { 10 }
       let(:remaining_hours) { 0 }

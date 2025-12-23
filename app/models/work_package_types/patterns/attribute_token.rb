@@ -30,7 +30,7 @@
 
 module WorkPackageTypes
   module Patterns
-    AttributeToken = Data.define(:key, :label_fn, :resolve_fn) do
+    AttributeToken = Data.define(:key, :label_fn, :resolve_fn, :formatter) do
       def label_with_context
         attribute_context = I18n.t("types.edit.subject_configuration.token.context.#{context}")
         I18n.t("types.edit.subject_configuration.token.label_with_context", attribute_context:, attribute_label: label)
@@ -41,7 +41,8 @@ module WorkPackageTypes
       end
 
       def call(*)
-        resolve_fn.call(*)
+        value = resolve_fn.call(*)
+        formatter.call(value)
       end
 
       def context
@@ -54,6 +55,23 @@ module WorkPackageTypes
           :work_package
         end
       end
+
+      # --- Equality overrides ---
+      # We want to make sure that two tokens are considered equal if they represent the attribute. This is regardless
+      # of identity of the methods used to resolve their labels etc.
+
+      def ==(other)
+        eql?(other)
+      end
+
+      def eql?(other)
+        self.class == other.class && key == other.key
+      end
+
+      def hash
+        [self.class, key].hash
+      end
+      # --- END Equality overrides ---
     end
   end
 end

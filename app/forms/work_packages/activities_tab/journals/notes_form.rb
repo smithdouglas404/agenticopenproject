@@ -40,6 +40,7 @@ module WorkPackages::ActivitiesTab::Journals
         rich_text_options: {
           showAttachments: false,
           resource:,
+          storageKey: "work_package-#{object.journable.id}-notes-#{object.id || 'new'}",
           editor_type: "constrained"
         }
       )

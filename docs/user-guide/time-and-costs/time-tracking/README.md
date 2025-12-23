@@ -49,9 +49,11 @@ The aggregated time spent on a work package is shown in the work package details
 
 ## Log time via the time tracking button
 
+<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/Time_tracking_button.mp4 "></video>
+
 Starting with OpenProject 13.0, you can also track time in real time using the start/stop time tracking button. To do this, navigate to a work package you are working on and click on the **Start time tracking button**.
 
-![OpenProject start time tracking button](openproject_user_guide_time_tracking_button.png)
+![OpenProject start time tracking button in a work package detailed view](openproject_user_guide_time_tracking_button.png)
 
 This will start the time tracking timer for the current work package. A timer icon will also appear next to your avatar in the top right corner as a reminder in case you navigate away from the work package.
 

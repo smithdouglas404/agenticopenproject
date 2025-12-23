@@ -106,6 +106,8 @@ export interface ICKEditorContext {
   previewContext?:string;
   // disabled specific mentions
   disabledMentions?:['user'|'work_package'];
+  // overrides the default storage key for revisions
+  storageKey?:string;
 }
 
 declare global {

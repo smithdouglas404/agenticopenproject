@@ -36,7 +36,7 @@ module Storages
         # @return [AuthenticationStrategy]
         # rubocop:disable Metrics/AbcSize
         def [](strategy)
-          auth = strategy.value_or { |it| raise ArgumentError, "Invalid authentication strategy '#{it.inspect}'" }
+          auth = strategy.value_or { raise ArgumentError, "Invalid authentication strategy '#{it.inspect}'" }
 
           case auth.key
           when :noop

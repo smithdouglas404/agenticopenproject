@@ -60,6 +60,9 @@ module WorkPackageTypes
       end
     end
 
-    def flat_valid_token_list = WorkPackageTypes::Patterns::TokenPropertyMapper.new.tokens_for_type(model).map(&:key)
+    def flat_valid_token_list
+      enabled, _disabled = WorkPackageTypes::Patterns::TokenPropertyMapper.new.partitioned_tokens_for_type(model)
+      enabled.map(&:key)
+    end
   end
 end

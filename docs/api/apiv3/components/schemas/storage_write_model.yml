@@ -13,6 +13,13 @@ properties:
 
       This is only required for authentication through single-sign-on and so far
       only supported for provider type Nextcloud.
+  tokenExchangeScope:
+    type: string
+    description: |-
+      The scope that will be requested when requesting a token for the storage through token exchange. Has no effect if no
+      token exchange is performed.
+
+      This is only required for authentication through single-sign-on and so far only supported for provider type Nextcloud.
   applicationPassword:
     type:
       - string

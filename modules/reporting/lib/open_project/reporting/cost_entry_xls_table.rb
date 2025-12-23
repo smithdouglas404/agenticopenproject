@@ -41,7 +41,8 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
 
   def build_cost_rows
     sorted_results.each do |result|
-      spreadsheet.add_row(cost_row(result))
+      row = spreadsheet.add_row(cost_row(result))
+      row.set_format 0, date_format
     end
   end
 
@@ -73,7 +74,7 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
   end
 
   def cost_main_columns(result)
-    main_cols = [show_field(:spent_on, result.fields["spent_on"])]
+    main_cols = [result.fields["spent_on"].to_date]
     main_cols.concat cost_main_times_columns(result) if with_times_column?
     main_cols
   end
@@ -130,14 +131,17 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
     %i[user_id activity_id entity_gid comments project_id]
   end
 
-  # Returns the results of the query sorted by date the time was spent on and by id
+  # Returns the results of the query sorted by date the time was spent on and name
   def sorted_results
-    query
-      .each_direct_result
-      .map(&:itself)
+    results = query.each_direct_result.map(&:itself)
+    users_by_id = load_users_for_results(results)
+
+    results
       .group_by { |r| r.fields["spent_on"] }
       .sort
-      .flat_map { |_, date_results| date_results.sort_by { |r| r.fields["id"] } }
+      .flat_map do |_, date_results|
+      date_results.sort_by { |r| user_name_for_sorting(r, users_by_id) }
+    end
   end
 
   def labour_query?
@@ -146,5 +150,14 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
 
   def with_times_column?
     Setting.allow_tracking_start_and_end_times && labour_query?
+  end
+
+  def load_users_for_results(results)
+    user_ids = results.map { |r| r.fields["user_id"] }.uniq
+    User.where(id: user_ids).index_by(&:id)
+  end
+
+  def user_name_for_sorting(result, users_by_id)
+    users_by_id[result.fields["user_id"]]&.name&.downcase || ""
   end
 end

@@ -21,7 +21,7 @@
 #++
 lv:
   plugin_budgets_engine:
-    name: 'Budžets'
+    name: "Budžets"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ lv:
         type: "Izmaksu veids"
         labor_budget: "Planned labor costs"
         material_budget: "Planned unit costs"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Budžeta nosaukums"
     models:
@@ -61,13 +62,19 @@ lv:
   help_currency_format: "Format of displayed currency values. %n is replaced with the currency value, %u ist replaced with the currency unit."
   help_override_rate: "Enter a value here to override the default rate."
   label_budget: "Budžets"
-  label_budget_new: "New budget"
-  label_budget_plural: "Budžets"
+  label_budget_available: "Budget available"
   label_budget_id: "Budžets #%{id}"
+  label_budget_new: "New budget"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Budžets"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Budžets"
-  label_example_placeholder: 'piemēram, %{decimal}'
+  label_example_placeholder: "piemēram, %{decimal}"
   label_view_all_budgets: "Apskatīt visus budžetus"
   label_yes: "Jā"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Work packages must be of the same project."
   notice_no_budgets_available: "Budžets nav pieejams."
   permission_edit_budgets: "Rediģēt budžetus"

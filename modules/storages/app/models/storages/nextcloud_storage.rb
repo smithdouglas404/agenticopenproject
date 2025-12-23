@@ -42,7 +42,6 @@ module Storages
       AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
     ].freeze
 
-    store_attribute :provider_fields, :automatically_managed, :boolean
     store_attribute :provider_fields, :username, :string
     store_attribute :provider_fields, :password, :string
     store_attribute :provider_fields, :group, :string
@@ -52,6 +51,10 @@ module Storages
     store_attribute :provider_fields, :token_exchange_scope, :string
 
     def self.short_provider_name = :nextcloud
+
+    def self.non_confidential_provider_fields
+      super + %i[username group group_folder authentication_method storage_audience token_exchange_scope]
+    end
 
     def oauth_configuration
       Adapters::Providers::Nextcloud::OAuthConfiguration.new(self)

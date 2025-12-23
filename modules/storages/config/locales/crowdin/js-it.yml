@@ -17,7 +17,8 @@ it:
       new_folder: "Nuova cartella"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "Microsoft SharePoint Online"
         default: "Archivio"
       information:
         authentication_error: "La richiesta di %{storageType} non può essere autenticata, è un errore."

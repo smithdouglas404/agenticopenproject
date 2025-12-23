@@ -38,6 +38,10 @@ module Token
     has_one :query, through: :ical_token_query_assignment
     has_one :project, through: :query
 
+    def token_name
+      ical_token_query_assignment.name
+    end
+
     class << self
       def create_and_return_value(user, query, token_name)
         # using the ! here to raise an exception if the token could

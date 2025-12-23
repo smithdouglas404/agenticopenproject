@@ -129,6 +129,13 @@ module Pages
 
     def ensure_page_loaded
       expect_angular_frontend_initialized
+
+      # wait for work packages page to be visible and have content in it
+      has_selector?(".work-packages-page--ui-view div")
+      # wait for content loader to disappear (in the activity tab)
+      has_no_selector?("content-loader", wait: 10)
+
+      nil
     end
 
     def disable_ajax_requests
@@ -312,8 +319,13 @@ module Pages
       find(".inline-edit--container.subject input")
     end
 
-    def go_back
-      find(".work-packages-back-button").click
+    def go_back(wait: true)
+      page.go_back
+
+      if wait
+        wait_for_network_idle
+        ensure_page_loaded
+      end
     end
 
     def mark_notifications_as_read

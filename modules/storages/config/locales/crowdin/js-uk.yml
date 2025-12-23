@@ -17,7 +17,8 @@ uk:
       new_folder: "Нова папка"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive / SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Сховище"
       information:
         authentication_error: "Сталася помилка. Запит до сховища %{storageType} не вдалось автентифікувати."

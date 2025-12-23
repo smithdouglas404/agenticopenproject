@@ -277,6 +277,11 @@ class WorkPackage < ApplicationRecord
     "#{type.name unless type.is_standard} ##{id}: #{subject}"
   end
 
+  def infoline(show_standard_type: true)
+    type_name = show_standard_type || !type.is_standard ? type.name : ""
+    "#{type_name}: #{subject} (##{id})"
+  end
+
   # Return true if the work_package is closed, otherwise false
   def closed?
     status.nil? || status.is_closed?
@@ -549,7 +554,7 @@ class WorkPackage < ApplicationRecord
   private_class_method :available_custom_fields_from_db
 
   def self.available_custom_field_key(work_package)
-    :"#work_package_custom_fields_#{work_package.project_id}_#{work_package.type_id}"
+    :"work_package_custom_fields_#{work_package.project_id}_#{work_package.type_id}"
   end
 
   private_class_method :available_custom_field_key

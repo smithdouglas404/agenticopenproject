@@ -108,6 +108,9 @@ RSpec.describe "Omniauth authentication" do
         click_link_or_button "Sign In"
 
         expect(current_path).to eql my_account_path
+
+        # Expect the dropdown menu to be the logged in one
+        expect(page).to have_test_selector "op-app-header--user-menu-button"
       end
     end
   end

@@ -256,24 +256,49 @@ RSpec.describe PermittedParams do
     it_behaves_like "allows params"
   end
 
+  describe "#project" do
+    let(:attribute) { :project }
+
+    describe "status_code" do
+      context "with valid status_code" do
+        let(:hash) { { "status_code" => "not_started" } }
+
+        it_behaves_like "allows params"
+      end
+
+      context "with empty status_code" do
+        let(:hash) { { "status_code" => "" } }
+        let(:expected_allowed_params) { { "status_code" => nil } }
+
+        it_behaves_like "allows params"
+      end
+    end
+
+    describe "status_explanation" do
+      let(:hash) { { "status_explanation" => "Blah..." } }
+
+      it_behaves_like "allows params"
+    end
+  end
+
   describe "#new_project" do
     let(:attribute) { :new_project }
     let(:hash_key) { "project" }
 
     context "with minimal params" do
-      let(:hash) { { "name" => "Brand New Project" } }
+      let(:hash) { { "name" => "Brand New Project", "workspace_type" => "project" } }
 
       it_behaves_like "allows params"
     end
 
     context "with parent_id" do
-      let(:hash) { { "name" => "Brand New Project", "parent_id" => "19" } }
+      let(:hash) { { "name" => "Brand New Project", "workspace_type" => "project", "parent_id" => "19" } }
 
       it_behaves_like "allows params"
     end
 
     context "with custom_field_values" do
-      let(:hash) { { "name" => "Brand New Project", "custom_field_values" => { "4" => "21" } } }
+      let(:hash) { { "name" => "Brand New Project", "workspace_type" => "project", "custom_field_values" => { "4" => "21" } } }
 
       it_behaves_like "allows params"
     end
@@ -304,6 +329,32 @@ RSpec.describe PermittedParams do
 
     context "with send_notifications" do
       let(:hash) { { "dependencies" => [], "send_notifications" => "1" } }
+
+      it_behaves_like "allows params"
+    end
+  end
+
+  describe "#project_status" do
+    let(:attribute) { :project_status }
+    let(:hash_key) { "project" }
+
+    describe "status_code" do
+      context "with valid status_code" do
+        let(:hash) { { "status_code" => "not_started" } }
+
+        it_behaves_like "allows params"
+      end
+
+      context "with empty status_code" do
+        let(:hash) { { "status_code" => "" } }
+        let(:expected_allowed_params) { { "status_code" => nil } }
+
+        it_behaves_like "allows params"
+      end
+    end
+
+    describe "status_explanation" do
+      let(:hash) { { "status_explanation" => "Blah..." } }
 
       it_behaves_like "allows params"
     end

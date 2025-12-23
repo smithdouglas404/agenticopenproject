@@ -10,7 +10,7 @@ keywords: my activity, personal changes, dashboard
 
 **My activity** gives you an overview of all your latest actions and projects you are involved in.
 
-You can open your **My activity** page by clicking on your user avatar in the upper right corner and then selecting **My activity** from the dropdown menu.
+You can open your **My activity** page by clicking on your user avatar in the upper right corner and then selecting **My activity** from the overlay menu that will open.
 
 ![Navigate to My Activity Page](openproject_select_my_actvity.png)
 

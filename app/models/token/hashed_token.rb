@@ -61,6 +61,14 @@ module Token
       def find_by_plaintext_value(input)
         find_by(value: hash_function(input))
       end
+
+      def find_by_plaintext_value!(input)
+        find_by!(value: hash_function(input))
+      end
+    end
+
+    def display_value
+      plain_value.presence || I18n.t("token.hashed_token.display_value_placeholder")
     end
 
     ##
@@ -83,7 +91,7 @@ module Token
     private
 
     def initialize_values
-      if new_record? && !value.present?
+      if new_record? && value.blank?
         @plain_value = self.class.generate_token_value
         self.value = hash_function(@plain_value)
       end

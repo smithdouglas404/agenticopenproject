@@ -29,6 +29,8 @@
 #++
 
 module Exports::PDF::Components::Cover
+  PRAWN_RGB_HEX_FORMAT = /\A[0-9A-F]{6}\z/
+
   def write_cover_page!
     write_cover_logo
     write_cover_hr
@@ -89,12 +91,14 @@ module Exports::PDF::Components::Cover
     hexcode = CustomStyle.current.export_cover_text_color
     return nil if hexcode.blank?
 
-    color = Color.new({ hexcode: })
-    color.normalize_hexcode
-    return nil if color.hexcode.blank?
+    normalized = ::Colors::HexColor::Normalizer.new.call(hexcode)
+    return nil if normalized.blank?
 
     # pdf hex colors are defined without leading hash
-    color.hexcode.sub("#", "")
+    color = normalized.tr("#", "")
+    return nil unless PRAWN_RGB_HEX_FORMAT.match?(color)
+
+    color
   end
 
   def write_hero_title(top, width)
@@ -152,9 +156,15 @@ module Exports::PDF::Components::Cover
   end
 
   def write_cover_footer
+    return if cover_page_footer_date.blank?
+
     text_style = styles.cover_footer
     text_style[:color] = cover_text_color if cover_text_color.present?
-    draw_text_left(footer_date, text_style, pdf.bounds.bottom - styles.cover_footer_offset)
+    draw_text_left(cover_page_footer_date, text_style, pdf.bounds.bottom - styles.cover_footer_offset)
+  end
+
+  def cover_page_footer_date
+    footer_date
   end
 
   def write_cover_logo

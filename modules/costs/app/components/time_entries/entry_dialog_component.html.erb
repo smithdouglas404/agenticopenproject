@@ -11,9 +11,9 @@
         ) %>
   <% end %>
   <% d.with_footer(variant: :large) do %>
-    <% flex_layout(justify_content: :flex_end, classes: "time-entry-dialog-footer-buttons") do |flex| %>
+    <%= grid_layout("time-entry-dialog-footer", tag: :div) do |grid| %>
       <% if can_delete_time_entry? %>
-        <% flex.with_column do %>
+        <% grid.with_area("delete") do %>
           <%= render(
                 Primer::Beta::Button.new(
                   scheme: :danger,
@@ -29,11 +29,12 @@
               ) { t("button_delete") } %>
         <% end %>
       <% end %>
-      <% flex.with_column(classes: "time-entry-button-push") %>
-      <% flex.with_column do %>
+      <% grid.with_area("cancel") do %>
         <%= render(
               Primer::Beta::Button.new(data: { "close-dialog-id": "time-entry-dialog" })
             ) { I18n.t("button_cancel") } %>
+        <% end %>
+        <% grid.with_area("confirm") do %>
         <%= render(
               Primer::Beta::Button.new(
                 scheme: :primary,

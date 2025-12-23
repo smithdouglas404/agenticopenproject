@@ -1,7 +1,7 @@
 <%=
   render(Primer::OpenProject::SidePanel::Section.new) do |section|
     section.with_title { I18n.t("saml.providers.label_openproject_information") }
-    section.with_description { I18n.t("openid_connect.instructions.redirect_url") }
+    section.with_description { I18n.t("openid_connect.instructions.oidc_information") }
 
     component_collection do |collection|
       collection.with_component(Primer::Beta::Heading.new(tag: :h5, mb: 1)) do

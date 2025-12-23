@@ -89,8 +89,6 @@ import {
   UploadConflictModalComponent,
 } from 'core-app/shared/components/storages/upload-conflict-modal/upload-conflict-modal.component';
 import { LocationData, UploadData } from 'core-app/shared/components/storages/storage/interfaces';
-import isNotNull from 'core-app/core/state/is-not-null';
-import compareId from 'core-app/core/state/compare-id';
 import isHttpResponse from 'core-app/core/upload/is-http-response';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { StoragesResourceService } from 'core-app/core/state/storages/storages.service';
@@ -319,7 +317,7 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
       .subscribe(([storage, fileLinks, collectionKey]) => {
         const locals = {
           addFileLinksHref: this.addFileLinksHref,
-          projectFolderHref: this.projectStorage._links.projectFolder?.href || null,
+          projectFolderHref: this.projectStorage._links.projectFolder?.href ?? null,
           projectFolderMode: this.projectStorage.projectFolderMode,
           storage,
           collectionKey,
@@ -395,7 +393,7 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
           const link = this.uploadResourceLink(storage, data.file.name, data.location);
           return this.storageFilesResourceService.uploadLink(link);
         }),
-        switchMap((link) => this.uploadAndNotify(link, data.file, data.overwrite)),
+        switchMap((link) => this.uploadAndNotify(link, data.file, data.location, data.overwrite)),
         catchError((error) => {
           isUploadError = true;
           return throwError(error);
@@ -409,7 +407,7 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
               .subscribe();
           }
         }),
-        filter(isNotNull),
+        filter((fileLinkCreationData) => fileLinkCreationData !== null),
         switchMap((file) =>
           combineLatest([
             this.storage.pipe(first()),
@@ -433,7 +431,7 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
           if (isUploadError) {
             this.handleUploadError(error as HttpErrorResponse, data.file.name);
           } else {
-            this.toastService.addError(this.text.toast.linkingAfterUploadFailed(data.file.name, this.resource.id as string));
+            this.toastService.addError(this.text.toast.linkingAfterUploadFailed(data.file.name, this.resource.id!));
           }
 
           console.error(error);
@@ -473,9 +471,9 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
     }
   }
 
-  private uploadAndNotify(link:IUploadLink, file:File, overwrite:boolean|null):Observable<IStorageFileUploadResponse> {
+  private uploadAndNotify(link:IUploadLink, file:File, location:string|null, overwrite:boolean|null):Observable<IStorageFileUploadResponse> {
     const { href } = link._links.destination;
-    const uploadFiles:IUploadFile[] = [{ file, overwrite: overwrite !== null ? overwrite : undefined }];
+    const uploadFiles:IUploadFile[] = [{ file, location: location ?? undefined, overwrite: overwrite ?? undefined }];
     const observable = this.uploadService.upload<IStorageFileUploadResponse>(href, uploadFiles)[0];
     this.toastService.addUpload(this.text.toast.uploadingLabel, [[file, observable]]);
 
@@ -498,7 +496,7 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
       .pipe(
         take(1),
         map((fileLinks) => {
-          const existingFileLink = fileLinks.find((l) => compareId(l.originData.id, response.id));
+          const existingFileLink = fileLinks.find((l) => String(l.originData.id) === String(response.id));
           if (existingFileLink) {
             return null;
           }
@@ -578,10 +576,9 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
   }
 
   public onDragOver(event:DragEvent):void {
-    const containsFiles = (dataTransfer:DataTransfer):boolean => dataTransfer.types.indexOf('Files') >= 0;
+    const containsFiles = (dataTransfer:DataTransfer):boolean => dataTransfer.types.includes('Files');
 
     if (event.dataTransfer !== null && containsFiles(event.dataTransfer)) {
-      // eslint-disable-next-line no-param-reassign
       event.dataTransfer.dropEffect = 'copy';
       this.draggingOverDropZone = true;
     }
@@ -590,4 +587,6 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
   public onDragLeave(_event:DragEvent):void {
     this.draggingOverDropZone = false;
   }
+
+  protected readonly nextcloud = nextcloud;
 }

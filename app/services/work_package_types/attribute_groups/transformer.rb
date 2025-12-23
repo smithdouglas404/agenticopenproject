@@ -67,13 +67,14 @@ module WorkPackageTypes
         query.extend(OpenProject::ChangedBySystem)
         query.change_by_system { query.user = User.system }
 
-        ::API::V3::UpdateQueryFromV3ParamsService
+        result = ::API::V3::UpdateQueryFromV3ParamsService
           .new(query, user)
           .call(props.with_indifferent_access)
 
-        query.show_hierarchies = false
-
-        [name, [query]]
+        if result.success?
+          query.show_hierarchies = false
+          [name, [query]]
+        end
       end
     end
   end

@@ -46,7 +46,12 @@ module Redmine::MenuManager::TopMenuHelper
       render_module_top_menu_node,
       render_logo
     ]
-    items << render_logo_icon unless custom_logo?
+
+    cs = CustomStyle.current
+    if cs&.logo_mobile.present? || !custom_logo?
+      items << render_logo_icon
+    end
+
     items
   end
 
@@ -55,22 +60,33 @@ module Redmine::MenuManager::TopMenuHelper
   end
 
   def render_logo
+    mode_class = "op-logo--link_high_contrast" if User.current.pref.light_high_contrast_theme?
     content_tag :div, class: "op-logo" do
-      mode_class = User.current.pref.high_contrast_theme? ? "op-logo--link_high_contrast" : ""
       link_to(I18n.t("label_home"),
               configurable_home_url,
-              class: "op-logo--link #{mode_class}")
+              data: { auto_theme_switcher_target: "desktopLogo" },
+              class: ["op-logo--link", mode_class].compact)
     end
   end
 
   def render_logo_icon
-    mode_class = "op-logo--icon_white" unless User.current.pref.high_contrast_theme?
-    link_to(I18n.t("label_home"), configurable_home_url, class: ["op-logo", "op-logo--icon", "op-logo--link", mode_class])
+    mode_class = "op-logo--icon_white" unless User.current.pref.light_high_contrast_theme?
+    link_to(I18n.t("label_home"),
+            configurable_home_url,
+            data: { auto_theme_switcher_target: "mobileLogo" },
+            class: ["op-logo", "op-logo--icon", "op-logo--link", mode_class].compact)
   end
 
   def render_waffle_menu_logo_icon
-    mode_class = User.current.pref.theme === "dark" ? "op-logo--icon_white" : "op-logo--icon"
-    render Primer::BaseComponent.new(tag: :div, classes: ["op-logo", mode_class])
+    style = CustomStyle.current
+    classes = ["op-logo"]
+    if style&.logo_mobile.present?
+      classes << "op-logo--icon"
+    else
+      mode_class = User.current.pref.theme == "dark" ? "op-logo--icon_white" : "op-logo--icon"
+      classes << mode_class
+    end
+    render Primer::BaseComponent.new(tag: :div, classes:)
   end
 
   def render_top_menu_search

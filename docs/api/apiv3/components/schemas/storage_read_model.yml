@@ -25,18 +25,29 @@ properties:
 
       This is only required for authentication through single-sign-on and so far
       only supported for provider type Nextcloud.
-  tenantId:
+  tokenExchangeScope:
     type: string
+    description: |-
+      The scope that will be requested when requesting a token for the storage through token exchange. Has no effect if no
+      token exchange is performed.
+
+      This is only required for authentication through single-sign-on and so far only supported for provider type Nextcloud.
+  tenantId:
+    type:
+      - "string"
+      - "null"
     description: |-
       The tenant id of a file storage of type OneDrive.
 
-      Ignored if the provider type is not OneDrive.
+      Ignored if the provider type is not OneDrive. May be null if the storage is not configured completely.
   driveId:
-    type: string
+    type:
+      - "string"
+      - "null"
     description: |-
       The drive id of a file storage of type OneDrive.
 
-      Ignored if the provider type is not OneDrive.
+      Ignored if the provider type is not OneDrive. May be null if the storage is not configured completely.
   hasApplicationPassword:
     type: boolean
     description: |-

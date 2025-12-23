@@ -51,6 +51,8 @@ module WorkPackageTypes
       if params[:attribute_groups].empty?
         model.reset_attribute_groups
       else
+        # FIXME: We lost the ability to react to errors on the transformation. Might not be a big issue on day to day, but still
+        #   a regression - 2025-08-07 noted by @mereghost
         model.attribute_groups = AttributeGroups::Transformer.new(groups: params[:attribute_groups], user: user).call
         params.delete(:attribute_groups)
       end

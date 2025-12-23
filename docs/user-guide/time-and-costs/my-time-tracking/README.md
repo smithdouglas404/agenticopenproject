@@ -12,6 +12,8 @@ keywords: time tracking, log time, time spent, calendar, time spent calendar, ti
 
 The *My time tracking* module offers a clear overview of your personal time entries. You can quickly log time directly from this page. To access it, select **My time tracking** from the left-hand menu.
 
+Alternatively, click the grid icon in the top left corner and select *My time tracking* from the overlay menu that will open.
+
 ![My tracking page overview in OpenProject](openproject_user_guide_my_time_tracking_module_overview.png)
 
 ### My time tracking page filters
@@ -28,8 +30,6 @@ The *My time tracking* module offers a clear overview of your personal time entr
    5. **Navigation arrows** — move to the previous or next time period.
    6. **Today** button — jump directly to the current day.
    7. **+ Log time** button — add a new time entry.
-
-
 
 ![My time tracking module filters explained](openproject_user_guide_my_time_tracking_module_filters_explained.png)
 
@@ -52,6 +52,10 @@ To edit a time entry, click it in the calendar, make your changes, and save. You
 At the bottom of each day a sum of hours per day is displayed. If week or month is selected, a respective total is also shown in the bottom right corner. 
 
 ![Sums of hours displayed at the bottom of the Calendar tab under My time tracking module in OpenProject](openproject_user_guide_my_time_tracking_module_calendar_tab_total_sums.png)
+
+If you are currently tracking time with a timer for a specific work package, you will also see the ongoing time tracking timer for the respective work package. The work package in question also has a different background color for easier differentiation. 
+
+![Active time tracking for a work package displayed on my time tracking page in OpenProject](openproject_user_guide_my_time_tracking_module_active_time_tracking_icon.png)
 
 ### List view
 
@@ -85,9 +89,9 @@ To log time in *List* view, you can either:
 
 ![List view under My time tracking module in OpenProject](openproject_user_guide_my_time_tracking_module_list_view_overview.png)
 
-To edit a time entry in the *List* view, click the **More** (three dots) icon at the end of the entry’s row in the table, then select the **Edit** (pencil) icon.
+To edit or delete a time entry in the *List* view, click the **More** (three dots) icon at the end of the entry’s row in the table, then select the **Edit** (pencil) or **Delete** icon respectively.
 
-![Icon to edit a time entry under List tab of the My time tracking module in OpenProject](openproject_user_guide_my_time_tracking_module_list_view_edit_icon.png)
+![Icon to edit or delete a time entry under List tab of the My time tracking module in OpenProject](openproject_user_guide_my_time_tracking_module_list_view_edit_icon.png)
 
 ## Log time in My time tracking module
 
@@ -101,7 +105,15 @@ To log time on the *My time tracking* page, click the **+ Log time** button. A m
 > These fields are only visible if the **Allow exact times tracking** option is enabled by an administrator.
 > If the **Require exact times** option is also enabled, these fields become mandatory in order to save the time entry.
 
-- **Hours** – Enter the number of hours you want to log for a specific work package.
+- **Hours** – Enter the number of hours you want to log for a specific work package. 
+
+> [!TIP]
+>  Duration can be entered both in hours and minutes. For example for logging 1,5 hours, you can enter:
+>  - 1.5h
+>  - 90m
+>  - 90min
+>  - 1:30
+
 
 - **Work package** – Type to search for a work package or select from the list of recently used ones.
 

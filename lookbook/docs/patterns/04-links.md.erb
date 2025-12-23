@@ -12,8 +12,8 @@ There are **two exceptions** where links may open in a new tab (`target="_blank"
 
 When a link opens in a new tab, the following must be implemented:
 
-* An **`aria-label`** must be added to inform screen reader users that the link opens in a new tab (e.g., `"Opens in a new tab"`).
 * The link must be followed by the `link-external` icon to visually indicate that a new tab will open.
+* Note: the link needs an accessible hint that it is opened in a new tab. This is done automatically, for details have a look at [accessibility guidelines](./accessibility/blank_target_links)
 
 # Inline Link Styling
 
@@ -23,6 +23,22 @@ For links in form captions and PageHeader descriptions, this is done automatical
 
 <%= embed OpenProject::Common::LinkPreview, :inline %>
 
-## Technical notes
+# Links in translated texts
 
 The module `Redmine::I18n` offers a helper called `link_translate` that can be used to render inline links inside translated text. This method ensures that the guidelines above are respected.
+
+```ruby
+link_translate("consent.user_has_consented", links: { consent_settings: "www.openproject.com" })
+```
+
+For that to work, the base string needs to define the link in the following format in the yml file:
+
+```yml
+user_has_consented: The user gave their consent to your [configured consent information text](consent_settings).
+```
+
+That will result in:
+
+```html
+The user gave their consent to your <a target="_blank" href="www.openproject.com" data-view-component="true" class="Link Link--underline"><span data-view-component="true" class="Link-content">configured consent information text</span></a>.
+```

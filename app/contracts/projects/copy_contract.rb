@@ -29,7 +29,7 @@
 #++
 
 module Projects
-  class CopyContract < BaseContract
+  class CopyContract < CreateContract
     protected
 
     def validate_model?

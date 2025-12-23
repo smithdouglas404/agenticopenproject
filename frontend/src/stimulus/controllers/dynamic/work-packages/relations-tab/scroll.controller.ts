@@ -7,10 +7,8 @@ export default class ScrollController extends Controller {
   declare readonly hasScrollToRowTarget:boolean;
 
   scrollToRowTargetConnected() {
-    if (this.hasScrollToRowTarget) {
-      setTimeout(() => {
-        this.scrollToRowTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      });
-    }
+    setTimeout(() => {
+      this.scrollToRowTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   }
 }
