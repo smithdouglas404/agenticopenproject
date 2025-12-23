@@ -40,7 +40,7 @@ module Overviews
         super
 
         @project_custom_field = project_custom_field
-        @project_custom_field_values = project_custom_field_values
+        @project_custom_field_values = Array(project_custom_field_values)
         @project = project
       end
 
@@ -101,6 +101,10 @@ module Overviews
         )
       end
 
+      def required?
+        @project_custom_field.required? && !@project_custom_field.calculated_value?
+      end
+
       def not_set?
         @project_custom_field_values.none?(&:value?)
       end
@@ -153,32 +157,28 @@ module Overviews
         when "user"
           render_user
         else
-          render(Primer::Beta::Text.new) do
-            @project_custom_field_values&.map do |cf_value|
-              format_value(cf_value.value, @project_custom_field)
-            end&.join(", ")
-          end
+          render_custom_field_values
         end
       end
 
       def render_long_text
         render OpenProject::Common::AttributeComponent.new("dialog-cf-#{@project_custom_field.id}",
                                                            @project_custom_field.name,
-                                                           @project_custom_field_values&.first&.value,
+                                                           @project_custom_field_values.first&.value,
                                                            lines: 3)
       end
 
       def render_user
         if @project_custom_field.multi_value?
           flex_layout do |avatar_container|
-            @project_custom_field_values&.each do |cf_value|
+            @project_custom_field_values.each do |cf_value|
               avatar_container.with_row do
                 render_avatar(cf_value.typed_value)
               end
             end
           end
         else
-          render_avatar(@project_custom_field_values&.first&.typed_value)
+          render_avatar(@project_custom_field_values.first&.typed_value)
         end
       end
 
@@ -187,7 +187,7 @@ module Overviews
       end
 
       def render_link
-        href = @project_custom_field_values&.first&.value
+        href = @project_custom_field_values.first&.value
         link = Addressable::URI.parse(href)
         return href unless link
 
@@ -197,12 +197,21 @@ module Overviews
         end
       end
 
+      def render_custom_field_values
+        render(Primer::Beta::Text.new) { custom_field_values }
+      end
+
       def accessible_value_text
         return I18n.t("placeholders.default") if not_set?
+        custom_field_values
+      end
 
-        @project_custom_field_values.map do |cf_value|
-          format_value(cf_value.value, @project_custom_field)
-        end.join(", ")
+      def custom_field_values
+        return @custom_field_values if defined?(@custom_field_values)
+
+        values = @project_custom_field_values.map { |v| format_value(v.value, @project_custom_field) }
+
+        @custom_field_values = @project_custom_field.multi_value? ? values.join(", ") : values.first
       end
     end
   end

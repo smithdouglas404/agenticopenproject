@@ -298,12 +298,13 @@ ja:
       warning: "このURLを他のユーザーと共有しないでください。このリンクを持つ誰でもアカウントやパスワードなしでワークパッケージの詳細を表示することができます。"
       token_name_label: "どこで使うのですか？？"
       token_name_placeholder: '名前を入力してください。例："電話"'
-      token_name_description_text: '複数のデバイスからこのカレンダーを購読する場合、この名前は、<a href="my/access_token", target="_blank">アクセストークンリストで</a>それらを区別するのに役立ちます。'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "URLをコピー"
       ical_generation_error_text: "カレンダーのURL生成時にエラーが発生しました。"
       success_message: 'URL "%{name}" がクリップボードにコピーされました。カレンダークライアントに貼り付けて購読を完了してください。'
     label_activate: "有効にする"
     label_assignee: "担当者"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "後に列を追加"
     label_add_column_before: "前に列を追加"
     label_add_columns: "列を追加"
@@ -345,6 +346,7 @@ ja:
     label_collapse: "折りたたむ"
     label_collapsed: "折りたたまれている。"
     label_collapse_all: "全てを折りたたむ"
+    label_collapse_text: "Collapse text"
     label_comment: "コメント"
     label_committed_at: "%{date}で%{committed_revision_link}"
     label_committed_link: "コミットされたバージョン%{revision_identifier}"
@@ -357,6 +359,7 @@ ja:
     label_expand: "展開"
     label_expanded: "展開"
     label_expand_all: "全てを展開"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "プロジェクトメニューを展開"
     label_export: "エクスポート"
     label_export_preparing: "エクスポートは準備中です。まもなくダウンロードされます。"
@@ -555,7 +558,7 @@ ja:
       date_alerts:
         milestone_date: "マイルストーン"
         overdue: "期限切れ"
-        overdue_since: "%{difference_in_days}以降。"
+        overdue_since: "for %{difference_in_days}."
         property_today: "は今日です。"
         property_is: "は%{difference_in_days}後。"
         property_was: "は、 %{difference_in_days} 前です。"
@@ -1123,6 +1126,7 @@ ja:
       current_project_and_all_descendants: "このプロジェクトと子プロジェクトでは"
       current_project: "このプロジェクトでは"
       recently_viewed: "最近閲覧した記事"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "すべてのプロジェクト"
         project_and_subprojects: "すべてのプロジェクトで"
@@ -1159,6 +1163,11 @@ ja:
         does_not_match_search: "プロジェクトが検索条件に一致しません。"
       no_results: "検索条件に一致するプロジェクトはありません。"
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "ベースライン"
       clear: "クリア"

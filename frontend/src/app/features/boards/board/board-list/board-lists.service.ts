@@ -104,7 +104,7 @@ export class BoardListsService {
     return board;
   }
 
-  private buildQueryRequest(params:Object) {
+  private buildQueryRequest(params:object) {
     return {
       public: true,
       _links: {

@@ -60,7 +60,10 @@ module Overviews
     def custom_fields_sidebar_enabled?
       @custom_fields_sidebar_enabled ||=
         current_user.allowed_in_project?(:view_project_attributes, project) &&
-        project.project_custom_fields.visible.any?
+          project.project_custom_fields
+                 .visible
+                 .group_by(&:project_custom_field_section)
+                 .any? { |section, _| section.shown_in_overview_sidebar? }
     end
 
     def render_sidebar_turbo_frame(*ids, src: nil, target: nil, **attributes)

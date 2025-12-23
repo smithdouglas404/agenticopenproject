@@ -68,10 +68,6 @@ module API
             end
 
             patch do
-              unless OpenProject::FeatureDecisions.block_note_editor_active?
-                raise ::API::Errors::Unauthorized.new(message: I18n.t("api_v3.errors.code_403"))
-              end
-
               doc = document
               request_body = JSON.parse(request.body.read)
 

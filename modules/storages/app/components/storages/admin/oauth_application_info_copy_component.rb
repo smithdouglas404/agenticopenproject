@@ -43,7 +43,7 @@ module Storages::Admin
     def oauth_application_details_link
       render(
         Primer::Beta::Link.new(
-          href: ::UrlBuilder.url(storage.uri, "settings/admin/openproject"),
+          href: ::Storages::UrlBuilder.url(storage.uri, "settings/admin/openproject"),
           target: "_blank"
         )
       ) { I18n.t("storages.instructions.oauth_application_details_link_text") }

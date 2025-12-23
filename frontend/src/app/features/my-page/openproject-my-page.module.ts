@@ -42,4 +42,4 @@ import { MyPageComponent } from 'core-app/features/my-page/my-page.component';
     MyPageComponent,
   ],
 })
-export class OpenprojectMyPageModule {} // eslint-disable-line @typescript-eslint/no-extraneous-class
+export class OpenprojectMyPageModule {}

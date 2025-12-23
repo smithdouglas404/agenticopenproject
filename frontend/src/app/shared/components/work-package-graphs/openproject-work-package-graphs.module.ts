@@ -72,4 +72,4 @@ import { OpenprojectTabsModule } from 'core-app/shared/components/tabs/openproje
     WorkPackageOverviewGraphComponent,
   ]
 })
-export class OpenprojectWorkPackageGraphsModule {} // eslint-disable-line @typescript-eslint/no-extraneous-class
+export class OpenprojectWorkPackageGraphsModule {}

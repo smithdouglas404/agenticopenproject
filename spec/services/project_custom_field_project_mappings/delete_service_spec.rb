@@ -39,7 +39,9 @@ RSpec.describe ProjectCustomFieldProjectMappings::DeleteService do
     end
   end
 
-  describe "calculated values", with_flag: { calculated_value_project_attribute: true } do
+  describe "calculated values",
+           with_ee: %i[calculated_values],
+           with_flag: { calculated_value_project_attribute: true } do
     using CustomFieldFormulaReferencing
 
     shared_let(:user) { create(:admin) }

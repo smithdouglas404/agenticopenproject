@@ -401,7 +401,9 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
     end
   end
 
-  context "with calculated value columns", with_flag: { calculated_value_project_attribute: true } do
+  context "with calculated value columns",
+          with_ee: %i[calculated_values],
+          with_flag: { calculated_value_project_attribute: true } do
     let!(:static_calculated_value) do
       create(:calculated_value_project_custom_field,
              name: "Calculated value field",
@@ -452,7 +454,7 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
 
         project.custom_field_values = { integer_custom_field.id => 0 }
         project.save!
-
+        project.reload
         project.calculate_custom_fields([division_by_zero_calculated_value])
 
         projects_page.visit!

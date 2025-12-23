@@ -129,7 +129,7 @@ module Redmine::MenuManager::TopMenu::QuickAddMenu
         classes: "__hl_inline_type_#{type_id}" }
     else
       { caption: type_name,
-        href: new_work_packages_path(type: type_id),
+        href: new_work_package_path(type: type_id),
         classes: "__hl_inline_type_#{type_id}" }
     end
   end

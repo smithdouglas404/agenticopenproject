@@ -115,7 +115,7 @@
           [localStorageKey]="'openProject-timelineFlexBasis'" />
         </div>
       }
-      <div class="work-packages-tabletimeline--timeline-side"
+      <div class="work-packages-tabletimeline--timeline-side" aria-hidden="true" tabindex="-1"
         [ngClass]="{ '-single-margin': (sumVisible || inlineCreateVisible) && !(sumVisible && inlineCreateVisible), '-double-margin': sumVisible && inlineCreateVisible }">
         <wp-timeline-container />
       </div>

@@ -297,12 +297,13 @@ ca:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copia l'URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Activar"
     label_assignee: "Assignat a"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Afegir una columna després"
     label_add_column_before: "Afegir una columna abans"
     label_add_columns: "Afegir una columna"
@@ -344,6 +345,7 @@ ca:
     label_collapse: "Col·lapsa"
     label_collapsed: "col·lapsat"
     label_collapse_all: "Col·lapsar tot"
+    label_collapse_text: "Collapse text"
     label_comment: "Comentari"
     label_committed_at: "%{committed_revision_link} el %{date}"
     label_committed_link: "revisió acceptada %{revision_identifier}"
@@ -356,6 +358,7 @@ ca:
     label_expand: "Expandir"
     label_expanded: "expandit"
     label_expand_all: "Expandir tot"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Expandieix el menú de projecte"
     label_export: "Exportar"
     label_export_preparing: "S'està preparant l'exportació i serà descarregada aviat."
@@ -554,7 +557,7 @@ ca:
       date_alerts:
         milestone_date: "Data de fita"
         overdue: "Vençut"
-        overdue_since: "since %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "is today."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
@@ -1126,6 +1129,7 @@ ca:
       current_project_and_all_descendants: "En aquest projecte + subprojectes"
       current_project: "En aquest projecte"
       recently_viewed: "Vist recentment"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "tots els projectes"
         project_and_subprojects: "i tots els subprojectes"
@@ -1162,6 +1166,11 @@ ca:
         does_not_match_search: "El projecte no coincideix amb la cerca."
       no_results: "Cap projecte s'ajusta a la teva cerca."
       no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Base de referència"
       clear: "Esborra"

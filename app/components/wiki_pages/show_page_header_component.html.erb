@@ -162,15 +162,25 @@ See COPYRIGHT and LICENSE files for more details.
           item.with_leading_visual_icon(icon: "op-printer")
         end
         if User.current.allowed_in_project?(:export_wiki_pages, @project)
-          menu.with_item(
+          menu.with_sub_menu_item(
             tag: :a,
             label: t("js.label_export"),
-            size: :medium,
-            href: "",
             title: t("js.label_export"),
-            classes: "modal-delivery-element--activation-link"
+            size: :auto,
+            test_selector: "export-button"
           ) do |item|
             item.with_leading_visual_icon(icon: :download)
+            if show_atom_link?
+              item.with_item(label: t("export.format.atom"), tag: :a, href: export_atom_link) do |subitem|
+                subitem.with_leading_visual_icon(icon: :"op-file-atom")
+              end
+            end
+            item.with_item(
+              label: t("text_formatting.markdown"), tag: :a, href: export_markdown_link,
+              test_selector: "markdown-export"
+            ) do |subitem|
+              subitem.with_leading_visual_icon(icon: :file)
+            end
           end
         end
         menu.with_item(
@@ -185,12 +195,3 @@ See COPYRIGHT and LICENSE files for more details.
     end
   end
 %>
-
-<section data-augmented-model-wrapper
-         data-modal-class-name="wiki-export---modal">
-  <%= link_to t("js.label_export"),
-              "",
-              title: t("js.label_export"),
-              style: "display: none;" %>
-  <%= render partial: "wiki/wiki_export_modal" %>
-</section>

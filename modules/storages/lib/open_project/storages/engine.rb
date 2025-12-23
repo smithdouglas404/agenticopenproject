@@ -51,7 +51,6 @@ module OpenProject::Storages
 
     initializer "openproject_storages.feature_decisions" do
       OpenProject::FeatureDecisions.add :storage_file_picking_select_all
-      OpenProject::FeatureDecisions.add :sharepoint_storage
     end
 
     initializer "openproject_storages.event_subscriptions" do

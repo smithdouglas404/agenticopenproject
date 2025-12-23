@@ -45,12 +45,12 @@ RSpec.describe "List Documents",
   current_user { member }
 
   context "with documents" do
-    let(:document_categories) do
-      %w[Specification Report Requirement].map { create(:document_category, name: it) }
+    let(:document_types) do
+      %w[Specification Report Requirement].map { create(:document_type, name: it) }
     end
 
-    let!(:specifications) { create_list(:document, 3, category: document_categories[0], project:) }
-    let!(:reports) { create_list(:document, 2, category: document_categories[1], project:) }
+    let!(:specifications) { create_list(:document, 3, type: document_types[0], project:) }
+    let!(:reports) { create_list(:document, 2, type: document_types[1], project:) }
 
     it "renders a list of all documents" do
       index_page.visit!
@@ -60,7 +60,7 @@ RSpec.describe "List Documents",
       index_page.expect_pagination_range(from: 1, to: 5, total: 5)
     end
 
-    it "allows filtering by document category" do
+    it "allows filtering by document type" do
       index_page.visit!
 
       index_page.submenu.click_item("Specification")
@@ -70,7 +70,7 @@ RSpec.describe "List Documents",
     end
 
     it "allows searching by document title" do
-      document = create(:document, title: "Book", project:, category: document_categories[0])
+      document = create(:document, title: "Book", project:, type: document_types[0])
       index_page.visit!
 
       within_test_selector("documents-sub-header") do
@@ -103,7 +103,7 @@ RSpec.describe "List Documents",
     it "renders a blank slate" do
       index_page.visit!
 
-      index_page.expect_blank_slate
+      index_page.expect_blank_slate_without_primary_action
 
       aggregate_failures "renders content that is accessible" do
         expect(page).to be_axe_clean.within("#content")

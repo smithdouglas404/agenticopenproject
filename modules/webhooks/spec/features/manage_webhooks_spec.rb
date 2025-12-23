@@ -47,7 +47,7 @@ RSpec.describe "Manage webhooks through UI", :js, :selenium do
       expect(webhook.all_projects).to be_truthy
 
       expect(page).to have_css(".webhooks--outgoing-webhook-row .enabled .icon-yes")
-      expect(page).to have_css(".webhooks--outgoing-webhook-row .selected_projects", text: "(all)")
+      expect(page).to have_css(".webhooks--outgoing-webhook-row .selected_projects", text: "All projects")
       expect(page).to have_css(".webhooks--outgoing-webhook-row .events", text: "Work packages")
       expect(page).to have_css(".webhooks--outgoing-webhook-row .description", text: webhook.description)
 

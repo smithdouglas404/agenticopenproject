@@ -59,10 +59,10 @@ class CustomFields::Inputs::MultiSelectList < CustomFields::Inputs::Base::Autoco
 
   def list_items
     case @custom_field.field_format
-    when "hierarchy", "scored_list"
+    when "hierarchy", "weighted_item_list"
       hierarchical_list_items.map do |item|
         {
-          label: item.ancestry_path,
+          label: item.ancestry_path(include_shorts_and_weights: true),
           value: item.id,
           selected: custom_values.pluck(:value).map(&:to_i).include?(item.id)
         }

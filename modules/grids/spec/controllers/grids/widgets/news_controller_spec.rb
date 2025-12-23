@@ -36,25 +36,50 @@ RSpec.describe Grids::Widgets::NewsController do
   current_user { user }
 
   describe "GET #show" do
+    before do
+      allow(Grids::Widgets::News)
+        .to receive(:new)
+        .and_return(widget_instance)
+    end
+
     context "for root" do
+      let(:widget_instance) { instance_double(Grids::Widgets::News, render_in: "content") }
+
       before do
         get :show
       end
 
-      it "renders show template", :aggregate_failures do
+      it "renders widget", :aggregate_failures do
         expect(response).to be_successful
-        expect(response).to render_template "show"
+        expect(response.body).to eq "content"
       end
     end
 
     context "with project" do
+      let(:widget_instance) { instance_double(Grids::Widgets::News, render_in: "content") }
+
       before do
         get :show, params: { project_id: project }
       end
 
-      it "renders show template", :aggregate_failures do
+      it "renders widget", :aggregate_failures do
         expect(response).to be_successful
-        expect(response).to render_template "show"
+        expect(response.body).to eq "content"
+      end
+    end
+
+    context "with project and news module disabled" do
+      let(:widget_instance) { instance_double(Grids::Widgets::News, render_in: "") }
+
+      before do
+        project.enabled_module_names -= %w[news]
+        get :show, params: { project_id: project }
+      end
+
+      it "renders nothing", :aggregate_failures do
+        expect(response).to be_successful
+        expect(response).to have_http_status(:no_content)
+        expect(response.body).to be_empty
       end
     end
   end

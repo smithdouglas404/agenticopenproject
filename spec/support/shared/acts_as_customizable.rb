@@ -174,12 +174,10 @@ RSpec.shared_examples_for "acts_as_customizable included" do
         )
       end
 
-      it "ignores the setter value and uses the custom_field_values" do
-        new_model_instance.custom_values_to_validate = []
+      it "returns and empty array" do
+        new_model_instance.deactivate_custom_field_validations!
 
-        expect(subject).to contain_exactly(
-          an_instance_of(CustomValue).and(having_attributes(custom_field_id: custom_field.id))
-        )
+        expect(subject).to be_empty
       end
 
       it "returns the values set via the setter" do
@@ -269,7 +267,7 @@ RSpec.shared_examples_for "acts_as_customizable included" do
             subject.custom_values_to_validate = []
           end
 
-          it_behaves_like "has a validation error on a required custom field"
+          it_behaves_like "is valid"
         end
       end
     end

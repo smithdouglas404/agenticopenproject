@@ -111,7 +111,7 @@ ca:
       idp_sso_service_url: >
         L'URL del punt d'inici de sessió del proveïdor d'identitat
       idp_slo_service_url: >
-        L'URL del punt d'inici de sessió del proveïdor d'identitat.
+        The URL of the identity provider logout endpoint.
       idp_cert: >
         Introduïu el certificat públic formatat per X509 PEM del proveïdor d'identitat. Podeu introduir diversos certificats separant-los amb una línia nova.
       name_identifier_format: >

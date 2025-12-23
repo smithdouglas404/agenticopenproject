@@ -31,7 +31,7 @@
 require "spec_helper"
 require "icalendar"
 
-RSpec.describe AllMeetings::ICalService, type: :model do # rubocop:disable RSpec/SpecFilePathFormat
+RSpec.describe AllMeetings::ICalService, type: :model do
   let(:user) do
     create(:user,
            firstname: "Bob",
@@ -134,7 +134,7 @@ RSpec.describe AllMeetings::ICalService, type: :model do # rubocop:disable RSpec
         entry = ical.events.first
 
         expect(entry.uid).to eq(meeting.uid)
-        expect(entry.organizer.to_s).to eq("mailto:#{ApplicationMailer.reply_to}")
+        expect(entry.organizer.to_s).to eq("mailto:#{ApplicationMailer.reply_to_address}")
         expect(entry.attendee.map(&:to_s)).to match_array([user, user2].map { |u| "mailto:#{u.mail}" })
         expect(entry.dtstart.utc).to eq meeting.start_time
         expect(entry.dtend.utc).to eq meeting.start_time + 1.hour
@@ -186,7 +186,7 @@ RSpec.describe AllMeetings::ICalService, type: :model do # rubocop:disable RSpec
         entry = ical.events.first
 
         expect(entry.uid).to eq(recurring_meeting.uid)
-        expect(entry.organizer.to_s).to eq("mailto:#{ApplicationMailer.reply_to}")
+        expect(entry.organizer.to_s).to eq("mailto:#{ApplicationMailer.reply_to_address}")
         expect(entry.attendee.map(&:to_s)).to match_array([user, user2].map { |u| "mailto:#{u.mail}" })
         expect(entry.summary).to eq "Recurring meeting"
         expect(entry.description).to eq "Link to meeting series: http://#{Setting.host_name}/recurring_meetings/#{recurring_meeting.id}"
@@ -228,7 +228,7 @@ RSpec.describe AllMeetings::ICalService, type: :model do # rubocop:disable RSpec
 
         expect(entry.uid).to eq(recurring_meeting.uid)
         expect(entry.recurrence_id).to eq(meeting.scheduled_meeting.start_time)
-        expect(entry.organizer.to_s).to eq("mailto:#{ApplicationMailer.reply_to}")
+        expect(entry.organizer.to_s).to eq("mailto:#{ApplicationMailer.reply_to_address}")
         expect(entry.attendee).to be_empty
         expect(entry.summary).to eq "Recurring meeting"
         description = <<~STR.strip

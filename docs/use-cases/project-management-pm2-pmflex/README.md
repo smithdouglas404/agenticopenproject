@@ -1,7 +1,7 @@
 ---
 sidebar_navigation:
   title: PM² and PMflex project management
-  priority: 600
+  priority: 985
 description: Learn how to set up and configure OpenProject to support the PM²/PMflex methodology with OpenProject
 keywords: pmflex, PM², PM2, 
 
@@ -38,7 +38,7 @@ This table provides an overview of the key terms and structures used to **map** 
 | Project Roles                                                | Project members with roles                       | [Members](https://pm2.openproject.com/projects/pm2-test/members) | [#31411](https://community.openproject.org/wp/31141) Add PM² roles and permissions to seed data |
 | [5 Initiating Phase](../../project-management-guide/5-initiating-phase) |                                                  |                                                              |                                                              |
 | Project Charter                                              | Project Charter (work package type)              | [Project Charter](https://pm2.openproject.com/projects/pm2-test/work_packages/451) | [#68064](https://community.openproject.org/wp/68064) Beyond documents for project artefacts |
-| Project Initiation Request                                   | Project Initiation Request (work package type)   | [Project Initiation Request](https://pm2.openproject.com/projects/pm2-test/work_packages/449) | [#31140](https://community.openproject.org/wp/31140) Create project initiation request based on existing project attributes |
+| Project Initiation Request                                   | Project Initiation Request (work package type)   | [Project Initiation Request](https://pm2.openproject.com/projects/pm2-test/work_packages/449) | [#68854](https://community.openproject.org/wp/68854) Multi-step project creation wizard to create and process PM²/PMflex project initiation requests<br />**Release info**: first version will be shipped in [17.0](https://community.openproject.org/wp/67801) behind a feature flag - general availability starting with [17.1](https://community.openproject.org/wp/69276). |
 | Business Case                                                | Business Case (work package type)                | [Business Case](https://pm2.openproject.com/projects/pm2-test/work_packages/450) | [#68064](https://community.openproject.org/wp/68064) Beyond documents for project artefacts<br />[#67726](https://community.openproject.org/wp/67726) Project business case widget for project overview |
 | Phase Gate RfP (Ready for Planning)                          | Phase Gate                                       |                                                              |                                                              |
 | [6 Planning Phase](../../project-management-guide/6-planning-phase) |                                                  |                                                              |                                                              |

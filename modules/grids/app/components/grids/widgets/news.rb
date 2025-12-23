@@ -38,11 +38,13 @@ module Grids
 
       option :limit, default: -> { NEWS_LIMIT }
 
-      def initialize(...)
-        super
+      def newest
+        @newest ||= news.limit(limit).to_a
+      end
 
-        @news =
-          if project
+      def news
+        @news ||=
+          if project_scoped?
             project.news.visible(current_user).newest_first
           else
             ::News
@@ -50,8 +52,6 @@ module Grids
               .newest_first
               .includes(:project)
           end
-
-        @newest = @news.limit(limit).to_a
       end
 
       def title
@@ -59,7 +59,17 @@ module Grids
       end
 
       def render?
-        project.nil? || project.module_enabled?("news")
+        global_scoped? || project.module_enabled?("news")
+      end
+
+      private
+
+      def project_scoped? = project.present?
+
+      def global_scoped? = !project_scoped?
+
+      def can_manage_news?
+        current_user.allowed_in_project?(:manage_news, project)
       end
     end
   end

@@ -36,7 +36,12 @@ module Storages
           class CreateListCommand < Base
             def call(auth_strategy:, input_data:)
               Authentication[auth_strategy].call(storage: @storage) do |http|
-                create_list(http, input_data).bind { get_list_properties(http, input_data.name) }
+                create_list(http, input_data).bind do
+                  get_list_properties(http, input_data.name).fmap do |list|
+                    clear_permissions_on_drive(http, list)
+                    list
+                  end
+                end
               end
             end
 
@@ -58,12 +63,22 @@ module Storages
               end
             end
 
+            def clear_permissions_on_drive(http, list)
+              handle_response(http.get(permissions_url(list.id))).bind do |permissions|
+                permissions[:value].each do |permission|
+                  http.delete(permissions_url(list.id, permission[:id]))
+                end
+              end
+            end
+
             def handle_response(response)
               error = Results::Error.new(source: self.class, payload: response)
 
               case response
               in { status: 200..299 }
                 Success(response.json(symbolize_keys: true))
+              in { status: 403 }
+                Failure(error.with(code: :forbidden))
               in { status: 409 }
                 Failure(error.with(code: :conflict))
               else
@@ -84,6 +99,10 @@ module Storages
 
             def list_uri(name)
               "#{request_uri}#{UrlBuilder.path(name)}?$expand=drive&$select=id,name,drive"
+            end
+
+            def permissions_url(drive_id, permission_id = nil)
+              UrlBuilder.url(base_uri, *["/v1.0/drives", drive_id, "/root/permissions", permission_id].compact)
             end
           end
         end

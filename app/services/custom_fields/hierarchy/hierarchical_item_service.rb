@@ -45,34 +45,35 @@ module CustomFields
       end
 
       # Insert a new node on the hierarchy tree at a desired position or at the end if no sort_order is passed.
-      # @param contract_class [Class<CustomFields::Hierarchy::InsertListItemContract>, Class<CustomFields::Hierarchy::InsertScoredItemContract>]
+      # @param contract_class [Class<CustomFields::Hierarchy::InsertListItemContract>, Class<CustomFields::Hierarchy::InsertWeightedItemContract>]
       #   the params validation contract class
       # @param parent [CustomField::Hierarchy::Item] the parent of the node
       # @param label [String] the node label/name that must be unique at the same tree level
       # @param short [String] an alias for the node
-      # @param score [Decimal] a numeric value for the node
-      # @param sort_order [Integer] the position into which insert the item.
+      # @param weight [Decimal] a numeric value for the node
+      # @param before [Integer] the position where to prepend the item. If not set or the position does not exist,
+      #   the item is inserted at the end.
       # @return [Success(CustomField::Hierarchy::Item), Failure(Dry::Validation::Result), Failure(ActiveModel::Errors)]
-      def insert_item(contract_class:, parent:, label:, short: nil, score: nil, sort_order: nil)
+      def insert_item(contract_class:, parent:, label:, short: nil, weight: nil, before: nil)
         contract_class
           .new
-          .call({ parent:, label:, short:, score: })
+          .call({ parent:, label:, short:, weight: })
           .to_monad
-          .bind { |validation| create_child_item(validation:, sort_order:) }
+          .bind { |validation| create_child_item(validation:, before:) }
       end
 
       # Updates an item/node
-      # @param contract_class [Class<CustomFields::Hierarchy::UpdateListItemContract>, Class<CustomFields::Hierarchy::UpdateScoredItemContract>]
+      # @param contract_class [Class<CustomFields::Hierarchy::UpdateListItemContract>, Class<CustomFields::Hierarchy::UpdateWeightedItemContract>]
       #   the params validation contract class
       # @param item [CustomField::Hierarchy::Item] the item to be updated
       # @param label [String] the node label/name that must be unique at the same tree level
       # @param short [String] an alias for the node
-      # @param score [Decimal] a numeric value for the node
+      # @param weight [Decimal] a numeric value for the node
       # @return [Success(CustomField::Hierarchy::Item), Failure(Dry::Validation::Result), Failure(ActiveModel::Errors)]
-      def update_item(contract_class:, item:, label: nil, short: nil, score: nil)
+      def update_item(contract_class:, item:, label: nil, short: nil, weight: nil)
         contract_class
           .new
-          .call({ item:, label:, short:, score: })
+          .call({ item:, label:, short:, weight: })
           .to_monad
           .bind { |attributes| update_item_attributes(item:, attributes:) }
       end
@@ -89,8 +90,17 @@ module CustomFields
         # list and nil)
         item_ids = item.self_and_descendant_ids
         custom_field = item.root&.custom_field
-        if item.destroy
+
+        ActiveRecord::Base.transaction do
+          unless item.destroy
+            raise ActiveRecord::Rollback
+          end
+
           update_calculated_values_for_hierarchy(item_ids:, custom_field:)
+          remove_assigned_custom_values(custom_field_id: custom_field.id, item_ids:)
+        end
+
+        if item.destroyed?
           Success()
         else
           Failure(item.errors)
@@ -103,6 +113,14 @@ module CustomFields
       # @return [Success(Array<CustomField::Hierarchy::Item>)]
       def get_branch(item:)
         Success(item.self_and_ancestors.reverse)
+      end
+
+      # Gets all nodes in a tree from the item/node back to the root without the item/node itself.
+      # Ordered from root to leaf
+      # @param item [CustomField::Hierarchy::Item] the parent of the node
+      # @return [Success(Array<CustomField::Hierarchy::Item>)]
+      def get_ancestors(item:)
+        Success(item.ancestors.reverse)
       end
 
       # Gets all descendant nodes in a tree starting from the item/node.
@@ -176,20 +194,34 @@ module CustomFields
         Success(item)
       end
 
-      def create_child_item(validation:, sort_order: nil)
-        attributes = validation.to_h
-        attributes[:sort_order] = sort_order - 1 if sort_order
+      def create_child_item(validation:, before:)
+        item = CustomField::Hierarchy::Item.new(**validation.to_h.except(:parent))
+        parent = validation[:parent]
+        relative_sibling = parent.children.find_by(sort_order: before)
 
-        item = validation[:parent].children.create(**attributes)
+        if relative_sibling.present?
+          relative_sibling.prepend_sibling(item)
+        else
+          parent.add_child(item)
+        end
+
         return Failure(item.errors) if item.new_record?
 
         update_position_cache(item.root)
         Success(item.reload)
       end
 
+      def remove_assigned_custom_values(custom_field_id:, item_ids:)
+        CustomValue
+          .where(custom_field_id:, value: item_ids)
+          .delete_all
+      rescue ActiveRecord::ActiveRecordError
+        raise ActiveRecord::Rollback
+      end
+
       def update_item_attributes(item:, attributes:)
-        if item.update(label: attributes[:label], short: attributes[:short], score: attributes[:score])
-          if item.score_previously_changed?
+        if item.update(label: attributes[:label], short: attributes[:short], weight: attributes[:weight])
+          if item.weight_previously_changed?
             # Only changes to item are of interest, so no need to pass descendant ids
             update_calculated_values_for_hierarchy(item_ids: item.id, custom_field: item.root&.custom_field)
           end
@@ -201,16 +233,16 @@ module CustomFields
 
       # Recalculates Calculated Values in all projects that use the hierarchy's custom field
       def update_calculated_values_for_hierarchy(item_ids:, custom_field:)
-        return unless custom_field&.field_format_scored_list?
+        return unless custom_field&.field_format_weighted_item_list?
 
         custom_field.class.customized_class
-          .where(custom_values: custom_field.custom_values.where(value: item_ids))
-          .find_each do |customized|
-            affected_cfs = customized.available_custom_fields.affected_calculated_fields([custom_field.id])
+                    .where(custom_values: custom_field.custom_values.where(value: item_ids))
+                    .find_each do |customized|
+          affected_cfs = customized.available_custom_fields.affected_calculated_fields([custom_field.id])
 
-            customized.calculate_custom_fields(affected_cfs)
-            customized.save if customized.changed_for_autosave?
-          end
+          customized.calculate_custom_fields(affected_cfs)
+          customized.save if customized.changed_for_autosave?
+        end
       end
 
       def update_item_order(item:, new_sort_order:)

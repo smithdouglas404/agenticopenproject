@@ -37,35 +37,53 @@ RSpec.describe Grids::Widgets::News, type: :component do
     render_inline(described_class.new(...))
   end
 
+  shared_let(:project_red) { create(:project, name: "Red", enabled_module_names: [:news]) }
+  shared_let(:project_blue) { create(:project, name: "Blue", enabled_module_names: [:news]) }
+  shared_let(:author) { create(:user) }
+  shared_let(:admin) { create(:admin) }
+
   let(:project) { nil }
-  let(:user) { create(:admin) }
+
+  let(:user) { admin }
 
   current_user { user }
 
-  subject(:rendered_component) do
-    render_component(project)
+  subject(:rendered_component) { render_component(project) }
+
+  shared_examples "empty-state without action" do
+    it "renders empty blankslate without action" do
+      expect(rendered_component).to have_test_selector("news-widget-empty")
+      expect(rendered_component).to have_text("This widget is currently empty.")
+      expect(rendered_component).to have_no_test_selector("news-widget-add-button")
+    end
   end
 
-  it "renders turbo-frame component wrapper" do
+  shared_examples "empty-state with action" do
+    it "renders empty blankslate with add action" do
+      expect(rendered_component).to have_test_selector("news-widget-empty")
+      expect(rendered_component).to have_text("This widget is currently empty.")
+      expect(rendered_component).to have_test_selector("news-widget-add-button")
+    end
+  end
+
+  it "renders turbo-frame wrapper" do
     expect(rendered_component).to have_element :"turbo-frame"
   end
 
   context "for root" do
     context "with no news" do
-      it "renders a message" do
-        expect(rendered_component).to have_primer_text "Nothing new to report.", color: "subtle"
-      end
+      it_behaves_like "empty-state without action"
     end
 
     context "with news" do
-      let(:author) { create(:user) }
-      let!(:news) { create_list(:news, 2, author:) }
+      let!(:news_red) { create(:news, project: project_red, author:) }
+      let!(:news_blue) { create(:news, project: project_blue, author:) }
 
-      it "renders news items", :aggregate_failures do
+      it "renders news items from all projects", :aggregate_failures do
         expect(rendered_component).to have_list_item(count: 2)
         expect(rendered_component).to have_list_item(position: 2) do |item|
-          expect(item).to have_link href: news_path(news.first)
-          expect(item).to have_content /Added by .+ on \d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/
+          expect(item).to have_link href: news_path(news_red)
+          expect(item).to have_content(/Added by .+ on \d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/)
           expect(item).to have_link href: user_path(author)
         end
       end
@@ -73,35 +91,46 @@ RSpec.describe Grids::Widgets::News, type: :component do
   end
 
   context "with project" do
-    let(:project) { create(:project) }
+    let(:project) { project_red }
+    # these news from another project should not be visible
+    let!(:other_project_news) { create(:news, project: project_blue, author:) }
 
-    context "with no news" do
-      it "renders a message" do
-        expect(rendered_component).to have_primer_text "Nothing new to report.", color: "subtle"
-      end
+    context "with no news in this project" do
+      it_behaves_like "empty-state with action"
     end
 
     context "with news" do
-      let(:author) { create(:user) }
-      let!(:news) { create_list(:news, 3, project:, author:) }
+      let!(:news_items) { create_list(:news, 3, project:, author:) }
 
-      it "renders news items", :aggregate_failures do
+      it "renders only this project’s news" do
         expect(rendered_component).to have_list_item(count: 3)
         expect(rendered_component).to have_list_item(position: 3) do |item|
-          expect(item).to have_link href: news_path(news.first)
-          expect(item).to have_content /Added by .+ on \d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/
+          expect(item).to have_link href: news_path(news_items.first)
+          expect(item).to have_content(/Added by .+ on \d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/)
           expect(item).to have_link href: user_path(author)
         end
       end
     end
   end
 
-  context "with project without news module enabled" do
-    let(:project) { create(:project, enabled_module_names: [:wiki]) }
+  context "when the project does not have the news module enabled" do
+    let(:project) { project_red }
+    let!(:news_item) { create(:news, project:, author:) }
 
-    it "does not render" do
-      expect(rendered_component).not_to have_primer_text "Nothing new to report.", color: "subtle"
-      expect(rendered_component).not_to have_list "News"
+    before do
+      project.enabled_module_names -= %w[news]
     end
+
+    it "renders nothing" do
+      expect(rendered_component.to_s).to be_empty
+    end
+  end
+
+  context "when the user does not have permission to manage news" do
+    let(:project) { project_red }
+    let(:user) { create(:user) }
+
+    # User has only view_news permission now
+    it_behaves_like "empty-state without action"
   end
 end

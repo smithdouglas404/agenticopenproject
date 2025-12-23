@@ -12,7 +12,7 @@
       render OpenProject::Common::AttributeLabelComponent.new(
         attribute: @project_custom_field.attribute_name,
         model: @project,
-        required: @project_custom_field.required?
+        required: required?
       ) do
         render(Primer::Beta::Text.new(font_weight: :bold)) { @project_custom_field.name }
       end
@@ -26,6 +26,16 @@
           render_value
         end
       end
+    end
+
+    custom_field_value_container.with_row(w: :full) do
+      render OpenProject::Common::AttributeHelpTextCaptionComponent.new(
+        help_text: helpers.help_text_for(
+          @project,
+          @project_custom_field.attribute_name,
+          current_user: helpers.current_user
+        )
+      )
     end
 
     if calculation_error?

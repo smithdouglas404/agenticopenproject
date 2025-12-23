@@ -167,7 +167,7 @@ export function initializeHalProperties<T extends HalResource>(halResourceServic
     if (!val) {
       halResource.$source._links[linkName] = { href: null };
     } else if (isArray) {
-      halResource.$source._links[linkName] = (val as HalResource[]).map((el:any) => ({ href: el.href }));
+      halResource.$source._links[linkName] = (val).map((el:any) => ({ href: el.href }));
     } else if (val.hasOwnProperty('$link')) {
       const link = (val as HalResource).$link;
 
@@ -178,11 +178,11 @@ export function initializeHalProperties<T extends HalResource>(halResourceServic
       halResource.$source._links[linkName] = { href: val.href };
     }
 
-    if (halResource.$embedded && halResource.$embedded[linkName]) {
+    if (halResource.$embedded?.[linkName]) {
       halResource.$embedded[linkName] = val;
 
       if (isArray) {
-        halResource.$source._embedded[linkName] = (val as HalResource[]).map((el) => el.$source);
+        halResource.$source._embedded[linkName] = (val).map((el) => el.$source);
       } else {
         halResource.$source._embedded[linkName] = _.get(val, '$source', val);
       }

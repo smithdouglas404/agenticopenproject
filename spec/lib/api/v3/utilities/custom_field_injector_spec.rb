@@ -296,7 +296,7 @@ RSpec.describe API::V3::Utilities::CustomFieldInjector do
 
     {
       hierarchy: { with_ee: [:custom_field_hierarchies] },
-      scored_list: {}
+      weighted_item_list: { with_ee: [:weighted_item_lists] }
     }.each do |format, tags|
       describe "#{format} custom field", **tags do
         let(:custom_field) do
@@ -509,7 +509,7 @@ RSpec.describe API::V3::Utilities::CustomFieldInjector do
       end
     end
 
-    %w[hierarchy scored_list].each do |format|
+    %w[hierarchy weighted_item_list].each do |format|
       context "for #{format} custom field" do
         let(:value) { build_stubbed(:hierarchy_item) }
         let(:raw_value) { value.id.to_s }

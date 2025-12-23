@@ -175,6 +175,10 @@ module SettingsHelper
     setting_label(setting, options) + wrap_field_outer(options, &)
   end
 
+  def writable_setting?(setting)
+    Setting.send(:"#{setting}_writable?")
+  end
+
   private
 
   def wrap_field_outer(options, &)
@@ -253,9 +257,5 @@ module SettingsHelper
     else
       "".html_safe
     end
-  end
-
-  def writable_setting?(setting)
-    Setting.send(:"#{setting}_writable?")
   end
 end

@@ -51,12 +51,17 @@ module Storages
 
             it "creates a list", vcr: "sharepoint/create_list_success" do
               result = described_class.call(storage:, auth_strategy:, input_data:)
+
               expect(result).to be_success
               drive = result.value!
 
               expect(drive.name).to eq(input_data.name)
               expect(drive.location).to eq(UrlBuilder.path("/", input_data.name))
               expect(drive.permissions).to eq([:readable])
+
+              permissions = check_permissions(drive.id)
+              expect(permissions.size).to eq(1)
+              expect(permissions.dig(0, :roles)).to contain_exactly("owner")
             ensure
               delete_created_list(input_data.name)
             end
@@ -92,6 +97,13 @@ module Storages
             def delete_created_list(name)
               Authentication[auth_strategy].call(storage:) do |http|
                 http.delete(list_uri(name)).raise_for_status
+              end
+            end
+
+            def check_permissions(drive_id)
+              Authentication[auth_strategy].call(storage:) do |http|
+                response = http.get("https://graph.microsoft.com/v1.0/drives/#{drive_id}/root/permissions").raise_for_status
+                response.json(symbolize_keys: true)[:value]
               end
             end
 

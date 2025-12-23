@@ -162,6 +162,11 @@ ja:
         expired: "%{date} に期限切れ"
         revoked: "%{date} で取り消されました"
         title: "アクセストークンテーブル"
+    settings:
+      new_project:
+        project_creation: "Project creation"
+        notification_text_default: >
+          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -185,12 +190,12 @@ ja:
       title: "隔離された添付ファイル"
       error_cannot_act_self: "アップロードしたファイルに対してアクションを実行できません。"
   attribute_help_texts:
-    note_public: "このフィールドに追加したテキストと画像は、ログインしているすべてのユーザーに公開されます！"
+    caption: "This short version will be displayed as caption of the attribute."
+    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
     text_overview: "このビューは、属性表示のカスタム ヘルプ テキストを作成できます。定義すると、このテキストはその属性の横にあるヘルプ アイコンをクリックして表示できます。"
-    label_plural: "属性のヘルプ テキスト"
     show_preview: "テキストをプレビュー"
     add_new: "ヘルプ テキストを追加"
-    edit: "%{attribute_caption} のヘルプ テキストを編集"
+    edit_field_name: "Edit help text for %{attribute_field_name}"
   background_jobs:
     status:
       error_requeue: "ジョブにエラーが発生しましたが、再試行中です。エラー: %{message}"
@@ -303,7 +308,7 @@ ja:
         placeholder:
           label: "アイテムラベル"
           short: "ショートネーム"
-          score: "スコア"
+          weight: "Weight"
       notice:
         remember_items_and_projects: "このカスタムフィールドの各タブに項目とプロジェクトを設定することを忘れないでください。"
       hierarchy:
@@ -311,6 +316,25 @@ ja:
           zero: 子項目はありません
           one: 1 個の子項目があります
           other: "%{count} 個の子項目があります"
+      role_assignment:
+        title: Role Assignment
+        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
+        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
+        role_field_label: "Project Role"
+        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        review_hint: >
+          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
+        review_button: Review users and permissions
+        dialog:
+          title: "Overview of users and permissions"
+          change: Change
+          changes:
+            new_member: Will be added as a member
+            remove_member: Will be removed as a member
+            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
+            gain_role: Will gain role ‘%{new_role}’
+            lose_role: Will lose role ‘%{old_role}’
+            no_change: No changes
     text_add_new_custom_field: >
       新しいカスタムフィールドをプロジェクトに追加するには、それをこのプロジェクトに追加する前に、まず作成する必要があります。
     is_enabled_globally: "グローバルで有効"
@@ -321,29 +345,41 @@ ja:
     reorder_confirmation: "警告：利用可能な値の現在の順序は失われます。続行しますか？"
     placeholder_version_select: "最初にワークパッケージまたはプロジェクトの選択が必要です"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    no_role_assigment: "No role assignment"
     instructions:
-      is_required: "必要に応じてカスタムフィールドをマークします。新規または既存のリソースを作成する際にフィールドを入力することが必須になります。"
-      is_required_for_project: "この属性を有効にし、すべてのプロジェクトで必要にする場合チェックします。個々のプロジェクトでは無効にすることはできません。"
-      is_for_all: "既存および新規のすべてのプロジェクトで利用可能なカスタムフィールドとしてマークします。"
-      multi_select: "ユーザーがこのカスタムフィールドに複数の値を割り当てることを許可します。"
-      searchable: "グローバル検索機能を使用する場合は、フィールド値を含めます。"
-      searchable_for_project: "この属性をプロジェクト リストでフィルタとして使用できるようにする場合チェックします。"
-      editable: "ユーザー自身がフィールドを編集できるようにする。"
-      admin_only: "この属性を管理者にのみ表示する場合チェックします。管理者権限を持たないユーザーは、管理者権限を持つユーザーがこの属性を表示または編集できません。"
-      is_filter: >
-        ワークパッケージビューのフィルタでカスタム項目を使用できるようにします。 「すべてのプロジェクトについて」が選択されている場合のみ、カスタムフィールドはグローバルビューに表示されます。
-      formula: "数値またはタイプ / を追加して属性または数学演算子を検索します。"
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: 現在、カスタム フィールドはありません。
       no_results_content_text: 新しいカスタム フィールドを作成
   calculated_values:
     error_dialog:
-      title: "Error with Calculated Value"
+      title: "Error with Calculated value"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
-      mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
+      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
+      mathematical: "The mathematical formula leads to an error. Please review the project calculation attribute and try again."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
   concatenation:
     single: "または"
   danger_dialog:
@@ -367,6 +403,7 @@ ja:
       int?: "は整数でなければなりません。"
       key?: "は見つかりません。"
       not_found: "見つかりません。"
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "独自のワークフローはありません。"
@@ -389,7 +426,7 @@ ja:
       depth: "深さ"
       item: "項目"
       label: "Label"
-      score: "スコア"
+      weight: "Weight"
       short: "ショートネーム"
       parent: "親項目"
       blueprint: "パターンの建設計画"
@@ -425,6 +462,18 @@ ja:
   incoming_mails:
     ignore_filenames: >
       受信メールの添付ファイルを処理するとき、無視する名前の一覧を指定します (例えば、署名またはアイコン)。1 行につき 1 つのファイル名を入力してください。
+  portfolios:
+    index:
+      search:
+        label: Portfolio name filter
+        placeholder: Search portfolios
+      sub_items_html:
+        other: "<strong>%{count}</strong> sub-items"
+    lists:
+      active: "Active portfolios"
+      my: "My portfolios"
+      favorited: "Favorite portfolios"
+      archived: "Archived portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -436,12 +485,15 @@ ja:
       work_package_categories: "ワークパッケージ：カテゴリー"
       work_package_file_links: "ワークパッケージ：ファイルリンク"
       work_package_shares: "ワークパッケージ：共有"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      complete_wizard_link: "Complete the %{artefact_name}"
     delete:
       scheduled: "削除がスケジュールされ、バックグラウンドで実行されます。結果は通知されます。"
       schedule_failed: "プロジェクトを削除できません: %{errors}"
-      failed: "プロジェクト%{name} の削除に失敗しました"
-      failed_text: "プロジェクト%{name} の削除要求が失敗しました。 プロジェクトはアーカイブされたままです。"
-      completed: "プロジェクト%{name} の削除が完了しました"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "プロジェクト '%{name}'を削除要求は完了しました。"
       completed_text_children: "さらに、次の子プロジェクトが削除されました:"
     index:
@@ -484,6 +536,22 @@ ja:
         description: >
           プロジェクトは、その役割と関連する権限に応じてプロジェクトメンバーにのみ表示されます。子プロジェクトは影響を受けず、独自の設定があります。
       change_identifier: 識別子の変更
+      subitems:
+        template_section: >
+          Select templates to be used when creating new subitems.
+        project_template_label: "Template for projects"
+        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
+        program_template_label: "Template for programs"
+        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
+        no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "全て有効"
         label_disable_all: "すべて無効"
@@ -517,9 +585,9 @@ ja:
           label_enable_single: "このプロジェクトでアクティブになっています。クリックして無効にします"
           label_disable_single: "このプロジェクトでは無効になっています。クリックして有効にします"
           remove_from_project: "プロジェクトから削除"
-        is_required_blank_slate:
-          heading: すべてのプロジェクトで必須
-          description: このプロジェクト属性は、「すべてのプロジェクトで必須」オプションがチェックされているため、すべてのプロジェクトで有効になります。個々のプロジェクトで無効にすることはできません。
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: 現在、有効な種類はありません。
         form:
@@ -533,8 +601,31 @@ ja:
         no_results_title_text: このプロジェクトによって使用される追加のディスク領域はありません。
       work_package_priorities:
         new_label: "新しい優先度"
+      creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "unavailable"
+        label_request_submission: "Request submission"
+        project_attributes_description: >
+          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
       button_edit: プロジェクトの状態を編集
+    wizard:
+      sidebar_content_title: "Content"
+      sections: "Sections"
+      title: "Project initiation request"
+      no_help_text: "This attribute has no help text defined."
+      success: "Project attributes saved and artifact work package created successfully."
+      progress_label: "%{current} of %{total}"
+      create_artifact_work_package_error: "Failed to create artifact work package"
+      create_artifact_storage_error: "Failed to store artifact in file storage"
   lists:
     create:
       success: "変更されたリストは新しいリストとして保存されました"
@@ -629,6 +720,17 @@ ja:
     index:
       no_results_title_text: 現在、報告するニュースはありません。
       no_results_content_text: ニュース項目を追加
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "%{num_days} のログインを維持"
@@ -683,9 +785,9 @@ ja:
         already_member_message: "既に %{project} のメンバーです"
       principal:
         no_results_user: "ユーザーが見つかりませんでした"
-        invite_user: "招待:"
+        invite_user: "招待："
         no_results_placeholder: "プレースホルダが見つかりません"
-        create_new_placeholder: "新しいプレースホルダを作成:"
+        create_new_placeholder: "新しいプレースホルダを作成："
         no_results_group: "グループが見つかりませんでした"
         invite_to_project: "Invite to %{project_name}"
         required:
@@ -700,7 +802,7 @@ ja:
         required: "ロールを選択してください"
       message:
         label: "招待メッセージ"
-        description: "私たちはユーザーに電子メールを送信します。ここに個人的なメッセージを追加することができます。招待状に関する説明や、プロジェクトに関するちょっとした情報などを添えていただくと、より効果的です。"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "招待状を送信"
       success_message:
@@ -822,6 +924,16 @@ ja:
     print_hint: このwikiページの内容をナビゲーションバーなしで表示します。
     index:
       no_results_content_text: 新しいWikiページを追加
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: 現在、ワークフローはありません。
@@ -990,18 +1102,12 @@ ja:
     deletion_pending: "アカウントは削除待ちの状態です。この処理はバックグラウンドで行われます。ユーザーが完全に削除されるまで少し時間がかかる場合があります。"
     deletion_info:
       data_consequences:
-        other: 'ユーザーが作成した殆どのデータ (例えば電子メール、設定、ワークパッケージ 、wiki記載 )が削除されます。ただし、他のユーザーの作業を妨害することがなくワークパッケージやwiki 記載のようなデータは削除することはできません。それ故に、このようなデータは「削除されたユーザー」と呼ばれるアカウントに再割り当てされます。削除された各アカウントのデータがこのアカウントに再割り当てされるので、そのユーザーが作成したデータと削除された別のユーザーのデータとを区別することができなくなります。'
-        self: 'あなたが作成した殆どのデータ (例えば電子メール、設定、ワークパッケージ 、wiki記載 )が削除されます。ただし、他のユーザーの作業を妨害することがなくワークパッケージやwiki 記載のようなデータは削除することはできません。それ故に、このようなデータは「削除されたユーザー」と呼ばれるアカウントに再割り当てされます。削除された各アカウントのデータがこのアカウントに再割り当てされるので、あなたが作成したデータと削除された別のユーザーのデータとを区別することができなくなります。'
-      heading: "アカウント名「 %{name} 」を削除します。"
-      info:
-        other: "ユーザアカウントの削除は復元できない操作です。"
-        self: "アカウントの削除は復元できない操作です。"
+        other: "All user-specific data will be deleted. The user's activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to the original account."
+        self: "All user-specific data will be deleted. Your activity in shared views such as work packages and meetings will not be deleted but instead be associated with a generic 'Deleted user' that cannot be linked to your original account."
+      heading: "Delete %{name}'s account?"
       login_consequences:
-        other: "このアカウントはシステムから削除されます。したがって、このユーザは現在の認証情報でログイン不可能になります。再度このアプリケーションのユーザになることは可能です。"
-        self: "自分のアカウントがシステムから削除されます。したがって、現在の認証情報ではログイン不可能になります。再度このアプリケーションのユーザになることは可能です。"
-      login_verification:
-        other: "削除を確認するためにログイン名 %{name} を入力してください。送信した後は、パスワードの確認が求められます。"
-        self: "削除を確認するためにあなたのログイン名 %{name} を入力してください。送信した後は、パスワードの確認を求められます。"
+        other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
+        self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
     error_inactive_activation_by_mail: >
       アカウントが有効化されていません。アカウントを有効にするために、受信したメール内のリンクをクリックしてください。
     error_inactive_manual_activation: >
@@ -1034,6 +1140,7 @@ ja:
       attribute_help_text:
         attribute_name: "属性"
         help_text: "ヘルプ テキスト"
+        caption: "Caption"
       auth_provider:
         scim_clients: "SCIMクライアント"
       calculated_value_error:
@@ -1131,6 +1238,7 @@ ja:
         identifier: "識別子"
         latest_activity_at: "最新の活動"
         parent: "親プロジェクト"
+        project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "可視性"
           true: "公開"
@@ -1145,6 +1253,13 @@ ja:
           off_track: "脱線"
           finished: "完了"
           discontinued: "中止"
+        project_creation_wizard_assignee_custom_field: "Assignee when submitted"
+        project_creation_wizard_notification_text: "Notification text"
+        project_creation_wizard_send_confirmation_email: "Confirmation email"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Work package type"
+        template: "Template"
         templated: "テンプレートプロジェクト"
         templated_value:
           true: "テンプレートとしてマーク"
@@ -1154,8 +1269,10 @@ ja:
         work_packages: "ワークパッケージ"
         workspace_type: "ワークスペースのタイプ"
       project_custom_field:
-        is_required: "すべてのプロジェクトに必要"
+        is_required: "Required"
         custom_field_section: セクション
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "期間"
         definition: "定義"
@@ -1265,6 +1382,7 @@ ja:
         header_alerts: "アラート"
         button_update_look_and_feel: "ルック＆フィールを更新"
         button_update_alerts: "アラートの更新"
+        button_update_user_information: "Update profile"
         comments_sorting: "ワークパッケージのアクティビティを並べ替えて表示する"
         disable_keyboard_shortcuts: "キーボードショートカットを無効にする"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1373,8 +1491,6 @@ ja:
         inclusion: "は許可されている値ではありません。"
         inclusion_nested: "はパス '%{path}' で許可されている値のいずれかに設定されていません。"
         invalid: "は不正な値です。"
-        invalid_characters: "無効な文字が含まれています。"
-        not_allowed_custom_fields_referenced: "には許可されていないカスタムフィールドが含まれています: %{custom_fields}。"
         invalid_url: "は有効な URL ではありません。"
         invalid_url_scheme: "はサポートされたプロトコルではありません (可能: %{allowed_schemes})。"
         less_than_or_equal_to: "は%{count}以下の値にしてください。"
@@ -1386,7 +1502,8 @@ ja:
         not_a_datetime: "は有効な日時ではありません。"
         not_a_number: "は数値にしてください。"
         not_allowed: "権限がないため無効です。"
-        not_json: "は有効な JSON オブジェクトではありません。"
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "は整数にしてください。"
         not_an_iso_date: "は有効な日付ではありません。必要な形式: YYYY-MM-dd。"
         not_same_project: "は同じプロジェクトに属していません。"
@@ -1429,8 +1546,18 @@ ja:
               minimum: "プリンシパル、コンテキスト、または '= ' 演算子の id に少なくとも 1 つのフィルタを含める必要があります。"
         custom_field:
           at_least_one_custom_option: "少なくとも 1 つオプションが有効である必要があります。"
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             other: "%{name}はプロジェクト属性の計算に使用されます：%{links}。"
+          attributes:
+            formula:
+              blank: "Formula can't be blank."
+              invalid: "Formula is invalid."
+              invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
+              not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
+              format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1500,9 +1627,11 @@ ja:
         project:
           archived_ancestor: "プロジェクトの祖先がアーカイブされています。"
           foreign_wps_reference_version: "子孫でないプロジェクトのワークパッケージが、プロジェクトまたはその子孫のバージョンを参照しています。"
+          cannot_be_assigned_to_artifact_work_package: "The chosen user is not allowed to be assigned to work packages."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "すべての子プロジェクトをアーカイブするために必要な権限がありません。管理者に連絡してください。"
+              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "まだワークパッケージによって使用されています: %{types}"
             enabled_modules:
@@ -1674,8 +1803,7 @@ ja:
               cant_exceed_work: "仕事より高くすることはできません。"
               must_be_set_when_work_is_set: "作業が設定されている場合に必要です。"
               must_be_set_when_work_and_percent_complete_are_set: "「作業」と「完了率」が設定されている場合に必要です。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                工数が設定されていて，完了率が 100%になっている場合，必ず0hになっている必要があります。
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 「Work」が空で「% Complete」が100%の場合、必ず空でなければなりません。
           readonly_status: "ワークパッケージは読み取り専用の状態になっているため、その属性は変更できません。"
@@ -1734,7 +1862,8 @@ ja:
           other: "%{count} つのエラーにより %{model} を保存できませんでした"
     models:
       attachment: "ファイル"
-      attribute_help_text: "属性のヘルプ テキスト"
+      attribute_help_text:
+        other: "Attribute help texts"
       auth_provider:
         other: "認証プロバイダー"
       category: "カテゴリ"
@@ -1782,6 +1911,11 @@ ja:
     header_additional_invalid_fields:
       other: "また、以下のフィールドに問題がありました："
     field_erroneous_label: "このフィールドが間違っています: %{full_errors}\n正しい値を入力してください。"
+    messages:
+      must_be_template: "must be template"
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "%{user} によって %{datetime} に作成されました"
@@ -1908,6 +2042,7 @@ ja:
     subject: "タイトル"
     slug: "スラグ"
     summary: "サマリ"
+    template: "Template"
     time_zone: "タイムゾーン"
     text: "テキスト（本文）"
     title: "タイトル"
@@ -1978,6 +2113,7 @@ ja:
   button_collapse_all: "全てを折りたたむ"
   button_configure: "設定"
   button_continue: "続行"
+  button_complete: "Complete"
   button_copy: "コピー"
   button_copy_to_clipboard: "クリップボードにコピー"
   button_copy_link_to_clipboard: "クリップボードにリンクをコピー"
@@ -1988,9 +2124,11 @@ ja:
   button_delete_permanently: "完全に削除"
   button_delete_watcher: "ウォッチャー「%{name}」を削除"
   button_download: "ダウンロード"
+  button_disable: "Disable"
   button_duplicate: "複製"
   button_duplicate_and_follow: "複製とフォロー"
   button_edit: "編集"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "関連するWikiページを編集: %{page_title}"
   button_expand_all: "全てを展開"
   button_favorite: "お気に入りに追加"
@@ -2005,6 +2143,7 @@ ja:
   button_print: "印刷"
   button_quote: "引用"
   button_remove: 削除
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "リマインダーを削除"
   button_rename: "名称変更"
   button_replace: "置き換え"
@@ -2077,9 +2216,25 @@ ja:
     copy_options:
       dependencies_label: "プロジェクトからコピー"
   create_project:
+    attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "テンプレートを使用"
+    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
       dependencies_label: "テンプレートからコピー"
+    blank_template:
+      label: "Blank project"
+      description: Start from scratch. Manually add project attributes, members and modules.
+    blank_description: No description provided.
+  create_portfolio:
+    template_heading: "Select a portfolio template to work with the most common project management methods, or create a portfolio from scratch."
+    blank_template:
+      label: "Blank portfolio"
+      description: Start from scratch. Manually add portfolio attributes, members and modules.
+  create_program:
+    template_heading: "Select a program template to work with the most common project management methods, or create a program from scratch."
+    blank_template:
+      label: "Blank program"
+      description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "新しいWikiページを作成"
   create_wiki_page_button: "Wiki ページ"
   date:
@@ -2219,11 +2374,11 @@ ja:
     features:
       baseline_comparison: ベースラインの比較
       board_view: 高度なボード
-      calculated_values: Calculated Values
+      calculated_values: Calculated values
       conditional_highlighting: 条件付きハイライト
       internal_comments: 内部コメント
       custom_actions: カスタムアクション
-      custom_field_hierarchies: タイプ階層のカスタムフィールド
+      custom_field_hierarchies: Hierarchies
       customize_life_cycle: ライフサイクルをカスタマイズ
       date_alerts: 日付アラート
       define_custom_style: カスタムテーマとロゴ
@@ -2233,12 +2388,14 @@ ja:
       nextcloud_sso: Nextcloudストレージのシングルサインオン。
       one_drive_sharepoint_file_storage: OneDrive/SharePointファイルストレージ
       placeholder_users: プレースホルダー ユーザー
+      portfolio_management: Portfolio management
       project_list_sharing: プロジェクトリストの共有
       readonly_work_packages: 読み取り専用のワークパッケージ
       scim_api: SCIMサーバーAPI
       sso_auth_providers: シングルサインオン
       team_planner_view: チームプランナー
       virus_scanning: アンチウイルススキャン
+      weighted_item_lists: Weighted item lists
       work_package_query_relation_columns: ワークパッケージクエリの関連列
       work_package_sharing: 外部ユーザーとワークパッケージを共有
       work_package_subject_generation: ワークパッケージの題名を生成
@@ -2285,15 +2442,17 @@ ja:
       readonly_work_packages:
         description: "特定のステータスのワークパッケージを読み取り専用としてマークします。"
       custom_field_hierarchies:
-        description: "階層のカスタム項目では、マルチレベル選択リストを使用してワークパッケージ内の階層構造を整理できます。"
+        description: "Hierarchy custom fields allow organizing hierarchical structures in work packages and projects by making use of multi-level select lists."
       date_alerts:
         description: "日付アラートでは、重要な期限を逃したり忘れたりすることは決してないように、今後の開始または終了日が通知されます。"
+      weighted_item_lists:
+        description: "Weighted item lists allow you to create a list with underlying numeric values associated."
       work_package_sharing:
         description: "プロジェクトのメンバーではないユーザーとワークパッケージを共有します。"
       project_list_sharing:
         description: "プロジェクトリストを個々のユーザーと共有します。"
       calculated_values:
-        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "Calculated values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "カスタムカラーテーマとロゴ"
         more_info: "注:使用されたロゴは一般公開されます。"
@@ -2322,6 +2481,8 @@ ja:
       internal_comments_inline:
         title: "内部コメントはグループ内のメンバーのみ閲覧できます"
         description: " "
+      portfolio_management:
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         other: "%{count} 日後 %{trial_plan} トライアルトークンです"
@@ -2526,7 +2687,7 @@ ja:
       attribute_not_found: "属性が見つかりません: %{attribute}"
       model_not_found: "不正な属性モデル: %{model}"
       resource_not_found: "リソースが見つかりません: %{resource}"
-      rich_text_unsupported: "リッチテキスト埋め込みは現在エクスポートではサポートされていません"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: 時間
       days: 日
@@ -2604,16 +2765,21 @@ ja:
       new_features:
         header: "新機能と製品のアップデートについて読む。"
         learn_about: "すべての新機能の詳細"
+        missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
-            このリリースには、以下のようなさまざまな新機能と改善が含まれています：
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "エンタープライズ版にアップグレード"
       postgres_migration: "PostgreSQL にインストールを移行しています"
@@ -2707,7 +2873,7 @@ ja:
         static_token_name: "APIトークン"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar サブスクリプションは管理者によって有効になっていません。この機能を使用するには管理者に問い合わせてください。"
         empty_text_hint: "iCalendar トークンを追加するには、プロジェクトの Calendar モジュール内から新規または既存のカレンダーを購読します。 必要な権限が必要です。"
       oauth:
@@ -2836,6 +3002,7 @@ ja:
   label_board_plural: "ボード"
   label_branch: "分岐"
   label_browse: "閲覧"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "選択したワークパッケージを一括編集"
   label_bundled: "(バンドル)"
   label_calendar: "カレンダー"
@@ -2848,7 +3015,7 @@ ja:
   label_select_main_menu_item: 新しいメインメニュー項目を選択する
   label_required_disk_storage: "必要なディスク ストレージ"
   label_send_invitation: 招待状を送信
-  label_calculated_value: "Calculated Value"
+  label_calculated_value: "Calculated value"
   label_change_parent: "親タスクの変更"
   label_change_plural: "変更"
   label_change_properties: "プロパティの変更"
@@ -3030,7 +3197,7 @@ ja:
   label_invite_user: "ユーザを招待"
   label_item: "項目"
   label_item_plural: "アイテム"
-  label_scored_list: "得点リスト"
+  label_weighted_item_list: "Weighted item list"
   label_share: "共有"
   label_share_project_list: "プロジェクト一覧を共有"
   label_share_work_package: "ワークパッケージを共有"
@@ -3065,7 +3232,8 @@ ja:
   label_lock_user: "ユーザーをロック"
   label_logged_as: "ログイン中"
   label_login: "ログイン"
-  label_custom_logo: "カスタムロゴ"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "カスタムエクスポートロゴ"
   label_custom_export_cover: "カスタムエクスポートカバーの背景"
   label_custom_export_footer: "カスタムエクスポートフッター画像"
@@ -3190,6 +3358,7 @@ ja:
   label_planning: "計画"
   label_please_login: "ログインしてください。"
   label_plugins: "プラグイン"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "モジュールとプラグイン"
   label_precedes: "次の項目に先行"
   label_preferences: "設定"
@@ -3210,11 +3379,15 @@ ja:
   label_project_attribute_manage_link: "プロジェクト属性の管理"
   label_project_count: "プロジェクトの合計数"
   label_project_copy_notifications: "プロジェクトのコピーの時、コピーした内容をメール通知する"
+  label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "最新のプロジェクト"
   label_project_default_type: "空の種類を許可する"
   label_project_hierarchy: "プロジェクトの階層構造"
   label_project_mappings: "プロジェクト"
   label_project_new: "新規プロジェクト"
+  label_project_initiation_request: "New project initiation request"
+  label_project_creation_wizard: "New project creation wizard"
+  label_project_mandate: "New project mandate"
   label_project_plural: "プロジェクト"
   label_project_list_plural: "プロジェクト一覧"
   label_project_life_cycle: "プロジェクトのライフ サイクル"
@@ -3264,6 +3437,7 @@ ja:
   label_repository_remove: "リポジトリを削除"
   label_repository_root: "リポジトリのルート"
   label_repository_plural: "リポジトリ"
+  label_request_submission: "Request submission"
   label_required: "必須"
   label_requires: "要求"
   label_result_plural: "検索結果"
@@ -3314,6 +3488,7 @@ ja:
   label_subproject: "子プロジェクト"
   label_subproject_new: "新しい子プロジェクト"
   label_subproject_plural: "子プロジェクト"
+  label_subitems: "Subitems"
   label_subtask_plural: "子タスク"
   label_summary: "サマリ"
   label_system: "システム"
@@ -3321,6 +3496,8 @@ ja:
   label_table_of_contents: "目次"
   label_tag: "タグ"
   label_team_planner: "チームプランナー"
+  label_template: "テンプレート"
+  label_templates: "Templates"
   label_text: "長文"
   label_this_month: "今月"
   label_this_week: "今週"
@@ -3748,6 +3925,7 @@ ja:
   permission_comment_news: "ニュースへのコメント"
   permission_commit_access: "リポジトリに読み取り/書き込みアクセス (コミット)"
   permission_copy_projects: "プロジェクトのコピー"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "ワークパッケージの重複"
   permission_create_backup: "バックアップの作成"
   permission_delete_work_package_watchers: "ウォッチャーの削除"
@@ -3776,6 +3954,7 @@ ja:
   permission_edit_timelines: "タイムラインの編集"
   permission_edit_wiki_pages: "Wikiページの編集"
   permission_export_work_packages: "ワークパッケージのエクスポート"
+  permission_export_projects: "Export projects"
   permission_export_wiki_pages: "Wikiページのエクスポート"
   permission_invite_members_by_email: "Invite members by email"
   permission_invite_members_by_email_explanation: >
@@ -3842,8 +4021,19 @@ ja:
   permission_edit_project_query: "プロジェクトのクエリを編集"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "0 portfolios"
+      one: "1 portfolio"
+      other: "%{count} portfolios"
+  program:
+    count:
+      zero: "0 programs"
+      one: "1 program"
+      other: "%{count} programs"
   project:
     archive:
+      title: "Archive project"
       are_you_sure: "プロジェクト '%{name}' をアーカイブしてもよろしいですか？"
       archived: "アーカイブ済み"
     count:
@@ -3870,6 +4060,7 @@ ja:
       title: プロジェクトの識別子を変更
     not_available: "プロジェクトなし"
     template:
+      copying_title: "Applying template"
       copying: >
         プロジェクトは選択したテンプレートプロジェクトから作成されています。プロジェクトが利用可能になるとすぐにメールで通知されます。
       use_template: "テンプレートを使用"
@@ -4037,6 +4228,7 @@ ja:
   setting_emails_salutation: "メール中のアドレス ユーザー"
   setting_oauth_allow_remapping_of_existing_users: "既存のユーザーの再マッピングを許可する"
   setting_sendmail_location: "Sendmail の実行可能ファイルの場所"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "利用可能な場合、STARTTLS を自動的に使用する"
   setting_smtp_ssl: "SSL接続を使用する"
   setting_smtp_address: "SMTPサーバ"
@@ -4125,6 +4317,8 @@ ja:
   setting_mail_handler_body_delimiter_regex: "この正規表現に一致するメールを切り捨てる"
   setting_mail_handler_ignore_filenames: "無視するメールの添付ファイル"
   setting_new_project_user_role_id: "システム管理者以外のプロジェクト作成者に設定するロール"
+  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
+  setting_new_project_notification_text: "Notification text"
   setting_password_active_rules: "有効な文字の種類"
   setting_password_count_former_banned: "再利用を禁止される最近使用済みパスワードの数"
   setting_password_days_valid: "パスワードを強制変更させる経過日数"
@@ -4171,7 +4365,7 @@ ja:
   setting_self_registration_manual_activation: "手動アカウントの有効化"
   setting_self_registration_manual_activation_caption: >
     ユーザーは自分で登録することができます。ユーザーのアカウントは、管理者またはユーザーを作成または管理するグローバル権限を持つユーザーがアクティベートするまで保留状態になります。
-  setting_session_ttl: "無操作タイムアウト"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "5未満の値は無効にすると同様"
   setting_session_ttl_enabled: "セッションの有効期限"
   setting_start_of_week: "週の開始"
@@ -4197,6 +4391,9 @@ ja:
   setting_work_package_list_default_highlighted_attributes: "デフォルトのインライン強調表示属性"
   setting_working_days: "営業日"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "ログイン"
       registration: "参加登録"
@@ -4257,6 +4454,7 @@ ja:
     passwords: "パスワード"
     project_attributes:
       heading: "プロジェクトの属性"
+      label_for_all_projects: "All projects"
       label_new_attribute: "プロジェクトの属性"
       label_new_section: "セクション"
       label_edit_section: "タイトルの編集"
@@ -4269,9 +4467,63 @@ ja:
       new:
         heading: "新しい属性"
         description: "このプロジェクト属性の変更は、有効なすべてのプロジェクトに反映されます。プロジェクトごとに必要な属性を無効にすることはできません。"
+      sections:
+        display_representation:
+          overview:
+            label: "Project attribute shown in:"
+            main_area:
+              label: "Main area"
+              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+            side_panel:
+              label: "Side panel"
+              description: "Add all the project attributes in a section inside the right side panel in the project overview."
+    project_initiation_request:
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
+      status:
+        submitted: "%{wizard_name} has been submitted"
+        submitted_description: "Click the button below to go to the work package for the submission process."
+        submitted_button: "Open submission request"
+        not_completed: "%{wizard_name} not yet completed"
+        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+      wizard_status_button:
+        project_initiation_request: "Open project initiation request"
+        project_creation_wizard: "Open project creation wizard"
+        project_mandate: "Open project mandate"
+      blankslate:
+        title: "Initiation request not enabled"
+        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+      disable_dialog:
+        title: "Disable project initiation request"
+        heading: "Disable this project initiation request?"
+        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
+        checkbox_message: "I understand that this action is not reversible"
+      name:
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
+      submission:
+        description_template: >
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
+        work_package_type: "Work package type"
+        work_package_type_caption: "The work package type that should be used to store the completed artifact."
+        status_when_submitted: "Status when submitted"
+        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
+        assignee: "Assignee when submitted"
+        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
+        confirmation_email_text: "Confirmation email text"
+        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
+        work_package_comment: "Work package comment"
+        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
+        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
       heading: "プロジェクトのライフ サイクル"
-      heading_description: "プロジェクトのライフサイクルでは、プロジェクト計画に使用できるプロジェクトフェーズを定義し、各プロジェクトの概要ページに表示されます。 これらの属性は、有効または無効にできますが、プロジェクトレベルでの順序は変更できません。"
+      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "追加"
       label_add_description: "プロジェクトフェーズ定義を追加"
       filter:
@@ -4345,7 +4597,9 @@ ja:
   text_project_custom_field_html: >
     Enterpriseエディションでは、プロジェクトのカスタムフィールド用に以下のアドオンが追加されます:<br> <ul> <li><b>プロジェクトのカスタムフィールドをプロジェクトリストに追加して、プロジェクトポートフォリオビューを作成します。</b></li> </ul>
   text_custom_logo_instructions: >
-    透明な背景の白いロゴをお勧めします。 従来、および Retina ディスプレイの両方で最高の結果となるように、画像の寸法は、460px x 60px を確認してください。
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     これは、PDFエクスポートに表示されるロゴです。PNGまたはJPEG画像ファイルである必要があります。 透明または白背景の黒または色のロゴをお勧めします。
   text_custom_export_cover_instructions: >
@@ -4421,6 +4675,7 @@ ja:
     602/5000 注：有効にすると、<a href="%{information_panel_path}">%{information_panel_label}</a>管理パネルとホームページに、インストールステータスのバッジが表示されます。 管理者のみに表示されます。 <br/>バッジは、最新のOpenProjectバージョンを公式のOpenProjectリリースデータベースと照合して、アップデートや既知の脆弱性について警告します。 チェックの内容、利用可能なアップデートを提供するために必要なデータ、およびこのチェックを無効にする方法の詳細については、<a href="%{more_info_url}">設定ドキュメント</a>をご覧ください。
   text_own_membership_delete_confirmation: "一部またはすべての権限を自分自身から剥奪しようとしているため、このプロジェクトを編集できなくなる可能性があります。\n本当に続けますか？"
   text_permanent_delete_confirmation_checkbox_label: "私は、この削除は取り消すことができないことを理解しています。"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "プラグインの「assets」ディレクトリが書き込み可能"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "アルファベット小文字(a-z)・数字・ハイフン・アンダースコアが使えます。アルファベット小文字で始まる必要があります。"
@@ -4731,6 +4986,8 @@ ja:
       multiple_errors: "複数フィールド制限に違反が生じました。"
       unable_to_create_attachment: "添付ファイルを作成できませんでした"
       unable_to_create_attachment_permissions: "ファイルシステムのアクセス許可がないため、添付ファイルを保存できませんでした"
+      user:
+        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
       render:
         context_not_parsable: "このコンテキストはリソースへのリンクではありません。"
         unsupported_context: "指定されたリソースは、コンテキストとしてはサポートされません。"
@@ -4745,8 +5002,10 @@ ja:
     resources:
       schema: "スキーマ"
     undisclosed:
-      parent: 未公開 - 権限がないため、選択された親は見えません。
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: 未公開 - アクセス許可がないため、祖先は見えません。
+      definingProject: Undisclosed - The project is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "事前承認"

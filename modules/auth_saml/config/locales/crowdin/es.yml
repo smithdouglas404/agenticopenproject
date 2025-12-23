@@ -111,7 +111,7 @@ es:
       idp_sso_service_url: >
         La URL del terminal de inicio de sesión del proveedor de identidad.
       idp_slo_service_url: >
-        La URL del terminal de inicio de sesión del proveedor de identidad.
+        The URL of the identity provider logout endpoint.
       idp_cert: >
         Introduzca el certificado público con formato X509 PEM del proveedor de identidad. Puede introducir varios certificados separándolos con una nueva línea.
       name_identifier_format: >

@@ -43,6 +43,10 @@ fr:
               response_is_not_successful: " répond par %{status}."
               response_is_not_json: " ne renvoie pas de corps JSON."
               response_misses_required_attributes: " ne renvoie pas les attributs requis. Les attributs manquants sont : %{missing_attributes}."
+          invalid_claims_essential: "ne définit pas de booléen à l'adresse %{attribute}."
+          invalid_claims_location: "contiennent des emplacements non pris en charge : %{invalid}. Les emplacements pris en charge sont les suivants : %{supported}."
+          invalid_claims_values: "ne définit pas de tableau à l'adresse %{attribute}."
+          non_object_attribute: "ne définit pas d'objet JSON à l'adresse %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: Saisissez le nom du fournisseur %{name} pour confirmer la suppression.

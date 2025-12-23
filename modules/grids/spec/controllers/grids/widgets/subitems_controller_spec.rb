@@ -37,13 +37,19 @@ RSpec.describe Grids::Widgets::SubitemsController do
 
   describe "GET #show" do
     context "with project" do
+      let(:widget_instance) { instance_double(Grids::Widgets::Subitems, render_in: "content") }
+
       before do
+        allow(Grids::Widgets::Subitems)
+          .to receive(:new)
+          .and_return(widget_instance)
+
         get :show, params: { project_id: project }
       end
 
-      it "renders show template", :aggregate_failures do
+      it "renders widget", :aggregate_failures do
         expect(response).to be_successful
-        expect(response).to render_template "show"
+        expect(response.body).to eq "content"
       end
     end
   end

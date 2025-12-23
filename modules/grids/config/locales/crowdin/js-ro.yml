@@ -52,6 +52,7 @@ ro:
           title: 'Tabelul pachetelor de lucru'
         work_packages_graph:
           title: 'Graficul pachetelor de lucru'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Calendar'
         work_packages_overview:

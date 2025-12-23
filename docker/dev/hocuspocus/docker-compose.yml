@@ -15,6 +15,7 @@ services:
     environment:
       - ALLOWED_DOMAINS=openproject.local,localhost
       - NODE_TLS_REJECT_UNAUTHORIZED=0
+      - SECRET=secret12345
 networks:
   gateway:
     external: true

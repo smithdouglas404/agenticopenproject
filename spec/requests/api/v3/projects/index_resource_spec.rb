@@ -284,6 +284,15 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
     end
   end
 
+  context "with programs and portfolios" do
+    shared_let(:portfolio) { create(:portfolio, public: true) }
+    shared_let(:program) { create(:program, public: true) }
+
+    it_behaves_like "API V3 collection response", 3, 3, "Project" do
+      let(:elements) { [project, program, portfolio] }
+    end
+  end
+
   context "with filtering by visibility" do
     let(:public_project) do
       # Otherwise, the public project is invisible
@@ -383,9 +392,7 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
   context "as project collection" do
     let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
     let(:projects) { [project] }
-    let(:expected) do
-      "#{api_v3_paths.project(project.id)}/work_packages"
-    end
+    let(:expected) { api_v3_paths.work_packages_by_workspace(project.id) }
 
     it "has projects with links to their work packages" do
       expect(last_response.body)
@@ -430,8 +437,8 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
         create(:project_custom_field_project_mapping, project: public_wp_share_project)
         .project_custom_field
       end
-      shared_let(:required_cf) do
-        create(:string_project_custom_field, is_required: true)
+      shared_let(:for_all_cf) do
+        create(:string_project_custom_field, is_for_all: true)
       end
 
       shared_let(:current_user) do
@@ -501,25 +508,33 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
           )
         end
 
-        it "returns the required_cf only for the other_project as a member " \
+        it "returns the for_all_cf only for the other_project as a member " \
            "with view_project_attributes" do
           expect(subject).not_to have_json_path(
-            "_embedded/elements/0/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/0/#{for_all_cf.attribute_name(:camel_case)}"
           )
           expect(subject).not_to have_json_path(
-            "_embedded/elements/1/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/1/#{for_all_cf.attribute_name(:camel_case)}"
           )
           expect(subject).not_to have_json_path(
-            "_embedded/elements/2/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/2/#{for_all_cf.attribute_name(:camel_case)}"
           )
           expect(subject).not_to have_json_path(
-            "_embedded/elements/3/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/3/#{for_all_cf.attribute_name(:camel_case)}"
           )
           expect(subject).to have_json_path(
-            "_embedded/elements/4/#{required_cf.attribute_name(:camel_case)}"
+            "_embedded/elements/4/#{for_all_cf.attribute_name(:camel_case)}"
           )
         end
       end
+    end
+  end
+
+  context "when not being logged in and login is required" do
+    current_user { create(:anonymous) }
+
+    context "if user is not logged in" do
+      it_behaves_like "unauthenticated access"
     end
   end
 end

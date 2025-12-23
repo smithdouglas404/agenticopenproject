@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -105,8 +105,7 @@ RSpec.describe("Activation of storages in projects",
     page.first(:link, "New storage").click
     expect(page).to have_current_path new_project_settings_project_storage_path(project_id: project)
     expect(page).to have_text("Add a file storage")
-    expect(page).to have_select("storages_project_storage_storage_id",
-                                options: ["#{storage.name} (#{storage})"])
+    expect(page).to have_select("storages_project_storage_storage_id", options: [storage.typed_label])
     page.click_on("Continue")
 
     # by default automatic have to be chosen if storage has automatic management enabled
@@ -179,8 +178,8 @@ RSpec.describe("Activation of storages in projects",
 
     within_test_selector("op-project-storages--delete-dialog") do
       expect(page).to have_text("Delete file storage")
-      expect(page).to have_unchecked_field("I understand that this deletion cannot be reversed")
-      expect(page).to have_button("Delete permanently", disabled: true)
+      expect(page).to have_unchecked_field("I understand that this removal cannot be reversed")
+      expect(page).to have_button("Remove permanently", disabled: true)
 
       # Cancel Confirmation
       page.click_button("Cancel")
@@ -193,8 +192,8 @@ RSpec.describe("Activation of storages in projects",
 
     within_test_selector("op-project-storages--delete-dialog") do
       # Approve Confirmation
-      page.check "I understand that this deletion cannot be reversed"
-      page.click_button("Delete permanently")
+      page.check "I understand that this removal cannot be reversed"
+      page.click_button("Remove permanently")
     end
 
     # List of ProjectStorages empty again
@@ -270,10 +269,9 @@ RSpec.describe("Activation of storages in projects",
       page.first(:link, "New storage").click
 
       aggregate_failures "select field options" do
-        expect(page).to have_select("storages_project_storage_storage_id",
-                                    options: ["#{configured_storage.name} (#{configured_storage.short_provider_type})"])
+        expect(page).to have_select("storages_project_storage_storage_id", options: [configured_storage.typed_label])
         expect(page).to have_no_select("storages_project_storage_storage_id",
-                                       options: ["#{unconfigured_storage.name} (#{unconfigured_storage.short_provider_type})"])
+                                       options: [unconfigured_storage.typed_label])
       end
     end
   end

@@ -80,7 +80,7 @@ RSpec.describe Meetings::ICalService, type: :model do # rubocop:disable RSpec/Sp
     it "renders the ICS file", :aggregate_failures do
       expect(result).to be_a String
 
-      expect(entry.organizer.to_s).to eq("mailto:#{ApplicationMailer.reply_to}")
+      expect(entry.organizer.to_s).to eq("mailto:#{ApplicationMailer.reply_to_address}")
       expect(entry.attendee.map(&:to_s)).to contain_exactly("mailto:foo@example.com", "mailto:bob@example.com")
       expect(entry.dtstart.utc).to eq meeting.start_time
       expect(entry.dtend.utc).to eq meeting.start_time + 1.hour

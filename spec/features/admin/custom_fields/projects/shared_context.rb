@@ -153,3 +153,134 @@ RSpec.shared_context "with seeded project custom fields" do
     ]
   end
 end
+
+RSpec.shared_examples "prevents access on insufficient permissions" do
+  current_user { non_admin }
+
+  before do
+    visit edit_admin_settings_project_custom_field_path(custom_field)
+  end
+
+  it "is not accessible" do
+    expect(page).to have_text("You are not authorized to access this page.")
+  end
+end
+
+RSpec.shared_examples "has breadcrumb and tabs" do
+  current_user { admin }
+
+  before do
+    visit edit_admin_settings_project_custom_field_path(custom_field)
+  end
+
+  it "shows a correct breadcrumb menu" do
+    within ".PageHeader-breadcrumbs" do
+      expect(page).to have_link("Administration")
+      expect(page).to have_link("Projects")
+      expect(page).to have_link("Project attributes")
+      expect(page).to have_text(custom_field.name)
+    end
+  end
+
+  it "shows tab navigation" do
+    within_test_selector("project_attribute_detail_header") do
+      expect(page).to have_link("Details")
+      expect(page).to have_link("Projects")
+    end
+  end
+end
+
+RSpec.shared_examples "shows checkboxes for configuration" do
+  current_user { admin }
+
+  let(:required_supported) do
+    super()
+  rescue NoMethodError
+    true
+  end
+
+  before do
+    visit edit_admin_settings_project_custom_field_path(custom_field)
+  end
+
+  it "shows checkboxes for 'Required', 'Admin-only' and 'For all projects' attributes" do
+    if required_supported
+      expect(page).to have_unchecked_field("Required")
+
+      check("Required")
+    else
+      expect(page).to have_no_field("Required")
+    end
+
+    expect(page).to have_unchecked_field("Admin-only")
+    check("Admin-only")
+
+    expect(page).to have_unchecked_field("For all projects")
+    check("For all projects")
+
+    click_on("Save")
+
+    expect(page).to have_text("Successful update")
+
+    custom_field.reload
+    expect(custom_field.is_required).to eq required_supported
+    expect(custom_field.admin_only).to be_truthy
+    expect(custom_field.is_for_all).to be_truthy
+  end
+end
+
+RSpec.shared_examples "editing the field" do
+  current_user { admin }
+
+  let(:using_primer) do
+    super()
+  rescue NoMethodError
+    false
+  end
+
+  before do
+    visit edit_admin_settings_project_custom_field_path(custom_field)
+  end
+
+  it "allows to change name and the section of the project custom field" do
+    # TODO: reuse specs for classic custom field form in order to test for other attribute manipulations
+    expect(page).to have_css(".PageHeader-title", text: custom_field.name)
+
+    fill_in("Name", with: "Updated name", fill_options: { clear: :backspace })
+    select(section_for_select_fields.name, from: "custom_field_custom_field_section_id")
+
+    click_on("Save")
+
+    expect(page).to have_text("Successful update")
+
+    expect(page).to have_css(".PageHeader-title", text: "Updated name")
+
+    expect(custom_field.reload.name).to eq("Updated name")
+    expect(custom_field.reload.project_custom_field_section).to eq(section_for_select_fields)
+
+    within ".PageHeader-breadcrumbs" do
+      expect(page).to have_link("Administration")
+      expect(page).to have_link("Projects")
+      expect(page).to have_link("Project attributes")
+      expect(page).to have_text("Updated name")
+    end
+  end
+
+  it "prevents saving a project custom field with an empty name" do
+    original_name = custom_field.name
+
+    fill_in("Name", with: "")
+    click_on("Save")
+
+    if using_primer
+      expect(page).to have_css(".FormControl-inlineValidation", text: "Name can't be blank")
+    else
+      expect(page).to have_field "Name", validation_message: /Please fill (in|out) this field./
+    end
+
+    expect(page).to have_no_text("Successful update")
+
+    expect(page).to have_css(".PageHeader-title", text: original_name)
+    expect(custom_field.reload.name).to eq(original_name)
+  end
+end

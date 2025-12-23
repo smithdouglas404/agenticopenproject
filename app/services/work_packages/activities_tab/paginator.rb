@@ -49,7 +49,7 @@
 #
 # @return [Array<Pagy, Array>] Pagy pagination object and array of activity records
 class WorkPackages::ActivitiesTab::Paginator
-  include Pagy::Backend
+  include Pagy::Method
   include WorkPackages::ActivitiesTab::JournalSortingInquirable
 
   def self.paginate(work_package, params = {})
@@ -72,7 +72,7 @@ class WorkPackages::ActivitiesTab::Paginator
         @filter = :all # Ignore filter when jumping to specific journal
         pagy_array_for_target_journal(anchor_type, target_record_id)
       else
-        pagy_array(base_journals, **pagy_options)
+        pagy(:offset, base_journals, **pagy_options)
       end
 
     # For UI display: if user wants "oldest first" UI, reverse the array
@@ -84,7 +84,12 @@ class WorkPackages::ActivitiesTab::Paginator
   private
 
   def pagy_options
-    { page: params[:page] || 1, limit: params[:limit] || Pagy::DEFAULT[:limit], max_pages: 100 }.compact
+    {
+      page: params[:page] || 1,
+      limit: params[:limit] || Pagy::DEFAULT[:limit],
+      max_pages: 100,
+      request: { params: }
+    }.compact
   end
 
   def extract_target_record_id
@@ -111,10 +116,10 @@ class WorkPackages::ActivitiesTab::Paginator
     if target_index
       limit = pagy_options[:limit]
       target_page = (target_index / limit) + 1
-      pagy_array(journals, **pagy_options, page: target_page)
+      pagy(:offset, journals, **pagy_options, page: target_page)
     else
       # Journal might be filtered out or deleted - fallback to page 1
-      pagy_array(journals, **pagy_options, page: 1)
+      pagy(:offset, journals, **pagy_options, page: 1)
     end
   end
 
@@ -140,10 +145,12 @@ class WorkPackages::ActivitiesTab::Paginator
       .reorder(version: :desc) # Always fetch newest first for pagination
       .with_sequence_version
 
-    journals = journals.where.not(notes: [nil, ""]) if filter == :only_comments
-    journals = apply_only_changes_filter_heuristic(journals) if filter == :only_changes
-
-    journals
+    case filter
+    when :only_comments then apply_comments_only_filter(journals)
+    when :only_changes then apply_changes_only_filter(journals)
+    else
+      journals
+    end
   end
 
   def fetch_revisions
@@ -167,64 +174,11 @@ class WorkPackages::ActivitiesTab::Paginator
     end
   end
 
-  # SQL-based heuristic to filter journals with changes.
-  #
-  # Includes journals that have:
-  #   * Initial journal (version = 1) - always included
-  #   * Attachment changes (attachable_journals association)
-  #   * Custom field changes (customizable_journals association)
-  #   * File link changes (storages_file_links_journals association)
-  #   * Cause metadata (system-triggered changes)
-  #   * Attribute/data changes (compares work_package_journals columns with immediate predecessor)
-  #
-  # Note: This heuristic may include false positives (journals without actual changes)
-  # for performance reasons, as it uses EXISTS subqueries and cannot guarantee perfect accuracy.
-  def apply_only_changes_filter_heuristic(journals)
-    sql = <<~SQL.squish
-      version = 1
-      OR EXISTS (SELECT 1 FROM attachable_journals WHERE attachable_journals.journal_id = journals.id)
-      OR EXISTS (SELECT 1 FROM customizable_journals WHERE customizable_journals.journal_id = journals.id)
-      OR EXISTS (SELECT 1 FROM storages_file_links_journals WHERE storages_file_links_journals.journal_id = journals.id)
-      OR (cause IS NOT NULL AND cause != '{}')
-      OR EXISTS (#{attribute_data_changes_condition_sql})
-    SQL
-
-    journals.where(OpenProject::SqlSanitization.sanitize(sql))
+  def apply_comments_only_filter(scope)
+    scope.where.not(notes: [nil, ""])
   end
 
-  def attribute_data_changes_condition_sql
-    <<~SQL.squish
-      SELECT 1
-        FROM journals predecessor
-        INNER JOIN work_package_journals pred_data ON predecessor.data_id = pred_data.id
-        INNER JOIN work_package_journals curr_data ON journals.data_id = curr_data.id
-        WHERE predecessor.journable_id = journals.journable_id
-          AND predecessor.journable_type = journals.journable_type
-          AND predecessor.version = (#{max_predecessor_version_sql})
-          AND (#{data_changes_condition_sql})
-    SQL
-  end
-
-  # Identify the immediate predecessor journal for comparison.
-  # NB: Journal versions are incremental but not guaranteed to be sequential.
-  def max_predecessor_version_sql
-    <<~SQL.squish
-      SELECT MAX(version)
-      FROM journals p2
-      WHERE p2.journable_id = journals.journable_id
-        AND p2.journable_type = journals.journable_type
-        AND p2.version < journals.version
-    SQL
-  end
-
-  # Detect changes in work_package_journals columns.
-  def data_changes_condition_sql
-    data_change_columns.map do |column_name|
-      "pred_data.#{column_name} IS DISTINCT FROM curr_data.#{column_name}"
-    end.join(" OR ")
-  end
-
-  def data_change_columns
-    Journal::WorkPackageJournal.column_names - ["id", "project_phase_definition_id"]
+  def apply_changes_only_filter(scope)
+    JournalChangesFilter.apply(scope)
   end
 end

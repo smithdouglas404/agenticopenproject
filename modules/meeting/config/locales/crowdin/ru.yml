@@ -119,7 +119,7 @@ ru:
   label_meeting_new_dynamic: "Новое однократное совещание"
   label_meeting_new_recurring: "Новое повторяющееся совещание"
   label_meeting_create: "Создать совещание"
-  label_meeting_copy: "Копировать совещание"
+  label_meeting_duplicate: "Дублировать совещание"
   label_meeting_edit: "Измененить совещание"
   label_meeting_agenda: "Повестка дня"
   label_meeting_minutes: "Протокол(-ы)"
@@ -131,7 +131,8 @@ ru:
   label_meeting_date_time: "Дата/Время"
   label_meeting_date_and_time: "Дата и время"
   label_meeting_diff: "Различия"
-  label_meeting_send_updates: "Отправлять обновления календаря"
+  label_meeting_send_updates: "Отправить приглашение и обновление календаря по электронной почте"
+  label_meeting_send_updates_caption: "Отправить приглашения по электронной почте всем участникам этого совещания"
   label_recurring_meeting: "Повторяющееся совещание"
   label_recurring_meeting_part_of: "Часть серии совещаний"
   label_recurring_meeting_new: "Новое повторяющееся совещание"
@@ -139,7 +140,7 @@ ru:
   label_template: "Шаблон"
   label_recurring_meeting_view: "Посмотреть серию совещаний"
   label_recurring_meeting_create: "Открыть"
-  label_recurring_meeting_copy: "Копировать как одноразовое"
+  label_recurring_meeting_duplicate: "Дублировать как одноразовое совещание"
   label_recurring_meeting_cancel: "Отменить это событие"
   label_recurring_meeting_delete: "Удалить событие"
   label_recurring_meeting_restore: "Восстановить это событие"
@@ -274,7 +275,7 @@ ru:
         confirm_button: "Отменить событие"
     blankslate:
       title: "Нет совещаний для отображения"
-      desc: "Нет совещаний, удовлетворяющих критериям активного фильтра."
+      desc: "Вы можете создать новое совещание или изменить критерии фильтра"
     label_export_pdf: "Экспорт в PDF"
     export:
       your_meeting_export: "Совещание экспортируется"
@@ -344,9 +345,9 @@ ru:
             Обновления календаря отключены. Участники не получат письмо, информирующее их при добавлении или удалении участников.
         onetime:
           enabled: >
-            Все участники получат по электронной почте обновленные приглашения календаря, информирующие их о Ваших изменениях.
+            Все участники будут получать обновления приглашений в календарь по электронной почте при добавлении или удалении участников.
           disabled: >
-            Обновления календаря по электронной почте отключены. Участники не получат электронное письмо с уведомлением о Ваших изменениях.
+            Участники не получат электронное письмо с уведомлением об изменении даты, времени или участников совещания.
         occurrence:
           enabled: >
             Для этой серии встреч включено обновление календаря по электронной почте. Все участники получат обновленные приглашения календаря, информирующие их о Ваших изменениях в этом событии.
@@ -357,11 +358,31 @@ ru:
             Для серии встреч включено обновление календаря по электронной почте. Все участники будут получать обновленные приглашения календаря, информирующие их о Ваших изменениях в этом шаблоне или отдельных событиях.
           disabled: >
             Обновления календаря по электронной почте отключены для серии встреч. Участники не будут получать электронные письма, информирующие их о Ваших изменениях в этом шаблоне или отдельных событиях.
+    presentation_mode:
+      title: "Режим презентации"
+      button_present: "Текущий"
+      exit: "Выйти из презентации"
+      current_item: "Текущий элемент"
+      total_items: "%{current} из %{total}"
+      previous: "Предыдущий"
+      next: "Следующий"
+      no_items: "Нет пунктов повестки дня"
+      no_items_flash: "На повестке дня нет никаких вопросов."
+    ical_response:
+      update_failed: "Не удалось обновить статус участия."
+      meeting_not_found: "Совещание для данного UID не найдено."
   meeting_section:
     untitled_title: "Раздел без названия"
     delete_confirmation: "Удаление раздела также удалит все пункты его повестки дня. Вы уверены, что хотите это сделать?"
     placeholder_title: "Новый раздел"
     empty_text: "Перенесите элементы сюда или создайте новые"
+  meeting_participant:
+    participation_status:
+      needs_action: "Нет ответа"
+      accepted: "Принято"
+      declined: "Отклонено"
+      tentative: "Возможно"
+      unknown: "Неизвестно"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Разница часового пояса"
@@ -388,6 +409,8 @@ ru:
       label_edit_template: "Изменить шаблон"
       banner_html: >
         В настоящее время вы редактируете шаблон серии совещаний: %{link}. Каждое новое совещание в этой серии будет использовать этот шаблон. Изменения не повлияют на прошлые или уже созданные совещания.
+      draft_banner_html: >
+        В данный момент Вы редактируете шаблон серии совещаний: %{link}. Каждое новое совещание в серии будет использовать этот шаблон. Изменения не повлияют на прошлые или уже созданные совещания. Никакие приглашения по электронной почте не будут отправлены в текущем режиме черновика, пока Вы не откроете первое совещание.
     frequency:
       x_daily:
         one: "Каждый день"
@@ -507,6 +530,9 @@ ru:
   label_agenda_item_move_to_bottom: "В конец"
   label_agenda_item_move_up: "Вверх"
   label_agenda_item_move_down: "Вниз"
+  label_agenda_item_duplicate: "Дубликат"
+  label_agenda_item_duplicate_in_next: "Дублировать при следующем совещании"
+  label_agenda_item_duplicate_in_next_title: "Дублировать при следующем совещании?"
   label_agenda_item_add_notes: "Добавить заметки"
   label_agenda_item_add_outcome: "Добавить итог"
   label_agenda_item_work_package_add: "Добавить пакет работ"
@@ -518,7 +544,7 @@ ru:
   label_agenda_outcome_edit: "Редактировать итог"
   label_agenda_outcome_delete: "Удалить итог"
   text_outcome_not_editable_anymore: "Этот итог недоступен для редактирования."
-  text_outcome_cannot_be_added: "Нельзя добавить итог."
+  text_outcome_cannot_be_added: "Итог больше нельзя добавить."
   label_backlog_clear: "Очистить бэклог"
   label_backlog_clear_button: "Очистить все"
   text_backlog_clear_error: "При попытке очистить бэклог произошла одна или несколько ошибок."
@@ -542,6 +568,7 @@ ru:
   label_meeting_series_details: "Подробности серии совещаний"
   label_meeting_details_edit: "Изменить сведения о совещании"
   label_meeting_state: "Статус совещания"
+  label_meeting_state_draft: "Черновик"
   label_meeting_state_open: "Открыть"
   label_meeting_state_closed: "Закрыть"
   label_meeting_state_agenda_created: "Повестка дня создана"
@@ -552,12 +579,19 @@ ru:
   label_meeting_reopen_action: "Открыть совещание заново"
   label_meeting_close_action: "Закрыть совещание"
   label_meeting_in_progress_action: "Начать совещание"
+  label_meeting_open_action: "Открыть совещание"
+  text_meeting_draft_description: "Подготовьте повестку дня в режиме черновика. Это совещание не будет рассылать никаких обновлений календаря или приглашений, даже если Вы измените детали совещания или добавите/удалите участников."
   text_meeting_open_description: "Можно добавлять и удалять пункты повестки и участников. Когда повестка готова, переведите её в статус «В процессе», чтобы фиксировать результаты."
   text_meeting_closed_description: "Это совещание является закрытым. Вы не можете добавлять/удалять пункты повестки."
   text_meeting_in_progress_description: "Можно редактировать повестку, фиксировать результаты по каждому пункту и отмечать присутствие участников. По завершении встречи пометьте её как «Закрыта», чтобы заблокировать изменения."
   text_meeting_open_dropdown_description: "Любые существующие результаты останутся, но пользователи не смогут добавлять новые результаты."
   text_meeting_in_progress_dropdown_description: "Итоги совещания, такие как информация или решения, принятые в ходе совещания."
   text_meeting_closed_dropdown_description: "Совещание закрыто. Вы больше не можете изменять пункты повестки дня или его результаты."
+  text_meeting_draft_banner: "В настоящее время Вы находитесь в режиме черновика. Это совещание не будет рассылать никаких обновлений календаря или приглашений, даже если Вы измените детали совещания или добавите/удалите участников."
+  text_exit_draft_mode_dialog_title: "Открыть это совещание и разослать приглашения?"
+  text_exit_draft_mode_dialog_subtitle: "Вы не можете вернуться в режим черновика после того, как запланировали совещание."
+  text_exit_draft_mode_dialog_template_title: "Открыть первое совещание из этой серии?"
+  text_exit_draft_mode_dialog_template_subtitle: "После этого Вы не сможете вернуться в режим черновика."
   text_meeting_not_editable_anymore: "Это совещание больше нельзя редактировать."
   text_meeting_not_present_anymore: "Это совещание было удалено. Пожалуйста, выберите другое."
   label_add_work_package_to_meeting_dialog_title: "Выберите совещание"
@@ -572,10 +606,12 @@ ru:
   text_agenda_item_not_editable_anymore: "Этот пункт повестки больше не редактируется."
   text_agenda_item_move_next_meeting: "Этот элемент будет перемещен на следующую встречу на %{date} в %{time}."
   text_agenda_item_moved_to_next_meeting: "Пункт повестки дня перенесен на следующее совещание на %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Вы уверены, что хотите добавить копию этого пункта повестки дня к следующему совещанию на %{date} в %{time}? Результаты не будут дублироваться."
+  text_agenda_item_duplicated_in_next_meeting: "Пункт повестки дня дублируется на следующем совещании %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Этот пакет работ пока не включен в повестку предстоящего совещания."
   text_agenda_item_move_next_meeting_cancelled: "Не удалось переместить на следующее совещание, так как оно было отменено."
   text_work_package_add_to_meeting_hint: 'Используйте кнопку "Добавить к совещанию", чтобы добавить этот пакет работ к предстоящему совещанию.'
-  text_work_package_has_no_past_meeting_agenda_items: "Этот пакет работ не упоминался на прошлом совещании."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Обновления календаря по электронной почте отключены. Участники не будут получать обновленные приглашения по электронной почте, когда Вы вносите изменения."
   text_email_updates_enabled: "Обновления календаря по электронной почте включены. Все участники получат обновленные приглашения по электронной почте, когда Вы внесете изменения."
   my_account:

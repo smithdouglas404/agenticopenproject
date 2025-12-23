@@ -36,7 +36,10 @@ module MeetingAgendaItems
     include OpPrimer::ComponentHelpers
     include Redmine::I18n
 
-    def initialize(meeting_agenda_item:, first_and_last: [], current_occurrence: nil)
+    def initialize(meeting_agenda_item:,
+                   first_and_last: [],
+                   current_occurrence: nil,
+                   presentation_mode: false)
       super
 
       @meeting_agenda_item = meeting_agenda_item
@@ -44,6 +47,7 @@ module MeetingAgendaItems
       @series = @meeting.recurring_meeting
       @first_and_last = first_and_last
       @current_occurrence = current_occurrence
+      @presentation_mode = presentation_mode
     end
 
     def wrapper_uniq_by
@@ -52,7 +56,13 @@ module MeetingAgendaItems
 
     private
 
+    def presentation_mode?
+      @presentation_mode
+    end
+
     def drag_and_drop_enabled?
+      return false if presentation_mode?
+
       !@meeting.closed? && User.current.allowed_in_project?(:manage_agendas, @meeting.project)
     end
 
@@ -104,7 +114,9 @@ module MeetingAgendaItems
                      tag: :button,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
+                       href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting,
+                                                           @meeting_agenda_item,
+                                                           presentation_mode: @presentation_mode,
                                                            current_occurrence: @current_occurrence),
                        method: "GET"
                      } }) do |item|
@@ -149,25 +161,47 @@ module MeetingAgendaItems
     end
 
     def move_to_next_meeting_action_item(menu)
+      next_meeting_action_item(
+        menu,
+        label: t(:label_agenda_item_move_to_next),
+        path_helper: :move_to_next_dialog_meeting_agenda_item_path,
+        icon: "arrow-right"
+      )
+    end
+
+    def duplicate_in_next_meeting_action_item(menu)
+      next_meeting_action_item(
+        menu,
+        label: t(:label_agenda_item_duplicate_in_next),
+        path_helper: :duplicate_in_next_dialog_meeting_agenda_item_path,
+        icon: :duplicate
+      )
+    end
+
+    def next_meeting_action_item(menu, label:, path_helper:, icon:)
       return unless editable?
       return if in_template?
       return if @series.nil?
 
-      next_date = @series.next_occurrence(from_time: @meeting.start_time)
+      from_time = @meeting.start_time.past? ? Time.current : @meeting.start_time
+      next_date = @series.next_occurrence(from_time:)
       return if next_date.nil?
 
       menu.with_item(
-        label: t(:label_agenda_item_move_to_next),
+        label:,
         tag: :button,
         content_arguments: { data: {
           action: "click->meetings--submit#intercept",
-          href: move_to_next_dialog_meeting_agenda_item_path(@meeting_agenda_item.meeting,
-                                                             @meeting_agenda_item,
-                                                             datetime: next_date.iso8601),
+          href: send(
+            path_helper,
+            @meeting_agenda_item.meeting,
+            @meeting_agenda_item,
+            datetime: next_date.iso8601
+          ),
           method: "GET"
         } }
       ) do |item|
-        item.with_leading_visual_icon(icon: "arrow-right")
+        item.with_leading_visual_icon(icon:)
       end
     end
 
@@ -182,6 +216,7 @@ module MeetingAgendaItems
 
     def delete_action_item(menu)
       return unless editable?
+      return if presentation_mode?
 
       label = @meeting_agenda_item.work_package_id.present? ? wp_agenda_item_delete_label : t(:text_destroy)
       menu.with_item(label:,

@@ -96,12 +96,6 @@ ja:
       manual: 既存のフォルダを手動で管理
     remove_project:
       deletion_failure_flash: プロジェクトをストレージから削除できませんでした。 %{error}
-      dialog:
-        automatically_managed_appendix: また、この場合、このストレージには自動的に管理されたプロジェクトフォルダがあり、そのファイルは永久に削除されます。
-        confirmation_text: このプロジェクトからこのファイルストレージを削除したいことを確認してください
-        heading_text: '%{storage} からプロジェクトを削除'
-        text: この操作は元に戻すことができず、このプロジェクトの作業パッケージからそのストレージのファイルやフォルダへのすべてのリンクを削除します。
-        title: ストレージからプロジェクトを削除
       label: プロジェクトを削除
   services:
     attributes:
@@ -122,12 +116,13 @@ ja:
       sharepoint_sync_service:
         create_folder: 'プロジェクトフォルダの作成を管理：'
         ensure_root_folder_permissions: 'ベースフォルダの権限を設定：'
-        hide_inactive_folders: '非アクティブフォルダを隠す ステップ'
+        hide_inactive_folders: '非アクティブフォルダを隠す ステップ：'
         remote_folders: 'グループフォルダの内容を読む：'
         rename_project_folder: '管理プロジェクトフォルダの名前を変更します：'
     errors:
       messages:
         error: 予期しないエラーが発生しました。OpenProject のログを確認するか、管理者に連絡してください。
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProjectはストレージプロバイダと認証できませんでした。アクセスできることを確認してください。
       models:
         copy_project_folders_service:
@@ -165,6 +160,7 @@ ja:
           group_does_not_exist: "%{group} は存在しません。Nextcloudインスタンスの設定を確認してください。"
           insufficient_privileges: OpenProjectには %{user} を %{group}に追加するための十分な権限がありません。Nextcloudでグループ設定を確認してください。
           not_allowed: Nextcloudはリクエストをブロックします。
+          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProjectがNextcloudと同期できませんでした。ストレージとNextcloudの設定を確認してください。
           user_does_not_exist: "Nextcloudには%{user} は存在しません。"
         one_drive_sync_service:
@@ -199,7 +195,7 @@ ja:
               not_found: "%{current_path} は見つかりませんでした。"
             set_folders_permissions:
               permission_not_set: '%{path} に権限を設定できませんでした。'
-          error: 予期しないエラーが発生しました。OneDrive に到達できることを確認し、OpenProject ワーカーのログを確認してください。
+          error: 予期しないエラーが発生しました。OneDrive に到達できることを確認し、OpenProject ワーカーのログを確認してください
           not_allowed: OpenProject は、OneDrive ドライブにアクセスすることができませんでした。Azure アプリケーションの権限設定を確認してください。
           not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
           unauthorized: OpenProjectがOneDriveと同期できませんでした。ストレージとAzureアプリケーションの設定を確認してください。
@@ -225,12 +221,13 @@ ja:
     confirm_replace_oauth_application: この操作で、現在の OAuth 認証情報がリセットされます。確認後、ストレージプロバイダで認証情報を再入力する必要があり、すべてのリモートユーザは OpenProject に対して再度認証する必要があります。本当に進めますか？
     confirm_replace_oauth_client: この操作により、現在のOAuth認証情報がリセットされます。確認後、ストレージプロバイダから新しい認証情報を入力する必要があり、すべてのユーザーは %{provider_type} に対して再度認証する必要があります。本当に進めますか？
     delete_warning:
-      project_storage_delete_result_1: このプロジェクトのワークパッケージから、そのストレージのファイルやフォルダへのリンクをすべて削除する。
-      project_storage_delete_result_2: このストレージに自動的に管理されるプロジェクトフォルダーがある場合、このフォルダーとそのファイルは永久に削除されます。
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
-      storage_delete_result_1: このストレージを使用しているすべてのプロジェクトのすべてのストレージ設定を削除します。
-      storage_delete_result_2: すべてのプロジェクトのワークパッケージから、そのストレージのファイルやフォルダへのリンクをすべて削除する。
-      storage_delete_result_3: このストレージに自動的に管理されるプロジェクトフォルダーがある場合、それらと含まれるファイルは永久に削除されます。
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: グループフォルダ
@@ -241,17 +238,23 @@ ja:
     error_invalid_provider_type: 有効なストレージプロバイダーを選択してください。
     file_storage_view:
       access_management:
-        automatic_management: 自動的に管理されるアクセスとフォルダ
-        automatic_management_description: OpenProject に、プロジェクトごとに自動的にフォルダを作成させ、そのユーザーアクセスを管理させます。こうすることで、チームメンバー全員が常に正しいアクセス権限を持つことができるのでおすすめです。
-        description: ユーザーアクセスとフォルダ作成の管理タイプを選択します。より整理された構造を持ち、すべての関連ユーザーへのアクセスを保証するために、自動管理アクセスを使用することをお勧めします。
-        manual_management: 手動で管理されたアクセスとフォルダ
-        manual_management_description: プロジェクトごとに手動でフォルダを作成し、管理します。関連するユーザーがアクセスできることを手動で確認する必要があります。
+        automatic_management: Enable automatically-managed access and folders
+        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
+        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
+        manual_management: Only allow manually-managed access and folders
+        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
         setup_incomplete: ユーザーアクセスとフォルダ作成の管理タイプを選択します。
-        subtitle: アクセス管理
+        subtitle: Folder and access management
       access_management_section: アクセスとプロジェクトフォルダ
       automatically_managed_folders: 自動的に管理されるフォルダ
       general_information: 一般情報
       oauth_configuration: OAuthの設定
+      one_drive:
+        access_management:
+          automatic_management: Enable automatically-managed access and folders
+          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
+          manual_management: Only allow manually-managed access and folders
+          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: プロジェクトフォルダ
@@ -345,9 +348,10 @@ ja:
         sp_client_write_permission_missing: クライアントはSharePointで書き込み権限が不足しているようです。ストレージのセットアップドキュメントを確認してください。
         sp_existing_test_folder: テストに必要なフォルダ %{folder_name} は SharePoint に既に存在します。削除してから、もう一度お試しください。
         sp_oauth_request_error: SharePointへのユーザーバウンドリクエストに失敗しました。詳細については、サーバーのログを確認してください。
+        sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         sp_oauth_token_missing: OpenProject は、ユーザーがまだ SharePoint アカウントをリンクしていないため、ユーザーレベルの SharePoint との通信をテストできません。
         sp_tenant_id_missing: 構成されたディレクトリ（テナント）IDがSharePointにありません。設定を確認してください。
-        sp_unexpected_content: SharePointドライブに予期しないコンテンツが見つかりました。
+        sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
         unknown_error: 接続を検証できませんでした。不明なエラーが発生しました。詳細についてはサーバーログを確認してください。
       label_error: エラー
       label_failed: 失敗しました
@@ -492,7 +496,7 @@ ja:
         title: プロジェクトフォルダに権限を設定しています。
     page_titles:
       file_storages:
-        delete: ファイルストレージを削除
+        delete: Delete file storage?
         subtitle: ワークパッケージ内のファイルをアップロード、リンク、管理するために、外部ファイルストレージを追加します。
       managed_project_folders:
         subtitle: |-
@@ -507,6 +511,8 @@ ja:
       project_storage_members:
         subtitle: 全プロジェクトメンバーのストレージ %{storage_name_link} の接続状態を確認する。
         title: 会員の接続状況
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: '外部ストレージのファイル権限は、自動的に管理されたプロジェクトフォルダ内のフォルダとファイルにのみ適用されます。 すべてのファイル権限がすべてのストレージプロバイダでサポートされているわけではないことに注意してください。 詳細については、 <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>ファイルストレージパーミッション</a> のドキュメントを確認してください。'
     provider_types:
       label: プロバイダー・タイプ
@@ -542,7 +548,13 @@ ja:
       heading: まだストレージがありません。
     successful_storage_connection: ストレージが正常に接続されました! 使用する各プロジェクトの「プロジェクト」タブでストレージをアクティブにすることを忘れないでください。
     upsell:
-      description: |-
-        OpenProjectでOneDriveをファイルストレージとして統合。ファイルをアップロードし、プロジェクト内の
-        ワークパッケージに直接リンクします。
-      title: OneDriveの統合
+      one_drive:
+        description: |-
+          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: OneDrive integration
+      sharepoint:
+        description: |-
+          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
+          work packages in a project.
+        title: SharePoint integration

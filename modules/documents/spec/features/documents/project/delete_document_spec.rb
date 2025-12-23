@@ -41,7 +41,7 @@ RSpec.describe "Delete Document",
   shared_let(:member_role_manage) { create(:existing_project_role, permissions: %i[view_documents manage_documents]) }
   shared_let(:member) { create(:user, member_with_roles: { project => member_role_read_only }) }
   shared_let(:manager) { create(:user, member_with_roles: { project => member_role_manage }) }
-  shared_let(:documents) { create_list(:document, 3, project:) }
+  shared_let(:documents) { create_list(:document, 3, project:, kind: :classic) }
 
   let(:index_page) { Documents::Pages::ListPage.new(project) }
   let(:delete_candidate) { documents.first }
@@ -49,28 +49,43 @@ RSpec.describe "Delete Document",
   context "with documents manager role" do
     current_user { manager }
 
-    it "allows deleting documents" do
-      index_page.visit!
-
-      index_page.expect_documents_listed(documents)
-
-      click_on delete_candidate.title
-      expect(page).to have_current_path(document_path(delete_candidate))
-      accept_alert { click_on "Delete" }
-
-      expect(page).to have_content("Successful deletion.")
-      expect(page).to have_current_path(project_documents_path(project))
-      index_page.expect_documents_listed(documents.drop(1))
-    end
-
-    context "when deletion fails" do
-      before do
-        allow_any_instance_of(Document).to receive(:destroy).and_return(false) # rubocop:disable RSpec/AnyInstance
-        allow_any_instance_of(Document).to receive_message_chain(:errors, :full_messages) # rubocop:disable RSpec/AnyInstance, RSpec/MessageChain
-          .and_return(["Deletion failed due to some error"])
+    context "with collaborative documents" do
+      let(:delete_candidate) do
+        documents.first.tap { |d| d.update(kind: :collaborative) }
       end
 
-      it "shows an error message" do
+      it "allows deleting the document" do
+        index_page.visit!
+
+        index_page.expect_documents_listed(documents)
+
+        click_on delete_candidate.title
+        expect(page).to have_current_path(document_path(delete_candidate))
+
+        within_test_selector("document-page-header") do
+          click_button accessible_name: "Document actions"
+          expect(page).to have_selector :menuitem, "Edit title"
+
+          click_on "Delete"
+        end
+
+        within_dialog("Delete document") do
+          expect(page).to have_heading "Delete this document?"
+          expect(page).to have_text "This will permanently delete this document and all file attachments. " \
+                                    "Are you sure you want to do this?"
+
+          check "I understand that this deletion cannot be reversed"
+          click_on "Delete permanently"
+        end
+
+        expect_and_dismiss_flash(message: "Successful deletion.")
+        expect(page).to have_current_path(project_documents_path(project))
+        index_page.expect_documents_listed(documents.drop(1))
+      end
+    end
+
+    context "with classic documents" do
+      it "allows deleting documents" do
         index_page.visit!
 
         index_page.expect_documents_listed(documents)
@@ -79,8 +94,68 @@ RSpec.describe "Delete Document",
         expect(page).to have_current_path(document_path(delete_candidate))
         accept_alert { click_on "Delete" }
 
-        expect(page).to have_content("Deletion failed due to some error")
+        expect_and_dismiss_flash(message: "Successful deletion.")
         expect(page).to have_current_path(project_documents_path(project))
+        index_page.expect_documents_listed(documents.drop(1))
+      end
+    end
+
+    context "when deletion fails" do
+      before do
+        errors = ActiveModel::Errors.new(Document.new)
+        errors.add(:base, "Deletion failed due to some error")
+
+        allow(Documents::DeleteService).to receive(:new)
+          .and_return(double(call: ServiceResult.failure(errors:)))
+      end
+
+      context "with collaborative documents" do
+        let(:delete_candidate) do
+          documents.first.tap { |d| d.update(kind: :collaborative) }
+        end
+
+        it "shows an error message" do
+          index_page.visit!
+
+          index_page.expect_documents_listed(documents)
+
+          click_on delete_candidate.title
+          expect(page).to have_current_path(document_path(delete_candidate))
+
+          within_test_selector("document-page-header") do
+            click_button accessible_name: "Document actions"
+            expect(page).to have_selector :menuitem, "Edit title"
+
+            click_on "Delete"
+          end
+
+          within_dialog("Delete document") do
+            expect(page).to have_heading "Delete this document?"
+            expect(page).to have_text "This will permanently delete this document and all file attachments. " \
+                                      "Are you sure you want to do this?"
+
+            check "I understand that this deletion cannot be reversed"
+            click_on "Delete permanently"
+          end
+
+          expect(page).to have_content("Deletion failed due to some error")
+          expect(page).to have_current_path(project_documents_path(project))
+        end
+      end
+
+      context "with classic documents" do
+        it "shows an error message" do
+          index_page.visit!
+
+          index_page.expect_documents_listed(documents)
+
+          click_on delete_candidate.title
+          expect(page).to have_current_path(document_path(delete_candidate))
+          accept_alert { click_on "Delete" }
+
+          expect(page).to have_content("Deletion failed due to some error")
+          expect(page).to have_current_path(project_documents_path(project))
+        end
       end
     end
   end

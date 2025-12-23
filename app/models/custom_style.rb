@@ -32,6 +32,7 @@ require "ttfunk"
 
 class CustomStyle < ApplicationRecord
   mount_uploader :logo, OpenProject::Configuration.file_uploader
+  mount_uploader :logo_mobile, OpenProject::Configuration.file_uploader
   mount_uploader :export_logo, OpenProject::Configuration.file_uploader
   mount_uploader :export_cover, OpenProject::Configuration.file_uploader
   mount_uploader :export_footer, OpenProject::Configuration.file_uploader
@@ -59,7 +60,7 @@ class CustomStyle < ApplicationRecord
     updated_at.to_i
   end
 
-  %i(favicon touch_icon export_logo export_cover export_footer logo
+  %i(favicon touch_icon export_logo export_cover export_footer logo logo_mobile
      export_font_regular export_font_bold export_font_italic export_font_bold_italic).each do |name|
     define_method :"#{name}_path" do
       attachment = send(name)

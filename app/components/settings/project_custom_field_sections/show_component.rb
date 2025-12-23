@@ -44,6 +44,10 @@ module Settings
         @first_and_last = first_and_last
       end
 
+      def custom_field_row_component_class
+        Settings::ProjectCustomFieldSections::CustomFieldRowComponent
+      end
+
       private
 
       def wrapper_uniq_by
@@ -156,6 +160,31 @@ module Settings
           content_arguments: { data: { turbo: "false",
                                        test_selector: "new-project-custom-field-in-section-button-#{format.name}" } }
         )
+      end
+
+      def display_representation_icon_for_section(section)
+        section.shown_in_overview_sidebar? ? :"op-view-split" : :"op-view-cards"
+      end
+
+      def display_representation_label_for_section(section)
+        if section.shown_in_overview_sidebar?
+          t("settings.project_attributes.sections.display_representation.overview.side_panel.label")
+        else
+          t("settings.project_attributes.sections.display_representation.overview.main_area.label")
+        end
+      end
+
+      def menu_item_options_for(section, key)
+        {
+          href: admin_settings_project_custom_field_section_path(section),
+          form_arguments: {
+            method: :put,
+            inputs: [{
+              name: "project_custom_field_section[overview]",
+              value: key
+            }]
+          }
+        }
       end
     end
   end

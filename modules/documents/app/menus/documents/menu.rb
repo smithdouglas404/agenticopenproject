@@ -46,7 +46,7 @@ module Documents
     end
 
     def document_type_options
-      @document_type_options ||= menu_item_filter_for(DocumentCategory, :category_id)
+      @document_type_options ||= menu_item_filter_for(DocumentType, :type_id)
     end
 
     def query_path(query_params)

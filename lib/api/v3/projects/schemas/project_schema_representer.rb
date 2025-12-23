@@ -34,6 +34,7 @@ module API
       module Schemas
         class ProjectSchemaRepresenter < ::API::Decorators::SchemaRepresenter
           extend ::API::V3::Utilities::CustomFieldInjector::RepresenterClass
+
           custom_field_injector type: :schema_representer
 
           schema :id,
@@ -86,7 +87,7 @@ module API
                  writable: ->(*) { represented.writable?(:status_explanation) }
 
           schema_with_allowed_link :parent,
-                                   type: "Project",
+                                   type: "Workspace",
                                    required: ->(*) {
                                      # Users only having the add_subprojects permission need to provide
                                      # a parent when creating a new project.
@@ -94,13 +95,13 @@ module API
                                        !current_user.allowed_globally?(:add_project)
                                    },
                                    href_callback: ->(*) {
-                                     query_props = if represented.model.new_record?
-                                                     ""
-                                                   else
-                                                     "?of=#{represented.model.id}"
-                                                   end
+                                     params = if represented.model.new_record?
+                                                { workspace_type: represented.model.workspace_type }
+                                              else
+                                                { of: represented.model.id }
+                                              end
 
-                                     api_v3_paths.projects_available_parents + query_props
+                                     api_v3_paths.projects_available_parents(**params)
                                    }
 
           schema :created_at,

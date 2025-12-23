@@ -53,7 +53,7 @@ export class WpResizerComponent extends UntilDestroyedMixin implements OnInit, A
 
   @Input() localStorageKey:string;
 
-  @Input() variableName:string = '--split-screen-width';
+  @Input() variableName = '--split-screen-width';
 
   private resizingElement:HTMLElement|null;
 
@@ -190,7 +190,7 @@ export class WpResizerComponent extends UntilDestroyedMixin implements OnInit, A
   private applyColumnLayout(checkWidth = 750) {
     const singleView = document.querySelector<HTMLElement>("[data-selector='wp-single-view']");
     if (singleView) {
-      jQuery(singleView).toggleClass('work-package--single-view_with-columns', singleView.offsetWidth > checkWidth);
+      singleView.classList.toggle('work-package--single-view_with-columns', singleView.offsetWidth > checkWidth);
     }
   }
 

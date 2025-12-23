@@ -39,9 +39,10 @@ class MeetingAgendaItemsController < ApplicationController
   before_action :set_meeting_agenda_item,
                 except: %i[new cancel_new create]
   before_action :set_current_occurrence,
+                :set_presentation_mode,
                 only: %i[new cancel_new edit cancel_edit create update destroy drop move move_to_section_dialog]
   before_action :authorize
-  before_action :check_recurring_meeting_param, only: %i[move_to_next_meeting]
+  before_action :check_recurring_meeting_param, only: %i[move_to_next_meeting duplicate_in_next_meeting]
   before_action :assign_drop_params, only: %i[drop]
 
   def new
@@ -81,7 +82,9 @@ class MeetingAgendaItemsController < ApplicationController
 
   def edit
     if @meeting_agenda_item.editable?
-      update_item_via_turbo_stream(state: :edit, display_notes_input: params[:display_notes_input],
+      update_item_via_turbo_stream(state: :edit,
+                                   display_notes_input: params[:display_notes_input],
+                                   presentation_mode: @presentation_mode,
                                    current_occurrence: @current_occurrence)
     else
       update_all_via_turbo_stream
@@ -92,7 +95,9 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def cancel_edit
-    update_item_via_turbo_stream(state: :show, current_occurrence: @current_occurrence)
+    update_item_via_turbo_stream(state: :show,
+                                 current_occurrence: @current_occurrence,
+                                 presentation_mode: @presentation_mode)
 
     respond_with_turbo_streams
   end
@@ -140,11 +145,14 @@ class MeetingAgendaItemsController < ApplicationController
         update_header_component_via_turbo_stream
         update_sidebar_details_component_via_turbo_stream
       end
-      update_item_via_turbo_stream(current_occurrence: @current_occurrence)
+      update_item_via_turbo_stream(current_occurrence: @current_occurrence,
+                                   presentation_mode: @presentation_mode)
       update_section_header_via_turbo_stream(meeting_section: @meeting_agenda_item.meeting_section)
     else
       # show errors
-      update_item_via_turbo_stream(state: :edit, current_occurrence: @current_occurrence)
+      update_item_via_turbo_stream(state: :edit,
+                                   current_occurrence: @current_occurrence,
+                                   presentation_mode: @presentation_mode)
       render_base_error_in_flash_message_via_turbo_stream(call.errors)
     end
 
@@ -216,6 +224,13 @@ class MeetingAgendaItemsController < ApplicationController
     )
   end
 
+  def duplicate_in_next_meeting_dialog
+    respond_with_dialog MeetingAgendaItems::DuplicateInNextMeetingDialogComponent.new(
+      agenda_item: @meeting_agenda_item,
+      datetime: params[:datetime]
+    )
+  end
+
   def move_to_next_meeting # rubocop:disable Metrics/AbcSize
     next_occurrence = init_next_meeting_occurrence
     return if next_occurrence.nil?
@@ -230,7 +245,25 @@ class MeetingAgendaItemsController < ApplicationController
       update_header_component_via_turbo_stream
       respond_with_turbo_streams
     else
-      respond_with_flash_error(message: call.message)
+      respond_with_flash_error(message: update_call.message)
+    end
+  end
+
+  def duplicate_in_next_meeting
+    next_occurrence = init_next_meeting_occurrence
+    return if next_occurrence.nil?
+
+    duplicate_call = duplicate_agenda_item_in_meeting(next_occurrence)
+
+    if duplicate_call.success?
+      close_dialog_via_turbo_stream("#duplicate-in-next-meeting-dialog")
+      render_success_flash_message_via_turbo_stream(
+        message: I18n.t(:text_agenda_item_duplicated_in_next_meeting, date: format_date(next_occurrence.start_time))
+      )
+      update_header_component_via_turbo_stream
+      respond_with_turbo_streams
+    else
+      respond_with_flash_error(message: duplicate_call.message)
     end
   end
 
@@ -259,6 +292,18 @@ class MeetingAgendaItemsController < ApplicationController
     ::MeetingAgendaItems::UpdateService
       .new(user: current_user, model: @meeting_agenda_item)
       .call(params)
+  end
+
+  def duplicate_agenda_item_in_meeting(target_meeting)
+    attributes = @meeting_agenda_item.copy_attributes
+    attributes = attributes.except("author_id", "created_at", "updated_at", "lock_version", "position")
+
+    attributes[:meeting_id] = target_meeting.id
+    attributes[:meeting_section_id] = nil
+
+    ::MeetingAgendaItems::CreateService
+      .new(user: current_user)
+      .call(attributes)
   end
 
   def init_next_meeting_occurrence
@@ -297,6 +342,10 @@ class MeetingAgendaItemsController < ApplicationController
 
   def set_current_occurrence
     @current_occurrence = Meeting.find_by(id: params[:current_occurrence])
+  end
+
+  def set_presentation_mode
+    @presentation_mode = ActiveModel::Type::Boolean.new.cast(params[:presentation_mode])
   end
 
   def meeting_agenda_item_params

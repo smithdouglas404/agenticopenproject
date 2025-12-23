@@ -243,6 +243,21 @@ module Redmine
       direct_match || parent_match
     end
 
+    # Returns the language name in its own language for a given locale
+    #
+    # @param lang_code [String] the locale for the desired language, like `en`,
+    #   `de`, `fil`, `zh-CN`, and so on.
+    # @return [String] the language name translated in its own language
+    def translate_language(lang_code)
+      # rename in-context translation language name for the language select box
+      if lang_code.to_sym == Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE &&
+        ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
+        [Redmine::I18n::IN_CONTEXT_TRANSLATION_NAME, lang_code.to_s]
+      else
+        [::I18n.t("cldr.language_name", locale: lang_code), lang_code.to_s]
+      end
+    end
+
     def set_language_if_valid(lang)
       if l = find_language(lang)
         ::I18n.locale = l

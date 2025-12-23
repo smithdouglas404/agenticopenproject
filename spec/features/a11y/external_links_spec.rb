@@ -40,7 +40,77 @@ RSpec.describe "External links", :js do
   it "sets ARIA describedby on external links" do
     visit "/"
 
-    expect(page).to have_link target: "_blank", described_by: "Open link in a new tab"
-    expect(page.all(:link, target: "_blank")).to all match_selector(:link, described_by: "Open link in a new tab")
+    expect(page).to have_link target: "_blank", accessible_description: "Open link in a new tab"
+    expect(page.all(:link, target: "_blank")).to all match_selector(:link, accessible_description: "Open link in a new tab")
+  end
+
+  it "updates external links to open in a new tab and sets rel attributes" do
+    visit "/"
+
+    page.execute_script <<~JS
+      const link = document.createElement('a');
+      link.href = 'https://example.com';
+      link.textContent = 'External Example';
+      document.body.appendChild(link);
+    JS
+
+    # Wait for mutation observer to detect and update the link
+    expect(page).to have_link("External Example", href: "https://example.com", target: "_blank")
+
+    link = find_link("External Example", href: "https://example.com", match: :first)
+
+    # Verify accessibility and security attributes
+    expect(link[:target]).to eq("_blank")
+    expect(link[:rel]).to include("noopener")
+    expect(link[:rel]).to include("noreferrer")
+
+    # It should also get the accessibility description
+    expect(link[:"aria-describedby"]).to include("open-blank-target-link-description")
+  end
+
+  it "does not modify links with empty href or download attribute" do
+    visit "/"
+
+    page.execute_script <<~JS
+      const emptyLink = document.createElement('a');
+      emptyLink.href = '';
+      emptyLink.textContent = 'Empty link';
+      document.body.appendChild(emptyLink);
+
+      const downloadLink = document.createElement('a');
+      downloadLink.href = '/files/sample.pdf';
+      downloadLink.download = 'sample.pdf';
+      downloadLink.textContent = 'Download PDF';
+      document.body.appendChild(downloadLink);
+    JS
+
+    empty_link = find_link("Empty link", href: "", match: :first)
+    download_link = find_link("Download PDF", href: "/files/sample.pdf", match: :first)
+
+    # The controller should NOT modify these links
+    expect(empty_link[:target]).to be_in([nil, ""])
+    expect(empty_link[:rel]).to be_nil.or eq("")
+    expect(empty_link[:"aria-describedby"]).to be_nil.or eq("")
+
+    expect(download_link[:target]).to be_in([nil, ""])
+    expect(download_link[:rel]).to be_nil.or eq("")
+    expect(download_link[:"aria-describedby"]).to be_nil.or eq("")
+  end
+
+  it 'adds aria-describedby to links with target="_blank"' do
+    visit "/"
+
+    page.execute_script <<~JS
+      const blankLink = document.createElement('a');
+      blankLink.href = '/internal-page';
+      blankLink.target = '_blank';
+      blankLink.textContent = 'Opens in new tab';
+      document.body.appendChild(blankLink);
+    JS
+
+    link = find_link("Opens in new tab", href: "/internal-page")
+
+    expect(link[:target]).to eq("_blank")
+    expect(link[:"aria-describedby"]).to include("open-blank-target-link-description")
   end
 end

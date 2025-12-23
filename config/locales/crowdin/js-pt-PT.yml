@@ -297,12 +297,13 @@ pt-PT:
       warning: "Não partilhe este URL com outros utilizadores. Qualquer pessoa com este link poderá ver os detalhes do pacote de trabalho sem uma conta ou palavra-passe."
       token_name_label: "Onde irá utilizar isto?"
       token_name_placeholder: 'Escreva um nome, por exemplo, "Telefone"'
-      token_name_description_text: 'Se subscrever este calendário a partir de vários dispositivos, este nome irá ajudá-lo a distinguir entre eles na sua lista de <a href="my/access_token", target="_blank">tokens de acesso</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copiar URL"
       ical_generation_error_text: "Ocorreu um erro ao gerar o URL do calendário."
       success_message: 'O URL "%{name}" foi copiado com sucesso para a área de transferência. Cole-o no seu cliente de Calendários para concluir a subscrição.'
     label_activate: "Ativar"
     label_assignee: "Responsável"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Adicionar coluna após"
     label_add_column_before: "Adicionar coluna antes"
     label_add_columns: "Adicionar colunas"
@@ -344,6 +345,7 @@ pt-PT:
     label_collapse: "Colapso"
     label_collapsed: "oculto"
     label_collapse_all: "Ocultar tudo"
+    label_collapse_text: "Collapse text"
     label_comment: "Comentario"
     label_committed_at: "%{committed_revision_link} le %{date}"
     label_committed_link: "revisão confirmada %{revision_identifier}"
@@ -356,6 +358,7 @@ pt-PT:
     label_expand: "Expandir"
     label_expanded: "expandido"
     label_expand_all: "Expandir Tudo"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Expandir menu do projeto"
     label_export: "Exportar"
     label_export_preparing: "A exportação está a ser preparada e será descarregada brevemente."
@@ -554,7 +557,7 @@ pt-PT:
       date_alerts:
         milestone_date: "Data do marco"
         overdue: "Em atraso"
-        overdue_since: "desde %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "é hoje."
         property_is: "é em %{difference_in_days}."
         property_was: "foi há %{difference_in_days}."
@@ -1126,6 +1129,7 @@ pt-PT:
       current_project_and_all_descendants: "Neste projeto + subprojetos"
       current_project: "Neste projeto"
       recently_viewed: "Visto recentemente"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "todos os projetos"
         project_and_subprojects: "e todos os subprojetos"
@@ -1162,6 +1166,11 @@ pt-PT:
         does_not_match_search: "O projeto não corresponde aos critérios de pesquisa."
       no_results: "Nenhum projeto corresponde aos seus critérios de pesquisa."
       no_favorite_results: "Nenhum projeto favorito corresponde aos seus critérios de pesquisa."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Linha de base"
       clear: "Limpar"

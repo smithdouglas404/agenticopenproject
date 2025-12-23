@@ -27,8 +27,8 @@
         </ul>
       </div>
       <wp-single-view [workPackage]="newWorkPackage"
-        [showProject]="copying" />
-      <wp-edit-actions-bar (onCancel)="cancelAndBackToList()" />
+                      [showProject]="copying" />
+      <wp-edit-actions-bar (onCancel)="cancelAndBack()" />
     </edit-form>
   </div>
 }

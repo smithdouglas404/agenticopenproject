@@ -52,6 +52,7 @@ lt:
           title: 'Darbo paketų lentelė'
         work_packages_graph:
           title: 'Darbo paketų grafas'
+          summary: "%{chartType} chart showing work packages which are %{description}."
         work_packages_calendar:
           title: 'Kalendorius'
         work_packages_overview:

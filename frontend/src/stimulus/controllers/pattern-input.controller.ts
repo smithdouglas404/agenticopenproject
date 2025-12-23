@@ -551,7 +551,6 @@ export default class PatternInputController extends Controller {
   private tokenText(key:string):string {
     const token = this.validTokenMap[key];
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!token) {
       return key;
     }
@@ -637,7 +636,7 @@ export default class PatternInputController extends Controller {
   }
 
   private isWhitespaceOrControlSpace(value:string|undefined|null):boolean {
-    if (!value || value.length !== 1) { return false; }
+    if (value?.length !== 1) { return false; }
 
     return new RegExp(`[${CONTROL_SPACE}\\s]`).test(value);
   }

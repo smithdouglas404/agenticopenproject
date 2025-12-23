@@ -30,8 +30,9 @@ import {
   ChangeDetectorRef,
   Directive,
   Injector,
+  Input,
   OnInit,
-  ViewChild,
+  ViewChild, OnDestroy,
 } from '@angular/core';
 import {
   StateService,
@@ -61,10 +62,10 @@ import { CurrentProjectService } from 'core-app/core/current-project/current-pro
 import { HalSource } from 'core-app/features/hal/interfaces';
 
 @Directive()
-export class WorkPackageCreateComponent extends UntilDestroyedMixin implements OnInit {
+export class WorkPackageCreateComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   public successState:string = splitViewRoute(this.$state);
 
-  public cancelState:string = this.$state.current.data.baseRoute;
+  public cancelState:string = this.$state?.current?.data?.baseRoute;
 
   public newWorkPackage:WorkPackageResource;
 
@@ -75,11 +76,13 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
   /** Are we in the copying substates ? */
   public copying = false;
 
-  public stateParams = this.$transition.params('to');
+  @Input() public stateParams:any;
 
   public text = {
     button_settings: this.I18n.t('js.button_settings'),
   };
+
+  @Input() public routedFromAngular = true;
 
   @ViewChild(EditFormComponent, { static: false }) protected editForm:EditFormComponent;
 
@@ -88,7 +91,6 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
 
   constructor(
     public readonly injector:Injector,
-    protected readonly $transition:Transition,
     protected readonly $state:StateService,
     protected readonly I18n:I18nService,
     protected readonly titleService:OpTitleService,
@@ -106,6 +108,12 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
   }
 
   public ngOnInit() {
+    // In case the create form is still routed via Angular, the stateParams are empty. We then read the params from the Transition
+    if (this.routedFromAngular) {
+      const transition = this.injector.get<Transition>(Transition);
+      this.stateParams = transition.params('to');
+    }
+
     this.closeEditFormWhenNewWorkPackageSaved();
 
     this.showForm();
@@ -117,23 +125,22 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
     super.ngOnDestroy();
   }
 
-  public switchToFullscreen() {
-    const type = idFromLink(this.change.value<HalResource>('type')?.href);
-    void this.$state.go('work-packages.new', { ...this.$state.params, type });
-  }
-
   public onSaved(params:{ savedResource:WorkPackageResource, isInitial:boolean }) {
     const { savedResource, isInitial } = params;
 
     this.editForm?.cancel(false);
 
-    if (this.successState) {
+    if(this.routedFromAngular && this.successState) {
       this.$state.go(this.successState, { workPackageId: savedResource.id })
         .then(() => {
           this.wpViewFocus.updateFocus(savedResource.id!);
           this.notificationService.showSave(savedResource, isInitial);
         });
+    } else {
+      window.OpenProject.pageState = 'submitted';
+      Turbo.visit(this.pathHelper.projectWorkPackagePath(savedResource.project.identifier, savedResource.id!) + window.location.search);
     }
+
   }
 
   protected showForm() {
@@ -188,9 +195,15 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
     this.titleService.setFirstPart(this.I18n.t('js.work_packages.create.title'));
   }
 
-  public cancelAndBackToList() {
+  public cancelAndBack() {
     this.wpCreate.cancelCreation();
-    this.$state.go(this.cancelState, this.$state.params);
+
+    if (this.routedFromAngular) {
+      this.$state.go(this.cancelState, this.$state.params);
+    } else {
+      const link = this.stateParams.projectPath ? this.pathHelper.workPackagesPath(this.stateParams.projectPath) : this.pathHelper.workPackagesPath(null);
+      window.location.href = (link + window.location.search);
+    }
   }
 
   protected createdWorkPackage() {

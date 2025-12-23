@@ -30,56 +30,49 @@
 
 require "rails_helper"
 
-RSpec.describe "BlockNote editor rendering", :js, with_flag: { block_note_editor: true } do
+RSpec.describe "BlockNote editor rendering", :js do
   let(:admin) { create(:admin) }
-  let(:project) { create(:project) }
-  let(:category) { create(:document_category, name: "Experimental", project:) }
-  let(:document) { create(:document, category:) }
+  let(:type) { create(:document_type, :experimental) }
+  let(:document) { create(:document, type:) }
   let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
 
   before do
     login_as(admin)
-  end
 
-  it "renders the BlockNote editor when editting a document" do
-    visit edit_document_path(document)
-
-    expect(page).to have_field("Category", required: true)
-    expect(page).to have_field("Title", required: true)
-
-    expect(page).to have_test_selector("blocknote-document-description")
-    expect(page).to have_css(".block-note-editor-container")
-
-    description_field = page.find_test_selector("blocknote-document-description")
-    description_field.click
-    description_field.send_keys("Additional text")
-
-    click_on("Save")
-
-    visit edit_document_path(document)
-
-    expect(page).to have_test_selector("blocknote-document-description", text: "Additional text")
+    # This is here while we don't have a setting defined for enabling/disabling collaboration
+    # rubocop:disable RSpec/AnyInstance
+    allow_any_instance_of(Primer::OpenProject::Forms::BlockNoteEditor).to receive(:collaboration_enabled).and_return(false)
+    # rubocop:enable RSpec/AnyInstance
   end
 
   it "renders the BlockNote editor in the users locale" do
     admin.update!(language: "de")
-    visit edit_document_path(document)
+    visit document_path(document)
 
     expect(page).to have_test_selector("blocknote-document-description")
-    expect(page).to have_no_content("Überschrift")
+    expect(editor.content).not_to include("Überschrift")
 
     editor.open_command_dialog
-    expect(page).to have_content("Überschrift")
+    expect(editor.content).to include("Überschrift")
   end
 
-  it "renders the blocknote editor in english if the users locale is not available for BlockNote" do
+  it "renders the BlockNote editor in english if the users locale is not available for BlockNote" do
     admin.update!(language: "af")
-    visit edit_document_path(document)
+    visit document_path(document)
 
     expect(page).to have_test_selector("blocknote-document-description")
-    expect(page).to have_no_content("Heading")
+    expect(editor.content).not_to include("Heading")
 
     editor.open_command_dialog
-    expect(page).to have_content("Heading")
+    expect(editor.content).to include("Heading")
+  end
+
+  it "renders the BlockNote editor with custom menu entries for work package linking" do
+    pending("handling tests with shadow dom")
+    visit document_path(document)
+
+    expect(page).to have_test_selector("blocknote-document-description")
+    editor.fill_in_with_content("/openproject")
+    expect(page).to have_content("Link to existing work package")
   end
 end

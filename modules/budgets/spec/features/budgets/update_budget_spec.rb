@@ -28,7 +28,7 @@
 
 require_relative "../../spec_helper"
 
-RSpec.describe "updating a budget", :js, :selenium do
+RSpec.describe "updating a budget", :js do
   let(:project) do
     create(:project_with_types,
            enabled_module_names: %i[budgets costs work_package_tracking],
@@ -51,7 +51,7 @@ RSpec.describe "updating a budget", :js, :selenium do
       create(:default_hourly_rate, user:, rate: 25.0, valid_from: 1.day.ago)
     end
 
-    it "creates the cost items", :selenium do
+    it "creates the cost items" do
       budget_page.visit!
       click_on "Update"
 

@@ -111,7 +111,7 @@ da:
       idp_sso_service_url: >
         URL'en til identitetsudbyderens login-endepunkt.
       idp_slo_service_url: >
-        URL'en til identitetsudbyderens login-endepunkt.
+        The URL of the identity provider logout endpoint.
       idp_cert: >
         Angiv det X509 PEM-formaterede offentlige certifikat fra identitetsudbyderen. Flere certifikater kan angives ved at adskille dem med en ny linje.
       name_identifier_format: >

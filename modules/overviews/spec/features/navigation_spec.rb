@@ -51,7 +51,7 @@ RSpec.describe "Navigate to overview", :js do
       end
 
       within "#content" do
-        expect(page).to have_heading "Project home"
+        expect(page).to have_heading project.name
       end
     end
 
@@ -75,7 +75,7 @@ RSpec.describe "Navigate to overview", :js do
 
         # Expect page to be loaded
         within "#content" do
-          expect(page).to have_heading "Project home"
+          expect(page).to have_heading project.name
         end
 
         # Navigate to the WP module
@@ -99,7 +99,7 @@ RSpec.describe "Navigate to overview", :js do
 
         # Expect page to be loaded
         within "#content" do
-          expect(page).to have_heading "Project home"
+          expect(page).to have_heading project.name
         end
       end
     end

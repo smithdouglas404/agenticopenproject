@@ -27,7 +27,7 @@ export function trackByHrefAndProperty(propertyName:string) {
 }
 
 export function trackByTrackingIdentifier(i:number, item:any) {
-  return _.get(item, 'trackingIdentifier', item && item.href);
+  return _.get(item, 'trackingIdentifier', item?.href);
 }
 
 export function compareByHref<T extends HalResource>(a:T|undefined|null, b:T|undefined|null):boolean {
