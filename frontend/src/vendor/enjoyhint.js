@@ -4291,10 +4291,7 @@
    * @author Ariel Flesler
    * @version 2.1.2
    */
-  ;(function (f) {
-    "use strict";
-    "function" === typeof define && define.amd ? define(["jquery"], f) : "undefined" !== typeof module && module.exports ? module.exports = f(require("jquery")) : f(jQuery)
-  })(function ($) {
+  (function ($) {
     "use strict";
 
     function n(a) {
@@ -4371,6 +4368,5 @@
       },
     };
     return p
-  });
-
+  })(jQuery);
 }(jQuery));

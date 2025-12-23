@@ -50,8 +50,8 @@ RSpec.describe TimeEntriesController do
   describe "#dialog" do
     describe "authorization checks" do
       context "when opening dialog on an existing time entry" do
-        let!(:time_entry1) { create(:time_entry, user: user, work_package: work_package1) }
-        let!(:time_entry2) { create(:time_entry, user: other_user, work_package: work_package1) }
+        let!(:time_entry1) { create(:time_entry, user: user, entity: work_package1) }
+        let!(:time_entry2) { create(:time_entry, user: other_user, entity: work_package1) }
 
         context "and the user has the edit_own_time_entries permission on the work package" do
           before do
@@ -198,7 +198,7 @@ RSpec.describe TimeEntriesController do
             time_entry = assigns(:time_entry)
             expect(time_entry).to be_new_record
             expect(time_entry.project).to eq(project1)
-            expect(time_entry.work_package).to eq(work_package1)
+            expect(time_entry.entity).to eq(work_package1)
           end
 
           it "does not allow to open the dialog for another work package" do

@@ -54,7 +54,7 @@ module Pages
 
     def delete_group!(name)
       accept_alert do
-        find_group(name).find("a[data-method=delete]").click
+        find_group(name).find("a[data-turbo-method=delete]").click
       end
     end
 
@@ -63,7 +63,7 @@ module Pages
     end
 
     def has_group?(name)
-      has_selector? "tr", text: name
+      has_selector? ".op-border-box-grid--row-item", text: name
     end
 
     def group(group_name)
@@ -73,6 +73,7 @@ module Pages
 
   class Group < Page
     include ::Components::Autocompleter::NgSelectAutocompleteHelpers
+
     attr_reader :id
 
     def initialize(id)
@@ -106,7 +107,7 @@ module Pages
     def remove_from_project!(name)
       open_projects_tab!
       SeleniumHubWaiter.wait
-      find_project(name).find("a[data-method=delete]").click
+      find_project(name).find("a[data-turbo-method=delete]").click
     end
 
     def search_for_project(query)
@@ -144,7 +145,7 @@ module Pages
       open_users_tab!
       SeleniumHubWaiter.wait
 
-      find_user(user_name).find("a[data-method=delete]").click
+      find_user(user_name).find("a[data-turbo-method=delete]").click
     end
 
     def find_user(user_name)

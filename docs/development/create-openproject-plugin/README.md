@@ -161,10 +161,9 @@ _CAVEAT: npm dependencies for hybrid plugins are not yet resolved._
 
 **To use a hybrid plugin:**
 
-  * declare the dependency in `Gemfile.plugins` within the `:opf_plugins` group
-    using the Bundler DSL.
-
-  * then run `bundle install`.
+* declare the dependency in `Gemfile.plugins` within the `:opf_plugins` group
+  using the Bundler DSL.
+* then run `bundle install`.
 
 Provided Ruby Bundler is aware of these plugins, Webpack (our node-based build pipeline)
 will bundle their assets.

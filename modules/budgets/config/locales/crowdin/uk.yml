@@ -21,21 +21,22 @@
 #++
 uk:
   plugin_budgets_engine:
-    name: 'Бюджети'
+    name: "Бюджети"
   activerecord:
     attributes:
       budget:
         author: "Автор"
         available: "Доступно"
-        budget: "Заплановані"
+        budget: "Заплановано"
         budget_ratio: "Витрачено (співвідношення)"
         description: "Опис"
-        spent: "Витрачений"
-        status: "Стан"
-        subject: "Заголовок"
+        spent: "Витрачено"
+        status: "Статус"
+        subject: "Тема"
         type: "Тип вартості"
-        labor_budget: "Планові витрати праці"
+        labor_budget: "Планові витрати на працю"
         material_budget: "Планові витрати на одиницю продукції"
+        base_amount: "Базова сума"
       work_package:
         budget_subject: "Назва бюджету"
     models:
@@ -47,7 +48,7 @@ uk:
   attributes:
     budget: "Бюджет"
   button_add_budget_item: "Додайте планові витрати"
-  button_add_budget: "Додайте бюджет"
+  button_add_budget: "Додати бюджет"
   button_add_cost_type: "Додати тип витрат"
   button_cancel_edit_budget: "Скасувати редагування бюджету"
   button_cancel_edit_costs: "Скасування  редагування витрат "
@@ -61,14 +62,20 @@ uk:
   help_currency_format: "Формат відображених валютних значень. %n замінюється на вартість валюти, %u це замінюється грошовою одиницею."
   help_override_rate: "Введіть тут значення, щоб змінити стандартну швидкість."
   label_budget: "Бюджет"
+  label_budget_available: "Доступний бюджет"
+  label_budget_id: "Бюджет #%{id}"
   label_budget_new: "Новий бюджет"
+  label_budget_planned: "Запланований бюджет"
   label_budget_plural: "Бюджети"
-  label_budget_id: "Бюджет  #%{id}"
+  label_budget_spent: "Витрачений бюджет"
+  label_budget_spent_ratio: "Коефіцієнт використання бюджету"
   label_deliverable: "Бюджет"
-  label_example_placeholder: 'наприклад, %{decimal}'
+  label_example_placeholder: "наприклад, %{decimal}"
   label_view_all_budgets: "Переглянути всі бюджети"
   label_yes: "Так"
-  notice_budget_conflict: "Робочі пакети повинні бути з одного проекту."
+  label_budget_totals: "Загальні суми"
+  label_budget_details: "Деталі бюджету"
+  notice_budget_conflict: "Робочі задачі повинні бути з одного проекту."
   notice_no_budgets_available: "Немає доступних бюджетів."
   permission_edit_budgets: "Редагувати бюджети"
   permission_view_budgets: "Переглянути бюджети"

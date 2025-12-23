@@ -39,6 +39,7 @@ import {
   templateUrl: './modal-banner.component.html',
   styleUrls: ['./modal-banner.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OpModalBannerComponent {
   @Input() type:'info'|'warning' = 'info';

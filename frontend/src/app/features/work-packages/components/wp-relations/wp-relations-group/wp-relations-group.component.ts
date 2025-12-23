@@ -35,6 +35,7 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 @Component({
   selector: 'wp-relations-group',
   templateUrl: './wp-relations-group.template.html',
+  standalone: false,
 })
 export class WorkPackageRelationsGroupComponent {
   @HostBinding('class.attributes-group') className = true;

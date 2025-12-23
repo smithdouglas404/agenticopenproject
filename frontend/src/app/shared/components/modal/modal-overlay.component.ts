@@ -49,6 +49,7 @@ import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destr
   selector: 'opce-modal-overlay',
   templateUrl: './modal-overlay.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OpModalOverlayComponent extends UntilDestroyedMixin {
   public notFullscreen = false;

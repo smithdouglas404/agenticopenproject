@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -63,7 +65,7 @@ class StatusesController < ApplicationController
     if @status.update(permitted_params.status)
       recompute_progress_values
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to action: "index"
+      redirect_to action: "index", status: :see_other
     else
       render action: :edit, status: :unprocessable_entity
     end
@@ -77,10 +79,10 @@ class StatusesController < ApplicationController
       status.destroy
       flash[:notice] = I18n.t(:notice_successful_delete)
     end
-    redirect_to action: "index"
+    redirect_to action: "index", status: :see_other
   rescue StandardError
     flash[:error] = I18n.t(:error_unable_delete_status)
-    redirect_to action: "index"
+    redirect_to action: "index", status: :see_other
   end
 
   protected

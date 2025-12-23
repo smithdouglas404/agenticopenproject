@@ -55,6 +55,7 @@ ar:
     hours: "الساعات"
     impediment: "عائق"
     label_versions_default_fold_state: "إظهار الإصدارات مطوية"
+    caption_versions_default_fold_state: ""
     work_package_is_closed: "مجموعة العمل قد تمت، عندما"
     label_is_done_status: "الحالة %{status_name} تعني أنها منجزة"
     no_burndown_data: "لا يوجد معلومات متوفرة عن الاستهلاك. من الضروري تحديد تواريخ البدء- والانتهاء في السباق."
@@ -73,6 +74,9 @@ ar:
     task: "المهمة"
     task_color: "لون المهمّة"
     unassigned: "غير المعيّنة"
+    user_preference:
+      header_backlogs: ""
+      button_update_backlogs: "Update backlogs module"
     x_more: "%{count} أكثر..."
   backlogs_active: "نشِط"
   backlogs_any: "أي"

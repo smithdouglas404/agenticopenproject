@@ -6,14 +6,19 @@ uk:
     Ви вийшли з системи. Вміст будь-якої форми, яку ви надішлете, може бути втрачено. Спробуйте, [увійти].
   activerecord:
     attributes:
+      openid_connect/group_link:
+        oidc_group_name: Ідентифікатор групи OpenID
       openid_connect/provider:
         name: Назва
         slug: Унікальний ідентифікатор
         display_name: Коротке ім’я
         client_id: ID клієнта
         client_secret: Секретний ключ клієнта
+        groups_claim: Запит груп
+        group_regexes: Шаблони (регулярні вирази)
         secret: Секретний ключ
         scope: Область
+        sync_groups: Синхронізувати групи
         grant_types_supported: Підтримувані типи дозволів
         limit_self_registration: Обмежити самостійну реєстрацію
         authorization_endpoint: Кінцева точка авторизації
@@ -38,6 +43,10 @@ uk:
               response_is_not_successful: " відповідає %{status}."
               response_is_not_json: " не повертає тіло JSON."
               response_misses_required_attributes: " не повертає необхідних атрибутів. Відсутні атрибути: %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: Введіть ім’я постачальника послуг %{name}, щоб підтвердити видалення.
@@ -52,14 +61,30 @@ uk:
   openid_connect:
     menu_title: Постачальники OpenID
     delete_title: "Видалити постачальника послуг OpenID Connect"
+    group_links_heading: Посилання на групи OpenID Connect
+    groups:
+      match_preview_component:
+        title: Отримані назви груп
+        placeholder_none: Немає груп, які відповідають цьому шаблону.
+      match_preview_dialog_component:
+        description: Це дає змогу протестувати шаблон регулярного виразу на прикладі даних, щоб переконатися, що назви груп, які ви хочете отримати, справді отримуються належним чином. Тут можна змінити шаблон, але сам тестовий рядок і збіги не буде збережено разом із конфігурацією.
+        group_names_label: Тестові назви груп
+        group_names_description: Введіть по одній назві групи на рядок так, як вони б з’являлися в запиті OIDC, щоб побачити, як ваші шаблони регулярних виразів впливають на них.
+        show_button: Тестовий шаблон
+        title: Тестові регулярні вирази
     instructions:
-      redirect_url: Це URL-адреса переспрямування, яку постачальник послуг OpenID Connect має використовувати для переспрямування в OpenProject після успішного входу в систему.
       endpoint_url: URL-адреса кінцевої точки, надана вам постачальником послуг OpenID Connect
+      group_regexes: Використовуйте один шаблон регулярного виразу на рядок. Щоб дізнатися більше про те, як це робити, перегляньте [документацію](docs_url).
+      group_regexes_detail: За потреби визначте шаблони, використовуючи регулярні вирази, щоб отримати відповідні назви груп із запиту груп. Наприклад, якщо ввести шаблон на зразок <code>^Level1/Level2/([\w/]+)$</code>, ви отримаєте групу Groupname/SubGroup із відповіді, що містить запис Level1/Level2/GroupName/SubGroup. Якщо немає шаблонів, які відповідають запису, відповідну групу буде проігноровано. Щоб синхронізувати всі групи, використовуючи їх повні назви, не вказуйте нічого.
+      group_regexes_testing: "Натисніть «Тестовий шаблон», щоб протестувати свій шаблон регулярного виразу на зразку інформації про користувача OIDC."
+      group_sync: Автоматично отримувати й синхронізувати інформацію про членство в групі від постачальника ідентифікаційних даних.
+      groups_claim: Укажіть назву запиту, яка має вказувати на назви груп, членом яких є користувач.
       metadata_none: Я не володію такою інформацією
       metadata_url: У мене є URL-адреса кінцевої точки виявлення
+      oidc_information: Ці значення потрібні для налаштування постачальника OpenID Connect.
       client_id: ID клієнта, наданий вам постачальником OpenID Connect
       client_secret: Це клієнтський секрет ключ, наданий вам постачальником OpenID Connect
-      limit_self_registration: Якщо увімкнено, користувачі можуть зареєструватися за допомогою цього провайдера лише за умови, що конфігурація з боку провайдера це дозволяє.
+      limit_self_registration: Якщо увімкнено, користувачі можуть зареєструватися через цього постачальника послуг лише за умови, що його конфігурація це дозволяє.
       display_name: Ім’я постачальника послуг. Відображатиметься як кнопка входу й пункт у списку постачальників послуг.
       tenant: 'Замініть клієнта за замовчуванням власним, якщо це можливо. Див. <a href=" https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc#find-your-apps-openid-configuration-document-uri">тут</a>.'
       scope: Якщо ви хочете запросити користувацькі області, ви можете додати одне або кілька значень областей, розділених пробілами, тут. Для отримання додаткової інформації дивіться [OpenID Connect documentation](docs_url).
@@ -98,6 +123,7 @@ uk:
       label_edit: Редагувати OpenID провайдера %{name}
       label_empty_title: Поки не налаштовано жодного постачальника послуг OpenID.
       label_empty_description: Додайте постачальника послуг, і він з’явиться тут.
+      label_group_mapping: Зіставлення груп
       label_metadata: Кінцева точка виявлення OpenID Connect
       label_automatic_configuration: Автоматична конфігурація
       label_optional_configuration: Додаткова конфігурація
@@ -105,11 +131,13 @@ uk:
       label_configuration_details: Метадані
       label_client_details: Відомості про клієнта
       label_attribute_mapping: Зіставлення атрибутів
+      notice_created: Нового постачальника OpenID успішно створено.
       client_details_description: Деталі конфігурації OpenProject як клієнта OIDC
       no_results_table: Ще не додано жодного постачальника.
       plural: Постачальники OpenID
       singular: OpenID постачальник
       section_texts:
+        group_mapping: Зіставте назви груп, які надає постачальник ідентифікаційних даних із групами в OpenProject.
         metadata: Попередньо заповнюйте конфігурацію, використовуючи URL-адресу кінцевої точки виявлення OpenID Connect
         metadata_form_banner: Редагування кінцевої точки виявлення може перевизначити наявні, попередньо заповнені значення метаданих.
         metadata_form_title: Кінцева точка виявлення OpenID Connect
@@ -119,6 +147,9 @@ uk:
         display_name: Коротке імʼя, яке бачать користувачі.
         attribute_mapping: Налаштуйте зіставлення атрибутів між OpenProject і постачальником послуг OpenID Connect.
         claims: Надсилайте додаткові запити відповіді щодо маркера ID або даних користувача.
+      side_panel:
+        information_component:
+          backchannel_logout_url: URL-адреса зворотного каналу для виходу
     setting_instructions:
       limit_self_registration: >
         Якщо ввімкнено, користувачі можуть зареєструватися лише через цього постачальника послуг (якщо це дозволено параметром самостійної реєстрації).

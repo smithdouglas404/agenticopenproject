@@ -8,6 +8,7 @@ import {
   templateUrl: './op-principal-loading-skeleton.component.html',
   styleUrls: ['./op-principal-loading-skeleton.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OpPrincipalLoadingComponent {
 

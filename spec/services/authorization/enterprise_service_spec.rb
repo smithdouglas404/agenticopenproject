@@ -32,7 +32,7 @@ require "spec_helper"
 
 RSpec.describe Authorization::EnterpriseService do
   let(:instance) { described_class.new(token) }
-  let(:token) { instance_double(EnterpriseToken, token_object:, expired?: expired?) }
+  let(:token) { instance_double(EnterpriseToken, token_object:, expired?: expired?, invalid_domain?: false) }
   let(:token_object) { OpenProject::Token.new }
   let(:feature) { "some_feature" }
   let(:expired?) { false }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,6 +29,11 @@
 # ++
 
 class ProjectRole < Role
+  has_many :custom_fields_roles,
+           foreign_key: "role_id",
+           dependent: :restrict_with_error,
+           inverse_of: :role
+
   def self.givable
     super
       .where(type: "ProjectRole")

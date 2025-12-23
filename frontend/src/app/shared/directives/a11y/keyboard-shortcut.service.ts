@@ -30,7 +30,8 @@ import { Injectable } from '@angular/core';
 import { FocusHelperService } from 'core-app/shared/directives/focus/focus-helper';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import * as Mousetrap from 'mousetrap';
+import { ConfigurationService } from 'core-app/core/config/configuration.service';
+import Mousetrap from 'mousetrap';
 
 const accessKeys = {
   preview: 1,
@@ -45,19 +46,17 @@ const accessKeys = {
 
 // this could be extracted into a separate component if it grows
 const accessibleListSelector = 'table.keyboard-accessible-list';
-const accessibleRowSelector = 'table.keyboard-accessible-list tbody tr';
 
 @Injectable({
   providedIn: 'root',
 })
 export class KeyboardShortcutService {
   // maybe move it to a .constant
-  private shortcuts:{ [name:string]:() => void } = {
-    /* eslint-disable quote-props */
+  private shortcuts:Record<string, () => void> = {
     '?': () => this.showHelpModal(),
     'g m': this.globalAction('myPagePath'),
     'g o': this.projectScoped('projectPath'),
-    'g w p': this.projectScoped('projectWorkPackagesPath'),
+    'g w p': this.projectScoped('workPackagesPath'),
     'g w i': this.projectScoped('projectWikiPath'),
     'g a': this.projectScoped('projectActivityPath'),
     'g c': this.projectScoped('projectCalendarPath'),
@@ -72,35 +71,39 @@ export class KeyboardShortcutService {
     's': this.accessKey('quickSearch'),
     'k': () => this.focusPrevItem(),
     'j': () => this.focusNextItem(),
-    /* eslint-enable quote-props */
   };
 
-  constructor(private readonly PathHelper:PathHelperService,
+  constructor(
+    private readonly PathHelper:PathHelperService,
     private readonly FocusHelper:FocusHelperService,
-    private readonly currentProject:CurrentProjectService) {
-    this.register();
-  }
+    private readonly currentProject:CurrentProjectService,
+    private readonly configurationService:ConfigurationService,
+  ) {}
 
   /**
    * Register the keyboard shortcuts.
    */
   public register():void {
-    _.each(this.shortcuts, (action:() => void, key:string) => Mousetrap.bind(key, action));
+    void this.configurationService.initialize().then(() => {
+      if (!this.configurationService.disableKeyboardShortcuts()) {
+        _.each(this.shortcuts, (action:() => void, key:string) => Mousetrap.bind(key, action));
+      }
+    });
   }
 
   public accessKey(keyName:'preview'|'newWorkPackage'|'edit'|'quickSearch'|'projectSearch'|'help'|'moreMenu'|'details'):() => void {
     const key = accessKeys[keyName];
 
     return () => {
-      const elem = jQuery(`[accesskey=${key}]:first`);
-      if (elem.is('input') || elem.attr('id') === 'global-search-input') {
+      const elem = document.querySelector<HTMLElement>(`[accesskey="${key}"]`)!;
+      if (elem instanceof HTMLInputElement || elem.getAttribute('id') === 'global-search-input') {
         // timeout with delay so that the key is not
         // triggered on the input
-        setTimeout(() => this.FocusHelper.focus(elem[0]), 200);
-      } else if (elem.is('[href]')) {
-        this.clickLink(elem[0] as HTMLLinkElement);
+        setTimeout(() => this.FocusHelper.focus(elem), 200);
+      } else if (elem instanceof HTMLAnchorElement) {
+        this.clickLink(elem);
       } else {
-        elem[0].click();
+        elem.click();
       }
     };
   }
@@ -120,8 +123,7 @@ export class KeyboardShortcutService {
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  clickLink(link:HTMLLinkElement):void {
+  clickLink(link:HTMLAnchorElement):void {
     const event = new MouseEvent('click', {
       view: window,
       bubbles: true,

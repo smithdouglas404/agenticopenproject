@@ -11,7 +11,7 @@ RSpec.describe "Cost report calculations", "grouping", :js do
     create(:time_entry,
            spent_on: 6.months.ago,
            user:,
-           work_package:,
+           entity: work_package,
            project:,
            hours: 10)
   end

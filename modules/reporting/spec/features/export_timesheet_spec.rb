@@ -34,7 +34,7 @@ RSpec.describe "Timesheet PDF export", :js do
   shared_let(:user) { create(:admin) }
   shared_let(:cost_type) { create(:cost_type, name: "Post-war", unit: "cap", unit_plural: "caps") }
   shared_let(:work_package) { create(:work_package, project:, subject: "Some task") }
-  shared_let(:cost_entry) { create(:cost_entry, user:, work_package:, project:, cost_type:) }
+  shared_let(:cost_entry) { create(:cost_entry, user:, entity: work_package, project:, cost_type:) }
   let(:report_page) { Pages::CostReportPage.new project }
 
   current_user { user }

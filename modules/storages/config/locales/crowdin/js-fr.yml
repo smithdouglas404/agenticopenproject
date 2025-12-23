@@ -17,7 +17,8 @@ fr:
       new_folder: "Nouveau dossier"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Stockage"
       information:
         authentication_error: "Erreur : la requête à %{storageType} n'a pas pu être authentifiée."

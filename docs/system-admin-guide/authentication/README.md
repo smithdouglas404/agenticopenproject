@@ -21,4 +21,6 @@ Configure **authentication** settings and authentication providers in OpenProjec
 | [Two-factor authentication](two-factor-authentication)       | Set up and manage two-factor authentication (2FA) in OpenProject. |
 | [reCAPTCHA](recaptcha)                                       | How to activate reCAPTCHA in OpenProject.                    |
 | [LDAP authentication](ldap-connections)                      | How to set up LDAP authentication in OpenProject.            |
-| [LDAP group synchronization](ldap-connections/ldap-group-synchronization) | How to configure LDAP group synchronization in OpenProject. (Enterprise add-on) |
+| [LDAP group synchronization](ldap-connections/ldap-group-synchronization) | How to configure LDAP group synchronization in OpenProject (Enterprise add-on). |
+| [SAML](saml)                                                 | How to set up SAML integration for SSO with OpenProject (Enterprise add-on). |
+| [SCIM](scim)                                                 | How to set up SCIM clients in OpenProject (Enterprise add-on). |

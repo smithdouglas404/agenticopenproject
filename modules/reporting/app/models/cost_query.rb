@@ -158,7 +158,12 @@ class CostQuery < ApplicationRecord
   end
 
   def add_chain(type, name, options)
-    chain type.const_get(name.to_s.camelcase), options
+    begin
+      chain type.const_get(name.to_s.camelcase), options
+    rescue NameError
+      # if something ends up in the column chain that does not exist, ignore it
+    end
+
     @transformer = nil
     @table = nil
     @depths = nil

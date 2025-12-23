@@ -37,6 +37,7 @@ import {
   selector: 'op-storage-information',
   templateUrl: './storage-information.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class StorageInformationComponent {
   @Input() content:StorageInformationBox;

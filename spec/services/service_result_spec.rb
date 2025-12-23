@@ -223,7 +223,7 @@ RSpec.describe ServiceResult, type: :model do
     let(:message) { "some message" }
 
     subject(:flash) do
-      {}.tap { service_result.apply_flash_message!(_1) }
+      {}.tap { service_result.apply_flash_message!(it) }
     end
 
     context "when successful" do

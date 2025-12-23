@@ -31,6 +31,7 @@ ru:
     github_avatar_url: "URL аватара"
     github_updated_at: "Обновлено"
     github_login: "Вход в GitHub"
+    host: "Хост"
     labels: "Метки"
     repository: "Репозиторий"
     changed_files_count: "Изменённые файлы"

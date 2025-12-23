@@ -40,13 +40,16 @@ class Widget::Filters < Widget::Base
       add_filter_label += label_tag(
         "add_filter_select",
         "#{I18n.t('js.filter.description.text_open_filter')} #{I18n.t('js.filter.description.text_close_filter')}",
-        class: "hidden-for-sighted"
+        class: "sr-only"
       )
 
       add_filter_value = content_tag :div, class: "advanced-filters--add-filter-value" do
         select_tag "add_filter_select",
                    options_for_select([["", ""]] + selectables),
                    class: "advanced-filters--select",
+                   data: {
+                     action: "reporting--page#addFilter"
+                   },
                    name: nil
       end
 
@@ -94,28 +97,43 @@ class Widget::Filters < Widget::Base
     render_widget Label, f, to: html
     render_widget Operators, f, to: html
 
-    if f_cls.heavy?
+    # Handling for custom widgets first
+    if f_cls == CostQuery::Filter::ProjectId
+      render_widget Project, f, to: html
+    elsif user_filter?(f_cls)
+      render_widget User, f, to: html
+    elsif f_cls == CostQuery::Filter::WorkPackageId
+      render_widget WorkPackage, f, to: html
+    # Handling of generic widgets
+    elsif f_cls.heavy?
       render_widget Heavy, f, to: html
     elsif engine::Operator.string_operators.all? { |o| f_cls.available_operators.include? o }
       render_widget TextBox, f, to: html
     elsif engine::Operator.time_operators.all? { |o| f_cls.available_operators.include? o }
       render_widget Date, f, to: html
     elsif engine::Operator.integer_operators.all? { |o| f_cls.available_operators.include? o }
-      if f_cls.available_values.nil? || f_cls.available_values.empty?
+      if f_cls.available_values.blank?
         render_widget TextBox, f, to: html
       else
         render_widget MultiValues, f, to: html, lazy: true
       end
     elsif f_cls.is_multiple_choice?
       render_widget MultiChoice, f, to: html
-    elsif f_cls == CostQuery::Filter::ProjectId
-      render_widget Project, f, to: html, lazy: true
     else
       render_widget MultiValues, f, to: html, lazy: true
     end
     render_widget RemoveButton, f, to: html
   end
   # rubocop:enable Metrics/PerceivedComplexity
-end
 
+  def user_filter?(f_cls)
+    f_cls.in?([
+                CostQuery::Filter::UserId,
+                CostQuery::Filter::LoggedById,
+                CostQuery::Filter::AssignedToId,
+                CostQuery::Filter::ResponsibleId,
+                CostQuery::Filter::AuthorId
+              ])
+  end
+end
 # rubocop:enable Metrics/AbcSize

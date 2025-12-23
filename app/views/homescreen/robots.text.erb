@@ -38,3 +38,9 @@ Disallow: <%= search_path(identifier) %>
 Disallow: <%= activities_path %>
 Disallow: /activity
 Disallow: <%= search_path %>
+Disallow: /project_queries/configure_view_modal
+Disallow: /projects/export_list_modal
+<%# Generally allow /projects but disallow those links that change columns, sort order or per page settings %>
+Disallow: /projects?*columns=
+Disallow: /projects?*sortBy=
+Disallow: /projects?*per_page=

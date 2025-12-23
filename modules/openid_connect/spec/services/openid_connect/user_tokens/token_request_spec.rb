@@ -107,10 +107,11 @@ RSpec.describe OpenIDConnect::UserTokens::TokenRequest, :webmock do
   end
 
   describe "#exchange" do
-    subject { service.exchange(token, audience) }
+    subject { service.exchange(token, audience, scope) }
 
     let(:token) { "a-refresh-token" }
     let(:audience) { "target-audience" }
+    let(:scope) { nil }
 
     it { is_expected.to be_success }
 
@@ -121,7 +122,12 @@ RSpec.describe OpenIDConnect::UserTokens::TokenRequest, :webmock do
     it "uses a properly formatted request body" do
       subject
       expect(WebMock).to have_requested(:post, provider.token_endpoint)
-        .with(body: { grant_type: OpenIDConnect::Provider::TOKEN_EXCHANGE_GRANT_TYPE, subject_token: token, audience: })
+        .with(body: {
+                grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
+                subject_token: token,
+                subject_token_type: "urn:ietf:params:oauth:token-type:access_token",
+                audience:
+              })
     end
 
     it "authenticates the request via HTTP Basic auth using Client ID and Client Secret" do
@@ -145,6 +151,22 @@ RSpec.describe OpenIDConnect::UserTokens::TokenRequest, :webmock do
           _, credentials = auth_header.split
           expect(Base64.decode64(credentials)).to eq "https%3A%2F%2Fopenproject.local:a-secret%2Fwith%3Aspecial-characters"
         end)
+      end
+    end
+
+    context "when passing a scope" do
+      let(:scope) { "scope-a scope-b" }
+
+      it "includes the scope in the request body" do
+        subject
+        expect(WebMock).to have_requested(:post, provider.token_endpoint)
+          .with(body: {
+                  grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
+                  subject_token: token,
+                  subject_token_type: "urn:ietf:params:oauth:token-type:access_token",
+                  audience:,
+                  scope:
+                })
       end
     end
 

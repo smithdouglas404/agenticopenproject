@@ -49,7 +49,7 @@ export class BcfApiService {
    *
    * @param href
    */
-  parse<T>(href:string):T {
+  parse<T>(href:string):T|undefined {
     if (!href.startsWith(this.bcfApiBase)) {
       throw new Error(`Cannot parse ${href} into BCF resource.`);
     }

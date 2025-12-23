@@ -17,7 +17,8 @@ cs:
       new_folder: "Nová složka"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Úložiště"
       information:
         authentication_error: "The request to %{storageType} could not be authenticated, that's an error."

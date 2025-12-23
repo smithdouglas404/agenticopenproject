@@ -33,22 +33,20 @@ import { WorkPackageResource } from 'core-app/features/hal/resources/work-packag
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { CustomActionResource } from 'core-app/features/hal/resources/custom-action-resource';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
-import { trackByHref } from 'core-app/shared/helpers/angular/tracking-functions';
 import { BannersService } from 'core-app/core/enterprise/banners.service';
 
 @Component({
   selector: 'wp-custom-actions',
   templateUrl: './wp-custom-actions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WpCustomActionsComponent extends UntilDestroyedMixin implements OnInit {
   @Input() workPackage:WorkPackageResource;
 
-  trackByHref = trackByHref;
-
   actions:CustomActionResource[] = [];
 
-  available = !this.bannersService.showBannerFor('custom_actions');
+  available = this.bannersService.allowsTo('custom_actions');
 
   constructor(
     readonly apiV3Service:ApiV3Service,

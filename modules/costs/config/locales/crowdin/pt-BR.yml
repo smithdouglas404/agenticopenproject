@@ -31,6 +31,9 @@ pt-BR:
         spent: "Gasto"
         spent_on: "Data"
         logged_by: "Registrado por"
+        entity: Registrado em
+        entity_id: Registrado em
+        entity_gid: Registrado em
       cost_type:
         unit: "Nome da unidade"
         unit_plural: "Plural do nome da unidade"
@@ -58,12 +61,15 @@ pt-BR:
         start_time: Hora de início
         end_time: Hora Final
         time: Hora
+        entity: Registrado por
+        entity_id: Registrado em
+        entity_gid: Registrado em
     models:
       time_entry:
-        one: "Entrada de tempo"
+        one: "Registro de tempo"
         other: "Registros de tempo"
       cost_entry:
-        one: "Custo de entrada"
+        one: "Registro de custo"
         other: "Registros de custo"
       cost_type:
         one: "Tipo de custo"
@@ -77,6 +83,7 @@ pt-BR:
         time_entry:
           invalid_time: "deve estar entre 00:00 e 23:59."
           cannot_log_for_this_work_package: "Não é possível registrar tempo para este pacote de trabalho."
+          duplicate_ongoing: "Já existe um registro de tempo em andamento para este usuário."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Pacote de trabalho #%{id} não é válido para reatribuir as entradas de custo."
           nullify_is_not_valid_for_cost_entries: "Custos dos insumos não podem ser atribuídos a um projeto."
@@ -94,6 +101,7 @@ pt-BR:
   button_log_time: "Registro"
   button_add_activity: "Atividade"
   button_add_time_entry: "Registro de tempo"
+  button_stop_timer: "Parar temporizador"
   caption_booked_on_project: "Reservado para o projeto"
   caption_default: "Padrão"
   caption_default_rate_history_for: "Taxa histórica padrão para %{user}"
@@ -107,7 +115,7 @@ pt-BR:
   caption_show_locked: "Mostrar tipos bloqueados"
   caption_log_time_dialog: "Horário do registro"
   description_date_for_new_rate: "Data para nova taxa"
-  description_costs_settings: "Define o formato desejado para os custos em todos os projetos."
+  description_costs_settings: "Defina o formato desejado para os custos em todos os projetos."
   description_time_settings: "Define quais campos são obrigatórios ao registrar o tempo em todos os projetos."
   group_by_others: "Não em qualquer grupo"
   label_between: "entre"
@@ -168,10 +176,11 @@ pt-BR:
   label_specific_month: "Mês %{month}"
   label_list: "Lista"
   label_month: "Mês"
-  label_workweek: "Semana de trabalho"
+  label_workweek: "Semana útil"
   label_day: "Dia"
   label_today_capitalized: "Hoje"
   label_view_mode_switcher: "Alterar vista"
+  label_timer_since: "Iniciado às %{time}"
   placeholder_activity_select_work_package_first: Primeiro é necessária a seleção do pacote de trabalho
   notice_something_wrong: "Algo deu errado. Por favor, tente novamente."
   notice_successful_restore: "Restauração bem-sucedida."
@@ -179,6 +188,7 @@ pt-BR:
   notice_cost_logged_successfully: "Custo unitário registrado com sucesso."
   notice_different_time_zones: "Este usuário tem um fuso horário diferente (%{tz}). A hora será registrada usando o fuso horário dele."
   notice_time_entry_update_failed: "Falha ao atualizar o registro de tempo. Erros: %{errors}"
+  notice_time_entry_delete_failed: "Falha ao excluir o registro de tempo. Erros: %{errors}"
   permission_edit_cost_entries: "Editar custos unitários reservados"
   permission_edit_own_cost_entries: "Editar custos unitários próprios reservados"
   permission_edit_hourly_rates: "Editar taxas horárias"
@@ -193,11 +203,13 @@ pt-BR:
   permission_view_own_hourly_rate: "Ver sua própria taxa horária"
   permission_view_own_time_entries: "Ver o próprio tempo gasto"
   project_module_costs: "Tempo e custos"
-  setting_allow_tracking_start_and_end_times: "Permitir o registro de horários exatos"
+  setting_allow_tracking_start_and_end_times: "Permitir horários de início e de término"
   setting_costs_currency: "Moeda"
   setting_costs_currency_format: "Formato de moeda"
-  setting_enforce_tracking_start_and_end_times: "Exigir horários exatos"
-  setting_enforce_without_allow: "Exigir horários exatos não é possível sem autorizá-los"
+  setting_enforce_tracking_start_and_end_times: "Exigir horários de início e término"
+  setting_enforce_without_allow: "Exigir os horários de início e término não é possível sem habilitá-los"
+  setting_allow_tracking_start_and_end_times_caption: "Ativa a inserção de horários de início e término ao registrar o tempo."
+  setting_enforce_tracking_start_and_end_times_caption: "Torna a inserção de horários de início e término obrigatória ao registrar o tempo."
   text_assign_time_and_cost_entries_to_project: "Atribuir horas relatadas e custos ao projeto"
   text_destroy_cost_entries_question: "%{cost_entries} foram informados sobre os pacotes de trabalho que você está prestes a excluir. O que você quer fazer?"
   text_destroy_time_and_cost_entries: "Excluir horas e custos informados"
@@ -216,7 +228,7 @@ pt-BR:
         start_time_different_date: "A data de início (%{start_time}) deve ser a mesma da data de registro (%{spent_on})."
   ee:
     features:
-      time_entry_time_restrictions: Exigir o rastreamento exato de tempo
+      time_entry_time_restrictions: Exigir controle exato de tempo
     upsell:
       time_entry_time_restrictions:
-        description: "Melhore o rastreamento do seu tempo exigindo a hora exata de início e término do registro."
+        description: "Melhore o controle de tempo exigindo horários exatos de início e término ao registrar o tempo."

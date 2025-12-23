@@ -1,4 +1,4 @@
-A form is a series of components that require user input that will then be submitted. Forms are notably common in settings pages but are also present elsewhere like in individual modals (edit project attribute section, edit meeting details) and the filter panel.
+A form is a series of components that require user input that will then be submitted. Forms are notably common in settings pages but are also present elsewhere like in individual modals (edit project attribute section, edit meeting details), the filter panel and in multi-step configuration screens (such as admin file storage or authentication setup pages).
 
 ## Overview
 
@@ -507,7 +507,7 @@ end
 
 It is easier to write and read.
 
-Under the hood, the form object is decorated with `Settings::FormDecorator`.
+Under the hood, the form object is decorated with `Settings::FormObjectDecorator`.
 That's where all the helper methods are defined. There aren't many for now, but
 this is intended to grow to support more advanced form features for
 administration pages.

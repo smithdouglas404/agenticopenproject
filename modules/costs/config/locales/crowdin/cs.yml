@@ -31,6 +31,9 @@ cs:
         spent: "Strávený čas"
         spent_on: "Datum"
         logged_by: "Zadáno"
+        entity: Přihlášen 
+        entity_id: Přihlášen 
+        entity_gid: Přihlášen 
       cost_type:
         unit: "Název jednotky"
         unit_plural: "Název Pluralizované jednotky"
@@ -58,6 +61,9 @@ cs:
         start_time: Čas zahájení
         end_time: Čas dokončení
         time: Čas
+        entity: Přihlášen 
+        entity_id: Přihlášen 
+        entity_gid: Přihlášen 
     models:
       time_entry:
         one: "Vstup času"
@@ -85,6 +91,7 @@ cs:
         time_entry:
           invalid_time: "musí být mezi 00:00 a 23:59."
           cannot_log_for_this_work_package: "Cannot log time for this work package."
+          duplicate_ongoing: "An ongoing time entry already exists for this user."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Pracovní balíček #%{id} není platný cíl pro přeřazení nákladových položek."
           nullify_is_not_valid_for_cost_entries: "K projektu nelze přiřadit položky nákladů."
@@ -102,6 +109,7 @@ cs:
   button_log_time: "Log"
   button_add_activity: "Aktivita"
   button_add_time_entry: "Čas protokolu"
+  button_stop_timer: "Stop timer"
   caption_booked_on_project: "Rezervováno v projektu"
   caption_default: "Výchozí"
   caption_default_rate_history_for: "Výchozí historie sazeb  pro %{user}"
@@ -161,25 +169,26 @@ cs:
   label_cost: "Náklady"
   label_costs: "Náklady"
   label_mandatory_fields: "Povinné pole"
-  label_my_time_tracking: "My time tracking"
+  label_my_time_tracking: "Sledování mého času"
   label_no_time: "No time tracked"
-  label_next_day: "Next day"
+  label_next_day: "Následující den"
   label_next_week: "Příští týden"
-  label_next_workweek: "Next work week"
-  label_next_month: "Next month"
-  label_previous_day: "Previous day"
-  label_previous_workweek: "Previous work week"
+  label_next_workweek: "Příští pracovní týden"
+  label_next_month: "Následující měsíc"
+  label_previous_day: "Předchozí den"
+  label_previous_workweek: "Předchozí pracovní týden"
   label_previous_week: "Předchozí týden"
-  label_previous_month: "Previous month"
-  label_specific_day: "Day %{day}"
-  label_specific_week: "Calendar week %{week}"
-  label_specific_month: "Month %{month}"
+  label_previous_month: "Předchozí měsíc"
+  label_specific_day: "Den %{day}"
+  label_specific_week: "Kalendářní týden %{week}"
+  label_specific_month: "Měsíc %{month}"
   label_list: "Seznam"
   label_month: "Měsíc"
   label_workweek: "Pracovní týden"
   label_day: "Den"
   label_today_capitalized: "Dnes"
-  label_view_mode_switcher: "Change view"
+  label_view_mode_switcher: "Změnit zobrazení"
+  label_timer_since: "Started at %{time}"
   placeholder_activity_select_work_package_first: Nejprve je nutné vybrat pracovní balíček
   notice_something_wrong: "Něco se pokazilo. Zkuste to prosím znovu."
   notice_successful_restore: "Úspěšně obnoveno."
@@ -187,6 +196,7 @@ cs:
   notice_cost_logged_successfully: "Jednotková cena byla úspěšně zaznamenána."
   notice_different_time_zones: "Tento uživatel má jiné časové pásmo (%{tz}). Čas bude zaznamenán pomocí svého časového pásma."
   notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
   permission_edit_cost_entries: "Upravit rezervované jednotkové náklady"
   permission_edit_own_cost_entries: "Upravit vlastní rezervované jednotkové náklady"
   permission_edit_hourly_rates: "Upravit hodinové sazby"
@@ -201,11 +211,13 @@ cs:
   permission_view_own_hourly_rate: "Zobrazit vlastní hodinovou sazbu"
   permission_view_own_time_entries: "Zobrazit vlastní strávený čas"
   project_module_costs: "Čas a náklady"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
   setting_costs_currency: "Měna"
   setting_costs_currency_format: "Formát měny"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "Require start and finish times"
+  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "Přiřadit nahlášené hodiny a náklady projektu"
   text_destroy_cost_entries_question: "%{cost_entries} byl nahlášen k pracovním balíčkům, které se chystáte odstranit. Co chcete udělat?"
   text_destroy_time_and_cost_entries: "Odstranit nahlášené hodiny a náklady"

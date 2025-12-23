@@ -51,39 +51,60 @@ module WorkPackages
       def self.add_comment_wrapper_key = "work-packages-activities-tab-add-comment-component"
       delegate :index_content_wrapper_key, :add_comment_wrapper_key, to: :class
 
+      def list_journals_component
+        WorkPackages::ActivitiesTab::Journals::IndexComponent.new(work_package:, filter:)
+      end
+
       private
 
       attr_reader :work_package, :filter, :last_server_timestamp, :deferred
 
       def wrapper_data_attributes # rubocop:disable Metrics/AbcSize
-        {
-          test_selector: "op-wp-activity-tab",
-          controller: index_stimulus_controller,
-          "application-target": "dynamic",
+        stimulus_controllers = {
+          controller: [
+            index_stimulus_controller,
+            polling_stimulus_controller,
+            editor_stimulus_controller,
+            auto_scrolling_stimulus_controller,
+            stems_stimulus_controller
+          ].join(" ")
+        }
+        stimulus_controller_values = {
+          editor_stimulus_controller("-unsaved-changes-confirmation-message-value") => unsaved_changes_confirmation_message,
           index_stimulus_controller("-notification-center-path-name-value") => notifications_path,
-          index_stimulus_controller("-update-streams-path-value") => update_streams_work_package_activities_path(work_package),
           index_stimulus_controller("-sorting-value") => journal_sorting,
           index_stimulus_controller("-filter-value") => filter,
           index_stimulus_controller("-user-id-value") => User.current.id,
           index_stimulus_controller("-work-package-id-value") => work_package.id,
-          index_stimulus_controller("-polling-interval-in-ms-value") => polling_interval,
-          index_stimulus_controller("-show-conflict-flash-message-url-value") => show_conflict_flash_message_work_packages_path,
-          index_stimulus_controller("-last-server-timestamp-value") => last_server_timestamp,
-          index_stimulus_controller("-unsaved-changes-confirmation-message-value") => unsaved_changes_confirmation_message
+          polling_stimulus_controller("-last-server-timestamp-value") => last_server_timestamp,
+          polling_stimulus_controller("-polling-interval-in-ms-value") => polling_interval,
+          polling_stimulus_controller("-show-conflict-flash-message-url-value") => show_conflict_flash_message_work_packages_path,
+          polling_stimulus_controller("-update-streams-path-value") => update_streams_work_package_activities_path(work_package)
         }
+        stimulus_controller_outlets = {
+          editor_stimulus_controller("-#{auto_scrolling_stimulus_controller}-outlet") => index_component_dom_selector,
+          editor_stimulus_controller("-#{polling_stimulus_controller}-outlet") => index_component_dom_selector,
+          editor_stimulus_controller("-#{stems_stimulus_controller}-outlet") => index_component_dom_selector,
+          polling_stimulus_controller("-#{auto_scrolling_stimulus_controller}-outlet") => index_component_dom_selector,
+          polling_stimulus_controller("-#{stems_stimulus_controller}-outlet") => index_component_dom_selector
+        }
+
+        { test_selector: "op-wp-activity-tab" }
+            .merge(stimulus_controllers)
+            .merge(stimulus_controller_values)
+            .merge(stimulus_controller_outlets)
       end
 
       def add_comment_wrapper_data_attributes
         {
           test_selector: "op-work-package-journal--new-comment-component",
           controller: internal_comment_stimulus_controller,
-          "application-target": "dynamic",
           internal_comment_stimulus_controller("-target") => "formContainer",
-          action: index_stimulus_controller(":onSubmit-end@window->#{internal_comment_stimulus_controller}#onSubmitEnd"),
+          action: editor_stimulus_controller(":onSubmit-end@window->#{internal_comment_stimulus_controller}#onSubmitEnd"),
           internal_comment_stimulus_controller("-highlight-class") => "work-packages-activities-tab-journals-new-component--journal-notes-body__internal-comment", # rubocop:disable Layout/LineLength
           internal_comment_stimulus_controller("-hidden-class") => "d-none",
-          internal_comment_stimulus_controller("-#{index_stimulus_controller}-outlet") => index_stimulus_controller_outlet_selector, # rubocop:disable Layout/LineLength
-          internal_comment_stimulus_controller("-is-internal-value") => false # Initial value
+          internal_comment_stimulus_controller("-is-internal-value") => false, # Initial value
+          internal_comment_stimulus_controller("-#{editor_stimulus_controller}-outlet") => index_component_dom_selector
         }
       end
 

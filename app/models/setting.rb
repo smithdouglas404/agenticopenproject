@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,6 +29,8 @@
 #++
 
 class Setting < ApplicationRecord
+  class NotWritableError < StandardError; end
+
   extend Aliases
   extend MailSettings
 
@@ -172,7 +176,7 @@ class Setting < ApplicationRecord
 
   def set_value!(val, force: false)
     unless force || definition.writable?
-      raise NoMethodError, "#{name} is not writable but can be set through env vars or configuration.yml file."
+      raise NotWritableError, "#{name} is not writable but can be set through env vars or configuration.yml file."
     end
 
     self[:value] = formatted_value(val)
@@ -339,7 +343,7 @@ class Setting < ApplicationRecord
       nil
     elsif definition.serialized? && value.is_a?(String)
       deserialize_hash(value)
-    elsif value != "".freeze && !value.nil?
+    elsif value != "" && !value.nil?
       read_formatted_setting(value, definition.format)
     elsif definition.format == :string
       value

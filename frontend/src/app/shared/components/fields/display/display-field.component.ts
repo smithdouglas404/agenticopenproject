@@ -3,7 +3,7 @@ import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
 import { DisplayFieldService } from 'core-app/shared/components/fields/display/display-field.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
-import { Constructor } from '@angular/cdk/table';
+import { Constructor } from 'core-app/core/util-types';
 import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
 import { SchemaResource } from 'core-app/features/hal/resources/schema-resource';
 
@@ -11,6 +11,7 @@ import { SchemaResource } from 'core-app/features/hal/resources/schema-resource'
   selector: 'display-field',
   template: '<span #displayFieldContainer></span>',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class DisplayFieldComponent implements OnInit {
   @Input() resource:HalResource;
@@ -21,7 +22,7 @@ export class DisplayFieldComponent implements OnInit {
 
   @Input() containerType:'table'|'single-view'|'timeline' = 'table';
 
-  @Input() displayFieldOptions:{ [key:string]:unknown } = {};
+  @Input() displayFieldOptions:Record<string, unknown> = {};
 
   @ViewChild('displayFieldContainer') container:ElementRef<HTMLSpanElement>;
 
@@ -59,7 +60,6 @@ export class DisplayFieldComponent implements OnInit {
 
   private getDisplayFieldInstance(fieldSchema:IFieldSchema) {
     if (this.displayClass) {
-      // eslint-disable-next-line new-cap
       const instance = new this.displayClass(this.fieldName, this.displayFieldContext);
       instance.apply(this.resource, fieldSchema);
       return instance;

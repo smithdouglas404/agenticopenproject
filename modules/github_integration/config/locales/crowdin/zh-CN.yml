@@ -31,6 +31,7 @@ zh-CN:
     github_avatar_url: "头像 URL"
     github_updated_at: "更新于"
     github_login: "登录 GitHub"
+    host: "主机"
     labels: "标签"
     repository: "存储库"
     changed_files_count: "已更改的文件"

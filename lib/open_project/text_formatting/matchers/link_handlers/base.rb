@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -55,9 +57,7 @@ module OpenProject::TextFormatting::Matchers
         []
       end
 
-      def allowed_prefixes
-        self.class.allowed_prefixes
-      end
+      delegate :allowed_prefixes, to: :class
 
       ##
       # Test whether we should try to resolve the given link
@@ -74,9 +74,7 @@ module OpenProject::TextFormatting::Matchers
       end
 
       def oid
-        unless identifier.nil?
-          identifier.to_i
-        end
+        identifier&.to_i
       end
 
       delegate :identifier, to: :matcher

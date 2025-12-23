@@ -56,7 +56,7 @@ RSpec.describe "Deleting time entries", :js do
   let(:other_work_package) { create(:work_package, project:, budget:) }
   let(:cost_entry) do
     create(:cost_entry,
-           work_package:,
+           entity: work_package,
            project:,
            units: 2.00,
            cost_type:,

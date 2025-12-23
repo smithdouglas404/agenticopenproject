@@ -26,11 +26,14 @@ zh-TW:
   activerecord:
     attributes:
       cost_entry:
-        work_package: "工作項目"
+        work_package: "工作套件"
         overridden_costs: "覆蓋成本"
         spent: "花費"
         spent_on: "日期"
         logged_by: "記錄者"
+        entity: 登錄為
+        entity_id: 登錄為
+        entity_gid: 登錄為
       cost_type:
         unit: "單位名稱"
         unit_plural: "單位名稱(複數)"
@@ -49,7 +52,7 @@ zh-TW:
       time_entry:
         project: 專案
         user: 使用者
-        work_package: 工作項目
+        work_package: 工作套件
         subject: 標題
         hours: 小時
         comments: 留言
@@ -58,6 +61,9 @@ zh-TW:
         start_time: 開始時間
         end_time: 完成時間
         time: 時間
+        entity: 登錄為
+        entity_id: 登錄為
+        entity_gid: 登錄為
     models:
       time_entry:
         other: "時間項"
@@ -66,15 +72,16 @@ zh-TW:
       cost_type:
         other: "費用類別"
       time_entry_activity:
-        other: "時間追蹤活動"
+        other: "工時紀錄活動"
       rate: "費率"
     errors:
       models:
         time_entry:
           invalid_time: "必須在 00:00 到 23:59 之間。"
-          cannot_log_for_this_work_package: "無法記錄此工作項目的時間。"
+          cannot_log_for_this_work_package: "無法記錄此工作套件的時間。"
+          duplicate_ongoing: "此使用者已有一筆正在進行中的工時紀錄。"
         work_package:
-          is_not_a_valid_target_for_cost_entries: "工作項目 #%{id} 不是重新分配支出的有效目標"
+          is_not_a_valid_target_for_cost_entries: "工作套件 #%{id} 無法作為有效的支出重新分配目標。"
           nullify_is_not_valid_for_cost_entries: "支出項目無法分配至專案"
   attributes:
     comment: "留言"
@@ -89,7 +96,8 @@ zh-TW:
   button_log_costs: "紀錄單位成本"
   button_log_time: "日誌"
   button_add_activity: "活動"
-  button_add_time_entry: "日誌的時間"
+  button_add_time_entry: "工時紀錄"
+  button_stop_timer: "停止計時器"
   caption_booked_on_project: "已記錄在專案上"
   caption_default: "預設"
   caption_default_rate_history_for: "%{user} 的費率歷史記錄"
@@ -101,7 +109,7 @@ zh-TW:
   caption_save_rate: "保存費率"
   caption_set_rate: "設定當前費率"
   caption_show_locked: "顯示鎖定類型"
-  caption_log_time_dialog: "日誌時間"
+  caption_log_time_dialog: "工作紀錄"
   description_date_for_new_rate: "新費率的日期"
   description_costs_settings: "定義所有專案中所需的成本格式。"
   description_time_settings: "定義在所有專案中記錄時間時，哪些欄位是必須填寫的。"
@@ -122,12 +130,12 @@ zh-TW:
   label_display_types: "顯示類型"
   label_edit: "編輯"
   label_generic_user: "一般使用者"
-  label_greater_or_equal: ">="
+  label_greater_or_equal: "之前"
   label_group_by: "分類"
   label_group_by_add: "增加群組欄位"
   label_hourly_rate: "小時費率"
   label_include_deleted: "包含已刪除的"
-  label_work_package_filter_add: "新增工作項目篩選條件"
+  label_work_package_filter_add: "新增工作套件篩選條件"
   label_kind: "類型"
   label_less_or_equal: "之後"
   label_log_costs: "紀錄支出單位"
@@ -149,14 +157,14 @@ zh-TW:
   label_cost: "成本"
   label_costs: "費用"
   label_mandatory_fields: "必要欄位"
-  label_my_time_tracking: "我的時間追蹤"
+  label_my_time_tracking: "我的工作記錄"
   label_no_time: "無時間追蹤"
   label_next_day: "下一天"
   label_next_week: "下一週"
-  label_next_workweek: "Next work week"
+  label_next_workweek: "下個工作週"
   label_next_month: "下個月"
   label_previous_day: "前一天"
-  label_previous_workweek: "Previous work week"
+  label_previous_workweek: "前個工作週"
   label_previous_week: "前一週"
   label_previous_month: "前一個月"
   label_specific_day: "%{day} 日"
@@ -167,14 +175,16 @@ zh-TW:
   label_workweek: "工作週"
   label_day: "日"
   label_today_capitalized: "今天"
-  label_view_mode_switcher: "Change view"
-  placeholder_activity_select_work_package_first: 需要先選擇工作項目
+  label_view_mode_switcher: "變更檢視"
+  label_timer_since: "從 %{time}開始"
+  placeholder_activity_select_work_package_first: 需要先選擇工作套件
   notice_something_wrong: "發生錯誤，請重試。"
   notice_successful_restore: "復原成功。"
   notice_successful_lock: "停用成功。"
   notice_cost_logged_successfully: "單位成本紀錄成功。"
   notice_different_time_zones: "此使用者使用不同的時區 (%{tz})。將使用他們的時區記錄時間。"
   notice_time_entry_update_failed: "更新工時紀錄失敗。錯誤內容：%{errors}"
+  notice_time_entry_delete_failed: "刪除時間紀錄時發生錯誤：%{errors}"
   permission_edit_cost_entries: "編輯自己紀錄的單位成本"
   permission_edit_own_cost_entries: "編輯自己紀錄的單位成本"
   permission_edit_hourly_rates: "編輯小時費率"
@@ -189,20 +199,22 @@ zh-TW:
   permission_view_own_hourly_rate: "查看自己的小時費率"
   permission_view_own_time_entries: "查看自己的耗時"
   project_module_costs: "時間與費用"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "允許起迄時間"
   setting_costs_currency: "貨幣"
   setting_costs_currency_format: " 貨幣格式"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "需要起迄時間"
+  setting_enforce_without_allow: "在不允許的情況下，要求開始和結束時間是不可能的"
+  setting_allow_tracking_start_and_end_times_caption: "啟用記錄工時時輸入開始與結束時間的功能。"
+  setting_enforce_tracking_start_and_end_times_caption: "在記錄工時時，強制要求輸入開始與結束時間。"
   text_assign_time_and_cost_entries_to_project: "將已回報的小時數和成本提交到專案中"
-  text_destroy_cost_entries_question: "您要刪除的工作項目已經回報了 %{cost_entries}。您想如何進行？"
+  text_destroy_cost_entries_question: "您即將刪除的工作套件中已有 %{cost_entries} 筆成本項目被回報。請問您希望如何處理？"
   text_destroy_time_and_cost_entries: "刪除已回報的小時數和成本"
-  text_destroy_time_and_cost_entries_question: "您要刪除的工作項目已回報了 %{hours} 小時的工作量、%{cost_entries} 的成本。您想如何進行？"
-  text_reassign_time_and_cost_entries: "將小時數和成本重新設定到工作項目中："
+  text_destroy_time_and_cost_entries_question: "您即將刪除的工作套件中，已回報 %{hours} 小時的工時及 %{cost_entries} 筆成本。請問您要如何處理？"
+  text_reassign_time_and_cost_entries: "將已回報的工時與成本重新指派給此工作套件："
   text_warning_hidden_elements: "一些資料可能已排除在合併之外。"
   week: "週"
   total_times:
-    workweek: "Workweek Total: %{hours}"
+    workweek: "本週總計：%{hours} 小時"
     week: "本週總計：%{hours} 小時"
     month: "本月總計：%{hours} 小時"
     day: "日總計：%{hours} 小時"

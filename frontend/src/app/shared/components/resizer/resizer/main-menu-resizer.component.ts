@@ -27,12 +27,13 @@
 //++
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit } from '@angular/core';
-import { distinctUntilChanged } from 'rxjs/operators';
-
 import { ResizeDelta } from 'core-app/shared/components/resizer/resizer.component';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { MainMenuToggleService } from 'core-app/core/main-menu/main-menu-toggle.service';
-
+import {
+  debounceTime,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'opce-main-menu-resizer',
@@ -47,7 +48,7 @@ import { MainMenuToggleService } from 'core-app/core/main-menu/main-menu-toggle.
       <button
         class="spot-link main-menu--navigation-toggler"
         [attr.title]="toggleTitle"
-        [class.open]="toggleService.showNavigation"
+        [class.open]="isOpen"
         (click)="toggleService.toggleNavigation($event)"
       >
         <span class="resize-handle"><svg op-resizer-vertical-lines-icon size="small"></svg></span>
@@ -56,18 +57,20 @@ import { MainMenuToggleService } from 'core-app/core/main-menu/main-menu-toggle.
       </button>
     </op-resizer>
   `,
+  standalone: false,
 })
-
 export class MainMenuResizerComponent extends UntilDestroyedMixin implements OnInit {
   public toggleTitle:string;
 
-  private resizeEvent:string;
+  private resizeEvent = 'main-menu-resize';
 
   private elementWidth:number;
 
-  private mainMenu = jQuery('#main-menu')[0];
+  private mainMenu = document.querySelector('#main-menu')!;
 
   public moving = false;
+
+  public isOpen:boolean;
 
   constructor(
     readonly toggleService:MainMenuToggleService,
@@ -78,17 +81,19 @@ export class MainMenuResizerComponent extends UntilDestroyedMixin implements OnI
   }
 
   ngOnInit() {
-    this.toggleService.titleData$
+    this.isOpen = this.toggleService.showNavigation;
+
+    // Listen on sidebar changes and toggle resizer classes, if necessary
+    this.toggleService.changeData$
       .pipe(
         distinctUntilChanged(),
         this.untilDestroyed(),
+        debounceTime(50),
       )
-      .subscribe((setToggleTitle) => {
-        this.toggleTitle = setToggleTitle;
+      .subscribe(() => {
+        this.isOpen = this.toggleService.showNavigation;
         this.cdRef.detectChanges();
       });
-
-    this.resizeEvent = 'main-menu-resize';
   }
 
   public resizeStart() {

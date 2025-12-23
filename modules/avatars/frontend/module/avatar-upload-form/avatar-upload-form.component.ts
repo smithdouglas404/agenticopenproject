@@ -41,6 +41,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './avatar-upload-form.html',
   providers: [{ provide: OpUploadService, useClass: AvatarUploadService }],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AvatarUploadFormComponent implements OnInit {
   public form:any;

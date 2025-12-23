@@ -36,11 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render Primer::OpenProject::PageHeader.new do |header|
     header.with_title { t(:label_news_plural) }
-    header.with_breadcrumbs(
-      [*([href: home_path, text: organization_name] unless @project),
-       *([href: project_overview_path(@project.id), text: @project.name] if @project),
-       t(:label_news_plural)]
-    )
+    header.with_breadcrumbs(@project ? [{ href: project_overview_path(@project.id), text: @project.name }, t(:label_news_plural)] : nil)
   end
 %>
 <% if managable %>
@@ -48,14 +44,13 @@ See COPYRIGHT and LICENSE files for more details.
     render(Primer::OpenProject::SubHeader.new) do |subheader|
       subheader.with_action_button(
         scheme: :primary,
-        aria: { label: t(:label_news_new) },
-        title: I18n.t(:label_work_package_status_new),
+        leading_icon: :plus,
+        label: t(:label_news_new),
         tag: :a,
         id: "new_news_link",
         data: { "test-selector": "add-news-button" },
         href: new_project_news_path(@project)
-      ) do |button|
-        button.with_leading_visual_icon(icon: :plus)
+      ) do
         t(:label_news_singular)
       end
     end

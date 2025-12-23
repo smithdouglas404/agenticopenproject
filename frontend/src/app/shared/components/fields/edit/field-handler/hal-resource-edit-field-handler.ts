@@ -26,7 +26,6 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { KeyCodes } from 'core-app/shared/helpers/keyCodes.enum';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { Injector } from '@angular/core';
@@ -77,7 +76,7 @@ export class HalResourceEditFieldHandler extends EditFieldHandler {
   /**
    * Stop this event from propagating out of the edit field context.
    */
-  public stopPropagation(evt:JQuery.TriggeredEvent) {
+  public stopPropagation(evt:Event) {
     evt.stopPropagation();
     return false;
   }
@@ -136,10 +135,10 @@ export class HalResourceEditFieldHandler extends EditFieldHandler {
    * In an edit mode, we can't derive from a submit event whether the user pressed enter
    * (and on what field he did that).
    */
-  public async handleUserKeydown(event:JQuery.TriggeredEvent, onlyCancel = false) {
+  public async handleUserKeydown(event:KeyboardEvent, onlyCancel = false) {
     // Only handle submission in edit mode
     if (this.inEditMode && !onlyCancel) {
-      if (event.which === KeyCodes.ENTER) {
+      if (event.key === 'Enter') {
         await this.form.submit();
         return false;
       }
@@ -147,7 +146,7 @@ export class HalResourceEditFieldHandler extends EditFieldHandler {
     }
 
     // Escape editing when not in edit mode
-    if (event.which === KeyCodes.ESCAPE) {
+    if (event.key === 'Escape') {
       this.handleUserCancel();
       return false;
     }

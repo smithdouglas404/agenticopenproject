@@ -38,11 +38,12 @@ import {
 @Component({
   templateUrl: './time-entries-work-package-autocompleter-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class TimeEntriesWorkPackageAutocompleterTemplateComponent implements IAutocompleterTemplateComponent {
   @Input() public mode:string|undefined;
-  @Input() public isOpenedInModal:boolean = false;
-  @Input() public hoverCards:boolean = true;
+  @Input() public isOpenedInModal = false;
+  @Input() public hoverCards = true;
 
   @ViewChild('headerTemplate') headerTemplate:TemplateRef<Element>;
 

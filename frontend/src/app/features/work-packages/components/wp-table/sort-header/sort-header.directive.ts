@@ -57,6 +57,7 @@ import { WorkPackageViewBaselineService } from 'core-app/features/work-packages/
   selector: 'sortHeader',
   templateUrl: './sort-header.directive.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export class SortHeaderDirective extends UntilDestroyedMixin implements AfterViewInit {
@@ -202,7 +203,7 @@ export class SortHeaderDirective extends UntilDestroyedMixin implements AfterVie
     return this.table && this.table.configuration.hierarchyToggleEnabled;
   }
 
-  toggleHierarchy(evt:JQuery.TriggeredEvent) {
+  toggleHierarchy(evt:Event) {
     if (this.wpTableHierarchies.toggleState()) {
       this.wpTableGroupBy.disable();
     }

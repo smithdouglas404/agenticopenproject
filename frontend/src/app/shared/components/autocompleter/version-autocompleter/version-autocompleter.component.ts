@@ -49,6 +49,7 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: '../create-autocompleter/create-autocompleter.component.html',
   selector: 'version-autocompleter',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class VersionAutocompleterComponent extends CreateAutocompleterComponent implements AfterViewInit {
   @Output() public onCreate = new EventEmitter<VersionResource>();

@@ -81,7 +81,7 @@ See COPYRIGHT and LICENSE files for more details.
             </td>
             <td style="text-align:left">
               <% checkbox_id = status.name.parameterize.underscore %>
-              <%= styled_label_tag checkbox_id, t("backlogs.label_is_done_status", status_name: status.name), class: "hidden-for-sighted" %>
+              <%= styled_label_tag checkbox_id, t("backlogs.label_is_done_status", status_name: status.name), class: "sr-only" %>
               <%= (styled_check_box_tag "statuses[][status_id]", status.id.to_s, @statuses_done_for_project.include?(status.id), id: checkbox_id) %>
             </td>
           </tr>

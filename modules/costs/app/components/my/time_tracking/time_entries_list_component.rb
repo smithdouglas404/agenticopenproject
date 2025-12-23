@@ -43,9 +43,12 @@ module My
         TimeEntry.model_name.human(count: 2)
       end
 
-      def has_actions? = true
+      def has_actions?
+        true
+      end
 
       def action_row_header_content
+        return unless can_create_time_entry?
         return if options[:mode] == :month
 
         render(Primer::Beta::IconButton.new(
@@ -84,6 +87,10 @@ module My
         else
           false
         end
+      end
+
+      def can_create_time_entry?
+        User.current.allowed_in_any_work_package?(:log_own_time) || User.current.allowed_in_any_project?(:log_time)
       end
     end
   end

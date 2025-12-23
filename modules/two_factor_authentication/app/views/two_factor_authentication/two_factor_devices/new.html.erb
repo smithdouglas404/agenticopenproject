@@ -17,7 +17,6 @@
                               url: { action: :register },
                               html: { class: nil, autocomplete: "off", data: {
                                 controller: "two-factor-authentication",
-                                application_target: "dynamic",
                                 challenge_url: optional_webauthn_challenge_url,
                                 device_type: @device_type,
                                 action: "submit->two-factor-authentication#onCreateDevice"

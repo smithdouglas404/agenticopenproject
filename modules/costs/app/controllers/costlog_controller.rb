@@ -57,7 +57,7 @@ class CostlogController < ApplicationController
     elsif @cost_entry.save
 
       flash[:notice] = t(:notice_cost_logged_successfully)
-      redirect_back_or_default work_package_path(@cost_entry.work_package)
+      redirect_back_or_default polymorphic_path(@cost_entry.entity)
     else
       render action: :edit, status: :unprocessable_entity
     end
@@ -73,7 +73,7 @@ class CostlogController < ApplicationController
     elsif @cost_entry.save
 
       flash[:notice] = t(:notice_successful_update)
-      redirect_back fallback_location: work_package_path(@cost_entry.work_package)
+      redirect_back fallback_location: polymorphic_path(@cost_entry.entity)
 
     else
       render action: "edit"
@@ -90,7 +90,7 @@ class CostlogController < ApplicationController
     if request.referer.include?("cost_reports")
       redirect_to controller: "/cost_reports", action: :index
     else
-      redirect_back fallback_location: work_package_path(@cost_entry.work_package)
+      redirect_back fallback_location: polymorphic_path(@cost_entry.entity)
     end
   end
 
@@ -120,11 +120,12 @@ class CostlogController < ApplicationController
               User.find_by(id: user_id)
             end
 
-    work_package_id = cost_entry_params.delete(:work_package_id)
-    @work_package = if @cost_entry.present? && @cost_entry.work_package_id == work_package_id
-                      @cost_entry.work_package
-                    else
-                      WorkPackage.find_by(id: work_package_id)
+    entity_id = cost_entry_params.delete(:entity_id)
+    entity_type = cost_entry_params.delete(:entity_type)
+    @work_package = if @cost_entry.present? && @cost_entry.entity_type == "WorkPackage" && @cost_entry.entity_id == entity_id
+                      @cost_entry.entity
+                    elsif entity_type == "WorkPackage"
+                      WorkPackage.find_by(id: entity_id)
                     end
 
     cost_type_id = cost_entry_params.delete(:cost_type_id)
@@ -138,7 +139,7 @@ class CostlogController < ApplicationController
   def new_default_cost_entry
     @cost_entry = CostEntry.new.tap do |ce|
       ce.project = @project
-      ce.work_package = @work_package
+      ce.entity = @work_package
       ce.user = User.current
       ce.spent_on = Time.zone.today
       # notice that cost_type is set to default cost_type in the model
@@ -147,7 +148,7 @@ class CostlogController < ApplicationController
 
   def update_cost_entry_from_params
     @cost_entry.user = @user
-    @cost_entry.work_package = @work_package
+    @cost_entry.entity = @work_package
     @cost_entry.cost_type = @cost_type
 
     attributes = permitted_params.cost_entry
@@ -161,7 +162,6 @@ class CostlogController < ApplicationController
   end
 
   def cost_entry_params
-    params.require(:cost_entry).permit(:work_package_id, :spent_on, :user_id,
-                                       :cost_type_id, :units, :comments)
+    params.expect(cost_entry: %i[user_id entity_id entity_type spent_on cost_type_id units comments])
   end
 end

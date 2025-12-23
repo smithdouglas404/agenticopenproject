@@ -40,12 +40,13 @@ Click the green **+ Type** button to add a new work package type in the system, 
 You can freely **configure the attributes shown** for each work package type to decide which attributes are shown in the form and how they are grouped.
 
 > [!NOTE]
-> Some parts of the Work package form configuration are an Enterprise add-on and only available for the [OpenProject Enterprise cloud](https://www.openproject.org/enterprise-edition/#hosting-options) and the [Enterprise On-premises edition](https://www.openproject.org/enterprise-edition/).
-> The Enterprise edition allows you to customize form configuration with these additional features:
->
-> - **Add new attribute groups**
+> Following parts of the Work package form configuration are an Enterprise add-on:
+> 
+>- **Add new attribute groups**
 > - **Rename attribute groups**
 > - **Add table of related work packages to a work package form**
+
+[feature: edit_attribute_groups ]
 
 To configure a type, first select the type from the list of types (see above) and select the tab **Form configuration**.
 
@@ -74,14 +75,13 @@ In this case, all attributes in the blue area on the left are displayed under th
 
 Watch the following video to see how you can customize your work packages with custom fields and configure the work package forms:
 
-<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Forms-and-Custom-Fields-1.mp4" type="video/mp4" controls="" style="width:100%"></video>
+<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Forms-and-Custom-Fields-1.mp4"></video>
 
 ## Add table of related work packages to a work package form (Enterprise add-on)
 
 Also, you can add a table of related work packages to your work package form. Click the green **+ Group** button and choose **Add table of related work package** from the drop-down list.
 
-> [!NOTE]
-> Adding a table of related work package in OpenProject is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easily possible.
+[feature: work_package_query_relation_columns ]
 
 ![Sys-admin-table-of-related-work-packages](openproject_system_guide_table_of_related_wp.png)
 
@@ -94,6 +94,13 @@ Click the green **Apply** button to add this work package list to your form.
 The embedded related work package table in the work package form will look like this. Here, the work packages with the chosen relation will be shown automatically (based on the filtered criteria in the embedded list) or new work packages with this relation can be added.
 
 ![Sys-admin-related-work-package-table](open_project_admin_related_wp_table.png)
+
+## Work package automatic subject configuration (Enterprise add-on)
+
+[feature: work_package_subject_generation ]
+
+Please refer to [this guide](automatic-subjects) for a detailed description of automatically generated work packages subjects in OpenProject. 
+
 
 ## Activate work package types for projects
 
@@ -109,4 +116,6 @@ This can be also configured in the [project settings](../../../user-guide/projec
 Under the **Generate PDF** tab of  *Administration -> Work packages -> Types* you can select which templates from currently available ones should be enabled for the PDF export of this specific type. 
 
 The template determines the design and attributes visible in the exported PDF of a work package using this type. The first  template on the list is selected by default.
+
+![Generate PDF tab under work package types settings in OpenProject administration](openproject_system_guide_work_package_types_pdf_tab.png)
 

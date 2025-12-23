@@ -34,9 +34,10 @@ export const appBaseSelector = 'openproject-base';
   selector: appBaseSelector,
   template: `
     <div class="openproject-base--ui-view">
-      <ui-view></ui-view>
+      <ui-view />
     </div>
   `,
+  standalone: false,
 })
 export class ApplicationBaseComponent {
 }

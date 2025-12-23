@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -94,7 +96,7 @@ class LdapAuthSourcesController < ApplicationController
     else
       flash[:warning] = t(:notice_wont_delete_auth_source)
     end
-    redirect_to action: "index"
+    redirect_to action: "index", status: :see_other
   end
 
   protected

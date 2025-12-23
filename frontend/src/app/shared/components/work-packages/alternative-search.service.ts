@@ -3,7 +3,6 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { QueryFilterResource } from 'core-app/features/hal/resources/query-filter-resource';
 
 @Injectable({ providedIn: 'root' })
-
 export class AlternativeSearchService {
   constructor(
     readonly I18n:I18nService,
@@ -18,7 +17,7 @@ export class AlternativeSearchService {
     remainingWorkAlternative: this.I18n.t('js.work_packages.properties.remainingWorkAlternative'),
   };
 
-  private alternativeNames:{ [index:string]:string } = {
+  private alternativeNames:Record<string, string> = {
     [this.specialSearchStrings.percentCompleteAlternative]: this.specialSearchStrings.percentComplete,
     [this.specialSearchStrings.workAlternative]: this.specialSearchStrings.work,
     [this.specialSearchStrings.remainingWorkAlternative]: this.specialSearchStrings.remainingWork,

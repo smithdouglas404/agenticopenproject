@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -37,10 +39,10 @@ module OpenProject
                   :background_reference_id,
                   :formatted
 
-      PARAGRAPH_CSS_CLASS = "op-uc-p".freeze
+      PARAGRAPH_CSS_CLASS = "op-uc-p"
 
       def initialize(id, name, description, lines: 1, background_reference_id: "content", formatted: false, **args)
-        super
+        super()
         @id = id
         @name = name
         @description = description

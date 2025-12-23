@@ -37,18 +37,18 @@ module Components
       class EditDialog < Components::Common::Modal
         include Components::Autocompleter::NgSelectAutocompleteHelpers
 
-        attr_reader :project, :project_custom_field_section, :title
+        attr_reader :project, :project_custom_field, :title
 
-        def initialize(project, project_custom_field_section)
+        def initialize(project, project_custom_field)
           super()
 
           @project = project
-          @project_custom_field_section = project_custom_field_section
-          @title = @project_custom_field_section.name
+          @project_custom_field = project_custom_field
+          @title = @project_custom_field.name
         end
 
         def dialog_css_selector
-          "dialog#edit-project-custom-fields-dialog-#{@project_custom_field_section.id}"
+          "dialog#edit-project-custom-field-dialog-#{@project_custom_field.id}"
         end
 
         def async_content_container_css_selector
@@ -95,10 +95,37 @@ module Components
           expect(page).to have_css(async_content_container_css_selector)
         end
 
+        def expect_field_label_with_help_text(label_text)
+          expect_field_label(label_text)
+          expect(find_field_label(label_text)).to have_link accessible_name: "Show help text"
+        end
+
+        def expect_field_label_without_help_text(label_text)
+          expect_field_label(label_text)
+          expect(find_field_label(label_text)).to have_no_link accessible_name: "Show help text"
+        end
+
+        def click_help_text_link_for_label(label_text)
+          link = find_field_label(label_text).find(:link, accessible_name: "Show help text")
+          link.click
+        end
+
+        def expect_field_label(label_text)
+          within_dialog do
+            expect(page).to have_element :label, text: label_text
+          end
+        end
+
+        def find_field_label(label_text)
+          within_dialog do
+            page.find(:element, :label, text: label_text)
+          end
+        end
+
         ###
 
         def input_containers
-          within "#project-section-edit-form > .FormControl-spacingWrapper" do
+          within "#project-custom-field-edit-form > .FormControl-spacingWrapper" do
             page.all(".FormControl-spacingWrapper")
           end
         end

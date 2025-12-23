@@ -8,8 +8,8 @@ export const colorModes = {
 
 @Injectable({ providedIn: 'root' })
 export class ColorsService {
-  public toHsl(value:string, colorMode?:string):string {
-    return `hsl(${this.valueHash(value)}, 50%, ${colorMode === colorModes.lightHighContrast ? '30%' : '50%'})`;
+  public toHsl(value:string):string {
+    return `hsl(${this.valueHash(value)}, 50%, 30%)`;
   }
 
   public toHsla(value:string, opacity:number) {

@@ -64,7 +64,7 @@ RSpec.describe API::V3::Activities::ActivityEagerLoadingWrapper, with_settings: 
     end
 
     it "can wrap TimeEntry journals" do
-      time_entry = create(:time_entry, project:, work_package:, user:)
+      time_entry = create(:time_entry, project:, entity: work_package, user:)
       expect(time_entry.journals).to be_wrappable
     end
 

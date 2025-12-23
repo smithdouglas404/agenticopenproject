@@ -8,6 +8,7 @@ import {
   selector: 'op-wp-graph-configuration-settings-tab',
   templateUrl: './settings-tab.component.html',
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
+  standalone: false,
 })
 export class WpGraphConfigurationSettingsTabComponent implements TabComponent {
   @ViewChild('tabInner', { static: true })

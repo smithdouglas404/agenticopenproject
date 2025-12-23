@@ -37,8 +37,8 @@ import { TabDefinition } from 'core-app/shared/components/tabs/tab.interface';
   selector: 'opce-global-search-tabs',
   templateUrl: '../../../shared/components/tabs/scrollable-tabs/scrollable-tabs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-
 export class GlobalSearchTabsComponent extends ScrollableTabsComponent implements OnInit, OnDestroy {
   private currentTabSub:Subscription;
 

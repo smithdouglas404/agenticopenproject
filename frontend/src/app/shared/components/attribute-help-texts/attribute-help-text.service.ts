@@ -29,9 +29,8 @@
 import { input } from '@openproject/reactivestates';
 import { Injectable } from '@angular/core';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { take } from 'rxjs/operators';
-import { CollectionResource } from 'core-app/features/hal/resources/collection-resource';
 import { HelpTextResource } from 'core-app/features/hal/resources/help-text-resource';
+import { firstValueFrom, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AttributeHelpTextsService {
@@ -49,43 +48,30 @@ export class AttributeHelpTextsService {
   public require(attribute:string, scope:string):Promise<HelpTextResource|undefined> {
     this.load();
 
-    return new Promise<HelpTextResource|undefined>((resolve, reject) => {
-      this.helpTexts
+    return new Promise((resolve) => {
+      void this.helpTexts
         .valuesPromise()
         .then(() => resolve(this.find(attribute, scope)));
     });
   }
 
-  /**
-   * Search for a given attribute help text
-   *
-   */
-  public requireById(id:string|number):Promise<HelpTextResource|undefined> {
-    this.load();
-
-    return this
-      .helpTexts
-      .values$()
-      .pipe(
-        take(1),
-      )
-      .toPromise()
-      .then(() => {
-        const value = this.helpTexts.getValueOr([]);
-        return _.find(value, (element) => element.id?.toString() === id.toString());
-      });
+  private load():void {
+    this.helpTexts
+      .putFromPromiseIfPristine(() => firstValueFrom(this.loadUncached()));
   }
 
-  private load():void {
-    this.helpTexts.putFromPromiseIfPristine(() => this.apiV3Service
+  private loadUncached() {
+    return this
+      .apiV3Service
       .help_texts
       .get()
-      .toPromise()
-      .then((resources:CollectionResource<HelpTextResource>) => resources.elements));
+      .pipe(
+        map((collection) => collection.elements),
+      );
   }
 
-  private find(attribute:string, scope:string):HelpTextResource|undefined {
-    const value = this.helpTexts.getValueOr([]);
-    return _.find(value, (element) => element.scope === scope && element.attribute === attribute);
+  private find(attribute:string, scope:string) {
+    const value = this.helpTexts.getValueOr<HelpTextResource[]>([]);
+    return value.find((element) => element.scope === scope && element.attribute === attribute);
   }
 }

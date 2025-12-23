@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -96,6 +98,6 @@ module VersionsHelper
     end
     filters << { version: { operator: "=", values: [version.id] } }
 
-    JSON.dump(filters)
+    filters # return as an array, not JSON string
   end
 end

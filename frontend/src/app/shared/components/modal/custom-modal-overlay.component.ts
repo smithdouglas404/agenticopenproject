@@ -41,6 +41,7 @@ export const opCustomModalOverlaySelector = 'op-custom-modal-overlay';
   selector: opCustomModalOverlaySelector,
   templateUrl: './modal-overlay.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OpCustomModalOverlayComponent extends OpModalOverlayComponent {
   protected isDefaultTarget(modalData:ModalData | null):boolean {

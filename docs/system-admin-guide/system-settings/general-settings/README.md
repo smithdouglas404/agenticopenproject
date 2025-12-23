@@ -20,17 +20,20 @@ You can configure general system settings in OpenProject. Under System settings 
 5. **Cache formatted text** allows to save formatted text in cache, which will help load Wiki Pages faster.
 
 6. **Allowed link protocols** allows protocols to be rendered as links in work package descriptions, long text fields and comments. Some examples are: 
-- vis://FE0E3D1D-9DC5-4931-BF6C-9E01216047A4/3/8326584
-- dict://term lookup
-- vscode://file/path/to/file
-- figma://
-- element://vector/webapp/#/room/!ID
-- tel://number
-- sms://number
-- facetime://number
-One protocol should be entered per line.
+   - vis://FE0E3D1D-9DC5-4931-BF6C-9E01216047A4/3/8326584
+   - dict://term lookup
+   - vscode://file/path/to/file
+   - figma://
+   - element://vector/webapp/#/room/!ID
+   - tel://number
+   - sms://number
+   - facetime://number
+    
+   One protocol should be entered per line.
+
 > [!NOTE]
 > Protocols http, https, and mailto are always allowed. 
+
 7. **Enable feeds** – enables RSS feeds on wiki pages, forums and news via RSS client.
 
 8. Set **feed content limit**.

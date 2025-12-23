@@ -41,7 +41,7 @@ module BulkServices
         @mapping_context = mapping_context
       end
 
-      def perform(params = {})
+      def perform
         service_call = validate_permissions
         service_call = validate_contract(service_call, params) if service_call.success?
         service_call = perform_bulk_create(service_call) if service_call.success?

@@ -10,6 +10,8 @@ import { PathHelperService } from 'core-app/core/path-helper/path-helper.service
 import moment from 'moment';
 import allLocales from '@fullcalendar/core/locales-all';
 import { renderStreamMessage } from '@hotwired/turbo';
+import { opStopwatchStopIconData, toDOMString } from '@openproject/octicons-angular';
+import { useMeta } from 'stimulus-use';
 
 export default class MyTimeTrackingController extends Controller {
   private turboRequests:TurboRequestsService;
@@ -32,6 +34,8 @@ export default class MyTimeTrackingController extends Controller {
     timeZone: String,
   };
 
+  static metaNames = ['csrf-token'];
+
   declare readonly calendarTarget:HTMLElement;
   declare readonly hasCalendarTarget:boolean;
   declare readonly modeValue:string;
@@ -46,18 +50,24 @@ export default class MyTimeTrackingController extends Controller {
   declare readonly workingDaysValue:number[];
   declare readonly startOfWeekValue:number;
   declare readonly timeZoneValue:string;
+  declare readonly csrfToken:string;
 
   private calendar:Calendar;
   private DEFAULT_TIMED_EVENT_DURATION = '01:00';
   private boundListener = this.dialogCloseListener.bind(this);
 
   async connect() {
+    useMeta(this, { suffix: false });
     const context = await window.OpenProject.getPluginContext();
     this.turboRequests = context.services.turboRequests;
     this.pathHelper = context.services.pathHelperService;
 
     if (this.hasCalendarTarget && this.viewModeValue === 'calendar') {
       this.initializeCalendar();
+
+      // The stimulus controller gets initialized before the content wrapper is fully shown
+      // so its height might not be set correctly yet.
+      setTimeout(() => this.calendar.updateSize(), 25);
     }
 
     // handle dialog close event
@@ -94,19 +104,28 @@ export default class MyTimeTrackingController extends Controller {
       eventMinHeight: 30,
       eventMaxStack: 2,
       nowIndicator: true,
+      slotDuration: '00:15:00',
+      slotLabelInterval: '01:00',
       businessHours: { daysOfWeek: this.workingDaysValue, startTime: '00:00', endTime: '24:00' },
       hiddenDays: this.hiddenDays(),
       firstDay: this.startOfWeekValue,
       eventClassNames(info) {
-        return [
+        const classes = [
           'calendar-time-entry-event',
           `__hl_type_${info.event.extendedProps.typeId}`,
           '__hl_border_top',
           'ellipsis',
         ];
+
+        if (info.event.extendedProps.ongoing) {
+          classes.push('calendar-time-entry-event-ongoing');
+        }
+
+        return classes;
       },
       eventContent: (info) => {
         let timeDetails = '';
+        let stopTimerButton = '';
         let duration = info.event.extendedProps.hours as number;
 
         if (info.isResizing && info.event.start && info.event.end) {
@@ -118,10 +137,14 @@ export default class MyTimeTrackingController extends Controller {
           timeDetails = `<div class="fc-event-times" title="${time}">${time}</div>`;
         }
 
+        if (info.event.extendedProps.ongoing) {
+          stopTimerButton = toDOMString(opStopwatchStopIconData, 'small', { 'aria-hidden': 'true', class: 'octicon stop-timer-button' });
+        }
+
         return {
           html: `
            <div class="fc-event-main-frame">
-             <div class="fc-event-time">${this.displayDuration(duration)}</div>
+             <div class="fc-event-time">${stopTimerButton} ${this.displayDuration(duration)}</div>
              <div class="fc-event-title-container">
                 <div class="fc-event-title fc-event-wp" title="${info.event.extendedProps.workPackageSubject}">
                   <a class="Link--primary Link" href="${this.pathHelper.workPackageShortPath(info.event.extendedProps.workPackageId as string)}">
@@ -188,6 +211,10 @@ export default class MyTimeTrackingController extends Controller {
           return false;
         }
 
+        if (draggedEvent?.extendedProps.ongoing) {
+          return false;
+        }
+
         return true;
       },
 
@@ -209,6 +236,9 @@ export default class MyTimeTrackingController extends Controller {
               .toDate(),
           );
         }
+
+        // mark the event explicitly as resizable if it is not an all day event
+        info.event.setProp('durationEditable', !info.event.allDay);
 
         this.calendar.setOption('defaultTimedEventDuration', this.DEFAULT_TIMED_EVENT_DURATION);
       },
@@ -245,7 +275,7 @@ export default class MyTimeTrackingController extends Controller {
     document
       .querySelectorAll('.fc-timegrid-cols .fc-day')
       .forEach((dayElement) => {
-        days.push(dayElement.getAttribute('data-date') as string);
+        days.push(dayElement.getAttribute('data-date')!);
       });
 
     calendarScrollGridWrapper.appendChild(this.buildHtmlFooter(days));
@@ -262,7 +292,7 @@ export default class MyTimeTrackingController extends Controller {
       // Format event date for comparison
       const eventDateStr = toMoment(eventStart, this.calendar).format('YYYY-MM-DD');
 
-      if (eventDateStr === dayStr && event.extendedProps && event.extendedProps.hours) {
+      if (eventDateStr === dayStr && event.extendedProps?.hours) {
         totalHours += event.extendedProps.hours as number;
       }
     });
@@ -339,13 +369,11 @@ export default class MyTimeTrackingController extends Controller {
   }
 
   updateTimeEntry(timeEntryId:string, spentOn:string, startTime:string | null, hours:number, revertFunction:() => void) {
-    const csrfToken = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
-
     fetch(this.pathHelper.timeEntryUpdate(timeEntryId), {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken,
+        'X-CSRF-Token': this.csrfToken,
       },
       body: JSON.stringify({
         time_entry: {
@@ -454,7 +482,7 @@ export default class MyTimeTrackingController extends Controller {
     // list view replaces only the updated date
     if (this.viewModeValue === 'list') {
       // we don't know what date we clicked, so we need to reload the whole page
-      if (additional && additional.spent_on) {
+      if (additional?.spent_on) {
         void this.turboRequests.request(this.pathHelper.myTimeTrackingRefresh(additional.spent_on, this.viewModeValue, this.modeValue), { method: 'GET' });
       } else {
         window.location.reload();

@@ -43,7 +43,6 @@ module My
       def wrapper_data
         {
           "controller" => "my--time-tracking",
-          "application-target" => "dynamic",
           "my--time-tracking-mode-value" => mode,
           "my--time-tracking-view-mode-value" => "list"
         }
@@ -99,10 +98,16 @@ module My
         end
       end
 
-      def collapsed?(date)
+      def collapsed?(date) # rubocop:disable Metrics/AbcSize
         return false if mode == :day
+        return false if mode.in?(%i[week workweek]) && range.exclude?(Date.current)
+        return false if mode == :month && range.exclude?(Date.current.beginning_of_week)
 
-        date.past?
+        if mode == :month
+          Date.current.cweek != date.cweek
+        else
+          !date.today?
+        end
       end
 
       def date_caption(date)

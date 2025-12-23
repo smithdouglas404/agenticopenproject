@@ -34,23 +34,24 @@ class RecurringMeeting < ApplicationRecord
   # Magical maximum of interval, derived from other calendars
   MAX_INTERVAL = 100
   include ::Meeting::VirtualStartTime
+  include ::Meeting::MeetingUid
   include Redmine::I18n
 
   belongs_to :project
   belongs_to :author, class_name: "User"
 
-  validates_presence_of :start_time, :title, :frequency, :end_after, :time_zone
-  validates_presence_of :end_date, if: -> { end_after_specific_date? }
-  validates_numericality_of :iterations,
-                            only_integer: true,
+  validates :start_time, :title, :frequency, :end_after, :time_zone, presence: true
+  validates :end_date, presence: { if: -> { end_after_specific_date? } }
+  validates :iterations,
+            numericality: { only_integer: true,
                             greater_than_or_equal_to: 1,
                             less_than_or_equal_to: MAX_ITERATIONS,
-                            if: -> { end_after_iterations? }
-  validates_numericality_of :interval,
-                            only_integer: true,
+                            if: -> { end_after_iterations? } }
+  validates :interval,
+            numericality: { only_integer: true,
                             greater_than_or_equal_to: 1,
                             less_than_or_equal_to: MAX_INTERVAL,
-                            if: -> { !frequency_working_days? }
+                            if: -> { !frequency_working_days? } }
 
   validate :end_date_constraints,
            if: -> { end_after_specific_date? }
@@ -60,8 +61,8 @@ class RecurringMeeting < ApplicationRecord
   # Unset any previously set schedule before running validations
   before_validation :unset_schedule
 
-  after_save :unset_schedule
   before_destroy :remove_jobs
+  after_save :unset_schedule
 
   enum :frequency,
        {
@@ -92,18 +93,28 @@ class RecurringMeeting < ApplicationRecord
   has_one :template, -> { where(template: true) },
           class_name: "Meeting"
 
+  has_many :recurring_meeting_interim_responses,
+           inverse_of: :recurring_meeting,
+           dependent: :destroy
+
   scope :visible, ->(*args) {
     includes(:project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_meetings))
   }
 
-  # Keep location and duration as a virtual attribute
-  # so it can be passed to the template on save
+  scope :participated_by, ->(user) {
+    left_outer_joins(template: :participants).where(participants: { user_id: user.id })
+  }
+
+  # Virtual attributes that can be passed on to the template on save
   virtual_attribute :location do
     nil
   end
   virtual_attribute :duration do
+    nil
+  end
+  virtual_attribute :notify do
     nil
   end
 
@@ -113,6 +124,10 @@ class RecurringMeeting < ApplicationRecord
 
   def has_ended?
     will_end? && last_occurrence < Time.zone.now
+  end
+
+  def notify?
+    template&.notify?
   end
 
   def human_frequency
@@ -142,9 +157,15 @@ class RecurringMeeting < ApplicationRecord
     super&.in_time_zone(time_zone)
   end
 
+  def time_zone_differs?
+    time_zone != User.current.time_zone
+  end
+
   def time_zone
-    time_zone_string = super || Setting.user_default_timezone.presence || "Etc/UTC"
-    ActiveSupport::TimeZone[time_zone_string]
+    time_zone_string = super
+    zone = ActiveSupport::TimeZone[time_zone_string] if time_zone_string.present?
+
+    zone || User.current.time_zone
   end
 
   def schedule
@@ -193,15 +214,17 @@ class RecurringMeeting < ApplicationRecord
   end
 
   def human_frequency_schedule
+    formatted_time = format_time(start_time, time_zone:, include_date: false)
+    time = time_zone_differs? ? "#{formatted_time} (#{friendly_timezone_name(time_zone)})" : formatted_time
     I18n.t("recurring_meeting.in_words.frequency",
            base: base_schedule,
-           time: format_time(start_time, include_date: false))
+           time:)
   end
 
   def reschedule_required?(previous: false)
     (previous ? previous_changes : changes)
       .keys
-      .intersect?(%w[frequency start_date start_time start_time_hour iterations interval end_after end_date])
+      .intersect?(%w[frequency start_date start_time start_time_hour iterations interval end_after end_date location])
   end
 
   def scheduled_occurrences(limit:)
@@ -285,10 +308,6 @@ class RecurringMeeting < ApplicationRecord
 
   def end_date_constraints
     return if end_date.nil?
-
-    if end_date < Date.current
-      errors.add(:end_date, :after_today)
-    end
 
     if parsed_start_date.present? && end_date < parsed_start_date
       errors.add(:end_date, :after, date: format_date(parsed_start_date))

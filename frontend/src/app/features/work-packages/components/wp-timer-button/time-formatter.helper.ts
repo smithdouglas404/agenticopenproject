@@ -1,4 +1,4 @@
-import * as moment from 'moment/moment';
+import moment from 'moment/moment';
 
 function paddedNumber(input:number):string {
   return input.toString().padStart(2, '0');

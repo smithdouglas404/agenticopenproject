@@ -42,7 +42,7 @@ class Journals::CreateService
 
     def self.for(journable)
       ASSOCIATION_NAMES
-        .map { "Journals::CreateService::#{_1}".constantize.new(journable) }
+        .map { "Journals::CreateService::#{it}".constantize.new(journable) }
         .select(&:associated?)
     end
 

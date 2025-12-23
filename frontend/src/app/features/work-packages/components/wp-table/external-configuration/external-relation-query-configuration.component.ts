@@ -15,6 +15,7 @@ import { ExternalQueryConfigurationComponent } from 'core-app/features/work-pack
     ],
     { provide: WpTableConfigurationModalPrependToken, useValue: WpTableConfigurationRelationSelectorComponent },
   ],
+  standalone: false,
 })
 export class ExternalRelationQueryConfigurationComponent extends ExternalQueryConfigurationComponent {
 }

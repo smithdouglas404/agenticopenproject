@@ -57,7 +57,7 @@ module RecurringMeetings
 
     def perform(recurring_meeting, scheduled_time)
       self.recurring_meeting = recurring_meeting
-      self.scheduled_time = scheduled_time
+      self.scheduled_time = scheduled_time.in_time_zone(recurring_meeting.time_zone)
 
       # Schedule the next job
       schedule_next_job

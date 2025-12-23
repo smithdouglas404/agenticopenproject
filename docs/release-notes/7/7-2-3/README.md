@@ -20,9 +20,9 @@ the single user. This bugfix release restores the original behavior.
 If you want to filter for this exact behavior, a new filter named
 *Assignee or belonging group* is now added that returns:
 
-  - **when filtering for a single user**: Work packages assigned to this
-    user, and any group it belongs to
-  - **when filtering for a group**: Work packages assigned to this
-    group, and any users within
+- **when filtering for a single user**: Work packages assigned to this
+  user, and any group it belongs to
+- **when filtering for a group**: Work packages assigned to this
+  group, and any users within
 
 Bug reference: [#26207](https://community.openproject.org/wp/26207)

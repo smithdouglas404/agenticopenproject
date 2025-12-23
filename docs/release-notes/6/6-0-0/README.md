@@ -56,13 +56,13 @@ start working with OpenProject.
 Aside from the main features, OpenProject 6.0 includes several smaller
 usability improvements:
 
-  - You can add attachment (e.g. images) to the work package description
-    using drag and drop.
-  - It is possible to create work packages from the global work package
-    table.
-  - It is possible to set the project when creating a work package.
-  - Users can more easily create work packages on the split and full
-    screen through the removed dropdown menu.
+- You can add attachment (e.g. images) to the work package description
+  using drag and drop.
+- It is possible to create work packages from the global work package
+  table.
+- It is possible to set the project when creating a work package.
+- Users can more easily create work packages on the split and full
+  screen through the removed dropdown menu.
 
 ## Improved design
 

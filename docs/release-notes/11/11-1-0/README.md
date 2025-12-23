@@ -50,7 +50,7 @@ Luckily, we now automated this process in order to reduce manual effort on both 
 
 Furthermore, we have extended the authentication profile with an **OpenID Connect provider.** Also, the printing, e.g. for wiki pages, has been optimized via the browser print function.
 
-## As always,…… there’s much more!
+## As always, there’s much more
 
 There are a lot more things we packed into 11.1 to tell you about.
 

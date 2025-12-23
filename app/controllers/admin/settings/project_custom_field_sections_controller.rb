@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -40,7 +42,7 @@ module Admin::Settings
       )
 
       if call.success?
-        update_header_via_turbo_stream # required to closed the dialog
+        update_header_via_turbo_stream(allow_custom_field_creation: allow_custom_field_creation?)
         update_sections_via_turbo_stream(project_custom_field_sections: ProjectCustomFieldSection.all)
       else
         update_section_dialog_body_form_via_turbo_stream(project_custom_field_section: call.result)
@@ -67,6 +69,7 @@ module Admin::Settings
       call = ::ProjectCustomFieldSections::DeleteService.new(user: current_user, model: @project_custom_field_section).call
 
       if call.success?
+        update_header_via_turbo_stream(allow_custom_field_creation: allow_custom_field_creation?)
         update_sections_via_turbo_stream(project_custom_field_sections: ProjectCustomFieldSection.all)
       else
         # TODO: show error message
@@ -95,11 +98,16 @@ module Admin::Settings
       )
 
       if call.success?
+        update_header_via_turbo_stream(allow_custom_field_creation: allow_custom_field_creation?)
         update_sections_via_turbo_stream(project_custom_field_sections: ProjectCustomFieldSection.all)
       else
         # TODO: show error message
       end
       respond_with_turbo_streams
+    end
+
+    def new_link
+      respond_with_dialog Settings::ProjectCustomFieldSections::NewSectionDialogComponent.new
     end
 
     private
@@ -108,8 +116,14 @@ module Admin::Settings
       @project_custom_field_section = ProjectCustomFieldSection.find(params[:id])
     end
 
+    def allow_custom_field_creation?
+      ProjectCustomFieldSection.any?
+    end
+
     def project_custom_field_section_params
-      params.require(:project_custom_field_section).permit(:name)
+      # Set the sidebar as default
+      params.require(:project_custom_field_section)[:overview] ||= CustomFieldSection::OVERVIEW__SIDEBAR_KEY
+      params.expect(project_custom_field_section: %i[name overview])
     end
   end
 end

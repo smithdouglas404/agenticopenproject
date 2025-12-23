@@ -66,6 +66,7 @@ export interface ConfirmDialogOptions {
   templateUrl: './confirm-dialog.modal.html',
   styleUrls: ['./confirm-dialog.modal.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ConfirmDialogModalComponent extends OpModalComponent {
   public showClose:boolean;
@@ -92,9 +93,8 @@ export class ConfirmDialogModalComponent extends OpModalComponent {
     close_popup: this.I18n.t('js.close_popup_title'),
   };
 
-  public icon = {
-    continue: undefined,
-    cancel: undefined,
+  public icon:{continue:'trash'|'unlink'} = {
+    continue: 'trash',
   };
 
   public passedData:string[];

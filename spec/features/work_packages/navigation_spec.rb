@@ -36,9 +36,7 @@ RSpec.describe "Work package navigation", :js, :selenium do
   let(:work_package) { build(:work_package, project:) }
   let(:global_html_title) { Components::HtmlTitle.new }
   let(:project_html_title) { Components::HtmlTitle.new project }
-  let(:wp_title_segment) do
-    "#{work_package.type.name}: #{work_package.subject} (##{work_package.id})"
-  end
+  let(:wp_title_segment) { work_package.infoline }
 
   let!(:query) do
     query = build(:query, user:, project:)
@@ -79,7 +77,8 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
     full_work_package.expect_subject
     full_work_package.expect_current_path
-    global_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
+
+    global_html_title.expect_first_segment "#{wp_title_segment} | Some project"
 
     # deep link work package details pane
 
@@ -124,17 +123,17 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
     full_work_package.expect_subject
     expect(page).to have_current_path project_work_package_path(project, work_package, "activity")
-    project_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
+    project_html_title.expect_first_segment wp_title_segment
 
     # Switch tabs
     full_work_package.switch_to_tab tab: :relations
     expect(page).to have_current_path project_work_package_path(project, work_package, "relations")
-    project_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
+    project_html_title.expect_first_segment wp_title_segment
 
     # Back to split screen using the button
     full_work_package.go_back
     global_work_packages.expect_work_package_listed(work_package)
-    expect(page).to have_current_path project_work_packages_path(project) + "/details/#{work_package.id}/relations"
+    expect(page).to have_current_path project_work_packages_path(project) + "/details/#{work_package.id}/overview"
 
     # Link to full screen from index
     global_work_packages.open_full_screen_by_link(work_package)
@@ -149,12 +148,10 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
   it "loading an unknown work package ID" do
     visit "/work_packages/999999999"
-
     expect_flash type: :error, message: I18n.t(:notice_file_not_found)
 
     visit "/projects/#{project.identifier}/work_packages/999999999"
-    global_work_packages = Pages::WorkPackagesTable.new
-    global_work_packages.expect_toast type: :error, message: I18n.t("api_v3.errors.not_found.work_package")
+    expect_flash type: :error, message: I18n.t(:notice_file_not_found)
   end
 
   # Regression #29994
@@ -172,7 +169,7 @@ RSpec.describe "Work package navigation", :js, :selenium do
   it "double clicking search result row (Regression #30247)" do
     work_package.subject = "Foobar"
     work_package.save!
-    visit search_path(q: "Foo", work_packages: 1, scope: :all)
+    visit search_path(q: "Foo", filter: :work_packages, scope: :all)
 
     table = Pages::EmbeddedWorkPackagesTable.new page.find_by_id("content")
     table.expect_work_package_listed work_package
@@ -187,6 +184,8 @@ RSpec.describe "Work package navigation", :js, :selenium do
     work_package.save!
 
     visit my_page_path
+
+    wait_for_network_idle
 
     page.find(".wp-table--cell-td.id a", text: work_package.id).click
 
@@ -208,7 +207,7 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
     it "filters out the work package" do
       wp_table = Pages::WorkPackagesTable.new project
-      wp_table.visit!
+      wp_table.visit_query query
 
       wp_table.expect_work_package_listed work_package
       full_view = wp_table.open_full_screen_by_link work_package
@@ -218,10 +217,13 @@ RSpec.describe "Work package navigation", :js, :selenium do
       subject.update "bar"
 
       full_view.expect_and_dismiss_toaster message: "Successful update."
+      work_package.reload
+      expect(work_package.subject).to eq("bar")
 
       # Go back to list
       full_view.go_back
 
+      expect(page).to have_field("editable-toolbar-title", with: query.name, wait: 10)
       wp_table.ensure_work_package_not_listed! work_package
     end
   end

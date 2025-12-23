@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -44,6 +46,18 @@ module OpPrimer
       @autohide = system_arguments[:scheme] == :success && system_arguments[:dismiss_scheme] != :none
 
       super
+    end
+
+    def render_as_turbo_stream(...)
+      return unless render?
+
+      super
+    end
+
+    private
+
+    def render?
+      trimmed_content.present?
     end
   end
 end

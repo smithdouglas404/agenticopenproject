@@ -29,12 +29,10 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import {
-  parseChronicDuration,
-  outputChronicDuration,
-} from 'core-app/shared/helpers/chronic_duration';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { useMeta } from 'stimulus-use';
+import { durationStringToSeconds, formattedHour } from 'core-stimulus/helpers/chronic-duration-helper';
 
 export default class TimeEntryController extends Controller {
   static targets = ['startTimeInput', 'endTimeInput', 'hoursInput', 'form'];
@@ -47,15 +45,21 @@ export default class TimeEntryController extends Controller {
   declare readonly hoursInputTarget:HTMLInputElement;
   declare oldWorkPackageId:string;
 
+  static metaNames = ['csrf-token'];
+
+  declare readonly csrfToken:string;
+
   private turboRequests:TurboRequestsService;
   private pathHelper:PathHelperService;
 
   async connect() {
+    useMeta(this, { suffix: false });
+
     const context = await window.OpenProject.getPluginContext();
     this.turboRequests = context.services.turboRequests;
     this.pathHelper = context.services.pathHelperService;
 
-    const workPackageAutocompleter = document.querySelector('opce-autocompleter[data-input-name*="time_entry[work_package_id]"]');
+    const workPackageAutocompleter = document.querySelector('opce-autocompleter[data-input-name*="time_entry[entity_id]"]');
     if (workPackageAutocompleter) {
       this.oldWorkPackageId = (workPackageAutocompleter as HTMLElement).dataset.inputValue || '';
     }
@@ -69,22 +73,21 @@ export default class TimeEntryController extends Controller {
     );
   }
 
-  workPackageChanged(event:InputEvent) {
+  entityChanged(event:InputEvent) {
     const target = event.currentTarget as HTMLInputElement;
     const newValue = target.value;
 
     if (this.oldWorkPackageId !== newValue) {
       this.oldWorkPackageId = newValue;
 
-      const url = this.formTarget.dataset.refreshFormUrl as string;
-      const csrfToken = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
+      const url = this.formTarget.dataset.refreshFormUrl!;
       const formData = new FormData(this.formTarget);
       formData.delete('_method'); // remove the override method as this will submit to the wrong action
       void this.turboRequests.request(url, {
         method: 'post',
         body: formData,
         headers: {
-          'X-CSRF-Token': csrfToken,
+          'X-CSRF-Token': this.csrfToken,
         },
       });
     }
@@ -92,14 +95,6 @@ export default class TimeEntryController extends Controller {
 
   timeInputChanged(event:InputEvent) {
     this.datesChanged(event.currentTarget as HTMLInputElement);
-  }
-
-  parsedHourInput():number {
-    const normalizedValue = this.hoursInputTarget.value.replace(',', '.');
-    return parseChronicDuration(normalizedValue, {
-      defaultUnit: 'hours',
-      ignoreSecondsWhenColonSeperated: true,
-    }) || 0;
   }
 
   datesChanged(initiatedBy:HTMLInputElement) {
@@ -126,7 +121,7 @@ export default class TimeEntryController extends Controller {
 
     const startTimeInMinutes = parseInt(startTimeParts[0], 10) * 60 + parseInt(startTimeParts[1], 10);
     const endTimeInMinutes = parseInt(endTimeParts[0], 10) * 60 + parseInt(endTimeParts[1], 10);
-    let hoursInMinutes = Math.round(this.parsedHourInput() / 60);
+    let hoursInMinutes = Math.round(durationStringToSeconds(this.hoursInputTarget.value) / 60);
 
     // We calculate the hours field if:
     //  - We have start & end time and no hours
@@ -146,8 +141,7 @@ export default class TimeEntryController extends Controller {
 
       hoursInMinutes += exisitingDayGap;
 
-      const formattedHours = outputChronicDuration(hoursInMinutes * 60, { format: 'hours_only' }) || '';
-      this.hoursInputTarget.value = formattedHours;
+      this.hoursInputTarget.value = formattedHour(hoursInMinutes * 60);
     } else if (startTimeInMinutes && hoursInMinutes) {
       const newEndTime = (startTimeInMinutes + hoursInMinutes) % (24 * 60);
 
@@ -170,10 +164,12 @@ export default class TimeEntryController extends Controller {
   hoursChanged() {
     // Parse input through our chronic duration parser and then reformat as hours that can be nicely parsed on the
     // backend
-    const hours = this.parsedHourInput();
-    this.hoursInputTarget.value = outputChronicDuration(hours, { format: 'hours_only' }) || '';
+    const duration = durationStringToSeconds(this.hoursInputTarget.value);
+    this.hoursInputTarget.value = formattedHour(duration);
 
-    this.datesChanged(this.hoursInputTarget);
+    if (duration !== 0) {
+      this.datesChanged(this.hoursInputTarget);
+    }
   }
 
   hoursKeyEnterPress(event:KeyboardEvent) {
@@ -183,10 +179,10 @@ export default class TimeEntryController extends Controller {
   }
 
   toggleEndTimePlusCaption(startTimeInMinutes:number, hoursInMinutes:number) {
-    const formControl = this.endTimeInputTarget.closest('.FormControl') as HTMLElement;
+    const formControl = this.endTimeInputTarget.closest('.FormControl')!;
     formControl
       .querySelectorAll('.FormControl-caption')
-      .forEach((caption) => caption.remove());
+      .forEach((caption) => { caption.remove(); });
 
     if (startTimeInMinutes + hoursInMinutes >= 24 * 60) {
       const diffInDays = Math.floor((startTimeInMinutes + hoursInMinutes) / (60 * 24));

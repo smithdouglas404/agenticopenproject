@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   render(Primer::OpenProject::PageHeader.new(test_selector: "custom-fields--page-header")) do |header|
-    header.with_title { @custom_field.name }
+    header.with_title { @custom_field.attribute_in_database("name") }
 
     header.with_breadcrumbs(breadcrumbs_items)
 

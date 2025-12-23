@@ -8,6 +8,10 @@ services:
           # by connecting to them, and we'd like it to go through traefik, instead
           # of calling the service containers directly.
           - openproject.local
+          - openproject-assets.local
           - nextcloud.local
           - gitlab.local
           - keycloak.local
+          - hocuspocus.local
+          - minio.local
+          - minioadmin.local

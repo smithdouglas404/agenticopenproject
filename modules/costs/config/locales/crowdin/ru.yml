@@ -31,6 +31,9 @@ ru:
         spent: "Потрачено"
         spent_on: "Дата"
         logged_by: "Учтено"
+        entity: Учтено
+        entity_id: Учтено
+        entity_gid: Учтено
       cost_type:
         unit: "Наименование количественного показателя"
         unit_plural: "Множественное наименование количественного показателя"
@@ -58,6 +61,9 @@ ru:
         start_time: Время начала
         end_time: Время окончания
         time: Время
+        entity: Учтено
+        entity_id: Учтено
+        entity_gid: Учтено
     models:
       time_entry:
         one: "Запись о трудозатратах"
@@ -85,6 +91,7 @@ ru:
         time_entry:
           invalid_time: "должно быть между 00:00 и 23:59."
           cannot_log_for_this_work_package: "Невозможно зарегистрировать время для этого пакета работ."
+          duplicate_ongoing: "Текущая запись времени уже существует для этого пользователя."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Пакет работ #%{id} не является допустимым объектом для назначения стимостей."
           nullify_is_not_valid_for_cost_entries: "Записи о стоимостях не могут быть присвоены проекту."
@@ -102,11 +109,12 @@ ru:
   button_log_time: "Журнал"
   button_add_activity: "Деятельность"
   button_add_time_entry: "Добавить трудозатраты"
+  button_stop_timer: "Остановить таймер"
   caption_booked_on_project: "Заказано на проект"
   caption_default: "По умолчанию"
   caption_default_rate_history_for: "История тарифов по умолчанию для %{user}"
   caption_locked_on: "Закрывается на"
-  caption_materials: "Модули"
+  caption_materials: "Ресурсы"
   caption_rate_history: "История тарифов"
   caption_rate_history_for: "История тарифов для %{user}"
   caption_rate_history_for_project: "История тарифов для %{user} в проекте %{project}"
@@ -161,7 +169,7 @@ ru:
   label_cost: "Затраты"
   label_costs: "Затраты"
   label_mandatory_fields: "Обязательные поля"
-  label_my_time_tracking: "Моё отслеживание времени"
+  label_my_time_tracking: "Мои трудозатраты"
   label_no_time: "Нет учтённого времени"
   label_next_day: "След. день"
   label_next_week: "На следующей неделе"
@@ -180,6 +188,7 @@ ru:
   label_day: "День"
   label_today_capitalized: "Сегодня"
   label_view_mode_switcher: "Изменить вид"
+  label_timer_since: "Начато в %{time}"
   placeholder_activity_select_work_package_first: Сначала необходимо выбрать пакет работ
   notice_something_wrong: "Произошла ошибка. Пожалуйста, попробуйте снова."
   notice_successful_restore: "Успешное восстановление."
@@ -187,6 +196,7 @@ ru:
   notice_cost_logged_successfully: "Стоимость единицы успешно зажурналировано "
   notice_different_time_zones: "У этого пользователя другой часовой пояс (%{tz}). Время будет журналироваться с учетом его часового пояса."
   notice_time_entry_update_failed: "Не удалось обновить запись учёта времени. Ошибки: %{errors}"
+  notice_time_entry_delete_failed: "Не удалось удалить запись учёта времени. Ошибки: %{errors}"
   permission_edit_cost_entries: "Править зарегестрированные количественные затраты"
   permission_edit_own_cost_entries: "Править собственные зарегистрированные количественные затраты"
   permission_edit_hourly_rates: "Править почасовые тарифы"
@@ -201,11 +211,13 @@ ru:
   permission_view_own_hourly_rate: "Просмотр своей почасовой ставки"
   permission_view_own_time_entries: "Просмотр своего отработанного времени"
   project_module_costs: "Время и затраты"
-  setting_allow_tracking_start_and_end_times: "Разрешить точное отслеживание времени"
+  setting_allow_tracking_start_and_end_times: "Разрешить время начала и окончания"
   setting_costs_currency: "Валюта"
   setting_costs_currency_format: "Формат валюты"
-  setting_enforce_tracking_start_and_end_times: "Требуется точное время"
+  setting_enforce_tracking_start_and_end_times: "Требуется время начала и окончания"
   setting_enforce_without_allow: "Требование точного времени невозможно без соответствующего разрешения"
+  setting_allow_tracking_start_and_end_times_caption: "Включает время начала и окончания учета."
+  setting_enforce_tracking_start_and_end_times_caption: "Делает ввод времени начала и окончания обязательным при регистрации времени."
   text_assign_time_and_cost_entries_to_project: "Связать сообщенные часы и расходы с проектом"
   text_destroy_cost_entries_question: "%{cost_entries} сообщили о рабочих пакетах, которые вы собираетесь удалить. Что вы собираетесь сделать?"
   text_destroy_time_and_cost_entries: "Удалить отчеты о часах и расходах"

@@ -29,7 +29,16 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% html_title t(:label_bulk_edit_selected_work_packages) %>
 
-<h2><%= t(:label_bulk_edit_selected_work_packages) %></h2>
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title { t(:label_bulk_edit_selected_work_packages) }
+    header.with_breadcrumbs(
+      [*([href: project_overview_path(@project.id), text: @project.name] if @project),
+       { href: (@project ? project_work_packages_path(@project) : work_packages_path), text: t(:label_work_package_plural) },
+       t(:label_bulk_edit_selected_work_packages)]
+    )
+  end
+%>
 <ul>
   <% @work_packages.each do |wp| %>
     <li>
@@ -132,7 +141,7 @@ See COPYRIGHT and LICENSE files for more details.
                 <%= styled_select_tag(
                       "work_package[version_id]",
                       content_tag("option", t(:label_none), value: "none") +
-                      version_options_for_select(@project.shared_versions.with_status_open.order_by_semver_name),
+                      version_options_for_select(@project.shared_versions.with_status_open.order(:name)),
                       include_blank: t(:label_no_change_option)
                     ) %>
               </div>
@@ -179,8 +188,9 @@ See COPYRIGHT and LICENSE files for more details.
             <%= styled_label_tag :work_package_start_date, WorkPackage.human_attribute_name(:start_date) %>
             <div class="form--field-container -visible-overflow">
               <%= angular_component_tag "opce-basic-single-date-picker",
+                                        class: "form--text-field-container",
                                         inputs: {
-                                          inputId: "work_package_start_date",
+                                          id: "work_package_start_date",
                                           name: "work_package[start_date]"
                                         } %>
             </div>
@@ -189,18 +199,27 @@ See COPYRIGHT and LICENSE files for more details.
             <%= styled_label_tag :work_package_due_date, WorkPackage.human_attribute_name(:due_date) %>
             <div class="form--field-container -visible-overflow">
               <%= angular_component_tag "opce-basic-single-date-picker",
+                                        class: "form--text-field-container",
                                         inputs: {
-                                          inputId: "work_package_due_date",
+                                          id: "work_package_due_date",
                                           name: "work_package[due_date]"
                                         } %>
             </div>
           </div>
+          <% if WorkPackage.work_based_mode? %>
+            <div class="form--field">
+              <%= styled_label_tag :work_package_done_ratio, WorkPackage.human_attribute_name(:done_ratio) %>
+              <div class="form--field-container">
+                <%= styled_text_field_tag "work_package[done_ratio]", "", type: :number, size: 10 %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     </fieldset>
     <fieldset class="form--fieldset">
       <legend class="form--fieldset-legend"><%= Journal.human_attribute_name(:notes) %></legend>
-      <%= label_tag "work_package_journal_notes", Journal.human_attribute_name(:notes), class: "hidden-for-sighted" %>
+      <%= label_tag "work_package_journal_notes", Journal.human_attribute_name(:notes), class: "sr-only" %>
       <%= styled_text_area_tag "work_package[journal_notes]", @notes, class: "wiki-edit", with_text_formatting: true %>
       <p><%= send_notification_option %></p>
     </fieldset>

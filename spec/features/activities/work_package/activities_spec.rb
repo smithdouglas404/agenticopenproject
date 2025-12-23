@@ -274,6 +274,17 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
 
         activity_tab.expect_journal_notes(text: "First comment by admin")
       end
+
+      it "highlights the comment specified in the URL until the user clicks anywhere" do
+        visit project_work_package_path(project, work_package.id, "activity", anchor: "activity-2")
+        wp_page.wait_for_activity_tab
+
+        highlighted_comment = page.find(".--anchor-highlighted")
+        expect(highlighted_comment).to have_content("First comment by admin")
+        # click anything (without triggering navigation or something else)
+        page.find(:xpath, "//*[text()='First comment by admin']").click
+        expect(page).to have_no_css(".--anchor-highlighted")
+      end
     end
   end
 
@@ -582,15 +593,18 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
     end
 
     context "when the work package has comments and changesets" do
+      let(:work_package) do
+        create(:work_package,
+               project:,
+               author: admin,
+               journals: {
+                 5.days.ago => { user: admin },
+                 4.days.ago => { user: admin, notes: "First comment by admin" },
+                 3.days.ago => { user: admin, notes: "Second comment by admin" }
+               }).tap(&:reload)
+      end
+
       before do
-        # for some reason the journal is set to the "Anonymous"
-        # although the work_package is created by the admin
-        # so we need to update the journal to the admin manually to simulate the real world case
-        work_package.journals.first.update!(user: admin)
-
-        create(:work_package_journal, user: admin, notes: "First comment by admin", journable: work_package, version: 2)
-        create(:work_package_journal, user: admin, notes: "Second comment by admin", journable: work_package, version: 3)
-
         wp_page.visit!
         wp_page.wait_for_activity_tab
       end
@@ -839,14 +853,14 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
       create(:work_package_journal, user: member, notes: "First comment by member", journable: work_package, version: 3)
     end
 
+    current_user { admin }
+
+    before do
+      wp_page.visit!
+      wp_page.wait_for_activity_tab
+    end
+
     context "when admin is visiting the work package" do
-      current_user { admin }
-
-      before do
-        wp_page.visit!
-        wp_page.wait_for_activity_tab
-      end
-
       it "can edit own comments" do
         # edit own comment
         activity_tab.edit_comment(first_comment_by_admin, text: "First comment by admin edited")
@@ -861,6 +875,19 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
 
         activity_tab.within_journal_entry(first_comment_by_member) do
           activity_tab.expect_journal_notes(text: "First comment by member edited")
+        end
+      end
+    end
+
+    context "when editing a comment included in the polling update" do
+      it "preserves the edit state" do
+        activity_tab.type_comment_in_edit(first_comment_by_admin, "Editing comment")
+        first_comment_by_admin.update_column(:updated_at, Time.current)
+
+        activity_tab.trigger_update_streams_poll
+
+        activity_tab.within_journal_entry(first_comment_by_admin) do
+          activity_tab.expect_journal_notes(text: "Editing comment")
         end
       end
     end
@@ -992,7 +1019,7 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
       logout
       login_as(admin)
 
-      # navigate to the same workpackage, but as a different user
+      # navigate to the same workpackage, as the same user
       wp_page.visit!
       wp_page.wait_for_activity_tab
       # expect the editor to be opened and content to be rescued for the correct user
@@ -1008,7 +1035,7 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
     let(:work_package) { create(:work_package, project:, author: admin) }
 
     # create enough comments to make the journal container scrollable
-    20.times do |i|
+    25.times do |i|
       let!(:"comment_#{i + 1}") do
         create(:work_package_journal, user: admin, notes: "Comment #{i + 1}", journable: work_package, version: i + 2)
       end
@@ -1026,11 +1053,19 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
             wp_page.wait_for_activity_tab
           end
 
-          it "scrolls to the comment specified in the URL" do
+          it "scrolls to the activity specified in the URL" do
             wait_for_auto_scrolling_to_finish
             activity_tab.expect_journal_container_at_position(50) # would be at the bottom if no anchor would be provided
 
             activity_tab.expect_activity_anchor_link(text: format_time(comment_1.updated_at))
+          end
+
+          it "highlights the activity specified in the URL until the user clicks anywhere" do
+            highlighted_comment = page.find(".--anchor-highlighted")
+            expect(highlighted_comment).to have_content("created this on")
+            # click anything (without triggering navigation or something else)
+            page.find(:xpath, "//*[text()='created this on']").click
+            expect(page).to have_no_css(".--anchor-highlighted")
           end
         end
 
@@ -1049,6 +1084,14 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
             activity_tab.filter_journals(:only_changes)
 
             activity_tab.expect_activity_anchor_link(text: format_time(comment_1.updated_at))
+          end
+
+          it "highlights the comment specified in the URL until the user clicks anywhere" do
+            highlighted_comment = page.find(".Box.--anchor-highlighted")
+            expect(highlighted_comment).to have_content("Comment 1")
+            # click anything (without triggering navigation or something else)
+            page.find(:xpath, "//*[text()='Comment 1']").click
+            expect(page).to have_no_css(".Box.--anchor-highlighted")
           end
         end
 
@@ -1410,6 +1453,10 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
 
     context "when the current user does not have the activity tab open the whole time" do
       it "raises a conflict warning when the work package is updated by another user while the current user is editing" do
+        pending "This has become obselete with the removal of uiRouter (#67007), because switching tabs now result in a
+               hard reload and no conflict appears like described in these examples.
+               Before removing this, please check the polling controller for possible cleanups.
+               Ticket: https://community.openproject.org/wp/68630"
         using_session(:admin) do
           login_as(admin)
 

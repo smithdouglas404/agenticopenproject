@@ -31,6 +31,7 @@ pl:
     github_avatar_url: "Adres URL awatara"
     github_updated_at: "Zaktualizowano o"
     github_login: "Login GitHub"
+    host: "Gospodarz"
     labels: "Etykiety"
     repository: "Repozytorium"
     changed_files_count: "Zmienione pliki"

@@ -6,7 +6,9 @@ description: Set up Single Sign-On through OpenID Connect Identity Provider as t
 keywords: Nextcloud file storage integration
 ---
 
-# Set up Single Sign-On through OpenID Connect Identity Provider
+# Set up Single Sign-On through OpenID Connect Identity Provider (Enterprise add-on)
+
+[feature: nextcloud_sso ]
 
 This authentication mode will use access tokens provided by an identity provider shared among Nextcloud and OpenProject to authenticate requests performed in the name of users.
 
@@ -56,12 +58,10 @@ Other identity providers might work as well, but we have only limited capacity t
 
 ### Keycloak
 
-Keycloak can provide tokens via Token Exchange, as well as immediately after user sign-in. Using Token Exchange is preferred, but requires enabling two preview features in the Keycloak deployment:
+Keycloak can provide tokens via Token Exchange, as well as immediately after user sign-in. Using Token Exchange is preferred, because it works
+with tokens that grant more narrow access.
 
-* `token-exchange`
-* `admin-fine-grained-authz`
-
-If you prefer not to enable preview features on your production deployment, it's also possible to use wide-access tokens, i.e. configure the access token that is handed out after user sign-in to also grant access to other applications.
+Alternatively, it's also possible to use wide-access tokens, i.e. configure the access token that is handed out after user sign-in to also grant access to other applications.
 
 #### Common setup steps
 
@@ -70,51 +70,50 @@ to your OpenProject and Nextcloud instances via Keycloak, you should already hav
 this guide, we will assume that these clients exist with the client ID `openproject` and `nextcloud` respectively.
 
 To make requests to the API of OpenProject, a client needs to obtain a token with the scope `api_v3`. We need to configure this client scope
-in Keycloak, so that the Nextcloud client can obtain it.
+in Keycloak, so that the Nextcloud client can obtain it. We will also need an additional scope that extends the audience of the OpenProject
+token.
 
 First, navigate to "Client scopes", click the "Create client scope" button and name the scope `api_v3`. Make sure
-to enable the option "Include in token scope", then save the form.
+to enable the option "Include in token scope", then save the form. Create a second client scope with a name of your choice, for example
+`add-nextcloud-audience`. For this scope "Include in token scope" is not necessary, though it can be helpful for your own debugging.
 
-This makes the scope ready to use. How we use it depends on the way that tokens are handed out to clients.
+These scopes do not have any effect yet, we have to add a mapper first. Navigate to the "Mappers" tab of the `api_v3` scope, Click "Configure a new mapper" and select "Audience". Give the mapper a name of your choice and make sure to select `openproject` in "Included Client Audience". This will make sure that tokens with the `api_v3` scope, will get an additional audience of `openproject`:
+
+![A configured audience mapper for including openproject as audience in a token](keycloak_audience_mapper.png)
+
+Afterwards repeat the same steps for the `add-nextcloud-audience` scope, choosing the `nextcloud` audience there.
+
+This makes the scopes ready to use. How we use them depends on the way that tokens are handed out to clients.
 
 #### Keycloak using Token Exchange
 
 ##### Configuring Keycloak
 
-First, make sure that you enabled both required features in Keycloak: `token-exchange` and `admin-fine-grained-authz`. You can [follow the Keycloak documentation on how to do that](https://www.keycloak.org/server/features). Once they are enabled, you can confirm them from the "Server Info" tab in your Keycloak installation:
+We need to enable Token Exchange for both clients. Navigate to the `openproject` client, scroll down to "Capability config" and enable
+the Authentication flow "Standard Token Exchange". Do the same for the `nextcloud` client:
 
-![The Keycloak UI that shows enabled features](keycloak_features.png)
+![The capability config section of a client with Standard Token Exchange enabled](keycloak_capability_config.png)
 
-We will need to allow OpenProject to exchange tokens with `nextcloud` in the audience, as well as allowing Nextcloud to exchange tokens with `openproject` in the audience.
+The `nextcloud` client requires an additional configuration step, where we allow to directly exchange a refresh token, instead of just an access token.
+From the `nextcloud` client, go to the tab Advanced and scroll down to the section "OpenID Connect Compatibility Modes". Set
+the option "Allow refresh token in Standard Token Exchange" to "Same session":
 
-To do this, we first create policies that will be used to control which clients are allowed to exchange tokens for a specific audience. Go to the `realm-management` client (in the default realm this client is called `master-realm`) and switch to the "Authorization" tab and there to the "Policies" submenu. If the "Authorization" tab is not visible, it might be necessary to make it visible by going to "Permissions" first and enabling fine-grained permissions there. Assuming you didn't create any other policies yet, your view should look similar to this:
+!["Allow refresh token in Standard Token Exchange" is set to "Same session"](keycloak_exchange_refresh_token.png)
 
-![An empty list of policies](keycloak_empty_policies.png)
+We will need to allow OpenProject to exchange tokens with `nextcloud` in the audience, as well as allowing Nextcloud to exchange tokens with `openproject` in the audience. Additionally Nextcloud tokens need to include the `api_v3` scope so that they are usable for requests against OpenProject's API.
 
-Click the "Create client policy" button and select "Client" as the policy type. Other types would be possible as well (such as Client scope), but this guide will explain the setup based on a client policy. Name the policy `allowed-to-exchange-openproject-token` and add at least `nextcloud` to the list of clients, while making sure that the Logic is "Positive". Afterwards repeat the same steps, creating a policy called `allowed-to-exchange-nextcloud-token`, including `openproject` in the list of clients:
+Navigate to "Clients", choose `openproject` and then go to the Tab called "Client Scopes". Press the button to "Add client scope" and select the `add-nextcloud-audience` scope, make sure it is set to "Optional", so that the scope is only included when it was requested. Afterwards go to the `nextcloud` client and add the scope `api_v3` there the same way.
 
-![One of the two exchange policies configured above](keycloak_exchange_policy.png)
-
-We will later use these policies to control who is allowed to perform a token exchange that results in a token usable for requests to the given client. For example, if you have additional clients that need to obtain a token usable at OpenProject, you'd add those clients to the `allowed-to-exchange-openproject-token` client list. The names suggested here are proposals for readable policy names, but they have no practical impact.
-
-Next, we need to apply the policies, so that they actually allow the token exchange for given clients. Navigate to the `openproject` client, go to the Tab "Permissions", enable the "Permissions enabled" checkbox and select the permission with the name `token-exchange`. You should end up on a form similar to this one:
-
-![Empty view of the permission configuration dialog](keycloak_exchange_permission.png)
-
-In the field "Policies" you can now add the `allowed-to-exchange-openproject-token` we created earlier. This means that clients matching that policy will be allowed to exchange an access token that includes the `openproject` audience.
-
-Afterwards repeat the previous steps to add the `allowed-to-exchange-nextcloud-token` policy to the `nextcloud` client.
-
-Lastly, we need to allow Nextcloud to obtain the previously created `api_v3` scope when requesting a token. Navigate to "Clients", choose
-`nextcloud` and then go to the Tab called "Client Scopes". Press the button to "Add client scope" and select the `api_v3` scope, make sure
-it is set to "Optional", so that the scope is only included when it was requested. Afterwards to to the `openproject` client and add the
-scope there the same way. This is required so that exchanged tokens can carry the scope as well.
+Both clients are now able to request the given scopes during token exchange.
 
 ##### Configuring OpenProject
 
-In OpenProject it is enough to configure the ID of the Nextcloud client (in our example: `nextcloud`) as the "Storage Audience". This will make sure that OpenProject will attempt to exchange a token for that audience before making requests to Nextcloud:
+In OpenProject we need to configure the ID of the Nextcloud client (in our example: `nextcloud`) as the "Storage Audience".
+This will make sure that OpenProject will attempt to exchange a token for that audience before making requests to Nextcloud.
 
-![OpenProject is configured to manually exchange tokens for the audience called nextcloud](openproject_manual_storage_audience.png)
+We also need to request the previously created `add-nextcloud-audience` scope during Token Exchange. To do that configure the "Storage Scope" to `add-nextcloud-audience`:
+
+![OpenProject is configured to manually exchange tokens for the audience called nextcloud requesting a scope called add-nextcloud-audience](openproject_manual_storage_audience.png)
 
 ##### Configuring Nextcloud
 
@@ -125,27 +124,15 @@ After enabling the toggle called "enable token exchange", you have to set the cl
 
 Additionally we need to configure the OpenID Connect provider in Nextcloud. Navigate to "Administration", and choose "OpenID Connect" from the sidebar. You should see a list of your configured OpenID Connect providers. At the top of that page enable the checkbox called "Store login tokens". This setting is required by Nextcloud to allow using tokens obtained during login for token exchange or requests to other services.
 
-Afterwards navigate to the OpenID Connect provider of the Keycloak and edit it. Make sure that the `api_v3` claim is part of the "Scope" text box. If it hasn't been added so far, you can append it to the existing text, ensuring that it is preceeded by a space, e.g., `openid email profile api_v3`. This ensures that Nextcloud will request the `api_v3` scope when a user logs in. Only then Keycloak will allow to exchange a token for OpenProject that carries the `api_v3` scope as well.
-
 This wraps up the configuration of this authentication method using Keycloak and token exchange. For details on the next step continue with the [general setup instructions](../#4-automatically-managed-project-folders).
 
 #### Keycloak using wide-access tokens
 
 ##### Configuring Keycloak
 
-We will add client scopes that result in the inclusion of an additional audience to the tokens returned during user authentication. This will cause OpenProject to receive tokens with an additional `nextcloud` audience and Nextcloud to receive tokens with an additional `openproject` audience.
+We will add the previously prepared client scopes that result in the inclusion of an additional audience to the tokens returned during user authentication. This will cause OpenProject to receive tokens with an additional `nextcloud` audience and Nextcloud to receive tokens with an additional `openproject` audience as well as the `api_v3` scope.
 
-First navigate to "Client scopes" and there press the button to "Create client scope" and give the scope a name of `add-openproject-audience`. After saving your view should look similar to this:
-
-![A newly saved client scope form](keycloak_new_client_scope.png)
-
-This scope does not have any effect yet, we have to add a mapper first. Navigate to the "Mappers" tab, Click "Configure a new mapper" and select "Audience". Give the mapper a name of your choice and make sure to select `openproject` in "Included Client Audience". This will make sure that clients that receive a token with this scope, will get an additional audience of `openproject`:
-
-![A configured audience mapper for including openproject as audience in a token](keycloak_audience_mapper.png)
-
-Afterwards make sure to create another scope called `add-nextcloud-audience` that will add the `nextcloud` audience to tokens that carry it.
-
-Finally we need to assign our newly created client scopes to our OpenProject and Nextcloud clients, so that the scopes take effect there. Navigate to the Nextcloud client, open the "Client Scopes" tab of the client and click "Add client scope". Then select the `add-openproject-audience` scope and add it as a "Default" scope:
+Navigate to the Nextcloud client, open the "Client Scopes" tab of the client and click "Add client scope". Then select the `api_v3` scope and add it as a "Default" scope:
 
 ![Nextcloud client with an additional scope added as default](keycloak_client_with_scope.png)
 
@@ -166,8 +153,6 @@ Make sure to leave the toggle "enable token exchange" disabled:
 
 Additionally, we need to configure the OpenID Connect provider in Nextcloud. Navigate to "Administration" and choose "OpenID Connect" from the sidebar. You should see a list of your configured OpenID Connect providers. At the top of that page enable the "Store login tokens" checkbox. This setting is required by Nextcloud to allow using tokens obtained during login for token exchange or requests to other services.
 
-Afterwards navigate to the OpenID Connect provider of the Keycloak and edit it. Make sure that the `api_v3` claim is part of the "Scope" text box. If it hasn't been added so far, you can append it to the existing text, ensuring that it is preceeded by a space, e.g., `openid email profile api_v3`. This ensures that Nextcloud will request the `api_v3` scope when a user logs in. Only then will Keycloak allow to exchange a token for OpenProject that carries the `api_v3` scope as well.
-
 This wraps up the configuration of this authentication method using Keycloak without token exchange. For details on the next step continue with the [general setup instructions](../#4-automatically-managed-project-folders).
 
 ### Nextcloud Hub
@@ -181,13 +166,13 @@ This deployment is simpler than running a dedicated identity provider, because i
 
 This guide will cover the setup related to using Nextcloud as a storage provider and will assume that it was already configured to be the OpenID Connect Provider of OpenProject.
 
-##### Configuring OpenProject
+#### Configuring OpenProject
 
 In OpenProject, configure the storage to "Use first access token obtained by identity provider". This means OpenProject will not attempt to perform a token exchange, but simply use the first token returned by the identity provider for authentication against the storage as well:
 
 ![OpenProject is configured to use the first access token obtained from the IDP](openproject_idp_storage_audience.png)
 
-##### Configuring Nextcloud
+#### Configuring Nextcloud
 
 In Nextcloud, we configure the OIDC provider to be "Nextcloud Hub". In the field "OpenProject client ID" you have to set the client ID of OpenProject as it's configured in Nextcloud (in the sidebar select "Security" and then scroll down to "OpenID Connect clients"):
 
@@ -200,7 +185,7 @@ section "Settings" and set the "Refresh Token Expire Time" to "Never". Non-expir
 Furthermore we need to configure Nextcloud to accept the access tokens it issued to us itself. This can only be enabled via an OCC command
 on the command line:
 
-```
+```shell
 occ config:system:set user_oidc --type boolean --value="true" oidc_provider_bearer_validation
 ```
 

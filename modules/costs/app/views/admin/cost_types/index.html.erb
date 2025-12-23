@@ -35,7 +35,7 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_breadcrumbs(
       [
         { href: admin_index_path, text: t("label_administration") },
-        { href: admin_costs_settings_path, text: t(:project_module_costs) },
+        { href: admin_time_settings_path, text: t(:project_module_costs) },
         I18n.t(:label_cost_type_plural)
       ]
     )
@@ -45,12 +45,11 @@ See COPYRIGHT and LICENSE files for more details.
 <%= render(Primer::OpenProject::SubHeader.new) do |subheader| %>
   <% subheader.with_action_button(
        scheme: :primary,
-       aria: { label: I18n.t(:button_add_cost_type) },
-       title: I18n.t(:button_add_cost_type),
+       leading_icon: :plus,
+       label: I18n.t(:button_add_cost_type),
        tag: :a,
        href: new_admin_cost_type_path
-     ) do |button|
-       button.with_leading_visual_icon(icon: :plus)
+     ) do
        CostType.model_name.human
      end %>
 
@@ -65,7 +64,7 @@ See COPYRIGHT and LICENSE files for more details.
               <%= angular_component_tag "opce-basic-single-date-picker",
                                         inputs: {
                                           value: @fixed_date,
-                                          inputId: :start_date,
+                                          id: :start_date,
                                           name: :fixed_date
                                         } %>
             </div>

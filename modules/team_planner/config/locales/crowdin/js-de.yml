@@ -3,6 +3,7 @@ de:
   js:
     team_planner:
       add_existing: 'Bestehende hinzufügen'
+      label_team_planner_plural: 'Teamplaner'
       add_existing_title: 'Vorhandenes Arbeitspaket hinzufügen'
       create_label: 'Teamplaner'
       create_title: 'Neuen Teamplaner erstellen'

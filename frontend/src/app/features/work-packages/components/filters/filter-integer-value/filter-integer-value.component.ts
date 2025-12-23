@@ -38,6 +38,7 @@ import { QueryFilterResource } from 'core-app/features/hal/resources/query-filte
 @Component({
   selector: 'op-filter-integer-value',
   templateUrl: './filter-integer-value.component.html',
+  standalone: false,
 })
 export class FilterIntegerValueComponent extends UntilDestroyedMixin {
   @Input() public shouldFocus = false;

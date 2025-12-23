@@ -79,7 +79,7 @@ RSpec.describe Token::ICal do
       # therefore a user needs to be allowed to have N ical tokens per query
       ical_token1 = described_class.create(
         user:,
-        ical_token_query_assignment_attributes: { query:, name: "#{name}_1" }
+        ical_token_query_assignment_attributes: { query:, name: "#{name}it" }
       )
       ical_token2 = described_class.create(
         user:,
@@ -109,11 +109,11 @@ RSpec.describe Token::ICal do
     it "a user cannot have N ical tokens per query with the same name" do
       ical_token1 = described_class.create(
         user:,
-        ical_token_query_assignment_attributes: { query:, name: "#{name}_1" }
+        ical_token_query_assignment_attributes: { query:, name: "#{name}it" }
       )
       ical_token2 = described_class.create(
         user:,
-        ical_token_query_assignment_attributes: { query:, name: "#{name}_1" }
+        ical_token_query_assignment_attributes: { query:, name: "#{name}it" }
       )
 
       expect(ical_token2.errors["ical_token_query_assignment.name"].first).to eq(
@@ -130,7 +130,7 @@ RSpec.describe Token::ICal do
 
       ical_token3 = described_class.create(
         user:,
-        ical_token_query_assignment_attributes: { query: query2, name: "#{name}_1" }
+        ical_token_query_assignment_attributes: { query: query2, name: "#{name}it" }
       )
 
       expect(described_class.where(user_id: user.id)).to contain_exactly(

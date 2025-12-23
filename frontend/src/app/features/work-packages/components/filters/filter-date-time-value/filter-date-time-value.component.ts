@@ -45,6 +45,7 @@ import { AbstractDateTimeValueController } from '../abstract-filter-date-time-va
 @Component({
   selector: 'op-filter-date-time-value',
   templateUrl: './filter-date-time-value.component.html',
+  standalone: false,
 })
 export class FilterDateTimeValueComponent extends AbstractDateTimeValueController implements OnInit {
   @HostBinding('id') get id() {

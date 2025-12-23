@@ -203,6 +203,7 @@ module Pages
       select_autocomplete(find('[data-test-selector="project_id"]'),
                           query: project,
                           results_selector: "body",
+                          wait_dropdown_open: true,
                           wait_for_fetched_options: false)
     end
 
@@ -249,6 +250,7 @@ module Pages
     def select_user_to_add(name)
       select_autocomplete page.find('[data-test-selector="tp-add-assignee"]'),
                           query: name,
+                          wait_dropdown_open: false,
                           results_selector: "body"
     end
 

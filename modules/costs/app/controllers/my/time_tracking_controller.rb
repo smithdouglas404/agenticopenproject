@@ -81,10 +81,14 @@ module My
 
     def parsed_date
       if params[:date].present?
-        begin
-          Date.iso8601(params[:date])
-        rescue StandardError
-          nil
+        if params[:date] == "today"
+          current_date
+        else
+          begin
+            Date.iso8601(params[:date])
+          rescue StandardError
+            nil
+          end
         end
       end
     end
@@ -114,16 +118,12 @@ module My
     end
 
     def current_date
-      case mode
-      when :day then Time.zone.today
-      when :week, :workweek then Time.zone.today.beginning_of_week(week_start_day)
-      when :month then Time.zone.today.beginning_of_month
-      end
+      Time.zone.today
     end
 
     def load_time_entries(time_scope)
       @time_entries = TimeEntry
-        .includes(:project, :activity, { work_package: :status })
+        .preload(:project, :activity, :entity)
         .where(project_id: Project.visible.select(:id))
         .where(user: User.current, spent_on: time_scope)
         .order(:spent_on, :start_time, :hours)

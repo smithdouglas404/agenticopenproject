@@ -69,8 +69,8 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
   describe "new.html" do
     become_admin
 
-    describe "w/o a valid planning element id" do
-      describe "w/o being a member or administrator" do
+    describe "without a valid planning element id" do
+      describe "without being a member or administrator" do
         become_non_member
 
         it "renders a 404 page" do
@@ -80,7 +80,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
         end
       end
 
-      describe "w/ the current user being a member" do
+      describe "with the current user being a member" do
         become_member_with_view_planning_element_permissions
 
         it "raises ActiveRecord::RecordNotFound errors" do
@@ -91,10 +91,10 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
       end
     end
 
-    describe "w/ a valid planning element id" do
+    describe "with a valid planning element id" do
       become_admin
 
-      describe "w/o being a member or administrator" do
+      describe "without being a member or administrator" do
         become_non_member
 
         it "renders a 403 Forbidden page" do
@@ -104,7 +104,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
         end
       end
 
-      describe "w/ the current user being a member" do
+      describe "with the current user being a member" do
         become_member_with_move_work_package_permissions
 
         before do
@@ -130,7 +130,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
     end
 
     describe "an issue to another project" do
-      context "w/o following" do
+      context "without following" do
         before do
           status
         end
@@ -273,7 +273,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
       describe "move with given note" do
         let(:note) { "Moving a work package" }
 
-        context "w/o work package changes" do
+        context "without work package changes" do
           before do
             post :create,
                  params: {
@@ -287,7 +287,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
           end
         end
 
-        context "w/o work package changes" do
+        context "with a work package priority change" do
           before do
             post :create,
                  params: {
@@ -303,8 +303,8 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
         end
       end
 
-      describe "&copy" do
-        context "follows to another project" do
+      describe "& duplicate" do
+        context "when following to another project" do
           before do
             post :create,
                  params: {
@@ -322,7 +322,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
           end
         end
 
-        context "w/o changing the work package's attribute" do
+        context "without changing the work package's attribute" do
           before do
             post :create,
                  params: {
@@ -342,7 +342,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
             expect(subject.status_id).to eq(work_package.status_id)
           end
 
-          it "did not change the status" do
+          it "did not change the version" do
             expect(subject.version_id).to eq(work_package.version_id)
           end
 
@@ -356,8 +356,8 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
         end
 
         context "with changing the work package's attribute" do
-          let(:start_date) { Date.today }
-          let(:due_date) { Date.today + 1 }
+          let(:start_date) { Date.current }
+          let(:due_date) { Date.tomorrow }
           let(:target_version) { create(:version, project: target_project) }
           let(:target_type) { target_project.types.first }
           let(:target_status) { create(:status, workflow_for_type: target_type) }
@@ -391,7 +391,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
 
           subject { WorkPackage.limit(2).order(Arel.sql("id desc")).where(project_id: target_project.id) }
 
-          it "copied two work packages" do
+          it "duplicates two work packages" do
             expect(subject.count).to eq(2)
           end
 
@@ -439,7 +439,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
         end
 
         context "with given note" do
-          let(:note) { "Copying a work package" }
+          let(:note) { "Duplicating a work package" }
 
           before do
             post :create,
@@ -488,9 +488,9 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
             end
           end
 
-          context "when copying the parent with a child exceeds the request limit",
+          context "when duplicating the parent with a child exceeds the request limit",
                   with_settings: { work_packages_bulk_request_limit: 1 } do
-            let(:note) { "Copying a work package" }
+            let(:note) { "Duplicating a work package" }
 
             before do
               post :create,
@@ -517,7 +517,7 @@ RSpec.describe WorkPackages::MovesController, with_settings: { journal_aggregati
           end
         end
 
-        context "when copying child work package from one project to other" do
+        context "when duplicating child work package from one project to other" do
           let(:to_project) do
             create(:project,
                    types: [type])

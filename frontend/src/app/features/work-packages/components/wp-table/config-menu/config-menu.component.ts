@@ -7,6 +7,7 @@ import { WpTableConfigurationModalComponent } from 'core-app/features/work-packa
 @Component({
   templateUrl: './config-menu.template.html',
   selector: 'wp-table-config-menu',
+  standalone: false,
 })
 export class WorkPackagesTableConfigMenuComponent {
   public text = {

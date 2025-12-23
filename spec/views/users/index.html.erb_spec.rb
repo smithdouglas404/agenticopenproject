@@ -31,6 +31,8 @@
 require "spec_helper"
 
 RSpec.describe "users/index" do
+  include EnterpriseTokenFactory
+
   shared_let(:admin) { create(:admin) }
   let!(:user) { create(:user, firstname: "Scarlet", lastname: "Scallywag") }
 
@@ -57,7 +59,7 @@ RSpec.describe "users/index" do
 
   context "with an Enterprise token" do
     before do
-      allow(OpenProject::Enterprise).to receive(:token).and_return(Struct.new(:restrictions).new({ active_user_count: 5 }))
+      create_enterprise_token("token_5_users", restrictions: { active_user_count: 5 })
     end
 
     it "shows the current number of active and allowed users" do

@@ -143,6 +143,7 @@ A very special thank you goes to Deutsche Bahn and City of Cologne for sponsorin
 Also, a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Bill Bai, Sam Yelman, Knight Chang, Gábor Alexovics, Gregor Buergisser, Andrey Dermeyko, Various Interactive, Clayton Belcher, Александр Татаринцев, and Keno Krewer.
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to highlight
+
 - [Alexander Aleschenko](https://crowdin.com/profile/top4ek), for a great number of translations into Russian.
 - [José Helbert Pina](https://crowdin.com/profile/GZTranslations), for a great number of translations into Portuguese.
 - [BigSeung](https://crowdin.com/profile/BigSeung), for a great number of translations into Korean.

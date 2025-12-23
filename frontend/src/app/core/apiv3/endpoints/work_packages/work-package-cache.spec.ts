@@ -43,7 +43,8 @@ import { WorkPackageCache } from 'core-app/core/apiv3/endpoints/work_packages/wo
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { OpenprojectHalModule } from 'core-app/features/hal/openproject-hal.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('WorkPackageCache', () => {
   let injector:Injector;
@@ -54,11 +55,8 @@ describe('WorkPackageCache', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OpenprojectHalModule,
-        HttpClientTestingModule,
-      ],
-      providers: [
+    imports: [OpenprojectHalModule],
+    providers: [
         States,
         HalResourceService,
         TimezoneService,
@@ -71,8 +69,10 @@ describe('WorkPackageCache', () => {
         { provide: ToastService, useValue: {} },
         { provide: HalResourceNotificationService, useValue: { handleRawError: () => false } },
         { provide: WorkPackageNotificationService, useValue: {} },
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
 
     injector = TestBed.inject(Injector);
     states = TestBed.inject(States);
@@ -80,7 +80,7 @@ describe('WorkPackageCache', () => {
     workPackageCache = new WorkPackageCache(injector, states.workPackages);
 
     // sinon.stub(schemaCacheService, 'ensureLoaded').returns(Promise.resolve(true));
-    spyOn(schemaCacheService, 'ensureLoaded').and.returnValue(Promise.resolve(true as any));
+    spyOn(schemaCacheService, 'ensureLoaded').and.resolveTo(true as any);
 
     const workPackage1 = new WorkPackageResource(
       injector,

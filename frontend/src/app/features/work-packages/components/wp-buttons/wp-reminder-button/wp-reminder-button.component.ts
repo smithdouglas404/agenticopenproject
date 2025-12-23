@@ -48,6 +48,7 @@ import { filter, map, startWith, switchMap } from 'rxjs/operators';
   selector: 'wp-reminder-button',
   templateUrl: './wp-reminder-button.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageReminderButtonComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackage:WorkPackageResource;
@@ -100,7 +101,7 @@ export class WorkPackageReminderButtonComponent extends UntilDestroyedMixin impl
     return this
       .apiV3Service
       .work_packages
-      .id(this.workPackage.id as string)
+      .id(this.workPackage.id!)
       .reminders
       .get()
       .pipe(

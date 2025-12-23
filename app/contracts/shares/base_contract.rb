@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -54,7 +56,7 @@ module Shares
     end
 
     def role_grantable
-      errors.add(:roles, :ungrantable) unless active_roles.all? { _1.is_a?(assignable_role_class) }
+      errors.add(:roles, :ungrantable) unless active_roles.all? { it.is_a?(assignable_role_class) }
     end
 
     def active_roles

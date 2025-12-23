@@ -40,12 +40,13 @@ export const wpBaseSelector = 'work-packages-base';
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
   template: `
     <div class="work-packages-page--ui-view">
-      <ui-view></ui-view>
+      <ui-view />
     </div>
   `,
   providers: [
     { provide: EditFormRoutingService, useClass: WorkPackageEditFormRoutingService },
   ],
+  standalone: false,
 })
 export class WorkPackagesBaseComponent {
 }

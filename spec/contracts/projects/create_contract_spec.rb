@@ -41,9 +41,11 @@ RSpec.describe Projects::CreateContract do
                   public: project_public,
                   parent: project_parent,
                   status_code: project_status_code,
-                  status_explanation: project_status_explanation)
+                  status_explanation: project_status_explanation,
+                  templated: project_templated,
+                  workspace_type: project_workspace_type)
     end
-    let(:global_permissions) { [:add_project] }
+    let(:global_permissions) { %i[add_project add_portfolios add_programs] }
     let(:validated_contract) do
       contract.tap(&:validate)
     end
@@ -53,9 +55,79 @@ RSpec.describe Projects::CreateContract do
     context "if the identifier is nil" do
       let(:project_identifier) { nil }
 
-      it "is replaced for new project" do
-        expect_valid(true)
+      it_behaves_like "contract is valid"
+    end
+
+    context "when having the 'project' workspace_type and lacking the add_project permission" do
+      let(:global_permissions) { [] }
+
+      it_behaves_like "contract is invalid", base: %i(error_unauthorized)
+    end
+
+    context "if workspace_type is nil" do
+      let(:project_workspace_type) { nil }
+
+      it_behaves_like "contract is invalid", workspace_type: %i[inclusion]
+    end
+
+    context "if workspace type is 'project'" do
+      let(:project_workspace_type) { "project" }
+
+      it_behaves_like "contract is valid"
+    end
+
+    context "if workspace type is 'program'" do
+      let(:project_workspace_type) { "program" }
+
+      context "without portfolio_management enterprise feature", with_ee: [] do
+        it_behaves_like "contract is invalid", base: %i[error_enterprise_only]
       end
+
+      context "with portfolio_management enterprise feature", with_ee: :portfolio_management do
+        it_behaves_like "contract is valid"
+
+        context "without the add_programs permission" do
+          let(:global_permissions) { %i[add_project add_portfolios] }
+
+          it_behaves_like "contract is invalid", base: %i[error_unauthorized]
+        end
+
+        context "having the add_programs permission" do
+          let(:global_permissions) { %i[add_programs] }
+
+          it_behaves_like "contract is valid"
+        end
+      end
+    end
+
+    context "if workspace type is 'portfolio'" do
+      let(:project_workspace_type) { "portfolio" }
+
+      context "without portfolio_management enterprise feature", with_ee: [] do
+        it_behaves_like "contract is invalid", base: %i[error_enterprise_only]
+      end
+
+      context "with portfolio_management enterprise feature", with_ee: :portfolio_management do
+        it_behaves_like "contract is valid"
+
+        context "without the add_portfolios permission" do
+          let(:global_permissions) { %i[add_project add_programs] }
+
+          it_behaves_like "contract is invalid", base: %i[error_unauthorized]
+        end
+
+        context "having the add_portfolios permission" do
+          let(:global_permissions) { %i[add_portfolios] }
+
+          it_behaves_like "contract is valid"
+        end
+      end
+    end
+
+    context "if workspace type is 'invalid type'" do
+      let(:project_workspace_type) { "invalid type" }
+
+      it_behaves_like "contract is invalid", workspace_type: %i[inclusion]
     end
 
     describe "permissions" do
@@ -77,6 +149,13 @@ RSpec.describe Projects::CreateContract do
           project.send(:"#{attribute}=", value)
           expect(validated_contract).not_to be_valid
           expect(validated_contract.errors[attribute]).to include "was attempted to be written but is not writable."
+        end
+      end
+
+      describe "writing template attribute" do
+        it_behaves_like "can write" do
+          let(:attribute) { :template }
+          let(:value) { build_stubbed(:template_project) }
         end
       end
 

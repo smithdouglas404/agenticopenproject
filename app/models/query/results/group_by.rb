@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -158,13 +160,8 @@ module ::Query::Results::GroupBy
   end
 
   def transform_property_keys(groups)
-    association = WorkPackage.reflect_on_all_associations.detect { |a| a.name == query.group_by_column.name.to_sym }
-
-    if association
-      transform_association_property_keys(association, groups)
-    else
-      groups
-    end
+    association = find_association_for_group
+    association ? transform_association_property_keys(association, groups) : groups
   end
 
   def transform_association_property_keys(association, groups)
@@ -212,5 +209,18 @@ module ::Query::Results::GroupBy
     order = sort_entry&.last || column.default_order
 
     "#{order} #{column.null_handling(order == 'asc')}"
+  end
+
+  def find_association_for_group
+    WorkPackage.reflect_on_all_associations.detect do |association|
+      matches_group_by_column?(association)
+    end
+  end
+
+  def matches_group_by_column?(association)
+    # Some query columns override their groupable column name, prefer that if given:
+    group_name = query.group_by_column.group_by_column_name || query.group_by_column.name
+
+    association.name == group_name.to_sym
   end
 end

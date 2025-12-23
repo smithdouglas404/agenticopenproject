@@ -1,7 +1,11 @@
+---
+sidebar_navigation:
+  title:  Report, Gantt and Table PDF Styling
+---
 
 # Report, Gantt and Table PDF
 
-This document describes the style settings format for the [PDF Export styling file](https://github.com/opf/openproject/blob/dev/app/models/work_package/pdf_export/report/standard.yml)
+This document describes the style settings format for the [PDF Export styling file](https://github.com/opf/openproject/blob/dev/app/models/work_package/pdf_export/report/standard.yml).
 
 | Key | Description | Data type |
 | - | - | - |
@@ -89,6 +93,23 @@ border_width_right: 0.5mm
 | `no_border_top` | **Disable border top**<br/>Turn off border on the top sides | boolean |
 | `no_border_right` | **Disable border right**<br/>Turn off border on the right sides | boolean |
 | `no_border_bottom` | **Disable border bottom**<br/>Turn off border on the bottom sides | boolean |
+
+## Cell alignment properties
+
+Properties to set vertical and horizontal alignment of table cells
+
+Key: `cell_alignment`
+
+Example:
+```yml
+align: center
+valign: middle
+```
+
+| Key | Description | Data type |
+| - | - | - |
+| `align` | **Horizontal alignment**<br/>Set the horizontal alignment of the content in a cell<br/>Example: `center`<br/>Valid values:<br/>`left`, `center`, `right` | string |
+| `valign` | **Vertical alignment**<br/>Border width only on the left side<br/>Example: `middle`<br/>Valid values:<br/>`top`, `center`, `middle`, `bottom` | string |
 
 ## Cover page
 
@@ -877,6 +898,7 @@ table_cell:
 | … | See [Font properties](#font-properties) |  |
 | … | See [Padding Properties](#padding-properties) |  |
 | … | See [Border Properties](#border-properties) |  |
+| … | See [Cell alignment properties](#cell-alignment-properties) |  |
 
 ## Table header cell
 
@@ -899,6 +921,7 @@ table_header:
 | … | See [Font properties](#font-properties) |  |
 | … | See [Padding Properties](#padding-properties) |  |
 | … | See [Border Properties](#border-properties) |  |
+| … | See [Cell alignment properties](#cell-alignment-properties) |  |
 
 ## Table of content
 

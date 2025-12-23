@@ -27,9 +27,22 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title @copy ? t(:button_copy) : t(:button_move), t("activerecord.models.work_package") %>
+<% html_title @copy ? t(:button_duplicate) : t(:button_move), t("activerecord.models.work_package") %>
 
-<h2><%= @copy ? t(:button_copy) : t(:button_move) %></h2>
+<% single_wp = @work_packages.size == 1 ? @work_packages.first : nil %>
+
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title { @copy ? t(:button_duplicate) : t(:button_move) }
+    header.with_breadcrumbs(
+      [*([href: project_overview_path(@project.id), text: @project.name] if @project),
+       { href: project_work_packages_path(@project), text: t(:label_work_package_plural) },
+       *(single_wp ? [{ href: work_package_path(single_wp), text: single_wp.subject }] : []),
+       @copy ? t(:button_duplicate) : t(:button_move)]
+    )
+  end
+%>
+
 <ul>
   <% @work_packages.each do |work_package| -%>
     <li>
@@ -162,8 +175,8 @@ See COPYRIGHT and LICENSE files for more details.
             <%= styled_label_tag :budget_id, Budget.model_name.human %>
             <%= styled_select_tag(
                   "budget_id", (@target_project == @project ? content_tag("option", t(:label_no_change_option), value: "") : "") +
-              content_tag("option", t(:label_none), value: "none") +
-              options_from_collection_for_select(@target_project.budgets, :id, :subject)
+                  content_tag("option", t(:label_none), value: "none") +
+                  options_from_collection_for_select(@target_project.budgets, :id, :subject)
                 ) %>
           </div>
         </div>
@@ -173,7 +186,7 @@ See COPYRIGHT and LICENSE files for more details.
             <div class="form--field-container -visible-overflow">
               <%= angular_component_tag "opce-basic-single-date-picker",
                                         inputs: {
-                                          inputId: "start_date",
+                                          id: "start_date",
                                           name: "start_date"
                                         } %>
             </div>
@@ -183,7 +196,7 @@ See COPYRIGHT and LICENSE files for more details.
             <div class="form--field-container -visible-overflow">
               <%= angular_component_tag "opce-basic-single-date-picker",
                                         inputs: {
-                                          inputId: "due_date",
+                                          id: "due_date",
                                           name: "due_date"
                                         } %>
             </div>
@@ -203,15 +216,15 @@ See COPYRIGHT and LICENSE files for more details.
     </fieldset>
     <fieldset class="form--fieldset">
       <legend class="form--fieldset-legend"><%= Journal.human_attribute_name(:notes) %></legend>
-      <%= label_tag "notes", Journal.human_attribute_name(:notes), class: "hidden-for-sighted" %>
+      <%= label_tag "notes", Journal.human_attribute_name(:notes), class: "sr-only" %>
       <%= styled_text_area_tag "notes", @notes, cols: 60, rows: 10, class: "wiki-edit", with_text_formatting: true %>
     </fieldset>
     <%= call_hook(:view_work_packages_move_bottom, work_packages: @work_packages, target_project: @target_project, copy: !!@copy) %>
   </section>
   <% if @copy %>
     <%= hidden_field_tag("copy") %>
-    <%= styled_submit_tag t(:button_copy), class: "-primary" %>
-    <%= styled_submit_tag t(:button_copy_and_follow), name: "follow", class: "-primary" %>
+    <%= styled_submit_tag t(:button_duplicate), class: "-primary" %>
+    <%= styled_submit_tag t(:button_duplicate_and_follow), name: "follow", class: "-primary" %>
   <% else %>
     <%= styled_submit_tag t(:button_move), class: "-primary" %>
     <%= styled_submit_tag t(:button_move_and_follow), name: "follow", class: "-primary" %>

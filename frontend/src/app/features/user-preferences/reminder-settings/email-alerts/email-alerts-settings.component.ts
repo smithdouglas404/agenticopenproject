@@ -29,6 +29,7 @@ export const emailAlerts:EmailAlertType[] = [
   selector: 'op-email-alerts-settings',
   templateUrl: './email-alerts-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class EmailAlertsSettingsComponent implements OnInit {
   form:UntypedFormGroup;

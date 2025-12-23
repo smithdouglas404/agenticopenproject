@@ -41,8 +41,8 @@ import { QueryFilterResource } from 'core-app/features/hal/resources/query-filte
 @Component({
   selector: 'wp-filter-by-text-input',
   templateUrl: './quick-filter-by-text-input.html',
+  standalone: false,
 })
-
 export class WorkPackageFilterByTextInputComponent extends UntilDestroyedMixin {
   @Output() public deactivateFilter = new EventEmitter<QueryFilterResource>();
 

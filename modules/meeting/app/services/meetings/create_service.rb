@@ -33,10 +33,10 @@ module Meetings
     protected
 
     def after_perform(call)
-      if call.success? && Journal::NotificationConfiguration.active?
-        meeting = call.result
+      meeting = call.result
 
-        meeting.participants.where(invited: true).each do |participant|
+      if call.success? && Journal::NotificationConfiguration.active? && meeting.send_emails?
+        meeting.participants.where(invited: true).find_each do |participant|
           MeetingMailer
             .invited(meeting, participant.user, User.current)
             .deliver_later

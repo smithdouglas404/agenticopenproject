@@ -43,6 +43,7 @@ import SpotDropAlignmentOption from 'core-app/spot/drop-alignment-options';
   selector: '[op-storage-file-list-item]',
   templateUrl: './storage-file-list-item.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class StorageFileListItemComponent {
   @Input() public content:StorageFileListItem;

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,7 +32,7 @@ module BreadcrumbHelper
   def nested_breadcrumb_element(section_header, title)
     output = "".html_safe
     output << "#{section_header}: "
-    output << content_tag(:strong, title)
+    output << content_tag(:b, title)
 
     output
   end

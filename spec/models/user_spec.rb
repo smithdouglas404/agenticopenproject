@@ -374,20 +374,17 @@ RSpec.describe User do
   end
 
   describe "#authentication_provider" do
-    let!(:provider) { create(:oidc_provider, slug: "test_provider") }
+    let!(:authentication_provider) { create(:oidc_provider) }
 
-    before do
-      user.identity_url = "test_provider:veryuniqueid"
-      user.save!
+    context "when there is a link between user and auth provider" do
+      let(:user) { create(:user, authentication_provider:) }
+
+      it "returns the provider when there is a link" do
+        expect(user.authentication_provider).to eql(authentication_provider)
+      end
     end
 
-    it "returns the provider" do
-      expect(user.authentication_provider).to eql(provider)
-    end
-
-    context "when no matching provider exists" do
-      let!(:provider) { nil }
-
+    context "when there is no link" do
       it "returns nil" do
         expect(user.authentication_provider).to be_nil
       end
@@ -395,22 +392,19 @@ RSpec.describe User do
   end
 
   describe "#human_authentication_provider" do
-    let!(:provider) { create(:oidc_provider, slug: "test_provider", display_name: "Karl") }
+    let!(:authentication_provider) { create(:oidc_provider) }
 
-    before do
-      user.identity_url = "test_provider:veryuniqueid"
-      user.save!
+    context "when there is a link between user and auth provider" do
+      let(:user) { create(:user, authentication_provider:) }
+
+      it "returns a human readable name" do
+        expect(user.human_authentication_provider).to eql(authentication_provider.display_name)
+      end
     end
 
-    it "returns a human readable name" do
-      expect(user.human_authentication_provider).to eql("Karl")
-    end
-
-    context "when no matching provider exists" do
-      let!(:provider) { nil }
-
+    context "when no provider exists" do
       it "returns nil" do
-        expect(user.authentication_provider).to be_nil
+        expect(user.human_authentication_provider).to be_nil
       end
     end
   end
@@ -503,7 +497,7 @@ RSpec.describe User do
 
   describe "#uses_external_authentication?" do
     context "with identity_url" do
-      let(:user) { build(:user, identity_url: "test_provider:veryuniqueid") }
+      let(:user) { create(:user, identity_url: "test_provider:veryuniqueid") }
 
       it "returns true" do
         expect(user).to be_uses_external_authentication
@@ -1086,8 +1080,9 @@ RSpec.describe User do
   end
 
   it_behaves_like "acts_as_customizable included" do
-    let(:model_instance) { user }
-    let(:custom_field) { create(:user_custom_field, :string) }
+    let!(:model_instance) { create(:user) }
+    let!(:new_model_instance) { user }
+    let!(:custom_field) { create(:user_custom_field, :string) }
   end
 
   describe ".available_custom_fields" do

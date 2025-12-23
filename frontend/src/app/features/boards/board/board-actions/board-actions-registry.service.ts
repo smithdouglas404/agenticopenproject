@@ -17,7 +17,7 @@ export class BoardActionsRegistryService {
     private bannersService:BannersService,
   ) {}
 
-  private mapping:{ [attribute:string]:BoardActionService } = {};
+  private mapping:Record<string, BoardActionService> = {};
 
   public add(attribute:string, service:BoardActionService):void {
     this.mapping[attribute] = service;
@@ -30,7 +30,7 @@ export class BoardActionsRegistryService {
       icon: '',
       description: '',
       image: '',
-      disabled: this.bannersService.showBannerFor('board_view'),
+      disabled: !this.bannersService.allowsTo('board_view'),
     }));
   }
 

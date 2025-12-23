@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { calculatePositionValueForDayCount, TimelineViewParameters } from '../wp-timeline';
 import { TimelineStaticElement } from './timeline-static-element';
 

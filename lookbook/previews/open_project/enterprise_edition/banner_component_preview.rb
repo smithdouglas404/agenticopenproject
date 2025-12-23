@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -69,6 +71,17 @@ module OpenProject
             .new(:customize_life_cycle,
                  variant: :medium,
                  image: "enterprise/internal-comments.png",
+                 show_always: true)
+        )
+      end
+
+      # @display min_height 600px
+      def large
+        render(
+          ::EnterpriseEdition::BannerComponent
+            .new(:date_alerts,
+                 variant: :large,
+                 video: "enterprise/date-alert-notifications.mp4",
                  show_always: true)
         )
       end

@@ -31,6 +31,7 @@ ko:
     github_avatar_url: "아바타 URL"
     github_updated_at: "업데이트:"
     github_login: "GitHub 로그인"
+    host: "호스트"
     labels: "레이블"
     repository: "리포지토리"
     changed_files_count: "파일 변경"

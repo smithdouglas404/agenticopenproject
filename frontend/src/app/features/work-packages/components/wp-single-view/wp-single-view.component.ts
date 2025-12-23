@@ -96,6 +96,7 @@ export const overflowingContainerAttribute = 'overflowingIdentifier';
   templateUrl: './wp-single-view.component.html',
   selector: 'wp-single-view',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackage:WorkPackageResource;
@@ -139,7 +140,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
 
   public uiSelfRef:string;
 
-  $element:JQuery;
+  element:HTMLElement;
 
   projectStorages = new BehaviorSubject<IProjectStorage[]>([]);
 
@@ -165,7 +166,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   }
 
   public ngOnInit():void {
-    this.$element = jQuery(this.elementRef.nativeElement as HTMLElement);
+    this.element = this.elementRef.nativeElement as HTMLElement;
 
     this.isNewResource = isNewResource(this.workPackage);
 
@@ -264,16 +265,6 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   }
 
   /**
-   * angular 2 doesn't support track by property any more but requires a custom function
-   * https://github.com/angular/angular/issues/12969
-   * @param _index
-   * @param elem
-   */
-  public trackByName(_index:number, elem:{ name:string }):string {
-    return elem.name;
-  }
-
-  /**
    * Allow other modules to register groups to insert into the single view
    */
   public prependedAttributeGroupComponents() {
@@ -313,12 +304,12 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
     const id = idFromLink(this.workPackage.project.href);
     const projectPath = this.PathHelper.projectPath(id);
     const projectName = this.workPackage.project.name as string;
-    const project = `<a href="${projectPath}" class="project-context--switch-link">${projectName}<a>`;
+    const project = `<a href="${projectPath}" target="_self" class="project-context--switch-link">${projectName}</a>`;
     return this.I18n.t('js.project.click_to_switch_to_project', { projectname: project });
   }
 
   showTwoColumnLayout():boolean {
-    return this.$element[0].getBoundingClientRect().width > 750;
+    return this.element.getBoundingClientRect().width > 750;
   }
 
   private rebuildGroupedFields(change:WorkPackageChangeset, attributeGroups:any) {
@@ -415,7 +406,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
     const schema = this.schema(workPackage);
 
     let schemaHref:string|null;
-    const projectHref:string|null = workPackage.project && workPackage.project.href;
+    const projectHref:string|null = workPackage.project?.href;
 
     if (schema.baseSchema) {
       schemaHref = schema.baseSchema.href;
@@ -440,9 +431,9 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   }
 
   private getAttributesGroupId(group:any):string {
-    const overflowingIdentifier = this.$element
-      .find(`[data-group-name=\'${group.name}\']`)
-      .data(overflowingContainerAttribute);
+    const overflowingIdentifier = this.element
+      .querySelector<HTMLElement>(`[data-group-name=\'${group.name}\']`)
+      ?.dataset[overflowingContainerAttribute];
 
     if (overflowingIdentifier) {
       return overflowingIdentifier.replace('.__overflowing_', '');

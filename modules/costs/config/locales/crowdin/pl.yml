@@ -31,6 +31,9 @@ pl:
         spent: "Wydatki"
         spent_on: "Data"
         logged_by: "W dzienniku zarejestrował:"
+        entity: Zalogowano przez
+        entity_id: Zalogowano przez
+        entity_gid: Zalogowano przez
       cost_type:
         unit: "Nazwa jednostki"
         unit_plural: "Liczba mnoga jednostki"
@@ -58,6 +61,9 @@ pl:
         start_time: Czas rozpoczęcia
         end_time: Czas zakończenia
         time: Godzina
+        entity: Zalogowano przez
+        entity_id: Zalogowano przez
+        entity_gid: Zalogowano przez
     models:
       time_entry:
         one: "Wpis czasu"
@@ -85,6 +91,7 @@ pl:
         time_entry:
           invalid_time: "musi zawierać się między 00:00 a 23:59."
           cannot_log_for_this_work_package: "Nie można zarejestrować czasu dla tego pakietu roboczego."
+          duplicate_ongoing: "Wpis bieżącej godziny już istnieje dla tego użytkownika."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Zestaw zadań #%{id} nie jest poprawnym celem do ponownego rozpisania kosztów."
           nullify_is_not_valid_for_cost_entries: "Pozycje kosztów nie mogą być przypisane do projektu."
@@ -102,6 +109,7 @@ pl:
   button_log_time: "Dziennik"
   button_add_activity: "Aktywność"
   button_add_time_entry: "Rejestruj czas pracy"
+  button_stop_timer: "Zatrzymaj zegar"
   caption_booked_on_project: "Zarezerwowano na projekt"
   caption_default: "Domyślny"
   caption_default_rate_history_for: "Domyślna stawka historii dla %{user}"
@@ -180,6 +188,7 @@ pl:
   label_day: "Dzień"
   label_today_capitalized: "Dzisiaj"
   label_view_mode_switcher: "Zmień widok"
+  label_timer_since: "Rozpoczęto o %{time}"
   placeholder_activity_select_work_package_first: W pierwszej kolejności wymagany jest wybór pakietu roboczego
   notice_something_wrong: "Coś poszło nie tak. Proszę spróbuj ponownie."
   notice_successful_restore: "Przywracanie się powiodło."
@@ -187,6 +196,7 @@ pl:
   notice_cost_logged_successfully: "Koszt jednostkowy zarejestrowano pomyślnie."
   notice_different_time_zones: "Ten użytkownik ma inną strefę czasową (%{tz}). Godzina będzie rejestrowana przy użyciu tej strefy czasowej."
   notice_time_entry_update_failed: "Nie można zaktualizować wpisu czasu. Błędy: %{errors}"
+  notice_time_entry_delete_failed: "Nie udało się usunąć wpisu czasu. Błędy: %{errors}"
   permission_edit_cost_entries: "Edytuj zapisane koszty jednostkowe"
   permission_edit_own_cost_entries: "Edytuj zarejestrowane własne koszty jednostkowe"
   permission_edit_hourly_rates: "Edycja stawek godzinowych"
@@ -201,11 +211,13 @@ pl:
   permission_view_own_hourly_rate: "Zobacz własne stawki godzinowe"
   permission_view_own_time_entries: "Zobacz swój poświęcony czas"
   project_module_costs: "Czas i koszty"
-  setting_allow_tracking_start_and_end_times: "Zezwalaj na dokładne śledzenie czasu"
+  setting_allow_tracking_start_and_end_times: "Zezwól na czasy rozpoczęcia i zakończenia"
   setting_costs_currency: "Waluta"
   setting_costs_currency_format: "Format waluty"
-  setting_enforce_tracking_start_and_end_times: "Wymagaj dokładnych czasów"
-  setting_enforce_without_allow: "Nie można wymagać dokładnych czasów bez zezwolenia na nie"
+  setting_enforce_tracking_start_and_end_times: "Wymagaj czasów rozpoczęcia i zakończenia"
+  setting_enforce_without_allow: "Nie można wymagać czasów rozpoczęcia i zakończenia bez zezwolenia na nie"
+  setting_allow_tracking_start_and_end_times_caption: "Umożliwia wprowadzenie czasów rozpoczęcia i zakończenia w razie rejestrowania czasu."
+  setting_enforce_tracking_start_and_end_times_caption: "Wymusza wprowadzenie czasów rozpoczęcia i zakończenia w razie rejestrowania czasu."
   text_assign_time_and_cost_entries_to_project: "Przypisz zgłoszone godziny i koszty do projektu"
   text_destroy_cost_entries_question: "%{cost_entries} zostały zgłoszone do Zestawu zadań, który chcesz usunąć. Co chcesz zrobić?"
   text_destroy_time_and_cost_entries: "Usuń zgłoszone godziny i koszty"

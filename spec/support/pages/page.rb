@@ -117,7 +117,7 @@ module Pages
     end
 
     def drag_and_drop_list_cuprite(from:, to:, elements:, handler:)
-      list = page.all(elements)
+      list = page.all(elements, minimum: [from, to].max + 1)
       source_handler = list[from].find(handler)
       target_handler = list[to].find(handler)
 
@@ -129,7 +129,7 @@ module Pages
       # Wait a bit because drag & drop in selenium is easily offended
       sleep 1
 
-      list = page.all(elements)
+      list = page.all(elements, minimum: [from, to].max + 1)
       source = list[from]
       target = list[to]
 
@@ -182,7 +182,7 @@ module Pages
       visit root_path
 
       within ".op-app-header" do
-        click_on "Modules"
+        page.find_test_selector("op-app-header--modules-menu-button").click
       end
 
       within "#op-app-header--modules-menu-list", visible: :all do

@@ -11,7 +11,6 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { KeyCodes } from 'core-app/shared/helpers/keyCodes.enum';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { findAllFocusableElementsWithin } from 'core-app/shared/helpers/focus-helpers';
 import { SpotDropModalTeleportationService } from './drop-modal-teleportation.service';
@@ -23,6 +22,7 @@ import { autoUpdate, computePosition, flip, limitShift, Placement, shift } from 
   selector: 'spot-drop-modal',
   templateUrl: './drop-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SpotDropModalComponent implements OnDestroy {
   @HostBinding('class.spot-drop-modal') public className = true;
@@ -95,7 +95,7 @@ export class SpotDropModalComponent implements OnDestroy {
 
   @ViewChild('anchor') anchor:ElementRef;
 
-  @ViewChild('body') body:TemplateRef<any>;
+  @ViewChild('body') body:TemplateRef<unknown>;
 
   @ViewChild('focusGrabber') focusGrabber:ElementRef;
 
@@ -158,9 +158,9 @@ export class SpotDropModalComponent implements OnDestroy {
           window.addEventListener('resize', this.onResize);
           window.addEventListener('orientationchange', this.onResize);
 
-          const focusCatcherContainer = document.querySelectorAll("[data-modal-focus-catcher-container='true']")[0];
+          const focusCatcherContainer = document.querySelector<HTMLElement>("[data-modal-focus-catcher-container='true']");
           if (focusCatcherContainer) {
-            (findAllFocusableElementsWithin(focusCatcherContainer as HTMLElement)[0])?.focus();
+            (findAllFocusableElementsWithin(focusCatcherContainer)[0])?.focus();
           } else {
             // Index 1 because the element at index 0 is the trigger button to open the modal
             (findAllFocusableElementsWithin(document.querySelector('.spot-drop-modal-portal')!)[1])?.focus();
@@ -218,7 +218,7 @@ export class SpotDropModalComponent implements OnDestroy {
   }
 
   private escapeCallback = (evt:KeyboardEvent) => {
-    if (evt.keyCode === KeyCodes.ESCAPE) {
+    if (evt.key === 'Escape') {
       this.close();
     }
   };

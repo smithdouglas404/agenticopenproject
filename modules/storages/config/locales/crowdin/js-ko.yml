@@ -17,7 +17,8 @@ ko:
       new_folder: "새 폴더"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "저장소"
       information:
         authentication_error: "%{storageType}에 대한 요청을 인증할 수 없습니다. 오류입니다."

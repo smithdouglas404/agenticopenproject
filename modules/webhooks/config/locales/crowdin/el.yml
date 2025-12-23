@@ -27,10 +27,15 @@ el:
       no_results_table: Δεν έχουν οριστεί webhooks ακόμη.
       label_add_new: Προσθήκη νέου webhook
       label_edit: Επεξεργασία webhook
-      label_event_resources: Πόροι συμβάντος
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Δημιουργήθηκε"
         updated: "Ενημερωμένο"
+        comment: "Σχόλιο"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the %{link} has passed.

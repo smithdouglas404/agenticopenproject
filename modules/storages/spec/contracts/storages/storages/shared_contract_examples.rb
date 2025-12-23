@@ -81,7 +81,7 @@ RSpec.shared_examples_for "onedrive storage contract" do
 
   let(:current_user) { create(:admin) }
   let(:storage_name) { "Storage 1" }
-  let(:storage_provider_type) { Storages::Storage::PROVIDER_TYPE_ONE_DRIVE }
+  let(:storage_provider_type) { Storages::OneDriveStorage.name }
   let(:storage_creator) { current_user }
 
   it_behaves_like "contract is valid for active admins and invalid for regular users"
@@ -95,7 +95,7 @@ RSpec.shared_examples_for "nextcloud storage contract", :storage_server_helpers,
   # Only admins have the right to create/delete storages.
   let(:current_user) { create(:admin) }
   let(:storage_name) { "Storage 1" }
-  let(:storage_provider_type) { Storages::Storage::PROVIDER_TYPE_NEXTCLOUD }
+  let(:storage_provider_type) { Storages::NextcloudStorage.name }
   let(:storage_host) { "https://host1.example.com" }
   let(:storage_creator) { current_user }
 

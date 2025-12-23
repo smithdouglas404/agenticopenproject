@@ -88,6 +88,8 @@ eo:
     button_list_view: "Lista vidigo"
     button_show_view: "Plenekrana vidigo"
     button_log_time: "Tempoprotokolo"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Pli"
     button_open_details: "Malfermi detalan vidon"
     button_close_details: "Fermi detalan vidon"
@@ -202,69 +204,6 @@ eo:
         edit_query: "Edit query"
         new_group: "Nova grupo"
         reset_to_defaults: "Restarigi la defaŭltojn"
-      enterprise:
-        text_reprieve_days_left: "%{days} days until end of grace period"
-        text_expired: "expired"
-        trial:
-          confirmation: "Confirmation of email address"
-          confirmation_info: >
-            We sent you an email on %{date} to %{email}. Please check your inbox and click the confirmation link provided to start your 14 days trial.
-          form:
-            general_consent: >
-              I agree with the <a target="_blank" href="%{link_terms}">terms of service</a> and the <a target="_blank" href="%{link_privacy}">privacy policy</a>.
-            invalid_email: "Invalid email address"
-            label_company: "Company"
-            label_first_name: "Nomo"
-            label_last_name: "Familinomo"
-            label_domain: "Domain"
-            label_subscriber: "Abonanto"
-            label_maximum_users: "Maksimuma kvanto da aktivaj uzantoj"
-            label_starts_at: "Starts at"
-            label_expires_at: "Senvalidiĝas la"
-            label_plan: "Plan"
-            label_additional_features: "Additional features"
-            receive_newsletter: I want to receive the OpenProject <a target="_blank" href="%{link}">newsletter</a>.
-            taken_domain: There can only be one active trial per domain.
-            domain_mismatch: The current request host name does not match the configured host name. Please double check your system settings.
-            taken_email: Each user can only create one trial.
-          email_not_received: "You did not receive an email? You can resend the email with the link on the right."
-          try_another_email: "Or try it with another email address."
-          next_steps: "Next steps"
-          resend_link: "Resend"
-          resend_success: "Email has been resent. Please check your emails and click the confirmation link provided."
-          resend_warning: "Could not resend email."
-          session_timeout: "Your session timed out. Please try to reload the page or resend email."
-          status_label: "Status:"
-          status_confirmed: "confirmed"
-          status_waiting: "email sent - waiting for confirmation"
-          test_ee: "Test the Enterprise edition 14 days for free"
-          quick_overview: "Get a quick overview of project management and team collaboration with OpenProject Enterprise edition."
-        upsell:
-          become_hero: "Fariĝu heroo!"
-          enterprise_info_html: "%{feature_title} is an Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span> add-on."
-          upgrade_info: "Please upgrade to a paid plan to activate and start using it in your team."
-          text: >
-            The OpenProject Enterprise edition builds on top of the Community edition. It includes Enterprise add-ons and professional support mainly aimed at organizations with more than 10 users that manage business critical projects with OpenProject.
-          you_contribute: "Developers need to pay their bills, too. By upgrading to the Enterprise edition, you will be supporting this open source community effort and contributing to its development, maintenance and continuous improvement."
-          benefits:
-            description: "What are the benefits of the Enterprise on-premises edition?"
-            high_security: "Security features"
-            high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-            installation: "Installation support"
-            installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
-            premium_features: "Enterprise add-ons"
-            premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-            professional_support: "Profesia subteno"
-            professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
-          button_start_trial: "Startu senpagan provperiodon"
-          button_upgrade: "Ppromocii nun"
-          button_contact_us: "Kontaktu nin por provoversio"
-          button_book_now: "Book now"
-          confidence: >
-            We deliver the confidence of a tested and supported enterprise-class project management software - with Open Source and an open mind.
-          link_quote: "Get a quote"
-          more_info: "Pliaj informoj"
-          unlimited: "Unlimited"
       working_days:
         calendar:
           empty_state_header: "Non-working days"
@@ -275,9 +214,9 @@ eo:
         change_button: "Save and reschedule"
         change_title: "Change working days"
         removed_title: "You will remove the following days from the non-working days list:"
-        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages in all projects in this instance."
+        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
         warning: >
-          The changes might take some time to take effect. You will be notified when all relevant work packages have been updated.
+          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
           Are you sure you want to continue?
       work_packages_settings:
         warning_progress_calculation_mode_change_from_status_to_field_html: >-
@@ -286,7 +225,7 @@ eo:
           Changing progress calculation mode from work-based to status-based will result in all existing <i>% Complete</i> values to be lost and replaced with values associated with each status. Existing values for <i>Remaining work</i> may also be recalculated to reflect this change. This action is not reversible.
     custom_actions:
       date:
-        specific: "je"
+        specific: "en"
         current_date: "Nuna dato"
     error:
       internal: "Okazis interna eraro."
@@ -335,7 +274,7 @@ eo:
         auto: "Auto zoom"
         days: "Days"
         weeks: "Weeks"
-        months: "Months"
+        months: "Monatoj"
         quarters: "Quarters"
         years: "Years"
         description: >
@@ -351,17 +290,6 @@ eo:
         format:
           date: "%{attribute} estas nevalida dato - JJJJ-MM-TT atendita."
         general: "Eraro okazis."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Legu pri novaj plibonigoj kaj aktualigoj de produkto."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_0":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>Meeting backlogs and the end of classic meetings.</li> <li>Updated Enterprise plans.</li> <li>Internal comments in work packages (Enterprise add-on).</li> <li>Automatically generated work package subjects (Enterprise add-on).</li> <li>Separate time tracking module with calendar view.</li> <li>Parent relation displayed in work package relations tab.</li> <li>Release to Community: Graphs on project overview page.</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -369,12 +297,13 @@ eo:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copy URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Activate"
     label_assignee: "Asignita al"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Aldoni kolumnon dektre"
     label_add_column_before: "Aldoni kolumnon maldektre"
     label_add_columns: "Aldoni kolumnojn"
@@ -387,6 +316,7 @@ eo:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "tagoj antaŭe"
     label_all: "ĉiuj"
+    label_all_projects: "All projects"
     label_all_uppercase: "Ĉiuj"
     label_all_work_packages: "ĉiuj laborpakaĵoj"
     label_and: "and"
@@ -415,6 +345,7 @@ eo:
     label_collapse: "Maletendi"
     label_collapsed: "maletendita"
     label_collapse_all: "Maletendi ĉion"
+    label_collapse_text: "Collapse text"
     label_comment: "Komento"
     label_committed_at: "%{committed_revision_link} en %{date}"
     label_committed_link: "reviziita versio %{revision_identifier}"
@@ -427,6 +358,7 @@ eo:
     label_expand: "Etendi"
     label_expanded: "etendita"
     label_expand_all: "Etendi ĉion"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Etendi projektan menuon"
     label_export: "Eksporti"
     label_export_preparing: "The export is being prepared and will be downloaded shortly."
@@ -496,7 +428,6 @@ eo:
     label_repository_plural: "Repositories"
     label_save_as: "Konservi kiel"
     label_search_columns: "Search a column"
-    label_select_project: "Elekti projekton"
     label_select_watcher: "Select a watcher..."
     label_selected_filter_list: "Elekti filtrilon"
     label_show_attributes: "Montri ĉiujn atribuojn"
@@ -507,7 +438,7 @@ eo:
     label_sort_lower: "Move down"
     label_sorting: "Sorting"
     label_spent_time: "Uzata tempo"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Klavu enter por registri."
     label_public_query: "Publika"
     label_sum: "Sumo"
@@ -515,7 +446,7 @@ eo:
     label_total_sum: "Total sum"
     label_subject: "Temo"
     label_this_week: "tiu ĉi semajno"
-    label_today: "Today"
+    label_today: "Hodiaŭ"
     label_time_entry_plural: "Uzata tempo"
     label_up: "Supren"
     label_user_plural: "Uzantoj"
@@ -566,7 +497,7 @@ eo:
     label_version_plural: "Versioj"
     label_view_has_changed: "Tiun ĉi vido havas ne registritajn ŝanĝojn. Klaku por registri ilin."
     help_texts:
-      show_modal: "Show attribute help text entry"
+      show_modal: "Show help text"
     onboarding:
       buttons:
         skip: "Skip"
@@ -622,12 +553,12 @@ eo:
         prioritized: "Prioritized"
         dateAlert: "Date alert"
         shared: "Shared"
-        reminder: "Reminder"
+        reminder: "Memorigilo"
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "Overdue"
-        overdue_since: "since %{difference_in_days}."
-        property_today: "is today."
+        overdue_since: "for %{difference_in_days}."
+        property_today: "estas hodiaŭ."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
         property_is_deleted: "is deleted."
@@ -706,9 +637,12 @@ eo:
       title: "Konfirmu vian pasvorton por daŭrigi"
     pagination:
       no_other_page: "You are on the only page."
+      pages_skipped: "Pages skipped."
+      page_navigation: "Pagination navigation"
+      per_page_navigation: 'Items per page selection'
       pages:
-        next: "Antaŭeniru al la venonta paĝo"
-        previous: "Reveni al la antaŭa paĝo"
+        page_number: Page %{number}
+        show_per_page: Show %{number} per page
     placeholders:
       default: "-"
       subject: "Enter subject here"
@@ -719,15 +653,10 @@ eo:
       autocompleter:
         label: "Project autocompletion"
       click_to_switch_to_project: "Project: %{projectname}"
-      confirm_template_load: "Switching the template will reload the page and you will lose all input to this form. Continue?"
       context: "Kunteksto de la projekto"
-      copy:
-        copy_options: "Copy options"
       not_available: "Project N/A"
-      no_template_selected: "(None)"
       required_outside_context: >
         Please choose a project to create the work package in to see all attributes. You can only select projects which have the type above activated.
-      use_template: "Use template"
     reminders:
       settings:
         daily:
@@ -761,6 +690,8 @@ eo:
           first_day: "First day"
           last_day: "Last day"
     text_are_you_sure: "Are you sure?"
+    text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
+    breadcrumb: "Breadcrumb"
     text_data_lost: "All entered data will be lost."
     text_user_wrote: "%{value} wrote:"
     types:
@@ -845,6 +776,7 @@ eo:
     autocompleter:
       placeholder: "Tajpu por serĉi"
       notFoundText: "No items found"
+      search: "Search"
       project:
         placeholder: "Select project"
     repositories:
@@ -890,10 +822,10 @@ eo:
         mixed: "Mixed"
     work_packages:
       bulk_actions:
-        move: "Bulk change of project"
         edit: "Bulk edit"
-        copy: "Bulk copy"
         delete: "Bulk delete"
+        duplicate: "Bulk duplicate"
+        move: "Bulk change of project"
       button_clear: "Malplenigi"
       comment_added: "La komento estis sukcese aldonita."
       comment_send_failed: "Eraro okazis. Ne eblis aldoni la komenton."
@@ -937,8 +869,8 @@ eo:
         header_no_type: "New work package (Type not yet set)"
         header_with_parent: "Nova %{type} (Filo de %{parent_type} #%{id})"
         button: "Krei"
-      copy:
-        title: "Kopii laborpakaĵon"
+      duplicate:
+        title: "Duplicate work package"
       hierarchy:
         show: "Montri hierarkian reĝimon"
         hide: "Kaŝi hierarkian reĝimon"
@@ -967,7 +899,7 @@ eo:
         percentComplete: "% Complete"
         percentCompleteAlternative: "Progress"
         dueDate: "Findato"
-        duration: "Duration"
+        duration: "Daŭro"
         spentTime: "Uzata tempo"
         category: "Kategorio"
         percentageDone: "Percentage done"
@@ -1035,9 +967,15 @@ eo:
       reminders:
         button_label: "Set reminder"
         title:
-          new: "Set reminder"
+          new: "Set a reminder"
           edit: "Edit reminder"
         subtitle: "You will receive a notification for this work package at the chosen time."
+        presets:
+          tomorrow: "Morgaŭ"
+          three_days: "En 3 tagoj"
+          week: "En unu semajno"
+          month: "En unu monato"
+          custom: "At a particular date/time"
       scheduling:
         is_parent: "The dates of this work package are automatically deduced from its children. Activate 'Manual scheduling' to set the dates."
         is_switched_from_manual_to_automatic: "The dates of this work package may need to be recalculated after switching from manual to automatic scheduling due to relationships with other work packages."
@@ -1089,7 +1027,7 @@ eo:
       time_relative:
         days: "tagoj"
         weeks: "weeks"
-        months: "months"
+        months: "monatoj"
     toolbar:
       settings:
         configure_view: "Configure view"
@@ -1136,6 +1074,8 @@ eo:
     notice_successful_delete: "Successful deletion."
     notice_successful_update: "Successful update."
     notice_job_started: "job started."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Bad Request."
     relations:
       empty: Ne ekzistas rilaton
@@ -1168,6 +1108,7 @@ eo:
       child_work_packages:
         one: "unu laborpakaĵa filo"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1188,7 +1129,7 @@ eo:
       current_project_and_all_descendants: "En tiu ĉi projekto + subprojektoj"
       current_project: "En tiu ĉi projekto"
       recently_viewed: "Recently viewed"
-      search: "Search"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "ĉiuj projektoj"
         project_and_subprojects: "kaj ĉiuj subprojektoj"
@@ -1198,71 +1139,8 @@ eo:
       list: "Tabelo"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Reen"
       invite: "Invite"
-      title:
-        invite: "Inviti uzanton"
-        invite_to_project: "Invite %{type} to %{project}"
-        User: "user"
-        Group: "group"
-        PlaceholderUser: "placeholder user"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
-      project:
-        label: "Projekto"
-        required: "Please select a project"
-        lacking_permission: "Please select a different project since you lack permissions to assign users to the currently selected."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Sekva"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
-      type:
-        required: "Please select the type to be invited"
-        user:
-          title: "Uzanto"
-          description: "Permissions based on the assigned role in the selected project"
-        group:
-          title: "Grupo"
-          description: "Permissions based on the assigned role in the selected project"
-        placeholder:
-          title: "Placeholder user"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Name or email address"
-          name: "Nomo"
-        already_member_message: "Already a member of %{project}"
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
-        next_button: "Sekva"
-        required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
-      role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Please select a role"
-        next_button: "Sekva"
-      message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Sekva"
-      summary:
-        next_button: "Sendi inviton"
-      success:
-        title: "%{principal} was invited!"
-        description:
-          user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          placeholder: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
-        next_button: "Daŭrigi"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1279,13 +1157,20 @@ eo:
       selected_filter:
         all: "All projects"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Baseline"
       clear: "Malplenigi"
@@ -1294,7 +1179,7 @@ eo:
       show_changes_since: "Show changes since"
       help_description: "Reference time zone for the baseline."
       time_description: "In your local time: %{datetime}"
-      time: "Time"
+      time: "Tempo"
       from: "De"
       to: "Al"
       drop_down:

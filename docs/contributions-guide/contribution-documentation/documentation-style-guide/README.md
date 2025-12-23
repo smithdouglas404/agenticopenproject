@@ -30,7 +30,7 @@ Within each folder there is a sub-hierarchy of topics. E.g. in the Getting start
 
 ### Folder content
 
-We aim to have a clear hierarchical structure with meaningful URLs like `https://www.openproject.org/docs/getting-started/sign-in-registration/`. With this structure you can identify straight away that this part of the documentation is about the sign in and registration process. At the same time, the website path matches our repository, making it easy to update the documentation.
+We aim to have a clear hierarchical structure with meaningful URLs like `/docs/getting-started/sign-in-registration/`. With this structure you can identify straight away that this part of the documentation is about the sign in and registration process. At the same time, the website path matches our repository, making it easy to update the documentation.
 
 Find an overview of content per folder here:
 
@@ -221,8 +221,8 @@ Example for an unordered list:
 
 - Do not add commas (`,`) or semicolons (`;`) to the ends of list items.
 - Separate list items from explanatory text with a colon (`:`). For example:
-    - Feature 1: very attractive new feature
-    - Feature 2: description of an additional feature
+  - Feature 1: very attractive new feature
+  - Feature 2: description of an additional feature
 
 ## Tables
 
@@ -335,7 +335,6 @@ Use images to help the reader understand where they are in a process, or how the
 When you take screenshots:
 
 - Capture the most relevant area: Do not include unnecessary blank space or areas of the page that do not help illustrate the point. The project menu on the left of the OpenProject application can change, so don’t include it unless it is necessary.
-
 - Be consistent: Coordinate screenshots with the other screenshots already on a documentation page. For example, if other screenshots include the left sidebar, include the sidebar in all screenshots.
 
 ### Highlight specific areas and add numbered labels
@@ -358,13 +357,12 @@ When referring to the numbered labels in the documentation text, use either an o
 
 ### Save images
 
+- Prefer PNG format for images. Use JPG only if the image is a photo or if the PNG file size exceeds 200 KB.
+- Try to compress your image with a tool like [squoosh](https://squoosh.app/) with `OxiPNG` or `MozJPEG`.
 - Save the image with a file name that describes the image. Use lower cases and no spaces (see [file names requirements](#directory-and-file-names)).
-
-- Make sure to not exceed the maximum image size of 200KB.
-
+- Make sure to not exceed the maximum image size of **200 KB**.
 - Place your images in the same directory where the README.md document that you are working on is located.
-
-- Compress GIFs, maximum size 250KB.
+- Compress GIFs, maximum size **2 MB**.
 
 ### Add the image link to content
 

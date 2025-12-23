@@ -34,6 +34,7 @@ import { UserResource } from 'core-app/features/hal/resources/user-resource';
   templateUrl: './assignee-board-header.html',
   styleUrls: ['./assignee-board-header.sass'],
   host: { class: 'title-container -small' },
+  standalone: false,
 })
 export class AssigneeBoardHeaderComponent {
   @Input('resource') public user:UserResource;

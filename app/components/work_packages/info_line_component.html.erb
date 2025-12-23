@@ -1,5 +1,5 @@
 <%=
-  flex_layout do |flex|
+  flex_layout(flex_wrap: :wrap) do |flex|
     flex.with_column(mr: 2) do
       render(WorkPackages::HighlightedTypeComponent.new(work_package: @work_package, font_size: :small))
     end

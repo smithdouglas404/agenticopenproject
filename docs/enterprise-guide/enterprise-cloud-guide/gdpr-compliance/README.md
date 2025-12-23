@@ -18,9 +18,11 @@ As a firm believer in open source, OpenProject is deeply invested in the freedom
 
 OpenProject cloud environment is hosted on a logically isolated virtual cloud at Amazon Web Services with all services being located in Europe. AWS is a [GDPR-compliant](https://aws.amazon.com/compliance/gdpr-center/) cloud infrastructure provider [with extensive security and compliance programs](https://aws.amazon.com/security/) as well as unparalleled access control mechanisms to ensure data privacy. Employed facilities are compliant with the ISO 27001 and 27018 standards.
 
-**Hosting in Germany (on request)**
+**Hosting in the EU**
 
-We offer secure hosting of your OpenProject cloud in a German data center upon request. Please [contact us](https://www.openproject.org/contact/) for further details.
+We offer secure hosting of your OpenProject cloud via Scaleway, with **all [sub-processors](https://www.openproject.org/legal/data-processing-agreement/sub-processors/) based within the European Union**, ensuring full data sovereignty and compliance with EU data protection regulations. 
+
+Please [contact us](https://www.openproject.org/contact/) for further details.
 
 ### Data backups and https encryption
 

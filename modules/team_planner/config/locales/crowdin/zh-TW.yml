@@ -12,7 +12,7 @@ zh-TW:
     upsell:
       team_planner_view:
         title: "團隊規劃"
-        description: "使用「團隊規劃器」全面掌握團隊的規劃狀況。您可以延長、縮短或拖放工作項目，以修改日期、移動位置或變更指派對象。"
+        description: "使用 「團隊規劃器(Team Planner)」 全面掌握團隊的規劃。您可以拉伸、縮短或拖放工作套件，以調整日期、移動位置或更換指派對象。"
   team_planner:
     label_team_planner: "團隊規劃"
     label_new_team_planner: "新團隊規劃"

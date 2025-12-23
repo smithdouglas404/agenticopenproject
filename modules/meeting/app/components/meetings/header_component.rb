@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -61,6 +62,13 @@ module Meetings
       end
     end
 
+    def can_start_presentation?
+      OpenProject::FeatureDecisions.meetings_presentation_mode_active? &&
+        !@meeting.template? &&
+        !@meeting.draft? &&
+        @meeting.agenda_items.any?
+    end
+
     private
 
     def delete_enabled?
@@ -68,14 +76,43 @@ module Meetings
     end
 
     def finish_setup_enabled?
-      @meeting.template? &&
-        User.current.allowed_in_project?(:create_meetings, @meeting.project) &&
-        @series.scheduled_meetings.none?
+      @meeting.draft? &&
+        User.current.allowed_in_project?(:edit_meetings, @meeting.project)
+    end
+
+    def action_button_params
+      {
+        tag: :button,
+        scheme: :primary,
+        mobile_label: action_button_label,
+        mobile_icon: :check,
+        size: :medium,
+        id: "open-meeting-button",
+        data: {
+          action: "click->meetings--submit#intercept",
+          href: action_button_href,
+          method: "GET"
+        }
+      }
+    end
+
+    def action_button_label
+      @meeting.recurring? ? I18n.t("recurring_meeting.template.button_finalize") : I18n.t("label_meeting_open_action")
+    end
+
+    def action_button_href
+      exit_draft_mode_dialog_project_meeting_path(@project, @meeting)
+    end
+
+    def send_emails?
+      !@meeting.closed? &&
+        @meeting.notify? &&
+        User.current.allowed_in_project?(:send_meeting_invites_and_outcomes, @meeting.project)
     end
 
     def breadcrumb_items
       [
-        parent_element,
+        ({ href: project_overview_path(@project.id), text: @project.name } if @project.present?),
         { href: @project.present? ? project_meetings_path(@project.id) : meetings_path,
           text: I18n.t(:label_meeting_plural) },
         meeting_series_element,
@@ -99,14 +136,6 @@ module Meetings
       end
     end
 
-    def parent_element
-      if @project.present?
-        { href: project_overview_path(@project.id), text: @project.name }
-      else
-        { href: home_path, text: helpers.organization_name }
-      end
-    end
-
     def delete_label
       if @series.present?
         I18n.t("label_recurring_meeting_cancel")
@@ -117,9 +146,9 @@ module Meetings
 
     def copy_label
       if @series.present?
-        I18n.t("label_recurring_meeting_copy")
+        I18n.t("label_recurring_meeting_duplicate")
       else
-        I18n.t("button_copy")
+        I18n.t("button_duplicate")
       end
     end
   end

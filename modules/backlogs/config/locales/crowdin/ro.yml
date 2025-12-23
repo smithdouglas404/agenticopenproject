@@ -55,6 +55,7 @@ ro:
     hours: "Ore"
     impediment: "Impediment"
     label_versions_default_fold_state: "Afișare versiuni complete"
+    caption_versions_default_fold_state: "Versiunile nu vor fi extinse în mod implicit la vizualizarea restanțelor. Fiecare versiune trebuie să fie extinsă manual."
     work_package_is_closed: "Pachetul de lucru este finalizat, atunci când"
     label_is_done_status: "Starea %{status_name} înseamnă terminat"
     no_burndown_data: "Nu sunt disponibile date privind arderea în vegetație. Este necesar să fie stabilite datele de început și de sfârșit ale sprintului."
@@ -73,6 +74,9 @@ ro:
     task: "Sarcină"
     task_color: "Sarcină"
     unassigned: "Neasociate"
+    user_preference:
+      header_backlogs: "Modul Backlog-uri"
+      button_update_backlogs: "Actualizează modul backlogs"
     x_more: "%{count} mai mult..."
   backlogs_active: "activ"
   backlogs_any: "oricare"

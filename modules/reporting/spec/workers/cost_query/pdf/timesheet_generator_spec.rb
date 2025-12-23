@@ -132,8 +132,8 @@ RSpec.describe CostQuery::PDF::TimesheetGenerator do
   def expected_entry_columns(t_entry, with_times_column)
     time_column = generator.format_spent_on_time(t_entry)
     [
-      "##{t_entry.work_package.id} ",
-      t_entry.work_package&.subject || "",
+      "##{t_entry.entity.id} ",
+      t_entry.entity&.subject || "",
       with_times_column && time_column.present? ? time_column : nil,
       generator.format_hours(t_entry.hours),
       t_entry.activity.name,
@@ -150,7 +150,7 @@ RSpec.describe CostQuery::PDF::TimesheetGenerator do
       generator.format_hours(time_entries.select { |entry| entry.user == user }.sum(&:hours)),
       time_entry_user.name,
       generator.format_hours(time_entries.select { |entry| entry.user == time_entry_user }.sum(&:hours)),
-      generator.format_hours(time_entries.sum(&:hours)),
+      generator.format_hours(time_entries.sum(&:hours))
     ]
   end
 

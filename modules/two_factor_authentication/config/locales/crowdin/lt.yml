@@ -123,7 +123,7 @@ lt:
       2fa_from_webauthn: Prašome pateikti WebAuthn rrenginį <strong>%{device_name}</strong>. Jei tai USB įrenginys, įsitikinkite, kad jis įjungtas ir jį palieskite. Tada paspauskite prisijungimo mygtuką.
       webauthn:
         title: "WebAuthn"
-        description: Register a FIDO2 device (like YubiKey) or the secure encalve of your mobile device.
+        description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.
         further_steps: Pasirinkę pavadinimą galite spausti mygtką Tęsti. Jūsų naršyklė paprašys pateikti jūsų WebAuthn įrenginį. Tai padarius, įrenginio registravimas bus baigtas.
       totp:
         title: "App-based authenticator"

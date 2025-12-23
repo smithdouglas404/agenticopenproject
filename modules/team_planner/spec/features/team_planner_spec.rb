@@ -151,6 +151,9 @@ RSpec.describe "Team planner",
 
       team_planner.title
 
+      expect(team_planner).to have_test_selector("op-breadcrumbs--item", text: "Team planners")
+      expect(team_planner).to have_css(".op-breadcrumbs--current", text: "Unnamed team planner", aria: { current: "page" })
+
       team_planner.wait_for_loaded
       team_planner.expect_empty_state
       team_planner.expect_assignee(user, present: false)

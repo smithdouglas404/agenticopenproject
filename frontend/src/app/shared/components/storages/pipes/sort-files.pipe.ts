@@ -5,6 +5,7 @@ import { IFileLinkOriginData } from 'core-app/core/state/file-links/file-link.mo
 
 @Pipe({
   name: 'sortFiles',
+  standalone: false,
 })
 export class SortFilesPipe implements PipeTransform {
   transform<T extends IFileLinkOriginData>(array:T[]):T[] {

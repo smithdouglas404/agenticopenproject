@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -66,7 +68,7 @@ module OpenProject::TextFormatting
       # that prefix is used if it matches the calculated number.
       def process_item(node, number)
         text = node.text
-        return "".html_safe unless text.present?
+        return "".html_safe if text.blank?
 
         id = get_unique_id(text)
         add_header_link_class_and_id(node, id)
@@ -80,13 +82,13 @@ module OpenProject::TextFormatting
         parent_number == "" ? num_in_level.to_s : "#{parent_number}.#{num_in_level}"
       end
 
-      def render_nested(level = 0, parent_number = "")
+      def render_nested(level = 0, parent_number = "") # rubocop:disable Metrics/AbcSize
         result = "".html_safe
         num_in_level = 0
 
-        while headings.length > 0
+        while !headings.empty?
           node = headings.first
-          node_level = node.name[1,].to_i
+          node_level = node.name[1].to_i
 
           if level == node_level
             # We will render this node

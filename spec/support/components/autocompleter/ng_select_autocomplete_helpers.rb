@@ -4,8 +4,7 @@ module Components::Autocompleter
   module NgSelectAutocompleteHelpers
     def search_autocomplete(element, query:, results_selector: nil, wait_dropdown_open: true, wait_for_fetched_options: true)
       SeleniumHubWaiter.wait unless using_cuprite?
-      # Open the element
-      element.click
+      ng_click_autocompleter(element)
 
       # Wait for dropdown to open
       ng_find_dropdown(element, results_selector:) if wait_dropdown_open
@@ -31,6 +30,10 @@ module Components::Autocompleter
       dropdown_list = ng_find_dropdown(element, results_selector:)
       scroll_to_element(dropdown_list)
       dropdown_list
+    end
+
+    def ng_click_autocompleter(target)
+      target.click
     end
 
     def ng_find_dropdown(element, results_selector: nil)
@@ -100,21 +103,24 @@ module Components::Autocompleter
 
       query = query.to_s
 
-      if query.length > 1
-        # Send all keys, and then with a delay the last one
-        # to emulate normal typing
-        if using_cuprite?
-          input.native.node.type(query[0..-2])
-          sleep 0.2
-          input.native.node.type(query[-1])
-        else
-          input.send_keys(query[0..-2])
-          sleep 0.2
-          input.send_keys(query[-1])
-        end
-      end
+      # Send all keys but last one, and then with a delay the last one
+      # to emulate normal typing
+      send_keys(input, query.to_s[0..-2], after_typing_sleep: 0.2)
+      send_keys(input, query.to_s[-1])
 
       wait_for_network_idle if using_cuprite? && wait_for_fetched_options
+    end
+
+    def send_keys(input, text, after_typing_sleep: nil)
+      return if text.blank?
+
+      if using_cuprite?
+        input.native.node.type(text)
+      else
+        input.send_keys(text)
+      end
+
+      sleep after_typing_sleep if after_typing_sleep
     end
 
     ##
@@ -149,32 +155,40 @@ module Components::Autocompleter
       text = select_text.presence || query
 
       # click the element to select it
-      target_dropdown.find(".ng-option", text:, match: :first, wait: 15).click
+      target_dropdown.first(".ng-option", text:, wait: 15).click
     end
 
-    # Finds the currently visible, expanded user auto completer and returns its dropdown menu options.
+    def expect_current_autocompleter_value(element, value)
+      expect(element).to have_css(".ng-value .ng-value-label", text: value, wait: 10)
+    end
+
+    # Checks for the currently visible, expanded user auto completer to contain the provided options.
     # A user always has a name, but their email is only visible in certain circumstances, so that value
     # might be nil.
     #
-    # The options are returned as an Array of Hashes, like this example with two users:
+    # The expected options are to be provided as an Array of Hashes, like this example with two users:
     #
     #   [
     #     { name: "Bob", email: nil },
     #     { name: "Alice", email: "alice@example.com" }
     #   ]
     #
-    # The order of elements in the Array is equal to the visible order on the website.
-    def visible_user_auto_completer_options
-      find(".ng-dropdown-panel [role='listbox']").all(".ng-option[role='option']").filter_map do |opt|
-        name = opt.find(".op-user-autocompleter--name").text
-        email_element = opt.all(".op-autocompleter__option-principal-email").first
-        email = email_element&.text
-
-        { name:, email: }
-      rescue Capybara::ElementNotFound
-        # In rare cases, the auto completer result body includes additional elements that do not contain all of the
-        # expected information. For example in the share modal. We will omit these entries.
-        nil
+    # The order the elements are provided in is also expected.
+    def expect_visible_user_auto_completer_options(expected)
+      within(".ng-dropdown-panel [role='listbox']") do
+        expected.each_with_index do |option, index|
+          expect(page)
+            .to have_css(".ng-option[role='option']:nth-child(#{index + 1}) .op-user-autocompleter--name",
+                         text: option[:name])
+          if option[:email]
+            expect(page)
+              .to have_css(".ng-option[role='option']:nth-child(#{index + 1}) .op-autocompleter__option-principal-email",
+                           text: option[:email])
+          else
+            expect(page)
+              .to have_no_css(".ng-option[role='option']:nth-child(#{index + 1}) .op-autocompleter__option-principal-email")
+          end
+        end
       end
     end
   end

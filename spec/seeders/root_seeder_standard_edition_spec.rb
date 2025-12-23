@@ -51,7 +51,7 @@ RSpec.describe RootSeeder,
       expect(User.not_builtin.where(admin: true).count).to eq 1
     end
 
-    it "creates the demo data" do
+    it "creates the demo data" do # rubocop:disable RSpec/MultipleExpectations
       expect(Project.count).to eq 2
       expect(EnabledModule.count).to eq 13
       expect(WorkPackage.count).to eq 36
@@ -70,6 +70,7 @@ RSpec.describe RootSeeder,
       expect(Boards::Grid.count).to eq 5
       expect(Boards::Grid.count { |grid| grid.options.has_key?(:filters) }).to eq 1
       expect(Project::PhaseDefinition.count).to eq 4
+      expect(DocumentType.count).to be >= 3 # at least the 3 default types
     end
 
     it "links work packages to their version" do
@@ -143,7 +144,7 @@ RSpec.describe RootSeeder,
     end
 
     include_examples "it creates records", model: Color, expected_count: 148
-    include_examples "it creates records", model: DocumentCategory, expected_count: 3
+    include_examples "it creates records", model: DocumentType, expected_count: 6
     include_examples "it creates records", model: GlobalRole, expected_count: 2
     include_examples "it creates records", model: WorkPackageRole, expected_count: 3
     include_examples "it creates records", model: ProjectRole, expected_count: 5
@@ -161,7 +162,7 @@ RSpec.describe RootSeeder,
 
     before_all do
       with_edition("standard") do
-        root_seeder.seed_data!
+        root_seeder.seed!
 
         # Run background jobs as those are also triggered by seeding.
         # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
@@ -173,12 +174,14 @@ RSpec.describe RootSeeder,
 
     include_examples "no email deliveries"
 
-    context "when run a second time" do
+    context "when run a second time in a different language", :settings_reset do
       before_all do
-        described_class.new.seed_data!
+        with_locale_env("de") do
+          described_class.new.seed!
+        end
       end
 
-      it "does not create additional data" do
+      it "does not create additional data and does not raise any errors" do # rubocop:disable RSpec/MultipleExpectations
         expect(Project.count).to eq 2
         expect(WorkPackage.count).to eq 36
         expect(Wiki.count).to eq 2
@@ -197,28 +200,43 @@ RSpec.describe RootSeeder,
         expect(Project::PhaseDefinition.count).to eq 4
       end
     end
-  end
 
-  describe "demo data with work package role migration having been run" do
-    shared_let(:root_seeder) { described_class.new }
+    context "when run a second time in a different language with some color data deleted", :settings_reset do
+      before_all do
+        with_locale_env("de") do
+          # Simulate a user having deleted the seeded colors.
+          # Could also be the user changing the hexcode of the colors, making lookup by hexcode fail.
+          Color.where(name: ["Grey", "Blue", "Black"]).delete_all
+          described_class.new.seed!
+        end
+      end
 
-    before_all do
-      # call the migration which will add data for work package roles. This
-      # needs to be done manually as running tests automatically calls the
-      # `db:test:purge` rake task.
-      require(Rails.root.join("db/migrate/20231128080650_add_work_package_roles"))
-      AddWorkPackageRoles.new.up
-
-      with_edition("standard") do
-        root_seeder.seed_data!
-
-        # Run background jobs as those are also triggered by seeding.
-        # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
-        perform_enqueued_jobs
+      it "does not create additional data and does not raise any errors" do
+        expect(Project.count).to eq 2
+        expect(WorkPackage.count).to eq 36
+        expect(Wiki.count).to eq 2
       end
     end
 
-    include_examples "creates standard demo data"
+    context "when run a second time after all demo projects and original statuses " \
+            "and workflows are deleted (Bug #65138)", :settings_reset do
+      before_all do
+        # Simulate a user having created new statuses, and deleted all default
+        # statuses and workflows (making looking up statuses by name impossible)
+        new_status = create(:status, :default, name: "My own default status")
+        Project.destroy_all
+        # destroying all statuses will destroy all workflows by cascade
+        Status.where.not(id: new_status.id).destroy_all
+        described_class.new.seed!
+      end
+
+      it "does not create additional data and does not raise any errors" do
+        # seeding recreates 2 demo projects
+        expect(Project.count).to eq 2
+        # but they're mostly empty because of the missing default statuses
+        expect(WorkPackage.count).to eq 0
+      end
+    end
   end
 
   describe "demo data mock-translated in another language" do
@@ -231,7 +249,7 @@ RSpec.describe RootSeeder,
           original_translation = m.call(*args, **kw)
           "tr: #{original_translation}"
         end
-        root_seeder.seed_data!
+        root_seeder.seed!
 
         # Run background jobs as those are also triggered by seeding.
         # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
@@ -255,16 +273,13 @@ RSpec.describe RootSeeder,
       shared_let(:root_seeder) { described_class.new }
 
       before_all do
-        with_env(env_var_name => "de") do
+        with_locale_env("de", env_var_name:) do
           with_edition("standard") do
-            reset(:default_language) # Settings are a pain to reset
-            root_seeder.seed_data!
+            root_seeder.seed!
 
             # Run background jobs as those are also triggered by seeding.
             # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
             perform_enqueued_jobs
-          ensure
-            reset(:default_language)
           end
         end
       end
@@ -294,7 +309,7 @@ RSpec.describe RootSeeder,
         allow(Settings::Definition["default_projects_modules"])
           .to receive(:writable?).and_return(false)
 
-        root_seeder.seed_data!
+        root_seeder.seed!
       end
     end
 
@@ -327,7 +342,7 @@ RSpec.describe RootSeeder,
       with_env("OPENPROJECT_SEED_ADMIN_USER_LOCKED" => "true") do
         with_edition("standard") do
           reset(:seed_admin_user_locked)
-          root_seeder.seed_data!
+          root_seeder.seed!
         end
       end
     ensure

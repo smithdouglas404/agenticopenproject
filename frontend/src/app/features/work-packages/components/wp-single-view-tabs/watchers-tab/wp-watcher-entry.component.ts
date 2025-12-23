@@ -41,6 +41,7 @@ import { WorkPackageWatchersTabComponent } from './watchers-tab.component';
   styleUrls: ['./wp-watcher-entry.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-wp-watcher-entry',
+  standalone: false,
 })
 export class WorkPackageWatcherEntryComponent implements OnInit {
   @Input() public watcher:UserResource;

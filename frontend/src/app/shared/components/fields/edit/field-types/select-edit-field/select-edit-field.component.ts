@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component, InjectFlags, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { StateService, UIRouterGlobals } from '@uirouter/core';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -54,6 +54,7 @@ export interface ValueOption {
 @Component({
   templateUrl: './select-edit-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SelectEditFieldComponent extends EditFieldComponent implements OnInit {
   @InjectField() selectAutocompleterRegister:SelectAutocompleterRegisterService;
@@ -66,19 +67,19 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
 
   @InjectField() uiRouterGlobals:UIRouterGlobals;
 
-  @InjectField(EditFormComponent, null, InjectFlags.Optional) editFormComponent:EditFormComponent;
+  @InjectField(EditFormComponent, null, { optional: true }) editFormComponent:EditFormComponent;
 
   public availableOptions:any[];
 
-  public text:{ [key:string]:string };
+  public text:Record<string, string>;
 
   public appendTo:any = null;
 
-  public referenceOutputs:{ [key:string]:Function } = {
+  public referenceOutputs:Record<string, Function> = {
     onCreate: (newElement:HalResource) => this.onCreate(newElement),
     onChange: (value:HalResource) => this.onChange(value),
     onAddNew: (value:HalResource) => this.onNewValueAdded(value),
-    onKeydown: (event:JQuery.TriggeredEvent) => this.handler.handleUserKeydown(event, true),
+    onKeydown: (event:KeyboardEvent) => this.handler.handleUserKeydown(event, true),
     onOpen: () => this.onOpen(),
     onClose: () => this.onClose(),
     onAfterViewInit: (component:CreateAutocompleterComponent) => this._autocompleterComponent = component,
@@ -94,7 +95,7 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
 
     // Special case 'null' value, which angular
     // only understands in ng-options as an empty string.
-    if (option && option.href === '') {
+    if (option?.href === '') {
       option.href = null;
     }
 
@@ -229,9 +230,9 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
   }
 
   public onOpen() {
-    jQuery(this.hiddenOverflowContainer).one('scroll', () => {
+    document.querySelector(this.hiddenOverflowContainer)!.addEventListener('scroll', () => {
       this._autocompleterComponent.closeSelect();
-    });
+    }, { once: true });
   }
 
   public onClose() {

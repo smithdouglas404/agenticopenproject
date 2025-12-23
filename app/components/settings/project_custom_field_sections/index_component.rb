@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -39,6 +41,10 @@ module Settings
         @project_custom_field_sections = project_custom_field_sections
       end
 
+      def row_component_class
+        Settings::ProjectCustomFieldSections::ShowComponent
+      end
+
       def first_and_last
         [@project_custom_field_sections.first, @project_custom_field_sections.last]
       end
@@ -47,8 +53,7 @@ module Settings
 
       def wrapper_data_attributes
         {
-          controller: "generic-drag-and-drop",
-          "application-target": "dynamic"
+          controller: "generic-drag-and-drop"
         }
       end
 

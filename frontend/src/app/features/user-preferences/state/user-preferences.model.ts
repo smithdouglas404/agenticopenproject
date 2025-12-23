@@ -17,6 +17,7 @@ export interface ImmediateRemindersSettings {
 export interface IUserPreference {
   autoHidePopups:boolean;
   commentSortDescending:boolean;
+  disableKeyboardShortcuts:boolean;
   timeZone:string|null;
   warnOnLeavingUnsaved:boolean;
   workdays:number[];

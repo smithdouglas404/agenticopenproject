@@ -12,7 +12,7 @@ ro:
     upsell:
       team_planner_view:
         title: "Planificator echipă"
-        description: "Obțineți o imagine de ansamblu completă a planificării echipei dumneavoastră cu Team Planner. Întindeți, scurtați și glisați pachetele de lucru pentru a modifica datele, pentru a le muta sau pentru a schimba destinatarii."
+        description: "Obține o imagine de ansamblu completă a planificării echipei tale cu Team Planner. Întinde, scurtează și glisează pachetele de lucru pentru a modifica datele, pentru a le muta sau pentru a schimba destinatarii."
   team_planner:
     label_team_planner: "Planificator echipă"
     label_new_team_planner: "Planificator echipă nou"

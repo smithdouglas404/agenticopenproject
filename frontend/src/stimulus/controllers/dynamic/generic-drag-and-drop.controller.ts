@@ -30,8 +30,9 @@
 
 import * as Turbo from '@hotwired/turbo';
 import { Controller } from '@hotwired/stimulus';
-import { Drake } from 'dragula';
+import dragula, { Drake } from 'dragula';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import { useMeta } from 'stimulus-use';
 
 interface TargetConfig {
   container:Element;
@@ -40,6 +41,9 @@ interface TargetConfig {
 }
 
 export default class GenericDragAndDropController extends Controller {
+  static metaNames = ['csrf-token'];
+  declare readonly csrfToken:string;
+
   drake:Drake|undefined;
   targetConfigs:TargetConfig[];
 
@@ -48,6 +52,7 @@ export default class GenericDragAndDropController extends Controller {
   observer:MutationObserver|null = null;
 
   connect() {
+    useMeta(this, { suffix: false });
     this.initDrake();
     this.startMutationObserver();
   }
@@ -73,10 +78,9 @@ export default class GenericDragAndDropController extends Controller {
 
     // Setup autoscroll
     void window.OpenProject.getPluginContext().then((pluginContext) => {
-      // eslint-disable-next-line no-new
       new pluginContext.classes.DomAutoscrollService(
         [
-          document.getElementById('content-body') as HTMLElement,
+          document.getElementById('content-body')!,
         ],
         {
           margin: 25,
@@ -114,7 +118,7 @@ export default class GenericDragAndDropController extends Controller {
       const containerAccessor = target.getAttribute('data-target-container-accessor');
 
       if (containerAccessor) {
-        target = target.querySelector(containerAccessor) as Element;
+        target = target.querySelector(containerAccessor)!;
         targetConfig.container = target;
       }
 
@@ -151,7 +155,7 @@ export default class GenericDragAndDropController extends Controller {
         method: 'PUT',
         body: data,
         headers: {
-          'X-CSRF-Token': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content,
+          'X-CSRF-Token': this.csrfToken,
           Accept: 'text/vnd.turbo-stream.html',
         },
         credentials: 'same-origin',

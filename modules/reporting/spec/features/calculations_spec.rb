@@ -16,7 +16,7 @@ RSpec.describe "Cost Report", "calculations", :js do
       create(:time_entry,
              spent_on:,
              user:,
-             work_package:,
+             entity: work_package,
              project:,
              hours: 10)
     end

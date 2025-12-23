@@ -30,6 +30,7 @@
 
 class Meeting < ApplicationRecord
   include VirtualStartTime
+  include MeetingUid
   include ChronicDuration
   include OpenProject::Journal::AttachmentHelper
 
@@ -41,16 +42,11 @@ class Meeting < ApplicationRecord
   belongs_to :recurring_meeting, optional: true
   has_one :scheduled_meeting, inverse_of: :meeting
 
-  # Legacy association to minutes, agendas, contents
-  # to be removed in 17.0
-  has_one :agenda, dependent: :destroy, class_name: "MeetingAgenda"
-  has_one :minutes, dependent: :destroy, class_name: "MeetingMinutes"
-  has_many :contents, -> { readonly }, class_name: "MeetingContent"
+  has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
 
   has_many :participants,
            dependent: :destroy,
-           class_name: "MeetingParticipant",
-           after_add: :send_participant_added_mail
+           class_name: "MeetingParticipant"
 
   has_many :agenda_items, dependent: :destroy, class_name: "MeetingAgendaItem", inverse_of: :meeting
   has_many :sections, -> { where(backlog: false) }, dependent: :delete_all, class_name: "MeetingSection"
@@ -82,6 +78,10 @@ class Meeting < ApplicationRecord
       .merge(Project.allowed_to(args.first || User.current, :view_meetings))
   }
 
+  scope :participated_by, ->(user) {
+    joins(:participants).where(meeting_participants: { user_id: user.id })
+  }
+
   acts_as_attachable(
     after_remove: :attachments_changed,
     order: "#{Attachment.table_name}.file",
@@ -108,17 +108,19 @@ class Meeting < ApplicationRecord
 
   accepts_nested_attributes_for :participants, allow_destroy: true
 
-  validates_presence_of :title, :project_id
+  validates :title, :project_id, presence: true
 
-  validates_numericality_of :duration, greater_than: 0
+  validates :duration, numericality: { greater_than: 0 }
 
   before_save :add_new_participants_as_watcher
 
-  after_update :send_rescheduling_mail, if: -> { saved_change_to_start_time? || saved_change_to_duration? }
+  after_update :send_updated_mail, if: -> {
+    saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location?
+  }
 
   enum :state, {
     open: 0, # 0 -> default, leave values for future states between open and closed
-    planned: 1,
+    draft: 1,
     in_progress: 3,
     cancelled: 4,
     closed: 5
@@ -167,6 +169,12 @@ class Meeting < ApplicationRecord
     !!template
   end
 
+  # One-time meeting time zone
+  # is always in the user's time zone
+  def time_zone
+    User.current.time_zone
+  end
+
   # Returns true if user or current user is allowed to view the meeting
   def visible?(user = User.current)
     user.allowed_in_project?(:view_meetings, project)
@@ -176,19 +184,12 @@ class Meeting < ApplicationRecord
     !closed? && user.allowed_in_project?(:edit_meetings, project)
   end
 
-  def invited_or_attended_participants
-    participants.where(invited: true).or(participants.where(attended: true))
-  end
-
-  def all_changeable_participants
-    changeable_participants = participants.select(&:invited).collect(&:user)
-    changeable_participants = changeable_participants + participants.select(&:attended).collect(&:user)
-    changeable_participants = changeable_participants +
-      User.allowed_members(:view_meetings, project)
-
-    changeable_participants
-      .compact
-      .uniq(&:id)
+  def notify?
+    if recurring?
+      recurring_meeting.template.notify
+    else
+      notify
+    end
   end
 
   def self.group_by_time(meetings)
@@ -229,43 +230,6 @@ class Meeting < ApplicationRecord
       .where(user_id: available_members)
   end
 
-  # triggered by MeetingAgendaItem#after_create/after_destroy/after_save
-  def calculate_agenda_item_time_slots
-    current_time = start_time
-    MeetingAgendaItem.transaction do
-      changed_items = agenda_items.includes(:meeting_section).order("meeting_sections.position", :position).map do |top|
-        start_time = current_time
-        current_time += top.duration_in_minutes&.minutes || 0.minutes
-        end_time = current_time
-        top.assign_attributes(start_time:, end_time:)
-        top
-      end
-
-      # Disable optimistic locking in order to avoid causing `StaleObjectError`.
-      MeetingAgendaItem.skip_optimistic_locking do
-        MeetingAgendaItem.import(
-          changed_items,
-          on_duplicate_key_update: {
-            conflict_target: [:id],
-            columns: %i[meeting_id
-                        author_id
-                        title
-                        notes
-                        position
-                        duration_in_minutes
-                        start_time
-                        end_time
-                        created_at
-                        updated_at
-                        work_package_id
-                        item_type
-                        lock_version]
-          }
-        )
-      end
-    end
-  end
-
   def agenda_items_sum_duration_in_minutes
     agenda_items.sum(:duration_in_minutes)
   end
@@ -286,6 +250,12 @@ class Meeting < ApplicationRecord
     end
   end
 
+  def send_emails?
+    return false if template? && recurring_meeting.scheduled_meetings.none?
+
+    persisted? && notify?
+  end
+
   private
 
   def add_new_participants_as_watcher
@@ -294,25 +264,23 @@ class Meeting < ApplicationRecord
     end
   end
 
-  def send_participant_added_mail(participant)
-    return if templated? || new_record?
-
-    if Journal::NotificationConfiguration.active?
-      MeetingMailer.invited(self, participant.user, User.current).deliver_later
-    end
-  end
-
-  def send_rescheduling_mail
-    return if templated? || new_record?
+  def send_updated_mail
+    return unless send_emails?
 
     MeetingNotificationService
       .new(self)
-      .call :rescheduled,
-            changes: {
-              old_start: saved_change_to_start_time? ? saved_change_to_start_time.first : start_time,
-              new_start: start_time,
-              old_duration: saved_change_to_duration? ? saved_change_to_duration.first : duration,
-              new_duration: duration
-            }
+      .call :updated,
+            changes: updated_mail_changes
+  end
+
+  def updated_mail_changes
+    {
+      old_start: saved_change_to_start_time? ? saved_change_to_start_time.first : start_time,
+      new_start: start_time,
+      old_duration: saved_change_to_duration? ? saved_change_to_duration.first : duration,
+      new_duration: duration,
+      old_location: saved_change_to_location? ? saved_change_to_location.first : location,
+      new_location: location
+    }
   end
 end

@@ -58,7 +58,7 @@ module Storages
               text: I18n.t("storages.health.checks.warnings", count: tally[:warning])
             }
           else
-            { icon: :"check-circle", icon_color: :success, text: I18n.t("storages.health.checks.failures", count: 0) }
+            { icon: :"check-circle", icon_color: :success, text: I18n.t("storages.health.checks.success") }
           end
         end
 

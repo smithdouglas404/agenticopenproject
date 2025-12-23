@@ -1,13 +1,14 @@
 module ::TeamPlanner
   class TeamPlannerController < BaseController
-    include EnterpriseTrialHelper
     include EnterpriseHelper
     include Layout
     before_action :load_and_authorize_in_optional_project
     before_action :build_plan_view, only: %i[new]
-    before_action :require_ee_token, except: %i[upsell]
     before_action :find_plan_view, only: %i[destroy]
-    before_action :write_augur_to_gon, only: %i[upsell]
+
+    guard_enterprise_feature(:team_planner_view, except: %i[index overview]) do
+      redirect_to action: :index
+    end
 
     menu_item :team_planner_view
 
@@ -50,12 +51,6 @@ module ::TeamPlanner
       end
 
       redirect_to action: :index
-    end
-
-    def require_ee_token
-      unless EnterpriseToken.allows_to?(:team_planner_view)
-        redirect_to action: :upsell
-      end
     end
 
     current_menu_item :index do

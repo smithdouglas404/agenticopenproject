@@ -55,6 +55,7 @@ si:
     hours: "පැය"
     impediment: "බාධාවන්"
     label_versions_default_fold_state: "නවනු අනුවාද පෙන්වන්න"
+    caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
     work_package_is_closed: "වැඩ පැකේජය සිදු කරනු ලබන්නේ කවදාද"
     label_is_done_status: "තත්ත්වය %{status_name} යන්නෙන් අදහස් කරන්නේ"
     no_burndown_data: "කිසිදු පිළිස්සීමක් දත්ත ලබා ගත හැකි. එය ස්ප්රින්ට් ආරම්භක හා අවසන් දින නියම කිරීම අවශ්ය වේ."
@@ -73,6 +74,9 @@ si:
     task: "කාර්යය"
     task_color: "කාර්ය වර්ණ"
     unassigned: "නොපවරා ඇත"
+    user_preference:
+      header_backlogs: "Backlogs module"
+      button_update_backlogs: "Update backlogs module"
     x_more: "%{count} තවත්..."
   backlogs_active: "ක්රියාකාරී"
   backlogs_any: "ඔනෑම"

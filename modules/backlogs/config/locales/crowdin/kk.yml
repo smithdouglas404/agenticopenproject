@@ -55,6 +55,7 @@ kk:
     hours: "Hours"
     impediment: "Impediment"
     label_versions_default_fold_state: "Show versions folded"
+    caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
     work_package_is_closed: "Work package is done, when"
     label_is_done_status: "Status %{status_name} means done"
     no_burndown_data: "No burndown data available. It is necessary to have the sprint start- and end dates set."
@@ -73,6 +74,9 @@ kk:
     task: "Task"
     task_color: "Task color"
     unassigned: "Unassigned"
+    user_preference:
+      header_backlogs: "Backlogs module"
+      button_update_backlogs: "Update backlogs module"
     x_more: "%{count} more..."
   backlogs_active: "active"
   backlogs_any: "any"

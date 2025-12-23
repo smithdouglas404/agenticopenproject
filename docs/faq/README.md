@@ -270,17 +270,9 @@ You can use the first two steps of [this instruction](../installation-and-operat
 
 To migrate from Bitnami **to Enterprise on-premises** please use [this instruction](../installation-and-operations/installation-faq/#how-can-i-migrate-from-bitnami-to-the-official-openproject-installation-packages). We offer (paid) installation support to help you migrate to OpenProject (for the Enterprise on-premises edition). Please contact us to request it.
 
-### How can I migrate from Jira/Confluence to OpenProject?
+### How can I migrate from JIRA/Confluence to OpenProject?
 
-At the moment there are these ways to migrate:
-
-- our [API](../api/)
-- our [Excel sync](../system-admin-guide/integrations/excel-synchronization)
-- Using a [Markdown export app](https://marketplace.atlassian.com/apps/1221351/markdown-exporter-for-confluence) you can export pages from Confluence and paste them (via copy & paste) into OpenProject in e.g. the wiki. This should preserve at least most of the layout. Attachments would then have to be added manually.
-
-Our partners at [ALMToolbox](https://www.almtoolbox.com/)  are happy to support you with Jira or Confluence migration. 
-
-For more information please contact us.
+Please consult [JIRA migration overview page](../installation-and-operations/jira-migration/) for an overview of all existing options.
 
 ### How can I migrate from Community edition or Enterprise on-premises to Enterprise cloud?
 
@@ -314,7 +306,7 @@ If in doubt on how you should start, you can also just [contact us](https://www.
 
 ### How can I receive support?
 
-We offer our Professional Support for Enterprise on-premises users and Enterprise cloud users. Please write an email to support@openproject.com.
+We offer our Professional Support for Enterprise on-premises users and Enterprise cloud users. Please write an email to [support@openproject.com](mailto:support@openproject.com).
 
 If you use the Community edition please feel free to use our [forums](https://community.openproject.org/projects/openproject/forums) for exchange with other users.
 

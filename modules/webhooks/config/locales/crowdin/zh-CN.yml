@@ -27,10 +27,15 @@ zh-CN:
       no_results_table: 尚未定义任何 Webhook。
       label_add_new: 添加新的 Webhook
       label_edit: 编辑 Webhook
-      label_event_resources: 事件资源
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "已创建"
         updated: "已更新"
+        comment: "评论"
+        internal_comment: "内部评论"
       explanation:
         text: >
           在发生诸如创建工作包或更新项目之类的事件时，OpenProject 将向配置的 Web 端点发送一个 POST 请求。通常，会在 %{link}过后发送事件。

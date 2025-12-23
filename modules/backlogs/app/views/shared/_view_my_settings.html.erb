@@ -27,14 +27,13 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<fieldset class="form--fieldset">
-  <legend class="form--fieldset-legend"><%= t(:label_backlogs) %></legend>
-  <div class="form--field">
-    <%= styled_label_tag :backlogs_task_color, t(:"backlogs.task_color") %>
-    <%= styled_text_field_tag :"backlogs[task_color]", color, container_class: "-middle" %>
-  </div>
-  <div class="form--field">
-    <%= styled_label_tag :backlogs_versions_default_fold_state, I18n.t("backlogs.label_versions_default_fold_state") %>
-    <%= styled_check_box_tag :"backlogs[versions_default_fold_state]", "closed", versions_default_fold_state == "closed" %>
-  </div>
-</fieldset>
+<%=
+  render(Primer::Beta::Subhead.new(mt: 3)) do |component|
+    component.with_heading(tag: :h3, size: :medium) { I18n.t("backlogs.user_preference.header_backlogs") }
+  end
+%>
+<%=
+  settings_primer_form_with(model: user.pref, scope: :backlogs, url: { action: "update_settings" }, data: { turbo: false }) do |form|
+    render(My::BacklogsForm.new(form, color:, versions_default_fold_state:))
+  end
+%>

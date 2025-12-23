@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -60,7 +62,7 @@ class AdminController < ApplicationController
     @plugins = Redmine::Plugin.not_bundled.sort
   end
 
-  def test_email
+  def test_email # rubocop:disable Metrics/AbcSize
     raise_delivery_errors = ActionMailer::Base.raise_delivery_errors
     # Force ActionMailer to raise delivery errors so we can catch it
     ActionMailer::Base.raise_delivery_errors = true
@@ -71,7 +73,7 @@ class AdminController < ApplicationController
       flash[:error] = I18n.t(:notice_email_error, value: Redmine::CodesetUtil.replace_invalid_utf8(e.message.dup))
     end
     ActionMailer::Base.raise_delivery_errors = raise_delivery_errors
-    redirect_to admin_settings_mail_notifications_path
+    redirect_to admin_settings_mail_notifications_path, status: :see_other
   end
 
   def info

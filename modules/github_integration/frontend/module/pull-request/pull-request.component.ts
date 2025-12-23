@@ -47,6 +47,7 @@ import {
     './pr-check.component.sass',
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 
 export class PullRequestComponent {

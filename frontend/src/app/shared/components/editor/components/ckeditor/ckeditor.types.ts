@@ -25,7 +25,7 @@ export interface ICKEditorInstance {
 
   state:string;
 
-  getData(options:{ trim:boolean }):string;
+  getData(options?:{ trim:boolean }):string;
 
   setData(content:string):void;
 
@@ -106,4 +106,12 @@ export interface ICKEditorContext {
   previewContext?:string;
   // disabled specific mentions
   disabledMentions?:['user'|'work_package'];
+  // overrides the default storage key for revisions
+  storageKey?:string;
+}
+
+declare global {
+  interface HTMLElement {
+    ckeditorInstance?:ICKEditorInstance;
+  }
 }

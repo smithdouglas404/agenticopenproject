@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,6 +32,7 @@ class Groups::DeleteService < BaseServices::Delete
   protected
 
   def destroy(group)
+    group.update_column(:status, Group.statuses[:deleted])
     ::Principals::DeleteJob.perform_later(group)
     true
   end

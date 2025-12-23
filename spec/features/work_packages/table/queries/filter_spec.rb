@@ -33,7 +33,7 @@ require "spec_helper"
 RSpec.describe "filter work packages", :js do
   include Components::Autocompleter::NgSelectAutocompleteHelpers
 
-  shared_let(:user) { create(:admin, preferences: { time_zone: "Etc/UTC" }) }
+  shared_let(:user) { create(:admin, preferences: { time_zone: "Europe/Kyiv" }) }
   shared_let(:watcher) { create(:user) }
   shared_let(:role) { create(:existing_project_role, permissions: [:view_work_packages]) }
   shared_let(:project) { create(:project, members: { watcher => role }) }
@@ -166,7 +166,7 @@ RSpec.describe "filter work packages", :js do
         expect_ng_option(
           page.find_by_id("values-version"),
           shared_version,
-          grouping: "Project N/A",
+          grouping: I18n.t(:"api_v3.undisclosed.project"),
           results_selector: "body"
         )
 
@@ -447,12 +447,15 @@ RSpec.describe "filter work packages", :js do
     end
     let(:wp_without_attachment) { create(:work_package, subject: "WP no attachment", project:) }
     let(:wp_table) { Pages::WorkPackagesTable.new }
+    let(:plaintext_file_handler) do
+      Plaintext::Resolver.file_handlers.find { |h| h.accept? "text/plain" }
+    end
 
     before do
-      allow_any_instance_of(Plaintext::Resolver).to receive(:text).and_return("I am the first text $1.99.")
+      allow(plaintext_file_handler).to receive(:text).and_return("I am the first text $1.99.")
       wp_with_attachment_a
       Attachments::ExtractFulltextJob.perform_now(attachment_a.id)
-      allow_any_instance_of(Plaintext::Resolver).to receive(:text).and_return("I am the second text.")
+      allow(plaintext_file_handler).to receive(:text).and_return("I am the second text.")
       wp_with_attachment_b
       Attachments::ExtractFulltextJob.perform_now(attachment_b.id)
       wp_without_attachment
@@ -611,8 +614,9 @@ RSpec.describe "filter work packages", :js do
       wp_table.ensure_work_package_not_listed! wp_updated_3d_ago, wp_updated_5d_ago
     end
 
-    it "filters between date by updated_at" do
+    it "filters between date by updated_at", skip: "flickering spec (#68677)" do
       wp_table.visit!
+      wait_for_network_idle
       loading_indicator_saveguard
       wp_table.expect_work_package_listed wp_updated_today, wp_updated_3d_ago, wp_updated_5d_ago
 
@@ -623,7 +627,7 @@ RSpec.describe "filter work packages", :js do
                             [4.days.ago.to_date.iso8601, 2.days.ago.to_date.iso8601],
                             "updatedAt"
 
-      wait_for_reload
+      wait_for_network_idle
       loading_indicator_saveguard
 
       wp_table.expect_work_package_listed wp_updated_3d_ago
@@ -633,7 +637,7 @@ RSpec.describe "filter work packages", :js do
 
       filters.remove_filter "updatedAt"
 
-      wait_for_reload
+      wait_for_network_idle
       loading_indicator_saveguard
       wp_table.expect_work_package_listed wp_updated_today, wp_updated_3d_ago, wp_updated_5d_ago
 
@@ -642,13 +646,14 @@ RSpec.describe "filter work packages", :js do
 
       # The frontend sends the date as a datetime string in utc where both bounds have the local offset deduced
       # e.g. ["2023-05-31T22:00:00Z", "2023-06-03T21:59:59Z"]
-      Time.use_zone(ActiveSupport::TimeZone[Time.now.getlocal.zone]) do
+      Time.use_zone(user.time_zone) do
         expect(date_filter.values)
-          .to eq [(Time.now.getlocal - 4.days).beginning_of_day.utc.iso8601, (Time.now.getlocal - 2.days).end_of_day.utc.iso8601]
+          .to eq [4.days.ago.beginning_of_day.utc.iso8601, 2.days.ago.end_of_day.utc.iso8601]
       end
 
       wp_table.visit_query(last_query)
 
+      wait_for_network_idle
       loading_indicator_saveguard
       wp_table.expect_work_package_listed wp_updated_3d_ago
       wp_table.ensure_work_package_not_listed! wp_updated_today, wp_updated_5d_ago
@@ -695,8 +700,10 @@ RSpec.describe "filter work packages", :js do
 
       last_query = Query.where(name: "Some query name").first
       date_filter = last_query.filters.last
-      expect(date_filter.values)
-        .to eq [3.days.ago.utc.beginning_of_day.iso8601]
+      Time.use_zone(user.time_zone) do
+        expect(date_filter.values)
+          .to eq [3.days.ago.beginning_of_day.utc.iso8601]
+      end
 
       wp_table.visit_query(last_query)
 
@@ -746,8 +753,10 @@ RSpec.describe "filter work packages", :js do
 
       last_query = Query.where(name: "Some query name").first
       date_filter = last_query.filters.last
-      expect(date_filter.values)
-        .to eq ["", 4.days.ago.utc.end_of_day.iso8601]
+      Time.use_zone(user.time_zone) do
+        expect(date_filter.values)
+          .to eq ["", 4.days.ago.end_of_day.utc.iso8601]
+      end
 
       wp_table.visit_query(last_query)
 

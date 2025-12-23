@@ -16,6 +16,7 @@ import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/que
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'wp-table-config-filters-tab',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WpTableConfigurationFiltersTabComponent implements TabComponent, OnInit {
   public filters:QueryFilterInstanceResource[] = [];

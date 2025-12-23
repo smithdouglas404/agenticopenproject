@@ -1,9 +1,7 @@
 import { DeviceService } from 'core-app/core/browser/device.service';
 import { scrollHeaderOnMobile } from 'core-app/core/setup/globals/global-listeners/top-menu-scroll';
 import { detectOnboardingTour } from 'core-app/core/setup/globals/onboarding/onboarding_tour_trigger';
-import { setupToggableFieldsets } from 'core-app/core/setup/globals/global-listeners/toggable-fieldset';
 import { installMenuLogic } from 'core-app/core/setup/globals/global-listeners/action-menu';
-import { listenToSettingChanges } from 'core-app/core/setup/globals/global-listeners/settings';
 import { makeColorPreviews } from 'core-app/core/setup/globals/global-listeners/color-preview';
 import { dangerZoneValidation } from 'core-app/core/setup/globals/global-listeners/danger-zone-validation';
 import { fixFragmentAnchors } from 'core-app/core/setup/globals/global-listeners/fix-fragment-anchors';
@@ -15,7 +13,7 @@ import {
 } from 'core-app/core/setup/globals/global-listeners/setup-server-response';
 
 export function addTurboGlobalListeners() {
-  document.addEventListener('turbo:load', () => {
+  const runOnRenderAndLoad = () => {
     // Add to content if warnings displayed
     if (document.querySelector('.warning-bar--item')) {
       const content = document.querySelector('#content') as HTMLElement;
@@ -38,16 +36,10 @@ export function addTurboGlobalListeners() {
     // Legacy scripts from app/assets that are not yet component based
     //
 
-    // Toggable fieldsets
-    setupToggableFieldsets();
-
     // Action menu logic
-    jQuery('.toolbar-items').each((_, menu:HTMLElement) => {
-      installMenuLogic(jQuery(menu));
+    document.querySelectorAll<HTMLElement>('.toolbar-items').forEach((menu) => {
+      installMenuLogic(menu);
     });
-
-    // Legacy settings listener
-    listenToSettingChanges();
 
     // Color patches preview the color
     makeColorPreviews();
@@ -63,7 +55,9 @@ export function addTurboGlobalListeners() {
     focusFirstErroneousField();
     activateFlashNotice();
     activateFlashError();
-  });
+  };
+  document.addEventListener('turbo:render', runOnRenderAndLoad);
+  document.addEventListener('DOMContentLoaded', runOnRenderAndLoad);
 
   document.addEventListener('turbo:before-morph-element', (event) => {
     const element = event.target as HTMLElement;

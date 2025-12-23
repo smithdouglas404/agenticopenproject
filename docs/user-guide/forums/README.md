@@ -11,7 +11,9 @@ keywords: forum, forums
 In the forum in OpenProject you can discuss topics in a project with the team: post questions, comment on it and document answers.
 
 <div class="glossary">
+
 **Forum** is defined as a module used to display forums and forum entries. The module has to be activated in the project settings and a forum has to be created in the Forums tab in the project settings to be displayed in the side navigation.
+
 </div>
 
 | Topic                                                    | Content                                                                      |
@@ -36,6 +38,7 @@ You will get a list of all existing forums within a project as well as a short d
 Click on the Forum title to open an existing forum.
 
 ## Create a new forum
+
 To create a new forum in your project, navigate to the **Forums** module in the left side menu and click the **+ Forum** button.
 
 ![A button to create a new forum in OpenProject](openproject_user_guide_forums_module_new_forum.png)

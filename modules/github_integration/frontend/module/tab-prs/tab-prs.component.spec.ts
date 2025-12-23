@@ -14,7 +14,8 @@ import { PullRequestStateComponent } from '../pull-request/pull-request-state.co
 
 @Component({
   selector: 'op-date-time',
-  template: '<p>OpDateTimeComponent </p>'
+  template: '<p>OpDateTimeComponent </p>',
+  standalone: false,
 })
 class OpDateTimeComponent {
   @Input()

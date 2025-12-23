@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -34,23 +36,19 @@ module FlashMessagesHelper
     include FlashMessagesOutputSafetyHelper
   end
 
-  # Renders flash messages
+  # Renders flash messages.
+  #
+  # @return [String] an HTML-safe string.
   def render_flash_messages
-    messages = flash
-      .reject { |k, _| k.start_with? "_" }
-      .reject { |k, _| k.to_s == "op_modal" }
-      .map { |k, v| render_flash_content(k.to_sym, v) }
-
-    safe_join messages, "\n"
+    safe_join build_flash_components.map { it.render_in(self) }, "\n"
   end
 
-  def render_flash_content(key, content)
-    case content
-    when Hash
-      render_flash_message(key, **content)
-    else
-      render_flash_message(key, message: content)
-    end
+  # Renders flash messages wrapped in `<turbo-stream>` tags, suitable for
+  # inclusion inline (e.g. as part of a turbo-frame response).
+  #
+  # @return [String] an HTML-safe string.
+  def render_flash_messages_as_turbo_streams
+    safe_join(build_flash_components.map { it.render_as_turbo_stream(view_context: self, action: :flash) })
   end
 
   def render_flash_modal
@@ -60,6 +58,15 @@ module FlashMessagesHelper
     component = component.constantize if component.is_a?(String)
 
     component.new(**content.fetch(:parameters, {})).render_in(self)
+  end
+
+  private
+
+  def build_flash_components
+    flash
+      .reject { |k, _| k.start_with? "_" }
+      .reject { |k, _| k.to_s == "op_modal" }
+      .map { |k, v| build_flash_component(k.to_sym, v) }
   end
 
   def mapped_flash_type(type)
@@ -75,9 +82,19 @@ module FlashMessagesHelper
     end
   end
 
-  def render_flash_message(type, message:, **args)
-    render(OpPrimer::FlashComponent.new(scheme: mapped_flash_type(type), **args)) do
-      join_flash_messages(message)
+  def build_flash_component(type, *args)
+    options = args.extract_options!
+    content = args.first || options[:message]
+
+    action_button_arguments = options.delete(:action_button_arguments)
+    action_button_content = options.delete(:action_button_content)
+
+    OpPrimer::FlashComponent.new(scheme: mapped_flash_type(type), **options).tap do |component|
+      component.with_content(join_flash_messages(content))
+
+      if action_button_arguments.present?
+        component.with_action_button(**action_button_arguments) { action_button_content }
+      end
     end
   end
 end

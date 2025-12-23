@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -36,6 +38,8 @@ class CustomValue::FloatStrategy < CustomValue::FormatStrategy
   end
 
   def formatted_value
+    return "" if value.blank?
+
     number_with_delimiter(value.to_s)
   end
 

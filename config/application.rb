@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -32,7 +34,9 @@ require "rails/all"
 require "active_support"
 require "active_support/dependencies"
 require "core_extensions"
+require "sprockets/railtie"
 require "view_component"
+require "primer/view_components"
 require "primer/view_components/engine"
 
 # Require the gems listed in Gemfile, including any gems
@@ -125,9 +129,6 @@ module OpenProject
     # http://stackoverflow.com/questions/4590229
     config.middleware.use Rack::TempfileReaper
 
-    # Move secure_headers middleware to after the ShowExceptions
-    config.middleware.move_after ActionDispatch::ShowExceptions, SecureHeaders::Middleware
-
     # Add lookbook preview paths when enabled
     if OpenProject::Configuration.lookbook_enabled?
       config.paths.add Primer::ViewComponents::Engine.root.join("app/components").to_s, eager_load: true
@@ -165,6 +166,13 @@ module OpenProject
 
     # Include tstzrange columns in the list of time zone aware types
     ActiveRecord::Base.time_zone_aware_types += [:tstzrange]
+
+    # Specifies whether `to_time` methods preserve the UTC offset of their receivers
+    # or preserves the timezone. Rails 8.0+ default is `:zone`.
+    # If set to `:zone`, `to_time` methods will use the timezone of their receivers.
+    # If set to `:offset`, `to_time` methods will use the UTC offset.
+    # If `false`, `to_time` methods will convert to the local system UTC offset instead.
+    config.active_support.to_time_preserves_timezone = :zone
 
     # Activate being able to specify the format in which full_message works.
     # Doing this, it is e.g. possible to avoid having the format of '%{attribute} %{message}' which
@@ -214,6 +222,9 @@ module OpenProject
     config.good_job.smaller_number_is_higher_priority = true
 
     config.action_controller.asset_host = OpenProject::Configuration::AssetHost.value
+
+    # Remove X-XSS-Protection header
+    config.action_dispatch.default_headers.delete "X-XSS-Protection"
 
     config.log_level = OpenProject::Configuration["log_level"].to_sym
 

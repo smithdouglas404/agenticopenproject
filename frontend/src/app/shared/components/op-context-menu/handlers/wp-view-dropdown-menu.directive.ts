@@ -39,6 +39,7 @@ import { WorkPackageViewTimelineService } from 'core-app/features/work-packages/
 
 @Directive({
   selector: '[wpViewDropdown]',
+  standalone: false,
 })
 export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
   constructor(
@@ -53,7 +54,7 @@ export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
 
   public isOpen = false;
 
-  protected open(evt:JQuery.TriggeredEvent) {
+  protected open(evt:Event) {
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
       this.buildItems();

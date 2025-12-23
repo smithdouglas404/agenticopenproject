@@ -8,7 +8,7 @@ ro:
         url: 'URL de încărcare utilă'
         secret: 'Secretul semnăturii'
         events: 'Evenimente'
-        enabled: 'Enabled'
+        enabled: 'Activat'
         projects: 'Proiecte activate'
       webhooks/log:
         event_name: 'Numele evenimentului'
@@ -27,10 +27,15 @@ ro:
       no_results_table: Nu au fost definite încă niciun fel de webhooks.
       label_add_new: Adaugă un nou webhook
       label_edit: Editați webhook
-      label_event_resources: Resurse pentru evenimente
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Creat pe"
         updated: "Actualizat"
+        comment: "Comentariu"
+        internal_comment: "Comentariu intern"
       explanation:
         text: >
           La apariția unui eveniment, cum ar fi crearea unui pachet de lucru sau o actualizare a unui proiect, OpenProject va trimite o cerere POST către punctele finale web configurate. De multe ori, evenimentul este trimis după ce a trecut %{link}.

@@ -46,11 +46,7 @@ RSpec.describe OpenProject::Appsignal do
     end
 
     it "stores the exception in current appsignal transaction if one is available" do
-      transaction = Appsignal::Transaction.create(
-        SecureRandom.uuid,
-        Appsignal::Transaction::BACKGROUND_JOB,
-        Appsignal::Transaction::GenericRequest.new({})
-      )
+      transaction = Appsignal::Transaction.create SecureRandom.uuid
       allow(transaction).to receive(:set_error)
       described_class.exception_handler("message", exception:)
 

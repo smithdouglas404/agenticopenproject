@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |s|
   s.name        = "openproject-auth_saml"
   s.version     = "1.0.0"

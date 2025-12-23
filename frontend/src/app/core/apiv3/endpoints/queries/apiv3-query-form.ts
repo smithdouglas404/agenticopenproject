@@ -30,7 +30,7 @@ import { QueryResource } from 'core-app/features/hal/resources/query-resource';
 import { ApiV3FormResource } from 'core-app/core/apiv3/forms/apiv3-form-resource';
 import { QueryFormResource } from 'core-app/features/hal/resources/query-form-resource';
 import { Observable } from 'rxjs';
-import * as URI from 'urijs';
+import URI from 'urijs';
 import { map, tap } from 'rxjs/operators';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { QueryFiltersService } from 'core-app/features/work-packages/components/wp-query/query-filters.service';
@@ -75,7 +75,7 @@ export class ApiV3QueryForm extends ApiV3FormResource<QueryFormResource> {
    * @param projectIdentifier
    * @param payload
    */
-  public loadWithParams(params:{ [key:string]:unknown }, queryId:string|null|undefined, projectIdentifier:string|undefined|null, payload:any = {}):Observable<[QueryFormResource, QueryResource]> {
+  public loadWithParams(params:Record<string, unknown>, queryId:string|null|undefined, projectIdentifier:string|undefined|null, payload:any = {}):Observable<[QueryFormResource, QueryResource]> {
     // We need a valid payload so that we
     // can check whether form saving is possible.
     // The query needs a name to be valid.

@@ -27,10 +27,15 @@ pt-PT:
       no_results_table: Nenhum webhook definido.
       label_add_new: Adicionar novo webhook
       label_edit: Editar webhook
-      label_event_resources: Recursos do evento
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Criado"
         updated: "Atualizado"
+        comment: "Comentário"
+        internal_comment: "Comentário interno"
       explanation:
         text: >
           Após a ocorrência de um evento, como criação de um pacote de trabalho ou atualização de um projeto, o OpenProject envia uma solicitação POST para os web endpoints configurados. Muitas vezes, o evento é enviado depois de %{link} ter passado.

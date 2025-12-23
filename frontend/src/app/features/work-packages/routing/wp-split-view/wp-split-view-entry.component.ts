@@ -39,14 +39,14 @@ import { populateInputsFromDataset } from 'core-app/shared/components/dataset-in
 @Component({
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
   template: `
-    <op-wp-split-view
-      [workPackageId]="workPackageId"
+    <op-wp-split-view [workPackageId]="workPackageId"
       [activeTab]="activeTab"
       [showTabs]="false"
       [resizerClass]="resizerClass"
-    ></op-wp-split-view>
+     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageSplitViewEntryComponent {
   @Input() workPackageId:string;
@@ -55,5 +55,7 @@ export class WorkPackageSplitViewEntryComponent {
 
   constructor(readonly elementRef:ElementRef) {
     populateInputsFromDataset(this);
+
+    document.body.classList.add('router--work-packages-partitioned-split-view-details');
   }
 }

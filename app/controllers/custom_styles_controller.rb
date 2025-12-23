@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,24 +30,23 @@
 
 class CustomStylesController < ApplicationController
   include EnterpriseHelper
+  include CustomStylesControllerHelper
 
   layout "admin"
   menu_item :custom_style
 
   UNGUARDED_ACTIONS = %i[logo_download
-                         export_logo_download
-                         export_cover_download
+                         logo_mobile_download
                          favicon_download
                          touch_icon_download].freeze
 
   before_action :require_admin,
                 except: UNGUARDED_ACTIONS
-  before_action :require_ee_token,
-                except: UNGUARDED_ACTIONS + %i[upsell]
   skip_before_action :check_if_login_required,
                      only: UNGUARDED_ACTIONS
-  before_action :write_augur_to_gon, only: %i[upsell]
   no_authorization_required! *UNGUARDED_ACTIONS
+
+  guard_enterprise_feature(:define_custom_style, except: UNGUARDED_ACTIONS + %i[show])
 
   def default_url_options
     super.merge(tab: params[:tab])
@@ -74,11 +75,14 @@ class CustomStylesController < ApplicationController
   end
 
   def update
+    flash.clear
     @custom_style = get_or_create_custom_style
-    if @custom_style.update(custom_style_params)
+    parameters = custom_style_params
+    error = validate_font_uploads(parameters)
+    if !error && @custom_style.update(parameters)
       redirect_to custom_style_path
     else
-      flash[:error] = @custom_style.errors.full_messages
+      flash[:error] = error || @custom_style.errors.full_messages
       render action: :show, status: :unprocessable_entity
     end
   end
@@ -99,12 +103,20 @@ class CustomStylesController < ApplicationController
     file_download(:logo_path)
   end
 
+  def logo_mobile_download
+    file_download(:logo_mobile_path)
+  end
+
   def export_logo_download
     file_download(:export_logo_path)
   end
 
   def export_cover_download
     file_download(:export_cover_path)
+  end
+
+  def export_footer_download
+    file_download(:export_footer_path)
   end
 
   def favicon_download
@@ -119,6 +131,10 @@ class CustomStylesController < ApplicationController
     file_delete(:remove_logo)
   end
 
+  def logo_mobile_delete
+    file_delete(:remove_logo_mobile)
+  end
+
   def export_logo_delete
     file_delete(:remove_export_logo)
   end
@@ -127,8 +143,28 @@ class CustomStylesController < ApplicationController
     file_delete(:remove_export_cover)
   end
 
+  def export_footer_delete
+    file_delete(:remove_export_footer)
+  end
+
   def favicon_delete
     file_delete(:remove_favicon)
+  end
+
+  def export_font_regular_delete
+    file_delete(:remove_export_font_regular)
+  end
+
+  def export_font_bold_delete
+    file_delete(:remove_export_font_bold)
+  end
+
+  def export_font_italic_delete
+    file_delete(:remove_export_font_italic)
+  end
+
+  def export_font_bold_italic_delete
+    file_delete(:remove_export_font_bold_italic)
   end
 
   def touch_icon_delete
@@ -161,6 +197,19 @@ class CustomStylesController < ApplicationController
     redirect_to custom_style_path
   end
 
+  def export_demo_pdf_download
+    result = ::Exports::PDF::DemoGenerator.new.export!
+    expires_in 0, public: false
+    send_data result.content,
+              filename: result.title,
+              type: "application/pdf",
+              disposition: "inline"
+  rescue StandardError => e
+    Rails.logger.error "Failed to generate demo PDF: #{e.message}"
+    flash[:error] = e.message
+    redirect_to custom_style_path
+  end
+
   private
 
   def theme_from_params
@@ -181,19 +230,21 @@ class CustomStylesController < ApplicationController
     CustomStyle.current || CustomStyle.create!
   end
 
-  def require_ee_token
-    unless EnterpriseToken.allows_to?(:define_custom_style)
-      redirect_to custom_style_upsell_path
-    end
-  end
-
   def custom_style_params
-    params.require(:custom_style).permit(:logo, :remove_logo,
-                                         :export_logo, :remove_export_logo,
-                                         :export_cover, :remove_export_cover,
-                                         :export_cover_text_color,
-                                         :favicon, :remove_favicon,
-                                         :touch_icon, :remove_touch_icon)
+    params.expect(custom_style: %i[
+                    logo remove_logo
+                    logo_mobile remove_logo_mobile
+                    export_logo remove_export_logo
+                    export_cover remove_export_cover
+                    export_footer remove_export_footer
+                    favicon remove_favicon
+                    touch_icon remove_touch_icon
+                    export_font_regular remove_export_font_regular
+                    export_font_bold remove_export_font_bold
+                    export_font_italic remove_export_font_italic
+                    export_font_bold_italic remove_export_font_bold_italic
+                    export_cover_text_color
+                  ])
   end
 
   def file_download(path_method)
@@ -213,6 +264,6 @@ class CustomStylesController < ApplicationController
     end
 
     @custom_style.send(remove_method)
-    redirect_to custom_style_path
+    redirect_to custom_style_path, status: :see_other
   end
 end

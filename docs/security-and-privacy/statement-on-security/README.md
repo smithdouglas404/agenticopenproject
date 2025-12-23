@@ -17,13 +17,13 @@ For more information on security and data privacy for OpenProject, please visit:
 **security.txt**
 
 OpenProject uses the `security.txt` standard for defining security policies.
-You can find our `security.txt` here: https://www.openproject.org/security.txt
+You can find our `security.txt` here: [www.openproject.org/security.txt](https://www.openproject.org/security.txt)
 
-Please see https://securitytxt.org/ for more information.
+Please see [securitytxt.org](https://securitytxt.org/) for more information.
 
 ## Security announcements mailing list
 
-If you want to receive immediate security notifications via email as we publish them, please sign up to our security mailing list: https://www.openproject.org/security-and-privacy/#mailing-list.
+If you want to receive immediate security notifications via email as we publish them, please sign up to our [security mailing list](https://www.openproject.org/security-and-privacy/#mailing-list).
 
 No messages except for security advisories or security related announcements will be sent there.
 
@@ -33,13 +33,13 @@ Any security related information will also be published on our [blog](https://ww
 
 ## Security advisory list
 
-OpenProject uses GitHub to manage and publish security advisory listings: https://github.com/opf/openproject/security/advisories
+OpenProject uses GitHub to manage and publish [security advisory listings](https://github.com/opf/openproject/security/advisories)
 
 ## Security vulnerability processing
 
 When we receive vulnerability reports from researchers or through internal identification, the following process is taking place immediately:
 
-1. A security vulnerability is reported internally or through security@openproject.com (see below on how to disclose vulnerabilities responsibly).
+1. A security vulnerability is reported internally or through [security@openproject.com](mailto:security@openproject.com) (see below on how to disclose vulnerabilities responsibly).
 2. A security engineer is receiving and validating the report. An internal tracking ticket is created with a checklist template on how to process the report.
 3. The reporter receives a timely response with an acknowledgement of the report, further questions if present, and an estimated timeline and complexity of a potential fix.
 4. The security engineer coordinates with the security and development team to prepare and test a fix for the report.
@@ -62,7 +62,11 @@ You can also [report a vulnerability directly in GitHub](https://github.com/opf/
 
 Please include a description on how to reproduce the issue if possible. Our security team will get your email and will attempt to reproduce and fix the issue as soon as possible.
 
-> **Please note:** OpenProject currently does not offer a bug bounty program. We will do our best to give you the appropriate credits for responsibly disclosing a security vulnerability to us. We will gladly reference your work, name, website on every publication we do related to the security update.
+## Bug bounty program
+
+OpenProject is currently subject of a bug bounty program, kindly sponsored by the European Commission. Please see https://yeswehack.com/programs/openproject for more details.
+
+Please note that OpenProject does not offer its own bug bounty program. For any security vulnerability you responsibly disclose to it, whether it's through another bug bounty porgram or through our website, we will do our best to give you the appropriate credits for responsibly disclosing a security vulnerability to us. We will gladly reference your work, name, website on every publication we do related to the security update.
 
 ## OpenProject security features
 

@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../shared_context"
 
-RSpec.describe "Edit project phases on project overview page", :js, with_flag: { stages_and_gates: true } do
+RSpec.describe "Edit project phases on project overview page", :js do
   include_context "with seeded projects and phases"
   shared_let(:user) { create(:user) }
   let(:overview_page) { Pages::Projects::Show.new(project) }
@@ -62,7 +62,7 @@ RSpec.describe "Edit project phases on project overview page", :js, with_flag: {
     let(:permissions) { %i[view_project view_project_phases] }
 
     it "shows the attributes sidebar" do
-      overview_page.within_life_cycles_sidebar do
+      overview_page.within_life_cycle_sidebar do
         expect(page).to have_text("Project life cycle")
       end
     end
@@ -72,7 +72,7 @@ RSpec.describe "Edit project phases on project overview page", :js, with_flag: {
     let(:permissions) { %i[view_project view_project_phases edit_project] }
 
     it "does not show the edit buttons" do
-      overview_page.within_life_cycles_sidebar do
+      overview_page.within_life_cycle_sidebar do
         project_life_cycles.each do |lc|
           expect(page).to have_no_link(href: edit_project_phase_path(lc))
         end
@@ -84,7 +84,7 @@ RSpec.describe "Edit project phases on project overview page", :js, with_flag: {
     let(:permissions) { %i[view_project view_project_phases edit_project edit_project_phases] }
 
     it "shows the edit buttons" do
-      overview_page.within_life_cycles_sidebar do
+      overview_page.within_life_cycle_sidebar do
         project_life_cycles.each do |lc|
           expect(page).to have_link(href: edit_project_phase_path(lc))
         end

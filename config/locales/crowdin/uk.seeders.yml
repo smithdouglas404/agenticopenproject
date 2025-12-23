@@ -43,13 +43,6 @@ uk:
           name: PM2 пурпуровий
         item_3:
           name: PM2 зелено-жовтий
-      document_categories:
-        item_0:
-          name: Документація
-        item_1:
-          name: Специфікація
-        item_2:
-          name: Інше
       project_query_roles:
         item_0:
           name: Засіб перегляду запиту проєктів
@@ -464,13 +457,13 @@ uk:
           name: Відхилено
       time_entry_activities:
         item_0:
-          name: Налаштування
+          name: Керування
         item_1:
           name: Специфікація
         item_2:
           name: Розробка
         item_3:
-          name: Перевірка
+          name: Тестування
         item_4:
           name: Підтримка
         item_5:

@@ -41,6 +41,6 @@ class DocumentBaseResource extends HalResource {
     private attachmentsBackend = false;
 }
 
-export const DocumentResource = Attachable(DocumentBaseResource);
+export type DocumentResource = DocumentBaseResource & InstanceType<ReturnType<typeof Attachable>>;
 
-export type DocumentResource = DocumentBaseResource;
+export const DocumentResource: typeof DocumentBaseResource & ReturnType<typeof Attachable> = Attachable(DocumentBaseResource);

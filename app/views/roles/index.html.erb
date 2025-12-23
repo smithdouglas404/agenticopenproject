@@ -43,13 +43,12 @@ See COPYRIGHT and LICENSE files for more details.
   render(Primer::OpenProject::SubHeader.new) do |subheader|
     subheader.with_action_button(
       scheme: :primary,
-      aria: { label: I18n.t(:label_role_new) },
-      title: I18n.t(:label_role_new),
+      leading_icon: :plus,
+      label: t(:label_role_new),
       tag: :a,
       test_selector: "roles--create-button",
       href: new_role_path
-    ) do |button|
-      button.with_leading_visual_icon(icon: :plus)
+    ) do
       Role.model_name.human
     end
   end
@@ -114,8 +113,7 @@ See COPYRIGHT and LICENSE files for more details.
               <%= unless role.builtin?
                     link_to(
                       "", role_path(role),
-                      method: :delete,
-                      data: { confirm: t(:text_are_you_sure) },
+                      data: { turbo_method: :delete, turbo_confirm: t(:text_are_you_sure) },
                       class: "icon icon-delete",
                       title: t(:button_delete)
                     )

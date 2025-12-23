@@ -35,7 +35,7 @@ FactoryBot.define do
     end
 
     after(:build) do |token, evaluator|
-      token.resource_owner_id = evaluator.resource_owner.id
+      token.resource_owner_id = evaluator.resource_owner.id if evaluator.resource_owner
     end
 
     application factory: :oauth_application

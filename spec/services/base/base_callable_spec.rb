@@ -33,7 +33,7 @@ require "spec_helper"
 RSpec.describe BaseServices::BaseCallable, type: :model do
   let(:test_service) do
     Class.new(BaseServices::BaseCallable) do
-      def perform(*)
+      def perform
         state.test = "foo"
         ServiceResult.success(result: "something")
       end
@@ -42,7 +42,7 @@ RSpec.describe BaseServices::BaseCallable, type: :model do
 
   let(:test_service2) do
     Class.new(BaseServices::BaseCallable) do
-      def perform(*)
+      def perform
         state.test2 = "foo"
         ServiceResult.success(result: "something")
       end

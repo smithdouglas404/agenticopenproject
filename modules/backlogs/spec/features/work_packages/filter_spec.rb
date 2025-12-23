@@ -64,6 +64,7 @@ RSpec.describe "Filter by backlog type", :js do
   let(:work_package_with_task_type) do
     create(:work_package,
            type: task_type,
+           parent: work_package_with_story_type,
            project:)
   end
 
@@ -104,5 +105,23 @@ RSpec.describe "Filter by backlog type", :js do
     filters.open
 
     filters.expect_filter_by("Backlog type", "is (OR)", "Story", "backlogsWorkPackageType")
+  end
+
+  it "can filter by task or any" do
+    filters.open
+
+    filters.add_filter_by("Backlog type", "is (OR)", "Story", "backlogsWorkPackageType")
+
+    wp_table.ensure_work_package_not_listed! work_package_with_task_type
+
+    filters.remove_filter "backlogsWorkPackageType"
+    filters.add_filter_by("Backlog type", "is (OR)", "Task", "backlogsWorkPackageType")
+
+    wp_table.expect_work_package_listed work_package_with_task_type
+
+    filters.remove_filter "backlogsWorkPackageType"
+    filters.add_filter_by("Backlog type", "is (OR)", "any", "backlogsWorkPackageType")
+
+    wp_table.expect_work_package_listed work_package_with_story_type, work_package_with_task_type
   end
 end

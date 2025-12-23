@@ -70,13 +70,13 @@ RSpec.describe "OAuth Access Grant Nudge upon adding a storage to a project",
 
     click_on("Storage")
 
-    expect(page).to have_select("Storage", options: ["#{storage.name} (nextcloud)"])
+    expect(page).to have_select("Storage", options: [storage.typed_label])
     click_on("Continue")
 
     expect(page).to have_checked_field("New folder with automatically managed permissions")
     click_on("Add")
 
-    expect(page).to have_css("h1", text: "Files")
+    expect(page).to have_heading "Files"
     expect(page).to have_text(storage.name)
 
     within_test_selector("oauth-access-grant-nudge-modal") do

@@ -37,5 +37,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-loading-file-list',
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class LoadingFileListComponent { }

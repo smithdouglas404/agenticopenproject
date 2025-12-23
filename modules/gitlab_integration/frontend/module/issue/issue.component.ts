@@ -38,7 +38,8 @@ import {IGitlabIssueResource} from 'core-app/features/plugins/linked/openproject
   styleUrls: [
     './issue.component.sass',
   ],
-  host: { class: 'op-issue' }
+  host: { class: 'op-issue' },
+  standalone: false,
 })
 
 export class IssueComponent {

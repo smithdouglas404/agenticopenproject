@@ -41,6 +41,7 @@ import {
   templateUrl: './wp-attribute-group.template.html',
   styleUrls: ['./wp-attribute-group.component.sass'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class WorkPackageFormAttributeGroupComponent extends UntilDestroyedMixin {
   @HostBinding('class.wp-attribute-group') className = true;
@@ -56,10 +57,6 @@ export class WorkPackageFormAttributeGroupComponent extends UntilDestroyedMixin 
     protected injector:Injector,
   ) {
     super();
-  }
-
-  public trackByName(_index:number, elem:{ name:string }) {
-    return elem.name;
   }
 
   /**

@@ -69,7 +69,11 @@ module BasicData
     end
 
     def applicable?
-      model_class.none?
+      model_class.none? && seed_data.all_references_exist?(all_required_references)
+    end
+
+    def all_required_references
+      get_required_references(models_data)
     end
 
     def lookup_existing_references
@@ -80,6 +84,8 @@ module BasicData
         if model = model_class.find_by(lookup_attributes)
           seed_data.store_reference(model_data["reference"], model)
         end
+      rescue ArgumentError
+        # ignore when lookups can not be done because of missing references
       end
     end
 

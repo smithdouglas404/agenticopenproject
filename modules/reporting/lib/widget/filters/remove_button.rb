@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,13 +30,22 @@
 
 class Widget::Filters::RemoveButton < Widget::Filters::Base
   def render
-    hidden_field = tag :input, id: "rm_#{filter_class.underscore_name}",
-                               name: "fields[]", type: "hidden", value: ""
-    button = content_tag(:a, href: "#", class: "filter_rem") do
+    hidden_field = tag :input,
+                       id: "rm_#{filter_class.underscore_name}",
+                       name: "fields[]", type: "hidden", value: ""
+    button = content_tag(
+      :a,
+      href: "#",
+      class: "filter_rem",
+      data: {
+        action: "click->reporting--page#removeFilter keydown->reporting--page#filterKeydown"
+      }
+    ) do
       icon_wrapper("icon-close advanced-filters--remove-filter-icon", I18n.t(:description_remove_filter))
     end
 
-    write(content_tag(:div, hidden_field + button, id: "rm_box_#{filter_class.underscore_name}",
-                                                   class: "advanced-filters--remove-filter"))
+    write(content_tag(:div, hidden_field + button,
+                      id: "rm_box_#{filter_class.underscore_name}",
+                      class: "advanced-filters--remove-filter"))
   end
 end

@@ -32,6 +32,10 @@ module My
   module TimeTracking
     class HeaderComponent < ApplicationComponent
       options :date, :mode, :view_mode
+
+      def view_mode_switch_link(new_view_mode)
+        my_time_tracking_path(date: date, mode: mode, view_mode: new_view_mode)
+      end
     end
   end
 end

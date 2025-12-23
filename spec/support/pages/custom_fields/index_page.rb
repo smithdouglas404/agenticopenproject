@@ -44,10 +44,6 @@ module Pages
         end
       end
 
-      def select_format(label)
-        select label, from: "custom_field_field_format"
-      end
-
       def set_name(name)
         find_by_id("custom_field_name").set name
       end
@@ -62,6 +58,34 @@ module Pages
 
       def has_form_element?(name)
         page.has_css? "label.form--label", text: name
+      end
+
+      def click_to_create_new_custom_field(type)
+        wait_for_network_idle
+
+        click_button "New custom field"
+
+        click_on type
+      end
+
+      def expect_having_create_item(type)
+        wait_for_network_idle
+
+        click_button "New custom field"
+
+        expect(page).to have_link(type)
+      end
+
+      def expect_not_having_create_item(type)
+        wait_for_network_idle
+
+        click_button "New custom field"
+
+        expect(page).to have_no_link(type)
+      end
+
+      def expect_none_listed
+        expect(page).to have_text("There are currently no custom fields.")
       end
     end
   end

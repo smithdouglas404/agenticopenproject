@@ -52,7 +52,7 @@ export default class TwoFactorAuthenticationController extends Controller {
     event.preventDefault();
 
     try {
-      const verifyOptionsRequest = await fetch(data.challengeUrl as string);
+      const verifyOptionsRequest = await fetch(data.challengeUrl!);
       const verifyOptions = await verifyOptionsRequest.text();
 
       const options = WebAuthnJSON.parseRequestOptionsFromJSON({
@@ -68,7 +68,9 @@ export default class TwoFactorAuthenticationController extends Controller {
 
       return true;
     } catch (error) {
-      this.displayError(error);
+      if (error instanceof DOMException) {
+        this.displayError(error);
+      }
       return false;
     }
   }
@@ -86,7 +88,7 @@ export default class TwoFactorAuthenticationController extends Controller {
     event.preventDefault();
 
     try {
-      const createOptionsRequest = await fetch(data.challengeUrl as string);
+      const createOptionsRequest = await fetch(data.challengeUrl!);
       const createOptions = await createOptionsRequest.text();
 
       const options = WebAuthnJSON.parseCreationOptionsFromJSON({
@@ -102,7 +104,9 @@ export default class TwoFactorAuthenticationController extends Controller {
 
       return true;
     } catch (error) {
-      this.displayError(error);
+      if (error instanceof DOMException) {
+        this.displayError(error);
+      }
       return false;
     }
   }
@@ -110,7 +114,7 @@ export default class TwoFactorAuthenticationController extends Controller {
   qrCodeElementTargetConnected(target:HTMLElement) {
     QrCreator.render(
       {
-        text: target.dataset.value as string,
+        text: target.dataset.value!,
         radius: 0,
         ecLevel: 'H',
         fill: '#222222',

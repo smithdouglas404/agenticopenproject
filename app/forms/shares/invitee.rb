@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -46,7 +48,7 @@ module Shares
                     { name: "id", operator: "!", values: [::Queries::Filters::MeValue::KEY] },
                     { name: "status", operator: "=", values: [Principal.statuses[:active], Principal.statuses[:invited]] }],
           searchKey: "any_name_attribute",
-          addTag: User.current.allowed_globally?(:create_user),
+          addTag: allowed_to_invite?,
           addTagText: I18n.t("members.send_invite_to"),
           multiple: true,
           focusDirectly: true,
@@ -61,6 +63,16 @@ module Shares
     def initialize(disabled: false)
       super()
       @disabled = disabled
+    end
+
+    def allowed_to_invite?
+      return true if User.current.allowed_globally?(:create_user)
+
+      if model.entity.respond_to?(:project)
+        return User.current.allowed_in_project?(:invite_members_by_email, model.entity.project)
+      end
+
+      false
     end
   end
 end

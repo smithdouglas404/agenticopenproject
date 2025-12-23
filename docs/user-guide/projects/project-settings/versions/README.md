@@ -20,14 +20,17 @@ To create a new version for your project, navigate to *Project settings → Vers
 ![Versions in project settings in OpenProject](openproject_user_guide_project_settings_work_packages_versions.png)
 
 You can configure the following details:
+
 - **Name**: Set a name for the version.
 - **Description**: Add a description to clarify the purpose of the version.
 - **Status**: Choose the status of the version. The default status is open.
 - **Wiki page**: Select a wiki page to link directly from the version in the Roadmap.
 - **Start and finish date**: Set the planned start and finish dates.
 - **Sharing**: Choose whether the version should be shared with other projects (e.g., in the project hierarchy or with subprojects).
+
 > [!NOTE]
-> Note: You’ll need to configure the backlog column separately in each project that uses the version.
+> You’ll need to configure the backlog column separately in each project that uses the version.
+
 - **Backlogs column**: Select a column for this version in the backlogs view. This is only necessary if you’re managing a [Scrum backlog](../../../backlogs-scrum).
 
 Click the Create button to save your changes.

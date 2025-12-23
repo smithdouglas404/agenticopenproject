@@ -39,7 +39,7 @@ module API
             end
 
             get &::API::V3::Utilities::Endpoints::Show
-                   .new(model: ::Project::Phase,
+                   .new(model: Project::Phase,
                         render_representer: API::V3::ProjectPhases::ProjectPhaseRepresenter)
                    .mount
           end

@@ -327,7 +327,7 @@ RSpec.describe WorkPackages::UpdateContract do
       end
     end
 
-    describe "project_phase_definition", with_flag: { stages_and_gates: true } do
+    describe "project_phase_definition" do
       let(:permissions) { super() + %i[view_project_phases move_work_packages] }
 
       context "when not changing the value but assigning a project in which the phase is not active" do
@@ -338,6 +338,18 @@ RSpec.describe WorkPackages::UpdateContract do
           work_package.reload
 
           work_package.project = persisted_other_project
+        end
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when not changing the value but changing a different attribute while the project phase is inactive" do
+        before do
+          work_package.project_phase_definition = persisted_inactive_project_phase.definition
+          work_package.save
+          work_package.reload
+
+          work_package.subject = "A new subject"
         end
 
         it_behaves_like "contract is valid"

@@ -25,6 +25,7 @@ export type SpotSwitchState = boolean;
     multi: true,
   }],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SpotSwitchComponent implements ControlValueAccessor {
   @HostBinding('class.spot-switch') public className = true;

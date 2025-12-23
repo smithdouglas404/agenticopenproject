@@ -830,45 +830,35 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
     end
 
     describe "projectPhase" do
-      context "with the feature enabled", with_flag: { stages_and_gates: true } do
-        context "with the view_project_phases permission" do
-          let(:permissions) { %i[edit_work_packages view_project_phases] }
+      context "with the view_project_phases permission" do
+        let(:permissions) { %i[edit_work_packages view_project_phases] }
 
-          it_behaves_like "has basic schema properties" do
-            let(:path) { "projectPhase" }
-            let(:type) { "ProjectPhase" }
-            let(:name) { I18n.t("attributes.project_phase") }
-            let(:required) { false }
-            let(:writable) { true }
-            let(:location) { "_links" }
-          end
-
-          it_behaves_like "has a collection of allowed values" do
-            let(:json_path) { "projectPhase" }
-            let(:href_path) { "project_phases" }
-            let(:factory) { :project_phase }
-          end
+        it_behaves_like "has basic schema properties" do
+          let(:path) { "projectPhase" }
+          let(:type) { "ProjectPhase" }
+          let(:name) { I18n.t("attributes.project_phase") }
+          let(:required) { false }
+          let(:writable) { true }
+          let(:location) { "_links" }
         end
 
-        context "without any phases active in the project" do
-          let(:permissions) { %i[edit_work_packages view_project_phases] }
-          let(:assignable_project_phases) { [] }
-
-          it "has no projectPhase attribute" do
-            expect(subject).not_to have_json_path("projectPhase")
-          end
-        end
-
-        context "without the view_project_phases permission" do
-          it "has no projectPhase attribute" do
-            expect(subject).not_to have_json_path("projectPhase")
-          end
+        it_behaves_like "has a collection of allowed values" do
+          let(:json_path) { "projectPhase" }
+          let(:href_path) { "project_phases" }
+          let(:factory) { :project_phase }
         end
       end
 
-      context "with the feature disabled" do
+      context "without any phases active in the project" do
         let(:permissions) { %i[edit_work_packages view_project_phases] }
+        let(:assignable_project_phases) { [] }
 
+        it "has no projectPhase attribute" do
+          expect(subject).not_to have_json_path("projectPhase")
+        end
+      end
+
+      context "without the view_project_phases permission" do
         it "has no projectPhase attribute" do
           expect(subject).not_to have_json_path("projectPhase")
         end
@@ -1049,9 +1039,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
     end
 
     describe "responsible and assignee" do
-      let(:base_href) { "/api/v3/projects/#{work_package.project.id}" }
-      let(:wp_base_href) { "/api/v3/work_packages/#{work_package.id}" }
-
       describe "assignee" do
         it_behaves_like "has basic schema properties" do
           let(:path) { "assignee" }
@@ -1064,8 +1051,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
 
         it_behaves_like "links to allowed values via collection link" do
           let(:path) { "assignee" }
-          let(:base_href) { "/api/v3/work_packages/#{work_package.id}" }
-          let(:href) { "#{base_href}/available_assignees" }
+          let(:href) { api_v3_paths.available_assignees_in_work_package(work_package.id) }
         end
 
         context "when not embedded" do
@@ -1102,7 +1088,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         context "when the work package is persisted" do
           it_behaves_like "links to allowed values via collection link" do
             let(:path) { "responsible" }
-            let(:href) { "#{wp_base_href}/available_assignees" }
+            let(:href) { api_v3_paths.available_assignees_in_work_package(work_package.id) }
           end
         end
 
@@ -1111,7 +1097,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
 
           it_behaves_like "links to allowed values via collection link" do
             let(:path) { "responsible" }
-            let(:href) { "#{base_href}/available_assignees" }
+            let(:href) { api_v3_paths.available_assignees_in_workspace(work_package.project_id) }
           end
         end
 

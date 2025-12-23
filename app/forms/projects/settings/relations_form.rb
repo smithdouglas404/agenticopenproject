@@ -33,27 +33,60 @@ module Projects
       delegate :parent, to: :model
 
       form do |f|
-        f.project_autocompleter(
-          name: :parent_id,
-          label: attribute_name(:parent_id),
-          autocomplete_options: {
-            model: project_autocompleter_model,
-            focusDirectly: false,
-            dropdownPosition: "bottom",
-            url: ::API::V3::Utilities::PathHelper::ApiV3Path.projects_available_parents + "?of=#{model.id}",
-            filters: [],
-            data: { qa_field_name: "parent" }
-          }
-        )
+        if visible?
+          f.project_autocompleter(
+            name: :parent_id,
+            label: attribute_name(:parent_id),
+            invalid: model.errors.include?(:parent_id),
+            validation_message: validation_message(:parent),
+            autocomplete_options: {
+              model: project_autocompleter_model,
+              focusDirectly: false,
+              dropdownPosition: "bottom",
+              url: project_autocompleter_url,
+              filters: [],
+              data: { qa_field_name: "parent" }
+            }
+          )
+        else
+          f.hidden(name: :parent_id)
+        end
+      end
+
+      def initialize(invisible: false)
+        super()
+
+        @invisible = invisible
       end
 
       private
+
+      attr_reader :invisible
+
+      def visible?
+        model.parent_allowed? && !invisible
+      end
+
+      def validation_message(attribute)
+        model.errors.full_messages_for(attribute).to_sentence.presence
+      end
 
       def project_autocompleter_model
         return nil unless parent
         return { id: parent.id, name: I18n.t(:"api_v3.undisclosed.parent") } unless parent.visible? || User.current.admin?
 
         { id: parent.id, name: parent.name }
+      end
+
+      def project_autocompleter_url
+        params =
+          if model.new_record?
+            { workspace_type: model.workspace_type }
+          else
+            { of: model.id }
+          end
+
+        ::API::V3::Utilities::PathHelper::ApiV3Path.projects_available_parents(**params)
       end
     end
   end

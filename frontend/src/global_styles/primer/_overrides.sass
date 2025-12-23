@@ -68,8 +68,15 @@ ul.SegmentedControl,
     display: none
 
 .Overlay
+  &--size-large-portrait
+    --overlay-height: 800px !important
+    --overlay-width: 640px !important
+
   &-body_autocomplete_height
-    min-height: 300px
+    min-height: 320px
+
+  &--size-xlarge-maximized-empty-footer
+    min-height: 534px
 
 // For some specific cases like progress form in small screens,
 // we need to change the direction of elements to column,
@@ -80,14 +87,19 @@ ul.SegmentedControl,
       flex-direction: column
       row-gap: 1rem
 
-.Button.op-app-header--primer-button,
-.Button.op-app-header--primer-button .Button-visual
-  color: var(--header-item-font-color)
-  width: auto
+.Button.op-app-header--primer-button
+  align-self: center
+  min-width: var(--control-medium-size)
 
   &:hover
-    background: var(--header-item-bg-hover-color)
     color: var(--header-item-font-hover-color)
+
+  &:not(.Button--primary),
+  &:not(.Button--primary) svg
+    color: var(--header-item-font-color)
+
+  svg
+    align-self: center
 
 // Prototypical CKEditor adjustments to better match Primer styles
 .ck-editor-primer-adjusted
@@ -113,3 +125,26 @@ ul.SegmentedControl,
 .generic-table
   .generic-table--action-menu-button
     min-width: max-content !important
+
+.FormControl-label:has(.op-attribute-help-text)
+  @extend .op-attribute-label
+
+  // the width of a space between the label text and asterisk
+  > :not(.op-attribute-help-text)::before
+    content: "\00a0"
+
+  // we override ordering to display help text after the asterisk
+  > .op-attribute-help-text
+    order: 1
+
+.Truncate
+  &.Truncate--expanded
+    max-width: none
+    min-width: 0
+    overflow: visible
+    white-space: normal
+
+    .Truncate-text
+      white-space: normal
+      overflow: visible
+      text-overflow: clip

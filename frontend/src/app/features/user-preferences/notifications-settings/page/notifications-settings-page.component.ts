@@ -46,6 +46,7 @@ interface IFullNotificationSettingsValue extends IToastSettingsValue {
   templateUrl: './notifications-settings-page.component.html',
   styleUrls: ['./notifications-settings-page.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NotificationsSettingsPageComponent extends UntilDestroyedMixin implements OnInit {
   @Input() userId:string;
@@ -54,7 +55,7 @@ export class NotificationsSettingsPageComponent extends UntilDestroyedMixin impl
 
   public availableTimesOverdue = overDueReminderTimes();
 
-  public eeShowBanners = false;
+  public eeAvailable = false;
 
   public form = new UntypedFormGroup({
     assignee: new UntypedFormControl(false),
@@ -137,7 +138,7 @@ export class NotificationsSettingsPageComponent extends UntilDestroyedMixin impl
 
   ngOnInit():void {
     this.form.disable();
-    this.eeShowBanners = this.bannersService.showBannerFor('date_alerts');
+    this.eeAvailable = this.bannersService.allowsTo('date_alerts');
 
     this
       .currentUserService
@@ -224,7 +225,7 @@ export class NotificationsSettingsPageComponent extends UntilDestroyedMixin impl
   public saveChanges():void {
     const prefs = this.storeService.store.getValue();
     const notificationSettings = (this.form.value as IFullNotificationSettingsValue);
-    const globalNotification = prefs.notifications.find((notification) => !notification._links.project.href) as INotificationSetting;
+    const globalNotification = prefs.notifications.find((notification) => !notification._links.project.href)!;
     const globalPrefs:INotificationSetting = {
       ...globalNotification,
       _links: { project: { href: null } },

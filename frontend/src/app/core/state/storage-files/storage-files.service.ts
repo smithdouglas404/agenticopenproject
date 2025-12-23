@@ -40,7 +40,6 @@ import { IStorageFiles } from 'core-app/core/state/storage-files/storage-files.m
 import { HttpClient } from '@angular/common/http';
 import { ID, QueryEntity } from '@datorama/akita';
 import { IStorageFile } from 'core-app/core/state/storage-files/storage-file.model';
-import isDefinedEntity from 'core-app/core/state/is-defined-entity';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 
 @Injectable()
@@ -95,7 +94,7 @@ export class StorageFilesResourceService {
     return this
       .query
       .selectEntity(id)
-      .pipe(filter(isDefinedEntity));
+      .pipe(filter(entity => entity !== undefined));
   }
 
   private lookupMany(ids:ID[]):Observable<IStorageFile[]> {

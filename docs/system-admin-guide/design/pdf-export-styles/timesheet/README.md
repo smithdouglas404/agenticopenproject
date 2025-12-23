@@ -1,7 +1,11 @@
+---
+sidebar_navigation:
+  title:  Timesheet PDF Styling
+---
 
 # Timesheet PDF
 
-This document describes the style settings format for the [PDF Export styling file](https://github.com/opf/openproject/blob/dev/app/models/work_package/pdf_export/timesheet/standard.yml)
+This document describes the style settings format for the [PDF Export styling file](https://github.com/opf/openproject/blob/dev/modules/reporting/app/workers/cost_query/pdf/standard.yml).
 
 | Key | Description | Data type |
 | - | - | - |

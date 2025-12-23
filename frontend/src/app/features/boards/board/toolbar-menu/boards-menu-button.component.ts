@@ -9,9 +9,10 @@ import { Observable } from 'rxjs';
             class="button last board--settings-dropdown toolbar-icon"
             boardsToolbarMenu
             [boardsToolbarMenu-resource]="board$ | async">
-      <op-icon icon-classes="button--icon icon-show-more"></op-icon>
+      <op-icon icon-classes="button--icon icon-show-more" />
     </button>
   `,
+  standalone: false,
 })
 export class BoardsMenuButtonComponent {
   @Input() board$:Observable<Board>;

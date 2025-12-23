@@ -27,10 +27,15 @@ ko:
       no_results_table: 아직 정의된 Webhook이 없습니다.
       label_add_new: 새로운 Webhook 추가
       label_edit: Webhook 편집
-      label_event_resources: 이벤트 리소스
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "생성됨"
         updated: "업데이트됨"
+        comment: "코멘트"
+        internal_comment: "내부 코멘트"
       explanation:
         text: >
           작업 패키지 생성 또는 프로젝트 업데이트 같은 이벤트가 발생하면 OpenProject는 구성된 웹 엔드포인트에 POST 요청을 보냅니다. 종종 %{link}이(가) 통과된 후에 이벤트가 전송됩니다.

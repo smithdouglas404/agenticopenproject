@@ -43,6 +43,7 @@ import { States } from 'core-app/core/states/states.service';
 
 @Component({
   templateUrl: './save-query.modal.html',
+  standalone: false,
 })
 export class SaveQueryModalComponent extends OpModalComponent {
   public queryName = '';
@@ -90,7 +91,7 @@ export class SaveQueryModalComponent extends OpModalComponent {
   }
 
   public get afterFocusOn():HTMLElement {
-    return document.getElementById('work-packages-settings-button') as HTMLElement;
+    return document.getElementById('work-packages-settings-button')!;
   }
 
   public saveQueryAs($event:Event):void {

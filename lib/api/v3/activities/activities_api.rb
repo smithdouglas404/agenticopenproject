@@ -58,6 +58,7 @@ module API
                                                           .mount
 
             mount ::API::V3::Attachments::AttachmentsByActivityCommentAPI
+            mount ::API::V3::EmojiReactions::EmojiReactionsByActivityCommentAPI
           end
         end
       end

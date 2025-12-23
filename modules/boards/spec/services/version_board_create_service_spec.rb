@@ -80,7 +80,7 @@ RSpec.describe Boards::VersionBoardCreateService do
 
       context "when there are no versions that apply for the project" do
         before do
-          versions.each { _1.update!(status: "closed") }
+          versions.each { it.update!(status: "closed") }
         end
 
         it "sets the column_count to the default value" do
@@ -108,7 +108,7 @@ RSpec.describe Boards::VersionBoardCreateService do
         subject
 
         queries_filters = queries.flat_map(&:filters).map(&:to_hash)
-        widgets_filters = widgets.flat_map { _1.options["filters"] }
+        widgets_filters = widgets.flat_map { it.options["filters"] }
 
         expect(queries_filters).to match_array(widgets_filters)
       end

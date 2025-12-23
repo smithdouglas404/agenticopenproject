@@ -31,6 +31,7 @@ fr:
     github_avatar_url: "URL de l'avatar"
     github_updated_at: "Mise à jour à"
     github_login: "Connexion GitHub"
+    host: "Hôte"
     labels: "Étiquettes"
     repository: "Référentiel"
     changed_files_count: "Fichiers modifiés"

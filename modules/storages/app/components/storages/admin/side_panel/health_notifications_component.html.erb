@@ -59,41 +59,6 @@ See COPYRIGHT and LICENSE files for more details.
             end
           end
         end
-
-        notifications_container.with_row(mt: 2) do
-          render(Primer::Beta::Text.new(font_weight: :bold)) { t("storages.health_email_notifications.title") }
-        end
-
-        notifications_container.with_row(mt: 2) do
-          form_for(
-            @storage, method: :patch,
-                      url: change_health_notifications_enabled_admin_settings_storage_path(@storage),
-                      data: { turbo_stream: true }
-          ) do |f|
-            flex_layout do |notification_status_actions|
-              notification_status_actions.with_row do
-                f.hidden_field :health_notifications_enabled, value: (@storage.health_notifications_should_be_sent? ? "0" : "1")
-              end
-
-              notification_status_actions.with_row(test_selector: "storage-health-notifications-button") do
-                render(
-                  Primer::Beta::Button.new(
-                    scheme: :default,
-                    block: true,
-                    type: :submit
-                  )
-                ) do |button|
-                  button.with_leading_visual_icon(icon: notification_status[:icon])
-                  notification_status[:label]
-                end
-              end
-            end
-          end
-        end
-
-        notifications_container.with_row(mt: 3, test_selector: "storage-health-notifications-description") do
-          render(Primer::Beta::Text.new(color: :subtle)) { notification_status[:description] }
-        end
       end
     end
   end

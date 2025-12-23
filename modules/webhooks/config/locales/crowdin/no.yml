@@ -27,10 +27,15 @@
       no_results_table: Ingen webhooks har blitt definert ennå.
       label_add_new: Legg til ny webhook
       label_edit: Rediger webhook
-      label_event_resources: Hendelsesressurser
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Opprettet"
         updated: "Oppdatert"
+        comment: "Kommentar"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Ved forekomst av en hendelse som oppretting av en arbeidspakke eller en oppdatering fra et prosjekt, vil OpenProject sende en POST-forespørsel til de konfigurerte nettendepunktene. Ofte blir hendelsen sendt etter at %{link} er godkjent.

@@ -10,6 +10,7 @@ import { PrincipalLike } from 'core-app/shared/components/principal/principal-ty
   styleUrls: ['./in-app-notification-actors-line.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class InAppNotificationActorsLineComponent implements OnInit {
   @HostBinding('class.op-ian-actors') className = true;

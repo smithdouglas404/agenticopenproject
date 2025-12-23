@@ -11,7 +11,7 @@ ar:
     settings:
       website_key: 'Website key (May also be called "Site key")'
       response_limit: 'Response limit for HCaptcha'
-      response_limit_text: 'The maximum number of characters to treat the HCaptcha response as valid.'
+      response_limit_text: 'الحد الأقصى لعدد الأحرف لاعتبار استجابة HCaptcha صحيحة.'
       website_key_text: 'أدخل مفتاح الموقع الذي قمت بإنشائه على وحدة تحكم المشرف reCAPTCHA لهذا النطاق.'
       secret_key: 'المفتاح السري'
       secret_key_text: 'أدخل المفتاح السري الذي أنشأته على وحدة تحكم المشرف reCAPTCHA.'

@@ -52,6 +52,7 @@ export interface IWorkPackageAutocompleteItem extends WorkPackageResource {
   templateUrl: '../../../../../../shared/components/autocompleter/op-autocompleter/op-autocompleter.component.html',
   styleUrls: ['../../../../../../shared/components/autocompleter/op-autocompleter/op-autocompleter.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageRelationsAutocompleteComponent extends OpAutocompleterComponent<IWorkPackageAutocompleteItem> {
   @Input() workPackage:WorkPackageResource;
@@ -96,9 +97,9 @@ export class WorkPackageRelationsAutocompleteComponent extends OpAutocompleterCo
     this.ngZone.runOutsideAngular(() => {
       setTimeout(() => {
         this.ngSelectInstance.dropdownPanel.adjustPosition();
-        jQuery(this.hiddenOverflowContainer).one('scroll', () => {
+        document.querySelector(this.hiddenOverflowContainer)?.addEventListener('scroll', () => {
           this.ngSelectInstance.close();
-        });
+        }, { once: true });
       }, 25);
     });
   }

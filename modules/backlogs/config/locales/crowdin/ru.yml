@@ -55,6 +55,7 @@ ru:
     hours: "Часы"
     impediment: "Препятствие"
     label_versions_default_fold_state: "Показать свернутые версии"
+    caption_versions_default_fold_state: "Версии не будут разворачиваться по умолчанию при просмотре бэклогов. Каждая версия должна быть развернута вручную."
     work_package_is_closed: "Пакет работ завершен, когда"
     label_is_done_status: "Статус %{status_name} означает завершение,"
     no_burndown_data: "Нет данных по выгоранию. Необходимо установить даты начала и конца спринта."
@@ -73,6 +74,9 @@ ru:
     task: "Задача"
     task_color: "Цвет задачи"
     unassigned: "Нераспределенные"
+    user_preference:
+      header_backlogs: "Модуль бэклогов"
+      button_update_backlogs: "Обновить модуль бэклогов"
     x_more: "Еще %{count}..."
   backlogs_active: "активно"
   backlogs_any: "любой"

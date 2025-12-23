@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -67,6 +69,7 @@ RSpec.describe "Boards enterprise spec", :js do
 
       board_page = board_index.open_board(manual_board)
       board_page.expect_query "My board"
+      wait_for_network_idle # wait for the banner to be loaded
       expect(page).not_to have_enterprise_banner
 
       board_index.visit!

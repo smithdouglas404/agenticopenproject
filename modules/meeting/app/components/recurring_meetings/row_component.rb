@@ -95,7 +95,7 @@ module RecurringMeetings
     def status
       scheme = status_scheme(state)
 
-      render(Primer::Beta::Label.new(title:, scheme:)) do
+      render(Primer::Beta::Label.new(scheme:)) do
         render(Primer::Beta::Text.new) { t("label_meeting_state_#{state}") }
       end
     end
@@ -112,8 +112,7 @@ module RecurringMeetings
     end
 
     def create
-      return unless copy_allowed?
-      return if instantiated? || cancelled?
+      return unless creatable?
 
       render(
         Primer::Beta::Button.new(
@@ -143,11 +142,35 @@ module RecurringMeetings
                                 "test-selector": "more-button"
                               })
 
+        open_action(menu)
         delete_scheduled_action(menu)
         ical_action(menu)
         delete_action(menu)
         restore_action(menu)
       end
+    end
+
+    def open_action(menu)
+      return unless creatable?
+
+      menu.with_item(
+        label: I18n.t(:label_recurring_meeting_create),
+        tag: :a,
+        href: init_project_recurring_meeting_path(
+          project,
+          model.recurring_meeting.id,
+          start_time: model.start_time.iso8601
+        ),
+        content_arguments: {
+          data: { turbo_method: :post }
+        }
+      ) do |item|
+        item.with_leading_visual_icon(icon: :"issue-opened")
+      end
+    end
+
+    def creatable?
+      copy_allowed? && !(instantiated? || cancelled?)
     end
 
     def ical_action(menu)

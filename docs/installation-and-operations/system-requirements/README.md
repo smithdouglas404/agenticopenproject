@@ -14,7 +14,7 @@ provide any official support for them.
 
 The server hardware requirements should be roughly the same for both the packaged installation and docker (both all-in-one container and compose).
 
-### Minimum Hardware Requirements
+### Minimum hardware requirements
 
 * __CPU:__ Quad Core CPU (>= 2ghz)
 * __Memory:__ 4096 MB
@@ -22,7 +22,7 @@ The server hardware requirements should be roughly the same for both the package
 
 This is for a single server running OpenProject for up to 200 total users. Depending on your number of concurrent users,  these requirements might vary drastically.
 
-## Scaling Requirements
+## Scaling requirements
 
 Generally speaking you will need more CPUs (the faster the better) and more RAM with an increasing number of users.
 Technically this only really depends on the number of concurrent users. No matter if you have 1000 or only 100 total users, if there only ever 20 users working at the same time, the CPU & RAM required will be the same.
@@ -81,9 +81,9 @@ Extrapolating the general system requirements for different sets of users, you w
 
 These values are **guidelines** and should be adjusted based on actual monitoring of resource usage. Scaling should prioritize **CPU and RAM, prioritize scaling Web Workers** first, followed by **Background Workers and Disk Space** as needed.
 
-## Example Configurations
+## Example configurations
 
-### **Small Instance (≤ 200 users, low concurrent activity)**
+### **Small instance (≤ 200 users, low concurrent activity)**
 
 - **Database**: 2 CPU / 4 GiB RAM
 
@@ -97,17 +97,16 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 
 - **Disk Space**: 20 GB + additional disk space in case of internal attachment storage
 
-### **Medium Instance (~500 users, moderate concurrent activity)**
+### **Medium instance (~500 users, moderate concurrent activity)**
 
 - **Database**: 2-4 CPU / 8 GiB RAM
 - **CPU**: 4 CPU
 - **RAM**: 8 GB
--  **Web Workers**: 4 Workers, each with 4-8 threads
-  •
+- **Web Workers**: 4 Workers, each with 4-8 threads
 - **Background Workers**: 2 multithreaded workers with 4-6 GiB RAM
 - **Disk Space**: 50 GB + additional disk space in case of internal attachment storage
 
-### **Large Instance (~1500 users, medium to high concurrent activity)**
+### **Large instance (~1500 users, medium to high concurrent activity)**
 
 - **Database**: 4-8 CPU / 16 GiB RAM
 - **CPU**: 8 CPU
@@ -127,9 +126,7 @@ These values are **guidelines** and should be adjusted based on actual monitorin
 - **Background Workers**: 8 multithreaded workers with 4-6GiB RAM, depending on workload
 - **Disk Space**: 250 GB + additional disk space in case of internal attachment storage
 
-
-
-### Additional Scaling Recommendations
+### Additional scaling recommendations
 
 **Monitor Resource Usage**
 
@@ -149,24 +146,30 @@ Consider external PostgreSQL with performance tuning.
 
 For high-availability setups, distribute traffic across multiple servers and availability regions.
 
+## Host operating system
 
+> [!IMPORTANT]
+>
+> Some features we plan for the future will only be shipped with Docker-based installations. We also don't plan to provide packaged-based installations for more recent Linux versions, e.g. Ubuntu 24.04.
 
-## Host Operating system
-
-The [package-based installation](../installation/packaged) requires one of the following Linux distributions:
-
-| Distribution (__64 bits only__) |
-| ------------------------------- |
-| Ubuntu 22.04 Jammy              |
-| Ubuntu 20.04 Focal              |
-| Debian 12 Bookworm              |
-| Debian 11 Bullseye              |
-| CentOS/RHEL 9.x                 |
-| Suse Linux Enterprise Server 15 |
+### Docker-based installation (recommendation)
 
 The [docker-based installation](../installation/docker) requires a system with Docker installed. Please see the [official Docker page](https://docs.docker.com/install/) for the list of supported systems.
 
 **Please note**, that we only provide packages for the __AMD64__ (x86) architecture. We do provide *docker containers* for both __ARM64__ and __AMD64__.
+
+### Packaged-based installation (.rpm/.deb)
+
+The [package-based installation](../installation/packaged) requires one of the following Linux distributions:
+
+| Distribution (__64 bits only__) | End of life software package                                 |
+| ------------------------------- | ------------------------------------------------------------ |
+| Ubuntu 22.04 Jammy              | *≈ 2027 Q2*                                                  |
+| Ubuntu 20.04 Focal              | 2025 Q3 - [OpenProject 16.2](https://community.openproject.org/wp/64078) |
+| Debian 12 Bookworm              | *≈ 2027 Q2*                                                  |
+| Debian 11 Bullseye              | *2026 Q3*                                                    |
+| CentOS/RHEL 9.x                 | *≈ 2027 Q2*                                                  |
+| Suse Linux Enterprise Server 15 | *≈ 2027 Q2*                                                  |
 
 ### Overview of dependencies
 
@@ -179,7 +182,7 @@ Both the package and docker based installations will install and setup the follo
 * __Database__: [PostgreSQL](https://www.postgresql.org/) Version >= 16
 
 Starting in OpenProject 16.0, PostgreSQL 16.0 will be a minimum requirement.
-PostgreSQL versions 13. and up will continue to work, but may result in incompatibilities and degraded performance in the future. We have a [migration guide on how to upgrade to PostgreSQL 17](../../installation-and-operations/misc/migration-to-postgresql17/).
+PostgreSQL versions 13. and up will continue to work, but may result in incompatibilities and degraded performance in the future. We have a [migration guide on how to upgrade to PostgreSQL 17](../misc/migration-to-postgresql17/).
 
 ## Client
 
@@ -189,6 +192,46 @@ OpenProject supports the latest versions of the major browsers.
 * [Microsoft Edge](https://www.microsoft.com/de-de/windows/microsoft-edge) (only MS Edge version based on Chromium is supported)
 * [Google Chrome](https://www.google.com/chrome/browser/desktop/)
 * [Apple Safari](https://www.apple.com/safari/)
+
+## Integrations (optional)
+
+### openDesk
+
+* [openDesk 1.4](https://gitlab.opencode.de/bmi/opendesk/deployment/opendesk/-/blob/main/CHANGELOG.md)
+
+### Nextcloud Hub
+
+#### Nextcloud Server
+
+* [Nextcloud 30](https://nextcloud.com/changelog/#latest30)
+* [Nextcloud 31](https://nextcloud.com/changelog/#latest31)
+
+> [!TIP]
+>
+> * If you run Nextcloud in the community edition be careful to not blindly follow the update hints in the
+>   administration area of a Nextcloud instance, as they nudge you to use the `latest` version, which might not be the
+>   latest `stable` version.
+> * If you installed Nextcloud via the [community](https://hub.docker.com/_/nextcloud) docker image, we advise you to
+>   pin it to the `stable` tag.
+> * Nextcloud company advises the use of their [all-in-one](https://hub.docker.com/r/nextcloud/all-in-one) docker image.
+
+#### Nextcloud Apps
+
+##### OpenProject integration
+
+* [OpenProject Integration 2.10.0](https://github.com/nextcloud/integration_openproject/releases/tag/v2.10.0)
+
+##### Team folders
+
+If you want to use the feature of [automatically managed project folders](../../system-admin-guide/integrations/nextcloud/#4-automatically-managed-project-folders) you need to install the [Team folders](https://apps.nextcloud.com/apps/groupfolders) app in Nextcloud (formerly Group folders).
+
+* [Team folders 19.1.7](https://github.com/nextcloud/groupfolders/releases/tag/v19.1.7)
+
+### Keycloak token exchange
+
+OpenProject is tested against the following version:
+
+* [Keycloak 26.4.0](https://github.com/keycloak/keycloak/releases/tag/26.4.0)
 
 ## Frequently asked questions (FAQ)
 

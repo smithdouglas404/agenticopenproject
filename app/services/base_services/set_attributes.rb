@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -40,8 +42,8 @@ module BaseServices
       self.contract_options = contract_options
     end
 
-    def perform(params = {})
-      set_attributes(params || {})
+    def perform
+      set_attributes(params)
 
       validate_and_result
     end
@@ -56,9 +58,30 @@ module BaseServices
       model.attributes = params
 
       set_default_attributes(params) if model.new_record?
+      set_custom_values_to_validate(params) if model.customizable?
+      ensure_default_attributes(params)
     end
 
     def set_default_attributes(_params)
+      # nothing to do for now but a subclass may
+    end
+
+    def set_custom_values_to_validate(params)
+      return model.deactivate_custom_field_validations! if contract_options[:skip_custom_field_validation]
+
+      custom_field_ids = custom_field_ids_from(params)
+
+      # Only update custom_values_to_validate when custom field params are provided.
+      # Otherwise keep them intact, so other services can still set them.
+      return if custom_field_ids.empty?
+
+      # Validate only the custom values being updated via the params.
+      model.custom_values_to_validate = model.custom_values.filter do |cv|
+        custom_field_ids.include?(cv.custom_field_id)
+      end
+    end
+
+    def ensure_default_attributes(_params)
       # nothing to do for now but a subclass may
     end
 
@@ -73,6 +96,18 @@ module BaseServices
     def prepare_model(model)
       model.extend(OpenProject::ChangedBySystem)
       model
+    end
+
+    def custom_field_ids_from(params)
+      # 1. Retrieve custom fields set via the accessor `wp.custom_field_1 = 1`
+      custom_field_ids = params.keys.filter_map { |k| k[/^custom_field_(\d+)$/, 1]&.to_i }
+
+      # 2. Retrieve custom fields set via the `wp.custom_field_values = { 1 => 1}` hash.
+      if params[:custom_field_values]
+        custom_field_ids += params[:custom_field_values].stringify_keys.keys.map(&:to_i)
+      end
+
+      custom_field_ids.uniq
     end
   end
 end

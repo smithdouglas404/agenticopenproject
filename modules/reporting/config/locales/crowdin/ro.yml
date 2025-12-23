@@ -45,8 +45,8 @@ ro:
   label_greater: ">"
   label_is_not_project_with_subprojects: "nu este (incluzând subproiecte)"
   label_is_project_with_subprojects: "este (incluzând subproiecte)"
-  label_is_work_package_with_descendants: "is (includes descendants)"
-  label_is_not_work_package_with_descendants: "is not (includes descendants)"
+  label_is_work_package_with_descendants: "este (include descendenții)"
+  label_is_not_work_package_with_descendants: "nu este (include descendenții)"
   label_work_package_attributes: "Atribute pachet de lucru"
   label_less: "<"
   label_logged_by_reporting: "Logat ca"
@@ -74,7 +74,7 @@ ro:
   label_group_by_add: "Adaugă atributul Grupează-după"
   label_inactive: "Inactiv"
   label_no: "Nu"
-  label_none: "Sincronizați datele"
+  label_none: "(fără date)"
   label_no_reports: "Nu există încă rapoarte de costuri."
   label_report: "Raportare"
   label_yes: "Da"
@@ -89,17 +89,17 @@ ro:
   validation_failure_integer: "nu e un întreg valid"
   export:
     timesheet:
-      title: "Your PDF timesheet export"
-      button: "Export PDF timesheet"
-      timesheet: "Timesheet"
+      title: "Export foi de timp PDF"
+      button: "Exportă fișier PDF de timp"
+      timesheet: "Foi de pontaj"
       time: "Timp"
-      sums_hours: Sums
-      overview_per_user_total: "Overview: Total hours per user"
-      overview_per_user_day: "Overview: Hours per user per day"
+      sums_hours: Sume
+      overview_per_user_total: "Prezentare: Total ore per utilizator"
+      overview_per_user_day: "Prezentare: Ore pe utilizator pe zi"
     cost_reports:
-      title: "Exportul dumneavoastră de rapoarte de costuri XLS"
+      title: "Exportul tău de rapoarte de costuri XLS"
       start_time: "Dată început"
-      end_time: "End time"
+      end_time: "Ora de încheiere"
   reporting:
     group_by:
       selected_columns: "Coloane selectate"

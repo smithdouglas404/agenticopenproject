@@ -11,7 +11,9 @@ keywords: Gantt chart, automatic scheduling, manual scheduling, start date, fini
 # Automatic and manual scheduling modes
 
 <div class="glossary">
+
 To schedule work packages in the Gantt chart, there is an **automatic scheduling mode** and a **manual scheduling mode (default)** (new in [release 15.4](../../../release-notes/15-4-0)). To add dependencies between work packages, you can set them as predecessor or successor in the Gantt chart. The automatic and manual scheduling modes determine how work packages behave when the dates of related work packages change.
+
 </div>
 
 
@@ -40,7 +42,7 @@ The **manual scheduling mode** can makes sense if:
 
 Moving a child work package in the manual scheduling mode will not move the dates of the parent work package. The scheduling differences will be indicated by a black or red bracket underneath (e.g. when a child is shorter or longer than the parent phase). See [this explanation](../#understanding-the-colors-and-lines-in-the-gantt-chart) to find out more about the lines and colors in the Gantt chart.
 
-<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Top-down-Scheduling.mp4" type="video/mp4" controls="" style="width:100%"></video>
+<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Top-down-Scheduling.mp4"></video>
 
 
 ## Automatic scheduling

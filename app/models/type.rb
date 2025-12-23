@@ -36,7 +36,7 @@ class Type < ApplicationRecord
 
   include ::Scopes::Scoped
 
-  attribute :patterns, Types::Patterns::CollectionType.new
+  attribute :patterns, WorkPackageTypes::Patterns::CollectionType.new
 
   store_attribute :pdf_export_templates_config, :export_templates_disabled, :json
   store_attribute :pdf_export_templates_config, :export_templates_order, :json
@@ -61,8 +61,10 @@ class Type < ApplicationRecord
 
   acts_as_list
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 255 }
-  validates :is_default, :is_milestone, inclusion: { in: [true, false] }
+  validates :name,
+            presence: true,
+            uniqueness: { case_sensitive: false },
+            length: { maximum: 255 }
 
   scopes :milestone
 

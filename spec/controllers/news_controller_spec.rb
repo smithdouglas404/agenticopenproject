@@ -67,7 +67,7 @@ RSpec.describe NewsController do
       expect(response).to be_successful
       expect(response).to render_template "show"
 
-      expect(response.body).to have_css("h1", text: news.title)
+      expect(assigns(:news)).to eq news
     end
 
     it "renders show with slug" do
@@ -76,7 +76,7 @@ RSpec.describe NewsController do
       expect(response).to be_successful
       expect(response).to render_template "show"
 
-      expect(response.body).to have_css("h1", text: news.title)
+      expect(assigns(:news)).to eq news
     end
 
     it "renders error if news item is not found" do
@@ -160,9 +160,10 @@ RSpec.describe NewsController do
   end
 
   describe "#destroy" do
-    it "deletes the news element and redirects to the news overview page" do
+    it "deletes the news item and redirects with 303 See Other" do
       delete :destroy, params: { id: news.id }
 
+      expect(response).to have_http_status(:see_other)
       expect(response).to redirect_to project_news_index_path(news.project)
       expect { news.reload }.to raise_error ActiveRecord::RecordNotFound
     end

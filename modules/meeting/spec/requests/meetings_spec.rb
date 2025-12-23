@@ -52,74 +52,75 @@ RSpec.describe "Meeting requests",
     end
   end
 
+  describe "show" do
+    context "when meeting belongs to another project the user has no access to" do
+      let(:other_project) { create(:project, enabled_module_names: %i[meetings]) }
+      let(:other_meeting) { create(:meeting, project: other_project) }
+
+      it "returns 404" do
+        get meeting_path(other_meeting)
+
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
   describe "copy" do
     let(:base_params) do
       {
-        copied_from_meeting_id: meeting.id,
         project_id: project.id,
         meeting: {
           title: "Copied meeting",
-          type: "Meeting"
+          type: "Meeting",
+          copied_from_meeting_id: meeting.id
         }
       }
     end
     let(:params) { {} }
-
-    subject do
-      post meetings_path(project),
-           params: base_params.merge(params)
-
-      Meeting.find_by(title: "Copied meeting")
-    end
 
     context "when copying agenda items" do
       let!(:agenda_item) { create(:meeting_agenda_item, meeting:, notes: "**foo**") }
       let(:params) { { copy_agenda: "1" } }
 
       it "copies the agenda items" do
-        subject
+        post meetings_path(project),
+             params: base_params.merge(params)
+
+        meeting = Meeting.find_by(title: "Copied meeting")
 
         expect(response).to be_redirect
 
-        expect(subject).to be_present
-        expect(subject.agenda_items.count).to eq(1)
-        expect(subject.agenda_items.first.notes).to eq("**foo**")
+        expect(meeting).to be_present
+        expect(meeting.agenda_items.count).to eq(1)
+        expect(meeting.agenda_items.first.notes).to eq("**foo**")
       end
     end
 
-    describe "send_notifications" do
-      let(:params) { { send_notifications: } }
+    describe "does not send notifications" do
+      before do
+        post meetings_path(project),
+             params: base_params
 
-      context "when enabled" do
-        let(:send_notifications) { "1" }
-
-        before do
-          subject
-          perform_enqueued_jobs
-        end
-
-        it "sends out emails" do
-          expect(ActionMailer::Base.deliveries.size).to eq 1
-        end
+        Meeting.find_by(title: "Copied meeting")
+        perform_enqueued_jobs
       end
 
-      context "when disabled" do
-        let(:send_notifications) { "0" }
-
-        it "sends out no emails" do
-          expect(ActionMailer::Base.deliveries).to be_empty
-        end
+      it do
+        expect(ActionMailer::Base.deliveries.size).to eq 0
       end
     end
 
     context "when copying without additional params" do
       it "copies the meeting, but not the agenda" do
-        subject
+        post meetings_path(project),
+             params: base_params.merge(params)
+
+        meeting = Meeting.find_by(title: "Copied meeting")
 
         expect(response).to be_redirect
 
-        expect(subject).to be_present
-        expect(subject.agenda_items).to be_empty
+        expect(meeting).to be_present
+        expect(meeting.agenda_items).to be_empty
       end
     end
 
@@ -128,7 +129,9 @@ RSpec.describe "Meeting requests",
       let(:meeting) { create(:meeting, project: other_project) }
 
       it "renders a 404" do
-        subject
+        post meetings_path(project),
+             params: base_params.merge(params)
+
         expect(response).to have_http_status(:not_found)
       end
     end

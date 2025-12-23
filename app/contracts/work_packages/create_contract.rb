@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -42,6 +44,10 @@ module WorkPackages
               # Note that nil would not override and [] would ignore the default permission, so we use the default here:
               permission: :add_work_packages
 
+    attribute :schedule_manually do
+      validate_has_predecessors_or_children if model.schedule_automatically?
+    end
+
     default_attribute_permission :add_work_packages
 
     validate :user_allowed_to_add
@@ -65,6 +71,12 @@ module WorkPackages
     def attributes_changed_by_user
       # lock version is initialized by AR itself
       super - ["lock_version"]
+    end
+
+    def validate_has_predecessors_or_children
+      if Relation.used_for_scheduling_of(model.parent).empty? && model.children.empty?
+        errors.add(:schedule_manually, :cannot_be_automatically_scheduled)
+      end
     end
   end
 end

@@ -41,7 +41,7 @@ de:
         changed: "geändert"
         created: "erstellt"
         commented: "kommentiert"
-        internal_comment: interner Kommentar
+        internal_comment: Interner Kommentar
         internal_journal: Interne Kommentare sind nur für eine einschränkbare Gruppe von Mitgliedern sichtbar.
         unsaved_changes_confirmation_message: Sie haben ungespeicherte Änderungen. Sind Sie sicher, dass Sie den Editor schließen möchten?
         internal_comment_confirmation:
@@ -59,31 +59,33 @@ de:
       tab_interface: "Benutzeroberfläche"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF-Exportstile"
+      tab_pdf_export_font: "Schriftart für den PDF-Export"
+      fonts:
+        file_too_large: "ist zu groß (maximale Größe ist %{count} MB)."
+        file_is_invalid: "ist keine gültige TTF-Schriftdatei."
       colors:
         primary-button-color: "Primäre Schaltfläche"
         accent-color: "Akzent"
         header-bg-color: "Hintergrund der Kopfzeile"
-        header-item-bg-hover-color: "Hintergrund der Kopfzeile bei Hover"
         main-menu-bg-color: "Hintergrundfarbe des Hauptmenüs"
         main-menu-bg-selected-background: "Hintergrundfarbe des Hauptmenüs bei Auswahl"
-        main-menu-bg-hover-background: "Hintergrundfarbe des Hauptmenüs bei Hover"
       custom_colors: "Benutzerdefinierte Farben"
       manage_colors: "Farbauswahloptionen bearbeiten"
       instructions:
         primary-button-color: "Starke Akzentfarbe, die für die wichtigste Schaltfläche auf einem Bildschirm verwendet wird."
         accent-color: "Farbe für Links und andere dezent hervorgehobene Elemente."
-        header-item-bg-hover-color: "Hintergrundfarbe von Header-Elementen während Mouse-hover."
-        header-item-font-color: "Schriftfarbe von anklickbaren Header-Elementen."
-        header-item-font-hover-color: "Schriftfarbe von anklickbaren Header-Elementen während Mouse-hover."
-        header-border-bottom-color: "Rahmenlinie unterhalb des Headers. Freilassen, um keine Linie darzustellen."
         main-menu-bg-color: "Hintergrundfarbe des Menüs in der linken Seitenleiste."
       theme_warning: Das Ändern des Themes wird Ihr benutzerdefiniertes Design überschreiben. Alle Änderungen werden dann verloren gehen. Sind Sie sicher, dass Sie fortfahren möchten?
     enterprise:
-      upgrade_to_ee: "Auf Enterprise edition upgraden"
+      delete_dialog:
+        title: "Enterprise-Token löschen"
+        heading: "Diesen Enterprise-Token löschen?"
+        confirmation: "Sind Sie sicher, dass Sie diesen Enterprise-Edition Support-Token löschen möchten?"
+      create_dialog:
+        title: "Enterprise-Token hinzufügen"
+        type_token_text: "Enterprise-Token Text"
+        token_placeholder: "Enterprise-Token Text hier einfügen"
       add_token: "Enterprise edition Support Token hochladen"
-      delete_token_modal:
-        text: "Sind Sie sicher, dass Sie das aktuelle Enterprise edition token entfernen möchten?"
-        title: "Token löschen"
       replace_token: "Aktuellen Enterprise edition Support Token ersetzen"
       order: "Enterprise on-premises bestellen"
       paste: "Enterprise edition Support Token hier einfügen"
@@ -95,13 +97,81 @@ de:
       buttons:
         upgrade: "Jetzt Upgrade durchführen"
         contact: "Kontaktieren Sie uns für eine Demo"
-      enterprise_info_html: "ist ein Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span> Add-on."
-      upgrade_info: "Bitte steigen Sie auf einen kostenpflichtigen Plan um, um diese Funktion zu aktivieren und in Ihrem Team zu verwenden."
+      status:
+        expired: "Abgelaufen"
+        expiring_soon: "Läuft bald ab"
+        in_grace_period: "In der Kulanzzeit"
+        invalid_domain: "Ungültige Domain"
+        not_active: "Nicht aktiv"
+        trial: "Probezeitraum"
     jemalloc_allocator: Jemalloc Speicher allocator
     journal_aggregation:
       explanation:
         text: "Individuelle Aktionen eines Benutzers (z.B. ein Arbeitspaket zweimal aktualisieren) werden zu einer einzigen Aktion zusammengefasst, wenn ihr Altersunterschied kleiner ist als der angegebene Zeitraum. Sie werden als eine einzige Aktion innerhalb der Anwendung angezeigt. Dadurch werden Benachrichtigungen um die gleiche Zeit verzögert, wodurch die Anzahl der gesendeten E-Mails verringert wird. Dies wirkt sich auch auf die Verzögerung von %{webhook_link} aus."
         link: "Webhook"
+    scim_clients:
+      authentication_methods:
+        sso: "JWT vom Identitätsanbieter"
+        oauth2_client: "OAuth 2.0 Client-Anmeldeinformationen"
+        oauth2_token: "Statisches Zugriffstoken"
+      created_client_credentials_dialog_component:
+        title: "Client-Zugangsdaten erstellt"
+        heading: "Client-Zugangsdaten wurden generiert"
+        one_time_hint: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
+      created_token_dialog_component:
+        title: "Token erstellt"
+        heading: "Ein Token wurde generiert"
+        label_token: "Token"
+        one_time_hint: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
+      delete_scim_client_dialog_component:
+        title: "SCIM-Client löschen"
+        heading: "Sind Sie sicher, dass Sie diesen SCIM-Client löschen möchten?"
+        description: "Von diesem SCIM-Client verwaltete Benutzer können nicht mehr von ihm aktualisiert werden."
+      edit:
+        label_delete_scim_client: "SCIM-Client löschen"
+      form:
+        auth_provider_description: "Dies ist der Dienst, den die vom SCIM-Anbieter hinzugefügten Benutzer für die Authentifizierung in OpenProject verwenden werden."
+        authentication_method_description_html: "So authentifiziert sich der SCIM-Client bei OpenProject. Bitte stellen Sie sicher, dass OAuth Tokens den <code>scim_v2</code> Scope enthalten."
+        description: "Mehr Informationen zu den folgenden Einstellungen können in [unserer Dokumentation](docs_url) gefunden werden."
+        jwt_sub_description: "Beispielsweise für Keycloak ist dies die UUID des Service-Accounts der zum SCIM-Client gehört. Weitere Informationen finden Sie in [unserer Dokumentation](docs_url)."
+        name_description: "Wählen Sie einen Namen, der anderen Administratoren hilft, besser zu verstehen, warum dieser Client konfiguriert wurde."
+      index:
+        description: "SCIM-Clients, die hier konfiguriert werden, können mit der OpenProject SCIM-Server-API interagieren, um Benutzerkonten und Gruppen zu erstellen, zu aktualisieren und zu entfernen."
+        label_create_button: "SCIM-Client hinzufügen"
+      new:
+        title: "Neuer SCIM-Client"
+      revoke_static_token_dialog_component:
+        confirm_button: "Widerrufen"
+        title: "Statisches Token widerrufen"
+        heading: "Sind Sie sicher, dass Sie dieses Token widerrufen möchten?"
+        description: "Der SCIM-Client, der dieses Token verwendet, kann nicht mehr auf die SCIM-Server-API von OpenProject zugreifen."
+      table_component:
+        blank_slate:
+          title: "Noch keine SCIM-Clients konfiguriert"
+          description: "Clients hinzufügen, um sie hier zu sehen"
+        user_count: "Benutzer"
+      token_list_component:
+        description: "Die Token, die Sie hier erzeugen, können von einem SCIM-Client weitergegeben werden, um auf die OpenProject SCIM-API zuzugreifen."
+        heading: "Token"
+        label_add_token: "Token"
+        label_aria_add_token: "Token hinzufügen"
+      token_table_component:
+        blank_slate:
+          title: "Es sind noch keine Token erstellt worden"
+          description: "Sie können jetzt eins erstellen"
+        expired: "Abgelaufen am %{date}"
+        revoked: "Widerrufen am %{date}"
+        title: "Zugangs-Token Tabelle"
+    settings:
+      new_project:
+        project_creation: "Erstellung von Projekten"
+        notification_text_default: >
+          <p>Hallo,</p> <p>Ein neues Projekt wurde erstellt: projectValue:name</p> <p>Vielen Dank</p>
+    workflows:
+      tabs:
+        default_transitions: "Standard-Übergänge"
+        user_author: "Benutzer ist Autor"
+        user_assignee: "Benutzer ist zugewiesen"
   authentication:
     login_and_registration: "Anmeldung und Registrierung"
   announcements:
@@ -120,12 +190,12 @@ de:
       title: "Unter Quarantäne gestellte Anhänge"
       error_cannot_act_self: "Sie können keine Aktionen für Ihre eigenen hochgeladenen Dateien durchführen."
   attribute_help_texts:
+    caption: "Diese Kurzversion wird als Untertitel des Attributs angezeigt."
     note_public: "Alle Texte und Bilder, die Sie diesem Feld hinzufügen, sind öffentlich für angemeldete Benutzer sichtbar."
     text_overview: "In dieser Ansicht können Sie benutzerdefinierte Hilfe-Texte für Attribute definieren. Für Attribute mit hinterlegtem Text können diese über ein kleines Hilfe-Icon neben dem Attribut angezeigt werden."
-    label_plural: "Hilfe-Texte für Attribute"
     show_preview: "Vorschau des Hilfe-Textes"
     add_new: "Hilfe-Text hinzufügen"
-    edit: "Hilfe-Text für %{attribute_caption} bearbeiten"
+    edit_field_name: "Hilfe-Text für %{attribute_field_name} bearbeiten"
   background_jobs:
     status:
       error_requeue: "Der Job ist mit einem Fehler fehlgeschlagen, wird aber erneut eingestellt. Der Fehler war: %{message}"
@@ -135,10 +205,9 @@ de:
     ldap_auth_failed: "Die Authentifizierung gegenüber des LDAP-Servers ist fehlgeschlagen."
     sync_failed: "Fehler beim Synchronisieren von LDAP: %{message}."
     back_to_index: "Klicken Sie hier, um zur Liste der Verbindungen zurückzukehren."
-    technical_warning_html: |
+    technical_warning: |
       Dieses LDAP-Formular erfordert technische Kenntnisse über Ihre LDAP/Active Directory-Einrichtung.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Bitte besuchen Sie unsere Dokumentation für detaillierte Anweisungen</a>.
+      [Bitte besuchen Sie unsere Dokumentation für detaillierte Anweisungen](docs_url).
     attribute_texts:
       name: Beliebiger Name der LDAP-Verbindung
       host: LDAP-Hostname oder IP-Adresse
@@ -238,6 +307,7 @@ de:
         placeholder:
           label: "Elementbezeichnung"
           short: "Kurzname"
+          weight: "Gewichtung"
       notice:
         remember_items_and_projects: "Denken Sie daran, Einträge und Projekte in den jeweiligen Registerkarten für dieses benutzerdefinierte Feld festzulegen."
       hierarchy:
@@ -245,6 +315,25 @@ de:
           zero: keine Unterelemente
           one: 1 Unterelement
           other: "%{count} Unterelemente"
+      role_assignment:
+        title: Rollenzuweisung
+        description: Sie können jedem Benutzer, dem dieses Projektattribut zugewiesen wurde, automatisch eine bestimmte Projektrolle zuweisen, unabhängig von der ursprünglichen Rolle dieses Benutzers in diesem Projekt.
+        warning: Je nach der unten ausgewählten Rolle kann der Benutzer, der diesem Projektattribut zugewiesen ist, wesentlich mehr Berechtigungen erhalten, als er zuvor hatte. Dies könnte bedeuten, dass er seine eigene Rolle und verknüpfte Berechtigungen ausweitet.
+        role_field_label: "Projektrolle"
+        role_field_caption: Diese Projektrolle wird automatisch jedem Benutzer zugewiesen, der diesem Projektattribut zugeordnet ist
+        review_hint: >
+          Es gibt %{user_count}, die diesem Projektattribut bereits in verschiedenen Projekten zugewiesen sind. Sie könnten zusätzliche Berechtigungen erhalten und zu Projekten als Mitglied hinzugefügt werden, auf die sie vorher keinen Zugriff hatten.
+        review_button: Benutzer und Berechtigungen prüfen
+        dialog:
+          title: "Übersicht über Benutzer und Berechtigungen"
+          change: Ändern
+          changes:
+            new_member: Wird als Mitglied hinzugefügt
+            remove_member: Wird als Mitglied entfernt
+            gain_and_lose_role: Wird die Rolle '%{old_role}' verlieren und die Rolle '%{new_role}' erhalten
+            gain_role: Wird die Rolle '%{new_role}' erhalten
+            lose_role: Wird die Rolle '%{old_role}' verlieren
+            no_change: Keine Änderungen
     text_add_new_custom_field: >
       Um neue benutzerdefinierte Felder einem Projekt zuzuweisen, müssen Sie diese erst global erstellen, um Sie dann an dieser Stelle aktivieren zu können.
     is_enabled_globally: "Für alle Projekte aktiviert"
@@ -254,29 +343,71 @@ de:
     reorder_alphabetical: "Alphabetisch umsortieren"
     reorder_confirmation: "Warnung: Die aktuelle Reihenfolge der verfügbaren Werte geht verloren. Fortfahren?"
     placeholder_version_select: "Zunächst muss ein Arbeitspaket oder ein Projekt ausgewählt werden"
+    calculated_field_not_editable: "Nicht editierbares Attribut. Dieser Wert wird automatisch berechnet."
+    no_role_assigment: "Keine Rollenzuweisung"
     instructions:
-      is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dies macht es zwingend erforderlich, das Feld auszufüllen, wenn neue oder aktualisierte Ressourcen erstellt werden."
-      is_required_for_project: "Das Attribut in allen Projekten erforderlich machen. Es kann dann nicht für einzelne Projekte deaktiviert werden."
-      is_for_all: "Markieren Sie das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
-      multi_select: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."
-      searchable: "Fügen Sie die Feldwerte hinzu, wenn Sie die globale Suchfunktion verwenden."
-      searchable_for_project: "Das Attribut kann als Filter in Projektlisten ausgewählt werden."
-      editable: "Feld darf von den Benutzern selbst bearbeitet werden."
-      admin_only: "Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten."
-      is_filter: >
-        Erlaubt das benutzerdefinierte Feld in einem Filter in der Arbeitspaket-Ansicht zu verwenden. Beachten Sie, dass, nur wenn "Für alle Projekte" ausgewählt ist, das benutzerdefinierte Feld in globalen Ansichten angezeigt wird.
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Zur Zeit existieren keine benutzerdefinierten Felder.
       no_results_content_text: Neues benutzerdefiniertes Feld anlegen
+  calculated_values:
+    error_dialog:
+      title: "Fehler in Berechnetem Wert"
+    errors:
+      unknown: "Ein unbekannter Fehler ist aufgetreten. Bitte überprüfen Sie die Formel für diesen Berechneten Wert."
+      mathematical: "Die mathematische Formel führt zu einem Fehler. Bitte überprüfen Sie das Attribut der Projektberechnung und versuchen Sie es erneut."
+      missing_value: Das Attribut "%{custom_field_name}" wird für diesen Berechneten Wert benötigt, ist aber leer.
+      disabled_value: Das Attribut "%{custom_field_name}" wird für diesen Berechneten Wert benötigt, ist aber leer.
   concatenation:
     single: "oder"
-  dry_validation:
+  danger_dialog:
+    confirmation_live_message_checked: "Die Schaltfläche zum Fortfahren ist nun aktiv."
+    confirmation_live_message_unchecked: "Die Schaltfläche zum Fortfahren ist inaktiv. Sie müssen das Kontrollkästchen ankreuzen, um fortzufahren."
+  op_dry_validation:
+    or: "oder"
     errors:
-      int?: "muss eine ganze Zahl sein."
+      array?: "muss ein Array sein."
+      decimal?: "muss eine Dezimalzahl sein."
+      defined: "darf nicht definiert werden."
+      eql?: "muss gleich %{left} sein."
       filled?: "muss ausgefüllt werden."
       greater_or_equal_zero: "muss größer oder gleich 0 sein."
+      gteq?: "muss größer oder gleich %{num} sein."
+      hash?: "muss ein Hash sein."
+      included_in?:
+        arg:
+          default: "muss einer von: %{list} sein."
+          range: "muss einer von: %{list_left} - %{list_right} sein."
+      int?: "muss eine ganze Zahl sein."
+      key?: "fehlt."
       not_found: "nicht gefunden."
+      respond_to?: "die erforderliche Methode nicht implementiert."
       rules:
+        copy_workflow_from:
+          workflow_missing: "hat keinen eigenen Workflow."
+        custom_field:
+          format_not_supported: "format '%{field_format}' wird nicht unterstützt."
         item:
           root_item: "kann keine Hierarchiewurzel sein."
           not_persisted: "muss ein bereits vorhandenes Element sein."
@@ -286,30 +417,63 @@ de:
           not_unique: "muss innerhalb der gleichen Hierarchieebene eindeutig sein."
         parent:
           not_descendant: "muss ein Unterelement der Hierarchiewurzel sein."
+      str?: "muss eine Zeichenkette sein."
+      type?: "muss %{type} sein."
     rules:
+      copy_workflow_from: "Typ für Workflow-Kopie"
+      enabled: "Aktiviert"
       depth: "Tiefe"
       item: "Element"
       label: "Bezeichnung"
+      weight: "Gewichtung"
       short: "Kurzname"
       parent: "Übergeordnetes Arbeitspaket"
       blueprint: "Blaupause für Muster"
   global_search:
+    title:
+      all_projects: 'Suche nach "%{search_term}" in allen Projekten'
+      current_project: 'Suche nach "%{search_term}" in %{project_name}'
+      project_and_subprojects: 'Suche nach "%{search_term}" in %{project_name} und allen Unterprojekten'
     placeholder: "Suche in %{app_title}"
     overwritten_tabs:
       all: "Alle"
       messages: "Forum"
       wiki_pages: "Wiki"
   groups:
+    edit:
+      synchronized_groups: "Synchronisierte Gruppen"
     index:
-      no_results_title_text: Derzeit gibt es keine Gruppen.
-      no_results_content_text: Neue Gruppe erstellen
+      description: Durch die Gruppierung von Benutzern können Sie diese den gleichen globalen Rollen oder den gleichen Projekten als Mitglieder zuweisen.
+    table_component:
+      blank_slate:
+        description: Sie können Gruppen von Benutzern mit eigenen Berechtigungen erstellen.
+        title: Noch keine Gruppen eingerichtet
+      user_count: Benutzeranzahl
     users:
       no_results_title_text: Diese Gruppe hat zur Zeit keine Mitglieder.
     memberships:
       no_results_title_text: Diese Gruppe ist zur Zeit keinem Projekt zugewiesen.
+    synchronized_groups:
+      blankslate:
+        action: Authentifizierungseinstellungen
+        description: Wenn diese Gruppe automatisch mit Gruppen in einem Identitätsanbieter wie beispielsweise OpenID Connect synchronisiert wird, dann taucht diese Verknüpfung hier auf. Dies können Sie in den Authentifizierungseinstellungen verwalten.
+        title: Noch keine synchronisierten Gruppen
   incoming_mails:
     ignore_filenames: >
       Geben Sie eine Liste von Dateinamen an, die beim Verarbeiten von Anhängen für eingehende Mails (z.B. Signaturen oder Symbole) ignoriert werden sollen. Geben Sie einen Dateinamen pro Zeile ein.
+  portfolios:
+    index:
+      search:
+        label: Portfolio-Namensfilter
+        placeholder: Portfolios suchen
+      sub_items_html:
+        one: "<strong>1</strong> Unterelement"
+        other: "<strong>%{count}</strong> Unterelemente"
+    lists:
+      active: "Aktive Portfolios"
+      my: "Meine Portfolios"
+      favorited: "Favorisierte Portfolios"
+      archived: "Archivierte Portfolios"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -321,6 +485,9 @@ de:
       work_package_categories: "Arbeitspakete: Kategorien"
       work_package_file_links: "Arbeitspakete: Datei-Links"
       work_package_shares: "Arbeitspakete: Geteilte Zugriffe"
+    create:
+      notification_email_subject: "Das Projekt '%{project_name}' wurde erstellt"
+      complete_wizard_link: "Vervollständigen Sie den %{artefact_name}"
     delete:
       scheduled: "Die Löschung wurde geplant und wird im Hintergrund durchgeführt. Sie werden über das Ergebnis informiert."
       schedule_failed: "Projekt kann nicht gelöscht werden: %{errors}"
@@ -339,7 +506,7 @@ de:
     lists:
       active: "Aktive Projekte"
       my: "Meine Projekte"
-      favored: "Favorisierte Projekte"
+      favorited: "Favorisierte Projekte"
       archived: "Archivierte Projekte"
       shared: "Geteilte Projektlisten"
       my_lists: "Meine Projektlisten"
@@ -351,7 +518,7 @@ de:
         text: "Diese Aktion löscht keine Projekte, die in der Liste enthalten sind. Sind Sie sicher, dass Sie diese Projektliste löschen möchten?"
     settings:
       header_details: Allgemeine Informationen
-      header_status: Projekt-Status
+      header_status: Projektstatus
       header_relations: Projektbeziehungen
       button_update_details: Einstellungen aktualisieren
       button_update_status_description: Statusbeschreibung aktualisieren
@@ -369,6 +536,22 @@ de:
         description: >
           Das Projekt wird nur für Projektmitglieder sichtbar sein, abhängig von ihrer Rolle und den zugehörigen Berechtigungen. Unterprojekte haben ihre eigenen Einstellungen zur Sichtbarkeit und erben nicht diese Einstellung.
       change_identifier: Kennung ändern
+      subitems:
+        template_section: >
+          Wählen Sie Vorlagen aus, die bei der Erstellung neuer Unterelemente verwendet werden sollen.
+        project_template_label: "Vorlage für Projekte"
+        project_template_caption: "Wählen Sie eine Projektvorlage, die als Standard für neue Unterprojekte verwendet werden soll."
+        program_template_label: "Vorlage für Programme"
+        program_template_caption: "Wählen Sie eine Programmvorlage, die als Standard für neue Programme in diesem Portfolio verwendet werden soll."
+        no_template: "Keine vordefinierte Vorlage"
+      template:
+        menu_title: "Vorlage"
+        title: "Einstellungen der Vorlage"
+        enable_failed: "Das Projekt konnte nicht als Vorlage aktiviert werden."
+        members:
+          excluded_roles_label: "Rollen, die bei der Anwendung der Vorlage ausgeschlossen werden sollen"
+          excluded_roles_caption: >
+            Wenn Sie ein neues Projekt mit dieser Vorlage erstellen, werden die oben ausgewählten Rollen nicht mit in das neue Projekt übernommen. Auf diese Weise können Sie auswählen, welche Mitglieder aufgrund ihrer Projektrollen ausgeschlossen werden sollen. Die Benutzer können dann zu Ansichtszwecken auf die Vorlage zugreifen, ohne dass sie Zugriff auf neue Projekte erhalten, die mit dieser Vorlage erstellt werden.
       actions:
         label_enable_all: "Alles aktivieren"
         label_disable_all: "Alles deaktivieren"
@@ -385,7 +568,7 @@ de:
       life_cycle:
         header:
           title: "Projekt-Lebenszyklus"
-          description_html: "Die aktiven Projektphasen definieren den Lebenszyklus dieses Projekts und sind in den <a href=%{admin_settings_url} target=\"_blank\">Administrationseinstellungen</a>definiert. Aktivierte Phasen werden in Ihrer <a href=%{overview_url} target=\"_blank\">Projektübersicht</a> angezeigt."
+          description_html: 'Die aktiven Projektphasen definieren den Lebenszyklus dieses Projekts und sind in den <a href=%{admin_settings_url} target="_blank">Administrationseinstellungen</a>definiert. Aktivierte Phasen werden in Ihrer <a href=%{overview_url} target="_blank">Projektübersicht</a> angezeigt.'
         non_defined: "Derzeit sind keine Phasen definiert."
         section_header: "Phasen"
         step:
@@ -402,9 +585,9 @@ de:
           label_enable_single: "In diesem Projekt aktiv, zum Deaktivieren anklicken"
           label_disable_single: "In diesem Projekt inaktiv, zum Aktivieren anklicken"
           remove_from_project: "Aus dem Projekt entfernen"
-        is_required_blank_slate:
-          heading: In allen Projekten erforderlich
-          description: Dieses Projekt-Attribut ist in allen Projekten aktiviert, da die Option "Benötigt in allen Projekten" aktiviert ist. Es kann nicht für einzelne Projekte deaktiviert werden.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Derzeit stehen keine Typen zur Verfügung.
         form:
@@ -412,16 +595,37 @@ de:
       versions:
         no_results_title_text: Derzeit gibt es keine Versionen für das Projekt.
         no_results_content_text: Neue Version erstellen
+        work_packages_graph: Arbeitspaket-Graph
+        show_work_packages: Arbeitspakete anzeigen
       storage:
         no_results_title_text: Durch dieses Projekt wird kein zusätzlicher erfasster Speicherplatz verbraucht.
       work_package_priorities:
         new_label: "Neue Priorität"
+      creation_wizard:
+        export:
+          description_attachment_export: "Das erzeugte Artefakt wird als PDF-Anhang zum erstellten Arbeitspaket gespeichert."
+          description_file_link_export: "Das erstellte Arbeitspaket enthält einen Dateilink zu einer PDF-Datei, die in einem externen Dateispeicher gespeichert ist. Erfordert einen aktiven Dateispeicher mit automatisch verwalteten Projektordnern. Im Moment werden nur Nextcloud-Dateispeicher unterstützt."
+          description_file_storage_selection: "Wählen Sie, welcher der konfigurierten externen Dateispeicher verwendet werden soll."
+          external_file_storage: "Externe Dateispeicher"
+          label_artifact_export: "Artefakt-Export"
+          label_attachment_export: "Als Dateianhang des Arbeitspakets speichern"
+          label_file_link_export: "Datei in externen Dateispeicher hochladen und Dateilink zum Arbeitspaket hinzufügen"
+          pdf_file_storage: "PDF-Datei-Speicherort"
+          unavailable: "nicht verfügbar"
+        label_request_submission: "Einreichung des Antrags"
+        project_attributes_description: >
+          Wählen Sie aus, welche Attribute in den Projektinitiierungsantrag aufgenommen werden sollen. Diese Liste zeigt nur [Projektattribute](project_attributes_url), die für dieses Projekt aktiviert sind.
     status:
       button_edit: Projektstatus bearbeiten
-  project_phase:
-    duration:
-      one: "Dauer: %{count} Arbeitstag"
-      other: "Dauer: %{count} Arbeitstage"
+    wizard:
+      sidebar_content_title: "Inhalt"
+      sections: "Abschnitte"
+      title: "Projektinitiierungsantrag"
+      no_help_text: "Für dieses Feld ist kein Hilfetext definiert."
+      success: "Projektattribute gespeichert und Artefakt der Anfrage als Arbeitspaket erstellt."
+      progress_label: "%{current} von %{total}"
+      create_artifact_work_package_error: "Arbeitspaket für das Artefakt der Anfrage konnte nicht erstellt werden"
+      create_artifact_storage_error: "Artefakt konnte nicht im Dateispeicher gespeichert werden"
   lists:
     create:
       success: "Die geänderte Liste wurde als neue Liste gespeichert"
@@ -498,26 +702,23 @@ de:
       will_revoke_access_to_all: "Mit dieser Aktion wird der Zugriff auf alle diese Arbeitspakete entfernt."
   my:
     access_token:
-      create_dialog:
-        title: Token generiert
-        header: Das %{type}-Token wurde generiert
-        warning: 'Hinweis: Dieser Token ist nur einmal sichtbar, der Token kann jetzt kopiert werden.'
-      errors:
-        token_name_blank: "Bitte geben Sie einen Namen für den API-Token an"
-        token_name_in_use: "Dieser API-Token-Name ist bereits in Verwendung, bitte wählen Sie einen anderen"
-      new_access_token_dialog_title: "Einen API-Token erstellen"
-      new_access_token_dialog_show_button_text: "API-Token"
-      new_access_token_dialog_text_field_placeholder_text: "Meine API-Token"
-      new_access_token_dialog_text_field_label: "Name"
-      new_access_token_dialog_submit_button_text: "Erstellen"
-      new_access_token_dialog_text: "Dieses Token ermöglicht es Anwendungen von Drittanbietern, mit Ihrer Instanz zu kommunizieren. Um das neue API-Token zu unterscheiden, geben Sie ihm bitte einen Namen."
-      new_access_token_dialog_attention_text: "API-Token wie Passwörter behandeln. Jeder, der über diesen Link verfügt, hat Zugang zu den Informationen dieser Instanz, teilen Sie sie nur mit vertrauenswürdigen Benutzern."
+      dialog:
+        token/api:
+          dialog_title: "Einen API-Token erstellen"
+          attention_text: "Behandeln Sie API-Tokens wie Passwörter. Jeder, der über diesen Link verfügt, hat Zugang zu den Informationen dieser Instanz."
+          dialog_body: "Dieses Token ermöglicht es Anwendungen von Drittanbietern, mit Ihrer Instanz zu kommunizieren. Um das neue API-Token zu unterscheiden, geben Sie ihm bitte einen Namen."
+          create_button: "Anlegen"
+          name_label: "Token-Name"
+      created_dialog:
+        token/api:
+          title: "Der API-Token wurde generiert"
+          warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
       failed_to_reset_token: "Zusatztoken konnte nicht zurückgesetzt werden: %{error}"
       failed_to_create_token: "Zugriffstoken konnte nicht erstellt werden: %{error}"
       failed_to_revoke_token: "Zugriffstoken kann nicht widerrufen werden: %{error}"
       notice_reset_token: "Ein neuer %{type} Token wurde generiert. Der Zutrittstoken lautet:"
       token_value_warning: "Hinweis: Dieser Token ist nur einmal sichtbar, der Token kann jetzt kopiert werden."
-      no_results_title_text: Zur Zeit stehen keine Zugangs-Tokens zur Verfügung.
+      no_results_title_text: "Zur Zeit stehen keine Zugangs-Tokens zur Verfügung."
       notice_api_token_revoked: "Das API-Token wurde gelöscht. Nutzen Sie bitte den Knopf in der API-Sektion für die Erstellung eines neues Token. "
       notice_rss_token_revoked: "Der RSS-Token wurde gelöscht. Um ein neues Token zu erstellen, benutzen Sie bitte den Link im RSS-Bereich."
       notice_ical_token_revoked: 'iCalendar-Token „%{token_name}“ für Kalender „%{calendar_name}“ des Projekts „%{project_name}“ wurde widerrufen. Die iCal-URL mit diesem Token ist jetzt ungültig.'
@@ -525,21 +726,35 @@ de:
     index:
       no_results_title_text: Es gibt aktuell keine Neuigkeiten.
       no_results_content_text: Neuigkeit hinzufügen
+  roles:
+    permissions:
+      section_check_all_label: "Alle %{module} Berechtigungen zuweisen"
+      section_uncheck_all_label: "Alle %{module} Berechtigungen zuweisen"
+    report:
+      matrix_caption: "Berechtigungsmatrix für das Modul %{module}"
+      matrix_checkbox_label: "Berechtigung '%{permission}' der Rolle '%{role}' Rolle zuweisen"
+      matrix_check_all_label: "Alle %{module} Berechtigungen zuweisen"
+      matrix_uncheck_all_label: "Alle %{module} Berechtigungen entfernen"
+      matrix_check_uncheck_all_in_row_label_html: "Umschalten von <em>%{permission}</em> Berechtigung für alle Rollen"
+      matrix_check_uncheck_all_in_col_label_html: "Umschalten aller %{module} Berechtigungen für die Rolle <em>%{role}</em>"
   users:
     autologins:
       prompt: "%{num_days} lang angemeldet bleiben"
     sessions:
-      remembered_devices: "Gespeicherte Geräte"
-      remembered_devices_caption: "Eine Liste aller Geräte, bei denen Sie sich mit der Option 'angemeldet bleiben' angemeldet haben."
       session_name: "%{browser_name} %{browser_version} unter %{os_name}"
       browser: "Browser"
+      expires: "Läuft aus"
+      last_connection: "Letzte Anmeldung"
       device: "Gerät / Betriebssystem"
       unknown_browser: "unbekannter Browser"
       unknown_os: "unbekanntes Betriebssystem"
-      current: "Aktuelle Sitzung"
+      unknown: "(unbekannt)"
+      browser_session: "(Browser-Sitzung)"
+      current: "Aktuell (dieses Gerät)"
       title: "Sitzungsverwaltung"
-      instructions: "Dies ist eine Liste der Geräte, die sich bei Ihrem Konto angemeldet haben. Widerrufen Sie alle Sitzungen, die Sie nicht kennen oder auf die Sie keinen Zugriff mehr haben."
+      instructions: "Sie sind über die folgenden Geräte bei Ihrem Konto angemeldet. Widerrufen Sie Sitzungen, die Sie nicht kennen oder von Geräten, die Sie nicht kontrollieren."
       may_not_delete_current: "Sie können Ihre aktuelle Sitzung nicht löschen."
+      deletion_warning: "Sind Sie sicher, dass Sie diese Sitzung widerrufen möchten? Sie werden auf diesem Gerät abgemeldet."
     groups:
       member_in_these_groups: "Dieser Benutzer ist Mitglied der folgenden Gruppen:"
       no_results_title_text: Dieser Benutzer ist derzeit kein Mitglied in einer Gruppe.
@@ -549,6 +764,57 @@ de:
     memberships:
       no_results_title_text: Dieser Nutzer ist derzeit in keinem Projekt Mitglied.
     open_profile: "Profil öffnen"
+    invite_user_modal:
+      invite: "Einladen"
+      title:
+        invite: "Nutzer einladen"
+        invite_to_project: "%{type} zu %{project} einladen"
+        invite_principal_to_project: "%{principal} zu %{project} einladen"
+      project:
+        label: "Projekt"
+        required: "Bitte wählen Sie ein Projekt"
+        next_button: "Weiter"
+        no_results: "Keine Projekte gefunden"
+        no_invite_rights: "Sie dürfen keine Mitglieder zu diesem Projekt hinzufügen"
+      type:
+        required: "Bitte wählen Sie die Benutzer-Typen aus, die eingeladen werden sollen"
+        user:
+          title: "Benutzer zu %{project_name} einladen"
+          description: "Berechtigungen basierend auf der zugewiesenen Rolle im ausgewählten Projekt"
+        group:
+          title: "Gruppe zu %{project_name} hinzufügen"
+          description: "Berechtigungen basierend auf der zugewiesenen Rolle im ausgewählten Projekt"
+        placeholder_user:
+          title: "Platzhalterbenutzer zu %{project_name} hinzufügen"
+          title_no_ee: "Platzhalter-Benutzer (Enterprise Edition Add-on)"
+          description: "Hat keinen Zugriff auf das Projekt und es werden keine E-Mails verschickt."
+        already_member_message: "Bereits ein Mitglied von %{project}"
+      principal:
+        no_results_user: "Keine Benutzer gefunden"
+        invite_user: "Einladen:"
+        no_results_placeholder: "Keine Platzhalter-Benutzer gefunden."
+        create_new_placeholder: "Erstelle neuen Platzhalter:"
+        no_results_group: "Es wurden keine Gruppen gefunden."
+        invite_to_project: "Zu %{project_name} einladen"
+        required:
+          user: "Bitte einen Benutzer auswählen"
+          placeholder: "Bitte einen Platzhalter auswählen"
+          group: "Bitte eine Gruppe auswählen"
+      role:
+        label: "Rolle in %{project}"
+        no_roles_found: "Keine Rollen gefunden"
+        description: >
+          Dies ist die Rolle, die der Nutzer beim Beitritt zum Projekt erhält. Die Rolle legt fest, welche Aktionen er durchführen darf und welche Informationen er sehen darf. [Erfahren Sie mehr über Rollen und Berechtigungen](docs_url)
+        required: "Bitte eine Rolle auswählen"
+      message:
+        label: "Einladungsnachricht"
+        description: "Wir werden eine E-Mail an den Benutzer senden, zu der Sie hier eine persönliche Nachricht hinzufügen können. Eine Erklärung für die Einladung könnte nützlich sein oder vielleicht ein paar Informationen über das Projekt, um den Start zu erleichtern."
+      summary:
+        next_button: "Einladung senden"
+      success_message:
+        user: "Der Benutzer kann sich jetzt anmelden, um auf %{project} zuzugreifen. In der Zwischenzeit können Sie bereits mit diesem Benutzer planen und beispielsweise Arbeitspakete zuweisen."
+        placeholder_user: "Der Platzhalter kann jetzt in %{project} verwendet werden. In der Zwischenzeit können Sie bereits mit diesem Benutzer planen und beispielsweise Arbeitspakete zuweisen."
+        group: "Die Gruppe ist nun %{project} zugewiesen. In der Zwischenzeit können Sie bereits mit dieser Gruppe planen und ihr zum Beispiel Arbeitspakete zuweisen."
   page:
     text: "Text"
   placeholder_users:
@@ -561,10 +827,13 @@ de:
         Alle Vorkommnisse des Platzhalter-Benutzers (z.B. als zugewiesene Person, Verantwortlicher oder andere Benutzerwerte) werden einem Konto mit dem Namen "Gelöschter Benutzer" zugewiesen. Da die Daten jedes gelöschten Kontos diesem Konto zugewiesen werden, wird es nicht möglich sein, die Daten dieses Benutzers von den Daten eines anderen gelöschten Kontos zu unterscheiden.
       irreversible: "Dieser Vorgang kann nicht rückgängig gemacht werden"
       confirmation: "Geben Sie den Namen des Platzhalter-Benutzers %{name} ein, um die Löschung zu bestätigen."
-  prioritiies:
+  priorities:
     edit:
       priority_color_text: |
         Klicken zum Zuweisen einer Farbe für diesen Prioritätswert. Diese wird für die Hervorhebung von Arbeitspaketen in Tabellen verwendet.
+    admin:
+      default:
+        caption: Wird diese Priorität als Standard gesetzt, überschreibt das den vorherhigen Standardwert.
   reactions:
     action_title: "Reagieren"
     add_reaction: "Reaktion hinzufügen"
@@ -593,7 +862,7 @@ de:
         Wählen Sie diese Option um Bearbeitung von Arbeitspaketen in diesem Status zu sperren.
         Außer dem Status selbst können dann keine Attribute verändert werden.
         <br>
-        <strong>Hinweis</strong>: Vererbte Attribute (z.B. von Kinderelementen oder Relationen) werden auch auf Arbeitspakete in diesen Status angewandt.
+        <strong>Hinweis</strong>: Vererbte Attribute (z.B. von Unteraufgaben oder Relationen) werden auch auf Arbeitspakete in diesen Status angewandt.
     index:
       no_results_title_text: Derzeit gibt es keine Arbeitspaket-Status.
       no_results_content_text: Neuen Status hinzufügen
@@ -605,7 +874,7 @@ de:
   themes:
     dark: "Dunkel"
     light: "Hell"
-    light_high_contrast: "Hell (hoher Kontrast)"
+    sync_with_os: "Automatisch (entsprechend dem OS-Farbschema)"
   types:
     index:
       no_results_title_text: Derzeit gibt es keine Typen.
@@ -614,8 +883,10 @@ de:
       form_configuration:
         tab: "Formularkonfiguration"
       projects:
-        tab: "Projekte"
-        enabled_projects: "Aktivierte Projekte"
+        tab: Projekte
+        enable_all: Für alle Projekte aktivieren
+        select_projects: Projekt auswählen
+        select_projects_description: Wählen Sie die Projekte aus, in denen Sie diesen Typ verwenden möchten.
       settings:
         tab: "Einstellungen"
         type_color_text: "Die ausgewählte Farbe unterscheidet verschiedene Typen\nin Gantt-Diagrammen und Arbeitspakettabellen. Es wird daher empfohlen, gut unterscheidbare Farben zu verwenden."
@@ -635,9 +906,8 @@ de:
             project: "Projekt"
         pattern:
           label: "Titel-Schema"
-          caption_with_supported_attributes_link: Create patterns by adding text, or type "/" to search for %{link}.
-          insert_as_text: "Keine Attribute gefunden. Als Text hinzufügen: \"%{word}\""
-          supported_attributes_link: "unterstützte Attribute"
+          caption: Das Schema kann durch Hinzufügen von Text erzeugt werden. Geben Sie "/" ein, um nach [unterstützten Attributen](attributes_url) zu suchen.
+          insert_as_text: 'Keine Attribute gefunden. Als Text hinzufügen: "%{word}"'
       export_configuration:
         tab: "PDF generieren"
         intro: "Wählen Sie aus den verfügbaren Vorlagen diejenige aus, die Sie für diesen Typ aktivieren möchten. Die Vorlage bestimmt das Design und die Attribute, die in der exportierten PDF-Datei eines Arbeitspakets mit diesem Typ sichtbar sind. Die erste Vorlage in der Liste ist standardmäßig ausgewählt."
@@ -656,6 +926,16 @@ de:
     print_hint: Damit wird der Inhalt dieser Wiki-Seite ohne Navigationsleisten gedruckt.
     index:
       no_results_content_text: Neue Wikiseite hinzufügen
+  workflows:
+    form:
+      matrix_caption: "Workflow-Matrix"
+      matrix_caption_assignee: "Workflow-Matrix für Zugewiesene"
+      matrix_caption_author: "Workflow-Matrix für den Autor"
+      matrix_checkbox_label: "Übergang von %{old_status} zu %{new_status} erlauben"
+      matrix_check_all_label: "Alle Übergänge zulassen"
+      matrix_uncheck_all_label: "Alle Übergänge verbieten"
+      matrix_check_uncheck_all_in_row_label_html: "Übergänge von <em>%{old_status}</em> auf alle neuen Status umschalten"
+      matrix_check_uncheck_all_in_col_label_html: "Übergänge von allen alten Status zu <em>%{new_status}</em> umschalten"
   work_flows:
     index:
       no_results_title_text: Derzeit gibt es keine Workflows.
@@ -668,10 +948,10 @@ de:
           manual_mobile: "Beziehungen werden ignoriert."
           manual_gap_between_predecessors: "Es gibt eine Verzögerung zu allen Vorgängern."
           manual_overlap_with_predecessors: "Überlappt mit mindestens einem Vorgänger."
-          manual_with_children: "Hat untergeordnete Arbeitspakete aber ihre Startdaten werden ignoriert."
+          manual_with_children: "Hat Unteraufgaben aber ihre Startdaten werden ignoriert."
         title:
           automatic_mobile: "Automatisch geplant."
-          automatic_with_children: "Untergeordenete Arbeitspakete bestimmen Termine."
+          automatic_with_children: "Die Termine sind durch untergeordnete Arbeitspakete bestimmt."
           automatic_with_predecessor: "Der Anfangstermin wird von einem Vorgänger festgelegt."
           manual_mobile: "Manuell geplant."
           manually_scheduled: "Manuell geplant – Daten unabhängig von Beziehungen."
@@ -685,9 +965,10 @@ de:
         automatic: "Automatisch"
         manual: "Manuell"
       show_relations: "Beziehungen anzeigen"
+      update_inputs_aria_live_message: "Datumsauswahl aktualisiert. %{message}"
       tabs:
         aria_label: "Datumsauswahl Reiter"
-        children: "Untergeordnete Arbeitspakete"
+        children: "Unteraufgaben"
         dates: "Daten"
         predecessors: "Vorgänger"
         successors: "Nachfolger"
@@ -699,8 +980,8 @@ de:
             title: "Keine Nachfolger"
             description: "Dieses Arbeitspaket hat noch keine Nachfolger."
           children:
-            title: "Keine Kinder"
-            description: "Dieses Arbeitspaket hat noch keine untergeordnete Arbeitspakete."
+            title: "Keine Unteraufgaben"
+            description: "Dieses Arbeitspaket hat noch keine Unteraufgaben."
     x_descendants:
       one: "Ein untergeordnetes Arbeitspaket"
       other: "%{count} untergeordnete Arbeitspakete"
@@ -753,13 +1034,14 @@ de:
     label_add_description: "Beschreibung hinzufügen"
     lag:
       subject: "Verzögerung"
-      caption: "Die minimale Anzahl von Arbeitstagen zwischen den zwei Arbeitspaketen."
+      caption: |-
+        Die minimale Anzahl von Arbeitstagen zwischen den zwei Arbeitspaketen; kann auch negativ sein.
     relations:
-      label_new_child_created: "Neues Arbeitspaket erstellt und als Kind hinzugefügt"
-      label_relates_singular: "Beziehung mit"
-      label_relates_plural: "Beziehung mit"
-      label_relates_to_singular: "Beziehungen mit"
-      label_relates_to_plural: "Beziehungen mit"
+      label_new_child_created: "Neues Arbeitspaket erstellt und als Unteraufgabe hinzugefügt"
+      label_relates_singular: "Verwandt mit"
+      label_relates_plural: "Verwandt mit"
+      label_relates_to_singular: "Verwandt mit"
+      label_relates_to_plural: "Verwandt mit"
       relates_description: "Erstellt eine sichtbare Beziehung zwischen den zwei Arbeitspaketen ohne weitere Auswirkungen"
       relates_to_description: "Erstellt eine sichtbare Beziehung zwischen den zwei Arbeitspaketen ohne weitere Auswirkungen"
       label_precedes_singular: "Nachfolger"
@@ -768,12 +1050,12 @@ de:
       label_follows_singular: "Vorgänger"
       label_follows_plural: "Vorgänger"
       follows_description: "Das verknüpfte Arbeitspaket muss beendet sein bevor dieses Arbeitspaket starten kann"
-      label_child_singular: "Untergeordnetes Arbeitspaket"
-      label_child_plural: "Untergeordnete Arbeitspakete"
-      new_child: "Neues Kind"
-      new_child_description: "Erstellt ein zugehöriges Arbeitspaket als Unterelement des aktuellen (übergeordneten) Arbeitspakets"
-      child: "Unteraufgabe"
-      child_description: "Macht das zugehörige Arbeitspaket zu einem Unterelement des aktuellen (übergeordneten) Arbeitspakets"
+      label_child_singular: "Unteraufgabe"
+      label_child_plural: "Unteraufgaben"
+      new_child: "Neue Unteraufgabe"
+      new_child_description: "Erstellt ein zugehöriges Arbeitspaket als Unteraufgabe des aktuellen (übergeordneten) Arbeitspakets"
+      child: "Kind"
+      child_description: "Macht das zugehörige Arbeitspaket zu einer Unteraufgabe des aktuellen (übergeordneten) Arbeitspakets"
       parent: "Übergeordnetes Arbeitspaket"
       parent_description: "Wandelt das verknüpfte in ein übergeordnetes Arbeitspaket dieses Arbeitspakets um"
       label_closest: "Am nächsten"
@@ -812,27 +1094,22 @@ de:
       required_description: "Markiert dieses Arbeitspaket als Voraussetzung für das verknüpfte Arbeitspaket"
       label_parent_singular: "Übergeordnete Arbeitspakete"
       label_parent_plural: "Übergeordnetes Arbeitspaket"
+      label_other_relations: "Andere Beziehungen"
       ghost_relation_title: "Zugehöriges Arbeitspaket"
       ghost_relation_description: "Dies ist für Sie aufgrund von Berechtigungen nicht sichtbar."
   label_invitation: Einladung
   account:
     delete: "Konto löschen"
     delete_confirmation: "Sind Sie sicher, dass Sie das Konto löschen wollen?"
-    deletion_pending: "Das Konto wurde gesperrt und zur Löschung vorgesehen. Beachten Sie, dass dieser Vorgang im Hintergrund abläuft. Es kann ein paar Momente dauern, bis der Benutzer vollständig gelöscht ist."
+    deletion_pending: "Das Konto wurde Löschung vorgesehen. Beachten Sie, dass dieser Vorgang im Hintergrund abläuft. Es kann ein paar Momente dauern, bis der Benutzer vollständig gelöscht ist."
     deletion_info:
       data_consequences:
-        other: 'Von den vom Nutzer im Zuge der Nutzung der Anwendung erstellen Daten (z.B. E-Mail-Adresse, Systemeinstellungen, Arbeitspakete, Wiki-Einträgen) werden so viele wie möglich gelöscht. Bitte beachten Sie allerdings, dass Daten wie Arbeitspakete und Wiki-Einträge nicht gelöscht werden können, da dies die Arbeit der anderen Nutzer behindern würde. Solche Daten werden daher einem "Gelöschten Nutzer" zugewiesen. Da die Daten aller gelöschten Accounts dem "Gelöschten Nutzer" zugewiesen werden, ist es unmöglich, die vom Nutzer erstellten Daten diesem Nutzer zuzuordnen.'
-        self: 'Von den von Ihnen im Zuge der Nutzung der Anwendung erstellen Daten (z.B. E-Mail-Adresse, Systemeinstellungen, Arbeitspakete, Wiki-Einträgen) werden so viele wie möglich gelöscht. Bitte beachten Sie allerdings, dass Daten wie Arbeitspakete und Wiki-Einträge nicht gelöscht werden können, da dies die Arbeit der anderen Nutzer behindern würde. Solche Daten werden daher einem "Gelöschten Nutzer" zugewiesen. Da die Daten aller gelöschter Accounts dem "Gelöschten Nutzer" zugewiesen werden, ist es unmöglich, die von Ihnen erstellten Daten auf Ihre Person zurückzuführen.'
-      heading: "Lösche Account %{name}"
-      info:
-        other: "Das Löschen des Accounts kann nicht rückgängig gemacht werden."
-        self: "Das Löschen Ihres Accounts kann nicht rückgängig gemacht werden."
+        other: "Alle benutzerspezifischen Daten werden gelöscht. Die Aktivitäten des Benutzers in gemeinsamen Ansichten wie Arbeitspaketen und Besprechungen werden nicht gelöscht, sondern mit einem generischen \"Gelöschten Benutzer\" verknüpft, der nicht mit dem ursprünglichen Konto verknüpft werden kann."
+        self: "Alle benutzerspezifischen Daten werden gelöscht. Ihre Aktivitäten in gemeinsamen Ansichten wie Arbeitspaketen und Besprechungen werden nicht gelöscht, sondern mit einem allgemeinen \"Gelöschten Benutzer\" verbunden, der nicht mit Ihrem ursprünglichen Konto verknüpft werden kann."
+      heading: "Konto von %{name} löschen?"
       login_consequences:
-        other: "Der Account wird aus dem System entfernt. Der Nutzer wird daher nicht mehr in der Lage sein, sich mit seinem derzeitigen Nutzernamen und Passwort anzumelden. Sofern der Nutzer es wünscht, kann er sich über die von der Anwendung zur Verfügung gestellten Mechanismen einen neuen Account zulegen."
-        self: "Ihr Account wird aus dem System entfernt. Sie werden daher nicht mehr in der Lage sein, sich mit Ihrem derzeitigen Nutzernamen und Passwort anzumelden. Sofern Sie es wünschen, können Sie sich über die von der Anwendung zur Verfügung gestellten Mechanismen einen neuen Account zulegen."
-      login_verification:
-        other: "Geben Sie den Nutzernamen %{name} ein um die Löschung zu verifizieren. Zusätzlich müssen Sie nach dem Absenden des Formulars Ihr Passwort bestätigen."
-        self: "Gebe deinen Login %{name} ein, um den Löschvorgang zu bestätigen. Sie müssen zusätzlich nach dem Absenden des Formulars Ihr Password bestätigen."
+        other: "Dieses Konto wird sofort aus dem System entfernt und der Benutzer kann sich nicht mehr mit seinen Anmeldedaten anmelden."
+        self: "Ihr Konto wird sofort aus dem System entfernt und Sie können sich nicht mehr mit Ihren Anmeldedaten anmelden."
     error_inactive_activation_by_mail: >
       Ihr Konto wurde noch nicht aktiviert. Zur Aktivierung folgen Sie bitte dem Link, der Ihnen bei der Registrierung per E-Mail zugeschickt wurde.
     error_inactive_manual_activation: >
@@ -846,6 +1123,10 @@ de:
     auth_source_login: Bitte melden Sie sich als <em>%{login}</em> an um Ihr Konto zu aktivieren.
     omniauth_login: Bitte loggen Sie sich ein um Ihr Konto zu aktivieren.
   actionview_instancetag_blank_option: "Bitte auswählen"
+  activemodel:
+    attributes:
+      projects/copy_options:
+        dependencies: "Abhängigkeiten"
   activerecord:
     attributes:
       announcements:
@@ -861,6 +1142,14 @@ de:
       attribute_help_text:
         attribute_name: "Attribut"
         help_text: "Hilfe-Text"
+        caption: "Untertitel"
+      auth_provider:
+        scim_clients: "SCIM-Clients"
+      calculated_value_error:
+        error_code: "Fehlercode"
+        customized: "Benutzerdefiniert"
+        customized_id: "Benutzerdefinierte ID"
+        customized_type: "Benutzerdefinierter typ"
       capability:
         context: "Kontext"
       changeset:
@@ -874,6 +1163,7 @@ de:
         default_value: "Standardwert"
         editable: "Bearbeitbar"
         field_format: "Format"
+        formula: "Formel"
         is_filter: "Als Filter benutzen"
         is_for_all: "Für alle Projekte"
         is_required: "Erforderlich"
@@ -887,6 +1177,8 @@ de:
         admin_only: "Nur für Administratoren"
       custom_value:
         value: "Wert"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client-ID"
         secret: "Clientschlüssel"
@@ -900,11 +1192,16 @@ de:
       emoji_reaction:
         reactable: "Reagiert am"
       enterprise_token:
-        domain: "Domain"
         starts_at: "Aktiv seit"
         subscriber: "Abonnent"
+        subscription: "Abonnement"
+        plan: "Plan"
         encoded_token: "Enterprise edition Support Token"
-        active_user_count_restriction: "Maximale aktive Nutzer"
+        active_user_count_restriction: "Aktive Nutzer"
+      enterprise_trial:
+        company: "Unternehmen"
+      favorite:
+        favorited: "Favorisiert"
       grids/grid:
         page: "Seite"
         row_count: "Anzahl der Zeilen"
@@ -937,11 +1234,13 @@ de:
         active_value:
           true: "nicht archiviert"
           false: "archiviert"
+        attribute_groups: "Attributgruppen"
         description: "Beschreibung"
         enabled_modules: "Aktivierte Module"
         identifier: "Kennung"
         latest_activity_at: "Letzte Aktivität am"
         parent: "Unterprojekt von"
+        project_creation_wizard_enabled: "Projektinitiierungsantrag"
         public_value:
           title: "Sichtbarkeit"
           true: "öffentlich"
@@ -956,6 +1255,13 @@ de:
           off_track: "Unplanmäßig"
           finished: "Abgeschlossen"
           discontinued: "Eingestellt"
+        project_creation_wizard_assignee_custom_field: "Zuweisung bei Einreichung"
+        project_creation_wizard_notification_text: "Benachrichtigungstext"
+        project_creation_wizard_send_confirmation_email: "Bestätigungs-E-Mail"
+        project_creation_wizard_status_when_submitted: "Status bei Einreichung"
+        project_creation_wizard_work_package_comment: "Arbeitspaket-Kommentar"
+        project_creation_wizard_work_package_type: "Arbeitspaket-Typ"
+        template: "Vorlage"
         templated: "Projektvorlage"
         templated_value:
           true: "als Vorlage markiert"
@@ -963,12 +1269,19 @@ de:
         types: "Typen"
         versions: "Versionen"
         work_packages: "Arbeitspakete"
+        workspace_type: "Arbeitsbereichstyp"
       project_custom_field:
-        is_required: "In allen Projekten erforderlich"
+        is_required: "Required"
         custom_field_section: Abschnitt
+      subproject_template_assignment:
+        workspace_type: "Arbeitsbereichstyp"
       project/phase:
         date_range: "Zeitraum"
         definition: "Definition"
+        duration: "Dauer"
+        start_date: "Anfangstermin"
+        start_date_caption: "Folgt der vorherigen Phase."
+        finish_date: "Endtermin"
       project/phase_definition:
         name: "Name"
         color: "Farbe"
@@ -1017,11 +1330,16 @@ de:
         url: "URL"
       role:
         permissions: "Berechtigungen"
+      scim_client:
+        authentication_method: "Authentifizierungsmethode"
+        jwt_sub: "Subject claim"
       status:
         is_closed: "Arbeitspaket geschlossen"
         is_readonly: "Arbeitspakete schreibgeschützt"
         excluded_from_totals: "Von der Berechnung der Gesamtsumme in der Hierarchie ausschließen"
         default_done_ratio: "% abgeschlossen"
+      token/named:
+        token_name: "Tokenname"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Zuordnung der Abfrage"
@@ -1033,7 +1351,7 @@ de:
         ongoing: "Fortlaufend"
       type:
         description: "Standardtext für Beschreibung"
-        attribute_groups: ""
+        attribute_groups: "Formularkonfiguration"
         is_in_roadmap: "In Roadmap standardmäßig angezeigt"
         is_default: "Typ für neue Projekte standardmäßig aktiviert"
         is_milestone: "Ist ein Meilenstein"
@@ -1059,17 +1377,38 @@ de:
         new_password: "Neues Kennwort"
         password_confirmation: "Bestätigung"
         consented_at: "Eingewilligt am"
+      group:
+        identity_url: "Identity URL"
       user_preference:
-        comments_sorting: "Kommentare anzeigen"
+        header_look_and_feel: "Erscheinungsbild und Bedienverhalten"
+        header_alerts: "Warnmeldungen"
+        button_update_look_and_feel: "Erscheinungsbild und Bedienverhalten aktualisieren"
+        button_update_alerts: "Warnmeldungen aktualisieren"
+        button_update_user_information: "Profil aktualisieren"
+        comments_sorting: "Arbeits­paket­aktivität anzeigen, sortiert nach"
+        disable_keyboard_shortcuts: "Tastaturkürzel deaktivieren"
+        disable_keyboard_shortcuts_caption_html: |-
+          Sie können die standardmäßigen <a href="%{href}">Tastenkombinationen</a> deaktivieren, wenn Sie einen Screenreader verwenden oder unbeabsichtigtes Auslösen einer Aktion durch eine Tastenkombination vermeiden möchten.
         dismissed_enterprise_banners: "Ausgeblendete Unternehmensbanner"
         impaired: "Für die barrierefreie Nutzung optimierte Oberfläche"
-        auto_hide_popups: "Benachrichtigungen erfolgreicher Aktionen automatisch ausblenden"
+        auto_hide_popups: "Erfolgsbannern automatisch ausblenden"
+        auto_hide_popups_caption: "Wenn diese Funktion aktiviert ist, verschwinden die grünen Erfolgsbanner automatisch nach 5 Sekunden."
         warn_on_leaving_unsaved: "Beim Verlassen einer Arbeitspaket-Seite mit ungespeichertem Text warnen"
-        theme: "Modus"
+        increase_theme_contrast: "Kontrast erhöhen"
+        increase_contrast: "Kontrast erhöhen"
+        increase_contrast_caption: "Aktiviere hohen Kontrast für den gewählten Farbmodus."
+        force_light_theme_contrast: "Hohen Kontrast im Hell-Modus erzwingen"
+        force_dark_theme_contrast: "Hohen Kontrast im Dunkel-Modus erzwingen"
+        force_light_theme_contrast_caption: "Verwendet die kontrastreiche Version des Hell-Modus, wenn der automatische Farbmodus ausgewählt ist."
+        force_dark_theme_contrast_caption: "Verwendet die kontrastreiche Version des Dunkel-Modus, wenn der automatische Farbmodus ausgewählt ist."
+        theme: "Farbmodus"
         time_zone: "Zeitzone"
-        mode_guideline: "Einige Darstellungsmodi überschreiben die Farben des benutzerdefinierten Designs, um die Barrierefreiheit und Lesbarkeit zu gewährleisten. Für das vollständige benutzerdefinierte Design wählen Sie bitte den hellen Modus."
+        mode_guideline: "Einige Modi überschreiben benutzerdefinierte Theme-Farben zur Verbesserung von Barrierefreiheit und Lesbarkeit. Bitte wählen Sie den Hellmodus für die vollständige Unterstützung Ihres benutzerdefinierten Themes."
         daily_reminders: "Tägliche Erinnerungen"
         workdays: "Arbeitstage"
+      users/invitation/form_model:
+        principal_type: "Art der Einladung"
+        id_or_email: "Name oder E-Mail-Adresse"
       version:
         effective_date: "Endtermin"
         sharing: "Gemeinsame Verwendung"
@@ -1083,7 +1422,7 @@ de:
         ancestor: "Nachkommen von" #used for filtering of work packages that are descendants of a given work package
         begin_insertion: "Beginn der Einfügung"
         begin_deletion: "Beginn des Löschvorgangs"
-        children: "Kindelemente"
+        children: "Unteraufgaben"
         derived_done_ratio: "Insgesamt % abgeschlossen"
         derived_remaining_hours: "Verbleibende Arbeit insgesamt"
         derived_remaining_time: "Verbleibende Arbeit insgesamt"
@@ -1132,10 +1471,11 @@ de:
         confirmation: "stimmt nicht mit %{attribute} überein."
         could_not_be_copied: "%{dependency} konnte nicht (vollständig) kopiert werden."
         does_not_exist: "existiert nicht."
-        error_enterprise_only: "%{action} ist nur in OpenProject Enterprise on-premises verfügbar"
+        error_enterprise_only: "%{action} ist nur in der OpenProject Enterprise Edition verfügbar."
         error_unauthorized: "kann nicht zugegriffen werden."
         error_readonly: "wurde versucht zu beschreiben, ist aber nicht beschreibbar."
         error_conflict: "Die Informationen wurde zwischenzeitlich durch andere Benutzer geändert."
+        error_not_found: "nicht gefunden."
         email: "ist keine gültige E-Mail-Adresse."
         empty: "muss ausgefüllt werden."
         enterprise_plan_required: "benötigt mindestens %{plan_name}."
@@ -1164,7 +1504,8 @@ de:
         not_a_datetime: "ist kein gültiges Datum."
         not_a_number: "ist keine Zahl."
         not_allowed: "ist ungültig aufgrund fehlender Berechtigungen."
-        not_json: "ist kein gültiges JSON-Objekt."
+        not_json: "konnte nicht als JSON gelsen werden."
+        not_json_object: "ist kein gültiges JSON-Objekt."
         not_an_integer: "ist keine ganzzahlige Zahl."
         not_an_iso_date: "ist kein gültiges Datum - Erwartetes Format: YYY-MM-DD."
         not_same_project: "gehört nicht zum selben Projekt."
@@ -1172,6 +1513,8 @@ de:
         odd: "muss ungerade sein."
         regex_match_failed: "stimmt nicht mit dem regulären Ausdruck %{expression} überein."
         regex_invalid: "konnte nicht mit dem zugehörigen regulären Ausdruck überprüft werden."
+        regex_list_invalid: "Die Zeilen %{invalid_lines} konnten nicht als regulärer Ausdruck gelesen werden."
+        hexcode_invalid: "ist kein gültiger 6-stelliger hexadezimaler Farbcode."
         smaller_than_or_equal_to_max_length: "muss kleiner als oder gleich der maximalen Länge sein."
         taken: "ist bereits vergeben."
         too_long: "ist zu lang (nicht mehr als %{count} Zeichen)."
@@ -1195,7 +1538,7 @@ de:
           attributes:
             content_type:
               blank: "Der Content-Type der Datei darf nicht leer sein."
-              not_whitelisted: "Die Datei wurde von einem automatischen Filter abgelehnt. '%{value}' ist nicht für Uploads freigegeben."
+              not_allowlisted: "Die Datei wurde von einem automatischen Filter abgelehnt. ‚%{value}‘ ist für den Upload nicht zulässig."
               format: "%{message}"
         capability:
           context:
@@ -1205,6 +1548,19 @@ de:
               minimum: "müssen mindestens einen Filter für Principal, Kontext oder ID mit dem '=' Operator enthalten."
         custom_field:
           at_least_one_custom_option: "Mindestens ein Wert muss verfügbar sein."
+          previous_custom_field_recalculation_unprocessed: "Die Neuberechnung früherer Änderungen für dieses benutzerdefinierte Feld wurde noch nicht durchgeführt. Bitte versuchen Sie es in ein paar Minuten erneut."
+          referenced_in_other_fields_html:
+            one: "%{name} wird bei der Berechnung eines Projektattributs verwendet %{links}."
+            other: "%{name} wird bei der Berechnung von Projektattribute verwendet %{links}."
+          attributes:
+            formula:
+              blank: "Die Formel kann nicht leer sein."
+              invalid: "Die Formel ist ungültig."
+              invalid_characters: "Nur numerische Werte, mathematische Operatoren und Projektattribute vom Typ Integer, Float, Berechneter Wert und Gewichtete Liste sind erlaubt."
+              not_allowed_custom_fields_referenced: "Das Attribut %{custom_fields} kann nicht verwendet werden, da es zu einem Zirkelbezug führt; ein Attribut hängt vom anderen ab."
+              format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1228,8 +1584,16 @@ de:
               forbidden_uri: "ist vom Server nicht erlaubt."
             scopes:
               not_match_configured: "stimmt nicht mit verfügbaren Geltungsbereichen überein."
+        enterprise_trial:
+          already_used: "wurde bereits verwendet, um eine Testversion zu erstellen."
+          failed_to_create: "Testversion konnte nicht erstellt werden (%{status})"
+          general_consent: "Bitte akzeptieren Sie die Nutzungs- und Vertragsbedingungen."
         enterprise_token:
+          only_one_trial: "Es kann nur ein Test-Token aktiv sein. Bitte löschen Sie den vorherigen Test-Token, bevor Sie einen weiteren hinzufügen."
           unreadable: "kann nicht gelesen werden. Ist dies ein Enterprise edition Support Token?"
+          already_added: "Dieser Token wurde bereits hinzugefügt."
+        favorite:
+          already_favorited: "wurde bereits favorisiert."
         grids/grid:
           overlaps: "überlappen."
           outside: "ist außerhalb des Rasters."
@@ -1266,9 +1630,11 @@ de:
         project:
           archived_ancestor: "Das Projekt hat einen archivierten Vorgänger."
           foreign_wps_reference_version: "Arbeitspakete in nicht verknüpften Projekten verweisen auf Versionen des Projekts oder seiner verknüpften Projekte."
+          cannot_be_assigned_to_artifact_work_package: "Der gewählte Nutzer darf im Arbeitspaket nicht zugewiesen werden."
           attributes:
             base:
               archive_permission_missing_on_subprojects: "Sie haben nicht die erforderlichen Berechtigungen, um alle Unterprojekte zu archivieren. Bitte kontaktieren Sie einen Administrator."
+              project_initiation_request_disabled: "Die Anfrage zur Projektinitiierung ist deaktiviert. Sie muss aktiviert sein, um das Artefakt-Arbeitspaket zu erstellen."
             types:
               in_use_by_work_packages: "wird noch genutzt von folgenden Arbeitspaketen: %{types}"
             enabled_modules:
@@ -1280,14 +1646,14 @@ de:
               blank: "Bitte wählen Sie ein Projekt aus."
         project/phase:
           attributes:
-            date_range:
-              start_date_must_be_before_finish_date: "Startdatum muss vor dem Enddatum liegen."
+            start_date:
+              must_be_before_finish_date: "muss vor dem Enddatum liegen."
               non_continuous_dates: "kann nicht vor dem Enddatum der vorherigen Phase liegen."
-              incomplete: "ist unvollständig."
+            finish_date:
+              must_be_after_start_date: "muss nach dem Startdatum liegen."
+          cannot_be_a_non_working_day: "kann kein arbeitsfreier Tag sein."
         query:
           attributes:
-            project:
-              error_not_found: "nicht gefunden"
             public:
               error_unauthorized: "- Der Nutzer hat nicht die Berechtigung öffentliche Ansichten zu erstellen."
             group_by:
@@ -1326,16 +1692,19 @@ de:
           typed_dag:
             circular_dependency: "Die Beziehung erzeugt eine zirkuläre Abhängigkeit."
           attributes:
+            base:
+              error_not_deletable: "Diese Beziehung kann nicht gelöscht werden, da Sie keine Bearbeitungsberechtigung für das ausgewählte Arbeitspaket haben."
+              error_not_editable: "Diese Beziehung kann nicht bearbeitet werden, da Sie keine Bearbeitungsrechte für das ausgewählte Arbeitspaket haben."
             to_id:
-              error_not_found: "nicht gefunden oder nicht sichtbar."
+              format: "Das ausgewählte Arbeitspaket %{message}"
+              error_not_found: "konnte nicht gefunden werden."
               error_readonly: "kann für bestehende Beziehungen nicht geändert werden."
+              error_not_manageable: "kann nicht hinzugefügt werden, da Sie keine Bearbeitungsberechtigung für das ausgewählte Arbeitspaket haben."
             from_id:
-              error_not_found: "nicht gefunden oder nicht sichtbar."
+              format: "Das ausgewählte Arbeitspaket %{message}"
+              error_not_found: "konnte nicht gefunden werden."
               error_readonly: "kann für bestehende Beziehungen nicht geändert werden."
-            lag:
-              greater_than_or_equal_to:
-                zero: "darf nicht negativ sein."
-              less_than_or_equal_to: "ist zu hoch."
+              error_not_manageable: "kann nicht hinzugefügt werden, da Sie keine Bearbeitungsberechtigung für das ausgewählte Arbeitspaket haben."
         repository:
           not_available: "SCM-Anbieter ist nicht verfügbar"
           not_whitelisted: "wird durch die Konfiguration nicht erlaubt."
@@ -1389,7 +1758,7 @@ de:
           attributes:
             id:
               format: "%{message}"
-              cannot_add_child_because_of_lack_of_permission: "Sie können kein Kind hinzufügen, weil Sie keine Berechtigung haben, das ausgewählte Arbeitspaket zu bearbeiten."
+              cannot_add_child_because_of_lack_of_permission: "Sie können keine Unteraufgabe hinzufügen, weil Sie keine Berechtigung haben, das ausgewählte Arbeitspaket zu bearbeiten."
               blank: "ID darf nicht leer sein."
             assigned_to:
               format: "%{message}"
@@ -1413,6 +1782,8 @@ de:
               cannot_be_self_assigned: "kann nicht selbst zugewiesen werden."
               cannot_be_in_another_project: "darf nicht in einem anderen Projekt sein."
               not_a_valid_parent: "ist ungültig."
+            schedule_manually:
+              cannot_be_automatically_scheduled: "kann nicht auf false gesetzt werden (automatisch geplant), da es keine Vorgänger oder Unteraufgaben hat."
             start_date:
               violates_relationships: "muss mindestens auf %{soonest_start} gesetzt werden, um Beziehungen zu anderen Arbeitspaketen nicht zu verletzten."
               cannot_be_null: "kann nicht auf Null gesetzt werden, als Enddatum und Dauer bekannt sind."
@@ -1435,8 +1806,7 @@ de:
               cant_exceed_work: "Kann nicht größer als der Aufwand sein."
               must_be_set_when_work_is_set: "Ist erforderlich, wenn Aufwand gesetzt ist."
               must_be_set_when_work_and_percent_complete_are_set: "ist erforderlich, wenn Aufwand und % abgeschlossen eingestellt sind."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                muss 0h sein, wenn Aufwand gesetzt und % abgeschlossen 100% ist.
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: muss 0h sein, wenn Aufwand gesetzt und % abgeschlossen 100% ist.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 muss leer bleiben, wenn Aufwand gesetzt und % abgeschlossen 100% ist.
           readonly_status: "Das Arbeitspaket befindet sich in einem schreibgeschützten Status, so dass seine Attribute nicht geändert werden können."
@@ -1472,10 +1842,6 @@ de:
                 description: "\"Kennwortbestätigung\" sollte mit \"Neues Kennwort\" übereinstimmen."
             status:
               invalid_on_create: "ist kein gültiger Status für neue Benutzer."
-            ldap_auth_source:
-              error_not_found: "nicht gefunden"
-            auth_source:
-              error_not_found: "nicht gefunden"
         member:
           principal_blank: "Bitte wählen Sie mindestens einen Benutzer oder eine Gruppe."
           role_blank: "muss zugeordnet werden."
@@ -1488,9 +1854,11 @@ de:
         version:
           undeletable_archived_projects: "Die Version kann nicht gelöscht werden, da sie Arbeitspakete enthält, die an sie angeschlossen sind."
           undeletable_work_packages_attached: "Die Version kann nicht gelöscht werden, da sie Arbeitspakete enthält, die an sie angeschlossen sind."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Bitte geben Sie einen Namen für den Token an"
+              in_use: "Dieser Token-Name ist bereits in Verwendung, bitte wählen Sie einen anderen"
               format: "%{message}"
       template:
         body: "Bitte überprüfen Sie die folgenden Felder:"
@@ -1499,18 +1867,28 @@ de:
           other: "%{count} Fehler haben das Speichern dieses %{model} verhindert"
     models:
       attachment: "Datei"
-      attribute_help_text: "Hilfe-Text für Attribute"
+      attribute_help_text:
+        one: "Hilfe-Text für Attribute"
+        other: "Hilfe-Texte für Attribute"
+      auth_provider:
+        one: "Authentifizierungsanbieter"
+        other: "Authentifizierungsanbieter"
       category: "Kategorie"
+      color: "Farbe"
       comment: "Kommentar"
       custom_action: "Benutzerdefinierte Aktion"
       custom_field: "Benutzerdefiniertes Feld"
       "doorkeeper/application": "OAuth-Anwendung"
+      enterprise_token:
+        one: "Enterprise-Token"
+        other: "Enterprise-Tokens"
       forum: "Forum"
       global_role: "Globale Rolle"
       group: "Gruppe"
       issue_priority:
         one: "Priorität"
         other: "Prioritäten"
+      meeting_participant: "Besprechungsteilnehmer"
       member: "Mitglied"
       news: "Neuigkeiten"
       notification:
@@ -1528,6 +1906,9 @@ de:
       role:
         one: "Rolle"
         other: "Rollen"
+      scim_client:
+        one: "SCIM-Client"
+        other: "SCIM-clients"
       status: "Arbeitspaket-Status"
       token/api:
         one: Zugangs-Token
@@ -1547,6 +1928,11 @@ de:
       one: "Zusätzlich gab es ein Problem mit dem folgenden Feld:"
       other: "Zusätzlich gab es ein Problem mit den folgenden Feldern:"
     field_erroneous_label: "Dieses Feld ist ungültig: %{full_errors} \nBitte geben Sie einen gültigen Wert ein."
+    messages:
+      must_be_template: "muss eine Vorlage sein"
+      unsupported_storage_type: "ist kein unterstützter Speichertyp."
+      storage_error: "Es ist ein Fehler bei der Speicherverbindung aufgetreten."
+      invalid_input: "Die Eingabe ist ungültig."
   activity:
     item:
       created_by_on: "erstellt von %{user} am %{datetime}"
@@ -1588,7 +1974,7 @@ de:
       added_date: "auf %{date} festlegen"
       changed_date: "von %{from} zu %{to} geändert"
       deactivated: "deaktiviert"
-      deleted_project_phase: "Deleted project phase"
+      deleted_project_phase: "Gelöschte Projektphase"
       phase_and_both_gates: "%{phase_message}. %{start_gate_message} und %{finish_gate_message}"
       phase_and_one_gate: "%{phase_message}. %{gate_message}"
       removed_date: "Datum gelöscht %{date}"
@@ -1600,6 +1986,7 @@ de:
     attachments: "Anhänge"
     actor: "Ausführender Benutzer"
     action: "Aktion"
+    api_key: "API-Schlüssel"
     author: "Autor"
     avatar: "Profilfoto"
     base: "Allgemeiner Fehler:"
@@ -1624,12 +2011,13 @@ de:
     derived_start_date: "Aggregierter Starttermin"
     direction: "Richtung"
     display_sums: "Summen anzeigen"
+    domain: "Domain"
     due_date: "Endtermin"
     estimated_hours: "Aufwand"
     estimated_time: "Aufwand"
     email: "E-Mail"
     entity_type: "Entität"
-    expires_at: "Läuft ab am"
+    expires_at: "Verfällt am"
     firstname: "Vorname"
     filter: "Filter"
     group: "Gruppe"
@@ -1673,11 +2061,13 @@ de:
     subject: "Thema"
     slug: "Slug"
     summary: "Zusammenfassung"
+    template: "Vorlage"
     time_zone: "Zeitzone"
     text: "Text"
     title: "Titel"
     type: "Typ"
     typeahead: "Autovervollständigung"
+    uid: "Eindeutige Kennung"
     updated_at: "Aktualisiert am"
     updated_on: "Aktualisiert am"
     uploader: "Bereitgestellt von"
@@ -1728,6 +2118,7 @@ de:
   button_add_watcher: "Beobachter hinzufügen"
   button_annotate: "Kommentieren"
   button_apply: "Anwenden"
+  button_apply_changes: "Änderungen anwenden"
   button_archive: "Archivieren"
   button_back: "Zurück"
   button_cancel: "Abbrechen"
@@ -1741,10 +2132,10 @@ de:
   button_collapse_all: "Alle zuklappen"
   button_configure: "Konfigurieren"
   button_continue: "Fortfahren"
+  button_complete: "Fertigstellen"
   button_copy: "Kopieren"
   button_copy_to_clipboard: "In Zwischenablage kopieren"
   button_copy_link_to_clipboard: "Link in Zwischenablage kopieren"
-  button_copy_and_follow: "Kopieren und Arbeitspaket anzeigen"
   button_create: "Anlegen"
   button_create_and_continue: "Anlegen und weiter"
   button_decline: "Ablehnen"
@@ -1752,8 +2143,11 @@ de:
   button_delete_permanently: "Endgültig löschen"
   button_delete_watcher: "Lösche Beobachter %{name}"
   button_download: "Download"
+  button_disable: "Deaktivieren"
   button_duplicate: "Duplizieren"
+  button_duplicate_and_follow: "Duplizieren und folgen"
   button_edit: "Bearbeiten"
+  button_enable: "Aktivieren"
   button_edit_associated_wikipage: "Zugehörige Wikiseite bearbeiten: %{page_title}"
   button_expand_all: "Alle ausklappen"
   button_favorite: "Zu Favoriten hinzufügen"
@@ -1768,6 +2162,7 @@ de:
   button_print: "Drucken"
   button_quote: "Zitieren"
   button_remove: Entfernen
+  button_remove_permanently: "Endgültig löschen"
   button_remove_reminder: "Erinnerung entfernen"
   button_rename: "Umbenennen"
   button_replace: "Ersetzen"
@@ -1777,8 +2172,8 @@ de:
   button_rollback: "Auf diese Version zurücksetzen"
   button_save: "Speichern"
   button_save_as: "Speichern unter"
-  button_apply_changes: "Änderungen anwenden"
   button_save_back: "Speichern und zurück"
+  button_select: "Auswählen"
   button_set_reminder: "Erinnerung einrichten"
   button_show: "Anzeigen"
   button_sort: "Sortierung"
@@ -1791,6 +2186,7 @@ de:
   button_unwatch: "Nicht beobachten"
   button_update: "Aktualisieren"
   button_upgrade: "Upgraden"
+  button_buy_now: "Jetzt kaufen"
   button_upload: "Hochladen"
   button_view: "Anzeigen"
   button_watch: "Beobachten"
@@ -1835,6 +2231,29 @@ de:
     text:
       failed: 'Das Projekt "%{source_project_name}" konnte nicht nach "%{target_project_name}" kopiert werden.'
       succeeded: 'Das Projekt "%{source_project_name}" wurde nach "%{target_project_name}" kopiert.'
+    source_project_label: "Projekt kopiert"
+    copy_options:
+      dependencies_label: "Projekt kopieren"
+  create_project:
+    attributes_heading: "Füllen Sie diese Pflichtangaben aus, um das Projekt anzulegen."
+    template_label: "Vorlage verwenden"
+    template_heading: "Wählen Sie eine Projektvorlage, um mit den gängigsten Projektmanagementmethoden zu arbeiten, oder erstellen Sie ein leeres Projekt."
+    copy_options:
+      dependencies_label: "Aus Vorlage erstellen"
+    blank_template:
+      label: "Leeres Projekt"
+      description: Bei Null anfangen. Projektattribute, Mitglieder und Module manuell hinzufügen.
+    blank_description: Keine Beschreibung angegeben.
+  create_portfolio:
+    template_heading: "Wählen Sie eine Portfoliovorlage, um mit den gängigsten Projektmanagementmethoden zu arbeiten, oder erstellen Sie ein leeres Portfolio."
+    blank_template:
+      label: "Leeres Portfolio"
+      description: Beginnen Sie bei Null. Fügen Sie Portfolioattribute, Mitglieder und Module manuell hinzu.
+  create_program:
+    template_heading: "Wählen Sie eine Programmvorlage, um mit den gängigsten Projektmanagementmethoden zu arbeiten, oder erstellen Sie ein Programm von Grund auf neu."
+    blank_template:
+      label: "Leeres Programm"
+      description: Bei Null anfangen. Programmattribute, Mitglieder und Module manuell hinzufügen.
   create_wiki_page: "Neue Wikiseite anlegen"
   create_wiki_page_button: "Wiki-Seite"
   date:
@@ -1950,6 +2369,9 @@ de:
         one: "1 Sek."
         other: "%{count} Sek."
     units:
+      minute_abbreviated:
+        one: "Min."
+        other: "Min"
       hour:
         one: "Stunde"
         other: "Stunde"
@@ -1991,40 +2413,57 @@ de:
     features:
       baseline_comparison: Grundlinie (Planungsvergleich)
       board_view: Erweiterte agile Boards
+      calculated_values: Berechnete Werte
       conditional_highlighting: Bedingte Hervorhebung
       internal_comments: Interne Kommentare
       custom_actions: Benutzerdefinierte Aktionen
-      custom_field_hierarchies: Selbstdefinierte Felder vom Typ Hierarchie
+      custom_field_hierarchies: Hierarchien
       customize_life_cycle: Projektlebenszyklus anpassen
       date_alerts: Datums-Erinnerungen
       define_custom_style: Selbstdefiniertes Logo und Farbthema
       edit_attribute_groups: Attributgruppen bearbeiten
       gantt_pdf_export: Gantt PDF Export
-      ldap_groups: LDAP Konten und Gruppen Synchronisation
-      nextcloud_sso: Single Sign-On for Nextcloud Storage
+      ldap_groups: LDAP-Benutzer- und Gruppensynchronisation
+      nextcloud_sso: Single Sign-On für Nextcloud-Speicher
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
+      portfolio_management: Portfolioverwaltung
       project_list_sharing: Projektlistenfreigabe
       readonly_work_packages: Schreibgeschützte Arbeitspakete
-      sso_auth_providers: Single Sign-on
+      scim_api: SCIM-Server-API
+      sso_auth_providers: Single-Sign-On
       team_planner_view: Teamplaner
-      two_factor_authentication: 2FA-Authentifizierung
       virus_scanning: Antivirus-Überprüfung
+      weighted_item_lists: Gewichtete Listen
       work_package_query_relation_columns: Arbeitspaket-Relationsspalten
       work_package_sharing: Teilen von Arbeitspaketen mit externen Nutzer:innen
       work_package_subject_generation: Arbeitspaket-Betreff Generierung
     upsell:
+      buy_now_button: "Jetzt kaufen"
       plans_title: "Enterprise-Plan"
       title: "Enterprise Add-on"
       plan_title: "Enterprise %{plan} Add-on"
       plan_name: "%{plan} Enterprise Plan"
       plan_text_html: "Beginnend mit dem %{plan_name} verfügbar."
+      unlimited: "Unbegrenzt"
+      already_have_token: >
+        Haben Sie bereits ein Token? Fügen Sie es über den Button unten hinzu, um zum gebuchten Enterprise-Plan zu wechseln.
       hide_banner: "Dieses Banner ausblenden"
       homescreen_description: >
-        Enterprise-Pläne erweitern die Community Edition von OpenProject, welche Sie derzeit verwenden. Sie beinhalten Add-ons, zusätzliche Funktionen und professionelle Unterstützung, die es Organisationen aller Größenordnungen ermöglicht, gemeinsam Großartiges zu erreichen.
+        Enterprise-Pläne erweitern die Community-Edition von OpenProject um zusätzliche [Enterprise Add-Ons](enterprise_url) und professionellen Support, ideal für Unternehmen, die OpenProject in einer geschäftskritischen Umgebung einsetzen.
       homescreen_subline: Durch ein Upgrade unterstützen Sie zudem ein Open-Source-Projekt.
       baseline_comparison:
         description: An dieser Liste vorgenommene Änderungen seit einem beliebigen Zeitpunkt in der Vergangenheit hervorheben.
+      benefits:
+        description: "Was sind die Vorteile von Enterprise on-premises?"
+        high_security: "Weitere Sicherheitsfunktionen"
+        high_security_text: "Single Sign on (SAML, OpenID Connect, CAS), LDAP Gruppen."
+        installation: "Installations-Support"
+        installation_text: "Erfahrene Software-Ingenieure führen Sie durch den gesamten Installations- und Einrichtungsprozess in Ihrer eigenen Infrastruktur."
+        premium_features: "Enterprise Add-ons"
+        premium_features_text: "Agile Boards, benutzerdefinierte Farben und Logo, Graphen, intelligente Workflows mit benutzerdefinierten Aktionen, Volltextsuche für Anhänge von Arbeitspaketen und Mehrfachauswahl benutzerdefinierter Felder."
+        professional_support: "Professionelle Unterstützung"
+        professional_support_text: "Sie bekommen zuverlässigen und persönlichen Support von Experten, die sich mit dem Einsatz von OpenProject in geschäftskritischen Umgebungen auskennen."
       work_package_subject_generation:
         description: "Erstellen Sie automatisch generierte Betreffe mit referenzierten Attributen und Text."
       customize_life_cycle:
@@ -2032,7 +2471,7 @@ de:
       conditional_highlighting:
         description: "Benötigen Sie bestimmte Arbeitspakete, um sich von der Masse abzuheben? Verwenden Sie die bedingte Hervorhebung in der Arbeitspaketstabelle."
       work_package_query_relation_columns:
-        description: "Möchten Sie Beziehungen oder Kinder als Spalten in der Arbeitspaketliste sehen können?"
+        description: "Möchten Sie Beziehungen oder Unteraufgaben als Spalten in der Arbeitspaketliste sehen können?"
       edit_attribute_groups:
         description: "Anpassen der Form-Konfiguration mit diesen zusätzlichen Add-ons:"
         features:
@@ -2042,11 +2481,17 @@ de:
       readonly_work_packages:
         description: "Arbeitspakete in bestimmten Status als schreibgeschützt markieren."
       custom_field_hierarchies:
-        description: "Benutzerdefinierte Felder vom Typ Hierarchie erlauben es, hierarchische Strukturen in Arbeitspaketen zu organisieren, indem sie mehrstufige Auswahllisten nutzen."
+        description: "Benutzerdefinierte Felder vom Typ Hierarchie erlauben es, hierarchische Strukturen in Arbeitspaketen und Projekten zu organisieren, indem sie mehrstufige Auswahllisten nutzen."
       date_alerts:
         description: "Mit Datums-Erinnerungen werden Sie über bevorstehende Start- oder Endtermine informiert, so dass Sie nie einen wichtigen Termin verpassen oder übersehen."
+      weighted_item_lists:
+        description: "Mit Gewichteten Listen können Sie eine Liste erstellen, die mit numerischen Werten verknüpft ist."
       work_package_sharing:
         description: "Teilen Sie Arbeitspakete mit Benutzern, die nicht Mitglieder des Projekts sind."
+      project_list_sharing:
+        description: "Projektlisten mit einzelnen Benutzern und Gruppen teilen."
+      calculated_values:
+        description: "Mit Berechneten Werten können Sie ein auf einer mathematischen Formel basierendes Attribut erstellen, in das numerische Werte und anderen Projektattributen und benutzerdefinierten Feldern einfließen."
       define_custom_style:
         title: "Selbstdefiniertes Farbthema und Logo"
         more_info: "Hinweis: Das verwendete Logo wird öffentlich zugänglich sein."
@@ -2055,8 +2500,14 @@ de:
         title: "Benutzerdefinierte Aktionen"
         description: "Selbstdefinierte Aktionen sind Verknüpfungen zu einer Reihe von vordefinierten Aktionen, die Sie für bestimmte Arbeitspakete je nach Status, Rolle, Typ oder Projekt mit nur einem Klick auf einen Button auslösen."
       nextcloud_sso:
-        title: "Single Sign-On for Nextcloud Storage"
-        description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
+        title: "Single Sign-On für Nextcloud-Speicher"
+        description: "Aktivieren Sie nahtlose und sichere Authentifizierung für Ihren Nextcloud-Speicher mit Single Sign-On. Vereinfachen Sie das Zugriffsmanagement und erhöhen Sie den Benutzerkomfort."
+      scim_api:
+        title: "SCIM-Clients"
+        description: "Automatisieren Sie die Benutzerverwaltung in OpenProject durch nahtlose Integration externer Identitätsdienste wie Microsoft Entra oder Keycloak über unsere SCIM Server API. Verfügbar ab dem Enterprise Corporate Plan."
+      sso_auth_providers:
+        title: "Single Sign-On (SSO)"
+        description: "Ermöglichen Sie es Benutzern, sich über externe SSO-Anbieter mit SAML oder OpenID Connect anzumelden, um einen nahtlosen Zugriff und die Integration mit bestehenden Identitätssystemen zu ermöglichen."
       virus_scanning:
         description: "Stellen Sie sicher, dass hochgeladene Dateien in OpenProject auf Viren gescannt werden, bevor sie für andere Benutzer zugänglich sind."
       placeholder_users:
@@ -2069,11 +2520,48 @@ de:
       internal_comments_inline:
         title: "Interne Kommentare schreiben, die nur für ausgewählte Mitglieder sichtbar ist."
         description: " "
+      portfolio_management:
+        description: Richten Sie Ihre Projekte an Ihren strategischen Zielen aus, indem Sie sie in Portfolios und Programmen organisieren.
+    teaser:
+      title:
+        one: "Ein Tag des %{trial_plan} Test-Token verbleibend"
+        other: "%{count} verbleibende Tage des %{trial_plan} Test-Tokens"
+      description: "Sie haben Zugriff auf alle Funktionen von %{trial_plan}."
+    trial:
+      not_found: "Sie haben einen Test-Token angefordert, aber diese Anfrage ist nicht mehr abrufbar. Bitte versuchen Sie es erneut."
+      wait_for_confirmation: "Wir haben Ihnen eine E-Mail zur Bestätigung geschickt, um den Token der Testversion abzurufen."
+      already_retrieved: >
+        Ihr Test-Enterprise-Token wurde bereits abgerufen. Bitte überprüfen Sie Ihre E-Mails auf das beigefügte Enterprise-Token. Bitte wenden Sie sich an unser Support-Team, wenn Sie Hilfe benötigen.
+      successfully_saved: "Ihr Enterprise-Token der Testversion wurde erfolgreich abgerufen."
+      token_sent: "Testversion-Token angefordert"
+      request_again: "Anfrage wiederholen"
+      resend_action: "Bestätigungsmail erneut senden"
+      welcome_title: "Kurze Funktionsübersicht"
+      welcome_description: "Erhalten Sie einen schnellen Überblick über Projektmanagement und Teamzusammenarbeit mit der OpenProject Enterprise edition."
+      confirmation_info: >
+        Wir haben Ihnen eine E-Mail am %{date} an die Adresse %{email} mit Informationen geschickt, um die kostenlose Testversion von OpenProject Enterprise zu starten. Bitte überprüfen Sie Ihren Posteingang und klicken Sie auf den Bestätigungslink, um Ihre 14 Tage kostenlose Testversion zu starten.
+      confirmation_subline: >
+        Bitte überprüfen Sie Ihren E-Mail-Posteingang und folgen Sie den Schritten, um Ihre 14-tägige kostenlose Testversion zu starten.
+      domain_caption: Das Token wird für den aktuell konfigurierten Hostnamen gültig sein.
+      receive_newsletter_html: >
+        Ich möchte den OpenProject <a target="_blank" href="https://www.openproject.org/newsletter/">Newsletter</a> erhalten.
+      consent_html: >
+        Ich stimme den <a target="_blank" href="https://www.openproject.org/de/rechtliches/nutzungsbedingungen"></a> und den <a target="_blank" href="https://www.openproject.org/de/rechtliches/datenschutz/">Datenschutzrichtlinien</a> zu.
+  email_calendar_updates:
+    state:
+      disabled: "Deaktiviert."
+      enabled: "Aktiviert."
+    button:
+      disabled: "Aktivieren"
+      enabled: "Deaktivieren"
   enumeration_activities: "Aktivitäten für Zeiterfassung"
   enumeration_work_package_priorities: "Arbeitspaket-Prioritäten"
-  enumeration_reported_project_statuses: "Gemeldeter Projekt-Status"
+  enumeration_reported_project_statuses: "Gemeldeter Projektstatus"
   enumeration_caption_order_changed: "Reihenfolge erfolgreich geändert."
   enumeration_could_not_be_moved: "Aufzählung konnte nicht verschoben werden."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Testversion
   error_auth_source_sso_failed: "Single Sign-On (SSO) für Nutzer '%{value}' fehlgeschlagen"
   error_can_not_archive_project: "Dieses Projekt kann nicht archiviert werden: %{errors}"
   error_can_not_delete_entry: "Eintrag kann nicht gelöscht werden"
@@ -2093,6 +2581,7 @@ de:
   error_color_could_not_be_saved: "Farbe konnte nicht gespeichert werden"
   error_cookie_missing: "Das OpenProject Cookie fehlt. Bitte stellen Sie sicher, dass Cookies aktiviert sind, da diese Applikation ohne aktivierte Cookies nicht korrekt funktioniert."
   error_custom_option_not_found: "Option ist nicht vorhanden."
+  error_enterprise_plan_needed: "Sie benötigen den Enterprise-Plan %{plan}, um diese Aktion durchzuführen."
   error_enterprise_activation_user_limit: "Ihr Konto konnte nicht aktiviert werden (Nutzerlimit erreicht). Bitte kontaktieren Sie Ihren Administrator um Zugriff zu erhalten."
   error_enterprise_token_invalid_domain: "Die Enterprise edition ist nicht aktiv. Die aktuelle Domain (%{actual}) entspricht nicht dem erwarteten Hostnamen (%{expected})."
   error_failed_to_delete_entry: "Fehler beim Löschen dieses Eintrags."
@@ -2101,6 +2590,7 @@ de:
   error_invalid_selected_value: "Ausgewählter Wert ist ungültig."
   error_journal_attribute_not_present: "Journal enthält Attribut %{attribute} nicht."
   error_pdf_export_too_many_columns: "Zu viele Spalten für PDF-Export ausgewählt. Bitte reduzieren Sie die Anzahl der ausgewählten Spalten."
+  error_pdf_date_range_too_long: "Der ausgewählte Datumsbereich des Arbeitspakets überschreitet die zulässige Grenze für den PDF-Export. Bitte beschränken Sie den Bereich auf maximal %{years} Jahre."
   error_pdf_failed_to_export: "Der PDF-Export konnte nicht gespeichert werden: %{error}"
   error_token_authenticity: "Das Cross-Site Request Forgery Token konnte nicht verfiziert werden. Wenn Sie versucht haben, Daten auf mehreren Tabs oder Browsern abzuspeichern, schließen sie diese und laden diese Seite erneut um den Vorgang zu wiederholen."
   error_reminder_not_found: "Die Erinnerung wurde nicht gefunden oder wurde bereits benachrichtigt."
@@ -2213,8 +2703,13 @@ de:
           label: "Beschreibungen inkludieren"
           caption: "Mit dieser Option wird die Beschreibungs-Spalte im Rohformat hinzugefügt."
     your_work_packages_export: "Arbeitspakete werden exportiert"
+    your_projects_export: "Projekte werden exportiert"
     succeeded: "Export abgeschlossen"
     failed: "Beim Versuch, die Arbeitspakete zu exportieren, ist ein Fehler aufgetreten: %{message}"
+    demo:
+      heading: "Demo-PDF"
+      footer: "Von OpenProject generiert"
+      button_text: Demo-PDF generieren
     errors:
       embedded_table_with_too_many_columns: "Diese eingebettete Arbeitspakettabelle passte nicht auf die Seite. Bitte reduzieren Sie die Anzahl der Spalten."
     format:
@@ -2232,7 +2727,7 @@ de:
       attribute_not_found: "Attribut nicht gefunden: %{attribute}"
       model_not_found: "ungültiges Attributmodell: %{model}"
       resource_not_found: "Ressource nicht gefunden: %{resource}"
-      rich_text_unsupported: "Rich-Text-Einbettung wird derzeit beim Export nicht unterstützt"
+      nested_rich_text_unsupported: "Rich-Text-Einbettung wird derzeit beim Export nicht unterstützt"
     units:
       hours: h
       days: d
@@ -2275,6 +2770,16 @@ de:
       xls2csv: "Xls2csv verfügbar (optional)"
       catppt: "Catppt verfügbar (optional)"
       tesseract: "Tesseract verfügbar (optional)"
+  filterable_tree_view:
+    filter_mode:
+      all: "Alle"
+      label: "Filtermodus"
+      selected: "Ausgewählt"
+    include_sub_items: "Unterelemente einbeziehen"
+    no_results_text: "Keine Ergebnisse"
+  toggle_switch:
+    label_on: "Ein"
+    label_off: "Aus"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2296,18 +2801,37 @@ de:
     blocks:
       community: "OpenProject Community"
       upsell:
-        title: "Auf Enterprise edition upgraden"
+        title: "Auf Enterprise Edition upgraden"
+      new_features:
+        header: "Lesen Sie über neue Funktionen und Updates."
+        learn_about: "Erfahren Sie mehr über die neuen Funktionen"
+        missing: "Es gibt noch keine hervorgehobenen Funktionen."
+        #We need to include the version to invalidate outdated translations in other locales
+        "17_0":
+          new_features_title: >
+            Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
+          new_features_list:
+            line_0: Zusammenarbeit an Dokumenten in Echtzeit.
+            line_1: Strukturierung zusammenhängender Projekte in Programme und Portfolios, um sie auf strategische Ziele auszurichten (Enterprise Add-on).
+            line_2: Bessere Verwaltung von Besprechungen mit Entwurfsmodus, Präsentationsmodus, verbesserten Ergebnissen und iCal-Abonnement.
+            line_3: Aktualisierte SharePoint-Integration mit flexibleren Berechtigungen (Enterprise Add-on).
+            line_4: Neu gestaltete Projektübersicht mit neuen Tabs, konfigurierbaren Widgets und einem verbesserten Layout.
+            line_5: Option zum Trennen der Sichtbarkeit von Benutzern innerhalb der Instanz, die nicht am selben Projekt oder derselben Gruppe arbeiten.
+            line_6: Verbesserter Ablauf der Projekterstellung mit neuer Vorlagenauswahl.
+            line_7: Eine intelligentere Suche, die Typ und Status einschließt, verbessert die Präzision in der globalen Suche und in Auswahlfeldern.
+            line_8: Verbesserungen der Zugänglichkeit mit ALT-Texten und verbesserten Diagrammfarben.
     links:
-      upgrade_enterprise_edition: "Auf Enterprise edition upgraden"
+      upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
-      user_guides: "Benutzerhandbuch"
+      user_guides: "Nutzungshandbuch"
       faq: "Häufig gestellte Fragen"
       impressum: "Impressum"
       glossary: "Glossar"
-      shortcuts: "Tastenkürzel"
+      shortcuts: "Tastaturkürzel"
       blog: "OpenProject Blog"
       forums: "Community Forum"
-      newsletter: "Sicherheitswarnungen / Newsletter"
+      security_alerts: "Sicherheitswarnungen"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "ImageMagick"
   journals:
@@ -2324,7 +2848,7 @@ de:
     cause_descriptions:
       work_package_predecessor_changed_times: durch Änderungen am Vorgänger %{link}
       work_package_parent_changed_times: durch Änderungen am übergeordneten Arbeitspaket %{link}
-      work_package_children_changed_times: durch Änderungen an Kind-Arbeitspaket %{link}
+      work_package_children_changed_times: durch Änderungen an Unteraufgabe %{link}
       work_package_related_changed_times: durch Änderungen an verwandtem Arbeitspaket %{link}
       work_package_duplicate_closed: Der Status wurde automatisch durch das als Duplikat markierte Arbeitspaket %{link} aktualisiert
       unaccessable_work_package_changed: nach Änderungen an einem zugehörigen Arbeitspaket
@@ -2352,9 +2876,9 @@ de:
         totals_removed_from_childless_work_packages: >-
           Arbeits- und Fortschrittssummen werden bei der <a href="%{href}" target="_blank">Versionsaktualisierung</a> automatisch für nicht übergeordnete Arbeitspakete entfernt. Diese Änderung entstand durch ein Upgrade und kann ignoriert werden.
       total_percent_complete_mode_changed_to_work_weighted_average: >-
-        Untergeordnete Arbeitspakete ohne Arbeit werden ignoriert.
+        Unteraufgaben ohne Arbeit werden ignoriert.
       total_percent_complete_mode_changed_to_simple_average: >-
-        Arbeitswerte von untergeordneten Arbeitspaketen werden ignoriert.
+        Arbeitswerte von Unteraufgaben werden ignoriert.
   links:
     configuration_guide: "Konfigurationsanleitung"
     get_in_touch: "Sie haben Fragen? Nehmen Sie Kontakt mit uns auf."
@@ -2368,7 +2892,7 @@ de:
       aggregation: "Zusammenfassungen"
       api_and_webhooks: "API und Webhooks"
     quick_add:
-      label: "Schnellmenue öffnen"
+      label: "Hinzufügen…"
   my_account:
     access_tokens:
       no_results:
@@ -2380,14 +2904,16 @@ de:
         expiration: "Läuft aus"
       indefinite_expiration: "Nie"
       simple_revoke_confirmation: "Sind Sie sicher, dass Sie dieses Token widerrufen möchten?"
-      api:
+      token/api:
         title: "Schnittstelle (API)"
         text_hint: "API-Token erlauben es Drittanbieter-Anwendungen, mit dieser OpenProject-Instanz über REST-APIs zu kommunizieren."
-        static_token_name: "API-Token"
         disabled_text: "API-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
+        add_button: "API-Token"
+      api:
+        static_token_name: "API-Token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar Token erlauben es Benutzern <a href="%{path}" target="_blank">OpenProject Kalender</a> zu abonnieren und aktuelle Arbeitspaket-Informationen auf externen Clients anzuzeigen.'
+        text_hint_link: "iCalendar-Token ermöglichen es Benutzern, [OpenProject-Kalender zu abonnieren](docs_url) und aktuelle Arbeitspaketinformationen in externen Anwendungen anzuzeigen."
         disabled_text: "iCalendar Abonnements sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
         empty_text_hint: "Um einen iCalendar Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
       oauth:
@@ -2409,7 +2935,7 @@ de:
         unknown_storage: "Unbekannter Speicher"
   notifications:
     reasons:
-      assigned: "Beauftragter"
+      assigned: "Zugewiesen an"
       dateAlert: "Datumsalarm"
       mentioned: "Erwähnt"
       responsible: "Verantwortlich"
@@ -2470,6 +2996,7 @@ de:
   label_api_access_key: "API-Zugriffsschlüssel"
   label_api_access_key_created_on: "Der API-Zugriffsschlüssel wurde vor %{value} erstellt"
   label_api_access_key_type: "Schnittstelle (API)"
+  label_auto_option: "(automatisch)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar-Token „%{token_name}“ für „%{calendar_name}“ in „%{project_name}“'
   label_ical_access_key_not_present: "iCalendar-Token(s) nicht vorhanden."
@@ -2515,10 +3042,11 @@ de:
   label_board_plural: "Boards"
   label_branch: "Zweig"
   label_browse: "Codebrowser"
+  label_builtin: "Eingebaut"
   label_bulk_edit_selected_work_packages: "Alle ausgewählten Arbeitspakete bearbeiten"
   label_bundled: "(Gebündelt)"
   label_calendar: "Kalender"
-  label_calendars_and_dates: "Kalendarien und Daten"
+  label_calendars_and_dates: "Kalender und Datum"
   label_calendar_show: "Kalender anzeigen"
   label_category: "Kategorie"
   label_completed: Abgeschlossen
@@ -2527,6 +3055,8 @@ de:
   label_select_main_menu_item: Neuen Hauptmenüpunkt auwählen
   label_required_disk_storage: "Erforderlicher Festplattenspeicher"
   label_send_invitation: Einladung senden
+  label_calculated_value: "Berechneter Wert"
+  label_change_parent: "Übergeordnetes Arbeitspaket ändern"
   label_change_plural: "Änderungen"
   label_change_properties: "Eigenschaften ändern"
   label_change_status: "Statuswechsel"
@@ -2576,6 +3106,7 @@ de:
   label_dashboard: "Dashboard"
   label_database_version: "PostgreSQL-Version"
   label_date: "Datum"
+  label_dates: "Daten"
   label_date_and_time: "Datum und Zeit"
   label_date_format: "Datumsformat"
   label_date_from: "Von"
@@ -2585,12 +3116,14 @@ de:
   label_default: "Standard"
   label_delete_user: "Benutzer löschen"
   label_delete_project: "Projekt löschen"
-  label_delete: "Lösche"
+  label_delete: "Löschen"
   label_deleted: "gelöscht"
   label_deleted_custom_field: "(gelöschtes benutzerdefiniertes Feld)"
   label_deleted_custom_item: "(gelöschter Eintrag)"
   label_deleted_custom_option: "(gelöschte Option)"
   label_empty_element: "(leer)"
+  label_go_back: "Eine Menüebene zurückgehen"
+  label_go_forward: "Öffne %{module} Untermenü"
   label_missing_or_hidden_custom_option: "(Fehlender Wert oder fehlende Zugriffsberechtigungen)"
   label_descending: "Absteigend"
   label_details: "Details"
@@ -2612,6 +3145,7 @@ de:
   label_duplicate: "Duplikat"
   label_duplicates: "Duplikat von"
   label_edit: "Bearbeiten"
+  label_edit_attribute: "Attribut bearbeiten"
   label_edit_x: "Bearbeiten: %{x}"
   label_enable_multi_select: "Mehrfachauswahl umschalten"
   label_enabled_project_custom_fields: "Aktivierte benutzerdefinierte Felder"
@@ -2659,10 +3193,12 @@ de:
   label_follows: "folgt"
   label_force_user_language_to_default: "Setze Sprache für Nutzer, die eine nicht erlaubte Sprache gewählt haben, auf die Standard-Sprache"
   label_form_configuration: "Formularkonfiguration"
+  label_formula: "Formel"
   label_gantt_chart: "Gantt-Diagramm"
   label_gantt_chart_plural: "Gantt Diagramme"
   label_general: "Allgemein"
   label_generate_key: "Schlüssel generieren"
+  label_global_modules: "Globale Module"
   label_global_roles: "Globale Rollen"
   label_git_path: "Pfad zum .git-Verzeichnis"
   label_greater_or_equal: ">="
@@ -2695,11 +3231,13 @@ de:
   label_information_plural: "Information"
   label_installation_guides: "Installationsanleitungen"
   label_integer: "Zahl"
+  label_interface: "Benutzeroberfläche"
   label_internal: "Intern"
   label_introduction_video: "Einführungsvideo"
   label_invite_user: "Nutzer einladen"
   label_item: "Element"
   label_item_plural: "Elemente"
+  label_weighted_item_list: "Gewichtete Listen"
   label_share: "Teilen"
   label_share_project_list: "Projektliste teilen"
   label_share_work_package: "Arbeitspaket teilen"
@@ -2710,6 +3248,7 @@ de:
   label_journal_diff: "Beschreibungsvergleich"
   label_language: "Sprache"
   label_languages: "Sprachen"
+  label_locale: "Sprache und Region"
   label_jump_to_a_project: "Zu einem Projekt springen..."
   label_keyword_plural: "Schlüsselwörter"
   label_language_based: "Sprachabhängig"
@@ -2729,12 +3268,19 @@ de:
   label_link_url: "Link (URL)"
   label_list: "Liste"
   label_loading: "Lade..."
+  label_locked: "gesperrt"
   label_lock_user: "Benutzer sperren"
   label_logged_as: "Angemeldet als"
   label_login: "Anmelden"
-  label_custom_logo: "Benutzerdefiniertes Logo"
+  label_custom_logo: "Benutzerdefiniertes Logo Desktop"
+  label_custom_logo_mobile: "Benutzerdefiniertes Logo Mobilgerät"
   label_custom_export_logo: "Selbstdefiniertes Logo für PDF-Export"
   label_custom_export_cover: "Hintergrund für Export Cover"
+  label_custom_export_footer: "Selbstdefiniertes Fußzeilen-Bild für PDF-Export"
+  label_custom_export_font_regular: "Normal"
+  label_custom_export_font_bold: "Fett"
+  label_custom_export_font_italic: "Kursiv"
+  label_custom_export_font_bold_italic: "Fett Kursiv"
   label_custom_export_cover_overlay: "Eigenes Deckblatt für Export"
   label_custom_export_cover_text_color: "Textfarbe"
   label_custom_pdf_export_settings: "Benutzerdefinierte PDF-Export-Einstellungen"
@@ -2746,6 +3292,7 @@ de:
   label_manage: "Verwalten"
   label_manage_groups: "Gruppen verwalten"
   label_managed_repositories_vendor: "Verwaltete %{vendor} Projektarchive"
+  label_mathematical_operators: "Mathematische Operatoren"
   label_max_size: "Maximale Größe"
   label_me: "ich"
   label_member_new: "Neues Mitglied"
@@ -2805,6 +3352,7 @@ de:
   label_no_due_date: "kein Endtermin"
   label_no_start_date: "kein Startdatum"
   label_no_parent_page: "Keine übergeordnete Seite"
+  label_notification_center_plural: "Benachrichtigungen"
   label_nothing_display: "Nichts anzuzeigen"
   label_nobody: "Niemand"
   label_not_configured: "Nicht konfiguriert"
@@ -2820,6 +3368,8 @@ de:
   label_operator_equals_or: "ist (ODER)"
   label_operator_equals_all: "ist (UND)"
   label_operator_shared_with_user_any: "beliebig"
+  label_open: "Offen"
+  label_closed: "Geschlossen"
   label_open_menu: "Menü öffnen"
   label_open_work_packages: "Offen"
   label_open_work_packages_plural: "offen"
@@ -2837,7 +3387,7 @@ de:
   label_password_rule_special: "Sonderzeichen"
   label_password_rule_uppercase: "Großbuchstaben"
   label_path_encoding: "Path encoding"
-  label_per_page: "Pro Seite"
+  label_per_page: "Pro Seite:"
   label_people: "Personen"
   label_permissions: "Berechtigungen"
   label_permissions_report: "Berechtigungsübersicht"
@@ -2848,6 +3398,7 @@ de:
   label_planning: "Terminplanung"
   label_please_login: "Anmelden"
   label_plugins: "Plugins"
+  label_portfolio_plural: "Portfolios"
   label_modules_and_plugins: "Module und Plugins"
   label_precedes: "Vorgänger von"
   label_preferences: "Präferenzen"
@@ -2868,11 +3419,15 @@ de:
   label_project_attribute_manage_link: "Projektattribute verwalten"
   label_project_count: "Gesamtzahl der Projekte"
   label_project_copy_notifications: "Sende Mailbenachrichtigungen beim Kopieren des Projekts."
+  label_project_initiation_export_pdf: "PDF-Export für %{project_creation_name}"
   label_project_latest: "Neueste Projekte"
   label_project_default_type: "Erlaube leere Typen"
   label_project_hierarchy: "Projekthierarchie"
   label_project_mappings: "Projekte"
   label_project_new: "Neues Projekt"
+  label_project_initiation_request: "Neuer Projektinitiierungsantrag"
+  label_project_creation_wizard: "Neuer Projekterstellungs-Assistent"
+  label_project_mandate: "Neues Projektmandat"
   label_project_plural: "Projekte"
   label_project_list_plural: "Projektlisten"
   label_project_life_cycle: "Projekt-Lebenszyklus"
@@ -2886,10 +3441,15 @@ de:
   label_project_view_all: "Alle Projekte anzeigen"
   label_project_show_details: "Projektdetails anzeigen"
   label_project_hide_details: "Projektdetails verstecken"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "Neues Portfolio"
+  label_program: "Programm"
+  label_program_new: "Neues Programm"
   label_public_projects: "Öffentliche Projekte"
   label_query_new: "Neuer Bericht"
   label_query_plural: "Benutzerdefinierte Berichte"
   label_read: "Lesen ..."
+  label_read_documentation: "Dokumentation lesen"
   label_register: "Neues Konto erstellen"
   label_register_with_developer: "Als Entwickler anmelden"
   label_registered_on: "Angemeldet am"
@@ -2917,6 +3477,7 @@ de:
   label_repository_remove: "Projektarchiv entfernen"
   label_repository_root: "Stammverzeichnis des Projektarchivs"
   label_repository_plural: "Projektarchive"
+  label_request_submission: "Einreichung des Antrags"
   label_required: "benötigt von"
   label_requires: "benötigt"
   label_result_plural: "Ergebnisse"
@@ -2967,6 +3528,7 @@ de:
   label_subproject: "Unterprojekt"
   label_subproject_new: "Neues Unterprojekt"
   label_subproject_plural: "Unterprojekte"
+  label_subitems: "Unterelemente"
   label_subtask_plural: "Unteraufgaben"
   label_summary: "Zusammenfassung"
   label_system: "System"
@@ -2974,6 +3536,8 @@ de:
   label_table_of_contents: "Inhaltsverzeichnis"
   label_tag: "Markierung"
   label_team_planner: "Teamplaner"
+  label_template: "Vorlage"
+  label_templates: "Vorlagen"
   label_text: "Langer Text"
   label_this_month: "aktueller Monat"
   label_this_week: "aktuelle Woche"
@@ -3012,11 +3576,13 @@ de:
   label_user_mail_option_only_my_events: "Nur für Aufgaben, die ich beobachte oder an welchen ich mitarbeite"
   label_user_mail_option_only_owner: "Nur für Aufgaben, die ich angelegt habe"
   label_user_mail_option_selected: "Für alle Ereignisse in den ausgewählten Projekten"
+  label_user_menu: "Benutzermenü"
   label_user_new: "Neuer Benutzer"
   label_user_plural: "Benutzer"
   label_user_search: "Nach Benutzer suchen"
   label_user_settings: "Benutzereinstellungen"
   label_users_settings: "Benutzereinstellungen"
+  label_value_x: "Wert: %{x}"
   label_version_new: "Neue Version"
   label_version_edit: "Version bearbeiten"
   label_version_plural: "Versionen"
@@ -3032,6 +3598,8 @@ de:
   label_watched_work_packages: "Beobachtete Arbeitspakete"
   label_what_is_this: "Was ist das?"
   label_week: "Woche"
+  label_widget: "Widget"
+  label_widget_new: "Neues Widget"
   label_wiki_content_added: "Die Wiki-Seite wurde erfolgreich hinzugefügt."
   label_wiki_content_updated: "Die Wiki-Seite wurde erfolgreich aktualisiert."
   label_wiki_toc: "Inhaltsverzeichnis"
@@ -3054,6 +3622,7 @@ de:
   label_work_package_attachments: "Anhänge des Arbeitspakets"
   label_work_package_category_new: "Neue Kategorie"
   label_work_package_category_plural: "Arbeitspaket-Kategorien"
+  label_work_package_comments: "Arbeitspaket-Kommentare"
   label_work_package_hierarchy: "Arbeitspakethierarchie"
   label_work_package_new: "Neues Arbeitspaket"
   label_work_package_edit: "Arbeitspaket %{name} editieren"
@@ -3325,6 +3894,7 @@ de:
   notice_password_confirmation_failed: "Ihr Passwort ist nicht korrekt. Kann nicht fortgesetzt werden."
   notice_principals_found_multiple: "Es wurden %{number} Ergebnisse gefunden.\nDrücke Tab um das erste Ergebnis zu fokussieren."
   notice_principals_found_single: "Es wurde ein Ergebnis gefunden.\nDrücke Tab um es zu fokussieren."
+  notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."
   notice_project_not_deleted: "Das Projekt wurde nicht gelöscht."
   notice_project_not_found: "Projekt nicht gefunden."
   notice_successful_connection: "Verbindung erfolgreich."
@@ -3332,6 +3902,8 @@ de:
   notice_successful_delete: "Erfolgreich gelöscht."
   notice_successful_cancel: "Erfolgreiche Absage."
   notice_successful_update: "Erfolgreich aktualisiert."
+  notice_unsuccessful_create: "Erstellung fehlgeschlagen."
+  notice_unsuccessful_create_with_reason: "Erstellung fehlgeschlagen: %{reason}"
   notice_unsuccessful_update: "Aktualisierung fehlgeschlagen."
   notice_unsuccessful_update_with_reason: "Aktualisierung fehlgeschlagen: %{reason}"
   notice_successful_update_custom_fields_added_to_project: |
@@ -3350,7 +3922,7 @@ de:
   #Default format for numbers
   number:
     format:
-      delimiter: ""
+      delimiter: "."
       precision: 2
       separator: ","
     human:
@@ -3376,6 +3948,8 @@ de:
   permission_add_work_packages: "Arbeitspakete hinzufügen"
   permission_add_messages: "Forenbeiträge hinzufügen"
   permission_add_project: "Projekte erstellen"
+  permission_add_portfolios: "Portfolios erstellen"
+  permission_add_programs: "Programme erstellen"
   permission_add_work_package_attachments: "Anhänge hinzufügen"
   permission_add_work_package_attachments_explanation: "Erlaubt das Hinzufügen von Anhängen ohne die Berechtigung, das Arbeitspaket selbst zu bearbeiten"
   permission_add_internal_comments: "Interne Kommentare schreiben"
@@ -3393,7 +3967,8 @@ de:
   permission_comment_news: "Nachricht kommentieren"
   permission_commit_access: "Lese- und Schreibzugriff auf Projektarchiv (Commit)"
   permission_copy_projects: "Projekte kopieren"
-  permission_copy_work_packages: "Arbeitspakete kopieren"
+  permission_copy_projects_explanation: "Bei Vorlagenprojekten hat diese Berechtigung eine weitere Funktion: Sie ermöglicht die Erstellung neuer Projekte, die von der Vorlage abgeleitet sind."
+  permission_copy_work_packages: "Arbeitspakete duplizieren"
   permission_create_backup: "Backups erstellen"
   permission_delete_work_package_watchers: "Beobachter löschen"
   permission_delete_work_packages: "Arbeitspakete löschen"
@@ -3421,7 +3996,11 @@ de:
   permission_edit_timelines: "Zeitplan-Reporte bearbeiten"
   permission_edit_wiki_pages: "Wiki-Seiten bearbeiten"
   permission_export_work_packages: "Arbeitspakete exportieren"
+  permission_export_projects: "Projekte exportieren"
   permission_export_wiki_pages: "Wiki-Seiten exportieren"
+  permission_invite_members_by_email: "Mitglieder per E-Mail einladen"
+  permission_invite_members_by_email_explanation: >
+    Ermöglicht es Benutzern, neue Mitglieder per E-Mail einzuladen. Eingeladene Benutzer erhalten eine E-Mail mit einem Link, über den sie ihr Passwort festlegen und ihr Konto aktivieren können. Abhängig von der Berechtigung zur Mitgliederverwaltung
   permission_list_attachments: "Anhänge auflisten"
   permission_log_own_time: "Eigenen Zeitaufwand verbuchen"
   permission_log_time: "Zeitaufwand für andere Benutzer verbuchen"
@@ -3451,6 +4030,9 @@ de:
   permission_share_work_packages: "Arbeitspakete teilen"
   permission_manage_types: "Typen auswählen"
   permission_manage_own_reminders: "Eigene Erinnerungen erstellen"
+  permission_view_all_principals: "Alle Benutzer und Gruppen anzeigen"
+  permission_view_all_principals_explanation: >
+    Ermöglicht es Benutzern, alle Benutzer und Gruppen im System zu sehen, auch wenn sie nicht gemeinsamen Projekten oder Gruppen angehören.
   permission_view_project: "Projekt anzeigen"
   permission_view_changesets: "Revisionen des Projektarchivs in OpenProject ansehen"
   permission_view_internal_comments: "Interne Kommentare ansehen"
@@ -3481,8 +4063,19 @@ de:
   permission_edit_project_query: "Projektabfrage bearbeiten"
   placeholders:
     default: "-"
+  portfolio:
+    count:
+      zero: "Keine Portfolios"
+      one: "Ein Portfolio"
+      other: "%{count} Portfolios"
+  program:
+    count:
+      zero: "0 Programme"
+      one: "1 Programm"
+      other: "%{count} Programme"
   project:
     archive:
+      title: "Projekt archivieren"
       are_you_sure: "Sind Sie sicher, dass Sie das Projekt '%{name}' archivieren wollen?"
       archived: "Archiviert"
     count:
@@ -3490,13 +4083,15 @@ de:
       one: "1 Projekt"
       other: "%{count} Projekte"
     destroy:
-      confirmation: "Wenn Sie fortfahren, wird das Projekt %{identifier} dauerhaft zerstört. Um diese Aktion zu bestätigen, geben Sie bitte den Projektnamen in das untenstehende Feld ein:"
-      project_delete_result_1: "Alle zugehörigen Daten löschen."
-      project_delete_result_2: "Alle verwalteten Projektordner in den angehängten Speichern löschen."
-      info: "Die Löschung des Projekts kann nicht rückgängig gemacht werden."
-      project_verification: "Geben Sie den Projektnamen %{name} ein um die Löschung zu bestätigen."
-      subprojects_confirmation: "Sein(e) Unterprojekt(e): %{value} werden ebenfalls gelöscht."
-      title: "Projekt %{name} löschen"
+      title: "Projekt löschen"
+      heading: "Dieses Projekt unwiderruflich löschen?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          Sie sind dabei, alle Daten im Zusammenhang mit dem Projekt <strong>%{name}</strong> dauerhaft zu löschen.
+        one: >
+          Sie sind dabei, alle Daten im Zusammenhang mit dem Projekt <strong>%{name}</strong> und diesem Unterprojekt dauerhaft zu löschen:
+        other: >
+          Sie sind dabei, alle Daten im Zusammenhang mit dem Projekt <strong>%{name}</strong> und diesen Unterprojekten dauerhaft zu löschen:
     filters:
       project_phase: "Projektphase: %{phase}"
       project_phase_any: "Projektphase: Alle"
@@ -3507,6 +4102,7 @@ de:
       title: Projektkennung ändern
     not_available: "Projekt N/A"
     template:
+      copying_title: "Vorlage anwenden"
       copying: >
         Ihr Projekt wird aus der ausgewählten Vorlage erstellt. Sie werden per E-Mail benachrichtigt, sobald das Projekt verfügbar ist.
       use_template: "Projektvorlage verwenden"
@@ -3621,7 +4217,7 @@ de:
       oauth_application_details: "Der Client Geheimcode wird nach dem Schließen dieses Fensters nicht mehr zugänglich sein. Bitte kopieren Sie diese Werte in die Nextcloud OpenProject Integrationseinstellungen:"
       oauth_application_details_link_text: "Zu den Einstellungen gehen"
       setup_documentation_details: "Wenn Sie Hilfe bei der Konfiguration eines neuen Datei-Speichers benötigen, konsultieren Sie bitte die Dokumentation: "
-      setup_documentation_details_link_text: "Datei-Speicher einrichten"
+      setup_documentation_details_link_text: "Dateispeicher einrichten"
       show_warning_details: "Um diesen Dateispeicher nutzen zu können, müssen Sie das Modul und den spezifischen Speicher in den Projekteinstellungen jedes gewünschten Projekts aktivieren."
     subversion:
       existing_title: "Vorhandenes Subversion Projektarchiv"
@@ -3672,7 +4268,9 @@ de:
   setting_attachment_whitelist: "Positivliste für Dateiuploads"
   setting_email_delivery_method: "E-Mail Zustellungsoption"
   setting_emails_salutation: "Anrede der Benutzer in E-Mails"
+  setting_oauth_allow_remapping_of_existing_users: "Neuzuordnung von Authentifizierungsprovidern der Benutzer erlauben"
   setting_sendmail_location: "Systempfad zu sendmail"
+  setting_sendmail_arguments: "Befehlszeilenargumente für sendmail"
   setting_smtp_enable_starttls_auto: "Automatisch STARTTLS verwenden, falls vorhanden"
   setting_smtp_ssl: "Benutzen Sie eine SSL-Verbindung"
   setting_smtp_address: "SMTP-Server"
@@ -3730,6 +4328,8 @@ de:
   setting_feeds_limit: "Max. Anzahl Einträge pro Atom-Feed"
   setting_file_max_size_displayed: "Maximale Größe inline angezeigter Textdateien"
   setting_host_name: "Hostname"
+  setting_collaborative_editing_hocuspocus_url: "Hokuspokus-Server-URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hokuspokus-Server-Schlüssel"
   setting_hours_per_day: "Stunden pro Tag"
   setting_hours_per_day_explanation: >-
     Dies legt fest, was als "Tag" angesehen wird, wenn eine zeitliche Dauer angezeigt werden (zum Beispiel: Wenn die Länge eines Tages 8 Stunden beträgt, wird eine Eingabe von 32 Stunden als 4 Tage angezeigt).
@@ -3759,6 +4359,8 @@ de:
   setting_mail_handler_body_delimiter_regex: "Schneide E-Mails nach Zeile ab, die diesem regulären Ausdruck entspricht"
   setting_mail_handler_ignore_filenames: "Ignorierte E-Mail-Anhänge"
   setting_new_project_user_role_id: "Rolle, die einem Nicht-Administrator zugeordnet wird, der ein Projekt erstellt"
+  setting_new_project_send_confirmation_email: "Benachrichtigung an den Autor senden, wenn ein neues Projekt erstellt wird"
+  setting_new_project_notification_text: "Benachrichtigungstext"
   setting_password_active_rules: "Aktive Zeichenklassen"
   setting_password_count_former_banned: "Anzahl zuletzt benutzter Passwörter, die nicht wiederverwendet werden dürfen"
   setting_password_days_valid: "Anzahl von Tagen, nach denen ein Passwortwechsel erzwungen wird"
@@ -3831,12 +4433,17 @@ de:
   setting_work_package_list_default_highlighted_attributes: "Voreinstellung Inline Hervorherbung"
   setting_working_days: "Arbeitstage"
   settings:
+    errors:
+      not_writable: "Diese Einstellung ist nicht schreibbar und kann nur außerhalb der Anwendung von einem Systemadministrator geändert werden."
+      failed_to_update: "Die Einstellung '%{name}' konnte nicht aktualisiert werden: %{message}"
     authentication:
-      login_and_sso: "Login und SSO"
+      login: "Anmelden"
       registration: "Registrierung"
-      single_sign_on: "Single-Sign-On"
+      sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
         Wenn diese Option aktiviert ist, werden die Anmeldeanfragen an den konfigurierten SSO-Anbieter weitergeleitet. Das Login-Dropdown und die Anmeldeseite sind dann deaktiviert. <br/> <strong>Hinweis:</strong> Sofern Sie nicht auch die Passwortanmeldung deaktivieren, können sich Benutzer bei aktivierter Option immer noch intern anmelden, indem sie die interne Anmeldeseite <code>%{internal_path}</code> verwenden.
+      remapping_existing_users_hint: >
+        Wenn diese Option aktiviert ist, kann jeder konfigurierte Identitätsanbieter bestehende Benutzer anhand ihrer E-Mail-Adresse oder Login erzeugen, auch wenn sich der Benutzer noch nie über diesen Anbieter angemeldet hat. Dies kann bei der Migration der OpenProject-Instanz zu einem neuen SSO-Anbieter nützlich sein, wird aber nicht empfohlen, wenn Sie einen Anbieter verwenden, dem nicht alle Benutzer Ihrer Instanz vertrauen.
     attachments:
       whitelist_text_html: >
         Legen Sie eine Liste gültiger Dateierweiterungen und/oder Mime-Typen für hochgeladene Dateien fest. <br/> Dateierweiterungen (z. B. <code>%{ext_example}</code>) oder Mime-Typen (z. ., <code>%{mime_example}</code>). <br/> Lassen Sie diese Liste leer, um das Hochladen beliebiger Dateitypen zu erlauben. Mehrere Werte erlaubt (eine Zeile pro Wert).
@@ -3889,6 +4496,7 @@ de:
     passwords: "Passwörter"
     project_attributes:
       heading: "Projektattribute"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Projektattribut"
       label_new_section: "Abschnitt"
       label_edit_section: "Titel bearbeiten"
@@ -3901,6 +4509,62 @@ de:
       new:
         heading: "Neues Attribut"
         description: "Änderungen an diesem Projektattribut werden in allen Projekten übernommen, in denen es aktiviert ist. Erforderliche Attribute können nicht projektweise deaktiviert werden."
+      sections:
+        display_representation:
+          overview:
+            label: "Projektattribut angezeigt in:"
+            main_area:
+              label: "Hauptbereich"
+              description: "Fügen Sie alle Projektattribute als einzelne Widgets in den Hauptbereich der Projektübersicht ein."
+            side_panel:
+              label: "Seitenleiste"
+              description: "Fügen Sie alle Projektattribute in einem Abschnitt in der rechten Seitenleiste der Projektübersicht hinzu."
+    project_initiation_request:
+      header_description: >
+        OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren und ein PDF als Ergebnis erzeugen zu lassen.
+      status:
+        submitted: "%{wizard_name} wurde eingereicht"
+        submitted_description: "Klicken Sie auf die Schaltfläche unten, um zum Arbeitspaket für den Einreichungsprozess zu gelangen."
+        submitted_button: "Einreichungsantrag öffnen"
+        not_completed: "%{wizard_name} ist noch nicht abgeschlossen"
+        not_completed_description: "Geben Sie die erforderlichen Informationen an, indem Sie die Formularschritte ausfüllen, und starten Sie das Projekt."
+      wizard_status_button:
+        project_initiation_request: "Projektinitiierungsantrag öffnen"
+        project_creation_wizard: "Projekterstellungs-Assistent öffnen"
+        project_mandate: "Projektmandat öffnen"
+      blankslate:
+        title: "Initiierungsanfrage nicht aktiviert"
+        description: "OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren."
+      disable_dialog:
+        title: "Projektinitiierungsantrag deaktivieren"
+        heading: "Diesen Projektinitiationsantrag deaktivieren?"
+        confirmation_message: "Der Projektinitiierungsantrag wird für neue Projekte, die auf dieser Vorlage basieren, nicht mehr verfügbar sein. Projektmanager und Projektverantwortliche müssen die entsprechenden Informationen in der Projektübersicht manuell konfigurieren und ausfüllen."
+        checkbox_message: "Ich verstehe, dass diese Aktion nicht rückgängig gemacht werden kann"
+      name:
+        artifact_name: "Name des Artefakts"
+        artifact_name_caption: "Wählen Sie den Namen für dieses Artefakt, passend zu Ihrer Projektmanagement-Methodik."
+        options:
+          project_initiation_request: "Projektinitiierungsantrag"
+          project_creation_wizard: "Projekterstellungs-Assistent"
+          project_mandate: "Projektmandat"
+      submission:
+        description_template: >
+          **Dieses Arbeitspaket wurde automatisch nach Abschluss des %{wizard_name} Workflows erstellt.**
+          Ein PDF-Artefakt mit allen eingereichten Informationen wurde generiert und zu Referenz- und Prüfzwecken an dieses Arbeitspaket angehängt.
+          Wenn Sie die Einleitungsschritte aktualisieren oder erneut ausführen müssen, können Sie den Assistenten jederzeit über den unten stehenden Link erneut öffnen:
+        description: "Wenn ein Benutzer eine Anfrage zur Projektinitiierung einreicht, wird ein neues Arbeitspaket erstellt, an das ein Artefakt der Anfrage als PDF-Datei angehängt wird. Die folgenden Einstellungen definieren den Typ, den Status und den Empfänger für dieses neue Arbeitspaket."
+        work_package_type: "Arbeitspaket-Typ"
+        work_package_type_caption: "Der Arbeitspaket-Typ, der zum Speichern des Artefakts verwendet wird."
+        status_when_submitted: "Status bei Einreichung"
+        status_when_submitted_caption: "Der Status, in den das erstellte Arbeitspaket übergeht, sobald der Antrag eingereicht wird."
+        send_confirmation_email: "Senden Sie eine Bestätigungs-E-Mail an den Benutzer, der den Projektinitiierungsantrag gestellt hat"
+        assignee: "Zuweisung bei Einreichung"
+        assignee_caption_html: "Der Benutzer oder die Gruppe, die diesem Projektattribut zugewiesen ist, wird auch der Zugewiesene des neuen Arbeitspakets. Diese Liste enthält nur aktive Projektattribute vom Typ <i>Benutzer</i>."
+        confirmation_email_text: "Text der Bestätigungs-E-Mail"
+        confirmation_email_default: "Hallo,\n\nSie haben einen Antrag auf Projektinitiierung für **%{project_name}** eingereicht. Dieser wartet nun auf seine Überprüfung.\nKlicken Sie auf den untenstehenden Link, um das Arbeitspaket mit Ihrem Antrag aufzurufen."
+        work_package_comment: "Arbeitspaket-Kommentar"
+        work_package_comment_caption: "Der oben ausgewählte Empfänger wird automatisch in dem Kommentar @erwähnt."
+        work_package_comment_default: "Ein Antrag auf Projektinitiierung für **%{project_name}** wurde eingereicht und wartet auf seine Prüfung."
     project_phase_definitions:
       heading: "Projekt-Lebenszyklus"
       heading_description: "Der Projekt-Lebenszyklus definiert die Projektphasen, die für Ihre Projektplanung verwendet werden können und auf der Übersichtsseite jedes Projekts erscheinen. Diese Attribute können aktiviert oder deaktiviert werden, aber nicht auf Projektebene neu geordnet werden."
@@ -3914,8 +4578,6 @@ de:
       new:
         description: "Änderungen an dieser Projekt-Phase werden in allen sie verwendenden Projekten sichtbar."
         heading: "Neue Phase"
-      edit:
-        heading: "Phase bearbeiten"
       both_gate: "Gate zum Beginn und zum Ende"
       no_gate: "Kein Gate"
       start_gate: "Gate zum Beginn"
@@ -3948,6 +4610,7 @@ de:
   status_invited: eingeladen
   status_locked: gesperrt
   status_registered: angemeldet
+  status_deleted: gelöscht
   #Used in array.to_sentence.
   support:
     array:
@@ -3957,6 +4620,7 @@ de:
   text_access_token_hint: "Zugangs-Tokens erlauben es externen Applikationen Zugriff auf OpenProject zu erhalten."
   text_analyze: "Weiter analysieren: %{subject}"
   text_are_you_sure: "Sind Sie sicher?"
+  open_link_in_a_new_tab: "Link in neuem Tab öffnen"
   text_are_you_sure_continue: "Sind Sie sicher, dass Sie fortfahren möchten?"
   text_are_you_sure_with_children: "Lösche Aufgabe und alle Unteraufgaben?"
   text_are_you_sure_with_project_custom_fields: "Wenn Sie dieses Attribut löschen, werden auch dessen Werte in allen Projekten gelöscht. Sind Sie sicher, dass Sie dies tun möchten?"
@@ -3977,11 +4641,27 @@ de:
   text_project_custom_field_html: >
     Die Enterprise Edition fügt diese zusätzlichen Add-ons für die benutzerdefinierten Felder der Projekte hinzu: <br> <ul> <li><b>Fügt benutzerdefinierte Felder für Projekte zu Ihrer Projektliste hinzu, um eine Portfolioansicht zu erstellen</b></li> </ul>
   text_custom_logo_instructions: >
-    Ein weißes Logo mit transparentem Hintergrund wird empfohlen. Für ein optimales Ergebnis für konventionelle und Retina-Displays sollte die Bildabmessungen 460 x 110 Pixel betragen.
+    Das Logo passt sich automatisch an die Kopfzeile an. Die besten Ergebnisse erzielen Sie, wenn Sie ein weißes Logo auf ein transparentes 130×47px großes Bild hochladen. Sie können innerhalb des Bildes so viel Abstand einfügen, wie Sie möchten.
+  text_custom_logo_mobile_instructions: >
+    Das Logo passt sich automatisch an die Kopfzeile an. Die besten Ergebnisse erzielen Sie, wenn Sie ein weißes Logo auf ein transparentes 130×33px großes Bild hochladen. Sie können innerhalb des Bildes so viel Abstand einfügen, wie Sie möchten.
   text_custom_export_logo_instructions: >
     Dies ist das Logo, das in Ihren PDF-Exporten erscheint. Es muss eine PNG- oder JPEG-Bilddatei sein. Ein schwarzes oder farbiges Logo auf transparentem oder weißem Hintergrund wird empfohlen.
   text_custom_export_cover_instructions: >
     Dies ist das Bild, das im Hintergrund einer Cover-Seite in Ihren PDF-Exporten erscheint. Es muss eine etwa 800px breite und 500px hohe PNG- oder JPEG-Bilddatei sein.
+  text_custom_export_footer_instructions: >
+    Ein grafisches Element für PDF-Exporte, das links neben der Fußzeile positioniert wird. Dieses Bild muss eine PNG- oder JPEG-Datei mit etwa 200 Pixeln Breite sein.
+  label_custom_export_font_instructions: >
+    Laden Sie benutzerdefinierte TrueType-Schriften (.ttf), für PDF-Exporte hoch. Die besten Ergebnisse erzielen Sie, wenn Sie passende Dateien aus der gleichen Schriftfamilie verwenden. Wenn keine Schriftart angegeben wird, wird die Standardschriftart NotoSans verwendet.
+  label_custom_export_images_instructions: >
+    Laden Sie benutzerdefinierte Bilddateien für Ihre PDF-Exporte hoch.
+  text_custom_export_font_regular_instructions: >
+    Dies ist die Schriftartdatei für normalen Text. Sie muss im TTF-Format vorliegen und ist erforderlich.
+  text_custom_export_font_bold_instructions: >
+    Dies ist die Schriftdatei für fetten Text. Sie ist optional. Wenn angegeben, muss sie im TTF-Format vorliegen.
+  text_custom_export_font_italic_instructions: >
+    Dies ist die Schriftdatei für kursiven Text. Sie ist optional. Wenn angegeben, muss sie im TTF-Format vorliegen.
+  text_custom_export_font_bold_italic_instructions: >
+    Dies ist die Schriftdatei für fett-kursiven Text. Sie ist optional. Wenn angegeben, muss sie im TTF-Format vorliegen.
   text_custom_favicon_instructions: >
     Dies ist das kleine Symbol, das in Ihrem Browser-Fenster/Tab neben dem Seitentitel angezeigt wird. Es muss ein quadratisches 32 x 32 Pixel großes PNG mit transparentem Hintergrund sein.
   text_custom_touch_icon_instructions: >
@@ -4039,6 +4719,7 @@ de:
     Hinweis: Wenn aktiviert, wird dies eine Plakette mit dem Status Ihrer Installation in der <a href="%{information_panel_path}">%{information_panel_label}</a> unter Administration und auf der Startseite anzeigen. Es wird nur Administratoren gezeigt. <br/> Die Plakette überprüft Ihre aktuelle OpenProject-Version gegen die offizielle Release Datenbank, um Sie über Updates oder bekannten Sicherheitslücken zu informieren. Für die Überprüfung der Version werden Daten benötigt, um verfügbare Updates für Ihre Umgebung zurückzugeben. Für mehr Informationen über die Plakette, welche Daten sie benötigt und wie Sie diese Überprüfung deaktivieren können, besuchen Sie bitte <a href="%{more_info_url}">die Konfigurationsdokumentation</a>.
   text_own_membership_delete_confirmation: "Sie sind dabei, einige oder alle Ihre Berechtigungen zu entfernen. Es ist möglich, dass Sie danach das Projekt nicht mehr ansehen oder bearbeiten dürfen.\nSind Sie sicher, dass Sie dies tun möchten?"
   text_permanent_delete_confirmation_checkbox_label: "Ich verstehe, dass diese Löschung nicht rückgängig gemacht werden kann"
+  text_permanent_remove_confirmation_checkbox_label: "Ich verstehe, dass diese Löschung nicht rückgängig gemacht werden kann"
   text_plugin_assets_writable: "Verzeichnis für Plugin-Assets beschreibbar"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Kleinbuchstaben (a-z), Ziffern, Binde- und Unterstriche erlaubt. Muss mit einem Kleinbuchstaben beginnen."
@@ -4218,7 +4899,7 @@ de:
     reminders:
       label_remind_at: "Datum"
       note_placeholder: "Warum richten Sie diese Erinnerung ein?"
-      success_creation_message: "Erinnerung erfolgreich eingerichtet. Sie erhalten zum ausgewählten Zeitpunkt eine Benachrichtigung für dieses Arbeitspaket."
+      create_success_message: "Erinnerung erfolgreich gesetzt. Sie erhalten eine Benachrichtigung für dieses Arbeitspaket %{reminder_time}."
       success_update_message: "Erinnerung aktualisiert erfolgreich."
       success_deletion_message: "Erinnerung erfolgreich gelöscht."
   sharing:
@@ -4290,12 +4971,12 @@ de:
         message: "Das Teilen von Projektlisten mit einzelnen Nutzern ist ein Enterprise Add-on"
   working_days:
     info: >
-      Tage, die nicht ausgewählt sind, werden bei der Planung von Arbeitspaketen übersprungen (und bei der Tageszählung nicht berücksichtigt). Diese können auf Arbeitspaket-Ebene überschrieben werden.
+      Tage, die nicht ausgewählt sind, werden bei der Planung von Arbeitspaketen und Projektphasen übersprungen (und bei der Tageszählung nicht berücksichtigt). Diese können auf Arbeitspaket-Ebene überschrieben werden.
     instance_wide_info: >
       Daten, die der Liste unten hinzugefügt werden, gelten als arbeitsfrei und werden bei der Planung von Arbeitspaketen übersprungen.
     change_button: "Arbeitstage ändern"
     warning: >
-      Die Änderung der Wochentage, die als Arbeitstage oder arbeitsfreie Tage gelten, kann sich in diesem Fall auf die Start- und Endtage aller Arbeitspakete in allen Projekten auswirken.
+      Die Änderung der Wochentage, die als Arbeitstage oder arbeitsfreie Tage gelten, kann sich auf die Start- und Endtage aller Arbeitspakete und Projektphasen in allen Projekten auswirken.
     journal_note:
       changed: _**Arbeitstage** geändert (%{changes})._
       days:
@@ -4319,8 +5000,16 @@ de:
       code_500: "Ein interner Fehler ist aufgetreten."
       code_500_outbound_request_failure: "Eine ausgehende Anfrage an eine andere Ressource ist mit dem Statuscode %{status_code} fehlgeschlagen."
       code_500_missing_enterprise_token: "Die Anfrage kann wegen ungültigem oder fehlenden Enterprise Token nicht bearbeitet werden."
+      bad_request:
+        emoji_reactions_activity_type_not_supported: "Dieser Aktivitätstyp unterstützt keine Emoji-Reaktionen."
+        invalid_link: "Der Link unter dem Schlüssel '%{key}' ist nicht gültig."
+        links_not_an_object: "_links muss ein JSON-Objekt sein."
+      conflict:
+        multiple_reminders_not_allowed: |-
+          Sie können nur eine Erinnerung gleichzeitig für ein Arbeitspaket festlegen. Bitte löschen oder aktualisieren Sie die bestehende Erinnerung.
       not_found:
         work_package: "Das von Ihnen gesuchte Arbeitspaket konnte nicht gefunden werden oder wurde gelöscht."
+        reminder: "Die Erinnerung konnte nicht gefunden werden oder wurde gelöscht."
       expected:
         date: "YYYY-MM-DD (Datum nach ISO 8601)"
         datetime: "JJJJ-MM-TTThh:mm:ss[.lll][+hh:mm] (kompatible ISO 8601-Datum)"
@@ -4342,6 +5031,8 @@ de:
       multiple_errors: "Einschränkungen für mehrere Felder wurden verletzt."
       unable_to_create_attachment: "Der Anhang konnte nicht erstellt werden"
       unable_to_create_attachment_permissions: "Der Anhang konnte aufgrund fehlender Dateisystemberechtigungen nicht gespeichert werden"
+      user:
+        name_readonly: "Das Attribut 'name' ist schreibgeschützt. Änderungen können über die Attribute firstname und lastname geschrieben werden."
       render:
         context_not_parsable: "Der übergebene Kontext ist kein Link zu einer Ressource."
         unsupported_context: "Die übergebene Ressource wird nicht als Kontext unterstützt."
@@ -4356,8 +5047,10 @@ de:
     resources:
       schema: "Schema"
     undisclosed:
-      parent: Unbekannt - Das ausgewählte Elternelement ist wegen fehlender Berechtigungen nicht sichtbar.
+      parent: Unbekannt - Das übergeordnete Element ist wegen fehlender Berechtigungen nicht sichtbar.
+      project: Unbekannt - Das Projekt ist wegen fehlender Berechtigungen nicht sichtbar.
       ancestor: Unbekannt - Das übergeordnete Element ist wegen fehlender Berechtigungen nicht sichtbar.
+      definingProject: Unbekannt - Das Projekt ist wegen fehlender Berechtigungen nicht sichtbar.
   doorkeeper:
     pre_authorization:
       status: "Vorab-Autorisierung"
@@ -4517,3 +5210,6 @@ de:
     description: "Fügt den OmniAuth SAML-Anbieter zu OpenProject hinzu"
   enterprise_plans:
     legacy_enterprise: "Enterprise Plan"
+  token:
+    hashed_token:
+      display_value_placeholder: "***"

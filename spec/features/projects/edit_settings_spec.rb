@@ -34,9 +34,10 @@ RSpec.describe "Projects", "editing settings", :js do
   include_context "ng-select-autocomplete helpers"
 
   let(:permissions) { %i(edit_project view_project_attributes edit_project_attributes) }
+  let(:project_memberships) { { project => permissions } }
 
   current_user do
-    create(:user, member_with_permissions: { project => permissions })
+    create(:user, member_with_permissions: project_memberships)
   end
 
   shared_let(:project) do
@@ -227,6 +228,94 @@ RSpec.describe "Projects", "editing settings", :js do
         project.reload
         expect(project.parent).to eq parent_project
       end
+    end
+  end
+
+  describe "attribute help texts" do
+    let(:general_page) { Pages::Projects::Settings::General.new(project) }
+
+    context "without attribute help texts defined" do
+      before do
+        general_page.visit!
+      end
+
+      it "shows field labels without help text link" do
+        general_page.expect_field_label_without_help_text "Name"
+        general_page.expect_field_label_without_help_text "Description"
+        general_page.expect_field_label_without_help_text "Project status description"
+        general_page.expect_field_label_without_help_text "Subproject of"
+      end
+
+      it "does not show help text link next to status button" do
+        within_section "Project status" do
+          button = find_button("Edit project status")
+          expect(page).to have_no_link accessible_name: "Show help text", right_of: button
+        end
+      end
+    end
+
+    context "with attribute help texts defined" do
+      let!(:name_help_text) { create(:project_help_text, attribute_name: :name) }
+      let!(:description_help_text) { create(:project_help_text, attribute_name: :description) }
+      let!(:status_help_text) { create(:project_help_text, attribute_name: :status) }
+      let!(:status_description_help_text) { create(:project_help_text, attribute_name: :status_explanation) }
+      let!(:subproject_of_help_text) { create(:project_help_text, attribute_name: :parent) }
+
+      before do
+        general_page.visit!
+      end
+
+      it "shows field labels with help text link" do
+        general_page.expect_field_label_with_help_text "Name"
+        general_page.expect_field_label_with_help_text "Description"
+        general_page.expect_field_label_with_help_text "Project status description"
+        general_page.expect_field_label_with_help_text "Subproject of"
+      end
+
+      it "shows help text link next to status button", :selenium do
+        within_section "Project status" do
+          button = find_button("Edit project status")
+          expect(page).to have_link accessible_name: "Show help text", right_of: button
+        end
+      end
+
+      it "shows help text modal on clicking help text link" do
+        general_page.click_help_text_link_for_label "Description"
+
+        expect(page).to have_modal "Description"
+        within_modal "Description" do
+          expect(page).to have_text "Attribute help text"
+
+          click_on "Close"
+        end
+        expect(page).to have_no_modal "Description"
+      end
+    end
+  end
+
+  describe "workspace type badges in Subproject of field", with_flag: { portfolio_models: true } do
+    shared_let(:portfolio) { create(:portfolio, name: "Parent Portfolio") }
+    shared_let(:program) { create(:program, name: "Parent Program") }
+    shared_let(:regular_project) { create(:project, name: "Regular Project") }
+    let(:parent_permissions) { %i[add_subprojects] }
+
+    let(:project_memberships) do
+      { project => permissions,
+        portfolio => parent_permissions,
+        program => parent_permissions,
+        regular_project => parent_permissions }
+    end
+
+    it "displays workspace type badges for portfolios and programs" do
+      general_page = Pages::Projects::Settings::General.new(project)
+      general_page.visit!
+
+      parent_field = general_page.parent_project_field
+
+      # Verify badges for different project types
+      parent_field.expect_option("Parent Portfolio", workspace_badge: "Portfolio")
+      parent_field.expect_option("Parent Program", workspace_badge: "Program")
+      parent_field.expect_option("Regular Project")
     end
   end
 end

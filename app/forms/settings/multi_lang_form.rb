@@ -59,7 +59,6 @@ module Settings
         disabled: setting_disabled?(name),
         visually_hide_label: true,
         rich_text_options: {
-          text_area_id: "settings-#{name}",
           turboMode: true,
           showAttachments: false
         }

@@ -77,7 +77,7 @@ Available arguments that change how the work packages are handled:
 
 In order to use the more secure Gmail API method, some extra initial setup in google cloud is required.
 
-1. Go to https://console.cloud.google.com/
+1. Go to the [Google cloud console](https://console.cloud.google.com/)
 2. Create new project
 3. Navigate to Enable APIs and Services
 4. Enable the Gmail API
@@ -87,7 +87,7 @@ In order to use the more secure Gmail API method, some extra initial setup in go
 8. Click on the new service account, go to the "Keys" tab, and add a new key.
 9. Save the JSON key file
     ***Note: Do not give anyone access to this JSON file as it contains the private key to your service account!***
-10. Go to https://admin.google.com
+10. Go to [admin.google.com](https://admin.google.com)
 11. Select Security > Access and Data Control > API Controls
 12. Go to "Domain-Wide Delegation"
 13. Add new API Client
@@ -98,13 +98,13 @@ In order to use the more secure Gmail API method, some extra initial setup in go
 
 Available arguments for the Gmail API rake task that specify the email behavior are
 
-|key | description|
-|----|------------|
-| `credentials` | Gmail service account credentials file (JSON) |
-| `username` | Gmail email address |
-| `query` | Gmail search query (https://support.google.com/mail/answer/7190?hl=en) |
-| `read_on_failure` | Mark emails as read even on failure (default: true) |
-| `max_emails` | Max emails to process (default: 1000) |
+|key | description                                                             |
+|----|-------------------------------------------------------------------------|
+| `credentials` | Gmail service account credentials file (JSON)                           |
+| `username` | Gmail email address                                                     |
+| `query` | [Gmail search query](https://support.google.com/mail/answer/7190?hl=en) |
+| `read_on_failure` | Mark emails as read even on failure (default: true)                     |
+| `max_emails` | Max emails to process (default: 1000)                                   |
 
 ## Format of the emails
 

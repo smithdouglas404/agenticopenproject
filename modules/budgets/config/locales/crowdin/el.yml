@@ -21,7 +21,7 @@
 #++
 el:
   plugin_budgets_engine:
-    name: 'Προϋπολογισμοί'
+    name: "Προϋπολογισμοί"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ el:
         type: "Τύπος κόστους"
         labor_budget: "Σχεδιασμένο κόστος εργασίας"
         material_budget: "Σχεδιασμένο κόστος μονάδας"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Τίτλος προϋπολογισμού"
     models:
@@ -61,13 +62,19 @@ el:
   help_currency_format: "Μορφοποίηση των νομισματικών τιμών που εμφανίζονται. %n αντικαθίσταται με την τρέχουσα τιμή, %u αντικαθίσταται με την τρέχουσα μονάδα."
   help_override_rate: "Εισάγετε μια τιμή εδώ για να αντικαταστήσετε την τρέχουσα αμοιβή."
   label_budget: "Προϋπολογισμός"
-  label_budget_new: "Νέος προϋπολογισμός"
-  label_budget_plural: "Προϋπολογισμοί"
+  label_budget_available: "Budget available"
   label_budget_id: "Προϋπολογισμός #%{id}"
+  label_budget_new: "Νέος προϋπολογισμός"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Προϋπολογισμοί"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Προϋπολογισμός"
-  label_example_placeholder: 'π.χ., %{decimal}'
+  label_example_placeholder: "π.χ., %{decimal}"
   label_view_all_budgets: "Εμφάνιση όλων των προϋπολογισμών"
   label_yes: "Ναι"
+  label_budget_totals: "Σύνολα"
+  label_budget_details: "Λεπτομέρειες προϋπολογισμού"
   notice_budget_conflict: "Work packages must be of the same project."
   notice_no_budgets_available: "Δεν υπάρχουν διαθέσιμοι προϋπολογισμοί."
   permission_edit_budgets: "Επεξεργασία προϋπολογισμών"

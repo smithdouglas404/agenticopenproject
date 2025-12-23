@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,8 +29,10 @@
 #++
 
 class CostEntry < ApplicationRecord
+  ALLOWED_ENTITY_TYPES = %w[WorkPackage].freeze
+
   belongs_to :project
-  belongs_to :work_package
+  belongs_to :entity, polymorphic: true
   belongs_to :user
   belongs_to :logged_by, class_name: "User"
   include ::Costs::DeletedUserFallback
@@ -38,20 +42,24 @@ class CostEntry < ApplicationRecord
 
   include ActiveModel::ForbiddenAttributesProtection
 
-  validates_presence_of :work_package_id, :project_id, :user_id, :logged_by_id, :cost_type_id, :units, :spent_on
-  validates_numericality_of :units, allow_nil: false, message: :invalid
-  validates_length_of :comments, maximum: 255, allow_nil: true
-
-  before_save :before_save
-  before_validation :before_validation
   after_initialize :after_initialize
+  before_validation :before_validation
+  before_save :before_save
   validate :validate
 
-  scope :on_work_packages, ->(work_packages) { where(work_package_id: work_packages) }
+  validates :entity, :project_id, :user_id, :logged_by_id, :cost_type_id, :units, :spent_on, presence: true
+  validates :units, numericality: { allow_nil: false, message: :invalid }
+  validates :comments, length: { maximum: 255, allow_nil: true }
+  validates :entity_type,
+            inclusion: { in: ALLOWED_ENTITY_TYPES },
+            allow_blank: true
+
+  scope :on_work_packages, ->(work_packages) { where(entity: work_packages) }
 
   extend CostEntryScopes
   include Entry::Costs
   include Entry::SplashedDates
+  include Entry::DeprecatedAssociation
 
   def after_initialize
     return unless new_record?
@@ -65,15 +73,15 @@ class CostEntry < ApplicationRecord
   end
 
   def before_validation
-    self.project = work_package.project if work_package && project.nil?
+    self.project = entity.project if entity && project.nil?
   end
 
-  def validate
+  def validate # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     errors.add :units, :invalid if units&.negative?
     errors.add :project_id, :invalid if project.nil?
-    errors.add :work_package_id, :invalid if work_package.nil? || (project != work_package.project)
+    errors.add :entity, :invalid if entity.nil? || (project != entity.project)
     errors.add :cost_type_id, :invalid if cost_type.present? && cost_type.deleted_at.present?
-    errors.add :user_id, :invalid if project.present? && !project.users.include?(user) && user_id_changed?
+    errors.add :user_id, :invalid if project.present? && project.users.exclude?(user) && user_id_changed?
 
     begin
       spent_on.to_date
@@ -85,6 +93,18 @@ class CostEntry < ApplicationRecord
   def before_save
     self.spent_on &&= spent_on.to_date
     update_costs
+  end
+
+  def entity=(value)
+    if value.is_a?(String) && value.starts_with?("gid://")
+      super(GlobalID::Locator.locate(value, only: ALLOWED_ENTITY_TYPES.map(&:safe_constantize)))
+    else
+      super
+    end
+  end
+
+  def entity_gid
+    entity&.to_gid.to_s
   end
 
   def overwritten_costs=(costs)

@@ -17,6 +17,7 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 @Component({
   selector: 'board-filter',
   templateUrl: './board-filter.component.html',
+  standalone: false,
 })
 export class BoardFilterComponent extends UntilDestroyedMixin implements AfterViewInit {
   /** Current active */

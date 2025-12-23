@@ -40,6 +40,7 @@ RSpec.describe DemoData::WorkPackageSeeder do
   let(:closed_status) { seed_data.find_reference(:default_status_closed) }
   let(:work_packages_data) { [] }
   let(:seed_data) { basic_seed_data.merge(Source::SeedData.new("work_packages" => work_packages_data)) }
+  let(:work_package_seeder) { described_class.new(project, seed_data) }
 
   def work_package_data(**attributes)
     {
@@ -51,7 +52,6 @@ RSpec.describe DemoData::WorkPackageSeeder do
   end
 
   before do
-    work_package_seeder = described_class.new(project, seed_data)
     work_package_seeder.seed!
   end
 
@@ -230,6 +230,11 @@ RSpec.describe DemoData::WorkPackageSeeder do
       ]
     end
 
+    it "correctly returns the required references" do
+      expect(work_package_seeder.all_required_references)
+        .to contain_exactly(:default_status_new, :default_type_task)
+    end
+
     it "creates a parent-child relation between work packages" do
       expect(WorkPackage.count).to eq(2)
       parent, child = WorkPackage.order(:id).to_a
@@ -246,6 +251,11 @@ RSpec.describe DemoData::WorkPackageSeeder do
                           ]),
         work_package_data(subject: "Child", parent: :this_one)
       ]
+    end
+
+    it "correctly returns the required references" do
+      expect(work_package_seeder.all_required_references)
+        .to contain_exactly(:default_status_new, :default_type_task)
     end
 
     it "creates parent-child relations between work packages" do

@@ -49,6 +49,7 @@ import { IToast, ToastService, ToastType } from 'core-app/shared/components/toas
   templateUrl: './toast.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-toast',
+  standalone: false,
 })
 export class ToastComponent implements OnInit {
   @Input() public toast:IToast;

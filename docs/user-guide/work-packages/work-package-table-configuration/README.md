@@ -79,7 +79,7 @@ Multi-select attributes also have one extra options:
 
 - **is (AND)**: returns all work packages that match _all_ of the entered values.
 
-Other attributes like Status might offer additional criteria like _open_ or _closed_. Required attributes might only offer two options, _is (OR)_ and _is not_, since they cannot be empty.
+Other attributes like Version might offer additional criteria like *open*, *closed* or *locked*. Required attributes might only offer two options, _is (OR)_ and _is not_, since they cannot be empty.
 
 ### Filter by text
 
@@ -154,6 +154,24 @@ It will then display the corresponding work package with the attachment.
 
 ![Filter a work package table by attachment name](openproject_user_guide_wp_table_filter_by_attachment_name.png)
 
+### Filter for project phases and phase gates
+
+To focus on specific stages of your project, you can use the **Project phase** filter in the work packages table. Simply select the relevant phase(s) from the filter dropdown to display all associated work packages.
+
+![Project phase filter in work packages table in OpenProject](openproject_user_guide_wp_table_project_phases_filter.png)
+
+Once applied, the filtered view shows only the work packages assigned to the selected phase(s), providing a clear snapshot of where your tasks sit within the overall project lifecycle. 
+
+> [!TIP]
+>
+> To be able to assign a work package to a specific project phase,  it is required to enable the **project phase** attribute in the administration for a a specific work package type and to active this work package type for a project. Read more about [configuring work package forms](../../../system-admin-guide/manage-work-packages/work-package-types/#work-package-form-configuration-enterprise-add-on)
+
+![Work packages filtered by project phase in OpenProject](openproject_user_guide_wp_table_project_phases_displayed.png)
+
+To gain even more insight, you can group the work packages by project phase. This helps visualize how tasks are distributed across phases and identify any gaps or overlaps in planning. This filtering and grouping combination makes it easier to manage progress, align tasks with strategic milestones, and ensure smooth transitions through phase gates.
+
+![Work packages grouped by phase in OpenProject](openproject_user_guide_wp_table_project_phases_displayed_grouped_by_phase.png)
+
 ## Sort the work package table
 
 ### Automatic sorting of the work package table
@@ -161,8 +179,11 @@ It will then display the corresponding work package with the attachment.
 By default, the work package table will be sorted by work package ID.
 
 <div class="glossary">
+
 The **ID** is unique for a work package within OpenProject. It will be set automatically from the system. With the ID you can reference a specific work package in OpenProject.
+
 </div>
+
 To sort the work package table view, open the [work package table configuration](#work-package-table-configuration) and select the tab **Sort by**. You can sort by up to three attributes, either ascending or descending.
 
 ![Sorting criteria in work package configuration in OpenProject](openproject_user_guide_wp_wp_table_configuration_sort_by.png)
@@ -214,8 +235,7 @@ If you group the work package table, sums will be shown for each group.
 
 ## Attribute highlighting (Enterprise add-on)
 
->  [!NOTE]
->  Attribute highlighting is an Enterprise add-on and can only be used with [Enterprise cloud](https://www.openproject.org/docs/enterprise-guide/enterprise-cloud-guide) or [Enterprise on-premises](https://www.openproject.org/docs/enterprise-guide/enterprise-on-premises-guide). An upgrade from the free community edition is easy and helps support OpenProject.
+[feature: conditional_highlighting ]
 
 You can highlight attributes in the work package table to emphasize the importance of certain attributes and have important topics at a glance. To activate attribute highlighting open the work package configuration table and select the **Highlighting** tab.
 
@@ -255,7 +275,7 @@ In this example, the table was filtered for work packages assigned to me which h
 
 **Public:** Check the public checkbox if you want to have this work package view accessible also for other users from this project.
 
-**Favored:** Check this favored checkbox if you want to have this work package as a menu item in your favorite views.
+**Favorited:** Check this favorited checkbox if you want to have this work package as a menu item in your favorite views.
 
 Press the **Save** button to save your view.
 
@@ -263,7 +283,7 @@ Press the **Save** button to save your view.
 
 The view will then be saved in the work packages menu in your **Favorite views**:
 
-![Favorite view in work package module menu](openproject_user_guide_wp_favored_view_saved.png)
+![Favorited view in work package module menu](openproject_user_guide_wp_favorited_view_saved.png)
 
 If you check the public visibility, the view will be saved under your public views in the work package menu:
 

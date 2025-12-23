@@ -29,6 +29,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
+import { useMeta } from 'stimulus-use';
 
 export default class BudgetSubformController extends Controller {
   static targets = [
@@ -47,21 +48,26 @@ export default class BudgetSubformController extends Controller {
   declare itemCountValue:number;
   declare updateUrlValue:string;
 
+  static metaNames = ['csrf-token'];
+
+  declare readonly csrfToken:string|null;
+
   private form:HTMLFormElement;
   private submitButtons:NodeListOf<HTMLButtonElement>;
 
   connect():void {
-    this.form = this.element.closest('form') as HTMLFormElement;
+    useMeta(this, { suffix: false });
+    this.form = this.element.closest('form')!;
     this.submitButtons = this.form.querySelectorAll("button[type='submit']");
   }
 
-  private debounceTimers:{ [id:string]:ReturnType<typeof setTimeout> } = {};
+  private debounceTimers:Record<string, ReturnType<typeof setTimeout>> = {};
 
   valueChanged(evt:Event) {
     const row = this.eventRow(evt.target);
 
     if (row) {
-      const id:string = row.getAttribute('id') as string;
+      const id:string = row.getAttribute('id')!;
 
       clearTimeout(this.debounceTimers[id]);
 
@@ -120,19 +126,17 @@ export default class BudgetSubformController extends Controller {
    * Returns the params for the update request
    */
   private buildRefreshRequest(row_identifier:string) {
-    const row = this.element.querySelector(`#${row_identifier}`) as HTMLElement;
+    const row = this.element.querySelector(`#${row_identifier}`)!;
     const body = new FormData();
     body.append('element_id', row_identifier);
     body.append('fixed_date', (document.querySelector('#budget_fixed_date') as HTMLInputElement).value);
 
     row.querySelectorAll('.budget-item-value').forEach((itemValue:HTMLInputElement|HTMLSelectElement) => {
-      body.append(itemValue.dataset.requestKey as string, (itemValue.value || '0'));
+      body.append(itemValue.dataset.requestKey!, (itemValue.value || '0'));
     });
 
-    const csrfTokenTag = document.querySelector("meta[name='csrf-token']");
-
-    if (csrfTokenTag !== null) {
-      body.append('authenticity_token', csrfTokenTag.getAttribute('content') as string);
+    if (this.csrfToken !== null) {
+      body.append('authenticity_token', this.csrfToken);
     }
 
     return body;

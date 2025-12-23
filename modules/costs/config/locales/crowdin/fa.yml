@@ -30,7 +30,10 @@ fa:
         overridden_costs: "هزینه‌های لغو شده"
         spent: "صرف شده"
         spent_on: "تاریخ"
-        logged_by: "Logged by"
+        logged_by: "گزارش شده توسط"
+        entity: گزارش شده برای
+        entity_id: گزارش شده برای
+        entity_gid: گزارش شده برای
       cost_type:
         unit: "نام واحد"
         unit_plural: "نام واحد پولی"
@@ -56,8 +59,11 @@ fa:
         activity: فعالیت
         spent_on: تاریخ
         start_time: زمان شروع
-        end_time: Finish time
+        end_time: زمان پایان
         time: زمان
+        entity: گزارش شده برای
+        entity_id: گزارش شده برای
+        entity_gid: گزارش شده برای
     models:
       time_entry:
         one: "Time entry"
@@ -77,6 +83,7 @@ fa:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
           cannot_log_for_this_work_package: "Cannot log time for this work package."
+          duplicate_ongoing: "An ongoing time entry already exists for this user."
         work_package:
           is_not_a_valid_target_for_cost_entries: "پکیج‌کاری شماره %{id} به عنوان مقصد معتبری برای تخصیص موارد هزینه نمی‌باشد."
           nullify_is_not_valid_for_cost_entries: "ورودی‌های هزینه نمی‌توانند به یک پروژه اختصاص یابند."
@@ -91,9 +98,10 @@ fa:
     fixed_date: "تاریخ ثابت"
   button_add_rate: "افزودن نرخ (ضریب) پرداخت"
   button_log_costs: "ثبت هزینه‌های واحد"
-  button_log_time: "Log"
+  button_log_time: "گزارش"
   button_add_activity: "فعالیت"
   button_add_time_entry: "پیگیری زمان"
+  button_stop_timer: "توقف زمان‌سنج"
   caption_booked_on_project: "رزرو شده در پروژه"
   caption_default: "پیش‌فرض"
   caption_default_rate_history_for: "تاریخچه ضریب (نرخ) پرداختی پیش‌فرض برای %{user}"
@@ -107,7 +115,7 @@ fa:
   caption_show_locked: "نمایش انواع قفل‌شده"
   caption_log_time_dialog: "پیگیری زمان"
   description_date_for_new_rate: "تاریخ برای شروع ضریب پرداختی (نرخ) جدید"
-  description_costs_settings: "Define the desired format for the costs in all projects."
+  description_costs_settings: "تعریف قالب مطلوب برای هزینه ها در همه پروژه ها."
   description_time_settings: "Define which fields are mandatory to fill when logging time in all projects."
   group_by_others: "در هیچ گروهی نیست"
   label_between: "بین"
@@ -150,28 +158,29 @@ fa:
   label_valid_from: "معتبر از"
   label_yes: "بله"
   label_time: "زمان"
-  label_cost: "Cost"
+  label_cost: "هزینه"
   label_costs: "هزینه ها"
   label_mandatory_fields: "Mandatory fields"
   label_my_time_tracking: "My time tracking"
   label_no_time: "No time tracked"
-  label_next_day: "Next day"
+  label_next_day: "روز بعد"
   label_next_week: "Next week"
-  label_next_workweek: "Next work week"
-  label_next_month: "Next month"
-  label_previous_day: "Previous day"
-  label_previous_workweek: "Previous work week"
+  label_next_workweek: "هفته کاری بعدی"
+  label_next_month: "ماه بعد"
+  label_previous_day: "روز قبل"
+  label_previous_workweek: "هفته کاری قبل"
   label_previous_week: "Previous week"
-  label_previous_month: "Previous month"
-  label_specific_day: "Day %{day}"
+  label_previous_month: "ماه قبل"
+  label_specific_day: "%{day} روز"
   label_specific_week: "Calendar week %{week}"
   label_specific_month: "Month %{month}"
   label_list: "لیست"
-  label_month: "Month"
-  label_workweek: "Work week"
+  label_month: "ماه"
+  label_workweek: "هفته کاری"
   label_day: "Day"
-  label_today_capitalized: "Today"
-  label_view_mode_switcher: "Change view"
+  label_today_capitalized: "امروز"
+  label_view_mode_switcher: "تغییر نما"
+  label_timer_since: "شروع شده از %{time}"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "مشکلی پیش آمد. لطفا دوباره تلاش کنید."
   notice_successful_restore: "بازیابی موفق"
@@ -179,6 +188,7 @@ fa:
   notice_cost_logged_successfully: "هزینه واحد با موفقیت ثبت شد."
   notice_different_time_zones: "This user has a different time zone (%{tz}). Time will be logged using their time zone."
   notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
   permission_edit_cost_entries: "ویرایش هزینه‌های واحد رزرو شده"
   permission_edit_own_cost_entries: "ویرایش هزینه‌های واحد رزرو شده خود"
   permission_edit_hourly_rates: "ویرایش نرخ (ضریب پرداختی) ساعتی"
@@ -193,11 +203,13 @@ fa:
   permission_view_own_hourly_rate: "مشاهده نرخ ساعتی خود"
   permission_view_own_time_entries: "مشاهده زمان صرف‌شده خود"
   project_module_costs: "زمان و هزینه‌ها"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
   setting_costs_currency: "واحد پول"
   setting_costs_currency_format: "فرمت واحد پول"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "درخواست زمان های شروع و پایان"
+  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "تخصیص ساعت‌ها و هزینه‌های گزارش شده به پروژه"
   text_destroy_cost_entries_question: "%{cost_entries} در بسته‌های کاری که می‌خواهید حذف کنید گزارش شده است. میخوای چیکار کنی؟"
   text_destroy_time_and_cost_entries: "ساعت ها و هزینه های گزارش شده را حذف کنید"

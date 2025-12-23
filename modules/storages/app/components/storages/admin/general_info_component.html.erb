@@ -11,7 +11,7 @@
         if can_show_open_link?
           concat(render(Primer::Beta::Text.new) { " - " })
           concat(
-            render(Primer::Beta::Link.new(href: open_href, target: "_blank")) do |link|
+            render(Primer::Beta::Link.new(href: open_href, target: "_blank", underline: true)) do |link|
               link.with_trailing_visual_icon(icon: "link-external", size: :small)
               I18n.t("storages.buttons.open_storage")
             end

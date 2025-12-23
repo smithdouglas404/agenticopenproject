@@ -27,7 +27,7 @@ import { opIconElement } from 'core-app/shared/helpers/op-icon-builder';
 import { ConfirmDialogService } from 'core-app/shared/components/modals/confirm-dialog/confirm-dialog.service';
 import { ConfirmDialogOptions } from '../modals/confirm-dialog/confirm-dialog.modal';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import allLocales from '@fullcalendar/core/locales-all';
 
 
@@ -44,6 +44,7 @@ export interface INonWorkingDay {
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./op-non-working-days-list.component.sass'],
   templateUrl: './op-non-working-days-list.component.html',
+  standalone: false,
 })
 export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
   @ViewChild(FullCalendarComponent) ucCalendar:FullCalendarComponent;
@@ -136,7 +137,7 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
   }
 
   private listenToFormSubmit() {
-    const form = this.elementRef.nativeElement.closest('form') as HTMLFormElement;
+    const form = this.elementRef.nativeElement.closest('form')!;
     form.addEventListener('submit', (evt:Event) => {
       if (!this.form_submitted
         && (this.nonWorkingDaysModified() || this.workingDaysModified())) {
@@ -175,7 +176,7 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit():void {
-    const form = this.elementRef.nativeElement.closest('form') as HTMLFormElement;
+    const form = this.elementRef.nativeElement.closest('form')!;
     const workingDayCheckboxes = Array.from(form.querySelectorAll('input[name="settings[working_days][]"]'));
     workingDayCheckboxes.forEach((checkbox:HTMLInputElement) => {
       if (checkbox.checked) {
@@ -252,7 +253,7 @@ export class OpNonWorkingDaysListComponent implements OnInit, AfterViewInit {
   private get workingDays():string[] {
     const workingDays:string[] = [];
 
-    const form = this.elementRef.nativeElement.closest('form') as HTMLFormElement;
+    const form = this.elementRef.nativeElement.closest('form')!;
     const workingDayCheckboxes = Array.from(form.querySelectorAll('input[name="settings[working_days][]"]'));
     workingDayCheckboxes.forEach((checkbox:HTMLInputElement) => {
       if (checkbox.checked) {

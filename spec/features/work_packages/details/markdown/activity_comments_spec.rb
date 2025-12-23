@@ -104,6 +104,12 @@ RSpec.describe "activity comments", :js, :selenium do
           page.find_test_selector("op-submit-work-package-journal-form").click
           activity_tab.expect_journal_notes(text: "this is a comment!1")
         end
+
+        it "submits with ctrl/cmd+enter" do
+          activity_tab.type_comment("this is a comment!2")
+          activity_tab.get_editor_form_field_element.input_element.send_keys :control, :enter
+          activity_tab.expect_journal_notes(text: "this is a comment!2")
+        end
       end
 
       describe "autocomplete" do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -85,7 +87,7 @@ module WorkPackagesHelper
     if package.closed? && !options[:no_hidden]
       parts[:hidden_link] << content_tag(:span,
                                          I18n.t(:label_closed_work_packages),
-                                         class: "hidden-for-sighted")
+                                         class: "sr-only")
     end
 
     # Suffix part
@@ -210,7 +212,7 @@ module WorkPackagesHelper
   end
 
   def last_work_package_note(work_package)
-    note_journals = work_package.journals.select(&:notes?)
+    note_journals = work_package.journals.internal_visible.select(&:notes?)
     return t(:text_no_notes) if note_journals.empty?
 
     note_journals.last.notes

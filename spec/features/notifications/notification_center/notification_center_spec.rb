@@ -117,7 +117,7 @@ RSpec.describe "Notification center",
       it "can dismiss all notifications of the currently selected filter" do
         visit home_path
         wait_for_reload
-        center.expect_bell_count "99+"
+        center.expect_bell_count ""
         center.open
 
         # side menu items show full count of notifications (inbox has two more due to the "Created" notification)
@@ -131,7 +131,7 @@ RSpec.describe "Notification center",
         center.mark_all_read
         wait_for_network_idle
 
-        center.expect_bell_count "99+"
+        center.expect_bell_count ""
         side_menu.expect_item_with_count "Inbox", 152
         side_menu.expect_item_with_count "Mentioned", 100
         side_menu.expect_item_with_no_count "Watcher"
@@ -142,7 +142,7 @@ RSpec.describe "Notification center",
         center.mark_all_read
         wait_for_network_idle
 
-        center.expect_bell_count "99+"
+        center.expect_bell_count ""
         side_menu.expect_item_with_count "Inbox", 101
         side_menu.expect_item_with_count "Mentioned", 100
         side_menu.expect_no_item project2.name

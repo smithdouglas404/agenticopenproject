@@ -43,13 +43,6 @@ tr:
           name: PM2 Macenta
         item_3:
           name: PM2 Yeşil Sarı
-      document_categories:
-        item_0:
-          name: Belgeleme
-        item_1:
-          name: Özellik
-        item_2:
-          name: Diğer
       project_query_roles:
         item_0:
           name: Proje sorgu görüntüleyicisi
@@ -81,15 +74,15 @@ tr:
     standard:
       project_phases:
         item_0:
-          name: Başlatılıyor
+          name: Başlatma
         item_1:
-          name: Planlanıyor
+          name: Planlama
           start_gate: Planlama için Hazır
         item_2:
           name: Yürütme
           start_gate: Yürütmeye Hazır
         item_3:
-          name: Kapatılıyor
+          name: Kapanış
           start_gate: Kapanışa Hazır
       priorities:
         item_0:
@@ -301,7 +294,7 @@ tr:
             kanban:
               name: Kanban panosu
             basic:
-              name: Görev tahtası
+              name: Görev panosu
               lists:
                 item_0:
                   name: İstek listesi

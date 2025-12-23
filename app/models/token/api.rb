@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,13 +29,6 @@
 #++
 
 module Token
-  class API < HashedToken
-    store_attribute :data, :token_name, :string
-
-    private
-
-    def single_value?
-      false
-    end
+  class API < Named
   end
 end

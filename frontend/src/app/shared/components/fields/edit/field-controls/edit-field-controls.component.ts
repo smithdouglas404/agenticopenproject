@@ -34,6 +34,7 @@ import { EditFieldComponent } from 'core-app/shared/components/fields/edit/edit-
 @Component({
   selector: 'edit-field-controls',
   templateUrl: './edit-field-controls.component.html',
+  standalone: false,
 })
 export class EditFieldControlsComponent {
   @Input() public cancelTitle:string;

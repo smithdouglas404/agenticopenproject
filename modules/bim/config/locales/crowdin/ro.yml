@@ -107,7 +107,7 @@ ro:
           invalid_perspective_camera: "perspective_camera este invalidă."
           mismatching_guid: "Ghidul din punctul de vedere json_viewpoint nu se potrivește cu ghidul modelului."
           no_json: "Nu este un json bine structurat."
-          snapshot_type_unsupported: "snapshot_type trebuie să fie fie \"png\" sau \"jpg\"."
+          snapshot_type_unsupported: "snapshot_type trebuie să fie \"png\" sau \"jpg\"."
           snapshot_data_blank: "este necesar să se furnizeze snapshot_data."
           unsupported_key: "Este inclusă o proprietate json neacceptată."
         bim/bcf/issue:

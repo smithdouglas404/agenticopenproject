@@ -123,7 +123,7 @@ ko:
       2fa_from_webauthn: WebAuthn 장치 <strong>%{device_name}</strong> 제공을 해주세요. USB 기반인 경우 장치를 연결하고 터치하세요. 그런 다음 로그인 버튼을 클릭하세요.
       webauthn:
         title: "WebAuthn"
-        description: 'FIDO2 장치(예: YubiKey) 또는 모바일 장치의 시큐어 엔클레이브를 등록하세요.'
+        description: 'FIDO2 장치(예: YubiKey) 또는 모바일 장치의 Secure Enclave를 등록하세요.'
         further_steps: 이름을 선택한 후 계속 버튼을 클릭할 수 있습니다. 브라우저에서 WebAuthn 장치를 제공하라는 메시지가 표시됩니다. 이렇게 하면 장치 등록이 완료됩니다.
       totp:
         title: "앱 기반 인증 도구"

@@ -1,5 +1,6 @@
 import { Title } from '@angular/platform-browser';
 import { Injectable } from '@angular/core';
+import { getMetaContent } from '../setup/globals/global-helpers';
 
 const titlePartsSeparator = ' | ';
 
@@ -13,12 +14,15 @@ export class OpTitleService {
   }
 
   public get base():string {
-    const appTitle = document.querySelector('meta[name=app_title]') as HTMLMetaElement;
-    return appTitle.content;
+    return getMetaContent('app_title');
   }
 
   public get titleParts():string[] {
     return this.current.split(titlePartsSeparator);
+  }
+
+  public get appTitle():string {
+    return this.titleParts[this.titleParts.length - 1];
   }
 
   public setFirstPart(value:string) {

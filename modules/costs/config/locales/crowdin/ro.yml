@@ -31,10 +31,13 @@ ro:
         spent: "Cheltuit"
         spent_on: "Dată"
         logged_by: "Logat ca"
+        entity: Logat pentru
+        entity_id: Logat pentru
+        entity_gid: Logat pentru
       cost_type:
         unit: "Denumirea unității"
         unit_plural: "Numele unității pluralizate"
-        default: "Cost type by default"
+        default: "Tip cost implicit"
       work_package:
         costs_by_type: "Unități consumate"
         labor_costs: "Costurile cu forța de muncă"
@@ -58,29 +61,33 @@ ro:
         start_time: Dată început
         end_time: Dată finalizare
         time: Timp
+        entity: Logat pentru
+        entity_id: Logat pentru
+        entity_gid: Logat pentru
     models:
       time_entry:
         one: "Înregistrarea timpului"
-        few: "Time entries"
-        other: "Time entries"
+        few: "Înregistrările timpului"
+        other: "Înregistrările timpului"
       cost_entry:
         one: "Poziție cost"
-        few: "Cost entries"
-        other: "Cost entries"
+        few: "Poziții cost"
+        other: "Poziții cost"
       cost_type:
         one: "Tipul de cost"
         few: "Tipuri de costuri"
         other: "Tipuri de costuri"
       time_entry_activity:
-        one: "Time tracking activity"
-        few: "Activități de urmărire timp activate"
-        other: "Activități de urmărire timp activate"
+        one: "Activitatea de urmărire a timpului"
+        few: "Activități de urmărire timp"
+        other: "Activități de urmărire timp"
       rate: "Evaluează"
     errors:
       models:
         time_entry:
           invalid_time: "trebuie să fie între 00:00 și 23:59."
-          cannot_log_for_this_work_package: "Cannot log time for this work package."
+          cannot_log_for_this_work_package: "Nu se poate înregistra timpul pentru acest pachet de lucru."
+          duplicate_ongoing: "Există deja o intrare în curs de desfășurare pentru acest utilizator."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Pachetul de lucru #%{id} nu este o ţintă validă pentru reasocierea timpilor de lucru."
           nullify_is_not_valid_for_cost_entries: "Înregistrările de costuri nu pot fi atribuite unui proiect."
@@ -98,6 +105,7 @@ ro:
   button_log_time: "Jurnal"
   button_add_activity: "Activitate"
   button_add_time_entry: "Consum timp"
+  button_stop_timer: "Oprește cronometrul"
   caption_booked_on_project: "Rezervat pe proiect"
   caption_default: "Implicit"
   caption_default_rate_history_for: "Istoricul ratei de neplată pentru %{user}"
@@ -111,8 +119,8 @@ ro:
   caption_show_locked: "Afișați tipurile blocate"
   caption_log_time_dialog: "Registru timp"
   description_date_for_new_rate: "Dată pentru noul tarif"
-  description_costs_settings: "Define the desired format for the costs in all projects."
-  description_time_settings: "Define which fields are mandatory to fill when logging time in all projects."
+  description_costs_settings: "Definește formatul dorit pentru costurile din toate proiectele."
+  description_time_settings: "Definește ce câmpuri sunt obligatorii de completat la logarea timpului în toate proiectele."
   group_by_others: "nici într-un grup"
   label_between: "între"
   label_cost_filter_add: "Adaugă un filtru de intrare a costurilor"
@@ -139,8 +147,8 @@ ro:
   label_kind: "Tip"
   label_less_or_equal: "<="
   label_log_costs: "Înregistrare costuri unitare"
-  label_new_time_entry_activity: "New time entry activity"
-  label_time_entry_activity_form_description: "Changes to this time entry activity will be reflected in all projects where it is enabled."
+  label_new_time_entry_activity: "Activitate nouă de înregistrare a timpului"
+  label_time_entry_activity_form_description: "Modificările acestei activități de intrare în timp se vor reflecta în toate proiectele în care este activată."
   label_no: "Nu"
   label_option_plural: "Opțiuni"
   label_overall_costs: "Costuri totale"
@@ -156,33 +164,35 @@ ro:
   label_time: "Timp"
   label_cost: "Cost"
   label_costs: "Costuri"
-  label_mandatory_fields: "Mandatory fields"
-  label_my_time_tracking: "My time tracking"
-  label_no_time: "No time tracked"
-  label_next_day: "Next day"
+  label_mandatory_fields: "Câmpuri obligatorii"
+  label_my_time_tracking: "Urmărirea timpului meu"
+  label_no_time: "Nici un timp urmărit"
+  label_next_day: "Ziua următoare"
   label_next_week: "Săptămâna viitoare"
-  label_next_workweek: "Next work week"
-  label_next_month: "Next month"
-  label_previous_day: "Previous day"
-  label_previous_workweek: "Previous work week"
+  label_next_workweek: "Următoarea săptămână de lucru"
+  label_next_month: "Luna următoare"
+  label_previous_day: "Ziua precedentă"
+  label_previous_workweek: "Săptămâna lucru anterioară"
   label_previous_week: "Săptămâna trecută"
-  label_previous_month: "Previous month"
-  label_specific_day: "Day %{day}"
-  label_specific_week: "Calendar week %{week}"
-  label_specific_month: "Month %{month}"
+  label_previous_month: "Luna anterioară"
+  label_specific_day: "Ziua %{day}"
+  label_specific_week: "Săptămâna calendaristică %{week}"
+  label_specific_month: "Luna %{month}"
   label_list: "Listă"
   label_month: "Luna"
   label_workweek: "Săptămână de lucru"
   label_day: "Zi"
   label_today_capitalized: "Azi"
-  label_view_mode_switcher: "Change view"
-  placeholder_activity_select_work_package_first: Work package selection is required first
+  label_view_mode_switcher: "Schimbă vizualizarea"
+  label_timer_since: "Început la %{time}"
+  placeholder_activity_select_work_package_first: Selecția pachetului de lucru este necesară mai întâi
   notice_something_wrong: "Ceva n-a mers bine. Vă rugăm să încercați din nou."
   notice_successful_restore: "Restaurare reușită."
   notice_successful_lock: "Blocat cu succes."
   notice_cost_logged_successfully: "Costul unitar a fost înregistrat cu succes."
-  notice_different_time_zones: "This user has a different time zone (%{tz}). Time will be logged using their time zone."
-  notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_different_time_zones: "Acest utilizator are un alt fus orar (%{tz}). Timpul va fi înregistrat folosind fusul orar."
+  notice_time_entry_update_failed: "Nu s-a reușit actualizarea intrării orare. Eroări: %{errors}"
+  notice_time_entry_delete_failed: "Eroare la ștergerea intrării orare. Erori: %{errors}"
   permission_edit_cost_entries: "Editarea costurilor unitare înregistrate"
   permission_edit_own_cost_entries: "Editați propriile costuri unitare contabilizate"
   permission_edit_hourly_rates: "Editați tarifele orare"
@@ -197,11 +207,13 @@ ro:
   permission_view_own_hourly_rate: "Vezi propriul tarif orar"
   permission_view_own_time_entries: "Vizualizează propriul timp consumat"
   project_module_costs: "Timp și costuri"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Permite orele de început și de sfârșit"
   setting_costs_currency: "Monedă"
   setting_costs_currency_format: "Format monedă"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "Cere orele de început și de sfârșit"
+  setting_enforce_without_allow: "Solicitarea orelor de început și de sfârșit nu este posibilă fără a le permite"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "Atribuiți orele și costurile raportate la proiect"
   text_destroy_cost_entries_question: "%{cost_entries} au fost raportate pe pachetele de lucru pe care urmează să le ștergeți. Ce doriți să faceți?"
   text_destroy_time_and_cost_entries: "Ștergeți orele și costurile raportate"
@@ -210,17 +222,17 @@ ro:
   text_warning_hidden_elements: "Este posibil ca unele intrări să fi fost excluse din agregare."
   week: "săptămână"
   total_times:
-    workweek: "Workweek Total: %{hours}"
-    week: "Week Total: %{hours}"
-    month: "Month Total: %{hours}"
-    day: "Day Total: %{hours}"
+    workweek: "Totalul săptămânii de lucru: %{hours}"
+    week: "Totalul săptămânii: %{hours}"
+    month: "Totalul lunii de lucru: %{hours}"
+    day: "Totalul zilei: %{hours}"
   api_v3:
     errors:
       validation:
-        start_time_different_date: "Date part of startTime (%{start_time}) must be the same as the spentOn (%{spent_on}) date."
+        start_time_different_date: "Partea de dată din startTime (%{start_time}) trebuie să fie aceeași cu data spentOn (%{spent_on})."
   ee:
     features:
-      time_entry_time_restrictions: Require exact time tracking
+      time_entry_time_restrictions: Necesită urmărirea exactă a timpului
     upsell:
       time_entry_time_restrictions:
-        description: "Improve your time tracking by requiring exact start and finish times when logging time."
+        description: "Îmbunătățește urmărirea timpului prin solicitarea orelor exacte de început și de sfârșit la înregistrarea timpului."

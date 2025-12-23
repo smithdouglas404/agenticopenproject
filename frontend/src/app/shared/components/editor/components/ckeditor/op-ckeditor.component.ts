@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
@@ -36,7 +36,7 @@ import {
   ICKEditorWatchdog,
 } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
 import { CKEditorSetupService } from 'core-app/shared/components/editor/components/ckeditor/ckeditor-setup.service';
-import { KeyCodes } from 'core-app/shared/helpers/keyCodes.enum';
+import { KeyCodes } from 'core-app/shared/helpers/keycodes';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 
@@ -46,6 +46,8 @@ declare module 'codemirror';
   selector: 'op-ckeditor',
   templateUrl: './op-ckeditor.html',
   styleUrls: ['./op-ckeditor.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   @Input() context:ICKEditorContext;
@@ -83,9 +85,9 @@ export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, 
   @Output() editorFocus = new EventEmitter<string>();
 
   // View container of the replacement used to initialize CKEditor5
-  @ViewChild('opCkeditorReplacementContainer', { static: true }) opCkeditorReplacementContainer:ElementRef;
+  @ViewChild('opCkeditorReplacementContainer', { static: true }) opCkeditorReplacementContainer:ElementRef<HTMLDivElement>;
 
-  @ViewChild('codeMirrorPane') codeMirrorPane:ElementRef;
+  @ViewChild('codeMirrorPane') codeMirrorPane:ElementRef<HTMLDivElement>;
 
   // CKEditor instance once initialized
   public watchdog:ICKEditorWatchdog;
@@ -118,10 +120,8 @@ export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, 
     { leading: true },
   );
 
-  private $element:JQuery;
-
   constructor(
-    private readonly elementRef:ElementRef,
+    private readonly elementRef:ElementRef<HTMLElement>,
     private readonly Notifications:ToastService,
     private readonly I18n:I18nService,
     private readonly configurationService:ConfigurationService,
@@ -173,16 +173,17 @@ export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, 
 
       return this.getRawData();
     } catch (e) {
-      console.error(`Failed to save CKEditor content: ${e}.`);
+      if (e instanceof Error) {
+        console.error(`Failed to save CKEditor content: ${e.message}.`);
 
-      const error = this.I18n.t(
-        'js.editor.error_saving_failed',
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
-        { error: e.toString() || this.I18n.t('js.error.internal') },
-      );
+        const error = this.I18n.t(
+          'js.editor.error_saving_failed',
+          { error: e.message },
+        );
 
-      if (notificationOnError) {
-        this.Notifications.addError(error);
+        if (notificationOnError) {
+          this.Notifications.addError(error);
+        }
       }
 
       return this._content;
@@ -203,14 +204,14 @@ export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, 
   ngOnInit() {
     try {
       this.initializeEditor();
-    } catch (error:unknown) {
+    } catch (e) {
       // We will run into this error if, among others, the browser does not fully support
       // CKEditor's requirements on ES6.
-
-      const message = (error as Error).toString();
-      console.error('Failed to setup CKEditor instance: %O', error);
-      this.error = message;
-      this.initializationFailed.emit(message);
+      console.error('Failed to setup CKEditor instance: %O', e);
+      if (e instanceof Error) {
+        this.error = e.message;
+        this.initializationFailed.emit(e.message);
+      }
     }
   }
 
@@ -223,9 +224,7 @@ export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, 
   }
 
   private initializeEditor() {
-    this.$element = jQuery(this.elementRef.nativeElement);
-
-    const editorPromise = this.ckEditorSetup
+    void this.ckEditorSetup
       .create(
         this.opCkeditorReplacementContainer.nativeElement,
         this.context,
@@ -262,8 +261,6 @@ export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, 
         this.initializeDone.emit(watchdog.editor);
         return watchdog.editor;
       });
-
-    this.$element.data('editor', editorPromise);
   }
 
   private interceptModifiedEnterKeystrokes(editor:ICKEditorInstance) {
@@ -271,13 +268,13 @@ export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, 
       editor.editing.view.document,
       'keydown',
       (evt, data) => {
-        if ((data.ctrlKey || data.metaKey) && data.keyCode === Number(KeyCodes.ENTER)) {
+        if ((data.ctrlKey || data.metaKey) && data.keyCode === KeyCodes.ENTER) {
           debugLog('Sending save request from CKEditor.');
           this.saveRequested.emit();
           evt.stop();
         }
 
-        if (data.keyCode === Number(KeyCodes.ESCAPE)) {
+        if (data.keyCode === KeyCodes.ESCAPE) {
           this.editorEscape.emit();
           evt.stop();
         }
@@ -338,15 +335,15 @@ export class OpCkeditorComponent extends UntilDestroyedMixin implements OnInit, 
     const current = this.getRawData();
     const cmMode = 'gfm';
 
-    Promise
+    void Promise
       .all([
         import('codemirror'),
-        import(/* webpackChunkName: "codemirror-mode" */ `codemirror/mode/${cmMode}/${cmMode}.js`),
+        import(/* webpackChunkName: "codemirror-mode" */ `../../../../../../../node_modules/codemirror/mode/${cmMode}/${cmMode}.js`),
       ])
       .then((imported:any[]) => {
         const CodeMirror = imported[0].default;
         this.codeMirrorInstance = CodeMirror(
-          this.$element.find('.ck-editor__source')[0],
+          this.elementRef.nativeElement.querySelector('.ck-editor__source'),
           {
             lineNumbers: true,
             smartIndent: true,

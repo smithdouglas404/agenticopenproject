@@ -21,7 +21,7 @@
 #++
 ar:
   plugin_budgets_engine:
-    name: 'الميزانيات'
+    name: "الميزانيات"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ ar:
         type: "أنواع التكلفة"
         labor_budget: "تكاليف العمل المخطط لها"
         material_budget: "تكاليف الوحدة المخطط لها"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "عنوان الميزانية"
     models:
@@ -61,13 +62,19 @@ ar:
   help_currency_format: "شكل قِيَم العملة المعروضة. %n تم إبداله بقيمة العملة، %u تم إبداله بوحدة العملة."
   help_override_rate: "أدخل قيمة هنا لتجاهل المعدل الافتراضي."
   label_budget: "الميزانية"
-  label_budget_new: "الميزانية الجديدة"
-  label_budget_plural: "الميزانيات"
+  label_budget_available: "Budget available"
   label_budget_id: "الميزانية #%{id}"
+  label_budget_new: "الميزانية الجديدة"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "الميزانيات"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "الميزانية"
-  label_example_placeholder: 'مثال، %{decimal}'
+  label_example_placeholder: "مثال، %{decimal}"
   label_view_all_budgets: "عرض جميع الميزانيات"
   label_yes: "نعم"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "مجموعات العمل يجب أن تكون لنفس المشروع."
   notice_no_budgets_available: "لا يوجد ميزانيات متاحة."
   permission_edit_budgets: "تحرير الميزانية"

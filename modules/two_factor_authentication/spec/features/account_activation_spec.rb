@@ -37,7 +37,10 @@ RSpec.describe "activating an invited account",
       activate!
 
       visit my_account_path
-      expect(page).to have_css(".form--field-container", text: user.login)
+
+      within_test_selector "my-account-form" do
+        expect(page).to have_field "user_username", with: user.login
+      end
     end
   end
 
@@ -57,11 +60,14 @@ RSpec.describe "activating an invited account",
       expect_flash(message: "Developer strategy generated the following one-time password:")
 
       fill_in I18n.t(:field_otp), with: sms_token
-      click_button I18n.t(:button_login)
+      click_button I18n.t(:button_login), type: "submit"
       wait_for_network_idle
 
       visit my_account_path
-      expect(page).to have_css(".form--field-container", text: user.login)
+
+      within_test_selector "my-account-form" do
+        expect(page).to have_field "user_username", with: user.login
+      end
     end
 
     it "handles faulty user input on two factor authentication" do
@@ -70,7 +76,7 @@ RSpec.describe "activating an invited account",
       expect_flash(message: "Developer strategy generated the following one-time password:")
 
       fill_in I18n.t(:field_otp), with: "asdf" # faulty token
-      click_button I18n.t(:button_login)
+      click_button I18n.t(:button_login), type: "submit"
 
       expect(page).to have_current_path signin_path
       expect(page).to have_content(I18n.t(:notice_account_otp_invalid))

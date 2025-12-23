@@ -11,14 +11,15 @@ In OpenProject you can customize your project settings. To do this, open a proje
 
 ![Project settings module selected in left-hand project menu in OpenProject](openproject_user_guide_project_settings_module.png)
 
->  [!NOTE]
->  You need to be a project administrator in order to see and access the project settings.
+> [!NOTE]
+> You need to be a project administrator in order to see and access the project settings.
 
 ## Overview
 
 | Topic                                                  | Content                                                      |
 | ------------------------------------------------------ | ------------------------------------------------------------ |
 | [Project information](project-information)             | Define project name, subproject, description, project status, and much more. |
+| [Project life cycle](project-life-cycle)               | Activate or deactivate project phases in a project.          |
 | [Project attributes](project-attributes)               | View and edit project attributes in a project.               |
 | [Modules](modules)                                     | Activate or deactivate modules in a project.                 |
 | [Work package types](work-packages)                    | Activate or deactivate work package types in a project.      |
@@ -29,3 +30,4 @@ In OpenProject you can customize your project settings. To do this, open a proje
 | [Activities (time tracking)](activities-time-tracking) | Activate or deactivate Activities (for time tracking) in a project. |
 | [Backlogs settings](backlogs-settings)                 | Manage backlogs settings for a project.                      |
 | [Files](files)                                         | Manage the storages connected to the project, add project folders and activate manual attachment uploads. |
+

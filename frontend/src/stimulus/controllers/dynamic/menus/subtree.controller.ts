@@ -49,12 +49,12 @@ export default class MenusSubtreeController extends Controller {
 
   public toggle(event:MouseEvent|KeyboardEvent):void {
     // ignore the event if a key different from ENTER was pressed.
-    if (event.type === 'keydown' && event.which !== 13) {
+    if (event.type === 'keydown' && (event as KeyboardEvent).key !== 'Enter') {
       return;
     }
 
     const target = event.target as HTMLElement;
-    const targetList = target.closest('ul.-with-hierarchy > li') as HTMLElement;
+    const targetList = target.closest('ul.-with-hierarchy > li')!;
     targetList.classList.toggle('-hierarchy-expanded');
     targetList.classList.toggle('-hierarchy-collapsed');
 

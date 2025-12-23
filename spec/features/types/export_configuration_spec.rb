@@ -38,7 +38,7 @@ RSpec.describe "type export configuration tab", :js do
 
   before do
     login_as(admin)
-    visit edit_tab_type_path(id: type.id, tab: "export_configuration")
+    visit edit_type_pdf_export_template_index_path(type)
   end
 
   def within_pdf_export_template_container(template_id, &)
@@ -61,9 +61,11 @@ RSpec.describe "type export configuration tab", :js do
 
   it "disables/enables all" do
     page.find("[data-test-selector='disable-all-pdf-export-templates']").click
+    wait_for_reload
     type.reload
     expect(type.pdf_export_templates.list_enabled.length).to eq(0)
     page.find("[data-test-selector='enable-all-pdf-export-templates']").click
+    wait_for_reload
     type.reload
     expect(type.pdf_export_templates.list_enabled.length).to eq(type.pdf_export_templates.list.length)
   end
@@ -74,10 +76,12 @@ RSpec.describe "type export configuration tab", :js do
       expect_checked_state
       toggle_pdf_export_template(first.id)
       expect_unchecked_state
+      wait_for_reload
       type.reload
       expect(type.pdf_export_templates.list.first.enabled).to be(false)
       toggle_pdf_export_template(first.id)
       expect_checked_state
+      wait_for_reload
       type.reload
       expect(type.pdf_export_templates.list.first.enabled).to be(true)
     end

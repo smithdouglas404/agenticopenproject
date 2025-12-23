@@ -29,12 +29,12 @@
 #++
 
 class CostQuery::PDF::TimesheetGenerator
-  include WorkPackage::PDFExport::Common::Common
-  include WorkPackage::PDFExport::Common::Attachments
-  include WorkPackage::PDFExport::Common::Logo
-  include WorkPackage::PDFExport::Export::Cover
-  include WorkPackage::PDFExport::Export::Page
-  include WorkPackage::PDFExport::Export::Timesheet::Styles
+  include Exports::PDF::Common::Common
+  include Exports::PDF::Common::Attachments
+  include Exports::PDF::Common::Logo
+  include Exports::PDF::Components::Cover
+  include Exports::PDF::Components::Page
+  include CostQuery::PDF::Styles
   include ReportingHelper
 
   H1_FONT_SIZE = 26
@@ -45,6 +45,8 @@ class CostQuery::PDF::TimesheetGenerator
   TABLE_CELL_FONT_SIZE = 10
   TABLE_CELL_BORDER_COLOR = "BBBBBB"
   TABLE_CELL_PADDING = 4
+  TABLE_CELL_PADDING_RIGHT = 8
+  TABLE_CELL_PADDING_BOTTOM = 6
   COMMENT_FONT_COLOR = "636C76"
   H2_FONT_SIZE = 20
   H2_MARGIN_BOTTOM = 10
@@ -55,8 +57,8 @@ class CostQuery::PDF::TimesheetGenerator
   COLUMN_DATE_WIDTH = 90
   COLUMN_ACTIVITY_WIDTH = 100
   COLUMN_HOURS_WIDTH = 60
-  COLUMN_TIME_WIDTH = 110
-  COLUMN_WP_WIDTH = 164
+  COLUMN_TIME_WIDTH = 108
+  COLUMN_WP_WIDTH = 166
 
   attr_accessor :pdf
 
@@ -116,8 +118,7 @@ class CostQuery::PDF::TimesheetGenerator
     render_doc_again_with_total_page_nrs! if wants_total_page_nrs?
     pdf.render
   rescue StandardError => e
-    Rails.logger.error "Failed to generate PDF export:  #{e.message}:\n#{e.backtrace.join("\n")}"
-    error(I18n.t(:error_pdf_failed_to_export, error: e.message))
+    error(e)
   end
 
   def render_doc
@@ -163,7 +164,7 @@ class CostQuery::PDF::TimesheetGenerator
               .filter { |r| r.fields["type"] == "TimeEntry" }
               .flat_map { |r| r.fields["id"] }
 
-      TimeEntry.where(id: ids).includes(%i[user activity work_package project])
+      TimeEntry.where(id: ids).includes(%i[user activity project])
     end
   end
 
@@ -218,11 +219,12 @@ class CostQuery::PDF::TimesheetGenerator
   end
 
   def build_table_subject_cell(entry)
-    return "" if entry.work_package.nil?
+    return "" if entry.entity.nil?
+    return "" unless entry.entity.is_a?(WorkPackage)
 
-    href = url_helpers.work_package_url(entry.work_package)
+    href = url_helpers.work_package_url(entry.entity)
     {
-      content: "#{make_link_href(href, "##{entry.work_package.id}")} #{entry.work_package.subject || ''}",
+      content: "#{make_link_href(href, "##{entry.entity.id}")} #{entry.entity.subject || ''}",
       inline_format: true
     }
   end
@@ -285,7 +287,7 @@ class CostQuery::PDF::TimesheetGenerator
         border_color: TABLE_CELL_BORDER_COLOR,
         border_width: 0.5,
         borders: %i[top bottom],
-        padding: [TABLE_CELL_PADDING, TABLE_CELL_PADDING, TABLE_CELL_PADDING + 2, TABLE_CELL_PADDING]
+        padding: [TABLE_CELL_PADDING, TABLE_CELL_PADDING_RIGHT, TABLE_CELL_PADDING_BOTTOM, TABLE_CELL_PADDING]
       }
     ) do |table|
       adjust_borders_first_column(table)
@@ -298,7 +300,10 @@ class CostQuery::PDF::TimesheetGenerator
   end
 
   def adjust_borders_first_column(table)
-    table.columns(0).borders = %i[top bottom left right]
+    table.columns(0).style do |c|
+      c.borders = %i[top bottom left right]
+      c.padding = [TABLE_CELL_PADDING, TABLE_CELL_PADDING, TABLE_CELL_PADDING_BOTTOM, TABLE_CELL_PADDING]
+    end
   end
 
   def adjust_borders_last_column(table)
@@ -311,7 +316,7 @@ class CostQuery::PDF::TimesheetGenerator
     table.columns(1).style do |c|
       if c.colspan > 1
         c.borders = %i[left right bottom]
-        c.padding = [0, TABLE_CELL_PADDING, TABLE_CELL_PADDING + 2, TABLE_CELL_PADDING]
+        c.padding = [0, TABLE_CELL_PADDING_RIGHT, TABLE_CELL_PADDING_BOTTOM, TABLE_CELL_PADDING]
         row_nr = c.row - 1
         values = table.columns(1..-1).rows(row_nr..row_nr)
         values.each do |cell|
@@ -460,7 +465,7 @@ class CostQuery::PDF::TimesheetGenerator
         border_color: TABLE_CELL_BORDER_COLOR,
         border_width: 0.5,
         borders: %i[top bottom left right],
-        padding: [TABLE_CELL_PADDING, TABLE_CELL_PADDING, TABLE_CELL_PADDING + 2, TABLE_CELL_PADDING]
+        padding: [TABLE_CELL_PADDING, TABLE_CELL_PADDING, TABLE_CELL_PADDING_BOTTOM, TABLE_CELL_PADDING]
       }
     ) do |table|
       adjust_overview_border_sum_row(table)
@@ -592,7 +597,7 @@ class CostQuery::PDF::TimesheetGenerator
         border_color: TABLE_CELL_BORDER_COLOR,
         border_width: 0.5,
         borders: %i[top bottom left right],
-        padding: [TABLE_CELL_PADDING, TABLE_CELL_PADDING, TABLE_CELL_PADDING + 2, TABLE_CELL_PADDING]
+        padding: [TABLE_CELL_PADDING, TABLE_CELL_PADDING, TABLE_CELL_PADDING_BOTTOM, TABLE_CELL_PADDING]
       }
     )
   end

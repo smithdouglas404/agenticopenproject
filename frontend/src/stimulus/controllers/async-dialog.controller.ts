@@ -30,31 +30,58 @@
 
 import { ApplicationController } from 'stimulus-use';
 import { renderStreamMessage } from '@hotwired/turbo';
-import { TurboHelpers } from '../../turbo/helpers';
+import { TurboHelpers } from 'core-turbo/helpers';
 
 export default class AsyncDialogController extends ApplicationController {
   connect() {
-    this.element.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.triggerTurboStream();
+    // Only bind events if we have an href to work with
+    if (this.href) {
+      this.bindEventListeners();
+    }
+  }
+
+  private bindEventListeners() {
+    this.element.addEventListener('click', (event:MouseEvent) => {
+      event.preventDefault();
+      this.triggerTurboStream(this.href);
+    });
+
+    this.element.addEventListener('keydown', (event:KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        this.triggerTurboStream(this.href);
+      }
     });
   }
 
-  triggerTurboStream():void {
+  private triggerTurboStream(url:string):void {
     TurboHelpers.showProgressBar();
 
-    void fetch(this.href, {
+    void fetch(url, {
       method: this.method,
       headers: {
         Accept: 'text/vnd.turbo-stream.html',
+        'X-Authentication-Scheme': 'Session',
       },
-    }).then((r) => r.text())
-      .then((html) => {
-        renderStreamMessage(html);
-      })
-      .finally(() => {
-        TurboHelpers.hideProgressBar();
-      });
+    }).then((response) => {
+      const contentType = response.headers.get('Content-Type') ?? '';
+      const isTurboStream = contentType.includes('text/vnd.turbo-stream.html');
+
+      if (!isTurboStream) {
+        return Promise.reject(new Error('Response is not a Turbo Stream'));
+      }
+
+      return response.text();
+    }).then((html) => {
+      renderStreamMessage(html);
+    }).finally(() => {
+      TurboHelpers.hideProgressBar();
+    });
+  }
+
+  handleOpenDialog(event:CustomEvent<{ url:string }>):void {
+    // Trigger the dialog with custom URL
+    this.triggerTurboStream(event.detail.url);
   }
 
   get href() {
@@ -62,6 +89,6 @@ export default class AsyncDialogController extends ApplicationController {
   }
 
   get method() {
-    return (this.element as HTMLLinkElement).dataset.turboMethod || 'GET';
+    return (this.element as HTMLLinkElement).dataset.turboMethod ?? 'GET';
   }
 }

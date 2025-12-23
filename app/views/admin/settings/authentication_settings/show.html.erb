@@ -32,8 +32,15 @@ See COPYRIGHT and LICENSE files for more details.
   {
     name: :login,
     path: admin_settings_authentication_path(tab: :login),
-    label: :"settings.authentication.login_and_sso",
+    label: :"settings.authentication.login",
     partial: "admin/settings/authentication_settings/login"
+  },
+  {
+    name: :sso,
+    path: admin_settings_authentication_path(tab: :sso),
+    label: :"settings.authentication.sso",
+    partial: "admin/settings/authentication_settings/sso",
+    enterprise_feature: :sso_auth_providers
   },
   {
     name: :registration,
@@ -55,7 +62,7 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_title { t("authentication.login_and_registration") }
     header.with_breadcrumbs(
       [{ href: admin_index_path, text: t(:label_administration) },
-       { href: admin_settings_authentication_path, text: t(:label_authentication) },
+       { href: admin_settings_authentication_path, text: t(:label_authentication), skip_for_mobile: true },
        t("authentication.login_and_registration")]
     )
     render_tab_header_nav(header, tabs)

@@ -3,7 +3,7 @@ sidebar_navigation:
   title: Edit work packages
   priority: 980
 description: How to edit work packages in OpenProject.
-keywords: edit work packages
+keywords: edit work packages, reminders, work package reminders, attachment, internal comment, bulk edit
 ---
 
 # Edit work packages
@@ -11,6 +11,7 @@ keywords: edit work packages
 | Feature                                                      | Documentation for                                            |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [Update a work package](#update-a-work-package)              | How to make a change to an existing work package.            |
+| [Add an internal comment (Enterprise add-on)](#internal-comments-enterprise-add-on) | How to leave work package comments with limited visibility.  |
 | [Update a work package in a table view](#update-a-work-package-in-a-work-package-table-view) | How to use the quick context menu in the work package table view. |
 | [Attach files to work packages](#attach-files-to-work-packages) | How to manually attach files to work packages.               |
 | [Set work package reminders](#work-package-reminders)        | How to set a reminder for a work package.                    |
@@ -22,7 +23,7 @@ keywords: edit work packages
 
 To edit a work package, double-click a work package row in [table view](../../work-packages/work-package-views/#table-view) or open the [split screen view](../../work-packages/work-package-views/#split-screen-view) to see the details.
 
-In the work package details, you can click in any field to update it, e.g. change the description, status, priority, assignee, or add a comment. 
+In the work package details, you can click in any field to update it, e.g. change the description, status, priority, assignee, or add a comment.
 
 > [!TIP]
 > You can also insert a page break into the description field if you intend to [export a work package in PDF format](../exporting/#pdf-report) and want to the description to be displayed on separate pages of a PDF report.
@@ -66,7 +67,7 @@ Please note, the status may differ from work package type. They can be configure
 
 To add a comment to a work package, open the [details view](../../work-packages/work-package-views/#full-screen-view) or the [split screen view](../../work-packages/work-package-views/#split-screen-view) of a work package. Under [Activity](../../../getting-started/work-packages-introduction/#activity-of-work-packages) tab you have a comment field at the bottom.
 
-> [!TIP] 
+> [!TIP]
 >
 > For narrower screens such as mobiles and tablets, the comment field may be displayed on the top, depending on your [Account settings](../../../user-guide/account-settings/).
 
@@ -90,9 +91,18 @@ To edit a work package comment click the **More (three dots)** icon at the right
 
 #### Copy a work package comment link
 
-You can copy a direct link to a specific work package comment in OpenProject. To do that, click the **More (three dots)** icon at the right side of the comment and select **Copy link to clipboard**. 
+You can copy a direct link to a specific work package comment in OpenProject. To do that, click the **More (three dots)** icon at the right side of the comment and select **Copy link to clipboard**.
 
 ![Copy a link to a work package comment in OpenProject](openproject_user_guide_wp_edit_comment_copy_link.png)
+
+### Internal comments (Enterprise add-on)
+
+[feature: internal_comments ]
+
+It is possible to add comments that are only visible to a select group of people. These are referred to as internal comments.
+
+Please refer to [this part of the user guide](../../activity/#internal-comments-enterprise-add-on) for more details.
+
 
 ### @ notification (mention)
 
@@ -117,15 +127,36 @@ You can manually upload files to work packages directly under the *Files* tab in
 
 Under the *Files* tab you will see the list of the all previously uploaded attachments, including file names, as well as which user uploaded an attachment and when. If no files were attached yet, the list will be empty.
 
+Attachments include files or images added to work package descriptions.
+
 You can remove an attachment by hovering over it and clicking the **Delete** icon.
 
 ![Delete a work package attachment in OpenProject](openproject_user_guide_wp_file_delete.png)
+
+> [!TIP]
+>
+> Attachments within work package comments (e.g. screenshots) will not be displayed under Files tab.
 
 ## Work package reminders
 
 If you want to be reminded about a work package at a later point in time, you can use the **Reminder** function. Click the **Reminder** (alarm clock) icon in the work package detailed view.
 
 ![Work package reminder icon in OpenProject](openproject_user_guide_wp_reminder_icon.png)
+
+A list with helpful pre-defined options will open, from which you can select:
+
+- tomorrow
+- in 3 days
+- in a week
+- in a month
+- at a particular date/time
+
+Selecting any of these options will display a modal. The time will be set to 9 am for the date you selected (apart from the last option). This modal allows you to adjust the pre-filled date and time and to add a note. This note will be visible when the reminder is triggered in Notification center.
+
+> [!TIP]
+> All the pre-defined reminder options will be set to 9 am of the selected date.
+
+![Pre-defined options for a work package reminder in OpenProject](openproject_user_guide_wp_reminder_quick_options.png)
 
 Specify the time and date on which you would like to be reminded and optionally add a note for more context. Then click the **Set reminder** button.
 
@@ -135,18 +166,15 @@ Once you set a reminder, you will see a confirmation message. The reminder icon 
 
 ![A badge to indicate a set reminder in OpenProject work package](openproject_user_guide_wp_reminder_badge.png)
 
-At the configured date and time, you will receive the reminder in [Notification center](../../notifications/#access-in-app-notifications). 
+At the configured date and time, you will receive the reminder in [Notification center](../../notifications/#access-in-app-notifications).
 
 ![Work package reminder in OpenProject notification center](openproject_user_guide_wp_set_reminder_notification.png)
 
->  [!NOTE] 
->
-> If multiple notifications exist for a single work package, the reminder will take precedence, showing the reminder note at the bottom of the  page. 
->
+> [!NOTE]
+> If multiple notifications exist for a single work package, the reminder will take precedence, showing the reminder note at the bottom of the  page.
 > In case a work package has both a reminder and date alert  notification set up, then the date alert is combined with the reminder note, so that both are visible.
 
 > [!TIP]
->
 > You can set to receive immediate notifications via e-mail for personal reminders. To do that, adjust your [account settings](../../account-settings/#email-reminders) accordingly.
 
 ## Watchers
@@ -154,7 +182,9 @@ At the configured date and time, you will receive the reminder in [Notification 
 ### How to add watchers to a work package
 
 <div class="glossary">
+
 **Watchers** can be added to a work package in order to notify members about changes. They will receive notifications according to their notification settings if changes are made to the respective work package.
+
 </div>
 
 To add watchers, open the work package [detailed view](../../work-packages/work-package-views/#full-screen-view), select the *Watchers* tab on the right hand side and choose the members you want to add with the drop-down menu or by starting to type their name.
@@ -190,7 +220,7 @@ Then you have the possibility to:
 * Open the fullscreen view of all selected work packages.
 * Bulk edit all selected work packages.
 * Bulk change of the project of all selected work packages.
-* Bulk copy all selected work packages, incl. the hierarchy relations (parent-child relations).
+* Bulk duplicate all selected work packages, incl. the hierarchy relations (parent-child relations).
 * Bulk delete all selected work packages.
 
 ![Bulk edit work packages in OpenProject](openproject_user_guide_wp_bulk_edit.png)
@@ -201,7 +231,7 @@ At the bottom of the page you can decide whether notifications about these chang
 
 ## Update a work package in a work package table view
 
-In the work package table view, you can not only open a single work package but also trigger direct actions such as logging time and costs, copying, downloading or deleting said work package. To access the quick context menu, simply right-click any work package in a work package table view and select the preferred action.
+In the work package table view, you can not only open a single work package but also trigger direct actions such as logging time and costs, duplicating, downloading or deleting said work package. To access the quick context menu, simply right-click any work package in a work package table view and select the preferred action.
 
 ![Quick context menu in OpenProject work package table](openproject_user_guide_wp_quick_context_menu.png)
 
@@ -212,14 +242,14 @@ You have the following options:
 - **Copy link to clipboard** - copies a short link to the selected work package to your clipboard.
 - **Log time** - opens a pop-up dialogue allowing you to [log time](../../time-and-costs/time-tracking/#log-time-in-the-work-package-view) directly to a work package without having to open it first.
 - **Log unit costs** - navigates you to the cost logging screen. Once you [log the costs](../../time-and-costs/cost-tracking/) and save the entry, you will return to the work package table view.
-- **Move to another project** - allows moving the selected work package to a different project. 
+- **Move to another project** - allows moving the selected work package to a different project.
 - **Duplicate** - opens a details view of a new work package on the right side of the screen. This new work package is an exact copy of the work package you selected, but you can adjust any details you would like to change and then save it.
 - **Duplicate in another project** - allows duplicating the selected work package to a different project.
 - **Delete** - deletes a work package. You will need to confirm the deletion.
 - **Download PDF** - downloads the selected work package as a PDF file.
 - **Download Atom** - downloads the selected work package as an Atom file.
 - **Indent hierarchy** - creates a child-parent relationship with the work package directly above. The work package you selected become the child work package. The work package directly above becomes the parent work package.
-- **Create new child** - opens a new work package on the right side of the screen. This new work package already has a child relationship to the work package you selected.  
+- **Create new child** - opens a new work package on the right side of the screen. This new work package already has a child relationship to the work package you selected.
 
 > [!TIP]
 > In OpenProject 14.5 the term *Copy a work package* was replaced by *Duplicate a work package*. *Change project* was replaced by *Move to another project*.

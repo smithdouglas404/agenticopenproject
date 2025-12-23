@@ -8,6 +8,7 @@ import { OPContextMenuService } from 'core-app/shared/components/op-context-menu
 
 @Component({
   templateUrl: './op-context-menu.html',
+  standalone: false,
 })
 export class OPContextMenuComponent {
   public items:OpContextMenuItem[];

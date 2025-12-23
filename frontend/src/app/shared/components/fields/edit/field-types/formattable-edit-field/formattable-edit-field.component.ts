@@ -37,6 +37,7 @@ import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 @Component({
   templateUrl: './formattable-edit-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FormattableEditFieldComponent extends EditFieldComponent implements OnInit, OnDestroy {
   public readonly field = this;
@@ -63,7 +64,7 @@ export class FormattableEditFieldComponent extends EditFieldComponent implements
     macros: 'none' as const,
     previewContext: this.previewContext,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-    options: { rtl: this.schema.options && this.schema.options.rtl },
+    options: { rtl: this.schema.options?.rtl },
     type: 'constrained',
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
     ...this.resource.getEditorContext(this.field.name),
@@ -135,7 +136,7 @@ export class FormattableEditFieldComponent extends EditFieldComponent implements
   }
 
   public get rawValue():string {
-    if (this.value && this.value.raw) {
+    if (this.value?.raw) {
       return this.value.raw;
     }
     return '';
@@ -146,7 +147,7 @@ export class FormattableEditFieldComponent extends EditFieldComponent implements
   }
 
   public isEmpty():boolean {
-    return !(this.value && this.value.raw);
+    return !(this.value?.raw);
   }
 
   protected initialize():void {

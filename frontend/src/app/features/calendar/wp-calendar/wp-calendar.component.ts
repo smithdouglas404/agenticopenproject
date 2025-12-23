@@ -45,7 +45,7 @@ import {
 } from '@fullcalendar/core';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -102,6 +102,7 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
     OpWorkPackagesCalendarService,
     OpCalendarService,
   ],
+  standalone: false,
 })
 export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implements OnInit {
   @ViewChild(FullCalendarComponent) ucCalendar:FullCalendarComponent;
@@ -245,7 +246,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
   }
 
   private initializeCalendar() {
-    const additionalOptions:{ [key:string]:unknown } = {
+    const additionalOptions:Record<string, unknown> = {
       locales: allLocales,
       locale: this.I18n.locale,
       height: '100%',
@@ -292,7 +293,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
           return;
         }
         const workPackage = event.extendedProps.workPackage as WorkPackageResource;
-        el.dataset.workPackageId = workPackage.id as string;
+        el.dataset.workPackageId = workPackage.id!;
       },
       eventResize: (resizeInfo:EventResizeDoneArg) => {
         const due = moment(resizeInfo.event.endStr).subtract(1, 'day').toDate();
@@ -337,11 +338,11 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       eventClick: (evt:EventClickArg) => {
         if (evt.event.extendedProps.meeting) {
           const meeting = evt.event.extendedProps.meeting as MeetingResource;
-          window.location.href = this.pathHelper.meetingPath(meeting.id as string);
+          window.location.href = this.pathHelper.meetingPath(meeting.id!);
         }
 
         if (evt.event.extendedProps.workPackage) {
-          const workPackageId = (evt.event.extendedProps.workPackage as WorkPackageResource).id as string;
+          const workPackageId = (evt.event.extendedProps.workPackage as WorkPackageResource).id!;
           // Currently the calendar widget is shown on multiple pages,
           // but only the calendar module itself is a partitioned query space which can deal with a split screen request
           if (this.$state.includes('calendar')) {
@@ -386,7 +387,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       return;
     }
 
-    const workPackageId = eventContainer.dataset.workPackageId as string;
+    const workPackageId = eventContainer.dataset.workPackageId!;
     this.workPackagesCalendar.showEventContextMenu({ workPackageId, event });
   }
 

@@ -39,8 +39,7 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { WeekdayService } from 'core-app/core/days/weekday.service';
 import { DayResourceService } from 'core-app/core/state/days/day.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
-import * as moment from 'moment-timezone';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment-timezone';
 import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
 
 export const DEFAULT_TIMESTAMP = 'PT0S';
@@ -130,7 +129,6 @@ export class WorkPackageViewBaselineService extends WorkPackageQueryStateService
 
   public lastWorkingDate():string {
     const date = moment().subtract(1, 'days');
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       if (this.isNonWorkingDay(date) || this.weekdaysService.isNonWorkingDay(date)) {
         date.subtract(1, 'days');

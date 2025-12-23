@@ -30,37 +30,148 @@
 
 require "spec_helper"
 
-RSpec.describe "Authentication Settings" do
+RSpec.describe "Authentication Settings", :js do
   shared_let(:admin) { create(:admin) }
 
   before do
     login_as(admin)
   end
 
-  describe "self registration settings" do
-    it "allows changing self registration options" do
-      visit admin_settings_authentication_path(tab: "registration")
+  describe "login settings" do
+    let(:login_page) { Pages::Admin::Authentication::Login.new }
 
-      # Test changing to "0" (disabled)
+    before do
+      login_page.visit!
+    end
+
+    it "allows changing autologin options" do
+      select "90 days", from: "Autologin"
+
+      login_page.save
+      Setting.clear_cache
+      login_page.reload!
+
+      expect(login_page).to have_select "Autologin", selected: "90 days"
+
+      select "disabled", from: "Autologin"
+
+      login_page.save
+      Setting.clear_cache
+      login_page.reload!
+
+      expect(login_page).to have_select "Autologin", selected: "disabled"
+    end
+
+    it "allows changing session expiration options" do
+      expect(login_page).to have_unchecked_field "Session expires"
+      expect(login_page).to have_no_field "Session expiration time after inactivity"
+
+      check "Session expires"
+      expect(login_page).to have_field "Session expiration time after inactivity"
+
+      fill_in "Session expiration time after inactivity", with: "30"
+
+      login_page.save
+      Setting.clear_cache
+      login_page.reload!
+
+      expect(login_page).to have_checked_field "Session expires"
+      expect(login_page).to have_field "Session expiration time after inactivity",
+                                       with: "30",
+                                       accessible_description: "minutes"
+
+      uncheck "Session expires"
+
+      login_page.save
+      Setting.clear_cache
+      login_page.reload!
+
+      expect(login_page).to have_unchecked_field "Session expires"
+      expect(login_page).to have_no_field "Session expiration time after inactivity"
+    end
+
+    it "allows changing logging options" do
+      expect(login_page).to have_unchecked_field "Log user login, name, and mail address for all requests"
+
+      check "Log user login, name, and mail address for all requests"
+
+      login_page.save
+      Setting.clear_cache
+      login_page.reload!
+
+      expect(login_page).to have_checked_field "Log user login, name, and mail address for all requests"
+
+      uncheck "Log user login, name, and mail address for all requests"
+
+      login_page.save
+      Setting.clear_cache
+      login_page.reload!
+
+      expect(login_page).to have_unchecked_field "Log user login, name, and mail address for all requests"
+    end
+
+    it "allows changing login redirect options" do
+      expect(login_page).to have_field "First login redirect", with: ""
+      expect(login_page).to have_field "After login redirect", with: ""
+
+      fill_in "First login redirect", with: "/my/page"
+      fill_in "After login redirect", with: "/projects/awesome-project"
+
+      login_page.save
+      Setting.clear_cache
+      login_page.reload!
+
+      expect(login_page).to have_field "First login redirect", with: "/my/page"
+      expect(login_page).to have_field "After login redirect", with: "/projects/awesome-project"
+
+      fill_in "First login redirect", with: "/projects/failing-project"
+
+      login_page.save
+      Setting.clear_cache
+      login_page.reload!
+
+      expect(login_page).to have_field "First login redirect", with: "/projects/failing-project"
+      expect(login_page).to have_field "After login redirect", with: "/projects/awesome-project"
+    end
+  end
+
+  describe "self registration settings" do
+    let(:registration_page) { Pages::Admin::Authentication::Registration.new }
+
+    it "allows changing self registration options" do
+      registration_page.visit!
+
       choose I18n.t(:setting_self_registration_disabled)
-      click_button "Save"
-      expect(page).to have_field("settings[self_registration]",
-                                 with: Setting::SelfRegistration.value(key: :disabled))
+      registration_page.expect_hidden_unsupervised_self_registration_warning
+      registration_page.save
+      Setting.clear_cache
+      expect(Setting::SelfRegistration.disabled?).to be(true)
+      registration_page.expect_self_registration_selected(:disabled)
+      registration_page.expect_hidden_unsupervised_self_registration_warning
 
       choose I18n.t(:setting_self_registration_activation_by_email)
-      click_button "Save"
-      expect(page).to have_field("settings[self_registration]",
-                                 with: Setting::SelfRegistration.value(key: :activation_by_email))
+      registration_page.expect_visible_unsupervised_self_registration_warning
+      registration_page.save
+      Setting.clear_cache
+      expect(Setting::SelfRegistration.by_email?).to be(true)
+      registration_page.expect_self_registration_selected(:activation_by_email)
+      registration_page.expect_visible_unsupervised_self_registration_warning
 
       choose I18n.t(:setting_self_registration_manual_activation)
-      click_button "Save"
-      expect(page).to have_field("settings[self_registration]",
-                                 with: Setting::SelfRegistration.value(key: :manual_activation))
+      registration_page.expect_hidden_unsupervised_self_registration_warning
+      registration_page.save
+      Setting.clear_cache
+      expect(Setting::SelfRegistration.manual?).to be(true)
+      registration_page.expect_self_registration_selected(:manual_activation)
+      registration_page.expect_hidden_unsupervised_self_registration_warning
 
       choose I18n.t(:setting_self_registration_automatic_activation)
-      click_button "Save"
-      expect(page).to have_field("settings[self_registration]",
-                                 with: Setting::SelfRegistration.value(key: :automatic_activation))
+      registration_page.expect_visible_unsupervised_self_registration_warning
+      registration_page.save
+      Setting.clear_cache
+      expect(Setting::SelfRegistration.automatic?).to be(true)
+      registration_page.expect_self_registration_selected(:automatic_activation)
+      registration_page.expect_visible_unsupervised_self_registration_warning
     end
   end
 end

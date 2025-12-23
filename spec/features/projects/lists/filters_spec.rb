@@ -37,11 +37,18 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
 
   shared_let(:custom_field) { create(:text_project_custom_field) }
   shared_let(:invisible_custom_field) { create(:project_custom_field, admin_only: true) }
+  shared_let(:integer_custom_field) { create(:integer_project_custom_field) }
 
-  shared_let(:project) { create(:project, name: "Plain project", identifier: "plain-project") }
+  shared_let(:project) do
+    create(:project, name: "Plain project", identifier: "plain-project") do |project|
+      project.custom_field_values = { integer_custom_field.id => 41 }
+      project.save!
+    end
+  end
   shared_let(:public_project) do
     create(:project, name: "Public Pr", identifier: "public-pr", public: true) do |project|
-      project.custom_field_values = { invisible_custom_field.id => "Secret CF" }
+      project.custom_field_values = { invisible_custom_field.id => "Secret CF", integer_custom_field.id => 42 }
+      project.save!
     end
   end
   shared_let(:development_project) { create(:project, name: "Development project", identifier: "development-project") }
@@ -168,9 +175,9 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
 
       # Test visibility of 'more' menu list items
       projects_page.activate_menu_of(parent_project) do |menu|
-        expect(menu).to have_text("Add to favorites")
         expect(menu).to have_text("Unarchive")
         expect(menu).to have_text("Delete")
+        expect(menu).to have_no_text("Add to favorites")
         expect(menu).to have_no_text("Archive")
         expect(menu).to have_no_text("Copy")
         expect(menu).to have_no_text("Settings")
@@ -663,7 +670,6 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
       projects_page.expect_projects_not_listed(public_project)
 
       # Applies the filters to the filters section
-      projects_page.toggle_filters_section
       projects_page.expect_filter_set "active"
       projects_page.expect_filter_set "name_and_identifier"
 
@@ -672,92 +678,183 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
     end
   end
 
+  context "when filtering via calculated values",
+          with_ee: %i[calculated_values],
+          with_flag: { calculated_value_project_attribute: true } do
+    let(:projects_with_calculated_value) do
+      [project, public_project]
+    end
+
+    let!(:calculated_value) do
+      create(:calculated_value_project_custom_field,
+             :skip_validations,
+             name: "Calculated value",
+             formula: "1.5 * {{cf_#{integer_custom_field.id}}}",
+             projects: projects_with_calculated_value)
+    end
+
+    let(:filters) do
+      JSON.dump([{ active: { operator: "=", values: ["t"] } },
+                 { "cf_#{calculated_value.id}": { operator: ">=", values: ["63"] } }])
+    end
+
+    before do
+      login_as(admin) # permitted user necessary to perform the calculations
+
+      projects_with_calculated_value.each do |proj|
+        proj.calculate_custom_fields([calculated_value])
+        proj.save!
+      end
+
+      Setting.enabled_projects_columns += [calculated_value.column_name]
+    end
+
+    it "allows filtering by the calculated value" do
+      visit "#{projects_page.path}?filters=#{filters}"
+
+      projects_page.expect_projects_not_listed(project, development_project)
+      projects_page.expect_projects_listed(public_project)
+    end
+  end
+
   describe "filtering for any lifecycle step" do
-    context "with the feature flag disabled", with_flag: { stages_and_gates: false } do
+    context "with the necessary permissions" do
+      before do
+        project_role.add_permission!(:view_project_phases)
+      end
+
+      it "allows filtering the projects by project phase elements" do
+        load_and_open_filters manager
+
+        projects_page.expect_filter_available("Project phase: Any")
+
+        projects_page.set_filter("project_phase_any",
+                                 "Project phase: Any",
+                                 "on",
+                                 [Time.zone.today])
+
+        projects_page.expect_projects_not_listed(development_project)
+        projects_page.expect_projects_in_order(project, public_project)
+
+        projects_page.remove_filter("project_phase_any")
+
+        projects_page.expect_projects_in_order(development_project, project, public_project)
+
+        projects_page.set_filter("project_phase_any",
+                                 "Project phase: Any",
+                                 "today")
+
+        projects_page.expect_projects_not_listed(development_project)
+        projects_page.expect_projects_in_order(project, public_project)
+
+        projects_page.remove_filter("project_phase_any")
+
+        projects_page.expect_projects_in_order(development_project, project, public_project)
+
+        projects_page.set_filter("project_phase_any",
+                                 "Project phase: Any",
+                                 "between",
+                                 [Time.zone.today - 5.days, Time.zone.today + 10.days])
+
+        projects_page.expect_projects_not_listed(development_project)
+        projects_page.expect_projects_in_order(project, public_project)
+
+        projects_page.remove_filter("project_phase_any")
+
+        projects_page.expect_projects_in_order(development_project, project, public_project)
+
+        projects_page.set_filter("project_phase_any",
+                                 "Project phase: Any",
+                                 "this week")
+
+        projects_page.expect_projects_not_listed(development_project)
+        projects_page.expect_projects_in_order(project, public_project)
+
+        projects_page.remove_filter("project_phase_any")
+
+        projects_page.expect_projects_in_order(development_project, project, public_project)
+
+        projects_page.set_filter("project_phase_any",
+                                 "Project phase: Any",
+                                 "is empty")
+
+        projects_page.expect_projects_not_listed(public_project, development_project, project)
+      end
+    end
+
+    context "without the necessary permissions" do
       it "does not have the lifecycle step (any) filter" do
         load_and_open_filters manager
 
         projects_page.expect_filter_not_available("Project phase: Any")
       end
     end
-
-    context "with the feature flag enabled", with_flag: { stages_and_gates: true } do
-      context "with the necessary permissions" do
-        before do
-          project_role.add_permission!(:view_project_phases)
-        end
-
-        it "allows filtering the projects by project phase elements" do
-          load_and_open_filters manager
-
-          projects_page.expect_filter_available("Project phase: Any")
-
-          projects_page.set_filter("project_phase_any",
-                                   "Project phase: Any",
-                                   "on",
-                                   [Time.zone.today])
-
-          projects_page.expect_projects_not_listed(development_project)
-          projects_page.expect_projects_in_order(project, public_project)
-
-          projects_page.remove_filter("project_phase_any")
-
-          projects_page.expect_projects_in_order(development_project, project, public_project)
-
-          projects_page.set_filter("project_phase_any",
-                                   "Project phase: Any",
-                                   "today")
-
-          projects_page.expect_projects_not_listed(development_project)
-          projects_page.expect_projects_in_order(project, public_project)
-
-          projects_page.remove_filter("project_phase_any")
-
-          projects_page.expect_projects_in_order(development_project, project, public_project)
-
-          projects_page.set_filter("project_phase_any",
-                                   "Project phase: Any",
-                                   "between",
-                                   [Time.zone.today - 5.days, Time.zone.today + 10.days])
-
-          projects_page.expect_projects_not_listed(development_project)
-          projects_page.expect_projects_in_order(project, public_project)
-
-          projects_page.remove_filter("project_phase_any")
-
-          projects_page.expect_projects_in_order(development_project, project, public_project)
-
-          projects_page.set_filter("project_phase_any",
-                                   "Project phase: Any",
-                                   "this week")
-
-          projects_page.expect_projects_not_listed(development_project)
-          projects_page.expect_projects_in_order(project, public_project)
-
-          projects_page.remove_filter("project_phase_any")
-
-          projects_page.expect_projects_in_order(development_project, project, public_project)
-
-          projects_page.set_filter("project_phase_any",
-                                   "Project phase: Any",
-                                   "is empty")
-
-          projects_page.expect_projects_not_listed(public_project, development_project, project)
-        end
-      end
-
-      context "without the necessary permissions" do
-        it "does not have the lifecycle step (any) filter" do
-          load_and_open_filters manager
-
-          projects_page.expect_filter_not_available("Project phase: Any")
-        end
-      end
-    end
   end
 
   describe "filtering for a specific lifecycle stage" do
-    context "with the feature flag disabled", with_flag: { stages_and_gates: false } do
+    context "with the necessary permissions" do
+      before do
+        project_role.add_permission!(:view_project_phases)
+      end
+
+      it "allows filtering the projects by the project phase stage" do
+        load_and_open_filters manager
+
+        projects_page.set_filter("project_phase_#{stage.definition_id}",
+                                 "Project phase: #{stage.name}",
+                                 "on",
+                                 [Time.zone.today + 5.days])
+
+        projects_page.expect_projects_not_listed(development_project, public_project)
+        projects_page.expect_projects_in_order(project)
+
+        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+
+        projects_page.expect_projects_in_order(development_project, project, public_project)
+
+        projects_page.set_filter("project_phase_#{stage.definition_id}",
+                                 "Project phase: #{stage.name}",
+                                 "today")
+
+        projects_page.expect_projects_not_listed(development_project, public_project)
+        projects_page.expect_projects_in_order(project)
+
+        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+
+        projects_page.expect_projects_in_order(development_project, project, public_project)
+
+        projects_page.set_filter("project_phase_#{stage.definition_id}",
+                                 "Project phase: #{stage.name}",
+                                 "between",
+                                 [Time.zone.today - 5.days, Time.zone.today + 10.days])
+
+        projects_page.expect_projects_not_listed(development_project, public_project)
+        projects_page.expect_projects_in_order(project)
+
+        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+
+        projects_page.expect_projects_in_order(development_project, project, public_project)
+
+        projects_page.set_filter("project_phase_#{stage.definition_id}",
+                                 "Project phase: #{stage.name}",
+                                 "this week")
+
+        projects_page.expect_projects_not_listed(development_project, public_project)
+        projects_page.expect_projects_in_order(project)
+
+        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+
+        projects_page.expect_projects_in_order(development_project, project, public_project)
+
+        projects_page.set_filter("project_phase_#{stage.definition_id}",
+                                 "Project phase: #{stage.name}",
+                                 "is empty")
+
+        projects_page.expect_projects_not_listed(public_project, development_project, project)
+      end
+    end
+
+    context "without the necessary permissions" do
       it "does not have the lifecycle (specific stage) filter" do
         load_and_open_filters manager
 
@@ -765,63 +862,63 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
       end
     end
 
-    context "with the feature flag enabled", with_flag: { stages_and_gates: true } do
+    describe "filtering for a specific Project phase gate" do
       context "with the necessary permissions" do
         before do
           project_role.add_permission!(:view_project_phases)
         end
 
-        it "allows filtering the projects by the project phase stage" do
+        it "allows filtering the projects by the project phase gate" do
           load_and_open_filters manager
 
-          projects_page.set_filter("project_phase_#{stage.definition_id}",
-                                   "Project phase: #{stage.name}",
+          projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
+                                   "Project phase gate: #{gate.finish_gate_name}",
                                    "on",
-                                   [Time.zone.today + 5.days])
+                                   [Time.zone.today])
 
-          projects_page.expect_projects_not_listed(development_project, public_project)
-          projects_page.expect_projects_in_order(project)
+          projects_page.expect_projects_not_listed(development_project, project)
+          projects_page.expect_projects_in_order(public_project)
 
-          projects_page.remove_filter("project_phase_#{stage.definition_id}")
+          projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
 
           projects_page.expect_projects_in_order(development_project, project, public_project)
 
-          projects_page.set_filter("project_phase_#{stage.definition_id}",
-                                   "Project phase: #{stage.name}",
+          projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
+                                   "Project phase gate: #{gate.finish_gate_name}",
                                    "today")
 
-          projects_page.expect_projects_not_listed(development_project, public_project)
-          projects_page.expect_projects_in_order(project)
+          projects_page.expect_projects_not_listed(development_project, project)
+          projects_page.expect_projects_in_order(public_project)
 
-          projects_page.remove_filter("project_phase_#{stage.definition_id}")
+          projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
 
           projects_page.expect_projects_in_order(development_project, project, public_project)
 
-          projects_page.set_filter("project_phase_#{stage.definition_id}",
-                                   "Project phase: #{stage.name}",
+          projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
+                                   "Project phase gate: #{gate.finish_gate_name}",
                                    "between",
                                    [Time.zone.today - 5.days, Time.zone.today + 10.days])
 
-          projects_page.expect_projects_not_listed(development_project, public_project)
-          projects_page.expect_projects_in_order(project)
+          projects_page.expect_projects_not_listed(development_project, project)
+          projects_page.expect_projects_in_order(public_project)
 
-          projects_page.remove_filter("project_phase_#{stage.definition_id}")
+          projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
 
           projects_page.expect_projects_in_order(development_project, project, public_project)
 
-          projects_page.set_filter("project_phase_#{stage.definition_id}",
-                                   "Project phase: #{stage.name}",
+          projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
+                                   "Project phase gate: #{gate.finish_gate_name}",
                                    "this week")
 
-          projects_page.expect_projects_not_listed(development_project, public_project)
-          projects_page.expect_projects_in_order(project)
+          projects_page.expect_projects_not_listed(development_project, project)
+          projects_page.expect_projects_in_order(public_project)
 
-          projects_page.remove_filter("project_phase_#{stage.definition_id}")
+          projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
 
           projects_page.expect_projects_in_order(development_project, project, public_project)
 
-          projects_page.set_filter("project_phase_#{stage.definition_id}",
-                                   "Project phase: #{stage.name}",
+          projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
+                                   "Project phase gate: #{gate.finish_gate_name}",
                                    "is empty")
 
           projects_page.expect_projects_not_listed(public_project, development_project, project)
@@ -829,92 +926,10 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
       end
 
       context "without the necessary permissions" do
-        it "does not have the lifecycle (specific stage) filter" do
-          load_and_open_filters manager
-
-          projects_page.expect_filter_not_available("Project phase: #{stage.name}")
-        end
-      end
-    end
-
-    describe "filtering for a specific Project phase gate" do
-      context "with the feature flag disabled", with_flag: { stages_and_gates: false } do
         it "does not have the lifecycle (specific gate) filter" do
           load_and_open_filters manager
 
           projects_page.expect_filter_not_available("Project phase gate: #{gate.name}")
-        end
-      end
-
-      context "with the feature flag enabled", with_flag: { stages_and_gates: true } do
-        context "with the necessary permissions" do
-          before do
-            project_role.add_permission!(:view_project_phases)
-          end
-
-          it "allows filtering the projects by the project phase gate" do
-            load_and_open_filters manager
-
-            projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
-                                     "Project phase gate: #{gate.finish_gate_name}",
-                                     "on",
-                                     [Time.zone.today])
-
-            projects_page.expect_projects_not_listed(development_project, project)
-            projects_page.expect_projects_in_order(public_project)
-
-            projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
-
-            projects_page.expect_projects_in_order(development_project, project, public_project)
-
-            projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
-                                     "Project phase gate: #{gate.finish_gate_name}",
-                                     "today")
-
-            projects_page.expect_projects_not_listed(development_project, project)
-            projects_page.expect_projects_in_order(public_project)
-
-            projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
-
-            projects_page.expect_projects_in_order(development_project, project, public_project)
-
-            projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
-                                     "Project phase gate: #{gate.finish_gate_name}",
-                                     "between",
-                                     [Time.zone.today - 5.days, Time.zone.today + 10.days])
-
-            projects_page.expect_projects_not_listed(development_project, project)
-            projects_page.expect_projects_in_order(public_project)
-
-            projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
-
-            projects_page.expect_projects_in_order(development_project, project, public_project)
-
-            projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
-                                     "Project phase gate: #{gate.finish_gate_name}",
-                                     "this week")
-
-            projects_page.expect_projects_not_listed(development_project, project)
-            projects_page.expect_projects_in_order(public_project)
-
-            projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
-
-            projects_page.expect_projects_in_order(development_project, project, public_project)
-
-            projects_page.set_filter("project_finish_gate_#{gate.definition_id}",
-                                     "Project phase gate: #{gate.finish_gate_name}",
-                                     "is empty")
-
-            projects_page.expect_projects_not_listed(public_project, development_project, project)
-          end
-        end
-
-        context "without the necessary permissions" do
-          it "does not have the lifecycle (specific gate) filter" do
-            load_and_open_filters manager
-
-            projects_page.expect_filter_not_available("Project phase gate: #{gate.name}")
-          end
         end
       end
     end

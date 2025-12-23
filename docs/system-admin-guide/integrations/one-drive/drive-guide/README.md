@@ -2,17 +2,17 @@
 sidebar_navigation:
   title: Drive Guide
   priority: 600
-description: Drive guide for OneDrive/SharePoint integration setup in OpenProject
-keywords: OneDrive/SharePoint file storage integration, OneDrive, SharePoint, DriveID, Azure, Drive ID
+description: Drive guide for OneDrive integration setup in OpenProject
+keywords: OneDrive file storage integration, OneDrive, SharePoint, DriveID, Azure, Drive ID
 ---
 
 # Drive Guide
 
 ## Configure drive for automatic management
 
-If you need a OneDrive/SharePoint drive configured for using the "Automatically managed project folders" file storage
-option, there are some preliminary steps to take. Otherwise, if the drive will to be used in a file storage with the
-permission management still based within OneDrive/SharePoint, you should skip these steps and continue
+If you need a OneDrive drive inside a SharePoint site configured for using the "Automatically managed project folders"
+file storage option, there are some preliminary steps to take. Otherwise, if the drive will to be used in a file storage
+with the permission management still based within OneDrive, you should skip these steps and continue
 with [obtaining the drive id](./#how-to-obtain-a-drive-id).
 
 > [!IMPORTANT]
@@ -51,7 +51,7 @@ Once this is done, there should be no permissions left assigned to the document 
 
 ## How to obtain a drive ID
 
-To configure a OneDrive/SharePoint storage you will need the drive ID of the drive you want to connect to OpenProject.
+To configure a OneDrive file storage you will need the drive ID of the drive you want to connect to OpenProject.
 Usually this will be a drive within a SharePoint site or a group.
 
 The easiest way to get this ID is by using the Microsoft GRAPH API.
@@ -81,22 +81,20 @@ GET https://graph.microsoft.com/v1.0/sites/<SITE_ID>/drives
 ```
 
 This will result in a list of drives. You can select the correct drive by its `name` and take the value of the `ID`.
-With this value you can fully configure the OneDrive/SharePoint integration in OpenProject.
+With this value you can fully configure the OneDrive integration in OpenProject.
 
 ## Step-by-step guide with examples
 
 In this section we provide a few examples, in which we demonstrate how to go through the steps mentioned above with a
 specific toolset.
+
 > [!NOTE]
 > Following examples are explicitly written for this toolset and other mentioned preconditions, hence deviating
 > from the preconditions will cause the example to deviate.
 
 ### Example 1: Microsoft GRAPH explorer
 
-Microsoft provides a web application, which can browse the GRAPH API. This tool can be
-found [here](https://developer.microsoft.com/en-us/graph/graph-explorer). This method only works, if the drive is not
-configured as described in the section
-about [configuring a drive for automatic management](./#configure-drive-for-automatic-management), so the better
+Microsoft provides a web application, which can browse the GRAPH API. This tool can be found [here](https://developer.microsoft.com/en-us/graph/graph-explorer). This method only works, if the drive is not configured as described in the section about [configuring a drive for automatic management](./#configure-drive-for-automatic-management), so the better
 alternative is [example 2](./#example-2-terminal).
 
 #### Preconditions
@@ -210,7 +208,7 @@ There is a way to get all necessary information by executing the web requests fr
 > **IMPORTANT, please read**: Setting the API permission `Sites.Read.All` to the `Application` level imposes an
 > undeniable security risk.
 
-If the client credentials would get leaked, any client can read sites and their content by just using those credentials.
+If the client credentials get leaked, any client can read sites and their content by just using those credentials.
 It is highly recommended to remove that API permission after using this method to get the drive ID.
 
 #### How to
@@ -228,7 +226,7 @@ curl -H "Content-Type: application/x-www-form-urlencoded" \
   'https://login.microsoftonline.com/<TENANT_ID>/oauth2/v2.0/token' | jq .access_token
 ```
 
-- The result is a valid access that is needed in the following requests.
+- The result is a valid access token that is needed in the following requests.
 - Fetch the hostname of the tenant (e.g. `example.sharepoint.com`).
 - Go to the SharePoint website, where the drive you want to connect can be found.
   - Fetch the relative path from the browser's URL field (e.g. `/sites/mysharepointsite`).

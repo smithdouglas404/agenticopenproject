@@ -32,8 +32,8 @@ module Meetings
   class DeleteService < ::BaseServices::Delete
     protected
 
-    def after_validate(_, call)
-      send_cancellation_mail(model)
+    def after_validate(call)
+      send_cancellation_mail(model) if model.notify?
       cancel_scheduled_meeting(model)
 
       call
@@ -44,6 +44,10 @@ module Meetings
         MeetingMailer
           .cancelled(meeting, participant.user, User.current)
           .deliver_now
+      rescue StandardError => e
+        Rails.logger.error do
+          "Failed to deliver meeting cancellation for meeting #{meeting.id} to #{participant.user.mail}: #{e.message}"
+        end
       end
     end
 

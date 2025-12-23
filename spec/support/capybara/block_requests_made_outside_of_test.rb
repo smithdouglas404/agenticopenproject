@@ -49,7 +49,7 @@ end
 RSpec.configure do |config|
   Capybara.app = RequestsBlocker.new(Capybara.app)
 
-  config.before(:each, type: :feature) do
+  config.before do
     Capybara.app.unblock_requests!
   end
 

@@ -29,8 +29,7 @@
 require "spec_helper"
 require_relative "../support/pages/backlogs"
 
-RSpec.describe "Backlogs in backlog view", :js,
-               :selenium do
+RSpec.describe "Backlogs in backlog view", :js do
   let!(:project) do
     create(:project,
            types: [story, task],
@@ -130,11 +129,12 @@ RSpec.describe "Backlogs in backlog view", :js,
       .expect_story_not_in_sprint(sprint_story1, sprint)
 
     # The backlogs can be folded by default
-    visit my_settings_path
+    visit my_interface_path
 
     check "Show versions folded"
 
-    click_button "Save"
+    click_button "Update backlogs module"
+    expect_and_dismiss_flash(message: "Account was successfully updated.")
 
     backlogs_page.visit!
 

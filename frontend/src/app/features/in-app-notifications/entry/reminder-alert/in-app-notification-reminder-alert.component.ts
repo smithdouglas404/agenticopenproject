@@ -15,6 +15,7 @@ import { IInAppNotificationDetailsResource, INotification } from 'core-app/core/
   styleUrls: ['./in-app-notification-reminder-alert.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class InAppNotificationReminderAlertComponent implements OnInit {
   @Input() aggregatedNotifications:INotification[];

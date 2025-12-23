@@ -3,7 +3,8 @@
     primer_form_with(
       model: @meeting_agenda_item,
       method: @method,
-      url: @submit_path
+      url: @submit_path,
+      namespace: "form_#{wrapper_uniq_by}"
     ) do |f|
       grid_layout("op-meeting-agenda-item-form", tag: :div) do |grid|
         grid.with_area(:title) do

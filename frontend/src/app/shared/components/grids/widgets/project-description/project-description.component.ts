@@ -43,6 +43,7 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
   providers: [
     HalResourceEditingService,
   ],
+  standalone: false,
 })
 export class WidgetProjectDescriptionComponent extends AbstractWidgetComponent implements OnInit {
   public project$:Observable<ProjectResource>;

@@ -36,8 +36,8 @@ keywords: feature requests, ideas, open feature request
 
 **Example:**
 
-AS an OpenProject user<br>
-I WANT to only show the allowed status fields as active for which a status transition is allowed based on the workflow<br>
+AS an OpenProject user  
+I WANT to only show the allowed status fields as active for which a status transition is allowed based on the workflow  
 SO THAT I am clearly aware which status transitions are allowed before doing them.
 
 ### Acceptance criteria

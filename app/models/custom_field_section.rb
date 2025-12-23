@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,9 +29,23 @@
 #++
 
 class CustomFieldSection < ApplicationRecord
+  OVERVIEW__SIDEBAR_KEY = "sidebar"
+  OVERVIEW__MAIN_AREA_KEY = "main_area"
+  DEFAULT_OVERVIEW_KEY = OVERVIEW__SIDEBAR_KEY.freeze
+
   acts_as_list scope: [:type]
 
   validates :name, presence: true
 
   default_scope { order(:position) }
+
+  store_attribute :display_representation, :overview, :string
+
+  def shown_in_overview_sidebar?
+    overview == OVERVIEW__SIDEBAR_KEY
+  end
+
+  def shown_in_overview_main_area?
+    overview == OVERVIEW__MAIN_AREA_KEY
+  end
 end

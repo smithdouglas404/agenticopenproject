@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -62,7 +64,7 @@ class WorkPackages::BulkController < ApplicationController
 
       respond_to do |format|
         format.html do
-          redirect_back_or_default(project_work_packages_path(@work_packages.first.project))
+          redirect_to (project_work_packages_path(@work_packages.first.project))
         end
         format.json do
           head :ok

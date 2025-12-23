@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
   templateUrl: './pause-reminders.component.html',
   styleUrls: ['./pause-reminders.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class PauseRemindersComponent implements OnInit {
   form:UntypedFormGroup;

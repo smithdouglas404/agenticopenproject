@@ -45,6 +45,7 @@ import { StaticAttributeHelpTextModalComponent } from './static-attribute-help-t
   selector: 'opce-static-attribute-help-text',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './static-attribute-help-text.component.html',
+  standalone: false,
 })
 export class StaticAttributeHelpTextComponent {
   // Attribute pass the modal title and content

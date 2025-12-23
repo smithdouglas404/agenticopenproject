@@ -27,6 +27,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   providers: [
     CustomTextEditFieldService,
   ],
+  standalone: false,
 })
 export class WidgetCustomTextComponent extends AbstractWidgetComponent implements OnInit, OnChanges, OnDestroy {
   protected currentRawText:string;
@@ -37,7 +38,7 @@ export class WidgetCustomTextComponent extends AbstractWidgetComponent implement
     attachments: this.I18n.t('js.label_attachments'),
   };
 
-  @ViewChild('displayContainer') readonly displayContainer:ElementRef;
+  @ViewChild('displayContainer') readonly displayContainer:ElementRef<HTMLElement>;
 
   constructor(
     protected I18n:I18nService,

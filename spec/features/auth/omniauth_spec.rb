@@ -34,15 +34,19 @@ RSpec.describe "Omniauth authentication" do
   # Load ViewAccountLoginAuthProvider to have this spec passing
   OpenProject::Hooks::ViewAccountLoginAuthProvider
 
+  let(:mail) { "omnibob@example.com" }
+  let(:login) { "omnibob" }
+  let(:firstname) { "omni" }
+  let(:lastname) { "bob" }
   let(:user) do
     create(:user,
            force_password_change: false,
-           identity_url: "developer:omnibob@example.com",
-           login: "omnibob",
-           mail: "omnibob@example.com",
-           firstname: "omni",
-           lastname: "bob")
+           login:,
+           mail:,
+           firstname:,
+           lastname:)
   end
+  let(:user_menu) { Components::UserMenu.new }
 
   before do
     @omniauth_test_mode = OmniAuth.config.test_mode
@@ -64,7 +68,7 @@ RSpec.describe "Omniauth authentication" do
     translation.scan(/(^.*) %\{/).first.first
   end
 
-  context "sign in existing user" do
+  describe "existing user sign in" do
     it "redirects to back url" do
       visit account_lost_password_path
       click_link("Omniauth Developer", match: :first, visible: :all)
@@ -87,7 +91,7 @@ RSpec.describe "Omniauth authentication" do
       fill_in("email", with: user.mail)
       click_link_or_button "Sign In"
 
-      expect(page).to have_link("omni bob")
+      user_menu.expect_user_shown "omni bob"
       expect(page).to have_link("Sign out")
     end
 
@@ -104,6 +108,9 @@ RSpec.describe "Omniauth authentication" do
         click_link_or_button "Sign In"
 
         expect(current_path).to eql my_account_path
+
+        # Expect the dropdown menu to be the logged in one
+        expect(page).to have_test_selector "op-app-header--user-menu-button"
       end
     end
   end
@@ -141,16 +148,16 @@ RSpec.describe "Omniauth authentication" do
 
       SeleniumHubWaiter.wait
       # login form developer strategy
-      fill_in("first_name", with: user.firstname)
+      fill_in("first_name", with: firstname)
       # intentionally do not supply last_name
-      fill_in("email", with: user.mail)
+      fill_in("email", with: mail)
       click_link_or_button "Sign In"
 
       expect(page).to have_content "Last name can't be blank"
       # on register form, we are prompted for a last name
       within("#content") do
         SeleniumHubWaiter.wait
-        fill_in("user_lastname", with: user.lastname)
+        fill_in("user_lastname", with: lastname)
         click_link_or_button "Create"
       end
 
@@ -159,20 +166,11 @@ RSpec.describe "Omniauth authentication" do
     end
   end
 
-  context "register on the fly",
-          with_settings: {
-            self_registration?: true,
-            self_registration: Setting::SelfRegistration.automatic
-          } do
-    let(:user) do
-      User.new(force_password_change: false,
-               identity_url: "developer:omnibob@example.com",
-               login: "omnibob",
-               mail: "omnibob@example.com",
-               firstname: "omni",
-               lastname: "bob")
-    end
-
+  describe "on-the-fly registration",
+           with_settings: {
+             self_registration?: true,
+             self_registration: Setting::SelfRegistration.automatic
+           } do
     it_behaves_like "omniauth user registration"
 
     it "redirects to homescreen" do
@@ -181,15 +179,15 @@ RSpec.describe "Omniauth authentication" do
 
       SeleniumHubWaiter.wait
       # login form developer strategy
-      fill_in("first_name", with: user.firstname)
+      fill_in("first_name", with: firstname)
       # intentionally do not supply last_name
-      fill_in("email", with: user.mail)
+      fill_in("email", with: mail)
       click_link_or_button "Sign In"
 
       # on register form, we are prompted for a last name
       within("#content") do
         SeleniumHubWaiter.wait
-        fill_in("user_lastname", with: user.lastname)
+        fill_in("user_lastname", with: lastname)
         click_link_or_button "Create"
       end
 
@@ -202,10 +200,10 @@ RSpec.describe "Omniauth authentication" do
     end
   end
 
-  context "registration by email",
-          with_settings: {
-            self_registration: Setting::SelfRegistration.by_email
-          } do
+  describe "email registration",
+           with_settings: {
+             self_registration: Setting::SelfRegistration.by_email
+           } do
     shared_examples "registration with registration by email" do
       it "still automatically activates the omniauth account" do
         visit login_path
@@ -236,7 +234,7 @@ RSpec.describe "Omniauth authentication" do
     end
   end
 
-  context "error occurs" do
+  describe "error handling" do
     shared_examples "omniauth signin error" do
       it "fails with generic error message" do
         # set omniauth to test mode will redirect all calls to omniauth

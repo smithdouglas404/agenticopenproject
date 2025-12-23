@@ -39,33 +39,39 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "rendering" do
                   updated_at: DateTime.now - 3.hours,
                   hours:,
                   activity:,
-                  project:,
-                  work_package:,
+                  project: workspace,
+                  entity: work_package,
                   user:)
   end
-  let(:project) { build_stubbed(:project) }
-  let(:work_package) { build_stubbed(:work_package, project:) }
+  let(:workspace) { build_stubbed(:project) }
+  let(:work_package) { build_stubbed(:work_package, project: workspace || build_stubbed(:project)) }
+  let(:meeting) { build_stubbed(:meeting, project: workspace) }
   let(:activity) { build_stubbed(:time_entry_activity) }
   let(:user) { build_stubbed(:user) }
   let(:current_user) { user }
   let(:hours) { 5 }
+  let(:embed_links) { true }
   let(:permissions) do
     [:edit_time_entries]
   end
   let(:representer) do
-    described_class.create(time_entry, current_user:, embed_links: true)
+    described_class.create(time_entry, current_user:, embed_links:)
   end
 
-  subject { representer.to_json }
+  subject(:generated) { representer.to_json }
 
   before do
     mock_permissions_for(current_user) do |mock|
-      mock.allow_in_project *permissions, project:
+      mock.allow_in_project *permissions, project: workspace if workspace
     end
 
     allow(time_entry)
       .to receive(:available_custom_fields)
       .and_return([])
+  end
+
+  it "fulfills the documented schema" do
+    expect(generated).to match_json_schema.from_docs("time_entry_model")
   end
 
   include_context "eager loaded work package representer"
@@ -76,16 +82,38 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "rendering" do
       let(:href) { api_v3_paths.time_entry time_entry.id }
     end
 
-    it_behaves_like "has a titled link" do
-      let(:link) { "project" }
-      let(:href) { api_v3_paths.project project.id }
-      let(:title) { project.name }
+    describe "project" do
+      it_behaves_like "has workspace linked"
     end
 
-    it_behaves_like "has a titled link" do
-      let(:link) { "workPackage" }
-      let(:href) { api_v3_paths.work_package work_package.id }
-      let(:title) { work_package.subject }
+    context "with a time entry logged on a work package" do
+      it_behaves_like "has a titled link" do
+        let(:link) { "entity" }
+        let(:href) { api_v3_paths.work_package work_package.id }
+        let(:title) { work_package.subject }
+      end
+
+      it_behaves_like "has a titled link" do
+        let(:link) { "workPackage" }
+        let(:href) { api_v3_paths.work_package work_package.id }
+        let(:title) { work_package.subject }
+      end
+    end
+
+    context "with a time entry logged on a meeting" do
+      before do
+        time_entry.entity = meeting
+      end
+
+      it_behaves_like "has a titled link" do
+        let(:link) { "entity" }
+        let(:href) { api_v3_paths.meeting meeting.id }
+        let(:title) { meeting.title }
+      end
+
+      it_behaves_like "has no link" do
+        let(:link) { "workPackage" }
+      end
     end
 
     it_behaves_like "has a titled link" do
@@ -284,6 +312,12 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "rendering" do
           .to be_json_eql(expected.to_json)
           .at_path("customField#{custom_field.id}")
       end
+    end
+  end
+
+  describe "_embedded" do
+    describe "project" do
+      it_behaves_like "has workspace embedded"
     end
   end
 end

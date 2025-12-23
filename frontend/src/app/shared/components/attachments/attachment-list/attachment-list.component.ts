@@ -41,6 +41,7 @@ import { AttachmentsResourceService } from 'core-app/core/state/attachments/atta
   selector: 'op-attachment-list',
   templateUrl: './attachment-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OpAttachmentListComponent extends UntilDestroyedMixin {
   @Input() public attachments:IAttachment[] = [];
@@ -48,6 +49,8 @@ export class OpAttachmentListComponent extends UntilDestroyedMixin {
   @Input() public collectionKey:string;
 
   @Input() public showTimestamp = true;
+
+  @Input() public showDelete = true;
 
   @Output() public attachmentRemoved = new EventEmitter<void>();
 

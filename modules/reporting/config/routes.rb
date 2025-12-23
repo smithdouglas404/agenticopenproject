@@ -35,7 +35,6 @@ Rails.application.routes.draw do
       end
 
       member do
-        get :index, as: :project
         post :update
         post :rename
       end
@@ -48,14 +47,13 @@ Rails.application.routes.draw do
 
   resources :cost_reports, except: :create do
     collection do
-      match :index, via: %i[get post]
+      match :index, via: %i[get post], as: :global
       post :save_as, action: :create
       get :drill_down
       match :available_values, via: %i[get post]
     end
 
     member do
-      get :index, as: :global
       post :update
       post :rename
     end

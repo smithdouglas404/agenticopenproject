@@ -36,7 +36,8 @@ import { I18nService } from "core-app/core/i18n/i18n.service";
   templateUrl: './tab-header-issue.template.html',
   styleUrls: [
     './styles/tab-header-issue.sass'
-  ]
+  ],
+  standalone: false,
 })
 export class TabHeaderIssueComponent {
   @Input() public workPackage:WorkPackageResource;

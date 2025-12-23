@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -60,10 +62,33 @@ module OpenProject
   module FeatureDecisions
     module_function
 
+    ##
+    # Adds a new feature flag to the system, setting up flag-specific methods and settings configurations.
+    # By default, the feature flag is inactive in production but active in development. A user can
+    # choose to activate it via ENV variable or in the administration.
+    # Once a feature is fully developed and tested, it can be set to always be active in production
+    # by setting `force_active: true`. Then, the ENV variable and the setting will be ignored.
+    # After the release, the feature flag can then be removed from the codebase.
+    #
+    # === Example:
+    # Adding a new feature flag:
+    #   OpenProject::FeatureDecisions.add :new_ui,
+    #                                     description: "Enables the new user interface",
+    #                                     force_active: true
+    #
+    # Querying the state of the feature flag:
+    #   OpenProject::FeatureDecisions.new_ui_active? # => true or false based on configuration
+    #
+    # @param [Symbol] flag_name The name of the feature flag to add.
+    # @param [String, nil] description A description of the feature flag for documentation purposes.
+    # @param [Boolean] force_active Whether to force the feature flag to be active in production or development environments.
+    # @return [void]
+    ##
     def add(flag_name, description: nil, force_active: false)
       all << flag_name
       define_flag_methods(flag_name)
-      define_setting_definition(flag_name, description:, force_active:)
+      define_setting_definition(flag_name, description:,
+                                           force_active: force_active && (Rails.env.production? || Rails.env.development?))
     end
 
     def active

@@ -22,6 +22,7 @@ Additionally, in your OpenProject work package, the GitHub integration supports 
 ![Git snippets dropdown menu under GitHub tab in OpenProject work package](openproject-system-guide-github-integation-github-git-snippets.png)
 
 Pull request activities will also appear in the Activity tab when the pull request is:
+
 * first referenced (usually when opened)
 * marked ready for review
 * merged
@@ -73,6 +74,15 @@ The **Payload URL** must point to your OpenProject server's GitHub webhook endpo
 
 > [!NOTE]
 > For the events that should be triggered by the webhook, please select "Send me everything".
+
+> [!IMPORTANT]
+> OpenProject only supports the following GitHub events:
+>
+> - check_run
+> - issue_comment
+> - ping
+> - pull_request
+> If the GitHub webhook sends an event that OpenProject does not support, a 404 error is returned by OpenProject.
 
 You will need the API key you copied earlier in OpenProject. Append it to the *Payload URL* as a simple GET parameter named `key`. In the end the URL should look something like this:
 

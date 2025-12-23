@@ -24,7 +24,7 @@ Recurring meetings are helpful to schedule and organize meetings that happen reg
 
 ## Create and edit recurring meetings
 
-You can either create a recurring meeting from within a project or from the global **Meetings** module. For steps on creating a classic meetings please consult [this page](../classic-meetings). For steps on setting up one-time meetings please consult [this page](../one-time-meetings).
+You can either create a recurring meeting from within a project or from the global **Meetings** module. For steps on setting up one-time meetings please consult [this page](../one-time-meetings).
 
 To create a new recurring meeting, click the green **+ Meeting** button in the upper right corner and select **Recurring**. 
 
@@ -53,8 +53,8 @@ Enter your meeting's title, location, start and end date and time, duration, fre
 - Daily, Interval = 2 → The meeting occurs every two days.
 - Weekly, Interval = 4 → The meeting occurs every four weeks.
 
->  [!TIP]
->  For **working day-based recurrence**, the **Interval field is hidden** and always set to 1, meaning the meeting occurs on every working day without customization.
+> [!TIP]
+> For **working day-based recurrence**, the **Interval field is hidden** and always set to 1, meaning the meeting occurs on every working day without customization.
 
 **Meeting series ends** field is a select dropdown field that defines when a recurring meeting series should come to an end. The following options are possible:
 
@@ -66,28 +66,34 @@ Click the **Create meeting series** button to save your changes. This will creat
 
 ## Edit recurring meetings template
 
-After creating a meeting series, you are redirected to the recurring meeting template. At this point, no meeting within the recurring meeting series has yet been set up. You need to first define a template that will be the basis of all upcoming meetings. In other words, all new iterations of meetings in the series will be a copy of this template.
+After creating a meeting series, you are redirected to the recurring meeting template, which will open in the [draft mode](../one-time-meetings/#meeting-draft-mode) by default. At this point, no meeting within the recurring meeting series has yet been set up. You need to first define a template that will be the basis of all upcoming meetings. In other words, all new iterations of meetings in the series will be a copy of this template.
 
 ![Template meeting for recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_initial_template.png)
 
 You can define the template the same way that you would a [one-time meeting](../one-time-meetings): you can add sections, agenda items, work packages and even a set of participants. Keep in mind that every new occurrence of a meeting in the series will use this template. After you are done editing the meeting template, you can create the first meeting by clicking **Open first meeting** button, which will direct you to the first open meeting occurrence in the new series.
 
+> [!IMPORTANT]
+> Once you leave the draft mode, you can no longer return, i.e. you can still edit your template, but the changes may be visible (depending on the e-mail notification status).
+
+You will be asked to decide whether or not meeting series participants should receive calendar invites and updates. Depending on your choice, a corresponding banner will inform you of the consequent actions. 
+
+![A dialogue to select meeting related notification preferences when exiting a meeting draft mode in OpenProject](openproject_userguide_meetings_recurring_meeting_open_button_dialogue.png)
+
 You can always adjust the template at a later date by selecting the meeting series from the left hand menu and clicking **Edit template** on the meeting series index page. These changes will not affect past or already created (opened) meetings. 
 
 ![Edit template button for recurring meetings in OpenProject](openproject_userguide_meetings_recurring_meeting_edit_template_button.png)
 
-
-
 ## Edit recurring meetings
+
 ### Edit recurring meeting series
 
 The left side menu displays all existing meeting series. Click on one will open the index page for this particular series, displaying all meeting occurrences planned for this series, and are grouped into:
 
--  **Open**: lists all meetings within the series that have been opened and can be edited. All open meetings will also be displayed under *My Meetings* section. 
+- **Open**: lists all meetings within the series that have been opened and can be edited. All open meetings will also be displayed under *My Meetings* section. 
 - **Planned**: lists all meetings within the selected meeting series that are scheduled, but not yet open.  Every time a planned meeting starts, the next one will open automatically. You can also open any of the planned  meetings manually to import the template and start editing the agenda.
 
->  [!TIP]
->  Once a meeting is open, changes to the template do not affect it. 
+> [!TIP]
+> Once a meeting is open, changes to the template do not affect it. 
 
 To edit the meeting series, select the **More** (three dots) icon on the far right side of the meeting series name and select *Edit meeting series*.
 
@@ -96,8 +102,14 @@ To edit the meeting series, select the **More** (three dots) icon on the far rig
 Within the same menu you also have the following options:
 
 - Download meeting series as iCalendar event
+
 - Send email to all participants
+
+- End meeting series (this option is only displayed if the series has not been ended before)
+
 - Delete meeting series
+
+  
 
 ### Edit a recurring meeting occurrence
 
@@ -107,21 +119,49 @@ To edit a single meeting within recurring meeting series you have to open it fir
 
 This will open the specific meeting page. You can then edit the meeting by using same functions as for [editing one-time meetings](../one-time-meetings), including adding sections and agenda points, documenting agenda item outcomes, inviting participants and adding attachments.
 
-Additionally you can copy a specific meeting series occurrence as a one-time meeting. To do that click the **More** (three dots) icon and select **Copy as one-time meeting**.
+Additionally you can copy a specific meeting series occurrence as a one-time meeting. To do that click the **More** (three dots) icon and select **Duplicate as one-time meeting**.
 
 ![Copy a recurring meeting occurrence as a one-time meeting](openproject_userguide_meetings_copy_recurring_meeting_as_onetime.png)
 
 Within the same menu you also have the following options:
 
 - Download iCalendar event
-- Send email to all participants
-- View history
+- Send email invite to participants
+- Export PDF
+- History
 - Cancel this occurrence
 
 ### Move an agenda item to next meeting
 
-In addition to all the options available for [editing one-time meetings](../one-time-meetings), within a single meeting of a recurring meeting series you can move an agenda item to next meeting. 
+In addition to all the options available when clicking on the three-dot **More** (⋯) menu for an agenda item in when [editing one-time meetings](../one-time-meetings), you will see one additional option to move the agenda item to the next meeting occurrence in the series.
 
-To do that click the **More** (three dots) icon next to an agenda item and select **Move to next meeting**.
+![Move an agenda item to next meeting in OpenProject recurring meetings](openproject_userguide_meetings_recurring_move_agenda_item.png)
 
-![Move an agenda item to next meeting in OpenProject recurring meetings](openproject_userguide_meetings_recurring_meeting_move_agenda_item_to_next_meeting.png)
+## Meeting backlogs for recurring meetings
+
+### Series backlogs
+
+A **series backlog** is a special pre-existing section below the actual agenda items of that occurrence where additional agenda items maybe be listed for consideration. These items may then be added to a particular occurrence by the meeting organizer either before or during a meeting. 
+
+The backlog can be collapsed or expanded by clicking on the the title. Agenda backlog for recurring meetings will be visible for all meetings in the series. 
+
+> [!TIP]
+> By default, the backlog is expanded when the meeting status is *open*, collapsed if the meeting status is *in progress*, and hidden if the meeting is *closed*.
+
+![Agenda backlog section title collapsed, in OpenProject recurring meetings](openproject_userguide_meetings_series_backlog_title.png)
+
+#### Add and edit items to series backlogs
+
+You can add agenda items and link work packages in the same way as you would within the meeting agenda: either by dragging and dropping via the handle on the left or by using the **Add** button. 
+
+![Agenda backlog in recurring meetings in OpenProject](openproject_userguide_meetings_series_backlog.png)
+
+The dropdown More (three dots) icon on the right opens a menu allowing editing, reordering or deleting an item in the series backlog.  Here you can also  add notes and move a backlog item to a current meeting. If there are multiple sections in the current meeting, you will be asked to select a section first. 
+
+![Move agenda items from the series backlog to the agenda in OpenProject Meetings](openproject_userguide_meetings_move_series_backlog_items.png)
+
+#### Clear agenda backlogs
+
+You can either remove single items from a series backlog or clear an entire backlog by clicking the *Clear backlog* option under More (three dots) menu next to the backlog name. Use this option with caution, as the action cannot be undone.
+
+![An option to clear a series backlog in OpenProject recurring meetings](openproject_userguide_meetings_clear_series_backlog.png)

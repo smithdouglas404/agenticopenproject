@@ -30,11 +30,17 @@
 
 import { Controller } from '@hotwired/stimulus';
 import * as Turbo from '@hotwired/turbo';
+import { useMeta } from 'stimulus-use';
 
 export default class HierarchyItemController extends Controller {
+  static metaNames = ['csrf-token'];
+  declare readonly csrfToken:string;
+
   private currentHover:HTMLElement | null;
 
-  connect() {}
+  connect() {
+    useMeta(this, { suffix: false });
+  }
 
   dragstart(event:DragEvent) {
     const element = dataNode(event.target);
@@ -82,7 +88,7 @@ export default class HierarchyItemController extends Controller {
       const originElement = document.querySelector(`[data-hierarchy-item-id='${origin}']`) as HTMLElement;
       originElement.style.opacity = '1';
 
-      if (targetElement.dataset.hierarchyItemId === originElement.dataset.hierarchyItemId) {
+      if (targetElement.dataset.hierarchyItemId === (originElement as HTMLElement).dataset.hierarchyItemId) {
         return;
       }
 
@@ -91,31 +97,26 @@ export default class HierarchyItemController extends Controller {
         targetSortOrder += 1;
       }
 
-      updateSortOrder(originElement, targetSortOrder);
+      this.#updateSortOrder(originElement, targetSortOrder);
     }
   }
-}
 
-function updateSortOrder(originElement:HTMLElement, sortOrder:number | string) {
-  const { frameId = '', indexUrl = '', moveUrl = '' } = originElement.dataset;
+  #updateSortOrder(originElement:HTMLElement, sortOrder:number | string):void {
+    const { frameId = '', indexUrl = '', moveUrl = '' } = originElement.dataset;
 
-  fetch(new URL(moveUrl), {
-    body: new URLSearchParams([['new_sort_order', sortOrder.toString()]]),
-    method: 'POST',
-    credentials: 'include',
-    headers: [
-      ['Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8'],
-      ['X-CSRF-Token', getMetaValue('csrf-token')],
-    ],
-    redirect: 'manual',
-  }).then(() => {
-    Turbo.visit(indexUrl, { frame: frameId });
-  }).catch(() => {});
-}
-
-function getMetaValue(name:string) {
-  const element = document.head.querySelector(`meta[name='${name}']`);
-  return element?.getAttribute('content') || '';
+    fetch(new URL(moveUrl), {
+      body: new URLSearchParams([['new_sort_order', sortOrder.toString()]]),
+      method: 'POST',
+      credentials: 'include',
+      headers: [
+        ['Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8'],
+        ['X-CSRF-Token', this.csrfToken],
+      ],
+      redirect: 'manual',
+    }).then(() => {
+      Turbo.visit(indexUrl, { frame: frameId });
+    }).catch(() => {});
+  }
 }
 
 function dataNode(node:EventTarget | null):HTMLElement {

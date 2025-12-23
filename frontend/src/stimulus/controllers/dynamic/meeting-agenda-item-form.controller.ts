@@ -30,6 +30,7 @@
 
 import * as Turbo from '@hotwired/turbo';
 import { Controller } from '@hotwired/stimulus';
+import { useMeta } from 'stimulus-use';
 
 export default class extends Controller {
   static values = {
@@ -43,9 +44,20 @@ export default class extends Controller {
   static targets = ['notesInput'];
   declare readonly notesInputTarget:HTMLInputElement;
 
+  static metaNames = ['csrf-token'];
+  declare readonly csrfToken:string;
+
   connect():void {
+    useMeta(this, { suffix: false });
     this.focusInput();
     this.addNotes();
+    this.storeInitialValues();
+  }
+
+  storeInitialValues():void {
+    this.element.querySelectorAll('input[type="text"], input[type="number"]').forEach((input) => {
+      (input as HTMLInputElement).dataset.initialValue = (input as HTMLInputElement).value;
+    });
   }
 
   focusInput():void {
@@ -63,7 +75,7 @@ export default class extends Controller {
     const response = await fetch(this.cancelUrlValue, {
       method: 'GET',
       headers: {
-        'X-CSRF-Token': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content,
+        'X-CSRF-Token': this.csrfToken,
         Accept: 'text/vnd.turbo-stream.html',
       },
     });

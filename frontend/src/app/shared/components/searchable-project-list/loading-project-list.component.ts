@@ -37,5 +37,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-loading-project-list',
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class OpLoadingProjectListComponent { }

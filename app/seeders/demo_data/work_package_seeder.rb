@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -35,6 +37,10 @@ module DemoData
       BasicData::PrioritySeeder,
       AdminUserSeeder
     ]
+    # :parent is not strictly a required reference: they are most often created
+    # while seeding work packages so it would not make sense to not seed if they
+    # are not referenced yet.
+    self.attribute_names_for_required_references = %w[status type]
 
     attr_reader :project, :statuses, :repository, :types
     alias_method :project_data, :seed_data
@@ -56,9 +62,13 @@ module DemoData
       end
     end
 
-    private
+    def all_required_references
+      collect_required_references(project_data.lookup("work_packages"))
+    end
 
     RelationData = Data.define(:from, :to_reference, :type)
+
+    private
 
     attr_reader :relations_to_create
 
@@ -149,6 +159,15 @@ module DemoData
 
     def find_type(attributes)
       seed_data.find_reference(attributes["type"].to_sym)
+    end
+
+    def collect_required_references(work_packages_data)
+      Array.wrap(work_packages_data).each_with_object(Set.new) do |work_package_data, acc|
+        acc.merge(get_required_references(work_package_data))
+        if work_package_data["children"]
+          acc.merge(collect_required_references(work_package_data["children"]))
+        end
+      end
     end
 
     def set_version!(wp_attr, attributes)

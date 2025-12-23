@@ -41,14 +41,15 @@ module Costs
                    permissible_on: :project
         permission :view_own_time_entries,
                    {},
-                   permissible_on: %i[work_package project]
+                   permissible_on: %i[work_package project],
+                   contract_actions: { time_entries: %i[read_own] }
 
         permission :log_own_time,
                    {},
                    permissible_on: %i[work_package project],
                    require: :loggedin,
-                   dependencies: :view_own_time_entries
-
+                   dependencies: :view_own_time_entries,
+                   contract_actions: { time_entries: %i[create_own] }
         permission :log_time,
                    {},
                    permissible_on: :project,
@@ -58,8 +59,8 @@ module Costs
         permission :edit_own_time_entries,
                    {},
                    permissible_on: %i[work_package project],
-                   require: :loggedin
-
+                   require: :loggedin,
+                   contract_actions: { time_entries: %i[edit_own destroy_own] }
         permission :edit_time_entries,
                    {},
                    permissible_on: :project,
@@ -144,9 +145,23 @@ module Costs
 
       menu :global_menu,
            :my_time_tracking,
-           { controller: "/my/time_tracking", action: "index" },
+           { controller: "/my/time_tracking", action: "index", date: "today" },
            after: :my_page,
            caption: :label_my_time_tracking,
+           if: ->(*) do
+             User.current.allowed_in_any_project?(:log_own_time) || User.current.allowed_in_any_project?(:log_time)
+           end,
+           icon: :stopwatch
+
+      menu :top_menu,
+           :my_time_tracking,
+           { controller: "/my/time_tracking", action: "index" },
+           after: :my_page,
+           context: :my,
+           caption: :label_my_time_tracking,
+           if: ->(*) do
+             User.current.allowed_in_any_project?(:log_own_time) || User.current.allowed_in_any_project?(:log_time)
+           end,
            icon: :stopwatch
     end
 
@@ -159,7 +174,7 @@ module Costs
 
     activity_provider :time_entries, class_name: "Activities::TimeEntryActivityProvider", default: false
 
-    patches %i[Project User PermittedParams]
+    patches %i[Project User PermittedParams WorkPackage]
     patch_with_namespace :BasicData, :SettingSeeder
     patch_with_namespace :ActiveSupport, :NumberHelper, :NumberToCurrencyConverter
 
@@ -220,7 +235,7 @@ module Costs
              current_user.allowed_in_project?(:view_cost_entries, represented.project) ||
              current_user.allowed_in_project?(:view_own_cost_entries, represented.project)
            } do
-        next unless represented.persisted? && represented.project.costs_enabled?
+        next unless represented.persisted? && represented.project&.costs_enabled?
 
         {
           href: cost_reports_path(represented.project_id,
@@ -311,7 +326,9 @@ module Costs
     end
 
     config.to_prepare do
-      Enumeration.register_subclass(TimeEntryActivity)
+      # Load Enumeration descendants due to STI
+      TimeEntryActivity
+
       OpenProject::ProjectLatestActivity.register on: "TimeEntry"
       Costs::Patches::MembersPatch.mixin!
 

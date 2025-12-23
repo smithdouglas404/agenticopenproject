@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -49,7 +51,8 @@ class Project::Phase < ApplicationRecord
   attr_readonly :definition_id
 
   scope :active, -> { where(active: true) }
-  scopes :order_by_position
+  scopes :order_by_position,
+         :covering_dates_or_days_of_week
 
   class << self
     def visible(user = User.current)
@@ -58,46 +61,56 @@ class Project::Phase < ApplicationRecord
     end
   end
 
-  def date_range=(range)
-    case range
-    when String
-      self.start_date, self.finish_date = range.split(" - ")
-      self.finish_date ||= start_date # Allow single dates as range
-    when Range
-      fail ArgumentError, "Only inclusive ranges expected" if range.exclude_end?
-
-      self.start_date = range.begin
-      self.finish_date = range.end
-    when nil
-      self.start_date = self.finish_date = nil
-    else
-      fail ArgumentError, "Expected String, Range or nil"
-    end
+  def any_date_set?
+    start_date? || finish_date?
   end
 
-  def range_set?
+  def date_range_set?
     start_date? && finish_date?
   end
 
-  def not_set?
-    !range_set?
-  end
-
-  def range_incomplete?
-    start_date? ^ finish_date?
+  def date_range_not_set?
+    !date_range_set?
   end
 
   def validate_date_range
-    errors.add(:date_range, :start_date_must_be_before_finish_date) if range_set? && (start_date > finish_date)
-  end
-
-  def set_calculated_duration
-    self.duration = calculate_duration
+    if date_range_set? && (start_date > finish_date)
+      if finish_date_changed?
+        errors.add(:finish_date, :must_be_after_start_date)
+      else
+        errors.add(:start_date, :must_be_before_finish_date)
+      end
+    end
   end
 
   def calculate_duration
-    return nil unless range_set?
+    return nil unless date_range_set?
 
     Day.working.from_range(from: start_date, to: finish_date).count
   end
+
+  def default_start_date
+    return @default_start_date if defined?(@default_start_date)
+
+    previous_finish_date = previous_phase.finish_date if follows_previous_phase?
+    @default_start_date = previous_finish_date && Day.next_working(from: previous_finish_date).date
+  end
+
+  def previous_phases
+    @previous_phases ||= project.available_phases.select { it.position < position }
+  end
+
+  def previous_phase
+    previous_phases.last
+  end
+
+  def follows_previous_phase?
+    !!previous_phase&.date_range_set?
+  end
+
+  def following_phases
+    @following_phases ||= project.available_phases.select { it.position > position }
+  end
+
+  def to_s; name end
 end

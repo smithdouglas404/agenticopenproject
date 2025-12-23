@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Linking projects phases and work packages", :js, with_flag: { stages_and_gates: true } do
+RSpec.describe "Linking projects phases and work packages", :js do
   shared_let(:initiating_phase_definition) { create(:project_phase_definition, name: "Initiating") }
   shared_let(:executing_phase_definition) do
     create(:project_phase_definition, name: "Executing", start_gate: true, start_gate_name: "Ready to Execute")

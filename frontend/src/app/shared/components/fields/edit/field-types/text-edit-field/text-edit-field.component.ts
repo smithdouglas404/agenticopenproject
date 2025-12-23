@@ -31,6 +31,7 @@ import { EditFieldComponent } from 'core-app/shared/components/fields/edit/edit-
 
 @Component({
   templateUrl: '../text-edit-field.component.html',
+  standalone: false,
 })
 export class TextEditFieldComponent extends EditFieldComponent {
   // ToDo: Work package specific

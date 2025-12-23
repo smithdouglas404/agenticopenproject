@@ -30,7 +30,7 @@ import {
   Injectable,
   Injector,
 } from '@angular/core';
-import * as moment from 'moment';
+import moment, { Moment } from 'moment';
 import {
   take,
   tap,
@@ -42,7 +42,6 @@ import {
   Observable,
   of,
 } from 'rxjs';
-import { Moment } from 'moment';
 
 @Injectable({ providedIn: 'root' })
 export class WeekdayService {

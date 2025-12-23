@@ -69,7 +69,7 @@ RSpec.describe Storages::Admin::HealthStatusController do
 
     it "sends the text version of the report when requested" do
       # Creating an actual report result and caching it so we can test the rendering of the response
-      validator = Storages::Peripherals::Registry["nextcloud.validators.connection"].new(storage)
+      validator = Storages::Adapters::Registry["nextcloud.validators.connection"].new(storage)
       result = validator.call
       Rails.cache.write validator.report_cache_key, result
 
@@ -83,6 +83,7 @@ RSpec.describe Storages::Admin::HealthStatusController do
       expect(yaml["storage"]).to eq storage.name
       expect(yaml["storage_type"]).to eq storage.to_s
       expect(yaml.dig("base_configuration", "storage_configured", "state")).to eq("failure")
+      expect(yaml.dig("configuration", "host")).to eq(storage.host)
     end
   end
 
@@ -90,16 +91,16 @@ RSpec.describe Storages::Admin::HealthStatusController do
     let(:cache_key) { "my_cache_key" }
 
     before do
-      validator = instance_double(Storages::Peripherals::ConnectionValidators::NextcloudValidator)
-      report = Storages::Peripherals::ConnectionValidators::ValidatorResult.new
-      allow(Storages::Peripherals::ConnectionValidators::NextcloudValidator).to receive(:new).and_return(validator)
+      validator = instance_double(Storages::Adapters::Providers::Nextcloud::Validators::ConnectionValidator)
+      report = Storages::Adapters::ConnectionValidators::ValidatorResult.new
+      allow(Storages::Adapters::Providers::Nextcloud::Validators::ConnectionValidator).to receive(:new).and_return(validator)
       allow(validator).to receive_messages(call: report, report_cache_key: cache_key)
     end
 
     it "creates and caches a health status report and redirects to show" do
       post :create, params: params
       expect(response.status).to redirect_to admin_settings_storage_health_status_report_path(storage)
-      expect(Rails.cache.read(cache_key)).to be_a(Storages::Peripherals::ConnectionValidators::ValidatorResult)
+      expect(Rails.cache.read(cache_key)).to be_a(Storages::Adapters::ConnectionValidators::ValidatorResult)
     end
   end
 
@@ -107,9 +108,9 @@ RSpec.describe Storages::Admin::HealthStatusController do
     let(:cache_key) { "my_cache_key" }
 
     before do
-      validator = instance_double(Storages::Peripherals::ConnectionValidators::NextcloudValidator)
-      report = Storages::Peripherals::ConnectionValidators::ValidatorResult.new
-      allow(Storages::Peripherals::ConnectionValidators::NextcloudValidator).to receive(:new).and_return(validator)
+      validator = instance_double(Storages::Adapters::Providers::Nextcloud::Validators::ConnectionValidator)
+      report = Storages::Adapters::ConnectionValidators::ValidatorResult.new
+      allow(Storages::Adapters::Providers::Nextcloud::Validators::ConnectionValidator).to receive(:new).and_return(validator)
       allow(validator).to receive_messages(call: report, report_cache_key: cache_key)
     end
 

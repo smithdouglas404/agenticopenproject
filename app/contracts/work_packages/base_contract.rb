@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,6 +32,7 @@ module WorkPackages
   class BaseContract < ::ModelContract
     include ::Attachments::ValidateReplacements
     include AssignableValuesContract
+    include WorkPackages::SetAttributesService::ProgressValuesCalculations
 
     attribute :subject
     attribute :description
@@ -83,10 +86,7 @@ module WorkPackages
               permission: :manage_subtasks
 
     attribute :project_phase_definition_id,
-              permission: :view_project_phases,
-              writable: ->(*) {
-                OpenProject::FeatureDecisions.stages_and_gates_active?
-              } do
+              permission: :view_project_phases do
       validate_phase_active_in_project
     end
     attribute_alias :project_phase_definition_id, :project_phase_id
@@ -289,6 +289,7 @@ module WorkPackages
 
     def validate_parent_not_self
       if model.parent == model
+        errors.delete(:parent_id) # remove the error added by closure_tree's cycle detection
         errors.add :parent, :cannot_be_self_assigned
       end
     end
@@ -304,9 +305,20 @@ module WorkPackages
       if model.parent_id_changed? &&
          model.parent_id &&
          errors.exclude?(:parent) &&
-         WorkPackage.relatable(model, Relation::TYPE_PARENT).where(id: model.parent_id).empty?
+         current_parent_unrelatable?
+        # closure_tree adds an error on :parent_id because of the cycle
+        # detection, and active_record sees the error when saving the children
+        # association and adds an error on :children as well. We need to remove
+        # them.
+        errors.delete(:parent_id) # remove the error added by closure_tree
+        errors.delete(:children) # remove the error added by active_record
+        # add our own error
         errors.add :parent, :cant_link_a_work_package_with_a_descendant
       end
+    end
+
+    def current_parent_unrelatable?
+      WorkPackage.relatable(model, Relation::TYPE_PARENT).where(id: model.parent_id).empty?
     end
 
     def validate_status_exists
@@ -386,9 +398,7 @@ module WorkPackages
     end
 
     def validate_percent_complete_matches_work_and_remaining_work
-      return if percent_complete_derivation_unapplicable?
-
-      if !percent_complete_range_derived_from_work_and_remaining_work.cover?(percent_complete)
+      if correctable_percent_complete_value?(work:, remaining_work:, percent_complete:)
         errors.add(:done_ratio, :does_not_match_work_and_remaining_work)
       end
     end
@@ -464,21 +474,6 @@ module WorkPackages
       percent_complete.nil?
     end
 
-    def percent_complete_derivation_unapplicable?
-      WorkPackage.status_based_mode? || # only applicable in work-based mode
-        work_empty? || remaining_work_empty? || percent_complete_empty? || # only applicable if all 3 values are set
-        work == 0 || percent_complete == 100 # only applicable if not in special cases leading to divisions by zero
-    end
-
-    def percent_complete_range_derived_from_work_and_remaining_work
-      work_done = work - remaining_work
-      percentage = (100 * work_done.to_f / work)
-
-      lower_bound = percentage.truncate
-      upper_bound = lower_bound + 1
-      lower_bound..upper_bound
-    end
-
     def validate_no_reopen_on_closed_version
       if model.version_id && model.reopened? && model.version.closed?
         errors.add :base, I18n.t(:error_can_not_reopen_work_package_on_closed_version)
@@ -548,7 +543,7 @@ module WorkPackages
     def validate_phase_active_in_project
       if model.project.present? &&
         model.project_phase_definition_id.present? &&
-        !(model.project_changed? && !model.project_phase_definition_changed?) &&
+        model.project_phase_definition_changed? &&
         !project_definition_assignable?
         errors.add :project_phase_id, :inclusion
       end
@@ -603,7 +598,7 @@ module WorkPackages
     end
 
     def category_not_of_project?
-      model.category && model.project.categories.exclude?(model.category)
+      model.category && (model.project.nil? || model.project.categories.exclude?(model.category))
     end
 
     def status_changed?

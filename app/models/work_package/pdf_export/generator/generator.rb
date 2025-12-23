@@ -39,6 +39,7 @@ module WorkPackage::PDFExport::Generator::Generator
 
     def initialize(styling_yml)
       symbol_yml = symbolize(styling_yml)
+      symbol_yml[:page][:font] = Exports::PDF::Common::View::default_font
       validate_schema!(symbol_yml, styles_schema)
       @styles = MarkdownToPDF::Styles.new(symbol_yml)
       init_options({ auto_generate_header_ids: false })
@@ -135,7 +136,7 @@ module WorkPackage::PDFExport::Generator::Generator
       if src == logo_image_filename
         logo_image_filename
       else
-        attachment_image_filepath(work_package, src)
+        attachment_image_filepath(src)
       end
     })
   end

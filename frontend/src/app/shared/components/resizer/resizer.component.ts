@@ -58,6 +58,7 @@ export interface ResizeDelta {
   selector: 'op-resizer',
   templateUrl: './resizer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ResizerComponent implements OnDestroy {
   private startX:number;

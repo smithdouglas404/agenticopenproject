@@ -51,6 +51,7 @@ RSpec.describe UserPreferences::UpdateContract do
       },
       time_zone: "America/Sao_Paulo",
       warn_on_leaving_unsaved: true,
+      disable_keyboard_shortcuts: true,
       workdays: [1, 2, 4, 6]
     }
   end

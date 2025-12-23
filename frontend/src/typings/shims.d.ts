@@ -11,14 +11,12 @@
 /// <reference path="../../node_modules/@types/moment-timezone/index.d.ts" />
 /// <reference path="../../node_modules/@types/urijs/index.d.ts" />
 /// <reference path="../../node_modules/@types/webpack-env/index.d.ts" />
-/// <reference path="../../node_modules/@types/dragula/index.d.ts" />
 /// <reference path="../../node_modules/@types/resize-observer-browser/index.d.ts" />
 
 import { Injector } from '@angular/core';
 
 import { OpenProject } from 'core-app/core/setup/globals/openproject';
 import * as TLodash from 'lodash';
-import { Dragula } from 'dragula';
 import { Screenfull } from 'screenfull';
 import { ErrorReporterBase } from 'core-app/core/errors/error-reporter-base';
 import { I18n } from 'i18n-js';
@@ -57,7 +55,6 @@ declare module '@hotwired/turbo' {
 declare global {
   const _:typeof TLodash;
   const I18n:I18n;
-  const dragula:Dragula;
 }
 
 declare global {
@@ -73,8 +70,6 @@ declare global {
   }
 
   interface JQuery {
-    topShelf:any;
-    mark:any;
     tablesorter:any;
   }
 

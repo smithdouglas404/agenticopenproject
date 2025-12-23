@@ -12,7 +12,8 @@ export interface OpContextMenuItem {
   linkText?:string;
   title?:string;
   divider?:boolean;
-  onClick?:($event:JQuery.TriggeredEvent|MouseEvent) => boolean;
+  isHeader?:boolean;
+  onClick?:(event:MouseEvent) => boolean;
 }
 
 export interface OpContextMenuLocalsMap {

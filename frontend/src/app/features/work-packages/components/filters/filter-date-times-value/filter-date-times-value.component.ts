@@ -45,6 +45,7 @@ import { validDate } from 'core-app/shared/components/datepicker/helpers/date-mo
 @Component({
   selector: 'op-filter-date-times-value',
   templateUrl: './filter-date-times-value.component.html',
+  standalone: false,
 })
 export class FilterDateTimesValueComponent extends AbstractDateTimeValueController implements OnInit {
   @HostBinding('id') get id() {

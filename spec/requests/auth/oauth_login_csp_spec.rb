@@ -43,7 +43,7 @@ RSpec.describe "CSP appends on login form from oauth",
       get oauth_path
 
       csp = response.headers["Content-Security-Policy"]
-      expect(csp).to include "form-action 'self' https://foobar.com/;"
+      expect(csp).to match %r{form-action 'self' .+? https://foobar.com}
 
       location = response.headers["Location"]
       expect(location).to include("/login?back_url=#{CGI.escape(oauth_path)}")
@@ -57,7 +57,7 @@ RSpec.describe "CSP appends on login form from oauth",
       get oauth_path
 
       csp = response.headers["Content-Security-Policy"]
-      expect(csp).to include "form-action 'self' myscheme:"
+      expect(csp).to match %r{form-action 'self' .+? myscheme:}
     end
   end
 end

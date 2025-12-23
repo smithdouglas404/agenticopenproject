@@ -123,7 +123,7 @@
       2fa_from_webauthn: Oppgi WebAuthn enheten <strong>%{device_name}</strong>. Hvis den er USB-basert, sørg for å koble den inn og trykke på den. Klikk deretter på påloggingsknappen.
       webauthn:
         title: "WebAuthn"
-        description: Register a FIDO2 device (like YubiKey) or the secure encalve of your mobile device.
+        description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.
         further_steps: Etter at du har valgt et navn, kan du klikke på fortsett-knappen. Nettleseren vil be deg om å vise WebAuthn enheten. Når du har gjort dette, er du ferdig med å registrere enheten.
       totp:
         title: "App-based authenticator"

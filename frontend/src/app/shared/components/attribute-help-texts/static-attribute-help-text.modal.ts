@@ -37,6 +37,7 @@ import { OpModalLocalsMap } from 'core-app/shared/components/modal/modal.types';
 @Component({
   templateUrl: './static-attribute-help-text.modal.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class StaticAttributeHelpTextModalComponent extends OpModalComponent implements OnInit {
   readonly text = {

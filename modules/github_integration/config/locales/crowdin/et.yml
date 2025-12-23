@@ -31,6 +31,7 @@ et:
     github_avatar_url: "Avatari URL"
     github_updated_at: "Updated at"
     github_login: "GitHub login"
+    host: "Host"
     labels: "Sildid"
     repository: "Hoidla"
     changed_files_count: "Muudetud failid"

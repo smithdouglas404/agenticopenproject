@@ -2,12 +2,11 @@
   render(Primer::OpenProject::SubHeader.new) do |subheader|
     subheader.with_action_button(
       scheme: :primary,
-      aria: { label: I18n.t(:label_user_new) },
-      title: I18n.t(:label_user_new),
+      leading_icon: :plus,
+      label: t(:label_user_new),
       tag: :a,
       href: new_user_path
-    ) do |button|
-      button.with_leading_visual_icon(icon: :plus)
+    ) do
       t("activerecord.models.user")
     end
 

@@ -1,11 +1,12 @@
 import { IWorkPackageTimestamp } from 'core-app/features/hal/resources/work-package-timestamp-resource';
 import { ISchemaProxy } from 'core-app/features/hal/schemas/schema-proxy';
 import { DEFAULT_TIMESTAMP } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-baseline.service';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 
 export type BaselineOption = 'oneDayAgo'|'lastWorkingDay'|'oneWeekAgo'|'oneMonthAgo'|'aSpecificDate'|'betweenTwoSpecificDates';
+export type BaselineMode = 'added'|'updated'|'removed'|null;
 
 export interface BaselineTimestamp {
   date:string;
@@ -60,8 +61,8 @@ export function attributeChanged(base:IWorkPackageTimestamp, schema:ISchemaProxy
     });
 }
 
-export function getBaselineState(workPackage:WorkPackageResource, schemaService:SchemaCacheService):string {
-  let state = '';
+export function getBaselineState(workPackage:WorkPackageResource, schemaService:SchemaCacheService):BaselineMode {
+  let state:BaselineMode = null;
   const schema = schemaService.of(workPackage);
   const timestamps = workPackage.attributesByTimestamp || [];
   if (timestamps.length > 1) {
@@ -74,8 +75,6 @@ export function getBaselineState(workPackage:WorkPackageResource, schemaService:
     } else if (attributeChanged(base, schema)) {
       state = 'updated';
     }
-  } else {
-    state = '';
   }
   return state;
 }

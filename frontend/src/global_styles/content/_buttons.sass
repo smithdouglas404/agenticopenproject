@@ -84,6 +84,9 @@ a.button
     &:hover, &:focus
       border-color: var(--button--primary-background-hover-color)
 
+    &:focus-visible
+      box-shadow: inset 0 0 0 3px var(--fgColor-onEmphasis,var(--fgColor-white))
+
   &.-highlight-inverted
     @include button-style(var(--button-default-bgColor-rest), var(--button-default-bgColor-hover), var(--button-default-fgColor-rest))
     @include button-style(var(--button-default-bgColor-rest), var(--button-default-bgColor-hover), var(--button-default-fgColor-rest))
@@ -140,6 +143,15 @@ a.button
   &_flex
     display: inline-flex
     align-items: center
+
+  // This is very bad :(
+  // but as long as we have that mixture of old buttons with octicons inside we have to enforce the alignment
+  // Unfortunately, each browser/OS combination behaves differently
+  // This fix works for all browsers, except for Firefox on Windows (:cry:)
+  &:has(> .octicon)
+    body:not(.-browser-windows):not(.-browser-firefox) &
+      display: inline-flex
+      align-items: center
 
 .button--icon
   @include icon-common

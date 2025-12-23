@@ -33,6 +33,12 @@ module API
     module Activities
       class ActivitiesByWorkPackageAPI < ::API::OpenProjectAPI
         resource :activities do
+          helpers do
+            def to_boolean(value, default)
+              ActiveRecord::Type::Boolean.new.cast(value.presence || default)
+            end
+          end
+
           get do
             self_link = api_v3_paths.work_package_activities @work_package.id
 
@@ -58,11 +64,13 @@ module API
               raise ::API::Errors::NotFound.new
             end
 
+            internal = to_boolean(params[:internal], false)
             call = AddWorkPackageNoteService
                        .new(user: current_user,
                             work_package: @work_package)
                        .call(params[:comment][:raw],
-                             send_notifications: !(params.has_key?(:notify) && params[:notify] == "false"))
+                             send_notifications: to_boolean(params[:notify], true),
+                             internal:)
 
             if call.success?
               Activities::ActivityRepresenter.new(call.result, current_user:)

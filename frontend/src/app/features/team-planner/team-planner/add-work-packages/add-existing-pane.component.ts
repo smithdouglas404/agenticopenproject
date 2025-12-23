@@ -45,6 +45,7 @@ import { OpWorkPackagesCalendarService } from 'core-app/features/calendar/op-wor
   templateUrl: './add-existing-pane.component.html',
   styleUrls: ['./add-existing-pane.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AddExistingPaneComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   @HostBinding('class.op-add-existing-pane') className = true;
@@ -89,8 +90,8 @@ export class AddExistingPaneComponent extends UntilDestroyedMixin implements OnI
   ])
     .pipe(
       map(([draggable, rendered]) => {
-        const renderedIds = rendered.elements.map((el) => el.id as string);
-        return draggable.filter((wp) => !renderedIds.includes(wp.id as string));
+        const renderedIds = rendered.elements.map((el) => el.id!);
+        return draggable.filter((wp) => !renderedIds.includes(wp.id!));
       }),
     );
 

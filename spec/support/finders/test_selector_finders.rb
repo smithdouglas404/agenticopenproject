@@ -48,6 +48,10 @@ module TestSelectorFinders
   def have_test_selector(value, **)
     have_selector(test_selector(value), **)
   end
+
+  def have_no_test_selector(value, **)
+    have_no_selector(test_selector(value), **)
+  end
 end
 
 RSpec.configure do |config|

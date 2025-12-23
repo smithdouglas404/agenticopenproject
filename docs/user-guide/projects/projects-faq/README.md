@@ -12,7 +12,7 @@ keywords: projects FAQ, project questions
 
 There are several possibilities:
 
-1. To see only the projects without their work packages go to [Projects](../project-lists/) ("View all projects"). Here yo can also display the Project list in a Gantt chart view with all important milestones of all Projects. Therefore you have to click on "Open as Gantt view".
+1. To see only the projects without their work packages go to [Projects](../project-lists/) ("View all projects"). Here you can also display the Project list in a Gantt chart view with all important milestones of all Projects. Therefore you have to click on "Open as Gantt view".
 2. For work packages of all projects click on *Modules -> Work packages* in the upper right hand corner (9 squares) in the navigation bar, to access the [global work packages list](../project-lists/#global-work-package-tables). Use the view configuration to group the work packages by project.
 3. Select a project with subprojects, go to the Project overview, add the widget "Work package table" and set the filter "Including subproject". Find more information on this topic [here](../../project-overview/#widgets). Additionally you could add the column "Progress" to compare your different Project progress.
 4. Add the widget "Work package table" to your My page and set the filter mentioned above. Find more information on this topic [here](../../../getting-started/my-page/#configure-the-my-page). Additionally you could add the column "Progress".
@@ -43,6 +43,10 @@ Yes, it is possible; [set](../project-settings/versions/) the sharing option for
 ## Is it possible to hide or remove fields in the project settings (like status, status description)?
 
 You can't remove fields/attributes that are no custom fields. However, you can hide them in the [projects overview](../project-lists/).
+
+## Can I create a custom project status?
+
+There are six project status to choose from: on track, at risk, off track, not started, finished and discontinued. These cannot be changed. However, if you want to add additional information, you can do so in the status description or you can create an additional [project custom field](../../../system-admin-guide/custom-fields/custom-fields-projects/). Both, status description and the project custom field can be displayed in the **project list**.
 
 ## How do I reopen an archived project?
 

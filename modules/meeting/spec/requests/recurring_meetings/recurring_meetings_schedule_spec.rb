@@ -57,60 +57,60 @@ RSpec.describe "Recurring meetings schedule text",
     response
   end
 
-  before do
-    login_as(current_user)
-  end
-
-  describe "setting schedule" do
-    it "returns the update text" do
-      expect(subject).to have_http_status(:ok)
-      expect(subject.body).to include("Every day at 10:00 AM")
+  describe "when logged in" do
+    before do
+      login_as(current_user)
     end
 
-    context "when changing the frequency and interval" do
-      let(:frequency) { "weekly" }
-      let(:interval) { "2" }
-
+    describe "setting schedule" do
       it "returns the update text" do
-        expect(subject).to have_http_status(:ok)
-        expect(subject.body).to include("Every 2 weeks on Thursday at 10:00 AM")
-      end
-    end
-
-    context "when changing the interval" do
-      let(:interval) { "2" }
-
-      it "returns the update text" do
-        expect(subject).to have_http_status(:ok)
-        expect(subject.body).to include("Every 2 days at 10:00 AM")
-      end
-    end
-
-    context "when leaving the interval empty" do
-      let(:interval) { "" }
-
-      it "falls back to the default" do
         expect(subject).to have_http_status(:ok)
         expect(subject.body).to include("Every day at 10:00 AM")
       end
-    end
 
-    context "when requesting with turbo" do
-      let(:format) { :turbo_stream }
+      context "when changing the frequency and interval" do
+        let(:frequency) { "weekly" }
+        let(:interval) { "2" }
 
-      it "returns an update turbo stream" do
-        expect(subject).to have_http_status(:ok)
-        expect(subject.body).to include("turbo-stream")
-        expect(subject.body).to include("Every day at 10:00 AM")
+        it "returns the update text" do
+          expect(subject).to have_http_status(:ok)
+          expect(subject.body).to include("Every 2 weeks on Thursday at 10:00 AM")
+        end
+      end
+
+      context "when changing the interval" do
+        let(:interval) { "2" }
+
+        it "returns the update text" do
+          expect(subject).to have_http_status(:ok)
+          expect(subject.body).to include("Every 2 days at 10:00 AM")
+        end
+      end
+
+      context "when leaving the interval empty" do
+        let(:interval) { "" }
+
+        it "falls back to the default" do
+          expect(subject).to have_http_status(:ok)
+          expect(subject.body).to include("Every day at 10:00 AM")
+        end
+      end
+
+      context "when requesting with turbo" do
+        let(:format) { :turbo_stream }
+
+        it "returns an update turbo stream" do
+          expect(subject).to have_http_status(:ok)
+          expect(subject.body).to include("turbo-stream")
+          expect(subject.body).to include("Every day at 10:00 AM")
+        end
       end
     end
   end
 
-  context "when user has no permissions to access" do
-    let(:current_user) { create(:user) }
-
+  context "when not logged in" do
     it "does not allow to request it" do
-      expect(subject).to have_http_status(:forbidden)
+      expect(subject).to have_http_status(:found)
     end
   end
 end

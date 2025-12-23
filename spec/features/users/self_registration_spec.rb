@@ -34,6 +34,7 @@ RSpec.describe "user self registration", :js do
   let(:admin_password) { "Test123Test123" }
   let(:admin) { create(:admin, password: admin_password, password_confirmation: admin_password) }
   let(:home_page) { Pages::Home.new }
+  let(:user_menu) { Components::UserMenu.new }
 
   context 'with "manual account activation"',
           with_settings: { self_registration: Setting::SelfRegistration.manual.to_s } do
@@ -59,11 +60,10 @@ RSpec.describe "user self registration", :js do
 
     it "allows self registration and activation by an admin", :signout_via_visit do
       home_page.visit!
+      user_menu.open
 
       # registration as an anonymous user
       within ".op-app-header" do
-        click_link "Sign in"
-
         click_link "Create a new account"
       end
 
@@ -120,10 +120,7 @@ RSpec.describe "user self registration", :js do
       # Test logging in as newly created and activated user
       login_with "heidi", "test123=321test"
 
-      within ".op-app-header" do
-        expect(page)
-          .to have_css("a[title='#{registered_user.name}']")
-      end
+      user_menu.expect_user_shown registered_user.name
     end
   end
 end

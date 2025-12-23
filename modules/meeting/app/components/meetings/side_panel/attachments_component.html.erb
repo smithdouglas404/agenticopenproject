@@ -12,10 +12,11 @@
       section.with_counter(count: @meeting.attachments.count)
 
       section.with_footer_button(
+        color: :accent,
         id: "meetings-add-attachments",
         classes: "hide-when-print"
       ) do |button|
-        button.with_leading_visual_icon(icon: "op-attachmentadd")
+        button.with_leading_visual_icon(icon: "op-add-attachment")
         t("js.label_add_attachments")
       end
 

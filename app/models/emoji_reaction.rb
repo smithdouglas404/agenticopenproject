@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -52,5 +54,9 @@ class EmojiReaction < ApplicationRecord
 
   def self.emoji(reaction)
     EMOJI_MAP[reaction.to_sym]
+  end
+
+  def emoji
+    self.class.emoji(reaction)
   end
 end

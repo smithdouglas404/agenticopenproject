@@ -34,7 +34,7 @@ zh-TW:
         work_package:
           attributes:
             blocks_ids:
-              can_only_contain_work_packages_of_current_sprint: "只可以在現在進度中包含工作項目的 IDs"
+              can_only_contain_work_packages_of_current_sprint: "只能包含當前衝刺（Sprint）中的工作套件 ID。"
               must_block_at_least_one_work_package: "必須包含至少一個項目的 ID"
             version_id:
               task_version_must_be_the_same_as_story_version: "必須與上層「使用者需求」(User Story)的版本相同。"
@@ -55,7 +55,8 @@ zh-TW:
     hours: "小時"
     impediment: "阻礙"
     label_versions_default_fold_state: "顯示精簡版本"
-    work_package_is_closed: "視為工作項目已完成"
+    caption_versions_default_fold_state: "檢視待辦清單時，版本預設不會展開，需手動逐一展開。"
+    work_package_is_closed: "視為工作套件已完成"
     label_is_done_status: "狀態 %{status_name} 表示完成"
     no_burndown_data: "沒有未完成的資料。起始和結束日期在進度中是必須的"
     points: "點"
@@ -73,6 +74,9 @@ zh-TW:
     task: "任務"
     task_color: "任務顏色"
     unassigned: "尚未指派"
+    user_preference:
+      header_backlogs: "待辦清單模組"
+      button_update_backlogs: "更新待辦清單模組"
     x_more: "還有 %{count} 個 ..."
   backlogs_active: "啟用"
   backlogs_any: "全部"
@@ -108,11 +112,11 @@ zh-TW:
   label_backlog: "待辦事項"
   label_backlogs: "待辦事項"
   label_backlogs_unconfigured: "您尚未設定待辦事項。請前往 '%{administration} -> %{plugins}' 然後在 %{configure} 連結上按一下。當你設定欄位後，再返回這個頁面使用這個工具。"
-  label_blocks_ids: "被禁止的工作項目 IDs"
+  label_blocks_ids: "被禁止的工作套件 IDs"
   label_burndown: "完成"
   label_column_in_backlog: "待辦事項的欄位"
   label_hours: "小時"
-  label_work_package_hierarchy: "工作項目的結構"
+  label_work_package_hierarchy: "工作套件階層"
   label_master_backlog: "主待辦事項"
   label_not_prioritized: "尚未安排優先順序"
   label_points: "點數"
@@ -142,7 +146,7 @@ zh-TW:
   points_to_accept: "點數不被接受"
   points_to_resolve: "點數尚未完成"
   project_module_backlogs: "待辦事項"
-  rb_label_copy_tasks: "複製工作項目"
+  rb_label_copy_tasks: "複製工作套件"
   rb_label_copy_tasks_all: "全部"
   rb_label_copy_tasks_none: "無"
   rb_label_copy_tasks_open: "開啟"

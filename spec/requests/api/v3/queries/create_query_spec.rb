@@ -171,7 +171,7 @@ RSpec.describe "POST /api/v3/queries",
       post!
 
       expect(last_response).to have_http_status :unprocessable_entity
-      expect(json["message"]).to eq "Project not found"
+      expect(json["message"]).to eq "Project not found."
     end
 
     it "yields a 422 error given an unknown operator" do

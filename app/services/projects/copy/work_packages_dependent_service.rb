@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -87,6 +89,7 @@ module Projects::Copy
         .new(user:,
              work_package: source_work_package,
              contract_class: WorkPackages::CopyProjectContract)
+        .with_state(bulk_duplicate_in_progress: true)
         .call(
           copy_attachments: copy_attachments?,
           copy_share_members: copy_shares?,
@@ -135,10 +138,7 @@ module Projects::Copy
         responsible_id: work_package_responsible_id(source_work_package),
         custom_field_values: custom_value_attributes(source_work_package, user_cf_ids),
         # We don't support copying budgets right now
-        budget_id: nil,
-
-        # We persist the setting in the job which will trigger a delayed job for potentially sending the journal notifications.
-        send_notifications: params.dig(:params, :send_notifications)
+        budget_id: nil
       }
     end
 

@@ -28,8 +28,11 @@
 
 import { OpenProjectPluginContext } from 'core-app/features/plugins/plugin-context';
 import { input, InputState } from '@openproject/reactivestates';
-import { getMetaElement, GlobalHelpers } from 'core-app/core/setup/globals/global-helpers';
+import { getMetaContent, getMetaValue } from 'core-app/core/setup/globals/global-helpers';
 import { firstValueFrom } from 'rxjs';
+import { ThemeUtils } from './theme-utils';
+
+export type OpenProjectPageState = 'pristine'|'edited'|'submitted';
 
 /**
  * OpenProject instance methods
@@ -37,14 +40,21 @@ import { firstValueFrom } from 'rxjs';
 export class OpenProject {
   public pluginContext:InputState<OpenProjectPluginContext> = input<OpenProjectPluginContext>();
 
-  public helpers = new GlobalHelpers();
+  /**
+   * Theme utilities for system theme detection and application
+   */
+  public theme = new ThemeUtils();
 
-  /** Globally setable variable whether the page was edited */
-  public pageWasEdited = false;
+  /** Globally setable variable whether the page was edited or submitted */
+  pageState:OpenProjectPageState = 'pristine';
 
-  /** Globally setable variable whether the page form is submitted.
-   * Necessary to avoid a data loss warning on beforeunload */
-  public pageIsSubmitted = false;
+  public get pageWasEdited():boolean {
+    return this.pageState === 'edited';
+  }
+
+  public get pageWasSubmitted():boolean {
+    return this.pageState === 'submitted';
+  }
 
   /** Globally setable variable whether any of the EditFormComponent
    * contain changes.
@@ -58,15 +68,15 @@ export class OpenProject {
   }
 
   public get urlRoot():string {
-    return getMetaElement('app_base_path')?.content || '';
+    return getMetaContent('app_base_path');
   }
 
   public get environment():string {
-    return getMetaElement('openproject_initializer')?.dataset.environment || '';
+    return getMetaValue('openproject_initializer', 'environment');
   }
 
   public get edition():string {
-    return getMetaElement('openproject_initializer')?.dataset.edition || '';
+    return getMetaValue('openproject_initializer', 'edition');
   }
 
   public get isStandardEdition():boolean {

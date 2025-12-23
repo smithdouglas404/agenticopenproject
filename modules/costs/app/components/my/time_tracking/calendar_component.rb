@@ -43,7 +43,6 @@ module My
       def wrapper_data
         {
           "controller" => "my--time-tracking",
-          "application-target" => "dynamic",
           "my--time-tracking-mode-value" => mode,
           "my--time-tracking-view-mode-value" => "calendar",
           "my--time-tracking-time-entries-value" => time_entries_json,
@@ -66,7 +65,7 @@ module My
       end
 
       def total_hours
-        total_hours = time_entries.sum(&:hours).round(2)
+        total_hours = time_entries.sum(&:hours_for_calculation).round(2)
         total_str = DurationConverter.output(total_hours, format: :hours_and_minutes).presence || t("label_no_time")
 
         I18n.t(mode, scope: "total_times", hours: total_str)

@@ -31,6 +31,7 @@ es:
     github_avatar_url: "URL del avatar"
     github_updated_at: "Actualizado a las"
     github_login: "Inicio de sesión en GitHub"
+    host: "Host"
     labels: "Etiquetas"
     repository: "Repositorio"
     changed_files_count: "Archivos modificados"

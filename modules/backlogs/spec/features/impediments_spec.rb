@@ -32,11 +32,11 @@ RSpec.describe "Impediments on taskboard", :js,
                :selenium do
   let!(:project) do
     create(:project,
-           types: [story, task],
+           types: [story_type, task_type],
            enabled_module_names: %w(work_package_tracking backlogs))
   end
-  let!(:story) { create(:type_feature) }
-  let!(:task) { create(:type_task) }
+  let!(:story_type) { create(:type_feature) }
+  let!(:task_type) { create(:type_task) }
   let!(:priority) { create(:default_priority) }
   let!(:status) { create(:status, is_default: true) }
   let!(:other_status) { create(:status) }
@@ -45,12 +45,12 @@ RSpec.describe "Impediments on taskboard", :js,
            old_status: status,
            new_status: other_status,
            role:,
-           type_id: story.id)
+           type_id: story_type.id)
     create(:workflow,
            old_status: status,
            new_status: other_status,
            role:,
-           type_id: task.id)
+           type_id: task_type.id)
   end
   let(:role) do
     create(:project_role,
@@ -70,27 +70,27 @@ RSpec.describe "Impediments on taskboard", :js,
     create(:work_package,
            status:,
            project:,
-           type: task,
+           type: task_type,
            version: sprint,
            parent: story1)
   end
   let!(:story1) do
     create(:work_package,
            project:,
-           type: story,
+           type: story_type,
            version: sprint)
   end
   let!(:other_task) do
     create(:work_package,
            project:,
-           type: task,
+           type: task_type,
            version: sprint,
            parent: other_story)
   end
   let!(:other_story) do
     create(:work_package,
            project:,
-           type: story,
+           type: story_type,
            version: other_sprint)
   end
   let!(:sprint) do
@@ -104,8 +104,8 @@ RSpec.describe "Impediments on taskboard", :js,
     login_as current_user
     allow(Setting)
       .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [story.id.to_s],
-                  "task_type" => task.id.to_s)
+      .and_return("story_types" => [story_type.id.to_s],
+                  "task_type" => task_type.id.to_s)
   end
 
   it "allows creating and updating impediments" do
@@ -178,7 +178,7 @@ RSpec.describe "Impediments on taskboard", :js,
     find("#impediments .subject", text: "New impediment").click
 
     fill_in "subject", with: "Updated impediment"
-    fill_in "blocks_ids", with: story.id
+    fill_in "blocks_ids", with: story1.id
     click_on "OK"
 
     # Saves successfully

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -39,6 +41,8 @@ module WorkPackages
     # let the contract be used in error messages
     delegate :to_s,
              to: :model
+
+    def validate_model? = false
 
     private
 

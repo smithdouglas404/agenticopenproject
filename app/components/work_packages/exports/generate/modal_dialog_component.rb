@@ -50,7 +50,7 @@ module WorkPackages
           work_package.subject
         end
 
-        def default_footer_text_right
+        def default_footer_text
           work_package.project.name
         end
 

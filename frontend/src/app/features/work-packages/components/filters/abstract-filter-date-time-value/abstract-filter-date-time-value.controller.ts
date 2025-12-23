@@ -45,7 +45,7 @@ export abstract class AbstractDateTimeValueController extends UntilDestroyedMixi
   }
 
   ngOnInit() {
-    _.remove(this.filter.values as string[], (value) => !(value === '' || this.timezoneService.isValidISODateTime(value)));
+    this.filter.values = (this.filter.values as string[]).filter((value) => (value === '' || this.timezoneService.isValidISODateTime(value)));
   }
 
   public abstract get lowerBoundary():Moment|null;
@@ -79,17 +79,23 @@ export abstract class AbstractDateTimeValueController extends UntilDestroyedMixi
 
   public get timeZoneText() {
     if (this.lowerBoundary && this.upperBoundary) {
-      return this.I18n.t('js.filter.time_zone_converted.two_values',
+      return this.I18n.t(
+ 'js.filter.time_zone_converted.two_values',
         {
           from: this.lowerBoundary.format('YYYY-MM-DD HH:mm'),
           to: this.upperBoundary.format('YYYY-MM-DD HH:mm'),
-        });
+        },
+);
     } if (this.upperBoundary) {
-      return this.I18n.t('js.filter.time_zone_converted.only_end',
-        { to: this.upperBoundary.format('YYYY-MM-DD HH:mm') });
+      return this.I18n.t(
+ 'js.filter.time_zone_converted.only_end',
+        { to: this.upperBoundary.format('YYYY-MM-DD HH:mm') },
+);
     } if (this.lowerBoundary) {
-      return this.I18n.t('js.filter.time_zone_converted.only_start',
-        { from: this.lowerBoundary.format('YYYY-MM-DD HH:mm') });
+      return this.I18n.t(
+'js.filter.time_zone_converted.only_start',
+        { from: this.lowerBoundary.format('YYYY-MM-DD HH:mm') },
+);
     }
 
     return '';

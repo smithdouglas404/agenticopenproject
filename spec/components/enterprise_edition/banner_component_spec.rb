@@ -49,15 +49,9 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
       }.compact
     }
   end
-  let(:static_links) do
-    {
-      enterprise_features: {
-        some_enterprise_feature: {
-          href:
-        }
-      }
-    }
-  end
+
+  let(:enterprise_feature_link) { href }
+
   let(:translations) do
     {
       ee: {
@@ -82,13 +76,18 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
 
   before do
     allow(OpenProject::Static::Links)
-      .to receive(:links)
-            .and_return(static_links)
+      .to receive(:url_for)
+      .and_call_original
+
+    allow(OpenProject::Static::Links)
+      .to receive(:url_for)
+      .with(:enterprise_features, :some_enterprise_feature)
+      .and_return(enterprise_feature_link)
 
     allow(OpenProject::Token)
       .to receive(:lowest_plan_for)
-      .with(:some_enterprise_feature)
-      .and_return(plan)
+            .with(:some_enterprise_feature)
+            .and_return(plan)
 
     I18n.config.enforce_available_locales = !enforce_available_locales
 
@@ -144,7 +143,7 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
   context "when banner is dismissed" do
     let(:preference) { build_stubbed(:user_preference) }
     let(:user) { build_stubbed(:user, preference:) }
-    let(:dismiss_key) { :some_enterprise_feature }
+    let(:dismiss_key) { "some_enterprise_feature" }
     let(:component_args) { { dismissable: true } }
 
     before do
@@ -164,7 +163,7 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
     end
 
     context "when using a custom dismiss_key" do
-      let(:dismiss_key) { :foo }
+      let(:dismiss_key) { "foo" }
       let(:component_args) { { dismiss_key:, dismissable: true } }
 
       it_behaves_like "does not render the component"
@@ -248,16 +247,7 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
   end
 
   context "without a link key in the static_link file" do
-    let(:static_links) do
-      {
-        enterprise_features: {
-          default: {
-            href: "https://example.com"
-          },
-          some_enterprise_feature: {}
-        }
-      }
-    end
+    let(:enterprise_feature_link) { nil }
 
     it "uses the default" do
       render_component_in_mo
@@ -266,7 +256,81 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
 
       expect(component).to have_text(expected_title)
       expect(component).to have_text(expected_description)
-      expect(component).to have_link("More information", href: "https://example.com")
+
+      expect(component).to have_link("More information", href: "https://www.openproject.org/enterprise-edition?go_to_locale=mo")
+    end
+  end
+
+  context "with large variant" do
+    context "with video parameter" do
+      let(:component_args) { { variant: :large, video: "enterprise/date-alert-notifications.mp4" } }
+
+      it_behaves_like "renders the component"
+
+      it "renders with large variant class" do
+        render_component_in_mo
+
+        component = find_test_selector(component_test_selector)
+
+        expect(component[:class]).to include("op-enterprise-banner_large")
+
+        expect(component).to have_css('video[src$="/enterprise/date-alert-notifications.mp4"]')
+      end
+    end
+
+    context "with image parameter" do
+      let(:component_args) { { variant: :large, image: "enterprise/homescreen.png" } }
+
+      it_behaves_like "renders the component"
+
+      it "renders with large variant class" do
+        render_component_in_mo
+
+        component = find_test_selector(component_test_selector)
+
+        expect(component[:class]).to include("op-enterprise-banner_large")
+
+        expect(component).to have_css('img[src$="/enterprise/homescreen.png"]')
+      end
+    end
+
+    context "with video and image parameters" do
+      let(:component_args) do
+        { variant: :large, video: "enterprise/date-alert-notifications.mp4", image: "enterprise/homescreen.png" }
+      end
+
+      it "raises an error" do
+        expect { render_component_in_mo }
+          .to raise_error(ArgumentError, "Only one of 'image' and 'video' parameters can be specified for variant :large")
+      end
+    end
+
+    context "without video and image parameters" do
+      let(:component_args) { { variant: :large } }
+
+      it "raises an error" do
+        expect { render_component_in_mo }
+          .to raise_error(ArgumentError, "Either 'image' or 'video' parameter is required for variant :large")
+      end
+    end
+  end
+
+  context "with a trial token", :with_ee_trial, with_ee: [:some_enterprise_feature] do
+    current_user { build(:admin) }
+
+    it_behaves_like "renders the component"
+
+    it "renders with trial overrides" do
+      render_component_in_mo
+
+      component = find_test_selector(component_test_selector)
+
+      expect(component[:class]).to include("op-enterprise-banner_trial")
+      expect(component[:class]).not_to include("op-enterprise-banner_medium")
+      expect(component[:class]).not_to include("op-enterprise-banner_large")
+
+      expect(component).to have_css(".op-enterprise-banner--dismiss")
+      expect(component).to have_content("Buy now")
     end
   end
 end

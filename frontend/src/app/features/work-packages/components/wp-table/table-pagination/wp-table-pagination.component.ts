@@ -54,6 +54,7 @@ import { PaginationService } from 'core-app/shared/components/table-pagination/p
   templateUrl: '../../../../../shared/components/table-pagination/table-pagination.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wp-table-pagination',
+  standalone: false,
 })
 export class WorkPackageTablePaginationComponent extends TablePaginationComponent implements OnInit, OnDestroy {
   constructor(

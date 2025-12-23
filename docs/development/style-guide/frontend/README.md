@@ -16,11 +16,12 @@ Declarative Programming is a paradigm where the code describes **what to do** by
 
 #### What
 
-* Encapsulate logic in methods with meaningful names.
-    * Domain/Business logic: \
-Encapsulate the implementation details in the subdomain service (e.g., login should be placed in the AuthService and encapsulate all the login functionality).
-    * Presentation or interaction logic: \
-Encapsulate the implementation details in a component’s method or in a Presenter (service scoped/provided in the component).
+Encapsulate logic in methods with meaningful names.
+
+* Domain/Business logic: \
+  Encapsulate the implementation details in the subdomain service (e.g., login should be placed in the AuthService and encapsulate all the login functionality).
+* Presentation or interaction logic: \
+  Encapsulate the implementation details in a component’s method or in a Presenter (service scoped/provided in the component).
 
 #### Example
 
@@ -177,8 +178,8 @@ Are state and logic containers.
 ##### What
 
 * Encapsulate logic in services:
-    * State (Store) + Domain logic (state CRUD)
-    * Complex UI logic (Presenters)
+  * State (Store) + Domain logic (state CRUD)
+  * Complex UI logic (Presenters)
 * Provide a meaningful API to access the state and logic.
 * Follow the unidirectional data flow pattern
 
@@ -200,11 +201,11 @@ Represent a feature that interacts with the state. This could be a page (routed 
 * Inject the State Services (Stores).
 * Contain Presentational Components (PC), usually.
 * Bridge State Services (Stores) and PCs:
-    * Pass down state updates (from Stores) through PCs’ @Outputs
-    * React to PCs’ @Outputs
+  * Pass down state updates (from Stores) through PCs’ @Outputs
+  * React to PCs’ @Outputs
 * Notes:
-    * Could contain other CCs.
-    * Could contain presentational logic (show/hide PCs, calculations..), in those cases are named something like Mixed Components.
+  * Could contain other CCs.
+  * Could contain presentational logic (show/hide PCs, calculations..), in those cases are named something like Mixed Components.
 
 ##### Example
 
@@ -212,7 +213,7 @@ Pages, components that are routed, are usually container components since the ne
 
 ##### What
 
-* Concentrate the interaction with the state (Stores) in Container Components.
+Concentrate the interaction with the state (Stores) in Container Components.
 
 ##### Why
 
@@ -231,12 +232,12 @@ Are the building blocks of the UI.
 
 * Present/display state that is passed via @Inputs.
 * Handle user interaction:
-    * Implement the interaction logic
-    * Emit @Outputs
+  * Implement the interaction logic
+  * Emit @Outputs
 * Notes:
-    * Could contain:
-        * Other Presentational Components and Container Components.
-        * Presenter Services that encapsulate complex UI logic (computed styles, UI calculations...)).
+  * Could contain:
+    * Other Presentational Components and Container Components.
+    * Presenter Services that encapsulate complex UI logic (computed styles, UI calculations...)).
 
 ##### Example
 
@@ -250,11 +251,11 @@ Components from UI libraries are usually Presentational Components (e.g., [mater
 
 * Reusability: \
 Presentational components are more reusable because:
-    * Are not tied to a concrete business logic.
-    * Usually perform a generic interaction/presentation (button, tab, list, layout)
+  * Are not tied to a concrete business logic.
+  * Usually perform a generic interaction/presentation (button, tab, list, layout)
 * Increase
-    * Productivity
-    * Standardization
+  * Productivity
+  * Standardization
 * Align with Design Systems
 * Improved testability because there are no side effects (pure).
 * Are easier to replace.
@@ -266,7 +267,7 @@ Clean code is easily readable, understandable, changeable, extensible, scalable 
 #### What
 
 * Do follow clean [patterns and rules](https://github.com/labs42io/clean-code-typescript)
-    * [Summary of the Clean Code principles](https://gist.github.com/wojteklu/73c6914cc446146b8b533c0988cf8d29)
+* [Summary of the Clean Code principles](https://gist.github.com/wojteklu/73c6914cc446146b8b533c0988cf8d29)
 
 #### Why
 
@@ -279,6 +280,7 @@ Clean code is easily readable, understandable, changeable, extensible, scalable 
 
 #### What
 
-* Do follow BEM directives:
-    * [https://en.bem.info/methodology/css/](https://en.bem.info/methodology/css/)
-    * [https://en.bem.info/methodology/html/](https://en.bem.info/methodology/html/)
+Do follow BEM directives:
+
+* [https://en.bem.info/methodology/css/](https://en.bem.info/methodology/css/)
+* [https://en.bem.info/methodology/html/](https://en.bem.info/methodology/html/)

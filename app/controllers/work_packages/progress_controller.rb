@@ -29,29 +29,42 @@
 # ++
 
 class WorkPackages::ProgressController < ApplicationController
+  include OpTurbo::ComponentStream
+  include FlashMessagesHelper
+
   ERROR_PRONE_ATTRIBUTES = %i[status_id
                               estimated_hours
                               remaining_hours
                               done_ratio].freeze
 
   layout false
-  authorization_checked! :new, :edit, :create, :update
+  authorization_checked! :new, :edit, :preview, :create, :update
 
   def new
     make_fake_initial_work_package
     set_progress_attributes_to_work_package
 
-    render progress_modal_component
+    render_modal
   end
 
   def edit
     find_work_package
     set_progress_attributes_to_work_package
 
-    render progress_modal_component
+    render_modal
   end
 
-  # rubocop:disable Metrics/AbcSize
+  def preview
+    if params[:work_package_id]
+      find_work_package
+    else
+      make_fake_initial_work_package
+    end
+
+    set_progress_attributes_to_work_package
+    render_modal
+  end
+
   def create
     make_fake_initial_work_package
     service_call = set_progress_attributes_to_work_package
@@ -61,13 +74,16 @@ class WorkPackages::ProgressController < ApplicationController
                    .intersect?(ERROR_PRONE_ATTRIBUTES)
       respond_to do |format|
         format.turbo_stream do
+          update_via_turbo_stream(
+            component: progress_modal_component,
+            method: "morph"
+          )
+
           # Bundle 422 status code into stream response so
           # Angular has context as to the success or failure of
           # the request in order to fetch the new set of Work Package
           # attributes in the ancestry solely on success.
-          render turbo_stream: [
-            turbo_stream.morph("work_package_progress_modal", progress_modal_component)
-          ], status: :unprocessable_entity
+          respond_with_turbo_streams(status: :unprocessable_entity)
         end
       end
     else
@@ -76,7 +92,6 @@ class WorkPackages::ProgressController < ApplicationController
                      percentageDone: @work_package.done_ratio }
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def update
     find_work_package
@@ -86,27 +101,36 @@ class WorkPackages::ProgressController < ApplicationController
                      .call(work_package_progress_params)
 
     if service_call.success?
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: []
-        end
-      end
+      head :ok
     else
       respond_to do |format|
         format.turbo_stream do
+          # errors not visible from progress modal fields are rendered in a flash message
+          render_error_flash_message_via_turbo_stream(message: extra_error_messages(service_call))
+
+          update_via_turbo_stream(
+            component: progress_modal_component,
+            method: "morph"
+          )
+
           # Bundle 422 status code into stream response so
           # Angular has context as to the success or failure of
           # the request in order to fetch the new set of Work Package
           # attributes in the ancestry solely on success.
-          render turbo_stream: [
-            turbo_stream.morph("work_package_progress_modal", progress_modal_component)
-          ], status: :unprocessable_entity
+          respond_with_turbo_streams(status: :unprocessable_entity)
         end
       end
     end
   end
 
   private
+
+  def render_modal
+    render :modal,
+           locals: {
+             progress_modal_component:
+           }
+  end
 
   def progress_modal_component
     modal_class.new(@work_package, focused_field:, touched_field_map:)
@@ -142,7 +166,7 @@ class WorkPackages::ProgressController < ApplicationController
                  "remaining_hours_touched",
                  "done_ratio_touched",
                  "status_id_touched")
-          .transform_values { _1 == "true" }
+          .transform_values { it == "true" }
           .permit!
   end
 
@@ -153,7 +177,7 @@ class WorkPackages::ProgressController < ApplicationController
   end
 
   def allowed_touched_params
-    allowed_params.filter { touched?(_1) }
+    allowed_params.filter { touched?(it) }
   end
 
   def allowed_params
@@ -186,5 +210,13 @@ class WorkPackages::ProgressController < ApplicationController
 
   def formatted_duration(hours)
     API::V3::Utilities::DateTimeFormatter.format_duration_from_hours(hours, allow_nil: true)
+  end
+
+  def extra_error_messages(service_call)
+    errors_not_handled_by_progress_modal = service_call.errors.reject do |error|
+      ERROR_PRONE_ATTRIBUTES.include?(error.attribute)
+    end
+
+    join_flash_messages(errors_not_handled_by_progress_modal.map(&:full_message))
   end
 end

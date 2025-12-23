@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment, { Moment } from 'moment';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { WorkPackageChangeset } from 'core-app/features/work-packages/components/wp-edit/work-package-changeset';
 import {
@@ -23,7 +23,6 @@ import {
   MouseDirection,
 } from './timeline-cell-renderer';
 import { WorkPackageCellLabels } from './wp-timeline-cell-labels';
-import Moment = moment.Moment;
 
 export class TimelineMilestoneCellRenderer extends TimelineCellRenderer {
   public get type():string {
@@ -125,7 +124,7 @@ export class TimelineMilestoneCellRenderer extends TimelineCellRenderer {
       return false;
     }
 
-    const diamond = jQuery('.diamond', element)[0];
+    const diamond = element.querySelector<HTMLElement>('.diamond')!;
 
     diamond.style.width = `${15}px`;
     diamond.style.height = `${15}px`;

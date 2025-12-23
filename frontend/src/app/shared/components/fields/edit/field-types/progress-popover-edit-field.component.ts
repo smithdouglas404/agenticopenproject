@@ -58,6 +58,7 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
   templateUrl: './progress-popover-edit-field.component.html',
   styleUrls: ['./progress-popover-edit-field.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProgressPopoverEditFieldComponent extends ProgressEditFieldComponent implements OnInit {
   text = {
@@ -133,11 +134,11 @@ export class ProgressPopoverEditFieldComponent extends ProgressEditFieldComponen
   }
 
   public handleSuccessfulCreate(JSONResponse:{ estimatedTime:string, remainingTime:string, percentageDone:string }):void {
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.resource.estimatedTime = JSONResponse.estimatedTime;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.resource.remainingTime = JSONResponse.remainingTime;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.resource.percentageDone = JSONResponse.percentageDone;
 
     this.onModalClosed();
@@ -177,7 +178,6 @@ export class ProgressPopoverEditFieldComponent extends ProgressEditFieldComponen
       url.searchParams.set('work_package[status_id_touched]', 'true');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.frameSrc = url.toString();
   }
 

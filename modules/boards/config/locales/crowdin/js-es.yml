@@ -3,7 +3,7 @@ es:
   ee:
     upsell:
       board_view:
-        description: '¿Quieres automatizar tus flujos de trabajo con tableros? Los tableros avanzados son una extensión de Enterprise. Mejores su plan a uno de pago.'
+        description: '¿Quiere automatizar sus flujos de trabajo con Tableros? Los tableros avanzados son una extensión Enterprise. Mejore su plan a uno de pago.'
   js:
     boards:
       create_new: 'Crear tablero'

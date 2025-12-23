@@ -119,10 +119,10 @@ table:
   header:
     styles: [ 'bold' ]
     background-color: 'F0F0F0'
-    size: 10
+    size: 11
   cell:
     padding: 1mm
-    size: 9
+    size: 11
 
 html_table:
   margin-top: 2mm
@@ -130,10 +130,17 @@ html_table:
   header:
     styles: [ 'bold' ]
     background-color: 'F0F0F0'
-    size: 10
+    size: 11
+    border-width: 0.25
+    border-color: '000000'
+    no_border: true
   cell:
     padding: 1mm
-    size: 9
+    size: 11
+    border-width: 0.25
+    border-color: '000000'
+    no_border: true
+    valign: middle
 
 blockquote:
   background-color: 'f4f9ff'

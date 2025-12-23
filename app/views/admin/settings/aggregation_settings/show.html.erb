@@ -34,7 +34,7 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_title { t(:"menus.admin.aggregation") }
     header.with_breadcrumbs(
       [{ href: admin_index_path, text: t(:label_administration) },
-       { href: admin_settings_aggregation_path, text: t(:"menus.admin.mails_and_notifications") },
+       { href: admin_settings_aggregation_path, text: t(:"menus.admin.mails_and_notifications"), skip_for_mobile: true },
        t(:"menus.admin.aggregation")]
     )
   end

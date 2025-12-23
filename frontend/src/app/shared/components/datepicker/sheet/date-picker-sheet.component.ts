@@ -58,6 +58,7 @@ import { DeviceService } from 'core-app/core/browser/device.service';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class OpDatePickerSheetComponent implements AfterViewInit, OnChanges {
   @HostBinding('class.op-datepicker-sheet') className = true;

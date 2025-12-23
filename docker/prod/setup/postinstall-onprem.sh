@@ -45,6 +45,8 @@ su - postgres -c "$PGBIN/pg_ctl -D /tmp/nulldb -l /dev/null -l /tmp/nulldb/log -
 sleep 5
 
 echo "create database structure; create user structure with encrypted password 'p4ssw0rd'; grant all privileges on database structure to structure;" | su - postgres -c psql
+# since postgres 15 we need to also explictly grant the user permissions on the public schema
+echo "grant all on schema public to structure;" | su - postgres -c 'psql -d structure'
 
 # dump schema
 DATABASE_URL=postgres://structure:p4ssw0rd@127.0.0.1/structure RAILS_ENV=production bundle exec rake db:migrate db:schema:dump db:schema:cache:dump

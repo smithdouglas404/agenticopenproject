@@ -21,19 +21,21 @@ module SharedTwoFactorExamples
   def two_factor_step(token)
     expect(page).to have_css("input#otp")
     fill_in "otp", with: token
-    click_button I18n.t(:button_login)
+    click_button I18n.t(:button_login), type: "submit"
     wait_for_network_idle
   end
 
   def expect_logged_in
     wait_for_network_idle
     visit my_account_path
-    expect(page).to have_css(".form--field-container", text: user.login)
+    within_test_selector "my-account-form" do
+      expect(page).to have_field "user_username", with: user.login
+    end
   end
 
   def expect_not_logged_in
     visit my_account_path
-    expect(page).to have_no_css(".form--field-container", text: user.login)
+    expect(page).to have_no_test_selector("my-account-form")
   end
 end
 

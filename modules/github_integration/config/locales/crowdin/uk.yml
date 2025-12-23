@@ -31,6 +31,7 @@ uk:
     github_avatar_url: "URL-адреса аватара"
     github_updated_at: "Оновлено о"
     github_login: "Вхід у GitHub"
+    host: "Хост"
     labels: "Мітки"
     repository: "Репозиторій"
     changed_files_count: "Змінені файли"

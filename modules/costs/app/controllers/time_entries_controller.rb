@@ -30,7 +30,6 @@
 
 class TimeEntriesController < ApplicationController
   include OpTurbo::ComponentStream
-  include OpTurbo::DialogStreamHelper
   include Redmine::I18n
 
   before_action :require_login
@@ -46,7 +45,7 @@ class TimeEntriesController < ApplicationController
 
   def dialog
     @show_work_package = params[:work_package_id].blank?
-    @show_user = show_user_input_in_dialog
+    @show_user = show_user_input_in_dialog?
     @limit_to_project_id = @project&.id
 
     prefill_time_entry_from_params
@@ -109,6 +108,8 @@ class TimeEntriesController < ApplicationController
     if call.success?
       if request_from_dialog?
         close_dialog_via_turbo_stream("#time-entry-dialog", additional: { spent_on: @time_entry.spent_on })
+      else
+        reload_page_via_turbo_stream
       end
     elsif call.failure? && request_from_dialog?
       form_component = TimeEntries::TimeEntryFormComponent.new(time_entry: @time_entry, **form_config_options)
@@ -121,16 +122,23 @@ class TimeEntriesController < ApplicationController
     respond_with_turbo_streams(status: call.success? ? :ok : :bad_request)
   end
 
-  def destroy
+  def destroy # rubocop:disable Metrics/AbcSize
     call = TimeEntries::DeleteService.new(user: current_user, model: @time_entry).call
 
     @time_entry = call.result
 
-    if call.success?
-      close_dialog_via_turbo_stream("#time-entry-dialog")
+    if request_from_dialog?
+      if call.success?
+        close_dialog_via_turbo_stream("#time-entry-dialog")
+      else
+        form_component = TimeEntries::TimeEntryFormComponent.new(time_entry: @time_entry, **form_config_options)
+        update_via_turbo_stream(component: form_component, status: :bad_request)
+      end
+    elsif call.success?
+      reload_page_via_turbo_stream
     else
-      form_component = TimeEntries::TimeEntryFormComponent.new(time_entry: @time_entry, **form_config_options)
-      update_via_turbo_stream(component: form_component, status: :bad_request)
+      render_error_flash_message_via_turbo_stream(message: t("notice_time_entry_delete_failed",
+                                                             errors: call.errors.full_messages.join(", ")))
     end
 
     respond_with_turbo_streams(status: call.success? ? :ok : :bad_request)
@@ -169,7 +177,7 @@ class TimeEntriesController < ApplicationController
     end
   end
 
-  def show_user_input_in_dialog
+  def show_user_input_in_dialog?
     return false if params[:onlyMe] == "true"
 
     if @project
@@ -224,7 +232,7 @@ class TimeEntriesController < ApplicationController
                       entry
                     end
                   else
-                    TimeEntry.new(project: @project, work_package: @work_package, user: User.current)
+                    TimeEntry.new(project: @project, entity: @work_package, user: User.current)
                   end
   end
 end

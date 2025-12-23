@@ -29,8 +29,7 @@
 import { Injectable } from '@angular/core';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import * as moment from 'moment-timezone';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment-timezone';
 import { outputChronicDuration } from '../../shared/helpers/chronic_duration';
 
 @Injectable({ providedIn: 'root' })

@@ -7,11 +7,11 @@
       data: {
         turbo: true,
         controller: [
-          "meetings--form",
           "show-when-value-selected",
+          "show-when-checked",
           @meeting.is_a?(RecurringMeeting) ? "recurring-meetings--form" : nil
         ].compact.join(" "),
-        "application-target": "dynamic"
+        "recurring-meetings--form-persisted-value": @meeting.persisted?
       },
       html: {
         id: "meeting-form"
@@ -133,9 +133,11 @@
           modal_body.with_row(mt: 3) do
             render(Meeting::CopyAttachments.new(f))
           end
+        end
 
+        if @meeting.is_a?(RecurringMeeting) && @meeting.persisted?
           modal_body.with_row(mt: 3) do
-            render(Meeting::EmailParticipants.new(f))
+            render(Meetings::EmailUpdatesBannerComponent.new(@meeting))
           end
         end
       end

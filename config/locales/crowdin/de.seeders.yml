@@ -43,13 +43,6 @@ de:
           name: PM2 Rosa
         item_3:
           name: PM2 Grüngelb
-      document_categories:
-        item_0:
-          name: Dokumentation
-        item_1:
-          name: Spezifikation
-        item_2:
-          name: Andere
       project_query_roles:
         item_0:
           name: Projektabfrage-Viewer
@@ -83,7 +76,7 @@ de:
         item_0:
           name: Initiierung
         item_1:
-          name: Terminplanung
+          name: Planung
           start_gate: Bereit für Planung
         item_2:
           name: Durchführung

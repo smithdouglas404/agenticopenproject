@@ -29,7 +29,7 @@ The async-controller stimulus controller will ensure that a loading progress bar
 ```ruby
 class TestController < ApplicationControler
   # include the helper module
-  include OpTurbo::DialogStreamHelper
+  include OpTurbo::ComponentStream
 
   # ...
 
@@ -39,7 +39,7 @@ class TestController < ApplicationControler
 end
 ```
 
-For this to work, the `OpTurbo::Streamable` module needs to be included in the modal component, along with the `OpTurbo::DialogStreamHelper` module in the corresponding controller:
+For this to work, the `OpTurbo::Streamable` module needs to be included in the modal component, along with the `OpTurbo::ComponentStream` module in the corresponding controller:
 
 ```ruby
 class MyDialogComponent < ApplicationControler
@@ -70,9 +70,6 @@ You can also render the dialog in a manual turbo_stream template:
 
 ```ruby
 class TestController < ApplicationControler
-  # include the helper module
-  include OpTurbo::DialogStreamHelper
-
   # ...
 
   def dialog; end
@@ -121,11 +118,11 @@ you have to make sure that the data-turbo attribute is also set.
 
     d.with_footer do
       render(Primer::Beta::Button.new(
+        scheme: :primary,
         tag: :button,
         type: :submit,
         form: "my-dialog-form"
         data: { turbo: true }
-        variant: :primary,
       ) do |button|
         button.text = t(:button_save)
       end)
@@ -145,7 +142,7 @@ Referring to the example above (see "Dialogs with separate forms"), a controller
 ```ruby
 class TestController < ApplicationControler
   # include the helper module
-  include OpTurbo::DialogStreamHelper
+  include OpTurbo::ComponentStream
 
   # ...
 
@@ -219,18 +216,9 @@ This can come in the form of a positive confirmation where a user is asked to e.
 
 Or it can be to ascertain the user actually wants to destroy a model.
 
-<%= embed OpenProject::Common::DialogPreview, :confirm_deletion %>
+<%= embed Patterns::DangerDialogPreview %>
 
-**Note:** Currently, confirmation dialog require a lot of manual work to be implemented.
-Prefer using a native browser confirmation dialog when possible using the `data-confirm` attribute and UJS for the time
-being.
-
-Primerized confirmation dialogs are still a work in progress.
-
-
-#### Where it's used
-
-- Project list &rarr; Delete the project list
+**Note:** Please have a look at the [documentation of the DangerDialog](../components/danger_dialog) component
 
 ### Form dialogs
 

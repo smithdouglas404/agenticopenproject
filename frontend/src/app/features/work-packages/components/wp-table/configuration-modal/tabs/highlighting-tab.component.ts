@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Injector,
-  ViewChild,
+  ViewChild, OnInit,
 } from '@angular/core';
 import { TabComponent } from 'core-app/features/work-packages/components/wp-table/configuration-modal/tab-portal-outlet';
 import { WorkPackageViewHighlightingService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-highlighting.service';
@@ -19,8 +19,9 @@ import { repositionDropdownBugfix } from 'core-app/shared/components/autocomplet
 @Component({
   templateUrl: './highlighting-tab.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-export class WpTableConfigurationHighlightingTabComponent implements TabComponent {
+export class WpTableConfigurationHighlightingTabComponent implements TabComponent, OnInit {
   // Display mode
   public highlightingMode:HighlightingMode = 'inline';
 
@@ -28,7 +29,7 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
 
   public lastEntireRowAttribute:HighlightingMode = 'status';
 
-  public eeShowBanners = false;
+  public eeAvailable = false;
 
   public availableInlineHighlightedAttributes:HalResource[] = [];
 
@@ -74,10 +75,10 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
 
     this.setSelectedValues();
 
-    this.eeShowBanners = this.Banners.showBannerFor('conditional_highlighting');
+    this.eeAvailable = this.Banners.allowsTo('conditional_highlighting');
     this.updateMode(this.wpTableHighlight.current.mode);
 
-    if (this.eeShowBanners) {
+    if (!this.eeAvailable) {
       this.updateMode('none');
     }
   }
@@ -94,7 +95,7 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
       this.highlightingMode = mode;
     }
 
-    if (['status', 'priority'].indexOf(this.highlightingMode) !== -1) {
+    if (['status', 'priority'].includes(this.highlightingMode)) {
       this.lastEntireRowAttribute = this.highlightingMode;
       this.entireRowMode = true;
     } else {
@@ -106,8 +107,8 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
     this.selectedAttributes = model;
   }
 
-  public disabledValue(value:boolean):string | null {
-    return value ? 'disabled' : null;
+  public disabledValue(allowed:boolean):string | null {
+    return allowed ? null : 'disabled';
   }
 
   public get availableHighlightedAttributes():HalResource[] {

@@ -95,5 +95,5 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::Assertions
   config.include ActiveJob::TestHelper
 
-  OpenProject::Configuration["attachments_storage_path"] = "tmp/files"
+  OpenProject::Configuration["attachments_storage_path"] = "tmp/files#{ENV.fetch('TEST_ENV_NUMBER', nil)}"
 end

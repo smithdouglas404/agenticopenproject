@@ -123,7 +123,7 @@ ms:
       2fa_from_webauthn: Sila sediakan peranti WebAuthn <strong>%{device_name}</strong>. Jika ia berdasarkan USB, sila pastikan untuk memasang dan menyentuhnya. Selepas itu, klik butang log masuk.
       webauthn:
         title: "WebAuthn"
-        description: Daftarkan peranti FIDO2 (seperti YubiKey) atau sangkar selamat peranti mudah alih anda.
+        description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.
         further_steps: Setelah anda memilih nama, anda boleh klik butang Teruskan. Pelayar anda akan maklumkan kepada anda untuk mengemukakan peranti WebAuthn anda. Setelah berbuat demikian, pendaftaran peranti anda telah selesai.
       totp:
         title: "Pengesah berasaskan aplikasi"

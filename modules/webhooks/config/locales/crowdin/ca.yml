@@ -27,10 +27,15 @@ ca:
       no_results_table: Encara no s'han definit cap webhooks.
       label_add_new: Afegeix un nou webhook
       label_edit: Edita el webhook
-      label_event_resources: Recursos de l'esdeveniment
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Creat"
         updated: "Actualitzat"
+        comment: "Comentari"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           En el cas que un esdeveniment com la creació d'un paquet de treball o l'actualització d'un projecte, OpenProject enviarà una sol·licitud POST als punts finals de web configurats. A vegades, l'esdeveniment s'envia després que %{link} ha passat.

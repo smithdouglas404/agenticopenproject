@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -32,6 +33,7 @@ module Meetings
     class MeetingAgendaItemsSeeder < ::BasicData::ModelSeeder
       self.model_class = MeetingAgendaItem
       self.seed_data_model_key = "meeting_agenda_items"
+      self.attribute_names_for_required_references = %w[author presenter meeting work_package]
 
       ##
       #

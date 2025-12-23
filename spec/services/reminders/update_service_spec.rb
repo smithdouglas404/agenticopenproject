@@ -41,7 +41,8 @@ RSpec.describe Reminders::UpdateService do
 
     let(:model_instance) { create(:reminder, :scheduled, :with_unread_notifications, creator: user) }
     let(:user) { create(:admin) }
-    let(:call_attributes) { { remind_at: 2.days.from_now } }
+    let(:remind_at) { 2.days.from_now.change(hour: 12, min: 0) }
+    let(:call_attributes) { { remind_at_date: remind_at.to_date, remind_at_time: remind_at.strftime("%H:%M") } }
 
     before do
       model_instance.update(job_id: 1)
@@ -71,7 +72,7 @@ RSpec.describe Reminders::UpdateService do
         end
 
         aggregate_failures "schedule new job" do
-          expect(model_instance.remind_at.to_i).to eq(call_attributes[:remind_at].to_i)
+          expect(model_instance.remind_at.to_i).to eq(remind_at.to_i)
           expect(Reminders::ScheduleReminderJob).to have_received(:schedule).with(model_instance)
         end
       end
@@ -93,7 +94,7 @@ RSpec.describe Reminders::UpdateService do
         end
 
         aggregate_failures "schedule new job" do
-          expect(model_instance.remind_at.to_i).to eq(call_attributes[:remind_at].to_i)
+          expect(model_instance.remind_at.to_i).to eq(remind_at.to_i)
           expect(Reminders::ScheduleReminderJob).to have_received(:schedule).with(model_instance)
         end
       end

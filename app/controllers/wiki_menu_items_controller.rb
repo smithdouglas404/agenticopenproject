@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -101,7 +103,7 @@ class WikiMenuItemsController < ApplicationController
         flash[:notice] = t(:notice_successful_update)
       end
 
-      redirect_back_or_default({ action: "edit", id: @page })
+      redirect_back_or_default({ action: "edit", id: @page }, status: :see_other)
     else
       respond_to do |format|
         format.html do

@@ -57,6 +57,7 @@ import { IFileIcon } from 'core-app/shared/components/storages/icons.mapping';
   selector: '[op-attachment-list-item]',
   templateUrl: './attachment-list-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OpAttachmentListItemComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit {
   @Input() public attachment:IAttachment;
@@ -65,9 +66,11 @@ export class OpAttachmentListItemComponent extends UntilDestroyedMixin implement
 
   @Input() public showTimestamp = true;
 
+  @Input() public showDelete = true;
+
   @Output() public removeAttachment = new EventEmitter<void>();
 
-  @ViewChild('avatar') avatar:ElementRef;
+  @ViewChild('avatar') avatar:ElementRef<HTMLDivElement>;
 
   static imageFileExtensions:string[] = ['jpeg', 'jpg', 'gif', 'bmp', 'png'];
 
@@ -170,7 +173,7 @@ export class OpAttachmentListItemComponent extends UntilDestroyedMixin implement
 
   private get isImage():boolean {
     const ext = this.attachment.fileName.split('.').pop() || '';
-    return OpAttachmentListItemComponent.imageFileExtensions.indexOf(ext.toLowerCase()) > -1;
+    return OpAttachmentListItemComponent.imageFileExtensions.includes(ext.toLowerCase());
   }
 
   public confirmRemoveAttachment():void {
@@ -179,9 +182,6 @@ export class OpAttachmentListItemComponent extends UntilDestroyedMixin implement
         text: this.text.deleteConfirmation,
         title: this.text.deleteTitle,
         button_continue: this.text.deleteTitle,
-      },
-      icon: {
-        continue: 'delete',
       },
       dangerHighlighting: true,
     };

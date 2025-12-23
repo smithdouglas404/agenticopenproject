@@ -33,6 +33,7 @@ import { WidgetWpSetMenuComponent } from 'core-app/shared/components/grids/widge
 @Component({
   selector: 'widget-wp-graph-menu',
   templateUrl: '../menu/widget-menu.component.html',
+  standalone: false,
 })
 export class WidgetWpGraphMenuComponent extends WidgetWpSetMenuComponent {
   protected configurationComponent = WpGraphConfigurationModalComponent;

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,7 +31,6 @@
 class Projects::QueriesController < ApplicationController
   include Queries::Loading
   include OpTurbo::ComponentStream
-  include OpTurbo::DialogStreamHelper
 
   # No need for a more specific authorization check. That is carried out in the contracts.
   no_authorization_required! :show, :new, :create, :rename, :update, :toggle_public, :destroy, :destroy_confirmation_modal,
@@ -141,7 +142,10 @@ class Projects::QueriesController < ApplicationController
     if service_call.success?
       flash[:notice] = I18n.t(success_i18n_key)
 
-      redirect_to modified_query.visible? ? projects_path(query_id: modified_query.id) : projects_path
+      redirect_to(
+        modified_query.visible? ? projects_path(query_id: modified_query.id) : projects_path,
+        status: :see_other
+      )
     else
       flash[:error] = I18n.t(error_i18n_key, errors: service_call.errors.full_messages.join("\n"))
 

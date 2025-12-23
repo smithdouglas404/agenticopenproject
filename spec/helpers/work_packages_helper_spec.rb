@@ -59,14 +59,14 @@ RSpec.describe WorkPackagesHelper do
       it "prepends an invisible closed information if the work package is closed" do
         stub_work_package.status = closed_status
 
-        expect(helper.link_to_work_package(stub_work_package)).to have_css("a span.hidden-for-sighted", text: "closed")
+        expect(helper.link_to_work_package(stub_work_package)).to have_css("a span.sr-only", text: "closed")
       end
 
       it "omits the invisible closed information if told so even though the work package is closed" do
         stub_work_package.status = closed_status
 
         expect(helper.link_to_work_package(stub_work_package, no_hidden: true))
-          .to have_no_css("a span.hidden-for-sighted", text: "closed")
+          .to have_no_css("a span.sr-only", text: "closed")
       end
     end
 
@@ -191,6 +191,58 @@ RSpec.describe WorkPackagesHelper do
                   { name: "ID", id: "id" },
                   { name: "Subject", id: "subject" }
                 ])
+    end
+  end
+
+  describe "#last_work_package_note" do
+    let(:user) do
+      create(:user,
+             member_with_permissions: { project => permissions })
+    end
+
+    let(:project) { create(:project, enabled_internal_comments: true) }
+
+    before do
+      allow(User).to receive(:current).and_return(user)
+    end
+
+    context "with a work package that has notes" do
+      let(:work_package) { create(:work_package, project:) }
+
+      before do
+        add_work_package_note(internal: false)
+        add_work_package_note(internal: true)
+      end
+
+      context "and the user has no permission to see internal notes" do
+        let(:permissions) { %i[view_work_packages] }
+
+        it "returns the last unrestricted note" do
+          expect(helper.last_work_package_note(work_package)).to eq("This is the last PUBLIC note")
+        end
+      end
+
+      context "and the user has permissions to see internal notes" do
+        let(:permissions) { %i[view_work_packages view_internal_comments] }
+
+        it "returns the last unrestricted note" do
+          expect(helper.last_work_package_note(work_package)).to eq("This is the last INTERNAL note")
+        end
+      end
+
+      def add_work_package_note(internal: false)
+        work_package.add_journal(user:, notes: "This is the last #{internal ? 'INTERNAL' : 'PUBLIC'} note", internal:)
+        work_package.save(validate: false)
+      end
+    end
+
+    context "with a work package that has no notes" do
+      let(:work_package) { create(:work_package, project:) }
+      let(:permissions) { %i[view_work_packages] }
+
+      it "returns the no notes text" do
+        expect(helper.last_work_package_note(work_package)).to eq(I18n.t(:text_no_notes))
+      end
     end
   end
 end

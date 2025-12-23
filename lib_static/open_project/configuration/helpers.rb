@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -82,6 +84,14 @@ module OpenProject
         end
       end
 
+      def enterprise_chargebee_site
+        if Rails.env.production?
+          self["enterprise_chargebee_site"]
+        else
+          "openproject-enterprise-test"
+        end
+      end
+
       def file_storage?
         attachments_storage == :file
       end
@@ -123,11 +133,15 @@ module OpenProject
       end
 
       def fog_credentials
-        (Hash(self["fog"])["credentials"] || {}).map { |key, value| [key.to_sym, value] }.to_h
+        (Hash(self["fog"])["credentials"] || {}).symbolize_keys
       end
 
       def fog_directory
         Hash(self["fog"])["directory"]
+      end
+
+      def fog_s3_upload_host
+        fog_credentials[:endpoint].presence || "#{fog_directory}.s3-#{fog_credentials[:region]}.amazonaws.com"
       end
 
       def file_uploader
@@ -172,6 +186,10 @@ module OpenProject
 
       def web_wait_timeout
         Integer(ENV["RACK_TIMEOUT_WAIT_TIMEOUT"].presence || web["wait_timeout"].presence)
+      end
+
+      def term_on_timeout
+        Integer(ENV["RACK_TIMEOUT_TERM_ON_TIMEOUT"].presence || web["term_on_timeout"].presence)
       end
 
       def web_min_threads

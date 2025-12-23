@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -38,6 +40,7 @@ RSpec.describe "Work Package timer", :js, :selenium do
   let(:wp_view_b) { Pages::FullWorkPackage.new(work_package_b) }
   let(:time_logging_modal) { Components::TimeLoggingModal.new }
   let(:timer_button) { Components::WorkPackages::TimerButton.new }
+  let(:user_menu) { Components::UserMenu.new }
 
   let(:user) { create(:user, member_with_permissions: { project => permissions }) }
 
@@ -55,10 +58,10 @@ RSpec.describe "Work Package timer", :js, :selenium do
       active_time_entries = TimeEntry.where(ongoing: true, user:)
       expect(active_time_entries.count).to eq 1
       timer_entry = active_time_entries.first
-      expect(timer_entry.work_package).to eq work_package_a
+      expect(timer_entry.entity).to eq work_package_a
       expect(timer_entry.hours).to be_nil
 
-      page.find(".op-top-menu-user").click
+      user_menu.open
       expect(page).to have_css(".op-timer-account-menu", wait: 10)
       expect(page).to have_css(".op-timer-account-menu--wp-details", text: "##{work_package_a.id}: WP A")
       page.find_test_selector("op-timer-account-menu-stop").click
@@ -80,6 +83,7 @@ RSpec.describe "Work Package timer", :js, :selenium do
       expect(timer_entry.ongoing).to be false
       expect(timer_entry.hours).not_to be_nil
 
+      user_menu.close
       timer_button.start
       timer_button.expect_active
 
@@ -97,7 +101,7 @@ RSpec.describe "Work Package timer", :js, :selenium do
       active_time_entries = TimeEntry.where(ongoing: true, user:)
       expect(active_time_entries.count).to eq 1
       timer_entry = active_time_entries.first
-      expect(timer_entry.work_package).to eq work_package_a
+      expect(timer_entry.entity).to eq work_package_a
       expect(timer_entry.hours).to be_nil
 
       page.within(".spot-modal") { click_on "Stop current timer" }
@@ -122,7 +126,7 @@ RSpec.describe "Work Package timer", :js, :selenium do
       active_time_entries = TimeEntry.where(ongoing: true, user:)
       expect(active_time_entries.count).to eq 1
       timer_entry = active_time_entries.first
-      expect(timer_entry.work_package).to eq work_package_b
+      expect(timer_entry.entity).to eq work_package_b
       expect(timer_entry.hours).to be_nil
     end
   end
@@ -135,7 +139,7 @@ RSpec.describe "Work Package timer", :js, :selenium do
     context "when an old timer exists" do
       let!(:active_timer) do
         Timecop.travel(2.days.ago) do
-          create(:time_entry, project:, work_package: work_package_a, user:, ongoing: true)
+          create(:time_entry, project:, entity: work_package_a, user:, ongoing: true)
         end
       end
 
@@ -153,6 +157,7 @@ RSpec.describe "Work Package timer", :js, :selenium do
       second_window = open_new_window
       within_window(second_window) do
         wp_view_a.visit!
+        wait_for_network_idle
         timer_button.expect_visible
         timer_button.start
         timer_button.expect_active

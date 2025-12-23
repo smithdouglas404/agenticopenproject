@@ -55,7 +55,7 @@ module BasicData
       end
 
       def backlogs_configured?
-        BACKLOGS_SETTINGS_KEYS.all? { configured?(_1) }
+        BACKLOGS_SETTINGS_KEYS.all? { configured?(it) }
       end
 
       def configured?(key)

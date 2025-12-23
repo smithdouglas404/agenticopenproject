@@ -16,31 +16,37 @@
 .controller-homescreen .widget-boxes
   .widget-box.upsell
     padding: 0
-    background: var(--bgColor-accent-muted)
     flex-basis: 100%
-    border: var(--borderWidth-thin) solid var(--borderColor-severe-muted)
+    border: var(--borderWidth-thin) solid var(--enterprise-upsell-color)
     border-radius: var(--borderRadius-medium)
     background: var(--body-background)
+    container-name: upsellContainer
+    container-type: inline-size
+
+.widget-box--upsell-block
+  margin-bottom: 1rem
+  border: var(--borderWidth-thin) solid var(--enterprise-upsell-color)
+  border-radius: var(--borderRadius-medium)
+  background: var(--body-background)
+  // Ensure the image does not overflow the container on the borders
+  position: relative
+  overflow: hidden
 
 .widget-box--blocks--upsell-container
+  position: relative
   padding: 20px
   height: 250px
-  background-size: contain
-  background-repeat: no-repeat
-  background-position: center right
-
-  @media screen and (max-width: $breakpoint-lg)
-    background-image: none !important
-
-  @media screen and (max-width: $breakpoint-xl)
-    background-size: cover
 
 .upsell-colored
   color: var(--enterprise-upsell-color) !important
 
+.upsell-colored-text
+  color: var(--enterprise-upsell-text-color) !important
+
 .upsell-colored-background
   background: var(--enterprise-upsell-color) !important
   color: white !important
+  border-color: var(--enterprise-upsell-color) !important
 
 .widget-box--blocks--upsell-title
   font-weight: 400
@@ -49,15 +55,28 @@
   display: flex
 
 .widget-box--blocks--upsell-text
-  width: 50%
+  display: flex
+  flex-direction: column
+  height: 100%
+  width: 60%
+  position: relative
+  z-index: 1
 
   @media screen and (max-width: $breakpoint-lg)
     width: 100%
 
-.widget-box--blocks--upsell-description
-  margin: 10px 0 10px 0
-  display: flex
-
 .widget-box--blocks--upsell-image
-  width: 200px
-  margin: auto
+  @include upsell-image
+
+@container upsellContainer (max-width: 1000px)
+  .widget-box--blocks--upsell-container
+    height: auto
+  .widget-box--blocks--upsell-image
+    background-image: none !important
+
+@container upsellContainer (max-width: 1300px)
+  .widget-box--blocks--upsell-image
+    background-size: cover
+
+.widget-box--blocks--upsell-description
+  flex-grow: 1

@@ -94,6 +94,17 @@ RSpec.describe Journal::Timestamps do
       end
     end
 
+    describe "when ensuring UTC is passed to the timestamp where condition" do
+      it "converts the timestamp to UTC in the generated SQL" do
+        sql = Time.use_zone("America/New_York") do
+          est_time = Time.zone.parse("2022-08-01 11:30:00")
+          Journal.at_timestamp(est_time).to_sql
+        end
+        expect(sql)
+          .to include(/validity_period @> timestamp with time zone '2022-08-01 15:30:00 UTC'/)
+      end
+    end
+
     describe "when there are journals for Monday, Wednesday, and Friday" do
       let(:before_monday) { "2022-01-01".to_datetime }
       let(:monday) { "2022-08-01".to_datetime }

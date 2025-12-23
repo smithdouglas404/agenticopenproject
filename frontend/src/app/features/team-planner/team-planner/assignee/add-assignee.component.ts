@@ -51,6 +51,7 @@ import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/r
   templateUrl: './add-assignee.component.html',
   selector: 'op-tp-add-assignee',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AddAssigneeComponent {
   @Output() public selectAssignee = new EventEmitter<HalResource>();

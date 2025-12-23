@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Injector,
+  Injector, OnInit, OnDestroy,
 } from '@angular/core';
 import {
   DynamicComponentDefinition,
@@ -36,6 +36,8 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { OpTitleService } from 'core-app/core/html/op-title.service';
 import { EMPTY } from 'rxjs';
 import { SubmenuService } from 'core-app/core/main-menu/submenu.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 export function boardCardViewHandlerFactory(injector:Injector) {
   return new CardViewHandlerRegistry(injector);
@@ -52,8 +54,9 @@ export function boardCardViewHandlerFactory(injector:Injector) {
     DragAndDropService,
     BoardFiltersService,
   ],
+  standalone: false,
 })
-export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
+export class BoardPartitionedPageComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   text = {
     button_more: this.I18n.t('js.button_more'),
     delete: this.I18n.t('js.button_delete'),
@@ -80,9 +83,6 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
 
   /** Whether the board is editable */
   editable:boolean;
-
-  /** Go back to boards using back-button */
-  backButtonCallback:() => void;
 
   /** Current query title to render */
   selectedTitle?:string;
@@ -149,6 +149,8 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     readonly Boards:BoardService,
     readonly titleService:OpTitleService,
     readonly submenuService:SubmenuService,
+    readonly pathHelperService:PathHelperService,
+    readonly currentProject:CurrentProjectService,
   ) {
     super();
   }
@@ -193,6 +195,16 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     super.ngOnDestroy();
     this.removeTransitionSubscription();
   }
+
+  breadcrumbItems() {
+    return [
+      { href: this.pathHelperService.projectPath(this.currentProject.identifier!), text: (this.currentProject.name) },
+      { href: this.pathHelperService.boardsPath(this.currentProject.identifier), text: this.I18n.t('js.label_board_plural') },
+      this.selectedTitle?? '',
+    ];
+  }
+
+  currentMenuSectionHeader() { return this.I18n.t('js.label_global_queries'); }
 
   changeChangesFromTitle(newName:string) {
     this.board$
@@ -240,7 +252,7 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
    * @param state The current or entering state
    */
   protected setPartition(state:Ng2StateDeclaration) {
-    this.currentPartition = (state.data && state.data.partition) ? state.data.partition : '-split';
+    this.currentPartition = (state.data?.partition) ? state.data.partition : '-split';
   }
 
   private reloadSidemenu():void {

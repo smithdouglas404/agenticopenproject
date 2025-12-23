@@ -84,7 +84,7 @@ es:
       only_sms_allowed: "Solo se puede configurar el envío de SMS para otros usuarios."
     upsell:
       title: "Autenticación de dos factores"
-      description: "Fortalezca la seguridad de su instancia de OpenProject ofreciendo (o aplicando) reconocimiento de dos factores a todos los miembros del proyecto."
+      description: "Refuerce la seguridad de su instancia de OpenProject ofreciendo (o aplicando) reconocimiento de dos factores a todos los miembros del proyecto."
     backup_codes:
       none_found: No existen códigos de respaldo para esta cuenta.
       singular: Código de respaldo
@@ -123,7 +123,7 @@ es:
       2fa_from_webauthn: Indique el dispositivo WebAuthn <strong>%{device_name}</strong>. Si es USB asegúrese de conectarlo y tocarlo. A continuación, haga clic en el botón de inicio de sesión.
       webauthn:
         title: "WebAuthn"
-        description: Registre un dispositivo FIDO2 (como YubiKey) o la encalve segura de su dispositivo móvil.
+        description: Registre un dispositivo FIDO2 (como YubiKey) o el enclave seguro de su dispositivo móvil.
         further_steps: Una vez que haya elegido un nombre, puede hacer clic en el botón Continuar. Su navegador le pedirá que presente su dispositivo WebAuthn. Cuando lo haya hecho, habrá terminado de registrar el dispositivo.
       totp:
         title: "Autenticador en aplicación"

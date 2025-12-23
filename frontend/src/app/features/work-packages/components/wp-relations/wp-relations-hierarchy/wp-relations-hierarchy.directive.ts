@@ -42,6 +42,7 @@ import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
   selector: 'wp-relations-hierarchy',
   templateUrl: './wp-relations-hierarchy.template.html',
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
+  standalone: false,
 })
 export class WorkPackageRelationsHierarchyComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackage:WorkPackageResource;
@@ -92,7 +93,7 @@ export class WorkPackageRelationsHierarchyComponent extends UntilDestroyedMixin 
       .id(this.workPackage)
       .requireAndStream()
       .pipe(
-        withLatestFrom(this.schemaCache.requireAndStream(this.schemaCache.getSchemaHref(this.workPackage) as string)),
+        withLatestFrom(this.schemaCache.requireAndStream(this.schemaCache.getSchemaHref(this.workPackage)!)),
         this.untilDestroyed(),
       )
       .subscribe(([wp, _]) => {

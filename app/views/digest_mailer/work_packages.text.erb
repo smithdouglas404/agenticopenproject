@@ -2,7 +2,7 @@
 <%= "#{I18n.t(:"mail.digests.you_have")} #{digest_summary_text(@notification_ids.length, @mentioned_count)}" %>
 <%= "-" * 100 %>
 
-<% @aggregated_notifications.first(DigestMailer::MAX_SHOWN_WORK_PACKAGES).each do | work_package, notifications_by_work_package| %>
+<% @aggregated_notifications.first(DigestMailer::MAX_SHOWN_WORK_PACKAGES).each do |work_package, notifications_by_work_package| %>
 
   <%= "=" * (("# " + work_package.id.to_s + work_package.subject).length + 4) %>
   = #<%= work_package.id %> <%= work_package.subject %> =

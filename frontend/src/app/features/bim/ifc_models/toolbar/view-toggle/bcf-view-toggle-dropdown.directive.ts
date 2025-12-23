@@ -45,6 +45,7 @@ import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op
 
 @Directive({
   selector: '[opBcfViewDropdown]',
+  standalone: false,
 })
 export class BcfViewToggleDropdownDirective extends OpContextMenuTrigger {
   constructor(readonly elementRef:ElementRef,
@@ -57,7 +58,7 @@ export class BcfViewToggleDropdownDirective extends OpContextMenuTrigger {
     super(elementRef, opContextMenu);
   }
 
-  protected open(evt:JQuery.TriggeredEvent):void {
+  protected open(evt:Event):void {
     this.buildItems();
     this.opContextMenu.show(this, evt);
   }

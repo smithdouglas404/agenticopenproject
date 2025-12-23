@@ -88,6 +88,8 @@ pl:
     button_list_view: "Widok listy"
     button_show_view: "Tryb pełnoekranowy"
     button_log_time: "Rejestruj czas pracy"
+    button_start_timer: "Włącz zegar"
+    button_stop_timer: "Zatrzymaj zegar"
     button_more: "Więcej"
     button_open_details: "Otwórz szczegóły widoku"
     button_close_details: "Zamknij szczegóły widoku"
@@ -202,69 +204,6 @@ pl:
         edit_query: "Edytuj zapytanie"
         new_group: "Nowa Grupa"
         reset_to_defaults: "Resetuj do ustawień domyślnych"
-      enterprise:
-        text_reprieve_days_left: "Liczba dni do końca okresu karencji: %{days}"
-        text_expired: "wygasł"
-        trial:
-          confirmation: "Potwierdzenie adresu e-mail"
-          confirmation_info: >
-            Wysłaliśmy Ci wiadomość e-mail %{date} na adres %{email}. Sprawdź swoją skrzynkę odbiorczą i kliknij link potwierdzający, aby rozpocząć 14-dniowy okres próbny.
-          form:
-            general_consent: >
-              Przyjmuję <a target="_blank" href="%{link_terms}">warunki umowy</a> i <a target="_blank" href="%{link_privacy}">politykę prywatności</a>.
-            invalid_email: "Nieprawidłowy adres e-mail"
-            label_company: "Firma"
-            label_first_name: "Imię"
-            label_last_name: "Nazwisko"
-            label_domain: "Domena"
-            label_subscriber: "Subskrybent"
-            label_maximum_users: "Maksymalna liczba aktywnych użytkowników"
-            label_starts_at: "Data rozpoczęcia"
-            label_expires_at: "Wygasa"
-            label_plan: "Plan"
-            label_additional_features: "Dodatkowe funkcje"
-            receive_newsletter: Chcę otrzymywać <a target="_blank" href="%{link}">biuletyn </a> OpenProject.
-            taken_domain: W każdej domenie może być aktywna tylko jedna wersja próbna.
-            domain_mismatch: Obecna nazwa hosta żądania nie pasuje do skonfigurowanej nazwy hosta. Sprawdź dokładnie ustawienia systemu.
-            taken_email: Każdy użytkownik może utworzyć tylko jeden okres próbny.
-          email_not_received: "Wiadomość e-mail nie doszła? Możesz ją ponownie wysłać za pomocą linku po prawej stronie."
-          try_another_email: "Możesz też spróbować użyć innego adresu e-mail."
-          next_steps: "Następne kroki"
-          resend_link: "Wysłać ponownie"
-          resend_success: "Wiadomość e-mail została wysłana ponownie. Sprawdź swoje wiadomości e-mail i kliknij podany link potwierdzenia."
-          resend_warning: "Nie można ponownie wysłać wiadomości e-mail."
-          session_timeout: "Upłynął limit czasu sesji. Spróbuj ponownie załadować stronę lub ponownie wyślij wiadomość e-mail."
-          status_label: "Stan:"
-          status_confirmed: "potwierdzony"
-          status_waiting: "wysłano wiadomość e-mail — oczekiwanie na potwierdzenie"
-          test_ee: "Testuj wersję Enterprise przez 14 dni za darmo"
-          quick_overview: "Zapoznaj się z krótkim omówieniem zarządzania projektami i pracy zespołowej w OpenProject w wersji Enterprise."
-        upsell:
-          become_hero: "Zostań bohaterem!"
-          enterprise_info_html: "%{feature_title} jest dodatkiem wersji Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span>."
-          upgrade_info: "Aby ją aktywować i zacząć korzystać z niej w zespole, przejdź na plan płatny."
-          text: >
-            Edycja OpenProject Enterprise opiera się na edycji społecznośiowej. Zawiera dodatki dla Entrprise i profesjonalne wsparcie skierowane głównie do organizacji z ponad 10 użytkownikami, które zarządzają projektami o kluczowym znaczeniu dla biznesu za pomocą OpenProject.
-          you_contribute: "Deweloperzy również muszą płacić rachunki. Poprzez przejście na wersję Enterprise będziesz wspierać ten wysiłek społeczności open source i przyczyniać się do jej rozwoju, utrzymania i ciągłego doskonalenia."
-          benefits:
-            description: "Jakie są korzyści z rozwiązania lokalnego wersji Enterprise?"
-            high_security: "Funkcje zabezpieczeń"
-            high_security_text: "Pojedyncze logowanie (SAML, OpenID Connect, CAS), grupy LDAP."
-            installation: "Pomoc w instalacji"
-            installation_text: "Doświadczeni inżynierowie oprogramowania prowadzą Cię przez cały proces instalacji i konfiguracji w Twojej własnej infrastrukturze."
-            premium_features: "Dodatki dla Enterprise"
-            premium_features_text: "Tablice zwinne, niestandardowy motyw i logotyp, wykresy, inteligentne przepływy pracy z działaniami niestandardowymi, wyszukiwanie pełnotekstowe w załącznikach do pakietów roboczych i pola niestandardowe, umożliwiające wybór wielokrotny."
-            professional_support: "Profesjonalne wsparcie"
-            professional_support_text: "Uzyskaj niezawodne, wysokiej klasy wsparcie od starszych inżynierów wsparcia technicznego posiadających wiedzę fachową na temat uruchamiania oprogramowania OpenProject w środowiskach o znaczeniu krytycznym dla biznesu."
-          button_start_trial: "Rozpocznij bezpłatny okres próbny"
-          button_upgrade: "Uaktualnij teraz"
-          button_contact_us: "Skontaktuj się z nami, aby uzyskać demo"
-          button_book_now: "Zarezerwuj teraz"
-          confidence: >
-            Dostarczamy sprawdzone i wspierane oprogramowanie klasy korporacyjnej do zarządzania projektami — z otwartym kodem źródłowym i otwartym umysłem.
-          link_quote: "Uzyskaj wycenę"
-          more_info: "Więcej informacji"
-          unlimited: "Bez ograniczeń"
       working_days:
         calendar:
           empty_state_header: "Dni nierobocze"
@@ -275,9 +214,9 @@ pl:
         change_button: "Zapisz i zmień harmonogram"
         change_title: "Zmień dni robocze"
         removed_title: "Z listy dni nieroboczych usuniesz następujące dni:"
-        change_description: "Zmiana dni tygodnia, które są uważane za dni robocze lub nierobocze może wpłynąć na dni rozpoczęcia i zakończenia wszystkich pakietów roboczych we wszystkich projektach w tym wystąpieniu."
+        change_description: "Zmiana dni tygodnia, które są uważane za dni robocze lub nierobocze, może wpłynąć na dni rozpoczęcia i zakończenia wszystkich pakietów roboczych i cykli życia we wszystkich projektach w tym wystąpieniu."
         warning: >
-          Zmiany mogą wejść w życie po pewnym czasie. Gdy wszystkie odpowiednie pakiety robocze zostaną zaktualizowane, otrzymasz powiadomienie.
+          Zmiany mogą wejść w życie po pewnym czasie. Gdy wszystkie odpowiednie pakiety robocze i cykle życia projektów zostaną zaktualizowane, otrzymasz powiadomienie.
           Czy na pewno chcesz kontynuować?
       work_packages_settings:
         warning_progress_calculation_mode_change_from_status_to_field_html: >-
@@ -351,17 +290,6 @@ pl:
         format:
           date: "Atrybut %{attribute} jest nieprawidłową datą. Oczekiwany format: RRRR-MM-DD."
         general: "Wystapił błąd."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Przeczytaj o nowych funkcjach i aktualizacjach produktów."
-          learn_about: "Dowiedz się więcej o wszystkich nowych funkcjach"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_0":
-            standard:
-              new_features_html: >
-                Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak <br> <ul class="%{list_styling_class}"> <li>Backlogi spotkań i koniec klasycznych spotkań.</li> <li>Zaktualizowane plany Enterprise.</li> <li>Komentarze wewnętrzne w pakietach roboczych (dodatek wersji Enterprise).</li> <li>Automatycznie generowane tematy pakietów roboczych (dodatek wersji Enterprise).</li> <li>Oddzielny moduł śledzenia czasu z widokiem kalendarza.</li> <li>Relacja nadrzędna wyświetlana na karcie relacji pakietu roboczego.</li> <li>Wydanie dla społeczności: wykresy na stronie przeglądu projektu.</li> </ul>
     ical_sharing_modal:
       title: "Subskrybuj kalendarz"
       inital_setup_error_message: "Podczas pobierania danych wystąpił błąd."
@@ -369,12 +297,13 @@ pl:
       warning: "Nie udostępniaj tego adresu URL innym użytkownikom. Każda osoba mająca ten link będzie mogła wyświetlić szczegóły pakietu roboczego bez konieczności posiadania konta lub hasła."
       token_name_label: "Gdzie będziesz go używać?"
       token_name_placeholder: 'Wpisz nazwę, np. „Telefon”'
-      token_name_description_text: 'Jeśli subskrybujesz ten kalendarz na wielu urządzeniach, nazwa ta pomoże Ci rozróżnić je na liście <a href="my/access_token", target="_blank">tokenów dostępu</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Kopiuj adres URL"
       ical_generation_error_text: "Podczas generowania adresu URL kalendarza wystąpił błąd."
       success_message: 'Adres URL „%{name}” został skopiowany do schowka. Wklej go w kliencie kalendarza, aby dokonać subskrypcji.'
     label_activate: "Aktywuj"
     label_assignee: "Przypisana osoba"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Dodaj kolumnę po"
     label_add_column_before: "Dodaj kolumnę przed"
     label_add_columns: "Dodaj kolumny"
@@ -387,6 +316,7 @@ pl:
     label_added_time_by: 'Dodany przez <a href="%{authorLink}">%{author}</a> o %{age}'
     label_ago: "dni temu"
     label_all: "wszystkie"
+    label_all_projects: "Wszystkie projekty"
     label_all_uppercase: "Wszystkie"
     label_all_work_packages: "wszystkie pakiety pracy"
     label_and: "i"
@@ -415,6 +345,7 @@ pl:
     label_collapse: "Zwiń"
     label_collapsed: "zwinięty"
     label_collapse_all: "Zwiń wszystko"
+    label_collapse_text: "Collapse text"
     label_comment: "Komentarz"
     label_committed_at: "%{committed_revision_link} w %{date}"
     label_committed_link: "rewizja przeprowadzona %{revision_identifier}"
@@ -427,6 +358,7 @@ pl:
     label_expand: "Rozwiń"
     label_expanded: "rozwinięty"
     label_expand_all: "Rozwiń wszystkie"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Rozwiń menu projektu"
     label_export: "Eksportuj"
     label_export_preparing: "Eksport jest przygotowywany i zostanie wkrótce pobrany."
@@ -496,7 +428,6 @@ pl:
     label_repository_plural: "Repozytoria"
     label_save_as: "Zapisz jako"
     label_search_columns: "Wyszukaj kolumnę"
-    label_select_project: "Wybierz projekt"
     label_select_watcher: "Wybierz obserwatora..."
     label_selected_filter_list: "Wybrane filtry"
     label_show_attributes: "Pokaż wszystkie atrybuty"
@@ -507,7 +438,7 @@ pl:
     label_sort_lower: "Przenieś niżej"
     label_sorting: "Sortowanie"
     label_spent_time: "Czas pracy"
-    label_star_query: "Dodane do ulubionych"
+    label_star_query: "Ulubione"
     label_press_enter_to_save: "Aby zapisać, naciśnij Enter."
     label_public_query: "Publiczny"
     label_sum: "Suma"
@@ -566,7 +497,7 @@ pl:
     label_version_plural: "Wersje"
     label_view_has_changed: "Ten widok zawiera niezapisane zmiany. Kliknij, aby je zapisać."
     help_texts:
-      show_modal: "Pokaż atrybut wpisu tekstu pomocy"
+      show_modal: "Pokaż tekst pomocy"
     onboarding:
       buttons:
         skip: "Omiń"
@@ -626,7 +557,7 @@ pl:
       date_alerts:
         milestone_date: "Data  kamienia milowego"
         overdue: "Przekroczony termin"
-        overdue_since: "od %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "jest dzisiaj."
         property_is: "jest za %{difference_in_days}."
         property_was: "była %{difference_in_days} temu."
@@ -708,9 +639,12 @@ pl:
       title: "Potwierdź hasło aby kontynuować"
     pagination:
       no_other_page: "Jesteś na jedynej stronie."
+      pages_skipped: "Pominięte strony."
+      page_navigation: "Nawigacja po paginacji"
+      per_page_navigation: 'Wybór liczby pozycji na jednej stronie'
       pages:
-        next: "Do następnej strony"
-        previous: "Wróć do poprzedniej strony"
+        page_number: Strona %{number}
+        show_per_page: Pokaż %{number} na jednej stronie
     placeholders:
       default: "-"
       subject: "Wpisz tutaj temat"
@@ -721,15 +655,10 @@ pl:
       autocompleter:
         label: "Autouzupełnianie projektu"
       click_to_switch_to_project: "Projekt: %{projectname}"
-      confirm_template_load: "Przełączenie szablonu spowoduje ponowne załadowanie strony i utracisz wszystkie dane wprowadzone do tego formularza. Kontynuować?"
       context: "Kontekst projektu"
-      copy:
-        copy_options: "Opcje kopiowania"
       not_available: "Projekt niedostępny"
-      no_template_selected: "(Brak)"
       required_outside_context: >
         Wybierz projekt, w którym chcesz utworzyć pakiet roboczy, aby zobaczyć wszystkie atrybuty. Możesz wybrać tylko projekty, które mają aktywowany powyższy typ.
-      use_template: "Użyj szablonu"
     reminders:
       settings:
         daily:
@@ -763,6 +692,8 @@ pl:
           first_day: "Pierwszy dzień"
           last_day: "Ostatni dzień"
     text_are_you_sure: "Jesteś pewny?"
+    text_are_you_sure_to_cancel: "Na tej stronie znajdują się niezapisane zmiany. Czy na pewno chcesz je odrzucić?"
+    breadcrumb: "Ścieżka"
     text_data_lost: "Wszystkie wprowadzone dane zostaną utracone."
     text_user_wrote: "%{value} napisał(a):"
     types:
@@ -847,6 +778,7 @@ pl:
     autocompleter:
       placeholder: "Wpisz szukaną frazę"
       notFoundText: "Nie znaleziono elementów"
+      search: "Wyszukaj"
       project:
         placeholder: "Wybierz projekt"
     repositories:
@@ -892,10 +824,10 @@ pl:
         mixed: "Mieszane"
     work_packages:
       bulk_actions:
-        move: "Masowa zmiana projektu"
         edit: "Masowa edycja"
-        copy: "Masowe kopiowanie"
         delete: "Masowe usuwanie"
+        duplicate: "Duplikacja zbiorcza"
+        move: "Masowa zmiana projektu"
       button_clear: "Wyczyść"
       comment_added: "Komentarz został dodany pomyślnie."
       comment_send_failed: "Wystąpił błąd. Nie można zamieścić komentarza."
@@ -939,8 +871,8 @@ pl:
         header_no_type: "Nowy pakiet roboczy (typ jeszcze nie ustawiony)"
         header_with_parent: "Nowy %{type} (podrzędny %{parent_type} #%{id})"
         button: "Utwórz"
-      copy:
-        title: "Kopiuj pakiet roboczy"
+      duplicate:
+        title: "Zduplikuj pakiet roboczy"
       hierarchy:
         show: "Pokaż tryb hierarchii"
         hide: "Ukryj tryb hierarchii"
@@ -961,7 +893,7 @@ pl:
         estimatesAndTime: "Szacunki i czas"
         other: "Inne"
       properties:
-        assignee: "Przypisana osoba"
+        assignee: "Przypisany do"
         author: "Autor"
         createdAt: "Utworzone"
         description: "Opis"
@@ -1040,6 +972,12 @@ pl:
           new: "Ustaw przypomnienie"
           edit: "Edytuj przypomnienie"
         subtitle: "W wybranym terminie otrzymasz powiadomienie dotyczące tego pakietu roboczego."
+        presets:
+          tomorrow: "Jutro"
+          three_days: "Za 3 dni"
+          week: "Za tydzień"
+          month: "Za miesiąc"
+          custom: "W określonym dniu/godzinie"
       scheduling:
         is_parent: "Daty tego pakietu roboczego są automatycznie odejmowane od jego elementów podrzędnych. Włącz funkcję Planowanie ręczne, aby ustawić daty."
         is_switched_from_manual_to_automatic: "Po przełączeniu planowania z ręcznego na automatyczne konieczne może być ponowne obliczenie dat tego pakietu roboczego ze względu na jego powiązania z innymi pakietami roboczymi."
@@ -1138,6 +1076,8 @@ pl:
     notice_successful_delete: "Usuwanie zakończone sukcesem."
     notice_successful_update: "Aktualizacja zakończona sukcesem."
     notice_job_started: "zadanie rozpoczęte."
+    no_job_id: "Serwer nie zwrócił identyfikatora zadania."
+    invalid_job_response: "Niepoprawna odpowiedź z serwera."
     notice_bad_request: "Nieprawidłowe żądanie."
     relations:
       empty: Brak relacji
@@ -1174,6 +1114,7 @@ pl:
         few: "%{count} potomnych pakietów roboczych"
         many: "%{count} potomnych pakietów roboczych"
         other: "%{count} potomnych pakietów roboczych"
+      hour_string: "%{hours}h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1196,7 +1137,7 @@ pl:
       current_project_and_all_descendants: "W tym projekcie + pod projekcie"
       current_project: "W tym projekcie"
       recently_viewed: "Ostatnio wyświetlane"
-      search: "Szukaj"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "Wszystkie projekty"
         project_and_subprojects: "i wszystkie podprojekty"
@@ -1206,71 +1147,8 @@ pl:
       list: "Tabela"
       timeline: "Wykres Gantta"
     invite_user_modal:
-      back: "Wstecz"
       invite: "Zaproś"
-      title:
-        invite: "Zaproś użytkownika"
-        invite_to_project: "Zaproś %{type} do %{project}"
-        User: "użytkownik"
-        Group: "grupa"
-        PlaceholderUser: "użytkownik zastępczy"
-        invite_principal_to_project: "Zaproś %{principal} do %{project}"
-      project:
-        label: "Projekt"
-        required: "Wybierz projekt"
-        lacking_permission: "Nie masz uprawnień do przypisywania użytkowników do aktualnie wybranego projektu, wybierz inny."
-        lacking_permission_info: "Nie masz uprawnień do przypisywania użytkowników do projektu, w którym teraz jesteś. Musisz wybrać inny."
-        next_button: "Następny"
-        no_results: "Nie znaleziono żadnych projektów"
-        no_invite_rights: "Nie masz uprawnień do zapraszania członków do tego projektu"
-      type:
-        required: "Wybierz typ, który ma zostać zaproszony"
-        user:
-          title: "Użytkownik"
-          description: "Uprawnienia na podstawie przypisanej roli w wybranym projekcie"
-        group:
-          title: "Grupa"
-          description: "Uprawnienia na podstawie przypisanej roli w wybranym projekcie"
-        placeholder:
-          title: "Użytkownik zastępczy"
-          title_no_ee: "Użytkownik zastępczy (dodatek dostępny tylko w wersji Enterprise)"
-          description: "Nie ma dostępu do projektu i nie są wysyłane żadne wiadomości e-mail."
-          description_no_ee: 'Nie ma dostępu do projektu i żadne wiadomości e-mail nie są wysyłane. <br>Sprawdź <a href="%{eeHref}" target="_blank">wersję Enterprise</a>'
-      principal:
-        label:
-          name_or_email: "Nazwa lub adres e-mail"
-          name: "Nazwa"
-        already_member_message: "Już jest członkiem %{project}"
-        no_results_user: "Nie znaleziono żadnych użytkowników"
-        invite_user: "Zaproś:"
-        no_results_placeholder: "Nie znaleziono elementów zastępczych"
-        create_new_placeholder: "Utwórz nowy element zastępczy:"
-        no_results_group: "Nie znaleziono żadnych grup"
-        next_button: "Następny"
-        required:
-          user: "Wybierz użytkownika"
-          placeholder: "Wybierz element zastępczy"
-          group: "Wybierz grupę"
-      role:
-        label: "Rola w %{project}"
-        no_roles_found: "Nie znaleziono żadnych ról"
-        description: >-
-          To jest rola, jaką użytkownik otrzyma po dołączeniu do projektu. Rola określa, jakie działania mogą zostać podjęte i jakie informacje będą widoczne. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Dowiedz się więcej o rolach i uprawnieniach. </a>
-        required: "Wybierz rolę"
-        next_button: "Następny"
-      message:
-        label: "Wiadomość z zaproszeniem"
-        description: "Wyślemy do użytkownika wiadomość e-mail, do której możesz tutaj dodać prywatną wiadomość. Może to być wyjaśnienie zaproszenia lub ułatwiające rozpoczęcie pracy informacje na temat projektu."
-        next_button: "Następny"
-      summary:
-        next_button: "Wyślij zaproszenie"
-      success:
-        title: "Zaproszono %{principal}!"
-        description:
-          user: "Użytkownik może się teraz zalogować, aby uzyskać dostęp do %{project}.  Tymczasem możesz już planować z tym użytkownikiem i na przykład przypisać pakiety robocze."
-          placeholder: "Symbolu zastępczego można teraz użyć w %{project}. Tymczasem możesz już planować z tym użytkownikiem i na przykład przypisać pakiety robocze."
-          group: "Grupa jest teraz częścią %{project}. Tymczasem możesz już planować z tą grupą i na przykład przypisać pakiety robocze."
-        next_button: "Kontynuuj"
+      placeholder_add_tag: "Utwórz użytkownika zastępczego"
     exclusion_info:
       modal:
         title: "Status wyłączono z sum hierarchii"
@@ -1287,13 +1165,20 @@ pl:
       selected_filter:
         all: "Wszystkie projekty"
         selected: "Tylko zaznaczone"
-      search_placeholder: "Wyszukaj projekt..."
+      search_placeholder: "Wyszukaj projekty..."
+      search_placeholder_favorites: "Wyszukaj ulubione..."
       include_subprojects: "Uwzględnij wszystkie podprojekty"
       tooltip:
         include_all_selected: "Projekt już uwzględniony, ponieważ włączenie wszystkich podprojektów jest włączone."
         current_project: "To jest bieżący projekt, w którym jesteś."
         does_not_match_search: "Projekt nie spełnia kryteriów wyszukiwania."
       no_results: "Żaden projekt nie spełnia kryteriów wyszukiwania."
+      no_favorite_results: "Żaden ulubiony projekt nie spełnia kryteriów wyszukiwania."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Linia odniesienia"
       clear: "Wyczyść"

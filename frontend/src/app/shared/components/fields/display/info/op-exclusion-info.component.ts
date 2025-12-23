@@ -42,6 +42,7 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
   templateUrl: './op-exclusion-info.component.html',
   styleUrls: ['./op-exclusion-info.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class OpExclusionInfoComponent implements OnInit {
   public opened = false;

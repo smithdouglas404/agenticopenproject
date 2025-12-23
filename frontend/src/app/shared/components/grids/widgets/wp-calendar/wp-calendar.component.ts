@@ -39,6 +39,7 @@ import { CurrentUserService } from 'core-app/core/current-user/current-user.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './wp-calendar.component.html',
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
+  standalone: false,
 })
 export class WidgetWpCalendarComponent extends AbstractWidgetComponent {
   text = {

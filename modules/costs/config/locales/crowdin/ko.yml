@@ -31,6 +31,9 @@ ko:
         spent: "소비"
         spent_on: "날짜"
         logged_by: "기록자"
+        entity: 기록함 -
+        entity_id: 기록함 -
+        entity_gid: 기록함 -
       cost_type:
         unit: "단위 이름"
         unit_plural: "복수형 단위 이름"
@@ -58,6 +61,9 @@ ko:
         start_time: 시작 시간
         end_time: 완료 시간
         time: 시간
+        entity: 기록함 -
+        entity_id: 기록함 -
+        entity_gid: 기록함 -
     models:
       time_entry:
         other: "시간 항목"
@@ -73,6 +79,7 @@ ko:
         time_entry:
           invalid_time: "- 00:00에서 23:59 사이여야 합니다."
           cannot_log_for_this_work_package: "이 작업 패키지에 대한 시간을 기록할 수 없습니다."
+          duplicate_ongoing: "이 사용자에 대해 진행 중인 시간 항목이 이미 존재합니다."
         work_package:
           is_not_a_valid_target_for_cost_entries: "작업 패키지 #%{id}은(는) 비용 항목 재할당에 올바른 대상이 아닙니다."
           nullify_is_not_valid_for_cost_entries: "비용 항목은 프로젝트에 할당할 수 없습니다."
@@ -90,6 +97,7 @@ ko:
   button_log_time: "기록"
   button_add_activity: "활동"
   button_add_time_entry: "작업시간 기록"
+  button_stop_timer: "타이머 중지"
   caption_booked_on_project: "프로젝트에서 예약됨"
   caption_default: "기본값"
   caption_default_rate_history_for: "%{user}에 대한 기본 요금 기록"
@@ -168,6 +176,7 @@ ko:
   label_day: "일"
   label_today_capitalized: "오늘"
   label_view_mode_switcher: "보기 변경"
+  label_timer_since: "%{time}에 시작됨"
   placeholder_activity_select_work_package_first: 먼저 작업 패키지 선택이 필요합니다
   notice_something_wrong: "문제가 발생했습니다. 다시 시도해 주세요."
   notice_successful_restore: "성공적으로 복원되었습니다."
@@ -175,6 +184,7 @@ ko:
   notice_cost_logged_successfully: "단위 비용이 기록되었습니다."
   notice_different_time_zones: "이 사용자의 표준 시간대(%{tz})가 다릅니다. 시간은 해당 표준 시간대를 사용하여 기록됩니다."
   notice_time_entry_update_failed: "시간 항목을 업데이트하지 못했습니다. 오류: %{errors}"
+  notice_time_entry_delete_failed: "시간 항목을 삭제하지 못했습니다. 오류: %{errors}"
   permission_edit_cost_entries: "예약된 단위 비용 편집"
   permission_edit_own_cost_entries: "고유한 예약된 단위 비용 편집"
   permission_edit_hourly_rates: "시간당 요금 편집"
@@ -189,11 +199,13 @@ ko:
   permission_view_own_hourly_rate: "고유한 시간당 요금 보기"
   permission_view_own_time_entries: "고유한 소비 시간 보기"
   project_module_costs: "시간 및 비용"
-  setting_allow_tracking_start_and_end_times: "정확한 시간 추적 허용"
+  setting_allow_tracking_start_and_end_times: "시작 및 완료 시간 허용"
   setting_costs_currency: "통화"
   setting_costs_currency_format: "통화 형식"
-  setting_enforce_tracking_start_and_end_times: "정확한 시간 요구"
-  setting_enforce_without_allow: "이 옵션을 허용하지 않으면 정확한 시간 요구가 가능하지 않습니다"
+  setting_enforce_tracking_start_and_end_times: "시작 및 완료 시간 필요"
+  setting_enforce_without_allow: "이 옵션을 허용하지 않으면 시작 및 완료 시간 요구가 가능하지 않습니다"
+  setting_allow_tracking_start_and_end_times_caption: "시간을 기록할 때 시작 및 완료 시간 입력을 활성화합니다."
+  setting_enforce_tracking_start_and_end_times_caption: "시간을 기록할 때 시작 및 완료 시간을 필수로 입력해야 합니다."
   text_assign_time_and_cost_entries_to_project: "보고된 시간 및 비용을 프로젝트에 할당"
   text_destroy_cost_entries_question: "%{cost_entries}은(는) 삭제하려는 작업 패키지에서 보고되었습니다. 어떻게 하시겠습니까?"
   text_destroy_time_and_cost_entries: "보고된 시간 및 비용 삭제"

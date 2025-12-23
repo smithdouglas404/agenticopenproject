@@ -38,6 +38,7 @@ import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'widget-wp-table-menu',
   templateUrl: '../menu/widget-menu.component.html',
+  standalone: false,
 })
 export class WidgetWpTableMenuComponent extends WidgetWpSetMenuComponent {
   @InjectField() currentUser:CurrentUserService;

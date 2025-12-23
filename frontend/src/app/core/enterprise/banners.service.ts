@@ -26,8 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, DOCUMENT } from '@angular/core';
 import { enterpriseEditionUrl } from 'core-app/core/setup/globals/constants.const';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 
@@ -43,7 +42,19 @@ export class BannersService {
   }
 
   public showBannerFor(feature:string):boolean {
-    return !(this._bannersHidden || this.configuration.availableFeatures.includes(feature));
+    if (this._bannersHidden) {
+      return false;
+    }
+
+    return !this.allowsTo(feature) || this.trialling(feature);
+  }
+
+  public allowsTo(feature:string):boolean {
+    return this.configuration.availableFeatures.includes(feature);
+  }
+
+  public trialling(feature:string):boolean {
+    return this.configuration.triallingFeatures.includes(feature);
   }
 
   public getEnterPriseEditionUrl({ referrer, hash }:{ referrer?:string, hash?:string } = {}) {
@@ -59,17 +70,17 @@ export class BannersService {
     return url.toString();
   }
 
-  public async conditional(feature:string, bannersVisible?:() => void, bannersNotVisible?:() => void) {
+  public async conditional(feature:string, featureNotAvailable?:() => void, featureAvailable?:() => void) {
     await this.configuration.initialize();
 
-    if (this.showBannerFor(feature)) {
-      this.callMaybe(bannersVisible);
+    if (this.allowsTo(feature)) {
+      this.callMaybe(featureAvailable);
     } else {
-      this.callMaybe(bannersNotVisible);
+      this.callMaybe(featureNotAvailable);
     }
   }
 
   private callMaybe(func?:() => unknown) {
-    func && func();
+    func?.();
   }
 }

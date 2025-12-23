@@ -43,12 +43,11 @@ See COPYRIGHT and LICENSE files for more details.
 <%= render(Primer::OpenProject::SubHeader.new) do |subheader|
       subheader.with_action_button(
         scheme: :primary,
-        aria: { label: t(:label_version_new) },
-        title: t(:label_version_new),
+        leading_icon: :plus,
+        label: I18n.t(:label_version_new),
         tag: :a,
         href: url_for({ controller: "/versions", action: "new", project_id: @project })
-      ) do |button|
-        button.with_leading_visual_icon(icon: :plus)
+      ) do
         t("activerecord.models.version")
       end
     end %>

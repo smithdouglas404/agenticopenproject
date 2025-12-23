@@ -15,6 +15,7 @@ import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 @Component({
   templateUrl: './wp-table-configuration-relation-selector.html',
   selector: 'wp-table-configuration-relation-selector',
+  standalone: false,
 })
 export class WpTableConfigurationRelationSelectorComponent implements OnInit {
   private relationFilterIds:string[] = [
@@ -76,7 +77,7 @@ export class WpTableConfigurationRelationSelectorComponent implements OnInit {
   private setSelectedRelationFilter():void {
     const currentRelationFilters:QueryFilterInstanceResource[] = this.relationFiltersOf(this.wpTableFilters.current) as QueryFilterInstanceResource[];
     if (currentRelationFilters.length > 0) {
-      this.selectedRelationFilter = _.find(this.availableRelationFilters, { id: currentRelationFilters[0].id }) as QueryFilterResource;
+      this.selectedRelationFilter = _.find(this.availableRelationFilters, { id: currentRelationFilters[0].id })!;
     } else {
       this.selectedRelationFilter = this.availableRelationFilters[0];
     }

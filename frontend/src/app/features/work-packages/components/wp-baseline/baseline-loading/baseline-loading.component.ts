@@ -37,5 +37,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-baseline-loading',
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class OpBaselineLoadingComponent { }

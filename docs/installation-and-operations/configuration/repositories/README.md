@@ -293,17 +293,17 @@ Thus, if you use a separate user for Apache and OpenProject, they need to reside
 
 In newer versions of Git, you might see this error:
 
-```
+```shell
 fatal: detected dubious ownership in repository at <path>
 ```
 
 This happens because the owner of the repository (openproject) is not the one accessing it (www-data / web user), which is expected in this case. You will need to disable this check:
 
-```bash
+```shell
 git config --system --add safe.directory '*'
 ```
 
-Please inform yourself about the ramifications of this change. For more information, please see https://stackoverflow.com/a/73100228/420614, https://git-scm.com/docs/git-config/2.35.2#Documentation/git-config.txt-safedirectory
+Please inform yourself about the ramifications of this change. For more information, please see [stackoverflow](https://stackoverflow.com/a/73100228/420614) or [git-scm.com](https://git-scm.com/docs/git-config/2.35.2#Documentation/git-config.txt-safedirectory).
 
 #### Exemplary Apache Configuration
 

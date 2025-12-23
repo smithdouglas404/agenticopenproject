@@ -40,8 +40,7 @@ RSpec.describe "Tabs navigation and content switching on the admin/design page" 
     end
 
     it "redirects to upsell page" do
-      expect(page).to have_enterprise_upsell_page
-      expect(page).to have_text "Available starting with the Basic enterprise plan"
+      expect(page).to have_enterprise_banner(:basic)
     end
   end
 
@@ -92,12 +91,6 @@ RSpec.describe "Tabs navigation and content switching on the admin/design page" 
 
     it "redirects to pdf export styles tab" do
       click_on "PDF export styles"
-      expect(page).to have_current_path custom_style_path(tab: "pdf_export_styles")
-
-      # select a color theme and redirect to the PDF export styles tab
-      select("OpenProject (default)", from: "theme")
-      find("[data-test-selector='color-theme-button']").click
-      expect_flash(message: I18n.t(:notice_successful_update))
       expect(page).to have_current_path custom_style_path(tab: "pdf_export_styles")
 
       # change export cover text color and redirect to the PDF export styles tab

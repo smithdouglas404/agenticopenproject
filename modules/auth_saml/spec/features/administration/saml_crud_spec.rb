@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -47,7 +49,7 @@ RSpec.describe "SAML administration CRUD",
       fill_in "Name", with: "My provider"
       click_link_or_button "Continue"
 
-      expect(page).to have_css("h1", text: "My provider")
+      expect(page).to have_heading text: "My provider"
 
       # Skip metadata
       click_link_or_button "Continue"

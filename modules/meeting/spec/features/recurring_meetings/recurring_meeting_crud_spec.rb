@@ -210,7 +210,7 @@ RSpec.describe "Recurring meetings CRUD",
   context "with view permissions only" do
     let(:current_user) { other_user }
 
-    it "does not allow to act on the recurring meeting" do
+    it "does not allow to act on the recurring meeting, except for downloading the ical event" do
       show_page.visit!
 
       expect(page).to have_no_button "Open"
@@ -229,7 +229,11 @@ RSpec.describe "Recurring meetings CRUD",
       show_page.expect_planned_meeting date: "01/07/2025 01:30 PM"
       show_page.expect_planned_meeting date: "01/14/2025 01:30 PM"
 
-      expect(page).not_to have_test_selector "recurring-meeting-action-menu"
+      page.find_test_selector("recurring-meeting-action-menu").click
+      page.find(".Overlay")
+      page.within(".Overlay") do
+        expect(page).to have_css(".ActionListItem-label", count: 1)
+      end
     end
   end
 end

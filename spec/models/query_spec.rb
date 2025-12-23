@@ -593,7 +593,6 @@ RSpec.describe Query,
 
     context "with filters" do
       before do
-
         allow(Status)
           .to receive_messages(all: [valid_status], exists?: true)
 
@@ -925,6 +924,27 @@ RSpec.describe Query,
           query.destroy!
         end.not_to raise_error
       end
+    end
+  end
+
+  describe "#work_package_journals" do
+    let(:work_package) { create(:work_package, project:, author: project_member) }
+    let(:user) { create(:user, member_with_permissions: { work_package => %i[view_work_packages] }) }
+
+    before do
+      allow(User).to receive(:current).and_return(user)
+
+      work_package.add_journal(user:, notes: "This is a public note", internal: false)
+      work_package.save(validate: false)
+      work_package.add_journal(user:, notes: "This is an internal note", internal: true)
+      work_package.save(validate: false)
+    end
+
+    it "excludes internal comments", :aggregate_failures do
+      expect(work_package.journals.pluck(:restricted)).to contain_exactly(false, false, true)
+      expect(query.work_package_journals.count).to eq(2)
+      internal_journals = work_package.journals.where(restricted: true)
+      expect(query.work_package_journals).not_to include(internal_journals)
     end
   end
 end

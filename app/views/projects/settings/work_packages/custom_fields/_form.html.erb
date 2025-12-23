@@ -68,11 +68,11 @@ See COPYRIGHT and LICENSE files for more details.
         </thead>
         <tbody>
           <% all_custom_fields = @project.all_work_package_custom_fields.pluck(:id) %>
-          <% work_package_custom_fields.includes(:types).find_each do |custom_field| %>
+          <% work_package_custom_fields.includes(:types).each do |custom_field| # rubocop:disable Rails/FindEach %>
           <%
             options = {
               lang: custom_field.name_locale,
-              label_options: { class: "hidden-for-sighted" }
+              label_options: { class: "sr-only" }
             }
           %>
             <tr class="custom-field-<%= custom_field.id %>">
@@ -96,7 +96,7 @@ See COPYRIGHT and LICENSE files for more details.
               </td>
               <td>
                 <% if current_user.admin? %>
-                  <% type_links = custom_field.types.map { |t| link_to(t.name, edit_tab_type_path(id: t.id, tab: "form_configuration")) } %>
+                  <% type_links = custom_field.types.map { |t| link_to(t.name, edit_type_form_configuration_path(t)) } %>
                   <%= safe_join type_links, ", " %>
                 <% else %>
                   <%= custom_field.types.map(&:name).join(", ") %>

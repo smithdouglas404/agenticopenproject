@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -47,8 +49,10 @@ module FrontendAssetHelper
   # or referencing the running CLI proxy that hosts the assets in memory.
   def include_frontend_assets
     capture do
-      %w(vendor.js polyfills.js runtime.js main.js).each do |file|
-        concat nonced_javascript_include_tag variable_asset_path(file), skip_pipeline: true
+      concat nonced_javascript_include_tag variable_asset_path("jquery.js"), skip_pipeline: true
+
+      %w(polyfills.js main.js).each do |file|
+        concat nonced_javascript_include_tag variable_asset_path(file), skip_pipeline: true, type: "module"
       end
 
       concat frontend_stylesheet_link_tag("styles.css")
@@ -66,18 +70,7 @@ module FrontendAssetHelper
   end
 
   def nonced_javascript_include_tag(path, **)
-    javascript_include_tag(path, nonce: content_security_policy_script_nonce, **)
-  end
-
-  private
-
-  def lookup_frontend_asset(unhashed_file_name)
-    hashed_file_name = ::OpenProject::Assets.lookup_asset(unhashed_file_name)
-    frontend_asset_path(hashed_file_name)
-  end
-
-  def frontend_asset_path(file_name)
-    "/assets/frontend/#{file_name}"
+    javascript_include_tag(path, nonce: content_security_policy_nonce, **)
   end
 
   def variable_asset_path(path)
@@ -92,5 +85,16 @@ module FrontendAssetHelper
       # because in this case javascript|stylesheet_include_tag will add it automatically.
       lookup_frontend_asset(path)
     end
+  end
+
+  private
+
+  def lookup_frontend_asset(unhashed_file_name)
+    hashed_file_name = ::OpenProject::Assets.lookup_asset(unhashed_file_name)
+    frontend_asset_path(hashed_file_name)
+  end
+
+  def frontend_asset_path(file_name)
+    "/assets/frontend/#{file_name}"
   end
 end

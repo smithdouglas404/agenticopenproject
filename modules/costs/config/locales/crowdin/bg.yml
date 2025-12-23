@@ -31,6 +31,9 @@ bg:
         spent: "Отменено"
         spent_on: "Дата"
         logged_by: "Влязъл от"
+        entity: Logged for
+        entity_id: Logged for
+        entity_gid: Logged for
       cost_type:
         unit: "Име на единица"
         unit_plural: "Плурализирано име на единица"
@@ -58,6 +61,9 @@ bg:
         start_time: Начален час
         end_time: Finish time
         time: Час
+        entity: Logged for
+        entity_id: Logged for
+        entity_gid: Logged for
     models:
       time_entry:
         one: "Time entry"
@@ -77,6 +83,7 @@ bg:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
           cannot_log_for_this_work_package: "Cannot log time for this work package."
+          duplicate_ongoing: "An ongoing time entry already exists for this user."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Работния пакет #%{id} не е валидна цел за преназначение на разходите."
           nullify_is_not_valid_for_cost_entries: "Вписванията за разходи не могат да бъдат зададени на проект."
@@ -94,6 +101,7 @@ bg:
   button_log_time: "Log"
   button_add_activity: "Активност"
   button_add_time_entry: "Отчетено време"
+  button_stop_timer: "Stop timer"
   caption_booked_on_project: "Разходи за единична регистрация"
   caption_default: "По подразбиране"
   caption_default_rate_history_for: "История на тарифите по подразбиране за %{user}"
@@ -172,6 +180,7 @@ bg:
   label_day: "Ден"
   label_today_capitalized: "Днес"
   label_view_mode_switcher: "Change view"
+  label_timer_since: "Started at %{time}"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "Нещо се обърка. Моля, опитайте отново."
   notice_successful_restore: "Успешно възстановяване."
@@ -179,6 +188,7 @@ bg:
   notice_cost_logged_successfully: "Единичната цена е регистрирана успешно."
   notice_different_time_zones: "This user has a different time zone (%{tz}). Time will be logged using their time zone."
   notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
   permission_edit_cost_entries: "Редактирайте резервираните единични разходи"
   permission_edit_own_cost_entries: "Редактирайте собствените резервирани единични разходи"
   permission_edit_hourly_rates: "Редактирайте почасовите ставки"
@@ -193,11 +203,13 @@ bg:
   permission_view_own_hourly_rate: "Вижте собствената почасова ставка"
   permission_view_own_time_entries: "Вижте собственото си отработено време"
   project_module_costs: "Време и разходи"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
   setting_costs_currency: "Валута"
   setting_costs_currency_format: "Формат на валутата"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "Require start and finish times"
+  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "Присвойте отчетени часове и разходи на проекта"
   text_destroy_cost_entries_question: "%{cost_entries} бяха отчетени в работните пакети, които ще изтриете. Какво искаш да правиш?"
   text_destroy_time_and_cost_entries: "Изтрийте отчетените часове и разходи"

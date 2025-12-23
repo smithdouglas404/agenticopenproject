@@ -29,7 +29,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { TypedJSON } from 'typedjson';
-import { Constructor } from '@angular/cdk/table';
+import { Constructor } from 'core-app/core/util-types';
 import { Observable, throwError } from 'rxjs';
 import {
   HTTPClientHeaders,

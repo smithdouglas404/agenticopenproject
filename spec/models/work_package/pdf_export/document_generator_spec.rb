@@ -38,6 +38,7 @@ RSpec.describe WorkPackage::PDFExport::DocumentGenerator do
   end
   let(:export_time) { DateTime.new(2023, 6, 30, 23, 59) }
   let(:export_time_formatted) { format_time(export_time, include_date: true) }
+  let(:export_date_formatted) { format_date(export_time) }
   let(:export_pdf) do
     Timecop.freeze(export_time) do
       export.export!
@@ -56,7 +57,7 @@ RSpec.describe WorkPackage::PDFExport::DocumentGenerator do
       expected_result = [
         "This is a test description with an macro:",
         user.name,
-        export_time_formatted,
+        export_date_formatted,
         "A text in the center of the footer",
         "Page 1 of 1"
       ]
@@ -80,7 +81,7 @@ RSpec.describe WorkPackage::PDFExport::DocumentGenerator do
         expected_result = [
           "honorificabilitudinitatibus honorificabilitudinitatibus honorificabilitudinitatibus " \
           "honorificabili ­ tudinitatibus honorificabilitudinitatibus honorificabilitudinitatibus",
-          export_time_formatted,
+          export_date_formatted,
           "Page 1 of 1"
         ]
         result = pdf

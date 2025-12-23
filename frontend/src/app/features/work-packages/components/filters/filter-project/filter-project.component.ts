@@ -45,6 +45,7 @@ import { IAPIFilter } from 'core-app/shared/components/autocompleter/op-autocomp
   selector: 'op-filter-project',
   templateUrl: './filter-project.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FilterProjectComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public shouldFocus = false;
@@ -78,7 +79,7 @@ export class FilterProjectComponent extends UntilDestroyedMixin implements OnIni
       return;
     }
 
-    if (!val || (val && val.length === 0)) {
+    if (!val || (val?.length === 0)) {
       this.filter.values.length = 0;
       this.filterChanged.emit(this.filter);
       return;

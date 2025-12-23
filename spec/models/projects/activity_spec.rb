@@ -103,13 +103,13 @@ RSpec.describe Projects::Activity, "core" do
 
   let(:time_entry) do
     create(:time_entry,
-           work_package:,
+           entity: work_package,
            project:)
   end
 
   let(:time_entry2) do
     create(:time_entry,
-           work_package:,
+           entity: work_package,
            project:)
   end
 

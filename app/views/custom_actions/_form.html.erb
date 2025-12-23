@@ -69,8 +69,8 @@
           <% if %i(associated_property boolean user project).include?(action.type) %>
             <div class="form--field-container">
               <div class="form--select-container -middle">
-                <% case action.type %>
-                <% when :project %>
+                <% case action %>
+                <% in { type: :project } %>
                   <%= angular_component_tag "opce-project-autocompleter",
                                             inputs: {
                                               multiple: false,
@@ -81,10 +81,11 @@
                                               labelForId: "custom_action_actions_#{action.key}",
                                               inputValue: action.values.first
                                             } %>
-                <% when :user %>
+                <% in { type: :user, custom_field_based: false } %>
                   <% selected = action.value_objects.map { |v| { id: v[:value], name: v[:label] } } %>
                   <%= angular_component_tag "opce-user-autocompleter",
                                             inputs: {
+                                              multiple: action.multi_value?,
                                               hideSelected: true,
                                               defaultData: false,
                                               placeholder: I18n.t(:label_user_search),
@@ -93,7 +94,7 @@
                                               model: action.multi_value? ? selected : selected.first,
                                               inputName: input_name,
                                               filters: [
-                                                { name: "status", operator: "!", values: [Principal.statuses["locked"].to_s] },
+                                                { name: "status", operator: "!", values: [Principal.statuses["locked"].to_s] }
                                               ],
                                               appendTo: "body",
                                               additionalOptions: [
@@ -109,6 +110,7 @@
                   <%= angular_component_tag "opce-autocompleter",
                                             inputs: {
                                               multiple: action.multi_value?,
+                                              hideSelected: true,
                                               defaultData: false,
                                               items: action.allowed_values.map { |v| { id: v[:value], name: v[:label] } },
                                               model: action.multi_value? ? selected : selected.first,

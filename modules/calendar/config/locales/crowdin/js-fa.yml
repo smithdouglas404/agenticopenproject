@@ -2,7 +2,8 @@
 fa:
   js:
     calendar:
-      create_new: 'ساخت تقویم جدیدجدید'
-      title: 'تقویم‌ها'
+      create_new: 'ساخت تقویم جدید'
+      title: 'تقویم'
       too_many: 'در کل %{count} بسته کاری وجود دارد، اما فقط %{max} می‌تواند نشان داده شود.'
       unsaved_title: 'تقویم بی نام'
+      label_calendar_plural: 'تقویم‌ها'

@@ -36,26 +36,32 @@ See COPYRIGHT and LICENSE files for more details.
       [{ href: admin_index_path, text: t(:label_administration) },
        { href: custom_fields_path, text: t(:label_custom_field_plural) },
        { href: custom_fields_path(tab: @custom_field.type), text: I18n.t(@custom_field.type_name) },
-       t(:label_custom_field_new)]
+       nested_breadcrumb_element(label_for_custom_field_format(@custom_field.field_format), t(:label_custom_field_new))],
+      selected_item_font_weight: :normal
     )
   end
 %>
 
-<%= error_messages_for "custom_field" %>
+<% if CustomFields::DetailsComponent.supported?(@custom_field) %>
+  <%= render CustomFields::DetailsComponent.new(@custom_field) %>
+<% else %>
+  <%= error_messages_for "custom_field" %>
 
-<% content_controller "admin--custom-fields",
-                      dynamic: true,
-                      "admin--custom-fields-format-config-value": OpenProject::CustomFieldFormatDependent.stimulus_config,
-                      "admin--custom-fields-enterprise-edition-value": EnterpriseToken.allows_to?(:custom_field_hierarchies) %>
+  <% content_controller "admin--custom-fields",
+                        "admin--custom-fields-format-config-value": OpenProject::CustomFieldFormatDependent.stimulus_config,
+                        "admin--custom-fields-format-value": @custom_field.field_format,
+                        "admin--custom-fields-hierarchy-enabled-value": EnterpriseToken.allows_to?(:custom_field_hierarchies) %>
 
-<%= labelled_tabular_form_for @custom_field, as: :custom_field,
-                                             url: custom_fields_path,
-                                             html: { id: "custom_field_form", class: "-wide-labels" } do |f| %>
-  <%= render partial: "form", locals: { f: f } %>
-  <%= hidden_field_tag "type", @custom_field.type %>
-  <%= styled_button_tag t(:button_save),
-                        class: "-primary -with-icon icon-checkmark",
-                        data: {
-                          "admin--custom-fields-target": "submitButton"
-                        } %>
+  <%= labelled_tabular_form_for @custom_field,
+                                as: :custom_field,
+                                url: custom_fields_path,
+                                html: { id: "custom_field_form", class: "-wide-labels" } do |f| %>
+    <%= render partial: "form", locals: { f: f } %>
+    <%= hidden_field_tag "type", @custom_field.type %>
+    <%= styled_button_tag t(:button_save),
+                          class: "-primary -with-icon icon-checkmark",
+                          data: {
+                            "admin--custom-fields-target": "submitButton"
+                          } %>
+  <% end %>
 <% end %>

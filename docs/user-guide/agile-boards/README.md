@@ -11,7 +11,9 @@ keywords: agile boards, Kanban, Scrum, agile project management, action boards
 Boards support Agile project management methodologies, such as Scrum or Kanban. OpenProject Agile boards enable you to keep track tasks, bugs, features, risks and any other work package types. Boards consist of lists (columns) and cards (work packages). You can choose between a Basic board and various advanced Action boards.
 
 > [!NOTE]
-> The Basic board is included in the OpenProject Community edition. OpenProject Action boards are an Enterprise add-on and can only be used with [Enterprise cloud](../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easily possible.
+> The Basic board is included in the OpenProject Community edition. OpenProject Action boards are not.
+
+[feature: board_view ]
 
 | Topic                                                     | Content                                                      |
 | --------------------------------------------------------- | ------------------------------------------------------------ |
@@ -26,7 +28,7 @@ Boards support Agile project management methodologies, such as Scrum or Kanban. 
 | [Manage boards](#manage-boards)                           | How to manage permissions for boards.                        |
 | [Examples for Agile boards](#agile-boards-examples)       | Best practices for using the basic board and status, assignee and version board. |
 
-<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Agile-Boards.mp4" type="video/mp4" controls="" style="width:100%"></video>
+<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Agile-Boards.mp4"></video>
 
 
 ## Agile boards in OpenProject

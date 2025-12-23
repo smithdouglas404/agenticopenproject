@@ -50,6 +50,7 @@ import { HalEventsService } from 'core-app/features/hal/services/hal-events.serv
   selector: 'wp-relations',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './wp-relations.template.html',
+  standalone: false,
 })
 export class WorkPackageRelationsComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit, OnDestroy {
   @Input() public workPackage:WorkPackageResource;
@@ -91,7 +92,7 @@ export class WorkPackageRelationsComponent extends UntilDestroyedMixin implement
         this.untilDestroyed(),
       )
       .subscribe(() => {
-        this.updateRelationsTab();
+        this.updateRelationsTabAndCounter();
       });
 
     /*
@@ -108,19 +109,17 @@ export class WorkPackageRelationsComponent extends UntilDestroyedMixin implement
     document.addEventListener('turbo:submit-end', this.turboFrameListener);
   }
 
-  public updateCounter() {
-    const url = this.PathHelper.workPackageUpdateCounterPath(this.workPackage.id!, 'relations');
-    void this.turboRequests.request(url);
-  }
-
   private async updateFrontendData(event:CustomEvent) {
     if (event) {
-      const form = event.target as HTMLFormElement;
+      // A turbo:submit-end event *has* a `formSubmission` property, but I do not
+      // know how to avoid the eslint type warning. Please if you know, fix it.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const form = event.detail.formSubmission.formElement as HTMLFormElement;
       const updateWorkPackage = !!form.dataset?.updateWorkPackage;
 
       if (updateWorkPackage) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (event.detail && event.detail.success) {
+        if (event.detail?.success) {
           // Update the work package
           void this.apiV3Service
             .work_packages
@@ -130,19 +129,18 @@ export class WorkPackageRelationsComponent extends UntilDestroyedMixin implement
           // Refetch relations
           await this.wpRelations.require(this.workPackage.id!, true);
           this.halEvents.push(this.workPackage, { eventType: 'updated' });
-
-          this.updateCounter();
         }
       }
     }
   }
 
-  private updateRelationsTab() {
+  private updateRelationsTabAndCounter() {
     void this.turboRequests.requestStream(this.turboFrameSrc)
       .then((result) => {
         renderStreamMessage(result.html);
       });
 
-    this.updateCounter();
+    const url = this.PathHelper.workPackageUpdateCounterPath(this.workPackage.id!, 'relations');
+    void this.turboRequests.request(url);
   }
 }

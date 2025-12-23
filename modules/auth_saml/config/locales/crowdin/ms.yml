@@ -56,6 +56,7 @@ ms:
       label_mapping: Mapping
       label_requested_attribute_for: "Atribut yang diminta untuk: %{attribute}"
       no_results_table: Tiada pembekal identiti SAML telah ditakrifkan lagi.
+      notice_created: A new SAML identity provider was successfully created.
       plural: Pembekal identiti SAML
       singular: Pembekal identiti SAML
       requested_attributes: Atribut yang diminta
@@ -65,7 +66,7 @@ ms:
       metadata:
         dialog: "Ini ialah URL tempat metadata SAML OpenProject tersedia. Gunakan pilihan ini untuk mengkonfigurasi pembekal identiti anda:"
       upsell:
-        title: "Single Sign-On (SSO) with SAML"
+        title: "Daftar Masuk Sehala ( SSO ) melalui SAML"
         description: Sambungkan OpenProject kepada pembekal identiti SAML
       request_attributes:
         title: 'Atribut yang diminta'
@@ -110,7 +111,7 @@ ms:
       idp_sso_service_url: >
         URL titik akhir log masuk pembekal identiti.
       idp_slo_service_url: >
-        URL titik akhir log masuk pembekal identiti.
+        The URL of the identity provider logout endpoint.
       idp_cert: >
         Masukkan sijil awam berformat PEM X509 bagi pembekal identiti. Anda boleh memasukkan berbilang sijil dengan memisahkannya dengan baris baharu.
       name_identifier_format: >
@@ -138,7 +139,7 @@ ms:
       authn_requests_signed: >
         Jika ditandakan, OpenProject akan menandatangani SAML AuthnRequest. Anda perlu memberikan sijil tandatangan dan kunci peribadi menggunakan medan di bawah.
       want_assertions_signed: >
-        If checked, OpenProject will required signed responses from the identity provider using its own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
+        Jika ditandakan, OpenProject akan memerlukan respon bertanda daripada pembekal identiti menggunakan sijil pasangan kunci sendiri. OpenProject akan mengesahkan tandatangan terhadap sijil tersebut melalui bahagian konfigurasi asas. 
       want_assertions_encrypted: >
         Jika didayakan, minta pembekal identiti menyulitkan respons penegasan menggunakan pasangan sijil yang anda berikan.
       certificate: >

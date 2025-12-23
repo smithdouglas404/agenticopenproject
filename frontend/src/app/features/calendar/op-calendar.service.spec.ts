@@ -26,8 +26,6 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
 import { waitForAsync } from '@angular/core/testing';
 import { OpCalendarService } from 'core-app/features/calendar/op-calendar.service';
 

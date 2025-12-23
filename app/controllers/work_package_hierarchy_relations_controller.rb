@@ -30,7 +30,6 @@
 
 class WorkPackageHierarchyRelationsController < ApplicationController
   include OpTurbo::ComponentStream
-  include OpTurbo::DialogStreamHelper
 
   class InvalidRelationType < StandardError; end
 

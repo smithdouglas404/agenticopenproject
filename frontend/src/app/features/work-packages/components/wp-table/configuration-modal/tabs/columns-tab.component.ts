@@ -13,17 +13,18 @@ import {
 
 @Component({
   templateUrl: './columns-tab.component.html',
+  standalone: false,
 })
 export class WpTableConfigurationColumnsTabComponent implements TabComponent, OnInit {
   public availableColumnsOptions = this.wpTableColumns.all.map((c) => this.column2Like(c));
 
   public availableColumns = this.wpTableColumns.all;
 
-  public availableColumnsMap:{ [id:string]:QueryColumn } = _.keyBy(this.availableColumns, (c) => c.id);
+  public availableColumnsMap:Record<string, QueryColumn> = _.keyBy(this.availableColumns, (c) => c.id);
 
   public selectedColumns:DraggableOption[] = this.wpTableColumns.getColumns().map((c) => this.column2Like(c));
 
-  public selectedColumnMap:{ [id:string]:boolean } = {};
+  public selectedColumnMap:Record<string, boolean> = {};
 
   public text = {
     columnsHelp: this.I18n.t('js.work_packages.table_configuration.columns_help_text'),

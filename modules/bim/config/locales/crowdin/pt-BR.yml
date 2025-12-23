@@ -86,8 +86,8 @@ pt-BR:
         attachments: "Arquivo IFC"
       bim/bcf/issue:
         bcf_comment: "Comentário BCF"
-        bim_snippet: "Snippet do BIM"
-        reference_links: "Link de referência"
+        bim_snippet: "Trecho BIM"
+        reference_links: "Links de referência"
         stage: "Fase"
         viewpoint: "Ponto de vista"
     errors:

@@ -56,6 +56,7 @@ RSpec.describe API::V3::UserPreferences::UserPreferenceRepresenter,
 
   it { expect(subject).to have_json_path("timeZone") }
   it { expect(subject).to have_json_path("commentSortDescending") }
+  it { expect(subject).to have_json_path("disableKeyboardShortcuts") }
   it { expect(subject).to have_json_path("warnOnLeavingUnsaved") }
   it { expect(subject).to have_json_path("autoHidePopups") }
 

@@ -32,7 +32,8 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'wp-type-status',
   templateUrl: './wp-type-status.html',
+  standalone: false,
 })
 export class WorkPackageTypeStatusComponent {
-  @Input('workPackage') workPackage:WorkPackageResource;
+  @Input() workPackage:WorkPackageResource;
 }

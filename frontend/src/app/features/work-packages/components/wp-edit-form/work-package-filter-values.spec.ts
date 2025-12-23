@@ -38,7 +38,7 @@ import { WorkPackageCreateService } from 'core-app/features/work-packages/compon
 import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { TypeResource } from 'core-app/features/hal/resources/type-resource';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { States } from 'core-app/core/states/states.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
@@ -73,11 +73,8 @@ describe('WorkPackageFilterValues', () => {
   function setupTestBed() {
     // noinspection JSIgnoredPromiseFromCall
     void TestBed.configureTestingModule({
-      imports: [
-        UIRouterModule.forRoot({}),
-        HttpClientModule,
-      ],
-      providers: [
+    imports: [UIRouterModule.forRoot({})],
+    providers: [
         I18nService,
         { provide: WeekdayService, useValue: WeekdayServiceStub },
         States,
@@ -97,8 +94,9 @@ describe('WorkPackageFilterValues', () => {
         WorkPackageCreateService,
         HalResourceEditingService,
         WorkPackagesActivityService,
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+}).compileComponents();
 
     injector = TestBed.inject(Injector);
     halResourceService = injector.get(HalResourceService);

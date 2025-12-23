@@ -37,6 +37,11 @@ module API
             authorize_in_any_project(%i[view_project_phases select_project_phases])
           end
 
+          get &::API::V3::Utilities::Endpoints::Index
+                 .new(model: Project::PhaseDefinition,
+                      api_name: "ProjectPhaseDefinition")
+                 .mount
+
           route_param :id do
             after_validation do
               @phase_definition = ::Project::PhaseDefinition.find(params[:id])

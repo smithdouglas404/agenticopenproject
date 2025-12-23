@@ -60,6 +60,7 @@ export const ATTRIBUTE_MACRO_CLASS = 'op-attribute-value-macro';
   providers: [
     HalResourceEditingService,
   ],
+  standalone: false,
 })
 export class AttributeValueMacroComponent implements OnInit {
   @ViewChild('displayContainer') private displayContainer:ElementRef<HTMLSpanElement>;
@@ -94,8 +95,8 @@ export class AttributeValueMacroComponent implements OnInit {
   ngOnInit():void {
     const element = this.elementRef.nativeElement as HTMLElement;
     const model = element.dataset.model as SupportedAttributeModels;
-    const id = element.dataset.id as string;
-    const attributeName = element.dataset.attribute as string;
+    const id = element.dataset.id!;
+    const attributeName = element.dataset.attribute!;
     element.classList.add(ATTRIBUTE_MACRO_CLASS);
 
     if (this.isNestedMacro(model, id, attributeName)) {

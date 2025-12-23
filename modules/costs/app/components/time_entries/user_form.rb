@@ -77,7 +77,7 @@ module TimeEntries
 
     def user_completer_filters
       filters = [
-        { name: "type", operator: "=", values: %w[User Group] },
+        { name: "type", operator: "=", values: %w[User] },
         { name: "status", operator: "=", values: [Principal.statuses[:active], Principal.statuses[:invited]] }
       ]
 

@@ -73,7 +73,7 @@ module Bim::Bcf
 
     def build_snapshot(file, user: User.current)
       ::Attachments::BuildService
-        .bypass_whitelist(user:)
+        .bypass_allowlist(user:)
         .call(file:, container: self, filename: file.original_filename, description: "snapshot")
         .result
     end

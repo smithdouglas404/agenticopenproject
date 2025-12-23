@@ -35,10 +35,12 @@ import { ValueOption } from 'core-app/shared/components/fields/edit/field-types/
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { UserResource } from 'core-app/features/hal/resources/user-resource';
 
 @Component({
   templateUrl: './multi-select-edit-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MultiSelectEditFieldComponent extends EditFieldComponent implements OnInit {
   @ViewChild(NgSelectComponent, { static: true }) public ngSelectComponent:NgSelectComponent;
@@ -129,7 +131,7 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
 
       // Special case 'null' value, which angular
       // only understands in ng-options as an empty string.
-      if (option && option.href === '') {
+      if (option?.href === '') {
         option.href = null;
       }
 
@@ -140,9 +142,9 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
   }
 
   public onOpen() {
-    jQuery(this.hiddenOverflowContainer).one('scroll', () => {
+    document.querySelector(this.hiddenOverflowContainer)?.addEventListener('scroll', () => {
       this.ngSelectComponent.close();
-    });
+    }, { once: true });
   }
 
   public onClose() {
@@ -247,10 +249,10 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
 
   /**
    * For multi-select fields that are of type User, we want to show a hover card when hovering over users in the
-   * dropdown. For this to happen we must define a URL for the hover card.
+   * dropdown. For this to happen, we must define a URL for the hover card.
    */
-  protected getHoverCardUrl(item:{ id?:string }) {
-    if (item && item.id) {
+  protected getHoverCardUrl(item:HalResource) {
+    if (item instanceof UserResource && item.id) {
       return this.pathHelperService.userHoverCardPath(item.id);
     }
 

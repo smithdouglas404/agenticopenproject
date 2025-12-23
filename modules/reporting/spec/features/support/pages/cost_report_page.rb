@@ -79,17 +79,9 @@ module Pages
       end
     end
 
-    def show_loading_indicator(present: true)
-      if present
-        expect(page).to have_css("#ajax-indicator")
-      else
-        expect(page).to have_no_css("#ajax-indicator")
-      end
-    end
-
     def wait_for_page_to_reload
-      show_loading_indicator
-      show_loading_indicator(present: false)
+      wait_for_network_idle
+      expect(page).to have_no_css("#ajax-indicator")
     end
 
     def path

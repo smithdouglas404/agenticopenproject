@@ -55,6 +55,7 @@ import { GroupDescriptor } from 'core-app/features/work-packages/components/wp-s
   providers: [
     { provide: WorkPackageInlineCreateService, useClass: WpRelationInlineCreateService },
   ],
+  standalone: false,
 })
 export class WorkPackageRelationQueryComponent extends WorkPackageRelationQueryBase implements OnInit {
   @Input() public workPackage:WorkPackageResource;

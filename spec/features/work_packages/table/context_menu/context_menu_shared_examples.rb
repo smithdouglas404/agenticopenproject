@@ -37,10 +37,10 @@ RSpec.shared_examples_for "provides a single WP context menu" do
     expect(page).to have_css("h2", text: I18n.t(:button_move))
     expect(page).to have_css("a.work_package", text: "##{work_package.id}")
 
-    # Open Copy
+    # Open Duplicate
     open_context_menu.call
     menu.choose("Duplicate")
-    # Split view open in copy state
+    # Split view open in duplicate state
     expect(page)
       .to have_css(".wp-new-top-row",
                    text: "#{work_package.status.name.capitalize}\n#{work_package.type.name.upcase}")
@@ -70,7 +70,7 @@ RSpec.shared_examples_for "provides a single WP context menu" do
     # Duplicate in another project
     open_context_menu.call
     menu.choose("Duplicate in another project")
-    expect(page).to have_css("h2", text: I18n.t(:button_copy))
+    expect(page).to have_css("h2", text: I18n.t(:button_duplicate))
     expect(page).to have_css("a.work_package", text: "##{work_package.id}")
   end
 

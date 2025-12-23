@@ -30,9 +30,6 @@
 
 <%= render "common/favicons" %>
 
-<%# Allow gon output when necessary %>
-<%= include_gon(nonce: content_security_policy_script_nonce) %>
-
 <%# Include CLI assets (development) or prod build assets %>
 <%= include_frontend_assets %>
 
@@ -55,3 +52,6 @@
     <% end %>
   <% end %>
 <% end %>
+
+<%# Disable prefetching for now %>
+<meta name="turbo-prefetch" content="false">

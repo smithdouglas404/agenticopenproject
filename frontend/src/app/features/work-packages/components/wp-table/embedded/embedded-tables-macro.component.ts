@@ -35,9 +35,9 @@ import { populateInputsFromDataset } from 'core-app/shared/components/dataset-in
 @Component({
   template: `
     <wp-embedded-table-entry [queryProps]="queryProps"
-                             [configuration]="configuration">
-    </wp-embedded-table-entry>
+                             [configuration]="configuration" />
   `,
+  standalone: false,
 })
 export class EmbeddedTablesMacroComponent {
   @Input() public queryProps:object;

@@ -9,7 +9,7 @@ pt-BR:
   ee:
     upsell:
       board_view:
-        description: 'Gostaria de automatizar seu fluxo de trabalho com Quadros? Quadros avançados são um complemento do Enterprise. Atualize para um plano pago.'
+        description: 'Gostaria de automatizar seus fluxos de trabalho com os Quadros? Quadros avançados são um recurso adicional do Enterprise. Faça o upgrade para um plano pago.'
   boards:
     label_board: "Quadro"
     label_boards: "Quadros"

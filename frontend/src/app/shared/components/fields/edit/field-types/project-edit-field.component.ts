@@ -63,6 +63,7 @@ import { FilterOperator } from 'core-app/shared/helpers/api-v3/api-v3-filter-bui
   styleUrls: ['./project-edit-field.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProjectEditFieldComponent extends EditFieldComponent implements OnInit {
   isNew = isNewResource(this.resource);
@@ -120,7 +121,7 @@ export class ProjectEditFieldComponent extends EditFieldComponent implements OnI
     ];
 
     if (isNewResource(this.resource) && this.change.value('type')) {
-      const typeId = idFromLink((this.change.value('type') as HalResource).href);
+      const typeId = idFromLink((this.change.value('type') as { href:string }).href);
       filters.push({ name: 'type_id', operator: '=' as FilterOperator, values: [typeId] });
     }
 

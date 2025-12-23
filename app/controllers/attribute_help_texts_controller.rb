@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,15 +29,30 @@
 #++
 
 class AttributeHelpTextsController < ApplicationController
+  include OpTurbo::ComponentStream
+
   layout "admin"
   menu_item :attribute_help_texts
 
-  before_action :authorize_global
+  before_action :authorize_global, except: :show_dialog
   before_action :find_entry, only: %i(edit update destroy)
   before_action :find_type_scope
 
+  authorization_checked! :show_dialog
+
   def index
-    @texts_by_type = AttributeHelpText.all_by_scope
+    @attribute_help_texts = AttributeHelpText
+      .where(type: @attribute_scope)
+      .to_a
+      .sort_by(&:attribute_field_name)
+  end
+
+  def show_dialog
+    @attribute_help_text = AttributeHelpText.visible(current_user).find(params[:id])
+
+    respond_with_dialog(
+      AttributeHelpTexts::ShowDialogComponent.new(attribute_help_text: @attribute_help_text)
+    )
   end
 
   def new
@@ -80,7 +97,8 @@ class AttributeHelpTextsController < ApplicationController
       flash[:error] = t(:error_can_not_delete_entry)
     end
 
-    redirect_to attribute_help_texts_path(tab: @attribute_help_text.attribute_scope)
+    redirect_to attribute_help_texts_path(tab: @attribute_help_text.attribute_scope),
+                status: :see_other
   end
 
   protected
@@ -88,7 +106,9 @@ class AttributeHelpTextsController < ApplicationController
   private
 
   def permitted_params_with_attachments
-    permitted_params.attribute_help_text.merge(attachment_params)
+    permitted_params
+      .attribute_help_text
+      .merge(attachment_params)
   end
 
   def attachment_params
@@ -106,13 +126,13 @@ class AttributeHelpTextsController < ApplicationController
   end
 
   def find_type_scope
-    name = params.fetch(:name, "WorkPackage")
+    name = params[:tab] || params[:name] || "WorkPackage"
     submodule = AttributeHelpText.available_types.find { |mod| mod == name }
 
     if submodule.nil?
       render_404
     end
 
-    @attribute_scope = AttributeHelpText.const_get(submodule)
+    @attribute_scope = AttributeHelpText.const_get(submodule).to_s
   end
 end

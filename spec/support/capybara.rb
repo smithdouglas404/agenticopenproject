@@ -34,7 +34,13 @@ RSpec.shared_context "with host name set to test.host" do
 end
 
 RSpec.configure do |config|
+  # The maximum number of seconds to wait for asynchronous processes to finish
+  # Would default to 2 seconds otherwise
   Capybara.default_max_wait_time = 4
+
+  # Selectors will check for relevant aria role (currently only `button`)
+  # Would default to `false` otherwise
+  Capybara.enable_aria_role = true
 
   port = ENV.fetch("CAPYBARA_SERVER_PORT", ParallelHelper.port_for_app).to_i
   if port > 0

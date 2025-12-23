@@ -27,21 +27,26 @@
 //++
 
 import {
-  Component, Input, EventEmitter, Output,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
 } from '@angular/core';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { WorkPackageRelationsHierarchyService } from 'core-app/features/work-packages/components/wp-relations/wp-relations-hierarchy/wp-relations-hierarchy.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 @Component({
   templateUrl: './wp-breadcrumb-parent.html',
   selector: 'wp-breadcrumb-parent',
+  standalone: false,
 })
 export class WorkPackageBreadcrumbParentComponent {
-  @Input('workPackage') workPackage:WorkPackageResource;
+  @Input() workPackage:WorkPackageResource;
 
-  @Output('onSwitch') onSwitch = new EventEmitter<boolean>();
+  @Output() onSwitch = new EventEmitter<boolean>();
 
   public isSaving = false;
 
@@ -58,6 +63,7 @@ export class WorkPackageBreadcrumbParentComponent {
     protected readonly I18n:I18nService,
     protected readonly wpRelationsHierarchy:WorkPackageRelationsHierarchyService,
     protected readonly notificationService:WorkPackageNotificationService,
+    protected readonly pathHelper:PathHelperService,
   ) {
   }
 
@@ -101,5 +107,10 @@ export class WorkPackageBreadcrumbParentComponent {
       this.editing = state;
       this.onSwitch.emit(this.editing);
     }
+  }
+
+  public switchToFullscreenForWp(wp:WorkPackageResource):void {
+    const link = this.pathHelper.genericWorkPackagePath(wp.project?.identifier, wp.id!) + window.location.search;
+    Turbo.visit(link, { action: 'advance' });
   }
 }

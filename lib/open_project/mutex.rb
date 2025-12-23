@@ -80,7 +80,7 @@ module OpenProject
         #{action}:
           * lockname: #{lock_name}
           * thread:  #{Thread.current.object_id}
-          * held locks: #{WithAdvisoryLock::Base.lock_stack.map(&:name).join(', ')}
+          * held locks: #{ActiveRecord::Base.current_advisory_locks.join(', ')}
       MESSAGE
 
       Rails.logger.debug { message }

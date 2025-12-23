@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -131,7 +133,7 @@ module DemoData
       url_helpers.project_work_package_path(
         id: work_package.id,
         project_id: work_package.project.identifier,
-        state: "activity"
+        tab: "activity"
       )
     end
   end

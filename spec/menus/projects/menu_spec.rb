@@ -32,14 +32,13 @@ require "spec_helper"
 
 RSpec.describe Projects::Menu do
   let(:instance) { described_class.new(controller_path:, params:, current_user:) }
+  let!(:current_user_query) { ProjectQuery.create!(name: "Current user query", user:) }
   let(:controller_path) { "foo" }
   let(:params) { {} }
 
-  shared_let(:current_user) { build(:user) }
+  let(:current_user) { user }
 
-  shared_let(:current_user_query) do
-    ProjectQuery.create!(name: "Current user query", user: current_user)
-  end
+  shared_let(:user) { create(:user) }
 
   shared_let(:other_user_query) do
     ProjectQuery.create!(name: "Other user query", user: build(:user))
@@ -53,7 +52,7 @@ RSpec.describe Projects::Menu do
 
   shared_let(:shared_query) do
     ProjectQuery.create!(name: "Shared query", user: build(:user)).tap do |query|
-      create(:project_query_member, entity: query, user: current_user, roles: [view_project_query_role])
+      create(:project_query_member, entity: query, user:, roles: [view_project_query_role])
     end
   end
 
@@ -67,9 +66,19 @@ RSpec.describe Projects::Menu do
   describe "children items" do
     subject(:children_menu_items) { menu_items.flat_map(&:children) }
 
-    context "when the current user is an admin" do
-      before do
-        allow(current_user).to receive(:admin?).and_return(true)
+    context "when the current user is logged in (admin)" do
+      let(:current_user) { build(:admin) }
+
+      it "has the active projects item" do
+        expect(children_menu_items).to include(have_attributes(title: I18n.t("projects.lists.active")))
+      end
+
+      it "has the my projects item" do
+        expect(children_menu_items).to include(have_attributes(title: I18n.t("projects.lists.my")))
+      end
+
+      it "has the favorite projects item" do
+        expect(children_menu_items).to include(have_attributes(title: I18n.t("projects.lists.favorited")))
       end
 
       it "has an archived projects item" do
@@ -77,42 +86,70 @@ RSpec.describe Projects::Menu do
       end
     end
 
-    context "when the current user is not an admin" do
-      before do
-        allow(current_user).to receive(:admin?).and_return(false)
+    context "when the current user is logged in (no admin)" do
+      it "has the active projects item" do
+        expect(children_menu_items).to include(have_attributes(title: I18n.t("projects.lists.active")))
       end
 
-      it "has an archived projects item" do
+      it "has the my projects item" do
+        expect(children_menu_items).to include(have_attributes(title: I18n.t("projects.lists.my")))
+      end
+
+      it "has the favorite projects item" do
+        expect(children_menu_items).to include(have_attributes(title: I18n.t("projects.lists.favorited")))
+      end
+
+      it "has no archived projects item" do
         expect(children_menu_items).not_to include(have_attributes(title: I18n.t("projects.lists.archived")))
       end
+
+      it "contains menu items" do
+        expect(children_menu_items).to all(be_a(OpenProject::Menu::MenuItem))
+      end
+
+      it "contains item for current user query" do
+        expect(children_menu_items).to include(have_attributes(title: "Current user query"))
+      end
+
+      it "doesn't contain item for other user query" do
+        expect(children_menu_items).not_to include(have_attributes(title: "Other user query"))
+      end
+
+      it "contains item for public query" do
+        expect(children_menu_items).to include(have_attributes(title: "Public query"))
+      end
+
+      it "contains item for shared query" do
+        expect(children_menu_items).to include(have_attributes(title: "Shared query"))
+      end
     end
 
-    it "contains menu items" do
-      expect(children_menu_items).to all(be_a(OpenProject::Menu::MenuItem))
-    end
+    context "when the current user is not logged in" do
+      let(:current_user) { build(:anonymous) }
 
-    it "contains item for current user query" do
-      expect(children_menu_items).to include(have_attributes(title: "Current user query"))
-    end
+      it "has the active projects item" do
+        expect(children_menu_items).to include(have_attributes(title: I18n.t("projects.lists.active")))
+      end
 
-    it "doesn't contain item for other user query" do
-      expect(children_menu_items).not_to include(have_attributes(title: "Other user query"))
-    end
+      it "has no my projects item" do
+        expect(children_menu_items).not_to include(have_attributes(title: I18n.t("projects.lists.my")))
+      end
 
-    it "contains item for public query" do
-      expect(children_menu_items).to include(have_attributes(title: "Public query"))
-    end
+      it "has no favorite projects item" do
+        expect(children_menu_items).not_to include(have_attributes(title: I18n.t("projects.lists.favorited")))
+      end
 
-    it "contains item for shared query" do
-      expect(children_menu_items).to include(have_attributes(title: "Shared query"))
+      it "has no archived projects item" do
+        expect(children_menu_items).not_to include(have_attributes(title: I18n.t("projects.lists.archived")))
+      end
     end
   end
 
   describe "queries order" do
-    subject(:titles) { menu_items.map { _1.children.map(&:title) } }
+    subject(:titles) { menu_items.map { it.children.map(&:title) } }
 
     shared_let(:another_current_user_query) do
-      ProjectQuery.create!(name: "Another current user query", user: current_user)
+      ProjectQuery.create!(name: "Another current user query", user:)
     end
 
     shared_let(:another_public_query) do
@@ -121,18 +158,18 @@ RSpec.describe Projects::Menu do
 
     shared_let(:another_shared_query) do
       ProjectQuery.create!(name: "Another shared query", user: build(:user)).tap do |query|
-        create(:project_query_member, entity: query, user: current_user, roles: [view_project_query_role])
+        create(:project_query_member, entity: query, user:, roles: [view_project_query_role])
       end
     end
 
     before do
-      favored_queries.each do |query|
-        query.add_favoring_user(current_user)
+      favorited_queries.each do |query|
+        query.add_favoriting_user(current_user)
       end
     end
 
-    context "when no queries are favored" do
-      let(:favored_queries) { [] }
+    context "when no queries are favorited" do
+      let(:favorited_queries) { [] }
 
       it "orders persisted titles alphabetically" do
         expect(titles).to eq(
@@ -146,8 +183,8 @@ RSpec.describe Projects::Menu do
       end
     end
 
-    context "when some queries are favored" do
-      let(:favored_queries) do
+    context "when some queries are favorited" do
+      let(:favorited_queries) do
         [
           current_user_query,
           public_query,
@@ -155,7 +192,7 @@ RSpec.describe Projects::Menu do
         ]
       end
 
-      it "orders persisted titles by favor then alphabetically" do
+      it "orders persisted titles by favorite then alphabetically" do
         expect(titles).to eq(
           [
             ["Active projects", "My projects", "Favorite projects"],
@@ -167,8 +204,8 @@ RSpec.describe Projects::Menu do
       end
     end
 
-    context "when all queries are favored" do
-      let(:favored_queries) do
+    context "when all queries are favorited" do
+      let(:favorited_queries) do
         [
           current_user_query,
           another_current_user_query,

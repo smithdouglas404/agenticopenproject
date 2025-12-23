@@ -27,10 +27,15 @@ id:
       no_results_table: Belum ada webhook yang ditentukan.
       label_add_new: Tambahkan webhook baru
       label_edit: Ubah webhook
-      label_event_resources: Sumber acara
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Dibuat"
         updated: "Diperbarui"
+        comment: "Komentar"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Setelah kejadian seperti pembuatan paket kerja atau pembaruan proyek, OpenProject akan mengirimkan permintaan POST ke titik akhir web yang dikonfigurasi.  Sering kali, acara dikirim setelah %{link} lewat.

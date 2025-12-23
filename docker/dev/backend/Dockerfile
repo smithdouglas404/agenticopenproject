@@ -1,5 +1,5 @@
-FROM ruby:3.4.2-bullseye AS develop
-MAINTAINER operations@openproject.com
+FROM ruby:3.4.7-trixie AS develop
+LABEL org.opencontainers.image.authors="operations@openproject.com"
 
 ARG DEV_UID=1000
 ARG DEV_GID=1001
@@ -21,8 +21,13 @@ RUN groupmod -g $DEV_GID $USER || true
 WORKDIR /home/$USER
 
 RUN apt-get update -qq && \
+  apt-get install -y wget gnupg lsb-release curl && \
+  echo "deb [signed-by=/usr/share/keyrings/postgrsql.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+  wget --quiet -O- https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/postgrsql.gpg - && \
+  apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  postgresql-client libffi7 libffi-dev curl
+  postgresql-client-17 libffi8 libffi-dev curl && \
+  rm -rf /var/lib/apt/lists/*
 
 # Setup node source and install nodejs. Needed for running certain scripts in backend container,
 # as the `./scripts/api/validate_spec`.
@@ -31,6 +36,9 @@ RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg -
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 RUN apt-get update
 RUN apt-get install -y nodejs
+
+# Setup java. Needed for https://github.com/NUARIG/ladle which is used in specs to test LDAP related behavior.
+RUN apt-get install -y openjdk-21-jdk
 
 COPY ./docker/dev/backend/scripts/setup /usr/sbin/setup
 COPY ./docker/dev/backend/scripts/setup-bim /usr/sbin/setup-bim

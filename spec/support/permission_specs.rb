@@ -43,10 +43,10 @@ module PermissionSpecs
       def self.controller_actions
         Rails.application.routes.routes
           .map(&:defaults)
-          .select { _1[:controller] == described_class.controller_path }
+          .select { it[:controller] == described_class.controller_path }
           .pluck(:action)
           .uniq
-          .select { described_class.action_methods.include?(_1) }
+          .select { described_class.action_methods.include?(it) }
           .sort
       end
 

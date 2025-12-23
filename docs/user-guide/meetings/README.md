@@ -11,14 +11,16 @@ keywords: meetings
 Meetings in OpenProject allow you to manage and document your project meetings, prepare a meeting agenda together with your team, and share minutes with attendees - all in one central place.
 
 <div class="glossary">
+
 **Meetings** is defined as a module that allows the organization of meetings.
 **Note:** In order to be able to use the meetings plugin, the **Meetings module needs to be activated** in the [Project Settings](../projects/project-settings/modules/).
+
 </div>
 
 > [!IMPORTANT]
-> With OpenProject 13.1 we introduced dynamic meetings alongside [classic meetings](classic-meetings). 
+> With OpenProject 13.1 we introduced dynamic meetings alongside classic meetings.
 > With OpenProject 15.3 dynamic meetings are replaced by [one-time meetings](one-time-meetings) and [recurring meetings](recurring-meetings) to further improve meeting management.
-> Please keep in mind that the ability to create classic meetings will be removed from OpenProject with OpenProject 16.0.
+> With OpenProject 16.0 classic meetings were removed from OpenProject.
 
 
 
@@ -27,12 +29,11 @@ Meetings in OpenProject allow you to manage and document your project meetings, 
 | [Meetings in OpenProject](#meetings-in-openproject) | How to open meetings in OpenProject.                      |
 | [One-time meetings](one-time-meetings/)             | How to create and edit single meetings in OpenProject.    |
 | [Recurring meetings](recurring-meetings/)           | How to create and edit recurring meetings in OpenProject. |
-| [Classic meetings](classic-meetings/)               | How to create and edit a classic meeting in OpenProject.  |
 | [Meetings FAQs](meetings-faq)                       | Frequently asked questions about meetings in OpenProject. |
 
 ## Meetings in OpenProject
 
-Meetings in OpenProject help teams organize discussions, track meeting agendas, and document decisions efficiently. There are three types of meetings: **one-time meetings**, **recurring meetings**, and **classic meetings**. [One-time meetings](one-time-meetings/) are standalone events scheduled for a specific date and time. [Recurring meetings](recurring-meetings/) introduce a structured way to define a series of related meetings, ensuring consistency and reducing manual setup. [Classic meetings](classic-meetings/) are also standalone events, but are a legacy format that will eventually be phased out.
+Meetings in OpenProject help teams organize discussions, track meeting agendas, and document decisions efficiently. There are two types of meetings: **one-time meetings** and **recurring meetings**. [One-time meetings](one-time-meetings/) are standalone events scheduled for a specific date and time. [Recurring meetings](recurring-meetings/) introduce a structured way to define a series of related meetings, ensuring consistency and reducing manual setup.
 
 ### Meetings overview
 
@@ -84,5 +85,33 @@ You can also use the meetings filters to refine the list of meetings based on th
 
   ![Filter the list of dynamic meetings in OpenProject](openproject_userguide_meetings_filters.png)
 
+### Subscribe to meetings
+
+You can subscribe to all your OpenProject meetings in an external calendar application (such as Outlook, Apple Calendar, or Open-Xchange). This provides a single, read-only calendar that stays up to date automatically, without relying on individual .ics email invites.
+
+#### Create a subscription
+
+You can subscribe to OpenProject meetings either within the *Meetings* module, or from your [Account settings page](../account-settings/#icalendar). 
+
+On the meetings overview page (either global or project specific) click the **More (three dots)** icon and select **Subscribe to calendar**. 
+
+![Button to subscribe to meetings calendar on OpenProject meetings overview page](openproject_userguide_meetings_subscribe_button.png)
+
+You will be guided through creating an iCal subscription token:
+1. Name the token and click **Create subscription**.
+
+![New calendar subscription form opened in OpenProject](openproject_userguide_meetings_subscribtion_form_name.png)
+
+2. Copy the generated iCal meeting subscription URL. This URL is shown only once and allows anyone with it to view your meetings.
+
+![iCal meeting subscription URL shown when subscribing to a meetings calendar in OpenProject](openproject_userguide_meetings_subscription_token.png)
+
+3. Add this URL to your external calendar to subscribe to your OpenProject meetings.
+
+If you are only interested in a specific meeting, you can [download that specific meeting as an iCal event]
+(/one-time-meetings/#download-a-meeting-as-an-icalendar-event/) instead.
+
 > [!TIP]
-> If you are interested in how the Meetings module is used by the OpenProject team, please take a look at [this blog article](https://www.openproject.org/blog/meeting-management-example/).
+> If you are interested in how the Meetings module is used by the OpenProject team, please take a look at [this blog article](https://www.openproject.org/blog/meeting-management-example/). 
+>
+> Find out more about OpenProject as [open source meeting management software](https://www.openproject.org/collaboration-software-features/meeting-management/).

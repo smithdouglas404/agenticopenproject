@@ -112,6 +112,24 @@ RSpec.describe API::V3::Activities::ActivityRepresenter, "rendering" do
       end
     end
 
+    describe "internal" do
+      context "when internal" do
+        let(:journal) { build_stubbed(:work_package_journal, internal: true) }
+
+        it_behaves_like "property", :internal do
+          let(:value) { true }
+        end
+      end
+
+      context "when not internal" do
+        let(:journal) { build_stubbed(:work_package_journal, internal: false) }
+
+        it_behaves_like "property", :internal do
+          let(:value) { false }
+        end
+      end
+    end
+
     describe "comment" do
       it_behaves_like "API V3 formattable", "comment" do
         let(:format) { "markdown" }

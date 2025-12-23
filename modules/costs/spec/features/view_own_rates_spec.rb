@@ -51,7 +51,7 @@ RSpec.describe "Only see your own rates", :js do
   end
   let(:time_entry) do
     create(:time_entry, user:,
-                        work_package:,
+                        entity: work_package,
                         project:,
                         hours: 1.00)
   end
@@ -62,7 +62,7 @@ RSpec.describe "Only see your own rates", :js do
     type
   end
   let(:cost_entry) do
-    create(:cost_entry, work_package:,
+    create(:cost_entry, entity: work_package,
                         project:,
                         units: 2.00,
                         cost_type:,
@@ -81,10 +81,10 @@ RSpec.describe "Only see your own rates", :js do
     create(:time_entry, user: other_user,
                         hours: 3.00,
                         project:,
-                        work_package:)
+                        entity: work_package)
   end
   let(:other_cost_entry) do
-    create(:cost_entry, work_package:,
+    create(:cost_entry, entity: work_package,
                         project:,
                         units: 5.00,
                         user: other_user,

@@ -26,11 +26,14 @@ vi:
   activerecord:
     attributes:
       cost_entry:
-        work_package: "Gói công việc"
+        work_package: "Work Package"
         overridden_costs: "Chi phí ghi đè"
         spent: "Đã chi"
         spent_on: "Ngày"
         logged_by: "Đã ghi bởi"
+        entity: Ghi lại cho
+        entity_id: Ghi lại cho
+        entity_gid: Ghi lại cho
       cost_type:
         unit: "Tên đơn vị"
         unit_plural: "Tên đơn vị đa năng"
@@ -58,6 +61,9 @@ vi:
         start_time: Thời gian bắt đầu
         end_time: Thời gian hoàn thành
         time: Thời gian
+        entity: Ghi lại cho
+        entity_id: Ghi lại cho
+        entity_gid: Ghi lại cho
     models:
       time_entry:
         other: "Time entries"
@@ -67,12 +73,13 @@ vi:
         other: "Loại chi phí"
       time_entry_activity:
         other: "Theo dõi hoạt động"
-      rate: "Tỉ giá"
+      rate: "Tỷ lệ"
     errors:
       models:
         time_entry:
           invalid_time: "phải ở giữa khoảng 00:00 đến 23:59."
           cannot_log_for_this_work_package: "Cannot log time for this work package."
+          duplicate_ongoing: "An ongoing time entry already exists for this user."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Gói công việc #%{id} không phải là mục tiêu hợp lệ để phân bổ lại các mục chi phí."
           nullify_is_not_valid_for_cost_entries: "Các mục chi phí không thể được phân bổ cho một dự án."
@@ -90,12 +97,13 @@ vi:
   button_log_time: "Nhật ký"
   button_add_activity: "Hoạt động"
   button_add_time_entry: "Thời gian truy cập"
+  button_stop_timer: "Stop timer"
   caption_booked_on_project: "Đã ghi trên dự án"
   caption_default: "Mặc định"
   caption_default_rate_history_for: "Lịch sử tỷ lệ mặc định cho %{user}"
   caption_locked_on: "Đã khóa vào"
   caption_materials: "Đơn vị"
-  caption_rate_history: "Lịch sử tỷ lệ"
+  caption_rate_history: "Lịch sử đánh giá"
   caption_rate_history_for: "Lịch sử tỷ lệ cho %{user}"
   caption_rate_history_for_project: "Lịch sử tỷ lệ cho %{user} trong dự án %{project}"
   caption_save_rate: "Lưu tỷ lệ"
@@ -110,7 +118,7 @@ vi:
   label_cost_filter_add: "Thêm bộ lọc mục chi phí"
   label_costlog: "Chi phí đơn vị đã ghi"
   label_cost_plural: "Chi phí"
-  label_cost_type_plural: "Các loại chi phí"
+  label_cost_type_plural: "Loại chi phí"
   label_cost_type_specific: "Loại chi phí #%{id}: %{name}"
   label_costs_per_page: "Chi phí trên mỗi trang"
   label_current_default_rate: "Tỷ lệ mặc định hiện tại"
@@ -128,14 +136,14 @@ vi:
   label_hourly_rate: "Tỷ lệ theo giờ"
   label_include_deleted: "Bao gồm các mục đã xóa"
   label_work_package_filter_add: "Thêm bộ lọc gói công việc"
-  label_kind: "Loại"
+  label_kind: "Kiểu"
   label_less_or_equal: "<="
   label_log_costs: "Ghi lại chi phí đơn vị"
   label_new_time_entry_activity: "New time entry activity"
   label_time_entry_activity_form_description: "Changes to this time entry activity will be reflected in all projects where it is enabled."
   label_no: "Không"
-  label_option_plural: "Tùy chọn"
-  label_overall_costs: "Chi phí tổng cộng"
+  label_option_plural: "Tuỳ chọn"
+  label_overall_costs: "Tổng chi phí"
   label_rate: "Tỉ giá"
   label_rate_plural: "Các tỷ lệ"
   label_status_finished: "Hoàn thành"
@@ -168,6 +176,7 @@ vi:
   label_day: "Ngày"
   label_today_capitalized: "Hôm nay"
   label_view_mode_switcher: "Change view"
+  label_timer_since: "Started at %{time}"
   placeholder_activity_select_work_package_first: Phải chọn gói công việc trước đã
   notice_something_wrong: "Đã xảy ra lỗi. Vui lòng thử lại."
   notice_successful_restore: "Khôi phục thành công."
@@ -175,6 +184,7 @@ vi:
   notice_cost_logged_successfully: "Chi phí đơn vị đã được ghi lại thành công."
   notice_different_time_zones: "Người dùng này có múi giờ khác (%{tz}). Nhật ký sẽ được ghi lại theo múi giờ của họ."
   notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
   permission_edit_cost_entries: "Chỉnh sửa chi phí đơn vị đã ghi"
   permission_edit_own_cost_entries: "Chỉnh sửa chi phí đơn vị đã ghi của chính mình"
   permission_edit_hourly_rates: "Chỉnh sửa tỷ lệ theo giờ"
@@ -189,11 +199,13 @@ vi:
   permission_view_own_hourly_rate: "Xem tỷ lệ theo giờ của chính mình"
   permission_view_own_time_entries: "Xem thời gian đã tiêu của chính mình"
   project_module_costs: "Thời gian và chi phí"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
   setting_costs_currency: "Tiền tệ"
   setting_costs_currency_format: "Định dạng tiền tệ"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "Require start and finish times"
+  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "Gán giờ và chi phí đã báo cáo cho dự án"
   text_destroy_cost_entries_question: "%{cost_entries} đã được báo cáo trên các gói công việc bạn sắp xóa. Bạn muốn làm gì?"
   text_destroy_time_and_cost_entries: "Xóa giờ và chi phí đã báo cáo"

@@ -7,8 +7,12 @@ class MeetingNotificationService
   end
 
   def call(action, **)
-    recipients_with_errors = send_notifications!(action, **)
-    ServiceResult.new(success: recipients_with_errors.empty?, errors: recipients_with_errors)
+    if meeting.notify?
+      recipients_with_errors = send_notifications!(action, **)
+      ServiceResult.new(success: recipients_with_errors.empty?, errors: recipients_with_errors)
+    else
+      ServiceResult.failure(errors: meeting.participants.includes(:user))
+    end
   end
 
   private

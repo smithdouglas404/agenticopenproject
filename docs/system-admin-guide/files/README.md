@@ -3,16 +3,17 @@ sidebar_navigation:
   title: Files
   priority: 830
 description: File storages in OpenProject.
-keywords: files, file storages, Nextcloud integration, OneDrive setup, Sharepoint setup, OneDrive, Sharepoint, attachments
+keywords: files, file storages, Nextcloud integration, OneDrive setup, OneDrive, Sharepoint, attachments
 ---
 
 # Files 
 
-Under *Administration -> Files* you can add external file storages, such as Nextcloud or OneDrive/SharePoint and manage settings for attachments to work packages. 
+Under *Administration -> Files* you can add external file storages, such as Nextcloud or OneDrive and manage settings
+for attachments to work packages.
 
 ## External file storages
 
-Under [external file storages](./external-file-storages) you can add Nextcloud or OneDrive/SharePoint integration to OpenProject. 
+Under [external file storages](./external-file-storages) you can add Nextcloud or OneDrive integration to OpenProject. 
 
 ## Attachments
 

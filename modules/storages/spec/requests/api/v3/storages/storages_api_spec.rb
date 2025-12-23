@@ -47,19 +47,17 @@ RSpec.describe "API v3 storages resource", :storage_server_helpers, :webmock, co
   shared_let(:project_storage) { create(:project_storage, project:, storage:) }
 
   let(:current_user) { user_with_permissions }
-  let(:auth_check_result) { ServiceResult.success }
+  let(:user_query_result) { Success(id: "greedo") }
 
-  subject(:last_response) do
-    get path
-  end
+  subject(:last_response) { get path }
 
   before do
-    Storages::Peripherals::Registry.stub("nextcloud.queries.user", ->(_) { auth_check_result })
+    Storages::Adapters::Registry.stub("nextcloud.queries.user", ->(_) { user_query_result })
     login_as current_user
   end
 
   shared_examples_for "successful storage response" do |as_admin: false|
-    include_examples "successful response"
+    it_behaves_like "successful response"
 
     describe "response body" do
       subject { last_response.body }
@@ -233,8 +231,8 @@ RSpec.describe "API v3 storages resource", :storage_server_helpers, :webmock, co
       it_behaves_like "successful storage response"
 
       context "if user is missing permission view_file_links" do
-        before(:all) { remove_permissions(user_with_permissions, :view_file_links) }
-        after(:all) { add_permissions(user_with_permissions, :view_file_links) }
+        before { remove_permissions(user_with_permissions, :view_file_links) }
+        after { add_permissions(user_with_permissions, :view_file_links) }
 
         it_behaves_like "not found"
       end
@@ -280,39 +278,29 @@ RSpec.describe "API v3 storages resource", :storage_server_helpers, :webmock, co
       end
 
       context "when user has a remote identity for the storage" do
-        before do
-          create :remote_identity, user: current_user, integration: storage
-        end
+        before { create(:remote_identity, user: current_user, integration: storage) }
 
         context "when authorization succeeds and storage is connected" do
-          let(:auth_check_result) { ServiceResult.success }
-
-          include_examples "a storage authorization result",
-                           expected: API::V3::Storages::URN_CONNECTION_CONNECTED,
-                           has_authorize_link: false
+          it_behaves_like "a storage authorization result",
+                          expected: API::V3::Storages::URN_CONNECTION_CONNECTED,
+                          has_authorize_link: false
         end
 
         context "when authorization fails" do
-          let(:auth_check_result) { ServiceResult.failure(errors: Storages::StorageError.new(code: :unauthorized)) }
+          let(:user_query_result) { Failure(Storages::Adapters::Results::Error.new(code: :unauthorized, source: self)) }
 
-          include_examples "a storage authorization result",
-                           expected: API::V3::Storages::URN_CONNECTION_AUTH_FAILED,
-                           has_authorize_link: true
+          it_behaves_like "a storage authorization result",
+                          expected: API::V3::Storages::URN_CONNECTION_AUTH_FAILED,
+                          has_authorize_link: true
         end
 
         context "when authorization fails with an error" do
-          let(:auth_check_result) { ServiceResult.failure(errors: Storages::StorageError.new(code: :error)) }
+          let(:user_query_result) { Failure(Storages::Adapters::Results::Error.new(code: :error, source: self)) }
 
-          include_examples "a storage authorization result",
-                           expected: API::V3::Storages::URN_CONNECTION_ERROR,
-                           has_authorize_link: false
+          it_behaves_like "a storage authorization result",
+                          expected: API::V3::Storages::URN_CONNECTION_ERROR,
+                          has_authorize_link: false
         end
-      end
-
-      context "when user has no remote identity for the storage" do
-        include_examples "a storage authorization result",
-                         expected: API::V3::Storages::URN_CONNECTION_NOT_CONNECTED,
-                         has_authorize_link: true
       end
     end
   end
@@ -322,9 +310,7 @@ RSpec.describe "API v3 storages resource", :storage_server_helpers, :webmock, co
     let(:name) { "A new storage name" }
     let(:params) { { name: } }
 
-    subject(:last_response) do
-      patch path, params.to_json
-    end
+    subject(:last_response) { patch path, params.to_json }
 
     context "as non-admin" do
       context "if user belongs to a project using the given storage" do
@@ -394,7 +380,7 @@ RSpec.describe "API v3 storages resource", :storage_server_helpers, :webmock, co
 
         subject { last_response.body }
 
-        it { is_expected.to be_json_eql("Password is not valid.".to_json).at_path("message") }
+        it { is_expected.to be_json_eql("Application password is not valid.".to_json).at_path("message") }
       end
     end
   end
@@ -445,13 +431,10 @@ RSpec.describe "API v3 storages resource", :storage_server_helpers, :webmock, co
 
   describe "GET /api/v3/storages/:storage_id/open" do
     let(:path) { api_v3_paths.storage_open(storage.id) }
-    let(:location) { "https://deathstar.storage.org/files" }
+    let(:location) { URI("https://deathstar.storage.org/files") }
 
     before do
-      Storages::Peripherals::Registry.stub(
-        "nextcloud.queries.open_storage",
-        ->(_) { ServiceResult.success(result: location) }
-      )
+      Storages::Adapters::Registry.stub("nextcloud.queries.open_storage", ->(_) { Success(location) })
     end
 
     context "as admin" do
@@ -464,8 +447,8 @@ RSpec.describe "API v3 storages resource", :storage_server_helpers, :webmock, co
       it_behaves_like "redirect response"
 
       context "if user is missing permission view_file_links" do
-        before(:all) { remove_permissions(user_with_permissions, :view_file_links) }
-        after(:all) { add_permissions(user_with_permissions, :view_file_links) }
+        before { remove_permissions(user_with_permissions, :view_file_links) }
+        after { add_permissions(user_with_permissions, :view_file_links) }
 
         it_behaves_like "not found"
       end

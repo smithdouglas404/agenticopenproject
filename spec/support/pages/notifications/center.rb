@@ -68,6 +68,12 @@ module Pages
         item_title(notification).click
       end
 
+      def click_id(notification)
+        within_item(notification) do
+          click_on("##{notification.resource.id}")
+        end
+      end
+
       def double_click_item(notification)
         item_title(notification).double_click
       end
@@ -147,7 +153,7 @@ module Pages
       end
 
       def bell_element
-        page.find('opce-in-app-notification-bell [data-test-selector="op-ian-bell"]')
+        page.find_test_selector("op-ian-bell")
       end
 
       def expect_no_toaster

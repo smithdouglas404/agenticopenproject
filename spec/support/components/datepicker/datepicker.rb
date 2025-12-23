@@ -180,6 +180,7 @@ module Components
     ##
     # Expect the given date to be visible and a non-working day
     def expect_non_working(date)
+      ensure_date_is_displayed(date) unless displays_date?(date)
       label = date.strftime("%B %-d, %Y")
       expect(page).to have_css(".flatpickr-day.flatpickr-non-working-day[aria-label='#{label}']")
     end
@@ -187,6 +188,7 @@ module Components
     ##
     # Expect the given date to be visible and a working day
     def expect_working(date)
+      ensure_date_is_displayed(date) unless displays_date?(date)
       label = date.strftime("%B %-d, %Y")
       expect(page).to have_css(".flatpickr-day:not(.flatpickr-non-working-day)[aria-label='#{label}']")
     end
@@ -194,6 +196,7 @@ module Components
     ##
     # Expect the given date to be visible and disabled
     def expect_disabled(date)
+      ensure_date_is_displayed(date) unless displays_date?(date)
       label = date.strftime("%B %-d, %Y")
       expect(page).to have_css(".flatpickr-day.flatpickr-disabled[aria-label='#{label}']," \
                                ".flatpickr-day.flatpickr-non-working-day[aria-label='#{label}']")
@@ -202,8 +205,23 @@ module Components
     ##
     # Expect the given date to be visible and enabled
     def expect_not_disabled(date)
+      ensure_date_is_displayed(date) unless displays_date?(date)
       label = date.strftime("%B %-d, %Y")
       expect(page).to have_css(".flatpickr-day:not(.flatpickr-disabled):not(.flatpickr-non-working-day)[aria-label='#{label}']")
+    end
+
+    def displays_date?(date)
+      label = date.strftime("%B %-d, %Y")
+      page.has_css?(".flatpickr-day.flatpickr-disabled[aria-label='#{label}']")
+    end
+
+    def has_previous_month_toggle?
+      page.has_css?(".flatpickr-prev-month")
+    end
+
+    def ensure_date_is_displayed(date)
+      select_year(date.year)
+      select_month(date.month)
     end
 
     protected

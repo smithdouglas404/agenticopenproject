@@ -6,9 +6,12 @@ description: Set up Nextcloud as a file storage in your OpenProject instance
 keywords: Nextcloud file storage integration
 ---
 
-
-
 # Nextcloud integration setup
+
+> [!IMPORTANT]
+>
+> The integration between OpenProject and Nextcloud is part of the open source and free of charge **Community edition**, including all file management functionalities.
+> However, please note that setting up the Single Sign-on via OpenID Connect Identity Provider is an Enterprise Add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide). This Add-On is available for all installations under the [Enterprise Corporate plan](https://www.openproject.org/pricing/).
 
 | Topic                                                               | Description                                                          |
 |---------------------------------------------------------------------|:---------------------------------------------------------------------|
@@ -30,23 +33,13 @@ OpenProject offers close integration with Nextcloud to allow users to:
 
 ## Required system versions
 
-OpenProject makes significant efforts to ensure that the integration works with all the latest stable versions. We
-strongly recommend continuously updating all systems to the current stable version. This ensures access to the latest
-features and prompt fixes for any potential bugs.
+Please see our [System requirements](../../../installation-and-operations/system-requirements/) overview which lists the supported versions.
 
-- OpenProject [latest release](../../../release-notes/).
-- The officially minimal version of
-  the [OpenProject Integration Nextcloud app](https://apps.nextcloud.com/apps/integration_openproject) is `2.6.3`.
-- Nextcloud version in the latest `stable` version.
-  - If you run Nextcloud in the community edition be careful to not blindly follow the update hints in the
-    administration area of a Nextcloud instance, as they nudge you to use the `latest` version, which might not be the
-    latest `stable` version.
-  - If you installed Nextcloud via the [community](https://hub.docker.com/_/nextcloud) docker image, we advise you to
-    pin it to the `stable` tag.
-  - Nextcloud company advises the use of their [all-in-one](https://hub.docker.com/r/nextcloud/all-in-one) docker image.
-- If you want to use the feature of [automatically managed project folders](#4-automatically-managed-project-folders)
-  you need to install the officially minimal supported version `14.0.9` of
-  the [Group folders](https://apps.nextcloud.com/apps/groupfolders) app in Nextcloud.
+> [!IMPORTANT]
+>
+> OpenProject makes significant efforts to ensure that the integration works with all the latest stable versions. We
+> strongly recommend continuously updating all systems to the current stable version. This ensures access to the latest
+> features and prompt fixes for any potential bugs.
 
 ## Set up the integration
 
@@ -54,7 +47,7 @@ features and prompt fixes for any potential bugs.
 > You need to have administrator privileges in both your Nextcloud and OpenProject instances to set up this integration.
 
 Watch this video to find out how to set up the Nextcloud integration as an Administrator and as a user.
-<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Nextcloud-Integration-Setup.mp4" type="video/mp4" controls="" style="width:100%"></video>
+<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Nextcloud-Integration-Setup.mp4"></video>
 
 ### 1. Add the "OpenProject Integration" app in Nextcloud and point it to your OpenProject instance
 
@@ -81,7 +74,7 @@ Click on the **Save** button.
 > [!TIP]
 > If the OpenProject host cannot be added, you may check the [Troubleshooting](#troubleshooting) section at the bottom of this page.
 
-## 2. Create a Nextcloud file storage in your OpenProject instance
+### 2. Create a Nextcloud file storage in your OpenProject instance
 
 Navigate to your OpenProject administration settings page by clicking on *your avatar in the top right corner → Administration*. From the side menu on the left select *Files -> External file storages*.
 
@@ -107,7 +100,11 @@ The next part of the setup will vary depending on your chosen authentication met
 
 **Two-way OAuth 2.0 authorization code flow:** This way of authentication works with all deployments of OpenProject and Nextcloud. Requests between the two applications will act with the target application acting as OAuth 2.0 authorization server. For the users this means that they will usually have to confirm a separate OAuth consent screen for both directions of communication.
 
-**Single Sign-On through OpenID Connect Identity Provider:** This authentication mode improves user experience by eliminating additional consent screens. Requests between OpenProject and Nextcloud are authenticated with access tokens obtained from a common Identity Provider. This requires both applications to use the same OpenID Connect Identity Provider and specific configurations at the provider level. This advanced feature is available for all installations under the Enterprise Corporate plan.
+**Single Sign-On through OpenID Connect Identity Provider:** This authentication mode improves user experience by eliminating additional consent screens. Requests between OpenProject and Nextcloud are authenticated with access tokens obtained from a common Identity Provider. This requires both applications to use the same OpenID Connect Identity Provider and specific configurations at the provider level.
+
+> [!NOTE]
+>
+> This advanced feature is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide). It is available for all installations under the Enterprise Corporate plan. An upgrade from the free community edition is easy and helps support OpenProject.
 
 
 Instructions for both authentication methods can be found on the following pages:
@@ -135,7 +132,7 @@ In case you want to use this functionality you will be requested to enter a pass
 > [!NOTE]
 > When you use the **Terms of Service** app on the Nextcloud side, all terms also need to be accepted for the OpenProject user that gets created during the setup. This is set to happen automatically during the initial set-up. If you see an error message indicating otherwise or the integration does not behave as expected, please refer to the [Troubleshooting](#troubleshooting) section at the bottom of this page.
 
-At this point, you can click on **Done, complete setup** in both applications and your instance configuration will be completed.
+At this point, you can click on **Finish setup** in both applications and your instance configuration will be completed.
 
 ![Integration successfully completed on the OpenProject end](openproject_system_guide_nextcloud_integration_setup_step_10.png)
 
@@ -223,9 +220,17 @@ On Nextcloud inside the _OpenProject Integration_ App, when adding the OpenProje
   ```
   In case the `curl` command above results in an error pay attention what it is telling you. Typical reasons for connection issues are misconfigured firewalls, proxies, or a bad TLS/SSL setup.
 
-##### While using a self signed TLS/SSL certificate you receive "certificate verify failed"
+##### While using a self-signed TLS/SSL certificate you receive "certificate verify failed"
 
-Some administrators setup OpenProject using a self signed TLS/SSL certificate with their own CA (certificate authority). That CA needs to be known on the Nextcloud server. On a Debian/Ubuntu based server, make sure you add the CA certificate for your OpenProject certificate to `/usr/local/share/ca-certificates` and run `sudo update-ca-certificates` afterwards. Then Nextcloud's PHP code should be able to verify your OpenProject TLS/SSL certificate when emitting HTTPS requests to your Nextcloud server.
+Some administrators setup OpenProject using a self-signed TLS/SSL certificate with their own CA (certificate authority). That CA needs to be known on the Nextcloud server. On a Debian/Ubuntu based server, make sure you add the CA certificate for your OpenProject certificate to `/usr/local/share/ca-certificates` and run `sudo update-ca-certificates` afterwards.
+
+Next, import that new bundled file into Nextcloud:
+
+  ```shell
+  occ security:certificates:import /etc/ssl/certs/ca-certificates.crt
+  ```
+
+Now, Nextcloud's PHP code should be able to verify your OpenProject TLS/SSL certificate when emitting HTTPS requests to your Nextcloud server.
 
 Attention: Please do not confuse the CA for the Nextcloud server's certificate with the CA of the OpenProject server's certificate which you might have provided in the OpenProject installation wizard. They do not necessarily need to be the same.
 
@@ -287,13 +292,17 @@ If you do care about the `OpenProject` user/group/folder data then the condition
 If you face an error while trying to delete or disable user/group "OpenProject" then that's because user/group is protected by the _OpenProject Integration_ App. If you really need to delete the user or group follow these steps:
 
 1. Disable the _OpenProject Integration_ App
-  > [!NOTE]
-  > Disabling and enabling the app is safe. No app data will be deleted.
+
+> [!NOTE]
+> Disabling and enabling the app is safe. No app data will be deleted.
+
 2. Remove user `OpenProject`
 3. Remove group `OpenProject`
 4. Inside the _Group folders_ App (*Administration settings → Administration → Group folders*), remove group folder `OpenProject`.
-  > [!WARNING]
-  > This step will delete all files in that folder. Make sure to make a copy if you want to keep these files!**
+
+> [!WARNING]
+> This step will delete all files in that folder. Make sure to make a copy if you want to keep these files!**
+
 5. Enable the _OpenProject Integration_ App
 
 ### Setting up Nextcloud in OpenProject
@@ -317,9 +326,19 @@ On OpenProject inside the storage administration (*Administration → File stora
 
   If you do not get such a response check out what the `curl` command above is telling you. Typical reasons for connection issues are misconfigured firewalls, proxies, or a bad TLS/SSL setup.
 
-##### While using a self signed TLS/SSL certificate you receive "certificate verify failed"
+##### While using a self-signed TLS/SSL certificate you receive "certificate verify failed"
 
-Some administrators setup Nextcloud using a self signed TLS/SSL certificate with their own CA (certificate authority). The CA needs to be known on the OpenProject server. On a Debian/Ubuntu based server, make sure you add the CA certificate for your Nextcloud certificate to `/usr/local/share/ca-certificates` and run `sudo update-ca-certificates` afterwards. Then OpenProject's Ruby code should be able to verify your Nextcloud TLS/SSL certificate when emitting HTTPS requests to your Nextcloud server.
+Some administrators setup Nextcloud using a self-signed TLS/SSL certificate with their own CA (certificate authority). The CA needs to be known on the OpenProject server. On a Debian/Ubuntu based server, make sure you add the CA certificate for your Nextcloud certificate to `/usr/local/share/ca-certificates` and run `sudo update-ca-certificates` afterwards.
+
+Add the following environment variable to the OpenProject server and restart it:
+
+```text
+SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+```
+
+In docker compose based installations, this can be usually achieved by editing the `.env` file that's next to your `docker-compose.yml`.
+
+Afterwards OpenProject's Ruby code should be able to verify your Nextcloud TLS/SSL certificate when emitting HTTPS requests to your Nextcloud server.
 
 Attention: Please do not confuse the CA for the Nextcloud server's certificate with the CA of the OpenProject server's certificate which you might have provided in the OpenProject installation wizard. They do not necessarily need to be the same.
 

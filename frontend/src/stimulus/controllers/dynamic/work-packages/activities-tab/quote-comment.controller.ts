@@ -30,21 +30,21 @@
 
 import { Controller } from '@hotwired/stimulus';
 
-import type IndexController from './index.controller';
+import type EditorController from './editor.controller';
 import type InternalCommentController from './internal-comment.controller';
 
-type QuoteParams = {
+interface QuoteParams {
   userId:string;
   userName:string;
   textWrote:string;
   content:string;
   isInternal:boolean;
-};
+}
 
 export default class QuoteCommentController extends Controller {
-  static outlets = ['work-packages--activities-tab--index', 'work-packages--activities-tab--internal-comment'];
+  static outlets = ['work-packages--activities-tab--editor', 'work-packages--activities-tab--internal-comment'];
 
-  declare readonly workPackagesActivitiesTabIndexOutlet:IndexController;
+  declare readonly workPackagesActivitiesTabEditorOutlet:EditorController;
   declare readonly workPackagesActivitiesTabInternalCommentOutlet:InternalCommentController;
 
   quote({ params: { userId, userName, textWrote, content, isInternal } }:{ params:QuoteParams }) {
@@ -83,19 +83,19 @@ export default class QuoteCommentController extends Controller {
   private setCommentRestriction(isInternal:boolean) {
     if (isInternal && !this.workPackagesActivitiesTabInternalCommentOutlet.internalCheckboxTarget.checked) {
       this.workPackagesActivitiesTabInternalCommentOutlet.internalCheckboxTarget.checked = isInternal;
-      this.workPackagesActivitiesTabInternalCommentOutlet.toggleInternal();
+      this.workPackagesActivitiesTabInternalCommentOutlet.updateInternalState();
     }
   }
 
   private openEditorWithInitialData(quotedText:string) {
-    this.workPackagesActivitiesTabIndexOutlet.openEditorWithInitialData(quotedText);
+    this.workPackagesActivitiesTabEditorOutlet.openEditorWithInitialData(quotedText);
   }
 
   private get ckEditorInstance() {
-    return this.workPackagesActivitiesTabIndexOutlet.getCkEditorInstance();
+    return this.workPackagesActivitiesTabEditorOutlet.ckEditorInstance;
   }
 
   private get isFormVisible():boolean {
-    return !this.workPackagesActivitiesTabIndexOutlet.formRowTarget.classList.contains('d-none');
+    return !this.workPackagesActivitiesTabEditorOutlet.formRowTarget.classList.contains('d-none');
   }
 }

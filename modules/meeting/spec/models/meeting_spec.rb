@@ -107,37 +107,6 @@ RSpec.describe Meeting do
     end
   end
 
-  describe "all_changeable_participants" do
-    describe "WITH a user having the view_meetings permission" do
-      let(:project_members) { { user1 => role } }
-
-      it "contains the user" do
-        expect(meeting.all_changeable_participants).to eq([user1])
-      end
-    end
-
-    describe "WITH a user not having the view_meetings permission" do
-      let(:role2) { create(:project_role, permissions: []) }
-      let(:project_members) { { user1 => role, user2 => role2 } }
-
-      it "does not contain the user" do
-        expect(meeting.all_changeable_participants).not_to include(user2)
-      end
-    end
-
-    describe "WITH a user being locked but invited" do
-      let(:locked_user) { create(:locked_user) }
-
-      before do
-        meeting.participants_attributes = [{ user_id: locked_user.id, invited: 1 }]
-      end
-
-      it "contains the user" do
-        expect(meeting.all_changeable_participants).to include(locked_user)
-      end
-    end
-  end
-
   describe "participants and author as watchers" do
     let(:project_members) { { user1 => role, user2 => role } }
 
@@ -162,15 +131,7 @@ RSpec.describe Meeting do
     end
 
     context "other timezone set" do
-      let!(:old_time_zone) { Time.zone }
-
-      before do
-        Time.zone = "EST"
-      end
-
-      after do
-        Time.zone = old_time_zone.name
-      end
+      current_user { build_stubbed(:user, preferences: { time_zone: "EST" }) }
 
       it_behaves_like "uses that zone", "EST"
     end
@@ -206,6 +167,14 @@ RSpec.describe Meeting do
       expect(meeting).not_to be_valid
       expect(meeting.errors[:duration]).to include("is not a number.")
       expect(meeting.formatted_duration).to be_nil
+    end
+  end
+
+  describe "uid" do
+    it "assigns a uid on create" do
+      meeting = described_class.new(project:, author: user1)
+      expect(meeting.uid).to be_present
+      expect(meeting.uid).to include "@#{Setting.host_name}"
     end
   end
 

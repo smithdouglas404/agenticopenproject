@@ -88,6 +88,8 @@ da:
     button_list_view: "Listevisning"
     button_show_view: "Fuldskærmsvisning"
     button_log_time: "Tidsregistrering"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "mere"
     button_open_details: "Åbn detaljevisning"
     button_close_details: "Luk detaljeret visning"
@@ -201,69 +203,6 @@ da:
         edit_query: "Edit query"
         new_group: "Ny gruppe"
         reset_to_defaults: "Reset to defaults"
-      enterprise:
-        text_reprieve_days_left: "%{days} days until end of grace period"
-        text_expired: "expired"
-        trial:
-          confirmation: "Bekræft mailadresse"
-          confirmation_info: >
-            We sent you an email on %{date} to %{email}. Please check your inbox and click the confirmation link provided to start your 14 days trial.
-          form:
-            general_consent: >
-              Jeg er enig i <a target="_blank" href="%{link_terms}">vilkår for service</a> og <a target="_blank" href="%{link_privacy}">privatlivspolitik</a>.
-            invalid_email: "Ugynldig email adresse"
-            label_company: "Virksomhed"
-            label_first_name: "Fornavn"
-            label_last_name: "Efternavn"
-            label_domain: "Domæne"
-            label_subscriber: "Subscriber"
-            label_maximum_users: "Maximum active users"
-            label_starts_at: "Starter fra"
-            label_expires_at: "Expires at"
-            label_plan: "Plan"
-            label_additional_features: "Additional features"
-            receive_newsletter: Jeg ønsker at modtage OpenProject <a target="_blank" href="%{link}">nyhedsbrevet</a>.
-            taken_domain: Der kan kun være én aktiv prøve pr. domæne.
-            domain_mismatch: The current request host name does not match the configured host name. Please double check your system settings.
-            taken_email: Hver bruger kan kun oprette en prøveversion.
-          email_not_received: "Du har ikke modtaget en e-mail? Du kan gensende e-mailen med linket til højre."
-          try_another_email: "Eller prøv det med en anden e-mail-adresse."
-          next_steps: "Næste trin"
-          resend_link: "Resend"
-          resend_success: "E-mail er blevet gensendt. Tjek dine e-mails og klik på det angivne bekræftelseslink."
-          resend_warning: "Kunne ikke gensende e-mail."
-          session_timeout: "Din session fik timeout. Prøv at genindlæse siden eller gensende e-mail."
-          status_label: "Status:"
-          status_confirmed: "Bekræftet"
-          status_waiting: "e-mail sendt - venter på bekræftelse"
-          test_ee: "Test the Enterprise edition 14 days for free"
-          quick_overview: "Get a quick overview of project management and team collaboration with OpenProject Enterprise edition."
-        upsell:
-          become_hero: "Become a hero!"
-          enterprise_info_html: "%{feature_title} is an Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span> add-on."
-          upgrade_info: "Please upgrade to a paid plan to activate and start using it in your team."
-          text: >
-            The OpenProject Enterprise edition builds on top of the Community edition. It includes Enterprise add-ons and professional support mainly aimed at organizations with more than 10 users that manage business critical projects with OpenProject.
-          you_contribute: "Developers need to pay their bills, too. By upgrading to the Enterprise edition, you will be supporting this open source community effort and contributing to its development, maintenance and continuous improvement."
-          benefits:
-            description: "What are the benefits of the Enterprise on-premises edition?"
-            high_security: "Sikkerheds funktioner"
-            high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-            installation: "Installations support"
-            installation_text: "Erfarne software ingeniører guide dig gennem den komplette installation og setup proces i din egen infrastruktur."
-            premium_features: "Enterprise add-ons"
-            premium_features_text: "Agile tavler, brugerdefineret tema og logo, grafer, intelligente arbejdsgange med brugerdefinerede handlinger, fuld tekst søgning efter vedhæftede filer arbejde og multi-valgs brugerdefinerede felter."
-            professional_support: "Professionel support"
-            professional_support_text: "Få pålidelig, høj-touch support fra senior support ingeniører med ekspert viden om at køre OpenProject i forretningskritiske miljøer."
-          button_start_trial: "Start gratis prøveperiode"
-          button_upgrade: "Upgrade now"
-          button_contact_us: "Kontakt os for en demo"
-          button_book_now: "Bestil nu"
-          confidence: >
-            Vi leverer tillid til en testet og understøttet enterprise-klasse projektstyringssoftware - med Open Source og et åbent sind.
-          link_quote: "Få et tilbud"
-          more_info: "More information"
-          unlimited: "Ubegrænset"
       working_days:
         calendar:
           empty_state_header: "Non-working days"
@@ -274,9 +213,9 @@ da:
         change_button: "Save and reschedule"
         change_title: "Change working days"
         removed_title: "You will remove the following days from the non-working days list:"
-        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages in all projects in this instance."
+        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
         warning: >
-          The changes might take some time to take effect. You will be notified when all relevant work packages have been updated.
+          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
           Are you sure you want to continue?
       work_packages_settings:
         warning_progress_calculation_mode_change_from_status_to_field_html: >-
@@ -350,17 +289,6 @@ da:
         format:
           date: "%{attribute} is no valid date - YYYY-MM-DD expected."
         general: "Der opstod en fejl."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Read about new features and product updates."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_0":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>Meeting backlogs and the end of classic meetings.</li> <li>Updated Enterprise plans.</li> <li>Internal comments in work packages (Enterprise add-on).</li> <li>Automatically generated work package subjects (Enterprise add-on).</li> <li>Separate time tracking module with calendar view.</li> <li>Parent relation displayed in work package relations tab.</li> <li>Release to Community: Graphs on project overview page.</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -368,12 +296,13 @@ da:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copy URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Aktivér"
     label_assignee: "Tildelt"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Add column after"
     label_add_column_before: "Add column before"
     label_add_columns: "Add columns"
@@ -386,6 +315,7 @@ da:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "dage siden"
     label_all: "alle"
+    label_all_projects: "All projects"
     label_all_uppercase: "Alle"
     label_all_work_packages: "alle arbejdspakker"
     label_and: "og"
@@ -414,6 +344,7 @@ da:
     label_collapse: "Fold sammen"
     label_collapsed: "sammenfoldet"
     label_collapse_all: "Fold alle sammen"
+    label_collapse_text: "Collapse text"
     label_comment: "Kommentér"
     label_committed_at: "%{committed_revision_link} d. %{date}"
     label_committed_link: "tilknyttet revision %{revision_identifier}"
@@ -426,6 +357,7 @@ da:
     label_expand: "Udvid"
     label_expanded: "udfoldet"
     label_expand_all: "Fold alle ud"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Expand project menu"
     label_export: "Eksportér"
     label_export_preparing: "Eksporten er under forberedelse og vil blive hentet om lidt."
@@ -480,7 +412,7 @@ da:
     label_previous: "Foregående"
     label_per_page: "Per side:"
     label_please_wait: "Please wait"
-    label_project: "Projekt"
+    label_project: "Prjoekt"
     label_project_list: "Project lists"
     label_project_plural: "Projekter"
     label_visibility_settings: "Visibility settings"
@@ -495,7 +427,6 @@ da:
     label_repository_plural: "Projektarkiver"
     label_save_as: "Gem som"
     label_search_columns: "Search a column"
-    label_select_project: "Select a project"
     label_select_watcher: "Vælg en tilsynsførende..."
     label_selected_filter_list: "Valgte filtre"
     label_show_attributes: "Vis alle egenskaber"
@@ -506,7 +437,7 @@ da:
     label_sort_lower: "Flyt ned"
     label_sorting: "Sorterer"
     label_spent_time: "Anvendt tid"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "Offentlig"
     label_sum: "Sum"
@@ -565,7 +496,7 @@ da:
     label_version_plural: "Versioner"
     label_view_has_changed: "This view has unsaved changes. Click to save them."
     help_texts:
-      show_modal: "Vis attributten til hjælpetekst"
+      show_modal: "Show help text"
     onboarding:
       buttons:
         skip: "Spring over"
@@ -625,7 +556,7 @@ da:
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "Overdue"
-        overdue_since: "since %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "is today."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
@@ -705,9 +636,12 @@ da:
       title: "Confirm your password to continue"
     pagination:
       no_other_page: "You are on the only page."
+      pages_skipped: "Pages skipped."
+      page_navigation: "Pagination navigation"
+      per_page_navigation: 'Items per page selection'
       pages:
-        next: "Forward to the next page"
-        previous: "Tilbage til forrige side"
+        page_number: Page %{number}
+        show_per_page: Show %{number} per page
     placeholders:
       default: "-"
       subject: "Enter subject here"
@@ -718,15 +652,10 @@ da:
       autocompleter:
         label: "Project autocompletion"
       click_to_switch_to_project: "Project: %{projectname}"
-      confirm_template_load: "Switching the template will reload the page and you will lose all input to this form. Continue?"
       context: "Project context"
-      copy:
-        copy_options: "Copy options"
       not_available: "Project N/A"
-      no_template_selected: "(None)"
       required_outside_context: >
         Please choose a project to create the work package in to see all attributes. You can only select projects which have the type above activated.
-      use_template: "Use template"
     reminders:
       settings:
         daily:
@@ -760,6 +689,8 @@ da:
           first_day: "First day"
           last_day: "Last day"
     text_are_you_sure: "Sikker?"
+    text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
+    breadcrumb: "Breadcrumb"
     text_data_lost: "All entered data will be lost."
     text_user_wrote: "%{value} skrev:"
     types:
@@ -844,6 +775,7 @@ da:
     autocompleter:
       placeholder: "Type to search"
       notFoundText: "No items found"
+      search: "Søg"
       project:
         placeholder: "Select project"
     repositories:
@@ -889,10 +821,10 @@ da:
         mixed: "Mixed"
     work_packages:
       bulk_actions:
-        move: "Bulk change of project"
         edit: "Bulk edit"
-        copy: "Bulk copy"
         delete: "Bulk delete"
+        duplicate: "Bulk duplicate"
+        move: "Bulk change of project"
       button_clear: "Ryd"
       comment_added: "Kommentaren blev tilføjet."
       comment_send_failed: "En fejl opstod. Kunne ikke indsende kommentaren."
@@ -936,8 +868,8 @@ da:
         header_no_type: "New work package (Type not yet set)"
         header_with_parent: "New %{type} (Child of %{parent_type} #%{id})"
         button: "Opret"
-      copy:
-        title: "Copy work package"
+      duplicate:
+        title: "Duplicate work package"
       hierarchy:
         show: "Show hierarchy mode"
         hide: "Hide hierarchy mode"
@@ -971,7 +903,7 @@ da:
         category: "Kategori"
         percentageDone: "Procentdel udført"
         priority: "Prioritet"
-        projectName: "Projekt"
+        projectName: "Prjoekt"
         remainingWork: "Resterende arbejde"
         remainingWorkAlternative: "Resterende timer"
         responsible: "Ansvarlig"
@@ -1034,9 +966,15 @@ da:
       reminders:
         button_label: "Set reminder"
         title:
-          new: "Set reminder"
+          new: "Set a reminder"
           edit: "Edit reminder"
         subtitle: "You will receive a notification for this work package at the chosen time."
+        presets:
+          tomorrow: "Tomorrow"
+          three_days: "In 3 days"
+          week: "In a week"
+          month: "In a month"
+          custom: "At a particular date/time"
       scheduling:
         is_parent: "The dates of this work package are automatically deduced from its children. Activate 'Manual scheduling' to set the dates."
         is_switched_from_manual_to_automatic: "The dates of this work package may need to be recalculated after switching from manual to automatic scheduling due to relationships with other work packages."
@@ -1135,6 +1073,8 @@ da:
     notice_successful_delete: "Sletning gennemført."
     notice_successful_update: "Opdatering gennemført."
     notice_job_started: "job started."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Uanvendelig anmodning."
     relations:
       empty: Ingen relationer findes
@@ -1167,6 +1107,7 @@ da:
       child_work_packages:
         one: "one child work package"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 t"
         other: "%{count} t"
@@ -1187,7 +1128,7 @@ da:
       current_project_and_all_descendants: "In this project + subprojects"
       current_project: "In this project"
       recently_viewed: "Recently viewed"
-      search: "Søg"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "all projects"
         project_and_subprojects: "and all subprojects"
@@ -1197,71 +1138,8 @@ da:
       list: "Table"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Tilbage"
       invite: "Invitér"
-      title:
-        invite: "Invitér bruger"
-        invite_to_project: "Inviter %{type} til %{project}"
-        User: "bruger"
-        Group: "gruppe"
-        PlaceholderUser: "pladsholder bruger"
-        invite_principal_to_project: "Inviter %{principal} til %{project}"
-      project:
-        label: "Projekt"
-        required: "Vælg et projekt"
-        lacking_permission: "Please select a different project since you lack permissions to assign users to the currently selected."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Næste"
-        no_results: "Ingen projekter blev fundet"
-        no_invite_rights: "Du har ikke tilladelse til at invitere medlemmer til dette projekt"
-      type:
-        required: "Vælg venligst den type, der skal inviteres"
-        user:
-          title: "Bruger"
-          description: "Tilladelser baseret på den tildelte rolle i det valgte projekt"
-        group:
-          title: "Gruppe"
-          description: "Tilladelser baseret på den tildelte rolle i det valgte projekt"
-        placeholder:
-          title: "Pladsholder bruger"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Har ikke adgang til projektet, og ingen e-mails er sendt ud."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Navn eller e-mailadresse"
-          name: "Navn"
-        already_member_message: "Allerede medlem af %{project}"
-        no_results_user: "Ingen brugere blev fundet"
-        invite_user: "Invitér:"
-        no_results_placeholder: "Ingen pladsholdere blev fundet"
-        create_new_placeholder: "Opret ny pladsholder:"
-        no_results_group: "Ingen grupper blev fundet"
-        next_button: "Næste"
-        required:
-          user: "Vælg venligst en bruger"
-          placeholder: "Vælg venligst en pladsholder"
-          group: "Vælg venligst en gruppe"
-      role:
-        label: "Rolle i %{project}"
-        no_roles_found: "No roles were found"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Vælg venligst en rolle"
-        next_button: "Næste"
-      message:
-        label: "Invitations besked"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Næste"
-      summary:
-        next_button: "Send invitation"
-      success:
-        title: "%{principal} blev inviteret!"
-        description:
-          user: "Brugeren kan nu logge ind for at få adgang til %{project}. I mellemtiden kan du allerede planlægge med den pågældende bruger og tildele arbejdspakker for eksempel."
-          placeholder: "Pladsholderen kan nu bruges i %{project}. I mellemtiden kan du allerede planlægge med den pågældende bruger og tildele arbejdspakker for eksempel."
-          group: "Gruppen er nu en del af %{project}. I mellemtiden kan du allerede planlægge med denne gruppe og tildele arbejdspakker for eksempel."
-        next_button: "Fortsæt"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1278,13 +1156,20 @@ da:
       selected_filter:
         all: "All projects"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Baseline"
       clear: "Ryd"

@@ -32,6 +32,7 @@ interface IReminderSettingsFormValue {
   templateUrl: './reminder-settings-page.component.html',
   styleUrls: ['./reminder-settings-page.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ReminderSettingsPageComponent extends UntilDestroyedMixin implements OnInit {
   @Input() userId:string;
@@ -96,7 +97,7 @@ export class ReminderSettingsPageComponent extends UntilDestroyedMixin implement
       .user$
       .pipe(take(1))
       .subscribe((user) => {
-        this.userId = this.userId || user?.id as string;
+        this.userId = this.userId || user?.id!;
         this.storeService.get(this.userId);
       });
 

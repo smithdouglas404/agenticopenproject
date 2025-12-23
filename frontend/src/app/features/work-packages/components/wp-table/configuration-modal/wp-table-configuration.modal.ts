@@ -40,6 +40,7 @@ export const WpTableConfigurationModalPrependToken = new InjectionToken<Componen
 
 @Component({
   templateUrl: './wp-table-configuration.modal.html',
+  standalone: false,
 })
 export class WpTableConfigurationModalComponent extends OpModalComponent implements OnInit, OnDestroy {
   public text = {
@@ -58,7 +59,7 @@ export class WpTableConfigurationModalComponent extends OpModalComponent impleme
 
   public onDataUpdated = new EventEmitter<void>();
 
-  public selectedColumnMap:{ [id:string]:boolean } = {};
+  public selectedColumnMap:Record<string, boolean> = {};
 
   // Get the view child we'll use as the portal host
   @ViewChild('tabContentOutlet', { static: true }) tabContentOutlet:ElementRef;
@@ -92,7 +93,7 @@ export class WpTableConfigurationModalComponent extends OpModalComponent impleme
   }
 
   ngOnInit() {
-    this.$element = this.elementRef.nativeElement as HTMLElement;
+    this.element = this.elementRef.nativeElement as HTMLElement;
 
     this.tabPortalHost = new TabPortalOutlet(
       this.wpTableConfigurationService.tabs,
@@ -148,7 +149,7 @@ export class WpTableConfigurationModalComponent extends OpModalComponent impleme
   }
 
   protected get afterFocusOn():HTMLElement {
-    return this.$element;
+    return this.element;
   }
 
   protected loadForm() {

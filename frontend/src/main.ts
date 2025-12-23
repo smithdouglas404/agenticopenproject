@@ -1,14 +1,21 @@
 import { OpenProjectModule } from 'core-app/app.module';
 import { enableProdMode } from '@angular/core';
-import * as jQuery from 'jquery';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import 'core-app/core/setup/init-jquery';
+import 'core-app/core/setup/init-js-patches';
+
 import { initializeLocale } from 'core-app/core/setup/init-locale';
 import { environment } from './environments/environment';
 import { configureErrorReporter } from 'core-app/core/errors/configure-reporter';
 import { initializeGlobalListeners } from 'core-app/core/setup/globals/global-listeners';
 import { getMetaElement } from 'core-app/core/setup/globals/global-helpers';
+import 'core-elements/block-note-element';
 
-(window as any).global = window;
+import 'core-app/core/setup/init-vendors';
+import 'core-app/core/setup/init-globals';
+import './stimulus/setup';
+import './turbo/setup';
+import { platformBrowser } from '@angular/platform-browser';
 
 // Ensure we set the correct dynamic frontend path
 // based on the RAILS_RELATIVE_URL_ROOT setting
@@ -24,14 +31,10 @@ const ASSET_HOST = initializer?.dataset.assetHost ? `//${initializer.dataset.ass
 
 // Ensure to set the asset base for dynamic code loading
 // https://webpack.js.org/guides/public-path/
-__webpack_public_path__ = ASSET_HOST + window.appBasePath + ASSET_BASE_PATH;
+// eslint-disable-next-line no-underscore-dangle
+globalThis.__webpack_public_path__ = ASSET_HOST + window.appBasePath + ASSET_BASE_PATH;
 
 window.ErrorReporter = configureErrorReporter();
-
-require('core-app/core/setup/init-vendors');
-require('core-app/core/setup/init-globals');
-require('stimulus/setup');
-require('turbo/setup');
 
 if (environment.production) {
   enableProdMode();
@@ -40,11 +43,8 @@ if (environment.production) {
 // Import the correct locale early on
 void initializeLocale()
   .then(() => {
-    jQuery(() => {
-      // Now that DOM is loaded, also run the global listeners
-      initializeGlobalListeners();
+    initializeGlobalListeners();
 
-      // Due to the behaviour of the Edge browser we need to wait for 'DOM ready'
-      void platformBrowserDynamic().bootstrapModule(OpenProjectModule);
-    });
+    // Due to the behaviour of the Edge browser we need to wait for 'DOM ready'
+    void platformBrowser().bootstrapModule(OpenProjectModule);
   });

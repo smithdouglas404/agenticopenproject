@@ -26,7 +26,7 @@ zh-TW:
       new_board: '新增看板'
       add_list: '新增列表至看板'
       add_card: '新增卡片'
-      error_attribute_not_writable: "無法移動該工作項目, %{attribute} 不可寫入"
+      error_attribute_not_writable: "無法移動該工作套件, %{attribute} 不可寫入。"
       error_loading_the_list: "列表讀取錯誤: %{error_message}"
       error_permission_missing: "缺少建立公開查詢的權限"
       error_cannot_move_into_self: "不可將任務移入自己的欄位"
@@ -41,15 +41,15 @@ zh-TW:
         action: '行動項看板'
         action_by_attribute: '行動項看板 (%{attribute})'
         action_text: >
-          一個含 %{attribute} 屬性篩選看板。(將工作項目移動到其他列表會更新其屬性)
+          一個依據 %{attribute} 屬性進行篩選的看板。將工作套件移動到其他列表時，會自動更新其該屬性值。
         action_text_subprojects: >
-          有子專案的看板。將工作項目拖動到其他列表會相應地更新（子）項目。
+          具備子專案自動欄位的看板。將工作套件拖放到其他列表時，會相應地更新其（子）專案。
         action_text_subtasks: >
-          有子元件的看板。將工作項目拖動到其他列表會相應地更新主要項目。
+          具備子元件的看板。將工作套件拖動到其他列表時，會相應地更新其父工作套件。
         action_text_status: >
           基本看板樣式的面板，包含「待辦」、「正在進行」、「已完成」等狀態的列。
         action_text_assignee: >
-          「執行者」視角的看板。適合分發工作項目。
+          具備依指派使用者自動分類欄位的看板，非常適合用於派發工作套件。
         action_text_version: >
           基於版本屬性的自動列面板。理想用於產品開發規劃。
         action_type:

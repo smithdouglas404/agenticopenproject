@@ -19,6 +19,7 @@
                 render(
                   Primer::Beta::Link.new(
                     href: redirect_url,
+                    underline: true,
                     data: {
                       action: "job-status-polling#redirectClick",
                       "job-status-polling-target": job_errors.present? ? nil : "redirect"
@@ -36,6 +37,7 @@
                     link: (render(
                       Primer::Beta::Link.new(
                         href: download_url,
+                        underline: true,
                         target: "_blank",
                         type: mime_type,
                         # omit download attribute for PDF,

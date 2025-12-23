@@ -38,7 +38,7 @@ RSpec.describe "Updating entries within the cost report", :js do
   let!(:time_entry_user) do
     create(:time_entry,
            user:,
-           work_package:,
+           entity: work_package,
            project:,
            hours: 5)
   end
@@ -51,7 +51,7 @@ RSpec.describe "Updating entries within the cost report", :js do
 
   let!(:cost_entry_user) do
     create(:cost_entry,
-           work_package:,
+           entity: work_package,
            project:,
            units: 3.00,
            cost_type:,
@@ -66,7 +66,7 @@ RSpec.describe "Updating entries within the cost report", :js do
     visit cost_reports_path(project)
     report_page.clear
     report_page.apply
-    report_page.show_loading_indicator present: false
+    report_page.wait_for_page_to_reload
   end
 
   it "can edit and delete time entries" do
@@ -85,7 +85,7 @@ RSpec.describe "Updating entries within the cost report", :js do
     table.rows_count 1
 
     report_page.switch_to_type "My cool type"
-    report_page.show_loading_indicator present: false
+    report_page.wait_for_page_to_reload
 
     table.rows_count 1
 
@@ -109,7 +109,7 @@ RSpec.describe "Updating entries within the cost report", :js do
     # Force a reload of the table (although nothing has changed)
     report_page.apply
     sleep(1)
-    report_page.show_loading_indicator present: false
+    report_page.wait_for_page_to_reload
 
     table.rows_count 1
 

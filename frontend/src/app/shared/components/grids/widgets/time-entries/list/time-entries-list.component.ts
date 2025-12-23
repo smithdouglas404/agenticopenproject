@@ -22,6 +22,8 @@ import {
   Observable,
 } from 'rxjs';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
+import { MeetingResource } from 'core-app/features/hal/resources/meeting-resource';
 
 @Directive()
 export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -93,8 +95,8 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
 
   public get total():string {
     const duration = this.entries.reduce((current, entry) => current + this.timezone.toHours(entry.hours), 0);
-
-    return this.i18n.t('js.units.hour', { count: duration });
+    const amount = this.i18n.t('js.units.hour', { count: duration });
+    return this.i18n.t('js.label_total_amount', { amount });
   }
 
   public get anyEntries():boolean {
@@ -109,12 +111,12 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
     return entry.project.name;
   }
 
-  public workPackageName(entry:TimeEntryResource):string {
-    return `#${entry.workPackage.id as string}: ${entry.workPackage.name}`;
+  public entityName(entry:TimeEntryResource):string {
+    return `#${entry.entity.id!}: ${entry.entity.name}`;
   }
 
-  public workPackageId(entry:TimeEntryResource):string {
-    return entry.workPackage.id as string;
+  public entityId(entry:TimeEntryResource):string {
+    return entry.entity.id!;
   }
 
   public comment(entry:TimeEntryResource):string | undefined {
@@ -125,8 +127,14 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
     return this.formatNumber(this.timezone.toHours(entry.hours));
   }
 
-  public workPackagePath(entry:TimeEntryResource):string {
-    return this.pathHelper.workPackagePath(idFromLink(entry.workPackage.href));
+  public entityPath(entry:TimeEntryResource):string {
+    if (entry.entity instanceof WorkPackageResource) {
+      return this.pathHelper.workPackagePath(idFromLink(entry.entity.href));
+    } if (entry.entity instanceof MeetingResource) {
+      return this.pathHelper.meetingPath(idFromLink(entry.entity.href));
+    }
+
+    return '';
   }
 
   public get isEditable():boolean {
@@ -135,7 +143,7 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
 
   public editTimeEntry(entry:TimeEntryResource):void {
     void this.turboRequests.request(
-      `${this.pathHelper.timeEntryEditDialog(entry.id as string)}`,
+      `${this.pathHelper.timeEntryEditDialog(entry.id!)}`,
       { method: 'GET' },
     );
   }
@@ -167,11 +175,11 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
       });
   }
 
-  protected abstract dmFilters():Array<[string, FilterOperator, [string]]>;
+  protected abstract dmFilters():[string, FilterOperator, [string]][];
 
   private buildEntries(entries:TimeEntryResource[]) {
     this.entries = entries;
-    const sumsByDateSpent:{ [key:string]:number } = {};
+    const sumsByDateSpent:Record<string, number> = {};
 
     entries.forEach((entry) => {
       const date = entry.spentOn;

@@ -36,19 +36,20 @@ See COPYRIGHT and LICENSE files for more details.
         method: :patch,
         data: {
           turbo_frame: "page-content",
-          application_target: "dynamic",
           controller: "storages--storage-audience"
         }
       ) do |form|
         flex_layout do |general_info_row|
           general_info_row.with_row(mb: 3) do
-            concat(render(Primer::Beta::Text.new(color: :subtle)) { "#{t('storages.storage_audience.documentation_intro')} " })
-            concat(
-              render(Primer::Beta::Link.new(href: OpenProject::Static::Links.url_for(:storage_docs, :nextcloud_sso))) do |link|
-                link.with_trailing_visual_icon(icon: "link-external")
-                I18n.t(:label_more_information)
-              end
-            )
+            render(Primer::Alpha::Banner.new(icon: :info, scheme: :default)) do |component|
+              component.with_action_button(
+                size: :medium,
+                tag: :a,
+                href: OpenProject::Static::Links.url_for(:storage_docs, :nextcloud_sso)
+              ) { I18n.t(:label_read_documentation) }
+
+              t('storages.storage_audience.documentation_intro')
+            end
           end
 
           general_info_row.with_row(mb: 3) do

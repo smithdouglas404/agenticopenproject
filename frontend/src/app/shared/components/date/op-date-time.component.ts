@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 
 @Component({
@@ -38,9 +38,10 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
       <span [textContent]="time"></span>
     </span>
   `,
+  standalone: false,
 })
-export class OpDateTimeComponent {
-  @Input('dateTimeValue') dateTimeValue:any;
+export class OpDateTimeComponent implements OnInit {
+  @Input() dateTimeValue:any;
 
   public date:any;
 

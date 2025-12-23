@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -59,6 +61,7 @@ require_relative "journal_formatter/decimal"
 require_relative "journal_formatter/fraction"
 require_relative "journal_formatter/id"
 require_relative "journal_formatter/named_association"
+require_relative "journal_formatter/polymorphic_association"
 require_relative "journal_formatter/percentage"
 require_relative "journal_formatter/plaintext"
 
@@ -84,6 +87,7 @@ module JournalFormatter
       fraction: JournalFormatter::Fraction,
       id: JournalFormatter::Id,
       named_association: JournalFormatter::NamedAssociation,
+      polymorphic_association: JournalFormatter::PolymorphicAssociation,
       percentage: JournalFormatter::Percentage,
       plaintext: JournalFormatter::Plaintext
     }

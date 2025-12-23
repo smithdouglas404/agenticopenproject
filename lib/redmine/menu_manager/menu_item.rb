@@ -37,6 +37,7 @@ class Redmine::MenuManager::MenuItem < Redmine::MenuManager::TreeNode
               :child_menus,
               :last,
               :partial,
+              :scheme,
               :engine,
               :enterprise_feature
 
@@ -70,6 +71,7 @@ class Redmine::MenuManager::MenuItem < Redmine::MenuManager::TreeNode
     @child_menus = options[:children]
     @last = options[:last] || false
     @partial = options[:partial]
+    @scheme = options[:scheme]
     @badge = options[:badge]
     @engine = options[:engine]
     @allow_deeplink = options[:allow_deeplink]
@@ -171,5 +173,9 @@ class Redmine::MenuManager::MenuItem < Redmine::MenuManager::TreeNode
 
   def heading?
     @is_heading || false
+  end
+
+  def enterprise_feature_missing?
+    @enterprise_feature.present? && !EnterpriseToken.allows_to?(@enterprise_feature)
   end
 end

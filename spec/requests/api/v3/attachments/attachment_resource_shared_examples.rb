@@ -157,7 +157,7 @@ RSpec.shared_examples "it supports direct uploads" do
         end
       end
 
-      context "with an attachment whitelist", with_settings: { attachment_whitelist: ["text/csv"] } do
+      context "with an attachment allowlist", with_settings: { attachment_whitelist: ["text/csv"] } do
         context "with an allowed content type" do
           let(:metadata) { { fileName: "cats.csv", fileSize: file.size, contentType: "text/csv" } }
 
@@ -171,14 +171,14 @@ RSpec.shared_examples "it supports direct uploads" do
 
           it "fails" do
             expect(subject.status).to eq 422
-            expect(subject.body).to include "not whitelisted"
+            expect(subject.body).to include "'text/plain' is not allowed for upload."
           end
         end
 
-        context "with a non-specific content type not on the whitelist" do
+        context "with a non-specific content type not on the allowlist" do
           let(:metadata) { { fileName: "cats.bin", fileSize: file.size, contentType: "application/binary" } }
 
-          # the actual whitelist check will be performed in the FinishDirectUpload job in this case
+          # the actual allowlist check will be performed in the FinishDirectUpload job in this case
           it "still succeeds" do
             expect(subject.status).to eq 201
           end

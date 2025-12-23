@@ -47,6 +47,7 @@ import { FormResource } from 'core-app/features/hal/resources/form-resource';
 @Component({
   templateUrl: './wp-button-macro.modal.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WpButtonMacroModalComponent extends OpModalComponent implements AfterViewInit {
   public changed = false;

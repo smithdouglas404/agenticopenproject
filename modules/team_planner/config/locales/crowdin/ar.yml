@@ -15,7 +15,7 @@ ar:
         description: "احصل على نظرة عامة كاملة لتخطيط فريقك مع فريق تخطيط العمل. تمديد, اختصار و سحب و إسقاط مجموعات العمل لتعديل التواريخ أو نقلها أو تغيير المحال إليهم."
   team_planner:
     label_team_planner: "مخطط الفريق"
-    label_new_team_planner: "New team planner"
+    label_new_team_planner: "\"مخطط فريق جديد\""
     label_create_new_team_planner: "إنشاء مخطط فريق جديد"
     label_team_planner_plural: "مخططي الفريق"
     label_assignees: "المعينون"

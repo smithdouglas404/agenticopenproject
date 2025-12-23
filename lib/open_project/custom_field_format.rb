@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,10 +32,9 @@ module OpenProject
   class CustomFieldFormat
     include Redmine::I18n
 
-    cattr_reader :available
-    @@available = {}
+    class_attribute :registered_by_name, default: {}
 
-    attr_reader :name, :order, :label, :edit_as, :class_names
+    attr_reader :name, :order, :label, :edit_as
 
     def initialize(name,
                    label:,
@@ -41,6 +42,8 @@ module OpenProject
                    edit_as: name,
                    only: nil,
                    multi_value_possible: false,
+                   enterprise_feature: nil,
+                   enabled: lambda { true },
                    formatter: "CustomValue::StringStrategy")
       @name = name
       @label = label
@@ -48,6 +51,8 @@ module OpenProject
       @edit_as = edit_as
       @class_names = only
       @multi_value_possible = multi_value_possible
+      @enterprise_feature = enterprise_feature
+      @enabled = enabled
       @formatter = formatter
     end
 
@@ -60,35 +65,70 @@ module OpenProject
       Kernel.const_get(@formatter)
     end
 
+    def available?
+      enabled? && enterprise_feature_allowed?
+    end
+
+    def enabled?
+      @enabled.call
+    end
+
+    def disabled?
+      !enabled?
+    end
+
+    def enterprise_feature_allowed?
+      !@enterprise_feature || EnterpriseToken.allows_to?(@enterprise_feature)
+    end
+
+    def for_class_name?(class_name)
+      @class_names.nil? || @class_names.include?(class_name)
+    end
+
     class << self
+      def registered = registered_by_name.values
+
       def map(&)
         yield self
       end
 
       # Registers a custom field format
       def register(custom_field_format, _options = {})
-        @@available[custom_field_format.name] = custom_field_format unless @@available.include?(custom_field_format.name)
+        return if registered_by_name.has_key?(custom_field_format.name)
+
+        registered_by_name[custom_field_format.name] = custom_field_format
+      end
+
+      def available
+        registered.select(&:available?)
+      end
+
+      def enabled
+        registered.select(&:enabled?)
       end
 
       def available_formats
-        @@available.keys
+        available.map(&:name)
       end
 
       def find_by(name:)
-        @@available[name.to_s]
+        registered_by_name[name.to_s]
       end
 
-      def all_for_field(custom_field)
-        class_name = custom_field.class.customized_class.name
-        all_for_class_name(class_name)
-      end
-
-      def all_for_class_name(class_name)
-        available
-          .values
-          .select { |field| field.class_names.nil? || field.class_names.include?(class_name) }
+      def enabled_for_class_name(class_name)
+        enabled
+          .select { |format| format.for_class_name?(class_name) && !format.label.nil? }
           .sort_by(&:order)
-          .reject { |format| format.label.nil? }
+      end
+
+      def available_for_class_name(class_name)
+        available
+          .select { |format| format.for_class_name?(class_name) && !format.label.nil? }
+          .sort_by(&:order)
+      end
+
+      def disabled_formats
+        registered.select(&:disabled?).map(&:name)
       end
     end
   end

@@ -44,17 +44,18 @@ import { ComponentType } from '@angular/cdk/overlay';
 import { Ng2StateDeclaration } from '@uirouter/angular';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
-import { InviteUserModalComponent } from 'core-app/features/invite-user-modal/invite-user.component';
 import { WorkPackageFilterContainerComponent } from 'core-app/features/work-packages/components/filters/filter-container/filter-container.directive';
 import isPersistedResource from 'core-app/features/hal/helpers/is-persisted-resource';
 import { UIRouterGlobals } from '@uirouter/core';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { firstValueFrom } from 'rxjs';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 export interface DynamicComponentDefinition {
   component:ComponentType<any>;
-  inputs?:{ [inputName:string]:any };
-  outputs?:{ [outputName:string]:Function };
+  inputs?:Record<string, any>;
+  outputs?:Record<string, Function>;
 }
 
 export interface ToolbarButtonComponentDefinition extends DynamicComponentDefinition {
@@ -73,6 +74,7 @@ export type ViewPartitionState = '-split'|'-left-only'|'-right-only';
     { provide: HalResourceNotificationService, useClass: WorkPackageNotificationService },
     QueryParamListenerService,
   ],
+  standalone: false,
 })
 export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase implements OnInit, OnDestroy {
   @InjectField() I18n!:I18nService;
@@ -81,13 +83,17 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
 
   @InjectField() queryParamListener:QueryParamListenerService;
 
+  @InjectField() pathHelperService:PathHelperService;
+
+  @InjectField() currentProjectService:CurrentProjectService;
+
   @InjectField() opModalService:OpModalService;
 
   @InjectField() uiRouterGlobals:UIRouterGlobals;
 
   @InjectField() configuration:ConfigurationService;
 
-  text:{ [key:string]:string } = {
+  text:Record<string, string> = {
     jump_to_pagination: this.I18n.t('js.work_packages.jump_marks.pagination'),
     text_jump_to_pagination: this.I18n.t('js.work_packages.jump_marks.label_pagination'),
   };
@@ -121,9 +127,6 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
 
   /** We need to pass the correct partition state to the view to manage the grid */
   currentPartition:ViewPartitionState = '-split';
-
-  /** What route (if any) should we go back to using the back button left of the title? */
-  backButtonCallback:() => void|undefined;
 
   /** Which filter container component to mount */
   filterContainerDefinition:DynamicComponentDefinition = {
@@ -175,6 +178,16 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
       });
   }
 
+  breadcrumbItems() {
+    throw new Error('Not implemented');
+  }
+
+  currentMenuSectionHeader() {
+    if (!this.currentQuery?.id) return this.I18n.t('js.label_default_queries');
+    if (this.currentQuery.starred) return this.I18n.t('js.label_starred_queries');
+    return this.currentQuery.public ? this.I18n.t('js.label_global_queries') : this.I18n.t('js.label_custom_queries');
+  }
+
   /**
    * We need to set the current partition to the grid to ensure
    * either side gets expanded to full width if we're not in '-split' mode.
@@ -182,7 +195,7 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
    * @param state The current or entering state
    */
   protected setPartition(state:Ng2StateDeclaration):void {
-    this.currentPartition = (state.data && state.data.partition) ? state.data.partition : '-split';
+    this.currentPartition = (state.data?.partition) ? state.data.partition : '-split';
   }
 
   protected setupInformationLoadedListener():void {
@@ -257,8 +270,6 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
       });
     }
   }
-
-  protected inviteModal = InviteUserModalComponent;
 
   protected loadQuery(firstPage = false):Promise<QueryResource> {
     let promise:Promise<QueryResource>;

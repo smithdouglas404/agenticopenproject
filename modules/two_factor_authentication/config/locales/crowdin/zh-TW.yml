@@ -107,8 +107,8 @@ zh-TW:
       make_default_failed: "更新預設 2FA 裝置失敗。"
       deletion_are_you_sure: "您確定要刪除這個 2FA 裝置嗎？"
       registration_complete: "2FA 裝置註冊完成！"
-      registration_failed_token_invalid: "2FA 裝置註冊失敗，權杖「token」無效。"
-      registration_failed_update: "2FA 裝置註冊失敗，權杖「Token」有效但裝置無法更新。"
+      registration_failed_token_invalid: "2FA 裝置註冊失敗，令牌(Token)無效。"
+      registration_failed_update: "2FA 裝置註冊失敗，令牌(Token)有效但裝置無法更新。"
       confirm_send_failed: "確認您的 2FA 裝置無法使用。"
       button_complete_registration: "完成兩階段驗證(2FA)註冊"
       text_confirm_to_complete_html: "請完成裝置註冊 <strong>%{identifier}</strong>輸入預設裝置的一次性密碼。"
@@ -121,7 +121,7 @@ zh-TW:
       2fa_from_webauthn: 請提供支援「 WebAuthn」裝置 <strong>%{device_name}</strong>. 如果是USB設備，請確定插入以及觸碰驗證後，再點選登入按鈕。
       webauthn:
         title: "WebAuthn"
-        description: 註冊 FIDO2 設備(如 YubiKey)或行動裝置的安全區域。
+        description: 註冊 FIDO2 裝置（例如 YubiKey）或您行動裝置的安全區域（Secure Enclave）。
         further_steps: 選擇名稱後，可以點擊“繼續”按鈕。瀏覽器將提示您出示 WebAuthn 設備。完成後，設備註冊即告完成。
       totp:
         title: "基於應用程式的身份驗證器"

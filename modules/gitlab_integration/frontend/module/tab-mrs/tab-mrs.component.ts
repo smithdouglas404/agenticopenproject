@@ -38,7 +38,8 @@ import {ApiV3Service} from "core-app/core/apiv3/api-v3.service";
 @Component({
   selector: 'tab-mrs',
   templateUrl: './tab-mrs.template.html',
-  host: { class: 'op-mrs' }
+  host: { class: 'op-mrs' },
+  standalone: false,
 })
 export class TabMrsComponent implements OnInit {
   @Input() public workPackage:WorkPackageResource;

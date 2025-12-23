@@ -48,6 +48,7 @@ import { PathHelperService } from 'core-app/core/path-helper/path-helper.service
   selector: 'op-files-tab',
   templateUrl: './op-files-tab.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageFilesTabComponent implements OnInit {
   @Input() workPackage:WorkPackageResource;

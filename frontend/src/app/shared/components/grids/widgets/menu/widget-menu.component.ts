@@ -33,6 +33,7 @@ import { WidgetAbstractMenuComponent } from 'core-app/shared/components/grids/wi
   selector: 'widget-menu',
   templateUrl: './widget-menu.component.html',
   styleUrls: ['./widget-menu.component.css'],
+  standalone: false,
 })
 export class WidgetMenuComponent extends WidgetAbstractMenuComponent {
 }

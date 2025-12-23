@@ -31,6 +31,7 @@ zh-TW:
     github_avatar_url: "大頭貼網址"
     github_updated_at: "更新於"
     github_login: "GitHub 登入"
+    host: "主機"
     labels: "標籤"
     repository: "版本庫"
     changed_files_count: "更改的檔案"

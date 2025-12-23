@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,7 +32,7 @@ class CompositeSeeder < Seeder
       seed_with(data_seeders)
 
       if discovered_seeders.any?
-        print_status "Loading discovered seeders: #{discovered_seeders.map { seeder_name(_1) }.join(', ')}"
+        print_status "Loading discovered seeders: #{discovered_seeders.map { seeder_name(it) }.join(', ')}"
         seed_with(discovered_seeders)
       end
     end

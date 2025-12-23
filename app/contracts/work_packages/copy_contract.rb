@@ -36,5 +36,20 @@ module WorkPackages
     # a scenario where this field must be writable
     attribute :done_ratio,
               writable: true
+
+    # Use the default permission for the create contract, which is :add_work_packages.
+    attribute_permission :project_phase_definition_id, :add_work_packages
+
+    # Do not validate predecessors or children presence when copying: when
+    # copying, it's possible to create a work package in automatic scheduling
+    # mode even if it has no predecessors or children yet. They will be added
+    # later in the process.
+    def validate_has_predecessors_or_children; end
+
+    # No validation happening on whether the phase is active in the project.
+    # When copying a work package, e.g. from a project template, the phase
+    # might not be active in the project yet. But when it is activated later,
+    # the value should then be present.
+    def validate_phase_active_in_project; end
   end
 end

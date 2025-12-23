@@ -31,6 +31,9 @@ zh-CN:
         spent: "已支出"
         spent_on: "日期"
         logged_by: "记录者为"
+        entity: 已记录
+        entity_id: 已记录
+        entity_gid: 已记录
       cost_type:
         unit: "单位名称"
         unit_plural: "单位名称（复数）"
@@ -58,6 +61,9 @@ zh-CN:
         start_time: 开始时间
         end_time: 结束时间
         time: 时间
+        entity: 已记录
+        entity_id: 已记录
+        entity_gid: 已记录
     models:
       time_entry:
         other: "时间记录"
@@ -73,6 +79,7 @@ zh-CN:
         time_entry:
           invalid_time: "必须在 00:00-23:59之间。"
           cannot_log_for_this_work_package: "无法记录该工作包的时间。"
+          duplicate_ongoing: "此用户已存在一个进行中的时间记录。"
         work_package:
           is_not_a_valid_target_for_cost_entries: "工作包 #%{id} 不是重新分配成本条目的有效目标。"
           nullify_is_not_valid_for_cost_entries: "无法将成本条目分配到项目。"
@@ -90,6 +97,7 @@ zh-CN:
   button_log_time: "日志"
   button_add_activity: "活动"
   button_add_time_entry: "记录时间"
+  button_stop_timer: "停止计时器"
   caption_booked_on_project: "已记录在项目上"
   caption_default: "基本"
   caption_default_rate_history_for: "%{user} 的基本费率历史记录"
@@ -168,6 +176,7 @@ zh-CN:
   label_day: "天"
   label_today_capitalized: "今天"
   label_view_mode_switcher: "更改视图"
+  label_timer_since: "%{time} 开始"
   placeholder_activity_select_work_package_first: 首先需要选择工作包
   notice_something_wrong: "出错了。请重试。"
   notice_successful_restore: "成功恢复。"
@@ -175,6 +184,7 @@ zh-CN:
   notice_cost_logged_successfully: "单位成本记录成功。"
   notice_different_time_zones: "该用户使用不同的时区 (%{tz})。将使用其时区记录时间。"
   notice_time_entry_update_failed: "无法更新时间条目。错误：%{errors}"
+  notice_time_entry_delete_failed: "无法删除时间条目。错误：%{errors}"
   permission_edit_cost_entries: "编辑记录的单位成本"
   permission_edit_own_cost_entries: "编辑自己记录的单位成本"
   permission_edit_hourly_rates: "编辑小时费率"
@@ -189,11 +199,13 @@ zh-CN:
   permission_view_own_hourly_rate: "查看自己的小时费率"
   permission_view_own_time_entries: "查看自己的耗时"
   project_module_costs: "工时和成本"
-  setting_allow_tracking_start_and_end_times: "允许确切的时间跟踪"
+  setting_allow_tracking_start_and_end_times: "允许开始和完成时间"
   setting_costs_currency: "货币"
   setting_costs_currency_format: "货币格式"
-  setting_enforce_tracking_start_and_end_times: "需要确切的时间"
-  setting_enforce_without_allow: "不允许的话，就无法确定精确时间。"
+  setting_enforce_tracking_start_and_end_times: "需要开始和完成时间"
+  setting_enforce_without_allow: "如果不允许，则无法要求开始和结束时间"
+  setting_allow_tracking_start_and_end_times_caption: "启用在记录时间时输入开始和结束时间。"
+  setting_enforce_tracking_start_and_end_times_caption: "记录时间时强制输入开始和结束时间。"
   text_assign_time_and_cost_entries_to_project: "将已上报的工时和成本提交到项目中"
   text_destroy_cost_entries_question: "您要删除的工作包已经上报了 %{cost_entries}。您想进行哪种操作？"
   text_destroy_time_and_cost_entries: "删除已上报的工时和成本"

@@ -36,6 +36,7 @@ import { PathHelperService } from 'core-app/core/path-helper/path-helper.service
   selector: 'op-meetings-tab',
   templateUrl: './meetings-tab.template.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MeetingsTabComponent implements OnInit, TabComponent {
   @Input() public workPackage:WorkPackageResource;

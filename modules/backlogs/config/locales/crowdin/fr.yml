@@ -55,6 +55,7 @@ fr:
     hours: "Heures"
     impediment: "Obstacle"
     label_versions_default_fold_state: "Afficher les versions de manière repliée"
+    caption_versions_default_fold_state: "Les versions ne seront pas développées par défaut lors de l'affichage des backlogs. Chacune devra être développée manuellement."
     work_package_is_closed: "Le lot de travaux est fait lorsque"
     label_is_done_status: "Le statut %{status_name} signifie fait"
     no_burndown_data: "Aucune donnée d'avancement disponible. Il est nécessaire que les dates de début et de fin du sprint soient définies."
@@ -73,6 +74,9 @@ fr:
     task: "Tâche"
     task_color: "Couleur des tâches"
     unassigned: "Non assigné"
+    user_preference:
+      header_backlogs: "Module des backlogs"
+      button_update_backlogs: "Mettre à jour le module des backlogs"
     x_more: "%{count} de plus..."
   backlogs_active: "actif"
   backlogs_any: "tout"

@@ -11,7 +11,23 @@ Navigate to *Administration* -> *Time and costs*. Here you can configure costs i
 
 ## Default time and cost settings
 
-Navigate to *Administration* -> *Time and costs* -> *Defaults* to define settings for costs in OpenProject.
+To define default settings for logging time and costs navigate to *Administration* -> *Time and costs* -> *Defaults* and select *Time* or *Costs* tab respectively.
+
+### Define default time settings (Enterprise add-on)
+
+[feature: time_entry_time_restrictions ]
+
+Under the *Time* tab you can define which fields are required to be fill out when logging time across all projects. 
+
+- **Allow exact times tracking**: enables entering start and finish times when logging time.  If disabled, only the amount of time spent can be logged, but not the start or end times. 
+  
+  If this option is activated, calendar mode is shown by default under My time tracking page. If not, list view will be shown by default.
+  
+- **Require exact times**: makes entering start and finish times mandatory when logging time.
+
+![Default settings for time logging in OpenProject administration](openproject_system_admin_guide_time_time_defaults.png)
+
+### Define default cost settings
 
 1. Configure the **currency used in the system, e.g. EUR**.
 2. **Specify the format of the currency**, if the number should be before or after the currency, e.g. 10 EUR, or $ 10.
@@ -48,6 +64,7 @@ In the overview list of all cost types you can define the following.
 4. Click on the name of a cost type to **edit an existing cost type**.
 5. **Set a current rate** (for the current valid from period) and press the save icon to apply it.
 6. **Lock** a cost type.
+
 > [!TIP]
 > Please note that you **can only lock but not delete** cost types.
 

@@ -33,8 +33,8 @@ RSpec.describe Ldap::ImportUsersFromListService do
   end
 
   context "when two users already exist" do
-    let!(:user_aa729) { create(:user, login: "aa729", firstname: "Foobar", ldap_auth_source:) }
-    let!(:user_bb459) { create(:user, login: "bb459", firstname: "Bla", ldap_auth_source:) }
+    let!(:user_aa729) { create(:user, login: "aa729", firstname: "Foobar", lastname: "Bobbit", ldap_auth_source:) }
+    let!(:user_bb459) { create(:user, login: "bb459", firstname: "Bla", lastname: "Bobbit", ldap_auth_source:) }
 
     it "adds the third one, but does not update the other two" do
       subject

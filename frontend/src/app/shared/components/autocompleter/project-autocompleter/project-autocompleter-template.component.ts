@@ -31,14 +31,23 @@ import {
   Component,
   TemplateRef,
   ViewChild,
+  inject,
 } from '@angular/core';
+import { ConfigurationService } from 'core-app/core/config/configuration.service';
+import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { IAutocompleterTemplateComponent } from 'core-app/shared/components/autocompleter/op-autocompleter/op-autocompleter.component';
 
 @Component({
   templateUrl: './project-autocompleter-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProjectAutocompleterTemplateComponent implements IAutocompleterTemplateComponent {
   @ViewChild('optionTemplate') optionTemplate:TemplateRef<Element>;
   @ViewChild('labelTemplate') labelTemplate?:TemplateRef<Element>;
+
+  readonly I18n = inject(I18nService);
+  readonly configuration = inject(ConfigurationService);
+
+  public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
 }

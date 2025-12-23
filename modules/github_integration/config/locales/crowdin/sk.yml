@@ -31,6 +31,7 @@ sk:
     github_avatar_url: "Avatar URL"
     github_updated_at: "Updated at"
     github_login: "GitHub login"
+    host: "Host"
     labels: "Labels"
     repository: "Repozitár"
     changed_files_count: "Changed files"

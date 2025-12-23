@@ -132,7 +132,7 @@ RSpec.describe Type do
     it "returns an empty collection when no patterns are defined" do
       type = create(:type)
 
-      expect(type.patterns).to eq(Types::Patterns::Collection.empty)
+      expect(type.patterns).to eq(WorkPackageTypes::Patterns::Collection.empty)
     end
 
     it "returns a PatternCollection" do
@@ -140,9 +140,9 @@ RSpec.describe Type do
                       subject: { blueprint: "{{work_package:custom_field_123}} - {{project:custom_field_321}}", enabled: true }
                     })
 
-      expect(type.patterns).to be_a(Types::Patterns::Collection)
+      expect(type.patterns).to be_a(WorkPackageTypes::Patterns::Collection)
       expect(type.patterns.subject)
-        .to eq(Types::Pattern.new("{{work_package:custom_field_123}} - {{project:custom_field_321}}", true))
+        .to eq(WorkPackageTypes::Pattern.new("{{work_package:custom_field_123}} - {{project:custom_field_321}}", true))
     end
   end
 
@@ -150,7 +150,7 @@ RSpec.describe Type do
     subject(:type) { build(:type) }
 
     it "assigns a patterns collection as-is" do
-      collection = Types::Patterns::Collection.build(patterns: {
+      collection = WorkPackageTypes::Patterns::Collection.build(patterns: {
                                                        subject: { blueprint: "some_string", enabled: false }
                                                      }).value!
 
@@ -164,7 +164,7 @@ RSpec.describe Type do
       it "defaults to an empty collection" do
         type.patterns = 4
 
-        expect(type.patterns).to eq(Types::Patterns::Collection.empty)
+        expect(type.patterns).to eq(WorkPackageTypes::Patterns::Collection.empty)
         expect { type.save! }.not_to raise_error
       end
     end
@@ -173,8 +173,8 @@ RSpec.describe Type do
       it "converts the incoming hash into a PatternCollection" do
         type.patterns = { subject: { blueprint: "some_string", enabled: false } }
 
-        expect(type.patterns).to be_a(Types::Patterns::Collection)
-        expect(type.patterns.subject).to be_a(Types::Pattern)
+        expect(type.patterns).to be_a(WorkPackageTypes::Patterns::Collection)
+        expect(type.patterns.subject).to be_a(WorkPackageTypes::Pattern)
 
         expect { type.save! }.not_to raise_error
       end

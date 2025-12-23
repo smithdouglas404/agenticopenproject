@@ -41,6 +41,7 @@ import { EditFieldComponent } from 'core-app/shared/components/fields/edit/edit-
            [attr.lang]="locale"
            [id]="handler.htmlId" />
   `,
+  standalone: false,
 })
 export class FloatEditFieldComponent extends EditFieldComponent {
   public locale = I18n.locale;

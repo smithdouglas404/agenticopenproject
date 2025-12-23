@@ -30,7 +30,6 @@
 
 class Storages::Admin::Storages::ProjectStoragesController < ApplicationController
   include OpTurbo::ComponentStream
-  include OpTurbo::DialogStreamHelper
   include FlashMessagesOutputSafetyHelper
   include Storages::OAuthAccessGrantable
 
@@ -116,9 +115,9 @@ class Storages::Admin::Storages::ProjectStoragesController < ApplicationControll
 
   def destroy_confirmation_dialog
     respond_with_dialog Storages::ProjectStorages::DestroyConfirmationDialogComponent.new(
-      storage: @storage,
       project_storage: @project_storage,
-      params:
+      target: :storage,
+      target_page: params[:page]
     )
   end
 

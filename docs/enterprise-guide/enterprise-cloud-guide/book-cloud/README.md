@@ -66,11 +66,9 @@ To select the **Pay per invoice** option, select the respective checkbox. This w
 Enter your **Billing information**. If you are a business customer from the EU, please enter a valid **VAT ID number**.
 
 > [!TIP]
->
 > Make sure to validate your billing email to receive the required information and invoice.
 
 > [!IMPORTANT]
->
 > You have to **agree to our terms of services and privacy policy**.
 
 Click the **Subscribe** button.

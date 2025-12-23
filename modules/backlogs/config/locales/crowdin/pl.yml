@@ -55,6 +55,7 @@ pl:
     hours: "Godziny"
     impediment: "Przeszkoda"
     label_versions_default_fold_state: "Pokaż zwinięte wersje"
+    caption_versions_default_fold_state: "Wersje nie będą domyślnie rozwijane podczas przeglądania backlogów. Każdą z nich należy rozwinąć ręcznie."
     work_package_is_closed: "Zestaw Zadań będzie gotowy, kiedy"
     label_is_done_status: "Status %{status_name} oznacza zrobiony"
     no_burndown_data: "Brak danych dostępnych danych spalania. Trzeba ustawić daty początku i końca sprintu."
@@ -73,6 +74,9 @@ pl:
     task: "Zadanie"
     task_color: "Kolor zadania"
     unassigned: "Nieprzypisane"
+    user_preference:
+      header_backlogs: "Moduł backlogów"
+      button_update_backlogs: "Zaktualizuj moduł backlogów"
     x_more: "%{count} więcej..."
   backlogs_active: "aktywny"
   backlogs_any: "którekolwiek"

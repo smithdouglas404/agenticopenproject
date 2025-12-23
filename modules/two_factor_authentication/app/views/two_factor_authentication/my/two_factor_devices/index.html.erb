@@ -11,26 +11,21 @@
 %>
 
 <%= render(Primer::OpenProject::SubHeader.new) do |subheader|
-      subheader.with_action_component do
-        render(Primer::Alpha::ActionMenu.new(anchor_align: :end, size: :small)) do |menu|
-          menu.with_show_button(
-            scheme: :primary,
-            test_selector: "two_factor_authentication_devices_button",
-            aria: { label: t("two_factor_authentication.label_device") }
-          ) do |button|
-            button.with_leading_visual_icon(icon: :plus)
-            button.with_trailing_action_icon(icon: :"triangle-down")
-            t("two_factor_authentication.label_device")
-          end
-
-          @available_devices.each_key do |key|
-            menu.with_item(
-              label: t("two_factor_authentication.devices.#{key}.title"),
-              href: url_for(action: :new, type: key),
-              test_selector: "two_factor_authentication_devices_#{key}"
-            ) do |item|
-              item.with_description.with_content(t("two_factor_authentication.devices.#{key}.description"))
-            end
+      subheader.with_action_menu(leading_icon: :plus,
+                                 trailing_icon: :"triangle-down",
+                                 label: t("two_factor_authentication.label_device"),
+                                 anchor_align: :end,
+                                 size: :small,
+                                 button_arguments: { scheme: :primary,
+                                                     test_selector: "two_factor_authentication_devices_button",
+                                                     aria: { label: t("two_factor_authentication.label_device") } }) do |menu|
+        @available_devices.each_key do |key|
+          menu.with_item(
+            label: t("two_factor_authentication.devices.#{key}.title"),
+            href: url_for(action: :new, type: key),
+            test_selector: "two_factor_authentication_devices_#{key}"
+          ) do |item|
+            item.with_description.with_content(t("two_factor_authentication.devices.#{key}.description"))
           end
         end
       end
@@ -53,7 +48,7 @@
             <%= link_to t("two_factor_authentication.remember.clear_cookie"),
                         my_2fa_remember_cookie_path,
                         class: "two-factor-authentication--remove-remember-cookie-link",
-                        method: :delete %>
+                        data: { turbo_method: :delete } %>
           </strong>
         </p>
       </div>

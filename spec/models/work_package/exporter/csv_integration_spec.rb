@@ -35,23 +35,25 @@ RSpec.describe WorkPackage::Exports::CSV, "integration" do
     login_as user
   end
 
-  let(:project) { create(:project) }
-  let(:options) { { show_descriptions: true } }
-  let(:type_a) { create(:type, name: "Type A") }
-  let(:type_b) { create(:type, name: "Type B") }
-  let(:wp1) { create(:work_package, project:, done_ratio: 25, subject: "WP1", type: type_a, id: 1) }
-  let(:wp2) { create(:work_package, project:, done_ratio: 0, subject: "WP2", type: type_a, id: 2) }
-  let(:wp3) { create(:work_package, project:, done_ratio: 0, subject: "WP3", type: type_b, id: 3) }
-  let(:wp4) { create(:work_package, project:, done_ratio: 0, subject: "WP4", type: type_a, id: 4) }
-  let(:user) do
+  shared_let(:project) { create(:project) }
+  shared_let(:options) { { show_descriptions: true } }
+  shared_let(:type_a) { create(:type, name: "Type A") }
+  shared_let(:type_b) { create(:type, name: "Type B") }
+  shared_let(:user) do
     create(:user,
            member_with_permissions: { project => %i(view_work_packages) })
   end
+
+  before_all do
+    set_factory_default(:user, user)
+  end
+
   let(:instance) do
     described_class.new(query, options)
   end
-  let(:work_packages) do
-    [wp1, wp2, wp3, wp4]
+
+  def byte_order_mark
+    "\uFEFF"
   end
 
   context "when the query is default" do
@@ -65,115 +67,121 @@ RSpec.describe WorkPackage::Exports::CSV, "integration" do
     # This would not happen if the description contained only letters covered by
     # ISO-8859-1. Since this can happen, though, it is more sensible to encode everything
     # in UTF-8 which gets rid of this problem altogether.
-    let!(:work_package) do
+    shared_let(:work_package) do
       create(
         :work_package,
         subject: "Ruby encodes ß as '\\xDF' in ISO-8859-1.",
         description: "\u2022 requires unicode.",
         assigned_to: user,
+        estimated_hours: 10.0,
         derived_estimated_hours: 15.0,
         type: type_a,
         project:
       )
     end
 
+    subject(:header_value_pairs) do
+      data = CSV.parse instance.export!.content
+      headers, values = data
+      headers.zip(values)
+    end
+
     context "when description is included" do
-      it "performs a successful export" do
-        work_package.reload
-
-        data = CSV.parse instance.export!.content
-
-        expect(data.size).to eq(2)
-        expect(data.last).to include(work_package.type.name)
-        expect(data.last).to include(work_package.subject)
-        expect(data.last).to include(work_package.description)
-        expect(data.last).to include(user.name)
-        expect(data.last).to include(work_package.updated_at.localtime.strftime("%m/%d/%Y %I:%M %p"))
-        expect(data.last).to include("· Σ 15h")
+      it "performs a successful export with description column" do
+        expect(header_value_pairs).to eq [
+          ["#{byte_order_mark}Type", work_package.type.name],
+          ["Subject", work_package.subject],
+          ["Assignee", user.name],
+          ["Updated on", work_package.updated_at.in_time_zone(user.time_zone).strftime("%m/%d/%Y %I:%M %p")],
+          ["Work", "10.0"],
+          ["Total work", "15.0"],
+          ["Description", work_package.description]
+        ]
       end
     end
 
     context "when description is not included" do
       let(:options) { { show_descriptions: false } }
 
-      it "performs a successful export" do
-        work_package.reload
+      it "performs a successful export without description column" do
+        expect(header_value_pairs).to eq [
+          ["#{byte_order_mark}Type", work_package.type.name],
+          ["Subject", work_package.subject],
+          ["Assignee", user.name],
+          ["Updated on", work_package.updated_at.in_time_zone(user.time_zone).strftime("%m/%d/%Y %I:%M %p")],
+          ["Work", "10.0"],
+          ["Total work", "15.0"]
+        ]
+      end
+    end
+  end
 
+  context "with multiple work packages" do
+    shared_let(:wp1) { create(:work_package, project:, done_ratio: 25, subject: "WP1", type: type_a, id: 1) }
+    shared_let(:wp2) { create(:work_package, project:, done_ratio: 0, subject: "WP2", type: type_a, id: 2) }
+    shared_let(:wp3) { create(:work_package, project:, done_ratio: 0, subject: "WP3", type: type_b, id: 3) }
+    shared_let(:wp4) { create(:work_package, project:, done_ratio: 0, subject: "WP4", type: type_a, id: 4) }
+
+    context "when the query is grouped" do
+      let(:query) do
+        create(:query, project:, user:, column_names: %i(type subject id),
+                       group_by: "type",
+                       show_hierarchies: false, sort_criteria: [%w[type asc], %w[id asc]])
+      end
+
+      it "performs a successful grouped export" do
+        type_a.update_column(:position, 1)
+        type_b.update_column(:position, 2)
+        data = CSV.parse instance.export!.content
+
+        expect(data.size).to eq(5)
+        expect(data.pluck(0)).to eq ["#{byte_order_mark}Type", "Type A", "Type A", "Type A", "Type B"]
+      end
+    end
+
+    context "when the query is filtered" do
+      let(:query) do
+        create(:query, project:, user:, column_names: %i(subject done_ratio))
+          .tap do |query|
+          query.add_filter "done_ratio", "=", [25]
+        end
+      end
+
+      it "performs a successful grouped export" do
         data = CSV.parse instance.export!.content
 
         expect(data.size).to eq(2)
-        expect(data.last).to include(work_package.type.name)
-        expect(data.last).to include(work_package.subject)
-        expect(data.last).not_to include(work_package.description)
-        expect(data.last).to include(user.name)
-        expect(data.last).to include(work_package.updated_at.localtime.strftime("%m/%d/%Y %I:%M %p"))
-        expect(data.last).to include("· Σ 15h")
-      end
-    end
-  end
-
-  context "when the query is grouped" do
-    let(:query) do
-      create(:query, project:, user:, column_names: %i(type subject id),
-                     group_by: "type",
-                     show_hierarchies: false, sort_criteria: [%w[type asc], %w[id asc]])
-    end
-
-    it "performs a successful grouped export" do
-      type_a.update_column(:position, 1)
-      type_b.update_column(:position, 2)
-      work_packages
-      data = CSV.parse instance.export!.content
-
-      expect(data.size).to eq(5)
-      expect(data.pluck(0)).to eq ["\xEF\xBB\xBFType", "Type A", "Type A", "Type A", "Type B"]
-    end
-  end
-
-  context "when the query is filtered" do
-    let(:query) do
-      create(:query, project:, user:, column_names: %i(subject done_ratio))
-        .tap do |query|
-        query.add_filter "done_ratio", "=", [25]
+        expect(data.last).to include(wp1.name)
       end
     end
 
-    it "performs a successful grouped export" do
-      work_packages
-      data = CSV.parse instance.export!.content
+    context "when the query is manually ordered" do
+      let(:query) do
+        create(
+          :query, project:, user:,
+                  column_names: %i(subject done_ratio),
+                  sort_criteria: [[:manual_sorting, "asc"]]
+        )
+      end
 
-      expect(data.size).to eq(2)
-      expect(data.last).to include(wp1.name)
-    end
-  end
+      before do
+        OrderedWorkPackage.delete_all
+        OrderedWorkPackage.create(query:, work_package: wp4, position: 0)
+        OrderedWorkPackage.create(query:, work_package: wp2, position: 1)
+        OrderedWorkPackage.create(query:, work_package: wp1, position: 2)
+        OrderedWorkPackage.create(query:, work_package: wp3, position: 3)
+      end
 
-  context "when the query is manually ordered" do
-    let(:query) do
-      create(
-        :query, project:, user:,
-                column_names: %i(subject done_ratio),
-                sort_criteria: [[:manual_sorting, "asc"]]
-      )
-    end
+      after do
+        OrderedWorkPackage.delete_all
+      end
 
-    before do
-      OrderedWorkPackage.delete_all
-      OrderedWorkPackage.create(query:, work_package: wp4, position: 0)
-      OrderedWorkPackage.create(query:, work_package: wp2, position: 1)
-      OrderedWorkPackage.create(query:, work_package: wp1, position: 2)
-      OrderedWorkPackage.create(query:, work_package: wp3, position: 3)
-    end
+      it "performs a successful manually ordered export" do
+        data = CSV.parse instance.export!.content
 
-    after do
-      OrderedWorkPackage.delete_all
-    end
-
-    it "performs a successful manually ordered export" do
-      work_packages
-      data = CSV.parse instance.export!.content
-
-      expect(data.size).to eq(5)
-      expect(data.pluck(0)).to eq %w[WP4 WP2 WP1 WP3].unshift("\xEF\xBB\xBFSubject")
+        expect(data.size).to eq(5)
+        expect(data.pluck(0)).to eq %w[WP4 WP2 WP1 WP3].unshift("#{byte_order_mark}Subject")
+      end
     end
   end
 end

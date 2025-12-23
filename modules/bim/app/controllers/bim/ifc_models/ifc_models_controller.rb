@@ -49,6 +49,10 @@ module Bim
                           .includes(:project, :uploader)
       end
 
+      def show
+        frontend_redirect params[:id].to_i
+      end
+
       def new
         @ifc_model = @project.ifc_models.build
         prepare_form(@ifc_model)
@@ -56,10 +60,6 @@ module Bim
 
       def edit
         prepare_form(@ifc_model)
-      end
-
-      def show
-        frontend_redirect params[:id].to_i
       end
 
       def defaults
@@ -116,7 +116,7 @@ module Bim
 
         if service_result.success?
           ::Attachments::FinishDirectUploadJob.perform_later attachment.id,
-                                                             whitelist: false
+                                                             allowlist: false
 
           flash[:notice] = if new_model
                              t("ifc_models.flash_messages.upload_successful")
@@ -174,7 +174,7 @@ module Bim
 
       def destroy
         @ifc_model.destroy
-        redirect_to action: :index
+        redirect_to action: :index, status: :see_other
       end
 
       private
@@ -183,7 +183,7 @@ module Bim
         return unless OpenProject::Configuration.direct_uploads?
 
         call = ::Attachments::PrepareUploadService
-                 .bypass_whitelist(user: current_user)
+                 .bypass_allowlist(user: current_user)
                  .call(filename: "model.ifc", filesize: 0)
 
         call.on_failure { flash[:error] = call.message }

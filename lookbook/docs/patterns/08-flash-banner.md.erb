@@ -43,6 +43,20 @@ If you want to make the flash non-dismissable, you can pass `dismiss_scheme: :no
 flash[:error] = { message: "Oh no!", icon: :alert, dismiss_scheme: :none }
 ```
 
+### Adding an action button
+
+You can add an action button by passing that to the hash:
+
+```ruby
+flash[:error] = {
+  message: "Oh no!",
+  action_button_content: "Button label",
+  action_button_arguments: { tag: :a, href: "/foo" }
+}
+```
+
+For more information on inputs, see the Banner with-action_button slot
+
 ## Usage in turbo streams
 
 The interesting part is having a flash message responded from within a turbo stream response

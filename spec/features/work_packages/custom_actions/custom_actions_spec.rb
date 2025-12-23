@@ -129,6 +129,12 @@ RSpec.describe "Custom actions", :js, with_ee: %i[custom_actions] do
 
     cf
   end
+  let!(:multi_user_custom_field) do
+    create(:multi_user_wp_custom_field).tap do |cf|
+      project.work_package_custom_fields << cf
+      work_package.type.custom_fields << cf
+    end
+  end
   let(:index_ca_page) { Pages::Admin::CustomActions::Index.new }
   let(:activity_tab) { Components::WorkPackages::Activities.new(work_package) }
 
@@ -484,7 +490,7 @@ RSpec.describe "Custom actions", :js, with_ee: %i[custom_actions] do
     end
   end
 
-  it "disables the custom action button and editing other fields when submiting the custom action" do
+  it "disables the custom action button and editing other fields when submitting the custom action" do
     # create custom action 'Unassign'
     index_ca_page.visit!
 
@@ -508,6 +514,9 @@ RSpec.describe "Custom actions", :js, with_ee: %i[custom_actions] do
     wp_page.visit!
 
     wp_page.ensure_page_loaded
+    wait_for_network_idle
+    wp_page.expect_custom_action("Unassign")
+
     # Stop sending ajax requests in order to test disabled fields upon submit
     wp_page.disable_ajax_requests
 
@@ -541,6 +550,26 @@ RSpec.describe "Custom actions", :js, with_ee: %i[custom_actions] do
       wp_page.ensure_page_loaded
 
       wp_page.click_custom_action("Unassign", expect_success: true)
+    end
+  end
+
+  context "with a multi_user field (Bug#64981)" do
+    it "saves when a user is assigned to the custom field" do
+      index_ca_page.visit!
+
+      new_ca_page = index_ca_page.new
+      new_ca_page.set_name("MultiUser")
+      new_ca_page.set_description("Multiple User Custom Field Test")
+      new_ca_page.add_action(multi_user_custom_field.name, other_member_user.name)
+      new_ca_page.expect_action(multi_user_custom_field.name, [other_member_user.name])
+
+      new_ca_page.create
+
+      index_ca_page.expect_current_path
+      index_ca_page.expect_listed("MultiUser")
+
+      edit_ca_page = index_ca_page.edit("MultiUser")
+      edit_ca_page.expect_action(multi_user_custom_field.name, [other_member_user.name])
     end
   end
 end

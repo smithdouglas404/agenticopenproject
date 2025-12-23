@@ -35,6 +35,7 @@ import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/que
   selector: 'op-filter-boolean-value',
   templateUrl: './filter-boolean-value.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FilterBooleanValueComponent {
   @Input() public shouldFocus = false;

@@ -56,6 +56,7 @@ import { StateService } from '@uirouter/core';
   templateUrl: './stop-existing-timer-modal.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class StopExistingTimerModalComponent extends OpModalComponent implements OnInit {
   @HostBinding('class.op-timer-stop-modal') className = true;

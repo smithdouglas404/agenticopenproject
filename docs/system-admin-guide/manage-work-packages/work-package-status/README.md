@@ -31,8 +31,8 @@ A new window will open, where you will be able to specify the following:
 
 2. The %&nbsp;Complete value in [Status-based progress calculation mode](../work-package-settings/).
 
-   > [!TIP]
-   > The value for % Complete can be set from 0 to 100. 
+> [!TIP]
+> The value for % Complete can be set from 0 to 100. 
 
 3. Define if the new work package status closes a work package (e.g. relevant when filtering for closed for packages), e.g. a work package status "rejected" will set a work package technically on closed and it will not appear in the default work package table with Open Work packages.
 
@@ -40,8 +40,7 @@ A new window will open, where you will be able to specify the following:
 
 5. Check if this status sets a **work package in read-only mode**. This means no work package attributes can be changed except the status.
 
-   > [!NOTE]
-   > The read-only modus for work package statuses is an Enterprise add-on and only available for [Enterprise on-premises](https://www.openproject.org/enterprise-edition/) and [Enterprise cloud](https://www.openproject.org/enterprise-edition/#hosting-options) customers.
+[feature: readonly_work_packages ]
 
 6. Check **Exclude from calculation of totals in hierarchy** if you want work packages with this status to *not* be included in the calculation of totals in a hierarchy. This is useful for statuses like *rejected*.
 

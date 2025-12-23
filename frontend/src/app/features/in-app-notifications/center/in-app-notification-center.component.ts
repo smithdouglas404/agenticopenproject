@@ -49,6 +49,7 @@ import {
   templateUrl: './in-app-notification-center.component.html',
   styleUrls: ['./in-app-notification-center.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class InAppNotificationCenterComponent implements OnInit {
   maxSize = NOTIFICATIONS_MAX_SIZE;
@@ -110,8 +111,7 @@ export class InAppNotificationCenterComponent implements OnInit {
   selectedFilter = this.reasonMenuItems.find((item) => item.key === this.urlParams.get('name'))?.title;
 
   image = {
-    no_notification: imagePath('notification-center/empty-state-no-notification.svg'),
-    no_selection: imagePath('notification-center/empty-state-no-selection.svg'),
+    no_notification: imagePath(`notification-center/empty-state-no-notification_${this.colorsService.colorMode()}.svg`),
     loading: imagePath(`notification-center/notification_loading_${this.colorsService.colorMode()}.gif`),
   };
 

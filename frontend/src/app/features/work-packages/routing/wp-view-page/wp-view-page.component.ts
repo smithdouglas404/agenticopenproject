@@ -45,6 +45,7 @@ import { of } from 'rxjs';
 import { WorkPackageFoldToggleButtonComponent } from 'core-app/features/work-packages/components/wp-buttons/wp-fold-toggle-button/wp-fold-toggle-button.component';
 import { OpProjectIncludeComponent } from 'core-app/shared/components/project-include/project-include.component';
 import { OpBaselineModalComponent } from 'core-app/features/work-packages/components/wp-baseline/baseline-modal/baseline-modal.component';
+import { BreadcrumbItem } from 'core-app/shared/components/breadcrumbs/op-breadcrumbs.component';
 
 @Component({
   selector: 'wp-view-page',
@@ -59,6 +60,7 @@ import { OpBaselineModalComponent } from 'core-app/features/work-packages/compon
     { provide: HalResourceNotificationService, useClass: WorkPackageNotificationService },
     QueryParamListenerService,
   ],
+  standalone: false,
 })
 export class WorkPackageViewPageComponent extends PartitionedQuerySpacePageComponent implements OnInit {
   toolbarButtonComponents:ToolbarButtonComponentDefinition[] = [
@@ -66,7 +68,6 @@ export class WorkPackageViewPageComponent extends PartitionedQuerySpacePageCompo
       component: WorkPackageCreateButtonComponent,
       inputs: {
         stateName$: of(this.stateName),
-        allowed: ['work_packages.createWorkPackage'],
       },
     },
     {
@@ -81,7 +82,7 @@ export class WorkPackageViewPageComponent extends PartitionedQuerySpacePageCompo
     },
     {
       component: WorkPackageFoldToggleButtonComponent,
-      show: () => !!(this.currentQuery && this.currentQuery.groupBy),
+      show: () => !!(this.currentQuery?.groupBy),
     },
     {
       component: WorkPackageDetailsViewButtonComponent,
@@ -108,6 +109,38 @@ export class WorkPackageViewPageComponent extends PartitionedQuerySpacePageCompo
     this.text.button_settings = this.I18n.t('js.button_settings');
   }
 
+  breadcrumbItems() {
+    const items:BreadcrumbItem[] = [];
+
+    if (this.currentProject?.identifier) {
+      items.push({
+        href: this.pathHelperService.projectPath(this.currentProject.identifier),
+        text: this.currentProject.name!,
+      });
+    }
+
+    items.push(this.breadcrumbModuleEntry());
+
+    if (this.selectedTitle) {
+      items.push(this.selectedTitle);
+    }
+
+    return items;
+  }
+
+  breadcrumbModuleEntry():{ href:string, text:string } {
+    if (this.isGantt) {
+      return {
+        href: this.pathHelperService.ganttChartsPath(this.currentProject.identifier),
+        text: this.I18n.t('js.work_packages.label_gantt_chart_plural'),
+      };
+    }
+    return {
+      href: this.pathHelperService.workPackagesPath(this.currentProject.identifier),
+      text: this.I18n.t('js.label_work_package_plural'),
+    };
+  }
+
   protected additionalLoadingTime():Promise<unknown> {
     if (this.wpTableTimeline.isVisible) {
       return this.querySpace.timelineRendered.pipe(take(1)).toPromise();
@@ -120,10 +153,14 @@ export class WorkPackageViewPageComponent extends PartitionedQuerySpacePageCompo
   }
 
   private get stateName() {
-    if (this.$state.current.name?.includes('gantt')) {
+    if (this.isGantt) {
       return 'gantt.partitioned.list.new';
     }
 
     return 'work-packages.partitioned.list.new';
+  }
+
+  private get isGantt() {
+    return this.$state.current.name?.includes('gantt');
   }
 }

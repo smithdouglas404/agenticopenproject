@@ -98,7 +98,7 @@ RSpec.describe "Relations children tab", :js, :with_cuprite do
       it "shows only the action to add a parent" do
         wp_page.visit_tab!("relations")
         relations_tab.expect_add_relation_button
-        relations_tab.expect_no_new_relation_type("Related to")
+        relations_tab.expect_no_new_relation_type("Related To")
         relations_tab.expect_no_new_relation_type("Child")
         relations_tab.expect_no_new_relation_type("Create new child")
         relations_tab.expect_new_relation_type("Parent")

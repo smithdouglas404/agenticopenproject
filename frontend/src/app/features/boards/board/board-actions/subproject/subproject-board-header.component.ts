@@ -35,6 +35,7 @@ import idFromLink from 'core-app/features/hal/helpers/id-from-link';
   templateUrl: './subproject-board-header.html',
   styleUrls: ['./subproject-board-header.sass'],
   host: { class: 'title-container -small' },
+  standalone: false,
 })
 export class SubprojectBoardHeaderComponent {
   @Input() public resource:HalResource;

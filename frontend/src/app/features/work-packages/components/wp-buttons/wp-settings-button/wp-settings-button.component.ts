@@ -36,6 +36,7 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 @Component({
   templateUrl: './wp-settings-button.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageSettingsButtonComponent {
   @Input() hideTableOptions = false;

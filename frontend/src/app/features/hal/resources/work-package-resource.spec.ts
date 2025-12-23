@@ -48,7 +48,8 @@ import { WorkPackageResource } from 'core-app/features/hal/resources/work-packag
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { WeekdayService } from 'core-app/core/days/weekday.service';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('WorkPackage', () => {
   let halResourceService:HalResourceService;
@@ -70,11 +71,8 @@ describe('WorkPackage', () => {
   beforeEach(waitForAsync(() => {
     // noinspection JSIgnoredPromiseFromCall
     TestBed.configureTestingModule({
-      imports: [
-        OpenprojectHalModule,
-        HttpClientTestingModule,
-      ],
-      providers: [
+    imports: [OpenprojectHalModule],
+    providers: [
         HalResourceService,
         States,
         TimezoneService,
@@ -90,8 +88,10 @@ describe('WorkPackage', () => {
         { provide: WorkPackageCreateService, useValue: {} },
         { provide: StateService, useValue: {} },
         { provide: SchemaCacheService, useValue: {} },
-      ],
-    })
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
       .compileComponents()
       .then(() => {
         halResourceService = TestBed.inject(HalResourceService);
@@ -123,32 +123,21 @@ describe('WorkPackage', () => {
 
     it('when work package is not new', () => {
       workPackage.$source.id = 420;
+
       expect(workPackage.canAddAttachments).toEqual(false);
     });
 
     it('when the work package has no `addAttachment` link and is not new', () => {
       workPackage.$source.id = 69;
       workPackage.$links.addAttachment = null as any;
+
       expect(workPackage.canAddAttachments).toEqual(false);
     });
 
     it('when the work package has an `addAttachment` link', () => {
-      workPackage.$links.addAttachment = <any> _.noop;
-      expect(workPackage.canAddAttachments).toEqual(true);
-    });
-  });
+      workPackage.$links.addAttachment = _.noop as any;
 
-  describe('when a work package is created with attachments and activities', () => {
-    beforeEach(() => {
-      source = {
-        _links: {
-          schema: { _type: 'Schema', href: 'schema' },
-          attachments: { href: 'attachments' },
-          activities: { href: 'activities' },
-        },
-        isNew: true,
-      };
-      createWorkPackage();
+      expect(workPackage.canAddAttachments).toEqual(true);
     });
   });
 });

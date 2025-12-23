@@ -211,7 +211,7 @@ export class ExampleComponent implements OnInit {
 
 There is one more class involved in this stack, the `EditFieldHandler`. It implements an adapter pattern to break the connection between the input-only characteristics of the `EditFieldComponent` and the handling of events towards an outer wrapper such as the `EditForm`. They are regular classes that handle events from the `EditFieldComponent` to make them reusable in cases where, for example, an `EditForm` does not exist.
 
-Any user event that should trigger saving or resetting of the field is being handled by the `EditFieldHandler`, hence its name. For example, pressing <kbd>ESC</kbd> on a `TextEditFieldComponent` will trigger the `EditFieldHandler#handleUserCancel` method. The same is true for submit events on the field or form (e.g., pressing <kbd>ENTER</kbd> on the field), which trigger the `EditFieldHandler#handleUserSubmit` method.
+Any user event that should trigger saving or resetting of the field is being handled by the `EditFieldHandler`, hence its name. For example, pressing \<kbd\>ESC\<\/kbd\> on a `TextEditFieldComponent` will trigger the `EditFieldHandler#handleUserCancel` method. The same is true for submit events on the field or form (e.g., pressing \<kbd\>ENTER\<\/kbd\> on the field), which trigger the `EditFieldHandler#handleUserSubmit` method.
 
 An example where this comes into play is the [`CustomText`](https://github.com/opf/openproject/tree/dev/frontend/src/app/shared/components/grids/widgets/custom-text/custom-text.component.ts) widget of the dashboards and My page, which use the `<edit-form-portal>` manually and pass in a handler that handles saving of these widgets without access to an edit form.
 
@@ -232,11 +232,11 @@ An example where this comes into play is the [`CustomText`](https://github.com/o
 On the example of a work package, this following code snippet would create an edit form for a given work package resource and an attribute for the `subject` attribute of that work package.
 
 ```html
-<edit-form *ngIf="workPackage" [resource]="workPackage">
-    <op-editable-attribute-field [resource]="workPackage"
-                              fieldName="subject">
-    </op-editable-attribute-field>
-</edit-form>
+@if (workPackage) {
+  <edit-form [resource]="workPackage">
+      <op-editable-attribute-field [resource]="workPackage" fieldName="subject"/>
+  </edit-form>
+}
 ```
 
 While this doesn't take care of any labels or styling, it will already provide error handling for the given field and allow proper saving of the changes to the resource.

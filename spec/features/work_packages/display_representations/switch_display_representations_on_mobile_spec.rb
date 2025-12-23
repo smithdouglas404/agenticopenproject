@@ -65,8 +65,7 @@ RSpec.describe "Switching work package view on mobile", :js, :selenium do
       cards.select_work_package(wp_1)
       expect(page).to have_css(".work-packages--details--subject",
                                text: wp_1.subject)
-      page.find(".work-packages-back-button").click
-
+      page.go_back
       # The query is however unchanged
       expect(page).to have_no_css(".editable-toolbar-title--save")
       url = URI.parse(page.current_url).query

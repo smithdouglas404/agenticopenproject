@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackageCustomField, :model do
+RSpec.describe WorkPackageCustomField, :model, with_ee: [:custom_field_hierarchies] do
   let(:feature) { create(:type_feature) }
   let(:task) { create(:type_task) }
   let(:project) { create(:project, types: [feature, task]) }

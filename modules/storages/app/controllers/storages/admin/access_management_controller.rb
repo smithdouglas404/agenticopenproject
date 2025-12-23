@@ -31,11 +31,13 @@
 class Storages::Admin::AccessManagementController < ApplicationController
   include OpTurbo::ComponentStream
 
+  ALLOWED_STORAGES = %i[storages_one_drive_storage storages_sharepoint_storage].freeze
+
   layout "admin"
 
   before_action :require_admin
 
-  model_object Storages::OneDriveStorage
+  model_object Storages::Storage
   before_action :find_model_object, only: %i[new create edit update]
 
   # menu_item is defined in the Redmine::MenuManager::MenuController
@@ -54,6 +56,11 @@ class Storages::Admin::AccessManagementController < ApplicationController
     end
   end
 
+  def edit
+    update_via_turbo_stream(component: Storages::Admin::Forms::AccessManagementFormComponent.new(@storage))
+    respond_with_turbo_streams
+  end
+
   def create
     service_result = call_update_service
 
@@ -62,6 +69,7 @@ class Storages::Admin::AccessManagementController < ApplicationController
     end
 
     service_result.on_failure do
+      @storage.errors.merge!(service_result.errors)
       update_via_turbo_stream(component: Storages::Admin::Forms::AccessManagementFormComponent.new(@storage, in_wizard: true))
       respond_with_turbo_streams
     end
@@ -75,14 +83,10 @@ class Storages::Admin::AccessManagementController < ApplicationController
     end
 
     service_result.on_failure do
+      @storage.errors.merge!(service_result.errors)
       update_via_turbo_stream(component: Storages::Admin::Forms::AccessManagementFormComponent.new(@storage))
     end
 
-    respond_with_turbo_streams
-  end
-
-  def edit
-    update_via_turbo_stream(component: Storages::Admin::Forms::AccessManagementFormComponent.new(@storage))
     respond_with_turbo_streams
   end
 
@@ -100,8 +104,7 @@ class Storages::Admin::AccessManagementController < ApplicationController
   end
 
   def permitted_storage_params
-    params
-      .require(:storages_one_drive_storage)
-      .permit("automatic_management_enabled")
+    key = params.keys.find { |k| ALLOWED_STORAGES.include?(k.to_sym) }
+    params.expect(key => ["automatic_management_enabled"])
   end
 end

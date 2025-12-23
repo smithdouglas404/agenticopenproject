@@ -47,6 +47,7 @@ class Budget < ApplicationRecord
   has_many :time_entries, through: :work_packages
 
   include ActiveModel::ForbiddenAttributesProtection
+  include Costs::NumberHelper
 
   acts_as_attachable
   acts_as_journalized
@@ -55,9 +56,8 @@ class Budget < ApplicationRecord
                 title: Proc.new { |o| "#{I18n.t(:label_budget)} ##{o.id}: #{o.subject}" },
                 url: Proc.new { |o| { controller: "budgets", action: "show", id: o.id } }
 
-  validates_presence_of :subject, :project, :author, :fixed_date
-  validates_length_of :subject, maximum: 255
-  validates_length_of :subject, minimum: 1
+  validates :subject, :project, :author, :fixed_date, presence: true
+  validates :subject, length: { minimum: 1, maximum: 255 }
 
   class << self
     def visible(user)
@@ -79,7 +79,10 @@ class Budget < ApplicationRecord
     protected
 
     def copy_attributes(source)
-      source.attributes.slice("project_id", "subject", "description", "fixed_date").merge("author" => User.current)
+      source
+        .attributes
+        .slice("project_id", "subject", "description", "fixed_date", "base_amount")
+        .merge("author" => User.current)
     end
 
     def copy_budget_items(source, sink, items:)
@@ -98,7 +101,7 @@ class Budget < ApplicationRecord
   end
 
   def budget
-    material_budget + labor_budget
+    base_amount + material_budget + labor_budget
   end
 
   def type_label
@@ -126,6 +129,10 @@ class Budget < ApplicationRecord
 
   def name
     subject
+  end
+
+  def base_amount=(value)
+    super(parse_number_string_to_number(value))
   end
 
   def material_budget
@@ -162,6 +169,10 @@ class Budget < ApplicationRecord
           ELSE
             #{TimeEntry.table_name}.overridden_costs END").to_d
                      end
+  end
+
+  def available
+    budget - spent
   end
 
   def new_material_budget_item_attributes=(material_budget_item_attributes)

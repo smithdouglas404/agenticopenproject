@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -211,7 +213,7 @@ module WorkPackages
         end
 
         def skip_rendering_details?
-          journal.initial? && journal_sorting == "desc"
+          journal.initial? && journal_sorting.desc?
         end
 
         def render_journal_details(details_container_inner)

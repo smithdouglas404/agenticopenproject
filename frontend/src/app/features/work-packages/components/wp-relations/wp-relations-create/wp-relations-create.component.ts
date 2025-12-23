@@ -12,6 +12,7 @@ import { WorkPackageRelationsService } from '../wp-relations.service';
 @Component({
   selector: 'wp-relations-create',
   templateUrl: './wp-relation-create.template.html',
+  standalone: false,
 })
 export class WorkPackageRelationsCreateComponent {
   @Input() readonly workPackage:WorkPackageResource;

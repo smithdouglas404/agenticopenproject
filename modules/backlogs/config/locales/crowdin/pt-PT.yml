@@ -55,6 +55,7 @@ pt-PT:
     hours: "Horas"
     impediment: "Impedimento"
     label_versions_default_fold_state: "Mostrar versões dobradas"
+    caption_versions_default_fold_state: "Versões não serão expandidas por predefinição quando visualizar os backlogs. Cada uma tem de ser expandida manualmente."
     work_package_is_closed: "Pacote de trabalho está feito quando"
     label_is_done_status: "O estado %{status_name} significa terminado"
     no_burndown_data: "Não há dados de burndown disponíveis. É necessário ter o conjunto de datas de início e final de sprint."
@@ -73,6 +74,9 @@ pt-PT:
     task: "Tarefa"
     task_color: "Cor de tarefa"
     unassigned: "Não atribuído"
+    user_preference:
+      header_backlogs: "Módulo de backlogs"
+      button_update_backlogs: "Atualizar o módulo de backlogs"
     x_more: "%{count} mais..."
   backlogs_active: "ativo"
   backlogs_any: "qualquer"

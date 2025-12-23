@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -38,6 +40,10 @@ class RootSeeder < Seeder
     @raise_on_unknown_language = raise_on_unknown_language
 
     load_available_seeders
+  end
+
+  def applicable?
+    true
   end
 
   # Returns the demo data in the default language.

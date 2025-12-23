@@ -30,11 +30,14 @@ el:
         overridden_costs: "Παράκαμπψη κόστους"
         spent: "Δαπανήθηκε"
         spent_on: "Ημερομηνία"
-        logged_by: "Logged by"
+        logged_by: "Καταχώρηση από"
+        entity: Καταχώρηση για
+        entity_id: Καταχώρηση για
+        entity_gid: Καταχώρηση για
       cost_type:
         unit: "Όνομα μονάδας"
         unit_plural: "Πληθυντικός ονόματος μονάδας"
-        default: "Cost type by default"
+        default: "Προεπιλεγμένος τύπος κόστους"
       work_package:
         costs_by_type: "Δαπανημένες μονάδες"
         labor_costs: "Κόστος εργασίας"
@@ -55,9 +58,12 @@ el:
         comments: Σχόλιο
         activity: Δραστηριότητα
         spent_on: Ημερομηνία
-        start_time: Start time
-        end_time: Finish time
+        start_time: Ώρα έναρξης
+        end_time: Ώρα λήξης
         time: Ώρα
+        entity: Καταχώρηση για
+        entity_id: Καταχώρηση για
+        entity_gid: Καταχώρηση για
     models:
       time_entry:
         one: "Καταχώρηση χρόνου"
@@ -69,7 +75,7 @@ el:
         one: "Τύπος κόστους"
         other: "Τύποι κόστους"
       time_entry_activity:
-        one: "Time tracking activity"
+        one: "Δραστηριότητες καταγραφής χρόνου"
         other: "Δραστηριότητες καταγραφής χρόνου"
       rate: "Αμοιβή"
     errors:
@@ -77,6 +83,7 @@ el:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
           cannot_log_for_this_work_package: "Cannot log time for this work package."
+          duplicate_ongoing: "An ongoing time entry already exists for this user."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Το πακέτο εργασίας #%{id} δεν είναι έγκυρος στόχος για ανάθεση των καταχωρήσεων κόστους."
           nullify_is_not_valid_for_cost_entries: "Οι καταχωρίσεις κόστους δεν μπορούν να ανατεθούν σε ένα έργο."
@@ -91,9 +98,10 @@ el:
     fixed_date: "Καθορισμένη ημερομηνία"
   button_add_rate: "Προσθήκη αμοιβής"
   button_log_costs: "Καταγραφή κόστους μονάδας"
-  button_log_time: "Log"
+  button_log_time: "Αρχείο καταγραφής"
   button_add_activity: "Δραστηριότητα"
   button_add_time_entry: "Καταγραφή χρόνου"
+  button_stop_timer: "Διακοπή χρονόμετρου"
   caption_booked_on_project: "Κλείστηκαν στο έργο"
   caption_default: "Προεπιλογή"
   caption_default_rate_history_for: "Προεπιλεγμένο ιστορικό αμοιβής για %{user}"
@@ -150,19 +158,19 @@ el:
   label_valid_from: "Έγκυρο από"
   label_yes: "Ναι"
   label_time: "Ώρα"
-  label_cost: "Cost"
+  label_cost: "Κόστος"
   label_costs: "Κόστος"
-  label_mandatory_fields: "Mandatory fields"
-  label_my_time_tracking: "My time tracking"
-  label_no_time: "No time tracked"
-  label_next_day: "Next day"
+  label_mandatory_fields: "Υποχρεωτικά πεδία"
+  label_my_time_tracking: "Η παρακολούθηση χρόνου μου"
+  label_no_time: "Δεν υπάρχει καταχωρημένος χρόνος"
+  label_next_day: "Επόμενη μέρα"
   label_next_week: "Επόμενη εβδομάδα"
-  label_next_workweek: "Next work week"
-  label_next_month: "Next month"
-  label_previous_day: "Previous day"
-  label_previous_workweek: "Previous work week"
+  label_next_workweek: "Επόμενη εβδομάδα εργασίας"
+  label_next_month: "Επόμενος μήνας"
+  label_previous_day: "Προηγούμενη μέρα"
+  label_previous_workweek: "Προηγούμενη εβδομάδα εργασίας"
   label_previous_week: "Προηγούμενη εβδομάδα"
-  label_previous_month: "Previous month"
+  label_previous_month: "Προηγούμενος μήνας"
   label_specific_day: "Day %{day}"
   label_specific_week: "Calendar week %{week}"
   label_specific_month: "Month %{month}"
@@ -172,6 +180,7 @@ el:
   label_day: "Ημέρα"
   label_today_capitalized: "Σήμερα "
   label_view_mode_switcher: "Change view"
+  label_timer_since: "Started at %{time}"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "Κάτι πήγε στραβά. Παρακαλούμε προσπαθήστε ξανά."
   notice_successful_restore: "Επιτυχής επαναφορά."
@@ -179,6 +188,7 @@ el:
   notice_cost_logged_successfully: "Η μονάδα κόστους καταγράφηκε επιτυχώς."
   notice_different_time_zones: "This user has a different time zone (%{tz}). Time will be logged using their time zone."
   notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
   permission_edit_cost_entries: "Επεξεργασία κλεισμένου κόστους μονάδας"
   permission_edit_own_cost_entries: "Επεξεργασία δικού μου κλεισμένου κόστους μονάδας"
   permission_edit_hourly_rates: "Επεξεργασία ωριαίων αμοιβών"
@@ -193,11 +203,13 @@ el:
   permission_view_own_hourly_rate: "Εμφάνιση των δικών μου ωριαίων αμοιβών"
   permission_view_own_time_entries: "Προβολή του δικού μου χρόνου που δαπανήθηκε"
   project_module_costs: "Χρόνος και κόστος"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
   setting_costs_currency: "Νόμισμα"
   setting_costs_currency_format: "Μορφοποίηση του νομίσματος"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "Require start and finish times"
+  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "Ανάθεση αναφερόμενων ωρών και κόστους στο έργο"
   text_destroy_cost_entries_question: "%{cost_entries} αναφέρθηκαν στα πακέτα εργασίας που πρόκειται να διαγράψετε. Τι θέλετε να κάνετε;"
   text_destroy_time_and_cost_entries: "Διαγραφή αναφερόμενων ωρών και κόστους"

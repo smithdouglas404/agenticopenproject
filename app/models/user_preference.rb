@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -35,6 +37,9 @@ class UserPreference < ApplicationRecord
             presence: true
 
   WORKDAYS_FROM_MONDAY_TO_FRIDAY = [1, 2, 3, 4, 5].freeze
+
+  COLOR_MODES = %i[light dark].freeze
+  THEMES = (COLOR_MODES + %i[sync_with_os]).freeze
 
   ##
   # Retrieve keys from settings, and allow accessing
@@ -86,6 +91,14 @@ class UserPreference < ApplicationRecord
     comments_sorting == "desc"
   end
 
+  def disable_keyboard_shortcuts?
+    settings.fetch(:disable_keyboard_shortcuts) { Setting.disable_keyboard_shortcuts? }
+  end
+
+  def disable_keyboard_shortcuts=(value)
+    settings[:disable_keyboard_shortcuts] = to_boolean(value)
+  end
+
   def diff_type
     settings.fetch(:diff_type, "inline")
   end
@@ -110,6 +123,7 @@ class UserPreference < ApplicationRecord
   alias :comments_in_reverse_order :comments_in_reverse_order?
   alias :warn_on_leaving_unsaved :warn_on_leaving_unsaved?
   alias :auto_hide_popups :auto_hide_popups?
+  alias :disable_keyboard_shortcuts :disable_keyboard_shortcuts?
 
   def comments_in_reverse_order=(value)
     settings[:comments_sorting] = to_boolean(value) ? "desc" : "asc"
@@ -119,8 +133,32 @@ class UserPreference < ApplicationRecord
     super.presence || Setting.user_default_theme
   end
 
-  def high_contrast_theme?
-    theme.end_with?("high_contrast")
+  def increase_theme_contrast=(value)
+    settings[:increase_theme_contrast] = to_boolean(value)
+  end
+
+  def force_light_theme_contrast=(value)
+    settings[:force_light_theme_contrast] = to_boolean(value)
+  end
+
+  def force_dark_theme_contrast=(value)
+    settings[:force_dark_theme_contrast] = to_boolean(value)
+  end
+
+  COLOR_MODES.each do |color_mode|
+    define_method("#{color_mode}_color_mode?") { theme.split("_", 2)[0] == color_mode.to_s }
+  end
+
+  THEMES.each do |theme_name|
+    define_method("#{theme_name}_theme?") { theme == theme_name.to_s }
+  end
+
+  def light_high_contrast_theme?
+    light_theme? && increase_theme_contrast?
+  end
+
+  def dark_high_contrast_theme?
+    dark_theme? && increase_theme_contrast?
   end
 
   def time_zone

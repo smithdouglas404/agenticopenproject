@@ -14,6 +14,7 @@ import {
   selector: 'op-immediate-reminder-settings',
   templateUrl: './immediate-reminder-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ImmediateReminderSettingsComponent implements OnInit {
   form:UntypedFormGroup;

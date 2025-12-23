@@ -38,7 +38,8 @@ import { PathHelperService } from "core-app/core/path-helper/path-helper.service
   templateUrl: './gitlab-tab.template.html',
   styleUrls: [
     './gitlab-tab.component.sass',
-  ]
+  ],
+  standalone: false,
 })
 export class GitlabTabComponent implements TabComponent {
   @Input() public workPackage:WorkPackageResource;

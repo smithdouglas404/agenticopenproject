@@ -31,6 +31,9 @@ ka:
         spent: "დახარჯული"
         spent_on: "თარიღი"
         logged_by: "ჩანაწერის ავტორი"
+        entity: რეგისტრაციის მიზეზი
+        entity_id: რეგისტრაციის მიზეზი
+        entity_gid: რეგისტრაციის მიზეზი
       cost_type:
         unit: "ერთეულის სახელი"
         unit_plural: "ერთეულის სახელი მრავლობითში"
@@ -58,6 +61,9 @@ ka:
         start_time: Start time
         end_time: Finish time
         time: დრო
+        entity: რეგისტრაციის მიზეზი
+        entity_id: რეგისტრაციის მიზეზი
+        entity_gid: რეგისტრაციის მიზეზი
     models:
       time_entry:
         one: "დროს ჩანაწერი"
@@ -77,6 +83,7 @@ ka:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
           cannot_log_for_this_work_package: "Cannot log time for this work package."
+          duplicate_ongoing: "An ongoing time entry already exists for this user."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Work package #%{id} is not a valid target for reassigning the cost entries."
           nullify_is_not_valid_for_cost_entries: "ღირებულების ჩანაწერებს პროექტს ვერ მიანიჭებთ."
@@ -94,6 +101,7 @@ ka:
   button_log_time: "Log"
   button_add_activity: "აქტივობა"
   button_add_time_entry: "ჟურნალში დროის ჩაწერა"
+  button_stop_timer: "Stop timer"
   caption_booked_on_project: "Booked on project"
   caption_default: "ნაგულისხმევი"
   caption_default_rate_history_for: "Default rate history for %{user}"
@@ -172,6 +180,7 @@ ka:
   label_day: "დღე"
   label_today_capitalized: "დღეს"
   label_view_mode_switcher: "Change view"
+  label_timer_since: "Started at %{time}"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "მოხდა შეცდომა. სცადეთ თავიდან."
   notice_successful_restore: "Successful restore."
@@ -179,6 +188,7 @@ ka:
   notice_cost_logged_successfully: "Unit cost logged successfully."
   notice_different_time_zones: "This user has a different time zone (%{tz}). Time will be logged using their time zone."
   notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
   permission_edit_cost_entries: "Edit booked unit costs"
   permission_edit_own_cost_entries: "Edit own booked unit costs"
   permission_edit_hourly_rates: "Edit hourly rates"
@@ -193,11 +203,13 @@ ka:
   permission_view_own_hourly_rate: "View own hourly rate"
   permission_view_own_time_entries: "View own spent time"
   project_module_costs: "დრო და ღირებულებები"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
   setting_costs_currency: "ფული"
   setting_costs_currency_format: "Format of currency"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "Require start and finish times"
+  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "Assign reported hours and costs to the project"
   text_destroy_cost_entries_question: "%{cost_entries} were reported on the work packages you are about to delete. What do you want to do ?"
   text_destroy_time_and_cost_entries: "Delete reported hours and costs"

@@ -38,6 +38,7 @@ RSpec.describe "Logout",
            password: user_password,
            password_confirmation: user_password)
   end
+  let(:user_menu) { Components::UserMenu.new }
 
   before do
     login_with(user.login, user_password)
@@ -48,7 +49,7 @@ RSpec.describe "Logout",
     visit my_page_path
 
     within ".op-app-header" do
-      page.find("a[title='#{user.name}']").click
+      user_menu.open
 
       click_link I18n.t(:label_logout)
     end

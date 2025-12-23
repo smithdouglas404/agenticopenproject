@@ -73,7 +73,7 @@ el:
     button_continue: "Συνέχεια"
     button_copy: "Αντιγραφή"
     button_copy_to_clipboard: "Αντιγραφή στο πρόχειρο"
-    button_copy_link_to_clipboard: "Copy link to clipboard"
+    button_copy_link_to_clipboard: "Αντιγραφή συνδέσμου στο πρόχειρο"
     button_copy_to_other_project: "Duplicate in another project"
     button_custom-fields: "Προσαρμοσμένα πεδία"
     button_delete: "Διαγραφή"
@@ -88,6 +88,8 @@ el:
     button_list_view: "Προβολή λίστας"
     button_show_view: "Προβολή πλήρης οθόνης"
     button_log_time: "Ιστορικό χρόνου"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Διακοπή χρονόμετρου"
     button_more: "Περισσότερα"
     button_open_details: "Άνοιγμα προβολής λεπτομερειών"
     button_close_details: "Κλείσιμο προβολής λεπτομερειών"
@@ -201,69 +203,6 @@ el:
         edit_query: "Επεξεργασία αναζήτησης"
         new_group: "Νέα ομάδα"
         reset_to_defaults: "Επαναφορά στα προεπιλεγμένα"
-      enterprise:
-        text_reprieve_days_left: "%{days} days until end of grace period"
-        text_expired: "expired"
-        trial:
-          confirmation: "Επιβεβαίωση της διεύθυνσης email"
-          confirmation_info: >
-            Σας στείλαμε ένα email στο %{date} στο %{email}. Παρακαλούμε ελέγξτε τα εισερχόμενά σας και κάντε κλικ στον σύνδεσμο επιβεβαίωσης που παρέχεται για να ξεκινήσετε τη δοκιμή 14 ημερών.
-          form:
-            general_consent: >
-              Συμφωνώ με τους <a target="_blank" href="%{link_terms}">όρους χρήσης</a> και με την <a target="_blank" href="%{link_privacy}">πολιτική απορρήτου</a>.
-            invalid_email: "Μη έγκυρη διεύθυνση email"
-            label_company: "Εταιρεία"
-            label_first_name: "Όνομα"
-            label_last_name: "Επώνυμο"
-            label_domain: "Τομέας"
-            label_subscriber: "Συνδρομητής"
-            label_maximum_users: "Μέγιστοι ενεργοί χρήστες"
-            label_starts_at: "Αρχίζει στις"
-            label_expires_at: "Λήγει στις"
-            label_plan: "Πλάνο"
-            label_additional_features: "Additional features"
-            receive_newsletter: Θέλω να λαμβάνω το <a target="_blank" href="%{link}">ενημερωτικό δελτίο</a> του OpenProject.
-            taken_domain: Μπορεί να υπάρχει μόνο μια ενεργή δοκιμαστική συνδρομή ανά τομέα.
-            domain_mismatch: The current request host name does not match the configured host name. Please double check your system settings.
-            taken_email: Κάθε χρήστης μπορεί να δημιουργήσει μόνο μία δοκιμαστική συνδρομή.
-          email_not_received: "Δεν λάβατε email? Μπορείτε να ξαναστείλετε το email με τον σύνδεσμο στα δεξιά."
-          try_another_email: "Ή δοκιμάστε με διαφορετική διεύθυνση email."
-          next_steps: "Επόμενα βήματα"
-          resend_link: "Αποστολή ξανά"
-          resend_success: "Το email απεστάλη ξανά. Παρακαλούμε ελέγξτε τα emails σας και πατήστε τον σύνδεσμο επιβεβαίωσης."
-          resend_warning: "Δεν ήταν δυνατή η αποστολή email."
-          session_timeout: "Η συνεδρία σας έληξε. Παρακαλούμε δοκιμάστε να ξαναφορτώσετε τη σελίδα ή να ξαναστείλετε το email."
-          status_label: "Κατάσταση:"
-          status_confirmed: "επιβεβαιωμένο"
-          status_waiting: "το email απεστάλη - αναμονή για επιβεβαίωση"
-          test_ee: "Test the Enterprise edition 14 days for free"
-          quick_overview: "Get a quick overview of project management and team collaboration with OpenProject Enterprise edition."
-        upsell:
-          become_hero: "Γίνετε ήρωας!"
-          enterprise_info_html: "%{feature_title} is an Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span> add-on."
-          upgrade_info: "Please upgrade to a paid plan to activate and start using it in your team."
-          text: >
-            The OpenProject Enterprise edition builds on top of the Community edition. It includes Enterprise add-ons and professional support mainly aimed at organizations with more than 10 users that manage business critical projects with OpenProject.
-          you_contribute: "Developers need to pay their bills, too. By upgrading to the Enterprise edition, you will be supporting this open source community effort and contributing to its development, maintenance and continuous improvement."
-          benefits:
-            description: "What are the benefits of the Enterprise on-premises edition?"
-            high_security: "Χαρακτηριστικά ασφαλείας"
-            high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-            installation: "Υποστήριξη εγκατάστασης"
-            installation_text: "Οι έμπειροι μηχανικοί λογισμικού σας καθοδηγούν στην πλήρη διαδικασία εγκατάστασης και εγκατάστασης στη δική σας υποδομή."
-            premium_features: "Enterprise add-ons"
-            premium_features_text: "Agile πίνακες, προσαρμοσμένα θέματα και λογότυπα, γραφήματα, έξυπνες ροές εργασίας με προσαρμοσμένες ενέργειες, αναζήτηση κειμένου για συνημμένα πακέτων εργασίας και πολλαπλή επιλογή προσαρμοσμένων πεδίων."
-            professional_support: "Επαγγελματική υποστήριξη"
-            professional_support_text: "Αποκτήστε αξιόπιστη, high-touch υποστήριξη από ανώτερους μηχανικούς υποστήριξης με εξειδικευμένες γνώσεις σχετικά με τη λειτουργία του OpenProject σε κρίσιμα επιχειρηματικά περιβάλλοντα."
-          button_start_trial: "Έναρξη δωρεάν δοκιμαστικής περιόδου"
-          button_upgrade: "Αναβάθμιση τώρα"
-          button_contact_us: "Επικοινωνήστε μαζί μας για μια επίδειξη"
-          button_book_now: "Κάντε κράτηση τώρα"
-          confidence: >
-            Παρέχουμε την εμπιστοσύνη ενός δοκιμασμένου και υποστηριζόμενου λογισμικού διαχείρισης έργων, επιχειρησιακού επιπέδου - με Ανοιχτό Κώδικα και ανοιχτό μυαλό.
-          link_quote: "Λάβετε μια προσφορά"
-          more_info: "Περισσότερες πληροφορίες"
-          unlimited: "Απεριόριστα"
       working_days:
         calendar:
           empty_state_header: "Non-working days"
@@ -274,9 +213,9 @@ el:
         change_button: "Save and reschedule"
         change_title: "Change working days"
         removed_title: "You will remove the following days from the non-working days list:"
-        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages in all projects in this instance."
+        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
         warning: >
-          The changes might take some time to take effect. You will be notified when all relevant work packages have been updated.
+          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
           Are you sure you want to continue?
       work_packages_settings:
         warning_progress_calculation_mode_change_from_status_to_field_html: >-
@@ -350,17 +289,6 @@ el:
         format:
           date: "%{attribute} δεν είναι έγκυρη ημερομηνία - αναμένεται ΕΕΕΕ-ΜΜ-ΗΗ."
         general: "Παρουσιάστηκε σφάλμα."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Διαβάστε για τις νέες λειτουργίες και τις ενημερώσεις προϊόντων."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_0":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>Meeting backlogs and the end of classic meetings.</li> <li>Updated Enterprise plans.</li> <li>Internal comments in work packages (Enterprise add-on).</li> <li>Automatically generated work package subjects (Enterprise add-on).</li> <li>Separate time tracking module with calendar view.</li> <li>Parent relation displayed in work package relations tab.</li> <li>Release to Community: Graphs on project overview page.</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -368,12 +296,13 @@ el:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copy URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Ενεργοποίηση"
     label_assignee: "Ανάθεση σε"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
     label_add_column_after: "Προσθήκη στήλης μετά"
     label_add_column_before: "Προσθήκη στήλης πριν"
     label_add_columns: "Προσθέστε στήλη"
@@ -386,6 +315,7 @@ el:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "ημέρες πριν"
     label_all: "όλα"
+    label_all_projects: "Όλα τα έργα"
     label_all_uppercase: "Όλα"
     label_all_work_packages: "όλα τα πακέτα εργασίας"
     label_and: "και"
@@ -414,6 +344,7 @@ el:
     label_collapse: "Σύμπτυξη"
     label_collapsed: "συμπτυγμένο"
     label_collapse_all: "Σύμπτυξη όλων"
+    label_collapse_text: "Collapse text"
     label_comment: "Σχόλιο"
     label_committed_at: "%{committed_revision_link} στις %{date}"
     label_committed_link: "δεσμευμένη αναθεώρηση %{revision_identifier}"
@@ -426,6 +357,7 @@ el:
     label_expand: "Επέκταση"
     label_expanded: "επεκταμένη"
     label_expand_all: "Ανάπτυξη όλων"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Επέκταση του μενού έργου"
     label_export: "Εξαγωγή"
     label_export_preparing: "Η εξαγωγή προετοιμάζεται και θα κατεβεί σύντομα."
@@ -495,7 +427,6 @@ el:
     label_repository_plural: "Αποθετήρια"
     label_save_as: "Αποθήκευση ως"
     label_search_columns: "Search a column"
-    label_select_project: "Επιλογή έργου"
     label_select_watcher: "Επιλέξτε έναν παρατηρητή..."
     label_selected_filter_list: "Επιλεγμένα φίλτρα"
     label_show_attributes: "Εμφανίστε όλα τα χαρακτηριστικά"
@@ -506,7 +437,7 @@ el:
     label_sort_lower: "Μετακίνηση προς τα κάτω"
     label_sorting: "Ταξινόμηση"
     label_spent_time: "Χρόνος που δαπανήθηκε"
-    label_star_query: "Αγαπημένο"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Πατήστε enter για αποθήκευση."
     label_public_query: "Δημόσιο"
     label_sum: "Άθροισμα"
@@ -565,7 +496,7 @@ el:
     label_version_plural: "Εκδόσεις"
     label_view_has_changed: "Η προβολή έχει μη αποθηκευμένες αλλαγές. Κάντε κλικ για τις αποθηκεύσετε."
     help_texts:
-      show_modal: "Εμφανίστε το χαρακτηριστικό καταχώρησης κειμένου βοήθειας"
+      show_modal: "Show help text"
     onboarding:
       buttons:
         skip: "Παράλειψη"
@@ -625,7 +556,7 @@ el:
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "Overdue"
-        overdue_since: "since %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "is today."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
@@ -705,9 +636,12 @@ el:
       title: "Επιβεβαιώστε τον κωδικό πρόσβασης σας για να συνεχίσετε"
     pagination:
       no_other_page: "Βρίσκεστε στη μοναδική σελίδα."
+      pages_skipped: "Pages skipped."
+      page_navigation: "Pagination navigation"
+      per_page_navigation: 'Items per page selection'
       pages:
-        next: "Μεταβείτε στην επόμενη σελίδα"
-        previous: "Επιστροφή στην προηγούμενη σελίδα"
+        page_number: Page %{number}
+        show_per_page: Show %{number} per page
     placeholders:
       default: "-"
       subject: "Εισάγετε θέμα εδώ"
@@ -718,15 +652,10 @@ el:
       autocompleter:
         label: "Αυτόματη συμπλήρωση έργου"
       click_to_switch_to_project: "Project: %{projectname}"
-      confirm_template_load: "Η αλλαγή του προτύπου θα επαναφορτώσει τη σελίδα και θα χάσετε όλα τα στοιχεία εισόδου σε αυτή τη φόρμα. Συνέχεια?"
       context: "Πλαίσιο έργου"
-      copy:
-        copy_options: "Επιλογές αντιγραφής"
       not_available: "Project N/A"
-      no_template_selected: "(Κανένα)"
       required_outside_context: >
         Παρακαλούμε επιλέξτε ένα έργο μέσα στο οποίο θα δημιουργήσετε το πακέτο εργασίας για να δείτε όλα τα χαρακτηριστικά. Μπορείτε να επιλέξετε μόνο έργα που έχουν τον παραπάνω τύπο ενεργό.
-      use_template: "Χρήση προτύπου"
     reminders:
       settings:
         daily:
@@ -760,6 +689,8 @@ el:
           first_day: "First day"
           last_day: "Last day"
     text_are_you_sure: "Είστε σίγουρος/η;"
+    text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
+    breadcrumb: "Breadcrumb"
     text_data_lost: "All entered data will be lost."
     text_user_wrote: "%{value} έγραψε:"
     types:
@@ -844,6 +775,7 @@ el:
     autocompleter:
       placeholder: "Πληκτρολογήστε για αναζήτηση"
       notFoundText: "No items found"
+      search: "Αναζήτηση"
       project:
         placeholder: "Select project"
     repositories:
@@ -889,10 +821,10 @@ el:
         mixed: "Mixed"
     work_packages:
       bulk_actions:
-        move: "Μαζική αλλαγή του έργου"
         edit: "Μαζική επεξεργασία"
-        copy: "Μαζική αντιγραφή"
         delete: "Μαζική διαγραφή"
+        duplicate: "Bulk duplicate"
+        move: "Μαζική αλλαγή του έργου"
       button_clear: "Εκκαθάριση"
       comment_added: "Το σχόλιο προστέθηκε με επιτυχία."
       comment_send_failed: "Παρουσιάστηκε ένα σφάλμα. Δεν ήταν δυνατή η υποβολή του σχολίου."
@@ -936,8 +868,8 @@ el:
         header_no_type: "Καινούργιο πακέτο εργασίας (Ο τύπος δεν έχει οριστεί ακόμη)"
         header_with_parent: "Νέο %{type} (Παιδί του %{parent_type} #%{id})"
         button: "Δημιουργία"
-      copy:
-        title: "Αντιγραφή πακέτου εργασίας"
+      duplicate:
+        title: "Duplicate work package"
       hierarchy:
         show: "Εμφάνιση λειτουργίας ιεραρχίας"
         hide: "Απόκρυψη λειτουργίας ιεραρχίας"
@@ -972,7 +904,7 @@ el:
         percentageDone: "Ποσοστό ολοκλήρωσης"
         priority: "Προτεραιότητα"
         projectName: "Έργο"
-        remainingWork: "Remaining work"
+        remainingWork: "Υπολειπόμενες Ώρες"
         remainingWorkAlternative: "Υπολειπόμενες ώρες"
         responsible: "Υπεύθυνος"
         startDate: "Ημερομηνία έναρξης"
@@ -986,7 +918,7 @@ el:
         version: "Έκδοση"
         work: "Work"
         workAlternative: "Εκτιμώμενος χρόνος"
-        remainingTime: "Remaining work"
+        remainingTime: "Υπολειπόμενες Ώρες"
       default_queries:
         manually_sorted: "New manually sorted query"
         latest_activity: "Τελευταία δραστηριότητα"
@@ -1034,9 +966,15 @@ el:
       reminders:
         button_label: "Set reminder"
         title:
-          new: "Set reminder"
+          new: "Set a reminder"
           edit: "Edit reminder"
         subtitle: "You will receive a notification for this work package at the chosen time."
+        presets:
+          tomorrow: "Tomorrow"
+          three_days: "In 3 days"
+          week: "In a week"
+          month: "In a month"
+          custom: "At a particular date/time"
       scheduling:
         is_parent: "Οι ημερομηνίες αυτού του πακέτου εργασίας προκύπτουν αυτόματα από τα παιδιά του. Ενεργοποιήστε τον \"Χειροκίνητο προγραμματισμό\" για να ορίσετε τις ημερομηνίες."
         is_switched_from_manual_to_automatic: "Οι ημερομηνίες αυτού του πακέτου εργασίας μπορεί να χρειαστεί να υπολογιστούν εκ νέου μετά τη μετάβαση από χειροκίνητο σε αυτόματο προγραμματισμό λόγω των σχέσεων με άλλα πακέτα εργασίας."
@@ -1135,6 +1073,8 @@ el:
     notice_successful_delete: "Επιτυχής διαγραφή."
     notice_successful_update: "Επιτυχής ενημέρωση."
     notice_job_started: "η εργασία ξεκίνησε."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Εσφαλμένο Αίτημα."
     relations:
       empty: Δεν υπάρχει συσχέτιση
@@ -1167,6 +1107,7 @@ el:
       child_work_packages:
         one: "ένα παιδί πακέτο εργασίας"
         other: "%{count} παιδιά πακέτα εργασίας"
+      hour_string: "%{hours} h"
       hour:
         one: "1 ώρα"
         other: "%{count} ώρες"
@@ -1187,7 +1128,7 @@ el:
       current_project_and_all_descendants: "Σε αυτό το έργο + υποέργα"
       current_project: "Σε αυτό το έργο"
       recently_viewed: "Recently viewed"
-      search: "Αναζήτηση"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
       title:
         all_projects: "όλα τα έργα"
         project_and_subprojects: "και όλα τα υποέργα"
@@ -1197,71 +1138,8 @@ el:
       list: "Πίνακας"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Επιστροφή"
       invite: "Πρόσκληση"
-      title:
-        invite: "Προσκαλέστε χρήστη"
-        invite_to_project: "Προσκαλέστε %{type} στο %{project}"
-        User: "χρήστης"
-        Group: "ομάδα"
-        PlaceholderUser: "placeholder χρήστης"
-        invite_principal_to_project: "Πρόσκληση %{principal} στο %{project}"
-      project:
-        label: "Έργο"
-        required: "Παρακαλούμε επιλέξτε ένα έργο"
-        lacking_permission: "Παρακαλώ επιλέξτε ένα διαφορετικό πρότζεκτ καθώς δεν έχετε δικαιώματα να εγγράψετε τους χρήστες στο επιλεγμένο."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Επόμενο"
-        no_results: "Δεν βρέθηκαν έργα"
-        no_invite_rights: "You are not allowed to invite members to this project"
-      type:
-        required: "Παρακαλώ επιλέξτε τον τύπο που θα προσκληθεί"
-        user:
-          title: "Χρήστης"
-          description: "Permissions based on the assigned role in the selected project"
-        group:
-          title: "Ομάδα"
-          description: "Permissions based on the assigned role in the selected project"
-        placeholder:
-          title: "Placeholder χρήστης"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Όνομα ή διεύθυνση email"
-          name: "Όνομα"
-        already_member_message: "Ήδη μέλος του %{project}"
-        no_results_user: "Δεν βρέθηκαν χρήστες"
-        invite_user: "Πρόσκληση:"
-        no_results_placeholder: "Δεν βρέθηκαν placeholders"
-        create_new_placeholder: "Δημιουργία νέου placeholder:"
-        no_results_group: "Δεν βρέθηκαν ομάδες"
-        next_button: "Επόμενο"
-        required:
-          user: "Παρακαλώ επιλέξτε ένα χρήστη"
-          placeholder: "Παρακαλώ επιλέξτε ένα placeholder"
-          group: "Παρακαλούμε επιλέξτε μια ομάδα"
-      role:
-        label: "Ρόλος στο %{project}"
-        no_roles_found: "Δεν βρέθηκε κανένας ρόλος"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Παρακαλούμε επιλέξτε ένα ρόλο"
-        next_button: "Επόμενο"
-      message:
-        label: "Μήνυμα πρόσκλησης"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Επόμενο"
-      summary:
-        next_button: "Αποστολή πρόσκλησης"
-      success:
-        title: "%{principal} προσκλήθηκε!"
-        description:
-          user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          placeholder: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          group: "Η ομάδα είναι τώρα μέρος του %{project}. Εν τω μεταξύ, μπορείτε να προγραμματίσετε ήδη με αυτή την ομάδα και να αντιστοιχίσετε πακέτα εργασίας."
-        next_button: "Συνέχεια"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1278,13 +1156,20 @@ el:
       selected_filter:
         all: "Όλα τα έργα"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
     baseline:
       toggle_title: "Baseline"
       clear: "Εκκαθάριση"

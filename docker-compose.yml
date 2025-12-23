@@ -36,7 +36,7 @@ x-op-backend: &backend
     target: develop
   <<: [*image, *restart_policy]
   environment:
-    LOCAL_DEV_CHECK: "${LOCAL_DEV_CHECK:?The docker-compose file for OpenProject has moved to https://github.com/opf/openproject-deploy}"
+    LOCAL_DEV_CHECK: "${LOCAL_DEV_CHECK:?The docker-compose file for OpenProject has moved to https://github.com/opf/openproject-docker-compose}"
     RAILS_ENV: development
     OPENPROJECT_CACHE__MEMCACHE__SERVER: cache:11211
     OPENPROJECT_RAILS__CACHE__STORE: file_store
@@ -66,6 +66,9 @@ services:
     depends_on:
       - db
       - cache
+      - frontend
+    ports:
+      - "${PORT:-3000}:3000"
 
   worker:
     <<: *backend
@@ -77,19 +80,19 @@ services:
   frontend:
     build:
       <<: *frontend-build
-    command: "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng serve --host 0.0.0.0 --public-host ${OPENPROJECT_DEV_URL}"
+    command: "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng serve --host 0.0.0.0"
     volumes:
       - ".:/home/dev/openproject"
       - "${CKEDITOR_BUILD_DIR:-./frontend/src/vendor/ckeditor/}:/home/dev/openproject/frontend/src/vendor/ckeditor/"
-    environment:
-      PROXY_HOSTNAME: backend
     networks:
       - network
-    depends_on:
-      - backend
+    environment:
+      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "openproject-assets.local"
+    ports:
+      - "${FE_PORT:-4200}:4200"
 
   db:
-    image: postgres:13
+    image: postgres:17
     <<: *restart_policy
     stop_grace_period: "3s"
     volumes:
@@ -110,7 +113,7 @@ services:
 ######### Testing stuff below ############
 
   db-test:
-    image: postgres:13
+    image: postgres:17
     stop_grace_period: "3s"
     volumes:
       - "pgdata-test:/var/lib/postgresql/data"
@@ -124,7 +127,7 @@ services:
   frontend-test:
     build:
       <<: *frontend-build
-    command: "npm run serve:test"
+    command: "npm run serve"
     volumes:
       - ".:/home/dev/openproject"
       - "fedata-test:/home/dev/openproject/public/assets/frontend"
@@ -135,6 +138,8 @@ services:
       FE_HOST: frontend-test
     networks:
       - testing
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://frontend-test:4200/"]
 
   backend-test:
     build:
@@ -147,17 +152,21 @@ services:
     networks:
       - testing
     depends_on:
-      - db-test
-      - selenium-hub
-      - frontend-test
-      - cuprite-chrome
+      db-test:
+        condition: service_started
+      selenium-hub:
+        condition: service_started
+      frontend-test:
+        condition: service_healthy
+      cuprite-chrome:
+        condition: service_started
     environment:
       RAILS_ENV: test
       OPENPROJECT_RAILS__RELATIVE__URL__ROOT: "${OPENPROJECT_RAILS__RELATIVE__URL__ROOT:-}"
       DATABASE_URL: postgresql://openproject:openproject@db-test/openproject
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
       SELENIUM_GRID_URL: http://selenium-hub:4444/wd/hub
-      CHROME_URL: http://cuprite-chrome:3333
+      CHROME_WS_URL: ws://cuprite-chrome:3000/chrome
       CAPYBARA_SERVER_PORT: 3000
       CAPYBARA_DYNAMIC_BIND_IP: 1
       CAPYBARA_APP_HOSTNAME: backend-test
@@ -183,7 +192,6 @@ services:
     depends_on:
       - chrome
       - firefox
-      - opera
     networks:
       - testing
 
@@ -223,34 +231,14 @@ services:
       NODE_MAX_INSTANCES: "${CI_JOBS:-4}"
       NODE_MAX_SESSION: "${CI_JOBS:-4}"
 
-  opera:
-    image: selenium/node-opera:4
-    volumes:
-      - /dev/shm:/dev/shm
-      - "downloads-test:/home/seluser/Downloads"
-    networks:
-      - testing
-    environment:
-      SE_EVENT_BUS_HOST: selenium-hub
-      SE_EVENT_BUS_PUBLISH_PORT: 4442
-      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
-      SCREEN_WIDTH: 1920
-      SCREEN_HEIGHT: 1080
-      # in case we want multiple sessions per container
-      NODE_MAX_INSTANCES: "${CI_JOBS:-4}"
-      NODE_MAX_SESSION: "${CI_JOBS:-4}"
-
   cuprite-chrome:
     # Currently, Apple M1 is only supported in unnumbered "latest" versions.
     # See https://github.com/browserless/chrome/issues/1393
-    image: browserless/chrome:latest
+    image: ghcr.io/browserless/chrome:latest
     networks:
       - testing
-    ports:
-      - "3333:3333"
     environment:
-      # By default, it uses 3000, which is typically used by Rails.
-      PORT: 3333
+      HOST: cuprite-chrome
       # Set connection timeout to avoid timeout exception during debugging
       # https://docs.browserless.io/docs/docker.html#connection-timeout
       CONNECTION_TIMEOUT: 600000

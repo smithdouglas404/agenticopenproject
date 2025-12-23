@@ -230,7 +230,7 @@ flowchart TD
   A1[Native client] -->|"HTTP(s) requests"| loadbalancer
   A2[SVN or Git client] -->|"HTTP(s) requests"| loadbalancer
   loadbalancer -->|Proxy| openproject
-  
+
   subgraph openproject[OpenProject Core Application]
     openprojectrailsapp[Rails application]
     C[Puma app server]
@@ -242,12 +242,12 @@ flowchart TD
   direction TB
     idp["Identity provider (idp)"]
     nex["Nextcloud (nex)"]
-    osh["OneDrive/SharePoint (osh)"]
+    osh["OneDrive (osh)"]
     gih["GitHub (gih)"]
     gil["GitLab (gil)"]
     cal["Calendar (cal)"]
    O["API integrations (api)"]
- 
+
 end
 
   subgraph services[Internal Services]
@@ -262,28 +262,29 @@ end
   openproject <--> services
   openproject --> integrations
   loadbalancer <--> integrations
-  
+
   subgraph localclients[Local Client / User device]
   direction TB
  browser
  A1
  A2
- 
- 
- 
- 
+
+
+
+
 end
-
-  
-  
-
 ```
 
 As a web application, the primary data flow is between the user's web browser (or attached API clients) through an external proxying web server (this might be a load balancer or proxying server). Depending on the individual setup the proxying server is responsible for terminating TLS connections for the course of this document - although encrypted connections between Load balancer and Puma server are possible. In case of packaged or Kubernetes installations, this proxying server might be part of the OpenProject stack (e.g., an Apache2 packaged installation server or nginx ingress).
 
 The external web server acts as a proxy/reverse-proxy for the OpenProject Puma app server, relaying requests for it to handle and respond. In the course of the request, access to external services such as the PostgreSQL database, a caching server, or attached storages might be performed. In case of S3-compatible object storage set ups, OpenProject performs calls to the object storage to put or request files from it. Likewise, for network-attached storages linked into the application, underlying network requests are performed. These are out of scope for this evaluation, as they are provided and maintained by the operator of the system.
 
-In the course of using the application, background tasks are enqueued in the database such as outgoing emails, cleanup tasks, or notification processing. These tasks are performed in a separate process, the background worker queue. This process accesses the same services as the application server process to access or modify data. It might connect to external integrations such as a [Nextcloud](../../user-guide/file-management/nextcloud-integration/) or [OneDrive/SharePoint](../../user-guide/file-management/one-drive-integration/) instance to set up file sharings depending on actions performed by the users.
+In the course of using the application, background tasks are enqueued in the database such as outgoing emails, cleanup
+tasks, or notification processing. These tasks are performed in a separate process, the background worker queue. This
+process accesses the same services as the application server process to access or modify data. It might connect to
+external integrations such as a [Nextcloud](../../user-guide/file-management/nextcloud-integration/)
+or [OneDrive](../../user-guide/file-management/one-drive-integration/) instance to set up file sharings
+depending on actions performed by the users.
 
 **Exemplary request flow**
 
@@ -313,34 +314,33 @@ flowchart LR
   Browser <-->|idp-01| IDP
   IDP <-->|idp-02| openproject[OpenProject]
   Browser <-->|idp-03| openproject
-  
+
   subgraph IDP[Identity Provider]
    direction LR
    ssoprovider[SSO provider]
    LDAP
-  
+
   end
-  
+
   subgraph openproject["Relying Party (OpenProject) "]
    direction LR
    ssoclient[SSO client]
    ldapauthentication[LDAP authentication]
    ldapgroupsync[LDAP group sync]
-   
+
  end
 
   subgraph localclients[Local clients]
    direction LR
    Browser
-   end
-  
+  end
 ```
 
 #### Purpose
 
 * Centralized identity and access management
 * Single sign on and single sign out ([OIDC](../../system-admin-guide/authentication/openid-providers/), [SAML](../../system-admin-guide/authentication/saml/))
-* [Syncing LDAP groups with OpenProject groups](../../system-admin-guide/authentication/ldap-connections/ldap-group-synchronization/)  
+* [Syncing LDAP groups with OpenProject groups](../../system-admin-guide/authentication/ldap-connections/ldap-group-synchronization/)
 
 #### Processed data
 
@@ -367,16 +367,16 @@ flowchart LR
   B <-->|eml-02| C[Email gateway]
   C <-->|eml-03| D[Email notification service]
 
- 
+
    subgraph localclients[Local clients]
   direction TB
    A
     end
- 
+
  subgraph internal[Internal services]
   direction TB
    C
-  
+
     end
 
   subgraph external[External services]
@@ -384,15 +384,11 @@ flowchart LR
    A
    B
     end
-    
+
   subgraph OpenProject
   direction TB
    D
     end
-    
-    
-
-
 ```
 
 #### Purpose
@@ -429,9 +425,9 @@ flowchart LR
 %%{init: {'theme':'neutral'}}%%
 flowchart LR
  opicalapi[OpenProject's iCal API] --> |cal-01|B
- B[Calendar web application] -->|cal-03| localcalendarapp[Local calendar application] 
+ B[Calendar web application] -->|cal-03| localcalendarapp[Local calendar application]
   opicalapi -->|cal-02| localcalendarapp
-  
+
   subgraph localclient[Local clients]
    direction TB
     localcalendarapp
@@ -442,10 +438,10 @@ flowchart LR
     direction TB
      B
     end
-    
+
     subgraph OpenProject
    direction TB
-     projectcalendar[Project calendar] --> opicalapi 
+     projectcalendar[Project calendar] --> opicalapi
     end
 ```
 
@@ -478,14 +474,14 @@ flowchart LR
   Browser <-->|nex-02| nextcloud
   nextclouddesktopclient[Nextcloud desktop client] <-->|nex-03| nextcloudapi
   appopenprojectintegration <-->|nex-04| openprojectapi
-  
+
   subgraph local[Local clients]
    Browser
    nextclouddesktopclient
    end
 
 subgraph openproject[OpenProject]
-   
+
    opnextcloudintegrattion[Nextcloud integration]
    openprojectapi[API]
     end
@@ -494,8 +490,7 @@ subgraph openproject[OpenProject]
    groupfolder[Group folder app]
    appopenprojectintegration[OpenProject integration app]
    nextcloudapi[API]
- end 
-  
+ end
 ```
 
 #### Purpose
@@ -516,7 +511,7 @@ subgraph openproject[OpenProject]
 * `nex-03` TLS
 * `nex-04` TLS
 
-### F: OneDrive/SharePoint (osh)
+### F: OneDrive (osh)
 
 #### Overview
 
@@ -527,28 +522,27 @@ flowchart LR
   Browser <-->|osh-02| onedrive
   onedrivedesktopclient[Nextcloud desktop client] <-->|osh-03| onedriveapi
   appopenprojectintegration <-->|osh-04| openprojectapi
-  
+
   subgraph local[Local clients]
    Browser
    onedrivedesktopclient[OneDrive desktop client]
    end
 
 subgraph openproject[OpenProject]
-   
-   oponedrivetegration[OneDrive/SharePoint integration]
+
+   oponedrivetegration[OneDrive integration]
    openprojectapi[API]
     end
 
-  subgraph onedrive[OneDrive/SharePoint]
+  subgraph onedrive[OneDrive]
    appopenprojectintegration[OpenProject integration app]
    onedriveapi[API]
- end 
-  
+ end
 ```
 
 #### Purpose
 
-* Users can link files stored in OneDrive/SharePoint with work packages in OpenProject.
+* Users can link files stored in OneDrive with work packages in OpenProject.
 
 #### Processed data
 
@@ -580,7 +574,7 @@ flowchart LR
  githubwebhooks[Webhooks]
 
  end
- 
+
  subgraph localclients[Local clients]
    direction TB
    gitclient[Git client]
@@ -590,8 +584,6 @@ flowchart LR
    direction TB
    opgithubintegration[Github integration] --- workpackagesmodule[Work packages module]
  end
-  
-  
 ```
 
 #### Purpose
@@ -627,7 +619,7 @@ flowchart LR
  gitlabwebhooks[Webhooks]
 
  end
- 
+
  subgraph localclients[Local clients]
    direction TB
    gitclient[Git client]
@@ -637,8 +629,6 @@ flowchart LR
    direction TB
    opgitlabintegration[GitLab integration] --- workpackagesmodule[Work packages module]
  end
-  
-  
 ```
 
 #### Purpose
@@ -666,7 +656,7 @@ flowchart LR
 %%{init: {'theme':'neutral'}}%%
 flowchart LR
  api <-->|api-01| apiintegration[API integration]
- 
+
  subgraph externalintegreations[External integrations]
    direction TB
    apiintegration
@@ -696,11 +686,11 @@ flowchart LR
 
 OpenProject makes use of technical cookies to identity the browser client and/or remember information such as 2FA login state. The core application makes use of these cookies:
 
-| **Cookie name**                                | **Description**                                              | **Expiry**                                                   | **Security flags**                                    | **Implementation**                                           |
+| **Cookie name**                                | **Description**                                              | **Expiration**                                                   | **Security flags**                                    | **Implementation**                                           |
 | ---------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------- | ------------------------------------------------------------ |
-| `_open_project_session` (name is configurable) | contains the information about the logged in user as well as information stored between requests on the user's choices (e.g. the filters for costs are in part stored there) | Session <br>+ configurable server-sideTTL                  | secure<br>httponly<br>Samesite=Lax<br>encrypted | [Code ref](https://github.com/opf/openproject/blob/release/13.0/config/initializers/session_store.rb#L34-L39) |
-| `autologin` (name is configurable)             | (Optional feature, requires opt-in under Administration > Authentication settings) <br>enables the user to automatically log in again after the session expired (e.g. because the browser was closed). It is set when the user checks the '*Stay logged in*' box in the login form.<br> | Cookie 1 year<br>+ server-side token N days (configurable) | secure<br>httponly<br>Samesite=Lax<br>encrypted | [Code ref](https://github.com/opf/openproject/blob/release/13.0/app/controllers/concerns/accounts/user_login.rb#L19C1-L29) |
-| `op2fa_remember_token`                         | the presence of that cookie suppresses the need for the user to provide a second factor upon login for N days (configurable by administration) if the user selects to do so when entering the 2fa information. | N days (configurable)                                        | secure<br>httponly<br>Samesite=Lax<br>encrypted | [Code ref](https://github.com/opf/openproject/blob/release/13.0/modules/two_factor_authentication/app/controllers/concerns/two_factor_authentication/remember_token.rb#L28-L34) |
+| `_open_project_session` (name is configurable) | contains the information about the logged in user as well as information stored between requests on the user's choices (e.g. the filters for costs are in part stored there) | Session <br>+ configurable server-sideTTL                  | secure<br>httponly<br>Samesite=Lax<br>encrypted | [Code ref](https://github.com/opf/openproject/blob/release/16.0/config/initializers/session_store.rb#L34-L39) |
+| `autologin` (name is configurable)             | (Optional feature, requires opt-in under Administration > Authentication settings) <br>enables the user to automatically log in again after the session expired (e.g. because the browser was closed). It is set when the user checks the '*Stay logged in*' box in the login form.<br> | Cookie 1 year<br>+ server-side token N days (configurable) | secure<br>httponly<br>Samesite=Lax<br>encrypted | [Code ref](https://github.com/opf/openproject/blob/release/16.0/app/services/users/login_service.rb#L58-L74) |
+| `op2fa_remember_token`                         | the presence of that cookie suppresses the need for the user to provide a second factor upon login for N days (configurable by administration) if the user selects to do so when entering the 2fa information. | N days (configurable)                                        | secure<br>httponly<br>Samesite=Lax<br>encrypted | [Code ref](https://github.com/opf/openproject/blob/release/16.0/modules/two_factor_authentication/app/controllers/concerns/two_factor_authentication/remember_token.rb#L28-L33) |
 
 ## Deletion of personal data
 

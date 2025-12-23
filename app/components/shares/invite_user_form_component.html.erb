@@ -4,7 +4,6 @@
         model: new_share,
         url: url_for([entity, Member]),
         data: { controller: 'user-limit shares--user-selected',
-                'application-target': 'dynamic',
                 'user-limit-open-seats-value': OpenProject::Enterprise.open_seats_count,
                 action: 'submit->shares--user-selected#ensureUsersSelected' }
       ) do |form|

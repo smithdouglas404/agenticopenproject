@@ -44,7 +44,7 @@ import {
   HalResourceEditingService,
 } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/resource-changeset';
-import * as moment from 'moment';
+import moment from 'moment';
 import {
   WorkPackageViewSelectionService,
 } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-selection.service';
@@ -202,7 +202,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       // There might also be a query_id but the settings persisted in it are overwritten by the props.
       if (this.urlParams.query_props) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const oldQueryProps:{ [key:string]:unknown } = JSON.parse(this.urlParams.query_props as string);
+        const oldQueryProps:Record<string, unknown> = JSON.parse(this.urlParams.query_props as string);
 
         // Update the date period of the calendar in the filter
         const newQueryProps = {
@@ -221,7 +221,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       }
     } else {
       queryProps = this.generateQueryProps(
-        this.querySpace.query.value as QueryResource,
+        this.querySpace.query.value!,
         startDate,
         endDate,
       );
@@ -335,7 +335,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
     event.preventDefault();
 
-    const handler = new WorkPackageViewContextMenu(this.injector, workPackageId, jQuery(event.target as HTMLElement));
+    const handler = new WorkPackageViewContextMenu(this.injector, workPackageId, event.target as HTMLElement);
     this.contextMenuService.show(handler, event);
   }
 
@@ -432,16 +432,65 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
   updateDates(resizeInfo:EventResizeDoneArg|EventDropArg|EventReceiveArg, dragged?:boolean):ResourceChangeset<WorkPackageResource> {
     const workPackage = resizeInfo.event.extendedProps.workPackage as WorkPackageResource;
-    const changeset = this.halEditing.edit(workPackage);
-    if (!workPackage.ignoreNonWorkingDays && workPackage.duration && dragged) {
-      changeset.setValue('duration', workPackage.duration);
-    } else {
-      const due = moment(resizeInfo.event.endStr)
-        .subtract(1, 'day')
-        .format('YYYY-MM-DD');
-      changeset.setValue('dueDate', due);
+    const startDate = resizeInfo.event.startStr;
+    const endDate = moment(resizeInfo.event.endStr).subtract(1, 'day').format('YYYY-MM-DD');
+
+    // When resizing an event, or if it's a milestone, set work package dates to
+    // event dates
+    if (!dragged || this.isMilestone(workPackage)) {
+      return this.changeToDates(workPackage, startDate, endDate);
     }
-    changeset.setValue('startDate', resizeInfo.event.startStr);
+
+    // When drag&drop, adjust existing dates and duration of work package,
+    //
+    // In TeamPlanner, work packages can be moved from a work package list to
+    // the calendar. In this case, there is no `delta` property (EventReceiveArg
+    // event type) and dates need to set, even if not set initially.
+    //
+    // When moving inside the calendar, event is an EventDropArg and `delta`
+    // property is present. Dates must be changed only if they are already set.
+    const isMovingInSameCalendar = !!(resizeInfo as EventDropArg).delta;
+    if (isMovingInSameCalendar) {
+      return this.moveToDates(workPackage, startDate, endDate);
+    }
+    return this.moveToStartDate(workPackage, startDate);
+  }
+
+  private changeToDates(workPackage:WorkPackageResource, startDate:string, endDate:string):ResourceChangeset<WorkPackageResource> {
+    const changeset = this.halEditing.edit(workPackage);
+    changeset.setValue('startDate', startDate);
+    changeset.setValue('dueDate', endDate);
+
+    return changeset;
+  }
+
+  private moveToDates(workPackage:WorkPackageResource, startDate:string, endDate:string):ResourceChangeset<WorkPackageResource> {
+    const changeset = this.halEditing.edit(workPackage);
+
+    // Due to non-working days, we can't directly set start and due date when
+    // drag-n-dropping work packages. Instead set duration (if present) and
+    // start date to get due date recomputed.
+    if (workPackage.duration) {
+      changeset.setValue('duration', workPackage.duration);
+    }
+
+    // Keep dates unset if they are not set
+    if (workPackage.startDate) {
+      changeset.setValue('startDate', startDate);
+    } else {
+      changeset.setValue('dueDate', endDate);
+    }
+
+    return changeset;
+  }
+
+  private moveToStartDate(workPackage:WorkPackageResource, startDate:string):ResourceChangeset<WorkPackageResource> {
+    const changeset = this.halEditing.edit(workPackage);
+
+    changeset.setValue('startDate', startDate);
+    // keep duration if present to deal with non-working days, or defaults to 1 day
+    changeset.setValue('duration', workPackage.duration || 'P1D');
+
     return changeset;
   }
 }

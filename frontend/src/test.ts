@@ -10,7 +10,10 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import { I18n } from 'i18n-js'
+import { I18n } from 'i18n-js';
+import { registerDialogStreamAction } from 'core-turbo/dialog-stream-action';
+
+registerDialogStreamAction();
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access no-explicit-any
 (window as any).global = window;

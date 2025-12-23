@@ -22,15 +22,20 @@ nl:
     plural: Webhooks
     resources:
       time_entry:
-        name: "Tijd invoer"
+        name: "Tijdregistratie"
     outgoing:
       no_results_table: Er zijn nog geen webhooks gedefinieerd.
       label_add_new: Nieuwe webhook toevoegen
       label_edit: Webhook bewerken
-      label_event_resources: Gebeurtenis bronnen
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Gemaakt"
         updated: "Bijgewerkt"
+        comment: "Commentaar"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Bij het voorkomen van een gebeurtenis zoals het maken van een werkpakket of een update van een project OpenProject stuurt een POST-aanvraag naar de geconfigureerde webeindpunten. Vaak wordt de afspraak verzonden nadat de %{link} voorbij is.

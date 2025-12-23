@@ -37,7 +37,7 @@ RSpec.describe "Work Package table configuration modal columns spec", :js do
       columns.remove "Subject", save_changes: false
       columns.add "Project", save_changes: true
       columns.expect_column_available "Subject"
-      columns.expect_column_not_available "Project"
+      columns.expect_column_not_available /Project\z/
 
       expect(page).to have_css(".wp-table--table-header", text: "ID")
       expect(page).to have_css(".wp-table--table-header", text: "PROJECT")
@@ -78,14 +78,11 @@ RSpec.describe "Work Package table configuration modal columns spec", :js do
         sleep 1
 
         columns.apply
-        expect(page).to have_css(".wp-table--table-header", text: "ID")
-        expect(page).to have_css(".wp-table--table-header", text: "PROJECT")
-        expect(page).to have_css(".wp-table--table-header", text: "SUBJECT")
 
-        names = all(".wp-table--table-header").map(&:text)
-        # Depending on what browser is used, subject column may be first or second
-        # it doesn't matter for the outcome of this test
-        expect(names).to eq(%w[SUBJECT ID PROJECT]).or(eq(%w[ID SUBJECT PROJECT]))
+        expect(page).to have_selector :columnheader, text: /.+/, count: 3
+        expect(page).to have_selector :columnheader, "ID"
+        expect(page).to have_selector :columnheader, "Subject"
+        expect(page).to have_selector :columnheader, "Project", colindex: 2
       end
     end
   end

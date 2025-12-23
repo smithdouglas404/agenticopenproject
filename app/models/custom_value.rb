@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -44,8 +46,10 @@ class CustomValue < ApplicationRecord
   delegate :editable?,
            :admin_only?,
            :required?,
+           :is_for_all?,
            :max_length,
            :min_length,
+           :calculated_value?,
            to: :custom_field
 
   delegate :to_s, to: :value

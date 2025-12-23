@@ -36,8 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
                  "members-form-target": "addMemberForm",
                  controller: "user-limit",
                  "user-limit-open-seats-value": OpenProject::Enterprise.open_seats_count,
-                 "user-limit-member-autocompleter-value": true,
-                 "application-target": "dynamic"
+                 "user-limit-member-autocompleter-value": true
                }
     ) do |f| %>
     <a title="<%= t("js.close_form_title") %>"
@@ -70,14 +69,15 @@ See COPYRIGHT and LICENSE files for more details.
       </div>
       <div class="grid-content medium-8 small-12 -flex -with-button">
         <div class="form--field">
-          <%= styled_label_tag :member_role_ids do %>
-            <%= content_tag :span, t(:label_role_search) %>
-            <%= angular_component_tag "opce-attribute-help-text",
-                                      inputs: {
-                                        attribute: "members",
-                                        attributeScope: "Project"
-                                      } %>
-          <% end %>
+          <%= styled_label_tag :member_role_ids, title: t(:label_role_search) do
+                render OpenProject::Common::AttributeLabelComponent.new(
+                  attribute: "members",
+                  model: Project,
+                  tag: nil
+                ) do
+                  render(Primer::Beta::Text.new) { t(:label_role_search) }
+                end
+              end %>
           <div class="form--field-container">
             <div class="form--select-container -auto">
               <% options = roles.collect { |obj| [obj.name, obj.id] } %>

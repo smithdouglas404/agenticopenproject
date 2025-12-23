@@ -17,7 +17,8 @@ pl:
       new_folder: "Nowy folder"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Magazyn danych"
       information:
         authentication_error: "Żądania do %{storageType} nie można uwierzytelnić, to jest błąd."

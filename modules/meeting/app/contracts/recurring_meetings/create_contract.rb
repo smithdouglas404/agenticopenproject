@@ -29,6 +29,8 @@
 
 module RecurringMeetings
   class CreateContract < BaseContract
+    attribute :uid
+
     validate :user_allowed_to_add
     validate :project_is_present
     validate :start_time_constraints

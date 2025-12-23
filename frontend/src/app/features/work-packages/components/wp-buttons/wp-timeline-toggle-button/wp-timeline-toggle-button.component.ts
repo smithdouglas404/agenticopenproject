@@ -45,6 +45,7 @@ export interface TimelineButtonText extends ButtonControllerText {
   styleUrls: ['./wp-timeline-toggle-button.sass'],
   selector: 'wp-timeline-toggle-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageTimelineButtonComponent extends AbstractWorkPackageButtonComponent implements OnInit {
   public buttonId = 'work-packages-timeline-toggle-button';

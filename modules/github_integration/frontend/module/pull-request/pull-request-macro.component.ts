@@ -45,6 +45,7 @@ import { PullRequestState } from './pull-request-state.component';
   providers: [
     HalResourceEditingService,
   ],
+  standalone: false,
 })
 export class PullRequestMacroComponent implements OnInit {
   @Input() pullRequestId:string;

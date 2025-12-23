@@ -53,6 +53,16 @@ OpenProject has multiple file format options for exporting work packages, includ
 
 OpenProject has multiple options for exporting work packages in PDF format. These include table, report and Gantt chart. 
 
+> [!TIP]
+>
+> OpenProject PDF export supports commonly used character sets, including multilingual fonts with different alphabets, various symbols (mathematical, technical) and emojis.
+>
+![Example of a PDF export in OpenProject that includes lorem ipsum text in multiple languages and mathematical symbols](openproject-user-guide-wp-export-multilingual-symbols-example.png)
+
+> [!NOTE]
+>
+> Rich text can be embedded using [Macros](../../wysiwyg/#attributes), such as descriptions of other work packages. This feature is supported as long as the embedding is not within table cells, or if it only contains basic text formatting.
+
 #### PDF Table
 
 PDF Table exports the work package table displaying work packages as single rows with the selected columns for the work package table. Work package IDs are linked to the respective work packages. Clicking on a work package ID will lead you directly to the work package in OpenProject.
@@ -74,9 +84,6 @@ The table of attributes is followed by the work package description and, if nece
 
 > [!TIP]
 > If you used page breaks in work package descriptions, contents will be split into separate pages accordingly. 
-
-> [!NOTE]
-> Embedding of rich text, e.g. descriptions of other work packages, is currently not supported.
 
 ![OpenProject_pdf_report_export](openproject-pdf-export-work-plans.png)
 
@@ -100,8 +107,7 @@ If you select the **Include images** option, your PDF Report will include the im
 
 #### Gantt chart PDF
 
-> [!NOTE]
-> Gantt chart PDF export is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide). An upgrade from the free Community edition is easy and helps support OpenProject.
+[feature: gantt_pdf_export ]
 
 You can export Gantt charts directly from the work packages module by selecting the respective option, or from the Gantt charts module by doing the same.
 
@@ -177,9 +183,8 @@ If you select **Generate PDF**, a modal will open, where you can adjust the foll
 
 - **Template** is a dropdown menu showing all of the options currently enabled. At moment possible template options include:
 
-   - *Attributes and description* - this template lists all the work package attributes [configured in the work package form](../../../system-admin-guide/manage-work-packages/work-package-types/#work-package-form-configuration-enterprise-add-on), regardless whether they are filled out or not.
-   - *Contract* - this template includes work package details formatted to the standard German contract form.
-
+  - *Attributes and description* - this template lists all the work package attributes [configured in the work package form](../../../system-admin-guide/manage-work-packages/work-package-types/#work-package-form-configuration-enterprise-add-on), regardless whether they are filled out or not.
+  - *Contract* - this template includes work package details formatted to the standard German contract form.
     
 > [!TIP] 
 > You can define which templates are enabled for specific work package types in the [administration settings](../../../system-admin-guide/manage-work-packages/work-package-types).

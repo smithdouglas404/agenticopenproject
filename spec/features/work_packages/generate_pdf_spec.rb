@@ -110,7 +110,7 @@ RSpec.describe "work package generate PDF dialog", :js do
         hyphenation: "false",
         hyphenation_language: "en",
         template: "attributes",
-        footer_text_right: project.name,
+        footer_text: project.name,
         page_orientation: "portrait"
       }
     end
@@ -140,7 +140,7 @@ RSpec.describe "work package generate PDF dialog", :js do
   context "with hyphenation" do
     let(:expected_params) do
       {
-        footer_text_right: "Custom Footer Text",
+        footer_text: "Custom Footer Text",
         template: "attributes",
         hyphenation: "true",
         hyphenation_language: "de"
@@ -150,7 +150,7 @@ RSpec.describe "work package generate PDF dialog", :js do
     it "downloads with options" do
       check("Hyphenation")
       select "Deutsch", from: "hyphenation_language"
-      fill_in "footer_text_right", with: "Custom Footer Text"
+      fill_in "footer_text", with: "Custom Footer Text"
       generate!
     end
   end

@@ -44,11 +44,8 @@ module Components
       end
 
       def select_type(value)
-        retry_block do
-          select_autocomplete page.find_test_selector("work_package_create_dialog_type"),
-                              query: value,
-                              select_text: value.upcase,
-                              results_selector: "#create-work-package-dialog"
+        in_dialog do
+          select_combo_box_option value, from: "Type"
         end
       end
 

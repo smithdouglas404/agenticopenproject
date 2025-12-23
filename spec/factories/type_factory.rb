@@ -58,6 +58,10 @@ FactoryBot.define do
     end
   end
 
+  trait :with_subject_pattern do
+    patterns { { subject: { blueprint: "{{author}} - {{status}}/{{type}} - {{id}}", enabled: true } } }
+  end
+
   trait :default do
     is_default { true }
   end

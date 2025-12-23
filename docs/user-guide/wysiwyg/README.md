@@ -150,6 +150,10 @@ For work packages and users, typing `#` or `@` will open an autocomplete dropdow
 > These macros will only be expanded in the frontend. For each individual user, the correct permissions will be checked and
 > the macro will result in an error if the user is not allowed to view the respective resource.
 
+> [!NOTE]
+> In the [PDF Export](../work-packages/exporting/#pdf-export), embedding of rich text attributes (e.g. work package description) is limited for some cases.
+> Simple text formatting or embedding outside of table cells is supported.
+
 ### Embedding of a work package value by work package ID
 
 Use the `workPackageValue:ID:attribute` macros to embed attributes of a work package by its [work package ID](../work-packages). 
@@ -222,31 +226,32 @@ The following lists show the supported attributes for work packages and projects
 The following list contains all supported attribute names for the `workPackageValue` and `workPackageLabel` macros, 
 where `1234` stands for the [work package ID](../work-packages).
 
-| **Attribute**       | Usage example                                                |
-| ------------------- | ------------------------------------------------------------ |
-| %Complete           | `workPackageValue:8415:percentageDone`                       |
-| Accountable         | `workPackageValue:1234:responsible`                          |
-| Assignee            | `workPackageValue:1234:assignee`                             |
-| Author              | `workPackageValue:1234:author`                               |
-| Category            | `workPackageValue:1234:category`                             |
-| Creation date       | `workPackageValue:1234:createdAt`                            |
+| **Attribute**       | Usage example                                                   |
+|---------------------|-----------------------------------------------------------------|
+| %Complete           | `workPackageValue:8415:percentageDone`                          |
+| Accountable         | `workPackageValue:1234:responsible`                             |
+| Assignee            | `workPackageValue:1234:assignee`                                |
+| Author              | `workPackageValue:1234:author`                                  |
+| Category            | `workPackageValue:1234:category`                                |
+| Creation date       | `workPackageValue:1234:createdAt`                               |
 | Custom Fields       | `workPackageValue:1234:"Name of the work package custom field"` |
-| Date of last update | `workPackageValue:1234:updatedAt`                            |
-| Description         | `workPackageValue:1234:description`                          |
-| Estimated time      | `workPackageValue:1234:estimatedTime`                        |
-| Finish date         | `workPackageValue:1234:dueDate`                              |
-| Parent work package | `workPackageValue:1234:parent`                               |
-| Priority            | `workPackageValue:1234:priority`                             |
-| Project             | `workPackageValue:1234:project`                              |
-| Remaining hours     | `workPackageValue:1234:remainingTime`                        |
-| Remaining work      | `workPackageValue:8415:remainingTime`                        |
-| Spent time          | `workPackageValue:1234:spentTime`                            |
-| Start date          | `workPackageValue:1234:startDate`                            |
-| Status              | `workPackageValue:1234:status`                               |
-| Subject / Title     | `workPackageValue:1234:subject`                              |
-| Version             | `workPackageValue:1234:version`                              |
-| Work                | `workPackageValue:8415:estimatedTime`                        |
-| Work package type   | `workPackageValue:1234:type`                                 |
+| Date of last update | `workPackageValue:1234:updatedAt`                               |
+| Description         | `workPackageValue:1234:description`                             |
+| Estimated time      | `workPackageValue:1234:estimatedTime`                           |
+| Finish date         | `workPackageValue:1234:dueDate`                                 |
+| Parent work package | `workPackageValue:1234:parent`                                  |
+| Priority            | `workPackageValue:1234:priority`                                |
+| Project             | `workPackageValue:1234:project`                                 |
+| Project phase       | `workPackageValue:1234:projectPhase`                            |
+| Remaining hours     | `workPackageValue:1234:remainingTime`                           |
+| Remaining work      | `workPackageValue:8415:remainingTime`                           |
+| Spent time          | `workPackageValue:1234:spentTime`                               |
+| Start date          | `workPackageValue:1234:startDate`                               |
+| Status              | `workPackageValue:1234:status`                                  |
+| Subject / Title     | `workPackageValue:1234:subject`                                 |
+| Version             | `workPackageValue:1234:version`                                 |
+| Work                | `workPackageValue:8415:estimatedTime`                           |
+| Work package type   | `workPackageValue:1234:type`                                    |
 
 > [!NOTE]
 > Recursive embedding of rich text is not supported. For example, you cannot embed a work package description in itself with `workPackageValue:description`.

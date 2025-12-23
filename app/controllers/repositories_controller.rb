@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -127,7 +129,8 @@ class RepositoriesController < ApplicationController
     else
       flash[:error] = repository.errors.full_messages
     end
-    redirect_to project_settings_repository_path(@project)
+    redirect_to project_settings_repository_path(@project),
+                status: :see_other
   end
 
   alias_method :browse, :show
@@ -255,8 +258,7 @@ class RepositoriesController < ApplicationController
   end
 
   def stats
-    # allow object_src self to be able to load dynamic stats SVGs from ./graph
-    override_content_security_policy_directives object_src: %w('self')
+    append_content_security_policy_directives object_src: %w('self') # rubocop:disable Lint/PercentStringArray
 
     @show_commits_per_author = current_user.allowed_in_project?(:view_commit_author_statistics, @project)
   end

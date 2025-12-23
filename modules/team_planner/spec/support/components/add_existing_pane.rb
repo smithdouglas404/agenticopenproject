@@ -67,11 +67,10 @@ module Components
       end
     end
 
-    def drag_wp_by_pixel(work_package, by_x, by_y)
-      source = page
-                 .find("[data-test-selector='op-add-existing-pane--wp-#{work_package.id}']")
-
-      drag_by_pixel(element: source, by_x:, by_y:)
+    def drag_wp_to_date(work_package, date)
+      wp_card = card(work_package)
+      day_header = page.find(:columnheader, exact_text: date.strftime("%02d %A"))
+      drag_n_drop_element(from: wp_card, to: day_header, offset_y: day_header.native.size.height)
     end
 
     def card(work_package)

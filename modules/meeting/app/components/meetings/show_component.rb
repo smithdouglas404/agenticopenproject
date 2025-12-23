@@ -41,10 +41,10 @@ module Meetings
 
     private
 
-    def wrapper_data_attributes
+    def show_page_data_attributes
       {
-        controller: "meetings-drag-and-drop add-meeting-params",
-        "application-target": "dynamic"
+        turbo: true,
+        controller: "meetings--drag-and-drop meetings--submit"
       }
     end
   end

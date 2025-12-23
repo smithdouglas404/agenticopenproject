@@ -131,7 +131,7 @@ module API
         end
 
         def property_supported?(property)
-          ALL_SUPPORTED_PROPERTIES.any? { _1.is_a?(Regexp) ? property =~ _1 : property == _1 }
+          ALL_SUPPORTED_PROPERTIES.any? { it.is_a?(Regexp) ? property =~ it : property == it }
         end
       end
     end

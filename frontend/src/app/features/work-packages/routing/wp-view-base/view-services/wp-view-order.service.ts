@@ -47,12 +47,14 @@ import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class WorkPackageViewOrderService extends WorkPackageQueryStateService<QueryOrder> {
-  constructor(protected readonly querySpace:IsolatedQuerySpace,
+  constructor(
+    protected readonly querySpace:IsolatedQuerySpace,
     protected readonly apiV3Service:ApiV3Service,
     protected readonly states:States,
     protected readonly causedUpdates:CausedUpdatesService,
     protected readonly wpTableSortBy:WorkPackageViewSortByService,
-    protected readonly pathHelper:PathHelperService) {
+    protected readonly pathHelper:PathHelperService,
+) {
     super(querySpace);
   }
 
@@ -88,7 +90,7 @@ export class WorkPackageViewOrderService extends WorkPackageQueryStateService<Qu
    * Pull an item from the rendered list
    */
   public remove(order:string[], wpId:string):string[] {
-    _.remove(order, (id) => id === wpId);
+    order = order.filter((id) => id !== wpId);
     this.update({ [wpId]: -1 });
     return order;
   }

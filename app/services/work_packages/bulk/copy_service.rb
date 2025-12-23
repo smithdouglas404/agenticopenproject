@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -111,7 +113,7 @@ module WorkPackages
           WorkPackages::CopyService
             .new(user:,
                  work_package:)
-            .with_state(bulk_copy_in_progress: true)
+            .with_state(bulk_duplicate_in_progress: true)
             .call(**overridden_attributes.symbolize_keys)
         end
       end

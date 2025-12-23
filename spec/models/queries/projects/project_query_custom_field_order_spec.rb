@@ -171,7 +171,7 @@ RSpec.describe ProjectQuery, "order using CustomFieldOrder" do
 
   context "for list format" do
     let(:possible_values) { %w[100 3 20] }
-    let(:id_by_value) { custom_field.possible_values.to_h { [_1.value, _1.id] } }
+    let(:id_by_value) { custom_field.possible_values.to_h { [it.value, it.id] } }
 
     context "if not allowing multi select" do
       include_examples "it sorts" do
@@ -183,7 +183,7 @@ RSpec.describe ProjectQuery, "order using CustomFieldOrder" do
             # sorting is done by position, and not by value
             project_with_cf_value(id_by_value.fetch("100")),
             project_with_cf_value(id_by_value.fetch("3")),
-            project_with_cf_value(id_by_value.fetch("20")),
+            project_with_cf_value(id_by_value.fetch("20"))
           ]
         end
       end
@@ -207,7 +207,7 @@ RSpec.describe ProjectQuery, "order using CustomFieldOrder" do
             project_with_cf_value(*id_by_value.fetch_values("20", "100")),      # 100, 20
             project_with_cf_value(*id_by_value.fetch_values("3")),              # 3
             project_with_cf_value(*id_by_value.fetch_values("3", "20")),        # 3, 20
-            project_with_cf_value(*id_by_value.fetch_values("20")),             # 20
+            project_with_cf_value(*id_by_value.fetch_values("20")) # 20
           ]
         end
 
@@ -230,7 +230,7 @@ RSpec.describe ProjectQuery, "order using CustomFieldOrder" do
         create(:user, lastname: "A", firstname: "X", login: "ax", mail: "ax@o.p")
       ]
     end
-    shared_let(:id_by_login) { users.to_h { [_1.login, _1.id] } }
+    shared_let(:id_by_login) { users.to_h { [it.login, it.id] } }
 
     shared_let(:role) { create(:project_role) }
 
@@ -254,7 +254,7 @@ RSpec.describe ProjectQuery, "order using CustomFieldOrder" do
             id_by_login.fetch("ax"),
             id_by_login.fetch("ba"),
             id_by_login.fetch("bb1"),
-            id_by_login.fetch("bb2"),
+            id_by_login.fetch("bb2")
           ]
         end
 
@@ -280,7 +280,7 @@ RSpec.describe ProjectQuery, "order using CustomFieldOrder" do
             id_by_login.fetch_values("ax", "bb1"), # ax, bb1
             id_by_login.fetch_values("ba"),        # ba
             id_by_login.fetch_values("bb1", "ba"), # ba, bb1
-            id_by_login.fetch_values("ba", "bb2"), # ba, bb2
+            id_by_login.fetch_values("ba", "bb2") # ba, bb2
           ]
         end
 
@@ -310,7 +310,7 @@ RSpec.describe ProjectQuery, "order using CustomFieldOrder" do
         create(:version, project:, sharing: "system", name: "9")
       ]
     end
-    let(:id_by_name) { versions.to_h { [_1.name, _1.id] } }
+    let(:id_by_name) { versions.to_h { [it.name, it.id] } }
 
     context "if not allowing multi select" do
       include_examples "it sorts" do
@@ -322,7 +322,7 @@ RSpec.describe ProjectQuery, "order using CustomFieldOrder" do
             project_with_cf_value(id_by_name.fetch("9")),
             project_with_cf_value(id_by_name.fetch("10.2")),
             project_with_cf_value(id_by_name.fetch("10.10.2")),
-            project_with_cf_value(id_by_name.fetch("10.10.10")),
+            project_with_cf_value(id_by_name.fetch("10.10.10"))
           ]
         end
       end

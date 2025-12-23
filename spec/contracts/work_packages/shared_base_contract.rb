@@ -200,7 +200,7 @@ RSpec.shared_examples "work package contract" do
       end
     end
 
-    describe "project_phase_definition", with_flag: { stages_and_gates: true } do
+    describe "project_phase_definition" do
       let(:permissions) { super() + %i[view_project_phases] }
 
       before do
@@ -231,10 +231,6 @@ RSpec.shared_examples "work package contract" do
         end
 
         it_behaves_like "contract is invalid", project_phase_id: :inclusion
-      end
-
-      context "with the feature being disabled", with_flag: { stages_and_gates: false } do
-        it_behaves_like "contract is invalid", project_phase_id: :error_readonly
       end
     end
   end

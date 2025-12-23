@@ -38,7 +38,7 @@ module MeetingAgendaItems
       @meeting = meeting_agenda_item.meeting
     end
 
-    def perform(params)
+    def perform
       service_call = validate_permission
       service_call = validate_meeting_existence if service_call.success?
       service_call = validate_meeting_agenda_item_editable if service_call.success?

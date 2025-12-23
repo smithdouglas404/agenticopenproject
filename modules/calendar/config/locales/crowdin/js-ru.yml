@@ -6,3 +6,4 @@ ru:
       title: 'Календарь'
       too_many: 'Всего %{count} пакетов работ, но может быть отображено только %{max}.'
       unsaved_title: 'Безымянный календарь'
+      label_calendar_plural: 'Календари'

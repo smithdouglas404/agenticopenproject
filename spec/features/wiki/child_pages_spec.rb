@@ -69,8 +69,8 @@ RSpec.describe "wiki child pages", :js, :selenium do
     end
 
     # hierarchy displayed in the sidebar
-    expect(page).to have_css(".pages-hierarchy",
-                             text: "#{parent_page.title}\n#{child_page_name}")
+    expect(page).to have_css(".pages-hierarchy", text: parent_page.title)
+    expect(page).to have_css(".pages-hierarchy", text: child_page_name)
 
     # on toc page
     visit index_project_wiki_index_path(project)

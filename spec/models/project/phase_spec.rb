@@ -31,6 +31,11 @@
 require "rails_helper"
 
 RSpec.describe Project::Phase do
+  shared_let(:admin) { create(:admin) }
+  before do
+    login_as(admin)
+  end
+
   it "can be instantiated" do
     expect { described_class.new }.not_to raise_error(NotImplementedError)
   end
@@ -62,68 +67,29 @@ RSpec.describe Project::Phase do
     end
   end
 
-  describe "#not_set?" do
-    it "returns true if start_date or finish_date is blank" do
-      expect(subject.not_set?).to be(true)
-    end
+  describe "validations" do
+    subject { create(:project_phase) }
 
-    it "returns false if both start_date and finish_date are present" do
-      subject.start_date = Time.zone.today
-      subject.finish_date = Date.tomorrow
-      expect(subject.not_set?).to be(false)
-    end
-  end
-
-  describe "#date_range=" do
-    it "splits a valid date range string into start_date and finish_date" do
-      subject.date_range = "2024-11-26 - 2024-11-27"
-      expect(subject.start_date).to eq(Date.parse("2024-11-26"))
-      expect(subject.finish_date).to eq(Date.parse("2024-11-27"))
-    end
-
-    it "sets finish_date to start_date if a single date is provided" do
-      subject.date_range = "2024-11-26"
-      expect(subject.start_date).to eq(Date.parse("2024-11-26"))
-      expect(subject.finish_date).to eq(Date.parse("2024-11-26"))
-    end
-
-    it "accepts a date range" do
-      subject.date_range = Date.parse("2024-12-26")..Date.parse("2024-12-27")
-      expect(subject.start_date).to eq(Date.parse("2024-12-26"))
-      expect(subject.finish_date).to eq(Date.parse("2024-12-27"))
-    end
-
-    it "errors on date range excluding end" do
-      expect do
-        subject.date_range = Date.parse("2024-12-26")...Date.parse("2024-12-27")
-      end.to raise_error(ArgumentError, "Only inclusive ranges expected")
-    end
-
-    it "accepts nil" do
-      subject.date_range = nil
-      expect(subject.start_date).to be_nil
-      expect(subject.finish_date).to be_nil
-    end
-  end
-
-  describe "#validate_date_range" do
     it "is valid when both dates are blank" do
-      stage = build(:project_phase, start_date: nil, finish_date: nil)
-      expect(stage).to be_valid
+      subject.assign_attributes(start_date: nil, finish_date: nil)
+      expect(subject).to be_valid
     end
 
-    it "adds error if start_date is after finish_date" do
-      subject.start_date = Date.tomorrow
-      subject.finish_date = Time.zone.today
+    it "adds error if start_date is after finish_date (start date is changed)" do
+      subject.start_date = subject.finish_date + 1.day
       expect(subject).not_to be_valid
-      expect(subject.errors.symbols_for(:date_range)).to include(:start_date_must_be_before_finish_date)
+      expect(subject.errors.symbols_for(:start_date)).to include(:must_be_before_finish_date)
+    end
+
+    it "adds error if finish_date is before start_date (finish date is changed)" do
+      subject.finish_date = subject.start_date - 1.day
+      expect(subject).not_to be_valid
+      expect(subject.errors.symbols_for(:finish_date)).to include(:must_be_after_start_date)
     end
 
     it "does not add errors if start_date is before or equal to finish_date" do
-      subject.start_date = Time.zone.today
-      subject.finish_date = Time.zone.today
-      expect(subject).not_to be_valid
-      expect(subject.errors[:date_range]).to be_empty
+      subject.start_date = subject.finish_date
+      expect(subject).to be_valid
     end
   end
 
@@ -132,33 +98,114 @@ RSpec.describe Project::Phase do
 
     let(:date) { Time.zone.today }
 
-    describe "#set_calculated_duration" do
-      it "sets duration to the number of working days in complete date range" do
-        subject.duration = 0
-        subject.date_range = date..date + 27
+    it "returns number of working days in complete date range" do
+      subject.start_date = date
+      subject.finish_date = date + 27
 
-        expect { subject.set_calculated_duration }.to change(subject, :duration).from(0).to(20)
-      end
+      expect(subject.calculate_duration).to eq(20)
+    end
 
-      it "sets duration to nil if date range is incomplete" do
-        subject.duration = 0
-        subject.start_date = nil
+    it "returns nil if date range is incomplete" do
+      subject.start_date = nil
 
-        expect { subject.set_calculated_duration }.to change(subject, :duration).from(0).to(nil)
+      expect(subject.calculate_duration).to be_nil
+    end
+  end
+
+  shared_context "with project phases" do
+    let(:project) { create(:project) }
+
+    let!(:definition1) { create(:project_phase_definition, position: 1) }
+    let!(:definition2) { create(:project_phase_definition, position: 2) }
+    let!(:phase1) do
+      create(:project_phase,
+             project:,
+             definition: definition1,
+             start_date: Time.zone.today,
+             finish_date: Time.zone.today + 5)
+    end
+    let!(:phase2) { create(:project_phase, project:, definition: definition2) }
+  end
+
+  describe "#follows_previous_phase?" do
+    include_context "with project phases"
+
+    context "when the previous phase has a date range set" do
+      it "returns truthy" do
+        expect(phase2).to be_follows_previous_phase
       end
     end
 
-    describe "#calculate_duration" do
-      it "returns number of working days in complete date range" do
-        subject.date_range = date..date + 27
-
-        expect(subject.calculate_duration).to eq(20)
+    context "when the previous phase does not have a date range set" do
+      before do
+        phase1.update(start_date: nil, finish_date: nil)
       end
 
-      it "returns nil if date range is incomplete" do
-        subject.start_date = nil
+      it "returns falsy" do
+        expect(phase2).not_to be_follows_previous_phase
+      end
+    end
 
-        expect(subject.calculate_duration).to be_nil
+    context "when there is no previous phase" do
+      it "returns falsy" do
+        expect(phase1).not_to be_follows_previous_phase
+      end
+    end
+
+    context "when only the start date is set on the previous phase" do
+      before do
+        phase1.update(start_date: Time.zone.today, finish_date: nil)
+      end
+
+      it "returns falsy" do
+        expect(phase2).not_to be_follows_previous_phase
+      end
+    end
+
+    context "when only the finish date is set on the previous phase" do
+      before do
+        phase1.update(start_date: nil, finish_date: Time.zone.today + 5)
+      end
+
+      it "returns falsy" do
+        expect(phase2).not_to be_follows_previous_phase
+      end
+    end
+
+    context "when the previous phase is inactive" do
+      before do
+        phase1.update(active: false)
+      end
+
+      it "does not consider the previous phase when it is inactive" do
+        expect(phase2).not_to be_follows_previous_phase
+      end
+    end
+  end
+
+  describe "#default_start_date" do
+    include_context "with project phases"
+
+    context "when the previous phase has a complete date range" do
+      it "returns the next working day after the previous phase finish date" do
+        expected = Day.next_working(from: phase1.finish_date).date
+        expect(phase2.default_start_date).to eq(expected)
+      end
+    end
+
+    context "when the previous phase has an incomplete date range" do
+      before do
+        phase1.update(start_date: nil)
+      end
+
+      it "returns nil" do
+        expect(phase2.default_start_date).to be_nil
+      end
+    end
+
+    context "when there is no previous phase" do
+      it "returns nil" do
+        expect(phase1.default_start_date).to be_nil
       end
     end
   end

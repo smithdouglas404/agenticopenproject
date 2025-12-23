@@ -33,7 +33,6 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 @Injectable({
   providedIn: 'root',
 })
-
 export class CopyToClipboardService {
   constructor(
     readonly toastService:ToastService,

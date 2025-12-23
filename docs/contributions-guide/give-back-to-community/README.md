@@ -63,7 +63,7 @@ Help OpenProject reach more users by engaging with our content and sharing it wi
 - **Add a backlink to your website**
   Include a link to OpenProject’s website on your blog, portfolio, or company website to help more people discover our tool.
 - **Write a Review**
-  Share your thoughts about OpenProject on one of our review platforms. [Leave a review ](https://www.openproject.org/reviews/).
+  Share your thoughts about OpenProject on one of our review platforms. [Leave a review](https://www.openproject.org/reviews/).
 
 ## Spread the word
 

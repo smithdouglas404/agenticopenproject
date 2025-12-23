@@ -68,6 +68,10 @@ class RowComponent < ApplicationComponent
     nil
   end
 
+  def scheme
+    :default
+  end
+
   def checkmark(condition)
     if condition
       helpers.op_icon "icon icon-checkmark"

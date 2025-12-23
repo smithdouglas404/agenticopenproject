@@ -82,13 +82,14 @@ module OpPrimer
     end
 
     def column_title(name)
-      header = headers.find { |h| h[0] == name }
-      header ? header[1][:caption] : nil
+      _, header_options = headers.assoc(name)
+      header_options&.dig(:caption)
     end
 
     def header_classes(column)
       classes = [heading_class]
       classes << "op-border-box-grid--main-column" if main_column?(column)
+      classes << "op-border-box-grid--heading-action" if column == :actions
 
       classes.join(" ")
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -44,7 +46,7 @@ module Admin
           }
         ]
 
-        if @custom_field.field_format_hierarchy?
+        if @custom_field.hierarchical_list?
           tabs << {
             name: "items",
             path: custom_field_items_path(@custom_field),
@@ -53,12 +55,19 @@ module Admin
         end
 
         if @custom_field.is_a?(WorkPackageCustomField) ||
-          @custom_field.is_a?(ProjectCustomField)
+           @custom_field.is_a?(ProjectCustomField)
           tabs <<
             {
               name: "custom_field_projects",
               path: custom_field_projects_path(@custom_field),
               label: t(:label_project_plural)
+            }
+
+          tabs <<
+            {
+              name: "attribute_help_text",
+              path: attribute_help_text_custom_field_path(@custom_field),
+              label: AttributeHelpText.human_plural_model_name
             }
         end
 
@@ -71,7 +80,7 @@ module Admin
         [{ href: admin_index_path, text: t(:label_administration) },
          { href: custom_fields_path, text: t(:label_custom_field_plural) },
          { href: custom_fields_path(tab: @custom_field.type), text: I18n.t(@custom_field.type_name) },
-         @custom_field.name]
+         @custom_field.attribute_in_database("name")]
       end
     end
   end

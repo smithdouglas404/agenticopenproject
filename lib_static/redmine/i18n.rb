@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -34,7 +36,7 @@ module Redmine
     include ActionView::Helpers::NumberHelper
 
     IN_CONTEXT_TRANSLATION_CODE = :lol
-    IN_CONTEXT_TRANSLATION_NAME = "In-Context Crowdin Translation".freeze
+    IN_CONTEXT_TRANSLATION_NAME = "In-Context Crowdin Translation"
 
     def self.included(base)
       base.extend Redmine::I18n
@@ -69,10 +71,27 @@ module Redmine
       ("%.2f" % hours.to_f)
     end
 
-    def format_date(date)
-      return nil unless date
+    # Formats the given date or datetime as a date string according to the user's time zone
+    # and optional specified or system default format.
+    #
+    # @param date_or_time [Date|Time] The date or time object to format.
+    # @param time_zone [ActiveSupport::TimeZone] Use a different time zone than the current users's.
+    #   If provided, will output the time zone identifier
+    # @param format [String, nil] The strftime format to use for the date. If nil, the default
+    #   date format from `Setting.date_format` is used.
+    def format_date(date_or_time, time_zone: nil, format: Setting.date_format)
+      return nil unless date_or_time
 
-      Setting.date_format.blank? ? ::I18n.l(date.to_date) : date.strftime(Setting.date_format)
+      local =
+        if time_zone
+          date_or_time.in_time_zone(time_zone).to_date
+        elsif date_or_time.instance_of?(Date) # Important not to use is_a? as it will match DateTime
+          date_or_time
+        else
+          in_user_zone(date_or_time).to_date
+        end
+
+      format.present? ? ::I18n.l(local, format:) : ::I18n.l(local)
     end
 
     ##
@@ -94,13 +113,24 @@ module Redmine
     #
     # @param i18n_key [String] The I18n key to translate.
     # @param links [Hash] Link names mapped to URLs.
-    # @param target [String] optional HTML target attribute for the links.
-    def link_translate(i18n_key, links: {}, locale: ::I18n.locale, target: nil)
-      translation = ::I18n.t(i18n_key.to_s, locale:)
+    # @param external [Boolean] Whether the links should be opened as external links, i.e. in a new tab (default: true)
+    # @param underline [Boolean] Whether to underline links inserted into the text (default: true)
+    def link_translate(i18n_key, links: {}, external: true, underline: true) # rubocop:disable Metrics/AbcSize
+      translation = ::I18n.t(i18n_key.to_s)
       result = translation.scan(link_regex).inject(translation) do |t, matches|
         link, text, key = matches
-        href = String(links[key.to_sym])
-        link_tag = content_tag(:a, text, href:, target:)
+        link_reference = links[key.to_sym]
+        href = case link_reference
+               when Array
+                 OpenProject::Static::Links.url_for(*link_reference)
+               else
+                 String(link_reference)
+               end
+        target = external ? "_blank" : nil
+        link_tag = render(Primer::Beta::Link.new(href:, target:, underline:)) do |l|
+          l.with_trailing_visual_icon(icon: :"link-external") if external
+          text
+        end
 
         t.sub(link, link_tag)
       end
@@ -116,25 +146,6 @@ module Redmine
     #   - `name`
     def link_regex
       /(\[(.+?)\]\((.+?)\))/
-    end
-
-    # Formats the given time as a date string according to the user's time zone and
-    # optional specified format.
-    #
-    # @param time [Time] The time to format.
-    # @param format [String, nil] The strftime format to use for the date. If nil, the default
-    #   date format from `Setting.date_format` is used.
-    # @return [String, nil] The formatted date string, or nil if the time is not provided.
-    def format_time_as_date(time, format: nil)
-      return nil unless time
-
-      local_date = in_user_zone(time).to_date
-
-      if format
-        local_date.strftime(format)
-      else
-        format_date(local_date)
-      end
     end
 
     # Formats the given time as a time string according to the user's time zone
@@ -230,6 +241,21 @@ module Redmine
       parent_match = valid_languages.detect { |l| l =~ /#{lang}/i }
 
       direct_match || parent_match
+    end
+
+    # Returns the language name in its own language for a given locale
+    #
+    # @param lang_code [String] the locale for the desired language, like `en`,
+    #   `de`, `fil`, `zh-CN`, and so on.
+    # @return [String] the language name translated in its own language
+    def translate_language(lang_code)
+      # rename in-context translation language name for the language select box
+      if lang_code.to_sym == Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE &&
+        ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
+        [Redmine::I18n::IN_CONTEXT_TRANSLATION_NAME, lang_code.to_s]
+      else
+        [::I18n.t("cldr.language_name", locale: lang_code), lang_code.to_s]
+      end
     end
 
     def set_language_if_valid(lang)

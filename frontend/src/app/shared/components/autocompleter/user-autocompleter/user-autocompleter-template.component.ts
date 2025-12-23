@@ -38,11 +38,12 @@ import { hrefFromPrincipal, typeFromHref } from 'core-app/shared/components/prin
   templateUrl: './user-autocompleter-template.component.html',
   styleUrls: ['./user-autocompleter-template.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class UserAutocompleterTemplateComponent implements IAutocompleterTemplateComponent {
   @Input() public inviteUserToProject:string|undefined;
-  @Input() public isOpenedInModal:boolean = false;
-  @Input() public hoverCards:boolean = true;
+  @Input() public isOpenedInModal = false;
+  @Input() public hoverCards = true;
 
   constructor(private readonly pathHelperService:PathHelperService) {}
 

@@ -11,8 +11,8 @@ es:
       team_planner_view: "Planificador de equipo"
     upsell:
       team_planner_view:
-        title: "Planificador de equipo"
-        description: "Obtén una visión completa de la planificación de tu equipo con el Planificador de Equipo. Alargar, acortar y mover paquetes de trabajo para modificar fechas o cambiar asignados."
+        title: "Planificador de equipos"
+        description: "Obtenga una visión completa de la planificación de su equipo con el Planificador de equipo. Alargue, acorte, arrastre y suelte los paquetes de trabajo para modificar fechas, moverlos o cambiar los asignados."
   team_planner:
     label_team_planner: "Planificador de equipo"
     label_new_team_planner: "Nuevo planificador de equipos"

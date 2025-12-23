@@ -1,24 +1,24 @@
 import { Controller } from '@hotwired/stimulus';
 
-require('core-vendor/jquery.flot/jquery.flot');
-require('core-vendor/jquery.flot/excanvas');
-require('core-vendor/jquery.jeditable.mini');
-require('core-vendor/jquery.cookie');
-require('core-vendor/jquery.colorcontrast');
+import 'jquery.flot';
+import 'jquery.flot/excanvas';
 
-require('./backlogs/common');
-require('./backlogs/master_backlog');
-require('./backlogs/backlog');
-require('./backlogs/burndown');
-require('./backlogs/model');
-require('./backlogs/editable_inplace');
-require('./backlogs/sprint');
-require('./backlogs/work_package');
-require('./backlogs/story');
-require('./backlogs/task');
-require('./backlogs/impediment');
-require('./backlogs/taskboard');
-require('./backlogs/show_main');
+import 'core-vendor/jquery.jeditable.mini';
+import 'core-vendor/jquery.colorcontrast';
+
+import './backlogs/common';
+import './backlogs/master_backlog';
+import './backlogs/backlog';
+import './backlogs/burndown';
+import './backlogs/model';
+import './backlogs/editable_inplace';
+import './backlogs/sprint';
+import './backlogs/work_package';
+import './backlogs/story';
+import './backlogs/task';
+import './backlogs/impediment';
+import './backlogs/taskboard';
+import './backlogs/show_main';
 
 export default class BacklogsController extends Controller {
 }

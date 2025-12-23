@@ -48,11 +48,12 @@ import { CollectionResource } from 'core-app/features/hal/resources/collection-r
   selector: 'wp-share-button',
   templateUrl: './wp-share-button.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageShareButtonComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackage:WorkPackageResource;
 
-  showEnterpriseIcon = this.bannersService.showBannerFor('work_package_sharing');
+  showEnterpriseIcon = !this.bannersService.allowsTo('work_package_sharing');
 
   shareCount$:Observable<number>;
 
@@ -90,7 +91,7 @@ export class WorkPackageShareButtonComponent extends UntilDestroyedMixin impleme
   private countShares():Observable<number> {
     const filters = new ApiV3FilterBuilder()
       .add('entityType', '=', ['WorkPackage'])
-      .add('entityId', '=', [this.workPackage.id as string]);
+      .add('entityId', '=', [this.workPackage.id!]);
 
     return this
       .apiV3Service

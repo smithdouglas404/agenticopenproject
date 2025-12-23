@@ -23,21 +23,21 @@
 hu:
   attributes:
     commit: "Commit"
-    gitlab: "GitLab identifier"
+    gitlab: "Gitlab azonosító"
     gitlab_avatar_url: "Avatar URL"
     gitlab_email: "GitLab Email"
     gitlab_html_url: "GitLab HTML URL"
     gitlab_merge_request: "Merge Request"
-    gitlab_name: "GitLab name"
-    gitlab_updated_at: "Updated at"
+    gitlab_name: "GitLab név"
+    gitlab_updated_at: "Frissítve ekkor"
     gitlab_user_avatar_url: "GitLab avatar URL"
-    gitlab_username: "GitLab username"
+    gitlab_username: "GitLab felhasználónév"
   activerecord:
     attributes:
       gitlab_pipeline:
-        ci_details: "CI Details"
+        ci_details: "CI Részletek"
       gitlab_merge_request:
-        labels: "Labels"
+        labels: "Címkék"
     errors:
       models:
         gitlab_issue:

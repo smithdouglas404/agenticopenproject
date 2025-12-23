@@ -42,6 +42,10 @@ RSpec.describe OpenProject::FeatureDecisions, :settings_reset do
 
   shared_context "when adding the feature flag as always active" do
     before do
+      # Forcing the flag to be active only works in production and dev, not in test.
+      allow(Rails.env)
+        .to receive(:production?)
+              .and_return(true)
       described_class.add flag_name, force_active: true
     end
   end

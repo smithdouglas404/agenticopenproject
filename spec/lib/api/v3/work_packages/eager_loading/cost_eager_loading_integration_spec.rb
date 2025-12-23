@@ -58,27 +58,27 @@ RSpec.describe API::V3::WorkPackages::WorkPackageEagerLoadingWrapper, "cost eage
     create(:cost_entry,
            cost_type:,
            user:,
-           work_package:,
+           entity: work_package,
            project:)
   end
   let(:cost_entry2) do
     create(:cost_entry,
            cost_type:,
            user:,
-           work_package:,
+           entity: work_package,
            project:)
   end
   let(:time_entry1) do
     create(:time_entry,
            user:,
            project:,
-           work_package:)
+           entity: work_package)
   end
   let(:time_entry2) do
     create(:time_entry,
            user:,
            project:,
-           work_package:)
+           entity: work_package)
   end
   let(:user_rates) do
     create(:hourly_rate,

@@ -47,8 +47,7 @@ module Queries::Projects::Filters::FilterOnProjectPhase
   end
 
   def available?
-    OpenProject::FeatureDecisions.stages_and_gates_active? &&
-      User.current.allowed_in_any_project?(:view_project_phases)
+    User.current.allowed_in_any_project?(:view_project_phases)
   end
 
   def where
@@ -148,7 +147,7 @@ module Queries::Projects::Filters::FilterOnProjectPhase
   end
 
   def end_of_week
-    beginning_of_week + 7.days
+    (beginning_of_week + 6.days).end_of_day
   end
 
   def project_phase_scope

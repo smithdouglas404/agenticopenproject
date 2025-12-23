@@ -37,6 +37,7 @@ import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/que
 @Component({
   selector: 'op-filter-string-value',
   templateUrl: './filter-string-value.component.html',
+  standalone: false,
 })
 export class FilterStringValueComponent extends UntilDestroyedMixin {
   @Input() public shouldFocus = false;

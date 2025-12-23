@@ -205,6 +205,8 @@ RSpec.describe "Work package timeline date formatting",
       it "sets dates, duration and duration bar" do
         subject
 
+        wp_timeline.expect_and_dismiss_toaster(message: "Successful update.")
+
         row.expect_bar(duration: expected_bar_duration)
         row.expect_labels left: nil,
                           right: nil,

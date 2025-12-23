@@ -13,13 +13,13 @@ To access the **Global modules** side menu, simply click on the logo in the head
 
 ![Navigating to global modules menu in OpenProject](open_project_user_guide_global_modules_menu.png)
 
-You can also use the grid icon in the top right corner to access the **Global modules** side menu.
+You can also use the grid icon in the top left corner to access the **Global modules** side menu.
 
 ![Navigating to global modules menu in OpenProject via grid icon](open_project_user_guide_global_modules_menu_grid_icon.png)
 
 > It is possible that some of the global modules are not visible to you. This will be the case if said module is not activated in the [Project settings](../../projects/project-settings/) in any of the active projects in you instance. If, for example, the **News** module is not enabled in any of the active projects, you will not see it in the **Global modules** menu.
 
-You can also use the grid icon in the top right corner to access the **Global modules** side menu.
+You can also use the grid icon in the top left corner to access the **Global modules** side menu.
 
 If you navigate within a specific project, you can also return to the global modules by unselecting your project in the project selector menu. The project you are currently in will be indicated by the grey background. Click the **x** icon to unselect it and return to global modules. The module selection will be kept, i.e. if you were viewing Meetings module in the project, you will see the global Meetings module. 
 
@@ -37,7 +37,8 @@ You can create a new project here directly by using the  **+ Project** button.
 
 Read more on [Project lists filters](../../../user-guide/projects/project-lists/#project-lists-filters).
 
->**Note:** You can also access the **Projects** global module by opening the [Select a project dropdown menu](../../../user-guide/projects/project-lists/) and by clicking the **Project lists** button, or by clicking on the **Modules** button in the header next to the search bar and the selecting **Projects** in the menu that appears.
+> [!NOTE]
+> You can also access the **Projects** global module by opening the [All projects dropdown menu](../../../user-guide/projects/project-lists/) and by clicking the **Project lists** button, or by clicking on the **Modules** grid icon in the top left corner of the header navigation and selecting **Projects** in the menu that appears.
 
 ## Activity
 
@@ -49,7 +50,8 @@ The timeframe for tracing and displaying activities starts with the current date
 
 You can adjust the view by using the filters on the left menu and clicking the **Apply** button.
 
->Note: **Changesets** filter comes from repositories that are managed by OpenProject. For example, if you make a commit to a GIT or SVN repository, these changes will be displayed here. At the moment this filter is only relevant for self-hosted editions.
+> [!NOTE]
+>**Changesets** filter comes from repositories that are managed by OpenProject. For example, if you make a commit to a GIT or SVN repository, these changes will be displayed here. At the moment this filter is only relevant for self-hosted editions.
 
 ## Work packages
 
@@ -79,7 +81,7 @@ You can also create a new calendar directly from the global modules menu by clic
 
 ![Creating a new calendar from the Calendars global module](openproject_global_modules_add_calendar.png)
 
-Here you can name the calendar, select a project to which the calendar should belong  and set it to be public or favored. Find out more about editing calendars [here](../../calendar).
+Here you can name the calendar, select a project to which the calendar should belong  and set it to be public or favorited. Find out more about editing calendars [here](../../calendar).
 
 ## Team planners
 
@@ -91,7 +93,7 @@ You can also create a new team planner directly from the global modules menu by 
 
 ![Creating a new team planner from the Team planners global module](openproject_global_modules_add_team_planner.png)
 
-You can name the new team planner, select a project to which it should belong and set to be public or favored. Find out more about editing team planners [here](../../team-planner).
+You can name the new team planner, select a project to which it should belong and set to be public or favorited. Find out more about editing team planners [here](../../team-planner).
 
 ## Boards
 

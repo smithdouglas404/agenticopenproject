@@ -56,6 +56,14 @@ module Pages
         end
       end
 
+      def expect_tab(tab)
+        @tab = tab.downcase
+
+        within_test_selector("custom_field_detail_header") do
+          expect(page).to have_css("a[href='#{path}']", text: tab, aria: { current: "page" })
+        end
+      end
+
       def open_action_menu_for(label)
         within_test_selector("op-custom-fields--hierarchy-item", text: label) do
           within_test_selector("op-hierarchy-item--action-menu") do

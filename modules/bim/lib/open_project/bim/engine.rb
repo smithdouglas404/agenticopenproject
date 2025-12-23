@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -108,6 +110,18 @@ module OpenProject::Bim
                   parent: :ifc_models,
                   partial: "/bim/menus/menu"
       end
+
+      ::Redmine::MenuManager.map(:account_menu) do |menu|
+        menu.push(:revit_add_in,
+                  "",
+                  caption: :"js.revit.revit_add_in_settings",
+                  icon: "op-view-modal",
+                  html: {
+                    id: "user-menu--revit-add-in-entry",
+                    classes: "d-none"
+                  },
+                  after: :administration)
+      end
     end
 
     class_inflection_override("v2_1" => "V2_1")
@@ -215,7 +229,9 @@ module OpenProject::Bim
 
     config.to_prepare do
       Doorkeeper.configuration.scopes.add(:bcf_v2_1)
+    end
 
+    config.before_initialize do
       unless defined? OpenProject::Authentication::Scope::BCF_V2_1
         OpenProject::Authentication::Scope::BCF_V2_1 = :bcf_v2_1
       end

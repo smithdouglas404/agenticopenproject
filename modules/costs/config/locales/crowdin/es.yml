@@ -31,6 +31,9 @@ es:
         spent: "Pasado"
         spent_on: "Fecha"
         logged_by: "Registrado por"
+        entity: Registrado en
+        entity_id: Registrado en
+        entity_gid: Registrado en
       cost_type:
         unit: "Nombre de la unidad"
         unit_plural: "Nombre de la unidad pluralizado"
@@ -57,7 +60,10 @@ es:
         spent_on: Fecha
         start_time: Hora de inicio
         end_time: Hora de finalización
-        time: Tiempo
+        time: Hora
+        entity: Registrado en
+        entity_id: Registrado en
+        entity_gid: Registrado en
     models:
       time_entry:
         one: "Entrada de tiempo"
@@ -77,6 +83,7 @@ es:
         time_entry:
           invalid_time: "debe estar entre las 00:00 y las 23:59."
           cannot_log_for_this_work_package: "No se puede registrar el tiempo para este paquete de trabajo."
+          duplicate_ongoing: "Ya existe una entrada de tiempo en curso para este usuario."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Paquete de trabajo #%{id} no es un objetivo válido para reasignar las entradas de costo."
           nullify_is_not_valid_for_cost_entries: "Las entradas de costo  no pueden ser asignadas a un proyecto."
@@ -94,6 +101,7 @@ es:
   button_log_time: "Registro"
   button_add_activity: "Actividad"
   button_add_time_entry: "Registro de tiempo"
+  button_stop_timer: "Detener temporizador"
   caption_booked_on_project: "Reservados en proyecto"
   caption_default: "Por defecto"
   caption_default_rate_history_for: "Historial de morosidad para %{user}"
@@ -168,10 +176,11 @@ es:
   label_specific_month: "Mes %{month}"
   label_list: "Lista"
   label_month: "Mes"
-  label_workweek: "Semana de trabajo"
+  label_workweek: "Semana laboral"
   label_day: "Día"
   label_today_capitalized: "Hoy"
   label_view_mode_switcher: "Cambia vista"
+  label_timer_since: "Comenzó a las %{time}"
   placeholder_activity_select_work_package_first: Primero debe seleccionar el paquete de trabajo
   notice_something_wrong: "Algo salió mal. Por favor intentelo nuevamente."
   notice_successful_restore: "Restauración exitosa."
@@ -179,6 +188,7 @@ es:
   notice_cost_logged_successfully: "Costo unitario registrado correctamente."
   notice_different_time_zones: "Este usuario tiene una zona horaria diferente (%{tz}). La hora se registrará utilizando su zona horaria."
   notice_time_entry_update_failed: "Error al actualizar la entrada de tiempo. Errores: %{errors}"
+  notice_time_entry_delete_failed: "Error al eliminar la entrada de tiempo. Errores: %{errors}"
   permission_edit_cost_entries: "Editar los costos unitarios reservados"
   permission_edit_own_cost_entries: "Editar los costos unitarios propios reservados"
   permission_edit_hourly_rates: "Editar las tasas por hora"
@@ -193,11 +203,13 @@ es:
   permission_view_own_hourly_rate: "Ver tarifa por hora propia"
   permission_view_own_time_entries: "Ver tiempo propio invertido"
   project_module_costs: "Tiempo y costos"
-  setting_allow_tracking_start_and_end_times: "Permitir seguimiento de tiempos exacto"
+  setting_allow_tracking_start_and_end_times: "Permitir horas de inicio y finalización"
   setting_costs_currency: "Moneda"
   setting_costs_currency_format: "Formato de moneda"
-  setting_enforce_tracking_start_and_end_times: "Requiere tiempos exactos"
-  setting_enforce_without_allow: "No es posible exigir tiempos exactos sin permitir que se utilicen"
+  setting_enforce_tracking_start_and_end_times: "Requerir horas de inicio y finalización"
+  setting_enforce_without_allow: "No es posible requerir horas de inicio y finalización sin permitirlas antes"
+  setting_allow_tracking_start_and_end_times_caption: "Habilita la introducción de las horas de inicio y finalización cuando se registra tiempo."
+  setting_enforce_tracking_start_and_end_times_caption: "Hace que introducir las horas de inicio y finalización sea obligatorio cuando se registra tiempo."
   text_assign_time_and_cost_entries_to_project: "Asignar horas reportadas y los costos al proyecto"
   text_destroy_cost_entries_question: "%{cost_entries} fueron reportados en los paquetes de trabajo que van a eliminar. ¿Qué quieres hacer?"
   text_destroy_time_and_cost_entries: "Eliminar horas reportadas y costos"

@@ -19,7 +19,7 @@ Here, you can manage the **REST web service** to selectively control whether for
 
 ### Documentation
 
-If the **docs page** is enabled you can get an interactive view of the APIv3 documentation under https://qa.openproject-edge.com/api/docs*.*
+If the **docs page** is enabled you can get an interactive view of the [APIv3 documentation](https://www.openproject.org/docs/api/introduction).
 
 ### Cross-Origin Resource Sharing (CORS)
 
@@ -49,7 +49,7 @@ You can configure the following options for webhooks:
 3. Freely choose an additional **description** to further identify the intent of the respective webhook.
 4. By defining a **Signature secret** you guarantee that the sender of the payload request is actually OpenProject. The client will then check this signature secret.
 5. **Enable** if **the webhook** should be active.
-6. **Set the events** for which the webhook should be activate, i.e. webhook for updating or creating projects or work packages, or for creating time entries.
+6. **Set the events** for which the webhook should be activate, i.e. webhook for updating or creating projects, work packages, work package comments, time entries and attachments.
 7. **Select for which projects the webhook should be active**. You can choose all projects or only specific projects. For example if you select the project "System admin guide", an event (ie. create a new time entry) will be fired via the webhook. This will only happen if a user logs time within the selected projects.
 8. Press the green **Create** button to save your changes (you may nee to scroll down to find it). There you can also cancel your input.
 

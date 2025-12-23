@@ -31,6 +31,9 @@ ca:
         spent: "Gastat"
         spent_on: "Data"
         logged_by: "Registrat per"
+        entity: Registrat per
+        entity_id: Registrat per
+        entity_gid: Registrat per
       cost_type:
         unit: "Nom d'unitat"
         unit_plural: "Noms d'unitat pluralitzats"
@@ -58,6 +61,9 @@ ca:
         start_time: Hora d'inici
         end_time: Finish time
         time: Hora
+        entity: Registrat per
+        entity_id: Registrat per
+        entity_gid: Registrat per
     models:
       time_entry:
         one: "Entrada de temps"
@@ -77,6 +83,7 @@ ca:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
           cannot_log_for_this_work_package: "Cannot log time for this work package."
+          duplicate_ongoing: "An ongoing time entry already exists for this user."
         work_package:
           is_not_a_valid_target_for_cost_entries: "El paquet de treball #%{id} no és un objectiu vàlid per reassignar les entrades de costs."
           nullify_is_not_valid_for_cost_entries: "Les entrades de cost no poden ser assignades a un projecte."
@@ -94,6 +101,7 @@ ca:
   button_log_time: "Log"
   button_add_activity: "Activitat"
   button_add_time_entry: "Temps de registre"
+  button_stop_timer: "Stop timer"
   caption_booked_on_project: "Registrat a un projecte"
   caption_default: "Per defecte"
   caption_default_rate_history_for: "Història de tarifa per defecte per %{user}"
@@ -172,6 +180,7 @@ ca:
   label_day: "Dia"
   label_today_capitalized: "Avui"
   label_view_mode_switcher: "Change view"
+  label_timer_since: "Started at %{time}"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "Alguna cosa ha anat malament. Si us plau, prova-ho de nou."
   notice_successful_restore: "Restaurat correctament."
@@ -179,6 +188,7 @@ ca:
   notice_cost_logged_successfully: "Cost d'unitat registrat correctament."
   notice_different_time_zones: "This user has a different time zone (%{tz}). Time will be logged using their time zone."
   notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
   permission_edit_cost_entries: "Editar costs d'unitat registrats"
   permission_edit_own_cost_entries: "Editar costs d'unitat registrats propis"
   permission_edit_hourly_rates: "Editar tarifes per hora"
@@ -193,11 +203,13 @@ ca:
   permission_view_own_hourly_rate: "Visualitza totes les tarifes per hora pròpies"
   permission_view_own_time_entries: "Visualitzar el propi temps invertit"
   project_module_costs: "Temps i costs"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
   setting_costs_currency: "Divisa"
   setting_costs_currency_format: "Format de divisa"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "Require start and finish times"
+  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "Assignar les hores i costs registrats al projecte"
   text_destroy_cost_entries_question: "%{cost_entries} van ser reportades al paquet de treball que vols eliminar. Què vols fer?"
   text_destroy_time_and_cost_entries: "Eliminar hores i costs reportats"

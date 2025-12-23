@@ -31,7 +31,7 @@
 class Journals::CreateService
   class Customizable < Association
     def associated?
-      journable.respond_to?(:customizable?)
+      journable.customizable?
     end
 
     def cleanup_predecessor(predecessor)

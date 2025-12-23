@@ -33,7 +33,7 @@ Find more information [here](https://www.openproject.org/blog/enterprise-edition
 
 ## How can I book additional users?
 
-Please use the link "Manage subscription" in the email you received confirming your subscription or contact sales@openproject.com.
+Please use the link "Manage subscription" in the email you received confirming your subscription or contact [support@openproject.com](mailto:support@openproject.com).
 
 ## Is it possible to only upgrade *some* users to the Enterprise edition?
 

@@ -78,6 +78,20 @@ RSpec.describe "OIDC administration CRUD",
 
       click_link_or_button "Continue"
 
+      # Groups
+      enabled_checkbox = page.find_by_id("openid_connect_provider_sync_groups")
+      expect(enabled_checkbox).not_to be_checked
+      expect(page).to have_no_field " Groups claim"
+      expect(page).to have_no_field "Patterns (regular expressions)"
+
+      check "Synchronize groups"
+      expect(page).to have_field("Groups claim", with: "groups")
+      expect(page).to have_field("Patterns (regular expressions)", with: "")
+      fill_in "Groups claim", with: "custom-groups"
+      fill_in "Patterns (regular expressions)", with: "Foo\nBar"
+
+      click_link_or_button "Continue"
+
       # Claims
       fill_in "Claims", with: '{"foo": "bar"}'
       fill_in "ACR values", with: "foo bar"
@@ -111,6 +125,9 @@ RSpec.describe "OIDC administration CRUD",
       expect(provider.mapping_email).to eq "mail"
       expect(provider.mapping_first_name).to eq "myName"
       expect(provider.mapping_last_name).to eq "myLastName"
+
+      expect(provider.groups_claim).to eq("custom-groups")
+      expect(provider.group_regexes).to eq(["Foo", "Bar"])
 
       click_link_or_button "Delete"
       # Confirm the deletion
@@ -175,7 +192,7 @@ RSpec.describe "OIDC administration CRUD",
   context "without EE", without_ee: %i[sso_auth_providers] do
     it "renders the upsell page" do
       visit "/admin/openid_connect/providers"
-      expect(page).to have_enterprise_banner(:premium)
+      expect(page).to have_enterprise_banner(:professional)
     end
   end
 end

@@ -29,10 +29,12 @@
 #++
 
 class TimeEntry < ApplicationRecord
+  ALLOWED_ENTITY_TYPES = %w[WorkPackage Meeting].freeze
+
   # could have used polymorphic association
   # project association here allows easy loading of time entries at project level with one database trip
   belongs_to :project
-  belongs_to :work_package
+  belongs_to :entity, polymorphic: true
   belongs_to :user
   belongs_to :activity, class_name: "TimeEntryActivity"
   belongs_to :rate, -> { where(type: %w[HourlyRate DefaultHourlyRate]) }, class_name: "Rate"
@@ -42,11 +44,11 @@ class TimeEntry < ApplicationRecord
   MAX_TIME = (60 * 24) - 1 # => 23:59
   SECONDS_PER_HOUR = 3600.0
 
-  acts_as_customizable
+  acts_as_customizable validate_unless: ->(te) { te.new_record? && te.ongoing? }
 
   acts_as_journalized
 
-  validates :user_id, :project_id, :spent_on,
+  validates :user_id, :project_id, :spent_on, :entity,
             presence: true
 
   validates :hours,
@@ -76,22 +78,29 @@ class TimeEntry < ApplicationRecord
             },
             allow_blank: true
 
-  scope :on_work_packages, ->(work_packages) { where(work_package_id: work_packages) }
+  validates :entity_type,
+            inclusion: { in: ALLOWED_ENTITY_TYPES },
+            allow_blank: true
+
+  scope :on_work_packages, ->(work_packages) { where(entity: work_packages) }
 
   extend ::TimeEntries::TimeEntryScopes
   include ::Scopes::Scoped
   include Entry::Costs
   include Entry::SplashedDates
+  include Entry::DeprecatedAssociation
 
   scopes :of_user_and_day,
-         :ongoing
+         :ongoing,
+         :ongoing_for_user_other_than
 
   # TODO: move into service
   before_save :update_costs
 
   register_journal_formatted_fields "hours", formatter_key: :time_entry_hours
   register_journal_formatted_fields "user_id", formatter_key: :time_entry_named_association
-  register_journal_formatted_fields "work_package_id", "activity_id", formatter_key: :named_association
+  register_journal_formatted_fields "activity_id", formatter_key: :named_association
+  register_journal_formatted_fields "entity_gid", formatter_key: :polymorphic_association
   register_journal_formatted_fields "comments", "spent_on", "start_time", formatter_key: :plaintext
 
   def self.update_all(updates, conditions = nil, options = {})
@@ -109,14 +118,26 @@ class TimeEntry < ApplicationRecord
     end
   end
 
+  def entity=(value)
+    if value.is_a?(String) && value.starts_with?("gid://")
+      super(GlobalID::Locator.locate(value, only: ALLOWED_ENTITY_TYPES.map(&:safe_constantize)))
+    else
+      super
+    end
+  end
+
+  def entity_gid
+    entity&.to_gid.to_s
+  end
+
   def hours=(value)
-    write_attribute :hours, (value.is_a?(String) ? (value.to_hours || value) : value)
+    super(value.is_a?(String) ? (value.to_hours || value) : value)
   end
 
   def ongoing_hours
     return nil unless ongoing?
 
-    (Time.zone.now.to_i - created_at.to_i) / SECONDS_PER_HOUR
+    ((Time.zone.now.to_i - created_at.to_i) / SECONDS_PER_HOUR).round(2)
   end
 
   def start_time=(value)
@@ -129,7 +150,7 @@ class TimeEntry < ApplicationRecord
 
   # Returns true if the time entry can be edited by usr, otherwise false
   def editable_by?(usr)
-    (usr == user && usr.allowed_in_work_package?(:edit_own_time_entries, work_package)) ||
+    (usr == user && entity.is_a?(WorkPackage) && usr.allowed_in_work_package?(:edit_own_time_entries, entity)) ||
       usr.allowed_in_project?(:edit_time_entries, project)
   end
 
@@ -139,7 +160,7 @@ class TimeEntry < ApplicationRecord
 
   def visible_by?(usr)
     usr.allowed_in_project?(:view_time_entries, project) ||
-      (user_id == usr.id && usr.allowed_in_work_package?(:view_own_time_entries, work_package))
+      (user_id == usr.id && entity.is_a?(WorkPackage) && usr.allowed_in_work_package?(:view_own_time_entries, entity))
   end
 
   def costs_visible_by?(usr)
@@ -151,6 +172,10 @@ class TimeEntry < ApplicationRecord
     start_time.present?
   end
 
+  def hours_for_calculation
+    ongoing? ? ongoing_hours : hours
+  end
+
   def start_timestamp # rubocop:disable Metrics/AbcSize
     return nil if start_time.blank?
     return nil if time_zone.blank?
@@ -159,10 +184,11 @@ class TimeEntry < ApplicationRecord
     time_zone_object.local(spent_on.year, spent_on.month, spent_on.day, start_time / 60, start_time % 60)
   end
 
-  def end_timestamp
+  def end_timestamp # rubocop:disable Metrics/AbcSize
     return nil if start_time.blank?
     return nil if time_zone.blank?
     return nil if spent_on.blank?
+    return nil if hours.blank? && !ongoing?
 
     if ongoing?
       start_timestamp + ongoing_hours.hours

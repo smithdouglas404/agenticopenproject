@@ -38,7 +38,7 @@ import waitForUploadsFinished from 'core-app/core/upload/wait-for-uploads-finish
 import { IHalErrorBase, IHalMultipleError, isHalError } from 'core-app/features/hal/resources/error-resource';
 
 export function removeSuccessFlashMessages():void {
-  jQuery('.op-toast.-success').remove();
+  document.querySelectorAll('.op-toast.-success').forEach((flashMessage) => flashMessage.remove());
 }
 
 export type ToastType = 'success'|'error'|'warning'|'info'|'upload'|'loading';
@@ -61,10 +61,9 @@ export class ToastService {
     readonly configurationService:ConfigurationService,
     readonly I18n:I18nService,
   ) {
-    jQuery(window).on(
-      OPToastEvent,
-      (event:JQuery.TriggeredEvent, toast:IToast) => { this.add(toast); },
-    );
+    window.addEventListener(OPToastEvent, ({ detail:toast }:CustomEvent<IToast>) => {
+      this.add(toast);
+    });
   }
 
   /**
@@ -80,8 +79,7 @@ export class ToastService {
 
     this.stack.doModify((current) => {
       const nextValue = [toast].concat(current);
-      _.remove(nextValue, (n, i) => i > 0 && this.removeOnAdd(n));
-      return nextValue;
+      return [nextValue[0]].concat(nextValue.slice(1).filter((n, i) => !this.removeOnAdd(n)));
     });
 
     // auto-hide if success
@@ -168,8 +166,7 @@ export class ToastService {
 
   public remove(toast:IToast):void {
     this.stack.doModify((current) => {
-      _.remove(current, (n) => n === toast);
-      return current;
+      return current.filter((n) => n !== toast);
     });
   }
 

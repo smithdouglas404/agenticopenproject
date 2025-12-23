@@ -17,7 +17,8 @@ pt-PT:
       new_folder: "Nova pasta"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Armazenamento"
       information:
         authentication_error: "Não foi possível autenticar o pedido para %{storageType}, o que constitui um erro."

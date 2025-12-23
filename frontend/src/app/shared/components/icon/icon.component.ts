@@ -33,13 +33,16 @@ import { Component, Input } from '@angular/core';
   host: { class: 'op-icon--wrapper' },
   template: `
       <i [ngClass]="iconClasses"
-         [attr.title]="iconTitle || undefined"
-         aria-hidden="true"></i>
-      <span
-        class="hidden-for-sighted"
-        [textContent]="iconTitle"
-        *ngIf="iconTitle"></span>
-    `,
+        [attr.title]="iconTitle || undefined"
+      aria-hidden="true"></i>
+      @if (iconTitle) {
+        <span
+          class="sr-only"
+          [textContent]="iconTitle"
+        ></span>
+      }
+      `,
+  standalone: false,
 })
 export class OpIconComponent {
   @Input('icon-classes') iconClasses:string;

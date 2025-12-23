@@ -23,7 +23,7 @@ ja:
   js:
     text_are_you_sure: "よろしいですか？"
     myTimeTracking:
-      noSpecificTime: "No specific time"
+      noSpecificTime: "時間指定なし"
     work_packages:
       property_groups:
         costs: "コスト"

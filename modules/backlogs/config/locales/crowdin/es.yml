@@ -55,6 +55,7 @@ es:
     hours: "Horas"
     impediment: "Impedimento"
     label_versions_default_fold_state: "Mostrar versiones colapsadas"
+    caption_versions_default_fold_state: "Las versiones no se expandirán por defecto al visualizar los trabajos pendientes. Cada una deberá expandirse manualmente."
     work_package_is_closed: "El paquete de trabajo esta terminado, cuando"
     label_is_done_status: "El estado %{status_name} significa completado"
     no_burndown_data: "No hay datos de trabajo pendiente disponisbles. Es necesario tener un sprint con las fechas de inicio y fin asignadas."
@@ -73,6 +74,9 @@ es:
     task: "Tarea"
     task_color: "Color de la tarea"
     unassigned: "No asignado"
+    user_preference:
+      header_backlogs: "Módulo de trabajos pendientes"
+      button_update_backlogs: "Actualizar módulo de trabajos pendientes"
     x_more: "%{count} más..."
   backlogs_active: "activo"
   backlogs_any: "cualquiera"

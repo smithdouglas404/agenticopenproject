@@ -69,6 +69,57 @@ RSpec.describe Reminder do
     end
   end
 
+  describe "#visible?" do
+    let(:user) { build_stubbed(:user) }
+    let(:other_user) { build_stubbed(:user) }
+    let(:remindable) { build_stubbed(:work_package) }
+    let(:reminder) { build_stubbed(:reminder, creator: user, remindable: remindable) }
+
+    context "when the creator is the current user" do
+      context "and the user has access to the remindable" do
+        current_user { user }
+
+        before do
+          mock_permissions_for(user) do |mock|
+            mock.allow_in_project(:view_work_packages, project: remindable.project)
+          end
+        end
+
+        it "returns true" do
+          expect(reminder).to be_visible
+        end
+      end
+
+      context "and the user does not have access to the remindable" do
+        current_user { user }
+
+        it "returns false" do
+          expect(reminder).not_to be_visible
+        end
+      end
+    end
+
+    context "when the current user is not the same as the creator" do
+      current_user { other_user }
+
+      context "and the user has access to the remindable" do
+        before do
+          mock_permissions_for(other_user) do |mock|
+            mock.allow_in_project(:view_work_packages, project: remindable.project)
+          end
+        end
+
+        it "returns false" do
+          expect(reminder).not_to be_visible
+
+          aggregate_failures "remindable is visible to the other user" do
+            expect(remindable.visible?(other_user)).to be(true)
+          end
+        end
+      end
+    end
+  end
+
   describe "#unread_notifications?" do
     context "with an unread notification" do
       subject { create(:reminder, :with_unread_notifications) }

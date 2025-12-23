@@ -20,12 +20,29 @@ if [ -d "/var/db/openproject" ]; then
 	exit 2
 fi
 
+# Ensure PGBIN is set according to PGVERSION env var
+if [ -n "$PGVERSION" ]; then
+	export PGBIN="/usr/lib/postgresql/$PGVERSION/bin"
+	export PATH="$PGBIN:$PATH"
+fi
+
 if [ "$(id -u)" = '0' ]; then
 	# reexport PGVERSION and PGBIN env variables according to postgres version of existing cluster (if any)
 	# this must happen in the entrypoint
 	if [ -f "$PGDATA/PG_VERSION" ]; then
-		export PGVERSION="$(cat "$PGDATA/PG_VERSION")"
+		EXISTING_PGVERSION="$(cat "$PGDATA/PG_VERSION")"
 		echo "-----> Existing PostgreSQL cluster found in $PGDATA."
+
+		# Check for version mismatch between configured and existing PostgreSQL versions
+		if [ "$PGVERSION" != "$EXISTING_PGVERSION" ]; then
+			echo "WARNING: PostgreSQL version mismatch detected!"
+			echo "Your container is configured for PostgreSQL $PGVERSION, but existing data is from PostgreSQL $EXISTING_PGVERSION."
+			echo "You need to upgrade your postgresql data before you can use it with PGVERSION=$PGVERSION in the container"
+			echo "Please see the migration guide: https://www.openproject.org/docs/installation-and-operations/misc/migration-to-postgresql17/"
+			echo "Continuing with PostgreSQL $EXISTING_PGVERSION for now..."
+		fi
+
+		export PGVERSION="$EXISTING_PGVERSION"
 	fi
 	export PGBIN="/usr/lib/postgresql/$PGVERSION/bin"
 	export PGCONF_FILE="/etc/postgresql/$PGVERSION/main/postgresql.conf"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -134,7 +136,7 @@ class BackupJob < ApplicationJob
   def store_backup(file_name, backup:, user:)
     File.open(file_name) do |file|
       call = Attachments::CreateService
-        .bypass_whitelist(user:)
+        .bypass_allowlist(user:)
         .call(container: backup, filename: file_name, file:, description: "OpenProject backup")
 
       call.on_success do

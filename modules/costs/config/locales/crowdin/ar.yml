@@ -30,7 +30,10 @@ ar:
         overridden_costs: "تكاليف متجاوزة"
         spent: "أنفق"
         spent_on: "التاريخ"
-        logged_by: "Logged by"
+        logged_by: "\"تم تسجيل الدخول بواسطة \""
+        entity: Logged for
+        entity_id: Logged for
+        entity_gid: Logged for
       cost_type:
         unit: "اسم الوحدة"
         unit_plural: "اسم الوحدة متعددة الأقطاب"
@@ -58,6 +61,9 @@ ar:
         start_time: Start time
         end_time: Finish time
         time: الوقت
+        entity: Logged for
+        entity_id: Logged for
+        entity_gid: Logged for
     models:
       time_entry:
         zero: "Time entries"
@@ -92,7 +98,8 @@ ar:
       models:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
-          cannot_log_for_this_work_package: "Cannot log time for this work package."
+          cannot_log_for_this_work_package: "تعذر تسجيل الوقت لهذا العمل."
+          duplicate_ongoing: "An ongoing time entry already exists for this user."
         work_package:
           is_not_a_valid_target_for_cost_entries: "مجموعة العمل #%{id} ليست هدفًا صالحًا لإعادة تعيين إدخالات التكلفة."
           nullify_is_not_valid_for_cost_entries: "لا يمكن تعيين إدخالات التكلفة للمشروع."
@@ -110,6 +117,7 @@ ar:
   button_log_time: "Log"
   button_add_activity: "النشاط"
   button_add_time_entry: "وقت السجل"
+  button_stop_timer: "Stop timer"
   caption_booked_on_project: "حُجِِز على المشروع"
   caption_default: "الافتراضي"
   caption_default_rate_history_for: "تاريخ المعدل الافتراضي ل %{user}"
@@ -123,8 +131,8 @@ ar:
   caption_show_locked: "إظهار الأنواع المغلقة"
   caption_log_time_dialog: "وقت السجل"
   description_date_for_new_rate: "تاريخ المعدل الجديد"
-  description_costs_settings: "Define the desired format for the costs in all projects."
-  description_time_settings: "Define which fields are mandatory to fill when logging time in all projects."
+  description_costs_settings: "تحديد التنسيق المطلوب لتكاليف جميع المشروعات."
+  description_time_settings: "تحديد الحقول التي يستلزم ملؤها عند إدخال الوقت لجميع المشروعات."
   group_by_others: "ليس في أي مجموعة"
   label_between: "بين"
   label_cost_filter_add: "أضِف عامل تصفية لإدخال التكلفة"
@@ -168,26 +176,27 @@ ar:
   label_time: "الوقت"
   label_cost: "Cost"
   label_costs: "التكاليف"
-  label_mandatory_fields: "Mandatory fields"
-  label_my_time_tracking: "My time tracking"
-  label_no_time: "No time tracked"
-  label_next_day: "Next day"
+  label_mandatory_fields: "حقول إلزامية"
+  label_my_time_tracking: "تتبع الوقت الخاص بي"
+  label_no_time: "لا يوجد وقت مسجل"
+  label_next_day: "اليوم التالي"
   label_next_week: "الأسبوع القادم"
   label_next_workweek: "Next work week"
-  label_next_month: "Next month"
+  label_next_month: "الشهر القادم"
   label_previous_day: "Previous day"
   label_previous_workweek: "Previous work week"
   label_previous_week: "الأسبوع الماضي"
-  label_previous_month: "Previous month"
+  label_previous_month: "الشهر السابق"
   label_specific_day: "Day %{day}"
   label_specific_week: "Calendar week %{week}"
   label_specific_month: "Month %{month}"
   label_list: "القائمة"
   label_month: "شهر"
-  label_workweek: "Work week"
+  label_workweek: "أسبوع العمل"
   label_day: "اليوم"
-  label_today_capitalized: "Today"
+  label_today_capitalized: "اليوم"
   label_view_mode_switcher: "Change view"
+  label_timer_since: "Started at %{time}"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "حصل خطأ ما. من فضلك حاول مرة أخرى."
   notice_successful_restore: "استعادة ناجحة."
@@ -195,6 +204,7 @@ ar:
   notice_cost_logged_successfully: "تمّ تسجيل تكلفة الوحدة بنجاح."
   notice_different_time_zones: "This user has a different time zone (%{tz}). Time will be logged using their time zone."
   notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
   permission_edit_cost_entries: "تحرير تكاليف الوحدة المحجوزة"
   permission_edit_own_cost_entries: "تحرير تكاليف الوحدة المحجوزة الخاصة"
   permission_edit_hourly_rates: "تحرير الأجور الساعيّة"
@@ -209,11 +219,13 @@ ar:
   permission_view_own_hourly_rate: "عرض الأجور الساعيّة الخاصة"
   permission_view_own_time_entries: "عرض الوقت الخاص الذي تم قضاؤه"
   project_module_costs: "الوقت والتكاليف"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
   setting_costs_currency: "العملة"
   setting_costs_currency_format: "شكل العملة"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "Require start and finish times"
+  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "تعيين الساعات والتكاليف التي تمّ الإبلاغ عنها للمشروع"
   text_destroy_cost_entries_question: "%{cost_entries} تم الإبلاغ عنها في مجموعات العمل التي توشك أن تلغيها. ماذا تريد أن تفعل؟"
   text_destroy_time_and_cost_entries: "إلغاء الساعات والتكاليف التي تم الإبلاغ عنها"

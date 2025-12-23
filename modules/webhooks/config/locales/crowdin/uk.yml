@@ -27,10 +27,15 @@ uk:
       no_results_table: Немає доданих вебхуків.
       label_add_new: Додати новий вебхук
       label_edit: Редагувати вебхук
-      label_event_resources: Ресурси події
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Створено"
         updated: "Оновлено"
+        comment: "Коментар"
+        internal_comment: "Внутрішній коментар"
       explanation:
         text: >
           У разі настання такої події, як створення пакета робіт або оновлення проєкту, OpenProject надcилає POST-запит налаштованим кінцевим точкам мережі. Здебільшого подія надсилається після проходження %{link}.

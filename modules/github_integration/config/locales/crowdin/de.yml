@@ -31,6 +31,7 @@ de:
     github_avatar_url: "Avatar-URL"
     github_updated_at: "Aktualisiert am"
     github_login: "GitHub Login"
+    host: "Host"
     labels: "Bezeichnung"
     repository: "Projektarchiv"
     changed_files_count: "Geänderte Dateien"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -37,6 +39,7 @@ class Project < ApplicationRecord
   include Projects::Types
   include Projects::Versions
   include Projects::WorkPackageCustomFields
+  include Projects::CreationWizard
 
   include ::Scopes::Scoped
 
@@ -44,7 +47,19 @@ class Project < ApplicationRecord
   IDENTIFIER_MAX_LENGTH = 100
 
   # reserved identifiers
-  RESERVED_IDENTIFIERS = %w[new menu queries export_list_modal].freeze
+  RESERVED_IDENTIFIERS = %w[new menu queries filters export_list_modal].freeze
+
+  enum :workspace_type, {
+    project: "project",
+    program: "program",
+    portfolio: "portfolio"
+  }, validate: true
+
+  ALLOWED_PARENT_WORKSPACE_TYPES = {
+    project: %i[portfolio program project],
+    program: %i[portfolio],
+    portfolio: %i[]
+  }.with_indifferent_access
 
   has_many :members, -> {
     # TODO: check whether this should
@@ -60,6 +75,7 @@ class Project < ApplicationRecord
            class_name: "Member"
   has_many :users, through: :members, source: :principal
   has_many :principals, through: :member_principals, source: :principal
+  has_many :calculated_value_errors, dependent: :delete_all, as: :customized
 
   has_many :enabled_modules, dependent: :delete_all
   has_and_belongs_to_many :types, -> {
@@ -88,19 +104,31 @@ class Project < ApplicationRecord
   has_many :storages, through: :project_storages
   has_many :phases, class_name: "Project::Phase", dependent: :destroy
   has_many :available_phases,
-           -> { visible.eager_load(:definition).order(position: :asc) },
+           -> { visible.order_by_position },
            class_name: "Project::Phase",
            inverse_of: :project
 
   has_many :recurring_meetings, dependent: :destroy
+
+  belongs_to :template, class_name: "Project", optional: true
+
+  has_many :templated_projects,
+           class_name: "Project",
+           foreign_key: "template_id",
+           inverse_of: :template,
+           dependent: nil
+
+  has_many :subproject_template_assignments,
+           dependent: :delete_all
 
   accepts_nested_attributes_for :available_phases
   validates_associated :available_phases, on: :saving_phases
 
   store_attribute :settings, :deactivate_work_package_attachments, :boolean
   store_attribute :settings, :enabled_internal_comments, :boolean
+  store_attribute :settings, :excluded_role_ids_on_copy, :json, default: []
 
-  acts_as_favorable
+  acts_as_favoritable
 
   acts_as_customizable validate_on: :saving_custom_fields
   # extended in Projects::CustomFields in order to support sections
@@ -139,6 +167,7 @@ class Project < ApplicationRecord
                 datetime: :created_at
 
   register_journal_formatted_fields "active", formatter_key: :active_status
+  register_journal_formatted_fields "cause", formatter_key: :cause
   register_journal_formatted_fields "templated", formatter_key: :template
   register_journal_formatted_fields "identifier", "name", formatter_key: :plaintext
   register_journal_formatted_fields "status_explanation", "description", formatter_key: :diff
@@ -188,7 +217,9 @@ class Project < ApplicationRecord
 
   scopes :activated_in_storage,
          :allowed_to,
+         :assignable_parents,
          :available_custom_fields,
+         :available_templates,
          :visible
 
   scope :has_module, ->(mod) {
@@ -203,6 +234,8 @@ class Project < ApplicationRecord
   scope :archived, -> { where(active: false) }
   scope :with_member, ->(user = User.current) { where(id: user.memberships.select(:project_id)) }
   scope :without_member, ->(user = User.current) { where.not(id: user.memberships.select(:project_id)) }
+  scope :workspace_type, ->(workspace_type) { workspace_types.key?(workspace_type) ? where(workspace_type:) : none }
+  scope :templated, -> { where(templated: true) }
 
   scopes :activated_time_activity,
          :visible_with_activated_time_activity
@@ -246,6 +279,17 @@ class Project < ApplicationRecord
 
   def to_s
     name
+  end
+
+  def workspace_label
+    case workspace_type
+    when "program"
+      I18n.t("label_program")
+    when "portfolio"
+      I18n.t("label_portfolio")
+    else
+      I18n.t("label_project")
+    end
   end
 
   # Return true if this project is allowed to do the specified action.

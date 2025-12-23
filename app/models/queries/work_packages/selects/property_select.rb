@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -116,11 +118,13 @@ class Queries::WorkPackages::Selects::PropertySelect < Queries::WorkPackages::Se
       sortable: false,
       summable: false
     },
-    done_ratio: {
+    done_ratio_for_weighted_average: {
+      if: -> { WorkPackage.work_weighted_average_mode? },
+      name: :done_ratio,
       sortable: "#{WorkPackage.table_name}.done_ratio",
       groupable: true,
       summable: true,
-      summable_select: <<~SQL.squish
+      summable_select: <<~SQL.squish,
         CASE
           WHEN estimated_hours IS NULL OR remaining_hours IS NULL OR estimated_hours <= 0 THEN NULL
           WHEN remaining_hours <= 0 THEN 100
@@ -130,6 +134,25 @@ class Queries::WorkPackages::Selects::PropertySelect < Queries::WorkPackages::Se
           ELSE ROUND( ((1 - (remaining_hours / estimated_hours)) * 100)::numeric )::integer
         END as done_ratio
       SQL
+      summable_work_packages_select: false
+    },
+    done_ratio_for_simple_average: {
+      if: -> { WorkPackage.simple_average_mode? },
+      name: :done_ratio,
+      sortable: "#{WorkPackage.table_name}.done_ratio",
+      groupable: true,
+      summable: true,
+      summable_select: <<~SQL.squish,
+        CASE
+          WHEN done_ratio_count = 0 THEN NULL
+          WHEN done_ratio >= done_ratio_count * 100 THEN 100
+          WHEN done_ratio >= done_ratio_count * 99 THEN 99
+          WHEN done_ratio <= 0 THEN 0
+          WHEN done_ratio <= done_ratio_count THEN 1
+          ELSE ROUND(done_ratio::numeric / done_ratio_count)::integer
+        END as done_ratio
+      SQL
+      summable_work_packages_count_select: true
     },
     created_at: {
       sortable: "#{WorkPackage.table_name}.created_at",
@@ -145,8 +168,13 @@ class Queries::WorkPackages::Selects::PropertySelect < Queries::WorkPackages::Se
   }
 
   def self.instances(_context = nil)
-    property_selects.map do |name, options|
-      new(name, options)
+    active_selects = property_selects.reject do |_, options|
+      condition = options[:if]
+      condition && !condition.call
+    end
+    active_selects.filter_map do |default_name, options|
+      name = options[:name] || default_name
+      new(name, options.without(:if, :name))
     end
   end
 end

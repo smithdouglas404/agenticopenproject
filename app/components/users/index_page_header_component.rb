@@ -32,16 +32,11 @@ class Users::IndexPageHeaderComponent < ApplicationComponent
   include OpPrimer::ComponentHelpers
   include ApplicationHelper
 
+  delegate :user_limit, to: :"OpenProject::Enterprise"
+
   def breadcrumb_items
     [{ href: admin_index_path, text: t("label_administration") },
      { href: admin_settings_users_path, text: t(:label_user_and_permission) },
      t(:label_user_plural)]
-  end
-
-  def user_limit
-    token = OpenProject::Enterprise.token
-    limit = token && Hash(token.restrictions)[:active_user_count]
-
-    limit if limit && limit > 0
   end
 end

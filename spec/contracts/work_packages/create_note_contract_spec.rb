@@ -82,7 +82,7 @@ RSpec.describe WorkPackages::CreateNoteContract do
       end
     end
 
-    describe "journal_internal" do
+    describe "journal_internal", with_ee: [:internal_comments] do
       before do
         # Setting the journal_notes to not trigger a :blank error
         work_package.journal_notes = "blubs"
@@ -94,6 +94,15 @@ RSpec.describe WorkPackages::CreateNoteContract do
         end
 
         it_behaves_like "contract is valid"
+
+        context "and the enterprise token does not allow internal comments", with_ee: [] do
+          it "invalidates the contract, and shows the least required enterprise plan" do
+            expect(contract.validate).to be(false)
+
+            expect(contract.errors.full_messages)
+              .to eq(["Internal Journal requires at least the Professional enterprise plan."])
+          end
+        end
       end
 
       context "and journal_internal is false" do

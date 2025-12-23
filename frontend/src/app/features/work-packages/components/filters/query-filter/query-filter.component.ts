@@ -53,6 +53,7 @@ import { WorkPackageViewBaselineService } from 'core-app/features/work-packages/
   styleUrls: ['./query-filter.component.sass'],
   templateUrl: './query-filter.component.html',
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class QueryFilterComponent implements OnInit {
   @HostBinding('class.op-query-filter') className = true;
@@ -72,8 +73,6 @@ export class QueryFilterComponent implements OnInit {
   public eeShowBanners = false;
 
   public baselineIncompatibleFilter = false;
-
-  public trackByHref = halHref;
 
   public compareByHref = compareByHref;
 

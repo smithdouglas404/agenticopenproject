@@ -55,6 +55,7 @@ hr:
     hours: "Sati"
     impediment: "Teškoće"
     label_versions_default_fold_state: "Prikaži prikupljene verzije"
+    caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
     work_package_is_closed: "Radni zadatak je urađen, kada"
     label_is_done_status: "Status %{status_name} je završen"
     no_burndown_data: "Ne postoje dostupni burndown podaci. Neophodno je imati početni i krajnji datum perioda razvoja."
@@ -73,6 +74,9 @@ hr:
     task: "Zadaća"
     task_color: "Boja zadaće"
     unassigned: "Nedodijeljeno"
+    user_preference:
+      header_backlogs: "Backlogs module"
+      button_update_backlogs: "Update backlogs module"
     x_more: "%{count} više..."
   backlogs_active: "aktivno"
   backlogs_any: "bilo koji"

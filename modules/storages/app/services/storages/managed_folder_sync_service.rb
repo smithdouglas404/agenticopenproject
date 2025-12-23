@@ -46,7 +46,7 @@ module Storages
     def call
       with_tagged_logger([self.class.name, "storage-#{@storage.id}"]) do
         info "Starting AMPF Sync for Storage #{@storage.id}"
-        prepare_remote_folders.on_failure { return epilogue }
+        prepare_remote_folders
         apply_permissions_to_folders
         epilogue
       end
@@ -72,11 +72,11 @@ module Storages
     end
 
     def folder_create_service
-      Peripherals::Registry.resolve("#{@storage}.services.folder_create")
+      Adapters::Registry.resolve("#{@storage}.services.upkeep_managed_folders")
     end
 
     def folder_permissions_service
-      Peripherals::Registry.resolve("#{@storage}.services.folder_permissions")
+      Adapters::Registry.resolve("#{@storage}.services.upkeep_managed_folder_permissions")
     end
   end
 end

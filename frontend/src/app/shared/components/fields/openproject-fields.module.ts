@@ -26,12 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  APP_INITIALIZER,
-  CUSTOM_ELEMENTS_SCHEMA,
-  Injector,
-  NgModule,
-} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OpenprojectModalModule } from 'core-app/shared/components/modal/modal.module';
 import { OpenprojectEditorModule } from 'core-app/shared/components/editor/openproject-editor.module';
@@ -102,18 +97,14 @@ import { FormsModule } from '@angular/forms';
     DisplayFieldComponent,
   ],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeCoreEditFields,
-      deps: [EditFieldService, SelectAutocompleterRegisterService],
-      multi: true,
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeCoreDisplayFields,
-      deps: [DisplayFieldService],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = (initializeCoreEditFields)(inject(EditFieldService), inject(SelectAutocompleterRegisterService));
+      return initializerFn();
+    }),
+    provideAppInitializer(() => {
+      const initializerFn = (initializeCoreDisplayFields)(inject(DisplayFieldService));
+      return initializerFn();
+    }),
   ],
   declarations: [
     EditFormPortalComponent,

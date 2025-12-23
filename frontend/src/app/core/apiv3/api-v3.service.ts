@@ -28,7 +28,7 @@
 
 import { Injectable, Injector } from '@angular/core';
 import { ApiV3GettableResource, ApiV3ResourceCollection } from 'core-app/core/apiv3/paths/apiv3-resource';
-import { Constructor } from '@angular/cdk/table';
+import { Constructor } from 'core-app/core/util-types';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ApiV3GridsPaths } from 'core-app/core/apiv3/endpoints/grids/apiv3-grids-paths';
 import { ApiV3TimeEntriesPaths } from 'core-app/core/apiv3/endpoints/time-entries/apiv3-time-entries-paths';
@@ -205,7 +205,6 @@ export class ApiV3Service {
   }
 
   private apiV3CustomEndpoint<T>(cls:Constructor<T>):T {
-    // eslint-disable-next-line new-cap
     return new cls(this, this.pathHelper.api.v3.apiV3Base);
   }
 

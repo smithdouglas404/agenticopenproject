@@ -38,6 +38,7 @@ import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
   templateUrl: './bcf-wp-attribute-group.component.html',
   styleUrls: ['./bcf-wp-attribute-group.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class BcfNewWpAttributeGroupComponent extends BcfWpAttributeGroupComponent implements AfterViewInit {
   galleryViewpoints:BcfViewpointItem[] = [];

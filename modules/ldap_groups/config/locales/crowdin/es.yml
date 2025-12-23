@@ -2,7 +2,7 @@ es:
   ee:
     upsell:
       ldap_groups:
-        title: 'Sincronización de grupos de LDAP'
+        title: 'Sincronización de grupos LDAP'
         description: 'Sincronice grupos LDAP con grupos OpenProject para gestionar usuarios, cambiar sus permisos y facilitar la gestión de usuarios entre grupos.'
   plugin_openproject_ldap_groups:
     name: "Grupos LDAP de OpenProject"
@@ -78,4 +78,4 @@ es:
         dn_text: 'Escriba el DN completo del grupo en LDAP'
         group_text: 'Seleccione un grupo de OpenProject existente con el que se sincronizarán los miembros del grupo de LDAP'
       upsell:
-        description: 'Aproveche los grupos LDAP sincronizados para administrar usuarios, cambiar sus permisos y facilitar la administración de usuarios entre grupos.'
+        description: 'Aproveche los grupos LDAP sincronizados para gestionar usuarios, cambiar sus permisos y facilitar la gestión de usuarios entre grupos.'

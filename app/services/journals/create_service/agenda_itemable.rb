@@ -52,8 +52,6 @@ class Journals::CreateService
             notes,
             position,
             duration_in_minutes,
-            start_time,
-            end_time,
             work_package_id,
             item_type
           )
@@ -65,8 +63,6 @@ class Journals::CreateService
           agenda_items.notes,
           agenda_items.position,
           agenda_items.duration_in_minutes,
-          agenda_items.start_time,
-          agenda_items.end_time,
           agenda_items.work_package_id,
           agenda_items.item_type
         FROM meeting_agenda_items agenda_items
@@ -99,8 +95,6 @@ class Journals::CreateService
               #{normalize_newlines_sql('meeting_agenda_item_journals.notes')})
           OR (agenda_items.position IS DISTINCT FROM meeting_agenda_item_journals.position)
           OR (agenda_items.duration_in_minutes IS DISTINCT FROM meeting_agenda_item_journals.duration_in_minutes)
-          OR (agenda_items.start_time IS DISTINCT FROM meeting_agenda_item_journals.start_time)
-          OR (agenda_items.end_time IS DISTINCT FROM meeting_agenda_item_journals.end_time)
           OR (agenda_items.work_package_id IS DISTINCT FROM meeting_agenda_item_journals.work_package_id)
           OR (agenda_items.item_type IS DISTINCT FROM meeting_agenda_item_journals.item_type)
       SQL

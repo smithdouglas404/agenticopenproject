@@ -11,7 +11,7 @@ RSpec.describe "Cost report showing my own times", :js do
   let!(:time_entry1) do
     create(:time_entry,
            user:,
-           work_package:,
+           entity: work_package,
            project:,
            hours: 10)
   end

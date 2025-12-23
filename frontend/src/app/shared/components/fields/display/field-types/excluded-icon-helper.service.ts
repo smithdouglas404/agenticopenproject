@@ -32,7 +32,6 @@ import { WorkPackageResource } from 'core-app/features/hal/resources/work-packag
 import { StatusResource } from 'core-app/features/hal/resources/status-resource';
 
 @Injectable({ providedIn: 'root' })
-
 export class ExcludedIconHelperService {
   constructor(
     private apiV3Service:ApiV3Service,

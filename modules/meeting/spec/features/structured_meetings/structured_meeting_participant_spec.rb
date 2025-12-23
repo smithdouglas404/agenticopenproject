@@ -61,6 +61,7 @@ RSpec.describe "Meetings participants",
     create(:meeting,
            :author_participates,
            project:,
+           state: :in_progress,
            author: user)
   end
 
@@ -77,13 +78,15 @@ RSpec.describe "Meetings participants",
 
     show_page.open_participant_form
     show_page.in_participant_form do
-      show_page.expect_participant(user, invited: true, attended: false)
-      show_page.expect_participant(other_user, invited: false, attended: false)
-      show_page.expect_available_participants(count: 2)
-      expect(page).to have_button("Save")
+      show_page.expect_participant(user)
+      show_page.expect_available_participants(count: 1)
 
-      check(id: "checkbox_invited_#{other_user.id}")
-      click_on("Save")
+      show_page.toggle_attendance(user)
+      show_page.expect_participant(user, attended: true)
+
+      show_page.select_participant(other_user)
+      show_page.expect_participant(other_user)
+      show_page.expect_available_participants(count: 2)
     end
 
     expect(page).to have_css("#meetings-side-panel-participants-component", text: 2)

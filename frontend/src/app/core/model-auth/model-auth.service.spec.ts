@@ -26,8 +26,6 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
 import { AuthorisationService } from './model-auth.service';
 
 describe('authorisationService', () => {

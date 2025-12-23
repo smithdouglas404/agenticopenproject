@@ -27,26 +27,9 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= toolbar title: "#{t(:label_revision)} #{format_revision(@changeset)}" do %>
-  <li class="toolbar-item">
-    <% if @changeset.previous.nil? %>
-      <button class="button" disabled="disabled"><%= t(:label_previous) %></button>
-    <% else %>
-      <%= link_to_revision(@changeset.previous, @project, text: t(:label_previous), class: "button") %>
-    <% end %>
-  </li>
-  <li class="toolbar-item">
-    <% if @changeset.next.nil? %>
-      <button class="button" disabled="disabled"><%= t(:label_next) %></button>
-    <% else %>
-      <%= link_to_revision(@changeset.next, @project, text: t(:label_next), class: "button") %>
-    <% end %>
-  </li>
-  <li class="toolbar-item">
-    <%= form_tag({ controller: "/repositories", action: "revision", project_id: @project }, method: :get) do %>
-      <%= text_field_tag :rev, @rev, placeholder: t(:label_revision) %>
-    <% end %>
-  </li>
+<%= render(Repositories::Revision::PageHeaderComponent.new(changeset: @changeset, repository: @repository, project: @project))  %>
+<%= form_tag({ controller: "/repositories", action: "revision", project_id: @project }, method: :get) do %>
+  <%= text_field_tag :rev, @rev, placeholder: t(:label_revision) %>
 <% end %>
 <p><% if @changeset.scmid %>ID: <%= h(@changeset.scmid) %><br>
   <% end %>

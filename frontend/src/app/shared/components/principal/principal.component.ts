@@ -59,11 +59,14 @@ export interface PrincipalInput {
   styleUrls: ['./principal.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class OpPrincipalComponent implements OnInit {
   @Input() principal:PrincipalLike;
 
   @Input() hideAvatar = false;
+
+  @Input() avatarImageAltText?:string;
 
   @Input() hideName = false;
 
@@ -98,6 +101,7 @@ export class OpPrincipalComponent implements OnInit {
       const avatarOptions:AvatarOptions = {
         hide: this.hideAvatar,
         size: this.size,
+        imageAltText: this.avatarImageAltText,
       };
 
       const hoverCardOptions:HoverCardOptions = {

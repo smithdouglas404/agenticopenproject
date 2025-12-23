@@ -55,11 +55,13 @@ module ReportingHelper
     end
 
     name = name.camelcase
-    if CostQuery::Filter.const_defined? name
+    if CostQuery::Filter.const_defined?(name)
       CostQuery::Filter.const_get(name).label
-    elsif
-      CostQuery::GroupBy.const_defined? name
+    elsif CostQuery::GroupBy.const_defined?(name)
       CostQuery::GroupBy.const_get(name).label
+    elsif field.to_sym.in?(%i[entity entity_id entity_type entity_gid])
+      # TODO: Temporary override for now
+      TimeEntry.human_attribute_name(:entity)
     else
       # note that using WorkPackage.human_attribute_name relies on the attribute
       # being an work_package attribute or a general attribute for all models which might not
@@ -69,7 +71,7 @@ module ReportingHelper
   end
 
   def month_name(index)
-    Date::MONTHNAMES[index].to_s
+    I18n.t("date.month_names")[index].to_s
   end
 
   # ======================= SHARED CODE END
@@ -96,8 +98,7 @@ module ReportingHelper
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
-  def field_representation_map(key, value)
+  def field_representation_map(key, value) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     return I18n.t(:"placeholders.default") if value.blank?
 
     case key.to_sym
@@ -119,6 +120,23 @@ module ReportingHelper
       budget_link value
     when :work_package_id
       link_to_work_package(WorkPackage.find(value.to_i))
+    when :entity_gid
+      allowed_types = (TimeEntry::ALLOWED_ENTITY_TYPES | CostEntry::ALLOWED_ENTITY_TYPES).map(&:safe_constantize)
+      entity = begin
+        GlobalID::Locator.locate(value, only: allowed_types)
+      rescue URI::InvalidComponentError
+        nil
+      end
+
+      if entity.is_a?(::WorkPackage)
+        link_to_work_package(entity)
+      elsif entity.is_a?(::Meeting)
+        # TODO: add a link
+        entity.title
+      end
+    when :entity_type
+      # TODO: Skip for now
+      nil
     when :spent_on
       format_date(value.to_date)
     when :type_id
@@ -139,7 +157,6 @@ module ReportingHelper
       value.to_s
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def spent_on_time_representation(start_timestamp, hours)
     return "" if start_timestamp.nil?
@@ -157,7 +174,7 @@ module ReportingHelper
 
     days_between = (end_timestamp.to_date - start_timestamp.to_date).to_i
     if days_between.positive?
-      " (+#{WorkPackage::Exports::Formatters::Days.new(nil)
+      " (+#{WorkPackage::Exports::Formatters::PDF::Days.new(nil)
                                                   .format_value(days_between, nil)
                                                   .delete(' ')})"
     end
@@ -177,8 +194,9 @@ module ReportingHelper
     return "" if value.blank?
 
     case key.to_sym
-    when :work_package_id, :tweek, :tmonth, :week  then value.to_i
-    when :spent_on                                 then value.to_date.mjd
+    when :entity_id, :tweek, :tmonth, :week then value.to_i
+    when :entity_gid then GlobalID.new(value).model_id.to_i
+    when :spent_on then value.to_date.mjd
     else strip_tags(field_representation_map(key, value))
     end
   end

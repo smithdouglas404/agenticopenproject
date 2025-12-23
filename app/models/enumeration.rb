@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,8 +29,6 @@
 #++
 
 class Enumeration < ApplicationRecord
-  include SubclassRegistry
-
   default_scope { order("#{Enumeration.table_name}.position ASC") }
 
   belongs_to :project, optional: true
@@ -37,6 +37,7 @@ class Enumeration < ApplicationRecord
   acts_as_tree order: "position ASC"
 
   before_save :unmark_old_default_value, if: :became_default_value?
+  before_save :ensure_activated, if: -> { self.class.can_have_default_value? && is_default? }
   before_destroy :check_integrity
 
   validates :name, presence: true
@@ -172,5 +173,9 @@ class Enumeration < ApplicationRecord
 
   def check_integrity
     raise "Can't delete enumeration" if in_use?
+  end
+
+  def ensure_activated
+    self.active = true
   end
 end

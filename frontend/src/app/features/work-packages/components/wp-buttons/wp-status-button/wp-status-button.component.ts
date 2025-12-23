@@ -41,9 +41,10 @@ import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
   selector: 'wp-status-button',
   styleUrls: ['./wp-status-button.component.sass'],
   templateUrl: './wp-status-button.html',
+  standalone: false,
 })
 export class WorkPackageStatusButtonComponent extends UntilDestroyedMixin implements OnInit {
-  @Input('workPackage') public workPackage:WorkPackageResource;
+  @Input() public workPackage:WorkPackageResource;
 
   @Input() public small = false;
 

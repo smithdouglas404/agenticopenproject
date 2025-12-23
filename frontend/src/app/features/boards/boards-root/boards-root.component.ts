@@ -14,7 +14,7 @@ import {
 @Component({
   selector: 'boards-entry',
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
-  template: '<ui-view></ui-view>',
+  template: '<ui-view />',
   providers: [
     BoardConfigurationService,
     BoardStatusActionService,
@@ -24,6 +24,7 @@ import {
     BoardSubtasksActionService,
     QueryUpdatedService,
   ],
+  standalone: false,
 })
 export class BoardsRootComponent {
   constructor(readonly injector:Injector) {

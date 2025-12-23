@@ -29,44 +29,40 @@
 #++
 
 module ::TypesHelper
-  # rubocop:disable Rails/HelperInstanceVariable, Metrics/AbcSize
+  # rubocop:disable Rails/HelperInstanceVariable
   def types_tabs
     [
       {
         name: "settings",
-        path: edit_tab_type_path(id: @type.id, tab: :settings),
-        label: I18n.t("types.edit.settings.tab"),
-        view_component: WorkPackages::Types::SettingsComponent
+        path: edit_type_settings_path(@type),
+        label: I18n.t("types.edit.settings.tab")
       },
       {
         name: "form_configuration",
-        partial: "types/form/form_configuration",
-        path: edit_tab_type_path(id: @type.id, tab: :form_configuration),
+        path: edit_type_form_configuration_path(@type),
         label: I18n.t("types.edit.form_configuration.tab")
       },
       {
         name: "subject_configuration",
-        path: edit_tab_type_path(id: @type.id, tab: :subject_configuration),
-        label: "types.edit.subject_configuration.tab",
-        view_component: WorkPackages::Types::SubjectConfigurationComponent,
+        path: edit_type_subject_configuration_path(type_id: @type.id),
+        label: I18n.t("types.edit.subject_configuration.tab"),
         enterprise_feature: :work_package_subject_generation
       },
       {
         name: "projects",
-        partial: "types/form/projects",
-        path: edit_tab_type_path(id: @type.id, tab: :projects),
+        path: edit_type_projects_path(@type),
         label: I18n.t("types.edit.projects.tab")
       },
       {
         name: "export_configuration",
-        path: edit_tab_type_path(id: @type.id, tab: :export_configuration),
+        path: edit_type_pdf_export_template_index_path(type_id: @type.id),
         label: I18n.t("types.edit.export_configuration.tab"),
-        view_component: WorkPackages::Types::ExportConfigurationComponent
+        view_component: WorkPackageTypes::ExportConfigurationComponent
       }
     ]
   end
 
-  # rubocop:enable Rails/HelperInstanceVariable, Metrics/AbcSize
+  # rubocop:enable Rails/HelperInstanceVariable
 
   def icon_for_type(type)
     return unless type

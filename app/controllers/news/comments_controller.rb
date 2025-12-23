@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -39,11 +41,11 @@ class News::CommentsController < ApplicationController
       flash[:notice] = I18n.t(:label_comment_added)
     end
 
-    redirect_to news_path(@news)
+    redirect_to news_path(@news), status: :see_other
   end
 
   def destroy
     @comment.destroy
-    redirect_to news_path(@news)
+    redirect_to news_path(@news), status: :see_other
   end
 end

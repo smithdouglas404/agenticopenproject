@@ -36,7 +36,7 @@ RSpec.describe DemoData::ProjectSeeder do
   subject(:project_seeder) { described_class.new(seed_data.lookup("projects.my-project")) }
 
   let(:work_package) { create(:work_package) }
-  let(:user) { create(:user) }
+  let(:user) { create(:admin) }
   let(:seed_data) do
     data = basic_seed_data.merge(
       Source::SeedData.new(

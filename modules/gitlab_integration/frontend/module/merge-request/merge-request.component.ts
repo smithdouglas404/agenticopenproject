@@ -39,7 +39,8 @@ import {IGitlabMergeRequestResource} from 'core-app/features/plugins/linked/open
     './merge-request.component.sass',
     './mr-pipeline.component.sass',
   ],
-  host: { class: 'op-merge-request' }
+  host: { class: 'op-merge-request' },
+  standalone: false,
 })
 
 export class MergeRequestComponent {

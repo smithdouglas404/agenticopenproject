@@ -50,11 +50,13 @@ class ApplicationController < ActionController::Base
   include Accounts::CurrentUser
   include Accounts::UserLogin
   include Accounts::Authorization
-  include ::OpenProject::Authentication::SessionExpiry
+  include Accounts::EnterpriseGuard
+  include ::OpenProject::Authentication::SessionExpiration
   include AdditionalUrlHelpers
   include OpenProjectErrorHelper
   include Security::DefaultUrlOptions
   include OpModalFlashable
+  include DynamicContentSecurityPolicy
 
   layout "base"
 
@@ -123,6 +125,11 @@ class ApplicationController < ActionController::Base
     rescue_from StandardError do |exception|
       render_500 exception:
     end
+
+    rescue_from ActionController::UnknownFormat do
+      render body: "406 Not Acceptable: invalid request format",
+             status: :not_acceptable
+    end
   end
 
   rescue_from ActionController::ParameterMissing do |exception|
@@ -145,7 +152,6 @@ class ApplicationController < ActionController::Base
                 :tag_request,
                 :check_if_login_required,
                 :log_requesting_user,
-                :reset_i18n_fallbacks,
                 :check_session_lifetime,
                 :stop_if_feeds_disabled,
                 :set_cache_buster,
@@ -154,6 +160,7 @@ class ApplicationController < ActionController::Base
 
   include Redmine::Search::Controller
   include Redmine::MenuManager::MenuController
+
   helper Redmine::MenuManager::MenuHelper
 
   # set http headers so that the browser does not store any
@@ -172,7 +179,9 @@ class ApplicationController < ActionController::Base
   end
 
   def tag_request
-    ::OpenProject::Appsignal.tag_request(controller: self, request:)
+    context = { controller: self, request: }
+    ::OpenProject::Appsignal.tag_request(context)
+    ::OpenProject::OpenTelemetry.tag_request(context)
   end
 
   def reload_mailer_settings!
@@ -214,14 +223,6 @@ class ApplicationController < ActionController::Base
     string.gsub(/[^0-9a-zA-Z@._\-"'!?=\/ ]{1}/, "#")
   end
 
-  def reset_i18n_fallbacks
-    fallbacks = [I18n.default_locale] + Redmine::I18n.valid_languages.map(&:to_sym)
-    return if I18n.fallbacks.defaults == fallbacks
-
-    I18n.fallbacks = nil
-    I18n.fallbacks.defaults = fallbacks
-  end
-
   def set_localization
     # 1. Use completely authenticated user
     # 2. Use user with some authenticated stages not completed.
@@ -252,6 +253,13 @@ class ApplicationController < ActionController::Base
   # Note: find() is Project.friendly.find()
   def find_project_by_project_id
     @project = Project.find(params[:project_id])
+  end
+
+  # Find project by project_id if given
+  def find_optional_project
+    @project = Project.find(params[:project_id]) if params[:project_id].present?
+  rescue ActiveRecord::RecordNotFound
+    render_404
   end
 
   # Finds and sets @project based on @object.project

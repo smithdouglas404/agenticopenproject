@@ -28,13 +28,13 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <% content_for :header_tags do %>
-  <%= nonced_javascript_tag do %>
-    <%= render(partial: "shared/server_variables", formats: [:js]) %>
-  <% end %>
   <%= frontend_stylesheet_link_tag "backlogs.css" %>
 <% end %>
 
-<% content_controller "backlogs",
-                      dynamic: true %>
+<% content_for :additional_js_dom_ready do %>
+  <%= render(partial: "shared/server_variables", formats: [:js]) %>
+<% end %>
+
+<% content_controller "backlogs" %>
 
 <%= render template: "layouts/base", locals: local_assigns.merge(turbo_opt_out: true) %>

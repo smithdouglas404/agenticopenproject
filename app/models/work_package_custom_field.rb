@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -59,7 +61,7 @@ class WorkPackageCustomField < CustomField
   }
 
   scope :usable_as_custom_action, -> {
-    where.not(field_format: %w[hierarchy])
+    where.not(field_format: %w[hierarchy weighted_item_list])
          .order(:name)
   }
 

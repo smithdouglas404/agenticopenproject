@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Generate .env.pullpreview file
       run: |
         echo "OPENPROJECT_SEED_ADMIN_USER_PASSWORD_RESET=false" >> .env.pullpreview
@@ -35,6 +35,9 @@ jobs:
         echo "OPENPROJECT_HSTS=false" >> .env.pullpreview
         echo "OPENPROJECT_NOTIFICATIONS_POLLING_INTERVAL=10000" >> .env.pullpreview
         echo "OPENPROJECT_ENTERPRISE__CHARGEBEE__SITE=openproject-enterprise-test" >> .env.pullpreview
+        echo "OPENPROJECT_ENTERPRISE__TRIAL__CREATION__HOST=https://start.openproject-edge.com" >> .env.pullpreview
+        echo "OPENPROJECT_FEATURE_BLOCK_NOTE_EDITOR=true" >> .env.pullpreview
+        echo "OPENPROJECT_FEATURE_WP_ACTIVITY_TAB_LAZY_PAGINATION_ACTIVE=true" >> .env.pullpreview
     - name: Boot as BIM edition
       if: contains(github.ref, 'bim/') || contains(github.head_ref, 'bim/')
       run: |
@@ -45,6 +48,8 @@ jobs:
         cp ./docker/prod/Dockerfile ./Dockerfile
     - uses: pullpreview/action@v5
       with:
+        # allows to ssh to the instance using our GitHub ssh key
+        # command like: ssh ec2-user@pr-19375-trial-ip-3-127-219-135.my.preview.run
         admins: crohr,HDinger,machisuji,oliverguenther,ulferts,wielinde,cbliard
         compose_files: docker-compose.pullpreview.yml
         instance_type: xlarge

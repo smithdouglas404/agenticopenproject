@@ -102,7 +102,7 @@ module WorkPackages
                  I18n.t("work_packages.datepicker_modal.banner.description.automatic_mobile")
                end
 
-        "#{text} #{render(Primer::Beta::Link.new(tag: :a, href: link, target: '_blank')) do
+        "#{text} #{render(Primer::Beta::Link.new(tag: :a, href: link, target: '_blank', underline: true)) do
           I18n.t('work_packages.datepicker_modal.show_relations')
         end}".html_safe
       end

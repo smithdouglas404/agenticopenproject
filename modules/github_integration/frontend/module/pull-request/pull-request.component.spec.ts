@@ -9,6 +9,7 @@ import { PullRequestStateComponent } from './pull-request-state.component';
 @Component({
   selector: 'op-date-time',
   template: ``,
+  standalone: false,
 })
 class OpDateTimeComponent {
   @Input('dateTimeValue') dateTimeValue:any;

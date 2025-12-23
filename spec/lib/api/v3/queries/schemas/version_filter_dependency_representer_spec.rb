@@ -51,7 +51,7 @@ RSpec.describe API::V3::Queries::Schemas::VersionFilterDependencyRepresenter do
       describe "values" do
         let(:path) { "values" }
         let(:type) { "[]Version" }
-        let(:order) { "sortBy=#{CGI.escape(JSON.dump([%i(semver_name asc)]))}&pageSize=-1" }
+        let(:order) { "sortBy=#{CGI.escape(JSON.dump([%i(name asc)]))}&pageSize=-1" }
 
         context "for operator 'Queries::Operators::All'" do
           let(:operator) { Queries::Operators::All }
@@ -67,7 +67,7 @@ RSpec.describe API::V3::Queries::Schemas::VersionFilterDependencyRepresenter do
 
         context "within project" do
           let(:href) do
-            "#{api_v3_paths.versions_by_project(project.id)}?#{order}"
+            "#{api_v3_paths.versions_by_workspace(project.id)}?#{order}"
           end
 
           context "for operator 'Queries::Operators::Equals'" do

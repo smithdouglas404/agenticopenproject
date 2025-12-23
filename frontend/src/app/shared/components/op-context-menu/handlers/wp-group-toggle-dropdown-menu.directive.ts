@@ -34,6 +34,7 @@ import { WorkPackageViewCollapsedGroupsService } from 'core-app/features/work-pa
 
 @Directive({
   selector: '[wpGroupToggleDropdown]',
+  standalone: false,
 })
 export class WorkPackageGroupToggleDropdownMenuDirective extends OpContextMenuTrigger {
   constructor(readonly elementRef:ElementRef,
@@ -43,7 +44,7 @@ export class WorkPackageGroupToggleDropdownMenuDirective extends OpContextMenuTr
     super(elementRef, opContextMenu);
   }
 
-  protected open(evt:JQuery.TriggeredEvent) {
+  protected open(evt:Event) {
     this.buildItems();
     this.opContextMenu.show(this, evt);
   }
@@ -61,7 +62,7 @@ export class WorkPackageGroupToggleDropdownMenuDirective extends OpContextMenuTr
         disabled: this.wpViewCollapsedGroups.allGroupsAreCollapsed,
         linkText: this.I18n.t('js.button_collapse_all'),
         icon: 'icon-minus2',
-        onClick: (evt:JQuery.TriggeredEvent) => {
+        onClick: (evt) => {
           this.wpViewCollapsedGroups.setAllGroupsCollapseStateTo(true);
 
           return true;
@@ -71,7 +72,7 @@ export class WorkPackageGroupToggleDropdownMenuDirective extends OpContextMenuTr
         disabled: this.wpViewCollapsedGroups.allGroupsAreExpanded,
         linkText: this.I18n.t('js.button_expand_all'),
         icon: 'icon-plus',
-        onClick: (evt:JQuery.TriggeredEvent) => {
+        onClick: (evt) => {
           this.wpViewCollapsedGroups.setAllGroupsCollapseStateTo(false);
 
           return true;

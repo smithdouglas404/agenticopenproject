@@ -49,10 +49,6 @@ module Meetings
       end
     end
 
-    def dynamic_path
-      polymorphic_path([:new, @project, :meeting])
-    end
-
     def id
       "add-meeting-button"
     end
@@ -63,6 +59,23 @@ module Meetings
 
     def label_text
       I18n.t(:label_meeting)
+    end
+
+    def upcoming_query?
+      filter = @query.filters.find { |f| f.name == :time }
+      filter ? !filter.past? : true
+    end
+
+    def dynamic_path(upcoming: true)
+      polymorphic_path([@project, :meetings], current_params.merge(upcoming:))
+    end
+
+    def current_params
+      @current_params ||= params.slice(:filters, :page, :per_page).permit!
+    end
+
+    def filters_expanded?
+      params[:filters].present?
     end
   end
 end

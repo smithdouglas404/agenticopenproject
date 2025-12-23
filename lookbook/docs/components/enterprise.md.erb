@@ -2,6 +2,8 @@ OpenProject provides multiple ways to render upsell components. These adapt auto
 
 This document describes the different components and how to use them.
 
+For a list of all currently used feature IDs, please see the [enterprise feature list](./enterprise-feature-list).
+
 # Requirements
 
 ## Token Gem
@@ -30,7 +32,7 @@ en:
   # ... other keys
   ee:
     feature:
-	  # ...
+    # ...
       your_feature_name: "Fancy Enterprise feature!"
     upsell:
       # ...
@@ -48,7 +50,7 @@ for the upsell translation keys.
 ### Plan information
 The last sentence of each banner indicates the lowest plan that includes the feature. The phrasing is: "Available starting with the Enterprise {Plan name} plan."
 
-This line is appende automatically with the correct information based on the users' current plan.
+This line is appended automatically with the correct information based on the users' current plan.
 
 #### Static links
 
@@ -64,22 +66,6 @@ If none is provided, the link will go to the enterprise landing page on our webs
 ## Variations
 
 There are three varations of the Enterprise banner.
-
-### Full-page upsell banner
-
-The full-page upsell banner is used an entire page is inaccessible to the current user because their plan does not include that feature (vs. only a part of that feature not being available). The full page banner also allows us to provide a feature video or large illustration.
-
-For example: when a community user clicks on the 'Team planner' module (but it's not included in their plan), or if they go to the Project admin settings and navigate to the 'Internal comments' tab under Work packages.
-
-```ruby
-render EnterpriseEdition::UpsellPageComponent.new(
-  :enterprise_feature,
-  video: "enterprise/some-video.mp4",
-  # or image: "enterprise/some-image.png"
-)
-```
-
-<%= embed OpenProject::EnterpriseEdition::UpsellPageComponentPreview, :default, panels: %i[] %>
 
 ### Inline upsell banners
 
@@ -101,13 +87,11 @@ Once dismissed, it is not shown again.
 
 Pleases note that admins will see an 'Upgrade' button but regular users will only see a 'More information' link.
 
-
 ```ruby
 render EnterpriseEdition::BannerComponent.new(:enterprise_feature, dismissable: true)
 ```
 
 <%= embed OpenProject::EnterpriseEdition::BannerComponentPreview, :dismissable, panels: %i[] %>
-
 
 Use when: You want to show content below the banners, e.g. in administrative setting pages.
 
@@ -115,7 +99,7 @@ Use when: You want to show content below the banners, e.g. in administrative set
 
 The medium variant gives you of an opportunity to illustrate what the feature does and is more appealing than the inline variant. Use this when you want add additional context, and when the feature is not just a small setting.
 
-The medium variant banner has a fixed height of 220px and also also requires an image on the right side.
+The medium variant banner has a fixed height of 220px and also requires an image on the right side.
 
 **Tips:**
 
@@ -127,3 +111,33 @@ render EnterpriseEdition::BannerComponent.new(:enterprise_feature, variant: :med
 ```
 
 <%= embed OpenProject::EnterpriseEdition::BannerComponentPreview, :medium, panels: %i[] %>
+
+## Large variant banners
+
+The large variant upsell banner is used when an entire page is inaccessible to the current user because their plan does not include that feature (vs. only a part of that feature not being available).
+This banner is used when there is an illustration video or image present that requires this amount of space.
+
+For example: when a community user clicks on the 'Team planner' module (but it's not included in their plan)
+
+```ruby
+render EnterpriseEdition::BannerComponent.new(
+  :enterprise_feature,
+  variant: :large,
+  video: "enterprise/some-video.mp4",
+)
+```
+
+<%= embed OpenProject::EnterpriseEdition::BannerComponentPreview, :large, panels: %i[] %>
+
+### Passing through content
+
+You can use the helper method `with_enterprise_banner_guard` to conditionally render content based on the availability of an enterprise feature,
+and render a banner at the same time.
+
+This is useful when you want to show content only if the feature is available in the user's current plan.
+
+```erb
+<%%= with_enterprise_banner_guard(:enterprise_feature, **banner_args) do %>
+  Some additional content that will be rendered below the banner, only if the feature is available
+<%% end %>
+```

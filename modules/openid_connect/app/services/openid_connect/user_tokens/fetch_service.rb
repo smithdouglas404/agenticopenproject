@@ -43,8 +43,9 @@ module OpenIDConnect
       attr_reader :user
 
       def initialize(user:,
+                     exchange_scope: nil,
                      jwt_parser: JwtParser.new(verify_audience: false, verify_expiration: false),
-                     token_exchange: ExchangeService.new(user:),
+                     token_exchange: ExchangeService.new(user:, scope: exchange_scope),
                      token_refresh: RefreshService.new(user:, token_exchange:))
         @user = user
         @token_exchange = token_exchange

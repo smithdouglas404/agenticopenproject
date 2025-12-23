@@ -14,6 +14,8 @@ import {
   Observable,
   switchMap,
 } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { IOPFieldSchema } from 'core-app/features/hal/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class BoardListsService {
@@ -94,13 +96,15 @@ export class BoardListsService {
       const resource = this.halResourceService.createHalResourceOfClass(GridWidgetResource, source);
       board.addQuery(resource);
     } catch (e) {
-      this.toastService.addError(e);
-      console.error(e);
+      if (e instanceof HttpErrorResponse) {
+        this.toastService.addError(e);
+        console.error(e);
+      }
     }
     return board;
   }
 
-  private buildQueryRequest(params:Object) {
+  private buildQueryRequest(params:object) {
     return {
       public: true,
       _links: {

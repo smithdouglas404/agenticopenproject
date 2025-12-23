@@ -39,6 +39,7 @@ import { BcfViewService } from 'core-app/features/bim/ifc_models/pages/viewer/bc
   templateUrl: './bcf-split-left.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-bcf-content-left',
+  standalone: false,
 })
 export class BcfSplitLeftComponent implements OnInit {
   showViewer$:Observable<boolean>;

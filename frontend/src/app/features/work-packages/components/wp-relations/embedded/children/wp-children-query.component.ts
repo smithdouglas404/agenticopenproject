@@ -51,6 +51,7 @@ import { WorkPackageRelationsService } from 'core-app/features/work-packages/com
   providers: [
     { provide: WorkPackageInlineCreateService, useClass: WpChildrenInlineCreateService },
   ],
+  standalone: false,
 })
 export class WorkPackageChildrenQueryComponent extends WorkPackageRelationQueryBase implements OnInit {
   @Input() public workPackage:WorkPackageResource;

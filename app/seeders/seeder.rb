@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -44,6 +46,9 @@ class Seeder
   end
 
   class_attribute :needs, default: []
+  # The attributes referencing other objects created or looked up during
+  # seeding. The seeder should not run if one of them does not exist.
+  class_attribute :attribute_names_for_required_references, default: []
 
   attr_reader :seed_data
 
@@ -67,7 +72,14 @@ class Seeder
   end
 
   def applicable?
-    true
+    seed_data.all_references_exist?(all_required_references)
+  end
+
+  # Returns the references that are required to be present in the seed data.
+  # Should be overridden by subclasses to gather the references from their model
+  # data.
+  def all_required_references
+    []
   end
 
   # Called if the seeding is not applicable to have a chance to lookup
@@ -97,5 +109,12 @@ class Seeder
 
   def without_notifications(&)
     Journal::NotificationConfiguration.with(false, &)
+  end
+
+  def get_required_references(models_data)
+    refs = Array.wrap(models_data).map do |model_data|
+      model_data.values_at(*attribute_names_for_required_references)
+    end
+    refs.flatten.compact.uniq
   end
 end

@@ -32,7 +32,7 @@ require "spec_helper"
 
 RSpec.describe "types routes" do
   it do
-    expect(post("/types/move/123")).to route_to(controller: "types",
+    expect(post("/types/move/123")).to route_to(controller: "work_package_types/types",
                                                 action: "move",
                                                 id: "123")
   end

@@ -14,9 +14,9 @@ RSpec.describe "Work package single context menu", :js, :selenium do
     find("#action-show-more-dropdown-menu .button").click
   end
 
-  it "sets the correct copy project link" do
+  it "sets the correct duplicate work package link" do
     find(".menu-item", text: "Duplicate in another project", exact_text: true).click
-    expect(page).to have_css("h2", text: I18n.t(:button_copy))
+    expect(page).to have_css("h2", text: I18n.t(:button_duplicate))
     expect(page).to have_css("a.work_package", text: "##{work_package.id}")
     expect(page).to have_current_path /work_packages\/move\/new\?copy=true&ids\[\]=#{work_package.id}/
   end

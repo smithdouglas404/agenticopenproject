@@ -43,13 +43,6 @@ zh-TW:
           name: PM2 紅紫色
         item_3:
           name: PM2 黃綠色
-      document_categories:
-        item_0:
-          name: 說明文件
-        item_1:
-          name: 規範
-        item_2:
-          name: 其他
       project_query_roles:
         item_0:
           name: 專案查詢檢視器
@@ -57,11 +50,11 @@ zh-TW:
           name: 專案查詢編輯器
       work_package_roles:
         item_0:
-          name: 工作項目編輯者
+          name: 工作套件編輯者
         item_1:
-          name: 工作項目評論者
+          name: 工作套件留言者
         item_2:
-          name: 工作項目檢視者
+          name: 工作套件檢視者
       project_roles:
         item_0:
           name: 非成員
@@ -165,7 +158,7 @@ zh-TW:
                     如果您有任何問題或需要支援，請告知我們。聯絡我們：[support[at]openproject.com](mailto:support@openproject.com).
               item_5:
                 options:
-                  name: 工作項目
+                  name: 工作套件
               item_6:
                 options:
                   name: 里程碑
@@ -205,18 +198,27 @@ zh-TW:
             item_4:
               subject: 專案結束
           wiki: |
-            **您可以：**
+            在此 Wiki 中，您可以協作建立與編輯頁面及子頁面，打造專案 Wiki。
 
-            * 插入文字和圖片，也可以從其他文件複製和貼上
-            * 創建具有父頁面的頁面階層結構
-            * 將 wiki 頁面納入專案選單
-            * 使用巨集納入，例如目錄、工作包清單或甘特圖 * 在其他文字欄位納入 wiki 頁面，例如專案總覽頁 * 檢視變更連結其他文件例如：目錄、工作包清單或甘特圖
-            * 在其他文字欄位中包含 wiki 頁面，例如：專案總覽頁面
-            * 包含其他文件的連結
-            * 檢視變更歷史
-            * 以 Markdown 方式檢視
+            您可以：
 
-            更多資訊：[https://www.openproject.org/docs/user-guide/wiki/](https://www.openproject.org/docs/user-guide/wiki/)
+            插入文字與圖片，也可從其他文件中複製貼上
+
+            建立具有父子關係的頁面階層
+
+            將 Wiki 頁面加入專案選單中
+
+            使用巨集插入內容，例如目錄、工作套件清單或甘特圖
+
+            將 Wiki 頁面嵌入其他文字欄位中，例如專案總覽頁
+
+            插入指向其他文件的連結
+
+            檢視變更紀錄
+
+            以 Markdown 格式檢視
+
+            更多資訊請參閱：https://www.openproject.org/docs/user-guide/wiki/
         scrum-project:
           name: Scrum 專案
           status_explanation: 所有任務皆依計劃進行，相關人員知道他們的任務，系統完成設定。
@@ -334,7 +336,7 @@ zh-TW:
                     如果您有任何問題或需要支援，請告訴我們。聯絡我們：[support[at]openproject.com](mailto:support@openproject.com).
               item_5:
                 options:
-                  name: 工作項目
+                  name: 工作套件
               item_6:
                 options:
                   name: 專案計畫

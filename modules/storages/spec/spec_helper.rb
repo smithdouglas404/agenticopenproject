@@ -62,8 +62,14 @@ end
 Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
-  config.prepend_before { Storages::Peripherals::Registry.enable_stubs! }
-  config.append_after { Storages::Peripherals::Registry.unstub }
+  config.include Dry::Monads[:result]
+
+  config.prepend_before do
+    Storages::Adapters::Registry.enable_stubs!
+  end
+  config.append_after do
+    Storages::Adapters::Registry.unstub
+  end
 
   config.define_derived_metadata(file_path: %r{/modules/storages/spec}) do |metadata|
     metadata[:vcr_cassette_library_dir] = STORAGES_CASSETTE_LIBRARY_DIR

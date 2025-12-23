@@ -95,7 +95,7 @@ module OpenProject
                         @mapped_permissions.select { |p| p.name == action }
                       end
 
-        permissions.any? && permissions.all? { !_1.enabled? }
+        permissions.any? && permissions.all? { !it.enabled? }
       end
 
       def public_permissions

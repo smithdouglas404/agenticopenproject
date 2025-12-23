@@ -39,6 +39,7 @@ import { CollectionResource } from 'core-app/features/hal/resources/collection-r
 
 @Component({
   templateUrl: './work-package-edit-field.component.html',
+  standalone: false,
 })
 export class WorkPackageEditFieldComponent extends SelectEditFieldComponent {
   /** Keep a switchmap for search term and loading state */

@@ -55,7 +55,7 @@ Rails.application.routes.draw do
         constraints: {
           mode: /day|week|workweek|month/,
           view_mode: /list|calendar/,
-          date: /\d{4}-\d{2}-\d{2}/
+          date: /(\d{4}-\d{2}-\d{2}|today)/
         }
     get "/time-tracking/refresh" => "time_tracking#refresh",
         as: :time_tracking_refresh
@@ -101,5 +101,10 @@ Rails.application.routes.draw do
              only: %i[show update],
              controller: "costs_settings",
              as: "costs_settings"
+
+    resource :time,
+             only: %i[show update],
+             controller: "time_settings",
+             as: "time_settings"
   end
 end

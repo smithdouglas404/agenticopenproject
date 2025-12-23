@@ -10,7 +10,7 @@ way, the rendered form is wrapped into a container with `680px` max-width.
 ```erb
 <%%=
   settings_primer_form_with(**form_options) do |f|
-    render(WorkPackages::Types::SettingsForm.new(f))
+    render(WorkPackageTypes::SettingsForm.new(f))
   end %>
 ```
 

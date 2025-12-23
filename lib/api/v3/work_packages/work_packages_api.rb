@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -53,13 +55,13 @@ module API
             call.result
           end
 
-          post &::API::V3::Utilities::Endpoints::Create.new(model: WorkPackage,
+          post(&::API::V3::Utilities::Endpoints::Create.new(model: WorkPackage,
                                                             parse_service: WorkPackages::ParseParamsService,
                                                             params_modifier: ->(attributes) {
                                                               attributes[:send_notifications] = notify_according_to_params
                                                               attributes
                                                             })
-                                                       .mount
+                                                       .mount)
 
           route_param :id, type: Integer, desc: "Work package ID" do
             helpers WorkPackagesSharedHelpers
@@ -98,7 +100,8 @@ module API
             mount ::API::V3::WorkPackages::AvailableProjectsOnEditAPI
             mount ::API::V3::WorkPackages::AvailableRelationCandidatesAPI
             mount ::API::V3::WorkPackages::WorkPackageRelationsAPI
-            mount ::API::V3::Reminders::RemindersAPI
+            mount ::API::V3::Reminders::RemindersByWorkPackageAPI
+            mount ::API::V3::EmojiReactions::EmojiReactionsByWorkPackageCommentsAPI
           end
 
           mount ::API::V3::WorkPackages::CreateFormAPI

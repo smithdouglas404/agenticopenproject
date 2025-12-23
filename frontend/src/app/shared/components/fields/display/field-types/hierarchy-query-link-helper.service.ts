@@ -27,39 +27,28 @@
 //++
 
 import { Injectable } from '@angular/core';
-import * as URI from 'urijs';
-import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { ProjectResource } from 'core-app/features/hal/resources/project-resource';
+import URI from 'urijs';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 
 @Injectable({ providedIn: 'root' })
-
 export class HierarchyQueryLinkHelperService {
   constructor(
-    private apiV3Service:ApiV3Service,
     private pathHelper:PathHelperService,
   ) {}
 
   public addHref(link:HTMLAnchorElement, resource:HalResource):void {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (resource && resource.id && resource.project) {
+    if (resource && resource.id) {
       const wpID = resource.id.toString();
-      this.apiV3Service.projects.id(resource.project as ProjectResource).get().subscribe(
-        (project:ProjectResource) => {
-          const props = {
-            c: ['id', 'subject', 'type', 'status', 'estimatedTime', 'remainingTime', 'percentageDone'],
-            hi: true,
-            is: true,
-            f: [{ n: 'parent', o: '=', v: [wpID] }],
-          };
-          const href = URI(this.pathHelper.projectWorkPackagesPath(project.identifier as string))
-            .query({ query_props: JSON.stringify(props) })
-            .toString();
-
-          link.href = href;
-        },
-      );
+      const props = {
+        c: ['id', 'subject', 'type', 'status', 'estimatedTime', 'remainingTime', 'percentageDone'],
+        hi: true,
+        is: true,
+        f: [{ n: 'parent', o: '=', v: [wpID] }],
+      };
+      link.href = URI(this.pathHelper.workPackagesPath(null))
+        .query({ query_props: JSON.stringify(props) })
+        .toString();
     }
   }
 }

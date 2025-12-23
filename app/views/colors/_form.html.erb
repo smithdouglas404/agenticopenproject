@@ -34,7 +34,7 @@ See COPYRIGHT and LICENSE files for more details.
     <%= f.text_field :name, required: true, container_class: "-slim" %>
   </div>
   <div class="form--field -required">
-    <label class="form--label"><%= Color.human_attribute_name(:hexcode) %></label>
+    <label class="form--label" for="color_hexcode"><%= Color.human_attribute_name(:hexcode) %></label>
     <span class="form--field-container">
       <span class="form--text-field-container -xslim">
         <%= text_field_tag "color_hexcode",

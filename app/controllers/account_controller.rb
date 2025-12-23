@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -88,12 +90,12 @@ class AccountController < ApplicationController
   end
 
   # Enable user to choose a new password
-  def lost_password
-    return redirect_to(home_url) unless allow_lost_password_recovery?
+  def lost_password # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+    return redirect_to(home_url, status: :see_other) unless allow_lost_password_recovery?
 
     if params[:token]
       @token = ::Token::Recovery.find_by_plaintext_value(params[:token])
-      redirect_to(home_url) && return unless @token and !@token.expired?
+      redirect_to(home_url, status: :see_other) && return unless @token and !@token.expired?
 
       @user = @token.user
       if request.post?
@@ -102,7 +104,7 @@ class AccountController < ApplicationController
 
         if call.success?
           @token.destroy
-          redirect_to action: "login"
+          redirect_to action: "login", status: :see_other
           return
         end
       end
@@ -119,6 +121,7 @@ class AccountController < ApplicationController
       unless user
         # user not found in db
         Rails.logger.error "Lost password unknown email input: #{mail}"
+        redirect_to action: :lost_password, status: :see_other
         return
       end
 
@@ -126,6 +129,7 @@ class AccountController < ApplicationController
         # user uses an external authentication
         UserMailer.password_change_not_possible(user).deliver_later
         Rails.logger.warn "Password cannot be changed for user: #{mail}"
+        redirect_to action: :lost_password, status: :see_other
         return
       end
 
@@ -134,7 +138,7 @@ class AccountController < ApplicationController
       if token.save
         UserMailer.password_lost(token).deliver_later
         flash[:notice] = I18n.t(:notice_account_lost_email_sent)
-        redirect_to action: "login", back_url: home_url
+        redirect_to action: :lost_password, status: :see_other
         nil
       end
     end
@@ -180,14 +184,14 @@ class AccountController < ApplicationController
   # to change the password.
   # When making changes here, also check MyController.change_password
   def change_password
-    # Retrieve user_id from session
-    @user = User.find(params[:password_change_user_id])
+    # Retrieve user login name from session
+    @user = User.find_by!(login: params[:password_change_user])
 
     change_password_flow(user: @user, params:, show_user_name: true) do
       password_authentication(@user.login, params[:new_password])
     end
   rescue ActiveRecord::RecordNotFound
-    Rails.logger.error "Failed to find user for change_password request: #{flash[:_password_change_user_id]}"
+    Rails.logger.error "Failed to find user for change_password request: #{flash[:_password_change_user]}"
     render_404
   end
 
@@ -289,7 +293,7 @@ class AccountController < ApplicationController
 
     invited = session[:invitation_token].present?
     get = request.get? && allow
-    post = (request.post? || request.patch?) && (session[:auth_source_registration] || allow)
+    post = (request.post? || request.patch?) && (session[:auth_source_registration].present? || allow)
 
     invited || get || post
   end
@@ -333,7 +337,7 @@ class AccountController < ApplicationController
       @user.consented_at = DateTime.now
     end
 
-    if session[:auth_source_registration]
+    if session[:auth_source_registration].present?
       register_with_auth_source(@user)
     else
       register_plain_user(@user)

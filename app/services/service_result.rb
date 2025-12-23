@@ -143,6 +143,8 @@ class ServiceResult
     merge_success!(other) unless without_success
     merge_errors!(other)
     merge_dependent!(other)
+
+    self
   end
 
   ##
@@ -336,6 +338,16 @@ class ServiceResult
     ApplicationRecord.human_attribute_name(*)
   end
 
+  def message_type
+    if @message_type
+      @message_type.to_sym
+    elsif success?
+      :notice
+    else
+      :error
+    end
+  end
+
   private
 
   def initialize_errors(errors, provided_result)
@@ -346,16 +358,6 @@ class ServiceResult
     base = provided_result.respond_to?(:errors) ? provided_result : self
     ActiveModel::Errors.new(base).tap do |errors|
       errors.merge!(provided_result) if base != self
-    end
-  end
-
-  def message_type
-    if @message_type
-      @message_type.to_sym
-    elsif success?
-      :notice
-    else
-      :error
     end
   end
 

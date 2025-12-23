@@ -29,6 +29,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
+import dragula from 'dragula';
 
 export default class CustomFieldsController extends Controller {
   static targets = [
@@ -55,11 +56,13 @@ export default class CustomFieldsController extends Controller {
 
   static values = {
     formatConfig: Array,
-    enterpriseEdition: Boolean,
+    hierarchyEnabled: Boolean,
+    format: String,
   };
 
   declare readonly formatConfigValue:[string, string, string[]][];
-  declare readonly enterpriseEditionValue:boolean;
+  declare readonly formatValue:string;
+  declare readonly hierarchyEnabledValue:boolean;
 
   declare readonly formatTarget:HTMLInputElement;
   declare readonly dragContainerTarget:HTMLElement;
@@ -88,15 +91,11 @@ export default class CustomFieldsController extends Controller {
       this.setupDragAndDrop();
     }
 
-    this.formatChanged();
-  }
-
-  formatChanged() {
-    this.toggleFormat(this.formatTarget.value);
+    this.adaptInputsToFormat(this.formatValue);
   }
 
   moveRowUp(event:{ target:HTMLElement }) {
-    const row = event.target.closest('tr') as HTMLTableRowElement;
+    const row = event.target.closest('tr')!;
     const idx = this.customOptionRowTargets.indexOf(row);
     if (idx > 0) {
       this.customOptionRowTargets[idx - 1].before(row);
@@ -106,7 +105,7 @@ export default class CustomFieldsController extends Controller {
   }
 
   moveRowDown(event:{ target:HTMLElement }) {
-    const row = event.target.closest('tr') as HTMLTableRowElement;
+    const row = event.target.closest('tr')!;
     const idx = this.customOptionRowTargets.indexOf(row);
     if (idx < this.customOptionRowTargets.length - 1) {
       this.customOptionRowTargets[idx + 1].after(row);
@@ -116,7 +115,7 @@ export default class CustomFieldsController extends Controller {
   }
 
   moveRowToTheTop(event:{ target:HTMLElement }) {
-    const row = event.target.closest('tr') as HTMLTableRowElement;
+    const row = event.target.closest('tr')!;
     const first = this.customOptionRowTargets[0];
 
     if (first && first !== row) {
@@ -127,7 +126,7 @@ export default class CustomFieldsController extends Controller {
   }
 
   moveRowToTheBottom(event:{ target:HTMLElement }) {
-    const row = event.target.closest('tr') as HTMLTableRowElement;
+    const row = event.target.closest('tr')!;
     const last = this.customOptionRowTargets[this.customOptionRowTargets.length - 1];
 
     if (last && last !== row) {
@@ -207,7 +206,6 @@ export default class CustomFieldsController extends Controller {
 
   private setupDragAndDrop() {
     // Make custom fields draggable
-    // eslint-disable-next-line no-undef
     const drake = dragula([this.dragContainerTarget], {
       isContainer: () => false,
       moves: (el, source, handle:HTMLElement) => handle.classList.contains('dragula-handle'),
@@ -224,10 +222,9 @@ export default class CustomFieldsController extends Controller {
 
     // Setup autoscroll
     void window.OpenProject.getPluginContext().then((pluginContext) => {
-      // eslint-disable-next-line no-new
       new pluginContext.classes.DomAutoscrollService(
         [
-          document.getElementById('content-body') as HTMLElement,
+          document.getElementById('content-body')!,
         ],
         {
           margin: 25,
@@ -250,16 +247,13 @@ export default class CustomFieldsController extends Controller {
     });
   }
 
-  private toggleFormat(format:string) {
+  private adaptInputsToFormat(format:string) {
     if (this.hasSubmitButtonTarget) {
-      this.submitButtonTarget.disabled = format === 'hierarchy' && !this.enterpriseEditionValue;
+      this.submitButtonTarget.disabled = format === 'hierarchy' && !this.hierarchyEnabledValue;
     }
 
     this.formatConfigValue.forEach(([targetsName, operator, formats]) => {
-      let active = operator === 'only' ? formats.includes(format) : !formats.includes(format);
-      if (targetsName === 'enterpriseBanner' && this.enterpriseEditionValue) {
-        active = false;
-      }
+      const active = operator === 'only' ? formats.includes(format) : !formats.includes(format);
 
       const targets = this[`${targetsName}Targets` as keyof typeof this] as HTMLElement[];
       if (targets) {

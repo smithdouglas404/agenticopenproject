@@ -1,7 +1,7 @@
 ---
 sidebar_navigation:
   title: reCAPTCHA
-  priority: 600
+  priority: 300
 description: configure reCAPTCHA for OpenProject.
 keywords: reCAPTCHA, turnstile
 ---

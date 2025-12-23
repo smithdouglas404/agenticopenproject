@@ -94,8 +94,8 @@ tr:
       timesheet: "Zaman Çizelgesi"
       time: "Zaman"
       sums_hours: Toplam
-      overview_per_user_total: "Overview: Total hours per user"
-      overview_per_user_day: "Overview: Hours per user per day"
+      overview_per_user_total: "Genel bakış: Kullanıcı başına toplam saat"
+      overview_per_user_day: "Genel bakış: Kullanıcı başına günlük saat"
     cost_reports:
       title: "Maliyet Raporlarınızın XLS çıktısı"
       start_time: "Başlangıç tarihi"

@@ -17,7 +17,8 @@ es:
       new_folder: "Nueva carpeta"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/Sharepoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Almacén"
       information:
         authentication_error: "La solicitud a %{storageType} no ha podido autenticarse, es un error."

@@ -7,18 +7,9 @@ import { GridPageComponent } from 'core-app/shared/components/grids/grid/page/gr
   styleUrls: ['../../shared/components/grids/grid/page/grid-page.component.sass'],
   providers: GRID_PROVIDERS,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class MyPageComponent extends GridPageComponent {
-  showToolbar = false;
-
-  protected setHtmlTitle() {
-    // Done in rails
-  }
-
-  protected i18nNamespace():string {
-    return 'my_page';
-  }
-
   protected gridScopePath():string {
     return this.pathHelper.myPagePath();
   }

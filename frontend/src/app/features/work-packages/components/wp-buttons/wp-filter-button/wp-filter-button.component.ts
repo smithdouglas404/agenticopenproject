@@ -39,6 +39,7 @@ import { WorkPackageFiltersService } from 'core-app/features/work-packages/compo
   selector: 'wp-filter-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './wp-filter-button.html',
+  standalone: false,
 })
 export class WorkPackageFilterButtonComponent extends AbstractWorkPackageButtonComponent implements OnInit {
   public count:number;

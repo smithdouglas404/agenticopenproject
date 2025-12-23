@@ -118,6 +118,27 @@ RSpec.describe "Work package activity tab comment editor",
     end
   end
 
+  describe "Accessibility" do
+    current_user { admin }
+
+    before do
+      wp_page.visit!
+      wp_page.wait_for_activity_tab
+    end
+
+    it "has the rich text editor aria labelled" do
+      activity_tab.add_comment(text: "Sample text", save: false)
+
+      activity_tab.expect_focus_on_editor
+      expect(page).to have_selector(:rich_text, "Add a comment. Type @ to notify people.")
+
+      activity_tab.clear_comment(blur: true)
+
+      activity_tab.expect_blur_on_editor
+      expect(page).to have_selector(:rich_text, "Add a comment. Type @ to notify people.")
+    end
+  end
+
   describe "Attachments" do
     let(:image_fixture) { UploadedFile.load_from("spec/fixtures/files/image.png") }
     let(:editor) { Components::WysiwygEditor.new }

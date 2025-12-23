@@ -31,7 +31,7 @@ module Bim::Bcf
     class DeleteService < ::BaseServices::Delete
       private
 
-      def after_validate(params, contract_call)
+      def after_validate(contract_call)
         wp_call = work_package_delete_call(params)
 
         if wp_call.success?

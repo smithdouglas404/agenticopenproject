@@ -18,12 +18,12 @@ To create a new OpenProject trial, either go to the [OpenProject website](https:
 
 **Enter your organization domain**. This name will become part of the URL of your OpenProject installation, for example `myneworganization.openproject.com`.
 
-You can include a hyphen "-" in the organization name, e.g. *my-new-organization.openproject.com*. 
+You can include a hyphen "-" in the organization name, e.g. *myneworganization.openproject.com*. 
 
 > [!TIP]
 > We also support [custom domains](../enterprise-cloud-faq/#can-i-get-a-custom-domain-name-instead-of-exampleopenprojectcom). 
 
-Next, specify your **Email** and **Team language** preferences. 
+Next, specify your **Email**, **Team language** and [**Data center**  preferences](https://www.openproject.org/legal/data-processing-agreement/sub-processors/). 
 
 > [!IMPORTANT]
 > Keep in mind that the OpenProject [privacy policy](https://www.openproject.org/legal/privacy/) and the [terms of service](https://www.openproject.org/legal/terms-of-service/) apply if you create a trial instance.

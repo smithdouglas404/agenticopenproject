@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Linked projects phases and work packages when changing the project", :js, with_flag: { stages_and_gates: true } do
+RSpec.describe "Linked projects phases and work packages when changing the project", :js do
   include Components::Autocompleter::NgSelectAutocompleteHelpers
 
   shared_let(:phase_definition_active_in_both_projects) { create(:project_phase_definition) }

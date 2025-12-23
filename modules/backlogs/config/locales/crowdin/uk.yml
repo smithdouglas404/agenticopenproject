@@ -27,7 +27,7 @@ uk:
     attributes:
       work_package:
         position: "Позиція"
-        story_points: "Точки історії"
+        story_points: "Сторі-поінти"
         backlogs_work_package_type: "Тип Backlog-у"
     errors:
       models:
@@ -37,7 +37,7 @@ uk:
               can_only_contain_work_packages_of_current_sprint: "може містити лише ідентифікатори робочих пакетів у поточному спринті."
               must_block_at_least_one_work_package: "повинен містити ідентифікатор принаймні одного ticket-а."
             version_id:
-              task_version_must_be_the_same_as_story_version: "Повинно збігатись з версією батьківської історії"
+              task_version_must_be_the_same_as_story_version: "має збігатись із версією батьківської історії."
         sprint:
           cannot_end_before_it_starts: "Спринт не може закінчитися, перш ніж він почне працювати."
   backlogs:
@@ -55,6 +55,7 @@ uk:
     hours: "Години"
     impediment: "Перешкода"
     label_versions_default_fold_state: "Показати складені версії"
+    caption_versions_default_fold_state: "Версії не розгортатимуться за замовчуванням при перегляді невиконаних завдань. Кожну версію потрібно розгортати вручну."
     work_package_is_closed: "Робочий пакет виконується, коли"
     label_is_done_status: "Стан %{status_name} означає виконано"
     no_burndown_data: "Немає доступних даних. Необхідно встановити початкові та кінцеві дати спринту."
@@ -68,14 +69,17 @@ uk:
     remaining_hours_ideal: "Залишок роботи (ідеальний)"
     show_burndown_chart: "Графік Burndown"
     story: "Історія"
-    story_points: "Точки історії"
-    story_points_ideal: "Пункти історії (ідеально)"
+    story_points: "Сторі-поінти"
+    story_points_ideal: "Сторі-поінти (ідеально)"
     task: "Завдання"
     task_color: "Колір завдання"
     unassigned: "Не призначено"
+    user_preference:
+      header_backlogs: "Модуль невиконаних завдань"
+      button_update_backlogs: "Оновити модуль невиконаних завдань"
     x_more: "%{count} більше..."
   backlogs_active: "активний"
-  backlogs_any: "будь-який"
+  backlogs_any: "усі"
   backlogs_inactive: "Проект не показує активності"
   backlogs_points_burn_direction: "Бали спалюються вгору/вниз"
   backlogs_product_backlog: "Backlog продукту"

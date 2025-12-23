@@ -17,7 +17,8 @@ tr:
       new_folder: "Yeni klasör"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Depolama"
       information:
         authentication_error: "%{storageType} isteğinin yetkilendirilememesi bir hata."

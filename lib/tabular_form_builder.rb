@@ -101,7 +101,7 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
 
     inputs = {
       value: @object.public_send(field),
-      inputId: field_id(field, index: options[:index]),
+      id: field_id(field, index: options[:index]),
       name: options[:name] || field_name(field, index: options[:index])
     }
 
@@ -300,7 +300,7 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
       add_error_class(options)
       error_label = I18n.t("errors.field_erroneous_label",
                            full_errors: @object.errors.full_messages_for(field).join(" "))
-      content << content_tag("p", error_label, class: "hidden-for-sighted")
+      content << content_tag("p", error_label, class: "sr-only")
     end
   end
 
@@ -310,7 +310,7 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
 
   def label_for_field_prefix(content, options)
     if options[:prefix]
-      content << content_tag(:span, options[:prefix].html_safe, class: "hidden-for-sighted")
+      content << content_tag(:span, options[:prefix].html_safe, class: "sr-only")
     end
   end
 

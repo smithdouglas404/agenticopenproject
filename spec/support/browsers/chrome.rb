@@ -32,6 +32,19 @@ def register_chrome(language, name: :"chrome_#{language}", headless: "new", over
     # Disable "Select your search engine screen"
     options.add_argument("--disable-search-engine-choice-screen")
 
+    # Disable timers being throttled in background pages/tabs. Useful for
+    # parallel test runs.
+    options.add_argument("disable-background-timer-throttling")
+
+    # Normally, Chrome will treat a 'foreground' tab instead as backgrounded if
+    # the surrounding window is occluded (aka visually covered) by another
+    # window. This flag disables that. Useful for parallel test runs.
+    options.add_argument("disable-backgrounding-occluded-windows")
+
+    # This disables non-foreground tabs from getting a lower process priority.
+    # Useful for parallel test runs.
+    options.add_argument("disable-renderer-backgrounding")
+
     options.add_preference(:download,
                            directory_upgrade: true,
                            prompt_for_download: false,
@@ -117,3 +130,7 @@ register_chrome "en", name: :chrome_revit_add_in do |options|
 end
 
 register_chrome "en", name: :chrome_new_york_time_zone, override_time_zone: "America/New_York"
+
+register_chrome "en", name: :chrome_dark_mode do |options|
+  options.add_argument("--force-dark-mode")
+end

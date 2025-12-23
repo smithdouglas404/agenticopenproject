@@ -48,12 +48,6 @@ RSpec.describe "Team planner routing" do
   end
 
   context "with :project_id" do
-    it "routes to team_planner#upsell" do
-      expect(subject)
-        .to route(:get, "/projects/foobar/team_planners/upsell")
-              .to(controller: "team_planner/team_planner", action: :upsell, project_id: "foobar")
-    end
-
     it "routes to team_planner#show" do
       expect(subject)
         .to route(:get, "/projects/foobar/team_planners/new")
@@ -62,12 +56,6 @@ RSpec.describe "Team planner routing" do
   end
 
   context "without :project_id" do
-    it "routes to team_planner#upsell" do
-      expect(subject)
-        .to route(:get, "/team_planners/upsell")
-              .to(controller: "team_planner/team_planner", action: :upsell)
-    end
-
     it "routes to team_planner#new" do
       expect(subject)
         .to route(:get, "/team_planners/new")

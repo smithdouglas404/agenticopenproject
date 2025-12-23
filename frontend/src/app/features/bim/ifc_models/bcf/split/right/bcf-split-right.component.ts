@@ -39,6 +39,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './bcf-split-right.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-bcf-content-right',
+  standalone: false,
 })
 export class BcfSplitRightComponent implements OnInit {
   showWorkPackages$:Observable<boolean>;

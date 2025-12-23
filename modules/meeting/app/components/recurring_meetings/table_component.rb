@@ -41,6 +41,8 @@ module RecurringMeetings
 
     columns :start_time, :relative_time, :status, :create
 
+    mobile_columns :start_time, :status
+
     def has_actions?
       true
     end

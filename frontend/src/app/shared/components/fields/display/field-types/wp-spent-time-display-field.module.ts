@@ -29,11 +29,11 @@
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ProjectResource } from 'core-app/features/hal/resources/project-resource';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
-import * as URI from 'urijs';
+import URI from 'urijs';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { WorkDisplayField } from 'core-app/shared/components/fields/display/field-types/work-display-field.module';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 
 export class WorkPackageSpentTimeDisplayField extends WorkDisplayField {
@@ -117,7 +117,7 @@ export class WorkPackageSpentTimeDisplayField extends WorkDisplayField {
     this.workPackageForHandler = wp;
 
     void this.TurboRequests.request(
-      `${this.PathHelper.timeEntryWorkPackageDialog(wp.id as string)}?date=${moment().format('YYYY-MM-DD')}`,
+      `${this.PathHelper.timeEntryWorkPackageDialog(wp.id!)}?date=${moment().format('YYYY-MM-DD')}`,
       { method: 'GET' },
     );
   }

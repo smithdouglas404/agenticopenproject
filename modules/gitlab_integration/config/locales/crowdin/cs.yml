@@ -24,14 +24,14 @@ cs:
   attributes:
     commit: "Commit"
     gitlab: "GitLab identifier"
-    gitlab_avatar_url: "Avatar URL"
+    gitlab_avatar_url: "URL avataru"
     gitlab_email: "GitLab Email"
     gitlab_html_url: "GitLab HTML URL"
     gitlab_merge_request: "Merge Request"
-    gitlab_name: "GitLab name"
-    gitlab_updated_at: "Updated at"
+    gitlab_name: "Název GitLab"
+    gitlab_updated_at: "Aktualizováno"
     gitlab_user_avatar_url: "GitLab avatar URL"
-    gitlab_username: "GitLab username"
+    gitlab_username: "Uživatelské jméno GitLab"
   activerecord:
     attributes:
       gitlab_pipeline:

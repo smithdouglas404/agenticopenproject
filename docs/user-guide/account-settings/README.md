@@ -10,19 +10,19 @@ keywords: my account, account settings, change language
 
 Change your personal settings under Account settings (earlier called My account). Here you can adapt, e.g. the language, edit notifications, or add an avatar. Moreover you can manage access tokens and sessions.
 
-| Topic                                                        | Content                                                      |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Open account settings](#open-account-settings)              | How to open your personal settings in OpenProject            |
-| [Edit your user information](#edit-your-user-information)    | How to change the name or email address in OpenProject       |
-| [Profile settings: change your language, time zone or display of comments](#profile-settings) | How to change the language, time zone or display of comments in OpenProject |
-| [Change password](#change-password)                          | How to change my password                                    |
-| [Two-factor authentication](#two-factor-authentication)      | How to set up a two-factor authentication                    |
-| [Access tokens](#access-tokens)                              | How to set up access tokens in OpenProject                   |
-| [Session management](#sessions-management)                   | How to manage your OpenProject sessions                      |
-| [Notifications settings](#notifications-settings)            | How to change in-app notifications in OpenProject            |
-| [Email reminders](#email-reminders)                          | How to change email reminders sent by OpenProject            |
-| [Set an Avatar](#set-an-avatar)                              | How to set an avatar in OpenProject and change the profile picture |
-| [Delete account](#delete-account)                            | How to delete my own account                                 |
+| Topic                                                     | Content                                                      |
+| --------------------------------------------------------- | ------------------------------------------------------------ |
+| [Open account settings](#open-account-settings)           | How to open your personal settings in OpenProject            |
+| [Edit your user information](#edit-your-user-information) | How to change the name or email address in OpenProject       |
+| [Language and region](#language-and-region-settings)      | How to change the language and the time zone in OpenProject  |
+| [Change password](#change-password)                       | How to change my password                                    |
+| [Two-factor authentication](#two-factor-authentication)   | How to set up a two-factor authentication                    |
+| [Access tokens](#access-tokens)                           | How to set up access tokens in OpenProject                   |
+| [Session management](#sessions-management)                | How to manage your OpenProject sessions                      |
+| [Notifications settings](#notifications-settings)         | How to change in-app notifications in OpenProject            |
+| [Email reminders](#email-reminders)                       | How to change email reminders sent by OpenProject            |
+| [Set an Avatar](#set-an-avatar)                           | How to set an avatar in OpenProject and change the profile picture |
+| [Delete account](#delete-account)                         | How to delete my own account                                 |
 
 ## Open account settings
 
@@ -47,62 +47,101 @@ Here you can update the information and **save** your changes. If you're changin
 
 ![Profile settings in OpenProject](openproject_account_settings_profile.png)
 
-## Profile settings
+## Language and region settings
 
-Within the **Settings** on **Account settings** page you can change the language of OpenProject, adapt the time zone, select which display mode you would like to activate and change the order in which comments are displayed in the **Activity list** for work packages.
+Within the **Language and region** section of **Account settings** page you can change the language of OpenProject and adapt the time zone.
 
-Also, you can activate a **warning if you are leaving a work package with unsaved changes**.
+![OpenProject personal account settings](openproject_account_settings_language_and_regions.png)
 
-Additionally, you can activate to **auto-hide success notifications** from the system. This (only) means that the green pop-up success notifications will be removed automatically after five seconds.
-
-![OpenProject personal account settings](openproject_account_settings_settings.png)
 
 ### Change your language
 
-To change the language in OpenProject, navigate to the **Account settings** and choose the menu point **Settings**.
+To change the language in OpenProject, navigate to the **Account settings** and choose the menu point **Language and region**.
 
 Here you can choose between multiple languages.
 
-OpenProject is translated to more than 30 languages, like German, Chinese, French, Italian, Korean, Latvian, Lithuanian, Polish, Portuguese, Russian, Spanish, Turkish and many more. If you do not see your preferred language in the My account settings, the language needs to be activated by your system administrator in the [system's settings](../../system-admin-guide/system-settings/languages/).
+OpenProject is translated to more than 30 languages, like German, Chinese, French, Italian, Korean, Latvian, Lithuanian, Polish, Portuguese, Russian, Spanish, Turkish and many more. If you do not see your preferred language in your account settings, the language needs to be activated by your system administrator in the [system's settings](../../system-admin-guide/system-settings/languages/).
 
-Pressing the blue **Save** button will save your changes.
+Pressing the **Save** button will save your changes.
 
-If you want to help us to add further languages or to add the translations in your language, you can contribute to the CrowdIn translations project [here](https://crowdin.com/project/openproject).
+If you want to help us to add further languages or to add the translations in your language, you can contribute to the Crowdin translations project [here](https://crowdin.com/project/openproject).
 
 ### Change your time zone
 
-You can choose a time zone in which you work and how the comments and changes will be saved.
+You can choose a time zone in which you work from the dropdown menu of the respective field.
 
-Pressing the blue **Save** button will save your changes.
+Pressing the **Save** button will save your changes.
 
-### Select the high contrast color mode
+## Interface
 
-In the dropdown menu **Mode** you can pick the color mode. The default setting is the **Light mode**. You can also select the **Light high contrast mode**, which will significantly increase the contrast and override the color theme of the OpenProject instance for you.
+Under the **Interface** section of project settings you can adjust the color mode, activate alerts and adjust backlog settings. Settings here are grouped into three sections: *Look and feel*, *Alerts* and *Backlogs module*.
+
+### Look and feel
+
+In the **Look and feel** section under **Interface** in your profile settings (accessible via the left-hand menu), you can select your preferred display color mode and adjust the order in which comments appear in the **Activity list** for work packages.
+
+You can also **disable keyboard shortcuts** . This is useful if you rely on a screen reader or want to avoid triggering actions by accident.
+
+Click **Update look and feel** to save your changes.
+
+!["Look and feel" section under Interface settings in OpenProject account settings](openproject_account_settings_interface_look_and_feel.png)
+
+#### Select the high contrast color mode
+
+In the dropdown menu **Color mode** you can pick the color mode. The default setting is the **Light mode**. You can increase the contrast by activating the **Increase contrast** setting, which will significantly increase the contrast and override the color theme of the OpenProject instance for you.
 
 This mode is recommended for users with visuals impairment.
 
-![High contrast mode in OpenProject account settings](openproject_account_settings_settings_light_high_contrast_mode.png)
+![Light mode with increased contrast selected in OpenProject account settings](openproject_account_settings_settings_light_high_contrast_mode.png)
 
-### Select the dark mode
+#### Select the dark mode
 
-In the dropdown menu **Mode** you can pick the color mode. The default setting is the **Light mode**. You can also select the **Dark mode**, which will change the color theme of the OpenProject instance for you.
+In the dropdown menu **Color mode** you can pick the color mode. The default setting is **Light mode**. You can also alternatively select **Dark** mode and activate the **Increase contrast** setting for the **Dark high contrast** mode.
 
 > [!NOTE]
-> The dark mode ignores parts of the configured design. Top header and side menu colors are entirely overridden for this  mode. Only the accent color and the primary button color are kept, but are calculated to brighter variants.
+> Custom colors and themes are only supported in Light mode and changing color modes may override most or all custom configuration. Only some colors (accent and primary button color) are kept but adapted for appropriate contrast in certain modes like dark mode.
 
 ![Dark mode in OpenProject account settings](openproject_account_settings_dark_mode.png)
 
-### Change the order to display comments
+#### Select automatic color mode
+
+In the dropdown menu Color mode, you can now also select the **Automatic option, which will match the color mode of your operating system**. 
+
+![Automatic color mode in OpenProject account settings](openproject_account_settings_automatic_os_mode.png)
+
+If this option is selected, OpenProject will automatically match your operating system’s light or dark theme, including the system's contrast settings. You will also see additional settings to force high-contrast when Light or Dark mode is selected — this would ensure that OpenProject always increases contrast in automatic mode, regardless of the system contrast settings.
+
+If your operating system is set to high contrast mode, OpenProject will also automatically switch to the corresponding high contrast mode (light or dark).
+
+> [!NOTE]
+> This is a user-specific preference and only affects your own account.
+
+#### Change the order to display comments
 
 You can select the order of the comments (for example of the comments for a work package which appear in the Activity tab). You can select the **newest at the bottom** or **newest on top** to display the comments.
 
 If you choose newest on top, the latest comment will appear on top in the Activity list.
 
+#### Disable keyboard shortcuts
+
+If you use a screen reader or want to avoid accidentally triggering an action with a  shortcut, you can choose to disable default [keyboard shortcuts](../../user-guide/keyboard-shortcuts-access-keys/) by selecting the respective option.
+
+### Alerts
+Under **Alerts** section you can activate a **warning if you are leaving a work package with unsaved changes**.
+
+Additionally, you can activate to **auto-hide success notifications** from the system. This (only) means that the green pop-up success notifications will be removed automatically after five seconds.
+
+![Alerts section under interface settings in OpenProject account settings](openproject_account_settings_interface_alerts.png)
+
 ### Backlogs settings
 
 There are two personal settings available for the [Backlogs module](../../user-guide/backlogs-scrum/):
+
 **Task color**: Here you can enter the color in which your tasks on the task board (on the Backlogs page) are displayed. Tasks on the task board are color-coded based on who they are assigned to. Every user has a default color assigned but if you prefer a different color, you can change it.
+
 **Show versions folded**: When you navigate to the "Backlogs" module in a project, the available versions (e.g. Product backlog, Sprints) are displayed. By default they are expanded, i.e. all work packages included in those versions are shown right away. If you have a large number of versions that are shown on the "Backlogs" page, you may opt to collapse them by default. This way you see all the versions on a page and can then choose to expand those versions for which you want to see details.
+
+![Backlogs settings under Interface settings in OpenProject account settings](openproject_account_settings_interface_backlogs_module.png)
 
 ## Change password
 
@@ -114,7 +153,7 @@ Enter your current password.
 
 Enter your new password and confirm it a second time.
 
-Press the blue **Save** button in order to confirm the password changes.
+Press the **Save** button in order to confirm the password changes.
 
 > [!NOTE]
 > You cannot reset your Google password in OpenProject. If you authenticate with a Google/Gmail account, please go to your Google account administration in order to change your password.
@@ -218,14 +257,24 @@ Create a new token by clicking the **+RSS token** button. This will create your 
 
 ![OpenProject RSS token](openproject_account_settings_access_tokens_rss.png)
 
+### File storages
+
+File Storage tokens connect your OpenProject instance with an external File Storage. If you have not yet logged into any of the file storages activated for your instance, this list will be empty. You can delete tokens by clicking on the **Delete** icon.
+
+![File storages access tokens under Account settings in OpenProject](openproject_account_settings_access_tokens_file_storages.png)
+
+
 ## Sessions management
 
 To view and manage your OpenProject sessions navigate to **Account settings** and choose **Sessions management** from the menu.
 
 ![Sessions management in OpenProject account settings](openproject_account_settings_sessions_management.png)
 
-- **Current sessions**: here you can see all of your sessions. If for example you are logged into OpenProject from different browsers or devices, all will be shown in the list. Current session is the one you are currently using. You can terminate the sessions that are no longer in use. Inactive sessions will be removed from the list after 7 days (depending on the authentication settings they may become invalid earlier).
-- **Remembered devices**: here you can see a list of all devices that you are logged into using the "Stay logged in" option. You will have selected that option when [logging in](../../getting-started/sign-in-registration/). Whether or not that option is available and the duration of time for which you can stay logged in depends on the authentication settings of your instance.
+Here you can view and manage all of your active and remembered sessions in one place. Each row shows the browser, device, expiration date and last connection timestamp. For your current session the “Last connection” column displays **“Current (this device)”**.
+
+You can revoke a session at any time by clicking the **×** icon at the end of the row. Hover over the icon to see the **“Revoke”** tooltip. When you click, a confirmation message appears.
+
+Sessions expire automatically according to your instance’s authentication settings. Remembered sessions show their expiration in relative time (for example “in 5 days”).
 
 > [!NOTE]
 > Closing a browser does not necessarily terminate the session. It might still be displayed in the list and will be reactivated if you open the browser. This depends on both your browser's and the OpenProject instance's settings.
@@ -264,7 +313,7 @@ You can also opt-in to receive **email alerts for other items (that are not work
 - **Wiki page added** - ...adds a new [Wiki page](../../user-guide/wiki/)
 - **Wiki page updated** - ...updates a [Wiki page](../../user-guide/wiki/)
 - **Membership added** - ...adds you to a new [Work package](../../getting-started/work-packages-introduction/)
-- **Membership updates** - ...updates your membership associations
+- **Membership updated** - ...updates your membership associations
 
 ## Set an avatar
 

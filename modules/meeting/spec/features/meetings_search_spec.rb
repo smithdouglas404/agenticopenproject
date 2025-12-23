@@ -38,6 +38,7 @@ RSpec.describe "Meeting search", :js do
 
   let!(:meeting) { create(:meeting, project:) }
   let!(:agenda_item) { create(:meeting_agenda_item, meeting:) }
+  let(:global_search) { Components::GlobalSearch.new }
 
   before do
     login_as user
@@ -50,9 +51,9 @@ RSpec.describe "Meeting search", :js do
       select_autocomplete(page.find(".top-menu-search--input"),
                           query: "Meeting",
                           select_text: "In this project ↵",
-                          wait_dropdown_open: false)
+                          wait_dropdown_open: true)
 
-      page.find('[data-qa-tab-id="meetings"]').click
+      global_search.open_tab :meetings
       expect(page.find_by_id("search-results")).to have_text(meeting.title)
     end
 
@@ -60,9 +61,9 @@ RSpec.describe "Meeting search", :js do
       select_autocomplete(page.find(".top-menu-search--input"),
                           query: agenda_item.title,
                           select_text: "In this project ↵",
-                          wait_dropdown_open: false)
+                          wait_dropdown_open: true)
 
-      page.find('[data-qa-tab-id="meetings"]').click
+      global_search.open_tab :meetings
       expect(page.find_by_id("search-results")).to have_text(meeting.title)
     end
 
@@ -70,9 +71,9 @@ RSpec.describe "Meeting search", :js do
       select_autocomplete(page.find(".top-menu-search--input"),
                           query: agenda_item.notes,
                           select_text: "In this project ↵",
-                          wait_dropdown_open: false)
+                          wait_dropdown_open: true)
 
-      page.find('[data-qa-tab-id="meetings"]').click
+      global_search.open_tab :meetings
       expect(page.find_by_id("search-results")).to have_text(meeting.title)
     end
   end

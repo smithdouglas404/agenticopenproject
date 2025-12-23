@@ -32,39 +32,36 @@ require "spec_helper"
 
 RSpec.describe CustomValue::BoolStrategy do
   let(:instance) { described_class.new(custom_value) }
-  let(:custom_value) do
-    double("CustomValue",
-           value:)
-  end
+  let(:custom_value) { instance_double(CustomValue, value:) }
 
   describe "#value_present?" do
     subject { described_class.new(custom_value).value_present? }
 
-    context "value is nil" do
+    context "when value is nil" do
       let(:value) { nil }
 
       it { is_expected.to be false }
     end
 
-    context "value is empty string" do
+    context "when value is an empty string" do
       let(:value) { "" }
 
       it { is_expected.to be false }
     end
 
-    context "value is present string" do
+    context "when value is a present string" do
       let(:value) { "1" }
 
       it { is_expected.to be true }
     end
 
-    context "value is true" do
+    context "when value is true" do
       let(:value) { true }
 
       it { is_expected.to be true }
     end
 
-    context "value is false" do
+    context "when value is false" do
       let(:value) { false }
 
       it { is_expected.to be true }
@@ -74,37 +71,37 @@ RSpec.describe CustomValue::BoolStrategy do
   describe "#typed_value" do
     subject { instance.typed_value }
 
-    context "value corresponds to true" do
+    context "when value corresponds to true" do
       let(:value) { "1" }
 
       it { is_expected.to be true }
     end
 
-    context "value corresponds to false" do
+    context "when value corresponds to false" do
       let(:value) { "0" }
 
       it { is_expected.to be false }
     end
 
-    context "value is blank" do
+    context "when value is blank" do
       let(:value) { "" }
 
       it { is_expected.to be_nil }
     end
 
-    context "value is nil" do
+    context "when value is nil" do
       let(:value) { nil }
 
       it { is_expected.to be_nil }
     end
 
-    context "value is true" do
+    context "when value is true" do
       let(:value) { true }
 
       it { is_expected.to be true }
     end
 
-    context "value is false" do
+    context "when value is false" do
       let(:value) { false }
 
       it { is_expected.to be false }
@@ -114,7 +111,7 @@ RSpec.describe CustomValue::BoolStrategy do
   describe "#formatted_value" do
     subject { instance.formatted_value }
 
-    context "value is present string" do
+    context "when value corresponds to true" do
       let(:value) { "1" }
 
       it "is the true string" do
@@ -122,7 +119,7 @@ RSpec.describe CustomValue::BoolStrategy do
       end
     end
 
-    context "value is zero string" do
+    context "when value corresponds to false" do
       let(:value) { "0" }
 
       it "is the false string" do
@@ -130,7 +127,7 @@ RSpec.describe CustomValue::BoolStrategy do
       end
     end
 
-    context "value is true" do
+    context "when value is true" do
       let(:value) { true }
 
       it "is the true string" do
@@ -138,7 +135,7 @@ RSpec.describe CustomValue::BoolStrategy do
       end
     end
 
-    context "value is false" do
+    context "when value is false" do
       let(:value) { false }
 
       it "is the false string" do
@@ -146,7 +143,7 @@ RSpec.describe CustomValue::BoolStrategy do
       end
     end
 
-    context "value is nil" do
+    context "when value is nil" do
       let(:value) { nil }
 
       it "is the false string" do
@@ -154,7 +151,7 @@ RSpec.describe CustomValue::BoolStrategy do
       end
     end
 
-    context "value is blank" do
+    context "when value is blank" do
       let(:value) { "" }
 
       it "is the false string" do
@@ -166,7 +163,7 @@ RSpec.describe CustomValue::BoolStrategy do
   describe "#validate_type_of_value" do
     subject { instance.validate_type_of_value }
 
-    context "value corresponds to true" do
+    context "when value corresponds to true" do
       let(:value) { "1" }
 
       it "accepts" do
@@ -174,7 +171,7 @@ RSpec.describe CustomValue::BoolStrategy do
       end
     end
 
-    context "value corresponds to false" do
+    context "when value corresponds to false" do
       let(:value) { "0" }
 
       it "accepts" do
@@ -182,7 +179,7 @@ RSpec.describe CustomValue::BoolStrategy do
       end
     end
 
-    context "value is true" do
+    context "when value is true" do
       let(:value) { true }
 
       it "accepts" do
@@ -190,7 +187,7 @@ RSpec.describe CustomValue::BoolStrategy do
       end
     end
 
-    context "value is false" do
+    context "when value is false" do
       let(:value) { false }
 
       it "accepts" do

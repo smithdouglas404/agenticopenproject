@@ -490,7 +490,114 @@ RSpec.describe Version do
   end
 
   it_behaves_like "acts_as_customizable included" do
-    let(:model_instance) { version }
-    let(:custom_field) { create(:version_custom_field) }
+    let!(:model_instance) { create(:version) }
+    let!(:new_model_instance) { version }
+    let!(:custom_field) { create(:version_custom_field) }
+  end
+
+  describe ".visible scope" do
+    let(:user) { create(:user) }
+    let(:project1) { create(:project) }
+    let(:project2) { create(:project) }
+    let(:role) { create(:project_role, permissions: [:view_work_packages]) }
+    let!(:member) { create(:member, user: user, project: project1, roles: [role]) }
+
+    let!(:version_in_project1) { create(:version, project: project1) }
+    let!(:systemwide_version) { create(:version, project: project2, sharing: "system") }
+    let!(:version_in_project2) { create(:version, project: project2) }
+    let!(:work_package) { create(:work_package, project: project2, version: version_in_project2) }
+
+    before do
+      # Simulate that the user can see the work package in project2 (e.g., via sharing)
+      allow(WorkPackage).to receive(:visible).with(user).and_return(WorkPackage.where(id: work_package.id))
+    end
+
+    it "returns versions from visible projects, systemwide, and referenced by visible work packages" do
+      visible_versions = described_class.visible(user)
+      expect(visible_versions).to include(version_in_project1)
+      expect(visible_versions).to include(systemwide_version)
+      expect(visible_versions).to include(version_in_project2)
+    end
+
+    it "does not return unrelated versions" do
+      unrelated_version = create(:version)
+      expect(described_class.visible(user)).not_to include(unrelated_version)
+    end
+  end
+
+  describe "#visible?" do
+    let(:user) { create(:user) }
+    let(:project) { create(:project) }
+    let(:role) { create(:project_role, permissions: [:view_work_packages]) }
+    let!(:member) { create(:member, user: user, project: project, roles: [role]) }
+    let!(:version) { create(:version, project: project) }
+
+    context "when the user has project access" do
+      it "returns true" do
+        expect(version.visible?(user)).to be true
+      end
+    end
+
+    context "when the user has access to a shared work package but not the project" do
+      let(:other_user) { create(:user) }
+      let(:other_project) { create(:project) }
+      let!(:other_version) { create(:version, project: other_project) }
+      let!(:shared_wp) { create(:work_package, project: other_project, version: other_version) }
+
+      before do
+        # Simulate that the user can see the work package in other_project (e.g., via sharing)
+        allow(WorkPackage).to receive(:visible).with(other_user).and_return(WorkPackage.where(id: shared_wp.id))
+      end
+
+      it "returns true if the user can see a work package of the version" do
+        expect(other_version.visible?(other_user)).to be true
+      end
+    end
+
+    context "when the user has no access to the project or any work package" do
+      let(:stranger) { create(:user) }
+      let!(:unrelated_version) { create(:version) }
+
+      it "returns false" do
+        expect(unrelated_version.visible?(stranger)).to be false
+      end
+    end
+
+    context "when the version is systemwide" do
+      let(:stranger) { create(:user) }
+      let!(:systemwide_version) { create(:version, sharing: "system") }
+
+      it "returns true" do
+        expect(systemwide_version.visible?(stranger)).to be true
+      end
+    end
+  end
+
+  describe "order by name" do
+    shared_let(:project) { create(:project) }
+    shared_let(:ordered_names) do
+      [
+        "1. xxxx",
+        "1.1. aaa",
+        "1.1. zzz",
+        "1.2. mmm",
+        "1.10. aaa",
+        "9",
+        "10.2",
+        "10.10.2",
+        "10.10.10",
+        "aaaaa",
+        "aaaaa 1."
+      ]
+    end
+    shared_let(:versions) { ordered_names.shuffle.map { |name| create(:version, name:, project:) } }
+
+    it "returns the versions in ascending semver order" do
+      expect(described_class.order(:name).pluck(:name)).to eql ordered_names
+    end
+
+    it "returns the versions in descending semver order" do
+      expect(described_class.order(name: :desc).pluck(:name)).to eql ordered_names.reverse
+    end
   end
 end

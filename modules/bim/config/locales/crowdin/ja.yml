@@ -86,7 +86,7 @@ ja:
         attachments: "IFCファイル"
       bim/bcf/issue:
         bcf_comment: "BCF コメント"
-        bim_snippet: "BIMスニペット（BIM）"
+        bim_snippet: "BIMスニペット"
         reference_links: "参照リンク"
         stage: "ステージ"
         viewpoint: "ビューポイント"
@@ -105,8 +105,8 @@ ja:
           invalid_lines: "行が無効です"
           invalid_orthogonal_camera: "orthogonal_cameraが無効です。"
           invalid_perspective_camera: "perspective_cameraが無効です。"
-          mismatching_guid: "json_view のガイドがモデルのガイドと一致しません。"
-          no_json: "良い構造化がされているjsonではありません。"
+          mismatching_guid: "json_viewpoint のガイドがモデルのガイドと一致しません。"
+          no_json: "構造化されたjsonではありません。"
           snapshot_type_unsupported: "snapshot_type は 'png' または 'jpg' のいずれかにする必要があります。"
           snapshot_data_blank: "snapshot_data を提供する必要があります。"
           unsupported_key: "サポートされていない json プロパティが含まれています。"
@@ -128,7 +128,7 @@ ja:
       pending: '保留中'
       processing: '処理中'
       completed: '完了しました'
-      error: 'エラー！'
+      error: 'エラー'
     processing_notice:
       processing_default: '以下のデフォルトIFCモデルは処理中のため利用できません。'
     flash_messages:

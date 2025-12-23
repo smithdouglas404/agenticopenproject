@@ -44,6 +44,7 @@ export type PullRequestState = 'opened'|'closed'|'referenced'|'ready_for_review'
     './pull-request-state.component.sass',
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class PullRequestStateComponent implements OnInit {
   @Input() state:PullRequestState;

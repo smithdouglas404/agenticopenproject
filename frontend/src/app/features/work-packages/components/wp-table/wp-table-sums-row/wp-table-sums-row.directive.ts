@@ -48,6 +48,7 @@ import { WorkPackageCollectionResource } from 'core-app/features/hal/resources/w
   host: {
     '[class.-hidden]': 'isHidden',
   },
+  standalone: false,
 })
 export class WorkPackageTableSumsRowController implements AfterViewInit {
   @Input('wpTableSumsRow-table') workPackageTable:WorkPackageTable;

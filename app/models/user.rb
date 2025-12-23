@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,8 +31,10 @@
 require "digest/sha1"
 
 class User < Principal
+  ScimEmail = Struct.new("ScimEmail", :value, :primary, :type)
+
   VALID_NAME_REGEX = /\A[\d\p{Alpha}\p{Mark}\p{Space}\p{Emoji}'’´\-_.,@()+&*–]+\z/
-  CURRENT_USER_LOGIN_ALIAS = "me".freeze
+  CURRENT_USER_LOGIN_ALIAS = "me"
   USER_FORMATS_STRUCTURE = {
     firstname_lastname: %i[firstname lastname],
     firstname: [:firstname],
@@ -64,6 +68,7 @@ class User < Principal
   # unlike on other token types, all previously generated ical_tokens are kept
   # in order to keep all previously generated ical urls valid and usable
   has_many :ical_tokens, class_name: "::Token::ICal", dependent: :destroy
+  has_many :ical_meeting_tokens, class_name: "::Token::ICalMeeting", dependent: :destroy
 
   belongs_to :ldap_auth_source, optional: true
 
@@ -82,6 +87,10 @@ class User < Principal
   # Meeting memberships
   has_many :meeting_participants,
            class_name: "MeetingParticipant",
+           inverse_of: :user,
+           dependent: :destroy
+
+  has_many :recurring_meeting_interim_responses,
            inverse_of: :user,
            dependent: :destroy
 
@@ -115,7 +124,7 @@ class User < Principal
 
   def self.blocked_condition(blocked)
     block_duration = Setting.brute_force_block_minutes.to_i.minutes
-    blocked_if_login_since = Time.now - block_duration
+    blocked_if_login_since = Time.zone.now - block_duration
     negation = blocked ? "" : "NOT"
 
     ["#{negation} (users.failed_login_count >= ? AND users.last_failed_login_on > ?)",
@@ -203,6 +212,17 @@ class User < Principal
     end
   end
 
+  # Override acts_as_customizable to skip custom field validation for invited users
+  # since custom field values cannot be provided during the invitation process.
+  # We only skip the validation if no custom field changes are present.
+  def custom_values_to_validate
+    if invited? && custom_field_changes.empty?
+      []
+    else
+      super
+    end
+  end
+
   def self.search_in_project(query, options)
     options.fetch(:project).users.like(query)
   end
@@ -270,15 +290,6 @@ class User < Principal
     user
   end
 
-  # Returns the user who matches the given autologin +key+ or nil
-  def self.try_to_autologin(key)
-    token = Token::AutoLogin.find_by_plaintext_value(key) # rubocop:disable Rails/DynamicFindBy
-    # Make sure there's only 1 token that matches the key
-    if token && ((token.created_at > Setting.autologin.to_i.day.ago) && token.user && token.user.active?)
-      token.user
-    end
-  end
-
   # Columns required for formatting the user's name.
   def self.columns_for_name(formatter = nil)
     case formatter || Setting.user_format
@@ -308,16 +319,13 @@ class User < Principal
     end
   end
 
-  def authentication_provider
-    return nil if identity_url.blank?
-
-    slug = identity_url.split(":", 2).first
-    AuthProvider.find_by(slug:)
-  end
-
   # Return user's authentication provider for display
   def human_authentication_provider
     authentication_provider&.display_name
+  end
+
+  def provided_by_oidc?
+    authentication_provider.is_a?(OpenIDConnect::Provider)
   end
 
   ##
@@ -365,15 +373,15 @@ class User < Principal
 
   # Does the backend storage allow this user to change their password?
   def change_password_allowed?
-    return false if uses_external_authentication? ||
-      OpenProject::Configuration.disable_password_login?
+    return false if OpenProject::Configuration.disable_password_login?
+    return false if uses_external_authentication? && current_password.nil?
 
     ldap_auth_source_id.blank?
   end
 
   # Is the user authenticated via an external authentication source via OmniAuth?
   def uses_external_authentication?
-    identity_url.present?
+    user_auth_provider_links.exists?
   end
 
   #
@@ -486,7 +494,7 @@ class User < Principal
   # Returns the current day according to user's time zone
   def today
     if time_zone.nil?
-      Date.today
+      Time.zone.today
     else
       Time.now.in_time_zone(time_zone).to_date
     end
@@ -540,6 +548,30 @@ class User < Principal
     User.current = previous_user
   end
 
+  # Temporarily elevates a user's permissions to admin for the duration
+  # of the given block.
+  #
+  # This method ensures that any changes to the user's admin status are
+  # safely reverted after the block is executed, regardless of whether
+  # an exception is raised within the block.
+  #
+  # Saving of the user is attempted to be prevented but this might not be foolproof.
+  # Saving the user within the block should be avoided to prevent undesired side effects.
+  #
+  # @param user [User] The user that requires temporary admin elevation.
+  def self.execute_as_admin(user)
+    previous_user_admin_state = user.admin
+    previous_user_readonly_state = user.readonly?
+    user.admin = true
+    user.reset_permission_caches
+    user.readonly!
+    yield
+  ensure
+    user.admin = previous_user_admin_state
+    user.reset_permission_caches
+    user.instance_variable_set(:@readonly, previous_user_readonly_state)
+  end
+
   ##
   # Returns true if no authentication method has been chosen for this user yet.
   # There are three possible methods currently:
@@ -548,7 +580,7 @@ class User < Principal
   #   - OmniAuth
   #   - LDAP
   def missing_authentication_method?
-    identity_url.nil? && passwords.empty? && ldap_auth_source_id.nil?
+    !uses_external_authentication? && passwords.empty? && ldap_auth_source_id.nil?
   end
 
   # Returns the anonymous user.  If the anonymous user does not exist, it is created.  There can be only
@@ -560,6 +592,87 @@ class User < Principal
   def self.system
     SystemUser.first
   end
+
+  def scim_emails
+    [ScimEmail.new(mail, true, "work")]
+  end
+
+  def scim_emails=(emails)
+    email = emails.find { |email| email.primary == true } ||
+            emails.find { |email| email.type == "work" } ||
+            emails.min
+
+    self.mail = email&.value
+  end
+
+  # rubocop:disable Naming/PredicateMethod
+  def scim_active=(is_active)
+    if is_active
+      activate
+      true
+    else
+      lock if active?
+      false
+    end
+  end
+
+  def scim_active
+    active?
+  end
+  # rubocop:enable Naming/PredicateMethod
+
+  def self.scim_resource_type
+    Scimitar::Resources::User
+  end
+
+  def self.scim_attributes_map
+    {
+      id: :id,
+      externalId: :scim_external_id,
+      userName: :login,
+      name: {
+        givenName: :firstname,
+        familyName: :lastname
+      },
+      emails: [
+        {
+          list: :scim_emails,
+          class: User,
+          using: {
+            value: :value,
+            primary: :primary,
+            type: :type
+          },
+          find_with: Proc.new do |qwe|
+            ScimEmail.new(qwe["value"], qwe["primary"] == true, qwe["type"])
+          end
+        }
+      ],
+      groups: [
+        {
+          list: :groups,
+          using: {
+            value: :id
+          }
+        }
+      ],
+      active: :scim_active
+    }
+  end
+
+  def self.scim_queryable_attributes
+    {
+      externalId: { column: UserAuthProviderLink.arel_table[:external_id] },
+      username: { column: :login },
+      givenName: { column: :firstname },
+      familyName: { column: :lastname },
+      emails: { column: :mail },
+      groups: { column: Group.arel_table[:id] },
+      "groups.value" => { column: Group.arel_table[:id] }
+    }
+  end
+
+  include Scimitar::Resources::Mixin
 
   protected
 
@@ -610,7 +723,7 @@ class User < Principal
   def clean_up_former_passwords
     # minimum 1 to keep the actual user password
     keep_count = [1, Setting[:password_count_former_banned].to_i].max
-    (passwords[keep_count..-1] || []).each(&:destroy)
+    (passwords[keep_count..] || []).each(&:destroy)
   end
 
   def clean_up_password_attribute
@@ -630,7 +743,7 @@ class User < Principal
 
   def self.register_failed_login_attempt_if_user_exists_for(login)
     user = User.find_by_login(login)
-    user.log_failed_login if user.present?
+    user.presence&.log_failed_login
     nil
   end
 
@@ -654,7 +767,7 @@ class User < Principal
   def last_failed_login_within_block_time?
     block_duration = Setting.brute_force_block_minutes.to_i.minutes
     last_failed_login_on and
-      Time.now - last_failed_login_on < block_duration
+      Time.zone.now - last_failed_login_on < block_duration
   end
 
   def log_failed_login_count
@@ -666,7 +779,7 @@ class User < Principal
   end
 
   def log_failed_login_timestamp
-    self.last_failed_login_on = Time.now
+    self.last_failed_login_on = Time.zone.now
   end
 
   def self.default_admin_account_changed?

@@ -34,13 +34,13 @@ Users now have the ability to create and delete multiple API access keys. This e
 
 When navigating to the Access Tokens page in your account settings, you can add new API access keys to the list of existing keys. These keys become active immediately upon creation. Additionally, you can delete any API access key from the list, which deactivates the key. When adding a new API access key, you will be prompted to give it a name for easier identification.
 
-For more information, see work package https://community.openproject.org/wp/48619.
+For more information, see this [work package](https://community.openproject.org/wp/48619).
 
 ### CRUD News API endpoints allow automatic creation of news
 
 With OpenProject 14.3, we added CRUD News API endpoints. The Devkit is now able to automatically forward release messages to the OpenProject application.
 
-For more information, see work package https://community.openproject.org/wp/55764.
+For more information, see this [work package](https://community.openproject.org/wp/55764).
 
 ### Configure SMTP timeout over ENV variable
 
@@ -55,7 +55,7 @@ config.action_mailer.smtp_timeout = 30'
 
 This will extend the SMTP timeout to 30 seconds, accommodating slower mail server responses.
 
-For more information, see work package https://community.openproject.org/wp/55879.
+For more information, see this [work package](https://community.openproject.org/wp/55879).
 
 ## Important feature changes
 

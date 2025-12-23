@@ -57,6 +57,14 @@ module Pages
       ::Pages::SplitWorkPackageCreate.new project:
     end
 
+    def resize_start_date(work_package, date)
+      resize_date(work_package, date, end_date: false)
+    end
+
+    def resize_end_date(work_package, date)
+      resize_date(work_package, date, end_date: true)
+    end
+
     def resize_date(work_package, date, end_date: true)
       retry_block do
         wp_strip = event(work_package)
@@ -81,6 +89,7 @@ module Pages
       end_container = date_container target
 
       drag_n_drop_element(from: start_container, to: end_container)
+      expect_and_dismiss_toaster(message: I18n.t("js.notice_successful_update"))
     end
 
     def date_container(date)

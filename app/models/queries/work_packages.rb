@@ -62,6 +62,7 @@ module Queries::WorkPackages
     filter Filter::DatesIntervalFilter
     filter Filter::ParentFilter
     filter Filter::PrecedesFilter
+    filter Filter::ProjectPhaseFilter
     filter Filter::FollowsFilter
     filter Filter::RelatesFilter
     filter Filter::DuplicatesFilter
@@ -84,6 +85,7 @@ module Queries::WorkPackages
     exclude Filter::RelatableFilter
 
     select Selects::PropertySelect
+    select Selects::ProjectPhaseSelect
     select Selects::CustomFieldSelect
     select Selects::RelationToTypeSelect
     select Selects::RelationOfTypeSelect

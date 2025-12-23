@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,10 +30,18 @@
 
 module Projects
   class CreateContract < BaseContract
+    attribute :workspace_type
+    attribute :template
+
     include AdminWritableTimestamps
+    include RequiresEnterpriseGuard
+
     # Projects update their updated_at timestamp due to awesome_nested_set
     # so allowing writing here would be useless.
     allow_writable_timestamps :created_at
+
+    self.enterprise_action = :portfolio_management
+    self.enterprise_condition = proc { model.portfolio? || model.program? }
 
     def writable_attributes
       if allowed_to_write_custom_fields?
@@ -63,9 +73,30 @@ module Projects
     def without_custom_fields(changes) = changes.grep_v(/^custom_field_/)
 
     def validate_user_allowed_to_manage
+      if model.project?
+        validate_user_allowed_to_manage_projects
+      elsif model.portfolio?
+        validate_user_allowed_to_manage_portfolios
+      elsif model.program?
+        validate_user_allowed_to_manage_programs
+      end
+    end
+
+    def validate_user_allowed_to_manage_portfolios
+      unless user.allowed_globally?(:add_portfolios)
+        errors.add :base, :error_unauthorized
+      end
+    end
+
+    def validate_user_allowed_to_manage_programs
+      unless user.allowed_globally?(:add_programs)
+        errors.add :base, :error_unauthorized
+      end
+    end
+
+    def validate_user_allowed_to_manage_projects
       unless user.allowed_globally?(:add_project) ||
              (model.parent && user.allowed_in_project?(:add_subprojects, model.parent))
-
         errors.add :base, :error_unauthorized
       end
     end

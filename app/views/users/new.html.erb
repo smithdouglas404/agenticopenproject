@@ -48,7 +48,7 @@ See COPYRIGHT and LICENSE files for more details.
                               html: { class: nil, autocomplete: "off" },
                               data: {
                                 controller: "admin--users",
-                                "application-target": "dynamic",
+                                turbo: false,
                                 "admin--users-password-auth-selected-value": @user.ldap_auth_source_id.blank?
                               },
                               as: :user do |f| %>

@@ -127,7 +127,7 @@ module Pages::RecurringMeeting
     end
 
     def expect_modal(...)
-      expect(page).to have_modal(...)
+      Components::Common::Modal.new.expect_modal(...)
     end
 
     def expect_no_meeting(date:)
@@ -157,7 +157,8 @@ module Pages::RecurringMeeting
       within("li", text: date) do
         click_on "more-button"
 
-        expect(page).to have_css(".ActionListItem-label", count: 1)
+        expect(page).to have_css(".ActionListItem-label", count: 2)
+        expect(page).to have_css(".ActionListItem-label", text: "Open")
         expect(page).to have_css(".ActionListItem-label", text: "Cancel this occurrence")
 
         # Close it again

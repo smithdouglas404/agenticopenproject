@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -43,6 +45,10 @@ class Reminder < ApplicationRecord
     visible(user)
       .where(completed_at: nil)
       .where.missing(:reminder_notifications)
+  end
+
+  def visible?(user = User.current)
+    creator == user && remindable.visible?(user)
   end
 
   def unread_notifications?

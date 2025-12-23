@@ -31,6 +31,9 @@ fi:
         spent: "Käytetty"
         spent_on: "Päivämäärä"
         logged_by: "Logged by"
+        entity: Logged for
+        entity_id: Logged for
+        entity_gid: Logged for
       cost_type:
         unit: "Yksikön nimi"
         unit_plural: "Yksikön nimi monikossa"
@@ -58,6 +61,9 @@ fi:
         start_time: Start time
         end_time: Finish time
         time: Aika
+        entity: Logged for
+        entity_id: Logged for
+        entity_gid: Logged for
     models:
       time_entry:
         one: "Time entry"
@@ -77,6 +83,7 @@ fi:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
           cannot_log_for_this_work_package: "Cannot log time for this work package."
+          duplicate_ongoing: "An ongoing time entry already exists for this user."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Tehtävä #%{id} ei ole kelvollinen kohde kustannuskirjauksille."
           nullify_is_not_valid_for_cost_entries: "Kustannuksia ei voi kohdistaa projektiin."
@@ -94,6 +101,7 @@ fi:
   button_log_time: "Log"
   button_add_activity: "Tapahtumat"
   button_add_time_entry: "Kirjaa työaika"
+  button_stop_timer: "Stop timer"
   caption_booked_on_project: "Kirjattu projektille"
   caption_default: "Oletus"
   caption_default_rate_history_for: "Oletushinnan historia käyttäjälle %{user}"
@@ -172,6 +180,7 @@ fi:
   label_day: "Päivä"
   label_today_capitalized: "Tänään"
   label_view_mode_switcher: "Change view"
+  label_timer_since: "Started at %{time}"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "Jotain meni pieleen. Yritä uudelleen."
   notice_successful_restore: "Palautus onnistui."
@@ -179,6 +188,7 @@ fi:
   notice_cost_logged_successfully: "Kustannus kirjattu onnistuneesti."
   notice_different_time_zones: "This user has a different time zone (%{tz}). Time will be logged using their time zone."
   notice_time_entry_update_failed: "Failed to update time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
   permission_edit_cost_entries: "Kirjattujen yksikkökustannusten muokkaus"
   permission_edit_own_cost_entries: "Omien yksikkökustannuskirjausten muokkaus"
   permission_edit_hourly_rates: "Tuntihintojen muokkaus"
@@ -193,11 +203,13 @@ fi:
   permission_view_own_hourly_rate: "Oman tuntinnan tarkasteleminen"
   permission_view_own_time_entries: "Oman aikakirjauksen tarkistelu"
   project_module_costs: "Työaika ja kustannukset"
-  setting_allow_tracking_start_and_end_times: "Allow exact times tracking"
+  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
   setting_costs_currency: "Valuutta"
   setting_costs_currency_format: "Valuuttamuotoilu"
-  setting_enforce_tracking_start_and_end_times: "Require exact times"
-  setting_enforce_without_allow: "Requiring exact times is not possible without allowing them"
+  setting_enforce_tracking_start_and_end_times: "Require start and finish times"
+  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "Raportoitujen tunti- ja kustannuskirjausten liittäminen projektiin"
   text_destroy_cost_entries_question: "%{cost_entries} on raportoitu projektille, jota olet poistamassa. Mitä haluat tehdä?"
   text_destroy_time_and_cost_entries: "Poista raportoidut tunnit ja kustannukset"

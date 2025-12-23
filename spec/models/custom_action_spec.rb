@@ -132,7 +132,7 @@ RSpec.describe CustomAction do
       expect do
         stubbed_instance
           .all_actions
-          .select { _1.type == :associated_property }
+          .select { it.type == :associated_property }
           .each(&:allowed_values)
       end.not_to raise_error
     end

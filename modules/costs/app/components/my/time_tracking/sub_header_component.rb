@@ -54,7 +54,7 @@ module My
       end
 
       def today_href
-        my_time_tracking_path(date: Date.current, view_mode:, mode:)
+        my_time_tracking_path(date: "today", view_mode:, mode:)
       end
 
       def previous_attrs # rubocop:disable Metrics/AbcSize
@@ -89,6 +89,10 @@ module My
           { href: my_time_tracking_path(date: date + 1.month, view_mode:, mode:),
             aria: { label: I18n.t(:label_next_month) } }
         end
+      end
+
+      def can_create_time_entry?
+        User.current.allowed_in_any_work_package?(:log_own_time) || User.current.allowed_in_any_project?(:log_time)
       end
     end
   end

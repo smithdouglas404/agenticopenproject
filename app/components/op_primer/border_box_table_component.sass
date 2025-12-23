@@ -6,9 +6,17 @@
   &--row-item
     word-break: break-word
 
-  &--row-action
-    align-items: center
+  &--heading
+    align-self: center
+
+  &--row-action,
+  &--heading-action
+    display: flex
+    align-items: flex-start
     justify-content: flex-end
+
+  &--row-action
+    margin-top: -6px // Moving the button slightly to the top, so that the icon aligns visually with the other columns
 
 @media screen and (min-width: $breakpoint-md)
   .op-border-box-grid
@@ -16,7 +24,7 @@
     grid-auto-columns: minmax(0, 1fr)
     grid-auto-flow: column
     justify-content: flex-start
-    align-items: center
+    align-items: flex-start
 
     &--heading,
     &--row-item
@@ -25,11 +33,6 @@
 
       &:not(:last-child)
         padding-right: 6px
-
-      &:last-child
-        justify-content: flex-end !important
-        display: flex !important
-        flex-direction: row !important
 
     &--mobile-heading,
     &--row-label

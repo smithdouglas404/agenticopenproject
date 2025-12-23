@@ -177,6 +177,36 @@ RSpec.shared_context "with seeded projects, members and project custom fields" d
     field
   end
 
+  let!(:calculated_from_int_project_custom_field) do
+    field = create(
+      :calculated_value_project_custom_field,
+      :skip_validations,
+      formula: "{{cf_#{integer_project_custom_field.id}}} * 2",
+      projects: [project],
+      name: "Calculated field using int",
+      project_custom_field_section: section_for_input_fields
+    )
+
+    create(:custom_value, customized: project, custom_field: field, value: 234)
+
+    field
+  end
+
+  let!(:calculated_from_int_and_float_project_custom_field) do
+    field = create(
+      :calculated_value_project_custom_field,
+      :skip_validations,
+      formula: "{{cf_#{float_project_custom_field.id}}} * {{cf_#{integer_project_custom_field.id}}}",
+      projects: [project],
+      name: "Calculated field using int and float",
+      project_custom_field_section: section_for_input_fields
+    )
+
+    create(:custom_value, customized: project, custom_field: field, value: 123 * 123.456)
+
+    field
+  end
+
   let!(:list_project_custom_field) do
     field = create(:list_project_custom_field, projects: [project],
                                                name: "List field",
@@ -245,6 +275,14 @@ RSpec.shared_context "with seeded projects, members and project custom fields" d
     field
   end
 
+  let!(:sections) do
+    [
+      section_for_input_fields,
+      section_for_select_fields,
+      section_for_multi_select_fields
+    ]
+  end
+
   let!(:input_fields) do
     [
       boolean_project_custom_field,
@@ -273,7 +311,14 @@ RSpec.shared_context "with seeded projects, members and project custom fields" d
     ]
   end
 
-  let(:all_fields) { input_fields + select_fields + multi_select_fields }
+  let!(:calculated_value_fields) do
+    [
+      calculated_from_int_project_custom_field,
+      calculated_from_int_and_float_project_custom_field
+    ]
+  end
+
+  let(:all_fields) { input_fields + select_fields + multi_select_fields + calculated_value_fields }
 
   let!(:boolean_project_custom_field_activated_in_other_project) do
     create(:boolean_project_custom_field, projects: [other_project],

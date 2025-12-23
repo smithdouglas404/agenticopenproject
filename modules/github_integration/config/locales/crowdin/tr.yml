@@ -31,6 +31,7 @@ tr:
     github_avatar_url: "Avatar adresi"
     github_updated_at: "Güncellenme tarihi"
     github_login: "GitHub girişi"
+    host: "Sunucu"
     labels: "Etiketler"
     repository: "Depo"
     changed_files_count: "Değişen dosyalar"

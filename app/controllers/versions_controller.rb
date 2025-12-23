@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -92,10 +94,8 @@ class VersionsController < ApplicationController
   end
 
   def close_completed
-    if request.put?
-      @project.close_completed_versions
-    end
-    redirect_to project_settings_versions_path(@project)
+    @project.close_completed_versions
+    redirect_to project_settings_versions_path(@project), status: :see_other
   end
 
   def destroy
@@ -109,7 +109,7 @@ class VersionsController < ApplicationController
       flash[:error] << archived_project_mesage if archived_projects.any?
     end
 
-    redirect_to project_settings_versions_path(@project)
+    redirect_to project_settings_versions_path(@project), status: :see_other
   end
 
   private
@@ -168,7 +168,7 @@ class VersionsController < ApplicationController
       versions = versions.or(@project.rolled_up_versions.includes(:custom_values))
     end
 
-    versions = versions.visible.order_by_semver_name.except(:distinct).uniq
+    versions = versions.visible.order(:name).except(:distinct).uniq
     versions.reject! { |version| version.closed? || version.completed? } unless completed
     versions
   end

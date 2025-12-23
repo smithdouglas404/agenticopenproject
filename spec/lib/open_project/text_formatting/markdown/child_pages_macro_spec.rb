@@ -137,7 +137,7 @@ RSpec.describe "OpenProject child pages macro" do
     it { is_expected.to match(middle_page.title) }
     it { is_expected.to match(leaf_page.title) }
     # Check accessibility
-    it { is_expected.to include("hidden-for-sighted", "tabindex", "Expanded. Click to collapse") }
+    it { is_expected.to include("sr-only", "tabindex", "Expanded. Click to collapse") }
   end
 
   context "when only include_parent passed" do

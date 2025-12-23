@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -42,7 +44,7 @@ module OpenProject::TextFormatting
         %r{
           (\w+)(Label|Value) # The model type we try to reference
           (?::(?:([^"\s]+)|"([^"]+)"))? # Optional: An ID or subject reference
-          (?::([^"\s.]+|"([^".]+)")) # The attribute name we're trying to reference
+          (?::([^"\s.]+|"([^"]+)")) # The attribute name we're trying to reference
         }x
       end
 

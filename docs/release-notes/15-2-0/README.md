@@ -124,11 +124,13 @@ We continued introducing standardized components for page headers and subheaders
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
+
 A heartfelt thank you to the City of Cologne and ZenDiS for sponsoring parts of this release. Your support, combined with the incredible efforts of our Community, continues to drive these innovations forward.
 
 Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Stefan Weiberg.
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to highlight
+
 - [atifahnordin](https://crowdin.com/profile/atifahnordin), for an outstanding number of translations into Malay.
 - [Vlastislav Dockal](https://crowdin.com/profile/vdockal), for a great number of translations into Czech.
 - [Alin Marcu](https://crowdin.com/profile/deconfcom), for a great number of translations into Romanian.

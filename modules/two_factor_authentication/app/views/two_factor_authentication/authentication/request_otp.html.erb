@@ -4,8 +4,7 @@
 <% html_title t(:field_otp) %>
 <div id="login-form"
      class="form -bordered"
-     data-controller="two-factor-authentication"
-     data-application-target="dynamic">
+     data-controller="two-factor-authentication">
   <%= styled_form_tag(
         { action: :confirm_otp },
         id: "submit_otp",

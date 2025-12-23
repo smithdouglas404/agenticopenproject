@@ -27,10 +27,15 @@ cs:
       no_results_table: Zatím nebyly definovány žádné webhooky
       label_add_new: Přidat nový webhook
       label_edit: Upravit webhook
-      label_event_resources: Zdroje událostí
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Vytvořeno"
         updated: "Aktualizováno"
+        comment: "Komentář"
+        internal_comment: "Interní komentář"
       explanation:
         text: >
           Při výskytu události, jako je vytvoření pracovního balíčku nebo aktualizace projektu, OpenProject odešle POST požadavek na nakonfigurované webové koncové body. Často je událost odeslána poté, co %{link} prošel.

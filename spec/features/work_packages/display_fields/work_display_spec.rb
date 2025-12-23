@@ -159,7 +159,7 @@ RSpec.describe "Work display", :js do
   end
 
   describe "link to detailed view" do
-    let_work_packages(<<~TABLE)
+    shared_let_work_packages(<<~TABLE)
       hierarchy          | work |
       parent             |   5h |
         child 1          |   0h |
@@ -214,6 +214,21 @@ RSpec.describe "Work display", :js do
         within(:table) do
           expect(page).to have_columnheader("Work")
           expect(page).to have_columnheader("Remaining work")
+        end
+      end
+
+      context "when one of the children is in a different project" do
+        let(:other_project) { create(:project) }
+
+        before do
+          child1.update!(project: other_project)
+        end
+
+        it "still shows it (Bug #62847)" do
+          click_on("Σ 20h")
+
+          wp_table.expect_work_package_count(4)
+          wp_table.expect_work_package_listed(parent, child1, child2, child3)
         end
       end
     end

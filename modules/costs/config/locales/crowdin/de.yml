@@ -31,6 +31,9 @@ de:
         spent: "Verbraucht"
         spent_on: "Datum"
         logged_by: "Gebucht von"
+        entity: Eintrag für
+        entity_id: Eintrag für
+        entity_gid: Eintrag für
       cost_type:
         unit: "Einheit"
         unit_plural: "Einheit plural"
@@ -58,6 +61,9 @@ de:
         start_time: Startzeit
         end_time: Endzeit
         time: Zeit
+        entity: Eintrag für
+        entity_id: Eintrag für
+        entity_gid: Eintrag für
     models:
       time_entry:
         one: "Zeitbuchung"
@@ -77,6 +83,7 @@ de:
         time_entry:
           invalid_time: "muss zwischen 00:00 und 23:59 liegen."
           cannot_log_for_this_work_package: "Für dieses Arbeitspaket kann keine Zeit gebucht werden."
+          duplicate_ongoing: "Eine laufende Zeitbuchung existiert bereits für diesen Nutzer."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Arbeitspaket #%{id} ist kein gültiges Ziel für die Zuordnug der Stückkosteneinträge."
           nullify_is_not_valid_for_cost_entries: "Stückkosten können keinem Projekt zugeordnet werden."
@@ -91,9 +98,10 @@ de:
     fixed_date: "Referenzdatum"
   button_add_rate: "Satz hinzufügen"
   button_log_costs: "Stückkosten buchen"
-  button_log_time: "Protokollieren"
+  button_log_time: "Buchen"
   button_add_activity: "Aktivität"
   button_add_time_entry: "Zeit buchen"
+  button_stop_timer: "Timer stoppen"
   caption_booked_on_project: "Auf das Projekt gebucht"
   caption_default: "Standard"
   caption_default_rate_history_for: "Standardsatz-Historie für %{user}"
@@ -172,6 +180,7 @@ de:
   label_day: "Tag"
   label_today_capitalized: "Heute"
   label_view_mode_switcher: "Ansicht ändern"
+  label_timer_since: "Begonnen um %{time}"
   placeholder_activity_select_work_package_first: Zunächst muss ein Arbeitspaket ausgewählt werden
   notice_something_wrong: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
   notice_successful_restore: "Erfolgreich wiederhergestellt."
@@ -179,6 +188,7 @@ de:
   notice_cost_logged_successfully: "Stückkosten erfolgreich gebucht."
   notice_different_time_zones: "Dieser Benutzer hat eine andere Zeitzone (%{tz}). Die Zeit wird unter Verwendung seiner Zeitzone protokolliert."
   notice_time_entry_update_failed: "Fehler beim Aktualisieren des Zeiteintrags. Fehler: %{errors}"
+  notice_time_entry_delete_failed: "Fehler beim Löschen des Zeiteintrags. Fehler: %{errors}"
   permission_edit_cost_entries: "Bearbeiten gebuchter Stückkosten"
   permission_edit_own_cost_entries: "Bearbeiten eigener gebuchter Stückkosten"
   permission_edit_hourly_rates: "Stundensätze bearbeiten"
@@ -193,11 +203,13 @@ de:
   permission_view_own_hourly_rate: "Eigene Stundensätze ansehen"
   permission_view_own_time_entries: "Eigene gebuchte Aufwände ansehen"
   project_module_costs: "Zeit und Kosten"
-  setting_allow_tracking_start_and_end_times: "Genaue Zeiterfassung erlauben"
+  setting_allow_tracking_start_and_end_times: "Start- und Endzeiten erlaubt"
   setting_costs_currency: "Währung"
   setting_costs_currency_format: "Format der Währung"
-  setting_enforce_tracking_start_and_end_times: "Genaue Zeiterfassung erforderlich machen"
-  setting_enforce_without_allow: "Genaue Zeiterfassung kann nur erforderlich sein, wenn sie auch erlaubt ist"
+  setting_enforce_tracking_start_and_end_times: "Start- und Endzeiten erforderlich"
+  setting_enforce_without_allow: "Start und Endzeiten können nur erforderlich sein, wenn ihre Angabe erlaubt ist"
+  setting_allow_tracking_start_and_end_times_caption: "Erlaubt es bei der Zeitbuchung die genaue Start- und Endzeiten der Buchung zu erfassen."
+  setting_enforce_tracking_start_and_end_times_caption: "Erfordert, dass bei Zeitbuchungen genaue Start- und Endzeiten erfasst werden."
   text_assign_time_and_cost_entries_to_project: "Gebuchte Aufwände dem Projekt zuweisen"
   text_destroy_cost_entries_question: "Es wurden bereits %{cost_entries} auf dieses Ticket gebucht. Was soll mit den Aufwänden geschehen?"
   text_destroy_time_and_cost_entries: "Gebuchte Aufwände löschen"
@@ -219,4 +231,4 @@ de:
       time_entry_time_restrictions: Genaue Zeiterfassung erforderlich machen
     upsell:
       time_entry_time_restrictions:
-        description: "Verbessern Sie Ihre Zeiterfassung, indem Sie genaue Start- und Endzeiten für jede Zeitbuchung erforderlich machen."
+        description: "Verbessern Sie Ihre Zeiterfassung, indem Sie genaue Start- und Endzeiten für jede Zeitbuchung erfordern."
