@@ -75,9 +75,7 @@ module Redmine
     private
 
     def line_to_html(line, offsets)
-      line_to_html_raw(line, offsets).tap do |html_str|
-        html_str.force_encoding("UTF-8")
-      end
+      line_to_html_raw(line, offsets).dup.force_encoding("UTF-8")
     end
 
     def line_to_html_raw(line, offsets)
