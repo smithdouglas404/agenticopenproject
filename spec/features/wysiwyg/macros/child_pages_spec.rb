@@ -93,18 +93,18 @@ RSpec.describe "Wysiwyg child pages spec", :js do
           # Edit widget and cancel again
           placeholder.click
           page.find(".ck-balloon-panel .ck-button", visible: :all, text: "Edit").click
-          expect(page).to have_css(".spot-modal")
+          expect(page).to have_css(".Overlay")
           expect(page).to have_field("selected-page", with: "")
-          find(".spot-modal--cancel-button").click
+          find(".Overlay--cancel-button").click
 
           # Edit widget and save
           placeholder.click
           page.find(".ck-balloon-panel .ck-button", visible: :all, text: "Edit").click
-          expect(page).to have_css(".spot-modal")
+          expect(page).to have_css(".Overlay")
           fill_in "selected-page", with: "parent-page"
 
           # Save widget
-          find(".spot-modal--submit-button").click
+          find(".Overlay--submit-button").click
 
           # Placeholder states `parent-page` and no `Include parent`
           expect(placeholder).to have_text("parent-page")
@@ -132,11 +132,11 @@ RSpec.describe "Wysiwyg child pages spec", :js do
           # Edit widget and save
           placeholder.click
           page.find(".ck-balloon-panel .ck-button", visible: :all, text: "Edit").click
-          expect(page).to have_css(".spot-modal")
+          expect(page).to have_css(".Overlay")
           page.check "include-parent"
 
           # Save widget
-          find(".spot-modal--submit-button").click
+          find(".Overlay--submit-button").click
 
           # Placeholder states `parent-page` and `Include parent`
           expect(placeholder).to have_text("parent-page")

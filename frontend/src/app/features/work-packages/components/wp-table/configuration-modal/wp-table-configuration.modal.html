@@ -1,12 +1,17 @@
-<div
-  class="spot-modal spot-modal_wide wp-table--configuration-modal loading-indicator--location"
+<dialog
+  open
+  class="Overlay Overlay--size-large wp-table--configuration-modal loading-indicator--location"
   data-indicator-name="modal"
   >
-  <div id="spotModalTitle" class="spot-modal--header">{{text.title}}</div>
+  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{text.title}}</h1>
+      </div>
+    </div>
+  </div>
 
-  <div class="spot-divider"></div>
-
-  <div class="spot-modal--body spot-container">
+  <div class="Overlay-body">
 
     @if (!!prependModalComponent) {
       <ng-container *ngComponentOutlet="prependModalComponent; injector: injector" />
@@ -20,21 +25,21 @@
     }
     <div class="tab-content" #tabContentOutlet></div>
   </div>
-  <div class="spot-action-bar">
-    <div class="spot-action-bar--right">
-      <button
-        class="button button_no-margin spot-modal--cancel-button spot-action-bar--action"
-        [textContent]="text.cancelButton"
-        (click)="closeMe($event)"
-        >
-      </button>
-      <button
-        class="button button_no-margin -primary spot-action-bar--action"
-        data-test-selector="spot-modal-wp-table-configuration-save-button"
-        [textContent]="text.applyButton"
-        (click)="saveChanges()"
-        >
-      </button>
-    </div>
+  <div class="Overlay-footer Overlay-footer--alignEnd">
+    <button
+      class="Button Button--secondary Button--medium"
+      [textContent]="text.cancelButton"
+      (click)="closeMe($event)"
+      >
+    </button>
+    <button
+      class="Button Button--primary Button--medium"
+      data-test-selector="Overlay-wp-table-configuration-save-button"
+      (click)="saveChanges()"
+      >
+      <span class="Button-content">
+        <span class="Button-label">{{ text.applyButton }}</span>
+      </span> 
+    </button>
   </div>
-</div>
+</dialog>

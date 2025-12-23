@@ -1,18 +1,26 @@
-<div
-  class="spot-modal op-confirm-dialog loading-indicator--location"
+<dialog
+  open
+  class="Overlay op-confirm-dialog loading-indicator--location"
   data-indicator-name="modal"
   tabindex="0"
   cdkFocusInitial
   cdkTrapFocus
   [cdkTrapFocusAutoCapture]="true"
   >
-  <div id="spotModalTitle" class="spot-modal--header">{{text.title}}</div>
+  <div 
+    id="spotModalTitle" 
+    class="Overlay-header Overlay-header--large"
+    [class.Overlay-header--divided]="divideContent">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">
+          {{text.title}}
+        </h1>
+      </div>
+    </div>
+  </div>
 
-  @if (divideContent) {
-    <div class="spot-divider"></div>
-  }
-
-  <div class="spot-modal--body spot-container">
+  <div class="Overlay-body">
     <span class="op-confirm-dialog--text spot-body-small"
       [textContent]="text.text"
     ></span>
@@ -46,34 +54,38 @@
 
   </div>
 
-  <div class="spot-action-bar">
-    <div class="spot-action-bar--right">
-      <button
-        type="button"
-        class="button spot-modal--cancel-button spot-action-bar--action"
-        data-test-selector="confirmation-modal--cancel"
-        (click)="close($event)"
-        >
-        <svg x-icon size="small"></svg>
-        <span>{{text.button_cancel}}</span>
-      </button>
-      <button
-        type="button"
-        class="button spot-action-bar--action"
-        data-test-selector="confirmation-modal--confirmed"
-        [ngClass]="dangerHighlighting ? '-danger': '-primary'"
-        (click)="confirmAndClose($event)"
-        >
-        @switch (icon.continue) {
-          @case ('trash') {
-            <svg trash-icon size="small"></svg>
+  <div class="Overlay-footer Overlay-footer--alignEnd Overlay-footer--divided">
+    <button
+      type="button"
+      class="Button--secondary Button--medium Button"
+      data-test-selector="confirmation-modal--cancel"
+      (click)="close($event)"
+      >
+      <span class="Button-content">
+        <span class="Button-label">{{text.button_cancel}}</span>
+      </span>
+    </button>
+    <button
+      type="button"
+      class="Button--medium Button"
+      [class.Button--primary]="!dangerHighlighting"
+      [class.Button--danger]="dangerHighlighting"
+      data-test-selector="confirmation-modal--confirmed"
+      (click)="confirmAndClose($event)"
+      >
+      <span class="Button-content">
+        <span class="Button-visual Button-leadingVisual">
+          @switch (icon.continue) {
+            @case ('trash') {
+              <svg trash-icon size="small"></svg>
+            }
+            @case ('unlink') {
+              <svg unlink-icon size="small"></svg>
+            }
           }
-          @case ('unlink') {
-            <svg unlink-icon size="small"></svg>
-          }
-        }
-        <span>{{text.button_continue}}</span>
-      </button>
-    </div>
+        </span>
+        <span class="Button-label">{{text.button_continue}}</span>
+      </span>
+    </button>
   </div>
-</div>
+</dialog>

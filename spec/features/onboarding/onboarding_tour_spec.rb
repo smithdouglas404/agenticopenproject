@@ -89,8 +89,8 @@ RSpec.describe "onboarding tour for new users",
         expect(page).to have_text "Please select your language"
 
         # Selenium's click doesn't properly fire a mousedown event, so we trigger both explicitly
-        page.execute_script("document.querySelector('.spot-modal-overlay').dispatchEvent(new Event('mousedown'));")
-        page.execute_script("document.querySelector('.spot-modal-overlay').dispatchEvent(new Event('click'));")
+        page.execute_script("document.querySelector('.Overlay-overlay').dispatchEvent(new Event('mousedown'));")
+        page.execute_script("document.querySelector('.Overlay-overlay').dispatchEvent(new Event('click'));")
 
         # The tutorial appears
         expect(page).to have_text sanitize_string(I18n.t("js.onboarding.steps.welcome")), normalize_ws: true

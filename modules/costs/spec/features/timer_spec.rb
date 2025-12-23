@@ -104,7 +104,7 @@ RSpec.describe "Work Package timer", :js, :selenium do
       expect(timer_entry.entity).to eq work_package_a
       expect(timer_entry.hours).to be_nil
 
-      page.within(".spot-modal") { click_on "Stop current timer" }
+      page.within(".Overlay") { click_on "Stop current timer" }
       time_logging_modal.is_visible true
       time_logging_modal.has_field_with_value "spent_on", Date.current.strftime
       time_logging_modal.has_field_with_value "hours", /(\d\.)?\d+/
@@ -169,7 +169,7 @@ RSpec.describe "Work Package timer", :js, :selenium do
       expect(page).to have_css(".op-timer-stop-modal")
       expect(page).to have_text("Tracking time:")
 
-      page.within(".spot-modal") { click_on "Stop current timer" }
+      page.within(".Overlay") { click_on "Stop current timer" }
 
       time_logging_modal.is_visible true
       time_logging_modal.has_field_with_value "spent_on", Date.current.strftime

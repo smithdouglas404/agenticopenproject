@@ -87,7 +87,7 @@ export class SaveQueryModalComponent extends OpModalComponent {
   }
 
   public onOpen():void {
-    this.queryNameField.nativeElement.focus();
+    // this.queryNameField.nativeElement.focus();
   }
 
   public get afterFocusOn():HTMLElement {

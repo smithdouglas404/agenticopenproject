@@ -17,6 +17,8 @@ export interface QuerySharingChange {
   standalone: false,
 })
 export class QuerySharingFormComponent {
+  @Input() public label:string;
+
   @Input() public isSave:boolean;
 
   @Input() public isStarred:boolean;

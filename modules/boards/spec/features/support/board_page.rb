@@ -386,7 +386,7 @@ module Pages
     def open_and_fill_add_list_modal(name)
       open_add_list_modal
       sleep(0.1)
-      page.find(".spot-modal .new-list--action-select input").set(name)
+      page.find(".Overlay .new-list--action-select input").set(name)
       expect(page).to have_no_css(".ng-spinner-loader")
     end
 
@@ -396,7 +396,7 @@ module Pages
     end
 
     def add_list_modal_shows_warning(value, with_link: false)
-      within page.find(".spot-modal") do
+      within page.find(".Overlay") do
         warning = ".op-toast.-warning"
         link = ".op-toast--content a"
 

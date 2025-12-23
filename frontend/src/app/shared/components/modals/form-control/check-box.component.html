@@ -1,0 +1,10 @@
+<div>
+  <div class="FormControl-checkbox-wrap">
+    <input [name]="name()" type="hidden" value="0" autocomplete="off">
+    <input class="FormControl-checkbox" type="checkbox" value="1" [name]="name()" [id]="id()">
+    <span class="FormControl-checkbox-labelWrap">
+      <label class="FormControl-label" [htmlFor]="id()">{{ label() }}</label>
+      <span class="FormControl-caption" [id]="'caption-' + id()">{{ caption() }}</span>
+    </span>
+  </div>
+</div>

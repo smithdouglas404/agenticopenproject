@@ -74,33 +74,33 @@
             data-test-selector="op-project-include--loading"
            />
         }
-        <div class="spot-action-bar">
+
+        <div class="Overlay-footer Overlay-footer--alignEnd">
           <div class="spot-action-bar--left">
             <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
             <label class="op-project-include--include-all spot-action-bar--action">
               <spot-checkbox [(ngModel)]="includeSubprojects"
                 [ngModelOptions]="{standalone: true}"
                 data-qa-project-include-all-subprojects="1"
-               />
+              />
               <span class="op-project-include--include-all-text">{{ text.include_subprojects }}</span>
             </label>
           </div>
-          <div class="spot-action-bar--right">
-            <button
-              [disabled]="(loading$ | async)"
-              class="button spot-action-bar--action"
-              type="button"
-              (click)="clearSelection()"
-              >
-              {{ text.clear_selection }}
-            </button>
-            <button
-              [disabled]="(loading$ | async)"
-              class="button -primary spot-action-bar--action"
-              >
-              {{ text.apply }}
-            </button>
-          </div>
+
+          <button
+            [disabled]="(loading$ | async)"
+            class="button spot-action-bar--action"
+            type="button"
+            (click)="clearSelection()"
+            >
+            {{ text.clear_selection }}
+          </button>
+          <button
+            [disabled]="(loading$ | async)"
+            class="Button Button--primary Button--medium"
+            >
+            {{ text.apply }}
+          </button>
         </div>
       </form>
     }

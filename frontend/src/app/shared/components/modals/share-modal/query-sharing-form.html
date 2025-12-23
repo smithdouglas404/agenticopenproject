@@ -1,35 +1,30 @@
-<div class="form--field">
-  <div class="form--field-container -vertical">
-    <label class="form--label-with-check-box">
-      <div class="form--check-box-container">
-        <input type="checkbox"
-               name="is_public"
-               id="show-public"
-               [ngModel]="isPublic"
-               (ngModelChange)="updatePublic($event)"
-               [disabled]="!canPublish"
-               class="form--check-box" />
-      </div>
-      {{ text.visibleForOthers }}
-    </label>
-    <div class="form--field-instructions -no-margin" [textContent]="text.visibleForOthersText"></div>
-  </div>
-</div>
+<div class="FormControl-check-group-wrap">
+  <fieldset aria-describedby="validation-23c1ae8f-9723-4f87-bcf8-6e748bda678f" class="">
+    <legend class="FormControl-label">
+      {{ label }}
+    </legend>    
+    <div class="mb-2"></div>
 
-<div class="form--field">
-  <div class="form--field-container -vertical">
-    <label class="form--label-with-check-box">
-      <div class="form--check-box-container">
-        <input type="checkbox"
-               name="show_in_menu"
-               id="show-in-menu"
-               [ngModel]="isStarred"
-               (ngModelChange)="updateStarred($event)"
-               [disabled]="!canStar"
-               class="form--check-box" />
-      </div>
-      {{ text.showInMenu }}
-    </label>
-    <div class="form--field-instructions -no-margin" [textContent]="text.showInMenuText"></div>
-  </div>
+    <div class="FormControl-spacingWrapper">
+      <op-check-box 
+        name="is_public"
+        inputId="show-public"
+        [ngModel]="isPublic"
+        (ngModelChange)="updatePublic($event)"
+        [disabled]="!canPublish" 
+        [label]="text.visibleForOthers"
+        [caption]="text.visibleForOthersText"
+        />
+
+      <op-check-box
+        name="show_in_menu"
+        inputId="show-in-menu"
+        [ngModel]="isStarred"
+        (ngModelChange)="updateStarred($event)"
+        [disabled]="!canStar" 
+        [label]="text.showInMenu"
+        [caption]="text.showInMenuText"
+        />
+    </div>
+  </fieldset>
 </div>

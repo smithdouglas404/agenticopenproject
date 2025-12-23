@@ -1,12 +1,17 @@
-<div
-  class="spot-modal loading-indicator--location"
+<dialog
+  open
+  class="Overlay loading-indicator--location"
   data-indicator-name="modal"
   >
-  <div id="spotModalTitle" class="spot-modal--header">{{text.title}}</div>
+  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{ text.title }}</h1>
+      </div>
+    </div>
+  </div>
 
-  <div class="spot-divider"></div>
-
-  <div class="ngdialog-body spot-modal--body spot-container">
+  <div class="ngdialog-body Overlay-body">
     <ul class="spot-list">
       @for (widget of selectable; track trackWidgetBy($index, widget)) {
         <li
@@ -25,14 +30,14 @@
   </div>
 
   <div class="spot-action-bar hidden-for-mobile">
-    <div class="spot-action-bar--right">
+    <div class="Overlay-footer Overlay-footer--alignEnd">
       <button
         type="button"
-        class="button button_no-margin spot-modal--cancel-button spot-action-bar--action"
+        class="Button Button--secondary Button--medium"
         (click)="closeMe()"
         >
         {{ text.cancel_button }}
       </button>
     </div>
   </div>
-</div>
+</dialog>

@@ -178,23 +178,22 @@
          />
     }
     @if (showActionBar) {
-      <div class="spot-action-bar"
-        >
-        <div class="spot-action-bar--right">
-          <button
-            class="button spot-action-bar--action"
-            [disabled]="!selectedFilter"
-            type="button"
-            (click)="resetSelection()"
-            >
-            {{ text.clear }}
-          </button>
-          <button
-            class="button -primary spot-action-bar--action"
-            >
-            {{ text.apply }}
-          </button>
-        </div>
+      <div class="Overlay-footer Overlay-footer--alignEnd">
+        <button
+          class="Button Button--secondary Button--medium"
+          [disabled]="!selectedFilter"
+          type="button"
+          (click)="resetSelection()"
+          >
+          <span class="Button-content">
+            <span class="Button-label">{{ text.clear }}</span>
+          </span> 
+        </button>
+        <button class="Button Button--primary Button--medium">
+          <span class="Button-content">
+            <span class="Button-label">{{ text.apply }}</span>
+          </span>
+        </button>
       </div>
     }
   </form>

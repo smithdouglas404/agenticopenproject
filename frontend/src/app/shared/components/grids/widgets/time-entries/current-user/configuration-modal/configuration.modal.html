@@ -1,36 +1,41 @@
-<div class="spot-modal"
+<dialog
+  open
+  class="Overlay"
   data-indicator-name="modal"
   tabindex="0">
 
-  <div id="spotModalTitle" class="spot-modal--header">{{text.displayedDays}}</div>
+  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{ text.displayedDays }}</h1>
+      </div>
+    </div>
+  </div>
 
-  <div class="spot-divider"></div>
-
-  <div class="spot-modal--body spot-container">
+  <div class="Overlay-body">
     @for (day of days; track day; let index = $index) {
-      <div class="form--field -trailing-label">
-        <label class="form--label" [textContent]="day.weekDay" [htmlFor]="'day_' + index"></label>
-        <span class="form--field-container">
-          <span class="form--check-box-container">
-            <input type="checkbox" [id]="'day_' + index" name="days" class="form--check-box" [(ngModel)]="day.checked">
-          </span>
+      <div class="FormControl-checkbox-wrap">
+        <input type="checkbox" [id]="'day_' + index" name="days" class="FormControl-checkbox" [(ngModel)]="day.checked">
+        <span class="FormControl-checkbox-labelWrap">
+          <label class="FormControl-label" [textContent]="day.weekDay" [htmlFor]="'day_' + index"></label>
         </span>
       </div>
     }
   </div>
 
-  <div class="spot-action-bar">
-    <div class="spot-action-bar--right">
-      <button
-        class="button button_no-margin spot-modal--cancel-button spot-action-bar--action"
-        [textContent]="text.cancelButton"
-        (click)="closeMe($event)"
-      ></button>
-      <button
-        class="button button_no-margin -primary spot-action-bar--action"
-        [textContent]="text.applyButton"
-        (click)="saveChanges()"
-      ></button>
-    </div>
+  <div class="Overlay-footer Overlay-footer--alignEnd">
+    <button
+      class="Button Button--secondary Button--medium"
+      [textContent]="text.cancelButton"
+      (click)="closeMe($event)"
+    ></button>
+    <button
+      class="Button Button--primary Button--medium"
+      (click)="saveChanges()"
+      >
+      <span class="Button-content">
+        <span class="Button-label">{{ text.applyButton }}</span>
+      </span>
+    </button>
   </div>
-</div>
+</dialog>

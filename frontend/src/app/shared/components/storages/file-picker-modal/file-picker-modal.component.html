@@ -1,14 +1,17 @@
-<div
-  class="spot-modal op-file-picker"
+<dialog
+  open
+  class="Overlay op-file-picker"
   data-test-selector="op-files-picker-modal"
 >
-  <div class="spot-modal--header">
-    <span id="spotModalTitle" class="spot-modal--header-title">{{ text.header }}</span>
+  <div class="Overlay-header  Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{ text.header }}</h1>
+      </div>
+    </div>
   </div>
-
-  <div class="spot-divider"></div>
-
-  <div class="spot-modal--body spot-container op-file-picker--modal-body">
+  
+  <div class="Overlay-body op-file-picker--modal-body">
     @if ((showAlert | async) !== 'none') {
       <div class="op-toast -warning">
         <div class="op-toast--content">
@@ -63,7 +66,7 @@
     }
   </div>
 
-  <div class="spot-action-bar">
+  <div class="Overlay-footer Overlay-footer--alignEnd">
     @if (showSelectAll) {
       <div class="spot-action-bar--left">
         <button
@@ -78,25 +81,28 @@
       </div>
     }
 
-    <div class="spot-action-bar--right">
-      <button
-        type="button"
-        class="button spot-modal--cancel-button spot-action-bar--action"
-        (click)="closeMe()"
-      >
-        {{ text.buttons.cancel }}
-      </button>
-      <button
-        type="button"
-        class="button spot-action-bar--action"
-        data-test-selector="op-files-picker-modal--confirm"
-        [ngClass]="{ '-primary': selectedFileCount > 0 }"
-        [disabled]="selectedFileCount === 0"
-        (click)="createSelectedFileLinks()"
-      >
-        <svg link-icon size="small"></svg>
-        <span>{{ text.buttons.submit(selectedFileCount) }}</span>
-      </button>
-    </div>
+    <button 
+      type="button" 
+      class="Button Button--secondary Button--medium"
+      (click)="closeMe($event)">
+      <span class="Button-content">
+        <span class="Button-label">{{ text.buttons.cancel }}</span>
+      </span>
+    </button>
+    <button
+      type="button"
+      class="Button Button--medium"
+      data-test-selector="op-files-picker-modal--confirm"
+      [class.Button--primary]="selectedFileCount > 0"
+      [disabled]="selectedFileCount === 0"
+      (click)="createSelectedFileLinks()"
+    >
+      <span class="Button-content">
+        <span class="Button-visual Button-leadingVisual">
+          <svg link-icon size="small"></svg>
+        </span>
+        <span class="Button-label">{{ text.buttons.submit(selectedFileCount) }}</span>
+      </span>
+    </button>
   </div>
-</div>
+ </dialog>

@@ -52,7 +52,7 @@ RSpec.describe "invitations", :js do
       # Visit invitation link with correct token
       visit account_activate_path(token: Token::Invitation.last.value)
 
-      expect(page).to have_css(".spot-modal--header", text: "Welcome to OpenProject")
+      expect(page).to have_css(".Overlay-header", text: "Welcome to OpenProject")
     end
   end
 

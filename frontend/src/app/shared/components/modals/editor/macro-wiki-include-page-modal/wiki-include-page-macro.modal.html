@@ -1,12 +1,16 @@
 <form
-  class="spot-modal"
+  class="Overlay"
   (submit)="applyAndClose($event)"
 >
-  <div id="spotModalTitle" class="spot-modal--header">{{text.title}}</div>
+  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{ text.title }}</h1>
+      </div>
+    </div>
+  </div>
 
-  <div class="spot-divider"></div>
-
-  <div class="spot-modal--body spot-container">
+  <div class="Overlay-body">
     <fieldset class="form--fieldset">
       <legend [textContent]="text.page"></legend>
       <div class="form--field">
@@ -33,22 +37,19 @@
       </div>
     </fieldset>
   </div>
-  <div class="spot-action-bar">
-    <div class="spot-action-bar--right">
-      <button
-        class="spot-modal--cancel-button button button_no-margin spot-action-bar--action"
-        (click)="closeMe($event)"
-        tabindex="4"
-        [textContent]="text.button_cancel"
-        [attr.title]="text.button_cancel"
-      ></button>
-      <button
-        class="spot-modal--submit-button button button_no-margin -primary spot-action-bar--action"
-        (click)="applyAndClose($event)"
-        tabindex="3"
-        [textContent]="text.button_save"
-        [attr.title]="text.button_save"
-      ></button>
-    </div>
+  <div class="Overlay-footer Overlay-footer--alignEnd">
+    <button 
+      type="button" 
+      class="Button Button--secondary Button--medium"
+      (click)="closeMe($event)">
+      <span class="Button-content">
+        <span class="Button-label">{{ text.button_cancel }}</span>
+      </span>
+    </button>
+    <button class="Button Button--primary Button--medium">
+      <span class="Button-content">
+        <span class="Button-label">{{ text.button_save }}</span>
+      </span> 
+    </button>
   </div>
-</form>
+ </form>

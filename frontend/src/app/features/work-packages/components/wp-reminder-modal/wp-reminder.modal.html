@@ -1,34 +1,27 @@
-<div
-  class="spot-modal op-reminder-dialog-modal"
+<dialog
+  open
+  class="Overlay op-reminder-dialog-modal"
 >
-  <div
-    class="spot-modal--header"
-  >
-    <div
-      id="spotModalTitle"
-      class="spot-modal--header-title"
-      [textContent]="(this.title$ | async) || this.text.new_title">
+  <div class="Overlay-header Overlay-header--large">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title" [textContent]="(this.title$ | async) || this.text.new_title"></h1>
+        <h2 id="spotModalDescription" class="Overlay-description">{{ text.subtitle }}</h2>
+      </div>
+      <div class="Overlay-actionWrap">
+        <button 
+          [attr.aria-label]="text.button_close"
+          (click)="closeMe($event)"
+          data-test-selector="op-reminder-dialog-modal--close-icon"
+          type="button"
+          class="close-button Overlay-closeButton">
+          <svg x-icon size="small"></svg>
+        </button>
+      </div>
     </div>
-
-    <button
-      class="button button_no-margin -transparent spot-modal--header-close-button"
-      [attr.aria-label]="text.button_close"
-      (click)="closeMe($event)"
-      data-test-selector="op-reminder-dialog-modal--close-icon"
-    >
-      <svg
-        x-icon
-        size="small"
-        class="spot-modal--header-close-button-icon"
-      ></svg>
-    </button>
   </div>
-  <p
-    class="spot-modal--subheader fgColor-muted"
-    [textContent]="this.text.subtitle">
-  </p>
 
-  <div class="spot-modal--body spot-container">
+  <div class="Overlay-body">
     <turbo-frame
       #frameElement
       id="reminder_modal_body"
@@ -50,4 +43,4 @@
       </op-content-loader>
     </turbo-frame>
   </div>
-</div>
+</dialog>

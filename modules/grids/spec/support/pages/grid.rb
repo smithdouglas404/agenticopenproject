@@ -83,7 +83,7 @@ module Pages
       add_widget_button = area.find(".grid--widget-add", visible: :all)
       add_widget_button.click
 
-      within(".spot-modal", &)
+      within(".Overlay", &)
     end
 
     def expect_widget_adding_prohibited_generally(row_number = 1, column_number = 1)

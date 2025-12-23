@@ -97,7 +97,7 @@
         @if (!portfolioModelsEnabled) {
           <div
             class="spot-action-bar">
-            <div class="spot-action-bar--right">
+            <div class="Overlay-footer Overlay-footer--alignEnd">
               <a
                 class="button spot-action-bar--action"
                 [href]="allProjectsPath()"
@@ -107,7 +107,7 @@
               </a>
               @if (canCreateNewProjects$ | async) {
                 <a
-                  class="button -primary spot-action-bar--action"
+                  class="Button Button--primary Button--medium"
                   [href]="newProjectPath()"
                   >
                   <svg plus-icon size="small" />

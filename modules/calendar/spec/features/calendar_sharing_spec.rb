@@ -109,7 +109,7 @@ RSpec.describe "Calendar sharing via ical", :js do
           page.click_button("Subscribe to calendar")
 
           # modal should not be shown
-          expect(page).to have_no_css(".spot-modal--header", text: "Subscribe to calendar")
+          expect(page).to have_no_css(".Overlay-header", text: "Subscribe to calendar")
         end
       end
     end
@@ -155,7 +155,7 @@ RSpec.describe "Calendar sharing via ical", :js do
           page.click_button("Subscribe to calendar")
 
           # modal should not be shown
-          expect(page).to have_no_css(".spot-modal--header", text: "Subscribe to calendar")
+          expect(page).to have_no_css(".Overlay-header", text: "Subscribe to calendar")
         end
       end
     end
@@ -189,17 +189,17 @@ RSpec.describe "Calendar sharing via ical", :js do
       it "shows a sharing modal" do
         open_sharing_modal
 
-        expect(page).to have_css(".spot-modal--header", text: "Subscribe to calendar")
+        expect(page).to have_css(".Overlay-header", text: "Subscribe to calendar")
       end
 
       it "closes the sharing modal when closed by user by clicking the close button" do
         open_sharing_modal
 
-        expect(page).to have_css(".spot-modal--header", text: "Subscribe to calendar")
+        expect(page).to have_css(".Overlay-header", text: "Subscribe to calendar")
 
         click_button "Cancel"
 
-        expect(page).to have_no_css(".spot-modal--header", text: "Subscribe to calendar")
+        expect(page).to have_no_css(".Overlay-header", text: "Subscribe to calendar")
       end
 
       it "successfully requests a new tokenized iCalendar URL when a unique name is provided" do
@@ -210,7 +210,7 @@ RSpec.describe "Calendar sharing via ical", :js do
         click_button "Copy URL"
 
         # implicitly testing for success -> modal is closed and fallback message is shown
-        expect(page).to have_no_css(".spot-modal--header", text: "Subscribe to calendar")
+        expect(page).to have_no_css(".Overlay-header", text: "Subscribe to calendar")
         expect(page).to have_content("/projects/#{saved_query.project.id}/calendars/#{saved_query.id}/ical?ical_token=")
 
         # explictly testing for success message is not working in test env, probably
@@ -231,7 +231,7 @@ RSpec.describe "Calendar sharing via ical", :js do
         click_button "Copy URL"
 
         # modal is still shown and error message is shown
-        expect(page).to have_css(".spot-modal--header", text: "Subscribe to calendar")
+        expect(page).to have_css(".Overlay-header", text: "Subscribe to calendar")
         expect(page).to have_content("Name is mandatory")
       end
 
@@ -242,7 +242,7 @@ RSpec.describe "Calendar sharing via ical", :js do
 
         click_button "Copy URL"
 
-        expect(page).to have_no_css(".spot-modal--header", text: "Subscribe to calendar")
+        expect(page).to have_no_css(".Overlay-header", text: "Subscribe to calendar")
         expect(page).to have_content("/projects/#{saved_query.project.id}/calendars/#{saved_query.id}/ical?ical_token=")
 
         # do the same thing again, now expect validation error
@@ -254,7 +254,7 @@ RSpec.describe "Calendar sharing via ical", :js do
         click_button "Copy URL"
 
         # modal is still shown and error message is shown
-        expect(page).to have_css(".spot-modal--header", text: "Subscribe to calendar")
+        expect(page).to have_css(".Overlay-header", text: "Subscribe to calendar")
         expect(page).to have_content("Name is already in use")
       end
     end
@@ -309,7 +309,7 @@ RSpec.describe "Calendar sharing via ical", :js do
         page.click_button("Subscribe to calendar")
 
         # modal should not be shown
-        expect(page).to have_no_css(".spot-modal--header", text: "Subscribe to calendar")
+        expect(page).to have_no_css(".Overlay-header", text: "Subscribe to calendar")
       end
     end
   end

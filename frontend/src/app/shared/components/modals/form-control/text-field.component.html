@@ -1,0 +1,22 @@
+<div>
+  <primer-text-field class="FormControl width-full FormControl--fullWidth">
+    <label class="FormControl-label" [htmlFor]="id()">
+      {{ label() }}
+      @if (required()) {
+        <span aria-hidden="true">*</span>
+      }
+    </label>
+    <div class="FormControl-input-wrap">
+      <input
+        data-target="primer-text-field.inputElement"
+        class="FormControl-input FormControl-medium"
+        type="text"
+        [value]="value()"
+        [disabled]="disabled()"
+        [name]="name()"
+        (input)="onInput($event)"
+        [id]="inputId()"
+        [required]="required">
+    </div>
+  </primer-text-field>
+</div>

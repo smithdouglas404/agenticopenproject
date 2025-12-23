@@ -100,7 +100,7 @@ RSpec.describe "Manage webhooks through UI", :js, :selenium do
         SeleniumHubWaiter.wait
         find("td.response_body a", text: "Show").click
 
-        page.within(".spot-modal") do
+        page.within(".Overlay") do
           expect(page).to have_css(".webhooks--response-headers strong", text: "test")
           expect(page).to have_css(".webhooks--response-body", text: log.response_body)
         end
@@ -124,7 +124,7 @@ RSpec.describe "Manage webhooks through UI", :js, :selenium do
               find("td.response_body a", text: "Show").click
             end
 
-            page.within(".spot-modal") do
+            page.within(".Overlay") do
               expect(page).to have_css(".webhooks--response-body", text: matching_log.response_body)
               click_button("Close")
             end

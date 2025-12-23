@@ -1,13 +1,17 @@
 <form
-  class="spot-modal loading-indicator--location op-query-get-ical-url"
+  class="Overlay loading-indicator--location op-query-get-ical-url"
   [formGroup]="tokenNameForm"
   (submit)="generateAndCopyUrl()"
   >
-  <div id="spotModalTitle" class="spot-modal--header">{{text.label_ical_sharing}}</div>
+  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{text.label_ical_sharing}}</h1>
+      </div>
+    </div>
+  </div>
 
-  <div class="spot-divider"></div>
-
-  <div class="spot-modal--body spot-container">
+  <div class="Overlay-body">
     <div tabindex="0" class="-warning op-toast">
       <div role="alert" aria-atomic="true" class="op-toast--content">
         <p>
@@ -45,17 +49,15 @@
     </spot-form-field>
   </div>
 
-  <div class="spot-action-bar">
-    <div class="spot-action-bar--right">
-      <button type="button" class="button button_no-margin spot-modal--cancel-button spot-action-bar--action"
-        [textContent]="text.button_cancel"
-        (click)="closeMe($event)">
-      </button>
-      <button type="submit" class="button button_no-margin -primary -with-icon icon-copy spot-action-bar--action"
-        (click)="generateAndCopyUrl()"
-        [textContent]="text.button_copy"
-        [disabled]="isBusy">
-      </button>
-    </div>
+  <div class="Overlay-footer Overlay-footer--alignEnd">
+    <button type="button" class="Button Button--secondary Button--medium"
+      [textContent]="text.button_cancel"
+      (click)="closeMe($event)">
+    </button>
+    <button type="submit" class="button button_no-margin -primary -with-icon icon-copy spot-action-bar--action"
+      (click)="generateAndCopyUrl()"
+      [textContent]="text.button_copy"
+      [disabled]="isBusy">
+    </button>
   </div>
 </form>

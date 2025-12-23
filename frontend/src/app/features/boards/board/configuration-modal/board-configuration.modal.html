@@ -1,27 +1,36 @@
-<div
-  class="spot-modal loading-indicator--location"
+<dialog
+  open
+  class="Overlay loading-indicator--location"
   data-indicator-name="modal"
 >
-  <div id="spotModalTitle" class="spot-modal--header">{{text.title}}</div>
+  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{text.title}}</h1>
+      </div>
+    </div>
+  </div>
 
-  <div class="spot-divider"></div>
-
-  <div class="spot-modal--body spot-container">
+  <div class="Overlay-body">
     <div class="tab-content" #tabContentOutlet></div>
   </div>
 
-  <div class="spot-action-bar">
-    <div class="spot-action-bar--right">
+    <div class="Overlay-footer Overlay-footer--alignEnd">
       <button
-        class="button button_no-margin spot-modal--cancel-button spot-action-bar--action"
-        [textContent]="text.cancelButton"
+        class="Button Button--secondary Button--medium"
         (click)="closeMe($event)"
-      ></button>
+        >
+        <span class="Button-content">
+          <span class="Button-label">{{ text.cancelButton }}</span>
+        </span>
+      </button>
       <button
-        class="button button_no-margin -primary spot-action-bar--action"
-        [textContent]="text.applyButton"
+        class="Button Button--primary Button--medium"
         (click)="saveChanges()"
-      ></button>
+        >
+        <span class="Button-content">
+          <span class="Button-label">{{ text.applyButton }}</span>
+        </span> 
+      </button>
     </div>
-  </div>
-</div>
+ </dialog>

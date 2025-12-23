@@ -85,6 +85,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { OpDatePickerModule } from 'core-app/shared/components/datepicker/datepicker.module';
 import { OpBreadcrumbsComponent } from './components/breadcrumbs/op-breadcrumbs.component';
 import { PrimerIconButtonComponent } from './components/primer/icon-button.component';
+import { PrimerTextFieldComponent } from './components/modals/form-control/text-field.component';
+import { PrimerCheckBoxComponent } from './components/modals/form-control/check-box.component';
 
 export function bootstrapModule(injector:Injector):void {
   // Ensure error reporter is run
@@ -127,7 +129,9 @@ export function bootstrapModule(injector:Injector):void {
     FullCalendarModule,
     OpDatePickerModule,
 
-    PrimerIconButtonComponent
+    PrimerIconButtonComponent,
+    PrimerTextFieldComponent,
+    PrimerCheckBoxComponent,
   ],
   exports: [
     // Re-export all commonly used
@@ -181,7 +185,9 @@ export function bootstrapModule(injector:Injector):void {
 
     OpNonWorkingDaysListComponent,
 
-    PrimerIconButtonComponent
+    PrimerIconButtonComponent,
+    PrimerTextFieldComponent,
+    PrimerCheckBoxComponent,
   ],
   providers: [
     CopyToClipboardService,

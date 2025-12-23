@@ -59,11 +59,11 @@ RSpec.describe "Wysiwyg work package button spec", :js do
         editor.in_editor do |_container, editable|
           editor.insert_macro "Insert create work package button"
 
-          expect(page).to have_css(".spot-modal")
+          expect(page).to have_css(".Overlay")
           select "MyTaskName", from: "selected-type"
 
           # Cancel editing
-          find(".spot-modal--cancel-button").click
+          find(".Overlay--cancel-button").click
           expect(editable).to have_no_css(".macro.-create_work_package_link")
 
           editor.insert_macro  "Insert create work package button"
@@ -71,7 +71,7 @@ RSpec.describe "Wysiwyg work package button spec", :js do
           check "button_style"
 
           # Save widget
-          find(".spot-modal--submit-button").click
+          find(".Overlay--submit-button").click
 
           # Find widget, click to show toolbar
           modal = find(".button.op-uc-placeholder", text: "Create work package")
@@ -81,7 +81,7 @@ RSpec.describe "Wysiwyg work package button spec", :js do
           page.find(".ck-balloon-panel .ck-button", visible: :all, text: "Edit").click
           expect(page).to have_checked_field("wp_button_macro_style")
           expect(page).to have_select("selected-type", selected: "MyTaskName")
-          find(".spot-modal--cancel-button").click
+          find(".Overlay--cancel-button").click
         end
 
         # Save wiki page

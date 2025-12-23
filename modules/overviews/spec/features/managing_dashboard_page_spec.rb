@@ -177,7 +177,7 @@ RSpec.describe "Dashboard page managing", :js, with_flag: { new_project_overview
 
       page.find_test_selector("overview--add-widgets-button").click
 
-      within(".spot-modal") do
+      within(".Overlay") do
         expect(page).to have_content(I18n.t("js.grid.add_widget"))
 
         SeleniumHubWaiter.wait unless using_cuprite?

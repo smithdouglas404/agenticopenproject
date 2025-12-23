@@ -1,14 +1,17 @@
-<div
-  class="spot-modal op-file-picker"
+<dialog
+  open
+  class="Overlay op-file-picker"
   data-test-selector="op-files-picker-modal"
 >
-  <div class="spot-modal--header">
-    <span id="spotModalTitle" class="spot-modal--header-title">{{ text.header }}</span>
+  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{text.header}}</h1>
+      </div>
+    </div>
   </div>
 
-  <div class="spot-divider"></div>
-
-  <div class="spot-modal--body spot-container op-file-picker--modal-body">
+  <div class="Overlay-body op-file-picker--modal-body">
     @if ((showAlert | async) !== 'none') {
       <div class="op-toast -warning">
         <div class="op-toast--content">
@@ -67,7 +70,8 @@
     }
   </div>
 
-  <div class="spot-action-bar">
+
+  <div class="Overlay-footer Overlay-footer--alignEnd">
     <div class="spot-action-bar--left">
       <button
         type="button"
@@ -79,24 +83,23 @@
         <span [textContent]="text.buttons.newFolder"></span>
       </button>
     </div>
-    <div class="spot-action-bar--right">
-      <button
-        type="button"
-        class="button spot-action-bar--action"
-        (click)="closeMe()"
-      >
-        {{ text.buttons.cancel }}
-      </button>
-      <button
-        type="button"
-        class="button spot-action-bar--action -primary"
-        data-test-selector="op-files-picker-modal--confirm"
-        [disabled]="!canChooseLocation"
-        [textContent]="text.buttons.submit"
-        (click)="chooseLocation()"
-      >
-        {{ text.buttons.submit }}
-      </button>
-    </div>
+
+    <button
+      type="button"
+      class="button spot-action-bar--action"
+      (click)="closeMe()"
+    >
+      {{ text.buttons.cancel }}
+    </button>
+    <button
+      type="button"
+      class="button spot-action-bar--action -primary"
+      data-test-selector="op-files-picker-modal--confirm"
+      [disabled]="!canChooseLocation"
+      [textContent]="text.buttons.submit"
+      (click)="chooseLocation()"
+    >
+      {{ text.buttons.submit }}
+    </button>
   </div>
-</div>
+</dialog>

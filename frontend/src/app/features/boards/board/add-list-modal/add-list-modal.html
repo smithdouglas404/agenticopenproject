@@ -1,12 +1,17 @@
-<div
-  class="spot-modal spot-modal_autoheight confirm-form-submit--modal loading-indicator--location"
+<dialog
+  open
+  class="Overlay Overlay_autoheight confirm-form-submit--modal loading-indicator--location"
   data-indicator-name="modal"
   >
-  <div id="spotModalTitle" class="spot-modal--header">{{ text.title }}</div>
+  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{text.title}}</h1>
+      </div>
+    </div>
+  </div>
 
-  <div class="spot-divider"></div>
-
-  <div class="spot-modal--body spot-container">
+  <div class="Overlay-body">
     @if (showWarning && warningText) {
       <div
         class="op-toast -warning">
@@ -48,23 +53,26 @@
       </div>
     </div>
   </div>
-  <div class="spot-action-bar">
-    <div class="spot-action-bar--right">
-      <button
-        class="button button_no-margin spot-modal--cancel-button spot-action-bar--action"
-        data-test-selector="confirmation-modal--cancel"
-        (click)="closeMe($event)"
-        [textContent]="text.button_cancel"
-        [attr.title]="text.button_cancel"
-      ></button>
-      <button
-        class="button button_no-margin -primary spot-action-bar--action"
-        data-test-selector="confirmation-modal--confirmed"
-        (click)="create()"
-        [disabled]="!this.selectedAttribute || inFlight"
-        [textContent]="text.button_add"
-        [attr.title]="text.button_add"
-      ></button>
-    </div>
+
+  <div class="Overlay-footer Overlay-footer--alignEnd">
+    <button
+      class="Button Button--secondary Button--medium"
+      data-test-selector="confirmation-modal--cancel"
+      (click)="closeMe($event)"
+      >
+      <span class="Button-content">
+        <span class="Button-label">{{ text.button_cancel }}</span>
+      </span>
+    </button>
+    <button
+      class="Button Button--primary Button--medium"
+      data-test-selector="confirmation-modal--confirmed"
+      (click)="create()"
+      [disabled]="!this.selectedAttribute || inFlight"
+      >
+      <span class="Button-content">
+        <span class="Button-label">{{ text.button_add }}</span>
+      </span> 
+    </button>
   </div>
-</div>
+</dialog>

@@ -80,7 +80,7 @@ module Components
       end
 
       def save
-        find('[data-test-selector="spot-modal-wp-table-configuration-save-button"]').click
+        find('[data-test-selector="Overlay-wp-table-configuration-save-button"]').click
       end
 
       def cancel
@@ -120,7 +120,7 @@ module Components
       end
 
       def selector
-        ".spot-modal"
+        ".Overlay"
       end
 
       private

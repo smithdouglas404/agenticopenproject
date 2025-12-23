@@ -40,8 +40,8 @@ export function detectOnboardingTour():void {
       sessionStorage.setItem(onboardingTourStorageKey, 'readyToStart');
 
       // Start automatically when modal is closed by backdrop click or cancel button
-      waitForElement('.spot-modal-overlay_active', 'body', () => {
-        const elementsByClassName = document.getElementsByClassName('spot-modal-overlay_active');
+      waitForElement('.Overlay-overlay_active', 'body', () => {
+        const elementsByClassName = document.getElementsByClassName('Overlay-overlay_active');
         Array.from(elementsByClassName).forEach((modalOverlay) => {
           modalOverlay.addEventListener('click', (evt) => {
             if (evt.target === modalOverlay) {

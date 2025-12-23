@@ -35,7 +35,7 @@ module Components
     include RSpec::Matchers
 
     def container
-      ".spot-modal"
+      ".Overlay"
     end
 
     def expect_open

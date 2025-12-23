@@ -1,8 +1,8 @@
 <div
-  class="spot-modal-overlay"
-  [class.spot-modal-overlay_active]="(activeModalInstance$ | async) !== null"
-  [class.spot-modal-overlay_not-full-screen]="notFullscreen"
-  [class.spot-modal-overlay_top]="mobileTopPosition"
+  class="Overlay-overlay"
+  [class.Overlay-overlay_active]="(activeModalInstance$ | async) !== null"
+  [class.Overlay-overlay_not-full-screen]="notFullscreen"
+  [class.Overlay-overlay_top]="mobileTopPosition"
   #overlay
   tabindex="0"
   cdkFocusInitial
@@ -16,7 +16,7 @@
   @if ((activeModalInstance$ | async)?.showCloseButton !== false) {
     <button
       type="button"
-      class="spot-button spot-modal-overlay--close-button"
+      class="spot-button Overlay-overlay--close-button"
       (click)="close($event)"
       >
       <svg x-icon size="small" />

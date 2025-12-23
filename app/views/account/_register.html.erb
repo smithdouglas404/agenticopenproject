@@ -31,15 +31,15 @@ See COPYRIGHT and LICENSE files for more details.
         @user,
         url: account_register_path,
         data: { turbo: false },
-        html: { class: "form -wide-labels spot-modal" }
+        html: { class: "form -wide-labels Overlay" }
       ) do |f| %>
     <%= back_url_hidden_field_tag use_referer: false %>
     <%= error_messages_for :user %>
-    <div id="spotModalTitle" class="spot-modal--header">
+    <div class="Overlay-header">
       <%= I18n.t("onboarding.welcome", app_title: Setting.app_title) %>
     </div>
     <div class="spot-divider"></div>
-    <div class="spot-modal--body spot-container">
+    <div class="Overlay-body">
       <h2><%= t(:label_register) %></h2>
       <section class="form--section">
         <% if @user.ldap_auth_source_id.nil? %>

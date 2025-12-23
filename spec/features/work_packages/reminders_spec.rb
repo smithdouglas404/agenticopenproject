@@ -69,11 +69,11 @@ RSpec.describe "Work package reminder modal",
       work_package_page.visit!
       work_package_page.click_reminder_button_with_context_menu
       wait_for_network_idle
-      within ".spot-modal" do
+      within ".Overlay" do
         expect(page)
-          .to have_css(".spot-modal--header-title", text: "Set a reminder")
+          .to have_css(".Overlay--header-title", text: "Set a reminder")
         expect(page)
-          .to have_css(".spot-modal--subheader",
+          .to have_css(".Overlay--subheader",
                        text: "You will receive a notification for this work package at the chosen time.")
         fill_in "Date", with: date
         fill_in "Time", with: time.strftime("%H:%M").to_time
@@ -103,11 +103,11 @@ RSpec.describe "Work package reminder modal",
 
       work_package_page.click_reminder_button
       wait_for_network_idle
-      within ".spot-modal" do
+      within ".Overlay" do
         expect(page)
-          .to have_css(".spot-modal--header-title", text: "Edit reminder")
+          .to have_css(".Overlay--header-title", text: "Edit reminder")
         expect(page)
-          .to have_css(".spot-modal--subheader",
+          .to have_css(".Overlay--subheader",
                        text: "You will receive a notification for this work package at the chosen time.")
         expect(page).to have_field("Date", with: date)
         expect(page).to have_field("Time", with: time.strftime("%H:%M"))
@@ -130,7 +130,7 @@ RSpec.describe "Work package reminder modal",
 
       work_package_page.click_reminder_button
       wait_for_network_idle
-      within ".spot-modal" do
+      within ".Overlay" do
         click_link_or_button "Remove reminder"
       end
 
@@ -155,18 +155,18 @@ RSpec.describe "Work package reminder modal",
       work_package_page.click_reminder_button
       wait_for_network_idle
 
-      within ".spot-modal" do
+      within ".Overlay" do
         expect(page)
-          .to have_css(".spot-modal--header-title", text: "Edit reminder")
+          .to have_css(".Overlay--header-title", text: "Edit reminder")
         expect(page)
-          .to have_css(".spot-modal--subheader",
+          .to have_css(".Overlay--subheader",
                        text: "You will receive a notification for this work package at the chosen time.")
       end
 
       perform_enqueued_jobs
       center.expect_bell_count(1)
 
-      within ".spot-modal" do
+      within ".Overlay" do
         fill_in "Note", with: "I'm changing this"
         click_link_or_button "Save"
         wait_for_network_idle
@@ -175,7 +175,7 @@ RSpec.describe "Work package reminder modal",
       work_package_page.expect_flash(type: :danger,
                                      message: I18n.t(:error_reminder_not_found))
 
-      within ".spot-modal" do
+      within ".Overlay" do
         find_test_selector("op-reminder-dialog-modal--close-icon").click
       end
 
@@ -184,9 +184,9 @@ RSpec.describe "Work package reminder modal",
       work_package_page.click_reminder_button_with_context_menu
       wait_for_network_idle
 
-      within ".spot-modal" do
+      within ".Overlay" do
         # Now it should be the create reminder modal
-        expect(page).to have_css(".spot-modal--header-title", text: "Set a reminder")
+        expect(page).to have_css(".Overlay--header-title", text: "Set a reminder")
       end
     end
 
@@ -202,11 +202,11 @@ RSpec.describe "Work package reminder modal",
         work_package_page.visit!
         work_package_page.click_reminder_button_with_context_menu
         wait_for_network_idle
-        within ".spot-modal" do
+        within ".Overlay" do
           expect(page)
-            .to have_css(".spot-modal--header-title", text: "Set a reminder")
+            .to have_css(".Overlay--header-title", text: "Set a reminder")
           expect(page)
-            .to have_css(".spot-modal--subheader",
+            .to have_css(".Overlay--subheader",
                          text: "You will receive a notification for this work package at the chosen time.")
 
           # Yesterday 02:00
@@ -253,11 +253,11 @@ RSpec.describe "Work package reminder modal",
         work_package_page.click_reminder_button_with_context_menu
         wait_for_network_idle
 
-        within ".spot-modal" do
+        within ".Overlay" do
           expect(page)
-            .to have_css(".spot-modal--header-title", text: "Set a reminder")
+            .to have_css(".Overlay--header-title", text: "Set a reminder")
           expect(page)
-            .to have_css(".spot-modal--subheader",
+            .to have_css(".Overlay--subheader",
                          text: "You will receive a notification for this work package at the chosen time.")
 
           # Click the Schedule button without filling in the date or time
@@ -334,11 +334,11 @@ RSpec.describe "Work package reminder modal",
 
         work_package_page.click_reminder_button
         wait_for_network_idle
-        within ".spot-modal" do
+        within ".Overlay" do
           expect(page)
-            .to have_css(".spot-modal--header-title", text: "Edit reminder")
+            .to have_css(".Overlay--header-title", text: "Edit reminder")
           expect(page)
-            .to have_css(".spot-modal--subheader",
+            .to have_css(".Overlay--subheader",
                          text: "You will receive a notification for this work package at the chosen time.")
           expect(page).to have_field("Date", with: reminder.remind_at.in_time_zone(current_user.time_zone).to_date)
           expect(page).to have_field("Time", with: reminder.remind_at.in_time_zone(current_user.time_zone).strftime("%H:%M"))
@@ -380,11 +380,11 @@ RSpec.describe "Work package reminder modal",
         end
 
         wait_for_network_idle
-        within ".spot-modal" do
+        within ".Overlay" do
           expect(page)
-            .to have_css(".spot-modal--header-title", text: "Set a reminder")
+            .to have_css(".Overlay--header-title", text: "Set a reminder")
           expect(page)
-            .to have_css(".spot-modal--subheader",
+            .to have_css(".Overlay--subheader",
                          text: "You will receive a notification for this work package at the chosen time.")
           expect(page).to have_field("Date", with: 1.day.from_now.to_date)
           expect(page).to have_field("Time", with: "09:00")
@@ -398,13 +398,13 @@ RSpec.describe "Work package reminder modal",
       work_package_page.visit!
       work_package_page.click_reminder_button_with_context_menu
       wait_for_network_idle
-      within ".spot-modal" do
+      within ".Overlay" do
         expect(page)
-          .to have_css(".spot-modal--header-title", text: "Set a reminder")
+          .to have_css(".Overlay--header-title", text: "Set a reminder")
         find_test_selector("op-reminder-modal-close-button").click
       end
 
-      expect(page).to have_no_css(".spot-modal", wait: 0)
+      expect(page).to have_no_css(".Overlay", wait: 0)
     end
   end
 

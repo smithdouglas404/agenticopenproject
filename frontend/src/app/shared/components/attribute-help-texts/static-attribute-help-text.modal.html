@@ -1,30 +1,29 @@
-<div
-  class="spot-modal"
+<dialog
+  open
+  class="Overlay"
   data-indicator-name="modal"
   data-test-selector="static-attribute-help-text--modal"
 >
-  <div
-    id="spotModalTitle"
-    class="spot-modal--header"
-  >
-  {{ title }}
+  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{ title }}</h1>
+      </div>
+    </div>
   </div>
 
-  <div class="spot-divider"></div>
-
-  <div class="spot-modal--body spot-container">
+  <div class="Overlay-body">
     <span class="spot-body-small">{{ content }}</span>
   </div>
 
-  <div class="spot-action-bar hidden-for-mobile">
-    <div class="spot-action-bar--right">
-      <button
-        type="button"
-        class="button spot-action-bar--action spot-modal--cancel-button"
-        (click)="closeMe()"
-        >
-        {{ text.close }}
-      </button>
-    </div>
+  <div class="Overlay-footer Overlay-footer--alignEnd hidden-for-mobile">
+    <button 
+      type="button" 
+      class="Button Button--secondary Button--medium"
+      (click)="closeMe()">
+      <span class="Button-content">
+        <span class="Button-label">{{ text.close }}</span>
+      </span>
+    </button>
   </div>
-</div>
+</dialog>

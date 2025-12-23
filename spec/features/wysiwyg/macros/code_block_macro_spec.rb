@@ -98,12 +98,12 @@ RSpec.describe "Wysiwyg code block macro", :js, :selenium do
         editor.in_editor do |container,|
           editor.click_toolbar_button "Insert code snippet"
 
-          expect(page).to have_css(".spot-modal")
+          expect(page).to have_css(".Overlay")
 
           # CM wraps an accessor to the editor instance on the outer container
           cm = page.find(".CodeMirror")
           page.execute_script("arguments[0].CodeMirror.setValue(arguments[1]);", cm.native, "asdf")
-          find(".spot-modal--submit-button").click
+          find(".Overlay--submit-button").click
 
           expect(container).to have_css(".op-uc-code-block", text: "asdf")
 
@@ -133,7 +133,7 @@ RSpec.describe "Wysiwyg code block macro", :js, :selenium do
         editor.in_editor do |container,|
           editor.click_toolbar_button "Insert code snippet"
 
-          expect(page).to have_css(".spot-modal")
+          expect(page).to have_css(".Overlay")
 
           # CM wraps an accessor to the editor instance on the outer container
           cm = page.find(".CodeMirror")
@@ -145,7 +145,7 @@ RSpec.describe "Wysiwyg code block macro", :js, :selenium do
           expect(page).to have_css(".cm-keyword", text: "def")
           expect(page).to have_css(".cm-def", text: "foobar")
 
-          find(".spot-modal--submit-button").click
+          find(".Overlay--submit-button").click
 
           # Expect macro saved to editor
           expect(container).to have_css(".op-uc-code-block", text: snippet)
@@ -176,7 +176,7 @@ RSpec.describe "Wysiwyg code block macro", :js, :selenium do
 
           widget = container.find(".op-uc-code-block")
           page.driver.browser.action.double_click(widget.native).perform
-          expect(page).to have_css(".spot-modal")
+          expect(page).to have_css(".Overlay")
 
           expect(page).to have_css(".op-uc-code-block--language", text: "ruby")
           expect(page).to have_css(".cm-keyword", text: "def")

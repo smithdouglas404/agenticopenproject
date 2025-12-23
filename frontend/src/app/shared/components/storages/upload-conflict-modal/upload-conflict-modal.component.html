@@ -1,18 +1,16 @@
 <div
-  class="spot-modal"
+  class="Overlay"
 >
-  <div
-    class="spot-modal--header"
-  >
-    <span
-      id="spotModalTitle"
-      class="spot-modal--header-title"
-      [textContent]="text.header"
-    ></span>
+  <div class="Overlay-header">
+    <div class="Overlay-headerContentWrap">
+      <div class="Overlay-titleWrap">
+        <h1 id="spotModalTitle" class="Overlay-title">{{text.header}}</h1>
+      </div>
+    </div>
   </div>
 
   <div
-    class="spot-modal--body spot-container"
+    class="Overlay-body"
   >
     <span
       class="spot-body-small"
@@ -24,7 +22,7 @@
     class="spot-action-bar"
   >
     <div
-      class="spot-action-bar--right"
+      class="Overlay-footer Overlay-footer--alignEnd"
     >
       <button
         type="button"
