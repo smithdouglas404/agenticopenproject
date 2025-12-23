@@ -62,7 +62,7 @@ hu:
       meeting_participant:
         invited: "Meghívott"
         attended: "Részt vett"
-        participation_status: "Participation status"
+        participation_status: "Részvételi státusz"
     errors:
       models:
         meeting_participant:
@@ -127,7 +127,7 @@ hu:
   label_meeting_date_time: "Dátum/idő"
   label_meeting_date_and_time: "Dátum és idő"
   label_meeting_diff: "Eltérés"
-  label_meeting_send_updates: "Send email calendar invite and updates"
+  label_meeting_send_updates: "Naptári meghívók és frissítések küldése e-mailben"
   label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
   label_recurring_meeting: "Ismétlődő megbeszélés"
   label_recurring_meeting_part_of: "Ismétlődő megbeszélés része"
@@ -264,7 +264,7 @@ hu:
           Any meeting information not in the template will be lost. Do you want to continue?
         confirm_button: "Cancel occurrence"
     blankslate:
-      title: "There are no meetings to display"
+      title: "Nincsenek megjelenítendő találkozók"
       desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "PDF exportálása"
     export:
@@ -335,7 +335,7 @@ hu:
             E-mail naptárfrissítések letiltva. A résztvevők nemkapnak e-mailt a résztvevők módisításáról.
         onetime:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            A résztvevők hozzáadásakor vagy eltávolításakor minden résztvevő frissített naptármeghívókat kap e-mailben.
           disabled: >
             Participants will not receive an email informing them of changes to meeting date, time or participants.
         occurrence:
@@ -350,16 +350,16 @@ hu:
             E-mail naptárfrissítések le vannak tiltva az ismétlődő megbeszéléshez. A résztvevők nem fognak e-mail értesítőt kapni a sablon, vagy egyedi esemény változásairól.
     presentation_mode:
       title: "Presentation Mode"
-      button_present: "Present"
-      exit: "Exit presentation"
+      button_present: "Prezentáció megkezdése"
+      exit: "Kilépés a prezentációból"
       current_item: "Current item"
       total_items: "%{current} of %{total}"
-      previous: "Previous"
-      next: "Next"
-      no_items: "No agenda items"
+      previous: "Előző"
+      next: "Következő"
+      no_items: "Nincsenek napirendi pontok"
       no_items_flash: "There are no agenda items to present."
     ical_response:
-      update_failed: "Could not update participation status."
+      update_failed: "Nem sikerült frissíteni a részvételi státuszt."
       meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "Untitled section"
@@ -368,11 +368,11 @@ hu:
     empty_text: "Húzza ide az elemeket, vagy hozzon létre egy újat"
   meeting_participant:
     participation_status:
-      needs_action: "No response"
-      accepted: "Accepted"
-      declined: "Declined"
-      tentative: "Maybe"
-      unknown: "Unknown"
+      needs_action: "Nincs válasz"
+      accepted: "Elfogadva"
+      declined: "Elutasítva"
+      tentative: "Talán"
+      unknown: "Ismeretlen"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Time zone difference"
@@ -597,7 +597,7 @@ hu:
   text_work_package_has_no_upcoming_meeting_agenda_items: "Ez a munkacsomag még nem szerepel a következő megbeszélések napirendjén."
   text_agenda_item_move_next_meeting_cancelled: "Unable to move to the next meeting since it has been cancelled."
   text_work_package_add_to_meeting_hint: 'Használja a "Hozzáadás a megbeszéléshez" gombot, ha ezt a munkacsomagot hozzá kívánja adni egy közelgő értekezlethez.'
-  text_work_package_has_no_past_meeting_agenda_items: "Ez a munkacsomag nem került említésre egy korábbi megbeszélésen."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Email calendar updates are muted. Participants will not receive updated invites via email when you make changes."
   text_email_updates_enabled: "Email calendar updates are enabled. All participants will receive updated invites via email when you make changes."
   my_account:

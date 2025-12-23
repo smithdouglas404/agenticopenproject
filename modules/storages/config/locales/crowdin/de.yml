@@ -122,6 +122,7 @@ de:
     errors:
       messages:
         error: Ein unerwarteter Fehler ist aufgetreten. Bitte überprüfen Sie die OpenProject Logdateien für weitere Informationen oder kontaktieren Sie einen Administrator
+        forbidden: OpenProject konnte nicht auf die angefragte Ressource zugreifen. Bitte überprüfen Sie Ihre Berechtigungskonfiguration auf dem Speicheranbieter.
         unauthorized: OpenProject konnte sich nicht mit dem Speicheranbieter authentifizieren. Bitte überprüfen Sie Ihre Speicherkonfiguration und dessen Zugang.
       models:
         copy_project_folders_service:

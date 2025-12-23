@@ -43,12 +43,12 @@ module Components
         if filter_name == "name_and_identifier"
           expect(page.find_by_id(filter_name).value).not_to be_empty
         elsif value
-          within("li[data-filter-name='#{filter_name}']:not(.hidden)", visible: :all) do
+          within("li[data-filter-name='#{filter_name}']") do
             expect(page).to have_css(".advanced-filters--filter-value", text: value, visible: :all)
           end
         else
           expect(page)
-            .to have_css("li[data-filter-name='#{filter_name}']:not(.hidden)", visible: :all)
+            .to have_css("li[data-filter-name='#{filter_name}']")
         end
       end
 

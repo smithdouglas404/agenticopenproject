@@ -31,9 +31,8 @@
 module Storages::Admin
   class AccessManagementForm < ApplicationForm
     form do |access_management_form|
-      access_management_form.radio_button_group(name: :access_management) do |radio_buttons|
+      access_management_form.radio_button_group(name: :automatic_management_enabled, validation_message:) do |radio_buttons|
         radio_buttons.radio_button(
-          name: :automatic_management_enabled,
           value: true,
           checked: @storage.automatic_management_enabled?,
           label: access_management_translation("automatic_management"),
@@ -42,7 +41,6 @@ module Storages::Admin
         )
 
         radio_buttons.radio_button(
-          name: :automatic_management_enabled,
           value: false,
           checked: !@storage.automatic_management_enabled?,
           label: access_management_translation("manual_management"),
@@ -58,6 +56,10 @@ module Storages::Admin
     end
 
     private
+
+    def validation_message
+      @storage.errors.full_messages.join(", ") if @storage.errors.any?
+    end
 
     def access_management_translation(key)
       if @storage.provider_type_one_drive?

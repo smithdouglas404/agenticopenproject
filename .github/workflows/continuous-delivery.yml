@@ -17,10 +17,9 @@ jobs:
     steps:
       - name: Trigger Flavours workflow
         env:
-          TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
+          TOKEN: ${{ secrets.OPENPROJECTCI_FLAVOUR_TRIGGER_TOKEN }}
           REPOSITORY: opf/openproject-flavours
           WORKFLOW_ID: ci.yml
-          # Use environment variable to prevent command injection
           REF_NAME: ${{ github.ref_name }}
         run: |
           PAYLOAD=$(jq -n --arg ref "$REF_NAME" '{"ref": "dev", "inputs": {"ref": $ref}}')

@@ -64,7 +64,7 @@ module OpenProject::Meeting
         permission :edit_meetings,
                    {
                      meetings: %i[edit cancel_edit update update_title change_state toggle_notifications_dialog
-                                  details_dialog update_details toggle_notifications],
+                                  details_dialog update_details toggle_notifications exit_draft_mode_dialog exit_draft_mode],
                      recurring_meetings: %i[edit cancel_edit update update_title details_dialog update_details
                                             notify end_series end_series_dialog],
                      work_package_meetings_tab: %i[add_work_package_to_meeting_dialog add_work_package_to_meeting refresh_form],
@@ -88,7 +88,6 @@ module OpenProject::Meeting
                    require: :member
         permission :manage_agendas,
                    {
-                     meetings: %i[change_state exit_draft_mode_dialog exit_draft_mode],
                      meeting_agenda_items: %i[new cancel_new create edit cancel_edit update destroy drop move
                                               move_to_next_meeting move_to_next_meeting_dialog
                                               duplicate_in_next_meeting duplicate_in_next_meeting_dialog

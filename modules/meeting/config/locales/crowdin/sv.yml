@@ -597,7 +597,7 @@ sv:
   text_work_package_has_no_upcoming_meeting_agenda_items: "Detta arbetspaket är ännu inte inplanerat i en kommande dagordning."
   text_agenda_item_move_next_meeting_cancelled: "Det går inte att gå vidare till nästa möte eftersom det har ställts in."
   text_work_package_add_to_meeting_hint: 'Använd knappen "Lägg till i möte" för att lägga till detta arbetspaket i ett kommande möte.'
-  text_work_package_has_no_past_meeting_agenda_items: "Detta arbetspaket nämndes inte vid ett tidigare möte."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Kalenderuppdateringar via e-post är avstängda. Deltagarna kommer inte att få uppdaterade inbjudningar via e-post när du gör ändringar."
   text_email_updates_enabled: "Uppdateringar av kalendern via e-post är aktiverade. Alla deltagare kommer att få uppdaterade inbjudningar via e-post när du gör ändringar."
   my_account:

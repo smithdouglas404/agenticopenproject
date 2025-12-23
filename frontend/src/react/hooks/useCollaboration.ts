@@ -135,7 +135,9 @@ export function useCollaboration(
 
   useEffect(() => {
     if (hasTimedOut) {
+      debugLog('(BlockNote Editor) Connection to collaboration server timed out');
       setConnectionError(true);
+      setIsLoading(false);
     }
   }, [hasTimedOut]);
 

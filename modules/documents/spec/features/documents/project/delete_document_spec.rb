@@ -78,7 +78,7 @@ RSpec.describe "Delete Document",
           click_on "Delete permanently"
         end
 
-        expect(page).to have_content("Successful deletion.")
+        expect_and_dismiss_flash(message: "Successful deletion.")
         expect(page).to have_current_path(project_documents_path(project))
         index_page.expect_documents_listed(documents.drop(1))
       end
@@ -94,7 +94,7 @@ RSpec.describe "Delete Document",
         expect(page).to have_current_path(document_path(delete_candidate))
         accept_alert { click_on "Delete" }
 
-        expect(page).to have_content("Successful deletion.")
+        expect_and_dismiss_flash(message: "Successful deletion.")
         expect(page).to have_current_path(project_documents_path(project))
         index_page.expect_documents_listed(documents.drop(1))
       end

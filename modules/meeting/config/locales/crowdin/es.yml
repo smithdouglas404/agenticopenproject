@@ -597,7 +597,7 @@ es:
   text_work_package_has_no_upcoming_meeting_agenda_items: "Este paquete de trabajo no está todavía programado en ninguna agenda de próximas reuniones."
   text_agenda_item_move_next_meeting_cancelled: "No se puede mover a la próxima reunión, ya que ha sido cancelada."
   text_work_package_add_to_meeting_hint: 'Utilice el botón "Añadir a la reunión" para añadir este paquete de trabajo a una próxima reunión.'
-  text_work_package_has_no_past_meeting_agenda_items: "Este paquete de trabajo no se mencionó en ninguna reunión anterior."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Las actualizaciones de calendario por correo electrónico están silenciadas. Los participantes no recibirán invitaciones actualizadas por correo electrónico cuando realice cambios."
   text_email_updates_enabled: "Las actualizaciones de calendario por correo electrónico están habilitadas. Los participantes recibirán invitaciones actualizadas por correo electrónico cuando realice cambios."
   my_account:

@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 
 <% format_dependent = OpenProject::CustomFieldFormatDependent.new(@custom_field.field_format) %>
 
@@ -81,7 +81,13 @@ See COPYRIGHT and LICENSE files for more details.
       <%= f.check_box :multi_value,
                       data: { action: "admin--custom-fields#checkOnlyOne" } %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.multi_select") %></p>
+        <p>
+          <% if @custom_field.is_a?(ProjectCustomField) %>
+            <%= t("custom_fields.instructions.multi_select.project") %>
+          <% else %>
+            <%= t("custom_fields.instructions.multi_select.all") %>
+          <% end %>
+        </p>
       </div>
     </div>
 
@@ -153,30 +159,30 @@ See COPYRIGHT and LICENSE files for more details.
 </section>
 
 <section class="form--section">
-  <% case @custom_field.class.name
-     when "WorkPackageCustomField" %>
+  <% case @custom_field.class.name %>
+  <% when "WorkPackageCustomField" %>
     <div class="form--field">
       <%= f.check_box :is_required %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.is_required") %></p>
+        <p><%= t("custom_fields.instructions.is_required.all") %></p>
       </div>
     </div>
     <div class="form--field">
       <%= f.check_box :is_for_all %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.is_for_all") %></p>
+        <p><%= t("custom_fields.instructions.is_for_all.all") %></p>
       </div>
     </div>
     <div class="form--field">
       <%= f.check_box :is_filter %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.is_filter") %></p>
+        <p><%= t("custom_fields.instructions.is_filter.all") %></p>
       </div>
     </div>
     <div class="form--field" <%= format_dependent.attributes(:searchable) %>>
       <%= f.check_box :searchable %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.searchable") %></p>
+        <p><%= t("custom_fields.instructions.searchable.all") %></p>
       </div>
     </div>
     <div class="form--field" <%= format_dependent.attributes(:textOrientation) %>>
@@ -186,52 +192,58 @@ See COPYRIGHT and LICENSE files for more details.
     <div class="form--field">
       <%= f.check_box :is_required %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.is_required") %></p>
+        <p><%= t("custom_fields.instructions.is_required.all") %></p>
       </div>
     </div>
     <div class="form--field">
       <%= f.check_box :admin_only %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.admin_only") %></p>
+        <p><%= t("custom_fields.instructions.admin_only.all") %></p>
       </div>
     </div>
     <div class="form--field">
       <%= f.check_box :editable %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.editable") %></p>
+        <p><%= t("custom_fields.instructions.editable.all") %></p>
       </div>
     </div>
   <% when "ProjectCustomField" %>
     <div class="form--field">
       <%= f.check_box :is_required %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.is_required_for_project") %></p>
+        <p><%= t("custom_fields.instructions.is_required.project") %></p>
+      </div>
+    </div>
+    <div class="form--field">
+      <%= f.check_box :is_for_all %>
+      <div class="form--field-instructions">
+        <p><%= t("custom_fields.instructions.is_for_all.project") %></p>
       </div>
     </div>
     <div class="form--field">
       <%= f.check_box :admin_only %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.admin_only") %></p>
+        <p><%= t("custom_fields.instructions.admin_only.project") %></p>
       </div>
     </div>
     <div class="form--field" <%= format_dependent.attributes(:searchable) %>>
       <%= f.check_box :searchable %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.searchable_for_project") %></p>
+        <p><%= t("custom_fields.instructions.searchable.project") %></p>
       </div>
     </div>
   <% when "TimeEntryCustomField" %>
     <div class="form--field">
       <%= f.check_box :is_required %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.is_required") %></p>
+        <p><%= t("custom_fields.instructions.is_required.all") %></p>
       </div>
     </div>
   <% else %>
     <div class="form--field">
       <%= f.check_box :is_required %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.is_required") %></p>
+        <p><%= t("custom_fields.instructions.is_required.all") %></p>
       </div>
     </div>
   <% end %>

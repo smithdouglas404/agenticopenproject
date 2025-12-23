@@ -70,7 +70,7 @@ module Projects
         end
 
         def toggle_enabled?
-          !@project_custom_field.required?
+          !@project_custom_field.is_for_all?
         end
 
         def toggle_data_attributes

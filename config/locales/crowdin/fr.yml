@@ -349,17 +349,28 @@ fr:
     calculated_field_not_editable: "Attribut non modifiable. Cette valeur est calculée automatiquement."
     no_role_assigment: "Pas d'attribution de rôle"
     instructions:
-      is_required: "Marquez le champ personnalisé comme obligatoire. Il sera alors obligatoire de remplir le champ lors de la création de nouvelles ressources. Les ressources existantes ne nécessiteront pas de valeur lors de leur mise à jour."
-      is_required_for_project: "Cochez cette case pour activer cet attribut et le rendre obligatoire dans tous les projets. Il ne peut pas être désactivé pour des projets individuels. Les projets existants n'auront pas besoin d'une valeur lorsqu'ils seront mis à jour."
-      is_for_all: "Marquer le champ personnalisé comme disponible dans tous les projets existants et nouveaux."
-      multi_select: "Permet à l'utilisateur d'assigner plusieurs valeurs à ce champ personnalisé."
-      searchable: "Inclure les valeurs des champs lors de l'utilisation de la fonctionnalité de recherche globale."
-      searchable_for_project: "Cocher pour rendre cet attribut disponible en tant que filtre dans les listes de projets."
-      editable: "Autoriser les utilisateurs à modifier eux-mêmes le champ"
-      admin_only: "Cocher pour rendre cet attribut visible uniquement par les administrateurs. Les utilisateurs sans droits d'administration ne seront pas en mesure de le voir ou de l'éditer."
-      is_filter: >
-        Permet au champ personnalisé d'être utilisé dans un filtre dans les vues des lots de travaux. Notez que le champ personnalisé n'apparaîtra dans les vues globales que si l'option "Pour tous les projets" est sélectionnée.
-      formula: "Ajoutez des valeurs numériques ou saisissez / pour rechercher un attribut ou un opérateur mathématique."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Il n'y a actuellement aucun champ personnalisé.
       no_results_content_text: Créer un nouveau champ personnalisé
@@ -577,9 +588,9 @@ fr:
           label_enable_single: "Actif dans ce projet, cliquez pour le désactiver"
           label_disable_single: "Inactif dans ce projet, cliquez pour l'activer"
           remove_from_project: "Supprimer du projet"
-        is_required_blank_slate:
-          heading: Requis dans tous les projets
-          description: Cet attribut de projet est activé dans tous les projets, car l'option « Requis dans tous les projets » est cochée. Il ne peut pas être désactivé pour des projets individuels.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Il n'y a actuellement aucun type disponible.
         form:
@@ -718,6 +729,17 @@ fr:
     index:
       no_results_title_text: Il n'y a actuellement aucune actualité à publier.
       no_results_content_text: Ajouter une actualité
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "Restez connecté pendant %{num_days}"
@@ -909,6 +931,16 @@ fr:
     print_hint: Ceci affichera le contenu de cette page wiki sans aucune barre de navigation.
     index:
       no_results_content_text: Ajouter une nouvelle page wiki
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: Il n'y a actuellement aucun flux de travaux.
@@ -1245,7 +1277,7 @@ fr:
         work_packages: "Lots de Travaux"
         workspace_type: "Type d'espace de travail"
       project_custom_field:
-        is_required: "Requis pour tous les projets"
+        is_required: "Required"
         custom_field_section: Section
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1533,6 +1565,8 @@ fr:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -4468,6 +4502,7 @@ fr:
     passwords: "Mots de passe"
     project_attributes:
       heading: "Attributs du projet"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Attribut du projet"
       label_new_section: "Section"
       label_edit_section: "Modifier le titre"

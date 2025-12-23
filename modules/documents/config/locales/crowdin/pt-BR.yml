@@ -27,10 +27,10 @@ pt-BR:
     errors:
       models:
         document_type:
-          one_or_more_required: "Cannot delete the last document type"
+          one_or_more_required: "Não é possível excluir o último tipo de documento"
     models:
       document: "Documento"
-      documents: "Documents"
+      documents: "Documentos"
     attributes:
       document:
         content_binary: "Conteúdo binário"
@@ -45,8 +45,8 @@ pt-BR:
     page_header:
       heading: "Todos os documentos"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "Ações do documento"
+        edit_title: "Editar título"
     subheader:
       filter:
         label: "Filtro por nome do documento"
@@ -55,10 +55,10 @@ pt-BR:
       heading: "Ainda não há documentos"
       description: "Não há documentos nesta visualização. Você pode clicar no botão abaixo para adicionar um."
     document_categories_deprecation_notice:
-      heading: File categories are now called 'Document types'
+      heading: As categorias de arquivos agora são chamadas 'Tipos de Documento'
       description: |-
-        Your existing file categories have been converted to document types with the introduction of the new Documents module.
-        All existing documents have also been migrated to these new types.
+        Suas categorias de arquivos existente foram convertidas em tipos de documento com a introdução do novo módulo Documentos. 
+        Todos os documentos existentes também foram migrados para esses novos tipos.
       primary_action: Configure document types
       secondary_action: Learn more about the Documents module
     document_type_actions: "Document type actions"

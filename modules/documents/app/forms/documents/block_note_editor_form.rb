@@ -36,7 +36,6 @@ module Documents
         label: I18n.t("label_document_description"),
         readonly: readonly,
         visually_hide_label: true,
-        classes: "document-form--long-description",
         value: model.content_binary,
         attachments_upload_url:,
         attachments_collection_key:

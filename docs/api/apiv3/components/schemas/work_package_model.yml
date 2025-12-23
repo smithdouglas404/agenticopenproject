@@ -54,14 +54,18 @@ properties:
     format: date
     description: Date on which a milestone is achieved
   derivedStartDate:
-    type: string
+    type:
+      - "string"
+      - "null"
     format: date
     description: Similar to start date but is not set by a client but rather deduced
       by the work packages' descendants. If manual scheduleManually is active, the
       two dates can deviate.
     readOnly: true
   derivedDueDate:
-    type: string
+    type:
+      - "string"
+      - "null"
     format: date
     description: Similar to due date but is not set by a client but rather deduced
       by the work packages' descendants. If manual scheduleManually is active, the
@@ -106,7 +110,9 @@ properties:
       **Permission** view time entries
     readOnly: true
   percentageDone:
-    type: integer
+    type:
+      - "integer"
+      - "null"
     description: Amount of total completion for a work package
     minimum: 0
     maximum: 100

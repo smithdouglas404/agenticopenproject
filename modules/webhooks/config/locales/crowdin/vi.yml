@@ -27,7 +27,10 @@ vi:
       no_results_table: Chưa có webhook nào được định nghĩa.
       label_add_new: Thêm webhook mới
       label_edit: Chỉnh sửa webhook
-      label_event_resources: Tài nguyên sự kiện
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Đã tạo"
         updated: "Đã cập nhật"

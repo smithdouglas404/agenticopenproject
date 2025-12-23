@@ -34,4 +34,8 @@ class Grids::Widgets::NewsController < Grids::WidgetController
   # 403 error page.
   skip_before_action :load_and_authorize_in_optional_project
   before_action :find_optional_project
+
+  def show
+    render_widget Grids::Widgets::News.new(@project, current_user:)
+  end
 end

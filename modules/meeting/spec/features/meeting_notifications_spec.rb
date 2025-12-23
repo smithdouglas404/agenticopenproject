@@ -101,6 +101,13 @@ RSpec.describe "Meeting notifications", :js do
       show_page.open_meeting
       expect(meeting.reload.notify).to be true
 
+      wait_for_network_idle
+
+      # check if mail is sent on opening meeting (Bug #70109)
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+      ActionMailer::Base.deliveries.clear
+
       # check calendar updates sidepanel component
       page.within("[data-test-selector='email-updates-mode-selector']") do
         expect(page).to have_text("Email calendar updates")
