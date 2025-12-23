@@ -166,16 +166,16 @@ RSpec.describe Projects::CreateService, type: :model do
           end
         end
 
-        context "with required custom fields",
+        context "with for_all custom fields",
                 with_ee: %i[calculated_values],
                 with_flag: { calculated_value_project_attribute: true } do
           let!(:calculated_custom_field) do
             create(:calculated_value_project_custom_field,
                    project_custom_field_section: section)
           end
-          let!(:required_calculated_custom_field) do
+          let!(:for_all_calculated_custom_field) do
             create(:calculated_value_project_custom_field,
-                   is_required: true,
+                   is_for_all: true,
                    project_custom_field_section: section)
           end
 
@@ -183,10 +183,10 @@ RSpec.describe Projects::CreateService, type: :model do
             { custom_field_values: { text_custom_field.id => "foo" } }
           end
 
-          it "activates required calculated custom fields even if no value is provided" do
+          it "activates calculated custom fields even if no value is provided" do
             subject
             expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
-              .to contain_exactly(required_calculated_custom_field.id, text_custom_field.id)
+              .to contain_exactly(for_all_calculated_custom_field.id, text_custom_field.id)
           end
         end
 
@@ -230,7 +230,7 @@ RSpec.describe Projects::CreateService, type: :model do
       describe "calculated custom fields",
                with_ee: %i[calculated_values],
                with_flag: { calculated_value_project_attribute: true } do
-        shared_let(:cf_static) { create(:integer_project_custom_field, is_required: true) }
+        shared_let(:cf_static) { create(:integer_project_custom_field, is_for_all: true) }
         let(:project) { create(:project) }
         let!(:model_instance) { project }
         let(:stub_model_instance) { false }
@@ -248,7 +248,7 @@ RSpec.describe Projects::CreateService, type: :model do
         context "when trying to explicitly set values of calculated custom fields" do
           let!(:cf_calculated) do
             create(:calculated_value_project_custom_field,
-                   is_required: true, formula: "1 + 1")
+                   is_for_all: true, formula: "1 + 1")
           end
 
           let(:project_attributes) do
@@ -269,11 +269,11 @@ RSpec.describe Projects::CreateService, type: :model do
         context "when setting value of field referenced in calculated values" do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_static} * 7")
+                   is_for_all: true, formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_calculated1} * 11")
+                   is_for_all: true, formula: "#{cf_calculated1} * 11")
           end
 
           let(:project_attributes) do
@@ -296,11 +296,11 @@ RSpec.describe Projects::CreateService, type: :model do
         context "when not setting value of field referenced in calculated values" do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_static} * 7")
+                   is_for_all: true, formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_calculated1} * 11")
+                   is_for_all: true, formula: "#{cf_calculated1} * 11")
           end
 
           let(:project_attributes) do
@@ -326,15 +326,15 @@ RSpec.describe Projects::CreateService, type: :model do
           let!(:cf_c) { create(:integer_project_custom_field) }
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_a} * 7")
+                   is_for_all: true, formula: "#{cf_a} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_b} * 11")
+                   is_for_all: true, formula: "#{cf_b} * 11")
           end
           let!(:cf_calculated3) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_c} * 13")
+                   is_for_all: true, formula: "#{cf_c} * 13")
           end
 
           let(:project_attributes) do
@@ -362,7 +362,7 @@ RSpec.describe Projects::CreateService, type: :model do
         context "when intermediate calculated value field is not enabled" do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_static} * 7")
+                   is_for_all: true, formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
@@ -370,7 +370,7 @@ RSpec.describe Projects::CreateService, type: :model do
           end
           let!(:cf_calculated3) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_calculated2} * 13")
+                   is_for_all: true, formula: "#{cf_calculated2} * 13")
           end
 
           let(:project_attributes) do
@@ -400,15 +400,15 @@ RSpec.describe Projects::CreateService, type: :model do
         context "when intermediate calculated value field is for admin only" do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_static} * 7")
+                   is_for_all: true, formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations, :admin_only,
-                   is_required: true, formula: "#{cf_calculated1} * 11")
+                   is_for_all: true, formula: "#{cf_calculated1} * 11")
           end
           let!(:cf_calculated3) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_calculated2} * 13")
+                   is_for_all: true, formula: "#{cf_calculated2} * 13")
           end
 
           let(:project_attributes) do
@@ -432,11 +432,11 @@ RSpec.describe Projects::CreateService, type: :model do
         context "when referenced value field is for admin only" do
           let!(:cf_calculated) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   is_required: true, formula: "#{cf_static} * #{cf_referenced}")
+                   is_for_all: true, formula: "#{cf_static} * #{cf_referenced}")
           end
 
           context "when referenced value is static" do
-            let!(:cf_referenced) { create(:integer_project_custom_field, :admin_only, is_required: true) }
+            let!(:cf_referenced) { create(:integer_project_custom_field, :admin_only, is_for_all: true) }
 
             let(:project_attributes) do
               {
@@ -466,7 +466,7 @@ RSpec.describe Projects::CreateService, type: :model do
           context "when referenced value is calculated value without references" do
             let!(:cf_referenced) do
               create(:calculated_value_project_custom_field, :skip_validations, :admin_only,
-                     is_required: true, formula: "2")
+                     is_for_all: true, formula: "2")
             end
 
             let(:project_attributes) do
@@ -494,10 +494,10 @@ RSpec.describe Projects::CreateService, type: :model do
           end
 
           context "when referenced value is calculated value with another reference" do
-            let!(:cf_referenced1) { create(:integer_project_custom_field, :admin_only, is_required: true) }
+            let!(:cf_referenced1) { create(:integer_project_custom_field, :admin_only, is_for_all: true) }
             let!(:cf_referenced) do
               create(:calculated_value_project_custom_field, :skip_validations, :admin_only,
-                     is_required: true, formula: "-1 * #{cf_referenced1}")
+                     is_for_all: true, formula: "-1 * #{cf_referenced1}")
             end
 
             let(:project_attributes) do

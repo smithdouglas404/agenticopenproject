@@ -122,6 +122,7 @@ uk:
     errors:
       messages:
         error: Сталася неочікувана помилка. Щоб дізнатися більше, перегляньте журнали OpenProject або зверніться до адміністратора.
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject не вдалося автентифікуватись у постачальника сховища. Переконайтеся, що ви маєте до нього доступ.
       models:
         copy_project_folders_service:

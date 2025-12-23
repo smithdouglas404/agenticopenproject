@@ -611,7 +611,7 @@ pl:
   text_work_package_has_no_upcoming_meeting_agenda_items: "Ten pakiet roboczy nie został jeszcze zaplanowany w planie nadchodzącego spotkania."
   text_agenda_item_move_next_meeting_cancelled: "Nie można przenieść na następne spotkanie, ponieważ zostało ono anulowane."
   text_work_package_add_to_meeting_hint: 'Użyj przycisku „Dodaj do spotkania”, aby dodać ten pakiet roboczy do nadchodzącego spotkania.'
-  text_work_package_has_no_past_meeting_agenda_items: "Ten pakiet roboczy nie został wspomniany na poprzednim spotkaniu."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest wyciszone. Po wprowadzeniu zmian uczestnicy nie będą otrzymywać zaktualizowanych zaproszeń pocztą elektroniczną."
   text_email_updates_enabled: "Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest włączone. Po wprowadzeniu zmian wszyscy uczestnicy będą otrzymywać zaktualizowane zaproszenia pocztą elektroniczną."
   my_account:

@@ -39,13 +39,18 @@ import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
 
 class BlockNoteElement extends HTMLElement {
   private mount:HTMLDivElement;
+  private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
 
   constructor() {
     super();
 
     const shadowRoot = this.attachShadow({ mode: 'open' });
+    // Container for connection error/recovery messages (rendered by React via fetchConnectionTemplate)
+    this.errorContainer = document.createElement('div');
+    this.errorContainer.id = 'documents-show-edit-view-connection-error-notice-component';
     this.mount = document.createElement('div');
+    shadowRoot.appendChild(this.errorContainer);
     shadowRoot.appendChild(this.mount);
 
     const blockNoteStylesheetUrl = this.getAttribute('blocknote-stylesheet-url');
@@ -56,30 +61,13 @@ class BlockNoteElement extends HTMLElement {
       shadowRoot.appendChild(link);
     }
 
-    const style = document.createElement('style');
-    style.textContent = `
-      .block-note-editor-container {
-        align-items: center;
-        display: flex;
-        flex-direction: column-reverse;
-        gap: 10px;
-        height: 100%;
-        max-width: none;
-        padding: 0;
-      }
-
-      .block-note-editor-container > .bn-editor {
-        height: 100%;
-        max-width: 800px;
-        min-height: 80vh;
-        overflow: auto;
-        width: 100%;
-        background-color: transparent;
-        padding-top: 10px;
-        padding-inline: 0;
-      }
-    `;
-    shadowRoot.appendChild(style);
+    const shadowDomStylesheetUrl = this.getAttribute('shadow-dom-stylesheet-url');
+    if (shadowDomStylesheetUrl) {
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'stylesheet');
+      link.setAttribute('href', shadowDomStylesheetUrl);
+      shadowRoot.appendChild(link);
+    }
   }
 
   connectedCallback() {
@@ -121,6 +109,7 @@ class BlockNoteElement extends HTMLElement {
           attachmentsUploadUrl: this.getAttribute('attachments-upload-url') ?? '',
           attachmentsCollectionKey: this.getAttribute('attachments-collection-key') ?? '',
           hocuspocusProvider: hocuspocusProvider,
+          errorContainer: this.errorContainer,
         }
       )
     );

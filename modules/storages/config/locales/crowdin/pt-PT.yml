@@ -122,6 +122,7 @@ pt-PT:
     errors:
       messages:
         error: Ocorreu um erro inesperado. Verifique os registos do OpenProject para obter mais informações ou contacte um administrador
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: Não foi possível autenticar o OpenProject com o fornecedor de armazenamento. Certifique-se de que tem acesso ao mesmo.
       models:
         copy_project_folders_service:

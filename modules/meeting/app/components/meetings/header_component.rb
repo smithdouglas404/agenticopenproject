@@ -77,7 +77,7 @@ module Meetings
 
     def finish_setup_enabled?
       @meeting.draft? &&
-        User.current.allowed_in_project?(:create_meetings, @meeting.project)
+        User.current.allowed_in_project?(:edit_meetings, @meeting.project)
     end
 
     def action_button_params

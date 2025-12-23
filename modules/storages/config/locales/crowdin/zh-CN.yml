@@ -122,6 +122,7 @@ zh-CN:
     errors:
       messages:
         error: 发生意外错误。请检查日志获取更多信息或联系管理员
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: 无法通过存储提供商进行身份验证。请确保您有访问权限。
       models:
         copy_project_folders_service:

@@ -122,6 +122,7 @@ ko:
     errors:
       messages:
         error: 예기치 않은 오류가 발생했습니다. OpenProject 로그에서 자세한 내용을 확인하거나 관리자에게 문의하세요
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject가 저장소 공급자를 인증할 수 없습니다. 액세스 권한이 있는지 확인하세요.
       models:
         copy_project_folders_service:

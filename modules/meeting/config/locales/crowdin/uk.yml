@@ -611,7 +611,7 @@ uk:
   text_work_package_has_no_upcoming_meeting_agenda_items: "Цей пакет робіт ще не заплановано в порядку денному майбутньої наради."
   text_agenda_item_move_next_meeting_cancelled: "Не вдається перейти до наступної наради, оскільки її скасовано."
   text_work_package_add_to_meeting_hint: 'Натисніть кнопку «Додати до наради», щоб додати цей пакет робіт до майбутньої наради.'
-  text_work_package_has_no_past_meeting_agenda_items: "Цей пакет робіт не згадано в минулій нараді."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Надсилання електронною поштою оновлень із календаря тимчасово вимкнено. Учасники не отримають листи з оновленими запрошеннями після того, як ви внесете зміни."
   text_email_updates_enabled: "Надсилання електронною поштою оновлень із календаря ввімкнено. Усі учасники отримають листи з оновленими запрошеннями після того, як ви внесете зміни."
   my_account:

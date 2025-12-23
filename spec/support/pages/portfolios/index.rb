@@ -44,7 +44,6 @@ module Pages
         within_portfolio_list do
           portfolios.each do |portfolio|
             expect(page).to have_text(portfolio.name)
-            expect(page).to have_text(portfolio.description)
           end
         end
       end

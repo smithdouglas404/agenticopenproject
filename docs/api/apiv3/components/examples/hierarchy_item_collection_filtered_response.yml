@@ -20,6 +20,8 @@ value:
           parent:
             href: /api/v3/custom_field_items/1337
             name: null
+          branch:
+            href: /api/v3/custom_field_items/1338/branch
           children:
             - href: /api/v3/custom_field_items/1340
               name: ST-377
@@ -39,6 +41,8 @@ value:
           parent:
             href: /api/v3/custom_field_items/1338
             name: Stormtroopers
+          branch:
+            href: /api/v3/custom_field_items/1340/branch
           children:
             - href: /api/v3/custom_field_items/1480
               name: ST-377-200
@@ -58,6 +62,8 @@ value:
           parent:
             href: /api/v3/custom_field_items/1338
             name: Stormtroopers
+          branch:
+            href: /api/v3/custom_field_items/1341/branch
           children:
             - href: /api/v3/custom_field_items/1580
               name: ST-422-137

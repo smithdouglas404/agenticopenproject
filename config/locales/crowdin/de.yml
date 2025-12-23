@@ -346,17 +346,28 @@ de:
     calculated_field_not_editable: "Nicht editierbares Attribut. Dieser Wert wird automatisch berechnet."
     no_role_assigment: "Keine Rollenzuweisung"
     instructions:
-      is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Felder obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt."
-      is_required_for_project: "Aktivieren Sie dieses Attribut und machen Sie es in allen Projekten erforderlich. Es kann für einzelne Projekte nicht deaktiviert werden. Bestehende Projekte benötigen keinen Wert, wenn sie aktualisiert werden."
-      is_for_all: "Markieren Sie das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
-      multi_select: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."
-      searchable: "Fügen Sie die Feldwerte hinzu, wenn Sie die globale Suchfunktion verwenden."
-      searchable_for_project: "Das Attribut kann als Filter in Projektlisten ausgewählt werden."
-      editable: "Feld darf von den Benutzern selbst bearbeitet werden."
-      admin_only: "Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten."
-      is_filter: >
-        Erlaubt das benutzerdefinierte Feld in einem Filter in der Arbeitspaket-Ansicht zu verwenden. Beachten Sie, dass, nur wenn "Für alle Projekte" ausgewählt ist, das benutzerdefinierte Feld in globalen Ansichten angezeigt wird.
-      formula: "Fügen Sie numerische Werte hinzu oder geben Sie / ein, um nach einem Attribut oder einem mathematischen Operator zu suchen."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Zur Zeit existieren keine benutzerdefinierten Felder.
       no_results_content_text: Neues benutzerdefiniertes Feld anlegen
@@ -534,13 +545,13 @@ de:
         program_template_caption: "Wählen Sie eine Programmvorlage, die als Standard für neue Programme in diesem Portfolio verwendet werden soll."
         no_template: "Keine vordefinierte Vorlage"
       template:
-        menu_title: "Template"
-        title: "Template settings"
-        enable_failed: "Failed to enable template mode."
+        menu_title: "Vorlage"
+        title: "Einstellungen der Vorlage"
+        enable_failed: "Das Projekt konnte nicht als Vorlage aktiviert werden."
         members:
-          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_label: "Rollen, die bei der Anwendung der Vorlage ausgeschlossen werden sollen"
           excluded_roles_caption: >
-            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
+            Wenn Sie ein neues Projekt mit dieser Vorlage erstellen, werden die oben ausgewählten Rollen nicht mit in das neue Projekt übernommen. Auf diese Weise können Sie auswählen, welche Mitglieder aufgrund ihrer Projektrollen ausgeschlossen werden sollen. Die Benutzer können dann zu Ansichtszwecken auf die Vorlage zugreifen, ohne dass sie Zugriff auf neue Projekte erhalten, die mit dieser Vorlage erstellt werden.
       actions:
         label_enable_all: "Alles aktivieren"
         label_disable_all: "Alles deaktivieren"
@@ -574,9 +585,9 @@ de:
           label_enable_single: "In diesem Projekt aktiv, zum Deaktivieren anklicken"
           label_disable_single: "In diesem Projekt inaktiv, zum Aktivieren anklicken"
           remove_from_project: "Aus dem Projekt entfernen"
-        is_required_blank_slate:
-          heading: In allen Projekten erforderlich
-          description: Dieses Projekt-Attribut ist in allen Projekten aktiviert, da die Option "Benötigt in allen Projekten" aktiviert ist. Es kann nicht für einzelne Projekte deaktiviert werden.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Derzeit stehen keine Typen zur Verfügung.
         form:
@@ -715,6 +726,17 @@ de:
     index:
       no_results_title_text: Es gibt aktuell keine Neuigkeiten.
       no_results_content_text: Neuigkeit hinzufügen
+  roles:
+    permissions:
+      section_check_all_label: "Alle %{module} Berechtigungen zuweisen"
+      section_uncheck_all_label: "Alle %{module} Berechtigungen zuweisen"
+    report:
+      matrix_caption: "Berechtigungsmatrix für das Modul %{module}"
+      matrix_checkbox_label: "Berechtigung '%{permission}' der Rolle '%{role}' Rolle zuweisen"
+      matrix_check_all_label: "Alle %{module} Berechtigungen zuweisen"
+      matrix_uncheck_all_label: "Alle %{module} Berechtigungen entfernen"
+      matrix_check_uncheck_all_in_row_label_html: "Umschalten von <em>%{permission}</em> Berechtigung für alle Rollen"
+      matrix_check_uncheck_all_in_col_label_html: "Umschalten aller %{module} Berechtigungen für die Rolle <em>%{role}</em>"
   users:
     autologins:
       prompt: "%{num_days} lang angemeldet bleiben"
@@ -786,7 +808,7 @@ de:
         required: "Bitte eine Rolle auswählen"
       message:
         label: "Einladungsnachricht"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
+        description: "Wir werden eine E-Mail an den Benutzer senden, zu der Sie hier eine persönliche Nachricht hinzufügen können. Eine Erklärung für die Einladung könnte nützlich sein oder vielleicht ein paar Informationen über das Projekt, um den Start zu erleichtern."
       summary:
         next_button: "Einladung senden"
       success_message:
@@ -904,6 +926,16 @@ de:
     print_hint: Damit wird der Inhalt dieser Wiki-Seite ohne Navigationsleisten gedruckt.
     index:
       no_results_content_text: Neue Wikiseite hinzufügen
+  workflows:
+    form:
+      matrix_caption: "Workflow-Matrix"
+      matrix_caption_assignee: "Workflow-Matrix für Zugewiesene"
+      matrix_caption_author: "Workflow-Matrix für den Autor"
+      matrix_checkbox_label: "Übergang von %{old_status} zu %{new_status} erlauben"
+      matrix_check_all_label: "Alle Übergänge zulassen"
+      matrix_uncheck_all_label: "Alle Übergänge verbieten"
+      matrix_check_uncheck_all_in_row_label_html: "Übergänge von <em>%{old_status}</em> auf alle neuen Status umschalten"
+      matrix_check_uncheck_all_in_col_label_html: "Übergänge von allen alten Status zu <em>%{new_status}</em> umschalten"
   work_flows:
     index:
       no_results_title_text: Derzeit gibt es keine Workflows.
@@ -1239,7 +1271,7 @@ de:
         work_packages: "Arbeitspakete"
         workspace_type: "Arbeitsbereichstyp"
       project_custom_field:
-        is_required: "In allen Projekten erforderlich"
+        is_required: "Required"
         custom_field_section: Abschnitt
       subproject_template_assignment:
         workspace_type: "Arbeitsbereichstyp"
@@ -1527,6 +1559,8 @@ de:
               invalid_characters: "Nur numerische Werte, mathematische Operatoren und Projektattribute vom Typ Integer, Float, Berechneter Wert und Gewichtete Liste sind erlaubt."
               not_allowed_custom_fields_referenced: "Das Attribut %{custom_fields} kann nicht verwendet werden, da es zu einem Zirkelbezug führt; ein Attribut hängt vom anderen ab."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -3008,7 +3042,7 @@ de:
   label_board_plural: "Boards"
   label_branch: "Zweig"
   label_browse: "Codebrowser"
-  label_builtin: "Built-in"
+  label_builtin: "Eingebaut"
   label_bulk_edit_selected_work_packages: "Alle ausgewählten Arbeitspakete bearbeiten"
   label_bundled: "(Gebündelt)"
   label_calendar: "Kalender"
@@ -3933,7 +3967,7 @@ de:
   permission_comment_news: "Nachricht kommentieren"
   permission_commit_access: "Lese- und Schreibzugriff auf Projektarchiv (Commit)"
   permission_copy_projects: "Projekte kopieren"
-  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
+  permission_copy_projects_explanation: "Bei Vorlagenprojekten hat diese Berechtigung eine weitere Funktion: Sie ermöglicht die Erstellung neuer Projekte, die von der Vorlage abgeleitet sind."
   permission_copy_work_packages: "Arbeitspakete duplizieren"
   permission_create_backup: "Backups erstellen"
   permission_delete_work_package_watchers: "Beobachter löschen"
@@ -4462,6 +4496,7 @@ de:
     passwords: "Passwörter"
     project_attributes:
       heading: "Projektattribute"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Projektattribut"
       label_new_section: "Abschnitt"
       label_edit_section: "Titel bearbeiten"
@@ -4486,7 +4521,7 @@ de:
               description: "Fügen Sie alle Projektattribute in einem Abschnitt in der rechten Seitenleiste der Projektübersicht hinzu."
     project_initiation_request:
       header_description: >
-        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
+        OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren und ein PDF als Ergebnis erzeugen zu lassen.
       status:
         submitted: "%{wizard_name} wurde eingereicht"
         submitted_description: "Klicken Sie auf die Schaltfläche unten, um zum Arbeitspaket für den Einreichungsprozess zu gelangen."
@@ -4608,7 +4643,7 @@ de:
   text_custom_logo_instructions: >
     Das Logo passt sich automatisch an die Kopfzeile an. Die besten Ergebnisse erzielen Sie, wenn Sie ein weißes Logo auf ein transparentes 130×47px großes Bild hochladen. Sie können innerhalb des Bildes so viel Abstand einfügen, wie Sie möchten.
   text_custom_logo_mobile_instructions: >
-    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
+    Das Logo passt sich automatisch an die Kopfzeile an. Die besten Ergebnisse erzielen Sie, wenn Sie ein weißes Logo auf ein transparentes 130×33px großes Bild hochladen. Sie können innerhalb des Bildes so viel Abstand einfügen, wie Sie möchten.
   text_custom_export_logo_instructions: >
     Dies ist das Logo, das in Ihren PDF-Exporten erscheint. Es muss eine PNG- oder JPEG-Bilddatei sein. Ein schwarzes oder farbiges Logo auf transparentem oder weißem Hintergrund wird empfohlen.
   text_custom_export_cover_instructions: >

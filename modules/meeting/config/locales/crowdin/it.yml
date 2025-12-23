@@ -597,7 +597,7 @@ it:
   text_work_package_has_no_upcoming_meeting_agenda_items: "Questa macro-attività non è ancora programmata in un prossimo ordine del giorno di riunione."
   text_agenda_item_move_next_meeting_cancelled: "Impossibile passare alla riunione successiva perché è stata annullata."
   text_work_package_add_to_meeting_hint: 'Utilizzare il pulsante "Aggiungi alla riunione" per aggiungere questa macro-attività a una riunione imminente.'
-  text_work_package_has_no_past_meeting_agenda_items: "Questa macro-attività non è stato menzionata in una riunione precedente."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Gli aggiornamenti del calendario via email sono disattivati. I partecipanti non riceveranno inviti aggiornati via email quando apporti modifiche."
   text_email_updates_enabled: "Gli aggiornamenti del calendario via email sono abilitati. Tutti i partecipanti riceveranno gli inviti aggiornati via email quando apporti modifiche."
   my_account:

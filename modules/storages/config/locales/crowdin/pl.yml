@@ -122,6 +122,7 @@ pl:
     errors:
       messages:
         error: Wystąpił nieoczekiwany błąd. Sprawdź dzienniki OpenProject, aby uzyskać więcej informacji lub skontaktuj się z administratorem
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject nie mógł uwierzytelnić się z dostawcą magazynu. Upewnij się, że masz do niego dostęp.
       models:
         copy_project_folders_service:

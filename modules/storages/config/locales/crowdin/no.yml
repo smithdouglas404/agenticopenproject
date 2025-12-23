@@ -122,6 +122,7 @@
     errors:
       messages:
         error: Det oppstod en uventet feil. Sjekk OpenProject logger for mer informasjon eller kontakt en administrator
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject kunne ikke logge inn på lagringsstedet. Vennligst sørg for at du har tilgang til det.
       models:
         copy_project_folders_service:

@@ -36,13 +36,19 @@ RSpec.describe Grids::Widgets::MembersController do
   current_user { user }
 
   describe "GET #show" do
+    let(:widget_instance) { instance_double(Grids::Widgets::Members, render_in: "content") }
+
     before do
+      allow(Grids::Widgets::Members)
+        .to receive(:new)
+        .and_return(widget_instance)
+
       get :show, params: { project_id: project }
     end
 
-    it "renders show template", :aggregate_failures do
+    it "renders widget", :aggregate_failures do
       expect(response).to be_successful
-      expect(response).to render_template "show"
+      expect(response.body).to eq "content"
     end
   end
 end

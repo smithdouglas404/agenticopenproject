@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -196,7 +198,7 @@ gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.239"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.206"
+gem "aws-sdk-s3", "~> 1.208"
 
 gem "openproject-token", "~> 8.3.0"
 
@@ -248,7 +250,7 @@ gem "turbo-rails", "~> 2.0.20"
 # happenning in failing tests when WebMock or VCR stub cannot be found.
 gem "httpx", "~> 1.6.3"
 
-# Brings actual deep freezing to most ruby objects
+# Brings actual deep-freezing to most ruby objects
 gem "ice_nine"
 
 group :test do
@@ -395,6 +397,9 @@ gem "disposable", "~> 0.6.2"
 
 # Used for formula evaluation of calculated values
 gem "dentaku", "~> 3.5"
+
+# Used for more powerful counter caches
+gem "counter_culture", "~> 3.11"
 
 group :postgres do
   gem "pg", "~> 1.6.2"

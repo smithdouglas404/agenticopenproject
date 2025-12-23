@@ -52,7 +52,8 @@ module Portfolios
       {
         controller: "filter--filters-form",
         "filter--filters-form-perform-turbo-requests-value": true,
-        "filter--filters-form-clear-button-id-value": clear_button_id
+        "filter--filters-form-clear-button-id-value": clear_button_id,
+        "filter--filters-form-display-filters-value": filters_expanded?
       }
     end
 
@@ -71,6 +72,10 @@ module Portfolios
 
     def show_new_portfolio_button?
       @current_user.allowed_globally?(:add_portfolios)
+    end
+
+    def filters_expanded?
+      params[:filters].present?
     end
   end
 end

@@ -46,9 +46,17 @@ RSpec.describe ProjectCustomFieldProjectMappings::ToggleService do
 
     shared_let(:required_custom_field) do
       create(:project_custom_field,
-             name: "Visible required field",
+             name: "Required field",
              admin_only: false,
              is_required: true,
+             project_custom_field_section:)
+    end
+
+    shared_let(:forced_active_custom_field) do
+      create(:project_custom_field,
+             name: "Visible forced-active field",
+             admin_only: false,
+             is_for_all: true,
              project_custom_field_section:)
     end
 
@@ -61,71 +69,73 @@ RSpec.describe ProjectCustomFieldProjectMappings::ToggleService do
 
     let(:visible_custom_field_params) { { project_id: project.id, custom_field_id: visible_custom_field.id } }
     let(:required_custom_field_params) { { project_id: project.id, custom_field_id: required_custom_field.id } }
+    let(:forced_active_custom_field_params) { { project_id: project.id, custom_field_id: forced_active_custom_field.id } }
     let(:invisible_custom_field_params) { { project_id: project.id, custom_field_id: invisible_custom_field.id } }
 
     context "with admin permissions" do
       shared_let(:user) { create(:admin) }
 
-      it "toggles visible, non-required fields" do
-        expect(project.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+      it "toggles visible, non-is_for_all fields" do
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
         2.times do
           expect(instance.call(**visible_custom_field_params, value: "1")).to be_success
 
-          expect(project.reload.project_custom_fields).to contain_exactly(
-            required_custom_field, visible_custom_field
-          )
+          expected = [forced_active_custom_field, visible_custom_field]
+          expect(project.reload.project_custom_fields).to match_array(expected)
         end
 
         2.times do
           expect(instance.call(**visible_custom_field_params, value: "0")).to be_success
 
-          expect(project.reload.project_custom_fields).to contain_exactly(
-            required_custom_field
-          )
+          expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
         end
       end
 
-      it "toggles invisible, non-required fields" do
-        expect(project.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+      it "toggles invisible, non-is_for_all fields" do
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
         2.times do
           expect(instance.call(**invisible_custom_field_params, value: "1")).to be_success
 
-          expect(project.reload.project_custom_fields).to contain_exactly(
-            required_custom_field, invisible_custom_field
-          )
+          expected = [forced_active_custom_field, invisible_custom_field]
+          expect(project.reload.project_custom_fields).to match_array(expected)
         end
 
         2.times do
           expect(instance.call(**invisible_custom_field_params, value: "0")).to be_success
 
-          expect(project.reload.project_custom_fields).to contain_exactly(
-            required_custom_field
-          )
+          expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
         end
       end
 
-      it "does not toggle required fields" do
-        expect(project.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+      it "does not toggle is_for_all fields" do
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
-        expect(instance.call(**required_custom_field_params, value: "1")).to be_failure
+        expect(instance.call(**forced_active_custom_field_params, value: "1")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
-        expect(instance.call(**required_custom_field_params, value: "0")).to be_failure
+        expect(instance.call(**forced_active_custom_field_params, value: "0")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
+      end
+
+      it "does toggle required fields" do
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
+
+        2.times do
+          expect(instance.call(**required_custom_field_params, value: "1")).to be_success
+
+          expected = [forced_active_custom_field, required_custom_field]
+          expect(project.reload.project_custom_fields).to match_array(expected)
+        end
+
+        2.times do
+          expect(instance.call(**required_custom_field_params, value: "0")).to be_success
+
+          expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
+        end
       end
     end
 
@@ -143,62 +153,45 @@ RSpec.describe ProjectCustomFieldProjectMappings::ToggleService do
                })
       end
 
-      it "toggles visible, non-required fields" do
-        expect(project.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+      it "toggles visible, non-is_for_all fields" do
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
         2.times do
           expect(instance.call(**visible_custom_field_params, value: "1")).to be_success
 
-          expect(project.reload.project_custom_fields).to contain_exactly(
-            required_custom_field, visible_custom_field
-          )
+          expected = [forced_active_custom_field, visible_custom_field]
+          expect(project.reload.project_custom_fields).to match_array(expected)
         end
 
         2.times do
           expect(instance.call(**visible_custom_field_params, value: "0")).to be_success
 
-          expect(project.reload.project_custom_fields).to contain_exactly(
-            required_custom_field
-          )
+          expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
         end
       end
 
       it "does not toggle invisible, non-required fields" do
-        expect(project.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
         expect(instance.call(**invisible_custom_field_params, value: "1")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
         expect(instance.call(**invisible_custom_field_params, value: "0")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
       end
 
-      it "does not toggle required fields" do
-        expect(project.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+      it "does not toggle is_for_all fields" do
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
-        expect(instance.call(**required_custom_field_params, value: "1")).to be_failure
+        expect(instance.call(**forced_active_custom_field_params, value: "1")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
-        expect(instance.call(**required_custom_field_params, value: "0")).to be_failure
+        expect(instance.call(**forced_active_custom_field_params, value: "0")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
       end
     end
 
@@ -215,58 +208,40 @@ RSpec.describe ProjectCustomFieldProjectMappings::ToggleService do
                })
       end
 
-      it "does not toggle visible, non-required fields" do
-        expect(project.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+      it "does not toggle visible, non-is_for_all fields" do
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
         expect(instance.call(**visible_custom_field_params, value: "1")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
         expect(instance.call(**visible_custom_field_params, value: "0")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
       end
 
-      it "does not toggle invisible, non-required fields" do
-        expect(project.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+      it "does not toggle invisible, non-is_for_all fields" do
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
         expect(instance.call(**invisible_custom_field_params, value: "1")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
         expect(instance.call(**invisible_custom_field_params, value: "0")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
       end
 
-      it "does not toggle required fields" do
-        expect(project.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+      it "does not toggle is_for_all fields" do
+        expect(project.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
-        expect(instance.call(**required_custom_field_params, value: "1")).to be_failure
+        expect(instance.call(**forced_active_custom_field_params, value: "1")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
 
-        expect(instance.call(**required_custom_field_params, value: "0")).to be_failure
+        expect(instance.call(**forced_active_custom_field_params, value: "0")).to be_failure
 
-        expect(project.reload.project_custom_fields).to contain_exactly(
-          required_custom_field
-        )
+        expect(project.reload.project_custom_fields).to contain_exactly(forced_active_custom_field)
       end
     end
   end

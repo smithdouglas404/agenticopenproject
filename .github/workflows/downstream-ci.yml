@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Trigger SaaS Tests
         env:
-          TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
+          TOKEN: ${{ secrets.OPENPROJECTCI_GH_SAAS_WORKFLOW_PAT }}
           REPOSITORY: opf/saas-openproject
           WORKFLOW_ID: test-saas.yml
           EVENT_NAME: ${{ github.event_name }}
@@ -64,20 +64,20 @@ jobs:
             exit 0
           fi
 
-          PAYLOAD=$(printf '{"ref": "%s", "inputs": {"core_ref": "%s"}}' "$REF" "$CORE_REF")
+          PAYLOAD=$(jq -n --arg ref "$REF" --arg core_ref "$CORE_REF" '{"ref": $ref, "inputs": {"core_ref": $core_ref}}')
           OUTPUT_FILE=/tmp/request-output
 
           echo "Triggering $WORKFLOW_ID workflow on $REPOSITORY branch '$REF', which will check out core branch '$CORE_REF'"
 
           status=$(
-            curl -i --fail-with-body -s -o $OUTPUT_FILE -w "%{http_code}" \
+            curl -i --fail-with-body --silent --output $OUTPUT_FILE --write-out "%{http_code}" \
               -H"authorization: Bearer $TOKEN" -H"Accept: application/vnd.github.v3+json" \
               -XPOST \
               -d "$PAYLOAD" \
               https://api.github.com/repos/$REPOSITORY/actions/workflows/$WORKFLOW_ID/dispatches
           )
 
-          if [ "$status" = "204" ]; then
+          if [[ "$status" =~ ^2..$ ]]; then
             echo Downstream workflow triggered successfully
           else
             echo Failed to trigger downstream workflow:
