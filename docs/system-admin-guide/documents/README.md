@@ -7,7 +7,7 @@ keywords: document category, document categories, documents, collaboration, cate
 ---
 # Documents module settings
 
-Intro text: this page shows the settings for Documents module in OpenProject administration.
+This page describes the available settings for the **Documents** module in the OpenProject administration.
 
 ## Document types
 
@@ -15,7 +15,12 @@ Intro text: this page shows the settings for Documents module in OpenProject adm
 >
 > Prior to OpenProject 17.0 document types were called *categories* and were configured under *Administration → Files → Categories*. 
 
-To create or edit document categories in OpenProject, navigate to *Administration → Documents*. Here, you will automatically see all existing document types. You can adjust the items within the list by using the options behind the **More (three dots)** menu on the right side. You can also rearrange the order by using the drag-and-drop handle on the left. 
+To create or edit document categories in OpenProject, navigate to *Administration → Documents*. Here, you will automatically see all existing document types:
+
+- The column **Type** lists all existing document type names
+- The column **Documents** shows the number of documents of this specific type
+
+You can adjust the items within the list by using the options behind the **More (three dots)** menu on the right side. You can also rearrange the order by using the drag-and-drop handle on the left. 
 
 ![Document types overview in OpenProject administration](openproject_system_guide_documents_types_overview.png)
 
@@ -29,15 +34,50 @@ You can then name the new type, and activate it. You can optionally set this typ
 
 Press the **Save** button to save your changes.
 
-![Create new documentats type in OpenProject](openproject_system_guide_documents_types_new_form.png)
+![Create new document type in OpenProject](openproject_system_guide_documents_types_new_form.png)
 
-### Edit or remove document type
+### Edit a document type
 
 To **edit** an existing type, either click on the name directly or select the **Edit** option from the **More (three dots)** menu on the right end of the row.
 
-![Edit a documentat type in OpenProject administration](openproject_system_guide_documents_types_edit.png)
+![Edit a document type in OpenProject administration](openproject_system_guide_documents_types_edit.png)
 
+### Delete a document type
 
 To remove a document type, open the **More (three dots)** menu on the right end of the row and click on the **delete** icon.
 
+![Delete a document type in OpenProject administration](openproject_system_guide_documents_types_delete_button.png)
+
+You will see a dialogue informing you of the consequences. 
+- If a document type is unused, this has no significant consequences. 
+
+  ![A warning message when deleting an unused document type in OpenProject](openproject_system_guide_documents_types_delete_message_type_unused.png)
+
+- If a document type is used, you will need to select a different type for reassigning
+
+  ![A warning message when deleting a used document type in OpenProject, asking to reassing documents to a different type](openproject_system_guide_documents_types_delete_message_type_used.png)
+
+- If a document type is the last existing one, you will not be able to delete it. There must always be at least one document type configured. In this case you can create another document type first.
+
+  ![A warning message that deleting the last existing document type is not permitted in OpenProject](openproject_system_guide_documents_types_delete_message_type_last.png)
+
 ## Real-time collaboration in documents
+
+Real-time collaboration for OpenProject's *Documents* module was introduced with 17.0 release.
+
+> [!IMPORTANT]
+>
+> Real-time collaboration is automatically available for the following installation types: 
+>
+> - Containerized installations
+> - Cloud-hosted installations
+>
+> Packaged installations (DEB/RPM) require additional manual setup. This includes installing and configuring dependencies such as Hocuspocus to enable real-time collaboration. Refer to the administration guide for detailed setup instructions. (ADD LINK)
+
+When enabled, real-time collaboration allows multiple users to edit the same document simultaneously. Changes are synchronized in real time, and users can see each other’s cursors and edits as they happen. This significantly improves collaboration, especially for teams working together on shared documentation or meeting notes.
+
+Technically, real-time collaboration relies on a running [Hocuspocus server](https://github.com/opf/op-blocknote-hocuspocus)[ ](https://github.com/opf/op-blocknote-hocuspocus)  that handles synchronization between users. OpenProject connects to this service to provide a seamless collaborative editing experience within documents.
+
+![Administration settings for real-time documents collaboration in OpenProject](openproject_system_guide_documents_real_time_collaboration.png)
+
+Read more about the introduction of real-time collaboration in the [in the official blog article](https://www.openproject.org/blog/real-time-collaboration-in-documents/).
