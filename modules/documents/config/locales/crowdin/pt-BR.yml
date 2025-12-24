@@ -59,45 +59,45 @@ pt-BR:
       description: |-
         Suas categorias de arquivos existente foram convertidas em tipos de documento com a introdução do novo módulo Documentos. 
         Todos os documentos existentes também foram migrados para esses novos tipos.
-      primary_action: Configure document types
-      secondary_action: Learn more about the Documents module
-    document_type_actions: "Document type actions"
+      primary_action: Configure o tipo do documento
+      secondary_action: Saiba mais sobre o módulo Documentos
+    document_type_actions: "Ações do tipo de Documento"
     text_collaboration_disabled_notice:
       description: |-
-        Unable to open document because real-time text collaboration is disabled.
-        Please contact your administrator to enable real-time text collaboration if you want to access this document.
+        Não foi possível abrir o documento porque a colaboração de texto em tempo real está desativada.
+        Entre em contato com o administrador para ativar a colaboração de texto em tempo real se você quiser acessar este documento.
     show_edit_view:
       connection_error_notice:
         description: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
-        action: Try again
+          Não foi possível abrir o documento porque o servidor de colaboração de texto em tempo real está inacessível.
+          Contate o administrador se o problema persistir.
+        action: Tente novamente
       connection_recovery_notice:
-        description: "The connection to the real-time text collaboration server has been restored."
+        description: "A conexão para o servidor de colaboração de texto em tempo real foi restaurada."
     index_page:
       name: "Nome"
       type: "Tipo"
       updated_at: "Última edição"
-      label_legacy: "Legacy"
+      label_legacy: "Legado"
     menu:
       all: "Todos os documentos"
       types: "Tipos"
-      collaboration_settings: "Real-time collaboration"
+      collaboration_settings: "Colaboração em tempo real"
     last_updated_at: "Last saved %{time}."
-    active_editors: "Active editors"
+    active_editors: "Editores ativos"
     active_editors_count:
       one: "1 active editor"
       other: "%{count} active editors"
     label_attachment_author: "Autor do anexo"
     label_categories: "Categorias"
     new_category: "Nova categoria"
-    new_type: "New type"
+    new_type: "Novo tipo"
     delete_dialog:
-      title: "Delete document"
-      heading: "Delete this document?"
-      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
+      title: "Deletar documento"
+      heading: "Deletar este documento?"
+      confirmation_message_html: "Isso deletará permanentemente este documento e todos os arquivos anexados. Você tem certeza que deseja fazer isso?"
     delete_document_type_dialog:
-      title: Delete document type
+      title: Deletar tipo de documento
       heading: Delete this document type?
       confirmation_message: |-
         The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
