@@ -39,8 +39,12 @@ import { StateService } from '@uirouter/angular';
 export const WpTableConfigurationModalPrependToken = new InjectionToken<ComponentType<any>>('WpTableConfigurationModalPrependComponent');
 
 @Component({
+  selector: 'wp-table-configuration',
   templateUrl: './wp-table-configuration.modal.html',
   standalone: false,
+  host: {
+    'class': 'foo-bar'
+  }
 })
 export class WpTableConfigurationModalComponent extends OpModalComponent implements OnInit, OnDestroy {
   public text = {

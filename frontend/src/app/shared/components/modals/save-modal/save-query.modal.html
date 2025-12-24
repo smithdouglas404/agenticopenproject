@@ -1,17 +1,18 @@
+<div class="Overlay-header Overlay-header--large Overlay-header--divided">
+  <div class="Overlay-headerContentWrap">
+    <div class="Overlay-titleWrap">
+      <h1 id="spotModalTitle" class="Overlay-title">{{text.save_as}}</h1>
+    </div>
+  </div>
+</div>
+
 <form
-  class="Overlay loading-indicator--location"
+  class=" loading-indicator--location"
   data-indicator-name="modal"
   name="modalSaveForm"
   (submit)="saveQueryAs($event)"
 >
-  <div class="Overlay-header Overlay-header--large Overlay-header--divided">
-    <div class="Overlay-headerContentWrap">
-      <div class="Overlay-titleWrap">
-        <h1 id="spotModalTitle" class="Overlay-title">{{text.save_as}}</h1>
-      </div>
-    </div>
-  </div>
-
+<scrollable-region>
   <div
     name="modalSaveForm"
     class="Overlay-body"
@@ -33,6 +34,7 @@
       [isPublic]="isPublic" />
       </div>
   </div>
+</scrollable-region>
 
   <div class="Overlay-footer Overlay-footer--alignEnd">
     <button
@@ -58,3 +60,4 @@
     </button>
   </div>
 </form>
+

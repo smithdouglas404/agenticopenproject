@@ -1,6 +1,5 @@
-<dialog
-  open
-  class="Overlay loading-indicator--location"
+<div
+  class="loading-indicator--location"
   data-indicator-name="modal"
 >
   <div class="Overlay-header Overlay-header--large Overlay-header--divided">
@@ -15,22 +14,22 @@
     <div class="tab-content" #tabContentOutlet></div>
   </div>
 
-    <div class="Overlay-footer Overlay-footer--alignEnd">
-      <button
-        class="Button Button--secondary Button--medium"
-        (click)="closeMe($event)"
-        >
-        <span class="Button-content">
-          <span class="Button-label">{{ text.cancelButton }}</span>
-        </span>
-      </button>
-      <button
-        class="Button Button--primary Button--medium"
-        (click)="saveChanges()"
-        >
-        <span class="Button-content">
-          <span class="Button-label">{{ text.applyButton }}</span>
-        </span> 
-      </button>
-    </div>
- </dialog>
+  <div class="Overlay-footer Overlay-footer--alignEnd">
+    <button
+      class="Button Button--secondary Button--medium"
+      (click)="closeMe($event)"
+      >
+      <span class="Button-content">
+        <span class="Button-label">{{ text.cancelButton }}</span>
+      </span>
+    </button>
+    <button
+      class="Button Button--primary Button--medium"
+      (click)="saveChanges()"
+      >
+      <span class="Button-content">
+        <span class="Button-label">{{ text.applyButton }}</span>
+      </span>
+    </button>
+  </div>
+</div>

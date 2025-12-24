@@ -43,6 +43,12 @@ import { States } from 'core-app/core/states/states.service';
 
 @Component({
   templateUrl: './save-query.modal.html',
+  styles: `
+    :host
+      display: contents
+    form
+      display: contents
+  `,
   standalone: false,
 })
 export class SaveQueryModalComponent extends OpModalComponent {

@@ -1,26 +1,15 @@
-<div
-  class="Overlay-overlay"
+<dialog
+  class="Overlay Overlay-whenNarrow Overlay--size-medium Overlay--motion-scaleFade Overlay--full-whenNarrow Overlay--disableScroll"
   [class.Overlay-overlay_active]="(activeModalInstance$ | async) !== null"
   [class.Overlay-overlay_not-full-screen]="notFullscreen"
   [class.Overlay-overlay_top]="mobileTopPosition"
   #overlay
-  tabindex="0"
-  cdkFocusInitial
-  cdkTrapFocus
-  [cdkTrapFocusAutoCapture]="true"
   (mousedown)="close($event, false)"
-  role="dialog"
   aria-modal="true"
   aria-labelledby="spotModalTitle"
+  aria-describedby="spotModalDescription"
   >
-  @if ((activeModalInstance$ | async)?.showCloseButton !== false) {
-    <button
-      type="button"
-      class="spot-button Overlay-overlay--close-button"
-      (click)="close($event)"
-      >
-      <svg x-icon size="small" />
-    </button>
-  }
-  <ng-template cdkPortalOutlet />
-</div>
+  <div cdkTrapFocus cdkTrapFocusAutoCapture style="display:contents">
+    <ng-template cdkPortalOutlet></ng-template>
+  </div>
+</dialog>

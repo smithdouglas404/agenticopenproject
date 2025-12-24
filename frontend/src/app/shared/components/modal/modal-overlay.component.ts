@@ -31,7 +31,13 @@ import {
   ChangeDetectorRef,
   Component,
   ComponentRef,
+  effect,
   ElementRef,
+  inject,
+  model,
+  output,
+  untracked,
+  viewChild,
   ViewChild,
 } from '@angular/core';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
@@ -43,6 +49,7 @@ import { OpModalComponent } from 'core-app/shared/components/modal/modal.compone
 import { ModalData, OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { PortalOutletTarget } from 'core-app/shared/components/modal/portal-outlet-target.enum';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
+import { QupayaOverlayContainer } from './custom-overlay-container';
 
 
 @Component({
@@ -58,6 +65,14 @@ export class OpModalOverlayComponent extends UntilDestroyedMixin {
 
   public portalOutlet:CdkPortalOutlet;
 
+  // private readonly overlayContainer = inject(QupayaOverlayContainer);
+  // private readonly dialogOverlayContainerRef = viewChild.required<
+  //   ElementRef<HTMLDivElement>
+  // >("dialogOverlayContainer");
+  // private readonly overlay =
+  //   viewChild.required<ElementRef<HTMLDialogElement>>("overlay");
+@ViewChild('overlay', { static: true }) overlay:ElementRef<HTMLDialogElement>;
+
   @ViewChild(CdkPortalOutlet) set portalOutletContainer(v:CdkPortalOutlet) {
     // ViewChild reference may be undefined initially
     // due to ngIf
@@ -67,7 +82,29 @@ export class OpModalOverlayComponent extends UntilDestroyedMixin {
     }
   }
 
-  @ViewChild('overlay', { static: true }) overlay:ElementRef;
+
+
+
+  // readonly open = model(false);
+  // readonly close = output<void>();
+
+  // protected readonly openEvents = effect(() => {
+  //   const dialog = untracked(this.overlay);
+  //   const containerRef = untracked(this.dialogOverlayContainerRef);
+  //   if (this.open()) {
+  //     dialog.nativeElement.showModal();
+  //     console.log("OVERLAY CONT", this.overlayContainer);
+  //     this.overlayContainer.addContainer(containerRef.nativeElement);
+  //   } else {
+  //     dialog.nativeElement.close();
+  //     this.overlayContainer.removeContainer();
+  //   }
+  // });
+  // handleClose(): void {
+  //   this.close.emit();
+  //   this.open.set(false);
+  // }
+
 
   activeModalData$ = this.modalService.activeModalData$;
 
@@ -129,6 +166,7 @@ export class OpModalOverlayComponent extends UntilDestroyedMixin {
     }
 
     ref.instance.closingEvent.emit(ref.instance);
+    this.overlay.nativeElement.close();
     this.portalOutlet.detach();
     this.modalService.activeModalInstance$.next(null);
   }
@@ -144,8 +182,7 @@ export class OpModalOverlayComponent extends UntilDestroyedMixin {
     this.modalService.activeModalInstance$.next(instance);
     this.cdRef.detectChanges();
 
-    // Focus on wrapper by default
-    (this.overlay.nativeElement as HTMLElement).focus();
+    this.overlay.nativeElement.showModal();
 
     // Focus on the first element
     instance && instance.onOpen();

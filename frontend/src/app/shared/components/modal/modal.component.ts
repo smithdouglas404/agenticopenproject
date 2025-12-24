@@ -90,7 +90,9 @@ export abstract class OpModalComponent extends UntilDestroyedMixin implements On
   }
 
   public onOpen():void {
+    console.log("ELEMENTRY MY DEAR", this.element);
     this.openingEvent.emit();
+    
     this.updateAppHeight();
     this.cdRef.detectChanges();
 
