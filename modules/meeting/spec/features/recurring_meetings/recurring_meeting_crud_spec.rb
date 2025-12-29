@@ -216,7 +216,7 @@ RSpec.describe "Recurring meetings CRUD",
       expect(page).to have_no_button "Open"
       show_page.expect_open_meeting date: "12/31/2024 01:30 PM"
 
-      within("li", text: "12/31/2024 01:30 PM") do
+      within_row("12/31/2024 01:30 PM") do
         click_on "more-button"
 
         expect(page).to have_css(".ActionListItem-label", count: 1)
