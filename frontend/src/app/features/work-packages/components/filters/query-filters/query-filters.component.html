@@ -2,11 +2,14 @@
   <fieldset id="filters" class="advanced-filters--container">
     <legend [textContent]="text.selected_filter_list"></legend>
     @if (showCloseFilter) {
-      <a
-        [attr.title]="text.close_form"
-        class="advanced-filters--close icon-context icon-close"
-        (click)="closeFilter()">
-      </a>
+      <primer-icon-button 
+        icon="x"
+        scheme="invisible"
+        class="advanced-filters--close"
+        tooltip-direction="se"
+        [label]="text.close_form"
+        (clicked)="closeFilter()"
+      />
     }
     <ul class="advanced-filters--filters">
       <li id="filter_search"

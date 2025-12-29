@@ -4,7 +4,15 @@
     <op-group-edit-in-place [name]="group.name"
       (onValueChange)="rename($event)"
       class="group-name" />
-    <span class="delete-group icon-small icon-close" (click)="deleteGroup.emit()"></span>
+      <primer-icon-button
+        icon="x"
+        scheme="invisible"
+        size="small"
+        class="delete-group"
+        tooltip-direction="w"
+        [label]="text.delete_group"
+        (clicked)="deleteGroup.emit()"
+      />
   </div>
   <div class="attributes" dragula="attributes" [(dragulaModel)]="group.attributes">
     @for (attribute of group.attributes; track attribute) {
@@ -20,7 +28,14 @@
             </span>
           }
         </span>
-        <span class="delete-attribute icon-small icon-close" (click)="removeFromGroup(attribute)"></span>
+        <primer-icon-button
+          icon="x"
+          scheme="invisible"
+          size="small"
+          tooltip-direction="w"
+          [label]="text.remove_attribute"
+          (clicked)="removeFromGroup(attribute)"
+        />
       </div>
     }
   </div>
