@@ -41,7 +41,7 @@ class Projects::Phases::ApplyWorkingDaysChangeJob < ApplyWorkingDaysChangeJobBas
 
       project.journal_cause = journal_cause
 
-      project.touch_and_save_journals
+      project.save_journals
     end
   end
 

@@ -33,7 +33,7 @@ require "services/base_services/behaves_like_update_service"
 
 RSpec.describe ProjectPhases::UpdateService, type: :model do
   before do
-    allow(project).to receive(:touch_and_save_journals)
+    allow(project).to receive(:save_journals)
   end
 
   it_behaves_like "BaseServices update service" do
@@ -55,10 +55,10 @@ RSpec.describe ProjectPhases::UpdateService, type: :model do
       end
     end
 
-    it "calls touch_and_save_journals on project" do
+    it "calls save_journals on project" do
       expect(service.call).to be_success
 
-      expect(project).to have_received(:touch_and_save_journals)
+      expect(project).to have_received(:save_journals)
     end
   end
 

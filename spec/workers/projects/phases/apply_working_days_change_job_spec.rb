@@ -169,7 +169,7 @@ RSpec.describe Projects::Phases::ApplyWorkingDaysChangeJob do
           }.each do |project, reschedule_service|
             allow(ProjectPhases::RescheduleService)
               .to receive(:new).with(user:, project:).and_return(reschedule_service)
-            allow(project).to receive(:touch_and_save_journals)
+            allow(project).to receive(:save_journals)
           end
         end
 
@@ -190,10 +190,10 @@ RSpec.describe Projects::Phases::ApplyWorkingDaysChangeJob do
         it "journals all projects with correct cause" do
           subject
 
-          expect(project_a).to have_received(:touch_and_save_journals)
+          expect(project_a).to have_received(:save_journals)
           expect(project_a).to have_attributes(journal_cause: an_instance_of(Journal::CausedByWorkingDayChanges))
 
-          expect(project_b).to have_received(:touch_and_save_journals)
+          expect(project_b).to have_received(:save_journals)
           expect(project_b).to have_attributes(journal_cause: an_instance_of(Journal::CausedByWorkingDayChanges))
         end
       end
@@ -208,7 +208,7 @@ RSpec.describe Projects::Phases::ApplyWorkingDaysChangeJob do
           allow(where).to receive(:find_each)
 
           allow(ProjectPhases::RescheduleService).to receive(:new)
-          allow(project).to receive(:touch_and_save_journals)
+          allow(project).to receive(:save_journals)
         end
 
         it "doesn't cause exception" do
@@ -220,7 +220,7 @@ RSpec.describe Projects::Phases::ApplyWorkingDaysChangeJob do
         it "doesn't journal" do
           subject
 
-          expect(project).not_to have_received(:touch_and_save_journals)
+          expect(project).not_to have_received(:save_journals)
         end
       end
 
@@ -243,7 +243,7 @@ RSpec.describe Projects::Phases::ApplyWorkingDaysChangeJob do
 
           allow(ProjectPhases::RescheduleService)
             .to receive(:new).and_return(reschedule_service)
-          allow(project).to receive(:touch_and_save_journals)
+          allow(project).to receive(:save_journals)
         end
 
         it "calls RescheduleService with first start_date and only with phases after the start date" do
@@ -258,7 +258,7 @@ RSpec.describe Projects::Phases::ApplyWorkingDaysChangeJob do
         it "journals project with correct cause" do
           subject
 
-          expect(project).to have_received(:touch_and_save_journals)
+          expect(project).to have_received(:save_journals)
           expect(project).to have_attributes(journal_cause: an_instance_of(Journal::CausedByWorkingDayChanges))
         end
       end
@@ -278,7 +278,7 @@ RSpec.describe Projects::Phases::ApplyWorkingDaysChangeJob do
           allow(where).to receive(:find_each).and_yield(project)
 
           allow(ProjectPhases::RescheduleService).to receive(:new)
-          allow(project).to receive(:touch_and_save_journals)
+          allow(project).to receive(:save_journals)
         end
 
         it "no call RescheduleService is done" do
@@ -290,7 +290,7 @@ RSpec.describe Projects::Phases::ApplyWorkingDaysChangeJob do
         it "doesn't journal" do
           subject
 
-          expect(project).not_to have_received(:touch_and_save_journals)
+          expect(project).not_to have_received(:save_journals)
         end
       end
     end

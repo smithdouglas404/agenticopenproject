@@ -38,7 +38,7 @@ RSpec.describe ProjectPhases::ActivationService, type: :model do
   let(:service) { described_class.new(user:, project:, definitions:) }
 
   before do
-    allow(project).to receive(:touch_and_save_journals)
+    allow(project).to receive(:save_journals)
   end
 
   def create_phase(**) = create(:project_phase, project:, **)
@@ -874,7 +874,7 @@ RSpec.describe ProjectPhases::ActivationService, type: :model do
     it "journals the project" do
       service.call(active: true)
 
-      expect(project).to have_received(:touch_and_save_journals)
+      expect(project).to have_received(:save_journals)
     end
   end
 end

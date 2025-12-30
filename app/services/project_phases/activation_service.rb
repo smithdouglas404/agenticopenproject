@@ -51,7 +51,7 @@ module ProjectPhases
         service_call = reschedule_following_phases(phase)
       end
 
-      project.touch_and_save_journals
+      project.save_journals
 
       service_call
     end

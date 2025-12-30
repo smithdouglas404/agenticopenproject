@@ -35,7 +35,7 @@ module ProjectPhases
     def after_perform(*)
       reschedule_following_phases if model.any_date_set?
 
-      project.touch_and_save_journals
+      project.save_journals
 
       super
     end
