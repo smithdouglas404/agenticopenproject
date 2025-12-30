@@ -6,8 +6,8 @@
           class="op-tab-row--tab"
           tabindex="0"
           (click)="autocompleter.changeMode('all')"
-          (keydown.enter)="autocompleter.changeMode('all')"
-          (keydown.space)="autocompleter.changeMode('all')"
+          (keydown.enter)="$event.preventDefault(); autocompleter.changeMode('all')"
+          (keydown.space)="$event.preventDefault(); autocompleter.changeMode('all')"
         >
           <a
             href="#"
@@ -21,8 +21,8 @@
           class="op-tab-row--tab"
           tabindex="0"
           (click)="autocompleter.changeMode('recent')"
-          (keydown.space)="autocompleter.changeMode('recent')"
-          (keydown.enter)="autocompleter.changeMode('recent')"
+          (keydown.space)="$event.preventDefault(); autocompleter.changeMode('recent')"
+          (keydown.enter)="$event.preventDefault(); autocompleter.changeMode('recent')"
         >
           <a
             href="#"

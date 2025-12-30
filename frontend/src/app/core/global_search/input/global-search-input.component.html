@@ -69,9 +69,9 @@
           <a tabindex="0"
              href="#"
              class="global-search--option"
-             (click)="followItem(item)"
-             (keydown.enter)="followItem(item)"
-             (keydown.space)="followItem(item)">
+             (click)="$event.preventDefault(); followItem(item)"
+             (keydown.enter)="$event.preventDefault(); followItem(item)"
+             (keydown.space)="$event.preventDefault(); followItem(item)">
             <div class="global-search--search-term">{{ currentValue }}</div>
             <div class="global-search--project-scope" title="{{ item.projectScope }}">{{ item.text }} ↵</div>
           </a>

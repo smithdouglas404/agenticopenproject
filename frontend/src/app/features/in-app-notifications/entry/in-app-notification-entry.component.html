@@ -1,9 +1,10 @@
 <div
   class="op-ian-item--row"
   tabindex="0"
+  role="button"
   (click)="onClick()"
-  (keydown.enter)="onClick()"
-  (keydown.space)="onClick()"
+  (keydown.enter)="$event.preventDefault(); onClick()"
+  (keydown.space)="$event.preventDefault(); onClick()"
   (dblclick)="onDoubleClick()"
   >
   @if (workPackage$ && (workPackage$ | async); as workPackage) {
@@ -55,10 +56,11 @@
         data-test-selector="mark-as-read-button"
         class="op-ian-item--button icon-mark-read"
         tabindex="0"
+        role="button"
         [title]="text.mark_as_read"
         (click)="markAsRead($event, aggregatedNotifications)"
-        (keydown.enter)="markAsRead($event, aggregatedNotifications)"
-        (keydown.space)="markAsRead($event, aggregatedNotifications)"
+        (keydown.enter)="$event.preventDefault(); markAsRead($event, aggregatedNotifications)"
+        (keydown.space)="$event.preventDefault(); markAsRead($event, aggregatedNotifications)"
         >
       </i>
     }

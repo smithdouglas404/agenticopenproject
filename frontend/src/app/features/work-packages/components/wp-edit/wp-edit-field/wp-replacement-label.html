@@ -1,8 +1,8 @@
 <span
   class="wp-replacement-label"
   (click)="activate($event)"
-  (keydown.space)="activate($event)"
-  (keydown.enter)="activate($event)"
+  (keydown.space)="$event.preventDefault(); activate($event)"
+  (keydown.enter)="$event.preventDefault(); activate($event)"
   tabindex="0"
   role="button"
   attr.data-test-selector="{{fieldName}}">
