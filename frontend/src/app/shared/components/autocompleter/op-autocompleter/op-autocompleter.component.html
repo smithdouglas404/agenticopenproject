@@ -241,8 +241,8 @@
     <span class="ng-value-icon left"
           tabindex="0"
           (click)="clear(item)"
-          (keydown.enter)="clear(item)"
-          (keydown.space)="clear(item)">×</span>
+          (keydown.enter)="$event.preventDefault(); clear(item)"
+          (keydown.space)="$event.preventDefault(); clear(item)">×</span>
     <span
       [ngOptionHighlight]="search"
       [ngClass]=" additionalClassProperty ? item[additionalClassProperty] : ''"
