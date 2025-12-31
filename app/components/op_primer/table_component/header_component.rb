@@ -29,37 +29,29 @@
 #++
 
 module OpPrimer
-  class BorderBoxRowComponent < ::RowComponent # rubocop:disable OpenProject/AddPreviewForViewComponent
-    include ComponentHelpers
+  class TableComponent::HeaderComponent < Primer::Component
+    DEFAULT_SCOPE = :col
+    SCOPE_OPTIONS = [DEFAULT_SCOPE, :row].freeze
 
-    def mobile_label(column)
-      return unless table.mobile_labels.include?(column)
+    def initialize(scope: DEFAULT_SCOPE, align: TableComponent::CellComponent::DEFAULT_ALIGNMENT, **system_arguments) # rubocop:disable Lint/MissingSuper
+      resolved_scope = fetch_or_fallback(SCOPE_OPTIONS, scope, DEFAULT_SCOPE)
+      resolved_align = fetch_or_fallback(
+        TableComponent::CellComponent::ALIGNMENT_OPTIONS,
+        align,
+        TableComponent::CellComponent::DEFAULT_ALIGNMENT
+      )
 
-      table.column_title(column)
+      @system_arguments = deny_tag_argument(**system_arguments)
+      @system_arguments[:tag] = :th
+      @system_arguments[:scope] = resolved_scope
+      @system_arguments[:role] = resolved_scope == :row ? :rowheader : :columnheader
+      @system_arguments[:data] = merge_data(
+        @system_arguments, data: { cell_align: resolved_align }
+      )
     end
 
-    def visible_on_mobile?(column)
-      table.mobile_columns.include?(column)
-    end
-
-    def grid_column_classes(column)
-      classes = ["op-border-box-grid--row-item"]
-      classes << column_css_class(column)
-      classes << "op-border-box-grid--main-column" if table.main_column?(column)
-      classes << "ellipsis" unless table.main_column?(column)
-      classes << "op-border-box-grid--no-mobile" unless visible_on_mobile?(column)
-
-      classes.compact.join(" ")
-    end
-
-    def column_args(_column)
-      {}
-    end
-
-    def checkmark(condition)
-      if condition
-        render(Primer::Beta::Octicon.new(icon: :check))
-      end
+    def call
+      render(Primer::BaseComponent.new(**@system_arguments)) { content }
     end
   end
 end

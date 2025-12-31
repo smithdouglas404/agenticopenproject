@@ -28,38 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpPrimer
-  class BorderBoxRowComponent < ::RowComponent # rubocop:disable OpenProject/AddPreviewForViewComponent
-    include ComponentHelpers
+require "rails_helper"
 
-    def mobile_label(column)
-      return unless table.mobile_labels.include?(column)
+RSpec.describe OpPrimer::DataTableComponent::ColumnComponent, type: :component do
+  subject(:component) { described_class.new(field: :name) }
 
-      table.column_title(column)
-    end
+  let(:ice_cream_klass) { Data.define(:id, :name) }
+  let(:row) { ice_cream_klass.new(id: 1, name: "Chocolate") }
 
-    def visible_on_mobile?(column)
-      table.mobile_columns.include?(column)
-    end
-
-    def grid_column_classes(column)
-      classes = ["op-border-box-grid--row-item"]
-      classes << column_css_class(column)
-      classes << "op-border-box-grid--main-column" if table.main_column?(column)
-      classes << "ellipsis" unless table.main_column?(column)
-      classes << "op-border-box-grid--no-mobile" unless visible_on_mobile?(column)
-
-      classes.compact.join(" ")
-    end
-
-    def column_args(_column)
-      {}
-    end
-
-    def checkmark(condition)
-      if condition
-        render(Primer::Beta::Octicon.new(icon: :check))
+  it "renders cell content if provided" do
+    render_inline(component) do |column|
+      column.with_header { "Flavor" }
+      column.with_cell do |row|
+        "#{row.name} with a wafer and whipped cream"
       end
     end
+
+    expect(component.render_cell(row)).to eq "Chocolate with a wafer and whipped cream"
+  end
+
+  it "renders field value otherwise" do
+    render_inline(component) do |column|
+      column.with_header { "Flavor" }
+    end
+
+    expect(component.render_cell(row)).to eq "Chocolate"
   end
 end

@@ -29,7 +29,7 @@
 #++
 
 module OpPrimer
-  class BorderBoxTableComponent < TableComponent
+  class BorderBoxTableComponent < ::TableComponent
     include ComponentHelpers
 
     class << self

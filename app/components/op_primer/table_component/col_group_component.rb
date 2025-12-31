@@ -29,37 +29,16 @@
 #++
 
 module OpPrimer
-  class BorderBoxRowComponent < ::RowComponent # rubocop:disable OpenProject/AddPreviewForViewComponent
-    include ComponentHelpers
+  class TableComponent::ColGroupComponent < Primer::Component
+    renders_many :cols, TableComponent::ColGroupComponent::ColComponent
 
-    def mobile_label(column)
-      return unless table.mobile_labels.include?(column)
-
-      table.column_title(column)
+    def initialize(**system_arguments) # rubocop:disable Lint/MissingSuper
+      @system_arguments = deny_tag_argument(**system_arguments)
+      @system_arguments[:tag] = :colgroup
     end
 
-    def visible_on_mobile?(column)
-      table.mobile_columns.include?(column)
-    end
-
-    def grid_column_classes(column)
-      classes = ["op-border-box-grid--row-item"]
-      classes << column_css_class(column)
-      classes << "op-border-box-grid--main-column" if table.main_column?(column)
-      classes << "ellipsis" unless table.main_column?(column)
-      classes << "op-border-box-grid--no-mobile" unless visible_on_mobile?(column)
-
-      classes.compact.join(" ")
-    end
-
-    def column_args(_column)
-      {}
-    end
-
-    def checkmark(condition)
-      if condition
-        render(Primer::Beta::Octicon.new(icon: :check))
-      end
+    def render?
+      cols.any?
     end
   end
 end

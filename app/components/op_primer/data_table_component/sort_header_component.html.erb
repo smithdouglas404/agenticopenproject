@@ -1,0 +1,28 @@
+<%= render(OpPrimer::TableComponent::HeaderComponent.new(**@system_arguments)) do %>
+  <%=
+    render(
+      Primer::Beta::BaseButton.new(
+        classes: "ButtonReset TableSortButton",
+        data: { action: "click:data-table-element2#toggleSort" }
+      )
+    ) do
+  %>
+    <%= content %>
+    <%=
+      render(
+        Primer::Beta::Octicon.new(
+          icon: :"sort-asc",
+          classes: ["TableSortIcon", "TableSortIcon--ascending", { "d-none": !@direction.in?(%i[NONE ASC]) }]
+        )
+      )
+    %>
+    <%=
+      render(
+        Primer::Beta::Octicon.new(
+          icon: :"sort-desc",
+          classes: ["TableSortIcon", "TableSortIcon--descending", { "d-none": !@direction.in?([:DESC]) }]
+        )
+      )
+    %>
+  <% end %>
+<% end %>

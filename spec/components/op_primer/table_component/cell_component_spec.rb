@@ -28,38 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpPrimer
-  class BorderBoxRowComponent < ::RowComponent # rubocop:disable OpenProject/AddPreviewForViewComponent
-    include ComponentHelpers
+require "rails_helper"
 
-    def mobile_label(column)
-      return unless table.mobile_labels.include?(column)
+RSpec.describe OpPrimer::TableComponent::CellComponent, type: :component do
+  def render_component(**, &)
+    render_inline(described_class.new(**), &)
 
-      table.column_title(column)
+    @rendered_content # bypass Nokogiri::HTML5.fragment https://github.com/sparklemotion/nokogiri/issues/3536 # rubocop:disable RSpec/InstanceVariable
+  end
+
+  context "with content" do
+    subject(:rendered_component) { render_component { "Cell content" } }
+
+    it "renders cell" do
+      expect(rendered_component).to have_element :td, role: "cell", text: "Cell content"
     end
+  end
 
-    def visible_on_mobile?(column)
-      table.mobile_columns.include?(column)
+  context "with text" do
+    subject(:rendered_component) { render_component(text: "Cell text") }
+
+    it "renders cell" do
+      expect(rendered_component).to have_element :td, role: "cell", text: "Cell text"
     end
+  end
 
-    def grid_column_classes(column)
-      classes = ["op-border-box-grid--row-item"]
-      classes << column_css_class(column)
-      classes << "op-border-box-grid--main-column" if table.main_column?(column)
-      classes << "ellipsis" unless table.main_column?(column)
-      classes << "op-border-box-grid--no-mobile" unless visible_on_mobile?(column)
+  context "without content" do
+    subject(:rendered_component) { render_component }
 
-      classes.compact.join(" ")
-    end
-
-    def column_args(_column)
-      {}
-    end
-
-    def checkmark(condition)
-      if condition
-        render(Primer::Beta::Octicon.new(icon: :check))
-      end
+    it "renders empty cell" do
+      expect(rendered_component).to have_element :td, role: "cell", text: ""
     end
   end
 end

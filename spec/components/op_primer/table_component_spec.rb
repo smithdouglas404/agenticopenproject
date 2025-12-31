@@ -28,38 +28,46 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpPrimer
-  class BorderBoxRowComponent < ::RowComponent # rubocop:disable OpenProject/AddPreviewForViewComponent
-    include ComponentHelpers
+require "rails_helper"
 
-    def mobile_label(column)
-      return unless table.mobile_labels.include?(column)
+RSpec.describe OpPrimer::TableComponent, type: :component do
+  def render_component(**, &)
+    render_inline(described_class.new(**), &)
+  end
 
-      table.column_title(column)
-    end
+  subject(:rendered_component) do
+    render_component do |table|
+      table.with_caption do
+        "Table"
+      end
 
-    def visible_on_mobile?(column)
-      table.mobile_columns.include?(column)
-    end
+      table.with_head do |thead|
+        thead.with_row do |tr|
+          tr.with_header do
+            "Header"
+          end
+        end
+      end
 
-    def grid_column_classes(column)
-      classes = ["op-border-box-grid--row-item"]
-      classes << column_css_class(column)
-      classes << "op-border-box-grid--main-column" if table.main_column?(column)
-      classes << "ellipsis" unless table.main_column?(column)
-      classes << "op-border-box-grid--no-mobile" unless visible_on_mobile?(column)
-
-      classes.compact.join(" ")
-    end
-
-    def column_args(_column)
-      {}
-    end
-
-    def checkmark(condition)
-      if condition
-        render(Primer::Beta::Octicon.new(icon: :check))
+      table.with_body do |tbody|
+        tbody.with_row do |tr|
+          tr.with_cell do
+            "Cell"
+          end
+        end
       end
     end
+  end
+
+  it "renders table" do
+    expect(rendered_component).to have_element :table, role: "table"
+  end
+
+  it "renders thead" do
+    expect(rendered_component).to have_element :thead, role: "rowgroup"
+  end
+
+  it "renders tbody" do
+    expect(rendered_component).to have_element :tbody, role: "rowgroup"
   end
 end

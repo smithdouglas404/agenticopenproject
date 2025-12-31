@@ -29,37 +29,25 @@
 #++
 
 module OpPrimer
-  class BorderBoxRowComponent < ::RowComponent # rubocop:disable OpenProject/AddPreviewForViewComponent
-    include ComponentHelpers
+  class DataTableComponent::SortHeaderComponent < Primer::Component
+    DEFAULT_DIRECTION = :ASC
+    DIRECTION_OPTIONS = [DEFAULT_DIRECTION, :DESC, :NONE].freeze
 
-    def mobile_label(column)
-      return unless table.mobile_labels.include?(column)
+    ARIA_SORT_OPTIONS = { ASC: "ascending", DESC: "descending" }.freeze
 
-      table.column_title(column)
-    end
+    # @param scheme [direction] Specify the sort direction for the TableHeader <%= one_of(DIRECTION_OPTIONS) %>
+    #
+    def initialize(direction: DEFAULT_DIRECTION, **system_arguments) # rubocop:disable Lint/MissingSuper
+      @direction = fetch_or_fallback(DIRECTION_OPTIONS, direction, DEFAULT_DIRECTION)
+      aria_sort = ARIA_SORT_OPTIONS.fetch(@direction, nil)
 
-    def visible_on_mobile?(column)
-      table.mobile_columns.include?(column)
-    end
-
-    def grid_column_classes(column)
-      classes = ["op-border-box-grid--row-item"]
-      classes << column_css_class(column)
-      classes << "op-border-box-grid--main-column" if table.main_column?(column)
-      classes << "ellipsis" unless table.main_column?(column)
-      classes << "op-border-box-grid--no-mobile" unless visible_on_mobile?(column)
-
-      classes.compact.join(" ")
-    end
-
-    def column_args(_column)
-      {}
-    end
-
-    def checkmark(condition)
-      if condition
-        render(Primer::Beta::Octicon.new(icon: :check))
-      end
+      @system_arguments = system_arguments
+      @system_arguments[:classes] = class_names(
+        "TableHeader"
+      )
+      @system_arguments[:aria] = merge_aria(
+        @system_arguments, { aria: { sort: aria_sort } }
+      )
     end
   end
 end
