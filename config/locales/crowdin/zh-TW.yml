@@ -649,7 +649,7 @@ zh-TW:
     invite_by_mail: "寄發邀請至：%{mail}"
     send_invite_to: "寄送邀請"
     columns:
-      shared: "共享"
+      shared: "參與"
     filters:
       all_shares: "所有共享的"
     menu:
