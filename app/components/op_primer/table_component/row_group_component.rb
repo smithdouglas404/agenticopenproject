@@ -36,7 +36,7 @@ module OpPrimer
     end
 
     def render?
-      rows.any?
+      rows.any? || content?
     end
   end
 end

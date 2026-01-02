@@ -31,23 +31,55 @@
 require "rails_helper"
 
 RSpec.describe OpPrimer::TableComponent::FootComponent, type: :component do
+  include ActionView::Helpers::TagHelper
+
   def render_component(**, &)
     render_inline(described_class.new(**), &)
 
     @rendered_content # bypass Nokogiri::HTML5.fragment https://github.com/sparklemotion/nokogiri/issues/3536 # rubocop:disable RSpec/InstanceVariable
   end
 
-  subject(:rendered_component) do
-    render_component do |tfoot|
-      tfoot.with_row do |tr|
-        tr.with_cell do
-          "Cell"
+  context "with slots" do
+    subject(:rendered_component) do
+      render_component do |tfoot|
+        tfoot.with_row do |tr|
+          tr.with_cell do
+            "Cell"
+          end
         end
       end
     end
+
+    it "renders tfoot" do
+      expect(rendered_component).to have_element :tfoot, role: "rowgroup"
+    end
+
+    it "renders row" do
+      expect(rendered_component).to have_element :tr, role: "row"
+    end
   end
 
-  it "renders tfoot" do
-    expect(rendered_component).to have_element :tfoot, role: "rowgroup"
+  context "with content" do
+    subject(:rendered_component) do
+      render_component do
+        tag.tr
+      end
+    end
+
+    it "renders tfoot" do
+      expect(rendered_component).to have_element :tfoot, role: "rowgroup"
+    end
+
+    it "renders row" do
+      expect(rendered_component).to have_element :tr
+    end
+  end
+
+  context "without slots or content" do
+    subject(:rendered_component) { render_component }
+
+    it "renders nothing" do
+      expect(rendered_component.to_s).to be_blank
+    end
   end
 end
