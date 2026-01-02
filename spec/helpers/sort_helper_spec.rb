@@ -160,6 +160,25 @@ RSpec.describe SortHelper do
       HTML
     end
 
+    context "when with_th: false" do
+      let(:options) { { with_th: false } }
+
+      it "renders a sort link without enclosing th" do
+        expect(output).to be_html_eql(<<-HTML)
+          <div class="generic-table--sort-header-outer">
+            <div class="generic-table--sort-header">
+              <span>
+                <a href="/work_packages?sort=sort_criteria_params"
+                   rel="nofollow"
+                   target="_top"
+                   title="Sort by &quot;Id&quot;">Id</a>
+              </span>
+            </div>
+          </div>
+        HTML
+      end
+    end
+
     context "when sorting by the column" do
       let(:sort_key) { "id" }
 

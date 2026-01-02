@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,24 +25,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 <%= component_wrapper(tag: "turbo-frame") do %>
   <div class="project-list-page--table" data-controller="table-action-menu">
     <div class="generic-table--flex-container">
       <div class="generic-table--container <%= container_class %>">
         <div class="generic-table--results-container">
-          <table class="generic-table" data-controller="table-highlighting" <%= table_id ? "id=\"#{table_id}\"".html_safe : "" %>>
-            <colgroup>
+          <%= render(OpPrimer::TableComponent.new(id: table_id, classes: "generic-table", data: { controller: "table-highlighting" })) do |table| %>
+            <% table.with_colgroup do |colgroup| %>
               <% columns.each do |column| %>
-                <col <%= "opHighlightCol" unless column.attribute == :hierarchy %>>
+                <% colgroup.with_col(data: { highlight: column.attribute != :hierarchy }) %>
               <% end %>
-              <col>
-            </colgroup>
-            <thead class="-sticky">
-              <tr>
+              <% colgroup.with_col(data: { highlight: false }) %>
+            <% end %>
+
+            <% table.with_head(classes: "-sticky") do |thead| %>
+              <% thead.with_row do |tr| %>
                 <% columns.each do |column| %>
-                  <% if column.attribute == :hierarchy %>
-                    <th id="project-table--hierarchy-header">
+                 <% if column.attribute == :hierarchy %>
+                    <% tr.with_header(id: "project-table--hierarchy-header") do %>
                       <div class="generic-table--sort-header-outer generic-table--sort-header-outer_no-highlighting">
                         <div class="generic-table--sort-header">
                           <%= content_tag :a,
@@ -53,39 +54,40 @@ See COPYRIGHT and LICENSE files for more details.
                                           title: t(:label_sort_by, value: %("#{t(:label_project_hierarchy)}")) %>
                         </div>
                       </div>
-                    </th>
+                    <% end %>
+                  <% elsif use_quick_action_table_headers? %>
+                    <% tr.with_header(**order_options(column).slice(:sortable)) do %>
+                      <%= quick_action_table_header column, order_options(column, turbo: true).merge(with_th: false) %>
+                    <% end %>
                   <% else %>
-                    <% if use_quick_action_table_headers? %>
-                      <%= quick_action_table_header column, order_options(column, turbo: true) %>
-                    <% else %>
-                      <th>
-                        <div class="generic-table--sort-header-outer">
-                          <div class="generic-table--sort-header">
-                          <span>
-                            <%= column.caption %>
-                          </span>
-                          </div>
+                    <% tr.with_header do %>
+                      <div class="generic-table--sort-header-outer">
+                        <div class="generic-table--sort-header">
+                          <span><%= column.caption %></span>
                         </div>
-                      </th>
+                      </div>
                     <% end %>
                   <% end %>
                 <% end %>
-                <th>
+                <% tr.with_header do %>
+                  <%# last column for buttons %>
                   <div class="generic-table--empty-header">
+                    <span class="sr-only"><%= t(:label_actions) %></span>
                   </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                <% end %>
+              <% end %>
+            <% end %>
+
+            <% table.with_body do |tbody| %>
               <% if rows.empty? %>
-                <tr class="generic-table--empty-row">
-                  <td colspan="<%= columns.length + 1 %>"><%= empty_row_message %></td>
-                </tr>
+                <% tbody.with_row(classes: "generic-table--empty-row") do |tr| %>
+                  <% tr.with_cell(colspan: columns.size + 1) { empty_row_message } %>
+                <% end %>
               <% end %>
               <%= render_collection rows %>
-            </tbody>
-          </table>
-          <% if inline_create_link && show_inline_create %>
+            <% end %>
+          <% end %>
+          <% if inline_create_link %>
             <div class="wp-inline-create-button">
               <%= inline_create_link %>
             </div>

@@ -53,8 +53,8 @@ RSpec.describe "users/index" do
   it "renders the user table" do
     render
 
-    expect(subject).to have_text("#{admin.firstname}   #{admin.lastname}")
-    expect(subject).to have_text("Scarlet   Scallywag")
+    expect(subject).to have_text("#{admin.firstname} #{admin.lastname}")
+    expect(subject).to have_text("Scarlet Scallywag")
   end
 
   context "with an Enterprise token" do

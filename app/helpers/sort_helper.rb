@@ -575,13 +575,14 @@ module SortHelper
     outer_classes = icon_header ? " generic-table--header_no-padding" : ""
     inner_classes = icon_header ? " generic-table--header_centered generic-table--header_no-min-width" : ""
 
-    content_tag "th", options do
-      content_tag "div", class: "generic-table--sort-header-outer#{outer_classes}" do
-        content_tag "div", class: "generic-table--sort-header#{inner_classes}" do
-          content_tag("span", class: classes, &)
-        end
+    with_th = options.delete(:with_th) { true }
+    content = tag.div class: "generic-table--sort-header-outer#{outer_classes}" do
+      tag.div class: "generic-table--sort-header#{inner_classes}" do
+        tag.span(class: classes, &)
       end
     end
+
+    with_th ? tag.th(**options) { content } : content
   end
 
   def sort_header_title(column, caption, options)
