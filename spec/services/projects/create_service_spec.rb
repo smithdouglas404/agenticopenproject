@@ -144,35 +144,27 @@ RSpec.describe Projects::CreateService, type: :model do
             }
           end
 
-          shared_examples_for "does not activate custom fields with default values" do |value_for_default_field|
-            let(:project_attributes) { project_attributes_with_default_value(value_for_default_field) }
+          describe "activation of custom fields with default values" do
+            [
+              { description: "explicitly set to blank", value: "", should_activate: false },
+              { description: "implicitly set to blank", value: nil, should_activate: false },
+              { description: "explicitly set to its default", value: "default", should_activate: false },
+              { description: "explicitly set to a user value", value: "a user set value", should_activate: true }
+            ].each do |test_case|
+              context "if the default value is #{test_case[:description]}" do
+                let(:project_attributes) { project_attributes_with_default_value(test_case[:value]) }
 
-            it "does not activate custom fields with default values" do
-              subject
-              expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
-                .to contain_exactly(text_custom_field.id, bool_custom_field.id)
-            end
-          end
-
-          context "if the default value is explicitly set to its default" do
-            it_behaves_like "does not activate custom fields with default values", "default"
-          end
-
-          context "if the default value is explicitly set to blank" do
-            it_behaves_like "does not activate custom fields with default values", ""
-          end
-
-          context "if the default value is implicitly set to blank" do
-            it_behaves_like "does not activate custom fields with default values", nil
-          end
-
-          context "if the default value is explicitly set" do
-            let(:project_attributes) { project_attributes_with_default_value("a user set value") }
-
-            it "does activate custom fields with default values" do
-              subject
-              expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
-                .to contain_exactly(text_custom_field.id, bool_custom_field.id, text_custom_field_with_default.id)
+                it "#{test_case[:should_activate] ? 'does' : 'does not'} activate custom fields with default values" do
+                  subject
+                  expected_ids = if test_case[:should_activate]
+                                   [text_custom_field.id, bool_custom_field.id, text_custom_field_with_default.id]
+                                 else
+                                   [text_custom_field.id, bool_custom_field.id]
+                                 end
+                  expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
+                    .to match_array(expected_ids)
+                end
+              end
             end
           end
         end
