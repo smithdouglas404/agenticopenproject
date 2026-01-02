@@ -134,34 +134,45 @@ RSpec.describe Projects::CreateService, type: :model do
                    project_custom_field_section: section)
           end
 
-          context "if the default value is not explicitly set to blank" do
-            let(:project_attributes) do
-              { custom_field_values: {
-                text_custom_field.id => "foo",
-                bool_custom_field.id => true
-              } }
-            end
-
-            it "activates custom fields with default values" do
-              subject
-              expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
-                .to contain_exactly(text_custom_field.id, bool_custom_field.id, text_custom_field_with_default.id)
-            end
-          end
-
-          context "if the default value is explicitly set to blank" do
-            let(:project_attributes) do
-              { custom_field_values: {
+          def project_attributes_with_default_value(value_for_default_field)
+            {
+              custom_field_values: {
                 text_custom_field.id => "foo",
                 bool_custom_field.id => true,
-                text_custom_field_with_default.id => ""
-              } }
-            end
+                text_custom_field_with_default.id => value_for_default_field
+              }.compact
+            }
+          end
+
+          shared_examples_for "does not activate custom fields with default values" do |value_for_default_field|
+            let(:project_attributes) { project_attributes_with_default_value(value_for_default_field) }
 
             it "does not activate custom fields with default values" do
               subject
               expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
                 .to contain_exactly(text_custom_field.id, bool_custom_field.id)
+            end
+          end
+
+          context "if the default value is explicitly set to its default" do
+            it_behaves_like "does not activate custom fields with default values", "default"
+          end
+
+          context "if the default value is explicitly set to blank" do
+            it_behaves_like "does not activate custom fields with default values", ""
+          end
+
+          context "if the default value is implicitly set to blank" do
+            it_behaves_like "does not activate custom fields with default values", nil
+          end
+
+          context "if the default value is explicitly set" do
+            let(:project_attributes) { project_attributes_with_default_value("a user set value") }
+
+            it "does activate custom fields with default values" do
+              subject
+              expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
+                .to contain_exactly(text_custom_field.id, bool_custom_field.id, text_custom_field_with_default.id)
             end
           end
         end

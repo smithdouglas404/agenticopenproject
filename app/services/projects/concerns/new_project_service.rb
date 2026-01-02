@@ -93,7 +93,13 @@ module Projects::Concerns
       # although the user explicitly provided a blank value. In order to not patch `acts_as_customizable`
       # further, we simply identify these custom values and deactivate the custom field.
 
-      custom_field_ids = new_project.custom_values.select { |cv| cv.value.blank? && !cv.is_for_all? }.pluck(:custom_field_id)
+      custom_field_ids = new_project.custom_values
+                                    .select do |cv|
+        !cv.is_for_all? &&
+          # Mind that a present value could just be the default value. Treat it as blank in that case:
+          (cv.value.blank? || cv.default?)
+      end.pluck(:custom_field_id)
+
       custom_field_project_mappings = new_project.project_custom_field_project_mappings
 
       custom_field_project_mappings
