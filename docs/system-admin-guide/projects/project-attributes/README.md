@@ -13,7 +13,7 @@ Project attributes are custom fields shown on the [Project home](../../../user-g
 > [!NOTE]
 > Prior to version 14.0, these were called "project custom fields" and described under the [Custom fields](../../custom-fields/custom-fields-projects/) page. Starting with 14.0, they are referred to as *project attributes*.
 
-This page describes how instance administrators can create, order, and group project attributes, and assign them to projects. For instructions on editing project attribute values within a project, see the [Project overview](../../../user-guide/project-overview) page.
+This page describes how instance administrators can create, order, and group project attributes, and assign them to projects. For instructions on editing project attribute values within a project, see the [Project home](../../../user-guide/project-home) page.
 
 ## View project attributes
 
