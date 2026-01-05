@@ -14,7 +14,7 @@ There are two ways to search for work packages, documents, projects, etc. in Ope
 
 The search bar is located in the **center of the header navigation**. To find work packages by subject, start typing your search terms — **do not press Enter**. An auto-completer will suggest matching work packages from all projects you have access to. You can click a suggestion or right-click to open it in a new tab.
 
-You can also search by work package type, status, ID, or the project it belongs to. For example, searching for **“release”** will show all work packages with the word “release” in the subject.
+You can also search by work package type, status, ID, or the project it belongs to. For example, let's start by searching for a keyword within a subject: entering the word **“release”** will show all work packages with the word “release” in the subject.
 
 ![Search results for a global search using the keyword "release" in OpenProject](openproject_user_guide_search_all_results.png)
 
