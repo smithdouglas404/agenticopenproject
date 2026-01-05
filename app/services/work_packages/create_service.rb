@@ -55,15 +55,14 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
   def create(attributes, work_package)
     result = set_attributes(attributes, work_package)
 
-    result.success =
-      if result.success
-        work_package.attachments = work_package.attachments_replacements if work_package.attachments_replacements
-        work_package.save
-
-        set_templated_subject(work_package)
-      end
-
     if result.success?
+      # Set attributes service passed, meaning the contract is fullfilled.
+      # Avoid running validations again as we might be in a project copy scenario.
+      work_package.attachments = work_package.attachments_replacements if work_package.attachments_replacements
+      work_package.save(validate: false)
+
+      update_subject_if_automatically_generated(work_package)
+
       # update ancestors before rescheduling, as the parent might switch to automatic mode
       multi_update_ancestors(result.all_results).each do |ancestor_result|
         result.merge!(ancestor_result)
@@ -77,11 +76,13 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
     result
   end
 
-  def set_templated_subject(work_package)
-    return true unless work_package.type&.replacement_pattern_defined_for?(:subject)
-
-    work_package.subject = work_package.type.enabled_patterns[:subject].resolve(work_package)
-    work_package.save
+  def update_subject_if_automatically_generated(work_package)
+    if work_package.type&.replacement_pattern_defined_for?(:subject)
+      Journal::NotificationConfiguration.with(false) do
+        work_package.subject = work_package.type.enabled_patterns[:subject].resolve(work_package)
+        work_package.save(validate: false)
+      end
+    end
   end
 
   def set_attributes(attributes, work_package)
