@@ -186,7 +186,7 @@ To **delete** a custom field, click on the delete icon next to the respective cu
 
 To define field caption and help text click on an existing custom field and navigate to **Attribute help texts** tab. Here you can define the following:
 
-- **Caption** - a short text that will be displayed as a custom field caption to provide context.
+- **Caption** - a short text that will be displayed as a custom field caption to provide context. Please note, that the caption text is currently only displayed for project attributes. 
 - **Help text** - a longer text that will be shown when a user hovers over a question mark next to the custom field name. Here you can provide more detailed explanation. This is a required field.
 - **Attachments** - attach files or images to illustrate a custom field. 
 

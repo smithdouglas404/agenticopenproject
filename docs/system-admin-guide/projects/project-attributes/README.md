@@ -49,9 +49,9 @@ Name the section and save it.
 
 ![Name a new project attribute section in OpenProject administration](open_project_system_admin_guide_project_attributes_new_section_name.png) 
 
-Each section includes a location selector defining where it appears on the Project overview page:
+Each section includes a location selector defining where it appears on the Project home page:
 - **Side panel** — Shows the section and its attributes in the right-hand panel.  
-- **Main area** — Shows the section and its attributes as widgets in the central area.
+- **Main area** — Shows the section and its attributes as a widget in the central area.
 
 ![Select the position of project attribute section in OpenProject](open_project_system_guide_project_attribute_section_location_options.png)
 
