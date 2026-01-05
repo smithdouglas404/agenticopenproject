@@ -8,7 +8,7 @@ keywords: project overview page, project home page, project home, project overvi
 
 # Project home page
 
-The **Project home page** page is a dashboard with important information about your respective project(s). This page displays all relevant information for your team, such as members, news, project description, work package reports, or project status. Information on the project overview is presented using [project attributes](#project-attributes) and [widgets](#widgets).  
+The **Project home page** page is a dashboard with important information about your respective project(s). This page displays all relevant information for your team, such as members, news, project description, work package reports, or project status. Information on the project overview is presented using [project attributes](./project-attributes/) and [widgets](./project-widgets/).  
 
 | Topic                                                        | Content                                                      |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -44,15 +44,15 @@ Here you can also [mark a project as favorite](#mark-a-project-as-favorite) or [
 
 The **Overview** tab is a pre-configured to provide a concise summary of the project’s status. Its layout is fixed and cannot be modified. It includes the following widgets: 
 
-  - [Description](project-widgets/#project-description)
+  - [Description](./project-widgets/#project-description-widget)
 
-  - [Project status](project-widgets/#project-status) 
+  - [Project status](./project-widgets/#project-status-widget) 
 
-  - [Subitems](widgets/#subitems)  
+  - [Subitems](./project-widgets/#subitems-widget)  
 
-  - [Members](project-widgets/#members) 
+  - [Members](./project-widgets/#members-widget) 
 
-  - [News](project-widgets/#news)  
+  - [News](project-widgets/#news-widget)  
 
   - Optional: [Project attributes](project-attributes). 
     

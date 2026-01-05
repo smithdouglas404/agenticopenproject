@@ -276,7 +276,7 @@ The My page in OpenProject is defined as your personal [dashboard](#dashboard) w
 
 ### News
 
-In OpenProject, News is defined as a [module](#module) that allows the publication and use of news entries. On the news page, you can see the latest news in a project in reverse chronological order. News communicate general topics to all team members. They can be displayed on the [project overview](#project-overview). [Read more about how to work with the News module in OpenProject](../user-guide/news/).
+In OpenProject, News is defined as a [module](#module) that allows the publication and use of news entries. On the news page, you can see the latest news in a project in reverse chronological order. News communicate general topics to all team members. They can be displayed on the [project home](#project-home). [Read more about how to work with the News module in OpenProject](../user-guide/news/).
 
 ### Nextcloud integration
 
@@ -361,7 +361,7 @@ In OpenProject, a [project](../user-guide/projects/) is defined as an individual
 
 ### Project attribute
 
-A project attribute in OpenProject is a [custom field](#custom-field) that applies to an entire project. It is displayed in the right-hand column on the project overview page and can be divided into sections for a better structure. Project attributes can be activated and deactivated either on the respective [project overview](#project-overview) page or, for managing multiple projects at once, in the global administration.
+A project attribute in OpenProject is a [custom field](#custom-field) that applies to an entire project. It is displayed in the right-hand column on the project overview page and can be divided into sections for a better structure. Project attributes can be activated and deactivated either on the respective [project home](#project-home) page or, for managing multiple projects at once, in the global administration.
 
 ### Project folder
 
@@ -377,7 +377,7 @@ The project identifier is defined as the unique name used to identify and refere
 
 In OpenProject, the project life cycle consists of [phases](#phase) and [phase gates](#phase-gate) that help you structure your projects and work packages methodically. By default, these follow the [PM² project management framework](#pm--pm2), using the phases *Initiating*, *Planning*, *Executing*, and *Closing*.
 
-Phases and phase gates are visible on the [project overview](#project-overview) page, in [work package tables](#work-package-table), and in [project lists](#project-lists). They can be used for filtering, grouping, and scheduling. Project administrators can activate relevant phases and gates for each project, while the global configuration of phases is an [Enterprise add-on](#enterprise-add-on).
+Phases and phase gates are visible on the [project home](#project-home) page, in [work package tables](#work-package-table), and in [project lists](#project-lists). They can be used for filtering, grouping, and scheduling. Project administrators can activate relevant phases and gates for each project, while the global configuration of phases is an [Enterprise add-on](#enterprise-add-on).
 
 [Read more about the project life cycle in our system admin guide](../system-admin-guide/projects/project-life-cycle).
 
@@ -389,9 +389,9 @@ In OpenProject, project lists are very useful for project portfolio managers to 
 
 The project navigation is the side navigation within a project. Entries in the project navigation can be added and removed by activating and deactivating [modules](#module) in the [project settings](#project-settings).
 
-### Project overview
+### Project home
 
-In OpenProject, the project overview is defined as a single [dashboard](#dashboard) page where all important information of a selected project can be displayed. The idea is to provide a central repository of information for the whole project team. Project information is added to the dashboard as [widgets](#widget). Open the project overview by navigating to "Overview" in the project menu on the left. [Read more about the project overview in OpenProject](../user-guide/project-overview/#project-overview).
+In OpenProject, the project overview is defined as a single [dashboard](#dashboard) page where all important information of a selected project can be displayed. The idea is to provide a central repository of information for the whole project team. Project information is added to the dashboard as [widgets](#widget). Open the project overview by navigating to "Overview" in the project menu on the left. [Read more about the project home in OpenProject](../user-guide/project-home/).
 
 ### Project phase
 
@@ -509,7 +509,7 @@ In OpenProject, a Weighted item list can be used both as a [custom field](#custo
 
 ### Widget
 
-A widget in OpenProject is defined as a small and customizable element that provides relevant information at a glance. Use widgets on your [My page](#my-page) dashboard or on the [project overview](#project-overview). [See all available project overview widgets](../user-guide/project-overview/#available-project-overview-widgets) and read [how to add a widget to the project overview](../user-guide/project-overview/#widgets).
+A widget in OpenProject is defined as a small and customizable element that provides relevant information at a glance. Use widgets on your [My page](#my-page) dashboard or on the [project home](#project-home). [See all available project home widgets](../user-guide/project-home/project-widgets/#project-widgets-catalog) and read [how to add a widget to the project home](../user-guide/project-home/project-widgets/#project-widgets-overview).
 
 ### Wiki
 

@@ -8,7 +8,7 @@ keywords: project attributes, create, project settings
 
 # Project attributes
 
-Project attributes are custom fields that allow you to communicate key information relevant to a project in the [Project Overview](../../../user-guide/project-overview) page.
+Project attributes are custom fields that allow you to communicate key information relevant to a project in the [Project home](../../../user-guide/project-home) page.
 
 > [!NOTE]
 > Prior to version 14.0, these were called "project custom fields" and described under the [Custom fields](../../custom-fields/custom-fields-projects/) page. Starting with 14.0, there is now a new entry in the administration section called 'Project attributes' under 'Projects'.
@@ -48,7 +48,7 @@ This is an example of new project attribute with a format *Text*.
 
 ![Create a new attribute form in OpenProject administration](open_project_system_guide_project_attributes_new_attribute.png)
 
-- **Name**: This is the name that will be visible in the [Project Overview](../../../user-guide/project-overview) page, if the custom field is activated on that project.
+- **Name**: This is the name that will be visible in the [Project home](../../../user-guide/project-home/) page, if the custom field is activated on that project.
 - **Section:** If there are sections, you can pick where this new project attribute should appear. [Learn about sections](#sections) for more information.
 - **Required for all projects**: Checking this makes this project attribute required for all projects. It cannot be deactivated at a project level.
 - **Admin-only**: If you enable this, the project attribute will only be visible to administrators. All other users will not see it, even if it is activated in a project.

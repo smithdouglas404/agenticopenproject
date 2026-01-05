@@ -19,7 +19,7 @@ Location of project attribute sections can be either in a pane on the right side
 Project attributes are always grouped in sections.
 
 > [!TIP]
-> Your view of the project attributes may vary depending on your  [roles and permissions in OpenProject](../../system-admin-guide/users-permissions/roles-permissions/). 
+> Your view of the project attributes may vary depending on your  [roles and permissions in OpenProject](../../../system-admin-guide/users-permissions/roles-permissions/). 
 > The project attributes are visible for users with the **View project attributes** permission enabled. The editing icons are visible for users with the **Edit project attributes** permission.
 
 ![Project home page showing project attributes on the right side pane in OpenProject](openproject_user_guide_project_overview_project_attributes_section.png)
@@ -31,7 +31,7 @@ To edit the value of any visible project attribute, simply click on that value. 
 Edit the values for each project attribute and click the **Save** button to confirm and save your changes.
 
 > [!NOTE]
-> If you are an instance administrator and would like to create, modify or add project attributes, please read our [system administration guide on project attributes](../../system-admin-guide/projects/project-attributes).
+> If you are an instance administrator and would like to create, modify or add project attributes, please read our [system administration guide on project attributes](../../../system-admin-guide/projects/project-attributes).
 
 ## Project attribute settings 
 
@@ -40,4 +40,4 @@ To adjust the project attribute settings for a specific project click the **More
 ![Link to project attribute settings from project overview page in OpenProject](openproject_user_guide_project_overview_project_attributes_settings.png)
 
 > [!NOTE]
-> This option is always available to instance and project administrators. It can also be activated for specific roles by enabling the *select_project_attributes* permission for that role via the [Roles and permissions page](../../system-admin-guide/users-permissions/roles-permissions/) in the administrator settings.
+> This option is always available to instance and project administrators. It can also be activated for specific roles by enabling the *select_project_attributes* permission for that role via the [Roles and permissions page](../../../system-admin-guide/users-permissions/roles-permissions/) in the administrator settings.
