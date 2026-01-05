@@ -44,11 +44,14 @@ RSpec.describe "REST API docs index page", :js, :selenium do
   context "with authenticated user" do
     current_user { create(:user) }
 
-    it "displays the docs rendered by openapi-explorer" do
-      visit_docs_page
+    context "when APIv3 documentation is enabled (from Administration > API > Enable docs page)",
+            with_settings: { apiv3_docs_enabled: true } do
+      it "displays the docs rendered by openapi-explorer" do
+        visit_docs_page
 
-      # web component are harder to test with capybara
-      expect(find("openapi-explorer").shadow_root).to have_css("#api-title", text: "OpenProject API V3 (Stable)")
+        # web component are harder to test with capybara
+        expect(find("openapi-explorer").shadow_root).to have_css("#api-title", text: "OpenProject API V3 (Stable)")
+      end
     end
 
     context "when APIv3 documentation is disabled (from Administration > API > Enable docs page)",
