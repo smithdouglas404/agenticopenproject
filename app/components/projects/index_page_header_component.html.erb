@@ -126,13 +126,18 @@
         end
 
         if can_export?
-          menu.with_item(
-            tag: :a,
-            label: t("js.label_export"),
-            href: export_list_modal_projects_path(projects_query_params),
-            content_arguments: { data: { controller: "async-dialog" }, rel: "nofollow" }
-          ) do |item|
-            item.with_leading_visual_icon(icon: "sign-out")
+          menu.with_sub_menu_item(label: t("js.label_export")) do |submenu|
+            submenu.with_leading_visual_icon(icon: "sign-out")
+            helpers.supported_export_formats.each do |key|
+              submenu.with_item(
+                label: t("export.format.#{key}"),
+                tag: :a,
+                href: projects_path(format: key, **helpers.projects_query_params.except(:page, :per_page)),
+                content_arguments: { data: { controller: "job-dialog" }, rel: "nofollow" }
+              ) do |item|
+                item.with_leading_visual_icon(icon: "op-#{key == "csv" ? "file-csv" : key}")
+              end
+            end
           end
         end
 
