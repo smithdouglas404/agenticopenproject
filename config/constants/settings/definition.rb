@@ -61,7 +61,7 @@ module Settings
       },
       apiv3_docs_enabled: {
         description: "Enable interactive APIv3 documentation as part of the application",
-        default: true
+        default: false
       },
       apiv3_enable_basic_auth: {
         description: "Enable API token or global basic authentication for APIv3 requests",

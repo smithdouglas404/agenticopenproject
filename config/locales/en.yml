@@ -4473,6 +4473,10 @@ en:
   setting_apiv3_docs_enabled_instructions_html: >
     If the docs page is enabled you can get an interactive view of the APIv3 documentation under
     <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information
+    or result in accidental loss of data when not being careful.
+    We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Attachment upload whitelist"
   setting_email_delivery_method: "Email delivery method"
   setting_emails_salutation: "Address user in emails with"
