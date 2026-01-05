@@ -151,11 +151,12 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
       mobile_icon: nil, # Do not show on mobile as it is already part of the menu
       mobile_label: nil,
       href:,
+      target: "_self",
       data: {
         turbo_stream: true,
         turbo_method: method
       },
-      target: ""
+      test_selector: "header-save-button"
     ) do
       render(
         Primer::Beta::Octicon.new(

@@ -33,21 +33,28 @@
   component_wrapper do
     flex_layout(tag: :div, align_items: :center, test_selector: "document-info-line") do |flex|
       flex.with_column(hide: :sm, mr: 3) do
-        render(Primer::Alpha::ActionMenu.new(select_variant: :single)) do |menu|
-          menu.with_show_button do |button|
+        if allowed_to_manage_documents?
+          render(Primer::Alpha::ActionMenu.new(select_variant: :single)) do |menu|
+            menu.with_show_button do |button|
+              button.with_trailing_visual_icon(icon: :"triangle-down")
+              document.type.name
+            end
+
+            other_document_types.each do |name, id|
+              menu.with_item(
+                label: name,
+                href: update_type_document_path(document),
+                form_arguments: {
+                  method: :put,
+                  inputs: [{ name: "type_id", value: id }]
+                }
+              )
+            end
+          end
+        else
+          render(Primer::Beta::Button.new(disabled: true)) do |button|
             button.with_trailing_visual_icon(icon: :"triangle-down")
             document.type.name
-          end
-
-          other_document_types.each do |name, id|
-            menu.with_item(
-              label: name,
-              href: update_type_document_path(document),
-              form_arguments: {
-                method: :put,
-                inputs: [{ name: "type_id", value: id }]
-              }
-            )
           end
         end
       end

@@ -35,236 +35,57 @@ module Admin
         include OpTurbo::Streamable
         include OpPrimer::ComponentHelpers
 
-        def initialize(item:, show_edit_form: false)
+        class << self
+          def menu_id(item:)
+            "op-custom-field-hierarchy-item-#{item.id}-action-menu"
+          end
+        end
+
+        def initialize(item:, custom_field:, show_edit_form: false)
           super(item)
           @show_edit_form = show_edit_form
-          @root = item.root || item.parent.root
+          @custom_field = custom_field
         end
 
         def wrapper_uniq_by
           model.id
         end
 
-        def item_link
-          custom_field = @root.custom_field
+        def menu_id
+          self.class.menu_id(item: model)
+        end
 
+        def item_link
           if project_custom_field_context?
-            admin_settings_project_custom_field_item_path(custom_field.id, model)
+            admin_settings_project_custom_field_item_path(custom_field_id, model)
           else
-            custom_field_item_path(custom_field.id, model)
+            custom_field_item_path(custom_field_id, model)
+          end
+        end
+
+        def item_actions_href
+          if project_custom_field_context?
+            item_actions_admin_settings_project_custom_field_item_path(custom_field_id, model)
+          else
+            item_actions_custom_field_item_path(custom_field_id, model)
           end
         end
 
         def show_form? = @show_edit_form || model.new_record?
 
         def children_count
-          I18n.t("custom_fields.admin.hierarchy.subitems", count: model.children.count)
+          I18n.t("custom_fields.admin.hierarchy.subitems", count: model.children_count)
         end
 
-        def first_item?
-          model.sort_order == 0
-        end
-
-        def last_item?
-          model.sort_order == model.parent.children.length - 1
-        end
-
-        def menu_items(menu) # rubocop:disable Metrics/AbcSize
-          with_item_group(menu) { edit_action_item(menu) }
-
-          with_item_group(menu) do
-            add_above_action_item(menu)
-            add_below_action_item(menu)
-            add_sub_item_action_item(menu)
-          end
-
-          with_item_group(menu) { change_parent_item(menu) }
-
-          with_item_group(menu) do
-            unless first_item?
-              move_to_top_action_item(menu)
-              move_up_action_item(menu)
-            end
-            unless last_item?
-              move_down_action_item(menu)
-              move_to_bottom_action_item(menu)
-            end
-          end
-
-          with_item_group(menu) { deletion_action_item(menu) }
-        end
+        def label_addition = model.suffix
 
         private
 
         def project_custom_field_context?
-          @root.custom_field.is_a?(ProjectCustomField)
+          @project_custom_field_context ||= @custom_field.is_a?(ProjectCustomField)
         end
 
-        def custom_field_id = @root.custom_field_id
-
-        def edit_action_item(menu)
-          href = if project_custom_field_context?
-                   edit_admin_settings_project_custom_field_item_path(custom_field_id, model)
-                 else
-                   edit_custom_field_item_path(custom_field_id, model)
-                 end
-
-          menu.with_item(label: I18n.t(:button_edit), tag: :a, href:) do |item|
-            item.with_leading_visual_icon(icon: :pencil)
-          end
-        end
-
-        def add_above_action_item(menu)
-          parent = model.parent
-          position = model.sort_order
-          href = if project_custom_field_context?
-                   new_child_admin_settings_project_custom_field_item_path(custom_field_id, parent, position:)
-                 else
-                   new_child_custom_field_item_path(custom_field_id, parent, position:)
-                 end
-
-          menu.with_item(
-            label: I18n.t(:button_add_item_above),
-            tag: :a,
-            href:,
-            content_arguments: { data: { turbo_frame: ItemsComponent.wrapper_key } }
-          ) { it.with_leading_visual_icon(icon: "fold-up") }
-        end
-
-        def add_below_action_item(menu)
-          parent = model.parent
-          position = model.sort_order + 1
-          href = if project_custom_field_context?
-                   new_child_admin_settings_project_custom_field_item_path(custom_field_id, parent, position:)
-                 else
-                   new_child_custom_field_item_path(custom_field_id, parent, position:)
-                 end
-
-          menu.with_item(
-            label: I18n.t(:button_add_item_below),
-            tag: :a,
-            href:,
-            content_arguments: { data: { turbo_frame: ItemsComponent.wrapper_key } }
-          ) { it.with_leading_visual_icon(icon: "fold-down") }
-        end
-
-        def add_sub_item_action_item(menu)
-          children = model.children
-          position = children.any? ? children.maximum(:sort_order) + 1 : 0
-          href = if project_custom_field_context?
-                   new_child_admin_settings_project_custom_field_item_path(custom_field_id, model, position:)
-                 else
-                   new_child_custom_field_item_path(custom_field_id, model, position:)
-                 end
-
-          menu.with_item(
-            label: I18n.t(:button_add_sub_item),
-            tag: :a,
-            href:,
-            content_arguments: { data: { turbo_frame: ItemsComponent.wrapper_key } }
-          ) { it.with_leading_visual_icon(icon: "op-arrow-in") }
-        end
-
-        def change_parent_item(menu)
-          href = if project_custom_field_context?
-                   change_parent_admin_settings_project_custom_field_item_path(project_custom_field_id: custom_field_id,
-                                                                               id: model.id)
-                 else
-                   change_parent_custom_field_item_path(custom_field_id:, id: model.id)
-                 end
-
-          menu.with_item(
-            label: I18n.t(:label_change_parent),
-            tag: :a,
-            href:,
-            content_arguments: { data: { controller: "async-dialog" } }
-          ) { it.with_leading_visual_icon(icon: "arrow-switch") }
-        end
-
-        def move_to_top_action_item(menu)
-          form_inputs = [{ name: "new_sort_order", value: 0 }]
-          href = if project_custom_field_context?
-                   move_admin_settings_project_custom_field_item_path(custom_field_id, model)
-                 else
-                   move_custom_field_item_path(custom_field_id, model)
-                 end
-
-          menu.with_item(label: I18n.t(:label_sort_highest),
-                         tag: :button,
-                         href:,
-                         content_arguments: { data: { turbo_frame: ItemsComponent.wrapper_key } },
-                         form_arguments: { method: :post, inputs: form_inputs }) do |item|
-            item.with_leading_visual_icon(icon: "move-to-top")
-          end
-        end
-
-        def move_up_action_item(menu)
-          form_inputs = [{ name: "new_sort_order", value: model.sort_order - 1 }]
-          href = if project_custom_field_context?
-                   move_admin_settings_project_custom_field_item_path(custom_field_id, model)
-                 else
-                   move_custom_field_item_path(custom_field_id, model)
-                 end
-
-          menu.with_item(label: I18n.t(:label_sort_higher),
-                         tag: :button,
-                         href:,
-                         content_arguments: { data: { turbo_frame: ItemsComponent.wrapper_key } },
-                         form_arguments: { method: :post, inputs: form_inputs }) do |item|
-            item.with_leading_visual_icon(icon: "chevron-up")
-          end
-        end
-
-        def move_down_action_item(menu)
-          form_inputs = [{ name: "new_sort_order", value: model.sort_order + 2 }]
-          href = if project_custom_field_context?
-                   move_admin_settings_project_custom_field_item_path(custom_field_id, model)
-                 else
-                   move_custom_field_item_path(custom_field_id, model)
-                 end
-
-          menu.with_item(label: I18n.t(:label_sort_lower),
-                         tag: :button,
-                         href:,
-                         content_arguments: { data: { turbo_frame: ItemsComponent.wrapper_key } },
-                         form_arguments: { method: :post, inputs: form_inputs }) do |item|
-            item.with_leading_visual_icon(icon: "chevron-down")
-          end
-        end
-
-        def move_to_bottom_action_item(menu)
-          form_inputs = [{ name: "new_sort_order", value: model.parent.children.length + 1 }]
-          href = if project_custom_field_context?
-                   move_admin_settings_project_custom_field_item_path(custom_field_id, model)
-                 else
-                   move_custom_field_item_path(custom_field_id, model)
-                 end
-
-          menu.with_item(label: I18n.t(:label_sort_lowest),
-                         tag: :button,
-                         href:,
-                         content_arguments: { data: { turbo_frame: ItemsComponent.wrapper_key } },
-                         form_arguments: { method: :post, inputs: form_inputs }) do |item|
-            item.with_leading_visual_icon(icon: "move-to-bottom")
-          end
-        end
-
-        def deletion_action_item(menu)
-          href = if project_custom_field_context?
-                   delete_admin_settings_project_custom_field_item_path(project_custom_field_id: custom_field_id,
-                                                                        id: model.id)
-                 else
-                   delete_custom_field_item_path(custom_field_id:, id: model.id)
-                 end
-
-          menu.with_item(label: I18n.t(:button_delete),
-                         scheme: :danger,
-                         tag: :a,
-                         href:,
-                         content_arguments: { data: { controller: "async-dialog" } }) do |item|
-            item.with_leading_visual_icon(icon: :trash)
-          end
-        end
+        def custom_field_id = @custom_field.id
       end
     end
   end

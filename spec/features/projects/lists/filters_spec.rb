@@ -670,7 +670,6 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
       projects_page.expect_projects_not_listed(public_project)
 
       # Applies the filters to the filters section
-      projects_page.toggle_filters_section
       projects_page.expect_filter_set "active"
       projects_page.expect_filter_set "name_and_identifier"
 

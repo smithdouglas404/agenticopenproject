@@ -64,13 +64,15 @@ RSpec.describe Queries::Factory,
               .and_return(scope)
 
       allow(scope)
-        .to receive(:find_by)
-              .and_return nil
+        .to receive(:includes)
+              .with(:calculated_value_errors)
+              .and_return(scope)
 
       allow(scope)
-        .to receive(:find_by)
-              .with(id: cf.id.to_s)
-              .and_return(cf)
+        .to receive(:where) do |conditions|
+          cf_id = conditions[:id]&.first
+          cf_id == cf.id ? [cf] : []
+        end
     end
   end
 

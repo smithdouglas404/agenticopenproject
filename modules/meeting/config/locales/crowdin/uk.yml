@@ -245,6 +245,9 @@ uk:
         summary_series: "Серію нарад «%{title}» скасував(-ла) %{actor}."
         summary: "«%{title}» скасував(-ла) %{actor}."
         date_time: "Заплановані дата/час"
+      ended:
+        header_series: "Ended: Meeting series '%{title}'"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
       updated:
         header: "Нараду «%{title}» оновлено"
         summary: "Нараду «%{title}» оновив(-ла) %{actor}"
@@ -361,13 +364,13 @@ uk:
     presentation_mode:
       title: "Режим презентації"
       button_present: "Презентувати"
-      exit: "Exit presentation"
+      exit: "Завершити режим показу"
       current_item: "Поточний елемент"
       total_items: "%{current} з %{total}"
       previous: "Попереднє"
-      next: "Next"
-      no_items: "No agenda items"
-      no_items_flash: "There are no agenda items to present."
+      next: "Наступний"
+      no_items: "Не має плану зустрічі"
+      no_items_flash: "Не доданий план зустрічі."
   meeting_section:
     untitled_title: "Розділ без назви"
     delete_confirmation: "Видалення цього розділу також призведе до видалення його елементів порядку денного. Ви впевнені?"

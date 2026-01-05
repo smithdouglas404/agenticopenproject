@@ -120,7 +120,7 @@ ro:
         remote_folders: 'Read contents of the group folder:'
         rename_project_folder: 'Rename managed project Folder:'
       sharepoint_sync_service:
-        create_folder: 'Creare dosar proiect gestionat:'
+        create_folder: 'Creează dosar proiect gestionat:'
         ensure_root_folder_permissions: 'Set Base Folder Permissions:'
         hide_inactive_folders: 'Hide Inactive Folders Step:'
         remote_folders: 'Read contents of the group folder:'

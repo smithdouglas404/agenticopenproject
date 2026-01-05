@@ -37,7 +37,7 @@ class ProjectCustomField < CustomField
 
   acts_as_list column: :position_in_custom_field_section, scope: [:custom_field_section_id]
 
-  after_save :activate_required_field_in_all_projects, if: :required?
+  after_save :activate_required_field_in_all_projects, if: :is_for_all?
 
   validates :custom_field_section_id, presence: true
 

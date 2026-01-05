@@ -348,17 +348,28 @@ ms:
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Tandakan ruang tersuai sebagai tersedia di semua projek baharu dan sedia ada."
-      multi_select: "Membenarkan pengguna untuk memberikan berbilang nilai kepada medan tersuai ini."
-      searchable: "Sertakan nilai-nilai ruangan apabila gunakan fungsi pencarian global."
-      searchable_for_project: "Semak untuk menjadikan atribut ini tersedia sebagai penapis dalam senarai projek."
-      editable: "Benarkan ruangan tersebut boleh diedit oleh pengguna sendiri."
-      admin_only: "Semak untuk menjadikan atribut ini hanya kelihatan kepada pentadbir. Pengguna tanpa hak pentadbir tidak akan dapat melihat atau mengeditnya."
-      is_filter: >
-        Benarkan ruang tersuai untuk digunakan di penyaring paparan pakej kerja. Perhatikan bahawa hanya "Untuk semua projek" yang dipilih, ruang tersuai akan dipaparkan di paparan global.
-      formula: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Tiada ruangan tersuai pada masa ini.
       no_results_content_text: Cipta ruangan tersuai baharu
@@ -533,8 +544,6 @@ ms:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
         menu_title: "Template"
@@ -577,9 +586,9 @@ ms:
           label_enable_single: "Aktif dalam projek ini, klik untuk nyahaktifkan"
           label_disable_single: "Tidak aktif dalam projek ini, klik untuk aktifkan"
           remove_from_project: "Alih keluar daripada projek"
-        is_required_blank_slate:
-          heading: Diperlukan dalam semua projek
-          description: Atribut projek ini telah diaktifkan dalam semua projek sejak pilihan "Diperlukan dalam semua projek" telah ditandakan. Ia tidak boleh dinyahaktifkan untuk projek individu.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Tiada jenis yang tersedia buat masa ini.
         form:
@@ -712,6 +721,17 @@ ms:
     index:
       no_results_title_text: Tiada berita untuk dipaparkan buat masa ini.
       no_results_content_text: Tambah item berita
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "Kekal log masuk selama %{num_days}"
@@ -783,7 +803,7 @@ ms:
         required: "Sila pilih peranan"
       message:
         label: "Mesej jemputan"
-        description: "Kami akan menghantar e-mel ke pengguna, dimana anda boleh menambah mesej peribadi di sini. Satu penerangan untuk jemputan akan berguna, atau mungkin sedikit maklumat berkenaan projek untuk bantu mereka bermula."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Hantar jemputan"
       success_message:
@@ -903,6 +923,16 @@ ms:
     print_hint: Ini akan mencetak kandungan halaman wiki ini tanpa sebarang bar navigasi.
     index:
       no_results_content_text: Tambah halaman wiki baharu
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: Tiada aliran kerja buat masa ini.
@@ -1238,7 +1268,7 @@ ms:
         work_packages: "Pakej Kerja"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Diperlukan untuk semua projek"
+        is_required: "Required"
         custom_field_section: Bahagian
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1524,6 +1554,8 @@ ms:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2967,6 +2999,7 @@ ms:
   label_board_plural: "Board"
   label_branch: "Cabang"
   label_browse: "Melayari"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Edit secara pukal pakej kerja yang dipilih"
   label_bundled: "(Terkumpul)"
   label_calendar: "Kalendar"
@@ -4417,6 +4450,7 @@ ms:
     passwords: "Kata laluan"
     project_attributes:
       heading: "Atribut projek"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Atribut projek"
       label_new_section: "Bahagian"
       label_edit_section: "Edit tajuk"
@@ -4560,6 +4594,8 @@ ms:
     Edisi Enterprise akan menambahkan segala jenis tambahan ke ruang tersuai projek: <br> <ul> <li><b> Tambah ruang tersuai ke projek ke senarai Projek anda untuk ciptakan paparan portfolio project </b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Ini merupakan logo yang akan muncul dalam eksport PDF anda. Ia perlu menjadi fail imej PNG atau JPEG. Logo hitam atau bewarna pada latar belakang telus atau putih disarankan.
   text_custom_export_cover_instructions: >

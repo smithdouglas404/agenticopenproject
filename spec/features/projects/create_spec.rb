@@ -116,6 +116,7 @@ RSpec.describe "Projects", "creation",
       create(:list_project_custom_field,
              name: "List CF",
              is_required: true,
+             is_for_all: true,
              multi_value: true,
              project_custom_field_section:)
     end
@@ -177,6 +178,7 @@ RSpec.describe "Projects", "creation",
       create(:version_project_custom_field,
              name: "Version CF",
              is_required: true,
+             is_for_all: true,
              multi_value: true,
              project_custom_field_section:)
     end
@@ -258,7 +260,14 @@ RSpec.describe "Projects", "creation",
                                            project_custom_field_section:)
       end
 
-      it "renders required custom fields for new" do
+      shared_let(:required_but_inactive_custom_field) do
+        create(:text_project_custom_field,
+               name: "Required inactive",
+               is_required: true,
+               project_custom_field_section:)
+      end
+
+      it "renders activated required custom fields for new" do
         visit new_project_path
 
         expect(page).to have_heading "New project"
@@ -275,7 +284,12 @@ RSpec.describe "Projects", "creation",
         expect(page).to have_text("3 of 3")
         expect(page).to have_field "Required Foo *"
         expect(page).to have_field "Required User *"
+
+        # Optional fields should not be shown
         expect(page).to have_no_field "Optional Foo"
+
+        # Inactive fields, even if required, should not be shown
+        expect(page).to have_no_field "Required Inactive *"
       end
     end
 
@@ -329,7 +343,7 @@ RSpec.describe "Projects", "creation",
         fill_in "Required Foo", with: "Required value"
       end
 
-      it "enables custom fields with provided values for this project" do
+      it "enables custom fields with provided values and for_all fields for this project" do
         click_on "Complete"
 
         expect_and_dismiss_flash type: :success, message: "Successful creation."
@@ -340,7 +354,7 @@ RSpec.describe "Projects", "creation",
 
         # unused custom field should not be activated
         expect(project.project_custom_field_ids).to contain_exactly(
-          required_custom_field.id
+          required_custom_field.id, optional_custom_field.id
         )
       end
 
@@ -349,6 +363,7 @@ RSpec.describe "Projects", "creation",
           create(:project_custom_field, name: "Foo with default value",
                                         field_format: "string",
                                         is_required: true,
+                                        is_for_all: true,
                                         default_value: "Default value",
                                         project_custom_field_section:)
         end
@@ -365,7 +380,7 @@ RSpec.describe "Projects", "creation",
 
           # custom_field_with_default_value should be activated and contain the default value
           expect(project.project_custom_field_ids).to contain_exactly(
-            custom_field_with_default_value.id, required_custom_field.id
+            custom_field_with_default_value.id, required_custom_field.id, optional_custom_field.id
           )
 
           expect(project.custom_value_for(custom_field_with_default_value).value).to eq("Default value")
@@ -384,7 +399,7 @@ RSpec.describe "Projects", "creation",
 
           # custom_field_with_default_value should be activated and contain the overwritten value
           expect(project.project_custom_field_ids).to contain_exactly(
-            custom_field_with_default_value.id, required_custom_field.id
+            custom_field_with_default_value.id, required_custom_field.id, optional_custom_field.id
           )
 
           expect(project.custom_value_for(custom_field_with_default_value).value).to eq("foo")
@@ -395,6 +410,7 @@ RSpec.describe "Projects", "creation",
         shared_let(:invisible_field) do
           create(:string_project_custom_field, name: "Text for Admins only",
                                                is_required: true,
+                                               is_for_all: true,
                                                admin_only: true,
                                                project_custom_field_section:)
         end
@@ -414,7 +430,7 @@ RSpec.describe "Projects", "creation",
             project = Project.last
 
             expect(project.project_custom_field_ids).to contain_exactly(
-              required_custom_field.id, invisible_field.id
+              required_custom_field.id, optional_custom_field.id, invisible_field.id
             )
 
             expect(project.custom_value_for(invisible_field).typed_value).to eq("foo")
@@ -438,7 +454,7 @@ RSpec.describe "Projects", "creation",
             project = Project.last
 
             expect(project.project_custom_field_ids).to contain_exactly(
-              required_custom_field.id
+              required_custom_field.id, optional_custom_field.id
             )
           end
         end

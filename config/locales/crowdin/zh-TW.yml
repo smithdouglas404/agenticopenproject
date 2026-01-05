@@ -348,17 +348,28 @@ zh-TW:
     calculated_field_not_editable: "不可編輯屬性。此值會自動計算。"
     no_role_assigment: "無角色指派"
     instructions:
-      is_required: "將自訂欄位標記為必填。這將使您在建立新資源時必須填寫該欄位。更新現有資源時則不需要填寫值。"
-      is_required_for_project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。現有專案更新時將不需要此值。"
-      is_for_all: "將客製欄位標記為「所有現有專案」和「新專案」中可用。"
-      multi_select: "允許使用者為此自訂欄位指定多個值。"
-      searchable: "使用全域搜尋功能時包含此欄位。"
-      searchable_for_project: "勾選可使此屬性在專案清單中作為篩選條件。"
-      editable: "允許使用者自行編輯此欄位"
-      admin_only: "勾選可使此屬性只對管理員可見。沒有管理員權限的使用者將無法檢視或編輯。"
-      is_filter: >
-        允許在工作套件檢視中的篩選條件使用客製欄位。請注意，僅在選擇「所有專案」的情況下，客製欄位才會出現在所有檢視中。
-      formula: "請輸入數值，或輸入「/」來搜尋屬性或數學運算符號。"
+      is_required:
+        all: "將自訂欄位標記為必填。這將使您在建立新資源時必須填寫該欄位。更新現有資源時則不需要填寫值。"
+        project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。現有專案更新時將不需要此值。"
+      is_for_all:
+        all: "將自訂欄位標記為在所有現有和新專案中都可用。"
+        project: "在所有現有和新專案中將屬性標示為可用。"
+      multi_select:
+        all: "允許使用者為此自訂欄位指定多個值。"
+        project: "允許使用者為此屬性指定多個值。"
+      searchable:
+        all: "使用全區域搜尋功能時，包含欄位值。"
+        project: "勾選可使此屬性在專案清單中作為篩選條件。"
+      editable:
+        all: "允許使用者自行編輯欄位。"
+      admin_only:
+        all: "勾選使自訂欄位僅對管理員可見。沒有管理權限的使用者將無法檢視或編輯。"
+        project: "勾選可使此屬性只對管理員可見。沒有管理員權限的使用者將無法檢視或編輯。"
+      is_filter:
+        all: >
+          允許在工作套件檢視的篩選器中使用自訂欄位。請注意，只有選取「針對所有專案」時，自訂欄位才會顯示在全區域檢視中。
+      formula:
+        project: "加入數值或輸入 / 搜尋屬性或數學運算符號。"
     tab:
       no_results_title_text: 目前沒有自定義的欄位
       no_results_content_text: 建立一個新的自定義欄位
@@ -510,9 +521,9 @@ zh-TW:
       header_details: 基本訊息
       header_status: 專案狀態
       header_relations: 專案關係
-      button_update_details: 更新詳細資料
-      button_update_status_description: 更新狀態說明
-      button_update_parent_project: 更新父專案
+      button_update_details: 更新
+      button_update_status_description: 更新專案狀態及說明
+      button_update_parent_project: 更新上層專案
       public_warning: >
         這個專案是公開的。任何有權訪問這個實例的人，都能依據其角色和相關權限來檢視和與這個專案互動。子專案不受影響，並且有其自己的設定。
       public_confirmation:
@@ -533,17 +544,15 @@ zh-TW:
         project_template_caption: "選取範本專案作為此類型新子項的預設值。"
         program_template_label: "方案範本"
         program_template_caption: "選擇範本程式，作為此類型新子項的預設值。"
-        portfolio_template_label: "模板化的專案組合"
-        portfolio_template_caption: "選擇範本組合，作為此類型新子項的預設值。"
         no_template: "沒有預先定義的範本"
       template:
-        menu_title: "Template"
-        title: "Template settings"
-        enable_failed: "Failed to enable template mode."
+        menu_title: "範本"
+        title: "範本設定"
+        enable_failed: "啟用範本模式失敗。"
         members:
-          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_label: "套用範本時排除的角色"
           excluded_roles_caption: >
-            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
+            從此範本建立新專案時，上面選取的角色將會省略。這可讓您根據專案角色選擇哪些成員將被排除在外。使用者可以為檢視目的存取範本，但不會被允許存取以此範本建立的新專案。
       actions:
         label_enable_all: "全部啟用"
         label_disable_all: "全部停用"
@@ -577,9 +586,9 @@ zh-TW:
           label_enable_single: "於此專案使用，請按一下停用"
           label_disable_single: "於此專案未使用，請按一下啟用"
           remove_from_project: "從專案移除"
-        is_required_blank_slate:
-          heading: 所有專案都需要
-          description: 由於已勾選「所有專案都需要」選項，因此所有專案都會啟用此專案屬性。個別專案無法停用。
+        is_for_all_blank_slate:
+          heading: 對所有的專案
+          description: 由於已勾選「適用於所有專案」選項，因此所有專案都啟用此專案屬性。個別專案無法停用。
       types:
         no_results_title_text: 目前沒有可用的類型
         form:
@@ -640,7 +649,7 @@ zh-TW:
     invite_by_mail: "寄發邀請至：%{mail}"
     send_invite_to: "寄送邀請"
     columns:
-      shared: "共享"
+      shared: "參與"
     filters:
       all_shares: "所有共享的"
     menu:
@@ -712,6 +721,17 @@ zh-TW:
     index:
       no_results_title_text: 目前沒有新消息報告
       no_results_content_text: 新增一個消息
+  roles:
+    permissions:
+      section_check_all_label: "指定所有 %{module} 權限"
+      section_uncheck_all_label: "取消指定所有 %{module} 權限"
+    report:
+      matrix_caption: "%{module} 模組的權限矩陣"
+      matrix_checkbox_label: "將 %{permission} 權限指定給 %{role} 角色"
+      matrix_check_all_label: "將所有 %{module} 權限指派給所有角色"
+      matrix_uncheck_all_label: "取消指定所有角色的所有 %{module} 權限"
+      matrix_check_uncheck_all_in_row_label_html: "切換 <em>%{permission}</em>所有角色的權限"
+      matrix_check_uncheck_all_in_col_label_html: "切換所有 %{module} 的權限 <em>%{role}</em>角色"
   users:
     autologins:
       prompt: "保持登入%{num_days}"
@@ -783,7 +803,7 @@ zh-TW:
         required: "請選擇角色"
       message:
         label: "邀請訊息"
-        description: "我們會寄送一封電子郵件給使用者，您可以在此加入個人訊息。說明邀請的原因或提供一些有關專案的資訊，能夠幫助他們更順利開始使用。"
+        description: "我們將會寄出一封電子郵件給使用者，你可以在此加入個人訊息。提供邀請的說明或一些與專案相關的資訊，可能有助於他們開始使用。"
       summary:
         next_button: "發送邀請函"
       success_message:
@@ -902,6 +922,16 @@ zh-TW:
     print_hint: 這將以不帶任何導航欄的方式列印此維基頁面的內容。
     index:
       no_results_content_text: 新增一個 wiki 頁面
+  workflows:
+    form:
+      matrix_caption: "工作流程矩陣"
+      matrix_caption_assignee: "指派對象的工作流程矩陣"
+      matrix_caption_author: "作者工作流程矩陣"
+      matrix_checkbox_label: "允許從 %{old_status} 過渡到 %{new_status}"
+      matrix_check_all_label: "允許所有轉換"
+      matrix_uncheck_all_label: "禁止所有轉換"
+      matrix_check_uncheck_all_in_row_label_html: "切換從 <em>%{old_status}</em>到所有新狀態"
+      matrix_check_uncheck_all_in_col_label_html: "從所有舊狀態切換轉換到 <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: 目前沒有工作流程
@@ -1236,7 +1266,7 @@ zh-TW:
         work_packages: "工作套件"
         workspace_type: "工作區類型"
       project_custom_field:
-        is_required: "所有專案都需要"
+        is_required: "必填"
         custom_field_section: 區段
       subproject_template_assignment:
         workspace_type: "工作區類型"
@@ -1522,6 +1552,8 @@ zh-TW:
               invalid_characters: "只允許數值、數學運算符號以及整數、浮點數、計算值和加權列表類型的專案屬性。"
               not_allowed_custom_fields_referenced: "不能使用屬性 %{custom_fields} ，因為這會導致循環引用；一個屬性依賴於另一個屬性。"
               format: "%{message}"
+            required:
+              cannot_be_true: "不能設定為 true。"
         custom_fields_project:
           attributes:
             project_ids:
@@ -2965,6 +2997,7 @@ zh-TW:
   label_board_plural: "看板"
   label_branch: "分支"
   label_browse: "瀏覽"
+  label_builtin: "內建"
   label_bulk_edit_selected_work_packages: "整批編輯選取的工作套件"
   label_bundled: "(已附帶)"
   label_calendar: "行事曆"
@@ -3885,7 +3918,7 @@ zh-TW:
   permission_comment_news: "在「最新消息」留言"
   permission_commit_access: "讀/寫 權限版本庫 (Commit)"
   permission_copy_projects: "複製專案"
-  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
+  permission_copy_projects_explanation: "在範本專案中，此權限具有次要功能，它允許建立源自範本的新專案。"
   permission_copy_work_packages: "複製工作套件"
   permission_create_backup: "建立備份"
   permission_delete_work_package_watchers: "刪除監看者"
@@ -4414,6 +4447,7 @@ zh-TW:
     passwords: "密碼"
     project_attributes:
       heading: "專案屬性"
+      label_for_all_projects: "所有專案"
       label_new_attribute: "專案屬性"
       label_new_section: "區段"
       label_edit_section: "編輯標題"
@@ -4438,7 +4472,7 @@ zh-TW:
               description: "將所有專案屬性加入專案總覽中右側面板內的區段。"
     project_initiation_request:
       header_description: >
-        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
+        OpenProject 可以產生逐步操作精靈，協助專案經理填寫專案啟動申請。你可以選擇要包含哪些專案屬性，並產出 PDF 成果檔。
       status:
         submitted: "%{wizard_name} 已提交"
         submitted_description: "請點擊下方的按鈕，以前往提交流程的工作套件。"
@@ -4557,6 +4591,8 @@ zh-TW:
     企業版將為項目的自定義字段添加以下其他附加組件：<br> <ul> <li><b>在項目列表中添加項目自定義字段，以創建項目組合視圖</b></li> </ul>
   text_custom_logo_instructions: >
     標誌會自動縮放以適應頁首 (Header) 空間。為了達到最佳效果，請上傳一個白色標誌，並置於透明的 130×47 像素圖像上。您可以在該圖像內部添加任意多您想要的間距。
+  text_custom_logo_mobile_instructions: >
+    徽標會自動調整大小以配合標頭。為達到最佳效果，請在 130×33px 的透明圖片上上傳白色標誌。您可以隨意在該圖像中加入間距。
   text_custom_export_logo_instructions: >
     這是出現在 PDF 匯出中的Logo。 它必須是 PNG 或 JPEG 影像檔。 建議在透明或白色背景上使用黑色或彩色標誌。
   text_custom_export_cover_instructions: >

@@ -53,7 +53,7 @@ RSpec.describe Projects::Settings::General::ShowComponent, type: :component do
     it "renders a form" do
       render_component
 
-      expect(page.find(:heading, heading)).to have_ancestor "form"
+      expect(page.find(:section, heading)).to have_element :form
     end
   end
 

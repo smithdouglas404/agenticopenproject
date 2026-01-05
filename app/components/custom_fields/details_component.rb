@@ -35,14 +35,19 @@ module CustomFields
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
 
-    alias_method :custom_field, :model
+    ENTERPRISE_GUARDED = {
+      "calculated_value" => { key: :calculated_values, image: "enterprise/calculated-values.png" },
+      "hierarchy" => { key: :custom_field_hierarchies, image: "enterprise/hierarchies.png" },
+      "weighted_item_list" => { key: :weighted_item_lists, image: "enterprise/weighted_item_lists.png" }
+    }.freeze
 
-    def persisted_cf_has_no_items_or_projects?
-      custom_field.persisted? &&
-        custom_field.hierarchical_list? &&
-        custom_field.hierarchy_root.children.empty? &&
-        custom_field.projects.empty?
+    class << self
+      def supported?(custom_field)
+        custom_field.field_format.in?(%w[bool calculated_value hierarchy weighted_item_list])
+      end
     end
+
+    alias_method :custom_field, :model
 
     def form_url
       model.new_record? ? custom_fields_path : custom_field_path(model)
@@ -52,15 +57,39 @@ module CustomFields
       model.new_record? ? :post : :put
     end
 
-    def enterprise_addon
-      @enterprise_addon ||= case custom_field.field_format
-                            when "hierarchy"
-                              { key: :custom_field_hierarchies, image: "enterprise/hierarchies.png" }
-                            when "weighted_item_list"
-                              { key: :weighted_item_lists, image: "enterprise/weighted_item_lists.png" }
-                            else
-                              raise "Custom fields of format #{custom_field.field_format} are not supported by #{self.class.name}"
-                            end
+    def enterprise_addon_key
+      ENTERPRISE_GUARDED.dig(custom_field.field_format, :key)
+    end
+
+    def enterprise_addon_image
+      ENTERPRISE_GUARDED.dig(custom_field.field_format, :image)
+    end
+
+    def no_enterprise_feature?
+      ENTERPRISE_GUARDED[custom_field.field_format].nil?
+    end
+
+    def show_top_banner?
+      case custom_field.field_format
+      when "hierarchy", "weighted_item_list"
+        persisted_cf_has_no_items_or_projects?
+      else
+        false
+      end
+    end
+
+    def top_banner_text
+      case custom_field.field_format
+      when "hierarchy", "weighted_item_list"
+        I18n.t("custom_fields.admin.notice.remember_items_and_projects")
+      end
+    end
+
+    def persisted_cf_has_no_items_or_projects?
+      custom_field.persisted? &&
+        custom_field.hierarchical_list? &&
+        custom_field.hierarchy_root.children.empty? &&
+        custom_field.projects.empty?
     end
   end
 end

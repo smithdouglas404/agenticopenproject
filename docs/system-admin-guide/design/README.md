@@ -20,7 +20,7 @@ Under **Interface** you can also choose [custom colors](#interface-colors) for e
 
 ![Design interface settings in OpenProject administration](openproject_system_guide_design_interface.png)
 
-Under the **Branding** tab you can also [upload a custom logo](#upload-a-custom-logo) to replace the default OpenProject logo, [set a custom favicon](#set-a-custom-favicon), which is shown as an icon in your browser window/tab, and [upload a custom touch icon](#set-a-custom-touch-icon), which is shown on your smartphone or tablet when you bookmark OpenProject on your home screen.
+Under the **Branding** tab you can also [upload a custom desktop and/or mobile logos](#upload-a-custom-logo) to replace the default OpenProject logo, [set a custom favicon](#set-a-custom-favicon), which is shown as an icon in your browser window/tab, and [upload a custom touch icon](#set-a-custom-touch-icon), which is shown on your smartphone or tablet when you bookmark OpenProject on your home screen.
 
 ![Branding settings in OpenProject administration](openproject_system_guide_design_branding.png)
 
@@ -33,7 +33,6 @@ You can
 * upload a logo to be used in the exported PDF header
 * upload a custom background image for exports with a cover page
 * adjust the text color of the text overlay at the custom background image of the cover page
-* upload a design image that is placed on the left side of the footer
 
 > [!TIP]
 > You can generate a demo PDF to see a preview of your settings. Click the **Generate Demo PDF** button.
@@ -68,14 +67,33 @@ Press the Save button to apply your changes. The theme will then be changed.
 ![Change color theme in OpenProject administration settings](openproject_system_guide_design_color_theme_navy_blue.png)
 
 ## Upload a custom logo
+In the Administration → Design area, you can replace the standard OpenProject logo with your own branding.
 
-To replace the default OpenProject logo with your own logo, make sure that your logo has the dimensions 460 by 60 pixels. Select the *Browse* button and select the file from your hard drive to upload it.
+### Custom logo desktop
+This field to upload the version of your logo that should appear on larger screens. The logo you upload will automatically scale to fit the header. For best results, we recommend uploading a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like. 
+
+Select the *Browse* button and select the file from your hard drive to upload it.
 
 Click the *Upload* button to confirm and upload your logo.
 
 ![Upload custom logo in OpenProject administration settings](openproject_system_guide_design_upload_custom_logo.png)
 
 ![Custom logo updated in OpenProject administration](openproject_system_guide_design_custom_logo_uploaded.png)
+
+### Custom logo mobile
+
+A separate Custom logo mobile section allows you to provide an alternative logo optimized for smaller displays.
+
+### Logo display behavior
+
+Depending on which custom logos are uploaded, OpenProject will adjust the displayed logo according to the following principles:
+
+- If both desktop and mobile logos are provided, the logo switches responsively with the screen size.
+- If only a mobile logo is available, it will be used everywhere.
+- If only a desktop logo is uploaded, it will appear on desktop screens, while mobile views will not show a logo.
+- If no logo is uploaded, OpenProject continues to display its default logo.
+- When a custom logo is in use, a separate high-contrast version is no longer enforced.
+
 
 ## Set a custom favicon
 

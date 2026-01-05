@@ -46,6 +46,7 @@ class CustomValue < ApplicationRecord
   delegate :editable?,
            :admin_only?,
            :required?,
+           :is_for_all?,
            :max_length,
            :min_length,
            :calculated_value?,

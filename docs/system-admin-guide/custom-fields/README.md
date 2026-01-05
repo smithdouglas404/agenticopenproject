@@ -73,7 +73,11 @@ Under the *Items* tab you can specify which hierarchy items should be selectable
 
 ![Items tab for a hierarchy custom field in OpenProject administration](openproject_system_guide_hierarchy_field_add_item_button.png)
 
-You can then specify labels and short names for each of the items you want to add. The short name can be used e.g. for an abbreviation of a name or another associated short description. The short name is optional and will be displayed next to the item label in brackets. 
+You can then specify **labels** and **short names** for each item you want to add. The short name can be used, for example, as an abbreviation or an alternative description. It is optional and will be displayed next to the item label in brackets.
+
+> [!TIP]
+>
+> Short names are searchable in work package forms. This is especially useful when a custom field has many items, making it easier to find the right one quickly.
 
 ![Add an item to the hierarchy custom field in OpenProject administration](openproject_system_guide_hierarchy_field_add_item_form.png)
 
@@ -116,7 +120,13 @@ This underlying numerical value is mandatory, and can be used for calculation - 
 
 Custom fields can be configured as **required**. As the name suggests, **required** custom fields need to be filled out when a resource like a work package or a project is created. Without filling in a field, the user will be prevented from creating the resource.
 
-The *required* flag can also be set on existing custom fields. This might lead to a problem for resources that existed before the flag was later set to required. For example, a work package might have already been created and worked with for some time. But because the field was not required before, it might not have been filled in. Once the custom field becomes 'required', the next user wanting to modify the work package *needs* to fill in the field. There are other scenarios where this might occur, for example, when the activation of a required custom field for a project or a work package type. 
+>[!IMPORTANT]
+>
+>Custom field of type **Boolean** can **NOT** be set to be required. 
+
+The *required* flag can also be set on existing custom fields. This might lead to a problem for resources that existed before the flag was later set to required. For example, a work package might have already been created and worked with for some time. But because the field was not required before, it might not have been filled in.
+
+Once the custom field becomes 'required', the next user wanting to modify the work package *needs* to fill in the field. There are other scenarios where this might occur, for example, when the activation of a required custom field for a project or a work package type. 
 
 In the above scenario of a required custom field being absent on existing resources, OpenProject will try to minimize the times in which users are blocked from performing their intended action. A user might want to change the name of the project with no value filled in for a required custom field. Since the interface for changing the name does not display the custom fields, the user cannot provide a value at this point and OpenProject will not enforce the *required* setting then.
 
@@ -175,3 +185,19 @@ To **edit an existing custom field** select the appropriate tab and click on the
 To **delete** a custom field, click on the delete icon next to the respective custom field in the list.
 
 ![Edit or delete a custom field in OpenProject administration](system-admin-edit-delete-custom-field.png)
+
+## Define custom field help text
+
+To define field caption and help text click on an existing custom field and navigate to **Attribute help texts** tab. Here you can define the following:
+
+- **Caption** - a short text that will be displayed as a custom field caption to provide context. Please note, that the caption text is currently only displayed for project attributes. 
+- **Help text** - a longer text that will be shown when a user hovers over a question mark next to the custom field name. Here you can provide more detailed explanation. This is a required field.
+- **Attachments** - attach files or images to illustrate a custom field. 
+
+> [!IMPORTANT]
+>
+> Any text and images you add here will be publicly visible to all logged in users. 
+
+
+
+![Work package custom field detailed view, showing *Attribute help texts* tab in OpenProject administration](open_project_system_admin_guide_custom_field_attribute_text.png)

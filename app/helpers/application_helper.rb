@@ -362,10 +362,8 @@ module ApplicationHelper
     back_url
   end
 
-  def check_all_links(form_name)
-    link_to_function(t(:button_check_all), "OpenProject.helpers.checkAll('#{form_name}', true)") +
-      " | " +
-      link_to_function(t(:button_uncheck_all), "OpenProject.helpers.checkAll('#{form_name}', false)")
+  def check_all_links(form_id = nil, &)
+    render(OpenProject::Common::CheckAllComponent.new(checkable_id: form_id), &)
   end
 
   def current_layout

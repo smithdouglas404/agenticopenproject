@@ -32,5 +32,19 @@ class Grids::WidgetController < Grids::BaseInOptionalProjectController
   include OpTurbo::ComponentStream
   include OpTurbo::FlashStreamHelper
 
-  layout -> { "turbo_rails/frame" }
+  def show
+    raise NotImplementedError
+  end
+
+  private
+
+  def render_widget(widget)
+    rendered_widget = widget.render_in(view_context)
+
+    if rendered_widget.empty?
+      head(:no_content)
+    else
+      render html: rendered_widget
+    end
+  end
 end

@@ -87,4 +87,10 @@ class PortfoliosController < ProjectsController
     render_403 unless User.current.allowed_globally?(:add_portfolios) ||
                        Project.portfolio.allowed_to(User.current, :view_project).any?
   end
+
+  # Overwrite method in Queries::Loading
+  # since default doesn't work with portfolios using ProjectQuery
+  def query_class
+    ::ProjectQuery
+  end
 end
