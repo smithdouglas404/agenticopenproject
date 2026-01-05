@@ -109,12 +109,12 @@ module Projects::Concerns
         .destroy_all
     end
 
-    def build_missing_project_custom_field_project_mappings(project)
+    def build_missing_project_custom_field_project_mappings(project) # rubocop:disable Metrics/AbcSize
       # Activate all custom fields (via mapping table) that have no mapping, but are either
       # intended for all projects, or have a value provided by the user.
 
       custom_field_ids = project.custom_values
-        .select { |cv| cv.value? || cv.is_for_all? }
+        .select { |cv| cv.is_for_all? || (cv.value? && !cv.default?) }
         .pluck(:custom_field_id).uniq
       activated_custom_field_ids = project.project_custom_field_project_mappings.pluck(:custom_field_id).uniq
 
@@ -131,7 +131,7 @@ module Projects::Concerns
       # edits a custom field which is used by an admin only calculated value
       # field. Without this unscoping, admin only value and all fields
       # referencing it (recursively) will not be recalculated and there will
-      # even be no place for that recalculatin to be triggered unless an admin
+      # even be no place for that recalculation to be triggered unless an admin
       # edits same value again.
       #
       # This may need to be handled differently to make it work for other custom

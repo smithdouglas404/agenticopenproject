@@ -267,6 +267,14 @@ RSpec.describe "Projects", "creation",
                project_custom_field_section:)
       end
 
+      shared_let(:required_inactive_custom_field_with_default_value) do
+        create(:text_project_custom_field,
+               name: "Required inactive with default value",
+               is_required: true,
+               default_value: "foo",
+               project_custom_field_section:)
+      end
+
       it "renders activated required custom fields for new" do
         visit new_project_path
 
@@ -290,6 +298,7 @@ RSpec.describe "Projects", "creation",
 
         # Inactive fields, even if required, should not be shown
         expect(page).to have_no_field "Required Inactive *"
+        expect(page).to have_no_field "Required Inactive with default value *"
       end
     end
 
