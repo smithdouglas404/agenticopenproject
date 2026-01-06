@@ -8,12 +8,12 @@ keywords: files, file storages, Nextcloud integration, OneDrive setup, OneDrive,
 
 # Files 
 
-Under *Administration -> Files* you can add external file storages, such as Nextcloud or OneDrive and manage settings
+Under *Administration -> Files* you can add external file storages, such as Nextcloud, OneDrive or SharePoint and manage settings
 for attachments to work packages.
 
 ## External file storages
 
-Under [external file storages](./external-file-storages) you can add Nextcloud or OneDrive integration to OpenProject. 
+Under [external file storages](./external-file-storages) you can add Nextcloud, OneDrive or SharePoint integration to OpenProject. 
 
 ## Attachments
 

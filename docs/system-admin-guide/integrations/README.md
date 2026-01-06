@@ -29,15 +29,18 @@ OpenProject offers integration with Nextcloud for file storage and collaboration
 
 ### OneDrive (Enterprise add-on)
 
-OpenProject offers an integration with OneDrive for file storage and collaboration. You can find more information
-about [setting up the integration with OneDrive](./one-drive)
-and [using the integration](../../user-guide/file-management/one-drive-integration/).
+OpenProject offers an integration with OneDrive for file storage and collaboration. You can find more information about [setting up the integration with OneDrive](./one-drive) and [using the integration](../../user-guide/file-management/one-drive-integration/).
 
 > [!NOTE]
-> OneDrive integration is an Enterprise add-on and can only be used
-> with [Enterprise cloud](../../enterprise-guide/enterprise-cloud-guide/)
-> or [Enterprise on-premises](../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community
-> edition is easy and helps support OpenProject.
+> OneDrive integration is an Enterprise add-on and can only be used with [Enterprise cloud](../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
+
+
+### SharePoint (Enterprise add-on)
+
+OpenProject offers an integration with SharePoint for file storage and collaboration. You can find more information about [setting up the integration with SharePoint](./share-point) and [using the integration](../../user-guide/file-management/sharepoint-integration/).
+
+> [!NOTE]
+> SharePoint integration is an Enterprise add-on and can only be used with [Enterprise cloud](../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
 
 ## Community plugins
 

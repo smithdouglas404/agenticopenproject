@@ -8,18 +8,18 @@ keywords: integration, apps, OneDrive, SharePoint, user
 
 # SharePoint integration (Enterprise add-on)
 
-You can use **OneDrive** as an integrated file storage in OpenProject.
+You can use **SharePoint** as an integrated file storage in OpenProject.
 
 > [!NOTE]
 > SharePoint integration is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
 
 This integration makes it possible for you to:
 
-- Link files and folders stored in OneDrive with work packages in SharePoint
+- Link files and folders stored in SharePoint with work packages in OpenProject
 - View, open and download files and folders linked to a work package via the **Files** tab
 
 > [!IMPORTANT]
-> To be able to use OneDrive as a file storage in your project, the administrator of your instance should first have completed the [OneDrive integration setup](../../../system-admin-guide/integrations/one-drive). Then a project administrator can activate the integrated storage in the [File storages](../../projects/project-settings/files/) for a project.
+> To be able to use SharePoint as a file storage in your project, the administrator of your instance should first have completed the [SharePoint integration setup](../../../system-admin-guide/integrations/share-point). Then a project administrator can activate the integrated storage in the [File storages](../../projects/project-settings/files/) for a project.
 
 | Topic                                                        | Description                                                  |
 | ------------------------------------------------------------ | :----------------------------------------------------------- |
@@ -30,9 +30,9 @@ This integration makes it possible for you to:
 | [Permissions and access control](#permissions-and-access-control) | Permissions and access control in OneDrive file storage |
 | [Possible errors and troubleshooting](#possible-errors-and-troubleshooting) | Common errors in OneDrive integration and how to troubleshoot them |
 
-## Connect your OpenProject and OneDrive accounts
+## Connect your OpenProject and SharePoint accounts
 
-To begin using this integration, you will need to first connect your OpenProject and Microsoft accounts. To do this, open any work package in a project where a OneDrive file storage has been added and enabled by an administrator and follow these steps:
+To begin using this integration, you will need to first connect your OpenProject and Microsoft accounts. To do this, open any work package in a project where a SharePoint file storage has been added and enabled by an administrator and follow these steps:
 
 1. Select any work package. Go to the **Files tab** and, within the correct file storage section, click on **Storage login** button.
 
@@ -45,12 +45,12 @@ To begin using this integration, you will need to first connect your OpenProject
 
 ## Link files and folders to work packages
 
-In addition to listing files directly attached to a work package, the **Files** tab shows the OneDrive files that are linked to the current work package. Hovering on any linked file with your mouse will give you options to open or download the file, show the containing folder in SharePoint or remove the link.
+In addition to listing files directly attached to a work package, the **Files** tab shows the SharePoint files that are linked to the current work package. Hovering on any linked file with your mouse will give you options to open or download the file, show the containing folder in SharePoint or remove the link.
 
 To link a SharePoint file to the current work package, you can either:
 
-- select a local file, which will be uploaded to OneDrive storage and linked to this work package
-- select an existing file in OneDrive to link to
+- select a local file, which will be uploaded to SharePoint storage and linked to this work package
+- select an existing file in SharePoint to link to
 
 ![Link existing files to OneDrive from an OpenProject work package](openproject_onedrive_link_existing_files_link.png)
 
@@ -109,13 +109,13 @@ If you click the **Folder icon**, the OneDrive folder containing this file will 
 
 ## Permissions and access control
 
-When a file or folder from OneDrive is linked to a work package, an OpenProject user who has access to that work package will be able to:
+When a file or folder from SharePoint is linked to a work package, an OpenProject user who has access to that work package will be able to:
 
 - See the name of the linked file or folder
 - See when it was last modified (or created, if it has not yet been modified)
 - See who last modified it (or who created it, if it has not yet been modified)
 
-However, all available actions depend on permissions the OpenProject user (or more precisely, the OneDrive account tied to that user) has in OneDrive. In other words, a user who does not have the permission to access the file in OneDrive will also *not* be able to open, download, or modify the file in OpenProject.
+However, all available actions depend on permissions the OpenProject user (or more precisely, the SharePoint account tied to that user) has in SharePoint. In other words, a user who does not have the permission to access the file in SharePoint will also *not* be able to open, download, or modify the file in OpenProject.
 
 Please note, that with automatically managed project folders these permissions are set by OpenProject based on user permissions in OpenProject.
 
