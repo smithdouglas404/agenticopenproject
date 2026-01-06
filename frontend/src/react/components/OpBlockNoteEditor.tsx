@@ -35,7 +35,7 @@ import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import * as Y from 'yjs';
 import { useBlockNoteAttachments } from '../hooks/useBlockNoteAttachments';
 import { useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
@@ -108,12 +108,10 @@ export function OpBlockNoteEditor({
   type EditorType = typeof editor;
   const theme = useOpTheme();
 
-  const getCustomSlashMenuItems = useMemo(() => {
-    return (editorInstance:EditorType) => [
-      ...getDefaultReactSlashMenuItems(editorInstance),
-      openProjectWorkPackageSlashMenu(editorInstance),
-    ];
-  }, []);
+  const getCustomSlashMenuItems = useCallback((editorInstance:EditorType) => [
+    ...getDefaultReactSlashMenuItems(editorInstance),
+    openProjectWorkPackageSlashMenu(editorInstance),
+  ], []);
 
   return (
     <>
