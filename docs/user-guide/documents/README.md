@@ -15,11 +15,11 @@ The Documents module allows you to write or upload documents directly to the pro
 
 > [!IMPORTANT]
 >
-> With 17.0 real-time documents collaboration was introduced. It is automatically available for the following installation types: 
+> With 17.0 release, real-time documents collaboration was introduced. It is automatically available for the following installation types: 
 > - Containerized installations
 > - Cloud-hosted installations
 >
-> **Packaged installations (DEB/RPM) require additional manual setup**. This includes installing and configuring dependencies such as Hocuspocus to enable real-time collaboration. Refer to the administration guide for detailed setup instructions. (ADD LINK)
+> **Packaged installations (DEB/RPM) require additional manual setup**. Please refer to the [system administration guide for more details](../../system-admin-guide/documents/#real-time-collaboration-in-documents). 
 
 ## Document index
 
@@ -109,7 +109,7 @@ To delete a document, click on the *More (three dots)* menu and select *Delete*.
 
 ### Why can't I edit documents in real-time?
 
-Real-time document collaboration is available in OpenProject starting with version 17.0, but whether you can use it depends on how your OpenProject instance is set up. In cloud-hosted and containerized setups, real-time editing is enabled by default. For packaged installations (DEB/RPM), additional configuration is necessary. Please contact your OpenProject administrator to check whether it can be enabled for your installation.
+Real-time document collaboration is available in OpenProject starting with version 17.0, but whether you can use it depends on how your OpenProject instance is set up. In cloud-hosted and containerized setups, real-time editing is enabled by default. For packaged installations (DEB/RPM), additional configuration is necessary. Please contact your OpenProject administrator and/or refer to the [system administration guide for more details](../../system-admin-guide/documents/#real-time-collaboration-in-documents). 
 
 ### Is there a size limit for uploading documents to the OpenProject Enterprise cloud edition?
 

@@ -63,21 +63,28 @@ You will see a dialogue informing you of the consequences.
 
 ## Real-time collaboration in documents
 
-Real-time collaboration for OpenProject's *Documents* module was introduced with 17.0 release.
+Real-time collaboration for OpenProject’s **Documents** module was introduced with the 17.0 release. When enabled, it allows multiple users to edit the same document at the same time. Changes are synchronized instantly, and users can see each other’s cursors and edits as they occur. This improves collaboration, especially for teams working on shared documentation or meeting notes.
+
+From a technical perspective, real-time collaboration relies on a running [Hocuspocus server](https://github.com/opf/op-blocknote-hocuspocus), which handles synchronization between users. OpenProject connects to this service to provide a seamless collaborative editing experience within documents.
+
+![Administration settings for real-time documents collaboration in OpenProject](openproject_system_guide_documents_real_time_collaboration.png)
 
 > [!IMPORTANT]
 >
-> Real-time collaboration is automatically available for the following installation types: 
+> Real-time collaboration is available for the following installation types. However, it may require proper configuration before it is fully enabled:
 >
 > - Containerized installations
 > - Cloud-hosted installations
 >
-> Packaged installations (DEB/RPM) require additional manual setup. This includes installing and configuring dependencies such as Hocuspocus to enable real-time collaboration. Refer to the administration guide for detailed setup instructions. (ADD LINK)
+> Packaged installations (DEB/RPM) require additional manual setup. This includes installing and configuring a [Hocuspocus server](https://github.com/opf/op-blocknote-hocuspocus) to enable real-time collaboration.
 
-When enabled, real-time collaboration allows multiple users to edit the same document simultaneously. Changes are synchronized in real time, and users can see each other’s cursors and edits as they happen. This significantly improves collaboration, especially for teams working together on shared documentation or meeting notes.
+### Enable real-time collaboration for packaged installations
 
-Technically, real-time collaboration relies on a running [Hocuspocus server](https://github.com/opf/op-blocknote-hocuspocus) that handles synchronization between users. OpenProject connects to this service to provide a seamless collaborative editing experience within documents.
+To enable real-time collaboration in packaged installations, follow these steps:
+1. Download and install [op-blocknote-hocuspocus](https://github.com/opf/op-blocknote-hocuspocus)
+2. Set up the server by following the instructions in the GitHub repository
+3. Manually configure the server URL & secret in the *Documents* administration settings in OpenProject.
+> [!NOTE]
+> The secret must be identical in both op-blocknote-hocuspocus and OpenProject.
 
-![Administration settings for real-time documents collaboration in OpenProject](openproject_system_guide_documents_real_time_collaboration.png)
-
-Read more about the introduction of real-time collaboration in the [in the official blog article](https://www.openproject.org/blog/real-time-collaboration-in-documents/).
+For more background on this feature, see [this blog article](https://www.openproject.org/blog/real-time-collaboration-in-documents/) on the introduction of real-time collaboration in documents.
