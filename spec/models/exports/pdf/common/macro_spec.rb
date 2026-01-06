@@ -707,7 +707,7 @@ RSpec.describe Exports::PDF::Common::Macro do
       let(:markdown) { "projectLabel:status_code" }
 
       it "outputs the status label" do
-        expect(formatted).to eq("Project status")
+        expect(formatted).to eq("Status")
       end
     end
 
