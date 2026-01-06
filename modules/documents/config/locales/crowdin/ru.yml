@@ -124,7 +124,7 @@ ru:
           some_unwritable: Некоторые значения настраиваются через переменные окружения и не могут быть отредактированы здесь.
         hocuspocus_server_url:
           label: "URL-адрес сервера Hocuspocus"
-          caption: "Адрес работающего сервера Hocuspocus."
+          caption: "The address of a working Hocuspocus server."
         hocuspocus_server_secret:
           label: "Закрытый ключ клиента"
           caption: "Вставьте ключ, предоставленный сервером Hocuspocus."

@@ -120,7 +120,7 @@ fr:
           some_unwritable: Certaines valeurs sont configurées via des variables d'environnement et ne peuvent pas être modifiées ici.
         hocuspocus_server_url:
           label: "URL du serveur Hocuspocus"
-          caption: "L'adresse du serveur Hocuspocus en activité."
+          caption: "The address of a working Hocuspocus server."
         hocuspocus_server_secret:
           label: "Secret du client"
           caption: "Collez le secret fourni par le serveur Hocuspocus."

@@ -118,7 +118,7 @@ zh-TW:
           some_unwritable: 某些值透過環境變數設定，無法在此編輯。
         hocuspocus_server_url:
           label: "Hocuspocus 伺服器 URL"
-          caption: "工作中的 Hocuspocus 伺服器位址。"
+          caption: "The address of a working Hocuspocus server."
         hocuspocus_server_secret:
           label: "用戶端密碼"
           caption: "貼上 Hocuspocus 伺服器提供的秘碼。"

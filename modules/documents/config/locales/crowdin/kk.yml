@@ -120,7 +120,7 @@ kk:
           some_unwritable: Some values are configured via environment variables and cannot be edited here.
         hocuspocus_server_url:
           label: "Hocuspocus server URL"
-          caption: "The address of the working Hocuspocus server."
+          caption: "The address of a working Hocuspocus server."
         hocuspocus_server_secret:
           label: "Client secret"
           caption: "Paste the secret provided by the Hocuspocus server."

@@ -118,7 +118,7 @@ es:
           some_unwritable: Algunos valores están configurados en las variables de entorno y no pueden ser configurados aquí.
         hocuspocus_server_url:
           label: "Hocuspocus server URL"
-          caption: "The address of the working Hocuspocus server."
+          caption: "The address of a working Hocuspocus server."
         hocuspocus_server_secret:
           label: "Cliente Secreto"
           caption: "Paste the secret provided by the Hocuspocus server."

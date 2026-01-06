@@ -120,7 +120,7 @@ sv:
           some_unwritable: Vissa värden är konfigurerade via miljövariabler och kan inte redigeras här.
         hocuspocus_server_url:
           label: "Hocuspocus server URL"
-          caption: "Adressen till den fungerande Hocuspocus servern."
+          caption: "The address of a working Hocuspocus server."
         hocuspocus_server_secret:
           label: "Klienthemlighet"
           caption: "Klistra in hemligheten som tillhandahålls av Hocuspocus server."
