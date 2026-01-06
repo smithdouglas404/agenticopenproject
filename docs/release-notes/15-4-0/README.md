@@ -108,7 +108,7 @@ With OpenProject 15.4, we restructured some parts in the administration, so that
 
   > [!NOTE]
   >
-  > With 17.0 release Categories moved to *Administration -> Documents* [Read more in our system admin guide](../../system-admin-guide/documents/#document-types).
+  > With 17.0 release Document categories were renamed to Document types and were moved to *Administration -> Documents* [Read more in our system admin guide](../../system-admin-guide/documents/#document-types).
 
 ![Screenshot: The OpenProject administration of document categories](openproject_system_guide_files_categories_overview.png)
 
