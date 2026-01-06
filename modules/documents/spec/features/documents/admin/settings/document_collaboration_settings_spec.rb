@@ -30,7 +30,9 @@
 
 require "spec_helper"
 
-RSpec.describe "Document collaboration settings admin", :js, :settings_reset do
+RSpec.describe "Document collaboration settings admin",
+               :js,
+               :settings_reset do
   include Flash::Expectations
 
   current_user { create(:admin) }
@@ -38,6 +40,16 @@ RSpec.describe "Document collaboration settings admin", :js, :settings_reset do
   context "when first time setup" do
     it "can configure hocuspocus url and secret" do
       visit admin_settings_document_collaboration_settings_path
+
+      within_test_selector("collaboration-settings-disabled-notice") do
+        expect(page).to have_heading("Real-time collaboration is not enabled")
+        expect(page).to have_content("Once enabled, multiple users will be able to work together on a " \
+                                     "document at the same time. All new documents will be based on a new " \
+                                     "editor (BlockNote) and will require a working connection to a Hocuspocus server.")
+        click_on "Enable real-time collaboration"
+      end
+
+      expect_and_dismiss_flash(message: "Real-time collaboration has been enabled.")
 
       expect(page).to have_field("Hocuspocus server URL", with: "")
       expect(page).to have_field("Client secret", with: "")
@@ -72,22 +84,12 @@ RSpec.describe "Document collaboration settings admin", :js, :settings_reset do
       end
 
       expect_and_dismiss_flash(message: "Real-time collaboration has been disabled.")
-
-      within_test_selector("collaboration-settings-disabled-notice") do
-        expect(page).to have_heading("Real-time collaboration is not enabled")
-        expect(page).to have_content("Once enabled, multiple users will be able to work together on a " \
-                                     "document at the same time. All new documents will be based on a new " \
-                                     "editor (BlockNote) and will require a working connection to a Hocuspocus server.")
-        click_on "Enable real-time collaboration"
-      end
-
-      expect_and_dismiss_flash(message: "Real-time collaboration has been enabled.")
-      expect(Setting.real_time_text_collaboration_enabled?).to be(true)
     end
   end
 
   context "with hocuspocus url set via environment variable",
-          with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_URL" => "wss://env-hocuspocus.example.com" } do
+          with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_URL" => "wss://env-hocuspocus.example.com" },
+          with_settings: { real_time_text_collaboration_enabled: true } do
     before do
       reset(:collaborative_editing_hocuspocus_url)
       visit admin_settings_document_collaboration_settings_path
@@ -103,7 +105,8 @@ RSpec.describe "Document collaboration settings admin", :js, :settings_reset do
   end
 
   context "with secret set via environment variable",
-          with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_SECRET" => "envsupersecret" } do
+          with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_SECRET" => "envsupersecret" },
+          with_settings: { real_time_text_collaboration_enabled: true } do
     before do
       reset(:collaborative_editing_hocuspocus_secret)
       visit admin_settings_document_collaboration_settings_path
@@ -122,7 +125,8 @@ RSpec.describe "Document collaboration settings admin", :js, :settings_reset do
           with_env: {
             "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_URL" => "wss://env-hocuspocus.example.com",
             "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_SECRET" => "envsupersecret"
-          } do
+          },
+          with_settings: { real_time_text_collaboration_enabled: true } do
     before do
       reset(:collaborative_editing_hocuspocus_url)
       reset(:collaborative_editing_hocuspocus_secret)

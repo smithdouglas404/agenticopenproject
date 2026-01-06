@@ -214,7 +214,7 @@ RSpec.describe "Upload attachment to documents",
     end
   end
 
-  context "for collaborative documents" do
+  context "for collaborative documents", with_settings: { real_time_text_collaboration_enabled: true } do
     let(:document) { create(:document, project:) }
     let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
     let(:attachments_list) { Components::AttachmentsList.new }

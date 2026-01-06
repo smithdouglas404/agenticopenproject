@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe "BlockNote editor rendering", :js do
+RSpec.describe "BlockNote editor rendering", :js, with_settings: { real_time_text_collaboration_enabled: true } do
   let(:admin) { create(:admin) }
   let(:type) { create(:document_type, :experimental) }
   let(:document) { create(:document, type:) }
