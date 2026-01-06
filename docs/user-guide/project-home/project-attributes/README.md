@@ -14,7 +14,7 @@ keywords: project attribute, attribute, project custom field, project overview, 
 
 Project attributes must first be created [on an instance level administration](../../../system-admin-guide/projects/project-attributes/) and then activated for a specific project under [project settings](../../projects/project-settings/project-attributes/).
 
-Location of project attribute sections can be either in a pane on the right side under *project life cycle phases*, or in the main area under the project related widgets. The location of project attribute sections is determined under [project attribute settings in system administration](../../../system-admin-guide/projects/project-attributes/).
+The location of project attribute sections can be either in a pane on the right side under *project life cycle phases*, or in the main area under the project related widgets. The location of project attribute sections is determined under [project attribute settings in system administration](../../../system-admin-guide/projects/project-attributes/).
 
 Project attributes are always grouped in sections.
 

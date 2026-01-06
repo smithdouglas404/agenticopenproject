@@ -10,7 +10,7 @@ keywords: project overview, project home, home page, homepage, project widget
 
 ## Project widgets overview
 
-**Widgets** are small blocks of information that you can customize to display pertinent project information (such as project description, status, work package lists or graphs). You can add and remove multiple widgets, re-order them and resize them to your liking.
+**Widgets** are small blocks of information that you can customize to display pertinent project information (such as project description, status, work package lists or graphs). These widgets are displayed on the project home page. Project overview tab displays certain widgets in a pre-set layout. However, under the *Dashboard* tab you can add and remove multiple widgets, re-order them and resize them to your liking.
 
 <video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Quick_guide-Widgets.mp4"></video>
 
@@ -114,8 +114,8 @@ Time entries link to the respective work package and can be edited or deleted. T
 
 The subitems widget lists all subitems of the respective entity:
 
--  Subitems of a project are subprojects
-- Subitems of a program are projects and subprojects
+- Subitems of a project are subprojects
+- Subitems of a program are projects
 - Subitems of a portfolio are programs are projects
 
 The *Subitems* widget under the *Overview* tab allows adding subitems directly within the widget (click the **Plus** icon in the top right corner of the widget and select *Project*). That same widget under that *Dashboard* tab lists all subitems of a project, but offers no option to add subitems directly. 
@@ -188,5 +188,7 @@ To **resize** a widget, click the grey icon in the lower right hand corner of th
 ## Remove widgets from project home page
 
 To remove a widget from the project home page, click the three dots icon at the top right corner of the widget and select **Remove widget**.
+> [!NOTE]
+> Please keep in mind that this is only possible under the *Dashboard* tab. Project widgets under the *Overview* tab are fixed and can not be removed.
 
 ![Remove a widget from a project home page in OpenProject](openproject_user_guide_project_overview_remove_widget.png)
