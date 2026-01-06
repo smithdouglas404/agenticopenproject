@@ -104,7 +104,11 @@ This feature seems small, but can have a big impact: When a user quotes another 
 
 With OpenProject 15.4, we restructured some parts in the administration, so that admins can find the settings for work package priorities and document categories in the existing settings for the modules – all in one place. Therefore, the enumerations page in the administration has been removed. Instead, you can now find...
 
-- document categories under *Administration → Files → Categories*. [Read more in our system admin guide](../../system-admin-guide/files/categories/).
+- document categories under *Administration → Files → Categories*.
+
+  > [!NOTE]
+  >
+  > With 17.0 release Categories moved to *Administration -> Documents* [Read more in our system admin guide](../../system-admin-guide/documents/#document-types).
 
 ![Screenshot: The OpenProject administration of document categories](openproject_system_guide_files_categories_overview.png)
 
