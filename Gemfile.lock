@@ -1512,7 +1512,7 @@ GEM
       json
       puma
       yabeda (~> 0.5)
-    yabeda-rails (0.10.0)
+    yabeda-rails (0.11.0)
       activesupport
       anyway_config (>= 1.3, < 3)
       railties
@@ -2277,7 +2277,7 @@ CHECKSUMS
   yabeda-activerecord (0.1.2) sha256=1dd281a64e5742445a6718aa05e799ea08a397e9ab9c0d254ece447635a3e0e2
   yabeda-prometheus-mmap (0.4.0) sha256=1a66120756d6f931f03a7784e08e79060d71681ff83a9f5287df2ff756e9e2c9
   yabeda-puma-plugin (0.9.0) sha256=b78673ecc7ee30bc50691ddc41b7022c1c1801843900d5101418f4a14b550bc8
-  yabeda-rails (0.10.0) sha256=0a85bd829961494f66241d20192368e5d042f836f91986a1eac02f8dcb04237c
+  yabeda-rails (0.11.0) sha256=afa2581bd44c8f419cb3f2bbf9f6fb40f817c30476f7caf5d1c55c48d69a5b29
   yaml (0.4.0) sha256=240e69d1e6ce3584d6085978719a0faa6218ae426e034d8f9b02fb54d3471942
   yard (0.9.38) sha256=721fb82afb10532aa49860655f6cc2eaa7130889df291b052e1e6b268283010f
   zeitwerk (2.7.4) sha256=2bef90f356bdafe9a6c2bd32bcd804f83a4f9b8bc27f3600fff051eb3edcec8b
