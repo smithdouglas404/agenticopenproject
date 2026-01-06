@@ -16,7 +16,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -27,10 +27,5 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% page_title = I18n.t("storages.health.title") %>
+<%= turbo_stream.update "health_status_report", partial: "health_status" %>
 
-<% html_title(t(:label_administration), t(:project_module_storages), @storage.name, page_title) -%>
-
-<%= turbo_frame_tag "health_status_report", refresh: :morph do %>
-  <%= render "health_status" %>
-<% end %>
