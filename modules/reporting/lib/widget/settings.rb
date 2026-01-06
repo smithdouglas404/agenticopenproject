@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,70 +29,104 @@
 #++
 
 class Widget::Settings < Widget::Base
-  dont_cache! # Settings may change due to permissions
+  param :subject, reader: false
+  option :cost_types, optional: true
+  option :selected_type_id, optional: true
+
+  # delegate :allowed_in_report?, to: :controller
+
+  def allowed_in_report?(...)
+    true # FIXME
+  end
+
+  def view_template
+    div do
+      form_with(
+        model: @subject,
+        scope: :query,
+        id: "query_form",
+        url: url_for(action: "index", set_filter: "1"),
+        method: :post
+      ) do |f|
+        div(id: "query_form_content") do
+          render_filter_settings
+          render_group_by_settings
+          render_cost_types_settings
+          render_controls_settings(f)
+        end
+      end
+    end
+  end
+
+  private
 
   def render_filter_settings
-    render_widget Widget::Settings::Fieldset, @subject,
-                  type: "filters" do
-      render_widget Widget::Filters, @subject
+    render Widget::Settings::Fieldset.new(@subject, type: "filters") do
+      render Widget::Filters.new(@subject)
     end
   end
 
   def render_group_by_settings
-    render_widget Widget::Settings::Fieldset, @subject,
-                  type: "group_by" do
-      render_widget Widget::GroupBys, @subject
+    render Widget::Settings::Fieldset.new(@subject, type: "group_by") do
+      render Widget::GroupBys.new(@subject)
     end
   end
 
   def render_cost_types_settings
-    render_widget Widget::Settings::Fieldset, @subject, type: "units" do
-      render_widget Widget::CostTypes,
-                    @cost_types,
-                    selected_type_id: @selected_type_id
+    render Widget::Settings::Fieldset.new(@subject, type: "units") do
+      render Widget::CostTypes.new(@cost_types, selected_type_id: @selected_type_id)
     end
   end
 
-  def render_controls_settings
-    content_tag :div, class: "form--buttons -with-button-form hide-when-print" do
-      widgets = "".html_safe
-      render_widget(Widget::Controls::Apply, @subject, to: widgets)
-      render_widget(Widget::Controls::Save, @subject, to: widgets,
-                                                      can_save: allowed_in_report?(:save, @subject, current_user))
-      if allowed_in_report?(:create, @subject, current_user)
-        render_widget(Widget::Controls::SaveAs, @subject, to: widgets,
-                                                          can_save_as_public: allowed_in_report?(:save_as_public, @subject, current_user))
+  def render_controls_settings(form) # rubocop:disable Metrics/AbcSize
+    render_stack do
+      render_stack_item do
+        render Widget::Controls::Apply.new(@subject, form)
       end
-      render_widget(Widget::Controls::Clear, @subject, to: widgets)
-      render_widget(Widget::Controls::Delete, @subject, to: widgets,
-                                                        can_delete: allowed_in_report?(:destroy, @subject, current_user))
+
+      render_stack_item do
+        render Widget::Controls::Save.new(@subject, form, can_save: allowed_in_report?(:save, @subject, current_user))
+      end
+
+      render_stack_item do
+        render Widget::Controls::SaveAs.new(
+          @subject,
+          form,
+          can_save_as: allowed_in_report?(:create, @subject, current_user),
+          can_save_as_public: allowed_in_report?(:save_as_public, @subject, current_user)
+        )
+      end
+
+      render_stack_item do
+        render Widget::Controls::Clear.new(@subject, form)
+      end
+
+      render_stack_item do
+        render Widget::Controls::Delete.new(@subject, form, can_delete: allowed_in_report?(:destroy, @subject, current_user))
+      end
     end
   end
 
-  def render
-    write(form_tag("#", id: "query_form", method: :post) do
-      content_tag :div, id: "query_form_content" do
-        # will render a setting menu for every setting.
-        # To add new settings, write a new instance method render_<a name>_setting
-        # and add <a name> to the @@settings_to_render list.
-        content = "".html_safe
-        settings_to_render.each do |setting_name|
-          render_method_name = "render_#{setting_name}_settings"
-          content << send(render_method_name) if respond_to? render_method_name
-        end
-        content
-      end
-    end)
+  def render_stack(**, &)
+    render(
+      Primer::Alpha::Stack.new(
+        **,
+        gap: :condensed,
+        direction: :horizontal,
+        align: :start,
+        wrap: :wrap,
+        role: "toolbar"
+      ),
+      &
+    )
   end
 
-  def render_with_options(options, &)
-    @cost_types = options.delete(:cost_types)
-    @selected_type_id = options.delete(:selected_type_id)
+  def render_stack_item(**, &)
+    rendered = capture(&)
+    return if rendered.blank?
 
-    super
-  end
-
-  def settings_to_render
-    @settings_to_render ||= %i[filter group_by cost_types controls]
+    render(Primer::Alpha::StackItem.new(**)) do
+      rendered
+    end
   end
 end

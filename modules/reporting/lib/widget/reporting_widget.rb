@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,52 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Widget::ReportingWidget < ActionView::Base
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::AssetTagHelper
-  include ActionView::Helpers::FormTagHelper
-  include ActionView::Helpers::JavaScriptHelper
-  include ActionView::Helpers::OutputSafetyHelper
-  include Rails.application.routes.url_helpers
-  include ApplicationHelper
-  include AngularHelper
+class Widget::ReportingWidget < Phlex::HTML
+  extend Dry::Initializer[undefined: false]
+
+  include Phlex::Rails::Helpers::Routes
+  include Phlex::Rails::Helpers::FormWith
+  include Phlex::Rails::Helpers::Request
+  include Phlex::Rails::Helpers::Translate
+
   include ReportingHelper
   include Redmine::I18n
 
-  attr_accessor :output_buffer, :controller, :config, :_content_for, :_routes, :subject
+  register_output_helper :angular_component_tag
+  register_value_helper :truncate_single_line
 
-  def self.new(subject)
-    super.tap do |o|
-      o.subject = subject
-    end
+  protected
+
+  def primer_form_with(**, &)
+    form_with(**, skip_default_ids: false, builder: Primer::Forms::Builder, &)
   end
 
-  def current_language
-    ::I18n.locale
-  end
-
-  def protect_against_forgery?
-    false
-  end
-
-  def method_missing(name, *, &)
-    controller.send(name, *, &)
-  rescue NoMethodError
-    raise NoMethodError, "undefined method `#{name}' for #<#{self.class}:0x#{object_id}>"
-  end
-
-  module RenderWidgetInstanceMethods
-    def render_widget(widget, subject, options = {}, &)
-      i = widget.new(subject)
-      i.config = config
-      i._routes = _routes
-      i._content_for = @_content_for
-      i.controller = respond_to?(:controller) ? controller : self
-      i.request = request
-      i.render_with_options(options, &)
-    end
+  def render_button(**, &)
+    render(Primer::Beta::Button.new(**), &)
   end
 end
-
-ActionView::Base.include Widget::ReportingWidget::RenderWidgetInstanceMethods
-ActionController::Base.include Widget::ReportingWidget::RenderWidgetInstanceMethods

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,7 +29,14 @@
 #++
 
 class Widget::Controls < Widget::Base
-  def cache_key
-    "#{super}#{@subject.new_record? ? 1 : 0}"
+  param :subject
+  param :form, optional: true
+
+  def view_template
+    render_control
+  end
+
+  def render_control
+    raise NotImplementedError, "Control subclasses must implement this method."
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,39 +30,28 @@
 
 # rubocop:disable Metrics/AbcSize
 class Widget::Filters < Widget::Base
-  def render
-    spacer = content_tag :li, "", class: "advanced-filters--spacer hide-when-print"
+  include Phlex::Rails::Helpers::LabelTag
+  include Phlex::Rails::Helpers::OptionsForSelect
+  include Phlex::Rails::Helpers::SelectTag
 
-    add_filter = content_tag :li, id: "add_filter_block", class: "advanced-filters--add-filter hide-when-print" do
-      add_filter_label = label_tag(
-        "add_filter_select",
-        I18n.t(:label_filter_add),
-        class: "advanced-filters--add-filter-label"
-      )
-      add_filter_label += label_tag(
-        "add_filter_select",
-        "#{I18n.t('js.filter.description.text_open_filter')} #{I18n.t('js.filter.description.text_close_filter')}",
-        class: "sr-only"
-      )
+  param :subject, reader: false
 
-      add_filter_value = content_tag :div, class: "advanced-filters--add-filter-value" do
-        select_tag "add_filter_select",
-                   options_for_select([["", ""]] + selectables),
-                   class: "advanced-filters--select",
-                   data: {
-                     action: "reporting--page#addFilter"
-                   },
-                   name: nil
-      end
+  attr_reader :engine
 
-      add_filter_label + add_filter_value
+  def initialize(...)
+    super
+
+    @engine = @subject.class
+  end
+
+  def view_template
+    ul id: "filter_table", class: "advanced-filters--filters" do
+      render_filters
+
+      li class: "advanced-filters--spacer hide-when-print"
+
+      add_filter
     end
-
-    list = content_tag :ul, id: "filter_table", class: "advanced-filters--filters" do
-      render_filters + spacer + add_filter
-    end
-
-    write content_tag(:div, list)
   end
 
   def selectables
@@ -72,7 +63,7 @@ class Widget::Filters < Widget::Base
 
   def render_filters
     active_filters = @subject.filters.select(&:display?)
-    filters = engine::Filter.all.select(&:selectable?).map do |filter|
+    engine::Filter.all.select(&:selectable?).map do |filter|
       opts = { id: "filter_#{filter.underscore_name}",
                class: "#{filter.underscore_name} advanced-filters--filter",
                "data-filter-name": filter.underscore_name }
@@ -82,49 +73,71 @@ class Widget::Filters < Widget::Base
       else
         opts[:style] = "display:none"
       end
-      content_tag :li, opts do
+      li(**opts) do
         render_filter filter, active_instance
       end
     end
-
-    safe_join(filters)
   end
 
   # rubocop:disable Metrics/PerceivedComplexity
   def render_filter(f_cls, f_inst)
     f = f_inst || f_cls
-    html = "".html_safe
-    render_widget Label, f, to: html
-    render_widget Operators, f, to: html
+    render Label.new(f)
+    render Operators.new(f)
 
     # Handling for custom widgets first
     if f_cls == CostQuery::Filter::ProjectId
-      render_widget Project, f, to: html
+      render Project.new(f)
     elsif user_filter?(f_cls)
-      render_widget User, f, to: html
+      render User.new(f)
     elsif f_cls == CostQuery::Filter::WorkPackageId
-      render_widget WorkPackage, f, to: html
+      render WorkPackage.new(f)
     # Handling of generic widgets
     elsif f_cls.heavy?
-      render_widget Heavy, f, to: html
+      render Heavy.new(f)
     elsif engine::Operator.string_operators.all? { |o| f_cls.available_operators.include? o }
-      render_widget TextBox, f, to: html
+      render TextBox.new(f)
     elsif engine::Operator.time_operators.all? { |o| f_cls.available_operators.include? o }
-      render_widget Date, f, to: html
+      render Date.new(f)
     elsif engine::Operator.integer_operators.all? { |o| f_cls.available_operators.include? o }
       if f_cls.available_values.blank?
-        render_widget TextBox, f, to: html
+        render TextBox.new(f)
       else
-        render_widget MultiValues, f, to: html, lazy: true
+        render MultiValues.new(f, lazy: true)
       end
     elsif f_cls.is_multiple_choice?
-      render_widget MultiChoice, f, to: html
+      render MultiChoice.new(f)
     else
-      render_widget MultiValues, f, to: html, lazy: true
+      render MultiValues.new(f, lazy: true)
     end
-    render_widget RemoveButton, f, to: html
+    render RemoveButton.new(f)
   end
   # rubocop:enable Metrics/PerceivedComplexity
+
+  def add_filter
+    li id: "add_filter_block", class: "advanced-filters--add-filter hide-when-print" do
+      label(for: "add_filter_select", class: "advanced-filters--add-filter-label") do
+        plain t(:label_filter_add)
+
+        span(class: "sr-only") do
+          plain t("js.filter.description.text_open_filter")
+          whitespace
+          plain t("js.filter.description.text_close_filter")
+        end
+      end
+
+      div class: "advanced-filters--add-filter-value" do
+        select_tag("add_filter_select",
+                   class: "advanced-filters--select",
+                   data: {
+                     action: "reporting--page#addFilter"
+                   },
+                   name: nil) do
+                     options_for_select([["", ""]] + selectables)
+                   end
+      end
+    end
+  end
 
   def user_filter?(f_cls)
     f_cls.in?([

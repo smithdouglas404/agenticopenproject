@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -41,10 +43,10 @@ class Widget::Table::ReportTable < Widget::Table
   def configure_walker
     @walker ||= @subject.walker
     @walker.for_final_row do |row, cells|
-      content_tag(:th, class: "normal inner left -break-word", scope: "row") do
-        concat show_row(row)
-        concat safe_join(cells)
-        concat content_tag(:td, show_result(row), class: "normal inner right")
+      th(class: "normal inner left -break-word", scope: "row") do
+        show_row(row)
+        cells
+        td(show_result(row), class: "normal inner right")
       end
     end
 
@@ -52,9 +54,9 @@ class Widget::Table::ReportTable < Widget::Table
       subrows.flatten!
       unless row.fields.empty?
         subrows[0] = capture do
-          concat content_tag(:th, show_row(row), class: "top left -breakword", rowspan: subrows.size)
-          concat html_safe_gsub(subrows[0], "class='normal", "class='top")
-          concat content_tag(:th, show_result(row), class: "top right", rowspan: subrows.size)
+          th(show_row(row), class: "top left -breakword", rowspan: subrows.size)
+          html_safe_gsub(subrows[0], "class='normal", "class='top")
+          th(show_result(row), class: "top right", rowspan: subrows.size)
         end
       end
       subrows[-1] = html_safe_gsub(subrows.last, "class='normal", "class='bottom")
@@ -66,35 +68,36 @@ class Widget::Table::ReportTable < Widget::Table
     @walker.for_empty_cell { "<td class='normal empty'>&nbsp;</td>".html_safe }
 
     @walker.for_cell do |result|
-      content_tag(:td, show_result(result), class: "normal right")
+      td(show_result(result), class: "normal right")
     end
   end
   # rubocop:enable Metrics/AbcSize
 
-  def render
+  def view_template
     configure_query
     configure_walker
-    write "<table class='report'>".html_safe
-    render_thead
-    render_tfoot
-    render_tbody
-    write "</table>".html_safe
+
+    table class: "report" do
+      render_thead
+      render_tfoot
+      render_tbody
+    end
   end
 
   def render_tbody
-    write "<tbody>".html_safe
-    first = true
-    odd = true
-    walker.body do |line|
-      if first
-        line = html_safe_gsub(line, "class='normal", "class='top")
-        first = false
+    tbody do
+      first = true
+      odd = true
+      walker.body do |line|
+        if first
+          line = html_safe_gsub(line, "class='normal", "class='top")
+          first = false
+        end
+        line = mark_penultimate_column(line)
+        tr(line, class: odd ? "odd" : "even")
+        odd = !odd
       end
-      line = mark_penultimate_column(line)
-      write content_tag(:tr, line, class: odd ? "odd" : "even")
-      odd = !odd
     end
-    write "</tbody>".html_safe
   end
 
   def mark_penultimate_column(line)
@@ -108,57 +111,58 @@ class Widget::Table::ReportTable < Widget::Table
     walker.headers
     return if walker.headers_empty?
 
-    write "<thead>".html_safe
-    walker.headers do |list, first, first_in_col, last_in_col|
-      write "<tr>".html_safe if first_in_col
-      if first
-        write(content_tag(:th, "", rowspan: @subject.depth_of(:column), colspan: @subject.depth_of(:row)))
+    thead do
+      walker.headers do |list, first, first_in_col, last_in_col|
+        "<tr>".html_safe if first_in_col
+        if first
+          th(rowspan: @subject.depth_of(:column), colspan: @subject.depth_of(:row))
+        end
+        list.each do |column|
+          opts = { colspan: column.final_number(:column) }
+          opts[:class] = "inner" if column.final?(:column)
+          th(**opts) do
+            show_row column
+          end
+        end
+        if first
+          th(rowspan: @subject.depth_of(:column), colspan: @subject.depth_of(:row))
+        end
+        "</tr>".html_safe if last_in_col
       end
-      list.each do |column|
-        opts = { colspan: column.final_number(:column) }
-        opts[:class] = "inner" if column.final?(:column)
-        write(content_tag(:th, opts) do
-          show_row column
-        end)
-      end
-      if first
-        write(content_tag(:th, "", rowspan: @subject.depth_of(:column), colspan: @subject.depth_of(:row)))
-      end
-      write "</tr>".html_safe if last_in_col
     end
-    write "</thead>".html_safe
   end
 
   def render_tfoot
     return if walker.headers_empty?
 
-    write "<tfoot>".html_safe
-    walker.reverse_headers do |list, first, first_in_col, last_in_col|
-      if first_in_col
-        write "<tr>".html_safe
-        if first
-          write(content_tag(:th, " ", rowspan: @subject.depth_of(:column), colspan: @subject.depth_of(:row), class: "top"))
+    tfoot do
+      walker.reverse_headers do |list, first, first_in_col, last_in_col|
+        if first_in_col
+          "<tr>".html_safe
+          if first
+            th(" ", rowspan: @subject.depth_of(:column), colspan: @subject.depth_of(:row), class: "top")
+          end
         end
-      end
 
-      list.each do |column|
-        opts = { colspan: column.final_number(:column) }
-        opts[:class] = "inner" if first
-        write(content_tag(:th, show_result(column), opts))
-      end
-      if last_in_col
-        if first
-          write(content_tag(:th,
-                            rowspan: @subject.depth_of(:column),
-                            colspan: @subject.depth_of(:row),
-                            class: "top result") do
-                  show_result @subject
-                end)
+        list.each do |column|
+          opts = { colspan: column.final_number(:column) }
+          opts[:class] = "inner" if first
+          th(show_result(column), opts)
         end
-        write "</tr>".html_safe
+        if last_in_col
+          if first
+            th(
+              rowspan: @subject.depth_of(:column),
+              colspan: @subject.depth_of(:row),
+              class: "top result"
+            ) do
+              show_result @subject
+            end
+          end
+          "</tr>".html_safe
+        end
       end
     end
-    write "</tfoot>".html_safe
   end
   # rubocop:enable Metrics/AbcSize
 end

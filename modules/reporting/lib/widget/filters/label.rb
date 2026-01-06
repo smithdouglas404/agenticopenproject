@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,14 +29,9 @@
 #++
 
 class Widget::Filters::Label < Widget::Filters::Base
-  def render
-    options = {
-      id: filter_class.underscore_name,
-      class: "advanced-filters--filter-name",
-      title: h(filter_class.label)
-    }
-    write(content_tag(:label, options) do
-      h(filter_class.label)
-    end)
+  def render_filter
+    label(id: filter_class.underscore_name, class: "advanced-filters--filter-name") do
+      filter_class.label
+    end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -31,9 +33,10 @@
 # as it would appear in a filters available values. If given, it renders the
 # option-tags from the content array instead of the filters available values.
 class Widget::Filters::Option < Widget::Filters::Base
-  def render
-    options = content(@options[:content] || filter_class.available_values)
-    write safe_join(options)
+  option :content, optional: true
+
+  def render_filter
+    content(@content || filter_class.available_values)
   end
 
   # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
@@ -42,18 +45,19 @@ class Widget::Filters::Option < Widget::Filters::Base
     values.map do |name, id, *args|
       options = args.first || {} # optional configuration for values
       level = options[:level] # nesting_level is optional for values
-      name = I18n.t(name) if name.is_a? Symbol
-      name = I18n.t(:label_none) if name.empty?
+      name = t(name) if name.is_a? Symbol
+      name = t(:label_none) if name.empty?
       name_prefix = (level && level > 0 ? "#{' ' * 2 * level}> " : "")
       if options[:optgroup]
-        tag :optgroup, label: I18n.t(:label_sector)
+        optgroup label: t(:label_sector)
       else
         opts = { value: id }
         if (Array(filter.values).map(&:to_s).include? id.to_s) || (first && Array(filter.values).empty?)
           opts[:selected] = "selected"
         end
         first = false
-        content_tag(:option, opts) { name_prefix + name }
+
+        option(**opts) { name_prefix + name }
       end
     end
   end

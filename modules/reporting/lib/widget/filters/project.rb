@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,37 +29,33 @@
 #++
 
 class Widget::Filters::Project < Widget::Filters::Base
-  include AngularHelper
-
-  def render
-    write(content_tag(:div, id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value") do
-      label = html_label
-
+  def render_filter
+    div(id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value") do
       selected_values = map_filter_values
 
-      box = angular_component_tag "opce-project-autocompleter",
-                                  inputs: {
-                                    filters: [],
-                                    InputName: "values[#{filter_class.underscore_name}]",
-                                    hiddenFieldAction: "change->reporting--page#selectValueChanged",
-                                    multiple: true,
-                                    model: selected_values.compact
-                                  },
-                                  id: "#{filter_class.underscore_name}_select_1",
-                                  class: "filter-value"
+      span(class: "inline-label") do
+        html_label
 
-      content_tag(:span, class: "inline-label") do
-        label + box
+        angular_component_tag "opce-project-autocompleter",
+                              inputs: {
+                                filters: [],
+                                InputName: "values[#{filter_class.underscore_name}]",
+                                hiddenFieldAction: "change->reporting--page#selectValueChanged",
+                                multiple: true,
+                                model: selected_values.compact
+                              },
+                              id: "#{filter_class.underscore_name}_select_1",
+                              class: "filter-value"
       end
-    end)
+    end
   end
 
   private
 
   def html_label
-    label_tag "#{filter_class.underscore_name}_arg_1_val",
-              "#{h(filter_class.label)} #{I18n.t(:label_filter_value)}",
-              class: "sr-only"
+    label for: "#{filter_class.underscore_name}_arg_1_val", class: "sr-only" do
+      "#{filter_class.label} #{t(:label_filter_value)}"
+    end
   end
 
   def map_filter_values

@@ -34,13 +34,14 @@
 #        But well this is again one of those temporary solutions.
 class Widget::Filters::Heavy < Widget::Filters::Base
   # rubocop:disable Metrics/AbcSize
-  def render
+  def render_filter
     # TODO: sometimes filter.values is of the form [["3"]] and sometimes ["3"].
     #       (using cost reporting)
     #       this might be a bug - further research would be fine
     values = filter.values.first.is_a?(Array) ? filter.values.first : filter.values
     opts = Array(values).empty? ? [] : values.map { |i| filter_class.label_for_value(i.to_i) }
-    div = content_tag :div, id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value hidden" do
+
+    div id: "#{filter_class.underscore_name}_arg_1", class: "advanced-filters--filter-value hidden" do
       select_options = {
         "data-remote-url": url_for(action: "available_values"),
         "data-initially-selected": JSON::dump(Array(filter.values).flatten),
@@ -51,13 +52,12 @@ class Widget::Filters::Heavy < Widget::Filters::Base
         "data-filter-name": filter_class.underscore_name,
         "data-action": "change->reporting--page#selectValueChanged"
       }
-      box = content_tag :select, select_options do
-        render_widget Widget::Filters::Option, filter, content: opts
+      select(**select_options) do
+        render Widget::Filters::Option.new(filter, content: opts)
       end
-      box
     end
-    alternate_text = safe_join(opts.map(&:first), ", ")
-    write(div + content_tag(:label, alternate_text))
+
+    label { opts.map(&:first).join(", ") }
   end
 
   # rubocop:enable Metrics/AbcSize

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,33 +30,42 @@
 
 class Widget::Table < Widget::Base
   extend Report::InheritedAttribute
-  include ReportingHelper
+  include Phlex::Rails::Helpers::TurboFrameTag
+
+  delegate :cost_type, :unit_id, to: :controller
 
   attr_accessor :fields, :mapping
 
-  def initialize(query)
-    raise ArgumentError, "Tables only work on CostQuery!" unless query.is_a? CostQuery
+  def initialize(subject, **options)
+    raise ArgumentError, "Tables only work on CostQuery!" unless subject.is_a? CostQuery
+
+    @subject = subject
+    @options = options
 
     super
   end
+
+  def view_template
+    turbo_frame_tag(id: "foo-bar") do
+      comment { "table start" }
+      if @subject.result.count <= 0
+        div(class: "generic-table--no-results-container") do
+          i(class: "icon-info1")
+          span(class: "generic-table--no-results-title") { t(:no_results_title_text) }
+        end
+      else
+        render(resolve_table.new(@subject, **@options))
+      end
+    end
+  end
+
+  private
 
   def resolve_table
     if @subject.group_bys.empty?
       Widget::Table::EntryTable
     else
       Widget::Table::ReportTable
-    end
-  end
-
-  def render
-    write("<!-- table start -->".html_safe)
-    if @subject.result.count <= 0
-      write(content_tag(:div, "", class: "generic-table--no-results-container") do
-        content_tag(:i, "", class: "icon-info1") +
-          content_tag(:span, I18n.t(:no_results_title_text), class: "generic-table--no-results-title")
-      end)
-    else
-      render_widget(resolve_table, @subject, @options.reverse_merge(to: @output))
     end
   end
 end
