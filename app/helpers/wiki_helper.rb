@@ -61,7 +61,7 @@ module WikiHelper
 
   def wiki_module_breadcrumb(project, page)
     {
-      href: url_for({ controller: "/wiki", action: "index", project_id: project.identifier, id: page }),
+      href: toc_project_wiki_path(project, page),
       text: Wiki.human_model_name
     }
   end
