@@ -140,9 +140,7 @@ by clicking on the **Copy-to-Clipboard** element next to the information text, o
 **View** icon.
 
 > [!TIP]
-> If you have selected automatically managed access and folders you will also see the *Health status* message on the
-> right side. If the file storage set-up is incomplete or faulty, an error message will be displayed in that section. Read
-> more about errors and troubleshooting [here](../../files/external-file-storages/health-status/).
+> If you have selected automatically managed access and folders you will also see the *Health status* message on the right side. If the file storage set-up is incomplete or faulty, an error message will be displayed in that section. Read more about errors and troubleshooting [here](../../files/external-file-storages/health-status/).
 
 ![Edit OneDrive in OpenProject](openproject_system_guide_edit_icon_onedrive_storage.png)
 
@@ -166,7 +164,7 @@ it to enter the next page. Then they need to click the **Delete** button in the 
 
 ![Delete icon for OneDrive integration in OpenProject system settings](openproject_system_guide_delete_icon_onedrive_storage.png)
 
-You will be asked to confirm the exact file storage name.
+You will be asked to confirm you understand the consequences of the deletion.
 
 ![Delete a OneDrive integration from OpenProject system settings](openproject_system_guide_delete_onedrive_storage.png)
 

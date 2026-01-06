@@ -10,7 +10,7 @@ keywords: file storages, Nextcloud setup, Nextcloud integration, OneDrive setup,
 
 You can connect your OpenProject installation to Nextcloud, OneDrive or SharePoint. To do that navigate to **Administration** -> **Files** -> **External file storages** and select the respective option.
 
-You need to have administrator rights to be able to set up the integration.
+Please keep in mind that you need to have administrator rights to be able to set up the integration.
 
 ![Files storages in OpenProject administration](openproject_admin_guide_file_storages.png)
 

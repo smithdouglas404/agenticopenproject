@@ -32,9 +32,7 @@ Click on **+ Storage** or the **+** icon below the table.
 
 ![List of file storages available in a project under project settings in OpenProject](file-storages-available-in-project.png)
 
-In the page that follows, you will be able to select one of the file storages set up by your administrator. You can
-select Nextcloud or OneDrive file storages from the drop-down menu. If you only have one file storage set up (
-which is the most likely scenario), it should already be selected by default. Once the storage is selected click on the
+In the page that follows, you will be able to select one of the file storages set up by your administrator. You can select Nextcloud, OneDrive or SharePoint file storages from the drop-down menu. If you only have one file storage set up (which is the most likely scenario), it should already be selected by default. Once the storage is selected click on the
 **Continue** button to proceed.
 
 ![Add a file storage to a project under project settings in OpenProject](storage-add-new.png)
@@ -42,16 +40,12 @@ which is the most likely scenario), it should already be selected by default. On
 ## Add a OneDrive storage to a project (Enterprise add-on)
 
 > [!NOTE]
-> OneDrive integration is an Enterprise add-on and can only be used
-> with [Enterprise cloud](../../../../enterprise-guide/enterprise-cloud-guide/)
-> or [Enterprise on-premises](../../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free
-> Community edition is easy and helps support OpenProject.
+> OneDrive integration is an Enterprise add-on and can only be used > with [Enterprise cloud](../../../../enterprise-guide/enterprise-cloud-guide/) > or [Enterprise on-premises](../../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
 
 If you have selected the OneDrive option in the previous step of storage selection, you will now see the **Project
 folder** options.
 
-Here you can choose which kind of OneDrive project folder will be the default folder for file uploads for this project
-when using OneDrive integration.
+Here you can choose which kind of OneDrive project folder will be the default folder for file uploads for this project when using OneDrive integration.
 
 ![Select OneDrive folder type in OpenProject](onedrive-storage-add-folders-new.png)
 
@@ -63,8 +57,7 @@ when using OneDrive integration.
    in [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions). This
    option will only be available if the system administrator
    has [set up the storage with automatically managed folders](../../../../system-admin-guide/integrations/one-drive/).
-3. **Existing folder with manually managed permissions**: Once you selected this option, you can designate an existing
-   folder as the project folder for this project using the button **Select folder**. The permissions are however not
+3. **Existing folder with manually managed permissions**: Once you selected this option, you can designate an existing folder as the project folder for this project using the button **Select folder**. The permissions are however not
    automatically managed, **instead the folder and its content inherits the permissions as configured in the drive or
    the containing SharePoint site**. The administrator needs to manually ensure relevant users have access. The selected
    folder can be used by multiple projects.
@@ -76,6 +69,13 @@ The OneDrive file storage is now available to all work packages in this project.
 > [!TIP]
 > Please refer to the [OneDrive user guide](../../../file-management/one-drive-integration) for further instructions on
 > using the integration at a user level.
+
+## Add a SharePoint storage to a project (Enterprise add-on)
+
+> [!NOTE]
+> OneDrive integration is an Enterprise add-on and can only be used > with [Enterprise cloud](../../../../enterprise-guide/enterprise-cloud-guide/) > or [Enterprise on-premises](../../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
+
+The steps for adding a SharePoint integration to a project are similar 
 
 ## Add a Nextcloud storage to a project
 
