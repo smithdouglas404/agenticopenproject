@@ -408,7 +408,7 @@ group :postgres do
 end
 
 # Support application loading when no database exists yet.
-gem "activerecord-nulldb-adapter", "~> 1.1.1"
+gem "activerecord-nulldb-adapter", "~> 1.2.2"
 
 # Have application level locks on the database to have a mutex shared between workers/hosts.
 # We e.g. employ this to safeguard the creation of journals.
