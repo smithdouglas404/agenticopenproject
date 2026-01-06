@@ -130,6 +130,14 @@ RSpec.describe(
     let(:all_modules) { described_class.copyable_dependencies.pluck(:identifier) }
     let(:project_copy) { subject.result }
 
+    def copy_of(work_package)
+      copied_work_package = project_copy.work_packages.find_by(subject: work_package.subject)
+      expect(copied_work_package).not_to be_nil,
+                                         "Expected work package '#{work_package.subject}' to be copied to " \
+                                         "project '#{project_copy.name}' but was not"
+      copied_work_package
+    end
+
     shared_examples_for "copies public attribute" do
       describe "#public" do
         before do
@@ -969,8 +977,7 @@ RSpec.describe(
 
             it "copies the assigned_to" do
               expect(subject).to be_success
-              expect(project_copy.work_packages[0].assigned_to)
-                .to eql assigned_user
+              expect(copy_of(work_package).assigned_to).to eq(assigned_user)
               # The assignee of the new work package receives a notification
               expect { perform_enqueued_jobs }
                 .to change(Notification.where(recipient: assigned_user), :count)
@@ -984,8 +991,7 @@ RSpec.describe(
 
             it "nils the assigned_to" do
               expect(subject).to be_success
-              expect(project_copy.work_packages[0].assigned_to)
-                .to be_nil
+              expect(copy_of(work_package).assigned_to).to be_nil
               # No notification is sent out
               expect { perform_enqueued_jobs }
                 .not_to change(Notification.where(recipient: assigned_user), :count)
@@ -1008,8 +1014,7 @@ RSpec.describe(
 
             it "copies the responsible" do
               expect(subject).to be_success
-              expect(project_copy.work_packages[0].responsible)
-                .to eql responsible_user
+              expect(copy_of(work_package).responsible).to eq(responsible_user)
               # The responsible of the new work package receives a notification
               expect { perform_enqueued_jobs }
                 .to change(Notification.where(recipient: responsible_user), :count)
@@ -1021,9 +1026,9 @@ RSpec.describe(
           context "with the member being not copied" do
             let(:only_args) { %w[work_packages] }
 
-            it "nils the assigned_to" do
+            it "nils the responsible" do
               expect(subject).to be_success
-              expect(project_copy.work_packages[0].responsible).to be_nil
+              expect(copy_of(work_package).responsible).to be_nil
               # No notification is sent out
               expect { perform_enqueued_jobs }
                 .not_to change(Notification.where(recipient: responsible_user), :count)
@@ -1052,8 +1057,7 @@ RSpec.describe(
 
             it "copies the custom_field" do
               expect(subject).to be_success
-              wp = project_copy.work_packages.find_by(subject: work_package.subject)
-              expect(wp.send(custom_field.attribute_getter)).to eql other_user
+              expect(copy_of(work_package).send(custom_field.attribute_getter)).to eql other_user
             end
           end
 
@@ -1062,8 +1066,7 @@ RSpec.describe(
 
             it "nils the custom_field" do
               expect(subject).to be_success
-              wp = project_copy.work_packages.find_by(subject: work_package.subject)
-              expect(wp.send(custom_field.attribute_getter)).to be_nil
+              expect(copy_of(work_package).send(custom_field.attribute_getter)).to be_nil
             end
           end
         end
