@@ -1374,7 +1374,6 @@ en:
         work_packages: "Work Packages"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Section
       subproject_template_assignment:
         workspace_type: "Workspace type"
