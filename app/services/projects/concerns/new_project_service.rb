@@ -86,10 +86,8 @@ module Projects::Concerns
     def build_missing_project_custom_field_project_mappings(project)
       # Activate all custom fields (via mapping table) that have no mapping, but are either
       # intended for all projects, or have a value provided by the user.
-
-      custom_field_ids = activatable_custom_field_ids_from_project(project)
-      custom_field_ids += activatable_custom_field_ids_from_params
-      custom_field_ids.uniq!
+      custom_field_ids = Set.new(activatable_custom_field_ids_from_project(project))
+      custom_field_ids.merge(activatable_custom_field_ids_from_params)
 
       activated_custom_field_ids = project.project_custom_field_project_mappings.pluck(:custom_field_id).uniq
 
@@ -109,14 +107,16 @@ module Projects::Concerns
 
     def activatable_custom_field_ids_from_params
       # We will activate fields that are explicitly set via params
+
       # Extract custom field IDs from custom_field_values
       via_cf_values = params.fetch(:custom_field_values, {})
-                            .keys.map(&:to_i)
+                            .keys
+                            .map { it.to_s.to_i }
 
       # Extract custom field IDs from params keys that match 'custom_field_<id>'
       via_cf = params.keys
                      .grep(/\Acustom_field_\d+\z/)
-                     .map { |k| k.to_s.match(/custom_field_(\d+)/)[1].to_i }
+                     .map { |k| k.to_s[/custom_field_(\d+)/, 1].to_i }
 
       via_cf_values + via_cf
     end
