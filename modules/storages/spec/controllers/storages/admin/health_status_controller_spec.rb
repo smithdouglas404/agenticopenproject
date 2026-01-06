@@ -67,6 +67,13 @@ RSpec.describe Storages::Admin::HealthStatusController do
       expect(response).to render_template "show"
     end
 
+    it "renders turbo_stream format when requested" do
+      get :show, params: params, as: :turbo_stream
+      expect(response).to be_successful
+      expect(response).to render_template "show"
+      expect(response.content_type).to include("text/vnd.turbo-stream.html")
+    end
+
     it "sends the text version of the report when requested" do
       # Creating an actual report result and caching it so we can test the rendering of the response
       validator = Storages::Adapters::Registry["nextcloud.validators.connection"].new(storage)
@@ -100,6 +107,14 @@ RSpec.describe Storages::Admin::HealthStatusController do
     it "creates and caches a health status report and redirects to show" do
       post :create, params: params
       expect(response.status).to redirect_to admin_settings_storage_health_status_report_path(storage)
+      expect(Rails.cache.read(cache_key)).to be_a(Storages::Adapters::ConnectionValidators::ValidatorResult)
+    end
+
+    it "creates and caches a health status report and renders turbo_stream when requested" do
+      post :create, params: params, as: :turbo_stream
+      expect(response).to be_successful
+      expect(response).to render_template "show"
+      expect(response.content_type).to include("text/vnd.turbo-stream.html")
       expect(Rails.cache.read(cache_key)).to be_a(Storages::Adapters::ConnectionValidators::ValidatorResult)
     end
   end
