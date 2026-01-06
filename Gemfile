@@ -62,7 +62,7 @@ gem "warden-basic_auth", "~> 0.2.1"
 gem "pagy"
 gem "will_paginate", "~> 4.0.0"
 
-gem "friendly_id", "~> 5.5.0"
+gem "friendly_id", "~> 5.6.0"
 
 gem "scimitar", "~> 2.13"
 
