@@ -146,9 +146,9 @@ RSpec.describe Projects::CreateService, type: :model do
 
           describe "activation of custom fields with default values" do
             [
-              { description: "explicitly set to blank", value: "", should_activate: false },
-              { description: "implicitly set to blank", value: nil, should_activate: false },
-              { description: "explicitly set to its default", value: "default", should_activate: false },
+              { description: "implicitly set to its default", value: nil, should_activate: false },
+              { description: "explicitly set to its default", value: "default", should_activate: true },
+              { description: "explicitly set to blank", value: "", should_activate: true },
               { description: "explicitly set to a user value", value: "a user set value", should_activate: true }
             ].each do |test_case|
               context "if the default value is #{test_case[:description]}" do
