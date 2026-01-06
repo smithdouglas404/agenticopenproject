@@ -10,7 +10,11 @@ keywords: project overview, project home, home page, homepage, project widget
 
 ## Project widgets overview
 
-**Widgets** are small blocks of information that you can customize to display pertinent project information (such as project description, status, work package lists or graphs). These widgets are displayed on the project home page. Project overview tab displays certain widgets in a pre-set layout. However, under the *Dashboard* tab you can add and remove multiple widgets, re-order them and resize them to your liking.
+**Widgets** are small blocks of information that you can customize to display pertinent project information (such as project description, status, work package lists or graphs). These widgets are displayed on the project home page. 
+
+> [!TIP]
+>
+> Project overview tab displays certain widgets in a pre-set layout. However, under the *Dashboard* tab you can add and remove multiple widgets, re-order them and resize them to your liking.
 
 <video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Quick_guide-Widgets.mp4"></video>
 
@@ -66,9 +70,7 @@ You can add a widget which displays all project members and their corresponding 
 
 ![Project members widget in OpenProject](openproject_user_guide_project_overview_project_members_widget.png)
 
-You can [add members to your project](../../../getting-started/invite-members/) via the green **+ Member** button in the bottom left corner.
-
-The **View all members** button displays the list of project members that have been added to your project. Members can be individuals as well as entire groups.
+Clicking the **View all members** link will take you to the **[Members](../../members)** module, where you can view and edit the list of project members. Project members can be individuals as well as entire groups.
 
 ### News widget
 
