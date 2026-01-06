@@ -976,6 +976,7 @@ Rails.application.routes.draw do
 
   scope controller: "my" do
     get "/my/password", action: "password"
+    get "/my/password_confirmation_dialog", action: "password_confirmation_dialog"
     post "/my/change_password", action: "change_password"
 
     get "/my/account", action: "account"

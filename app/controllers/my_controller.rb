@@ -48,6 +48,7 @@ class MyController < ApplicationController
                              :update_settings,
                              :password,
                              :change_password,
+                             :password_confirmation_dialog,
                              :notifications,
                              :reminders
 
@@ -83,6 +84,10 @@ class MyController < ApplicationController
     change_password_flow(user: @user, params:, update_legacy: false) do
       redirect_to action: "password"
     end
+  end
+
+  def password_confirmation_dialog
+    respond_with_dialog My::PasswordConfirmationDialog.new
   end
 
   # Configure user's in app notifications
