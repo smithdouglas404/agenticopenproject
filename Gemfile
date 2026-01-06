@@ -380,7 +380,7 @@ group :development, :test do
   gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem "bootsnap", "~> 1.19.0", require: false
+gem "bootsnap", "~> 1.20.0", require: false
 
 # API gems
 gem "grape", "~> 2.4.0"
