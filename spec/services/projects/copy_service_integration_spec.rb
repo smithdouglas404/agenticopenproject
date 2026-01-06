@@ -130,10 +130,10 @@ RSpec.describe(
     let(:all_modules) { described_class.copyable_dependencies.pluck(:identifier) }
     let(:project_copy) { subject.result }
 
-    def copy_of(work_package)
-      copied_work_package = project_copy.work_packages.find_by(subject: work_package.subject)
+    def copy_of(original_work_package)
+      copied_work_package = project_copy.work_packages.find_by(subject: original_work_package.subject)
       expect(copied_work_package).not_to be_nil,
-                                         "Expected work package '#{work_package.subject}' to be copied to " \
+                                         "Expected work package '#{original_work_package.subject}' to be copied to " \
                                          "project '#{project_copy.name}' but was not"
       copied_work_package
     end
@@ -516,7 +516,7 @@ RSpec.describe(
 
           it "produces a valid query that is mapped in the new project" do
             expect(subject).to be_success
-            copied_wp = project_copy.work_packages.find_by(subject: "source wp")
+            copied_wp = copy_of(source_wp)
             copied = project_copy.queries.find_by(name: query.name)
             expect(copied.filters[1].values).to eq [copied_wp.id.to_s]
           end
@@ -661,8 +661,7 @@ RSpec.describe(
           expect(subject).to be_success
 
           expect(source.work_packages.count).to eq(project_copy.work_packages.count)
-          copied_wp = project_copy.work_packages.find_by(subject: "source wp")
-          expect(copied_wp.budget).to be_nil
+          expect(copy_of(source_wp).budget).to be_nil
         end
 
         context "if categories are copied" do
@@ -673,7 +672,7 @@ RSpec.describe(
 
             expect(subject).to be_success
 
-            wp = project_copy.work_packages.find_by(subject: source_wp.subject)
+            wp = copy_of(source_wp)
             expect(wp.category.name).to eq "Stock management"
             # Category got copied
             expect(wp.category.id).not_to eq source_category.id
@@ -692,7 +691,7 @@ RSpec.describe(
           it "updates the version" do
             expect(subject).to be_success
 
-            wp = project_copy.work_packages.find_by(subject: source_wp.subject)
+            wp = copy_of(source_wp)
             expect(wp.version.name).to eq "Assigned Issues"
             expect(wp.version).to be_closed
             expect(wp.version.id).not_to eq assigned_version.id
@@ -712,7 +711,7 @@ RSpec.describe(
               expect(subject).to be_success
               expect(project_copy.work_packages.count).to eq(3)
 
-              wp = project_copy.work_packages.find_by(subject: work_package.subject)
+              wp = copy_of(work_package)
               expect(wp.attachments.count).to eq(1)
               expect(wp.attachments.first.author).to eql(current_user)
             end
@@ -723,7 +722,7 @@ RSpec.describe(
               expect(subject).to be_success
               expect(project_copy.work_packages.count).to eq(3)
 
-              wp = project_copy.work_packages.find_by(subject: work_package.subject)
+              wp = copy_of(work_package)
               expect(wp.attachments.count).to eq(0)
             end
           end
@@ -802,9 +801,9 @@ RSpec.describe(
           it do
             expect(subject).to be_success
 
-            grandparent_wp_copy = project_copy.work_packages.find_by(subject: work_package3.subject)
-            parent_wp_copy = project_copy.work_packages.find_by(subject: work_package2.subject)
-            child_wp_copy = project_copy.work_packages.find_by(subject: work_package.subject)
+            grandparent_wp_copy = copy_of(work_package3)
+            parent_wp_copy = copy_of(work_package2)
+            child_wp_copy = copy_of(work_package)
 
             expect([grandparent_wp_copy, parent_wp_copy, child_wp_copy]).to all be_present
             expect(child_wp_copy.parent).to eq(parent_wp_copy)
@@ -825,7 +824,7 @@ RSpec.describe(
 
           it do
             expect(subject).to be_success
-            wp = project_copy.work_packages.find_by(subject: work_package.subject)
+            wp = copy_of(work_package)
             expect(cat = wp.category).not_to be_nil
             expect(cat.project).to eq(project_copy)
           end
@@ -847,7 +846,7 @@ RSpec.describe(
 
             it "does copy active watchers but does not add the copying user as a watcher" do
               expect(subject).to be_success
-              expect(project_copy.work_packages[0].watcher_users)
+              expect(copy_of(work_package).watcher_users)
                 .to contain_exactly(watcher)
             end
           end
@@ -866,7 +865,7 @@ RSpec.describe(
 
             it "does not copy locked watchers and does not add the copying user as a watcher" do
               expect(subject).to be_success
-              expect(project_copy.work_packages[0].watcher_users).to be_empty
+              expect(copy_of(work_package).watcher_users).to be_empty
             end
           end
         end
@@ -908,8 +907,7 @@ RSpec.describe(
               expect(shared_wp_member.principal).to eq(source_wp_shared_with_user)
               expect(shared_wp_member.roles).to contain_exactly(wp_role)
 
-              copied_wp = project_copy.work_packages.find_by(subject: "source wp")
-              expect(shared_wp_member.entity).to eq(copied_wp)
+              expect(shared_wp_member.entity).to eq(copy_of(source_wp))
             end
           end
 
@@ -953,12 +951,9 @@ RSpec.describe(
 
           it "assigns the work packages to copies of the versions" do
             expect(subject).to be_success
-            expect(project_copy.work_packages.detect { |wp| wp.subject == work_package.subject }.version.name)
-              .to eql version.name
-            expect(project_copy.work_packages.detect { |wp| wp.subject == work_package2.subject }.version.name)
-              .to eql version2.name
-            expect(project_copy.work_packages.detect { |wp| wp.subject == work_package3.subject }.version)
-              .to be_nil
+            expect(copy_of(work_package).version.name).to eq version.name
+            expect(copy_of(work_package2).version.name).to eq version2.name
+            expect(copy_of(work_package3).version).to be_nil
           end
         end
 
@@ -1084,8 +1079,8 @@ RSpec.describe(
             expect(subject).to be_success
 
             expect(source.work_packages.count).to eq(project_copy.work_packages.count)
-            copied_wp = project_copy.work_packages.find_by(subject: "source wp")
-            copied_wp2 = project_copy.work_packages.find_by(subject: "source wp2")
+            copied_wp = copy_of(source_wp)
+            copied_wp2 = copy_of(source_wp2)
 
             # First issue with a relation on project
             # copied relation + reflexive relation
@@ -1111,12 +1106,10 @@ RSpec.describe(
             expect(subject).to be_success
             expect(project_copy.work_packages.count).to eq(2)
 
-            copied_wp = project_copy.work_packages.find_by(subject: source_wp.subject)
-            expect(copied_wp.project_phase_definition_id).to eq(source_project_phase.definition_id)
+            expect(copy_of(source_wp).project_phase_definition_id).to eq(source_project_phase.definition_id)
 
             [source_wp, source_wp_locked].each do |wp|
-              copied_wp = project_copy.work_packages.find_by(subject: wp.subject)
-              expect(copied_wp.project_phase_definition_id).to eq(wp.project_phase_definition_id)
+              expect(copy_of(wp).project_phase_definition_id).to eq(wp.project_phase_definition_id)
             end
           end
         end
