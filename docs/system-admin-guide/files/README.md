@@ -21,5 +21,9 @@ Under [attachments](./attachments) you can manage settings for attachments in wo
 
 ## Categories
 
-Under [categories](./categories) you can create and manage documentation categories in OpenProject.
+Under categories you can create and manage documentation categories in OpenProject.
+
+>  [!NOTE]
+>
+> With 17.0 the *Documents* module was enhanced with live-collaboration features, resulting in a dedicated area in system adminstration. From then on documentation of Categories was moved [here](../documents).
 

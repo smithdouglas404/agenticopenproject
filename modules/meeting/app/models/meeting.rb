@@ -115,7 +115,7 @@ class Meeting < ApplicationRecord
   before_save :add_new_participants_as_watcher
 
   after_update :send_updated_mail, if: -> {
-    saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location?
+    saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location? || saved_change_to_title?
   }
 
   enum :state, {
@@ -273,14 +273,16 @@ class Meeting < ApplicationRecord
             changes: updated_mail_changes
   end
 
-  def updated_mail_changes
+  def updated_mail_changes # rubocop:disable Metrics/AbcSize
     {
       old_start: saved_change_to_start_time? ? saved_change_to_start_time.first : start_time,
       new_start: start_time,
       old_duration: saved_change_to_duration? ? saved_change_to_duration.first : duration,
       new_duration: duration,
       old_location: saved_change_to_location? ? saved_change_to_location.first : location,
-      new_location: location
+      new_location: location,
+      old_title: saved_change_to_title? ? saved_change_to_title.first : title,
+      new_title: title
     }
   end
 end
