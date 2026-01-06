@@ -191,7 +191,7 @@ fil:
       error_cannot_act_self: "Cannot perform actions on your own uploaded files."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "Sa tanawin na ito, pwede kang makalikha ng custom na tulong na mga teksto para sa mga katangian na tanawin. Kung mabigyan ng kahulugan, ang mga tekstong ito ay pwedeng makita sa pamamagitan ng pagpipindot ng icon na tulong kasunod sa pag-aari na katangian."
     show_preview: "Preview na teksto"
     add_new: "Magdagdag ng tulong na teksto"
@@ -351,7 +351,7 @@ fil:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -521,7 +521,7 @@ fil:
         text: "This action will not delete any project the list contains. Are you sure you want to delete this project list?"
     settings:
       header_details: Basic details
-      header_status: Estado ng proyekto
+      header_status: Status
       header_relations: Project relations
       button_update_details: Update details
       button_update_status_description: Update status description
@@ -619,7 +619,7 @@ fil:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Edit project status
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1254,8 +1254,8 @@ fil:
           true: "public"
           false: "private"
         queries: "Mga query"
-        status_code: "Estado ng proyekto"
-        status_explanation: "Project status description"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Not started"
           on_track: "On track"
@@ -1279,7 +1279,6 @@ fil:
         work_packages: "Ang mga pakete na ginawa"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Section
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2564,7 +2563,7 @@ fil:
       enabled: "Disable"
   enumeration_activities: "Time tracking activities"
   enumeration_work_package_priorities: "Ang mga prioridad ng work package"
-  enumeration_reported_project_statuses: "Estado ng inuulat na proyekto"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
   enterprise_trials:
@@ -4271,6 +4270,8 @@ fil:
   setting_apiv3_docs_enabled: "Enable docs page"
   setting_apiv3_docs_enabled_instructions_html: >
     If the docs page is enabled you can get an interactive view of the APIv3 documentation under <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Attachment upload whitelist"
   setting_email_delivery_method: "Pamaraan ng paghahatid ng email"
   setting_emails_salutation: "Address user in emails with"

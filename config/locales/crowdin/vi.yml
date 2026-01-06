@@ -191,7 +191,7 @@ vi:
       error_cannot_act_self: "Không thể thực hiện hành động trên các tệp bạn đã tải lên."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "Tại đây, bạn có thể tạo các văn bản hiển thị hỗ trợ. Khi hoàn thành, các văn bản có thể được hiển thị bằng cách nhấp vào biểu tượng trợ giúp bên cạnh các giá trị."
     show_preview: "Văn bản xem trước"
     add_new: "Thêm văn bản trợ giúp"
@@ -351,7 +351,7 @@ vi:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -520,7 +520,7 @@ vi:
         text: "Hành động này sẽ không xóa bất kỳ dự án nào có trong danh sách. Bạn có chắc chắn muốn xóa danh sách dự án này không?"
     settings:
       header_details: Basic details
-      header_status: Tình trạng dự án
+      header_status: Status
       header_relations: Project relations
       button_update_details: Update details
       button_update_status_description: Update status description
@@ -618,7 +618,7 @@ vi:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Edit project status
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1245,8 +1245,8 @@ vi:
           true: "công khai"
           false: "riêng tư"
         queries: "Truy vấn"
-        status_code: "Tình trạng dự án"
-        status_explanation: "Mô tả trạng thái dự án"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Chưa bắt đầu"
           on_track: "Đang tiến triển"
@@ -1270,7 +1270,6 @@ vi:
         work_packages: "Work Packages"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Phần
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2517,7 +2516,7 @@ vi:
       enabled: "Disable"
   enumeration_activities: "Theo dõi hoạt động"
   enumeration_work_package_priorities: "Độ ưu tiên của work package"
-  enumeration_reported_project_statuses: "Tình trạng dự án đã báo cáo"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
   enterprise_trials:
@@ -4224,6 +4223,8 @@ vi:
   setting_apiv3_docs_enabled: "Kích hoạt trang tài liệu"
   setting_apiv3_docs_enabled_instructions_html: >
     Nếu trang tài liệu được kích hoạt, bạn có thể xem tài liệu APIv3 tương tác tại <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Danh sách trắng tải lên tệp đính kèm"
   setting_email_delivery_method: "Cách gửi email"
   setting_emails_salutation: "Chào người dùng trong email với"

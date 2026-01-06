@@ -19,7 +19,7 @@ cs:
           title: 'Popis projektu'
           no_results: "Zatím nebyl napsán žádný popis. Můžete ho uvést v \"Nastavení projektu\"."
         project_status:
-          title: 'Stav projektu'
+          title: 'Status'
           not_started: 'Nezahájeno'
           on_track: 'Dle plánu'
           off_track: 'Mimo plán'
@@ -28,7 +28,7 @@ cs:
           finished: 'Dokončeno'
           discontinued: 'Zrušeno'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

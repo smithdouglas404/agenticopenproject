@@ -237,6 +237,8 @@ ja:
         header: "ミーティング '%{title}' が更新されました"
         summary: "ミーティング '%{title}' は %{actor} によって更新されました"
         body: "ミーティング '%{title}' は、 %{actor} によって更新されました。"
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "古い日付/時刻"
         new_date_time: "新しい日付/時刻"
         old_location: "古い場所"

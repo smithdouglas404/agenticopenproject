@@ -19,7 +19,7 @@ zh-TW:
           title: '專案描述'
           no_results: "尚未寫入任何描述。可以在「項目設置」中新增。"
         project_status:
-          title: '專案狀態'
+          title: 'Status'
           not_started: '未開始'
           on_track: '如期進行'
           off_track: '進度落後'
@@ -28,7 +28,7 @@ zh-TW:
           finished: '已完成'
           discontinued: '已中止'
         project_status_beta:
-          title: '專案狀態 (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: '子項目'
         project_favorites:

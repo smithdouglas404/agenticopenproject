@@ -191,7 +191,7 @@ ro:
       error_cannot_act_self: "Cannot perform actions on your own uploaded files."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "În această vizualizare, poți crea texte de ajutor personalizate pentru vizualizarea atributelor. Atunci când sunt definite, aceste texte pot fi afișate făcând clic pe pictograma de ajutor de lângă atributul care îi aparține."
     show_preview: "Previzualizare text"
     add_new: "Adaugă text de ajutor"
@@ -351,7 +351,7 @@ ro:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -522,7 +522,7 @@ ro:
         text: "This action will not delete any project the list contains. Are you sure you want to delete this project list?"
     settings:
       header_details: Informații de bază
-      header_status: Stare proiect
+      header_status: Status
       header_relations: Relații proiect
       button_update_details: Actualizează detalii
       button_update_status_description: Actualizează descrierea stării
@@ -620,7 +620,7 @@ ro:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Edit project status
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1263,8 +1263,8 @@ ro:
           true: "public"
           false: "privat"
         queries: "Interogări"
-        status_code: "Stare proiect"
-        status_explanation: "Descriere stadiu proiect"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Neînceput"
           on_track: "În lucru"
@@ -1288,7 +1288,6 @@ ro:
         work_packages: "Pachete de lucru"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Secțiune
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2611,7 +2610,7 @@ ro:
       enabled: "Dezactivează"
   enumeration_activities: "Activități de urmărire timp activate"
   enumeration_work_package_priorities: "Priorități pentru pachetele de lucru"
-  enumeration_reported_project_statuses: "Stările proiectului raportat"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
   enterprise_trials:
@@ -4321,6 +4320,8 @@ ro:
   setting_apiv3_docs_enabled: "Activare pagină documente"
   setting_apiv3_docs_enabled_instructions_html: >
     Dacă pagina de documente este activată, poți obține o vizualizare interactivă a documentației APIv3 la adresa <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Lista albă de încărcare a atașamentelor"
   setting_email_delivery_method: "Metoda de livrare e-mail"
   setting_emails_salutation: "Adresează utilizator în e-mailuri cu"

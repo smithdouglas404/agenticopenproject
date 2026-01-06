@@ -191,7 +191,7 @@ zh-TW:
       error_cannot_act_self: "無法隔離你上傳的檔案"
   attribute_help_texts:
     caption: "此簡短版本將顯示為屬性的標題。"
-    note_public: "您新增至此欄位的任何文字和影像，對所有登入的使用者都是公開可見的。"
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "在此頁面，你可以替屬性頁面建立自訂說明文字。當建立完成後，這些文字在點擊相關屬性旁的求助圖示時顯示。"
     show_preview: "預覽文字"
     add_new: "新增說明文字"
@@ -350,7 +350,7 @@ zh-TW:
     instructions:
       is_required:
         all: "將自訂欄位標記為必填。這將使您在建立新資源時必須填寫該欄位。更新現有資源時則不需要填寫值。"
-        project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。現有專案更新時將不需要此值。"
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "將自訂欄位標記為在所有現有和新專案中都可用。"
         project: "在所有現有和新專案中將屬性標示為可用。"
@@ -519,7 +519,7 @@ zh-TW:
         text: "此動作不會刪除清單中包含的任何專案。您確定要刪除此專案清單？"
     settings:
       header_details: 基本訊息
-      header_status: 專案狀態
+      header_status: Status
       header_relations: 專案關係
       button_update_details: 更新
       button_update_status_description: 更新專案狀態及說明
@@ -617,7 +617,7 @@ zh-TW:
         project_attributes_description: >
           選擇哪些專案屬性應包含在專案啟動請求中。此清單僅包含此專案啟用的 [專案屬性](project_attributes_url)。
     status:
-      button_edit: 編輯專案狀態
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "內容"
       sections: "區段"
@@ -1241,8 +1241,8 @@ zh-TW:
           true: "公開"
           false: "私人的"
         queries: "查詢"
-        status_code: "專案狀態"
-        status_explanation: "專案描述"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "未開始"
           on_track: "進度良好"
@@ -1266,7 +1266,6 @@ zh-TW:
         work_packages: "工作套件"
         workspace_type: "工作區類型"
       project_custom_field:
-        is_required: "必填"
         custom_field_section: 區段
       subproject_template_assignment:
         workspace_type: "工作區類型"
@@ -2513,7 +2512,7 @@ zh-TW:
       enabled: "停用"
   enumeration_activities: "工時紀錄活動"
   enumeration_work_package_priorities: "工作套件優先等級"
-  enumeration_reported_project_statuses: "報告的專案狀態"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "成功更改排序。"
   enumeration_could_not_be_moved: "無法移動枚舉。"
   enterprise_trials:
@@ -4218,6 +4217,8 @@ zh-TW:
   setting_apiv3_docs_enabled: "啟用文件頁面"
   setting_apiv3_docs_enabled_instructions_html: >
     如果啟用了文件頁面，您可以在 <a href="%{link}" target="_blank">%{link}</a> 下看到互動式 APIv3 文件
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "附件上傳白名單"
   setting_email_delivery_method: "電子郵件傳輸通訊協定"
   setting_emails_salutation: "郵件稱呼"

@@ -19,7 +19,7 @@ zh-CN:
           title: '项目描述'
           no_results: "尚未写入任何描述。可以在“项目设置”中提供一个描述。"
         project_status:
-          title: '项目状态'
+          title: 'Status'
           not_started: '未开始'
           on_track: '按计划进行'
           off_track: '偏离计划'
@@ -28,7 +28,7 @@ zh-CN:
           finished: '已完成'
           discontinued: '已中断'
         project_status_beta:
-          title: '项目状态（测试版）'
+          title: 'Status (BETA)'
         subprojects:
           title: '子项目'
         project_favorites:

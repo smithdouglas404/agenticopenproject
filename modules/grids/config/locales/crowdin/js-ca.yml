@@ -19,7 +19,7 @@ ca:
           title: 'Descripció del projecte'
           no_results: "No s'ha escrit cap descripció encara. Aquesta pot ser afegida en la configuració del projecte."
         project_status:
-          title: 'Estat del projecte'
+          title: 'Status'
           not_started: 'No començat'
           on_track: 'Pel bon camí'
           off_track: 'En mal camí'
@@ -28,7 +28,7 @@ ca:
           finished: 'Finalitzat'
           discontinued: 'Discontinuat'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

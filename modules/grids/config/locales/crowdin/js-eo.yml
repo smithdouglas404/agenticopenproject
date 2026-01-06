@@ -19,7 +19,7 @@ eo:
           title: 'Priskribo de projekto'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
-          title: 'Projecta statuso'
+          title: 'Status'
           not_started: 'Nekomencita'
           on_track: 'Laŭ la plano'
           off_track: 'Preter plano'
@@ -28,7 +28,7 @@ eo:
           finished: 'Finita'
           discontinued: 'Discontinued'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

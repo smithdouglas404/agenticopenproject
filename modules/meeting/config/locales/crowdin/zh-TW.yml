@@ -237,6 +237,8 @@ zh-TW:
         header: "會議 '%{title}' 已更新"
         summary: "會議 '%{title}' 已由 %{actor}更新"
         body: "會議 '%{title}' 已由 %{actor}更新。"
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "舊日期/時間"
         new_date_time: "新日期/時間"
         old_location: "舊位置"

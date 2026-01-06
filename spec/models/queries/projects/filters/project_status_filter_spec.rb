@@ -37,7 +37,7 @@ RSpec.describe Queries::Projects::Filters::ProjectStatusFilter do
     let(:model) { Project }
     let(:attribute) { :status_code }
     let(:values) { ["On track"] }
-    let(:human_name) { "Project status" }
+    let(:human_name) { "Status" }
     let(:admin) { build_stubbed(:admin) }
     let(:user) { build_stubbed(:user) }
     let(:expected) do

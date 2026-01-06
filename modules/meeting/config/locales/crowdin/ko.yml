@@ -237,6 +237,8 @@ ko:
         header: "'%{title}' 미팅이 업데이트되었습니다"
         summary: "'%{title}' 미팅을 %{actor} 님이 업데이트했습니다"
         body: "'%{title}' 미팅을 %{actor} 님이 업데이트했습니다."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "이전 날짜/시간"
         new_date_time: "새로운 날짜/시간"
         old_location: "이전 위치"

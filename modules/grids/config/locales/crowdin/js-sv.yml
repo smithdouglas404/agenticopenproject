@@ -19,7 +19,7 @@ sv:
           title: 'Projektbeskrivning'
           no_results: "Ingen beskrivning har skrivits ännu. Den kan anges i 'Projektinställningar'."
         project_status:
-          title: 'Projektstatus'
+          title: 'Status'
           not_started: 'Inte påbörjad'
           on_track: 'På rätt spår'
           off_track: 'Urspårat'
@@ -28,7 +28,7 @@ sv:
           finished: 'Avslutad'
           discontinued: 'Utgången'
         project_status_beta:
-          title: 'Projektstatus (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Underpunkter'
         project_favorites:

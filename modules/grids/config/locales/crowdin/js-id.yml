@@ -19,7 +19,7 @@ id:
           title: 'Deskripsi Proyek'
           no_results: "Belum ada deskripsi yang ditulis. Deskripsi dapat disediakan dalam 'Pengaturan proyek'."
         project_status:
-          title: 'Project status'
+          title: 'Status'
           not_started: 'Belum mulai'
           on_track: 'Di jalur'
           off_track: 'Keluar dari jalur'
@@ -28,7 +28,7 @@ id:
           finished: 'Selesai'
           discontinued: 'Dihentikan'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

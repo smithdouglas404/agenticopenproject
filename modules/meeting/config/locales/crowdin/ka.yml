@@ -242,6 +242,8 @@ ka:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "ძველი თარიღი/დრო"
         new_date_time: "ახალი თარიღი/დრო"
         old_location: "Old location"

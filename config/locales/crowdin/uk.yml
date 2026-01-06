@@ -191,7 +191,7 @@ uk:
       error_cannot_act_self: "Неможливо виконати дії з файлами, вивантаженими вами."
   attribute_help_texts:
     caption: "Ця коротка версія буде показуватися як заголовок атрибута."
-    note_public: "Будь-який текст та зображення, додані до цього поля, є загальнодоступними для всіх зареєстрованих користувачів."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "У цьому поданні можна створювати спеціальні тексти довідки для перегляду атрибутів. Коли вони визначені, ці тексти можна показувати, натиснувши піктограму довідки поруч з її атрибутом."
     show_preview: "Попередній перегляд тексту"
     add_new: "Додати текст довідки"
@@ -348,7 +348,7 @@ uk:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -520,7 +520,7 @@ uk:
         text: "Ця дія не призведе до видалення жодного проєкту зі списку. Справді видалити цей список проєктів?"
     settings:
       header_details: Основна інформація
-      header_status: Статус Проекту
+      header_status: Status
       header_relations: Зв’язки проєкту
       button_update_details: Оновити деталі
       button_update_status_description: Оновити опис проєкту
@@ -618,7 +618,7 @@ uk:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Змінити статус проєкту
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1266,8 +1266,8 @@ uk:
           true: "публічний"
           false: "приватний"
         queries: "Запити"
-        status_code: "Статус Проекту"
-        status_explanation: "Опис стану проєкту"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Не почато"
           on_track: "За графіком"
@@ -1291,7 +1291,6 @@ uk:
         work_packages: "Пакет робіт"
         workspace_type: "Тип робочого простору"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Розділ
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2652,7 +2651,7 @@ uk:
       enabled: "Вимкнути"
   enumeration_activities: "Дії щодо відстеження часу"
   enumeration_work_package_priorities: "Пріоритети робочого пакету"
-  enumeration_reported_project_statuses: "Повідомлення про статус проекту"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Порядок змінено."
   enumeration_could_not_be_moved: "Неможливо перенести перелічення."
   enterprise_trials:
@@ -4363,6 +4362,8 @@ uk:
   setting_apiv3_docs_enabled: "Увімкнути сторінку документів"
   setting_apiv3_docs_enabled_instructions_html: >
     Якщо сторінку документів увімкнено, ви можете отримати інтерактивне подання документації APIv3 за посиланням <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Дозволений список завантаження вкладень"
   setting_email_delivery_method: "Спосіб доставки електронної пошти"
   setting_emails_salutation: "Звертатися до користувача в електронних листах так:"

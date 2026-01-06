@@ -191,7 +191,7 @@ pl:
       error_cannot_act_self: "Nie można wykonać działań na twoich przesłanych plikach."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "W tym widoku możesz utworzyć własny widok tekstów pomocy dla atrybutów. Gdy zostaną zdefiniowane, będą widoczna po kliknięciu w ikonę pomocy danego atrybutu."
     show_preview: "Podgląd tekstu"
     add_new: "Dodaj tekst pomocy"
@@ -348,7 +348,7 @@ pl:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -520,7 +520,7 @@ pl:
         text: "To działanie nie spowoduje usunięcia żadnego projektu znajdującego się na liście. Czy na pewno chcesz usunąć tę listę projektów?"
     settings:
       header_details: Podstawowe szczegóły
-      header_status: Stan projektu
+      header_status: Status
       header_relations: Relacje projektu
       button_update_details: Zaktualizuj szczegóły
       button_update_status_description: Zaktualizuj opis statusu
@@ -618,7 +618,7 @@ pl:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Edytuj status projektu
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1268,8 +1268,8 @@ pl:
           true: "publiczne"
           false: "prywatne"
         queries: "Kwerendy"
-        status_code: "Stan projektu"
-        status_explanation: "Opis statusu projektu"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Nierozpoczęte"
           on_track: "Na ścieżce"
@@ -1293,7 +1293,6 @@ pl:
         work_packages: "Zadania"
         workspace_type: "Typ przestrzeni roboczej"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Sekcja
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2654,7 +2653,7 @@ pl:
       enabled: "Wyłącz"
   enumeration_activities: "Działania śledzenia czasu"
   enumeration_work_package_priorities: "Priorytety pakietów roboczych"
-  enumeration_reported_project_statuses: "Status zgłoszonego projektu"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Kolejność została zmieniona."
   enumeration_could_not_be_moved: "Nie można przenieść wyliczenia."
   enterprise_trials:
@@ -4364,6 +4363,8 @@ pl:
   setting_apiv3_docs_enabled: "Włącz stronę z dokumentami"
   setting_apiv3_docs_enabled_instructions_html: >
     Jeśli strona z dokumentami jest włączona, możesz uzyskać interaktywny widok dokumentacji APIv3 pod adresem <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Biała lista załączników do przesyłania"
   setting_email_delivery_method: "Metoda dostarczenia maila"
   setting_emails_salutation: "Zwracaj się do użytkownika w wiadomościach e-mail za pomocą"

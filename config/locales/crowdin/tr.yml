@@ -191,7 +191,7 @@ tr:
       error_cannot_act_self: "Kendi yüklediğiniz dosyalar üzerinde işlem yapamazsınız."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "Bu görünümde, öznitelikleri görünüm için özel yardım metinler oluşturabilirsiniz. Tanımladığınızda, bu metinler, aidiyet öznitelik yanındaki Yardım simgesini tıklayarak gösterilebilir."
     show_preview: "Metni önizle"
     add_new: "Yardım metni ekle"
@@ -352,7 +352,7 @@ tr:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -522,7 +522,7 @@ tr:
         text: "Bu eylem, listenin içerdiği hiçbir projeyi silmeyecektir. Bu proje listesini silmek istediğinizden emin misiniz?"
     settings:
       header_details: Temel bilgiler
-      header_status: Proje Durumu
+      header_status: Status
       header_relations: Proje ilişkileri
       button_update_details: Detayları güncelle
       button_update_status_description: Durum açıklamasını güncelle
@@ -620,7 +620,7 @@ tr:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Proje durumunu düzenle
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1254,8 +1254,8 @@ tr:
           true: "genel"
           false: "özel"
         queries: "Sorgular"
-        status_code: "Proje Durumu"
-        status_explanation: "Proje durumunun tanımı"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Başlatılmadı"
           on_track: "Takipte"
@@ -1279,7 +1279,6 @@ tr:
         work_packages: "İş Paketleri"
         workspace_type: "Çalışma Alanı türü"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Bölüm
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2564,7 +2563,7 @@ tr:
       enabled: "Devre dışı bırak"
   enumeration_activities: "Zaman izleme faaliyetleri"
   enumeration_work_package_priorities: "İş paketi öncelikleri"
-  enumeration_reported_project_statuses: "Bildirilen proje durumları"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Sıralama başarıyla değiştirildi."
   enumeration_could_not_be_moved: "Numaralandırma taşınamadı."
   enterprise_trials:
@@ -4271,6 +4270,8 @@ tr:
   setting_apiv3_docs_enabled: "Dokümanlar sayfasını etkinleştir"
   setting_apiv3_docs_enabled_instructions_html: >
     Dokümanlar sayfası etkinleştirildiyse, <a href="%{link}" target="_blank">%{link}</a> altında APIv3 belgelerinin etkileşimli bir görünümünü elde edebilirsiniz.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Ek yükleme beyaz listesi"
   setting_email_delivery_method: "E-posta teslim yöntemi"
   setting_emails_salutation: "E-postalarda kullanıcıya şu şekilde hitap edin"

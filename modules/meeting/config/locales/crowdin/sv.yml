@@ -242,6 +242,8 @@ sv:
         header: "Mötet '%{title}' har uppdaterats"
         summary: "Möte '%{title}' har uppdaterats av %{actor}"
         body: "Mötet '%{title}' har uppdaterats av %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Gammalt datum/tid"
         new_date_time: "Nytt datum/tid"
         old_location: "Gammal plats"

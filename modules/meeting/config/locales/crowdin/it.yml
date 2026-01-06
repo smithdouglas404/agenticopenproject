@@ -242,6 +242,8 @@ it:
         header: "La riunione \"%{title}\" è stata aggiornata"
         summary: "La riunione \"%{title}\" è stata aggiornata da %{actor}"
         body: "La riunione \"%{title}\" è stata aggiornata da %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Data/ora precedente"
         new_date_time: "Nuova data/ora"
         old_location: "Posizione precedente"

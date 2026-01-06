@@ -26,7 +26,7 @@
         if @project_custom_field.required?
           title_container.with_column(pt: 1) do
             render(Primer::Beta::Label.new(scheme: :attention, size: :medium)) do
-              t("label_required")
+              ProjectCustomField.human_attribute_name(:required)
             end
           end
         end

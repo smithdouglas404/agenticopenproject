@@ -242,6 +242,8 @@ pt-PT:
         header: "A reunião '%{title}' foi atualizada"
         summary: "A reunião '%{title}' foi atualizada por %{actor}"
         body: "A reunião '%{title}' foi atualizada por %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Data/hora antiga"
         new_date_time: "Nova data/hora"
         old_location: "Localização antiga"

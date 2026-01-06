@@ -252,6 +252,8 @@ ru:
         header: "Встреча '%{title}' была обновлена"
         summary: "Совещание '%{title}' было обновлено пользователем %{actor}"
         body: "Совещание '%{title}' было обновлено пользователем %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Старые дата/время"
         new_date_time: "Новые дата/время"
         old_location: "Старое расположение"

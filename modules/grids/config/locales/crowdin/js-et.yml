@@ -19,7 +19,7 @@ et:
           title: 'Projekti kirjeldus'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
-          title: 'Projekti olek'
+          title: 'Status'
           not_started: 'Pole alustatud'
           on_track: 'Graafikus'
           off_track: 'Pole graafikus'
@@ -28,7 +28,7 @@ et:
           finished: 'Lõpetatud'
           discontinued: 'Lopetatud'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

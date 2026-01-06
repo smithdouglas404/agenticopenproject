@@ -19,7 +19,7 @@ da:
           title: 'Projektbeskrivelse'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
-          title: 'Projektstatus'
+          title: 'Status'
           not_started: 'Not started'
           on_track: 'På sporet'
           off_track: 'Af sporet'
@@ -28,7 +28,7 @@ da:
           finished: 'Afsluttet'
           discontinued: 'Discontinued'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

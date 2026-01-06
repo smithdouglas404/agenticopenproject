@@ -19,7 +19,7 @@ pl:
           title: 'Opis projektu'
           no_results: "Nie napisano jeszcze opisu. Można go podać w sekcji Ustawienia projektu."
         project_status:
-          title: 'Stan projektu'
+          title: 'Status'
           not_started: 'Nierozpoczęte'
           on_track: 'Na ścieżce'
           off_track: 'Poza ścieżką'
@@ -28,7 +28,7 @@ pl:
           finished: 'Zakończone'
           discontinued: 'Przerwane'
         project_status_beta:
-          title: 'Status projektu (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Podpozycje'
         project_favorites:

@@ -252,6 +252,8 @@ uk:
         header: "Нараду «%{title}» оновлено"
         summary: "Нараду «%{title}» оновив(-ла) %{actor}"
         body: "Нараду «%{title}» оновив(-ла) %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Стара дата/час"
         new_date_time: "Нова дата/час"
         old_location: "Старе розташування"

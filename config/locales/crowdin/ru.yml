@@ -191,7 +191,7 @@ ru:
       error_cannot_act_self: "Невозможно выполнить действия с собственными загруженными файлами."
   attribute_help_texts:
     caption: "Эта краткая версия будет отображаться в качестве заголовка атрибута."
-    note_public: "Любой текст и изображения, которые вы добавляете в это поле, видны всем аутентифицированным пользователям."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "В этом представлении можно создать пользовательскую текстовую справку для атрибутов представления. При ее наличии, она будет показана по клику по значку справки возле атрибута."
     show_preview: "Предпросмотр текста"
     add_new: "Добавить текст справки"
@@ -350,7 +350,7 @@ ru:
     instructions:
       is_required:
         all: "Отметьте пользовательское поле как обязательное. Это сделает обязательным заполнение поля при создании новых ресурсов. Существующие ресурсы не будут требовать ввода значения при обновлении."
-        project: "Установите флажок, чтобы включить этот атрибут и сделать его обязательным для всех проектов. Его нельзя отключить для отдельных проектов. Существующие проекты не будут требовать значения при обновлении."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Отметьте пользовательское поле как доступное во всех существующих и новых проектах."
         project: "Отметьте атрибут как доступный во всех существующих и новых проектах."
@@ -522,7 +522,7 @@ ru:
         text: "Это действие не приведет к удалению ни одного проекта, содержащегося в списке. Вы уверены, что хотите удалить этот список проектов?"
     settings:
       header_details: Основные сведения
-      header_status: Состояние проекта
+      header_status: Status
       header_relations: Отношения с проектом
       button_update_details: Обновить детали
       button_update_status_description: Обновить описание статуса
@@ -620,7 +620,7 @@ ru:
         project_attributes_description: >
           Выберите, какие атрибуты проекта должны быть включены в запрос на инициацию проекта. В этот список входят только [атрибуты проекта](project_attributes_url), включенные для этого проекта.
     status:
-      button_edit: Редактировать статус проекта
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Содержимое"
       sections: "Разделы"
@@ -1270,8 +1270,8 @@ ru:
           true: "публичный"
           false: "приватный"
         queries: "Запросы"
-        status_code: "Статус проекта"
-        status_explanation: "Описание статуса проекта"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Не начат"
           on_track: "По плану"
@@ -1295,7 +1295,6 @@ ru:
         work_packages: "Задачи"
         workspace_type: "Тип рабочего пространства"
       project_custom_field:
-        is_required: "Требуется"
         custom_field_section: Раздел
       subproject_template_assignment:
         workspace_type: "Тип рабочего пространства"
@@ -2656,7 +2655,7 @@ ru:
       enabled: "Отключить"
   enumeration_activities: "Отслеживание времени"
   enumeration_work_package_priorities: "Приоритеты пакета работ"
-  enumeration_reported_project_statuses: "Перечень отчетов о статусах проекта"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Порядок успешно изменен."
   enumeration_could_not_be_moved: "Перечисление не может быть перенесено."
   enterprise_trials:
@@ -4366,6 +4365,8 @@ ru:
   setting_apiv3_docs_enabled: "Включить страницу с документами"
   setting_apiv3_docs_enabled_instructions_html: >
     Если включена страница документации к документации, вы можете получить интерактивный вид документации APIv3 под <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Белый список загрузки вложений"
   setting_email_delivery_method: "Метод доставки электронной почты"
   setting_emails_salutation: "Адрес пользователя в письмах с"

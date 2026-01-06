@@ -191,7 +191,7 @@ id:
       error_cannot_act_self: "Cannot perform actions on your own uploaded files."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "Pada tampilan ini, anda dapat membuat teks-teks bantuan yang dikhususkan untuk tampilan atribut-atribut tersebut. Ketika didefinisikan, teks-teks ini dapat ditampilkan dengan mengklik ikon bantuan pada atribut miliknya."
     show_preview: "Teks pratinjau"
     add_new: "Menambahkan teks bantuan"
@@ -347,7 +347,7 @@ id:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -516,7 +516,7 @@ id:
         text: "This action will not delete any project the list contains. Are you sure you want to delete this project list?"
     settings:
       header_details: Basic details
-      header_status: Project status
+      header_status: Status
       header_relations: Project relations
       button_update_details: Update details
       button_update_status_description: Update status description
@@ -614,7 +614,7 @@ id:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Edit project status
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1241,8 +1241,8 @@ id:
           true: "publik"
           false: "pribadi"
         queries: "Query"
-        status_code: "Project status"
-        status_explanation: "Deskripsi status proyek"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Belum mulai"
           on_track: "Di jalur"
@@ -1266,7 +1266,6 @@ id:
         work_packages: "Paket-Penugasan"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Bagian
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2513,7 +2512,7 @@ id:
       enabled: "Disable"
   enumeration_activities: "Kegiatan pelacakan waktu"
   enumeration_work_package_priorities: "Paket-Penugasan prioritas"
-  enumeration_reported_project_statuses: "Status Project yang di-Report"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
   enterprise_trials:
@@ -4217,6 +4216,8 @@ id:
   setting_apiv3_docs_enabled: "Aktifkan halaman dokumen"
   setting_apiv3_docs_enabled_instructions_html: >
     Jika laman dokumen diaktifkan, Anda bisa mendapatkan tampilan interaktif dokumentasi APIv3 di bawah <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Daftar putih upload lampiran"
   setting_email_delivery_method: "Email delivery method"
   setting_emails_salutation: "Address user in emails with"

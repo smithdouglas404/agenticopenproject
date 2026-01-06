@@ -242,6 +242,8 @@ es:
         header: "La reunión «%{title}» se ha actualizado"
         summary: "%{actor} ha actualizado la reunión «%{title}»"
         body: "%{actor} ha actualizado la reunión «%{title}»."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Fecha y hora anteriores"
         new_date_time: "Fecha y hora nuevas"
         old_location: "Ubicación antigua"

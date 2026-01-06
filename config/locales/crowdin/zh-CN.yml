@@ -191,7 +191,7 @@ zh-CN:
       error_cannot_act_self: "无法对自己上传的文件执行操作。"
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "在此视图中, 您可以为属性视图创建自定义帮助文本。定义后, 可以通过单击属性旁边的帮助图标来显示帮助文本。"
     show_preview: "预览文本"
     add_new: "添加帮助文本"
@@ -348,7 +348,7 @@ zh-CN:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -517,7 +517,7 @@ zh-CN:
         text: "此操作不会删除列表中包含的任何项目。确定要删除此项目列表吗？"
     settings:
       header_details: 基本信息
-      header_status: 项目状态
+      header_status: Status
       header_relations: 项目关系
       button_update_details: 更新详情
       button_update_status_description: 更新状态描述
@@ -615,7 +615,7 @@ zh-CN:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: 编辑项目状态
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1241,8 +1241,8 @@ zh-CN:
           true: "公开"
           false: "私有"
         queries: "查询"
-        status_code: "项目状态"
-        status_explanation: "项目状态描述"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "未开始"
           on_track: "按计划进行"
@@ -1266,7 +1266,6 @@ zh-CN:
         work_packages: "工作包"
         workspace_type: "工作空间类型"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: 单元
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2513,7 +2512,7 @@ zh-CN:
       enabled: "禁用"
   enumeration_activities: "时间跟踪活动"
   enumeration_work_package_priorities: "工作包优先级"
-  enumeration_reported_project_statuses: "报告的项目状态"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "顺序修改成功。"
   enumeration_could_not_be_moved: "无法移动枚举。"
   enterprise_trials:
@@ -4215,6 +4214,8 @@ zh-CN:
   setting_apiv3_docs_enabled: "启用文档页面"
   setting_apiv3_docs_enabled_instructions_html: >
     如果启用了文档页面，您可以在此 <a href="%{link}" target="_blank">%{link}</a> 获得 API v3 文档的交互式视图。
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "附件上传白名单"
   setting_email_delivery_method: "电子邮件发送方法"
   setting_emails_salutation: "电子邮件中的用户地址"

@@ -242,6 +242,8 @@ fr:
         header: "La réunion « %{title} » a été mise à jour"
         summary: "La réunion « %{title} » a été mise à jour par %{actor}"
         body: "La réunion « %{title} » a été mise à jour par %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Ancienne date/heure"
         new_date_time: "Nouvelle date/heure"
         old_location: "Ancien emplacement"

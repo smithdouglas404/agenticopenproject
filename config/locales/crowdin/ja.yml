@@ -191,7 +191,7 @@ ja:
       error_cannot_act_self: "アップロードしたファイルに対してアクションを実行できません。"
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "このビューは、属性表示のカスタム ヘルプ テキストを作成できます。定義すると、このテキストはその属性の横にあるヘルプ アイコンをクリックして表示できます。"
     show_preview: "テキストをプレビュー"
     add_new: "ヘルプ テキストを追加"
@@ -349,7 +349,7 @@ ja:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -518,7 +518,7 @@ ja:
         text: "この操作では、リストに含まれるプロジェクトは削除されません。本当にこのプロジェクトリストを削除しますか？"
     settings:
       header_details: 基本情報
-      header_status: プロジェクトの進捗状況
+      header_status: Status
       header_relations: プロジェクトの関係
       button_update_details: 基本情報の更新
       button_update_status_description: ステータスの概要を更新
@@ -616,7 +616,7 @@ ja:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: プロジェクトの状態を編集
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1244,8 +1244,8 @@ ja:
           true: "公開"
           false: "非公開"
         queries: "クエリ"
-        status_code: "プロジェクトステータス"
-        status_explanation: "プロジェクト進捗の概要"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "未着手"
           on_track: "順調"
@@ -1269,7 +1269,6 @@ ja:
         work_packages: "ワークパッケージ"
         workspace_type: "ワークスペースのタイプ"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: セクション
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2516,7 +2515,7 @@ ja:
       enabled: "無効"
   enumeration_activities: "タイムトラッキングアクティビティ"
   enumeration_work_package_priorities: "ワークパッケージの優先度"
-  enumeration_reported_project_statuses: "報告されるプロジェクト進捗状況"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "オーダーの変更に成功しました。"
   enumeration_could_not_be_moved: "列挙は移動できなかった。"
   enterprise_trials:
@@ -4223,6 +4222,8 @@ ja:
   setting_apiv3_docs_enabled: "ドキュメントページを有効にする"
   setting_apiv3_docs_enabled_instructions_html: >
     Docsページが有効になっている場合は、 <a href="%{link}" target="_blank">%{link}</a> の下でAPIv3 ドキュメントのインタラクティブなビューを取得できます。
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "添付ファイルのアップロードホワイトリスト"
   setting_email_delivery_method: "メールの配信方法"
   setting_emails_salutation: "メール中のアドレス ユーザー"

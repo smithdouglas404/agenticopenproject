@@ -191,7 +191,7 @@ it:
       error_cannot_act_self: "Impossibile eseguire azioni sui propri file caricati."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "In questa vista, puoi creare testi guida personalizzati per la visualizzazione degli attributi. Quando definiti, questi testi possono essere visualizzati facendo clic sull'icona guida accanto all'attributo relativo."
     show_preview: "Anteprima testo"
     add_new: "Aggiungi testo guida"
@@ -349,7 +349,7 @@ it:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -519,7 +519,7 @@ it:
         text: "Questa azione non eliminerà alcun progetto contenuto nell'elenco. Vuoi davvero eliminare questo elenco di progetti?"
     settings:
       header_details: Informazioni base
-      header_status: Stato del progetto
+      header_status: Status
       header_relations: Relazioni del progetto
       button_update_details: Aggiorna dettagli
       button_update_status_description: Aggiorna descrizione dello stato
@@ -617,7 +617,7 @@ it:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Modifica lo stato del progetto
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1251,8 +1251,8 @@ it:
           true: "pubblico"
           false: "privato"
         queries: "Interrogazioni"
-        status_code: "Stato del progetto"
-        status_explanation: "Descrizione dello stato del progetto"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Non iniziato"
           on_track: "Nei limiti"
@@ -1276,7 +1276,6 @@ it:
         work_packages: "Macro-attività"
         workspace_type: "Tipo di workspace"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Sezione
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2561,7 +2560,7 @@ it:
       enabled: "Disabilita"
   enumeration_activities: "Attività di monitoraggio dei tempi"
   enumeration_work_package_priorities: "Priorità della macro-attività"
-  enumeration_reported_project_statuses: "Stato di progetto segnalato"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Ordine modificato con successo."
   enumeration_could_not_be_moved: "L'enumerazione non può essere spostata."
   enterprise_trials:
@@ -4270,6 +4269,8 @@ it:
   setting_apiv3_docs_enabled: "Abilita pagina di documenti"
   setting_apiv3_docs_enabled_instructions_html: >
     Se la pagina dei documenti è abilitata, puoi ottenere una vista interattiva della documentazione APIv3 sotto <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Whitelist di caricamento di allegati"
   setting_email_delivery_method: "Metodo di invio e-mail"
   setting_emails_salutation: "Rivolgiti all'utente nelle e-mail con"

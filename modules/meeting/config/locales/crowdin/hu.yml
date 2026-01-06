@@ -242,6 +242,8 @@ hu:
         header: "A \"%{title}\" megbeszélés frissítve lett"
         summary: "A(z) \"%{title}\" megbeszélést %{actor} frissítette"
         body: "A(z) \"%{title}\" megbeszélést %{actor} frissítette."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Régi időpont"
         new_date_time: "Új időpont"
         old_location: "Régi helyszín"

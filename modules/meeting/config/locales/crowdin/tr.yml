@@ -242,6 +242,8 @@ tr:
         header: "'%{title}' toplantısı güncellendi"
         summary: "'%{title}' toplantısı %{actor} tarafından güncellendi"
         body: "'%{title}' toplantısı %{actor} tarafından güncellendi."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Eski tarih/saat"
         new_date_time: "Yeni tarih/saat"
         old_location: "Eski konum"

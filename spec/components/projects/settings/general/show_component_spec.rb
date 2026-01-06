@@ -67,8 +67,8 @@ RSpec.describe Projects::Settings::General::ShowComponent, type: :component do
     end
   end
 
-  describe "Project status" do
-    it_behaves_like "section with heading", "Project status"
+  describe "Status" do
+    it_behaves_like "section with heading", "Status"
 
     it "renders field" do
       expect(render_component).to have_element "opce-ckeditor-augmented-textarea",

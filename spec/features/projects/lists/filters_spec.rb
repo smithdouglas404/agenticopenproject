@@ -261,7 +261,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
       projects_page.open_filters
 
       projects_page.set_filter("project_status_code",
-                               "Project status",
+                               "Status",
                                "is (OR)",
                                ["On track"])
       wait_for_reload
@@ -270,7 +270,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
       expect(page).to have_no_text(no_status_project.name)
 
       projects_page.set_filter("project_status_code",
-                               "Project status",
+                               "Status",
                                "is not empty",
                                [])
       wait_for_reload
@@ -279,7 +279,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
       expect(page).to have_no_text(no_status_project.name)
 
       projects_page.set_filter("project_status_code",
-                               "Project status",
+                               "Status",
                                "is empty",
                                [])
       wait_for_reload
@@ -288,7 +288,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
       expect(page).to have_text(no_status_project.name)
 
       projects_page.set_filter("project_status_code",
-                               "Project status",
+                               "Status",
                                "is not",
                                ["On track"])
       wait_for_reload

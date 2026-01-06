@@ -252,6 +252,8 @@ pl:
         header: "Spotkanie „%{title}” zostało zaktualizowane"
         summary: "Spotkanie „%{title}” zostało zaktualizowane przez użytkownika %{actor}"
         body: "Spotkanie „%{title}” zostało zaktualizowane przez użytkownika %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Stara data/godzina"
         new_date_time: "Nowa data/godzina"
         old_location: "Stara lokalizacja"

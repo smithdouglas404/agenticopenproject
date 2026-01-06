@@ -249,7 +249,7 @@ RSpec.describe "Activity page navigation", :js do
         ensure_project_details_filter_is_checked
 
         expect(page).to have_link(text: "Details")
-        expect(page.text).to include("Project status description set (Details)")
+        expect(page.text).to include("Status description set (Details)")
         within ".op-activity-list" do
           click_link("Details")
         end

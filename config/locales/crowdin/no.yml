@@ -191,7 +191,7 @@
       error_cannot_act_self: "Kan ikke utføre handlinger på egne opplastede filer."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "I denne visningen kan du opprette egendefinerte hjelpetekster for attributtvisning. Når definert kan disse tekstene vises ved å klikke på hjelpeikonet ved siden av egenskapen det tilhører."
     show_preview: "Forhåndsvis tekst"
     add_new: "Legge til hjelpetekst"
@@ -351,7 +351,7 @@
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -521,7 +521,7 @@
         text: "Denne handlingen vil ikke slette noen av prosjektene på listen. Er du sikker på at du vil slette denne prosjektlisten?"
     settings:
       header_details: Basic details
-      header_status: Prosjektstatus
+      header_status: Status
       header_relations: Project relations
       button_update_details: Update details
       button_update_status_description: Update status description
@@ -619,7 +619,7 @@
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Edit project status
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -1253,8 +1253,8 @@
           true: "offentlig"
           false: "privat"
         queries: "Spørringer"
-        status_code: "Prosjektstatus"
-        status_explanation: "Prosjekt statusbeskrivelse"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Ikke påbegynt"
           on_track: "På rett spor"
@@ -1278,7 +1278,6 @@
         work_packages: "Arbeidspakker"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Seksjon
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -2563,7 +2562,7 @@
       enabled: "Disable"
   enumeration_activities: "Tidregistrering aktiviteter"
   enumeration_work_package_priorities: "Prioritering av arbeidspakker"
-  enumeration_reported_project_statuses: "Rapportert prosjektstatus"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
   enterprise_trials:
@@ -4272,6 +4271,8 @@
   setting_apiv3_docs_enabled: "Aktiver dokumenter"
   setting_apiv3_docs_enabled_instructions_html: >
     Hvis dokumenter er aktivert, kan du få en interaktiv visning av APIv3 dokumentasjonen under <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Last opp hviteliste for vedlegg"
   setting_email_delivery_method: "Leveringsmetode for e-post"
   setting_emails_salutation: "Adresser bruker i e-post med"
