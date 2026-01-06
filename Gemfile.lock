@@ -1456,7 +1456,7 @@ GEM
       activemodel (>= 3.0.0)
       public_suffix
     vcr (6.4.0)
-    vernier (1.8.1)
+    vernier (1.9.0)
     view_component (4.1.1)
       actionview (>= 7.1.0, < 8.2)
       activesupport (>= 7.1.0, < 8.2)
@@ -2258,7 +2258,7 @@ CHECKSUMS
   validate_email (0.1.6) sha256=9dfe9016d527b17a8d3a6e95e4dc50a125400eef899d13d4cc2a254393f82ee4
   validate_url (1.0.15) sha256=72fe164c0713d63a9970bd6700bea948babbfbdcec392f2342b6704042f57451
   vcr (6.4.0) sha256=077ac92cc16efc5904eb90492a18153b5e6ca5398046d8a249a7c96a9ea24ae6
-  vernier (1.8.1) sha256=317ff657dca28195e934ced93b78f02c46b652878231882f47e5ef330d584f2c
+  vernier (1.9.0) sha256=3aa6169804144ef27744123525f8f884541185a2eeb53c77afb28ad33c4be3cd
   view_component (4.1.1) sha256=179f63b0db1d1a8f6af635dd684456b2bcdf6b6f4da2ef276bbe0579c17b377e
   virtus (2.0.0) sha256=8841dae4eb7fcc097320ba5ea516bf1839e5d056c61ee27138aa4bddd6e3d1c2
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
