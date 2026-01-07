@@ -78,7 +78,10 @@ export async function fetchConnectionTemplate(
   try {
     const response = await fetch(url, {
       method: 'GET',
-      headers: { Accept: 'text/vnd.turbo-stream.html' },
+      headers: {
+        Accept: 'text/vnd.turbo-stream.html',
+        'X-Authentication-Scheme': 'Session',
+      },
     });
 
     if (!response.ok) {
