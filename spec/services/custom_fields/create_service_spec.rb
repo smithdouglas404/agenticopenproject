@@ -36,9 +36,10 @@ RSpec.describe CustomFields::CreateService, type: :model do
     context "when creating a project cf" do
       let(:model_instance) { build_stubbed(:project_custom_field) }
 
-      it "modifies the settings on successful call" do
-        subject
-        expect(Setting.enabled_projects_columns).to include(model_instance.column_name)
+      it "no longer changes the enabled_projects_columns setting" do
+        expect { subject }
+          .not_to change(Setting, :enabled_projects_columns)
+        expect(subject).to be_success
       end
     end
   end
