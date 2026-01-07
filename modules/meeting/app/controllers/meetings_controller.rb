@@ -335,8 +335,15 @@ class MeetingsController < ApplicationController
   def toggle_notifications
     @meeting.toggle!(:notify)
 
+    # Reload to get the updated value
+    @meeting.recurring_meeting.template.reload if @meeting.template?
+
     if @meeting.notify?
-      handle_notification(type: :toggle_notifications)
+      if @meeting.template?
+        handle_series_notification
+      else
+        handle_notification(type: :toggle_notifications)
+      end
     end
 
     update_sidebar_component_via_turbo_stream
@@ -587,5 +594,22 @@ class MeetingsController < ApplicationController
     else
       render_error_flash_message_via_turbo_stream(message:)
     end
+  end
+
+  def handle_series_notification
+    recurring_meeting = @meeting.recurring_meeting
+
+    @meeting
+      .participants
+      .invited
+      .find_each do |participant|
+      MeetingSeriesMailer.invited(
+        recurring_meeting,
+        participant.user,
+        User.current
+      ).deliver_later
+    end
+
+    render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_notification))
   end
 end
