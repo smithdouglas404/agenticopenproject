@@ -47,6 +47,15 @@ require_relative "../lib_static/open_project/configuration"
 
 module OpenProject
   class Application < Rails::Application
+    config.active_record.query_log_tags_enabled = true
+    config.active_record.query_log_tags = [
+      # Rails query log tags:
+      :application, :controller, :action, :job,
+      # GraphQL-Ruby query log tags:
+      { current_graphql_operation: -> { GraphQL::Current.operation_name },
+        current_graphql_field: -> { GraphQL::Current.field&.path },
+        current_dataloader_source: -> { GraphQL::Current.dataloader_source_class } }
+    ]
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -135,6 +144,8 @@ module OpenProject
       config.paths.add Rails.root.join("lookbook/previews").to_s, eager_load: true
       config.paths.add Primer::ViewComponents::Engine.root.join("previews").to_s, eager_load: true
     end
+
+    config.paths.add GraphiQL::Rails::Engine.root.join("app/controllers").to_s, eager_load: true
 
     # Constants in lib_static should only be loaded once and never be unloaded.
     # That directory contains configurations and patches to rails core functionality.

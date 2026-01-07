@@ -333,6 +333,8 @@ group :development do
 
   # git hooks manager
   gem "lefthook", require: false
+
+  gem "graphiql-rails"
 end
 
 group :development, :test do
@@ -429,3 +431,5 @@ end
 gem "openproject-octicons", "~>19.32.0"
 gem "openproject-octicons_helper", "~>19.32.0"
 gem "openproject-primer_view_components", "~>0.79.1"
+
+gem "graphql", "~> 2.5"
