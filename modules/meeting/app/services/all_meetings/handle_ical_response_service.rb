@@ -95,14 +95,17 @@ module AllMeetings
         # We have an instantiated meeting, so update that one
         update_participation_status(scheduled_meeting.meeting, event)
       else
-        # No instantiated meeting, so create an interim response
-        RecurringMeetingInterimResponse.create!(
+        # No instantiated meeting, create or update an interim response
+        response = RecurringMeetingInterimResponse.find_or_initialize_by(
           user: user,
           recurring_meeting: recurring_meeting,
-          start_time: recurrence_id,
-          participation_status: partstat(event),
-          comment: comment(event)
+          start_time: recurrence_id
         )
+
+        response.participation_status = partstat(event)
+        response.comment = comment(event)
+
+        response.save!
       end
 
       ServiceResult.success

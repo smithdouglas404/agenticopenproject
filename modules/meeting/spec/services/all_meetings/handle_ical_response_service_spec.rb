@@ -310,6 +310,33 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
           expect(interim_response.participation_status).to eq("accepted")
         end
       end
+
+      context "when an interim response already for this recurrence (the user has already responded and changes)" do
+        let(:partstat) { "DECLINED" }
+        let(:recurrence_date) { recurring_meeting.start_time + 1.month }
+        let!(:existing_response) do
+          RecurringMeetingInterimResponse.create!(
+            user: user,
+            recurring_meeting: recurring_meeting,
+            start_time: recurrence_date,
+            participation_status: "accepted"
+          )
+        end
+
+        let(:additional_ical_properties) do
+          "RECURRENCE-ID:#{recurrence_date.utc.strftime('%Y%m%dT%H%M%SZ')}"
+        end
+
+        it "updates the existing interim response" do
+          expect { subject }.not_to change(RecurringMeetingInterimResponse, :count)
+
+          expect(subject).to be_success
+
+          expect do
+            existing_response.reload
+          end.to change(existing_response, :participation_status).from("accepted").to("declined")
+        end
+      end
     end
 
     context "when responding to the series and the occurence in one mail" do
