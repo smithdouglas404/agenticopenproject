@@ -179,7 +179,10 @@ RSpec.describe WorkPackages::CreateService, "integration", type: :model do
       expect(service_result).to be_success
 
       got_enqueued_jobs = enqueued_jobs.pluck(:job)
-      expect(got_enqueued_jobs).to contain_exactly(Notifications::WorkflowJob, Journals::CompletedJob)
+      expect(got_enqueued_jobs)
+        .to contain_exactly(WorkPackages::WorkflowJob,
+                            Notifications::WorkflowJob,
+                            Journals::CompletedJob)
     end
 
     describe "setting the attachments" do
