@@ -49,33 +49,40 @@ Here you can choose which kind of OneDrive project folder will be the default fo
 
 ![Select OneDrive folder type in OpenProject](onedrive-storage-add-folders-new.png)
 
-1. **No specific folder**: By default, each user will start at the drive root when they upload a file or select files
-   for linking.
-2. **New folder with automatically managed permissions**: This will automatically create a folder for this project and
-   manage the access permissions for each project member. Each project member will automatically have access to this
-   folder according to the user permissions defined
-   in [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions). This
-   option will only be available if the system administrator
-   has [set up the storage with automatically managed folders](../../../../system-admin-guide/integrations/one-drive/).
-3. **Existing folder with manually managed permissions**: Once you selected this option, you can designate an existing folder as the project folder for this project using the button **Select folder**. The permissions are however not
-   automatically managed, **instead the folder and its content inherits the permissions as configured in the drive or
-   the containing SharePoint site**. The administrator needs to manually ensure relevant users have access. The selected
-   folder can be used by multiple projects.
+1. **No specific folder**: By default, each user will start at their own home folder when they upload a file or select files for linking.
+2. **New folder with automatically managed permissions**: This will automatically create a root folder for this project and manage the access permissions for each project member. Each project member will automatically have access to this folder according to the user permissions defined in [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions). This option will only be available if the system administrator has [set up the storage with automatically managed folders](../../../../system-admin-guide/integrations/one-drive/).
 
-Click on **Add** to add your new OneDrive file storage to this project.
+Click **Add** to add your new OneDrive file storage to this project.
 
 The OneDrive file storage is now available to all work packages in this project.
 
 > [!TIP]
-> Please refer to the [OneDrive user guide](../../../file-management/one-drive-integration) for further instructions on
-> using the integration at a user level.
+> Please refer to the [OneDrive user guide](../../../file-management/one-drive-integration) for further instructions on using the integration from a project member perspective.
 
 ## Add a SharePoint storage to a project (Enterprise add-on)
 
 > [!NOTE]
-> OneDrive integration is an Enterprise add-on and can only be used > with [Enterprise cloud](../../../../enterprise-guide/enterprise-cloud-guide/) > or [Enterprise on-premises](../../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
+> SharePoint integration is an Enterprise add-on and can only be used > with [Enterprise cloud](../../../../enterprise-guide/enterprise-cloud-guide/) > or [Enterprise on-premises](../../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
 
-The steps for adding a SharePoint integration to a project are similar 
+If you have selected the SharePoint option in the previous step of storage selection, you will now see the **Project folder** options.
+
+Here you can choose which kind of SharePoint project folder will be the default folder for file uploads for this project when using SharePoint integration.
+
+![Select SharePoint project folder type in OpenProject project settings](openproject_user_guide_projects_project_settings_sharepoint_folder_options.png)
+
+1. **No specific folder**: By default, each user will start at their own home folder when they upload a file or select files
+   for linking.
+2. **New folder with automatically managed permissions**: This will automatically create a root folder for this project and
+   manage the access permissions for each project member. 
+3. **Existing folder with manually managed permissions**: Once you selected this option, you can designate an existing folder as the root folder for this project using the **Select folder** button. The permissions are however not automatically managed, **instead the folder and its content inherits the permissions as configured on the SharePoint site**. The administrator needs to manually ensure relevant users have access. The selected
+   folder can be used by multiple projects.
+
+Click on **Add** to add your new SharePoint file storage to this project.
+
+The SharePoint file storage is now available to all work packages in this project.
+
+> [!TIP]
+> Please refer to the [OneDrive user guide](../../../file-management/sharepoint-integration) for further instructions on using the integration from a project member perspective.
 
 ## Add a Nextcloud storage to a project
 
@@ -112,9 +119,9 @@ You will see which project members have have successfully connected and who may 
 
 ![Project folder member connection status](storage-list-member-status.png)
 
-### Edit an existing Nextcloud storage
+## Edit an existing storage
 
-To edit an existing Nextcloud storage, you can click on the edit icon on the right side of the list of project storages.
+To edit an existing file storage, you can click on the edit icon on the right side of the list of project storages.
 
 ![List of project storages, edit or delete](storage-list-edit-delete.png)
 
@@ -125,7 +132,7 @@ For the moment, you will only be able to edit which project folder type is used 
 > [!TIP]
 > If the previously selected project folder type was **New folder with automatically managed permissions**, changing the project folder type will not delete the already created project folder. Changing it back will try to reconnect the previously created and used project folder.
 
-### Delete an existing file storage
+## Delete an existing file storage
 
 To delete an existing storage, you can click on the delete icon on the right side of the list of project storages.
 

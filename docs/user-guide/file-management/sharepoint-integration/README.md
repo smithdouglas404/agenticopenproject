@@ -55,7 +55,7 @@ To link a SharePoint file to the current work package, you can either:
 ![Link existing files to OneDrive from an OpenProject work package](openproject_onedrive_link_existing_files_link.png)
 
 > [!NOTE]
-> The default location that opens in the file picker is the file root of the configured OneDrive drive.
+> The default location that opens in the file picker is the file root of the configured SharePoint drive.
 
 ![Select a SharePoint file or folder to link to an OpenProject work package](openproject_onedrive_link_files.png)
 
@@ -65,16 +65,16 @@ If the file you want to link has not yet been uploaded to SharePoint, you can do
 
 ![Upload file link in an OpenProject work package](openproject_onedrive_upload_file_link.png)
 
-You will then be prompted to select a file (or multiple files) on your computer that you want to upload to OneDrive.
+You will then be prompted to select a file (or multiple files) on your computer that you want to upload to SharePoint.
 
 ![Choosing a file to upload to SharePoint in an OpenProject work package](openproject_onedrive_select_file.png)
 
-Alternatively, you can also simply drag a file or folder from your computer to the drag zone that will appear under the name of your OneDrive file storage.
+Alternatively, you can also simply drag a file or folder from your computer to the drag zone that will appear under the name of your SharePoint file storage.
 
-Once you have selected or dropped the files you would like to upload, you will need to select the location on OneDrive to which they should be stored.
+Once you have selected or dropped the files you would like to upload, you will need to select the location on SharePoint to which they should be stored.
 
 > [!NOTE]
-> The default location that opens in the file picker is the file root of the configured OneDrive drive.
+> The default location that opens in the file picker is the file root of the configured SharePoint drive.
 
 ![Selection a Sharepoint location to upload a file from OpenProject](openproject_onedrive_select_location.png)
 
@@ -89,11 +89,11 @@ You can also directly create a new folder within your Sharepoint folder structur
 
 To save the files you uploaded to the currently open folder, click on the **Choose location** button.
 
-The selected file is uploaded to your OneDrive instance and linked to the current work package. It appears under the name of the file storage.
+The selected file is uploaded to your SharePoint instance and linked to the current work package. It appears under the name of the file storage.
 
 ![File successfully uploaded to Sharepoint storage](openproject_onedrive_file_uploaded.png)
 
-If a file has been deleted on the OneDrive file storage it will still be displayed under the **Files** tab. However it will not be selectable. If you hover over a deleted file you will see the message indicating that the file could not be found.
+If a file has been deleted on the SharePoint file storage it will still be displayed under the **Files** tab. However it will not be selectable. If you hover over a deleted file you will see the message indicating that the file could not be found.
 
 ![A file has been deleted from the OneDrive file storage](oneproject_onedrive_deleted_file.png)
 
@@ -105,7 +105,7 @@ If you wish to unlink any linked file or folder, hover it in the list of linked 
 
 Respectively in order to download a file, click on the **Download icon** in the context menu of the file link in the list of the linked files.
 
-If you click the **Folder icon**, the OneDrive folder containing this file will open in a separate tab.
+If you click the **Folder icon**, the SharePoint folder containing this file will open in a separate tab.
 
 ## Permissions and access control
 
@@ -123,6 +123,6 @@ Please note, that with automatically managed project folders these permissions a
 
 ### No permission to see this file
 
-If you are unable to see the details of a file or are unable to open some of the files linked to a work package, it could be related to your OneDrive account not having the necessary permissions. In such a case, you will be able to see the name of file, time of last modification and the name of the modifier but you will not be able to perform any further actions. To open or access these files, please contact your OneDrive administrator or the creator of the file so that they can grant you the necessary permissions.
+If you are unable to see the details of a file or are unable to open some of the files linked to a work package, it could be related to your SharePoint account not having the necessary permissions. In such a case, you will be able to see the name of file, time of last modification and the name of the modifier but you will not be able to perform any further actions. To open or access these files, please contact your SharePoint administrator or the creator of the file so that they can grant you the necessary permissions.
 
 ![Error message based on missing permissions to see a file in OpenProject](openproject_onedrive_no_permission_to_view.png)
