@@ -10,14 +10,15 @@ keywords: file storages, project folder, storages
 > [!NOTE]
 > Before a storage service can be added to a project, an administrator must first set up [Nextcloud integration](../../../../system-admin-guide/integrations/nextcloud/) or [OneDrive integration](../../../../system-admin-guide/integrations/one-drive/) with OpenProject.
 
-| Topic                                                                                       | Description                                                 |
-|---------------------------------------------------------------------------------------------|:------------------------------------------------------------|
-| [Files module overview](#files-module-overview)                                             | Files module explained                                      |
-| [Add Nextcloud storage](#add-a-nextcloud-storage-to-a-project)                              | Add your Nextcloud storage to a project                     |
-| [Nextcloud and project folders](#project-folders)                                           | How to manage Nextcloud project folders                     |
-| [Edit and delete Nextcloud storage](#edit-an-existing-nextcloud-storage)                    | Edit and delete an existing Nextcloud storage               |
+| Topic                                                        | Description                                                 |
+| ------------------------------------------------------------ | :---------------------------------------------------------- |
+| [Files module overview](#files-module-overview)              | Files module explained                                      |
+| [Add Nextcloud storage](#add-a-nextcloud-storage-to-a-project) | Add your Nextcloud storage to a project                     |
+| [Nextcloud and project folders](#project-folders)            | How to manage Nextcloud project folders                     |
+| [Edit a file storage](#edit-an-existing-storage)             | Learn how to edit an existing file storage in a project     |
+| [Delete a file storage](#delete-an-existing-storage)         | Learn how to remove an existing file storage from a project |
 | [Add OneDrive storage to a project](#add-a-onedrive-storage-to-a-project-enterprise-add-on) | Add your OneDrive storage to a project                      |
-| [Show attachments in work packages](#show-attachments-in-the-work-packages-files-tab)       | Allow showing attachments under the work packages Files tab |
+| [Show attachments in work packages](#show-attachments-in-the-work-packages-files-tab) | Allow showing attachments under the work packages Files tab |
 
 ## Files module overview
 
@@ -73,7 +74,7 @@ Here you can choose which kind of SharePoint project folder will be the default 
 1. **No specific folder**: By default, each user will start at their own home folder when they upload a file or select files
    for linking.
 2. **New folder with automatically managed permissions**: This will automatically create a root folder for this project and
-   manage the access permissions for each project member. 
+   manage the access permissions for each project member.  Each project member will automatically have access to this folder according to the user permissions defined in [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions). This option will only be available if the system administrator has [set up the storage with automatically managed folders](../../../../system-admin-guide/integrations/one-drive/).
 3. **Existing folder with manually managed permissions**: Once you selected this option, you can designate an existing folder as the root folder for this project using the **Select folder** button. The permissions are however not automatically managed, **instead the folder and its content inherits the permissions as configured on the SharePoint site**. The administrator needs to manually ensure relevant users have access. The selected
    folder can be used by multiple projects.
 
