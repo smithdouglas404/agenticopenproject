@@ -37,6 +37,9 @@
   gap: var(--base-size-16, 1rem)
   align-items: center
 
+  @media screen and (max-width: $breakpoint-sm)
+    grid-template-columns: 1fr 1fr
+
   &--actions-left,
   &--actions-right
     display: flex
@@ -53,6 +56,9 @@
     justify-content: center
     align-items: center
     margin: 0 auto
+
+    @media screen and (max-width: $breakpoint-sm)
+      display: none
 
   &--progress-bar
     width: 200px
