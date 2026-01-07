@@ -62,7 +62,7 @@ gem "warden-basic_auth", "~> 0.2.1"
 gem "pagy"
 gem "will_paginate", "~> 4.0.0"
 
-gem "friendly_id", "~> 5.5.0"
+gem "friendly_id", "~> 5.6.0"
 
 gem "scimitar", "~> 2.13"
 
@@ -97,7 +97,7 @@ gem "deckar01-task_list", "~> 2.3.1"
 # Requires escape-utils for faster escaping
 gem "escape_utils", "~> 1.3"
 # Syntax highlighting used in html-pipeline with rouge
-gem "rouge", "~> 4.6.1"
+gem "rouge", "~> 4.7.0"
 # HTML sanitization used for html-pipeline
 gem "sanitize", "~> 7.0.0"
 # HTML autolinking for mails and urls (replaces autolink)
@@ -123,7 +123,7 @@ gem "sys-filesystem", "~> 1.5.0", require: false
 
 gem "bcrypt", "~> 3.1.6"
 
-gem "multi_json", "~> 1.17.0"
+gem "multi_json", "~> 1.19.0"
 gem "oj", "~> 3.16.12"
 
 gem "daemons"
@@ -192,7 +192,7 @@ gem "puma", "~> 7.1"
 gem "puma-plugin-statsd", "~> 2.7"
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
-gem "nokogiri", "~> 1.18.10"
+gem "nokogiri", "~> 1.19.0"
 
 gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
@@ -231,7 +231,7 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.87.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.89.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
 gem "view_component", "~> 4.1.1"
@@ -362,7 +362,7 @@ group :development, :test do
   gem "rubocop-factory_bot", require: false
   gem "rubocop-openproject", require: false
   gem "rubocop-performance", require: false
-  gem "rubocop-rails", "2.34.2", require: false # 2.33.4 has issues with Rails/ActionControllerFlashBeforeRender
+  gem "rubocop-rails", "~> 2.34.2"
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
 
@@ -380,7 +380,7 @@ group :development, :test do
   gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem "bootsnap", "~> 1.19.0", require: false
+gem "bootsnap", "~> 1.20.0", require: false
 
 # API gems
 gem "grape", "~> 2.4.0"
@@ -408,7 +408,7 @@ group :postgres do
 end
 
 # Support application loading when no database exists yet.
-gem "activerecord-nulldb-adapter", "~> 1.1.1"
+gem "activerecord-nulldb-adapter", "~> 1.2.2"
 
 # Have application level locks on the database to have a mutex shared between workers/hosts.
 # We e.g. employ this to safeguard the creation of journals.
