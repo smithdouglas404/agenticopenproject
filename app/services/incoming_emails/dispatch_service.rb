@@ -33,7 +33,7 @@ module IncomingEmails
 
     REFERENCES_RE = %r{^<?op\.([a-z_]+)-(\d+)@}
 
-    IGNORED_HEADERS = {
+    AUTOMATIC_HEADERS = {
       "X-Auto-Response-Suppress" => "oof",
       "Auto-Submitted" => /\Aauto-/
     }.freeze
@@ -61,8 +61,11 @@ module IncomingEmails
       @email = email
       @options = assign_options(options)
       @sender_email = email.from.to_a.first.to_s.strip
+      @automated_email ||= automatic_header_present?
       @logs = []
     end
+
+    def automated_email? = !!@automated_email
 
     def call!
       return if ignore_mail?
@@ -72,7 +75,7 @@ module IncomingEmails
       # We only dispatch the action if a user has been accepted or created
       dispatch if user.present?
     ensure
-      report_errors if !@success && Setting.report_incoming_email_errors?
+      report_errors unless @success
     end
 
     private
@@ -139,7 +142,7 @@ module IncomingEmails
       self
         .class
         .handlers
-        .find { |h| h.handles?(email, reference:) }
+        .find { |h| h.handles?(email, reference:, automated_email: automated_email?) }
         &.new(email, user:, plain_text_body:, reference:, options:)
     end
 
@@ -176,6 +179,8 @@ module IncomingEmails
     end
 
     def report_errors
+      return if automated_email?
+      return unless Setting.report_incoming_email_errors?
       return if logs.empty?
 
       UserMailer.incoming_email_error(user, mail_as_hash(email), logs).deliver_later
@@ -203,7 +208,7 @@ module IncomingEmails
     end
 
     def ignore_mail?
-      mail_from_system? || ignored_by_header? || ignored_user?
+      mail_from_system? || ignored_user?
     end
 
     def mail_from_system?
@@ -225,9 +230,8 @@ module IncomingEmails
         .map { |mail| mail.to_s.strip.downcase }
     end
 
-    def ignored_by_header?
-      # Ignore auto generated emails
-      IGNORED_HEADERS.each do |key, ignored_value|
+    def automatic_header_present?
+      AUTOMATIC_HEADERS.each do |key, ignored_value|
         value = email.header[key]
         next if value.blank?
 
