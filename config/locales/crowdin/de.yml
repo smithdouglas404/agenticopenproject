@@ -191,7 +191,7 @@ de:
       error_cannot_act_self: "Sie können keine Aktionen für Ihre eigenen hochgeladenen Dateien durchführen."
   attribute_help_texts:
     caption: "Diese Kurzversion wird als Untertitel des Attributs angezeigt."
-    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
+    note_public: "Alle Texte und Bilder, die Sie diesem Feld hinzufügen, sind öffentlich für angemeldete Benutzer sichtbar."
     text_overview: "In dieser Ansicht können Sie benutzerdefinierte Hilfe-Texte für Attribute definieren. Für Attribute mit hinterlegtem Text können diese über ein kleines Hilfe-Icon neben dem Attribut angezeigt werden."
     show_preview: "Vorschau des Hilfe-Textes"
     add_new: "Hilfe-Text hinzufügen"
@@ -347,27 +347,27 @@ de:
     no_role_assigment: "Keine Rollenzuweisung"
     instructions:
       is_required:
-        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+        all: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Ressourcen obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt."
+        project: "Erforderliche Attribute müssen vom Benutzer bei der Projekterstellung ausgefüllt werden, wenn das Feld aktiv ist (\"Für alle Projekte\" aktiviert oder beim Kopieren eines Projekts/Templates, in dem das Feld aktiv ist). Vorhandene Projekte benötigen keinen Wert, wenn sie aktualisiert werden."
       is_for_all:
-        all: "Mark the custom field as available in all existing and new projects."
-        project: "Mark the attribute as available in all existing and new projects."
+        all: "Markiert das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
+        project: "Markiert das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
       multi_select:
-        all: "Allows the user to assign multiple values to this custom field."
-        project: "Allows the user to assign multiple values to this attribute."
+        all: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."
+        project: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."
       searchable:
-        all: "Include the field values when using the global search functionality."
-        project: "Check to make this attribute available as a filter in project lists."
+        all: "Inkludiert die Werte des Feldes in die globale Suche."
+        project: "Das Attribut kann als Filter in Projektlisten ausgewählt werden."
       editable:
-        all: "Allow the field to be editable by users themselves."
+        all: "Feld darf von Benutzern ohne Administratorrechte bearbeitet werden."
       admin_only:
-        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
-        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+        all: "Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten."
+        project: "Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten."
       is_filter:
         all: >
-          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+          Erlaubt das benutzerdefinierte Feld in einem Filter in der Arbeitspaket-Ansicht zu verwenden. Beachten Sie, dass, nur wenn "Für alle Projekte" ausgewählt ist, das benutzerdefinierte Feld in globalen Ansichten angezeigt wird.
       formula:
-        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+        project: "Fügen Sie numerische Werte hinzu oder geben Sie / ein, um nach einem Attribut oder einem mathematischen Operator zu suchen."
     tab:
       no_results_title_text: Zur Zeit existieren keine benutzerdefinierten Felder.
       no_results_content_text: Neues benutzerdefiniertes Feld anlegen
@@ -586,8 +586,8 @@ de:
           label_disable_single: "In diesem Projekt inaktiv, zum Aktivieren anklicken"
           remove_from_project: "Aus dem Projekt entfernen"
         is_for_all_blank_slate:
-          heading: For all projects
-          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+          heading: Für alle Projekte
+          description: Dieses Projekt-Attribut ist in allen Projekten aktiviert, da die Option "Für alle Projekte" aktiviert ist. Es kann nicht für einzelne Projekte deaktiviert werden.
       types:
         no_results_title_text: Derzeit stehen keine Typen zur Verfügung.
         form:
@@ -616,7 +616,7 @@ de:
         project_attributes_description: >
           Wählen Sie aus, welche Attribute in den Projektinitiierungsantrag aufgenommen werden sollen. Diese Liste zeigt nur [Projektattribute](project_attributes_url), die für dieses Projekt aktiviert sind.
     status:
-      button_edit: Edit status
+      button_edit: Status bearbeiten
     wizard:
       sidebar_content_title: "Inhalt"
       sections: "Abschnitte"
@@ -1247,7 +1247,7 @@ de:
           false: "privat"
         queries: "Abfragen"
         status_code: "Status"
-        status_explanation: "Status description"
+        status_explanation: "Statusbeschreibung"
         status_codes:
           not_started: "Nicht gestartet"
           on_track: "Planmäßig"
@@ -1558,7 +1558,7 @@ de:
               not_allowed_custom_fields_referenced: "Das Attribut %{custom_fields} kann nicht verwendet werden, da es zu einem Zirkelbezug führt; ein Attribut hängt vom anderen ab."
               format: "%{message}"
             required:
-              cannot_be_true: "cannot be set to true."
+              cannot_be_true: "kann nicht auf 'wahr' gesetzt werden."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2553,7 +2553,7 @@ de:
       enabled: "Deaktivieren"
   enumeration_activities: "Aktivitäten für Zeiterfassung"
   enumeration_work_package_priorities: "Arbeitspaket-Prioritäten"
-  enumeration_reported_project_statuses: "Reported status"
+  enumeration_reported_project_statuses: "Gemeldeter Status"
   enumeration_caption_order_changed: "Reihenfolge erfolgreich geändert."
   enumeration_could_not_be_moved: "Aufzählung konnte nicht verschoben werden."
   enterprise_trials:
@@ -4263,7 +4263,7 @@ de:
   setting_apiv3_docs_enabled_instructions_html: >
     Wenn die Dokumentationsseite aktiviert ist,  sehen Sie eine interaktive APIv3 Dokumentation unter <a href="%{link}" target="_blank">%{link}</a>.
   setting_apiv3_docs_enabled_instructions_warning: >
-    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
+    Bitte beachten Sie, dass die Aktivierung der API-Dokumente auf einem Produktivsystem sensible Informationen preisgeben oder zu einem versehentlichen Datenverlust führen kann, wenn Sie nicht vorsichtig sind. Wir empfehlen, diese Einstellung nur für Entwicklungszwecke zu aktivieren.
   setting_attachment_whitelist: "Positivliste für Dateiuploads"
   setting_email_delivery_method: "E-Mail Zustellungsoption"
   setting_emails_salutation: "Anrede der Benutzer in E-Mails"
@@ -4495,7 +4495,7 @@ de:
     passwords: "Passwörter"
     project_attributes:
       heading: "Projektattribute"
-      label_for_all_projects: "All projects"
+      label_for_all_projects: "Alle Projekte"
       label_new_attribute: "Projektattribut"
       label_new_section: "Abschnitt"
       label_edit_section: "Titel bearbeiten"
