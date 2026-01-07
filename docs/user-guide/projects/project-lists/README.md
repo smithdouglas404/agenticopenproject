@@ -52,7 +52,7 @@ Each project is displayed in a single line, starting with the **Favorite** colum
 
 With the horizontal **three dots** icon on the right side of the list you can open **further features**, 
 such as [creating a new subproject](../#create-a-subproject), [project settings](../project-settings), 
-[add a project to favorites](../../project-overview/#mark-a-project-as-favorite), 
+[add a project to favorites](../../project-home/#mark-a-project-as-favorite), 
 [archiving a project](../project-settings/project-information/#archive-a-project), 
 [copying](../project-settings/project-information/#copy-a-project) and 
 [deleting a project](../project-settings/project-information/#delete-a-project). 

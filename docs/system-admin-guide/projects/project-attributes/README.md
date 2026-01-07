@@ -8,13 +8,12 @@ keywords: project attributes, create, project settings, attribute help text, hel
 
 # Project attributes
 
-Project attributes are custom fields shown on the [Project overview](../../../user-guide/project-overview) page. They allow you to communicate key information relevant to a project.
+Project attributes are custom fields shown on the [Project home](../../../user-guide/project-home) page. They allow you to communicate key information relevant to a project.
 
 > [!NOTE]
 > Prior to version 14.0, these were called "project custom fields" and described under the [Custom fields](../../custom-fields/custom-fields-projects/) page. Starting with 14.0, they are referred to as *project attributes*.
 
-This page describes how instance administrators can create, order, and group project attributes, and assign them to projects. For instructions on editing project attribute values within a project, see the [Project overview](../../../user-guide/project-overview) page.
-
+This page describes how instance administrators can create, order, and group project attributes, and assign them to projects. For instructions on editing project attribute values within a project, see the [Project home](../../../user-guide/project-home) page.
 
 ## View project attributes
 
@@ -83,7 +82,7 @@ This is an example of new project attribute with a format *List*.
 
 ![Create a new attribute form in OpenProject administration](open_project_system_guide_project_attributes_new_attribute.png)
 
-- **Name**: This is the name that will be visible in the [Project overview](../../../user-guide/project-overview) page, if the custom field is activated on that project.
+- **Name**: This is the name that will be visible in the [Project home](../../../user-guide/project-home/) page, if the custom field is activated on that project.
 
 - **Section:** If there are sections, you can pick where this new project attribute should appear. [Learn about sections](#sections) for more information.
 
