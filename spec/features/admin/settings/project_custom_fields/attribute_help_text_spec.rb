@@ -52,7 +52,7 @@ RSpec.describe "Project custom field attribute help text", :js do
       visit edit_admin_settings_project_custom_field_path(project_custom_field)
 
       # Navigate to attribute help text tab
-      click_on AttributeHelpText.human_plural_model_name
+      click_on AttributeHelpText.human_attribute_name(:help_text)
 
       expect(page).to have_current_path(
         attribute_help_text_admin_settings_project_custom_field_path(project_custom_field)
@@ -176,7 +176,7 @@ RSpec.describe "Project custom field attribute help text", :js do
       visit edit_admin_settings_project_custom_field_path(project_custom_field)
 
       # Navigate to attribute help text tab
-      click_on AttributeHelpText.human_plural_model_name
+      click_on AttributeHelpText.human_attribute_name(:help_text)
 
       expect(page).to have_current_path(
         attribute_help_text_admin_settings_project_custom_field_path(project_custom_field)
@@ -190,7 +190,7 @@ RSpec.describe "Project custom field attribute help text", :js do
       )
 
       # Navigate back to attribute help text tab
-      click_on AttributeHelpText.human_plural_model_name
+      click_on AttributeHelpText.human_attribute_name(:help_text)
 
       expect(page).to have_current_path(
         attribute_help_text_admin_settings_project_custom_field_path(project_custom_field)

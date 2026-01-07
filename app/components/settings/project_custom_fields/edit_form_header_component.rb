@@ -72,7 +72,7 @@ module Settings
           {
             name: "attribute_help_text",
             path: attribute_help_text_admin_settings_project_custom_field_path(@custom_field),
-            label: AttributeHelpText.human_plural_model_name
+            label: AttributeHelpText.human_attribute_name(:help_text)
           }
 
         tabs
