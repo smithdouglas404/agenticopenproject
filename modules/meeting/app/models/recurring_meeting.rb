@@ -319,7 +319,7 @@ class RecurringMeeting < ApplicationRecord
       .where(date: start_date...)
       .pluck(:date)
       .each do |date|
-      schedule.add_exception_time(date.to_time(:utc))
+        schedule.add_exception_time(date.to_time(:utc))
     end
   end
 

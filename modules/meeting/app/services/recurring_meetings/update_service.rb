@@ -47,6 +47,7 @@ module RecurringMeetings
 
       if should_reschedule?(recurring_meeting)
         reschedule_future_occurrences(recurring_meeting)
+        update_start_date(recurring_meeting)
         reschedule_init_job(recurring_meeting)
         send_updated_mail(recurring_meeting)
       end
@@ -72,6 +73,16 @@ module RecurringMeetings
       else
         remove_cancelled_schedules(recurring_meeting)
         reschedule_all_occurrences(recurring_meeting)
+      end
+    end
+
+    def update_start_date(recurring_meeting)
+      next_occurrence = recurring_meeting.next_occurrence&.in_time_zone(recurring_meeting.time_zone)
+      return if next_occurrence.nil?
+
+      Meeting.transaction do
+        recurring_meeting.update_column(:start_time, next_occurrence)
+        recurring_meeting.template.update_column(:start_time, next_occurrence)
       end
     end
 
@@ -146,8 +157,8 @@ module RecurringMeetings
         .where(recurring_meeting:)
         .cancelled
         .find_each do |scheduled|
-        occurring = recurring_meeting.schedule.occurs_at?(scheduled.start_time)
-        scheduled.delete unless occurring
+          occurring = recurring_meeting.schedule.occurs_at?(scheduled.start_time)
+          scheduled.delete unless occurring
       end
     end
 
@@ -159,17 +170,17 @@ module RecurringMeetings
         .participants
         .invited
         .find_each do |participant|
-        # Generate old schedule in each participant's locale
-        old_schedule = User.execute_as(participant.user) do
-          @old_schedule_model.full_schedule_in_words
-        end
+          # Generate old schedule in each participant's locale
+          old_schedule = User.execute_as(participant.user) do
+            @old_schedule_model.full_schedule_in_words
+          end
 
-        MeetingSeriesMailer.updated(
-          recurring_meeting,
-          participant.user,
-          User.current,
-          changes: { old_schedule:, old_location: @old_location }
-        ).deliver_now
+          MeetingSeriesMailer.updated(
+            recurring_meeting,
+            participant.user,
+            User.current,
+            changes: { old_schedule:, old_location: @old_location }
+          ).deliver_now
       end
     end
 
