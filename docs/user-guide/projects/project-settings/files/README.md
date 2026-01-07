@@ -16,7 +16,7 @@ keywords: file storages, project folder, storages
 | [Add Nextcloud storage](#add-a-nextcloud-storage-to-a-project) | Add your Nextcloud storage to a project                     |
 | [Nextcloud and project folders](#project-folders)            | How to manage Nextcloud project folders                     |
 | [Edit a file storage](#edit-an-existing-storage)             | Learn how to edit an existing file storage in a project     |
-| [Delete a file storage](#delete-an-existing-storage)         | Learn how to remove an existing file storage from a project |
+| [Delete a file storage](#delete-an-existing-file-storage)    | Learn how to remove an existing file storage from a project |
 | [Add OneDrive storage to a project](#add-a-onedrive-storage-to-a-project-enterprise-add-on) | Add your OneDrive storage to a project                      |
 | [Show attachments in work packages](#show-attachments-in-the-work-packages-files-tab) | Allow showing attachments under the work packages Files tab |
 
