@@ -31,7 +31,7 @@
 require "spec_helper"
 require "icalendar"
 
-RSpec.describe AllMeetings::ICalService, type: :model do # rubocop:disable RSpec/SpecFilePathFormat
+RSpec.describe AllMeetings::ICalService, type: :model do
   let(:user) do
     create(:user,
            firstname: "Bob",

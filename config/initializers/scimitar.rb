@@ -43,9 +43,6 @@ Rails.application.config.to_prepare do
         )
         return handle_scim_error(error)
       end
-      if !OpenProject::FeatureDecisions.scim_api_active?
-        return handle_scim_error(Scimitar::AuthenticationError.new)
-      end
 
       warden = request.env["warden"]
       user = warden.authenticate(scope: :scim_v2)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -23,32 +23,38 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-# Destroy confirmation dialog used when removing a storage from a project from within the project
-# by going to "Some project" -> Project settings -> Files.
-module Storages
-  module ProjectStorages
-    module Projects
-      class DestroyConfirmationDialogComponent < ApplicationComponent
-        include OpTurbo::Streamable
+module API
+  class Mcp
+    class ErrorRepresenter
+      INVALID_REQUEST = -32600
+      INTERNAL_ERROR = -32603
 
-        TEST_SELECTOR = "op-project-storages--delete-dialog"
+      def initialize(error)
+        @error = error
+      end
 
-        def initialize(storage:)
-          super
-          @project_storage = storage
-        end
-
-        def form_arguments
-          {
-            action: project_settings_project_storage_path(project_id: @project_storage.project, id: @project_storage),
-            method: :delete
+      def to_json(*)
+        {
+          jsonrpc: "2.0",
+          error: {
+            code: map_code(@error.code),
+            message: @error.message,
+            data: @error.details
           }
-        end
+        }.to_json(*)
+      end
+
+      private
+
+      def map_code(code)
+        return INTERNAL_ERROR if code >= 500
+
+        INVALID_REQUEST
       end
     end
   end

@@ -69,14 +69,14 @@ RSpec.describe API::V3::Users::UsersAPI do
     end
 
     describe "attribute change" do
-      let(:parameters) { { email: "foo@example.org", language: "de" } }
+      let(:parameters) { { login: "new.login", language: "de" } }
 
-      it_behaves_like "successful update", mail: "foo@example.org", language: "de"
+      it_behaves_like "successful update", login: "new.login", language: "de"
     end
 
     describe "attribute collision" do
-      let(:parameters) { { email: "foo@example.org" } }
-      let(:collision) { create(:user, mail: "foo@example.org") }
+      let(:parameters) { { login: "new.login" } }
+      let(:collision) { create(:user, login: "new.login") }
 
       before do
         collision
@@ -88,7 +88,7 @@ RSpec.describe API::V3::Users::UsersAPI do
         expect(last_response).to have_http_status(:unprocessable_entity)
 
         expect(last_response.body)
-          .to be_json_eql("email".to_json)
+          .to be_json_eql("login".to_json)
                 .at_path("_embedded/details/attribute")
 
         expect(last_response.body)
@@ -127,11 +127,11 @@ RSpec.describe API::V3::Users::UsersAPI do
         context "when no custom field value is provided" do
           let(:parameters) do
             {
-              email: "updated@example.org"
+              login: "new.login"
             }
           end
 
-          it_behaves_like "successful update", mail: "updated@example.org"
+          it_behaves_like "successful update", login: "new.login"
 
           it "keeps the custom field value empty" do
             send_request
@@ -143,7 +143,7 @@ RSpec.describe API::V3::Users::UsersAPI do
         context "when the custom field is provided but empty" do
           let(:parameters) do
             {
-              email: "updated@example.org",
+              login: "new.login",
               required_custom_field.attribute_name(:camel_case) => {
                 raw: ""
               }
@@ -165,14 +165,14 @@ RSpec.describe API::V3::Users::UsersAPI do
         context "when the custom field value is provided and valid" do
           let(:parameters) do
             {
-              email: "updated@example.org",
+              login: "new.login",
               required_custom_field.attribute_name(:camel_case) => {
                 raw: "Engineering"
               }
             }
           end
 
-          it_behaves_like "successful update", mail: "updated@example.org"
+          it_behaves_like "successful update", login: "new.login"
 
           it "updates the user with the custom field value" do
             send_request
@@ -189,14 +189,14 @@ RSpec.describe API::V3::Users::UsersAPI do
 
         let(:parameters) do
           {
-            email: "updated@example.org",
+            login: "new.login",
             custom_field.attribute_name(:camel_case) => {
               raw: "CF text"
             }
           }
         end
 
-        it_behaves_like "successful update", mail: "updated@example.org"
+        it_behaves_like "successful update", login: "new.login"
 
         it "sets the cf value" do
           send_request
@@ -215,14 +215,14 @@ RSpec.describe API::V3::Users::UsersAPI do
           let(:current_user) { create(:admin) }
           let(:parameters) do
             {
-              email: "updated@example.org",
+              login: "new.login",
               admin_only_custom_field.attribute_name(:camel_case) => {
                 raw: "CF text"
               }
             }
           end
 
-          it_behaves_like "successful update", mail: "updated@example.org"
+          it_behaves_like "successful update", login: "new.login"
 
           it "sets the cf value" do
             send_request
@@ -235,14 +235,14 @@ RSpec.describe API::V3::Users::UsersAPI do
           let(:current_user) { create(:user, global_permissions: %i[manage_user view_all_principals]) }
           let(:parameters) do
             {
-              email: "updated@example.org",
+              login: "new.login",
               admin_only_custom_field.attribute_name(:camel_case) => {
                 raw: "CF text"
               }
             }
           end
 
-          it_behaves_like "successful update", mail: "updated@example.org"
+          it_behaves_like "successful update", login: "new.login"
 
           it "does not set the cf value" do
             send_request
@@ -254,11 +254,11 @@ RSpec.describe API::V3::Users::UsersAPI do
             let(:is_required) { true }
             let(:parameters) do
               {
-                email: "updated@example.org"
+                login: "new.login"
               }
             end
 
-            it_behaves_like "successful update", mail: "updated@example.org"
+            it_behaves_like "successful update", login: "new.login"
 
             it "does not set the cf value" do
               send_request
@@ -290,8 +290,21 @@ RSpec.describe API::V3::Users::UsersAPI do
       end
     end
 
+    describe "email update" do
+      let(:email) { "this.is.a.new@email.address" }
+      let(:parameters) { { email:  email } }
+
+      it "updates the users email correctly" do
+        send_request
+        expect(last_response).to have_http_status(:ok)
+
+        updated_user = User.find(user.id)
+        expect(updated_user.mail).to eq(email)
+      end
+    end
+
     describe "unknown user" do
-      let(:parameters) { { email: "foo@example.org" } }
+      let(:parameters) { { login: "new.login" } }
       let(:path) { api_v3_paths.user(666) }
 
       it "responds with 404" do
@@ -317,6 +330,24 @@ RSpec.describe API::V3::Users::UsersAPI do
 
         expect(last_response.body)
           .to be_json_eql("password".to_json)
+                .at_path("_embedded/details/attribute")
+
+        expect(last_response.body)
+          .to be_json_eql("urn:openproject-org:api:v3:errors:PropertyIsReadOnly".to_json)
+                .at_path("errorIdentifier")
+      end
+    end
+
+    describe "email update" do
+      let(:email) { "this.is.a.new@email.address" }
+      let(:parameters) { { email: email } }
+
+      it "rejects the users email update" do
+        send_request
+        expect(last_response).to have_http_status(:unprocessable_entity)
+
+        expect(last_response.body)
+          .to be_json_eql("email".to_json)
                 .at_path("_embedded/details/attribute")
 
         expect(last_response.body)

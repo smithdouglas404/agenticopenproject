@@ -279,8 +279,8 @@ cs:
           Veškeré informace o schůzce, které nejsou v šabloně, budou ztraceny. Chcete pokračovat?
         confirm_button: "Zrušit výskyt"
     blankslate:
-      title: "Nic k zobrazení"
-      desc: "There are no meetings that meet the active filter criteria."
+      title: "There are no meetings to display"
+      desc: "You can create a new meeting or change filter criteria"
     label_export_pdf: "Exportovat PDF"
     export:
       your_meeting_export: "Meeting is being exported"
@@ -373,11 +373,21 @@ cs:
       next: "Next"
       no_items: "No agenda items"
       no_items_flash: "There are no agenda items to present."
+    ical_response:
+      update_failed: "Could not update participation status."
+      meeting_not_found: "Meeting not found for the given UID."
   meeting_section:
     untitled_title: "Sekce bez názvu"
     delete_confirmation: "Smazáním sekce také smažete všechny body agendy. Opravdu to chcete udělat?"
     placeholder_title: "Nová sekce"
     empty_text: "Přetáhněte položky sem nebo vytvořte nové"
+  meeting_participant:
+    participation_status:
+      needs_action: "No response"
+      accepted: "Accepted"
+      declined: "Declined"
+      tentative: "Maybe"
+      unknown: "Unknown"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Time zone difference"
@@ -471,7 +481,7 @@ cs:
   notice_meeting_updated: "Tato stránka byla aktualizována někým jiným. Pro zobrazení změn znovu načtena."
   permission_create_meetings: "Vytvořit schůzku\n"
   permission_edit_meetings: "Upravit schůzku"
-  permission_delete_meetings: "Odstranit schůzky"
+  permission_delete_meetings: "Smazat schůzku"
   permission_view_meetings: "Zobrazit schůzky"
   permission_manage_agendas: "Správa zápisů"
   permission_manage_agendas_explanation: "Allows creating, editing and removing agenda items"
@@ -525,6 +535,9 @@ cs:
   label_agenda_item_move_to_bottom: "Přesunout na konec"
   label_agenda_item_move_up: "Přesunout výš"
   label_agenda_item_move_down: "Přesunout níž"
+  label_agenda_item_duplicate: "Duplicate"
+  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
   label_agenda_item_add_notes: "Přidat poznámky"
   label_agenda_item_add_outcome: "Přidat výsledek"
   label_agenda_item_work_package_add: "Přidat pracovní balíček"
@@ -598,10 +611,12 @@ cs:
   text_agenda_item_not_editable_anymore: "Tento bod pořadu jednání již není upravitelný."
   text_agenda_item_move_next_meeting: "This item will be moved to the next meeting on %{date} at %{time}."
   text_agenda_item_moved_to_next_meeting: "Agenda item moved to the next meeting, on %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Tento pracovní balíček ještě není naplánován na nadcházející program schůzky."
   text_agenda_item_move_next_meeting_cancelled: "Unable to move to the next meeting since it has been cancelled."
   text_work_package_add_to_meeting_hint: 'Použijte tlačítko "Přidat do schůzky" pro přidání tohoto pracovního balíčku na nadcházející schůzku.'
-  text_work_package_has_no_past_meeting_agenda_items: "Tento pracovní balíček nebyl na minulé schůzce zmíněn."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Email calendar updates are muted. Participants will not receive updated invites via email when you make changes."
   text_email_updates_enabled: "Email calendar updates are enabled. All participants will receive updated invites via email when you make changes."
   my_account:

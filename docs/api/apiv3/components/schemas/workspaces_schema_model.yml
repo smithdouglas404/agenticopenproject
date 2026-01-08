@@ -101,14 +101,14 @@ example:
   - _type: ProjectFormCustomFieldSection
     name: Project Details
     attributes:
-      customField30
-      customField34
+    - customField30
+    - customField34
   - _type: ProjectFormCustomFieldSection
     name: Budget Information
     attributes:
-      customField31
-      customField32
-      customField35
+    - customField31
+    - customField32
+    - customField35
   id:
     type: Integer
     name: ID

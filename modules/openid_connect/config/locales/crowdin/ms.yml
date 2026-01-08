@@ -43,6 +43,10 @@ ms:
               response_is_not_successful: "membalas dengan %{status}."
               response_is_not_json: "tidak mengembalikan badan JSON."
               response_misses_required_attributes: "tidak mengembalikan atribut yang diperlukan. Atribut yang tiada ialah: %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: Masukkan nama pembekal %{name} untuk mengesahkan pemadaman.
