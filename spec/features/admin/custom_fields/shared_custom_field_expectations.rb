@@ -171,7 +171,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        labels: [
+        fields: [
           label_min_length,
           label_max_length,
           label_regexp,
@@ -193,13 +193,13 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        labels: [
+        fields: [
           label_min_length,
           label_max_length,
           label_regexp,
-          label_default_value,
           label_is_required
         ],
+        rich_text_field: label_default_value,
         no_labels: [
           label_multi_value,
           label_allow_non_open_versions,
@@ -216,7 +216,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
 
       # Integer has min/max_len and regex as well which seems strange.
       expect_page_to_have(
-        labels: [
+        fields: [
           label_min_length,
           label_max_length,
           label_regexp,
@@ -239,7 +239,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
 
       # Float has min/max_len and regex as well which seems strange.
       expect_page_to_have(
-        labels: [
+        fields: [
           label_min_length,
           label_max_length,
           label_regexp,
@@ -261,7 +261,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        labels: [
+        fields: [
           label_multi_value,
           label_is_required
         ],
@@ -283,7 +283,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        labels: [
+        fields: [
           label_is_required
         ],
         no_labels: [
@@ -305,7 +305,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        labels: [
+        fields: [
           label_default_value
         ],
         no_labels: [
@@ -327,7 +327,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        labels: [
+        fields: [
           label_multi_value,
           label_is_required
         ],
@@ -349,7 +349,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        labels: [
+        fields: [
           label_multi_value,
           label_allow_non_open_versions,
           label_is_required
@@ -371,7 +371,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        labels: [
+        fields: [
           label_multi_value,
           label_is_required,
           label_ee_banner_hierarchy
