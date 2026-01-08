@@ -73,6 +73,7 @@ module Primer
 
           @system_arguments = system_arguments
           @system_arguments[:tag] = :section
+          @system_arguments[:mb] ||= 4
           @system_arguments[:aria] ||= {}
           @system_arguments[:aria][:labelledby] = @heading_arguments[:id]
           @system_arguments[:hidden] = :none if inputs.all?(&:hidden?)
