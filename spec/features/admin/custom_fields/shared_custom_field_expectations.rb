@@ -332,6 +332,22 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
         no_fieldset: label_possible_values
       )
       expect(page).to have_button("Save", disabled: true)
+    when "Link"
+      expect_page_to_have(
+        fields: [
+          label_regexp,
+          label_default_value,
+          label_is_required
+        ],
+        no_labels: [
+          label_min_length,
+          label_max_length,
+          label_multi_value,
+          label_allow_non_open_versions,
+          label_ee_banner_hierarchy
+        ],
+        no_fieldset: label_possible_values
+      )
     else
       fail "fields for #{format} custom field are not defined"
     end
