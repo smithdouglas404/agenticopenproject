@@ -33,6 +33,15 @@ module Primer
     module Forms
       # :nodoc:
       class FieldsetGroup < Primer::Forms::BaseComponent
+        ##
+        # @param title [String] The title displayed as the heading for the fieldset
+        # @param inputs [Array<Primer::Forms::Dsl::Input>] Array of form inputs to be grouped
+        # @param builder [ActionView::Helpers::FormBuilder] The form builder instance
+        # @param form [Primer::Forms::BaseForm] The form object
+        # @param layout [Symbol] Layout style for the input group (default: Primer::Forms::Group::DEFAULT_LAYOUT)
+        # @param heading_arguments [Hash] Arguments passed to the heading component (id, tag, size)
+        # @param group_arguments [Hash] Arguments passed to the input group component
+        # @param system_arguments [Hash] Additional system arguments passed to the section wrapper
         def initialize( # rubocop:disable Metrics/AbcSize
           title:,
           inputs:,
