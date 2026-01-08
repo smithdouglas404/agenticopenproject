@@ -237,8 +237,7 @@ module IncomingEmails
 
         value = value.to_s.downcase
         if (ignored_value.is_a?(Regexp) && value.match(ignored_value)) || value == ignored_value
-          log "ignoring email with #{key}:#{value} header", report: false
-          # no point reporting back in case of auto-generated emails
+          log "email has automated #{key}:#{value} header", report: false
           return true
         end
       end
