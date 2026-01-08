@@ -17,8 +17,10 @@ keywords: SharePoint, file storage, integration
 | [Edit a SharePoint file storage](#edit-a-sharepoint-file-storage) | Edit a SharePoint file storage                               |
 | [Delete an SharePoint file storage](#delete-a-sharepoint-file-storage) | Delete a SharePoint file storage                             |
 
+[feature: one_drive_sharepoint_file_storage]
+
 > [!NOTE]
-> SharePoint integration is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
+> This feature includes using both OneDrive and SharePoint integrations.
 
 OpenProject offers an integration with SharePoint to allow users to:
 

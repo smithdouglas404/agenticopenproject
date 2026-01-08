@@ -10,10 +10,10 @@ keywords: integration, apps, OneDrive, SharePoint, user
 
 You can use **OneDrive** as an integrated file storage in OpenProject.
 
-> [!NOTE]
-> OneDrive integration is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
+[feature: one_drive_sharepoint_file_storage ]
 
-[feature: one_drive_sharepoint_file_storage]
+> [!NOTE]
+> This feature includes using both OneDrive and SharePoint integrations.
 
 
 This integration makes it possible for you to:

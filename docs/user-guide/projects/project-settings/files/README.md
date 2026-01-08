@@ -40,8 +40,10 @@ In the page that follows, you will be able to select one of the file storages se
 
 ## Add a OneDrive storage to a project (Enterprise add-on)
 
+[feature: one_drive_sharepoint_file_storage]
+
 > [!NOTE]
-> OneDrive integration is an Enterprise add-on and can only be used > with [Enterprise cloud](../../../../enterprise-guide/enterprise-cloud-guide/) > or [Enterprise on-premises](../../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
+> This feature includes using both OneDrive and SharePoint integrations.
 
 If you have selected the OneDrive option in the previous step of storage selection, you will now see the **Project
 folder** options.
@@ -62,8 +64,10 @@ The OneDrive file storage is now available to all work packages in this project.
 
 ## Add a SharePoint storage to a project (Enterprise add-on)
 
+[feature: one_drive_sharepoint_file_storage]
+
 > [!NOTE]
-> SharePoint integration is an Enterprise add-on and can only be used > with [Enterprise cloud](../../../../enterprise-guide/enterprise-cloud-guide/) > or [Enterprise on-premises](../../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
+> This feature includes using both OneDrive and SharePoint integrations.
 
 If you have selected the SharePoint option in the previous step of storage selection, you will now see the **Project folder** options.
 

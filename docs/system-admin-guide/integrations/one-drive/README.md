@@ -17,11 +17,10 @@ keywords: OneDrive, file storage, integration
 | [Edit a OneDrive file storage](#edit-a-onedrive-file-storage)      | Edit a OneDrive file storage                                          |
 | [Delete an OneDrive file storage](#delete-a-onedrive-file-storage) | Delete a OneDrive file storage                                        |
 
+[feature: one_drive_sharepoint_file_storage]
+
 > [!NOTE]
-> OneDrive integration is an Enterprise add-on and can only be used
-> with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/)
-> or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free
-> Community edition is easy and helps support OpenProject.
+> This feature includes using both OneDrive and SharePoint integrations.
 
 OpenProject offers an integration with OneDrive to allow users to:
 
