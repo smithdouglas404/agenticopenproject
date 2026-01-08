@@ -38,8 +38,11 @@ module Primer
         # @param inputs [Array<Primer::Forms::Dsl::Input>] Array of form inputs to be grouped
         # @param builder [ActionView::Helpers::FormBuilder] The form builder instance
         # @param form [Primer::Forms::BaseForm] The form object
-        # @param layout [Symbol] Layout style for the input group (default: Primer::Forms::Group::DEFAULT_LAYOUT)
-        # @param heading_arguments [Hash] Arguments passed to the heading component (id, tag, size)
+        # @param layout [Symbol] Layout style for the input group (default: :default_layout)
+        # @param heading_arguments [Hash] Arguments passed to the heading component
+        # @option heading_arguments [String] :id The ID for the heading element
+        # @option heading_arguments [Symbol] :tag The HTML tag for the heading (default: :h3)
+        # @option heading_arguments [Symbol] :size The size of the heading (default: :medium)
         # @param group_arguments [Hash] Arguments passed to the input group component
         # @param system_arguments [Hash] Additional system arguments passed to the section wrapper
         def initialize( # rubocop:disable Metrics/AbcSize
