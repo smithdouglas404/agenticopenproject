@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import {
   ExternalRelationQueryConfigurationService,
@@ -32,6 +39,7 @@ export const emptyTypeGroup = '__empty';
 
 @Component({
   selector: 'opce-admin-type-form-configuration',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './type-form-configuration.html',
   providers: [
     TypeBannerService,
@@ -105,8 +113,13 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
     // enough, we need to memoize whether we have already submitted.
     let submitted = false;
 
-    this.form.addEventListener('submit', () => {
-      submitted = true;
+    this.form.addEventListener('submit', (e) => {
+      if (submitted) { // Cancel if already submitted.
+        e.preventDefault();
+        e.stopPropagation();
+      } else {
+        submitted = true;
+      }
     });
 
     // Capture mousedown on button because firefox breaks blur on click
