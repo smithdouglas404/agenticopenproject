@@ -25,20 +25,13 @@ Your projects can be available publicly or internally. OpenProject does not limi
 
 ## Select project lists
 
-There are several ways to get an overview of all your projects. You can press the **Project lists** button at the bottom of the **Select a project** menu in the top left header navigation. You can search through the projects or use the **Favorites** button to find your projects quicker.
+To get an overview of all your projects use the [**Global modules menu**](../../home/global-modules/#projects) and select *Projects*. You can access that menu either on the left side of the OpenProject application homepage or by using the grid menu icon in the top right corner.
 
-!["Project lists" button at the bottom of the All projects dropdown menu in the header navigation of OpenProject](openproject_userguide_projects_project_lists_button.png)
-
-> [!TIP]
-> If you have already selected a project, the **x** icon next to that project will navigate you away from that selected project. 
-
-![Icon to close an already selected project in the All projects dropdown menu in OpenProject](openproject_user_guide_project_project_list_x.png)
-
-Alternatively, you can use the [**Global modules menu**](../../home/global-modules/#projects) and select *Projects*. You can access that menu either on the left side of the OpenProject application homepage or by using the grid menu icon in the top right corner.
+Alternatively click the *View all projects* button in the *Projects* widget on the application home page. 
 
 ![Select all projects from the global modules menu on the left side menu in OpenProject](openproject_user_guide_project_project_lists_project_global_module.png)
 
-You will then get a list of all your active projects in OpenProject.
+You will then get a list of all your active projects, programs and portfolios in OpenProject.
 
 ![A list of all projects in OpenProject](openproject_user_guide_project_project_lists_overview.png)
 
