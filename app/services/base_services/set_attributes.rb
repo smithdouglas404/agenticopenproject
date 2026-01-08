@@ -71,9 +71,10 @@ module BaseServices
 
       custom_field_ids = custom_field_ids_from(params)
 
-      # Only update custom_values_to_validate when custom field params are provided.
+      # Only update custom_values_to_validate when the object is persisted and the
+      # custom field params are provided.
       # Otherwise keep them intact, so other services can still set them.
-      return if custom_field_ids.empty?
+      return unless model.persisted? && custom_field_ids.any?
 
       # Validate only the custom values being updated via the params.
       model.custom_values_to_validate = model.custom_values.filter do |cv|
