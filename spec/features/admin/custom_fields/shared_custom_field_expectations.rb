@@ -137,7 +137,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
 
   def expect_page_to_have(selectors)
     selectors.each do |selector, locators|
-      locators.each do |locator|
+      Array(locators).each do |locator|
         expect(page).to send("have_#{selector}".singularize, locator)
       end
     end
@@ -152,9 +152,9 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
   let(:label_allow_non_open_versions) do
     I18n.t("activerecord.attributes.custom_field.allow_non_open_versions")
   end
-  # Possible values, capitalized on UI
+  # Possible values
   let(:label_possible_values) do
-    I18n.t("activerecord.attributes.custom_field.possible_values").upcase
+    I18n.t("activerecord.attributes.custom_field.possible_values")
   end
   let(:label_default_value) { I18n.t("activerecord.attributes.custom_field.default_value") } # Default value
   let(:label_is_required) { I18n.t("activerecord.attributes.custom_field.is_required") } # Required
@@ -171,19 +171,19 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        texts: [
+        labels: [
           label_min_length,
           label_max_length,
           label_regexp,
           label_default_value,
           label_is_required
         ],
-        no_texts: [
+        no_labels: [
           label_multi_value,
           label_allow_non_open_versions,
-          label_possible_values,
           label_ee_banner_hierarchy
-        ]
+        ],
+        no_fieldset: label_possible_values
       )
     end
   when "Long text"
@@ -193,19 +193,19 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        texts: [
+        labels: [
           label_min_length,
           label_max_length,
           label_regexp,
           label_default_value,
           label_is_required
         ],
-        no_texts: [
+        no_labels: [
           label_multi_value,
           label_allow_non_open_versions,
-          label_possible_values,
           label_ee_banner_hierarchy
-        ]
+        ],
+        no_fieldset: label_possible_values
       )
     end
   when "Integer"
@@ -216,19 +216,19 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
 
       # Integer has min/max_len and regex as well which seems strange.
       expect_page_to_have(
-        texts: [
+        labels: [
           label_min_length,
           label_max_length,
           label_regexp,
           label_default_value,
           label_is_required
         ],
-        no_texts: [
+        no_labels: [
           label_multi_value,
           label_allow_non_open_versions,
-          label_possible_values,
           label_ee_banner_hierarchy
-        ]
+        ],
+        no_fieldset: label_possible_values
       )
     end
   when "Float"
@@ -239,19 +239,19 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
 
       # Float has min/max_len and regex as well which seems strange.
       expect_page_to_have(
-        texts: [
+        labels: [
           label_min_length,
           label_max_length,
           label_regexp,
           label_default_value,
           label_is_required
         ],
-        no_texts: [
+        no_labels: [
           label_multi_value,
           label_allow_non_open_versions,
-          label_possible_values,
           label_ee_banner_hierarchy
-        ]
+        ],
+        no_fieldset: label_possible_values
       )
     end
   when "List"
@@ -261,12 +261,12 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        texts: [
+        labels: [
           label_multi_value,
-          label_possible_values,
           label_is_required
         ],
-        no_texts: [
+        fieldset: label_possible_values,
+        no_labels: [
           label_min_length,
           label_max_length,
           label_regexp,
@@ -283,19 +283,19 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        texts: [
+        labels: [
           label_is_required
         ],
-        no_texts: [
+        no_labels: [
           label_min_length,
           label_max_length,
           label_regexp,
           label_multi_value,
           label_allow_non_open_versions,
-          label_possible_values,
           label_default_value,
           label_ee_banner_hierarchy
-        ]
+        ],
+        no_fieldset: label_possible_values
       )
     end
   when "Boolean"
@@ -305,19 +305,19 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        texts: [
+        labels: [
           label_default_value
         ],
-        no_texts: [
+        no_labels: [
           label_min_length,
           label_max_length,
           label_regexp,
           label_multi_value,
           label_is_required,
           label_allow_non_open_versions,
-          label_possible_values,
           label_ee_banner_hierarchy
-        ]
+        ],
+        no_fieldset: label_possible_values
       )
     end
   when "User"
@@ -327,19 +327,19 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        texts: [
+        labels: [
           label_multi_value,
           label_is_required
         ],
-        no_texts: [
+        no_labels: [
           label_min_length,
           label_max_length,
           label_regexp,
           label_allow_non_open_versions,
-          label_possible_values,
           label_default_value,
           label_ee_banner_hierarchy
-        ]
+        ],
+        no_fieldset: label_possible_values
       )
     end
   when "Version"
@@ -349,19 +349,19 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        texts: [
+        labels: [
           label_multi_value,
           label_allow_non_open_versions,
           label_is_required
         ],
-        no_texts: [
+        no_labels: [
           label_min_length,
           label_max_length,
           label_regexp,
-          label_possible_values,
           label_default_value,
           label_ee_banner_hierarchy
-        ]
+        ],
+        no_fieldset: label_possible_values
       )
     end
   when "Hierarchy"
@@ -371,19 +371,19 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       end
 
       expect_page_to_have(
-        texts: [
+        labels: [
           label_multi_value,
           label_is_required,
           label_ee_banner_hierarchy
         ],
-        no_texts: [
+        no_labels: [
           label_min_length,
           label_max_length,
           label_regexp,
           label_allow_non_open_versions,
-          label_possible_values,
           label_default_value
-        ]
+        ],
+        no_fieldset: label_possible_values
       )
       expect(page).to have_button("Save", disabled: true)
     end
