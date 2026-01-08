@@ -16,9 +16,10 @@ properties:
     description: A short summary
     readOnly: true
   description:
-    type: string
-    description: The main body of the news with all the details
-    readOnly: true
+    allOf:
+    - "$ref": "./formattable.yml"
+    - description: The main body of the news with all the details
+      readOnly: true
   createdAt:
     type: string
     format: date-time

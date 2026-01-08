@@ -78,7 +78,9 @@ module Pages::Meetings
     end
 
     def click_create
-      click_on "Create meeting"
+      within "#new-meeting-dialog" do
+        click_on "Create meeting"
+      end
       wait_for_network_idle
     end
 
@@ -152,6 +154,10 @@ module Pages::Meetings
         expect(page)
           .to have_content I18n.t("meeting.blankslate.title")
       end
+    end
+
+    def expect_blank_slate_component
+      expect(page).to have_test_selector("meetings-blank-slate")
     end
 
     def expect_meetings_listed_in_order(*meetings)

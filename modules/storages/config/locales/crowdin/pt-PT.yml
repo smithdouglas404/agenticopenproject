@@ -96,12 +96,6 @@ pt-PT:
       manual: Pasta existente gerida manualmente
     remove_project:
       deletion_failure_flash: Erro ao remover o projeto do armazenamento. %{error}
-      dialog:
-        automatically_managed_appendix: Além disso, no caso de este armazenamento ter uma pasta de projeto gerida automaticamente, esta e os seus ficheiros serão eliminados para sempre.
-        confirmation_text: Confirme que compreende e pretende remover este armazenamento de ficheiros deste projeto
-        heading_text: Remover projeto de %{storage}
-        text: Esta ação é irreversível e irá remover todas as ligações dos pacotes de trabalho deste projeto aos ficheiros e pastas desse armazenamento.
-        title: Remover projeto do armazenamento
       label: Remover projeto
   services:
     attributes:
@@ -128,6 +122,7 @@ pt-PT:
     errors:
       messages:
         error: Ocorreu um erro inesperado. Verifique os registos do OpenProject para obter mais informações ou contacte um administrador
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: Não foi possível autenticar o OpenProject com o fornecedor de armazenamento. Certifique-se de que tem acesso ao mesmo.
       models:
         copy_project_folders_service:
@@ -226,12 +221,13 @@ pt-PT:
     confirm_replace_oauth_application: Esta ação irá repor as credenciais OAuth atuais. Após a confirmação, terá de voltar a introduzir as credenciais no fornecedor de armazenamento e todos os utilizadores remotos terão de autorizar novamente o OpenProject. Tem a certeza de que pretende continuar?
     confirm_replace_oauth_client: Esta ação irá repor as credenciais OAuth atuais. Depois de confirmar, terá de introduzir novas credenciais do fornecedor de armazenamento e todos os utilizadores terão de autorizar novamente em %{provider_type}. Tem a certeza de que pretende continuar?
     delete_warning:
-      project_storage_delete_result_1: Remover todos os links de pacotes de trabalho deste projeto para ficheiros e pastas desse armazenamento.
-      project_storage_delete_result_2: No caso de este armazenamento ter uma pasta de projeto gerida automaticamente, esta e os seus ficheiros serão eliminados para sempre.
-      storage: 'Tem a certeza de que quer apagar %{file_storage}? Isto irá:'
-      storage_delete_result_1: Remover todas as configurações de armazenamento para todos os projetos que utilizam este armazenamento.
-      storage_delete_result_2: Remover todos os links de pacotes de trabalho de todos os projetos para ficheiros e pastas desse armazenamento.
-      storage_delete_result_3: No caso de este armazenamento ter pastas de projeto geridas automaticamente, estas e os seus ficheiros serão eliminados para sempre.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Pastas de grupo
@@ -502,7 +498,7 @@ pt-PT:
         title: Estamos a definir as suas permissões na pasta do projeto.
     page_titles:
       file_storages:
-        delete: Eliminar armazenamento de ficheiros
+        delete: Delete file storage?
         subtitle: Adicione um armazenamento de ficheiros externo para carregar, ligar e gerir ficheiros em pacotes de trabalho.
       managed_project_folders:
         subtitle: |-
@@ -516,6 +512,8 @@ pt-PT:
       project_storage_members:
         subtitle: Verifique o estado da ligação para o armazenamento %{storage_name_link} de todos os membros do projeto.
         title: Estado da ligação dos membros
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'As permissões de ficheiros em armazenamentos externos são aplicadas apenas a pastas e ficheiros dentro de pastas de projetos geridas automaticamente. Tenha em conta que nem todas as permissões de ficheiros são suportadas por todos os fornecedores de armazenamento. Para mais informações, consulte a documentação sobre <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>permissões de armazenamento de ficheiros</a>.'
     provider_types:
       label: Tipo de fornecedor

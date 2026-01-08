@@ -49,10 +49,11 @@ module Storages
         if list_result.success?
           model.managed_drive_id = list_result.result.id
           model.managed_drive_name = list_result.result.name
-          service_call
         else
-          service_call.add_error(list_result.errors)
+          service_call.errors = list_result.errors
+          service_call.success = false
         end
+        service_call
       end
       # rubocop:enable Metrics/AbcSize
 

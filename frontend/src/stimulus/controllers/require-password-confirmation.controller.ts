@@ -29,22 +29,30 @@
  */
 
 import { ApplicationController } from 'stimulus-use';
-import {
-  PasswordConfirmationModalComponent,
-} from 'core-app/shared/components/modals/request-for-confirmation/password-confirmation.modal';
-import { PortalOutletTarget } from 'core-app/shared/components/modal/portal-outlet-target.enum';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { renderStreamMessage } from '@hotwired/turbo';
 
-export default class PasswordConfirmationDialogController extends ApplicationController {
+export default class RequirePasswordConfirmationController extends ApplicationController {
   private formListener:(evt:SubmitEvent) => unknown = this.onFormSubmit.bind(this);
+  private dialogCloseListener:(evt:Event) => unknown = this.onDialogClose.bind(this);
+  private dialogSubmitListener:(evt:CustomEvent) => unknown = this.onConfirmationSubmit.bind(this);
+
+  private pathHelper:PathHelperService;
 
   private activeDialog = false;
   private submitButton:HTMLButtonElement|null;
   private submitDialogId:string|undefined;
+  private previousSubmitter:HTMLElement|null;
 
-  connect() {
+  async connect() {
     super.connect();
 
+    const context = await window.OpenProject.getPluginContext();
+    this.pathHelper = context.services.pathHelperService;
+
     this.element.addEventListener('submit', this.formListener);
+    document.addEventListener('password-confirmation-dialog:close', this.dialogCloseListener);
+    document.addEventListener('password-confirmation-dialog:submit', this.dialogSubmitListener);
 
     this.submitButton = this.element.querySelector("button[type='submit']");
     this.submitDialogId = this.submitButton?.dataset?.submitDialogId;
@@ -55,10 +63,15 @@ export default class PasswordConfirmationDialogController extends ApplicationCon
     super.disconnect();
 
     this.element.removeEventListener('submit', this.formListener);
+    document.removeEventListener('password-confirmation-dialog:close', this.dialogCloseListener);
+    document.removeEventListener('password-confirmation-dialog:submit', this.dialogSubmitListener);
+  }
+
+  private onDialogClose(_event:Event) {
+    this.activeDialog = false;
   }
 
   private async onFormSubmit(event:SubmitEvent) {
-    const form = this.element as HTMLFormElement;
     const passwordConfirm = this.element.querySelector('#hidden_password_confirmation');
 
     if (passwordConfirm !== null) {
@@ -66,40 +79,54 @@ export default class PasswordConfirmationDialogController extends ApplicationCon
     }
 
     event.preventDefault();
-    const pluginContext = await window.OpenProject.getPluginContext();
-    const opModalService = pluginContext.services.opModalService;
+    this.previousSubmitter = event.submitter;
 
     // If already opened, do not open another dialog
     if (this.activeDialog) {
       return false;
     }
-    const target = document.querySelector('opce-custom-modal-overlay') ? PortalOutletTarget.Custom : PortalOutletTarget.Default;
     this.activeDialog = true;
 
-    pluginContext.runInZone(() => {
-      opModalService
-        .show(PasswordConfirmationModalComponent, 'global',{ }, false, false, target)
-        .subscribe((modal) => modal.closingEvent.subscribe(() => {
-          this.activeDialog = false;
+    void fetch(this.pathHelper.myPasswordConfirmationDialogPath(), {
+      method: 'GET',
+      headers: {
+        Accept: 'text/vnd.turbo-stream.html',
+        'X-Authentication-Scheme': 'Session',
+      },
+    }).then((response) => {
+      const contentType = response.headers.get('Content-Type') ?? '';
+      const isTurboStream = contentType.includes('text/vnd.turbo-stream.html');
 
-          if (!modal.confirmed) {
-            return;
-          }
+      if (!isTurboStream) {
+        return Promise.reject(new Error('Response is not a Turbo Stream'));
+      }
 
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.id = 'hidden_password_confirmation';
-          input.name = '_password_confirmation';
-          input.value = modal.password_confirmation!;
-
-          this.addSubmitDialogId();
-
-          form.append(input);
-          form.requestSubmit(event?.submitter);
-        }));
+      return response.text();
+    }).then((html) => {
+      renderStreamMessage(html);
+    }).catch(() => {
+      this.activeDialog = false;
     });
 
     return false;
+  }
+
+  private onConfirmationSubmit(event:CustomEvent) {
+    if(!this.activeDialog) {
+      return;
+    }
+
+    const form = this.element as HTMLFormElement;
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.id = 'hidden_password_confirmation';
+    input.name = '_password_confirmation';
+    input.value = event.detail as string;
+
+    this.addSubmitDialogId();
+
+    form.append(input);
+    form.requestSubmit(this.previousSubmitter);
   }
 
   private removeSubmitDialogId() {

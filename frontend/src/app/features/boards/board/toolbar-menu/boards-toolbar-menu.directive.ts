@@ -109,7 +109,7 @@ export class BoardsToolbarMenuDirective extends OpContextMenuTrigger {
             && window.confirm(this.I18n.t('js.text_query_destroy_confirmation'))) {
             void this.http
               .delete(
-                `/boards/${this.board.id}`,
+                `/projects/${this.board.projectId}/boards/${this.board.id}`,
                 { responseType: 'json' },
               )
               .subscribe(

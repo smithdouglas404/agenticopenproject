@@ -1526,7 +1526,8 @@ lt:
         not_a_datetime: "nėra tinkama data ir laikas."
         not_a_number: "nėra skaičius."
         not_allowed: "netinkamas dėl trūkstamų teisių."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "nėra sveikasis skaičius."
         not_an_iso_date: "nėra tinkama data. Reikalingas formatas: YYYY-MM-DD."
         not_same_project: "nepriklauso tam pačiam projektui."
@@ -2217,6 +2218,7 @@ lt:
   button_print: "Spausdinti"
   button_quote: "Cituoti"
   button_remove: Pašalinti
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Pervardinti"
   button_replace: "Pakeisti"
@@ -4816,6 +4818,7 @@ lt:
     Pastaba: įjungus bus rodomas ženkliukas su jūsų diegimo būsena <a href="%{information_panel_path}">%{information_panel_label}</a> administravimo skydelyje. Rodoma tik administratoriams. <br/> Ženkliukas palygins jūsų OpenProject versiją su oficialia OpenProject laidų duomenų baze ir praneš, jei yra atnaujinimų dėl žinomų saugumo problemų. Daugiau informacijos, ką daro šis tikrinimas, kokią reikia pateikti informaciją ir kaip šį tikrinimą išjungti, rasite <a href="%{more_info_url}">konfigūravimo dokumentacijoje</a>.
   text_own_membership_delete_confirmation: "Jūs ketinate pašalinti keletą ar visus leidimus ir gali būti, kad nebegalėsite redaguoti šio projekto po to.\nAr jūs tikrai norite tęsti?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Į papildinių katalogą galima rašyti"
   text_powered_by: "Parengta pagal %{link}"
   text_project_identifier_info: "Leidžiamos tik mažosios raidės (a-z), skaitmenys, paprasti (-) ir žemi brūkšneliai (_). Taip pat privalo prasidėti mažąja raide."

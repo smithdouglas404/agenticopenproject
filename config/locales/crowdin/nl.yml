@@ -1507,7 +1507,8 @@ nl:
         not_a_datetime: "is geen geldige datum tijd."
         not_a_number: "is geen getal."
         not_allowed: "is ongeldig vanwege ontbrekende machtigingen."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "is niet een geheel getal."
         not_an_iso_date: "is geen geldige datum. Vereist formaat: JJJJ-MM-DD."
         not_same_project: "hoort niet bij hetzelfde project."
@@ -2164,6 +2165,7 @@ nl:
   button_print: "Afdrukken"
   button_quote: "Citeer"
   button_remove: Verwijder
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Naam wijzigen"
   button_replace: "Vervang"
@@ -4719,6 +4721,7 @@ nl:
     Opmerking: indien ingeschakeld zal dit een badge weergeven met uw installatiestatus in de <a href="%{information_panel_path}">%{information_panel_label}</a> administratie paneel, en op de homepage. Deze wordt alleen getoond aan beheerders. <br/> De badge zal uw huidige OpenProject versie controleren tegen de officiële OpenProject-database om u te waarschuwen voor updates of bekende kwetsbaarheden. Voor meer informatie over wat de controle biedt, welke gegevens nodig zijn om beschikbare updates te verstrekken en hoe deze controle kan worden uitgeschakeld, bezoek <a href="%{more_info_url}">de configuratiedocumentatie</a>.
   text_own_membership_delete_confirmation: "U staat op het punt om enkele of alle van uw machtigingen te verwijderen en kan dit project daarna mogelijk niet meer bewerken.\nWeet u zeker dat u wilt doorgaan?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin directory schrijfbaar"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Alleen kleine letters (a-z), cijfers, streepjes en underscores (_) zijn toegestaan, moet beginnen met een kleine letter."

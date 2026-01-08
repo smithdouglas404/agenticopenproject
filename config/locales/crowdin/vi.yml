@@ -1502,7 +1502,8 @@ vi:
         not_a_datetime: "không phải là thời gian hợp lệ"
         not_a_number: "không phải là số"
         not_allowed: "không hợp lệ vì thiếu quyền."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "không phải là một số nguyên"
         not_an_iso_date: "không phải là một ngày hợp lệ. Yêu cầu định dạng: YYYY-MM-DD."
         not_same_project: "không thuộc cùng dự án."
@@ -2142,6 +2143,7 @@ vi:
   button_print: "In"
   button_quote: "Trích dẫn"
   button_remove: Xoá
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Đổi tên"
   button_replace: "Thay thế"
@@ -4675,6 +4677,7 @@ vi:
     Lưu ý: nếu được kích hoạt, một bảng thông báo về tình trạng của phần mềm sẽ được hiển thị tại trang quản trị <a href="%{information_panel_path}">%{information_panel_label}</a>, và tại trang chủ. Thông tin này chỉ được thấy bởi Quản trị viên. <br/> Bảng thông báo sẽ kiểm tra các thông tin cập nhật từ OpenProject và thông báo về các cập nhật mới hay các lỗi được phát hiện. Để biết thêm chi tiết, vui lòng tham khảo <a href="%{more_info_url}">tài liệu cấu hình</a>.
   text_own_membership_delete_confirmation: "Bạn sắp xóa một số hoặc tất cả quyền của mình và có thể không còn khả năng chỉnh sửa dự án này sau đó.\nBạn có chắc chắn muốn tiếp tục không?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Thư mục tài sản plugin có thể ghi được"
   text_powered_by: "Được cung cấp bởi %{link}"
   text_project_identifier_info: "Chỉ cho phép chữ cái viết thường (a-z), số, dấu gạch ngang và gạch dưới, phải bắt đầu bằng chữ cái viết thường."

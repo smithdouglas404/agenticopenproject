@@ -771,7 +771,7 @@ RSpec.describe UsersController do
                      value: "another_email@example.com",
                      edited_user: :some_admin,
                      current_user: :admin
-    include_examples "it can update field",
+    include_examples "it cannot update field",
                      field: :mail,
                      value: "another_email@example.com",
                      edited_user: :some_user,

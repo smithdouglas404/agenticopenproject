@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "user deletion:", :js do
+RSpec.describe "user deletion:", :js, :selenium, driver: :firefox_en do
   let(:dialog) { Components::PasswordConfirmationDialog.new }
 
   include Flash::Expectations
@@ -47,8 +47,7 @@ RSpec.describe "user deletion:", :js do
              password_confirmation: user_password)
     end
 
-    it "can delete their own account", :signout_via_visit do
-      Setting.users_deletable_by_self = 1
+    it "can delete their own account", :signout_via_visit, with_settings: { users_deletable_by_self: true } do
       visit my_account_path
       page.find_test_selector("delete-my-account-button").click
 
@@ -63,8 +62,7 @@ RSpec.describe "user deletion:", :js do
       expect(page).to have_current_path "/login"
     end
 
-    it "cannot delete their own account if the settings forbid it" do
-      Setting.users_deletable_by_self = 0
+    it "cannot delete their own account if the settings forbid it", with_settings: { users_deletable_by_self: false } do
       visit my_account_path
 
       expect(page).not_to have_test_selector("delete-my-account-button")
@@ -75,8 +73,7 @@ RSpec.describe "user deletion:", :js do
     let!(:user) { create(:user) }
     let(:current_user) { create(:user, global_permissions: %i[manage_user view_all_principals]) }
 
-    it "can not delete even if settings allow it" do
-      Setting.users_deletable_by_admins = 1
+    it "can not delete even if settings allow it", with_settings: { users_deletable_by_admins: true } do
       visit edit_user_path(user)
 
       expect(page).to have_content "#{user.firstname} #{user.lastname}"
@@ -96,8 +93,7 @@ RSpec.describe "user deletion:", :js do
              password_confirmation: user_password)
     end
 
-    it "can delete other users if the setting permits it" do
-      Setting.users_deletable_by_admins = 1
+    it "can delete other users if the setting permits it", with_settings: { users_deletable_by_admins: true } do
       visit edit_user_path(user)
 
       expect(page).to have_content "#{user.firstname} #{user.lastname}"
@@ -123,8 +119,7 @@ RSpec.describe "user deletion:", :js do
       expect(page).to have_current_path "/users"
     end
 
-    it "can delete and confirm with keyboard (Regression #44499)" do
-      Setting.users_deletable_by_admins = 1
+    it "can delete and confirm with keyboard (Regression #44499)", with_settings: { users_deletable_by_admins: true } do
       visit edit_user_path(user)
 
       expect(page).to have_content "#{user.firstname} #{user.lastname}"
@@ -143,8 +138,7 @@ RSpec.describe "user deletion:", :js do
       expect(page).to have_current_path "/users"
     end
 
-    it "cannot delete other users if the settings forbid it" do
-      Setting.users_deletable_by_admins = 0
+    it "cannot delete other users if the settings forbid it", with_settings: { users_deletable_by_admins: false } do
       visit edit_user_path(user)
 
       expect(page).to have_no_content "Delete account"

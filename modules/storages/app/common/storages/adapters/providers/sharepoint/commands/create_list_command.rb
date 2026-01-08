@@ -77,6 +77,8 @@ module Storages
               case response
               in { status: 200..299 }
                 Success(response.json(symbolize_keys: true))
+              in { status: 403 }
+                Failure(error.with(code: :forbidden))
               in { status: 409 }
                 Failure(error.with(code: :conflict))
               else

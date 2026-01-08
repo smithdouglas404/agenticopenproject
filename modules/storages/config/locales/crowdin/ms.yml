@@ -96,12 +96,6 @@ ms:
       manual: Folder yang tersedia dikendalikan secara manual
     remove_project:
       deletion_failure_flash: Gagal mengalih keluar projek daripada storan. %{error}
-      dialog:
-        automatically_managed_appendix: Dalam kes ini juga, storan ini mempunyai folder projek yang diuruskan secara automatik, dan fail yang termasuk akan dipadam selamanya.
-        confirmation_text: Sila sahkan bahawa anda faham dan ingin memadam storan fail ini daripada projek ini
-        heading_text: Alih keluar projek daripada %{storage}
-        text: Aksi ini tidak dapat dipulihkan dan akan padamkan semua pautan daripada pakej kerja projek ini ke fail dan folder storan itu.
-        title: Remove project from storage
       label: Keluarkan projek
   services:
     attributes:
@@ -128,6 +122,7 @@ ms:
     errors:
       messages:
         error: Ralat yang tidak dijangka berlaku. Sila semak log OpenProject untuk mendapatkan maklumat lanjut atau hubungi pentadbir
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject tidak dapat mengesahkan dengan Pembekal Storan. Sila pastikan anda mempunyai akses kepadanya.
       models:
         copy_project_folders_service:
@@ -226,12 +221,13 @@ ms:
     confirm_replace_oauth_application: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan OpenProject sekali lagi. Adakah anda pasti anda mahu teruskan?
     confirm_replace_oauth_client: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan %{provider_type} sekali lagi. Adakah anda pasti anda mahu teruskan?
     delete_warning:
-      project_storage_delete_result_1: Padam semua pautan dari pakej kerja projek ini ke fail dan folder storan tersebut.
-      project_storage_delete_result_2: Sekiranya storan ini mempunyai folder projek yang dikendalikan secara automatik, folder ini serta failnya akan dipadamkan selamanya.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
-      storage_delete_result_1: Padam semua penyediaan storan untuk semua projek yang menggunakan storan ini.
-      storage_delete_result_2: Padam semua pautan daripada pakej kerja semua projek ke fail dan folder storan tersebut.
-      storage_delete_result_3: Sekiranya storan ini mempunyai folder projek yang dikendalikan secara automatik, folder tersebut serta fail yang terkandung akan dipadamkan selamanya.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Group Folders
@@ -500,7 +496,7 @@ ms:
         title: Kami sedang menyediakan kebenaran anda di folder projek.
     page_titles:
       file_storages:
-        delete: Padamkan storan fail
+        delete: Delete file storage?
         subtitle: Tambah storan fail luaran untuk memuat naik, pautkan dan uruskan fail di pakej kerja.
       managed_project_folders:
         subtitle: |-
@@ -515,6 +511,8 @@ ms:
       project_storage_members:
         subtitle: Semak status sambungan untuk storan %{storage_name_link} bagi semua ahli projek.
         title: Status sambungan ahli
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'Kebenaran fail di storan luaran hanya digunakan pada folder dan fail dalam folder projek yang dikendalikan secara automatik. Perhatikan bahawa bukan semua kebenaran fail disokong oleh semua penyedia storan. Sila semak dokumentasi di <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>kebenaran storan fail</a>untuk maklumat lanjut.'
     provider_types:
       label: Jenis penyedia
