@@ -136,9 +136,9 @@ screenshot
 
 ### Redesigned project overview with new tabs, configurable widgets, and an improved layout
 
-OpenProject 17.0 introduces a **major redesign of the project overview**, making key information easier to understand and share.
+OpenProject 17.0 introduces a **major redesign of the project overview, which is now called "project home"**, making key information easier to understand and share.
 
-The page is now split into two tabs:
+The project home page is now split into two tabs:
 
 - **Overview** — a clean, structured summary with fixed widgets such as description, status, members, subitems, news, lifecycle dates, and project attributes.
 - **Dashboard** — the fully editable area for custom widgets, now without the previous right-hand panel.
@@ -147,7 +147,7 @@ The redesign also introduces a **new widget for Subitems** and improves existing
 
 ![OpenProject Project home showing both the Overview tab and the Dashboard tab](openproject-17-0-home-dashboard-overview.jpg)
 
-[Learn more about the project overview page in our user guide](../../user-guide/project-overview/).
+[Learn more about the project home page in our user guide](../../user-guide/project-home/).
 
 ### Improved project creation flow with better template selection
 
