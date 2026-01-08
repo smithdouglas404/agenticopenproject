@@ -28,39 +28,43 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Decorates a form object to provide a more convenient interface for
-# rendering settings.
-#
-# It automatically sets the label, value, and disabled properties from the
-# setting name and its definition attributes.
-module Settings
-  class FormObjectDecorator < SimpleDelegator
-    include ::ApplicationHelper
-    include InputMethods
+module Primer
+  module OpenProject
+    module Forms
+      # :nodoc:
+      class FieldsetGroup < Primer::Forms::BaseComponent
+        def initialize( # rubocop:disable Metrics/AbcSize
+          title:,
+          inputs:,
+          builder:,
+          form:,
+          layout: Primer::Forms::Group::DEFAULT_LAYOUT,
+          heading_arguments: {},
+          group_arguments: {},
+          **system_arguments
+        )
+          super()
 
-    # @!attribute [r] object
-    #   @return [Primer::Forms::Dsl::FormObject] the original form object
-    alias object __getobj__
+          @title = title
 
-    # @!method initialize(object)
-    #   Initializes a new {Settings::FormObjectDecorator}
-    #
-    #   @param object [Primer::Forms::Dsl::FormObject] The form object to be decorated
-    #   @return [FormObjectDecorator]
+          @heading_arguments = heading_arguments
+          @heading_arguments[:id] ||= "subhead-#{SecureRandom.uuid}"
+          @heading_arguments[:tag] ||= :h3
+          @heading_arguments[:size] ||= :medium
 
-    # Creates a group for a setting
-    #
-    # @param ** [Hash] Additional options for the group
-    # @see Primer::Forms::Dsl::FormObject#group
-    def group(**, &)
-      object.group(**) do |g|
-        yield Settings::FormObjectDecorator.new(g)
-      end
-    end
+          @fieldset_arguments = {
+            legend_text: @title,
+            visually_hide_legend: true,
+            aria: { labelledby: @heading_arguments[:id] }
+          }
+          @group_arguments = group_arguments.merge(inputs:, builder:, form:, layout:)
 
-    def fieldset_group(**, &)
-      object.fieldset_group(**) do |g|
-        yield Settings::FormObjectDecorator.new(g)
+          @system_arguments = system_arguments
+          @system_arguments[:tag] = :section
+          @system_arguments[:aria] ||= {}
+          @system_arguments[:aria][:labelledby] = @heading_arguments[:id]
+          @system_arguments[:hidden] = :none if inputs.all?(&:hidden?)
+        end
       end
     end
   end

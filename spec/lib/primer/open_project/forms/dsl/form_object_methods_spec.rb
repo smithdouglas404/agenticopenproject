@@ -27,41 +27,30 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
-# Decorates a form object to provide a more convenient interface for
-# rendering settings.
 #
-# It automatically sets the label, value, and disabled properties from the
-# setting name and its definition attributes.
-module Settings
-  class FormObjectDecorator < SimpleDelegator
-    include ::ApplicationHelper
-    include InputMethods
+require "spec_helper"
 
-    # @!attribute [r] object
-    #   @return [Primer::Forms::Dsl::FormObject] the original form object
-    alias object __getobj__
+RSpec.describe Primer::OpenProject::Forms::Dsl::FormObjectMethods, type: :forms do
+  let(:form_object) { Primer::Forms::Dsl::FormObject.extend(described_class) }
+  let(:builder) { instance_double(ActionView::Helpers::FormBuilder, object: model) }
+  let(:form) { instance_double(ApplicationForm, model:, caption_template?: false) }
+  let(:form_dsl) { form_object.new(builder:, form:) }
 
-    # @!method initialize(object)
-    #   Initializes a new {Settings::FormObjectDecorator}
-    #
-    #   @param object [Primer::Forms::Dsl::FormObject] The form object to be decorated
-    #   @return [FormObjectDecorator]
+  let(:options) { {} }
 
-    # Creates a group for a setting
-    #
-    # @param ** [Hash] Additional options for the group
-    # @see Primer::Forms::Dsl::FormObject#group
-    def group(**, &)
-      object.group(**) do |g|
-        yield Settings::FormObjectDecorator.new(g)
-      end
+  let(:model) { build_stubbed(:project) }
+
+  subject(:field) { field_group.first }
+
+  shared_examples_for "input class" do |input_class|
+    it "instantiates correct input class" do
+      expect(field).to be_a(input_class)
     end
+  end
 
-    def fieldset_group(**, &)
-      object.fieldset_group(**) do |g|
-        yield Settings::FormObjectDecorator.new(g)
-      end
-    end
+  describe "#fieldset_group" do
+    let(:field_group) { form_dsl.fieldset_group(title: "Title", **options) }
+
+    include_examples "input class", Primer::OpenProject::Forms::Dsl::FieldsetInputGroup
   end
 end
