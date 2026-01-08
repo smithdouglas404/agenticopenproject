@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= component_wrapper do %>
+<%= component_wrapper(class: "mb-4") do %>
   <%= render(Primer::Beta::Subhead.new) do |component|
     component.with_heading(tag: :h3, size: :medium) do
       t(:title, scope: i18n_scope)

@@ -45,6 +45,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%= render partial: "oauth_tokens_section", locals: { granted_applications: granted_applications } %>
 <%= render ::My::AccessToken::APITokensSectionComponent.new(tokens: Array(@user.rss_token), token_type: Token::RSS) %>
 <%= render partial: "storage_tokens_section", locals: { storage_tokens: @storage_tokens } %>
+
 <div class="generic-table--container">
   <div class="generic-table--results-container">
     <table class="generic-table" data-controller="table-highlighting">
