@@ -38,7 +38,7 @@ Portfolios in OpenProject enable you to:
 | [Example portfolio structures](#example-portfolio-structures) | See common portfolio hierarchy examples. |
 | [Select a portfolio](#select-a-portfolio) | Learn how to access portfolios in OpenProject. |
 | [Portfolios overview explained](#portfolios-overview-explained) | Understand the portfolios overview page and its elements. |
-| [Portfolios filters](#portfolios-filters) | Filter portfolios by status, membership, or favorites. |
+| [Portfolios filters](#portfolio-filters) | Filter portfolios by status, membership, or favorites. |
 | [Portfolio home page](#portfolio-home-page) | Learn what you can do on a portfolio home page. |
 
 
