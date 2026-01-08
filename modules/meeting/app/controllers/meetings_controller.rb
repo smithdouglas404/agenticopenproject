@@ -460,7 +460,8 @@ class MeetingsController < ApplicationController
 
     @meeting = scope
       .visible
-      .includes([:project, :author, { participants: :user }, :sections, { agenda_items: :outcomes }])
+      .includes([:project, :author, { participants: :user }, { agenda_items: :outcomes }])
+      .preload(:sections)
       .find(params[:id])
   end
 
