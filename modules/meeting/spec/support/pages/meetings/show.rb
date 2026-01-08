@@ -766,5 +766,9 @@ module Pages::Meetings
         element["data-reference-value"] != old_reference_value
       end
     end
+
+    def section_headers
+      page.all(".op-meeting-section-container[data-test-selector^='meeting-section-header-container-']").map(&:text)
+    end
   end
 end

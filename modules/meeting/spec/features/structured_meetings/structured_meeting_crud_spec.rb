@@ -524,32 +524,19 @@ RSpec.describe "Meetings CRUD",
       show_page.expect_section(title: "Section B")
       show_page.expect_section(title: "Section C")
 
-      initial_positions = [section1, section2, section3].map(&:position)
-      expect(initial_positions).to eq([1, 2, 3])
-
       show_page.select_section_action(section3, "Move up")
 
       wait_for_network_idle
 
       expect([section1, section2, section3].map { |s| s.reload.position }).to eq([1, 3, 2])
 
-      sections = page.all(".op-meeting-section-container").select do |section|
-        section["data-test-selector"]&.start_with?("meeting-section-container-") &&
-          !section["data-test-selector"]&.include?("header")
-      end
-      expect(sections[0]).to have_content("Section A")
-      expect(sections[1]).to have_content("Section C")
-      expect(sections[2]).to have_content("Section B")
+      expect(show_page.section_headers)
+        .to eq(["Section A", "Section C", "Section B"])
 
-      show_page.visit!
+      show_page.reload!
 
-      sections_after_refresh = page.all(".op-meeting-section-container").select do |section|
-        section["data-test-selector"]&.start_with?("meeting-section-container-") &&
-          !section["data-test-selector"]&.include?("header")
-      end
-      expect(sections_after_refresh[0]).to have_content("Section A")
-      expect(sections_after_refresh[1]).to have_content("Section C")
-      expect(sections_after_refresh[2]).to have_content("Section B")
+      expect(show_page.section_headers)
+        .to eq(["Section A", "Section C", "Section B"])
     end
   end
 end
