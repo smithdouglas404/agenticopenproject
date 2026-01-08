@@ -216,7 +216,7 @@ module Journals
         ), changes AS (
           #{select_changed_sql}
         ), cleanup_predecessor_data AS (
-          #{cleanup_predecessor_data(predecessor, notes, cause)}
+          #{cleanup_predecessor_data_sql(predecessor, notes, cause)}
         ), touch_journable AS (
           #{touch_journable_sql(predecessor, notes, cause)}
         ), fetch_time AS (
@@ -292,7 +292,7 @@ module Journals
       sql
     end
 
-    def cleanup_predecessor_data(predecessor, notes, cause)
+    def cleanup_predecessor_data_sql(predecessor, notes, cause)
       cleanup_predecessor_for(predecessor,
                               data_table_name,
                               :id,
