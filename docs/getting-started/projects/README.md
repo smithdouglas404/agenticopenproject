@@ -71,18 +71,50 @@ There are several ways to create a new project in OpenProject.
 
 4. In addition, you can also create a new project on the [project lists](../../user-guide/projects/project-lists/) overview page. 
 
-- You can either create a completely new project, a subproject of an existing project or a (sub)project from a template. For the latter option, choose a [template](../../user-guide/projects/project-templates/#create-a-project-template) using the drop-down menu.
-- Enter a **name** for your project and click the **Create** button.
-- Integrate the project into the existing project hierarchy by defining it as a subproject of an existing project.
-- The **Advanced settings** allow for further configuration, e.g. description, URL, etc.
+### Choose how to create your project
+You can create either:
 
-![Name and create a new project in OpenProject](openproject_getting_started_new_project_form.png)
+- a **blank project** (a completely new and empty project), or 
+- a project **based on a template**.
 
-By default, creating a new project will set you as project admin, regardless of whether you copied a project, used a template or created a project from scratch. Now, you can get started working on your project.
+The **Blank project** option is selected by default.
 
-To configure further project information, see the documentation for [project settings](../../user-guide/projects/project-settings/project-information/).
+If you do not see any template options, it means that no projects have been set as [project templates](../../user-guide/projects/project-templates/#create-a-project-template) yet. Click **Continue** to proceed.
 
-### View all projects
+![Select a template for creating a new project in OpenProject](openproject_getting_started_create_new_project_select_template.png)
+
+### Define project details
+
+Next, enter the **name** and an optional **description** for your project.  You can also integrate the project into your existing project hierarchy by selecting a **parent project**, which will make the new project a **subproject**.
+
+Click **Complete** to finish the setup.
+
+![Name and create a new project in OpenProject](openproject_getting_started_create_new_project_name.png)
+
+> [!TIP]
+> If you started creating a new project (project B) from within any other project (project A), project B is considered a subproject of project A. 
+> In this case, the **Subproject of** field is not shown, but the parent project appears in the breadcrumb navigation.
+> If this was not your intention, you can change or remove the parent project later in the project settings of project B.
+
+
+![Name and create a new subproject in OpenProject](openproject_getting_started_create_new_sub_project_name.png)
+
+> [!TIP]
+> If there are project attributes configured as **required**, an additional step will appear during project creation. You must fill in these attributes before you can complete the setup.
+
+![Fill out a required project attribute during new project creation in OpenProject](openproject_getting_started_create_new_project_attributes.png)
+
+### Project members
+
+The project members of a newly created project depend on how the project was created:
+
+- **Blank project**: No project members are added automatically.
+- **From a template**: The project inherits the same members and roles as defined in the template.
+- **Copied from another project**: The project inherits the members and roles from the original project.
+
+To continue configuring your project, see the documentation on [project settings](../../user-guide/projects/project-settings/project-information/).
+
+## View all projects
 
 To view all your projects in which you are a member, click on the **Project lists** button at the bottom of the action bar after opening the **Select a project** drop-down menu.
 
