@@ -114,7 +114,7 @@ RSpec.describe "Recurring meetings show",
 
       expect(page).to have_text format_time(past_instance.start_time)
       expect(page).to have_no_text format_time(past_schedule_cancelled.start_time)
-      expect(page).to have_no_css("li", text: "Cancelled")
+      expect(page).to have_no_row("Cancelled")
     end
 
     context "when meeting has ended and no upcoming meetings remain" do
@@ -226,7 +226,7 @@ RSpec.describe "Recurring meetings show",
 
         old_date = format_time(rescheduled.start_time)
         new_date = format_time(rescheduled_instance.start_time)
-        expect(page).to have_css("li s", text: old_date)
+        expect(page).to have_css("[role='row'] s", text: old_date)
         expect(page).to have_text("#{old_date}\n#{new_date}")
       end
     end
@@ -293,8 +293,8 @@ RSpec.describe "Recurring meetings show",
       it "shows the cancelled occurrences" do
         get project_recurring_meeting_path(project, recurring_meeting)
 
-        expect(page).to have_css("li", text: format_time(rescheduled.start_time))
-        expect(page).to have_css("li", text: "Cancelled")
+        expect(page).to have_role(:cell, text: format_time(rescheduled.start_time))
+        expect(page).to have_role(:cell, text: "Cancelled")
       end
     end
 

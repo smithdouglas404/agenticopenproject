@@ -83,8 +83,6 @@ module Users
         end
       end
 
-      private
-
       def button_links
         [delete_button]
       end
@@ -92,6 +90,8 @@ module Users
       def row_css_class
         "session-row"
       end
+
+      private
 
       def delete_button
         return if current?
