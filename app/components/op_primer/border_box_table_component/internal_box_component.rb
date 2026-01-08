@@ -33,14 +33,12 @@ module OpPrimer
   # for rows, as well as additional label arguments.
   #
   # @note
-  #   DO NOT use this component unless you have a good reason to do so.
-  #   This component will be removed once primer/view_component#3821 is merged
+  #   This component is for internal use only. DO NOT use this component. This
+  #   component will be removed once we eventually migrate away from
+  #   BorderBoxTable.
   #
-  # @see https://github.com/primer/view_components/pull/3821
   # @api private
-  class BorderBoxComponent < Primer::Component
-    status :beta
-
+  class BorderBoxTableComponent::InternalBoxComponent < Primer::Component # :nodoc:
     DEFAULT_PADDING = :default
     PADDING_MAPPINGS = {
       DEFAULT_PADDING => "",
