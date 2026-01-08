@@ -25,6 +25,20 @@ If you navigate within a specific project, you can also return to the global mod
 
 ![Unselect a project from the project list in OpenProject](openproject_global_modules_unselect_project.png)
 
+## Portfolios (Enterprise add-on)
+
+[feature: portfolio_management ]
+
+The **Portfolios** global module will display all portfolios in your OpenProject instance of which you are a member and/or have the right to see (for example as an administrator), including public portfolios.
+
+You can create a new project here directly by using the  **+ Portfolio** button.
+
+![Portfolios global module in OpenProject](openproject_global_modules_portfolios.png)
+
+**Active portfolios** is the default view and shows only active portfolios. If you do not have administrator rights, this view will be the same as **My portfolios**.
+
+Read more on [Portfolios in OpenProject](../../portfolios).
+
 ## Projects
 
 The **Projects** global module will display all projects in your OpenProject instance of which you are a member and/or have the right to see (for example as an administrator), including public projects.
