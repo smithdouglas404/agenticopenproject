@@ -30,29 +30,22 @@
 
 module My
   module AccessToken
-    module API
+    module Storages
       class TableComponent < OpPrimer::BorderBoxTableComponent
-        columns :token_name, :created_at, :expires_on
-        main_column :token_name
+        columns :name, :created_at, :expires_on
+        main_column :name
         mobile_labels :created_at, :expires_on
-
-        def initialize(title:, token_type:, **)
-          super(**)
-
-          @title = title
-          @token_type = token_type
-        end
 
         def headers
           [
-            [:token_name, { caption: I18n.t("attributes.name") }],
+            [:name, { caption: I18n.t("attributes.name") }],
             [:created_at, { caption: User.human_attribute_name(:created_at) }],
             [:expires_on, { caption: I18n.t("my_account.access_tokens.headers.expiration") }]
           ]
         end
 
         def mobile_title
-          @title
+          I18n.t("my_account.access_tokens.storages.table_title")
         end
 
         def row_class
@@ -64,21 +57,15 @@ module My
         end
 
         def blank_title
-          I18n.t(:blank_title, scope: i18n_token_scope)
+          I18n.t("my_account.access_tokens.storages.blank_title")
         end
 
         def blank_description
-          I18n.t(:blank_description, scope: i18n_token_scope)
+          I18n.t("my_account.access_tokens.storages.blank_description")
         end
 
         def blank_icon
           nil
-        end
-
-        private
-
-        def i18n_token_scope
-          [:my_account, :access_tokens, @token_type.model_name.i18n_key]
         end
       end
     end

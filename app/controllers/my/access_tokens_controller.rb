@@ -80,15 +80,14 @@ module My
 
     def generate_rss_key # rubocop:disable Metrics/AbcSize
       token = Token::RSS.create!(user: current_user)
-      flash[:info] = [
-        t("my.access_token.notice_reset_token", type: "RSS").html_safe,
-        helpers.content_tag(:strong, helpers.content_tag(:code, token.plain_value)),
-        t("my.access_token.token_value_warning")
-      ]
+
+      update_via_turbo_stream(
+        component: My::AccessToken::APITokensSectionComponent.new(tokens: [token], token_type: Token::RSS)
+      )
+      respond_with_dialog(My::AccessToken::AccessTokenCreatedDialogComponent.new(token:))
     rescue StandardError => e
       Rails.logger.error "Failed to reset user ##{current_user.id} RSS key: #{e}"
       flash[:error] = t("my.access_token.failed_to_reset_token", error: e.message)
-    ensure
       redirect_to action: :index, status: :see_other
     end
 

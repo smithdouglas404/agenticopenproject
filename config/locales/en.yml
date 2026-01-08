@@ -764,9 +764,11 @@ en:
           create_button: "Create"
           name_label: "Token name"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "The API token has been generated"
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "Failed to reset access token: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -2022,6 +2024,9 @@ en:
       token/api:
         one: Access token
         other: Access tokens
+      token/rss:
+        one: "RSS token"
+        other: "RSS tokens"
       type:
         one: "Type"
         other: "Types"
@@ -3068,30 +3073,44 @@ en:
       indefinite_expiration: "Never"
       simple_revoke_confirmation: "Are you sure you want to revoke this token?"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
+        static_token_name: "API token"
         disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
         add_button: "API Token"
-      api:
-        static_token_name: "API token"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
-        empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you. Please contact your administrator to activate this feature."
+        blank_title: "No OAuth token"
+        last_used_at: "Last used at"
         title: "OAuth"
+        table_title: "OAuth tokens"
         text_hint: "OAuth tokens allow third-party applications to connect with this OpenProject instance."
-        empty_text_hint: "There is no third-party application access configured and active for you. Please contact your administrator to activate this feature."
-      rss:
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
+        table_title: "RSS tokens"
         text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
         static_token_name: "RSS token"
         disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
+        blank_description: "There is no storage access linked to your account."
+        blank_title: "No file storage tokens"
         title: "File storages"
+        table_title: "File storage tokens"
         text_hint: "File Storage tokens connect this OpenProject instance with an external File Storage."
-        empty_text_hint: "There is no storage access linked to your account."
         revoke_token: "Do you really want to remove this token? You will need to login again on %{storage}"
         removed: "File Storage token successfully removed"
         failed: "An error occurred and the token couldn't be removed. Please try again later."

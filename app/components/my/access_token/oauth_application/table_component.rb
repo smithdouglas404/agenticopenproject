@@ -30,29 +30,22 @@
 
 module My
   module AccessToken
-    module API
+    module OAuthApplication
       class TableComponent < OpPrimer::BorderBoxTableComponent
-        columns :token_name, :created_at, :expires_on
-        main_column :token_name
-        mobile_labels :created_at, :expires_on
-
-        def initialize(title:, token_type:, **)
-          super(**)
-
-          @title = title
-          @token_type = token_type
-        end
+        columns :name, :active_tokens, :last_used_at
+        main_column :name
+        mobile_labels :active_tokens, :last_used_at
 
         def headers
           [
-            [:token_name, { caption: I18n.t("attributes.name") }],
-            [:created_at, { caption: User.human_attribute_name(:created_at) }],
-            [:expires_on, { caption: I18n.t("my_account.access_tokens.headers.expiration") }]
+            [:name, { caption: I18n.t("attributes.name") }],
+            [:active_tokens, { caption: I18n.t("my_account.access_tokens.oauth.active_tokens") }],
+            [:last_used_at, { caption: I18n.t("my_account.access_tokens.oauth.last_used_at") }]
           ]
         end
 
         def mobile_title
-          @title
+          I18n.t("my_account.access_tokens.oauth.table_title")
         end
 
         def row_class
@@ -64,21 +57,15 @@ module My
         end
 
         def blank_title
-          I18n.t(:blank_title, scope: i18n_token_scope)
+          I18n.t("my_account.access_tokens.oauth.blank_title")
         end
 
         def blank_description
-          I18n.t(:blank_description, scope: i18n_token_scope)
+          I18n.t("my_account.access_tokens.oauth.blank_description")
         end
 
         def blank_icon
           nil
-        end
-
-        private
-
-        def i18n_token_scope
-          [:my_account, :access_tokens, @token_type.model_name.i18n_key]
         end
       end
     end

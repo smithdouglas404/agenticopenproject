@@ -41,12 +41,13 @@ RSpec.describe My::AccessTokensController do
     it "creates a key" do
       expect(user.rss_token).to be_nil
 
-      post :generate_rss_key
+      post :generate_rss_key, format: :turbo_stream
       expect(user.reload.rss_token).to be_present
-      expect(flash[:info]).to be_present
-      expect(flash[:error]).not_to be_present
 
-      expect(response).to redirect_to action: :index
+      expect(flash[:error]).to be_blank
+
+      expect(response).to be_successful
+      expect(response.body).to include(user.rss_token.value)
     end
 
     context "with existing key" do
@@ -55,15 +56,15 @@ RSpec.describe My::AccessTokensController do
       it "replaces the key" do
         expect(user.rss_token).to eq(key)
 
-        post :generate_rss_key
+        post :generate_rss_key, format: :turbo_stream
         new_token = user.reload.rss_token
         expect(new_token).not_to eq(key)
         expect(new_token.value).not_to eq(key.value)
         expect(new_token.value).to eq(user.rss_key)
 
-        expect(flash[:info]).to be_present
         expect(flash[:error]).not_to be_present
-        expect(response).to redirect_to action: :index
+        expect(response).to be_successful
+        expect(response.body).to include(new_token.value)
       end
     end
   end

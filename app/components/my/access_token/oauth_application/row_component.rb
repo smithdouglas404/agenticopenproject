@@ -30,26 +30,32 @@
 
 module My
   module AccessToken
-    module API
+    module OAuthApplication
       class RowComponent < OpPrimer::BorderBoxRowComponent
-        def api_token
-          model
+        def oauth_application
+          model.first
         end
 
-        def token_name
-          if !api_token.respond_to?(:token_name) || api_token.token_name.nil?
-            t(:static_token_name, scope: i18n_token_scope)
-          else
-            api_token.token_name
+        def oauth_application_tokens
+          model.last
+        end
+
+        def name
+          render(Primer::Beta::Text.new(test_selector: "oauth-application-#{oauth_application.id}-name")) do
+            oauth_application.name
           end
         end
 
-        def created_at
-          helpers.format_time(api_token.created_at)
+        def active_tokens
+          render(Primer::Beta::Text.new(test_selector: "oauth-application-#{oauth_application.id}-active-tokens")) do
+            oauth_application_tokens.count { |t| !t.expired? && !t.revoked? }.to_s
+          end
         end
 
-        def expires_on
-          I18n.t("my_account.access_tokens.indefinite_expiration")
+        def last_used_at
+          return "—" if oauth_application_tokens.empty?
+
+          helpers.format_time(oauth_application_tokens.max_by(&:created_at).created_at)
         end
 
         def button_links
@@ -61,28 +67,20 @@ module My
                    icon: :trash,
                    scheme: :danger,
                    tag: :a,
-                   href: delete_path,
+                   href: revoke_my_oauth_application_path(application_id: oauth_application.id),
                    "aria-label": t(:button_delete),
-                   test_selector: "api-token-revoke",
+                   test_selector: "oauth-token-row-#{oauth_application.id}-revoke",
                    data: {
-                     turbo_method: :delete,
-                     turbo_confirm: t("my_account.access_tokens.simple_revoke_confirmation")
+                     turbo_method: :post,
+                     turbo_confirm: t(
+                       "oauth.revoke_my_application_confirmation",
+                       token_count: t(
+                         "oauth.x_active_tokens",
+                         count: oauth_application_tokens.count
+                       )
+                     )
                    }
                  ))
-        end
-
-        private
-
-        def delete_path
-          case model
-          when Token::API then my_access_token_revoke_api_key_path(api_token.id)
-          when Token::ICalMeeting then my_access_token_revoke_ical_meeting_token_path(api_token.id)
-          when Token::RSS then revoke_rss_key_my_access_tokens_path(api_token.id)
-          end
-        end
-
-        def i18n_token_scope
-          [:my_account, :access_tokens, api_token.class.model_name.i18n_key]
         end
       end
     end

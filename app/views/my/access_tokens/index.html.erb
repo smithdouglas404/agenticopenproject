@@ -43,7 +43,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%= render partial: "icalendar_tokens_section", locals: { ical_tokens_grouped_by_query: @ical_tokens_grouped_by_query } %>
 <%= render ::My::AccessToken::APITokensSectionComponent.new(tokens: @user.ical_meeting_tokens, token_type: Token::ICalMeeting) %>
 <%= render partial: "oauth_tokens_section", locals: { granted_applications: granted_applications } %>
-<%= render partial: "rss_tokens_section", locals: { rss_token: @user.rss_token } %>
+<%= render ::My::AccessToken::APITokensSectionComponent.new(tokens: Array(@user.rss_token), token_type: Token::RSS) %>
 <%= render partial: "storage_tokens_section", locals: { storage_tokens: @storage_tokens } %>
 <div class="generic-table--container">
   <div class="generic-table--results-container">

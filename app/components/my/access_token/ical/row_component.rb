@@ -30,17 +30,30 @@
 
 module My
   module AccessToken
-    module API
+    module ICal
       class RowComponent < OpPrimer::BorderBoxRowComponent
         def api_token
           model
         end
 
-        def token_name
-          if !api_token.respond_to?(:token_name) || api_token.token_name.nil?
-            t(:static_token_name, scope: i18n_token_scope)
-          else
-            api_token.token_name
+        def name
+          render(Primer::Beta::Text.new(test_selector: "ical-token-#{api_token.id}-name")) do
+            api_token.ical_token_query_assignment.name
+          end
+        end
+
+        def calendar
+          render(
+            Primer::Beta::Link.new(
+              href: project_calendar_path(id: api_token.query.id, project_id: api_token.query.project_id),
+              test_selector: "ical-token-#{api_token.id}-query-name"
+            )
+          ) { api_token.query.name }
+        end
+
+        def project
+          render(Primer::Beta::Text.new(test_selector: "ical-token-#{api_token.id}-project-name")) do
+            api_token.query.project.name
           end
         end
 
@@ -61,28 +74,14 @@ module My
                    icon: :trash,
                    scheme: :danger,
                    tag: :a,
-                   href: delete_path,
+                   href: my_access_token_revoke_ical_token_path(access_token_id: api_token.id),
                    "aria-label": t(:button_delete),
-                   test_selector: "api-token-revoke",
+                   test_selector: "ical-token-#{api_token.id}-revoke",
                    data: {
                      turbo_method: :delete,
                      turbo_confirm: t("my_account.access_tokens.simple_revoke_confirmation")
                    }
                  ))
-        end
-
-        private
-
-        def delete_path
-          case model
-          when Token::API then my_access_token_revoke_api_key_path(api_token.id)
-          when Token::ICalMeeting then my_access_token_revoke_ical_meeting_token_path(api_token.id)
-          when Token::RSS then revoke_rss_key_my_access_tokens_path(api_token.id)
-          end
-        end
-
-        def i18n_token_scope
-          [:my_account, :access_tokens, api_token.class.model_name.i18n_key]
         end
       end
     end
