@@ -158,7 +158,7 @@ Each portfolio is displayed in a box containing the following information:
   
 - **Last updated** timestamp
 
-### Portfolios filters
+### Portfolio filters
 
 By default, the portfolio overview displays all active portfolios you can access. Use the following filters in the left side menu to refine your view:
 
