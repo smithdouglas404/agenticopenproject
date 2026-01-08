@@ -14,7 +14,7 @@ jobs:
     steps:
     - id: find_previous_release
       env:
-        GITHUB_TOKEN: ${{ secrets.OPENPROJECT_CI_GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.OPENPROJECTCI_GH_CORE_PAT }}
         GITHUB_REPOSITORY: ${{ github.repository }}
       run: |
         BRANCH=$(curl -H "Authorization: token $GITHUB_TOKEN" \
@@ -29,7 +29,7 @@ jobs:
         echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
     - id: find_latest_release
       env:
-        GITHUB_TOKEN: ${{ secrets.OPENPROJECT_CI_GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.OPENPROJECTCI_GH_CORE_PAT }}
         GITHUB_REPOSITORY: ${{ github.repository }}
       run: |
         BRANCH=$(curl -H "Authorization: token $GITHUB_TOKEN" \
@@ -152,4 +152,4 @@ jobs:
             fi
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.OPENPROJECT_CI_GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.OPENPROJECTCI_GH_CORE_PAT }}

@@ -321,6 +321,55 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
       end
     end
 
+    describe "with SVG file uploaded with .png extension" do
+      let(:svg_content) do
+        <<~SVG
+          <?xml version="1.0" encoding="UTF-8"?>
+          <svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+          <image href="text:/etc/passwd" width="600" height="600" />
+          </svg>
+        SVG
+      end
+      let(:svg_file) { FileHelpers.mock_uploaded_file(name: "test.png", content: svg_content, binary: false) }
+      let(:svg_attachment) { Attachment.new author: user, file: svg_file }
+      let(:attachments) { [svg_attachment] }
+      let(:description) do
+        <<~DESCRIPTION
+          This work package contains an SVG file uploaded with a .png extension.
+          ![](/api/v3/attachments/#{svg_attachment.id}/content)
+          <img class="op-uc-image" src="/api/v3/attachments/#{svg_attachment.id}/content" alt="SVG file">
+        DESCRIPTION
+      end
+
+      before do
+        svg_attachment.save
+      end
+
+      it "correctly identifies the file as SVG based on content, not filename" do
+        expect(svg_attachment.content_type).to eq "image/svg+xml"
+        expect(svg_attachment.content_type).not_to eq "image/png"
+      end
+
+      it "does not process SVG files in PDF export" do
+        expect(pdf[:images].length).to eq(0)
+      end
+
+      it "completes the PDF export without errors" do
+        result = pdf[:strings].join(" ")
+        expect(result).to include("This work package contains an SVG file")
+        expect(result).not_to include("/etc/passwd")
+        expect(result).not_to include("nobody")
+        expect(result).not_to include("root")
+      end
+
+      it "does not allow SVG content to be processed by MiniMagick" do
+        expect(exporter.send(:pdf_embeddable?, "image/svg+xml")).to be false
+        expect(exporter.send(:pdf_embeddable?, "image/png")).to be true
+        expect(exporter.send(:pdf_embeddable?, "image/jpeg")).to be true
+        expect(exporter.send(:pdf_embeddable?, "image/gif")).to be true
+      end
+    end
+
     describe "with embedded work package attributes" do
       let(:supported_work_package_embeds) do
         [
