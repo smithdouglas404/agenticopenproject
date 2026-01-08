@@ -48,6 +48,7 @@ Please choose the module or feature you want to learn more about.
 | [News](news)                                                 | How to create and manage News for your projects.             |
 | [Nextcloud integration](./file-management/nextcloud-integration) | How to link and use Nextcloud files and folders in OpenProject. |
 | [OneDrive integration](./file-management/one-drive-integration) | How to link and use OneDrive files and folders in OpenProject. |
+| [Portfolios](portfolios)                                     | How to create, edit and manage portfolios in OpenProject.    |
 | [Projects](projects)                                         | Edit, create, copy, delete projects and change project settings. |
 | [Project home page](project-home)                            | How to create a project overview dashboard with important project information. |
 | [Roadmap](roadmap)                                           | How to create a product roadmap with OpenProject.            |

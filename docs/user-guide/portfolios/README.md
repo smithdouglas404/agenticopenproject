@@ -31,15 +31,16 @@ Portfolios in OpenProject enable you to:
 - Provide a clear, structured overview for decision-making and reporting
 
 
-| Topic                                                        | Content                                                      |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Select project lists](#select-project-lists)                | Get an overview of all your projects in the project lists.   |
-| [Filter project lists](#project-lists-filters)               | Adjust filters in the project lists.                         |
-| [Favorite project lists](#favorite-project-lists)            | Mark project lists as favorite.                              |
-| [Share project lists with individual users and groups (Enterprise add-on)](#share-project-lists-with-individual-users-and-groups-enterprise-add-on) | Share project lists with individual users and groups.        |
-| [Share project lists with everyone](#share-with-everyone-at-openproject) | Share project lists with everyone within your OpenProject instance. |
-| [Export project list](#export-project-lists)                 | Export project lists as XLS, CSV or PDF.                     |
-| [Project overarching reports](#project-overarching-reports)  | Create project overarching reports across multiple projects. |
+| Topic | Content |
+|------|---------|
+| [Portfolios structure in OpenProject](#portfolios-structure-in-openproject) | Understand how portfolios, programs, and projects are structured. |
+| [Hierarchy and composition rules](#hierarchy-and-composition-rules) | Learn which workspace types can be combined and how hierarchies are enforced. |
+| [Example portfolio structures](#example-portfolio-structures) | See common portfolio hierarchy examples. |
+| [Select a portfolio](#select-a-portfolio) | Learn how to access portfolios in OpenProject. |
+| [Portfolios overview explained](#portfolios-overview-explained) | Understand the portfolios overview page and its elements. |
+| [Portfolios filters](#portfolios-filters) | Filter portfolios by status, membership, or favorites. |
+| [Portfolio home page](#portfolio-home-page) | Learn what you can do on a portfolio home page. |
+
 
 ## Portfolios structure in OpenProject
 A **portfolio** is a type of workspace that groups related **programs** and **projects** to provide a strategic overview.
@@ -166,7 +167,7 @@ By default, the portfolio overview displays all active portfolios you can access
 - **Favorite portfolios** — returns portfolios you marked as favorites.
 - **Archived portfolios** — returns portfolios that are no longer active but you still have permission to view.
 
-## Portfolios home page
+## Portfolio home page
 
 A portfolio can be edited, copied, set to public, used as a template, and deleted in the same way as a project. For more information, see the [Projects guide](../projects).
 
