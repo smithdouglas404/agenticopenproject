@@ -341,11 +341,11 @@ Your activated plugins are listed together with your [modules](#module) in your 
 
 ### PM² / PM2
 
-PM² is a project management framework developed by the European Commission to support the successful delivery of projects, especially in the public sector. It combines best practices from various methodologies and provides clear guidance, templates, and governance structures. In OpenProject, the [project life cycle](#project-life-cycle) can be structured according to PM², with predefined [project phases](#phase), [phase gates](#phase-gate), and roles based on this framework. [Read more about PM² and its role for OpenProject](https://www.openproject.org/pm2/).
+PM² is a project management framework developed by the European Commission to support the successful delivery of projects, especially in the public sector. It combines best practices from various methodologies and provides clear guidance, templates, and governance structures. In OpenProject, the [project life cycle](#project-life-cycle) can be structured according to PM², with predefined [project phases](#phase), [phase gates](#phase-gate), and roles based on this framework. [Read more about PM² and its role for OpenProject](https://www.openproject.org/pm2/). If you're looking for specific PM² terminology, please see our [use case of implementing PM² and PMflex project management in OpenProject](../../use-cases/project-management-pm2-pmflex/#implementing-pm-and-pmflex-project-management-in-openproject). 
 
 ### PMflex
 
-PMflex is is a comprehensive and flexible project management system based on the European [PM²](#pm--pm2) standard and further developed for public administration in Germany. [Read more about how to use PMflex with OpenProject](https://www.openproject.org/pmflex).
+PMflex is is a comprehensive and flexible project management system based on the European [PM²](#pm--pm2) standard and further developed for public administration in Germany. [Read more about how to use PMflex with OpenProject](https://www.openproject.org/pmflex). If you're looking for specific PMflex terminology, please see our [use case of implementing PM² and PMflex project management in OpenProject](../../use-cases/project-management-pm2-pmflex/#implementing-pm-and-pmflex-project-management-in-openproject). 
 
 ### Portfolio
 
