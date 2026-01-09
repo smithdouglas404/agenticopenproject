@@ -329,6 +329,31 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
           end
         end
       end
+
+      context "with another custom field present that is required but not for_all" do
+        shared_let(:required_not_for_all_custom_field) do
+          create(:text_project_custom_field,
+                 name: "Not for all CF",
+                 is_required: true,
+                 is_for_all: false)
+        end
+
+        context "when a value for the required field is provided, but no value for the required not for_all custom_field" do
+          let(:body) do
+            {
+              identifier: "new_project_identifier",
+              name: "Project name",
+              shared_custom_field.attribute_name(:camel_case) => {
+                raw: "Engineering"
+              }
+            }.to_json
+          end
+
+          it "responds with 201 and does not validate the required not for_all custom_field" do
+            expect(last_response).to have_http_status(:created)
+          end
+        end
+      end
     end
 
     context "with a visible custom field" do

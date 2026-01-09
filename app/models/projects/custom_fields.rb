@@ -68,5 +68,13 @@ module Projects::CustomFields
     def all_visible_custom_fields
       all_available_custom_fields.visible(project: self)
     end
+
+    def default_custom_values_to_validate
+      return [] if persisted?
+
+      # Validation is limited to is_for_all project custom fields for new projects.
+      custom_field_ids = available_custom_fields.for_all.required.pluck(:id)
+      custom_field_values.select { |cv| cv.custom_field_id.in?(custom_field_ids) }
+    end
   end
 end
