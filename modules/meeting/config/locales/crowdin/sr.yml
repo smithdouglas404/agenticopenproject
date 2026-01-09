@@ -240,10 +240,15 @@ sr:
         summary_series: "Meeting series '%{title}' has been cancelled by %{actor}."
         summary: "'%{title}' has been cancelled by %{actor}."
         date_time: "Scheduled date/time"
+      ended:
+        header_series: "Ended: Meeting series '%{title}'"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
       updated:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Old date/time"
         new_date_time: "New date/time"
         old_location: "Old location"

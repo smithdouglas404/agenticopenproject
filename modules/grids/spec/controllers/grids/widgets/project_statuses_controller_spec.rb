@@ -31,39 +31,38 @@
 require "rails_helper"
 
 RSpec.describe Grids::Widgets::ProjectStatusesController do
-  shared_let(:user) { create(:admin) }
+  shared_let(:project) { create(:project) }
+  shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_project edit_project] }) }
   current_user { user }
 
-  let(:project) { build_stubbed(:project) }
-  let(:service_result) { ServiceResult.failure }
-
-  before do
-    allow(Project)
-      .to receive(:find)
-            .with(project.identifier)
-            .and_return(project)
-
-    update_service = instance_double(Projects::UpdateService, call: service_result)
-
-    allow(Projects::UpdateService)
-      .to receive(:new)
-            .with(user:, model: project)
-            .and_return(update_service)
-  end
-
   describe "GET #show" do
+    let(:widget_instance) { instance_double(Grids::Widgets::ProjectStatus, render_in: "content") }
+
     before do
+      allow(Grids::Widgets::ProjectStatus)
+        .to receive(:new)
+        .and_return(widget_instance)
+
       get :show, params: { project_id: project }
     end
 
-    it "renders show template", :aggregate_failures do
+    it "renders widget", :aggregate_failures do
       expect(response).to be_successful
-      expect(response).to render_template "show"
+      expect(response.body).to eq "content"
     end
   end
 
   describe "PUT #update" do
+    let(:service_result) { ServiceResult.failure }
+
     before do
+      update_service = instance_double(Projects::UpdateService, call: service_result)
+
+      allow(Projects::UpdateService)
+        .to receive(:new)
+              .with(user:, model: project)
+              .and_return(update_service)
+
       put :update, params: { project_id: project, project: { **project_params } }, format: :turbo_stream
     end
 

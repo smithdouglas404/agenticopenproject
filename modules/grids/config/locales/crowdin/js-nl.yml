@@ -16,10 +16,10 @@ nl:
         news:
           title: 'Nieuws'
         project_description:
-          title: 'Projectbeschrijving'
+          title: 'Description'
           no_results: "Er is nog geen beschrijving geschreven. Er kan een vermelding worden verstrekt in de 'Projectinstellingen'."
         project_status:
-          title: 'Projectstatus'
+          title: 'Status'
           not_started: 'Nog niet gestart'
           on_track: 'Op schema'
           off_track: 'Buiten schema'
@@ -28,7 +28,7 @@ nl:
           finished: 'Afgewerkt'
           discontinued: 'Stopgezet'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

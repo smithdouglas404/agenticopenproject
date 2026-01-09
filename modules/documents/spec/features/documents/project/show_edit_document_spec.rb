@@ -52,7 +52,8 @@ RSpec.describe "Show/Edit Document View",
     # rubocop:enable RSpec/AnyInstance
   end
 
-  it "renders a collaborative document" do
+  it "renders a collaborative document",
+     with_settings: { real_time_text_collaboration_enabled: true } do
     visit document_path(document)
 
     expect(page).to have_content("Collaborative document")
@@ -99,7 +100,7 @@ RSpec.describe "Show/Edit Document View",
       editor = FormFields::Primerized::BlockNoteEditorInput.new
       editor.fill_in_with_content("This is the new **content**.")
 
-      expect(page).to have_content("This is the new content.")
+      expect(editor.text).to include("This is the new **content**.")
     end
   end
 

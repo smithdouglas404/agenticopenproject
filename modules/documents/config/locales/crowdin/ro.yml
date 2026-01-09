@@ -30,10 +30,10 @@ ro:
           one_or_more_required: "Nu se poate șterge ultimul tip de document"
     models:
       document: "Document"
-      documents: "Documents"
+      documents: "Documente"
     attributes:
       document:
-        content_binary: "Content binary"
+        content_binary: "Conținut binar"
         title: "Titlu"
   activity:
     filter:
@@ -43,13 +43,13 @@ ro:
   enumeration_doc_categories: "Document nou"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "Toate documentele"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "Acțiuni document"
+        edit_title: "Editează titlu"
     subheader:
       filter:
-        label: "Document name filter"
+        label: "Filtru nume document"
         placeholder: "Type here to search document names"
     documents_list_blank_slate:
       heading: "There are no documents yet"
@@ -122,7 +122,7 @@ ro:
           some_unwritable: Some values are configured via environment variables and cannot be edited here.
         hocuspocus_server_url:
           label: "Hocuspocus server URL"
-          caption: "The address of the working Hocuspocus server."
+          caption: "The address of a working Hocuspocus server."
         hocuspocus_server_secret:
           label: "Client secret"
           caption: "Paste the secret provided by the Hocuspocus server."
@@ -137,12 +137,12 @@ ro:
         success: Real-time collaboration has been enabled.
       disable_text_collaboration_dialog:
         title: Disable real-time collaboration
-        heading: Disable real-time collaboration?
+        heading: Dezactivează colaborarea în timp real?
         confirmation_message: |-
           All existing documents may become inaccessible. Please only do this if you are certain you want to disable
           real-time collaboration and the BlockNote editor in this instance.
         confirmation_checkbox_message: I understand that I might permanently lose data
-        success: Real-time collaboration has been disabled.
+        success: Colaborarea în timp real a fost dezactivată.
   label_document_added: "Document adăugat"
   label_document_new: "Document nou"
   label_document_plural: "Documente"
@@ -150,7 +150,7 @@ ro:
   label_document_title: "Titlu"
   label_document_description: "Descriere"
   label_document_category: "Categorie"
-  label_document_type: "Type"
+  label_document_type: "Tip"
   permission_manage_documents: "Administrează documentele"
   permission_view_documents: "Vezi documente"
   project_module_documents: "Documente"

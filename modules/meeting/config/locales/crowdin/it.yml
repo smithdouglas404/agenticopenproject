@@ -235,10 +235,15 @@ it:
         summary_series: "La serie di riunioni \"%{title}\" è stata cancellata da %{actor}."
         summary: "\"%{title}\" è stata cancellata da %{actor}."
         date_time: "Data/ora programmata"
+      ended:
+        header_series: "Ended: Meeting series '%{title}'"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
       updated:
         header: "La riunione \"%{title}\" è stata aggiornata"
         summary: "La riunione \"%{title}\" è stata aggiornata da %{actor}"
         body: "La riunione \"%{title}\" è stata aggiornata da %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Data/ora precedente"
         new_date_time: "Nuova data/ora"
         old_location: "Posizione precedente"

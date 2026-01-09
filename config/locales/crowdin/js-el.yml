@@ -344,6 +344,7 @@ el:
     label_collapse: "Σύμπτυξη"
     label_collapsed: "συμπτυγμένο"
     label_collapse_all: "Σύμπτυξη όλων"
+    label_collapse_text: "Collapse text"
     label_comment: "Σχόλιο"
     label_committed_at: "%{committed_revision_link} στις %{date}"
     label_committed_link: "δεσμευμένη αναθεώρηση %{revision_identifier}"
@@ -356,6 +357,7 @@ el:
     label_expand: "Επέκταση"
     label_expanded: "επεκταμένη"
     label_expand_all: "Ανάπτυξη όλων"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Επέκταση του μενού έργου"
     label_export: "Εξαγωγή"
     label_export_preparing: "Η εξαγωγή προετοιμάζεται και θα κατεβεί σύντομα."
@@ -554,7 +556,7 @@ el:
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "Overdue"
-        overdue_since: "since %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "is today."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
@@ -1123,6 +1125,8 @@ el:
     global_search:
       all_projects: "Σε όλα τα έργα"
       close_search: "Κλείσιμο αναζήτησης"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Σε αυτό το έργο + υποέργα"
       current_project: "Σε αυτό το έργο"
       recently_viewed: "Recently viewed"

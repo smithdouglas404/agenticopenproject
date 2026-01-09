@@ -235,10 +235,15 @@ tr:
         summary_series: "'%{title}' toplantı serisi %{actor} tarafından iptal edilmiştir."
         summary: "'%{title}' %{actor} tarafından iptal edilmiştir."
         date_time: "Planlanan tarih/saat"
+      ended:
+        header_series: "Ended: Meeting series '%{title}'"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
       updated:
         header: "'%{title}' toplantısı güncellendi"
         summary: "'%{title}' toplantısı %{actor} tarafından güncellendi"
         body: "'%{title}' toplantısı %{actor} tarafından güncellendi."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Eski tarih/saat"
         new_date_time: "Yeni tarih/saat"
         old_location: "Eski konum"

@@ -191,7 +191,7 @@ cs:
       error_cannot_act_self: "Nelze provádět akce s vlastními nahranými soubory."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "V tomto zobrazení můžete vytvořit vlastní nápovědné texty pro zobrazení atributů. Pokud je definováno, mohou být tyto texty zobrazeny klepnutím na ikonu nápovědy vedle jejího atributu."
     show_preview: "Náhled textu"
     add_new: "Přidat text nápovědy"
@@ -349,17 +349,28 @@ cs:
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Označit vlastní pole jako dostupné ve všech existujících a nových projektech."
-      multi_select: "Umožňuje uživateli přiřadit tomuto vlastnímu poli více hodnot."
-      searchable: "Zahrnout hodnoty polí při použití globální funkce vyhledávání."
-      searchable_for_project: "Zaškrtněte pro zpřístupnění tohoto atributu jako filtru v seznamech projektů."
-      editable: "Umožnit editaci pole samotnými uživateli."
-      admin_only: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
-      is_filter: >
-        Povolit použití vlastního pole ve filtru v zobrazení pracovního balíčku. Všimněte si, že pouze s vybraným 'pro všechny projekty' se vlastní pole zobrazí v globálních zobrazeních.
-      formula: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: V současné době nejsou žádná vlastní pole.
       no_results_content_text: Vytvořit nové vlastní pole
@@ -512,7 +523,7 @@ cs:
         text: "Tato akce neodstraní žádný projekt, který seznam obsahuje. Opravdu chcete tento seznam projektů smazat?"
     settings:
       header_details: Základní údaje
-      header_status: Stav projektu
+      header_status: Status
       header_relations: Vztahy projektu
       button_update_details: Aktualizovat podrobnosti
       button_update_status_description: Aktualizovat popis stavu
@@ -537,9 +548,15 @@ cs:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "Povolit vše"
         label_disable_all: "Zakázat vše"
@@ -573,9 +590,9 @@ cs:
           label_enable_single: "Aktivní v tomto projektu, kliknutím vypnete"
           label_disable_single: "Neaktivní v tomto projektu, klikněte pro povolení"
           remove_from_project: "Odstranit z projektu"
-        is_required_blank_slate:
-          heading: Povinné u všech projektů
-          description: Tento atribut projektu je aktivován ve všech projektech, protože je zaškrtnuta možnost "Vyžadováno ve všech projektech". Nelze jej deaktivovat pro jednotlivé projekty.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: V současné době nejsou k dispozici žádné typy.
         form:
@@ -604,7 +621,7 @@ cs:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Upravit stav projektu
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -726,6 +743,17 @@ cs:
     index:
       no_results_title_text: V současné době neexistují žádné zprávy k zobrazení.
       no_results_content_text: Přidat příspěvek
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "Zůstaňte přihlášeni po %{num_days}"
@@ -797,7 +825,7 @@ cs:
         required: "Vyberte prosím roli"
       message:
         label: "Pozvánka"
-        description: "Pošleme uživateli e-mail, ke kterému můžete přidat osobní zprávu. Vysvětlení pozvánky by mohlo být užitečné, nebo pár informací o projektu, které by jim pomohly začít."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Odeslat pozvánku"
       success_message:
@@ -921,6 +949,16 @@ cs:
     print_hint: Toto vytiskne obsah této wiki stránky bez navigačního panelu.
     index:
       no_results_content_text: Přidat novou wiki stránku
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: V současné době neexistují žádné pracovní postupy.
@@ -1234,8 +1272,8 @@ cs:
           true: "veřejný"
           false: "soukromý"
         queries: "Dotazy"
-        status_code: "Stav projektu"
-        status_explanation: "Popis stavu projektu"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Nezahájeno"
           on_track: "Dle plánu"
@@ -1259,7 +1297,6 @@ cs:
         work_packages: "Pracovní balíčky"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Vyžadováno pro všechny projekty"
         custom_field_section: Sekce
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1548,6 +1585,8 @@ cs:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2616,7 +2655,7 @@ cs:
       enabled: "Disable"
   enumeration_activities: "Sledování času"
   enumeration_work_package_priorities: "Priority pracovního balíčku"
-  enumeration_reported_project_statuses: "Nahlášený stav projektu"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
   enterprise_trials:
@@ -2867,15 +2906,19 @@ cs:
         learn_about: "Learn more about all new features"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "Upgradovat na Enterprise Edici"
       postgres_migration: "Migrujte vaši instalaci na PostgreSQL"
@@ -3098,6 +3141,7 @@ cs:
   label_board_plural: "Tabule"
   label_branch: "Větev"
   label_browse: "Procházet"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Hromadná úprava vybraných pracovních balíčků"
   label_bundled: "(vlevo)"
   label_calendar: "Kalendář"
@@ -4008,9 +4052,6 @@ cs:
   permission_add_project: "Vytvořit projekty"
   permission_add_portfolios: "Create portfolios"
   permission_add_programs: "Create programs"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Přidat přílohy"
   permission_add_work_package_attachments_explanation: "Umožňuje přidávat přílohy bez oprávnění upravovat pracovní balíčky"
   permission_add_internal_comments: "Write internal comments"
@@ -4028,6 +4069,7 @@ cs:
   permission_comment_news: "Komentování novinek"
   permission_commit_access: "Čtěte/zapisovat přístup do repozitáře (commit)"
   permission_copy_projects: "Kopírovat projekty"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Duplicate work packages"
   permission_create_backup: "Vytvořit zálohy"
   permission_delete_work_package_watchers: "Smazat sledující uživatele"
@@ -4325,6 +4367,8 @@ cs:
   setting_apiv3_docs_enabled: "Povolit stránku dokumentace"
   setting_apiv3_docs_enabled_instructions_html: >
     Pokud je stránka dokumentace povolena, můžete získat interaktivní pohled na dokumentaci APIv3 pod <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Seznam povolených povolených příloh"
   setting_email_delivery_method: "Způsob zasílání emailu"
   setting_emails_salutation: "Oslovujte  uživatele v e-mailech s"
@@ -4556,6 +4600,7 @@ cs:
     passwords: "Hesla"
     project_attributes:
       heading: "Atributy projektu"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Atribut projektu"
       label_new_section: "Sekce"
       label_edit_section: "Upravit název"
@@ -4579,7 +4624,8 @@ cs:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."
@@ -4698,6 +4744,8 @@ cs:
     Enterprise edice přidá tyto další doplňky do vlastních polí projektů: <br> <ul> <li><b>Přidá vlastní pole pro projekty do seznamu projektů a vytvoří tak projektové portfolio</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Toto je logo, které se zobrazí ve vašem PDF exportu. Musí se jednat o PNG nebo JPEG obrázek. Doporučuje se černé nebo barevné logo na průhledném nebo bílém pozadí.
   text_custom_export_cover_instructions: >

@@ -42,7 +42,6 @@ module Projects::Concerns
       new_project = attributes_call.result
 
       set_default_role(new_project) unless user.admin?
-      disable_custom_fields_with_empty_values(new_project)
       notify_project_created(new_project) if new_project.persisted?
 
       super
@@ -84,38 +83,42 @@ module Projects::Concerns
       ProjectMailer.project_created(new_project, user:).deliver_later
     end
 
-    def disable_custom_fields_with_empty_values(new_project)
-      # Ideally, `build_missing_project_custom_field_project_mappings` would not activate custom fields
-      # with empty values, but:
-      # This hook is required as acts_as_customizable build custom values with their default value
-      # even if a blank value was provided in the project creation form.
-      # `build_missing_project_custom_field_project_mappings` will then activate the custom field,
-      # although the user explicitly provided a blank value. In order to not patch `acts_as_customizable`
-      # further, we simply identify these custom values and deactivate the custom field.
-
-      custom_field_ids = new_project.custom_values.select { |cv| cv.value.blank? && !cv.required? }.pluck(:custom_field_id)
-      custom_field_project_mappings = new_project.project_custom_field_project_mappings
-
-      custom_field_project_mappings
-        .where(custom_field_id: custom_field_ids)
-        .or(custom_field_project_mappings
-          .where.not(custom_field_id: new_project.available_custom_fields.select(:id)))
-        .destroy_all
-    end
-
     def build_missing_project_custom_field_project_mappings(project)
-      # Activate all custom fields (via mapping table) that are required or
-      # have a value provided by the user, but no mapping exists.
+      # Activate all custom fields (via mapping table) that have no mapping, but are either
+      # intended for all projects, or have a value provided by the user.
+      custom_field_ids = Set.new(activatable_custom_field_ids_from_project(project))
+      custom_field_ids.merge(activatable_custom_field_ids_from_params)
 
-      custom_field_ids = project.custom_values
-        .select { |cv| cv.value? || cv.required? }
-        .pluck(:custom_field_id).uniq
       activated_custom_field_ids = project.project_custom_field_project_mappings.pluck(:custom_field_id).uniq
 
       mappings = (custom_field_ids - activated_custom_field_ids).uniq
         .map { |custom_field_id| { custom_field_id: } }
 
       project.project_custom_field_project_mappings.build(mappings)
+    end
+
+    def activatable_custom_field_ids_from_project(project)
+      # We will activate fields with existing values, unless it's the default value, which might
+      # be generated automatically
+      project.custom_values
+             .select { |cv| cv.is_for_all? || (cv.value? && !cv.default?) }
+             .pluck(:custom_field_id)
+    end
+
+    def activatable_custom_field_ids_from_params
+      # We will activate fields that are explicitly set via params
+
+      # Extract custom field IDs from custom_field_values
+      via_cf_values = params.fetch(:custom_field_values, {})
+                            .keys
+                            .map { it.to_s.to_i }
+
+      # Extract custom field IDs from params keys that match 'custom_field_<id>'
+      via_cf = params.keys
+                     .grep(/\Acustom_field_\d+\z/)
+                     .map { |k| k.to_s[/custom_field_(\d+)/, 1].to_i }
+
+      via_cf_values + via_cf
     end
 
     def update_calculated_value_custom_fields(model)
@@ -125,7 +128,7 @@ module Projects::Concerns
       # edits a custom field which is used by an admin only calculated value
       # field. Without this unscoping, admin only value and all fields
       # referencing it (recursively) will not be recalculated and there will
-      # even be no place for that recalculatin to be triggered unless an admin
+      # even be no place for that recalculation to be triggered unless an admin
       # edits same value again.
       #
       # This may need to be handled differently to make it work for other custom

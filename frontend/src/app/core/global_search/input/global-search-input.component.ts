@@ -38,6 +38,8 @@ import {
 import { RecentItemsService } from 'core-app/core/recent-items.service';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
+import { NgOption } from '@ng-select/ng-select/index';
+import { announce } from '@primer/live-region-element';
 
 interface SearchResultItem {
   id:string;
@@ -114,6 +116,8 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   public currentValue = '';
 
   public isFocusedDirectly = !!this.currentQuery && this.selectedItem instanceof HalResource;
+
+  public liveMessage = '';
 
   private unregisterGlobalListener:(() => unknown)|undefined;
 
@@ -251,9 +255,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   // in and then decide what to do. If a direct hit is present, follow that. Otherwise,
   // go to the search in the current scope.
   public onEnterBeforeResultsLoaded():void {
-    this.markable$.pipe(
-      first((v) => v),
-    ).subscribe(() => {
+    this.markable$.pipe(first()).subscribe(() => {
       if (this.selectedItem) {
         this.followSelectedItem();
       } else {
@@ -308,10 +310,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
       .fetchSearchResults(hashFreeQuery, hashFreeQuery !== query)
       .get()
       .pipe(
-        map((collection) => this.searchResultsToOptions(collection.elements, hashFreeQuery)),
-        tap(() => {
-          this.setMarkedOption();
-        }),
+        map((collection) => this.searchResultsToOptions(collection.elements, hashFreeQuery))
       );
   }
 
@@ -370,6 +369,15 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     // If we have a direct hit, we choose it to be the selected element.
     this.selectedItem = results.find((wp) => wp.id?.toString() === query) || searchOptions[0];
 
+    if (this.selectedItem instanceof WorkPackageResource) {
+      void announce(this.I18n.t('js.global_search.direct_hit_available'), { politeness: 'polite' });
+      this.setMarkedOption();
+    }
+    else {
+      const resultCount = results.length + searchOptions.length;
+      void announce(this.I18n.t('js.global_search.items_available', { count: resultCount }), { politeness: 'polite' });
+    }
+
     return [
       ...searchOptions,
       ...results,
@@ -420,8 +428,9 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
    * have marked the element we wish to.
    */
   private setMarkedOption():void {
+
     this.markable = true;
-    this.ngSelectComponent.ngSelectInstance.itemsList.markItem(this.ngSelectComponent.ngSelectInstance.itemsList.selectedItems[0]);
+    this.ngSelectComponent.ngSelectInstance.itemsList.markItem(this.selectedItem as NgOption);
 
     this.cdRef.detectChanges();
   }

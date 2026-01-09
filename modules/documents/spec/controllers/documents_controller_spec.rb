@@ -187,7 +187,10 @@ RSpec.describe DocumentsController do
   end
 
   describe "generate_oauth_token",
-           with_config: { collaborative_editing_hocuspocus_secret: "secret1234" } do
+           with_config: {
+             collaborative_editing_hocuspocus_url: "wss://hocuspocus.local",
+             collaborative_editing_hocuspocus_secret: "secret1234"
+           } do
     let(:manage_role) { create(:project_role, permissions: %i[view_documents manage_documents]) }
     let(:view_only_role) { create(:project_role, permissions: [:view_documents]) }
     let(:user_with_manage) { create(:user) }

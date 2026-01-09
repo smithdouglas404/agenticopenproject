@@ -16,10 +16,10 @@ he:
         news:
           title: 'חדשות'
         project_description:
-          title: 'תיאור הפרויקט'
+          title: 'Description'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
-          title: 'מצב הפרוייקט'
+          title: 'Status'
           not_started: 'Not started'
           on_track: 'On track'
           off_track: 'Off track'
@@ -28,7 +28,7 @@ he:
           finished: 'הסתיים'
           discontinued: 'Discontinued'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

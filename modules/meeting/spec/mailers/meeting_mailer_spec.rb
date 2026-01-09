@@ -139,6 +139,7 @@ RSpec.describe MeetingMailer do
       create(:meeting,
              author:,
              project:,
+             title: "Old title",
              start_time: "2021-11-09T23:00:00 +0100".to_datetime.utc)
     end
     let(:new_start) { "2021-11-12T23:00:00 +0100".to_datetime.utc }
@@ -148,7 +149,9 @@ RSpec.describe MeetingMailer do
         old_duration: 1,
         new_duration: 1,
         old_location: nil,
-        new_location: "Some new location" }
+        new_location: "Some new location",
+        old_title: meeting.title,
+        new_title: "New title" }
     end
     let(:mail) { described_class.updated(meeting, watcher1, author, changes:) }
     # this is needed to call module functions from Redmine::I18n
@@ -179,6 +182,8 @@ RSpec.describe MeetingMailer do
         expect(body).to include(i18n.format_time(new_start, include_date: false))
         expect(body).to include("-")
         expect(body).to include("Some new location")
+        expect(body).to include("Old title")
+        expect(body).to include("New title")
       end
     end
 
@@ -194,6 +199,8 @@ RSpec.describe MeetingMailer do
         expect(body).to include(i18n.format_time(new_start, include_date: false))
         expect(body).to include("-")
         expect(body).to include("Some new location")
+        expect(body).to include("Old title")
+        expect(body).to include("New title")
       end
     end
   end

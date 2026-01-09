@@ -365,7 +365,7 @@ In OpenProject, a [project](../user-guide/projects/) is defined as an individual
 
 ### Project attribute
 
-A project attribute in OpenProject is a [custom field](#custom-field) that applies to an entire project. It is displayed in the right-hand column on the project overview page and can be divided into sections for a better structure. Project attributes can be activated and deactivated either on the respective [project home page](#project-home) or, for managing multiple projects at once, in the global administration.
+A project attribute in OpenProject is a [custom field](#custom-field) that applies to an entire project. It is displayed in the right-hand column on the project overview page and can be divided into sections for a better structure. Project attributes can be activated and deactivated either on the respective [project home](#project-home) page or, for managing multiple projects at once, in the global administration.
 
 ### Project folder
 
@@ -389,7 +389,7 @@ The project identifier is defined as the unique name used to identify and refere
 
 In OpenProject, the project life cycle consists of [phases](#phase) and [phase gates](#phase-gate) that help you structure your projects and work packages methodically. By default, these follow the [PM² project management framework](#pm--pm2), using the phases *Initiating*, *Planning*, *Executing*, and *Closing*.
 
-Phases and phase gates are visible on the [project home page](#project-home) page, in [work package tables](#work-package-table), and in [project lists](#project-lists). They can be used for filtering, grouping, and scheduling. Project administrators can activate relevant phases and gates for each project, while the global configuration of phases is an [Enterprise add-on](#enterprise-add-on).
+Phases and phase gates are visible on the [project home](#project-home) page, in [work package tables](#work-package-table), and in [project lists](#project-lists). They can be used for filtering, grouping, and scheduling. Project administrators can activate relevant phases and gates for each project, while the global configuration of phases is an [Enterprise add-on](#enterprise-add-on).
 
 [Read more about the project life cycle in our system admin guide](../system-admin-guide/projects/project-life-cycle).
 

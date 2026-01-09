@@ -235,10 +235,15 @@ de:
         summary_series: "Die Terminserie '%{title}' wurde von %{actor} abgesagt."
         summary: "Besprechung '%{title}' wurde von %{actor} abgesagt."
         date_time: "Geplanter Zeitpunkt"
+      ended:
+        header_series: "Beendet: Terminserie '%{title}'"
+        summary_series: "Die Terminserie '%{title}' wurde von %{actor} beendet."
       updated:
         header: "Besprechung '%{title}' wurde aktualisiert"
         summary: "Die Besprechung '%{title}' wurde durch %{actor} aktualisiert"
         body: "Die Besprechung '%{title}' wurde durch %{actor} aktualisiert."
+        old_title: "Alter Titel"
+        new_title: "Neuer Titel"
         old_date_time: "Alte(s) Datum/Zeit"
         new_date_time: "Neue(s) Datum/Zeit"
         old_location: "Alter Ort"

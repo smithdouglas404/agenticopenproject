@@ -11,7 +11,7 @@ on:
 
 jobs:
   danger:
-    if: github.repository == 'opf/openproject'
+    if: github.repository_owner == 'opf'
     runs-on: [ubuntu-latest]
     timeout-minutes: 10
     steps:

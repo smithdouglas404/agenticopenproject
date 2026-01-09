@@ -191,7 +191,7 @@ tr:
       error_cannot_act_self: "Kendi yüklediğiniz dosyalar üzerinde işlem yapamazsınız."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "Bu görünümde, öznitelikleri görünüm için özel yardım metinler oluşturabilirsiniz. Tanımladığınızda, bu metinler, aidiyet öznitelik yanındaki Yardım simgesini tıklayarak gösterilebilir."
     show_preview: "Metni önizle"
     add_new: "Yardım metni ekle"
@@ -350,17 +350,28 @@ tr:
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Özel alanı tüm mevcut ve yeni projelerde kullanılabilir olarak işaretleyin."
-      multi_select: "Kullanıcının bu özel alana birden fazla değer atamasına izin verir."
-      searchable: "Genel arama işlevini kullanırken alan değerlerini ekleyin."
-      searchable_for_project: "Bu niteliği proje listelerinde filtre olarak kullanmak için işaretleyin."
-      editable: "Alanın kullanıcılar tarafından düzenlenebilir olmasına izin verin."
-      admin_only: "Bu niteliğin yalnızca yöneticilere görünür kılmak için işaretleyin. Yönetici hakları olmayan kullanıcılar bunu görüntüleyemez veya düzenleyemez."
-      is_filter: >
-        Özel alanın iş paketi görünümlerinde bir filtrede kullanılmasına izin verin. Yalnızca 'Tüm projeler için' seçildiğinde, özel alanın genel görünümlerde görüneceğini unutmayın.
-      formula: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Şu anda özel bir alan bulunmamakta.
       no_results_content_text: Yeni bir özel alan oluştur
@@ -511,7 +522,7 @@ tr:
         text: "Bu eylem, listenin içerdiği hiçbir projeyi silmeyecektir. Bu proje listesini silmek istediğinizden emin misiniz?"
     settings:
       header_details: Temel bilgiler
-      header_status: Proje Durumu
+      header_status: Status
       header_relations: Proje ilişkileri
       button_update_details: Detayları güncelle
       button_update_status_description: Durum açıklamasını güncelle
@@ -536,9 +547,15 @@ tr:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "Tümünü etkinleştir"
         label_disable_all: "Tümünü devre dışı bırak"
@@ -572,9 +589,9 @@ tr:
           label_enable_single: "Bu projede aktif, devre dışı bırakmak için tıklayın"
           label_disable_single: "Bu projede kapalı, açmak için tıklayın"
           remove_from_project: "Projeden kaldır"
-        is_required_blank_slate:
-          heading: Tüm projelerde zorunludur
-          description: '"Tüm projelerde zorunlu" seçeneği işaretli olduğu için bu proje niteliği tüm projelerde etkindir. Projeler için bağımsız olarak devre dışı bırakılamaz.'
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Şu anda hiçbir tip mevcut değil.
         form:
@@ -603,7 +620,7 @@ tr:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Proje durumunu düzenle
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -713,6 +730,17 @@ tr:
     index:
       no_results_title_text: Şu anda rapor edilecek bir haber yok.
       no_results_content_text: Haber öğesi ekle
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "%{num_days} için oturumu açık tut"
@@ -784,7 +812,7 @@ tr:
         required: "Lütfen bir rol seçin."
       message:
         label: "Davet Mesajı"
-        description: "Kullanıcıya, buradan kişisel bir mesaj ekleyebileceğiniz bir e-posta göndereceğiz. Davet için bir açıklama yararlı olabilir veya belki de başlamalarına yardımcı olacak projeyle ilgili bir parça bilgi olabilir."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Davet gönder"
       success_message:
@@ -905,6 +933,16 @@ tr:
     print_hint: Bu, bu wiki sayfasının içeriğini herhangi bir gezinme çubuğu olmadan yazdıracaktır.
     index:
       no_results_content_text: Yeni wiki sayfası Ekle
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: Sitemizde şuan iş akışı yok.
@@ -1216,8 +1254,8 @@ tr:
           true: "genel"
           false: "özel"
         queries: "Sorgular"
-        status_code: "Proje Durumu"
-        status_explanation: "Proje durumunun tanımı"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Başlatılmadı"
           on_track: "Takipte"
@@ -1241,7 +1279,6 @@ tr:
         work_packages: "İş Paketleri"
         workspace_type: "Çalışma Alanı türü"
       project_custom_field:
-        is_required: "Tüm projelerde zorunludur"
         custom_field_section: Bölüm
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1528,6 +1565,8 @@ tr:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2522,7 +2561,7 @@ tr:
       enabled: "Devre dışı bırak"
   enumeration_activities: "Zaman izleme faaliyetleri"
   enumeration_work_package_priorities: "İş paketi öncelikleri"
-  enumeration_reported_project_statuses: "Bildirilen proje durumları"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Sıralama başarıyla değiştirildi."
   enumeration_could_not_be_moved: "Numaralandırma taşınamadı."
   enterprise_trials:
@@ -2773,15 +2812,19 @@ tr:
         learn_about: "Tüm yeni özellikler hakkında daha fazla bilgi edinin"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "Enterprise sürümüne yükseltin"
       postgres_migration: "Kurulumunuzu PostgreSQL'e taşıyın"
@@ -3004,6 +3047,7 @@ tr:
   label_board_plural: "Panolar"
   label_branch: "Dal"
   label_browse: "Gözat"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Seçilen çalışma paketlerini toplu halde düzenle"
   label_bundled: "(Birlikte) sepetlemek "
   label_calendar: "Takvim"
@@ -3909,9 +3953,6 @@ tr:
   permission_add_project: "Proje oluşturma"
   permission_add_portfolios: "Portföyler oluştur"
   permission_add_programs: "Programlar oluştur"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Dosya Ekle"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Dahili yorumlar yazın"
@@ -3929,6 +3970,7 @@ tr:
   permission_comment_news: "Haberlere yorum yazmak"
   permission_commit_access: "Depoya okuma / yazma erişimi (tamamlama)"
   permission_copy_projects: "Proje kopyalamak"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Duplicate work packages"
   permission_create_backup: "Yedek oluşturma"
   permission_delete_work_package_watchers: "Takipçi sil"
@@ -4226,6 +4268,8 @@ tr:
   setting_apiv3_docs_enabled: "Dokümanlar sayfasını etkinleştir"
   setting_apiv3_docs_enabled_instructions_html: >
     Dokümanlar sayfası etkinleştirildiyse, <a href="%{link}" target="_blank">%{link}</a> altında APIv3 belgelerinin etkileşimli bir görünümünü elde edebilirsiniz.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Ek yükleme beyaz listesi"
   setting_email_delivery_method: "E-posta teslim yöntemi"
   setting_emails_salutation: "E-postalarda kullanıcıya şu şekilde hitap edin"
@@ -4457,6 +4501,7 @@ tr:
     passwords: "Parolalar"
     project_attributes:
       heading: "Proje öznitelikleri"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Proje özniteliği"
       label_new_section: "Bölüm"
       label_edit_section: "Başlığı düzenle"
@@ -4480,7 +4525,8 @@ tr:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."
@@ -4599,6 +4645,8 @@ tr:
     Enterprise sürümü, projelerin özel alanları için şu ek eklentileri ekleyecektir: <br> <ul> <li><b>Bir proje portföy görünümü oluşturmak için Projeler için özel alanları Proje listenize ekleyin</b></li > </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Bu, PDF dışa aktarımlarınızda görünen logodur. Bir PNG veya JPEG görüntü dosyası olması gerekir. Şeffaf veya beyaz arka plan üzerinde siyah veya renkli bir logo önerilir.
   text_custom_export_cover_instructions: >

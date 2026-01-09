@@ -16,10 +16,10 @@ ms:
         news:
           title: 'Berita'
         project_description:
-          title: 'Deskripsi projek'
+          title: 'Description'
           no_results: "Tiada deskripsi yang tertulis lagi. Deskripsi boleh diberikan di 'Tetapan Projek'."
         project_status:
-          title: 'Status projek'
+          title: 'Status'
           not_started: 'Belum dimulakan'
           on_track: 'Ikut jadual'
           off_track: 'Lari jadual'
@@ -28,7 +28,7 @@ ms:
           finished: 'Telah selesai'
           discontinued: 'Dihentikan'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

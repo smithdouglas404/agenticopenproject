@@ -19,7 +19,7 @@ Alternatively, you can also set the project status on the **project overview** p
 
 ![Project status widget on a project overview page in OpenProject](openproject_userguide_projects_project_status_widget.png)
 
-Learn more about [project status widget on a project overview page](../../project-overview/#project-status).
+Learn more about [project status widget on a project home page](../../project-home/project-widgets/#project-status-widget).
 
 ## Display the project status
 
@@ -27,14 +27,14 @@ The project status is displayed in different OpenProject modules.
 
 ### Project lists
 
-Click **[Project lists](../../projects/project-lists/)** button at the bottom of the *All projects* dropdown menu in the header navigation to open the project lists, which displays all your projects including their status.
+Click [Project lists](../../projects/project-lists/) button at the bottom of the *All projects* dropdown menu in the header navigation to open the project lists, which displays all your projects including their status.
 
 !["Project lists" button at the bottom of the All projects dropdown menu in the header navigation of OpenProject](openproject_userguide_projects_project_lists_button.png)
 
 ![Project list displaying project status column and project status filters in OpenProject](openproject_userguide_projects_project_lists_status_column.png)
 
-### Project overview
+### Project home
 
-The [project overview ](../../project-overview/) will also display your project status. The project status appears as a widget, which you can drag and drop to customize your project overview layout.
+The [project home](../../project-home/) will also display your project status. The project status appears as a widget, which you can drag and drop to customize your project overview layout.
 
-![Project status widget on a project overview page in OpenProject](openproject_userguide_projects_project_status_widget_overview.png)
+![Project status widget on a project home page in OpenProject](openproject_userguide_projects_project_status_widget_overview.png)

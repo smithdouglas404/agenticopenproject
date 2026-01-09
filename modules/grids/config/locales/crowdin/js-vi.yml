@@ -16,10 +16,10 @@ vi:
         news:
           title: 'Tin tức'
         project_description:
-          title: 'Mô tả dự án'
+          title: 'Description'
           no_results: "Chưa có mô tả nào được viết. Có thể cung cấp trong 'Cài đặt dự án'."
         project_status:
-          title: 'Tình trạng dự án'
+          title: 'Status'
           not_started: 'Chưa bắt đầu'
           on_track: 'Đang theo dõi'
           off_track: 'Ra ngoài quỹ đạo'
@@ -28,7 +28,7 @@ vi:
           finished: 'Hoàn thành'
           discontinued: 'Ngừng'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

@@ -191,7 +191,7 @@ ko:
       error_cannot_act_self: "고유한 업로드 파일에서는 작업을 수행할 수 없습니다."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "이 보기에서 특성 보기에 대한 사용자 지정 도움말 텍스트를 작성할 수 있습니다. 이 텍스트를 정의하면 속하는 특성 옆에 있는 도움말 아이콘을 클릭하여 표시할 수 있습니다."
     show_preview: "미리 보기 텍스트"
     add_new: "도움말 텍스트 추가"
@@ -349,17 +349,28 @@ ko:
     calculated_field_not_editable: "편집할 수 없는 특성입니다. 이 값은 자동으로 계산됩니다."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "모든 기존 프로젝트와 새 프로젝트에서 사용자 지정 필드를 사용 가능으로 표시합니다."
-      multi_select: "사용자가 이 사용자 지정 필드에 여러 값을 할당할 수 있도록 허용합니다."
-      searchable: "글로벌 검색 기능을 사용할 때 필드 값을 포함합니다."
-      searchable_for_project: "프로젝트 목록에서 이 특성을 필터로 사용 가능하게 설정하려면 선택하세요."
-      editable: "사용자가 필드를 편집할 수 있도록 허용합니다."
-      admin_only: "이 특성을 관리자에게만 표시하려면 선택하세요. 관리자 권한이 없는 사용자는 이 특성을 보거나 편집할 수 없습니다."
-      is_filter: >
-        작업 패키지 보기의 필터에서 사용자 지정 필드를 사용할 수 있도록 허용합니다. '모든 프로젝트용'을 선택한 경우에만 사용자 지정 필드가 글로벌 보기에 표시됩니다.
-      formula: "숫자 값을 추가하거나 /를 입력하여 특성 또는 수학 연산자를 검색합니다."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: 사용자 필드가 없습니다.
       no_results_content_text: 새 사용자 필드 생성
@@ -509,7 +520,7 @@ ko:
         text: "이 작업을 수행해도 목록에 포함된 프로젝트는 삭제되지 않습니다. 이 프로젝트 목록을 삭제하시겠습니까?"
     settings:
       header_details: 기본 세부 정보
-      header_status: 프로젝트 상태
+      header_status: Status
       header_relations: 프로젝트 관계
       button_update_details: 세부 정보 업데이트
       button_update_status_description: 상태 설명 업데이트
@@ -534,9 +545,15 @@ ko:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "모두 활성화"
         label_disable_all: "모두 비활성화"
@@ -570,9 +587,9 @@ ko:
           label_enable_single: "이 프로젝트에서 활성화되어 있습니다. 비활성화하려면 클릭하세요."
           label_disable_single: "이 프로젝트에서 비활성화되어 있습니다. 활성화하려면 클릭하세요."
           remove_from_project: "프로젝트에서 제거"
-        is_required_blank_slate:
-          heading: 모든 프로젝트에서 필수
-          description: '"모든 프로젝트에서 필수" 옵션이 선택되어 있으므로 모든 프로젝트에서 이 프로젝트 특성이 활성화됩니다. 개별 프로젝트에 대해 비활성화할 수 없습니다.'
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: 사용 가능한 타입이 없습니다.
         form:
@@ -601,7 +618,7 @@ ko:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: 프로젝트 상태 편집
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -705,6 +722,17 @@ ko:
     index:
       no_results_title_text: 보고할 소식이 없습니다.
       no_results_content_text: 소식 항목 추가
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "%{num_days}일 동안 로그인 상태 유지"
@@ -776,7 +804,7 @@ ko:
         required: "역할을 선택하십시오"
       message:
         label: "초대 메시지"
-        description: "사용자에게 이메일이 전송될 것입니다. 여기에 개인 메시지를 추가할 수도 있습니다. 초대에 관한 유용한 설명을 넣거나, 프로젝트를 시작하는 데 도움이 되는 정보를 넣을 수 있습니다."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "초대장 보내기"
       success_message:
@@ -897,6 +925,16 @@ ko:
     print_hint: 탐색 모음 없이 이 위키 페이지 콘텐츠가 인쇄됩니다.
     index:
       no_results_content_text: 위키 페이지 추가
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: 작업 흐름이 없습니다.
@@ -1207,8 +1245,8 @@ ko:
           true: "공개"
           false: "비공개"
         queries: "쿼리"
-        status_code: "프로젝트 상태"
-        status_explanation: "프로젝트 상태 설명"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "시작되지 않음"
           on_track: "정상 상태"
@@ -1232,7 +1270,6 @@ ko:
         work_packages: "작업 패키지"
         workspace_type: "워크스페이스 유형"
       project_custom_field:
-        is_required: "모든 프로젝트에 필수"
         custom_field_section: 섹션
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1518,6 +1555,8 @@ ko:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2475,7 +2514,7 @@ ko:
       enabled: "비활성화"
   enumeration_activities: "시간 추적 활동"
   enumeration_work_package_priorities: "작업 패키지 우선 순위"
-  enumeration_reported_project_statuses: "보고된 프로젝트 상태"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "주문이 변경되었습니다."
   enumeration_could_not_be_moved: "열거형은 이동할 수 없습니다."
   enterprise_trials:
@@ -2726,15 +2765,19 @@ ko:
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
-            이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 프로젝트 평가 및 점수 매기기를 위한 계산된 값(Enterprise 추가 기능).
-            line_1: 프로젝트 특성 유형 계층.
-            line_2: 상당한 영향을 미치는 성능 업데이트.
-            line_3: 문서 모듈의 새로운 색인 페이지.
-            line_4: 사용자 지정 필드 항목의 부모 변경 가능.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -2957,6 +3000,7 @@ ko:
   label_board_plural: "보드"
   label_branch: "브랜치"
   label_browse: "찾아보기"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "선택된 작업 패키지 일괄 편집"
   label_bundled: "(번들)"
   label_calendar: "달력"
@@ -3861,9 +3905,6 @@ ko:
   permission_add_project: "프로젝트 만들기"
   permission_add_portfolios: "포트폴리오 만들기"
   permission_add_programs: "프로그램 만들기"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "첨부 파일 추가"
   permission_add_work_package_attachments_explanation: "작업 패키지 편집 권한 없이 첨부 파일 추가를 허용합니다."
   permission_add_internal_comments: "내부 코멘트 작성"
@@ -3881,6 +3922,7 @@ ko:
   permission_comment_news: "뉴스에 코멘트 달기"
   permission_commit_access: "리포지토리(커밋)에 대한 읽기/쓰기 액세스"
   permission_copy_projects: "프로젝트 복사"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "작업 패키지 복제"
   permission_create_backup: "백업 만들기"
   permission_delete_work_package_watchers: "주시자 삭제"
@@ -4176,6 +4218,8 @@ ko:
   setting_apiv3_docs_enabled: "문서 페이지 활성화"
   setting_apiv3_docs_enabled_instructions_html: >
     문서 페이지가 활성화되면 <a href="%{link}" target="_blank">%{link}</a>에서 APIv3 문서의 대화식 보기를 얻을 수 있습니다.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "첨부 파일 업로드 허용 목록"
   setting_email_delivery_method: "이메일 배달 방법"
   setting_emails_salutation: "이메일의 주소 사용자:"
@@ -4407,6 +4451,7 @@ ko:
     passwords: "암호"
     project_attributes:
       heading: "프로젝트 특성"
+      label_for_all_projects: "All projects"
       label_new_attribute: "프로젝트 특성"
       label_new_section: "섹션"
       label_edit_section: "제목 편집"
@@ -4430,7 +4475,8 @@ ko:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."
@@ -4549,6 +4595,8 @@ ko:
     Enterprise Edition은 프로젝트의 사용자 지정 필드에 대해 다음과 같은 기타 추가 기능을 추가합니다: <br> <ul> <li><b>프로젝트 목록에 프로젝트에 대한 사용자 지정 필드를 추가하여 프로젝트 포트폴리오 보기 만들기</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     PDF 내보내기에서 표시되는 로고입니다. PNG 또는 JPEG 이미지 파일이어야 합니다. 투명 또는 흰색 바탕에 검은색 또는 컬러 로고를 사용하는 것이 좋습니다.
   text_custom_export_cover_instructions: >

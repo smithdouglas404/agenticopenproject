@@ -30,26 +30,21 @@
 
 RSpec.shared_examples_for "rendering Border Box Grid heading" do |text:|
   it "renders Border Box Grid heading '#{text}'" do
-    expect(rendered_component).to have_css ".op-border-box-grid--heading", text:
+    expect(rendered_component).to have_css ".op-border-box-grid__header", text:
   end
 end
 
 RSpec.shared_examples_for "rendering Border Box Grid mobile heading" do |text:|
   it "renders Border Box Grid mobile heading '#{text}'" do
-    expect(rendered_component).to have_css ".op-border-box-grid--mobile-heading", text:
+    expect(rendered_component).to have_css ".op-border-box-grid__mobile-header", text:
   end
 end
 
 RSpec.shared_examples_for "rendering Border Box Grid rows" do |row_count:, col_count:|
-  it "renders list" do
-    expect(rendered_component).to have_list
-  end
-
-  it "renders list items", :aggregate_failures do
-    expect(rendered_component).to have_list_item count: row_count, class: "Box-row"
-    expect(rendered_component).to have_list_item class: "Box-row" do |list_item|
-      expect(list_item).to have_css ".op-border-box-grid"
-      expect(list_item).to have_css ".op-border-box-grid--row-item", count: col_count
+  it "renders rows", :aggregate_failures do
+    expect(rendered_component).to have_css ".Box-row", count: row_count
+    expect(rendered_component).to have_css ".Box-row" do |row|
+      expect(row).to have_css ".op-border-box-grid__row-item", count: col_count
     end
   end
 end

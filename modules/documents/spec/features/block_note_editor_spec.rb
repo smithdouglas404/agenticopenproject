@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe "BlockNote editor rendering", :js do
+RSpec.describe "BlockNote editor rendering", :js, with_settings: { real_time_text_collaboration_enabled: true } do
   let(:admin) { create(:admin) }
   let(:type) { create(:document_type, :experimental) }
   let(:document) { create(:document, type:) }
@@ -50,10 +50,10 @@ RSpec.describe "BlockNote editor rendering", :js do
     visit document_path(document)
 
     expect(page).to have_test_selector("blocknote-document-description")
-    expect(page).to have_no_content("Überschrift")
+    expect(editor.content).not_to include("Überschrift")
 
     editor.open_command_dialog
-    expect(page).to have_content("Überschrift")
+    expect(editor.content).to include("Überschrift")
   end
 
   it "renders the BlockNote editor in english if the users locale is not available for BlockNote" do
@@ -61,13 +61,14 @@ RSpec.describe "BlockNote editor rendering", :js do
     visit document_path(document)
 
     expect(page).to have_test_selector("blocknote-document-description")
-    expect(page).to have_no_content("Heading")
+    expect(editor.content).not_to include("Heading")
 
     editor.open_command_dialog
-    expect(page).to have_content("Heading")
+    expect(editor.content).to include("Heading")
   end
 
   it "renders the BlockNote editor with custom menu entries for work package linking" do
+    pending("handling tests with shadow dom")
     visit document_path(document)
 
     expect(page).to have_test_selector("blocknote-document-description")

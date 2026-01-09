@@ -116,7 +116,7 @@ jobs:
       docker_tags: ${{ steps.extract_version.outputs.docker_tags }}
       registry_image: ${{ steps.extract_version.outputs.registry_image }}
   build:
-    if: github.repository == 'opf/openproject'
+    if: github.repository_owner == 'opf'
     needs:
       - setup
     runs-on:

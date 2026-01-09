@@ -344,6 +344,7 @@ ro:
     label_collapse: "Restrângere"
     label_collapsed: "restrâns"
     label_collapse_all: "Restrângere totală"
+    label_collapse_text: "Collapse text"
     label_comment: "Comentariu"
     label_committed_at: "%{committed_revision_link} la data de %{date}"
     label_committed_link: "revizia încărcată %{revision_identifier}"
@@ -356,6 +357,7 @@ ro:
     label_expand: "Extindere"
     label_expanded: "extins"
     label_expand_all: "Extindere totală"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Deschide meniu proiect"
     label_export: "Exportă"
     label_export_preparing: "Exportul este în curs de pregătire și va fi descărcat în curând."
@@ -554,7 +556,7 @@ ro:
       date_alerts:
         milestone_date: "Dată etapă"
         overdue: "Restanțe"
-        overdue_since: "de %{difference_in_days}"
+        overdue_since: "for %{difference_in_days}."
         property_today: "este azi."
         property_is: "este în %{difference_in_days}"
         property_was: "a fost acum %{difference_in_days}"
@@ -1127,6 +1129,8 @@ ro:
     global_search:
       all_projects: "In toate proiectele"
       close_search: "Închide căutarea"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "In acest proiect + subproiecte"
       current_project: "În acest proiect"
       recently_viewed: "Vizualizate recent"

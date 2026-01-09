@@ -16,10 +16,10 @@ de:
         news:
           title: 'Neuigkeiten'
         project_description:
-          title: 'Projektbeschreibung'
+          title: 'Description'
           no_results: "Noch keine Beschreibung festgelegt. Sie kann in den 'Projekteinstellungen' erstellt werden."
         project_status:
-          title: 'Projektstatus'
+          title: 'Status'
           not_started: 'Nicht gestartet'
           on_track: 'Planmäßig'
           off_track: 'Unplanmäßig'
@@ -28,7 +28,7 @@ de:
           finished: 'Abgeschlossen'
           discontinued: 'Eingestellt'
         project_status_beta:
-          title: 'Projektstatus (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Unterelemente'
         project_favorites:

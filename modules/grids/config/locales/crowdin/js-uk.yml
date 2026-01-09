@@ -16,10 +16,10 @@ uk:
         news:
           title: 'Новини'
         project_description:
-          title: 'Опис проекту'
+          title: 'Description'
           no_results: "Опис ще не створено. Можна вказати в налаштуваннях проекту."
         project_status:
-          title: 'Статус Проекту'
+          title: 'Status'
           not_started: 'Не почато'
           on_track: 'За графіком'
           off_track: 'Не за графіком'
@@ -28,7 +28,7 @@ uk:
           finished: 'Завершено'
           discontinued: 'Припинено'
         project_status_beta:
-          title: 'Статус проєкту (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Піделементи'
         project_favorites:

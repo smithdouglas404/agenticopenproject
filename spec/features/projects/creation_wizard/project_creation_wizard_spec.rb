@@ -29,6 +29,10 @@
 #++
 require "spec_helper"
 
+# This is a feature spec for the project creation wizard, but only when creating
+# a new project from a template with the wizard enabled (Project Initiation Request, PIR).
+# The wizard that is shown when creating a new blank project from scratch is NOT tested here.
+# See `spec/features/projects/create_spec.rb` for that.
 RSpec.describe "Project creation wizard",
                :js,
                :with_cuprite do

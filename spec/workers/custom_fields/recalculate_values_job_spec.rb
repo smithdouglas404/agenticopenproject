@@ -66,7 +66,7 @@ RSpec.describe CustomFields::RecalculateValuesJob, type: :model do
     end
 
     context "when custom field is calculated value" do
-      context "and is not required" do
+      context "and is not activated for all projects" do
         context "with formula referencing other fields" do
           let!(:static) { create(:integer_project_custom_field, projects:) }
           let!(:custom_field) do
@@ -115,9 +115,9 @@ RSpec.describe CustomFields::RecalculateValuesJob, type: :model do
         end
       end
 
-      context "and is required" do
+      context "and is activated for all projects" do
         context "with a static formula" do
-          let!(:custom_field) { create(:calculated_value_project_custom_field, formula: "1 + 1", is_required: true) }
+          let!(:custom_field) { create(:calculated_value_project_custom_field, formula: "1 + 1", is_for_all: true) }
           let(:custom_field_id) { custom_field.id }
 
           it "updates calculated values on all objects" do
@@ -142,7 +142,7 @@ RSpec.describe CustomFields::RecalculateValuesJob, type: :model do
         context "with formula referencing other fields" do
           let!(:static) { create(:integer_project_custom_field, projects: [project1, project2, project3]) }
           let!(:custom_field) do
-            create(:calculated_value_project_custom_field, formula: "#{static} * 3", is_required: true)
+            create(:calculated_value_project_custom_field, formula: "#{static} * 3", is_for_all: true)
           end
           let(:custom_field_id) { custom_field.id }
 

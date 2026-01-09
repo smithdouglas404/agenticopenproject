@@ -191,7 +191,7 @@ vi:
       error_cannot_act_self: "Không thể thực hiện hành động trên các tệp bạn đã tải lên."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "Tại đây, bạn có thể tạo các văn bản hiển thị hỗ trợ. Khi hoàn thành, các văn bản có thể được hiển thị bằng cách nhấp vào biểu tượng trợ giúp bên cạnh các giá trị."
     show_preview: "Văn bản xem trước"
     add_new: "Thêm văn bản trợ giúp"
@@ -349,17 +349,28 @@ vi:
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Đánh dấu trường tùy chỉnh là khả dụng trong tất cả các dự án hiện có và mới."
-      multi_select: "Allows the user to assign multiple values to this custom field."
-      searchable: "Bao gồm giá trị trường khi sử dụng chức năng tìm kiếm toàn cầu."
-      searchable_for_project: "Bao gồm giá trị trường khi sử dụng chức năng tìm kiếm toàn cầu."
-      editable: "Cho phép trường có thể chỉnh sửa bởi người dùng tự mình."
-      admin_only: "Tích để chỉ hiển thị thuộc tính này cho người quản trị. Người dùng không có quyền quản trị sẽ không thể xem hoặc chỉnh sửa thuộc tính này."
-      is_filter: >
-        Cho phép trường tùy chỉnh được sử dụng trong bộ lọc trong chế độ xem gói công việc. Lưu ý rằng chỉ khi 'Cho tất cả các dự án' được chọn, trường tùy chỉnh mới xuất hiện trong các chế độ xem toàn cầu.
-      formula: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Không có hiện tại không có trường tùy chỉnh.
       no_results_content_text: Tạo trường tùy chỉnh mới
@@ -509,7 +520,7 @@ vi:
         text: "Hành động này sẽ không xóa bất kỳ dự án nào có trong danh sách. Bạn có chắc chắn muốn xóa danh sách dự án này không?"
     settings:
       header_details: Basic details
-      header_status: Tình trạng dự án
+      header_status: Status
       header_relations: Project relations
       button_update_details: Update details
       button_update_status_description: Update status description
@@ -534,9 +545,15 @@ vi:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "Bật tất cả"
         label_disable_all: "Tắt tất cả"
@@ -570,9 +587,9 @@ vi:
           label_enable_single: "Kích hoạt trong dự án này, nhấp để tắt"
           label_disable_single: "Không kích hoạt trong dự án này, nhấp để bật"
           remove_from_project: "Xóa khỏi dự án"
-        is_required_blank_slate:
-          heading: Bắt buộc trong tất cả các dự án
-          description: Thuộc tính dự án này được kích hoạt trong tất cả các dự án vì tùy chọn "Bắt buộc trong tất cả các dự án" đã được chọn. Nó không thể bị vô hiệu hóa cho các dự án cá nhân.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Không có phân loại.
         form:
@@ -601,7 +618,7 @@ vi:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Edit project status
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -705,6 +722,17 @@ vi:
     index:
       no_results_title_text: Hiện không có tin tức báo cáo.
       no_results_content_text: Thêm một mục tin tức
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "Giữ đăng nhập trong %{num_days}"
@@ -776,7 +804,7 @@ vi:
         required: "Vui lòng chọn một vai trò"
       message:
         label: "Tin nhắn mời"
-        description: "Chúng tôi sẽ gửi email đến người dùng, bạn có thể thêm một tin nhắn cá nhân tại đây. Một lời giải thích về lời mời có thể hữu ích, hoặc có thể là một chút thông tin về dự án để giúp họ bắt đầu."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Gửi lời mời"
       success_message:
@@ -897,6 +925,16 @@ vi:
     print_hint: Điều này sẽ in nội dung của trang wiki này mà không có bất kỳ thanh điều hướng nào.
     index:
       no_results_content_text: Thêm một trang wiki mới
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: Hiện tại không có quy trình làm việc nào.
@@ -1207,8 +1245,8 @@ vi:
           true: "công khai"
           false: "riêng tư"
         queries: "Truy vấn"
-        status_code: "Tình trạng dự án"
-        status_explanation: "Mô tả trạng thái dự án"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Chưa bắt đầu"
           on_track: "Đang tiến triển"
@@ -1232,7 +1270,6 @@ vi:
         work_packages: "Work Packages"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Yêu cầu cho tất cả các dự án"
         custom_field_section: Phần
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1518,6 +1555,8 @@ vi:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2475,7 +2514,7 @@ vi:
       enabled: "Disable"
   enumeration_activities: "Theo dõi hoạt động"
   enumeration_work_package_priorities: "Độ ưu tiên của work package"
-  enumeration_reported_project_statuses: "Tình trạng dự án đã báo cáo"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
   enterprise_trials:
@@ -2726,15 +2765,19 @@ vi:
         learn_about: "Learn more about all new features"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "Nâng cấp lên phiên bản Enterprise"
       postgres_migration: "Di chuyển cài đặt của bạn lên PostgreSQL"
@@ -2957,6 +3000,7 @@ vi:
   label_board_plural: "Các bảng"
   label_branch: "Nhánh"
   label_browse: "Duyệt"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Chỉnh sửa các work package đã chọn"
   label_bundled: "(Tích hợp sẵn)"
   label_calendar: "Lịch"
@@ -3862,9 +3906,6 @@ vi:
   permission_add_project: "Tạo dự án"
   permission_add_portfolios: "Create portfolios"
   permission_add_programs: "Create programs"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Tệp đính kèm"
   permission_add_work_package_attachments_explanation: "Cho phép thêm tệp đính kèm mà không cần quyền chỉnh sửa gói công việc"
   permission_add_internal_comments: "Write internal comments"
@@ -3882,6 +3923,7 @@ vi:
   permission_comment_news: "Chú thích vào tin mới"
   permission_commit_access: "Quyền đọc/ghi vào kho (cam kết)"
   permission_copy_projects: "Sao chép dự án"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Duplicate work packages"
   permission_create_backup: "Tạo bản sao lưu"
   permission_delete_work_package_watchers: "Xóa người xem"
@@ -4179,6 +4221,8 @@ vi:
   setting_apiv3_docs_enabled: "Kích hoạt trang tài liệu"
   setting_apiv3_docs_enabled_instructions_html: >
     Nếu trang tài liệu được kích hoạt, bạn có thể xem tài liệu APIv3 tương tác tại <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Danh sách trắng tải lên tệp đính kèm"
   setting_email_delivery_method: "Cách gửi email"
   setting_emails_salutation: "Chào người dùng trong email với"
@@ -4410,6 +4454,7 @@ vi:
     passwords: "Mật khẩu"
     project_attributes:
       heading: "Các thuộc tính dự án"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Thuộc tính dự án"
       label_new_section: "Phần"
       label_edit_section: "Chỉnh sửa tiêu đề"
@@ -4433,7 +4478,8 @@ vi:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."
@@ -4552,6 +4598,8 @@ vi:
     Phiên bản Enterprise sẽ thêm các phần bổ sung cho các trường tùy chỉnh của dự án: <br> <ul> <li><b>Thêm các trường tùy chỉnh cho dự án vào danh sách Dự án của bạn để tạo cái nhìn tổng quan về danh mục dự án</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Đây là logo xuất hiện trong các bản xuất PDF của bạn. Nó cần phải là tệp hình ảnh PNG hoặc JPEG. Logo màu đen hoặc có màu trên nền trong suốt hoặc trắng được khuyến nghị.
   text_custom_export_cover_instructions: >

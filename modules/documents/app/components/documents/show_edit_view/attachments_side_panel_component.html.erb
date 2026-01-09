@@ -34,23 +34,33 @@
     panel.with_section do |section|
       section.with_title { t(:label_attachment_plural) }
 
-      section.with_footer_button(
-        color: :accent,
-        id: "documents-add-attachments",
-        classes: "hide-when-print"
-      ) do |button|
-        button.with_leading_visual_icon(icon: "op-add-attachment")
-        I18n.t("js.label_add_attachments")
-      end
+      if allow_uploading?
+        section.with_footer_button(
+          color: :accent,
+          id: "documents-add-attachments",
+          classes: "hide-when-print"
+        ) do |button|
+          button.with_leading_visual_icon(icon: "op-add-attachment")
+          I18n.t("js.label_add_attachments")
+        end
 
-      list_attachments(
-        api_v3_document_resource(document),
-        inputs: {
-          allowUploading: allow_uploading,
-          showTimestamp: false,
-          externalUploadButton: "#documents-add-attachments"
-        }
-      )
+        list_attachments(
+          api_v3_document_resource(document),
+          inputs: {
+            allowUploading: true,
+            showTimestamp: false,
+            externalUploadButton: "#documents-add-attachments"
+          }
+        )
+      else
+        list_attachments(
+          api_v3_document_resource(document),
+          inputs: {
+            allowUploading: false,
+            showTimestamp: false
+          }
+        )
+      end
     end
   end
 %>

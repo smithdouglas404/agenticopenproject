@@ -346,17 +346,28 @@ de:
     calculated_field_not_editable: "Nicht editierbares Attribut. Dieser Wert wird automatisch berechnet."
     no_role_assigment: "Keine Rollenzuweisung"
     instructions:
-      is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Felder obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt."
-      is_required_for_project: "Aktivieren Sie dieses Attribut und machen Sie es in allen Projekten erforderlich. Es kann für einzelne Projekte nicht deaktiviert werden. Bestehende Projekte benötigen keinen Wert, wenn sie aktualisiert werden."
-      is_for_all: "Markieren Sie das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
-      multi_select: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."
-      searchable: "Fügen Sie die Feldwerte hinzu, wenn Sie die globale Suchfunktion verwenden."
-      searchable_for_project: "Das Attribut kann als Filter in Projektlisten ausgewählt werden."
-      editable: "Feld darf von den Benutzern selbst bearbeitet werden."
-      admin_only: "Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten."
-      is_filter: >
-        Erlaubt das benutzerdefinierte Feld in einem Filter in der Arbeitspaket-Ansicht zu verwenden. Beachten Sie, dass, nur wenn "Für alle Projekte" ausgewählt ist, das benutzerdefinierte Feld in globalen Ansichten angezeigt wird.
-      formula: "Fügen Sie numerische Werte hinzu oder geben Sie / ein, um nach einem Attribut oder einem mathematischen Operator zu suchen."
+      is_required:
+        all: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Ressourcen obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt."
+        project: "Erforderliche Attribute müssen vom Benutzer bei der Projekterstellung ausgefüllt werden, wenn das Feld aktiv ist (\"Für alle Projekte\" aktiviert oder beim Kopieren eines Projekts/Templates, in dem das Feld aktiv ist). Vorhandene Projekte benötigen keinen Wert, wenn sie aktualisiert werden."
+      is_for_all:
+        all: "Markiert das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
+        project: "Markiert das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
+      multi_select:
+        all: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."
+        project: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."
+      searchable:
+        all: "Inkludiert die Werte des Feldes in die globale Suche."
+        project: "Das Attribut kann als Filter in Projektlisten ausgewählt werden."
+      editable:
+        all: "Feld darf von Benutzern ohne Administratorrechte bearbeitet werden."
+      admin_only:
+        all: "Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten."
+        project: "Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten."
+      is_filter:
+        all: >
+          Erlaubt das benutzerdefinierte Feld in einem Filter in der Arbeitspaket-Ansicht zu verwenden. Beachten Sie, dass, nur wenn "Für alle Projekte" ausgewählt ist, das benutzerdefinierte Feld in globalen Ansichten angezeigt wird.
+      formula:
+        project: "Fügen Sie numerische Werte hinzu oder geben Sie / ein, um nach einem Attribut oder einem mathematischen Operator zu suchen."
     tab:
       no_results_title_text: Zur Zeit existieren keine benutzerdefinierten Felder.
       no_results_content_text: Neues benutzerdefiniertes Feld anlegen
@@ -507,7 +518,7 @@ de:
         text: "Diese Aktion löscht keine Projekte, die in der Liste enthalten sind. Sind Sie sicher, dass Sie diese Projektliste löschen möchten?"
     settings:
       header_details: Allgemeine Informationen
-      header_status: Projektstatus
+      header_status: Status
       header_relations: Projektbeziehungen
       button_update_details: Einstellungen aktualisieren
       button_update_status_description: Statusbeschreibung aktualisieren
@@ -532,9 +543,15 @@ de:
         project_template_caption: "Wählen Sie eine Projektvorlage, die als Standard für neue Unterprojekte verwendet werden soll."
         program_template_label: "Vorlage für Programme"
         program_template_caption: "Wählen Sie eine Programmvorlage, die als Standard für neue Programme in diesem Portfolio verwendet werden soll."
-        portfolio_template_label: "Vorlage für Portfolios"
-        portfolio_template_caption: "Wählen Sie eine Portfoliovorlage, die als Standard für neue Teilportfolios verwendet werden soll."
         no_template: "Keine vordefinierte Vorlage"
+      template:
+        menu_title: "Vorlage"
+        title: "Einstellungen der Vorlage"
+        enable_failed: "Das Projekt konnte nicht als Vorlage aktiviert werden."
+        members:
+          excluded_roles_label: "Rollen, die bei der Anwendung der Vorlage ausgeschlossen werden sollen"
+          excluded_roles_caption: >
+            Wenn Sie ein neues Projekt mit dieser Vorlage erstellen, werden die oben ausgewählten Rollen nicht mit in das neue Projekt übernommen. Auf diese Weise können Sie auswählen, welche Mitglieder aufgrund ihrer Projektrollen ausgeschlossen werden sollen. Die Benutzer können dann zu Ansichtszwecken auf die Vorlage zugreifen, ohne dass sie Zugriff auf neue Projekte erhalten, die mit dieser Vorlage erstellt werden.
       actions:
         label_enable_all: "Alles aktivieren"
         label_disable_all: "Alles deaktivieren"
@@ -568,9 +585,9 @@ de:
           label_enable_single: "In diesem Projekt aktiv, zum Deaktivieren anklicken"
           label_disable_single: "In diesem Projekt inaktiv, zum Aktivieren anklicken"
           remove_from_project: "Aus dem Projekt entfernen"
-        is_required_blank_slate:
-          heading: In allen Projekten erforderlich
-          description: Dieses Projekt-Attribut ist in allen Projekten aktiviert, da die Option "Benötigt in allen Projekten" aktiviert ist. Es kann nicht für einzelne Projekte deaktiviert werden.
+        is_for_all_blank_slate:
+          heading: Für alle Projekte
+          description: Dieses Projekt-Attribut ist in allen Projekten aktiviert, da die Option "Für alle Projekte" aktiviert ist. Es kann nicht für einzelne Projekte deaktiviert werden.
       types:
         no_results_title_text: Derzeit stehen keine Typen zur Verfügung.
         form:
@@ -599,7 +616,7 @@ de:
         project_attributes_description: >
           Wählen Sie aus, welche Attribute in den Projektinitiierungsantrag aufgenommen werden sollen. Diese Liste zeigt nur [Projektattribute](project_attributes_url), die für dieses Projekt aktiviert sind.
     status:
-      button_edit: Projektstatus bearbeiten
+      button_edit: Status bearbeiten
     wizard:
       sidebar_content_title: "Inhalt"
       sections: "Abschnitte"
@@ -709,6 +726,17 @@ de:
     index:
       no_results_title_text: Es gibt aktuell keine Neuigkeiten.
       no_results_content_text: Neuigkeit hinzufügen
+  roles:
+    permissions:
+      section_check_all_label: "Alle %{module} Berechtigungen zuweisen"
+      section_uncheck_all_label: "Alle %{module} Berechtigungen zuweisen"
+    report:
+      matrix_caption: "Berechtigungsmatrix für das Modul %{module}"
+      matrix_checkbox_label: "Berechtigung '%{permission}' der Rolle '%{role}' Rolle zuweisen"
+      matrix_check_all_label: "Alle %{module} Berechtigungen zuweisen"
+      matrix_uncheck_all_label: "Alle %{module} Berechtigungen entfernen"
+      matrix_check_uncheck_all_in_row_label_html: "Umschalten von <em>%{permission}</em> Berechtigung für alle Rollen"
+      matrix_check_uncheck_all_in_col_label_html: "Umschalten aller %{module} Berechtigungen für die Rolle <em>%{role}</em>"
   users:
     autologins:
       prompt: "%{num_days} lang angemeldet bleiben"
@@ -780,7 +808,7 @@ de:
         required: "Bitte eine Rolle auswählen"
       message:
         label: "Einladungsnachricht"
-        description: "Wir senden dem Benutzer eine E-Mail, der Sie hier eine persönliche Nachricht ergänzen können. Eine Erklärung für die Einladung oder nützliche Informationen zum eingeladenen Projekt könnten nützlich sein, dem Benutzer bei der Mitarbeit zu unterstützen."
+        description: "Wir werden eine E-Mail an den Benutzer senden, zu der Sie hier eine persönliche Nachricht hinzufügen können. Eine Erklärung für die Einladung könnte nützlich sein oder vielleicht ein paar Informationen über das Projekt, um den Start zu erleichtern."
       summary:
         next_button: "Einladung senden"
       success_message:
@@ -898,6 +926,16 @@ de:
     print_hint: Damit wird der Inhalt dieser Wiki-Seite ohne Navigationsleisten gedruckt.
     index:
       no_results_content_text: Neue Wikiseite hinzufügen
+  workflows:
+    form:
+      matrix_caption: "Workflow-Matrix"
+      matrix_caption_assignee: "Workflow-Matrix für Zugewiesene"
+      matrix_caption_author: "Workflow-Matrix für den Autor"
+      matrix_checkbox_label: "Übergang von %{old_status} zu %{new_status} erlauben"
+      matrix_check_all_label: "Alle Übergänge zulassen"
+      matrix_uncheck_all_label: "Alle Übergänge verbieten"
+      matrix_check_uncheck_all_in_row_label_html: "Übergänge von <em>%{old_status}</em> auf alle neuen Status umschalten"
+      matrix_check_uncheck_all_in_col_label_html: "Übergänge von allen alten Status zu <em>%{new_status}</em> umschalten"
   work_flows:
     index:
       no_results_title_text: Derzeit gibt es keine Workflows.
@@ -1208,8 +1246,8 @@ de:
           true: "öffentlich"
           false: "privat"
         queries: "Abfragen"
-        status_code: "Projektstatus"
-        status_explanation: "Projektstatusbeschreibung"
+        status_code: "Status"
+        status_explanation: "Statusbeschreibung"
         status_codes:
           not_started: "Nicht gestartet"
           on_track: "Planmäßig"
@@ -1233,7 +1271,6 @@ de:
         work_packages: "Arbeitspakete"
         workspace_type: "Arbeitsbereichstyp"
       project_custom_field:
-        is_required: "In allen Projekten erforderlich"
         custom_field_section: Abschnitt
       subproject_template_assignment:
         workspace_type: "Arbeitsbereichstyp"
@@ -1520,6 +1557,8 @@ de:
               invalid_characters: "Nur numerische Werte, mathematische Operatoren und Projektattribute vom Typ Integer, Float, Berechneter Wert und Gewichtete Liste sind erlaubt."
               not_allowed_custom_fields_referenced: "Das Attribut %{custom_fields} kann nicht verwendet werden, da es zu einem Zirkelbezug führt; ein Attribut hängt vom anderen ab."
               format: "%{message}"
+            required:
+              cannot_be_true: "kann nicht auf 'wahr' gesetzt werden."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2479,7 +2518,7 @@ de:
         title: "Interne Kommentare schreiben, die nur für ausgewählte Mitglieder sichtbar ist."
         description: " "
       portfolio_management:
-        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
+        description: Richten Sie Ihre Projekte an Ihren strategischen Zielen aus, indem Sie sie in Portfolios und Programmen organisieren.
     teaser:
       title:
         one: "Ein Tag des %{trial_plan} Test-Token verbleibend"
@@ -2514,7 +2553,7 @@ de:
       enabled: "Deaktivieren"
   enumeration_activities: "Aktivitäten für Zeiterfassung"
   enumeration_work_package_priorities: "Arbeitspaket-Prioritäten"
-  enumeration_reported_project_statuses: "Gemeldeter Projektstatus"
+  enumeration_reported_project_statuses: "Gemeldeter Status"
   enumeration_caption_order_changed: "Reihenfolge erfolgreich geändert."
   enumeration_could_not_be_moved: "Aufzählung konnte nicht verschoben werden."
   enterprise_trials:
@@ -2765,15 +2804,19 @@ de:
         learn_about: "Erfahren Sie mehr über die neuen Funktionen"
         missing: "Es gibt noch keine hervorgehobenen Funktionen."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
             Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
-            line_0: Berechnete Werte für Projektbewertung und Scoring (Enterprise Add-on).
-            line_1: Projektattribute vom Typ Hierarchie.
-            line_2: Verbesserte Performance in vielen Bereichen.
-            line_3: Neue Übersichtsseite für das Dokumente-Modul.
-            line_4: Möglichkeit, das übergeordnete Element eines benutzerdefinierten Feldes zu ändern.
+            line_0: Zusammenarbeit an Dokumenten in Echtzeit.
+            line_1: Strukturierung zusammenhängender Projekte in Programme und Portfolios, um sie auf strategische Ziele auszurichten (Enterprise Add-on).
+            line_2: Bessere Verwaltung von Besprechungen mit Entwurfsmodus, Präsentationsmodus, verbesserten Ergebnissen und iCal-Abonnement.
+            line_3: Aktualisierte SharePoint-Integration mit flexibleren Berechtigungen (Enterprise Add-on).
+            line_4: Neu gestaltete Projektübersicht mit neuen Tabs, konfigurierbaren Widgets und einem verbesserten Layout.
+            line_5: Option zum Trennen der Sichtbarkeit von Benutzern innerhalb der Instanz, die nicht am selben Projekt oder derselben Gruppe arbeiten.
+            line_6: Verbesserter Ablauf der Projekterstellung mit neuer Vorlagenauswahl.
+            line_7: Eine intelligentere Suche, die Typ und Status einschließt, verbessert die Präzision in der globalen Suche und in Auswahlfeldern.
+            line_8: Verbesserungen der Zugänglichkeit mit ALT-Texten und verbesserten Diagrammfarben.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
@@ -2996,6 +3039,7 @@ de:
   label_board_plural: "Boards"
   label_branch: "Zweig"
   label_browse: "Codebrowser"
+  label_builtin: "Eingebaut"
   label_bulk_edit_selected_work_packages: "Alle ausgewählten Arbeitspakete bearbeiten"
   label_bundled: "(Gebündelt)"
   label_calendar: "Kalender"
@@ -3903,9 +3947,6 @@ de:
   permission_add_project: "Projekte erstellen"
   permission_add_portfolios: "Portfolios erstellen"
   permission_add_programs: "Programme erstellen"
-  permission_add_project_from_template: "Projekt aus Vorlage erstellen"
-  permission_add_portfolios_from_template: "Portfolio aus Vorlage erstellen"
-  permission_add_programs_from_template: "Programm aus Vorlage erstellen"
   permission_add_work_package_attachments: "Anhänge hinzufügen"
   permission_add_work_package_attachments_explanation: "Erlaubt das Hinzufügen von Anhängen ohne die Berechtigung, das Arbeitspaket selbst zu bearbeiten"
   permission_add_internal_comments: "Interne Kommentare schreiben"
@@ -3923,6 +3964,7 @@ de:
   permission_comment_news: "Nachricht kommentieren"
   permission_commit_access: "Lese- und Schreibzugriff auf Projektarchiv (Commit)"
   permission_copy_projects: "Projekte kopieren"
+  permission_copy_projects_explanation: "Bei Vorlagenprojekten hat diese Berechtigung eine weitere Funktion: Sie ermöglicht die Erstellung neuer Projekte, die von der Vorlage abgeleitet sind."
   permission_copy_work_packages: "Arbeitspakete duplizieren"
   permission_create_backup: "Backups erstellen"
   permission_delete_work_package_watchers: "Beobachter löschen"
@@ -4220,6 +4262,8 @@ de:
   setting_apiv3_docs_enabled: "Dokumentationsseite aktivieren"
   setting_apiv3_docs_enabled_instructions_html: >
     Wenn die Dokumentationsseite aktiviert ist,  sehen Sie eine interaktive APIv3 Dokumentation unter <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Bitte beachten Sie, dass die Aktivierung der API-Dokumente auf einem Produktivsystem sensible Informationen preisgeben oder zu einem versehentlichen Datenverlust führen kann, wenn Sie nicht vorsichtig sind. Wir empfehlen, diese Einstellung nur für Entwicklungszwecke zu aktivieren.
   setting_attachment_whitelist: "Positivliste für Dateiuploads"
   setting_email_delivery_method: "E-Mail Zustellungsoption"
   setting_emails_salutation: "Anrede der Benutzer in E-Mails"
@@ -4451,6 +4495,7 @@ de:
     passwords: "Passwörter"
     project_attributes:
       heading: "Projektattribute"
+      label_for_all_projects: "Alle Projekte"
       label_new_attribute: "Projektattribut"
       label_new_section: "Abschnitt"
       label_edit_section: "Titel bearbeiten"
@@ -4474,7 +4519,8 @@ de:
               label: "Seitenleiste"
               description: "Fügen Sie alle Projektattribute in einem Abschnitt in der rechten Seitenleiste der Projektübersicht hinzu."
     project_initiation_request:
-      header_description: "OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren."
+      header_description: >
+        OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren und ein PDF als Ergebnis erzeugen zu lassen.
       status:
         submitted: "%{wizard_name} wurde eingereicht"
         submitted_description: "Klicken Sie auf die Schaltfläche unten, um zum Arbeitspaket für den Einreichungsprozess zu gelangen."
@@ -4512,7 +4558,7 @@ de:
         status_when_submitted_caption: "Der Status, in den das erstellte Arbeitspaket übergeht, sobald der Antrag eingereicht wird."
         send_confirmation_email: "Senden Sie eine Bestätigungs-E-Mail an den Benutzer, der den Projektinitiierungsantrag gestellt hat"
         assignee: "Zuweisung bei Einreichung"
-        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
+        assignee_caption_html: "Der Benutzer oder die Gruppe, die diesem Projektattribut zugewiesen ist, wird auch der Zugewiesene des neuen Arbeitspakets. Diese Liste enthält nur aktive Projektattribute vom Typ <i>Benutzer</i>."
         confirmation_email_text: "Text der Bestätigungs-E-Mail"
         confirmation_email_default: "Hallo,\n\nSie haben einen Antrag auf Projektinitiierung für **%{project_name}** eingereicht. Dieser wartet nun auf seine Überprüfung.\nKlicken Sie auf den untenstehenden Link, um das Arbeitspaket mit Ihrem Antrag aufzurufen."
         work_package_comment: "Arbeitspaket-Kommentar"
@@ -4595,6 +4641,8 @@ de:
     Die Enterprise Edition fügt diese zusätzlichen Add-ons für die benutzerdefinierten Felder der Projekte hinzu: <br> <ul> <li><b>Fügt benutzerdefinierte Felder für Projekte zu Ihrer Projektliste hinzu, um eine Portfolioansicht zu erstellen</b></li> </ul>
   text_custom_logo_instructions: >
     Das Logo passt sich automatisch an die Kopfzeile an. Die besten Ergebnisse erzielen Sie, wenn Sie ein weißes Logo auf ein transparentes 130×47px großes Bild hochladen. Sie können innerhalb des Bildes so viel Abstand einfügen, wie Sie möchten.
+  text_custom_logo_mobile_instructions: >
+    Das Logo passt sich automatisch an die Kopfzeile an. Die besten Ergebnisse erzielen Sie, wenn Sie ein weißes Logo auf ein transparentes 130×33px großes Bild hochladen. Sie können innerhalb des Bildes so viel Abstand einfügen, wie Sie möchten.
   text_custom_export_logo_instructions: >
     Dies ist das Logo, das in Ihren PDF-Exporten erscheint. Es muss eine PNG- oder JPEG-Bilddatei sein. Ein schwarzes oder farbiges Logo auf transparentem oder weißem Hintergrund wird empfohlen.
   text_custom_export_cover_instructions: >

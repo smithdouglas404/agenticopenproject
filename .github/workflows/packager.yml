@@ -1,5 +1,5 @@
 name: Package
-on: 
+on:
   push:
     branches:
       - packaging/*
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    if: github.repository == 'opf/openproject'
+    if: github.repository_owner == 'opf'
     name: ${{ matrix.target }}
     runs-on: ubuntu-latest
     services:
@@ -49,6 +49,7 @@ jobs:
           target: ${{ matrix.target }}
           version: ${{ steps.setup.outputs.version }}
           debug: true
+          cache_prefix: ${{ github.ref_name }}
           env: |
             DATABASE_URL=postgres://app:p4ssw0rd@127.0.0.1:5432/app
       - name: Publish

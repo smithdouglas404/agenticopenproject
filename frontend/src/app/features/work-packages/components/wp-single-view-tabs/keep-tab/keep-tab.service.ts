@@ -73,8 +73,12 @@ export class KeepTabService {
   }
 
   public goCurrentShowState(workPackageId:string):void {
+    window.location.href = this.currentShowHref(workPackageId);
+  }
+
+  public currentShowHref(workPackageId:string):string {
     const projectIdentifier = this.currentProject.identifier;
-    window.location.href = this.pathHelper.genericWorkPackagePath(projectIdentifier, workPackageId, this.currentShowTab) + window.location.search;
+    return this.pathHelper.genericWorkPackagePath(projectIdentifier, workPackageId, this.currentShowTab) + window.location.search;
   }
 
   public goCurrentDetailsState(params:Record<string, unknown> = {}):void {

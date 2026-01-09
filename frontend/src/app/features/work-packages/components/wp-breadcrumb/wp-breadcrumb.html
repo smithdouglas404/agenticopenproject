@@ -14,10 +14,10 @@
               class="op-wp-breadcrumb--ellipsed"
               [ngClass]="{ 'icon4 icon-small icon-arrow-right5': !first }">
               <a [attr.title]="ancestor.name"
-                [textContent]="ancestor.name"
-                uiSref="work-packages.show"
-                [uiParams]="{workPackageId: ancestor.id}"
-              class="nocut"></a>
+                 [textContent]="ancestor.name"
+                 data-test-selector="op-wp-breadcrumb--hierarchy-element"
+                 [href]="ancestorPath(ancestor)"
+                 data-turbo="false"></a>
             </li>
           }
         }

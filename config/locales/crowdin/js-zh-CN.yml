@@ -345,6 +345,7 @@ zh-CN:
     label_collapse: "折叠"
     label_collapsed: "折叠"
     label_collapse_all: "全部折叠"
+    label_collapse_text: "Collapse text"
     label_comment: "评论"
     label_committed_at: "在 %{date} %{committed_revision_link}"
     label_committed_link: "上传的修订 %{revision_identifier}"
@@ -357,6 +358,7 @@ zh-CN:
     label_expand: "展开"
     label_expanded: "展开"
     label_expand_all: "全部展开"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "展开项目菜单"
     label_export: "导出"
     label_export_preparing: "导出文件已开始准备并将很快被下载。"
@@ -555,7 +557,7 @@ zh-CN:
       date_alerts:
         milestone_date: "里程碑日期"
         overdue: "逾期"
-        overdue_since: "自 %{difference_in_days}起。"
+        overdue_since: "for %{difference_in_days}."
         property_today: "今天。"
         property_is: "%{difference_in_days}后。"
         property_was: "%{difference_in_days}前。"
@@ -1120,6 +1122,8 @@ zh-CN:
     global_search:
       all_projects: "在所有项目中"
       close_search: "关闭搜索"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "在当前项目和子项目中"
       current_project: "在当前项目中"
       recently_viewed: "最近浏览"

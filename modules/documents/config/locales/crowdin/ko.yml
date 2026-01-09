@@ -27,10 +27,10 @@ ko:
     errors:
       models:
         document_type:
-          one_or_more_required: "Cannot delete the last document type"
+          one_or_more_required: "마지막 문서 유형을 삭제할 수 없습니다"
     models:
       document: "문서"
-      documents: "Documents"
+      documents: "문서"
     attributes:
       document:
         content_binary: "콘텐츠 바이너리"
@@ -118,7 +118,7 @@ ko:
           some_unwritable: Some values are configured via environment variables and cannot be edited here.
         hocuspocus_server_url:
           label: "Hocuspocus server URL"
-          caption: "The address of the working Hocuspocus server."
+          caption: "The address of a working Hocuspocus server."
         hocuspocus_server_secret:
           label: "Client secret"
           caption: "Paste the secret provided by the Hocuspocus server."

@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: read  # for actions/checkout to fetch code
       security-events: write  # for github/codeql-action/upload-sarif to upload SARIF results
-    if: github.repository == 'opf/openproject'
+    if: github.repository_owner == 'opf'
     name: Brakeman Scan
     runs-on: ubuntu-latest
     env:

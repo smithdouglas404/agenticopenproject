@@ -16,10 +16,10 @@ ka:
         news:
           title: 'სიახლეები'
         project_description:
-          title: 'Project description'
+          title: 'Description'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
-          title: 'პროექტის სტატუსი'
+          title: 'Status'
           not_started: 'დაწყებული არაა'
           on_track: 'გეგმის მიხედვით'
           off_track: 'შეჩერებულია'
@@ -28,7 +28,7 @@ ka:
           finished: 'დასრულებულია'
           discontinued: 'დასრულდა'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

@@ -122,7 +122,7 @@ ja:
       sharepoint_sync_service:
         create_folder: 'プロジェクトフォルダの作成を管理：'
         ensure_root_folder_permissions: 'ベースフォルダの権限を設定：'
-        hide_inactive_folders: '非アクティブフォルダを隠す ステップ'
+        hide_inactive_folders: '非アクティブフォルダを隠す ステップ：'
         remote_folders: 'グループフォルダの内容を読む：'
         rename_project_folder: '管理プロジェクトフォルダの名前を変更します：'
     errors:
@@ -200,7 +200,7 @@ ja:
               not_found: "%{current_path} は見つかりませんでした。"
             set_folders_permissions:
               permission_not_set: '%{path} に権限を設定できませんでした。'
-          error: 予期しないエラーが発生しました。OneDrive に到達できることを確認し、OpenProject ワーカーのログを確認してください。
+          error: 予期しないエラーが発生しました。OneDrive に到達できることを確認し、OpenProject ワーカーのログを確認してください
           not_allowed: OpenProject は、OneDrive ドライブにアクセスすることができませんでした。Azure アプリケーションの権限設定を確認してください。
           not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
           unauthorized: OpenProjectがOneDriveと同期できませんでした。ストレージとAzureアプリケーションの設定を確認してください。

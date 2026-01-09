@@ -52,6 +52,19 @@ RSpec.describe "Meeting requests",
     end
   end
 
+  describe "show" do
+    context "when meeting belongs to another project the user has no access to" do
+      let(:other_project) { create(:project, enabled_module_names: %i[meetings]) }
+      let(:other_meeting) { create(:meeting, project: other_project) }
+
+      it "returns 404" do
+        get meeting_path(other_meeting)
+
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
   describe "copy" do
     let(:base_params) do
       {

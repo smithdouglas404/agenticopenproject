@@ -30,12 +30,12 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   render(Primer::Alpha::TreeView.new(node_variant: :anchor)) do |tree_view|
-    href_fn = lambda { |item| href_for(item) }
-    current_fn = lambda { |item| item == @active_item }
-    expanded_fn = lambda do |item|
-      item == @active_item || @hierarchy_service.descendant_of?(item: @active_item, parent: item).success?
-    end
+    item_options = {
+      href_fn: lambda { |item| href_for(item) },
+      expanded: [@active_item, @active_item.parent],
+      current: @active_item
+    }
 
-    populate_tree_view(tree_view, @custom_field, item_options: { expanded_fn:, href_fn:, current_fn: })
+    populate_tree_view(tree_view, @custom_field, item_options:)
   end
 %>

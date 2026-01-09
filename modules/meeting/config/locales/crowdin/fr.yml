@@ -128,7 +128,7 @@ fr:
   label_meeting_date_and_time: "Date et heure"
   label_meeting_diff: "Différence"
   label_meeting_send_updates: "Envoi d'invitations et de mises à jour du calendrier par courrier électronique"
-  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
+  label_meeting_send_updates_caption: "Envoyez des invitations par courrier électronique à tous les participants à cette réunion."
   label_recurring_meeting: "Réunion récurrente"
   label_recurring_meeting_part_of: "Partie d'une série de réunions"
   label_recurring_meeting_new: "Nouvelle réunion récurrente"
@@ -235,10 +235,15 @@ fr:
         summary_series: "La série de réunions « %{title} » a été annulée par %{actor}."
         summary: "« %{title} » a été annulée par %{actor}."
         date_time: "Date/heure prévue"
+      ended:
+        header_series: "Terminé : Série de rencontres '%{title}'"
+        summary_series: "La série de réunions '%{title}' a été clôturée par %{actor}."
       updated:
         header: "La réunion « %{title} » a été mise à jour"
         summary: "La réunion « %{title} » a été mise à jour par %{actor}"
         body: "La réunion « %{title} » a été mise à jour par %{actor}."
+        old_title: "Ancien titre"
+        new_title: "Nouveau titre"
         old_date_time: "Ancienne date/heure"
         new_date_time: "Nouvelle date/heure"
         old_location: "Ancien emplacement"
@@ -356,8 +361,8 @@ fr:
       total_items: "%{current} sur %{total}"
       previous: "Précédent"
       next: "Suivante"
-      no_items: "No agenda items"
-      no_items_flash: "There are no agenda items to present."
+      no_items: "Aucun point à l'ordre du jour"
+      no_items_flash: "Il n'y a pas de point à l'ordre du jour."
   meeting_section:
     untitled_title: "Section sans titre"
     delete_confirmation: "Supprimer la section supprimera également tous les éléments de l'ordre du jour qui s'y rapportent. Voulez-vous vraiment continuer ?"
@@ -388,9 +393,9 @@ fr:
       label_view_template: "Voir le modèle"
       label_edit_template: "Modifier le modèle"
       banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+        Vous êtes en train d'éditer le modèle d'une série de réunions : %{link}. Chaque nouvelle occurrence d'une réunion dans la série utilisera ce modèle. Les modifications n'affecteront pas les réunions antérieures ou déjà créées.
       draft_banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
+        Vous êtes en train d'éditer le modèle d'une série de réunions : %{link}. Chaque nouvelle occurrence d'une réunion dans la série utilisera ce modèle. Les modifications n'affecteront pas les réunions antérieures ou déjà créées. Aucune invitation par courrier électronique ne sera envoyée dans ce mode brouillon jusqu'à ce que vous ouvriez la première réunion.
     frequency:
       x_daily:
         one: "Tous les jours"
@@ -541,7 +546,7 @@ fr:
   label_meeting_series_details: "Détails de la série de réunions"
   label_meeting_details_edit: "Modifier les détails de la réunion"
   label_meeting_state: "Statut de la réunion"
-  label_meeting_state_draft: "Draft"
+  label_meeting_state_draft: "Brouillon"
   label_meeting_state_open: "Ouvert"
   label_meeting_state_closed: "Fermé"
   label_meeting_state_agenda_created: "Ordre du jour créé"
@@ -552,19 +557,19 @@ fr:
   label_meeting_reopen_action: "Réouvrir la réunion"
   label_meeting_close_action: "Clôturer la réunion"
   label_meeting_in_progress_action: "Démarrer la réunion"
-  label_meeting_open_action: "Open meeting"
-  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  label_meeting_open_action: "Ouvrir la réunion"
+  text_meeting_draft_description: "Préparez votre ordre du jour en mode brouillon. Cette réunion n'enverra pas de mises à jour de calendrier ni d'invitations, même si vous modifiez les détails de la réunion ou si vous ajoutez/supprimez des participants."
   text_meeting_open_description: "Vous pouvez ajouter/supprimer des points de l'ordre du jour et des participants. Lorsque l'ordre du jour est prêt, marquez-le comme étant en cours pour documenter les résultats."
   text_meeting_closed_description: "Cette réunion est clôturée. Vous ne pouvez plus ajouter/supprimer des points de l'ordre du jour."
   text_meeting_in_progress_description: "Vous pouvez modifier l'ordre du jour, documenter les résultats de chaque point et suivre la présence des participants. Une fois la réunion terminée, vous pouvez la marquer comme fermée pour la verrouiller."
   text_meeting_open_dropdown_description: "Tous les résultats existants resteront, mais les utilisateurs ne pourront pas ajouter de nouveaux résultats."
   text_meeting_in_progress_dropdown_description: "Documentez les résultats tels que les besoins d'information ou les décisions prises pendant la réunion."
   text_meeting_closed_dropdown_description: "Cette réunion est terminée. Vous ne pouvez plus modifier les points de l'ordre du jour ou les résultats."
-  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
-  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
-  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
-  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
-  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
+  text_meeting_draft_banner: "Vous êtes actuellement en mode brouillon. Cette réunion n'enverra pas de mises à jour de calendrier ni d'invitations, même si vous modifiez les détails de la réunion ou si vous ajoutez/supprimez des participants."
+  text_exit_draft_mode_dialog_title: "Ouvrez cette réunion et envoyez des invitations ?"
+  text_exit_draft_mode_dialog_subtitle: "Vous ne pouvez pas revenir au mode brouillon une fois que vous avez planifié une réunion."
+  text_exit_draft_mode_dialog_template_title: "Ouvrez la première occurrence de cette série de réunions ?"
+  text_exit_draft_mode_dialog_template_subtitle: "Vous ne pouvez plus revenir au mode brouillon après cette opération."
   text_meeting_not_editable_anymore: "Cette réunion n'est plus modifiable."
   text_meeting_not_present_anymore: "Cette réunion a été supprimée. Veuillez sélectionner une autre réunion."
   label_add_work_package_to_meeting_dialog_title: "Sélectionner la réunion"

@@ -191,7 +191,7 @@ es:
       error_cannot_act_self: "No puede realizar acciones en sus propios archivos cargados."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "En esta vista, puede crear textos de ayuda personalizados para la vista de atributos. Después de definir estos textos, se pueden mostrar al hacer clic en el icono de ayuda junto al atributo al que pertenezcan."
     show_preview: "Vista previa del texto"
     add_new: "Agregar texto de ayuda"
@@ -347,17 +347,28 @@ es:
     calculated_field_not_editable: "Atributo no editable. Este valor se calcula automáticamente."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Marque el campo personalizado como disponible en todos los proyectos existentes y nuevos."
-      multi_select: "Permite al usuario asignar varios valores a este campo personalizado."
-      searchable: "Incluye los valores de los campos al usar la funcionalidad de búsqueda global."
-      searchable_for_project: "Marque esta casilla para que este atributo esté disponible como filtro en las listas de proyectos."
-      editable: "Permitir que el campo sea editable por los propios usuarios."
-      admin_only: "Marque esta casilla para que este atributo solo sea visible para los administradores. Los usuarios sin derechos de administrador no podrán verlo ni editarlo."
-      is_filter: >
-        Permitir que el campo personalizado se utilice como filtro en las vistas de paquetes de trabajo. Tenga en cuenta que solo 'Para todos los proyectos' seleccionados, el campo personalizado se mostrará en vistas globales.
-      formula: "Añada valores numéricos o escriba / para buscar un atributo o un operador matemático."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Actualmente no hay campos personalizados.
       no_results_content_text: Crear un nuevo campo personalizado
@@ -508,7 +519,7 @@ es:
         text: "Esta acción no eliminará ningún proyecto que contenga la lista. ¿Seguro que desea eliminar esta lista de proyectos?"
     settings:
       header_details: Detalles básicos
-      header_status: Estado del proyecto
+      header_status: Status
       header_relations: Relaciones del proyecto
       button_update_details: Actualizar detalles
       button_update_status_description: Actualizar descripción del estado
@@ -533,9 +544,15 @@ es:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "Activar todo"
         label_disable_all: "Desactivar todo"
@@ -569,9 +586,9 @@ es:
           label_enable_single: "Activo en este proyecto, pulse para desactivarlo"
           label_disable_single: "Inactivo en este proyecto, pulse para activarlo"
           remove_from_project: "Quitar del proyecto"
-        is_required_blank_slate:
-          heading: Obligatorio en todos los proyectos
-          description: Este atributo del proyecto está activado en todos los proyectos, ya que la opción «Obligatorio en todos los proyectos» está marcada. No puede desactivarse para proyectos individuales.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Actualmente no hay tipos disponibles.
         form:
@@ -600,7 +617,7 @@ es:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Editar estado del proyecto
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -710,6 +727,17 @@ es:
     index:
       no_results_title_text: No hay noticias sobre las que informar por el momento.
       no_results_content_text: Añadir un elemento de noticias
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "Permanecer conectado para %{num_days}"
@@ -781,7 +809,7 @@ es:
         required: "Por favor, seleccione un rol"
       message:
         label: "Mensaje de invitación"
-        description: "Enviaremos un correo electrónico al usuario, al cual puede añadir un mensaje personal aquí. Una explicación sobre la invitación podría ser útil, o bien información básica sobre el proyecto para ayudarles a empezar."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Enviar invitación"
       success_message:
@@ -903,6 +931,16 @@ es:
     print_hint: Esto imprimirá el contenido de esta página wiki sin ninguna barra de navegación.
     index:
       no_results_content_text: Añadir una nueva página wiki
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: Actualmente no existen flujos de trabajo.
@@ -1213,8 +1251,8 @@ es:
           true: "público"
           false: "privado"
         queries: "Consultas"
-        status_code: "Estado del proyecto"
-        status_explanation: "Descripción del estado del proyecto"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "No iniciado"
           on_track: "Según lo previsto"
@@ -1238,7 +1276,6 @@ es:
         work_packages: "Paquetes de trabajo"
         workspace_type: "Tipo de área de trabajo"
       project_custom_field:
-        is_required: "Obligatorio para todos los proyectos"
         custom_field_section: Sección
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1525,6 +1562,8 @@ es:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2519,7 +2558,7 @@ es:
       enabled: "Deshabilitar"
   enumeration_activities: "Actividades de seguimiento del tiempo"
   enumeration_work_package_priorities: "Prioridades del paquete de trabajo"
-  enumeration_reported_project_statuses: "Estatus del proyecto reportado"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Orden cambiado con éxito."
   enumeration_could_not_be_moved: "No se ha podido mover la enumeración."
   enterprise_trials:
@@ -2770,15 +2809,19 @@ es:
         learn_about: "Más información sobre todas las nuevas funciones"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
-            El lanzamiento incluye varias funciones nuevas y mejoras, tales como:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Valores calculados para la evaluación y puntuación del proyecto (extensión Enterprise).
-            line_1: Jerarquía de tipos de atributos del proyecto.
-            line_2: Actualizaciones de rendimiento con gran impacto.
-            line_3: Nueva página de índice para el módulo Documentos.
-            line_4: Posibilidad de cambiar el principal de un elemento de campo personalizado.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "Actualizar a Enterprise"
       postgres_migration: "Migrando su instalación a PostgreSQL"
@@ -3001,6 +3044,7 @@ es:
   label_board_plural: "Tableros"
   label_branch: "Sucursal"
   label_browse: "Explorar"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Edición masiva de paquetes de trabajo"
   label_bundled: "(Agrupado)"
   label_calendar: "Calendario"
@@ -3907,9 +3951,6 @@ es:
   permission_add_project: "Crear proyectos"
   permission_add_portfolios: "Crear portafolios"
   permission_add_programs: "Crear programas"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Añadir archivos adjuntos"
   permission_add_work_package_attachments_explanation: "Permite añadir archivos adjuntos sin el permiso Editar paquetes de trabajo"
   permission_add_internal_comments: "Escribir comentarios internos"
@@ -3927,6 +3968,7 @@ es:
   permission_comment_news: "Comentar noticias"
   permission_commit_access: "Permiso de escritura sobre el repositorio (commit)"
   permission_copy_projects: "Copiar proyectos"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Duplicar paquetes de trabajo"
   permission_create_backup: "Crear copias de seguridad"
   permission_delete_work_package_watchers: "Eliminar los observadores"
@@ -4224,6 +4266,8 @@ es:
   setting_apiv3_docs_enabled: "Activar página de documentos"
   setting_apiv3_docs_enabled_instructions_html: >
     Si la página de documentos está habilitada, puede obtener una vista interactiva de la documentación de APIv3 en <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Lista de permitidos de carga de archivos adjuntos"
   setting_email_delivery_method: "Método de envío de correo electrónico"
   setting_emails_salutation: "Dirigirse al usuario en los correos como"
@@ -4455,6 +4499,7 @@ es:
     passwords: "Contraseñas"
     project_attributes:
       heading: "Atributos del proyecto"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Atributo del proyecto"
       label_new_section: "Sección"
       label_edit_section: "Editar título"
@@ -4478,7 +4523,8 @@ es:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."
@@ -4597,6 +4643,8 @@ es:
     Enterprise añadirá estas extensiones para los campos personalizados de los proyectos: <br> <ul> <li><b>Añadir campos personalizados para proyectos a tu lista de proyectos para crear una vista porfolio de proyectos</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Este es el logotipo que aparece en sus exportaciones PDF. Tiene que ser un archivo de imagen PNG o JPEG. Se recomienda un logotipo negro o de color sobre fondo transparente o blanco.
   text_custom_export_cover_instructions: >

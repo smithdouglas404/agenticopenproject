@@ -345,6 +345,7 @@ pt-PT:
     label_collapse: "Colapso"
     label_collapsed: "oculto"
     label_collapse_all: "Ocultar tudo"
+    label_collapse_text: "Collapse text"
     label_comment: "Comentario"
     label_committed_at: "%{committed_revision_link} le %{date}"
     label_committed_link: "revisão confirmada %{revision_identifier}"
@@ -357,6 +358,7 @@ pt-PT:
     label_expand: "Expandir"
     label_expanded: "expandido"
     label_expand_all: "Expandir Tudo"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Expandir menu do projeto"
     label_export: "Exportar"
     label_export_preparing: "A exportação está a ser preparada e será descarregada brevemente."
@@ -555,7 +557,7 @@ pt-PT:
       date_alerts:
         milestone_date: "Data do marco"
         overdue: "Em atraso"
-        overdue_since: "desde %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "é hoje."
         property_is: "é em %{difference_in_days}."
         property_was: "foi há %{difference_in_days}."
@@ -1124,6 +1126,8 @@ pt-PT:
     global_search:
       all_projects: "Em todos os projetos"
       close_search: "Fechar pesquisa"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Neste projeto + subprojetos"
       current_project: "Neste projeto"
       recently_viewed: "Visto recentemente"

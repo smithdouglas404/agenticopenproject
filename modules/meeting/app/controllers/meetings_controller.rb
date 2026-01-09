@@ -335,8 +335,15 @@ class MeetingsController < ApplicationController
   def toggle_notifications
     @meeting.toggle!(:notify)
 
+    # Reload to get the updated value
+    @meeting.recurring_meeting.template.reload if @meeting.template?
+
     if @meeting.notify?
-      handle_notification(type: :toggle_notifications)
+      if @meeting.template?
+        handle_series_notification
+      else
+        handle_notification(type: :toggle_notifications)
+      end
     end
 
     update_sidebar_component_via_turbo_stream
@@ -355,6 +362,7 @@ class MeetingsController < ApplicationController
              .call({ state: "open", notify: meeting_params[:notify] == "1" })
 
     if call.success?
+      deliver_invitation_mails
       update_all_via_turbo_stream
       update_backlog_via_turbo_stream(collapsed: nil)
 
@@ -366,6 +374,21 @@ class MeetingsController < ApplicationController
   end
 
   private
+
+  def deliver_invitation_mails
+    return false unless @meeting.notify?
+
+    @meeting
+      .participants
+      .invited
+      .find_each do |participant|
+      MeetingMailer.invited(
+        @meeting,
+        participant.user,
+        User.current
+      ).deliver_later
+    end
+  end
 
   def load_query
     query = ParamsToQueryService.new(
@@ -433,8 +456,12 @@ class MeetingsController < ApplicationController
   end
 
   def find_meeting
-    @meeting = Meeting
-      .includes([:project, :author, { participants: :user }, :sections, { agenda_items: :outcomes }])
+    scope = @project ? @project.meetings : Meeting.all
+
+    @meeting = scope
+      .visible
+      .includes([:project, :author, { participants: :user }, { agenda_items: :outcomes }])
+      .preload(:sections)
       .find(params[:id])
   end
 
@@ -568,5 +595,22 @@ class MeetingsController < ApplicationController
     else
       render_error_flash_message_via_turbo_stream(message:)
     end
+  end
+
+  def handle_series_notification
+    recurring_meeting = @meeting.recurring_meeting
+
+    @meeting
+      .participants
+      .invited
+      .find_each do |participant|
+      MeetingSeriesMailer.invited(
+        recurring_meeting,
+        participant.user,
+        User.current
+      ).deliver_later
+    end
+
+    render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_notification))
   end
 end

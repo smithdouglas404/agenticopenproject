@@ -38,7 +38,8 @@ module Redmine::MenuManager::TopMenu::ModuleMenu
                                        position: :left) do |dialog|
         dialog.with_show_button(icon: "op-grid-menu",
                                 scheme: :invisible,
-                                classes: "op-app-header--primer-button",
+                                size: :large,
+                                classes: "op-app-header--primer-button op-app-header--modules-menu-button",
                                 test_selector: "op-app-header--modules-menu-button",
                                 "aria-controls": "op-app-header--modules-menu-list",
                                 "aria-label": I18n.t("label_global_modules"))

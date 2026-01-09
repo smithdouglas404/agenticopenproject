@@ -191,7 +191,7 @@
       error_cannot_act_self: "Kan ikke utføre handlinger på egne opplastede filer."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "I denne visningen kan du opprette egendefinerte hjelpetekster for attributtvisning. Når definert kan disse tekstene vises ved å klikke på hjelpeikonet ved siden av egenskapen det tilhører."
     show_preview: "Forhåndsvis tekst"
     add_new: "Legge til hjelpetekst"
@@ -349,17 +349,28 @@
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Merk egendefinert felt som tilgjengelig for alle eksisterende og nye prosjekter."
-      multi_select: "Allows the user to assign multiple values to this custom field."
-      searchable: "Inkluder feltverdier ved bruk av den globale søkefunksjonaliteten."
-      searchable_for_project: "Marker for å gjøre denne attributten tilgjengelig som filter i prosjektlister."
-      editable: "La feltet være redigerbart av brukere selv."
-      admin_only: "Marker for å gjøre denne attributten synlig kun for administratorer. Brukere uten administrative rettigheter vil ikke kunne se eller redigere den."
-      is_filter: >
-        Tillat at egendefinert felt brukes i filter i arbeidspakkevisninger. Merk at med 'For alle prosjekter' som er valgt, vil egendefinert felt vises i globale visninger.
-      formula: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Det er ingen egendefinerte felt for øyeblikket.
       no_results_content_text: Opprett nytt egendefinert felt
@@ -510,7 +521,7 @@
         text: "Denne handlingen vil ikke slette noen av prosjektene på listen. Er du sikker på at du vil slette denne prosjektlisten?"
     settings:
       header_details: Basic details
-      header_status: Prosjektstatus
+      header_status: Status
       header_relations: Project relations
       button_update_details: Update details
       button_update_status_description: Update status description
@@ -535,9 +546,15 @@
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "Aktiver alle"
         label_disable_all: "Deaktiver alle"
@@ -571,9 +588,9 @@
           label_enable_single: "Aktivert i dette prosjektet, klikk for å deaktivere"
           label_disable_single: "Deaktivert i dette prosjektet, klikk for å aktivere"
           remove_from_project: "Remove from project"
-        is_required_blank_slate:
-          heading: Påkrevd i alle prosjekter
-          description: Prosjektattributten er aktivert i alle prosjekter fordi "Påkrevd i alle prosjekter"-alternativet er valgt. Attributten kan ikke deaktiveres for hvert enkelt prosjekt.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Det finnes ingen tilgjengelige typer.
         form:
@@ -602,7 +619,7 @@
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Edit project status
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -712,6 +729,17 @@
     index:
       no_results_title_text: Det er ingen nyheter å vise.
       no_results_content_text: Legg til nyhet
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "Forbli innlogget for %{num_days}"
@@ -783,7 +811,7 @@
         required: "Vennligst velg en rolle"
       message:
         label: "Melding i invitasjon"
-        description: "Vi vil sende en e-post til brukeren, som du kan skrive en personlig melding til her. En forklaring på invitasjonen kan være nyttig, eller kanskje en litt informasjon om prosjektet for å hjelpe dem i gang."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Send invitasjon"
       success_message:
@@ -904,6 +932,16 @@
     print_hint: Dette vil skrive ut innholdet på denne wiki-siden uten noen navigasjonsfelt.
     index:
       no_results_content_text: Legg til ny wiki-side
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: Det er ingen arbeidsflyt for øyeblikket.
@@ -1215,8 +1253,8 @@
           true: "offentlig"
           false: "privat"
         queries: "Spørringer"
-        status_code: "Prosjektstatus"
-        status_explanation: "Prosjekt statusbeskrivelse"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Ikke påbegynt"
           on_track: "På rett spor"
@@ -1240,7 +1278,6 @@
         work_packages: "Arbeidspakker"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Påkrevd for alle prosjekter"
         custom_field_section: Seksjon
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1527,6 +1564,8 @@
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2521,7 +2560,7 @@
       enabled: "Disable"
   enumeration_activities: "Tidregistrering aktiviteter"
   enumeration_work_package_priorities: "Prioritering av arbeidspakker"
-  enumeration_reported_project_statuses: "Rapportert prosjektstatus"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
   enterprise_trials:
@@ -2772,15 +2811,19 @@
         learn_about: "Learn more about all new features"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "Oppgrader til Enterprise utgaven"
       postgres_migration: "Overføre installasjonen til PostgreSQL"
@@ -3003,6 +3046,7 @@
   label_board_plural: "Tavler"
   label_branch: "Gren"
   label_browse: "Bla gjennom"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Masseredigering av valgte arbeidspakker"
   label_bundled: "(Pakket)"
   label_calendar: "Kalender"
@@ -3910,9 +3954,6 @@
   permission_add_project: "Opprett prosjekt"
   permission_add_portfolios: "Create portfolios"
   permission_add_programs: "Create programs"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Legg til vedlegg"
   permission_add_work_package_attachments_explanation: "Tillater å legge til vedlegg uten å redigere arbeidspakke-tillatelse"
   permission_add_internal_comments: "Write internal comments"
@@ -3930,6 +3971,7 @@
   permission_comment_news: "Kommenter nyheter"
   permission_commit_access: "Lese/skrive tilgang til kodelageret (standard)"
   permission_copy_projects: "Kopier prosjekter"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Duplicate work packages"
   permission_create_backup: "Opprett sikkerhetskopier"
   permission_delete_work_package_watchers: "Slett overvåkere"
@@ -4227,6 +4269,8 @@
   setting_apiv3_docs_enabled: "Aktiver dokumenter"
   setting_apiv3_docs_enabled_instructions_html: >
     Hvis dokumenter er aktivert, kan du få en interaktiv visning av APIv3 dokumentasjonen under <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Last opp hviteliste for vedlegg"
   setting_email_delivery_method: "Leveringsmetode for e-post"
   setting_emails_salutation: "Adresser bruker i e-post med"
@@ -4458,6 +4502,7 @@
     passwords: "Passord"
     project_attributes:
       heading: "Prosjektegenskaper"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Prosjektegenskaper"
       label_new_section: "Seksjon"
       label_edit_section: "Rediger tittel"
@@ -4481,7 +4526,8 @@
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."
@@ -4600,6 +4646,8 @@
     Enterprise utgaven vil legge til disse ekstra utvidelsene for prosjektets egendefinerte felter: <br> <ul> <li><b>Legg til egendefinerte felt for prosjekter i din prosjektliste for å opprette en prosjektporteføljevisning</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Dette er logoen som vises i din PDF-eksport. Det må være en PNG eller JPEG bildefil. En svart eller farget logo på gjennomsiktig eller hvit bakgrunn anbefales.
   text_custom_export_cover_instructions: >

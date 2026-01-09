@@ -249,6 +249,9 @@ RSpec.describe CustomField::CalculatedValue,
       let!(:other_calculated_value) do
         create(:calculated_value_project_custom_field, formula: "2 + 2", projects: [project_without_permission])
       end
+      let!(:weighted_item_list) do
+        create(:project_custom_field, :weighted_item_list, projects: [project_without_permission])
+      end
 
       current_user { user }
 

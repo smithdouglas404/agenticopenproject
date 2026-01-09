@@ -92,6 +92,9 @@ module API
 
         content_type attachment_content_type(attachment)
         header["Content-Disposition"] = attachment.content_disposition
+        # Ensure we set nosniff on attachments served from our app
+        # so that browsers do not reinterpret the content
+        header["X-Content-Type-Options"] = "nosniff"
         env["api.format"] = :binary
         sendfile attachment.diskfile.path
       end

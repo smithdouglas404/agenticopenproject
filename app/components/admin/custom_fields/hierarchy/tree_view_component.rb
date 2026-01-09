@@ -39,7 +39,6 @@ module Admin
 
           @custom_field = custom_field
           @active_item = active_item
-          @hierarchy_service = ::CustomFields::Hierarchy::HierarchicalItemService.new
         end
 
         def href_for(item)

@@ -16,10 +16,10 @@ it:
         news:
           title: 'Notizie'
         project_description:
-          title: 'Descrizione del progetto'
+          title: 'Description'
           no_results: "Nessuna descrizione ancora scritta. Una può essere fornita nelle \"Impostazioni di progetto\"."
         project_status:
-          title: 'Stato del progetto'
+          title: 'Status'
           not_started: 'Non iniziato'
           on_track: 'Nei limiti'
           off_track: 'Fuori limite'
@@ -28,7 +28,7 @@ it:
           finished: 'Terminato'
           discontinued: 'Interrotto'
         project_status_beta:
-          title: 'Stato del progetto (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Sottoelementi'
         project_favorites:

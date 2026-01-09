@@ -345,6 +345,7 @@ ka:
     label_collapse: "ჩახურვა"
     label_collapsed: "ჩახურული"
     label_collapse_all: "ყველას ჩაკეცვა"
+    label_collapse_text: "Collapse text"
     label_comment: "კომენტარი"
     label_committed_at: "%{committed_revision_link} at %{date}"
     label_committed_link: "committed revision %{revision_identifier}"
@@ -357,6 +358,7 @@ ka:
     label_expand: "გაფართოება"
     label_expanded: "გაშლილი"
     label_expand_all: "ყველას გაშლა"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Expand project menu"
     label_export: "გატანა"
     label_export_preparing: "The export is being prepared and will be downloaded shortly."
@@ -555,7 +557,7 @@ ka:
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "ვადაგადაცილებული"
-        overdue_since: "since %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "is today."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
@@ -1124,6 +1126,8 @@ ka:
     global_search:
       all_projects: "In all projects"
       close_search: "ძებნის დახურვა"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "In this project + subprojects"
       current_project: "In this project"
       recently_viewed: "Recently viewed"

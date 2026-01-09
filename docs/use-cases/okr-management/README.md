@@ -150,11 +150,10 @@ Use **[parent–child boards](../../user-guide/agile-boards/)** to visualize Obj
 ![An example of parent-child board to illustrate OKR tasks for product team in OpenProject](openproject_docs_use_case_okr_board_example.png)
 
 ### Overview and statistics
-Open the **[Project overview](../../user-guide/project-overview/)** page to see an aggregated summary of OKR Initiatives, Objectives, Key Results and Tasks. 
+
+Open the **[Project home](../../user-guide/project-home/)** page to see an aggregated summary of OKR Initiatives, Objectives, Key Results and Tasks. 
 
 Combine this with saved filters to create a simple management dashboard.
-
-
 
 ![Overview page of an OKR project in OpenProject](openproject_docs_use_case_okr_project_overview.png)
 
@@ -164,6 +163,7 @@ Maintain regular communication to keep OKRs relevant and aligned.
 OpenProject provides collaboration tools for structured and transparent OKR discussions.
 
 ### Meetings
+
 Use the **[Meetings module](../../user-guide/meetings/)** to plan and conduct recurring OKR sessions. Create a meeting template to standardize the review process:
 
 - Add Objectives and Key Results directly to the agenda. 

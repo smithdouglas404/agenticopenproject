@@ -57,10 +57,7 @@ See COPYRIGHT and LICENSE files for more details.
 </noscript>
 <opce-toasts-container></opce-toasts-container>
 <opce-modal-overlay></opce-modal-overlay>
-<live-region>
-  <div id="polite" aria-live="polite" aria-atomic="true" class="sr-only"></div>
-  <div id="assertive" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
-</live-region>
+<live-region></live-region>
 <span id="open-blank-target-link-description" class="sr-only"><%= I18n.t("open_link_in_a_new_tab") %></span>
 <opce-spot-drop-modal-portal></opce-spot-drop-modal-portal>
 <% main_menu = render_main_menu(local_assigns.fetch(:menu_name, nil), @project) %>

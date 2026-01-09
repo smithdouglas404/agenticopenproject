@@ -191,7 +191,7 @@ zh-CN:
       error_cannot_act_self: "无法对自己上传的文件执行操作。"
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "在此视图中, 您可以为属性视图创建自定义帮助文本。定义后, 可以通过单击属性旁边的帮助图标来显示帮助文本。"
     show_preview: "预览文本"
     add_new: "添加帮助文本"
@@ -346,17 +346,28 @@ zh-CN:
     calculated_field_not_editable: "不可编辑属性。此值是自动计算的。"
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "将自定义字段标记为必填。这将在创建新资源时强制要求填写该字段。更新现有资源时，不会强制要求填写该值。"
-      is_required_for_project: "勾选以启用此属性，并在所有项目中将其设为必填。该属性无法在单个项目中停用。更新现有项目时，已存在的项目将无需填写该值。"
-      is_for_all: "将自定义字段标记为在所有现有项目和新项目中可用。"
-      multi_select: "允许用户为该自定义字段赋予多个值。"
-      searchable: "使用全局搜索功能时包含字段值。"
-      searchable_for_project: "选中可将此属性作为项目列表中的过滤器。"
-      editable: "允许用户自行编辑该字段。"
-      admin_only: "选中使此属性仅对管理员可见。没有管理员权限的用户将无法查看或编辑该属性。"
-      is_filter: >
-        允许在工作包视图中使用自定义字段。 请注意，只有选择了“所有项目”时，自定义字段才会显示在全局视图中。
-      formula: "添加数值或输入 / 以搜索特性或数学运算符。"
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: 目前没有自定义字段。
       no_results_content_text: 创建新的自定义字段
@@ -506,7 +517,7 @@ zh-CN:
         text: "此操作不会删除列表中包含的任何项目。确定要删除此项目列表吗？"
     settings:
       header_details: 基本信息
-      header_status: 项目状态
+      header_status: Status
       header_relations: 项目关系
       button_update_details: 更新详情
       button_update_status_description: 更新状态描述
@@ -531,9 +542,15 @@ zh-CN:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "全部启用"
         label_disable_all: "全部禁用"
@@ -567,9 +584,9 @@ zh-CN:
           label_enable_single: "在此项目中处于活动状态，点击禁用"
           label_disable_single: "在此项目中未启用，点击启用"
           remove_from_project: "从项目移除"
-        is_required_blank_slate:
-          heading: 所有项目中需要
-          description: 此项目属性已在所有项目中激活，因为选中了“所有项目中需要”的选项。它在单个项目中不能被停用。
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: 目前有可用的类型。
         form:
@@ -598,7 +615,7 @@ zh-CN:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: 编辑项目状态
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -702,6 +719,17 @@ zh-CN:
     index:
       no_results_title_text: 目前没有消息报告。
       no_results_content_text: 添加新闻项
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "保持登录状态 %{num_days}"
@@ -773,7 +801,7 @@ zh-CN:
         required: "请选择一个角色"
       message:
         label: "邀请消息"
-        description: "我们将向用户发送一封电子邮件，您可以在此处添加要向其发送的个人消息。提供邀请说明可能会很有用，您也可以添加一些有关该项目的信息以帮助他们开始。"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "发送邀请"
       success_message:
@@ -893,6 +921,16 @@ zh-CN:
     print_hint: 这将以不带任何导航栏的方式打印此维基页面的内容。
     index:
       no_results_content_text: 添加一个新的维基页面
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: 目前没有工作流。
@@ -1203,8 +1241,8 @@ zh-CN:
           true: "公开"
           false: "私有"
         queries: "查询"
-        status_code: "项目状态"
-        status_explanation: "项目状态描述"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "未开始"
           on_track: "按计划进行"
@@ -1228,7 +1266,6 @@ zh-CN:
         work_packages: "工作包"
         workspace_type: "工作空间类型"
       project_custom_field:
-        is_required: "在所有项目中应用"
         custom_field_section: 单元
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1514,6 +1551,8 @@ zh-CN:
               invalid_characters: "仅允许使用数值、数学运算符以及整数、浮点数、计算值和加权列表类型的项目属性。"
               not_allowed_custom_fields_referenced: "属性 %{custom_fields} 无法使用，因为存在循环引用：一个属性依赖于另一个属性。"
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2471,7 +2510,7 @@ zh-CN:
       enabled: "禁用"
   enumeration_activities: "时间跟踪活动"
   enumeration_work_package_priorities: "工作包优先级"
-  enumeration_reported_project_statuses: "报告的项目状态"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "顺序修改成功。"
   enumeration_could_not_be_moved: "无法移动枚举。"
   enterprise_trials:
@@ -2722,15 +2761,19 @@ zh-CN:
         learn_about: "详细了解所有新功能"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
-            此版本包含多项新功能和改进，例如：
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 项目评估和评分的计算值（Enterprise 附加组件）。
-            line_1: 项目特性类型层次结构。
-            line_2: 可以产生重大影响的性能更新。
-            line_3: '“文档”模块的新索引页面。'
-            line_4: 可以更改自定义字段条目的父项。
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2953,6 +2996,7 @@ zh-CN:
   label_board_plural: "面板"
   label_branch: "分支"
   label_browse: "浏览"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "批量编辑所选工作包"
   label_bundled: "(捆绑包)"
   label_calendar: "日历"
@@ -3855,9 +3899,6 @@ zh-CN:
   permission_add_project: "创建项目"
   permission_add_portfolios: "创建项目组合"
   permission_add_programs: "创建计划"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "添加附件"
   permission_add_work_package_attachments_explanation: "允许在没有编辑工作包权限的情况下添加附件"
   permission_add_internal_comments: "写内部评论"
@@ -3875,6 +3916,7 @@ zh-CN:
   permission_comment_news: "评论新闻"
   permission_commit_access: "读/写访问存储库 (提交)"
   permission_copy_projects: "复制项目"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "复制工作包"
   permission_create_backup: "创建备份"
   permission_delete_work_package_watchers: "删除关注者"
@@ -4170,6 +4212,8 @@ zh-CN:
   setting_apiv3_docs_enabled: "启用文档页面"
   setting_apiv3_docs_enabled_instructions_html: >
     如果启用了文档页面，您可以在此 <a href="%{link}" target="_blank">%{link}</a> 获得 API v3 文档的交互式视图。
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "附件上传白名单"
   setting_email_delivery_method: "电子邮件发送方法"
   setting_emails_salutation: "电子邮件中的用户地址"
@@ -4401,6 +4445,7 @@ zh-CN:
     passwords: "密码"
     project_attributes:
       heading: "项目属性"
+      label_for_all_projects: "All projects"
       label_new_attribute: "项目属性"
       label_new_section: "单元"
       label_edit_section: "编辑标题"
@@ -4424,7 +4469,8 @@ zh-CN:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."
@@ -4543,6 +4589,8 @@ zh-CN:
     企业版将为项目的自定义字段添加以下其他附加组件：<br> <ul> <li><b>在项目列表中添加项目自定义字段，以创建项目组合视图</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     这是在 PDF 导出文件中显示的徽标。它需要为 PNG 或 JPEG 图像文件。建议使用带有透明或白色背景的黑色或彩色徽标。
   text_custom_export_cover_instructions: >

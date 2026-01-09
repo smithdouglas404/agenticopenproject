@@ -20,13 +20,6 @@ import { PathHelperService } from 'core-app/core/path-helper/path-helper.service
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { getMetaContent } from 'core-app/core/setup/globals/global-helpers';
-import {
-  toDOMString,
-  briefcaseIconData,
-  SVGData,
-  versionsIconData,
-} from '@openproject/octicons-angular';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: '[op-header-project-select-list]',
@@ -69,8 +62,6 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
     readonly elementRef:ElementRef,
     readonly cdRef:ChangeDetectorRef,
     readonly currentProjectService:CurrentProjectService,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    readonly sanitizer:DomSanitizer
   ) { }
 
   ngOnInit():void {
@@ -126,32 +117,5 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
     }
 
     return `${url}?jump=${encodeURIComponent(currentMenuItem)}`;
-  }
-
-  workspaceTypeIconWithLabel(project:IProjectData):SafeHtml {
-    const workspaceType = project._type.toLowerCase();
-    const iconData = this.workspaceTypeSVGData(workspaceType);
-    if (!iconData) {
-      return '';
-    }
-
-    const htmlString = toDOMString(iconData, 'small', { 'aria-hidden': 'true', class: 'octicon' });
-    const translatedTypeName = this.I18n.t(`js.include_workspaces.types.${workspaceType}`);
-    const iconWithText = htmlString + ' ' + translatedTypeName;
-    return this.sanitizer.bypassSecurityTrustHtml(iconWithText);
-  }
-
-  private workspaceTypeSVGData(workspaceType:string):SVGData|undefined{
-    switch (workspaceType) {
-      case 'program': {
-        return versionsIconData;
-      }
-      case 'portfolio': {
-        return briefcaseIconData;
-      }
-      default: {
-        return undefined; // Case fallthrough for eslint
-      }
-    }
   }
 }

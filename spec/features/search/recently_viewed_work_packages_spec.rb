@@ -73,7 +73,6 @@ RSpec.describe "Recently viewed work packages",
 
       # work package is displayed and marked
       global_search.expect_work_package_option(work_package)
-      global_search.expect_work_package_marked(work_package)
 
       # clicking goes to the work package view
       global_search.click_work_package(work_package)

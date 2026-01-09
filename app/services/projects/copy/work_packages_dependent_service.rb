@@ -149,13 +149,11 @@ module Projects::Copy
     end
 
     def work_package_assigned_to_id(source_work_package)
-      possible_principal_id(source_work_package.assigned_to_id,
-                            source_work_package.project)
+      possible_principal_id(source_work_package.assigned_to_id)
     end
 
     def work_package_responsible_id(source_work_package)
-      possible_principal_id(source_work_package.responsible_id,
-                            source_work_package.project)
+      possible_principal_id(source_work_package.responsible_id)
     end
 
     def custom_value_attributes(source_work_package, user_cf_ids)
@@ -168,10 +166,10 @@ module Projects::Copy
       end
     end
 
-    def possible_principal_id(principal_id, project)
+    def possible_principal_id(principal_id)
       return unless principal_id
 
-      @principals ||= Principal.possible_assignee(project).pluck(:id).to_set
+      @principals ||= Principal.possible_assignee(target).pluck(:id).to_set
       principal_id if @principals.include?(principal_id)
     end
 

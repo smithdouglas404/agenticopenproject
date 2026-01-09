@@ -16,10 +16,10 @@ ru:
         news:
           title: 'Новости'
         project_description:
-          title: 'Описание проекта'
+          title: 'Description'
           no_results: "Описания еще нет. Его можно добавить в настройках проекта."
         project_status:
-          title: 'Статус проекта'
+          title: 'Status'
           not_started: 'Не начат'
           on_track: 'По плану'
           off_track: 'Приостановлен'
@@ -28,7 +28,7 @@ ru:
           finished: 'Завершен'
           discontinued: 'Прекращен'
         project_status_beta:
-          title: 'Статус проекта (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Подпроекты'
         project_favorites:

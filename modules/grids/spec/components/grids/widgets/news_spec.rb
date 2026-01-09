@@ -121,7 +121,9 @@ RSpec.describe Grids::Widgets::News, type: :component do
       project.enabled_module_names -= %w[news]
     end
 
-    it_behaves_like "empty-state with action"
+    it "renders nothing" do
+      expect(rendered_component.to_s).to be_empty
+    end
   end
 
   context "when the user does not have permission to manage news" do

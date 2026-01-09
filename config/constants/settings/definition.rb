@@ -61,7 +61,7 @@ module Settings
       },
       apiv3_docs_enabled: {
         description: "Enable interactive APIv3 documentation as part of the application",
-        default: true
+        default: false
       },
       apiv3_enable_basic_auth: {
         description: "Enable API token or global basic authentication for APIv3 requests",
@@ -346,7 +346,14 @@ module Settings
         allowed: -> { Redmine::I18n.all_languages }
       },
       default_projects_modules: {
-        default: %w[calendar board_view work_package_tracking gantt news costs wiki],
+        default: -> {
+          base_modules = %w[calendar board_view work_package_tracking gantt news costs wiki]
+          if Setting.real_time_text_collaboration_enabled?
+            base_modules + %w[documents]
+          else
+            base_modules
+          end
+        },
         allowed: -> { OpenProject::AccessControl.available_project_modules.map(&:to_s) }
       },
       default_projects_public: {
@@ -575,7 +582,10 @@ module Settings
       },
       real_time_text_collaboration_enabled: {
         description: "Enable real-time collaborative editing of text fields using BlockNoteJS and Hocuspocus server.",
-        default: true
+        default: -> {
+          Setting.collaborative_editing_hocuspocus_url.present? &&
+            Setting.collaborative_editing_hocuspocus_secret.present?
+        }
       },
       collaborative_editing_hocuspocus_url: {
         format: :string,

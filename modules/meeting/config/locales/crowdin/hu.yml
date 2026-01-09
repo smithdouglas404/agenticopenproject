@@ -62,7 +62,7 @@ hu:
       meeting_participant:
         invited: "Meghívott"
         attended: "Részt vett"
-        participation_status: "Participation status"
+        participation_status: "Részvételi státusz"
     errors:
       models:
         meeting_participant:
@@ -127,7 +127,7 @@ hu:
   label_meeting_date_time: "Dátum/idő"
   label_meeting_date_and_time: "Dátum és idő"
   label_meeting_diff: "Eltérés"
-  label_meeting_send_updates: "Send email calendar invite and updates"
+  label_meeting_send_updates: "Naptári meghívók és frissítések küldése e-mailben"
   label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
   label_recurring_meeting: "Ismétlődő megbeszélés"
   label_recurring_meeting_part_of: "Ismétlődő megbeszélés része"
@@ -235,10 +235,15 @@ hu:
         summary_series: "Meeting series '%{title}' has been cancelled by %{actor}."
         summary: "'%{title}' has been cancelled by %{actor}."
         date_time: "Scheduled date/time"
+      ended:
+        header_series: "Ended: Meeting series '%{title}'"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
       updated:
         header: "A \"%{title}\" megbeszélés frissítve lett"
         summary: "A(z) \"%{title}\" megbeszélést %{actor} frissítette"
         body: "A(z) \"%{title}\" megbeszélést %{actor} frissítette."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Régi időpont"
         new_date_time: "Új időpont"
         old_location: "Régi helyszín"
@@ -335,7 +340,7 @@ hu:
             E-mail naptárfrissítések letiltva. A résztvevők nemkapnak e-mailt a résztvevők módisításáról.
         onetime:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            A résztvevők hozzáadásakor vagy eltávolításakor minden résztvevő frissített naptármeghívókat kap e-mailben.
           disabled: >
             Participants will not receive an email informing them of changes to meeting date, time or participants.
         occurrence:
@@ -350,13 +355,13 @@ hu:
             E-mail naptárfrissítések le vannak tiltva az ismétlődő megbeszéléshez. A résztvevők nem fognak e-mail értesítőt kapni a sablon, vagy egyedi esemény változásairól.
     presentation_mode:
       title: "Presentation Mode"
-      button_present: "Present"
-      exit: "Exit presentation"
+      button_present: "Prezentáció megkezdése"
+      exit: "Kilépés a prezentációból"
       current_item: "Current item"
       total_items: "%{current} of %{total}"
-      previous: "Previous"
-      next: "Next"
-      no_items: "No agenda items"
+      previous: "Előző"
+      next: "Következő"
+      no_items: "Nincsenek napirendi pontok"
       no_items_flash: "There are no agenda items to present."
   meeting_section:
     untitled_title: "Untitled section"

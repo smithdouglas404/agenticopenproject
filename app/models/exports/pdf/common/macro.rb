@@ -102,12 +102,10 @@ module Exports::PDF::Common::Macro
   end
 
   def replace_macro(text, macro, in_html, context)
-    new_text = text.dup
-    text.to_enum(:scan, macro.regexp).each do |matched_string|
+    text.gsub(macro.regexp) do |matched_string|
       match = Regexp.last_match
-      new_text[match.begin(0)...match.end(0)] = replace_macro_match(match, matched_string, macro, in_html, context)
+      replace_macro_match(match, matched_string, macro, in_html, context)
     end
-    new_text
   end
 
   def replace_macro_match(match, matched_string, macro, in_html, context)
