@@ -726,6 +726,9 @@ tr:
       notice_api_token_revoked: "API belirteci silinmiştir. Yeni bir belirteç oluşturmak için lütfen API bölümündeki düğmeyi kullanın."
       notice_rss_token_revoked: "RSS belirteci silinmiştir. Yeni bir belirteç oluşturmak için lütfen RSS bölümündeki bağlantıyı kullanın."
       notice_ical_token_revoked: '"%{project_name}" projesinin "%{calendar_name}" takvimi için "%{token_name}" iCalendar belirteci iptal edildi. Bu belirtece sahip iCalendar URL''si artık geçersizdir.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Şu anda rapor edilecek bir haber yok.
@@ -1511,7 +1514,8 @@ tr:
         not_a_datetime: "geçerli bir zaman değil."
         not_a_number: "bir sayı değil."
         not_allowed: "Eksik izinler nedeniyle geçersiz."
-        not_json: "geçerli bir JSON nesnesi değildir."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "bir tamsayı değil."
         not_an_iso_date: "geçerli bir tarih değil. Gerekli biçim:: YYYY-AA-GG."
         not_same_project: "aynı projeye ait değil."
@@ -2136,6 +2140,7 @@ tr:
   button_click_to_reveal: "Ortaya çıkarmak için tıklayın"
   button_close: "Kapat"
   button_collapse_all: "Tümünü daralt"
+  button_confirm: "Confirm"
   button_configure: "Düzenle"
   button_continue: "Devam et"
   button_complete: "Complete"
@@ -2168,6 +2173,7 @@ tr:
   button_print: "Yazdır"
   button_quote: "Alıntı"
   button_remove: Kaldır
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Hatırlatmayı kaldır"
   button_rename: "Yeniden adlandır"
   button_replace: "Değiştir"
@@ -3895,7 +3901,7 @@ tr:
   notice_not_authorized: "Bu sayfaya erişme yetkiniz yok."
   notice_not_authorized_archived_project: "Erişmeye çalıştığınız proje arşive kaldırılmış."
   notice_requires_enterprise_token: "Kurumsal belirteç eksik veya bu sayfaya erişime izin vermiyor."
-  notice_password_confirmation_failed: "Parolanız doğru değil. Devam edilemez."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} sonuç bulundu.\nİlk sonuç için TABa basın."
   notice_principals_found_single: "Bir sonuç bulundu. \n Ona gitmek için TABa basın."
   notice_parent_item_not_found: "Üst öğe bulunamadı."
@@ -4722,6 +4728,7 @@ tr:
     Not: Etkinleştirildiğinde, bu, <a href="%{information_panel_path}">%{information_panel_label}</a> yönetim panelinde ve giriş sayfasında yükleme durumunuzla birlikte bir rozet görüntüler. Sadece yöneticilere gösterilir. <br/> Rozet, mevcut OpenProject sürümünüzü resmi OpenProject sürüm veritabanına karşı kontrol eder ve sizi herhangi bir güncelleme veya bilinen güvenlik açığı hakkında uyarır. Çekin sağladığı, mevcut güncellemeleri sağlamak için hangi verilerin gerekli olduğu ve bu kontrolün nasıl devre dışı bırakılacağı hakkında daha fazla bilgi için lütfen <a href="%{more_info_url}">yapılandırma belgelerini</a> ziyaret edin.
   text_own_membership_delete_confirmation: "İzinlerinizden bazılarını veya tümünü kaldırmak üzeresiniz ve bundan sonra bu projeyi düzenleyemeyebilirsiniz. Devam etmek istediğine emin misin?"
   text_permanent_delete_confirmation_checkbox_label: "Bu silme işleminin geri alınamayacağını anlıyorum"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin assets dizini yazılabilir"
   text_powered_by: "%{link} tarafından destekleniyor"
   text_project_identifier_info: "Yalnızca küçük harfler (a-z), sayılar, tire ve alt tire kullanılabilir ve mutlaka küçük harfle başlamalıdır."

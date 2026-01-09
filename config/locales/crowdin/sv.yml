@@ -725,6 +725,9 @@ sv:
       notice_api_token_revoked: "API-token har tagits bort. För att skapa en ny token använd knappen i API-avsnittet."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Det finns för närvarande inget att rapportera.
@@ -1511,7 +1514,8 @@ sv:
         not_a_datetime: "är inte en giltig datumtid."
         not_a_number: "är inte ett nummer."
         not_allowed: "är inte tillåtet på grund av saknade behörigheter."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "är inte ett heltal."
         not_an_iso_date: "är inte ett giltigt datum. Använd formatet ÅÅÅÅ-MM-DD."
         not_same_project: "tillhör inte samma projekt."
@@ -2136,6 +2140,7 @@ sv:
   button_click_to_reveal: "Klicka för att visa"
   button_close: "Stäng"
   button_collapse_all: "Fäll ihop alla"
+  button_confirm: "Confirm"
   button_configure: "Konfigurera"
   button_continue: "Fortsätt"
   button_complete: "Complete"
@@ -2168,6 +2173,7 @@ sv:
   button_print: "Skriv ut"
   button_quote: "Citat"
   button_remove: Ta bort
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Ta bort påminnelse"
   button_rename: "Ändra namn"
   button_replace: "Ersätt"
@@ -3896,7 +3902,7 @@ sv:
   notice_not_authorized: "Du har inte behörighet att komma åt denna sida."
   notice_not_authorized_archived_project: "Projektet som du försöker komma åt har arkiverats."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Ditt lösenord är inte korrekt. Kan inte fortsätta."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} resultat hittades. Använd TAB för att fokusera på det första."
   notice_principals_found_single: "Ett resultat. Använd TAB för att fokusera på det."
   notice_parent_item_not_found: "Parent item not found."
@@ -4722,6 +4728,7 @@ sv:
     Obs: om aktiverad, kommer detta att visa ett märke med din installationsstatus i administrationspanelen <a href="%{information_panel_path}">%{information_panel_label}</a> och på startsidan. Det visas endast för administratörer. <br/> Emblemet kommer att kontrollera din nuvarande OpenProject-version mot den officiella OpenProject-utgåvans databas för att varna dig om eventuella uppdateringar eller kända sårbarheter. För mer information om vad kontrollen ger, vilka uppgifter som behövs för att tillhandahålla tillgängliga uppdateringar, och hur du inaktiverar denna kontroll, besök <a href="%{more_info_url}">konfigurationsdokumentationen</a>.
   text_own_membership_delete_confirmation: "Du håller på att ta bort några eller alla av dina behörigheter och kommer därefter inte längre att kunna redigera detta projekt. Är du säker på att du vill fortsätta?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Katalogen \"Plugin assets\" skrivbar"
   text_powered_by: "Drivs av %{link}"
   text_project_identifier_info: "Bara gemena bokstäver (a-z), siffror, bindestreck och understreck tillåts och måste dessutom börja med en gemen bokstav."

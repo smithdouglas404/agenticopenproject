@@ -632,9 +632,6 @@ fil:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Kailangan mong ipasok ang iyong akwant password upang kumpirmahin ang pagbabago niito."
-      title: "Kumpirmahin ang iyong password upanh magpatuloy"
     pagination:
       no_other_page: "Ikaw ay nasa pahina lamang."
       pages_skipped: "Pages skipped."

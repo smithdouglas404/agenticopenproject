@@ -725,6 +725,9 @@ et:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: There is currently no news to report.
@@ -1511,7 +1514,8 @@ et:
         not_a_datetime: "is not a valid date time."
         not_a_number: "pole arv."
         not_allowed: "is invalid because of missing permissions."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "pole täisarv."
         not_an_iso_date: "is not a valid date. Required format: YYYY-MM-DD."
         not_same_project: "doesn't belong to the same project."
@@ -2136,6 +2140,7 @@ et:
   button_click_to_reveal: "Näitamiseks kliki"
   button_close: "Sulge"
   button_collapse_all: "Koonda kõik"
+  button_confirm: "Confirm"
   button_configure: "Seadista"
   button_continue: "Jätka"
   button_complete: "Complete"
@@ -2168,6 +2173,7 @@ et:
   button_print: "Prindi"
   button_quote: "Tsiteeri"
   button_remove: Eemalda
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Eemalda meeldetuletus"
   button_rename: "Nimeta ümber"
   button_replace: "Asenda"
@@ -3896,7 +3902,7 @@ et:
   notice_not_authorized: "Sul ei ole sellele lehele ligipääsuks õigusi."
   notice_not_authorized_archived_project: "See projekt on arhiveeritud."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Your password is not correct. Cannot continue."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "There are %{number} results found. \n Tab to focus the first result."
   notice_principals_found_single: "There is one result. \n Tab to focus it."
   notice_parent_item_not_found: "Parent item not found."
@@ -4724,6 +4730,7 @@ et:
     Note: if enabled, this will display a badge with your installation status in the <a href="%{information_panel_path}">%{information_panel_label}</a> administration panel, and on the home page. It is displayed to administrators only. <br/> The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit <a href="%{more_info_url}">the configuration documentation</a>.
   text_own_membership_delete_confirmation: "Sa võtad endalt ära osa või kõik õigused ega saa edaspidi seda projekti võib-olla enam muuta.\nOled sa jätkamises kindel?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Lisamoodulite abifailide kataloog on kirjutatav"
   text_powered_by: "Jooksutab %{link}"
   text_project_identifier_info: "Lubatud on ainult väikesed tähed (a-z), numbrid ja kriipsud. Peab algama väikse tähega."

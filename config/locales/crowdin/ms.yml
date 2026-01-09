@@ -717,6 +717,9 @@ ms:
       notice_api_token_revoked: "Token API telah dipadam. Sila gunakan butang di bahagian API untuk mencipta token baharu."
       notice_rss_token_revoked: "Token RSS telah dipadamkan. Untuk mencipta token baharu sila gunakan pautan di bahagian RSS."
       notice_ical_token_revoked: 'Token iCalendar "%{token_name}" untuk kalendar "%{calendar_name}" projek "%{project_name}" telah dibatalkan. URL iCalendar serta token ini sudah tidak sah.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Tiada berita untuk dipaparkan buat masa ini.
@@ -1500,7 +1503,8 @@ ms:
         not_a_datetime: "bukan tarikh masa yang sah."
         not_a_number: "bukan nombor."
         not_allowed: "adalah tidak sah kerana kekurangan kebenaran."
-        not_json: "bukan objek JSON yang sah."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "bukan sebuah integer."
         not_an_iso_date: "bukan tarikh yang sah. Format yang diperlukan: TTTT-BB-HH."
         not_same_project: "tidak tergolong dalam projek yang sama."
@@ -2108,6 +2112,7 @@ ms:
   button_click_to_reveal: "Klik untuk dedahkan"
   button_close: "Tutup"
   button_collapse_all: "Sembunyikan semua"
+  button_confirm: "Confirm"
   button_configure: "Konfigurasi"
   button_continue: "Teruskan"
   button_complete: "Complete"
@@ -2140,6 +2145,7 @@ ms:
   button_print: "Cetak"
   button_quote: "Petikan"
   button_remove: Keluarkan
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Buang peringatan"
   button_rename: "Namakan semula"
   button_replace: "Gantikan"
@@ -3846,7 +3852,7 @@ ms:
   notice_not_authorized: "Anda tidak diberi kebenaran untuk mengakses halaman ini."
   notice_not_authorized_archived_project: "Projek yang anda cuba mengakses telah diarkibkan."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Kata laluan tidak betul. Tidak boleh teruskan."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Terdapat %{number} hasil ditemui. \n Tab untuk memfokuskan hasil pertama."
   notice_principals_found_single: "Terdapat satu hasil. \n Tab untuk fokuskan."
   notice_parent_item_not_found: "Parent item not found."
@@ -4672,6 +4678,7 @@ ms:
     Perhatian: jika dibenarkan, ini akan paparkan lambang bersertaan status pemasangan di <a href="%{information_panel_path}">%{information_panel_label}</a> panel pentadbiran, dan di halaman utama. Ia hanya akan dipaparkan ke para pentadbir sahaja. <br/> Lambang tersebut akan menyemak versi OpenProject terkini anda terhadap pangkalan data keluaran rasmi OpenProject untuk memaklumkan anda tentang sebarang kemas kini atau kelemahan yang diketahui. Untuk maklumat lanjut bagi penyediaan semakan, data apa yang diperlukan untuk menyediakan kemas kini tersedia, dan bagaimana untuk menyahaktifkan semakan ini, sila kunjungi <a href="%{more_info_url}">dokumentasi konfigurasi</a>.
   text_own_membership_delete_confirmation: "Anda akan mengeluarkan beberapa atau semua kebenaran anda dan mungkin tidak lagi dapat mengedit projek ini selepas itu.\nAdakah anda pasti anda ingin teruskan?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Aset plugin direktori yang boleh ditulis"
   text_powered_by: "Dikuasakan oleh %{link}"
   text_project_identifier_info: "Hanya huruf kecil (a-z), nombor, sengkang dan tanda garis bawah adalah dibenarkan, mesti mula dengan huruf kecil."

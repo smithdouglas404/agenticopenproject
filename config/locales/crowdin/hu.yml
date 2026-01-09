@@ -724,6 +724,9 @@ hu:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "Az RSS-token törlésre került. Új token létrehozásához kérjük, használja az RSS szakaszban található linket."
       notice_ical_token_revoked: 'A "%{project_name}" projekt "%{calendar_name}" naptárához tartozó "%{token_name}" iCalendar token visszavonásra került. Az ezzel a tokennel rendelkező iCalendar URL mostantól érvénytelen.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Nincs megjeleníthető hír.
@@ -1510,7 +1513,8 @@ hu:
         not_a_datetime: "ez nem érvényes dátum."
         not_a_number: "ez nem egy szám."
         not_allowed: "hiányzó engedélyek miatt érvénytelen."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "ez nem egy szám."
         not_an_iso_date: "nem érvényes dátum. A szükséges formátum ÉÉÉÉ-HH-NN."
         not_same_project: "nem azonos projekthez tartozik."
@@ -2135,6 +2139,7 @@ hu:
   button_click_to_reveal: "Kattints a felfedéshez"
   button_close: "Bezár"
   button_collapse_all: "Az összes bezárása"
+  button_confirm: "Confirm"
   button_configure: "Beállítások"
   button_continue: "Folytatás"
   button_complete: "Complete"
@@ -2167,6 +2172,7 @@ hu:
   button_print: "Nyomtatás"
   button_quote: "Idéz"
   button_remove: Eltávolítás
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Átnevezés"
   button_replace: "Csere"
@@ -3894,7 +3900,7 @@ hu:
   notice_not_authorized: "Ön nem jogosult a lap eléréséhez."
   notice_not_authorized_archived_project: "Az elérni kivánt projekt archiválva."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "A jelszó nem megfelelő. Nem lehet folytatni."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} találat. \n Tab-al tudsz az első találatra fókuszálni."
   notice_principals_found_single: "Egyetlen találat van.\nA Tab billentyű megnyomásával ugrik rá a fókusz."
   notice_parent_item_not_found: "Parent item not found."
@@ -4722,6 +4728,7 @@ hu:
     Megjegyzés: ha engedélyezve van, akkor a telepítési állapotot jelző jelvény jelenik meg a <a href="%{information_panel_path}">%{information_panel_label} </a> adminisztrációs panelen és a kezdőlapon. Csak a rendszergazdák számára jelenik meg. <br/> A jelvény ellenőrzi az aktuális OpenProject verziót a hivatalos OpenProject kiadási adatbázishoz képest, hogy figyelmeztesse Önt minden frissítésre vagy ismert biztonsági résre. Ha többet szeretne megtudni arról, hogy mit tartalmaz az ellenőrzés, milyen adatokra van szükség az elérhető frissítésekhez, és hogyan tilthatja le ezt az ellenőrzést, keresse fel a <a href="%{more_info_url}"> konfigurációs dokumentációt </a>.
   text_own_membership_delete_confirmation: "Értesítem arról, hogy eltávolít néhány vagy az összes jogosultságot, és ezt követően már nem lehet szerkeszteni ezt a projektet. Biztosan folytatni kívánja?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin eszközök könyvtára írható"
   text_powered_by: "Készítette %{link}"
   text_project_identifier_info: "Csak kisbetű (a-z), számok, kötőjelek és aláhúzásjelek van engedélyezve, és kisbetűvel kell kezdődnie."
