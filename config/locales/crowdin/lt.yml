@@ -736,6 +736,9 @@ lt:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "RSS žetonas buvo ištrintas. Norėdami sukurti naują žetoną, prašome naudoti nuorodą RSS sekcijoje."
       notice_ical_token_revoked: 'iCalendar žetonas „%{token_name}“ projekto „%{project_name}“ kalendoriui „%{calendar_name}“ buvo atšauktas. iCalendar URL su šituo žetonu dabar nebetinkamas.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Nėra jokių naujienų.
@@ -2186,6 +2189,7 @@ lt:
   button_click_to_reveal: "Spauskite, kad atskleistumėte"
   button_close: "Uždaryti"
   button_collapse_all: "Sutraukti visus"
+  button_confirm: "Confirm"
   button_configure: "Konfigūruoti"
   button_continue: "Tęsti"
   button_complete: "Complete"
@@ -3991,7 +3995,7 @@ lt:
   notice_not_authorized: "Jūs neturite prieigos teisių prie šio puslapio."
   notice_not_authorized_archived_project: "Projektas, kurį bandote atidaryti, buvo suarchyvuotas."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Jūsų slaptažodis yra neteisingas. Negalima tęsti."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Rasta %{number} rezultatai (-as, -ų).\nPaspauskite 'Tab', kad susikoncentruotumėte į pirmą rezultatą."
   notice_principals_found_single: "Yra vienas rezultatas.\nPaspauskite 'Tab', kad susikoncentruotumėte į jį."
   notice_parent_item_not_found: "Parent item not found."

@@ -16,7 +16,7 @@ ro:
         news:
           title: 'Noutăţi'
         project_description:
-          title: 'Descriere proiect'
+          title: 'Description'
           no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi adăugată în \"Setări proiect\"."
         project_status:
           title: 'Status'

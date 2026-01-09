@@ -725,6 +725,9 @@ et:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: There is currently no news to report.
@@ -2137,6 +2140,7 @@ et:
   button_click_to_reveal: "Näitamiseks kliki"
   button_close: "Sulge"
   button_collapse_all: "Koonda kõik"
+  button_confirm: "Confirm"
   button_configure: "Seadista"
   button_continue: "Jätka"
   button_complete: "Complete"
@@ -3898,7 +3902,7 @@ et:
   notice_not_authorized: "Sul ei ole sellele lehele ligipääsuks õigusi."
   notice_not_authorized_archived_project: "See projekt on arhiveeritud."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Your password is not correct. Cannot continue."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "There are %{number} results found. \n Tab to focus the first result."
   notice_principals_found_single: "There is one result. \n Tab to focus it."
   notice_parent_item_not_found: "Parent item not found."

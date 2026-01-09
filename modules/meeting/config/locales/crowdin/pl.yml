@@ -119,7 +119,7 @@ pl:
   label_meeting_new_dynamic: "Nowe spotkanie jednorazowe"
   label_meeting_new_recurring: "Nowe spotkanie cykliczne"
   label_meeting_create: "Utwórz spotkanie"
-  label_meeting_duplicate: "Duplicate meeting"
+  label_meeting_duplicate: "Duplikuj spotkanie"
   label_meeting_edit: "Edycja spotkania"
   label_meeting_agenda: "Plan spotkania"
   label_meeting_minutes: "Protokół ze spotkania"
@@ -131,8 +131,8 @@ pl:
   label_meeting_date_time: "Data/Czas"
   label_meeting_date_and_time: "Data i godzina"
   label_meeting_diff: "Różnice"
-  label_meeting_send_updates: "Send email calendar invite and updates"
-  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
+  label_meeting_send_updates: "Wysyłaj zaproszenia do kalendarza i aktualizacje pocztą elektroniczną"
+  label_meeting_send_updates_caption: "Wyślij pocztą elektroniczną zaproszenia do wszystkich uczestników tego spotkania"
   label_recurring_meeting: "Spotkanie cykliczne"
   label_recurring_meeting_part_of: "Część serii spotkań"
   label_recurring_meeting_new: "Nowe spotkanie cykliczne"
@@ -140,7 +140,7 @@ pl:
   label_template: "Szablon"
   label_recurring_meeting_view: "Wyświetl serię spotkań"
   label_recurring_meeting_create: "Otwórz"
-  label_recurring_meeting_duplicate: "Duplicate as a one-time meeting"
+  label_recurring_meeting_duplicate: "Duplikuj jako jednorazowe spotkanie"
   label_recurring_meeting_cancel: "Anuluj to wystąpienie"
   label_recurring_meeting_delete: "Usuń wystąpienie"
   label_recurring_meeting_restore: "Przywróć to wystąpienie"
@@ -246,14 +246,14 @@ pl:
         summary: "„%{title}” anulował użytkownik %{actor}."
         date_time: "Zaplanowana data/godzina"
       ended:
-        header_series: "Ended: Meeting series '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
+        header_series: "Zakończono: serię spotkań „%{title}”"
+        summary_series: "Seria spotkań „%{title}” została zakończona przez użytkownika %{actor}."
       updated:
         header: "Spotkanie „%{title}” zostało zaktualizowane"
         summary: "Spotkanie „%{title}” zostało zaktualizowane przez użytkownika %{actor}"
         body: "Spotkanie „%{title}” zostało zaktualizowane przez użytkownika %{actor}."
-        old_title: "Old title"
-        new_title: "New title"
+        old_title: "Stary tytuł"
+        new_title: "Nowy tytuł"
         old_date_time: "Stara data/godzina"
         new_date_time: "Nowa data/godzina"
         old_location: "Stara lokalizacja"
@@ -279,8 +279,8 @@ pl:
           Wszelkie informacje o spotkaniu, które nie znajdują się w szablonie, zostaną utracone. Czy chcesz kontynuować?
         confirm_button: "Anuluj wystąpienie"
     blankslate:
-      title: "There are no meetings to display"
-      desc: "You can create a new meeting or change filter criteria"
+      title: "Nie ma żadnych spotkań do wyświetlenia"
+      desc: "Możesz utworzyć nowe spotkanie lub zmienić kryteria filtrowania"
     label_export_pdf: "Wyeksportuj PDF"
     export:
       your_meeting_export: "Spotkanie jest eksportowane"
@@ -350,9 +350,9 @@ pl:
             Aktualizacje kalendarza pocztą elektroniczną są wyłączone. Uczestnicy nie będą otrzymywać wiadomości e-mail z informacją o dodaniu lub usunięciu uczestników.
         onetime:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            Po dodaniu lub usunięciu uczestników wszyscy uczestnicy otrzymają zaktualizowane zaproszenia do kalendarza za pośrednictwem wiadomości e-mail.
           disabled: >
-            Participants will not receive an email informing them of changes to meeting date, time or participants.
+            Uczestnicy nie będą otrzymywać wiadomości e-mail z informacją o zmianie daty, godziny lub uczestników spotkania.
         occurrence:
           enabled: >
             Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest włączone dla serii spotkań. Wszyscy uczestnicy będą otrzymywać zaktualizowane zaproszenia do kalendarza z informacjami o zmianach tego wystąpienia.
@@ -364,18 +364,18 @@ pl:
           disabled: >
             Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest wyłączone dla serii spotkań. Uczestnicy nie będą otrzymywać wiadomości e-mail z informacjami o zmianach tego szablonu lub poszczególnych wystąpień.
     presentation_mode:
-      title: "Presentation Mode"
-      button_present: "Present"
-      exit: "Exit presentation"
-      current_item: "Current item"
-      total_items: "%{current} of %{total}"
-      previous: "Previous"
-      next: "Next"
-      no_items: "No agenda items"
-      no_items_flash: "There are no agenda items to present."
+      title: "Tryb prezentacji"
+      button_present: "Prezentuj"
+      exit: "Zakończ prezentację"
+      current_item: "Bieżąca pozycja"
+      total_items: "%{current} z %{total}"
+      previous: "Poprzedni"
+      next: "Następny"
+      no_items: "Brak pozycji planu spotkania"
+      no_items_flash: "Nie ma żadnych pozycji planu spotkania do zaprezentowania."
     ical_response:
-      update_failed: "Could not update participation status."
-      meeting_not_found: "Meeting not found for the given UID."
+      update_failed: "Nie można zaktualizować statusu uczestnictwa."
+      meeting_not_found: "Nie znaleziono spotkania dla podanego identyfikatora UID."
   meeting_section:
     untitled_title: "Sekcja bez nazwy"
     delete_confirmation: "Usunięcie sekcji spowoduje również usunięcie wszystkich jej elementów punktów planu spotkania. Czy na pewno chcesz to zrobić?"
@@ -383,11 +383,11 @@ pl:
     empty_text: "Przeciągnij elementy tutaj lub utwórz nowe"
   meeting_participant:
     participation_status:
-      needs_action: "No response"
-      accepted: "Accepted"
-      declined: "Declined"
-      tentative: "Maybe"
-      unknown: "Unknown"
+      needs_action: "Brak odpowiedzi"
+      accepted: "Zaakceptowano"
+      declined: "Odrzucono"
+      tentative: "Być może"
+      unknown: "Nieznany"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Różnica strefy czasowej"
@@ -413,9 +413,9 @@ pl:
       label_view_template: "Wyświetl szablon"
       label_edit_template: "Edytuj szablon"
       banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+        Aktualnie edytujesz szablon serii spotkań: %{link}. Każde nowe wystąpienie spotkania w serii będzie używać tego szablonu. Zmiany nie będą miały wpływu na wcześniejsze ani już utworzone spotkania.
       draft_banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
+        Obecnie edytujesz szablon serii spotkań: %{link}. Każde nowe wystąpienie spotkania w serii będzie używać tego szablonu. Zmiany nie będą miały wpływu na wcześniejsze ani już utworzone spotkania. Żadne zaproszenia nie zostaną wysłane pocztą elektroniczną w bieżącym trybie wersji roboczej, dopóki nie otworzysz pierwszego spotkania.
     frequency:
       x_daily:
         one: "Codziennie"
@@ -535,9 +535,9 @@ pl:
   label_agenda_item_move_to_bottom: "Przenieś na sam dół"
   label_agenda_item_move_up: "Przenieś wyżej"
   label_agenda_item_move_down: "Przenieś niżej"
-  label_agenda_item_duplicate: "Duplicate"
-  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
+  label_agenda_item_duplicate: "Duplikuj"
+  label_agenda_item_duplicate_in_next: "Duplikuj w następnym wystąpieniu"
+  label_agenda_item_duplicate_in_next_title: "Zduplikować w następnym wystąpieniu?"
   label_agenda_item_add_notes: "Dodawanie notatek"
   label_agenda_item_add_outcome: "Dodaj wynik"
   label_agenda_item_work_package_add: "Dodaj pakiet roboczy"
@@ -573,7 +573,7 @@ pl:
   label_meeting_series_details: "Szczegóły serii spotkań"
   label_meeting_details_edit: "Edytuj szczegóły spotkania"
   label_meeting_state: "Status spotkania"
-  label_meeting_state_draft: "Draft"
+  label_meeting_state_draft: "Wersja robocza"
   label_meeting_state_open: "Otwórz"
   label_meeting_state_closed: "Zamknięte"
   label_meeting_state_agenda_created: "Utworzono plan spotkania"
@@ -584,19 +584,19 @@ pl:
   label_meeting_reopen_action: "Otwórz ponownie spotkanie"
   label_meeting_close_action: "Zamknij spotkanie"
   label_meeting_in_progress_action: "Rozpocznij spotkanie"
-  label_meeting_open_action: "Open meeting"
-  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  label_meeting_open_action: "Otwórz spotkanie"
+  text_meeting_draft_description: "Przygotuj plan spotkania w trybie wersji roboczej. To spotkanie nie wyśle żadnych aktualizacji kalendarza ani zaproszeń, nawet jeśli zmienisz szczegóły spotkania lub dodasz/usuniesz uczestników."
   text_meeting_open_description: "Możesz dodawać/usuwać punkty planu spotkania i uczestników. Gdy plan spotkania będzie gotowy, oznacz go jako „w toku”, aby udokumentować wyniki."
   text_meeting_closed_description: "To spotkanie jest zamknięte. Nie można już dodawać/usuwać elementów planu spotkania."
   text_meeting_in_progress_description: "Można modyfikować plan spotkania, dokumentować wyniki każdego punktu i rejestrować obecność uczestników. Po zakończeniu spotkania można oznaczyć je jako zamknięte, aby je zablokować."
   text_meeting_open_dropdown_description: "Wszelkie dotychczasowe wyniki pozostaną niezmienione, ale użytkownicy nie będą mogli dodawać nowych wyników."
   text_meeting_in_progress_dropdown_description: "Udokumentuj wyniki, takie jak potrzeby informacyjne lub decyzje podjęte podczas spotkania."
   text_meeting_closed_dropdown_description: "To spotkanie jest zamknięte. Nie można już modyfikować pozycji planu spotkania ani wyników."
-  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
-  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
-  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
-  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
-  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
+  text_meeting_draft_banner: "Jesteś teraz w trybie wersji roboczej. To spotkanie nie wyśle żadnych aktualizacji kalendarza ani zaproszeń, nawet jeśli zmienisz szczegóły spotkania lub dodasz/usuniesz uczestników."
+  text_exit_draft_mode_dialog_title: "Otworzyć to spotkanie i wysłać zaproszenia?"
+  text_exit_draft_mode_dialog_subtitle: "Po zaplanowaniu spotkania nie można powrócić do trybu wersji roboczej."
+  text_exit_draft_mode_dialog_template_title: "Otworzyć pierwsze wystąpienie z tej serii spotkań?"
+  text_exit_draft_mode_dialog_template_subtitle: "Po tym nie możesz powrócić do trybu wersji roboczej."
   text_meeting_not_editable_anymore: "Tego spotkania nie można już edytować."
   text_meeting_not_present_anymore: "To spotkanie zostało usunięte. Wybierz inne spotkanie."
   label_add_work_package_to_meeting_dialog_title: "Wybierz spotkanie"
@@ -611,12 +611,12 @@ pl:
   text_agenda_item_not_editable_anymore: "Tego punktu planu spotkania nie można już edytować."
   text_agenda_item_move_next_meeting: "Punkt ten zostanie przeniesiony na następne spotkanie w dniu %{date} o %{time}."
   text_agenda_item_moved_to_next_meeting: "Punkt planu spotkania przeniesiono na następne spotkanie w dniu %{date}"
-  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
-  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Czy na pewno chcesz dodać kopię tego punktu planu spotkania do następnego spotkania w dniu %{date} o godzinie %{time}? Wyniki nie będą duplikowane."
+  text_agenda_item_duplicated_in_next_meeting: "Pozycję planu spotkania zduplikowano w następnym spotkaniu w dniu %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Ten pakiet roboczy nie został jeszcze zaplanowany w planie nadchodzącego spotkania."
   text_agenda_item_move_next_meeting_cancelled: "Nie można przenieść na następne spotkanie, ponieważ zostało ono anulowane."
   text_work_package_add_to_meeting_hint: 'Użyj przycisku „Dodaj do spotkania”, aby dodać ten pakiet roboczy do nadchodzącego spotkania.'
-  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
+  text_work_package_has_no_past_meeting_agenda_items: "Ten pakiet roboczy nie został dodany jako pozycja planu spotkania w poprzednim spotkaniu."
   text_email_updates_muted: "Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest wyciszone. Po wprowadzeniu zmian uczestnicy nie będą otrzymywać zaktualizowanych zaproszeń pocztą elektroniczną."
   text_email_updates_enabled: "Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest włączone. Po wprowadzeniu zmian wszyscy uczestnicy będą otrzymywać zaktualizowane zaproszenia pocztą elektroniczną."
   my_account:

@@ -16,7 +16,7 @@ hu:
         news:
           title: 'Hírek'
         project_description:
-          title: 'Projekt leírása'
+          title: 'Description'
           no_results: "Még nem írt leírást. Az egyik megtalálható a 'Projekt beállításai' részben."
         project_status:
           title: 'Status'

@@ -16,7 +16,7 @@ ja:
         news:
           title: 'ニュース'
         project_description:
-          title: 'プロジェクトの説明'
+          title: 'Description'
           no_results: "説明はまだ記載されていません。 1つは「プロジェクト設定」で入力できます。"
         project_status:
           title: 'Status'

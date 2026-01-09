@@ -716,6 +716,9 @@ ja:
       notice_api_token_revoked: "APIトークンが削除されました。新しいトークンを作成するには、APIセクションの作成ボタンを使用してください。"
       notice_rss_token_revoked: "RSSトークンが削除されました。新しいトークンを作成するには、RSSセクションのリンクを使用してください。"
       notice_ical_token_revoked: 'プロジェクト "%{token_name}" のカレンダー "%{calendar_name}" の iCalendar トークン "%{project_name}" が取り消されました。 このトークンのiCalendar URLは無効です。'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: 現在、報告するニュースはありません。
@@ -2110,6 +2113,7 @@ ja:
   button_click_to_reveal: "明らかにするためにクリック"
   button_close: "閉じる"
   button_collapse_all: "全てを折りたたむ"
+  button_confirm: "Confirm"
   button_configure: "設定"
   button_continue: "続行"
   button_complete: "Complete"
@@ -3849,7 +3853,7 @@ ja:
   notice_not_authorized: "このページにアクセスする権限がありません。"
   notice_not_authorized_archived_project: "アクセスしようとしたプロジェクトはアーカイブされています。"
   notice_requires_enterprise_token: "エンタープライズトークンが見つからないか、このページへのアクセスを許可していません。"
-  notice_password_confirmation_failed: "パスワードが正しくありません。続行できません。"
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} の検索結果があります。 \n タブで最初の結果へフォーカスします。"
   notice_principals_found_single: "1 つの結果があります。 \n タブでフォーカスします。"
   notice_parent_item_not_found: "Parent item not found."

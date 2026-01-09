@@ -739,6 +739,9 @@ cs:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "Token API byl odstraněn. Pro vytvoření nového tokenu použijte odkaz v sekci API."
       notice_ical_token_revoked: 'token iCalendar "%{token_name}" pro kalendář "%{calendar_name}" projektu "%{project_name}" byl zrušen. URL iCalendar s tímto tokenem je nyní neplatná.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: V současné době neexistují žádné zprávy k zobrazení.
@@ -2189,6 +2192,7 @@ cs:
   button_click_to_reveal: "Kliknutím zobrazíte"
   button_close: "Zavřít"
   button_collapse_all: "Sbalit vše"
+  button_confirm: "Confirm"
   button_configure: "Přizpůsobit"
   button_continue: "Pokračovat"
   button_complete: "Complete"
@@ -3993,7 +3997,7 @@ cs:
   notice_not_authorized: "Nemáte oprávnění k přístupu na tuto stránku."
   notice_not_authorized_archived_project: "Projekt, na který se pokoušíte přistoupit byl archivován."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Heslo není správné. Nelze pokračovat."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Nalezeno %{number} výsledků. \nStiskněte Tab pro přechod na první výsledek."
   notice_principals_found_single: "Existuje jeden výsledek. \n Záložka pro zaměření."
   notice_parent_item_not_found: "Parent item not found."

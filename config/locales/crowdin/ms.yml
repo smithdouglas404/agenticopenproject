@@ -717,6 +717,9 @@ ms:
       notice_api_token_revoked: "Token API telah dipadam. Sila gunakan butang di bahagian API untuk mencipta token baharu."
       notice_rss_token_revoked: "Token RSS telah dipadamkan. Untuk mencipta token baharu sila gunakan pautan di bahagian RSS."
       notice_ical_token_revoked: 'Token iCalendar "%{token_name}" untuk kalendar "%{calendar_name}" projek "%{project_name}" telah dibatalkan. URL iCalendar serta token ini sudah tidak sah.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Tiada berita untuk dipaparkan buat masa ini.
@@ -2109,6 +2112,7 @@ ms:
   button_click_to_reveal: "Klik untuk dedahkan"
   button_close: "Tutup"
   button_collapse_all: "Sembunyikan semua"
+  button_confirm: "Confirm"
   button_configure: "Konfigurasi"
   button_continue: "Teruskan"
   button_complete: "Complete"
@@ -3848,7 +3852,7 @@ ms:
   notice_not_authorized: "Anda tidak diberi kebenaran untuk mengakses halaman ini."
   notice_not_authorized_archived_project: "Projek yang anda cuba mengakses telah diarkibkan."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Kata laluan tidak betul. Tidak boleh teruskan."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Terdapat %{number} hasil ditemui. \n Tab untuk memfokuskan hasil pertama."
   notice_principals_found_single: "Terdapat satu hasil. \n Tab untuk fokuskan."
   notice_parent_item_not_found: "Parent item not found."

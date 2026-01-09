@@ -722,6 +722,9 @@ de:
       notice_api_token_revoked: "Das API-Token wurde gelöscht. Nutzen Sie bitte den Knopf in der API-Sektion für die Erstellung eines neues Token. "
       notice_rss_token_revoked: "Der RSS-Token wurde gelöscht. Um ein neues Token zu erstellen, benutzen Sie bitte den Link im RSS-Bereich."
       notice_ical_token_revoked: 'iCalendar-Token „%{token_name}“ für Kalender „%{calendar_name}“ des Projekts „%{project_name}“ wurde widerrufen. Die iCal-URL mit diesem Token ist jetzt ungültig.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Es gibt aktuell keine Neuigkeiten.
@@ -2129,6 +2132,7 @@ de:
   button_click_to_reveal: "Klicke, um anzuzeigen"
   button_close: "Schließen"
   button_collapse_all: "Alle zuklappen"
+  button_confirm: "Confirm"
   button_configure: "Konfigurieren"
   button_continue: "Fortfahren"
   button_complete: "Fertigstellen"
@@ -3890,7 +3894,7 @@ de:
   notice_not_authorized: "Sie sind nicht berechtigt, auf diese Seite zuzugreifen."
   notice_not_authorized_archived_project: "Das Projekt wurde archiviert und ist daher nicht verfügbar."
   notice_requires_enterprise_token: "Kein Enterprise-Token vorhanden oder das vorhandene Token erlaubt keinen Zugriff auf diese Seite."
-  notice_password_confirmation_failed: "Ihr Passwort ist nicht korrekt. Kann nicht fortgesetzt werden."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Es wurden %{number} Ergebnisse gefunden.\nDrücke Tab um das erste Ergebnis zu fokussieren."
   notice_principals_found_single: "Es wurde ein Ergebnis gefunden.\nDrücke Tab um es zu fokussieren."
   notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."

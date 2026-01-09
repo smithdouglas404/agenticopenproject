@@ -715,6 +715,9 @@ zh-CN:
       notice_api_token_revoked: "API 令牌已被删除。要创建新令牌，请使用 API 部分中的链接。"
       notice_rss_token_revoked: "RSS 令牌已被删除。要创建新令牌，请使用 RSS 部分中的链接。"
       notice_ical_token_revoked: '项目“%{project_name}”的日历“%{calendar_name}”的 iCalendar 令牌“%{token_name}”已被撤销。 此令牌的 iCalendar URL 现在无效。'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: 目前没有消息报告。
@@ -2107,6 +2110,7 @@ zh-CN:
   button_click_to_reveal: "单击以显示"
   button_close: "关闭"
   button_collapse_all: "全部折叠"
+  button_confirm: "Confirm"
   button_configure: "配置"
   button_continue: "继续"
   button_complete: "Complete"
@@ -3844,7 +3848,7 @@ zh-CN:
   notice_not_authorized: "您无权访问此页。"
   notice_not_authorized_archived_project: "您尝试访问的项目已存档。"
   notice_requires_enterprise_token: "企业令牌缺失或不允许访问此页面。"
-  notice_password_confirmation_failed: "您的密码不正确。无法继续。"
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "找到 %{number} 条结果。\n 点击以关注第一条结果。"
   notice_principals_found_single: "这有一个结果。\n点击来关注它。"
   notice_parent_item_not_found: "未找到父项"

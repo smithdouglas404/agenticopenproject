@@ -16,7 +16,7 @@ ru:
         news:
           title: 'Новости'
         project_description:
-          title: 'Описание проекта'
+          title: 'Description'
           no_results: "Описания еще нет. Его можно добавить в настройках проекта."
         project_status:
           title: 'Status'

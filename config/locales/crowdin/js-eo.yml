@@ -632,9 +632,6 @@ eo:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Vi devas enirigi vian kontan pasvorton por konfirmi tiun ĉi ŝanaĝon."
-      title: "Konfirmu vian pasvorton por daŭrigi"
     pagination:
       no_other_page: "You are on the only page."
       pages_skipped: "Pages skipped."
@@ -1126,6 +1123,8 @@ eo:
     global_search:
       all_projects: "En ĉiuj projektoj"
       close_search: "Fermi serĉon"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "En tiu ĉi projekto + subprojektoj"
       current_project: "En tiu ĉi projekto"
       recently_viewed: "Recently viewed"

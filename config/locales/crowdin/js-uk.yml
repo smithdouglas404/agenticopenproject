@@ -634,9 +634,6 @@ uk:
           add: "Додати налаштування для проєкту"
           already_selected: "Цей проєкт уже вибрано"
           remove: "Вилучити налаштування проєкту"
-    password_confirmation:
-      field_description: "Вам необхідно ввести пароль облікового запису, щоб підтвердити цю зміну."
-      title: "Підтвердіть ваш пароль щоб продовжити"
     pagination:
       no_other_page: "Ви знаходитесь на єдиній сторінці."
       pages_skipped: "Сторінки пропущено."
@@ -1134,6 +1131,8 @@ uk:
     global_search:
       all_projects: "У всіх проектах"
       close_search: "Закрити пошук"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "У цьому проекті + підпроекти"
       current_project: "У цьому проекті"
       recently_viewed: "Нещодавно переглянуті"

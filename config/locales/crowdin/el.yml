@@ -721,6 +721,9 @@ el:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Δεν υπάρχουν προς το παρόν νέα για αναφορά.
@@ -2133,6 +2136,7 @@ el:
   button_click_to_reveal: "Κάντε κλικ για να εμφανίσετε"
   button_close: "Κλείσιμο"
   button_collapse_all: "Σύμπτυξη όλων"
+  button_confirm: "Confirm"
   button_configure: "Ρύθμιση παραμέτρων"
   button_continue: "Συνέχεια"
   button_complete: "Complete"
@@ -3893,7 +3897,7 @@ el:
   notice_not_authorized: "Δεν έχετε δικαίωμα πρόσβασης σε αυτή τη σελίδα."
   notice_not_authorized_archived_project: "Το έργο που προσπαθείτε να ανοίξετε έχει αρχειοθετηθεί."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Ο κωδικός πρόσβασης δεν είναι σωστός. Δεν μπορείτε να συνεχίσετε."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Βρέθηκαν %{number} αποτελέσματα. \n Πατήστε Tab για να εστιάσετε στο πρώτο αποτέλεσμα."
   notice_principals_found_single: "Υπάρχει ένα αποτέλεσμα. \n Πατήστε Tab για να εστιάσετε σε αυτό."
   notice_parent_item_not_found: "Parent item not found."

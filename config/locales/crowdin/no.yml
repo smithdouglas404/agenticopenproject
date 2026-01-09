@@ -725,6 +725,9 @@
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "RSS-koden er slettet. For å opprette et nytt token må du bruke linken i RSS-avsnittet."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for kalender "%{calendar_name}" i prosjekt "%{project_name}" er trukket tilbake. iCalendar-URL''en med dette tokenet er nå ugyldig.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Det er ingen nyheter å vise.
@@ -2136,6 +2139,7 @@
   button_click_to_reveal: "Klikk for å vise"
   button_close: "Lukk"
   button_collapse_all: "Skjul alle"
+  button_confirm: "Confirm"
   button_configure: "Konfigurer"
   button_continue: "Fortsette"
   button_complete: "Complete"
@@ -3897,7 +3901,7 @@
   notice_not_authorized: "Du har ikke tilgang til å åpne denne siden."
   notice_not_authorized_archived_project: "Prosjektet du forsøker å åpne er arkivert."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Passordet er ikke riktig. Kan ikke fortsette."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Det finnes %{number} resultater. \n bruk tab for å fokusere det første resultatet."
   notice_principals_found_single: "Det er ett resultat. \n Bruk tab for å fokusere det."
   notice_parent_item_not_found: "Parent item not found."

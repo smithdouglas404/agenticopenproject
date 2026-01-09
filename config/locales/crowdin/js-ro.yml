@@ -632,9 +632,6 @@ ro:
           add: "Adaugă o setare pentru proiect"
           already_selected: "Acest proiect este deja selectat"
           remove: "Elimină setările proiectului"
-    password_confirmation:
-      field_description: "Trebuie să introduci parola contului tău pentru a confirma această schimbare."
-      title: "Te rog să confirmi parola pentru a continua"
     pagination:
       no_other_page: "Ești pe singura pagină."
       pages_skipped: "Pagini sărite."
@@ -1129,6 +1126,8 @@ ro:
     global_search:
       all_projects: "In toate proiectele"
       close_search: "Închide căutarea"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "In acest proiect + subproiecte"
       current_project: "În acest proiect"
       recently_viewed: "Vizualizate recent"

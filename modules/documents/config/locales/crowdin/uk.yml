@@ -124,7 +124,7 @@ uk:
           some_unwritable: Деякі значення налаштовуються за допомогою змінних середовища і не можуть бути відредаговані тут.
         hocuspocus_server_url:
           label: "URL-адреса сервера Hocuspocus"
-          caption: "The address of a working Hocuspocus server."
+          caption: "Адреса робочого сервера Hocuspocus."
         hocuspocus_server_secret:
           label: "Секретний ключ клієнта"
           caption: "Вставте секретний код, наданий сервером Hocuspocus."

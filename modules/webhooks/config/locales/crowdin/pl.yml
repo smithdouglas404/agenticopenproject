@@ -28,9 +28,9 @@ pl:
       label_add_new: Dodaj nowy webhook
       label_edit: Edytuj webhook
       label_x_events:
-        one: "1 event"
-        other: "%{count} events"
-        zero: "No events"
+        one: "1 zdarzenie"
+        other: "Liczba zdarzeń: %{count}"
+        zero: "Brak zdarzeń"
       events:
         created: "Utworzono"
         updated: "Zaktualizowano"

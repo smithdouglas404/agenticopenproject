@@ -738,6 +738,9 @@ ru:
       notice_api_token_revoked: "API токен был удален. Чтобы создать новый токен, пожалуйста, используйте кнопку в разделе API."
       notice_rss_token_revoked: "Ключ RSS был удален. Чтобы создать новый токен, пожалуйста, используйте ссылку в разделе RSS."
       notice_ical_token_revoked: 'токен iCalendar "%{token_name}" для календаря "%{calendar_name}" проекта "%{project_name}" был отозван. URL-адрес iCalendar с этим токеном недействителен.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: На данный момент новостей для отчета нет.
@@ -2187,6 +2190,7 @@ ru:
   button_click_to_reveal: "Нажмите, чтобы раскрыть"
   button_close: "Закрыть"
   button_collapse_all: "Свернуть все"
+  button_confirm: "Confirm"
   button_configure: "Настройка"
   button_continue: "Продолжить"
   button_complete: "Готово"
@@ -3991,7 +3995,7 @@ ru:
   notice_not_authorized: "Вы не авторизованы для доступа к этой странице."
   notice_not_authorized_archived_project: "Проект, к которому Вы пытаетесь получить доступ, заархивирован."
   notice_requires_enterprise_token: "Токен Enterprise отсутствует или не разрешает доступ к этой странице."
-  notice_password_confirmation_failed: "Пароль не правильный. Продолжить нельзя."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Найдено %{number} результатов. Нажмите <TAB> для перехода к первому."
   notice_principals_found_single: "Найден один результат. Нажмите <TAB> для перехода к нему."
   notice_parent_item_not_found: "Родительский элемент не найден."

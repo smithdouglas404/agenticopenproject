@@ -632,9 +632,6 @@ fi:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Sinun täytyy syöttää tilisi salasana vahvistaaksesi tämän muutoksen."
-      title: "Vahvista salasanasi jatkaaksesi"
     pagination:
       no_other_page: "Olet jo ainoalla sivulla."
       pages_skipped: "Pages skipped."
@@ -1126,6 +1123,8 @@ fi:
     global_search:
       all_projects: "Kaikista projekteista"
       close_search: "Close search"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Tästä projektista + aliprojekteista"
       current_project: "Tästä projektista"
       recently_viewed: "Recently viewed"

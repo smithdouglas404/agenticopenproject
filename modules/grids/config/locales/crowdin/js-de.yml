@@ -16,7 +16,7 @@ de:
         news:
           title: 'Neuigkeiten'
         project_description:
-          title: 'Projektbeschreibung'
+          title: 'Description'
           no_results: "Noch keine Beschreibung festgelegt. Sie kann in den 'Projekteinstellungen' erstellt werden."
         project_status:
           title: 'Status'

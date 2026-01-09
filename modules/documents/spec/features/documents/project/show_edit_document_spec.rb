@@ -52,7 +52,8 @@ RSpec.describe "Show/Edit Document View",
     # rubocop:enable RSpec/AnyInstance
   end
 
-  it "renders a collaborative document" do
+  it "renders a collaborative document",
+     with_settings: { real_time_text_collaboration_enabled: true } do
     visit document_path(document)
 
     expect(page).to have_content("Collaborative document")

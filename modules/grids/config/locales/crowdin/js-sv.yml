@@ -16,7 +16,7 @@ sv:
         news:
           title: 'Nyheter'
         project_description:
-          title: 'Projektbeskrivning'
+          title: 'Description'
           no_results: "Ingen beskrivning har skrivits ännu. Den kan anges i 'Projektinställningar'."
         project_status:
           title: 'Status'

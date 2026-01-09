@@ -631,9 +631,6 @@ zh-CN:
           add: "为项目添加设置"
           already_selected: "此项目已经选定"
           remove: "移除项目设置"
-    password_confirmation:
-      field_description: "输入密码以确认更改"
-      title: "输入密码以继续"
     pagination:
       no_other_page: "您位于唯一页面上。"
       pages_skipped: "跳过的页面。"
@@ -1122,6 +1119,8 @@ zh-CN:
     global_search:
       all_projects: "在所有项目中"
       close_search: "关闭搜索"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "在当前项目和子项目中"
       current_project: "在当前项目中"
       recently_viewed: "最近浏览"

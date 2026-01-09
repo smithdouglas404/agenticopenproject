@@ -725,6 +725,9 @@ si:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: වාර්තා කිරීමට දැනට කිසිදු ප්රවෘත්තියක් නොමැත.
@@ -2137,6 +2140,7 @@ si:
   button_click_to_reveal: "හෙළි කිරීමට ක්ලික් කරන්න"
   button_close: "වසන්න"
   button_collapse_all: "සියල්ල කඩා වැටෙන්න"
+  button_confirm: "Confirm"
   button_configure: "සකසන්න"
   button_continue: "ඉදිරියට යන්න"
   button_complete: "Complete"
@@ -3898,7 +3902,7 @@ si:
   notice_not_authorized: "මෙම පිටුවට ප්රවේශ වීමට ඔබට අවසර නැත."
   notice_not_authorized_archived_project: "ඔබ ප්රවේශ වීමට උත්සාහ කරන ව්යාපෘතිය සංරක්ෂණය කර ඇත."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "ඔබගේ මුරපදය නිවැරදි නොවේ. දිගටම කරගෙන යා නොහැක."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "සොයාගෙන ඇත %{number} ප්රතිඵල. \n පළමු ප්රතිඵලය අවධානය යොමු කිරීමට ටැබ්."
   notice_principals_found_single: "එක් ප්රති result ලයක් තිබේ. \n එය අවධානය යොමු කිරීමට ටැබ්."
   notice_parent_item_not_found: "Parent item not found."

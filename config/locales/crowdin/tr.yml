@@ -726,6 +726,9 @@ tr:
       notice_api_token_revoked: "API belirteci silinmiştir. Yeni bir belirteç oluşturmak için lütfen API bölümündeki düğmeyi kullanın."
       notice_rss_token_revoked: "RSS belirteci silinmiştir. Yeni bir belirteç oluşturmak için lütfen RSS bölümündeki bağlantıyı kullanın."
       notice_ical_token_revoked: '"%{project_name}" projesinin "%{calendar_name}" takvimi için "%{token_name}" iCalendar belirteci iptal edildi. Bu belirtece sahip iCalendar URL''si artık geçersizdir.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Şu anda rapor edilecek bir haber yok.
@@ -2137,6 +2140,7 @@ tr:
   button_click_to_reveal: "Ortaya çıkarmak için tıklayın"
   button_close: "Kapat"
   button_collapse_all: "Tümünü daralt"
+  button_confirm: "Confirm"
   button_configure: "Düzenle"
   button_continue: "Devam et"
   button_complete: "Complete"
@@ -3897,7 +3901,7 @@ tr:
   notice_not_authorized: "Bu sayfaya erişme yetkiniz yok."
   notice_not_authorized_archived_project: "Erişmeye çalıştığınız proje arşive kaldırılmış."
   notice_requires_enterprise_token: "Kurumsal belirteç eksik veya bu sayfaya erişime izin vermiyor."
-  notice_password_confirmation_failed: "Parolanız doğru değil. Devam edilemez."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} sonuç bulundu.\nİlk sonuç için TABa basın."
   notice_principals_found_single: "Bir sonuç bulundu. \n Ona gitmek için TABa basın."
   notice_parent_item_not_found: "Üst öğe bulunamadı."

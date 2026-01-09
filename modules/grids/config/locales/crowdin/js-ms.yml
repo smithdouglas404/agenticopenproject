@@ -16,7 +16,7 @@ ms:
         news:
           title: 'Berita'
         project_description:
-          title: 'Deskripsi projek'
+          title: 'Description'
           no_results: "Tiada deskripsi yang tertulis lagi. Deskripsi boleh diberikan di 'Tetapan Projek'."
         project_status:
           title: 'Status'

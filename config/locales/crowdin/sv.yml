@@ -725,6 +725,9 @@ sv:
       notice_api_token_revoked: "API-token har tagits bort. För att skapa en ny token använd knappen i API-avsnittet."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Det finns för närvarande inget att rapportera.
@@ -2137,6 +2140,7 @@ sv:
   button_click_to_reveal: "Klicka för att visa"
   button_close: "Stäng"
   button_collapse_all: "Fäll ihop alla"
+  button_confirm: "Confirm"
   button_configure: "Konfigurera"
   button_continue: "Fortsätt"
   button_complete: "Complete"
@@ -3898,7 +3902,7 @@ sv:
   notice_not_authorized: "Du har inte behörighet att komma åt denna sida."
   notice_not_authorized_archived_project: "Projektet som du försöker komma åt har arkiverats."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Ditt lösenord är inte korrekt. Kan inte fortsätta."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} resultat hittades. Använd TAB för att fokusera på det första."
   notice_principals_found_single: "Ett resultat. Använd TAB för att fokusera på det."
   notice_parent_item_not_found: "Parent item not found."

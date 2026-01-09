@@ -27,10 +27,10 @@ ko:
     errors:
       models:
         document_type:
-          one_or_more_required: "Cannot delete the last document type"
+          one_or_more_required: "마지막 문서 유형을 삭제할 수 없습니다"
     models:
       document: "문서"
-      documents: "Documents"
+      documents: "문서"
     attributes:
       document:
         content_binary: "콘텐츠 바이너리"
@@ -45,8 +45,8 @@ ko:
     page_header:
       heading: "모든 문서"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "문서 작업"
+        edit_title: "제목 편집"
     subheader:
       filter:
         label: "문서 이름 필터"
@@ -55,7 +55,7 @@ ko:
       heading: "아직 문서가 없습니다"
       description: "이 보기에는 문서가 없습니다. 아래 버튼을 클릭하여 문서를 추가할 수 있습니다."
     document_categories_deprecation_notice:
-      heading: File categories are now called 'Document types'
+      heading: 파일 카테고리는 이제 '문서 유형'이라고 합니다
       description: |-
         Your existing file categories have been converted to document types with the introduction of the new Documents module.
         All existing documents have also been migrated to these new types.

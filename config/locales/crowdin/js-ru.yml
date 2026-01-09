@@ -633,9 +633,6 @@ ru:
           add: "Добавить настройку для проекта"
           already_selected: "Этот проект уже выбран"
           remove: "Удалить настройки проекта"
-    password_confirmation:
-      field_description: "Чтобы подтвердить изменения, введите пароль учетной записи."
-      title: "Для продолжения введите свой пароль"
     pagination:
       no_other_page: "Вы находитесь на единственной странице."
       pages_skipped: "Страницы пропущены."
@@ -1133,6 +1130,8 @@ ru:
     global_search:
       all_projects: "Во всех проектах"
       close_search: "Закрыть поиск"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "В этом проекте + подпроектах"
       current_project: "В этом проекте"
       recently_viewed: "Недавно просмотренные"

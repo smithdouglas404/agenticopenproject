@@ -732,6 +732,9 @@ ro:
       notice_api_token_revoked: "Token-ul API a fost șters. Pentru a crea un nou token, foloște butonul din secțiunea API."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: În acest moment nu există știri de raportat.
@@ -2163,6 +2166,7 @@ ro:
   button_click_to_reveal: "Clic pentru a dezvălui"
   button_close: "Închide"
   button_collapse_all: "Restrângere totală"
+  button_confirm: "Confirm"
   button_configure: "Configurare"
   button_continue: "Continuă"
   button_complete: "Complete"
@@ -3945,7 +3949,7 @@ ro:
   notice_not_authorized: "Nu sunteți autorizat să accesați această pagină."
   notice_not_authorized_archived_project: "Proiectul pe care încercați să îl accesați a fost arhivat."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Parola dvs. nu este corectă. Nu se poate continua."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "S-au găsit %{number} rezultate\n Tab pentru a se concentra pe primul rezultat."
   notice_principals_found_single: "Există un singur rezultat\n Tab pentru a-l concentra."
   notice_parent_item_not_found: "Parent item not found."

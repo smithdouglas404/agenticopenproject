@@ -28,48 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "support/pages/page"
-
-module Pages
-  module CustomFields
-    class HierarchyPage < Page
-      def path
-        case @tab
-        when "items"
-          "/custom_fields/#{@custom_field.id}/items"
-        when "projects"
-          "/custom_fields/#{@custom_field.id}/projects"
-        else
-          "/custom_fields/#{@custom_field.id}/edit"
-        end
+module OpenProject
+  module Common
+    # @logical_path OpenProject/Common
+    class AdvancedFormInputsPreview < Lookbook::Preview
+      def advanced_radio_button_group
+        render_with_template
       end
 
-      def add_custom_field_state(custom_field)
-        @custom_field = custom_field
-      end
-
-      def switch_tab(tab)
-        @tab = tab.downcase
-
-        within_test_selector("custom_field_detail_header") do
-          click_on "Items"
-        end
-      end
-
-      def expect_tab(tab)
-        @tab = tab.downcase
-
-        within_test_selector("custom_field_detail_header") do
-          expect(page).to have_css("a[href='#{path}']", text: tab, aria: { current: "page" })
-        end
-      end
-
-      def open_action_menu_for(label)
-        within_test_selector("op-custom-fields--hierarchy-item", text: label) do
-          within_test_selector("op-hierarchy-item--action-menu") do
-            click_on
-          end
-        end
+      def advanced_check_box_group
+        render_with_template
       end
     end
   end

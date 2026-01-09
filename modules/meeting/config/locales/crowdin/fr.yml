@@ -236,14 +236,14 @@ fr:
         summary: "« %{title} » a été annulée par %{actor}."
         date_time: "Date/heure prévue"
       ended:
-        header_series: "Ended: Meeting series '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
+        header_series: "Terminé : Série de rencontres '%{title}'"
+        summary_series: "La série de réunions '%{title}' a été clôturée par %{actor}."
       updated:
         header: "La réunion « %{title} » a été mise à jour"
         summary: "La réunion « %{title} » a été mise à jour par %{actor}"
         body: "La réunion « %{title} » a été mise à jour par %{actor}."
-        old_title: "Old title"
-        new_title: "New title"
+        old_title: "Ancien titre"
+        new_title: "Nouveau titre"
         old_date_time: "Ancienne date/heure"
         new_date_time: "Nouvelle date/heure"
         old_location: "Ancien emplacement"
@@ -364,8 +364,8 @@ fr:
       no_items: "Aucun point à l'ordre du jour"
       no_items_flash: "Il n'y a pas de point à l'ordre du jour."
     ical_response:
-      update_failed: "Could not update participation status."
-      meeting_not_found: "Meeting not found for the given UID."
+      update_failed: "Impossible de mettre à jour le statut de participation."
+      meeting_not_found: "Réunion non trouvée pour l'UID donné."
   meeting_section:
     untitled_title: "Section sans titre"
     delete_confirmation: "Supprimer la section supprimera également tous les éléments de l'ordre du jour qui s'y rapportent. Voulez-vous vraiment continuer ?"
@@ -373,11 +373,11 @@ fr:
     empty_text: "Faites glisser des éléments ici ou créez-en un nouveau"
   meeting_participant:
     participation_status:
-      needs_action: "No response"
-      accepted: "Accepted"
-      declined: "Declined"
-      tentative: "Maybe"
-      unknown: "Unknown"
+      needs_action: "Pas de réponse"
+      accepted: "Acceptée"
+      declined: "Refusé"
+      tentative: "Peut-être"
+      unknown: "Inconnu"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Différence de fuseau horaire"
@@ -602,7 +602,7 @@ fr:
   text_work_package_has_no_upcoming_meeting_agenda_items: "Ce lot de travaux n'est pas encore inclus dans l'ordre du jour d'une prochaine réunion."
   text_agenda_item_move_next_meeting_cancelled: "Impossible de passer à la prochaine réunion, car elle a été annulée."
   text_work_package_add_to_meeting_hint: 'Utilisez le bouton "Ajouter à la réunion" pour ajouter ce lot de travaux à une réunion à venir.'
-  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
+  text_work_package_has_no_past_meeting_agenda_items: "Ce work package n'a pas été ajouté comme point à l'ordre du jour lors d'une réunion précédente."
   text_email_updates_muted: "Les mises à jour du calendrier par e-mail sont désactivées. Les participants ne recevront pas d'invitations actualisées par e-mail lorsque vous effectuerez des modifications."
   text_email_updates_enabled: "Les mises à jour du calendrier par e-mail sont activées. Tous les participants recevront des invitations actualisées par e-mail lorsque vous apporterez des modifications."
   my_account:

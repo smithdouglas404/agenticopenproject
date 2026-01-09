@@ -32,60 +32,14 @@ require "support/pages/page"
 
 module Pages
   module CustomFields
-    class IndexPage < Page
+    class New < Page
       def path
-        "/custom_fields"
+        "/custom_fields/new?type=#{@type}"
       end
 
-      def visit_tab(name)
-        visit!
-        within_test_selector("custom-fields--tab-nav") do
-          click_on name.to_s
-        end
-      end
-
-      def set_name(name)
-        find_by_id("custom_field_name").set name
-      end
-
-      def set_default_value(value)
-        fill_in "custom_field[default_value]", with: value
-      end
-
-      def set_all_projects(value)
-        find_by_id("custom_field_is_for_all").set value
-      end
-
-      def has_form_element?(name)
-        page.has_css? "label.form--label", text: name
-      end
-
-      def click_to_create_new_custom_field(type)
-        wait_for_network_idle
-
-        click_button "New custom field"
-
-        click_on type
-      end
-
-      def expect_having_create_item(type)
-        wait_for_network_idle
-
-        click_button "New custom field"
-
-        expect(page).to have_link(type)
-      end
-
-      def expect_not_having_create_item(type)
-        wait_for_network_idle
-
-        click_button "New custom field"
-
-        expect(page).to have_no_link(type)
-      end
-
-      def expect_none_listed
-        expect(page).to have_text("There are currently no custom fields.")
+      def initialize(type = "WorkPackageCustomField")
+        super()
+        @type = type
       end
     end
   end

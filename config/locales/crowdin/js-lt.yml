@@ -634,9 +634,6 @@ lt:
           add: "Pridėti nustatymą projektui"
           already_selected: "Šis projektas jau pažymėtas"
           remove: "Išimti projekto nustatymus"
-    password_confirmation:
-      field_description: "Norėdami patvirtinti šį pakeitimą turite įvesti savo paskyros slaptažodį."
-      title: "Norėdami tęsti, patvirtinkite savo slaptažodį"
     pagination:
       no_other_page: "Jūs esate vieninteliame puslapyje."
       pages_skipped: "Pages skipped."
@@ -1134,6 +1131,8 @@ lt:
     global_search:
       all_projects: "Visuose projektuose"
       close_search: "Uždaryti paiešką"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Šiame projekte + subprojektuose"
       current_project: "Šiame projekte"
       recently_viewed: "Neseniai žiūrėtos"

@@ -16,7 +16,7 @@ uk:
         news:
           title: 'Новини'
         project_description:
-          title: 'Опис проекту'
+          title: 'Description'
           no_results: "Опис ще не створено. Можна вказати в налаштуваннях проекту."
         project_status:
           title: 'Status'

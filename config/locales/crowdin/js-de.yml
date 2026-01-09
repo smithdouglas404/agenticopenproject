@@ -631,9 +631,6 @@ de:
           add: "Einstellung für Projekt hinzufügen"
           already_selected: "Dieses Projekt ist bereits ausgewählt"
           remove: "Projektspezifische Einstellungen entfernen"
-    password_confirmation:
-      field_description: "Sie müssen Ihr Kennwort eingeben, um diese Änderungen zu speichern."
-      title: "Geben Sie Ihr Kennwort ein, um fortzufahren"
     pagination:
       no_other_page: "Sie befinden sich auf der einzigen Seite."
       pages_skipped: "Seiten übersprungen."
@@ -1125,6 +1122,8 @@ de:
     global_search:
       all_projects: "In allen Projekten"
       close_search: "Suche schließen"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "In diesem Projekt + Unterprojekten"
       current_project: "In diesem Projekt"
       recently_viewed: "Vor Kurzem angesehen"

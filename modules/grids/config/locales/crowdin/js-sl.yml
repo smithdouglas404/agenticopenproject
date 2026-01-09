@@ -16,7 +16,7 @@ sl:
         news:
           title: 'Novice'
         project_description:
-          title: 'Opis projekta'
+          title: 'Description'
           no_results: "Opis še ni bil napisan. Lahko ga dodate v 'Projektnih nastavitvah'. "
         project_status:
           title: 'Status'

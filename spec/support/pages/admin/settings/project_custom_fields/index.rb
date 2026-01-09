@@ -28,13 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "support/pages/custom_fields/index_page"
+require "support/pages/custom_fields/index"
 
 module Pages
   module Admin
     module Settings
       module ProjectCustomFields
-        class Index < ::Pages::CustomFields::IndexPage
+        class Index < ::Pages::CustomFields::Index
           def path
             "/admin/settings/project_custom_fields"
           end

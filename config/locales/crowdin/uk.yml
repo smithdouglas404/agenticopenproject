@@ -320,20 +320,20 @@ uk:
         description: Ви можете автоматично надавати певну роль у проєкті будь-якому користувачу, якому призначено цей атрибут, незалежно від його початкової ролі у цьому проєкті.
         warning: Залежно від вибраної нижче ролі, користувач, якому призначено цей атрибут проєкту, може отримати значно більше прав доступу, ніж мав раніше, включно з можливістю додавати нових учасників та підвищувати їхню роль.
         role_field_label: "Роль проєкту"
-        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        role_field_caption: Ця роль проєкту буде автоматично надана будь-якому користувачу, якому призначено цей атрибут проєкту
         review_hint: >
-          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
-        review_button: Review users and permissions
+          У різних проєктах цей атрибут проєкту вже призначено стільком користувачам: %{user_count}. Вони можуть отримати додаткові дозволи, а також доступ до проєктів, у які їх раніше не було додано.
+        review_button: Переглянути користувачів і дозволи
         dialog:
-          title: "Overview of users and permissions"
-          change: Change
+          title: "Огляд користувачів і дозволів"
+          change: Змінити
           changes:
-            new_member: Will be added as a member
-            remove_member: Will be removed as a member
-            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
-            gain_role: Will gain role ‘%{new_role}’
-            lose_role: Will lose role ‘%{old_role}’
-            no_change: No changes
+            new_member: Буде додано як учасника
+            remove_member: Цього учасника буде видалено
+            gain_and_lose_role: Втратить роль «%{old_role}» і отримає роль «%{new_role}»
+            gain_role: Отримає роль «%{new_role}»
+            lose_role: Втратить роль «%{old_role}»
+            no_change: Немає змін
     text_add_new_custom_field: >
       Щоб додати нові користувальницькі поля до проекту, спочатку потрібно створити їх, перш ніж ви зможете додати їх до цього проекту.
     is_enabled_globally: "Увімкнено у всьому світі"
@@ -344,41 +344,41 @@ uk:
     reorder_confirmation: "Увага! Поточний порядок доступних значень буде втрачено. Продовжити?"
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
     calculated_field_not_editable: "Атрибут не підлягає редагуванню. Його значення обчислюється автоматично."
-    no_role_assigment: "No role assignment"
+    no_role_assigment: "Роль не призначено"
     instructions:
       is_required:
-        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        all: "Позначте користувальницьке поле як обов’язкове. Тоді його необхідно буде заповнювати при створенні нових ресурсів. При оновленні наявних ресурсів вводити значення не буде потрібно."
         project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
-        all: "Mark the custom field as available in all existing and new projects."
-        project: "Mark the attribute as available in all existing and new projects."
+        all: "Позначте користувацьке поле як доступне в усіх наявних і нових проєктах."
+        project: "Позначте атрибут як доступний в усіх наявних і нових проєктах."
       multi_select:
-        all: "Allows the user to assign multiple values to this custom field."
-        project: "Allows the user to assign multiple values to this attribute."
+        all: "Це дає змогу користувачу присвоїти користувацькому полю кілька значень."
+        project: "Це дає змогу користувачу присвоїти атрибуту кілька значень."
       searchable:
-        all: "Include the field values when using the global search functionality."
-        project: "Check to make this attribute available as a filter in project lists."
+        all: "Включіть значення полів під час використання функції глобального пошуку."
+        project: "Установіть прапорець, щоб зробити цей атрибут доступним як фільтр у списках проєктів."
       editable:
-        all: "Allow the field to be editable by users themselves."
+        all: "Дозвольте користувачам самостійно редагувати це поле."
       admin_only:
-        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
-        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+        all: "Установіть прапорець, щоб зробити це користувацьке поле видимим лише для адміністраторів. Користувачі без прав адміністратора не зможуть переглядати або редагувати його."
+        project: "Установіть прапорець, щоб зробити цей атрибут видимим лише для адміністраторів. Користувачі без прав адміністратора не зможуть переглядати або редагувати його."
       is_filter:
         all: >
-          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+          Дозвольте використовувати користувацьке поле у фільтрі в поданнях пакетів робіт. Зверніть увагу: користувацьке поле відображатиметься в глобальних поданнях, лише якщо встановлено прапорець «Для всіх проєктів».
       formula:
-        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+        project: "Додайте числові значення або введіть «/» для пошуку атрибута чи математичного оператора."
     tab:
       no_results_title_text: Наразі немає спеціальних полів.
       no_results_content_text: Створіть нове спеціальне поле
   calculated_values:
     error_dialog:
-      title: "Error with Calculated value"
+      title: "Помилка, пов’язана з полем «Розраховане значення»"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
-      mathematical: "The mathematical formula leads to an error. Please review the project calculation attribute and try again."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
+      unknown: "Сталася невідома помилка. Перевірте формулу, що використовується для цього поля «Розраховане значення»."
+      mathematical: "Математична формула призводить до помилки. Перевірте обчислювальний атрибут проєкту й повторіть спробу."
+      missing_value: Атрибут «%{custom_field_name}» обов’язковий для цього поля «Розраховане значення», але є порожнім.
+      disabled_value: Атрибут «%{custom_field_name}» обов’язковий для цього поля «Розраховане значення», але його вимкнено для проєкту.
   concatenation:
     single: "або"
   danger_dialog:
@@ -402,7 +402,7 @@ uk:
       int?: "має бути цілим числом."
       key?: "— відсутній елемент."
       not_found: "— не знайдено."
-      respond_to?: "does not implement required method."
+      respond_to?: "не реалізує потрібний метод."
       rules:
         copy_workflow_from:
           workflow_missing: "не має власного робочого процесу."
@@ -425,7 +425,7 @@ uk:
       depth: "Глибина"
       item: "Об’єкт"
       label: "Мітка"
-      weight: "Weight"
+      weight: "Вага"
       short: "Коротка назва"
       parent: "Батьківський об’єкт"
       blueprint: "Структура шаблону"
@@ -464,18 +464,18 @@ uk:
   portfolios:
     index:
       search:
-        label: Portfolio name filter
-        placeholder: Search portfolios
+        label: Фільтр за назвою портфелів
+        placeholder: Пошук портфелів
       sub_items_html:
-        one: "<strong>1</strong> sub-item"
-        few: "<strong>%{count}</strong> sub-items"
-        many: "<strong>%{count}</strong> sub-items"
-        other: "<strong>%{count}</strong> sub-items"
+        one: "<strong>1</strong> піделемент"
+        few: "<strong>%{count}</strong> піделементи"
+        many: "<strong>%{count}</strong> піделементів"
+        other: "<strong>%{count}</strong> піделемента"
     lists:
-      active: "Active portfolios"
-      my: "My portfolios"
-      favorited: "Favorite portfolios"
-      archived: "Archived portfolios"
+      active: "Активні портфелі"
+      my: "Мої портфелі"
+      favorited: "Вибрані портфелі"
+      archived: "Архівні портфелі"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -488,14 +488,14 @@ uk:
       work_package_file_links: "Пакети робіт: посилання на файли"
       work_package_shares: "Пакети робіт: спільні ресурси"
     create:
-      notification_email_subject: "Your project '%{project_name}' has been created"
-      complete_wizard_link: "Complete the %{artefact_name}"
+      notification_email_subject: "Ваш проєкт «%{project_name}» створено"
+      complete_wizard_link: "Заповніть %{artefact_name}"
     delete:
       scheduled: "Видалення заплановано та виконується у фоновому режимі. Ви отримаєте сповіщення про результат."
       schedule_failed: "Проект не можна видалити: %{errors}"
-      failed: "Deletion of project '%{name}' has failed"
-      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
-      completed: "Deletion of project '%{name}' completed"
+      failed: "Не вдалося видалити проєкт «%{name}»"
+      failed_text: "Не вдалося виконати запит на видалення проєкту «%{name}». Проєкт залишився в архіві."
+      completed: "Видалення проєкту «%{name}» завершено"
       completed_text: "Запит видалення проекту '%{name}' завершено."
       completed_text_children: "Крім того, видалено такі підпроєкти:"
     index:
@@ -540,12 +540,12 @@ uk:
       change_identifier: Ідентифікатор змін
       subitems:
         template_section: >
-          Select templates to be used when creating new subitems.
-        project_template_label: "Template for projects"
-        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
-        program_template_label: "Template for programs"
-        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        no_template: "No predefined template"
+          Виберіть шаблони, які використовуватимуться при створенні нових піделементів.
+        project_template_label: "Шаблон для проєктів"
+        project_template_caption: "Виберіть шаблонний проєкт, який використовуватиметься за замовчуванням для нових піделементів цього типу."
+        program_template_label: "Шаблон для програм"
+        program_template_caption: "Виберіть шаблонну програму, яка використовуватиметься за замовчуванням для нових піделементів цього типу."
+        no_template: "Немає попередньо визначеного шаблону"
       template:
         menu_title: "Template"
         title: "Template settings"
@@ -588,8 +588,8 @@ uk:
           label_disable_single: "Вимкнено в цьому проєкті; натисніть, щоб увімкнути"
           remove_from_project: "Вилучити з проєкту"
         is_for_all_blank_slate:
-          heading: For all projects
-          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+          heading: Для всіх проєктів
+          description: Цей атрибут проєкту активовано в усіх проєктах, оскільки встановлено прапорець «Для всіх проєктів». Його не можна деактивувати для окремих проєктів.
       types:
         no_results_title_text: Наразі немає доступних типів.
         form:
@@ -610,17 +610,17 @@ uk:
           description_file_storage_selection: "Select which of the configured external file storages should be used."
           external_file_storage: "External file storage"
           label_artifact_export: "Artifact export"
-          label_attachment_export: "Save as work package file attachment"
-          label_file_link_export: "Upload file to external file storage and add file link to work package"
-          pdf_file_storage: "PDF file storage"
-          unavailable: "unavailable"
-        label_request_submission: "Request submission"
+          label_attachment_export: "Зберегти як вкладення файлу в пакеті робіт"
+          label_file_link_export: "Завантажити файл у зовнішнє файлове сховище й додати посилання на нього в пакет робіт"
+          pdf_file_storage: "Сховище файлів PDF"
+          unavailable: "недоступно"
+        label_request_submission: "Подання запиту"
         project_attributes_description: >
-          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
+          Виберіть атрибути проєкту, які слід включити в запит на ініціювання проєкту. Цей список містить лише [атрибути проєкту](project_attributes_url), увімкнені для цього проєкту.
     status:
       button_edit: Edit status
     wizard:
-      sidebar_content_title: "Content"
+      sidebar_content_title: "Вміст"
       sections: "Sections"
       title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
@@ -736,6 +736,9 @@ uk:
       notice_api_token_revoked: "Маркер API видалено. Щоб створити новий, скористайтеся кнопкою в розділі API."
       notice_rss_token_revoked: "Маркер RSS видалено. Щоб створити новий, скористайтеся посиланням у розділі RSS."
       notice_ical_token_revoked: 'Маркер iCalendar «%{token_name}» для календаря «%{calendar_name}» проєкту «%{project_name}» відкликано. URL-адреса iCalendar із цим маркером зараз недійсна.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Наразі немає жодної новини.
@@ -2183,6 +2186,7 @@ uk:
   button_click_to_reveal: "Натисніть, щоб показати"
   button_close: "Закрити"
   button_collapse_all: "Згорнути все"
+  button_confirm: "Confirm"
   button_configure: "Настроювання"
   button_continue: "Продовжити"
   button_complete: "Complete"
@@ -3987,7 +3991,7 @@ uk:
   notice_not_authorized: "Ви не авторизовані для доступу до цієї сторінки."
   notice_not_authorized_archived_project: "Проект ви намагаєтеся отримати доступ до архіву."
   notice_requires_enterprise_token: "Токен Enterprise відсутній або не надає доступу до цієї сторінки."
-  notice_password_confirmation_failed: "Ваш пароль неправильний. Неможливо продовжити."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "There are %{number} знайдені результати. \nВкладка для фокусування першого результату."
   notice_principals_found_single: "Знайдений один результат. Натисніть <TAB> для переходу до нього."
   notice_parent_item_not_found: "Батьківський об’єкт не знайдено."

@@ -28,9 +28,9 @@ uk:
       label_add_new: Додати новий вебхук
       label_edit: Редагувати вебхук
       label_x_events:
-        one: "1 event"
-        other: "%{count} events"
-        zero: "No events"
+        one: "1 подія"
+        other: "%{count} події(-й)"
+        zero: "Немає подій"
       events:
         created: "Створено"
         updated: "Оновлено"

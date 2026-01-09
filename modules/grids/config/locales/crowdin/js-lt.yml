@@ -16,7 +16,7 @@ lt:
         news:
           title: 'Naujienos'
         project_description:
-          title: 'Projekto aprašymas'
+          title: 'Description'
           no_results: "Dar neįrašytas aprašymas. Jį galima nurodyti „Projekto nustatymuose“."
         project_status:
           title: 'Status'

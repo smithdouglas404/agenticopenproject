@@ -722,6 +722,9 @@ ca:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "S'ha suprimit el token RSS. Per crear un token nou, utilitzeu l'enllaç de la secció RSS."
       notice_ical_token_revoked: 'El token d''iCalendar "%{token_name}" per al calendari "%{calendar_name}" en el projecte "%{project_name}" s''ha revocat. L''URL d''iCalendar amb aquest token és ara invàlida.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Actualment no hi ha cap novetat per a informar.
@@ -2134,6 +2137,7 @@ ca:
   button_click_to_reveal: "Clica per mostrar"
   button_close: "Tanca"
   button_collapse_all: "Replega-ho tot"
+  button_confirm: "Confirm"
   button_configure: "Configurar"
   button_continue: "Continua"
   button_complete: "Complete"
@@ -3892,7 +3896,7 @@ ca:
   notice_not_authorized: "No tens permís per accedir a aquesta pàgina."
   notice_not_authorized_archived_project: "El projecte al que intentes accedir està arxivat."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "La teva contrasenya no és correcta, no es pot continuar."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "S'han trobat %{number} resultats.\nPrem per focalitzar el primer resultat."
   notice_principals_found_single: "S'han trobat un resultat.\nPrem per focalitzar-lo."
   notice_parent_item_not_found: "Parent item not found."

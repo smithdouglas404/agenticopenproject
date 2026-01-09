@@ -16,7 +16,7 @@ ko:
         news:
           title: '뉴스'
         project_description:
-          title: '프로젝트 설명'
+          title: 'Description'
           no_results: "설명이 아직 작성되지 않았습니다. '프로젝트 설정'에서 입력할 수 있습니다."
         project_status:
           title: 'Status'

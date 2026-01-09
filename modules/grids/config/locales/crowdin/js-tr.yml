@@ -16,7 +16,7 @@ tr:
         news:
           title: 'Haberler'
         project_description:
-          title: 'Proje tanımı'
+          title: 'Description'
           no_results: "Henüz bir açıklama yazılmadı. Biri 'Proje ayarları' içinde sağlanabilir."
         project_status:
           title: 'Status'

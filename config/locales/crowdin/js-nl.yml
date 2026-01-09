@@ -632,9 +632,6 @@ nl:
           add: "Instelling voor project toevoegen"
           already_selected: "Dit project is al geselecteerd"
           remove: "Projectinstellingen verwijderen"
-    password_confirmation:
-      field_description: "U moet uw wachtwoord invoeren om deze wijziging te bevestigen."
-      title: "Voer uw wachtwoord in om door te gaan"
     pagination:
       no_other_page: "U bent op de enige pagina."
       pages_skipped: "Pages skipped."
@@ -1126,6 +1123,8 @@ nl:
     global_search:
       all_projects: "Voor alle projecten"
       close_search: "Sluit zoekopdracht"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "In dit project + subprojecten"
       current_project: "In dit project"
       recently_viewed: "Recent bekeken"

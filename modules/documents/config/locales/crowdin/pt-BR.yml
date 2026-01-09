@@ -93,54 +93,52 @@ pt-BR:
     new_category: "Nova categoria"
     new_type: "Novo tipo"
     delete_dialog:
-      title: "Deletar documento"
-      heading: "Deletar este documento?"
-      confirmation_message_html: "Isso deletará permanentemente este documento e todos os arquivos anexados. Você tem certeza que deseja fazer isso?"
+      title: "Excluir documento"
+      heading: "Excluir este documento?"
+      confirmation_message_html: "Isso excluirá permanentemente este documento e todos os anexos. Tem certeza de que deseja fazer isso?"
     delete_document_type_dialog:
-      title: Deletar tipo de documento
-      heading: Delete this document type?
+      title: Excluir tipo de documento
+      heading: Excluir este tipo de documento?
       confirmation_message: |-
-        The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
-      select_reassign_to_label: Reassign documents to
+        O tipo “%{type_name}” não está sendo usado no momento. Excluir esse tipo não terá efeito sobre os documentos existentes.
+      select_reassign_to_label: Reatribuir documentos a
       reassign_message:
-        one: The type "%{type_name}" is currently being used in %{document_count} document. Please select which type to reassign them to.
-        other: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+        one: O tipo “%{type_name}” está sendo usado atualmente em %{document_count} documento. Selecione para qual tipo deseja reatribuí-los.
+        other: O tipo “%{type_name}” está sendo usado atualmente em %{document_count} documentos. Selecione para qual tipo deseja reatribuí-los.
       at_least_one_type_required:
-        title: Cannot delete document type
-        heading: Cannot delete the last document type
-        message: There must always be at least one document type configured. Create another one first if you want to delete this one.
+        title: Não é possível excluir o tipo de documento
+        heading: Não é possível excluir o último tipo de documento
+        message: É necessário haver pelo menos um tipo de documento configurado. Crie outro tipo antes de excluir este.
     admin:
       collaboration_settings:
         page_header:
           description: |-
-            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
-            It requires a working %{hocuspocus_server_link} to function.
+            Quando ativada, a colaboração em tempo real permite que vários usuários editem um documento simultaneamente.
+            Para funcionar, é necessário ter um %{hocuspocus_server_link} em funcionamento.
         banner:
-          none_writable: These values are configured via environment variables and cannot be edited here.
-          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+          none_writable: Esses valores são configurados por meio de variáveis de ambiente e não podem ser editados aqui.
+          some_unwritable: Alguns valores são configurados por meio de variáveis de ambiente e não podem ser editados aqui.
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The address of a working Hocuspocus server."
+          label: "URL do servidor Hocuspocus"
+          caption: "O endereço de um servidor Hocuspocus em funcionamento."
         hocuspocus_server_secret:
-          label: "Client secret"
-          caption: "Paste the secret provided by the Hocuspocus server."
-        hocuspocus_server: Hocuspocus server
+          label: "Segredo do cliente"
+          caption: "Cole o segredo fornecido pelo servidor Hocuspocus."
+        hocuspocus_server: Servidor Hocuspocus
       enable_text_collaboration:
-        heading: Real-time collaboration is not enabled
+        heading: A colaboração em tempo real não está habilitada
         description: |-
-          Once enabled, multiple users will be able to work together on a document at the same time.
-          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
-          Hocuspocus server.
-        primary_action: Enable real-time collaboration
-        success: Real-time collaboration has been enabled.
+          Depois de habilitada, vários usuários poderão trabalhar simultaneamente no mesmo documento.
+          Todos os novos documentos passarão a usar um novo editor (BlockNote) e exigirão uma conexão funcional com um servidor Hocuspocus.
+        primary_action: Habilitar colaboração em tempo real
+        success: A colaboração em tempo real foi habilitada.
       disable_text_collaboration_dialog:
-        title: Disable real-time collaboration
-        heading: Disable real-time collaboration?
+        title: Desabilitar colaboração em tempo real
+        heading: Desabilitar colaboração em tempo real?
         confirmation_message: |-
-          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
-          real-time collaboration and the BlockNote editor in this instance.
-        confirmation_checkbox_message: I understand that I might permanently lose data
-        success: Real-time collaboration has been disabled.
+          Todos os documentos existentes podem se tornar inacessíveis. Faça isso apenas se tiver certeza de que deseja desabilitar a colaboração em tempo real e o editor BlockNote nesta instância.
+        confirmation_checkbox_message: Entendo que posso perder dados permanentemente
+        success: A colaboração em tempo real foi desabilitada.
   label_document_added: "Documento adicionado"
   label_document_new: "Novo documento"
   label_document_plural: "Documentos"
@@ -148,7 +146,7 @@ pt-BR:
   label_document_title: "Título"
   label_document_description: "Descrição"
   label_document_category: "Categoria"
-  label_document_type: "Type"
+  label_document_type: "Tipo"
   permission_manage_documents: "Gerenciar documentos"
   permission_view_documents: "Visualizar documentos"
   project_module_documents: "Documentos"

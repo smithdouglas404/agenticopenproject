@@ -738,6 +738,9 @@ sl:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Trenutno ni nobenih novic za poročanje.
@@ -2188,6 +2191,7 @@ sl:
   button_click_to_reveal: "Klikni za razkritje"
   button_close: "Zapri"
   button_collapse_all: "Strni vse"
+  button_confirm: "Confirm"
   button_configure: "Nastavi"
   button_continue: "Nadaljuj"
   button_complete: "Complete"
@@ -3993,7 +3997,7 @@ sl:
   notice_not_authorized: "Nimate privilegijev za dostop do te strani."
   notice_not_authorized_archived_project: "Projekt, do katerega poskušate dostopati, je bil arhiviran."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Vaše geslo ni pravilno. Ne morete nadaljevati."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Najdeno je %{number} rezultatov.\nKliknite tipko tab da fokusirate prvi rezultat."
   notice_principals_found_single: "Najden je en rezultat.\nPritisnite tab, da ga prikaže."
   notice_parent_item_not_found: "Parent item not found."

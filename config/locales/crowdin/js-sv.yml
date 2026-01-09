@@ -631,9 +631,6 @@ sv:
           add: "Lägg till inställning för projekt"
           already_selected: "Detta projekt är redan valt"
           remove: "Ta bort projektinställningar"
-    password_confirmation:
-      field_description: "Du behöver ange ditt lösenord för att bekräfta ändringen."
-      title: "Bekräfta ditt lösenord för att fortsätta"
     pagination:
       no_other_page: "Du befinner dig på den enda sidan."
       pages_skipped: "Sidor överhoppade."
@@ -1125,6 +1122,8 @@ sv:
     global_search:
       all_projects: "I alla projekt"
       close_search: "Stäng sökning"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "I detta projekt + delprojekt"
       current_project: "I detta projekt"
       recently_viewed: "Nyligen visade"

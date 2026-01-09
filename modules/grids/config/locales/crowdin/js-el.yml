@@ -16,7 +16,7 @@ el:
         news:
           title: 'Νέα'
         project_description:
-          title: 'Περιγραφή έργου'
+          title: 'Description'
           no_results: "Δεν έχει γραφτεί ακόμα περιγραφή. Μπορεί να παρασχεθεί μια στις 'Ρυθμίσεις έργου'."
         project_status:
           title: 'Status'

@@ -16,7 +16,7 @@ cs:
         news:
           title: 'Novinky'
         project_description:
-          title: 'Popis projektu'
+          title: 'Description'
           no_results: "Zatím nebyl napsán žádný popis. Můžete ho uvést v \"Nastavení projektu\"."
         project_status:
           title: 'Status'

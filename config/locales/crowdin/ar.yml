@@ -753,6 +753,9 @@ ar:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: لا يوجد حالياً أخبار لتقدم.
@@ -2241,6 +2244,7 @@ ar:
   button_click_to_reveal: "Click to reveal"
   button_close: "أغلِق"
   button_collapse_all: "طَيْ الجميع"
+  button_confirm: "Confirm"
   button_configure: "تكوين"
   button_continue: "Continue"
   button_complete: "Complete"
@@ -4090,7 +4094,7 @@ ar:
   notice_not_authorized: "غير مسموح لك بالوصول إلى هذه الصفحة."
   notice_not_authorized_archived_project: "المشروع الذي تحاول الوصول إليه تمت أرشفته."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Your password is not correct. Cannot continue."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "وُجِد %{number} من النتائج.\nإضغط كي تحدد على النتيجة الأولى."
   notice_principals_found_single: "هنالك نتيجة واحدة.\nإضغط لتحديدها."
   notice_parent_item_not_found: "Parent item not found."

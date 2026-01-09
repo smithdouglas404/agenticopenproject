@@ -16,7 +16,7 @@ bg:
         news:
           title: 'Новини'
         project_description:
-          title: 'Описание на проект'
+          title: 'Description'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
           title: 'Status'

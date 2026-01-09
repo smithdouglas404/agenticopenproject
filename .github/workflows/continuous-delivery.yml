@@ -12,7 +12,7 @@ jobs:
   trigger_downstream_workflow:
     permissions:
       contents: none
-    if: github.repository == 'opf/openproject'
+    if: github.repository_owner == 'opf'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Flavours workflow

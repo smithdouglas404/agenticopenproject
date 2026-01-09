@@ -16,7 +16,7 @@ hi:
         news:
           title: 'नया'
         project_description:
-          title: 'प्रोजेक्ट विवरण'
+          title: 'Description'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
           title: 'Status'

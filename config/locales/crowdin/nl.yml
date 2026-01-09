@@ -722,6 +722,9 @@ nl:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "Het RSS-sleutel is verwijderd. Gebruik de link in het gedeelte RSS om een nieuwe sleutel aan te maken."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" voor kalender "%{calendar_name}" van project "%{project_name}" is ingetrokken. De iCalendar URL met deze token is nu ongeldig.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Er is momenteel geen nieuws om te rapporteren.
@@ -2133,6 +2136,7 @@ nl:
   button_click_to_reveal: "Klik om te onthullen"
   button_close: "Sluiten"
   button_collapse_all: "Alles inklappen"
+  button_confirm: "Confirm"
   button_configure: "Configureer"
   button_continue: "Verdergaan"
   button_complete: "Complete"
@@ -3893,7 +3897,7 @@ nl:
   notice_not_authorized: "U bent niet gemachtigd om deze pagina te openen."
   notice_not_authorized_archived_project: "Het project dat u probeert te bezoeken is gearchiveerd."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Uw wachtwoord is niet correct. Kan niet doorgaan."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Er zijn %{number} resultaten gevonden.   Tab om het eerste resultaat te tonen."
   notice_principals_found_single: "Er is één resultaat. Tab om te tonen."
   notice_parent_item_not_found: "Parent item not found."

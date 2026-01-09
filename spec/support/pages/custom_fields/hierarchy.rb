@@ -31,33 +31,45 @@
 require "support/pages/page"
 
 module Pages
-  module My
-    class PasswordPage < ::Pages::Page
+  module CustomFields
+    class Hierarchy < Page
       def path
-        "/my/password"
+        case @tab
+        when "items"
+          "/custom_fields/#{@custom_field.id}/items"
+        when "projects"
+          "/custom_fields/#{@custom_field.id}/projects"
+        else
+          "/custom_fields/#{@custom_field.id}/edit"
+        end
       end
 
-      def change_password(old_password, new_password, confirmation = new_password)
-        SeleniumHubWaiter.wait
-        page.fill_in("password", with: old_password, match: :prefer_exact)
-        page.fill_in("new_password", with: new_password)
-        page.fill_in("new_password_confirmation", with: confirmation)
-
-        page.click_link_or_button "Save"
+      def add_custom_field_state(custom_field)
+        @custom_field = custom_field
       end
 
-      def expect_password_reuse_error_message(count)
-        expect_flash(type: :error,
-                     message: I18n.t(:"activerecord.errors.models.user.attributes.password.reused", count:))
+      def switch_tab(tab)
+        @tab = tab.downcase
+
+        within_test_selector("custom_field_detail_header") do
+          click_on "Items"
+        end
       end
 
-      def expect_password_weak_error_message
-        expect_flash(type: :error,
-                     message: "Password Must contain characters of the following classes (at least 2 of 3): lowercase (e.g. 'a'), uppercase (e.g. 'A'), numeric (e.g. '1')")
+      def expect_tab(tab)
+        @tab = tab.downcase
+
+        within_test_selector("custom_field_detail_header") do
+          expect(page).to have_css("a[href='#{path}']", text: tab, aria: { current: "page" })
+        end
       end
 
-      def expect_password_updated_message
-        expect_and_dismiss_flash(type: :info, message: I18n.t(:notice_account_password_updated))
+      def open_action_menu_for(label)
+        within_test_selector("op-custom-fields--hierarchy-item", text: label) do
+          within_test_selector("op-hierarchy-item--action-menu") do
+            click_on
+          end
+        end
       end
     end
   end

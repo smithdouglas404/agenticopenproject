@@ -16,7 +16,7 @@ it:
         news:
           title: 'Notizie'
         project_description:
-          title: 'Descrizione del progetto'
+          title: 'Description'
           no_results: "Nessuna descrizione ancora scritta. Una può essere fornita nelle \"Impostazioni di progetto\"."
         project_status:
           title: 'Status'

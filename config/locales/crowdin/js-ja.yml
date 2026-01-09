@@ -632,9 +632,6 @@ ja:
           add: "プロジェクトの設定を追加する"
           already_selected: "このプロジェクトはすでに選ばれている"
           remove: "プロジェクトの設定を削除する"
-    password_confirmation:
-      field_description: "この変更を確認するには、アカウントのパスワードを入力する必要があります。"
-      title: "続行するにはパスワードを確認してください"
     pagination:
       no_other_page: "このページだけです。"
       pages_skipped: "ページスキップ。"
@@ -1123,6 +1120,8 @@ ja:
     global_search:
       all_projects: "すべてのプロジェクトで"
       close_search: "検索を閉じる"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "このプロジェクトと子プロジェクトでは"
       current_project: "このプロジェクトでは"
       recently_viewed: "最近閲覧した記事"

@@ -16,7 +16,7 @@ nl:
         news:
           title: 'Nieuws'
         project_description:
-          title: 'Projectbeschrijving'
+          title: 'Description'
           no_results: "Er is nog geen beschrijving geschreven. Er kan een vermelding worden verstrekt in de 'Projectinstellingen'."
         project_status:
           title: 'Status'

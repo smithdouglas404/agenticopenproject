@@ -16,7 +16,7 @@ id:
         news:
           title: 'News'
         project_description:
-          title: 'Deskripsi Proyek'
+          title: 'Description'
           no_results: "Belum ada deskripsi yang ditulis. Deskripsi dapat disediakan dalam 'Pengaturan proyek'."
         project_status:
           title: 'Status'

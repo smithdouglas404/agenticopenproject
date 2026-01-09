@@ -16,7 +16,7 @@ pl:
         news:
           title: 'Aktualności'
         project_description:
-          title: 'Opis projektu'
+          title: 'Description'
           no_results: "Nie napisano jeszcze opisu. Można go podać w sekcji Ustawienia projektu."
         project_status:
           title: 'Status'
@@ -30,7 +30,7 @@ pl:
         project_status_beta:
           title: 'Status (BETA)'
         subprojects:
-          title: 'Podpozycje'
+          title: 'Podppzycje'
         project_favorites:
           title: 'Ulubione projekty'
           no_results: 'Obecnie nie masz żadnych ulubionych projektów. Kliknij ikonę gwiazdki na pulpicie nawigacyjnym projektu, aby dodać go do ulubionych.'
@@ -52,7 +52,7 @@ pl:
           title: 'Tabela pakietów roboczych'
         work_packages_graph:
           title: 'Wykres pakietów roboczych'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "Wykres %{chartType} przedstawiający pakiety robocze, które są %{description}."
         work_packages_calendar:
           title: 'Kalendarz'
         work_packages_overview:

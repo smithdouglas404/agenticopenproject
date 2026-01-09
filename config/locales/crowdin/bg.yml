@@ -725,6 +725,9 @@ bg:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "RSS токенът е изтрит. За да създадете нов токен, използвайте връзката в раздела RSS."
       notice_ical_token_revoked: 'iCalendar токенът "%{token_name}" за календара "%{calendar_name}" на проекта "%{project_name}" е отменен. URL адресът на iCalendar с този токен, вече е невалиден.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Няма новини за докладване.
@@ -2137,6 +2140,7 @@ bg:
   button_click_to_reveal: "Кликнете, за да разкриете"
   button_close: "Затворени"
   button_collapse_all: "Свиване на всички"
+  button_confirm: "Confirm"
   button_configure: "Конфигуриране"
   button_continue: "Продължаване"
   button_complete: "Complete"
@@ -3898,7 +3902,7 @@ bg:
   notice_not_authorized: "Нямате право на достъп до тази страница."
   notice_not_authorized_archived_project: "Проектът, до който се опитвате да получите достъп е бил архивиран."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Паролата ви е неправилна! Не може да продължите!"
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Има намерени %{number} резултата. \n Таб, за да се фокусира първият резултат."
   notice_principals_found_single: "Резултатът е един. \n Таб, за да го фокусирате."
   notice_parent_item_not_found: "Parent item not found."

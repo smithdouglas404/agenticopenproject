@@ -16,7 +16,7 @@ vi:
         news:
           title: 'Tin tức'
         project_description:
-          title: 'Mô tả dự án'
+          title: 'Description'
           no_results: "Chưa có mô tả nào được viết. Có thể cung cấp trong 'Cài đặt dự án'."
         project_status:
           title: 'Status'

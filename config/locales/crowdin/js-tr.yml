@@ -632,9 +632,6 @@ tr:
           add: "Proje için ayar ekle"
           already_selected: "Bu proje zaten seçildi"
           remove: "Proje ayarlarını kaldır"
-    password_confirmation:
-      field_description: "Bu değişikliği onaylamak için hesap parolanızı girmeniz gerekir."
-      title: "Devam etmek için parolanızı doğrulayın"
     pagination:
       no_other_page: "Geçerli tek sayfadasınız."
       pages_skipped: "Sayfalar atlandı."
@@ -1126,6 +1123,8 @@ tr:
     global_search:
       all_projects: "Tüm projelerde"
       close_search: "Aramayı kapat"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Bu projede + alt projelerde"
       current_project: "Bu projede"
       recently_viewed: "Son görüntülenenler"

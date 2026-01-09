@@ -630,9 +630,6 @@ vi:
           add: "Thêm cài đặt cho dự án"
           already_selected: "Dự án này đã được chọn"
           remove: "Xóa cài đặt dự án"
-    password_confirmation:
-      field_description: "Bạn cần nhập mật khẩu tài khoản của mình để xác nhận thay đổi này."
-      title: "Xác nhận mật khẩu của bạn để tiếp tục"
     pagination:
       no_other_page: "Bạn đang trên trang duy nhất."
       pages_skipped: "Pages skipped."
@@ -1121,6 +1118,8 @@ vi:
     global_search:
       all_projects: "Cho tất cả các dự án"
       close_search: "Đóng tìm kiếm"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Trong dự án này + các dự án con"
       current_project: "Trong dự án này"
       recently_viewed: "Đã xem gần đây"
