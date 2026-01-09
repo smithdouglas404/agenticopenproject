@@ -45,5 +45,4 @@ To the same URL above but as a POST request
 
 ```shell
 POST https://graph.microsoft.com/v1.0/sites/<SHAREPOINT HOSTNAME>:/sites/<SITE NAME>:/permissions
-
 ```

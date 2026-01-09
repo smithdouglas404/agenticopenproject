@@ -10,7 +10,11 @@ get:
 
       + principal: Get all capabilities of a principal
 
-      + context: Get all capabilities within a context. Note that for a workspace context the client needs to provide `w{id}`, e.g. `w5` and for the global context a `g`
+      + context: Get all capabilities within a context. Note that for a workspace context the client needs to
+        provide `w{id}`, e.g. `w5` and for the global context a `g`.
+
+        + **Deprecation**: The now deprecated context `p` for project still works, but must eventually be replaced
+          with the `w` for the workspace context.
     example: '[{ "principal": { "operator": "=", "values": ["1"] }" }]'
     in: query
     name: filters
