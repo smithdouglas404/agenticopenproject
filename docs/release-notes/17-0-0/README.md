@@ -74,7 +74,9 @@ This update lays the foundation for future portfolio-level and program-level cap
 >[!NOTE]
 > This new hierarchy is especially valuable for organizations working with structured project management frameworks such as **PM²** or **PMflex**, where programs and portfolios play a central role.
 
-screenshot
+![OpenProject portfolio in global menu](openproject-17-0-portfolios-highlighted.png)
+
+[See our user guide to learn more about the portfolio module in OpenProject](/docs/user-guide/portfolios/).
 
 ### Better meeting management with draft mode, presentation mode, multiple outcomes, and iCal subscription
 
