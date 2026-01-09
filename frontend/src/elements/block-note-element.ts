@@ -30,8 +30,6 @@
 
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { Application } from '@hotwired/stimulus';
-import FlashController from 'core-stimulus/controllers/flash.controller';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { ShadowDomWrapper } from 'op-blocknote-extensions';
 import React from 'react';
@@ -41,23 +39,14 @@ import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
 
 class BlockNoteElement extends HTMLElement {
   private mount:HTMLDivElement;
-  private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
-  private stimulusApp:Application|null = null;
 
   constructor() {
     super();
 
     const shadowRoot = this.attachShadow({ mode: 'open' });
 
-    // Container for connection error/recovery messages (rendered by React via fetchConnectionTemplate)
-    this.errorContainer = document.createElement('div');
-    this.errorContainer.id = 'documents-show-edit-view-connection-error-notice-component';
-    this.errorContainer.dataset.controller = 'flash';
-    this.errorContainer.dataset.flashAutohideValue = 'true';
     this.mount = document.createElement('div');
-
-    shadowRoot.appendChild(this.errorContainer);
     shadowRoot.appendChild(this.mount);
 
     const blockNoteStylesheetUrl = this.getAttribute('blocknote-stylesheet-url');
@@ -78,10 +67,6 @@ class BlockNoteElement extends HTMLElement {
   }
 
   connectedCallback() {
-    // Initialize Stimulus application within shadow DOM
-    this.stimulusApp = Application.start(this.errorContainer);
-    this.stimulusApp.register('flash', FlashController);
-
     // Initialize React application within shadow DOM
     this.reactRoot = createRoot(this.mount);
 
@@ -100,11 +85,6 @@ class BlockNoteElement extends HTMLElement {
       this.reactRoot.unmount();
       this.reactRoot = null;
     }
-
-    if (this.stimulusApp) {
-      this.stimulusApp.stop();
-      this.stimulusApp = null;
-    }
   }
 
   private BlockNoteReactContainer = (hocuspocusProvider?:HocuspocusProvider) => {
@@ -120,8 +100,7 @@ class BlockNoteElement extends HTMLElement {
           openProjectUrl: this.getAttribute('open-project-url') ?? '',
           attachmentsUploadUrl: this.getAttribute('attachments-upload-url') ?? '',
           attachmentsCollectionKey: this.getAttribute('attachments-collection-key') ?? '',
-          hocuspocusProvider: hocuspocusProvider,
-          errorContainer: this.errorContainer,
+          hocuspocusProvider: hocuspocusProvider
         }
       )
     );

@@ -30,12 +30,13 @@
 
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { useEffect, useRef } from 'react';
 import * as Y from 'yjs';
 import { DocumentLoadingSkeleton } from './components/DocumentLoadingSkeleton';
 import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
-import { fetchConnectionTemplate } from './helpers/connection-template-fetcher';
 import { useCollaboration } from './hooks/useCollaboration';
+import { Banner, BaseStyles, ThemeProvider } from '@primer/react';
+import { I18nProvider, useI18n } from './hooks/useI18n';
+import { useEffect, useRef, useState } from 'react';
 
 export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
@@ -46,18 +47,31 @@ export interface OpBlockNoteContainerProps {
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
   hocuspocusProvider?:HocuspocusProvider;
-  errorContainer?:HTMLElement;
 }
 
-export default function OpBlockNoteContainer({ inputField,
-                                               inputText,
-                                               activeUser,
-                                               readOnly,
-                                               openProjectUrl,
-                                               attachmentsUploadUrl,
-                                               attachmentsCollectionKey,
-                                               hocuspocusProvider,
-                                               errorContainer }:OpBlockNoteContainerProps) {
+export default function OpBlockNoteContainer(props:OpBlockNoteContainerProps) {
+  return (
+    <ThemeProvider>
+      <BaseStyles>
+        <I18nProvider>
+          <OpBlockNoteInnerContainer {...props} />
+        </I18nProvider>
+      </BaseStyles>
+    </ThemeProvider>
+  );
+}
+
+export function OpBlockNoteInnerContainer({
+  inputField,
+  inputText,
+  activeUser,
+  readOnly,
+  openProjectUrl,
+  attachmentsUploadUrl,
+  attachmentsCollectionKey,
+  hocuspocusProvider,
+}:OpBlockNoteContainerProps) {
+
   const doc:Y.Doc = hocuspocusProvider
     ? hocuspocusProvider.document
     : (() => {
@@ -77,39 +91,66 @@ export default function OpBlockNoteContainer({ inputField,
 
   const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
   const hadErrorRef = useRef(false);
+  const [showRecoveryBanner, setShowRecoveryBanner] = useState(false);
 
   // Fetch error/recovery template based on connection state
   useEffect(() => {
-    if (!errorContainer) return;
-
     if (connectionError) {
       hadErrorRef.current = true;
-      void fetchConnectionTemplate('error', errorContainer);
     } else if (hadErrorRef.current) {
-      // Only fetch recovery if we previously had an error (avoid fetching on initial render)
-      void fetchConnectionTemplate('recovery', errorContainer);
+      // We've recovered from an error
+      setShowRecoveryBanner(true);
+      hadErrorRef.current = false;
     }
-  }, [connectionError, errorContainer]);
+  }, [connectionError]);
+
+  const { t } = useI18n();
 
   if (isLoading) {
     return <DocumentLoadingSkeleton />;
   }
 
   if (connectionError) {
-    // Error UI is rendered in errorContainer via fetchConnectionTemplate (outside React tree)
-    return null;
+    return (
+      <Banner
+        variant="critical"
+        aria-label={t('js.documents.show_edit_view.connection_error_notice.title')}
+        title={t('js.documents.show_edit_view.connection_error_notice.title')}
+        description={t('js.documents.show_edit_view.connection_error_notice.description')}
+        primaryAction={
+          <Banner.PrimaryAction
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            {t('js.documents.show_edit_view.connection_error_notice.action')}
+          </Banner.PrimaryAction>
+        }
+      />
+    );
   }
 
   return (
-    <OpBlockNoteEditor
-      activeUser={activeUser}
-      readOnly={readOnly}
-      openProjectUrl={openProjectUrl}
-      attachmentsUploadUrl={attachmentsUploadUrl}
-      attachmentsCollectionKey={attachmentsCollectionKey}
-      hocuspocusProvider={hocuspocusProvider}
-      doc={doc}
-    />
+    <>
+      {showRecoveryBanner && (
+        <Banner
+          variant="success"
+          aria-label={t('js.documents.show_edit_view.connection_recovery_notice.title')}
+          title={t('js.documents.show_edit_view.connection_recovery_notice.title')}
+          description={t('js.documents.show_edit_view.connection_recovery_notice.description')}
+          onDismiss={() => setShowRecoveryBanner(false)}
+        />
+      )}
+      <OpBlockNoteEditor
+        activeUser={activeUser}
+        readOnly={readOnly}
+        openProjectUrl={openProjectUrl}
+        attachmentsUploadUrl={attachmentsUploadUrl}
+        attachmentsCollectionKey={attachmentsCollectionKey}
+        hocuspocusProvider={hocuspocusProvider}
+        doc={doc}
+      />
+    </>
   );
 }
 
