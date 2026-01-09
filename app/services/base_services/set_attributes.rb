@@ -69,14 +69,13 @@ module BaseServices
     def set_custom_values_to_validate(params)
       return model.deactivate_custom_field_validations! if contract_options[:skip_custom_field_validation]
 
-      custom_field_ids = custom_field_ids_from(params)
+      custom_field_ids = custom_field_ids_to_validate(params)
 
-      # Only update custom_values_to_validate when the object is persisted and the
-      # custom field params are provided.
+      # Only update custom_values_to_validate when the custom field params are provided.
       # Otherwise keep them intact, so other services can still set them.
-      return unless model.persisted? && custom_field_ids.any?
+      return unless custom_field_ids.any?
 
-      # Validate only the custom values being updated via the params.
+      # Validate the custom values updated via the params only.
       model.custom_values_to_validate = model.custom_values.filter do |cv|
         custom_field_ids.include?(cv.custom_field_id)
       end
@@ -97,6 +96,13 @@ module BaseServices
     def prepare_model(model)
       model.extend(OpenProject::ChangedBySystem)
       model
+    end
+
+    def custom_field_ids_to_validate(params)
+      # Leave custom_field_ids_to_validate empty when the model is not persisted,
+      # allowing the default behaviour to set the id's to be validated in the
+      # model.custom_values_to_validate method.
+      model.persisted? ? custom_field_ids_from(params) : []
     end
 
     def custom_field_ids_from(params)
