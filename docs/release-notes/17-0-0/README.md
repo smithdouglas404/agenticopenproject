@@ -69,14 +69,12 @@ Creating workspaces also becomes more consistent: administrators can define defa
 
 A dedicated global permission now controls who may create programs and portfolios, ensuring that the new hierarchy can be introduced in a controlled way.
 
-This update lays the foundation for future portfolio-level and program-level capabilities in OpenProject.
+This update lays the foundation for future portfolio-level and program-level capabilities in OpenProject. [See our user guide to learn more about the portfolio module (Enterprise add-on) in OpenProject](../../user-guide/portfolios/).
 
 >[!NOTE]
 > This new hierarchy is especially valuable for organizations working with structured project management frameworks such as **PM²** or **PMflex**, where programs and portfolios play a central role.
 
 ![OpenProject portfolio in global menu](openproject-17-0-portfolios-highlighted.png)
-
-[See our user guide to learn more about the portfolio module in OpenProject](/docs/user-guide/portfolios/).
 
 ### Better meeting management with draft mode, presentation mode, multiple outcomes, and iCal subscription
 
@@ -134,7 +132,7 @@ When configuring SharePoint storage, administrators now benefit from:
 
 OpenProject continues to support both the legacy permission model and the new *Sites.Selected* approach, allowing administrators to choose whichever fits their security standards.
 
-screenshot
+See our system admin guide to learn more about the [SharePoint integration](../../user-guide/file-management/sharepoint-integration/) and now separate [OneDrive integration](../../user-guide/file-management/one-drive-integration/) for OpenProject.
 
 ### Redesigned project overview with new tabs, configurable widgets, and an improved layout
 
