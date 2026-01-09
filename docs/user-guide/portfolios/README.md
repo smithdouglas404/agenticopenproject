@@ -67,38 +67,39 @@ The following examples illustrate common (non-exhaustive) portfolio structures i
 
 #### Example 1: Portfolio with multiple programs and projects
 
-Portfolio A
-├─ Program A.1
-│ ├─ Project A.1.1
-│ ├─ Project A.1.2
-│ └─ …
-├─ Program A.2
-└─ Program A.3
+**Portfolio A**
+- **Program A.1**
+  - Project A.1.1
+  - Project A.1.2
+  - …
+- **Program A.2**
+- **Program A.3**
 
 #### Example 2: Mixed hierarchy with programs and standalone projects
 
-Portfolio X
-├─ Program Y
-│ └─ Project Y.1
-├─ Program Z
-│ └─ Project Z.1
-├─ Project O
-└─ Project I
+**Portfolio X**
+- **Program Y**
+  - Project Y.1
+- **Program Z**
+  - Project Z.1
+- Project O
+- Project I
 
 #### Example 3: Portfolio containing only programs
 
-Portfolio D
-├─ Program D1
-├─ Program D2
-└─ Program D3
+**Portfolio D**
+- **Program D1**
+- **Program D2**
+- **Program D3**
 
 
 #### Example 4: Portfolio containing only projects
 
-Portfolio 123
-├─ Project 1
-├─ Project 2
-└─ Project 3
+
+**Portfolio 123**
+- Project 1
+- Project 2
+- Project 3
 
 
 A portfolio can technically remain empty and function as a standalone workspace. However, in such cases, using a project instead of a portfolio is usually sufficient.
