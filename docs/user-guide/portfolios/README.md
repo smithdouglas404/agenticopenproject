@@ -10,7 +10,16 @@ keywords: portfolio, project, program, programme, portfolios, project portfolio,
 
 [feature: portfolio_management ]
 
-Portfolios in OpenProject allow you to organize and manage work at a strategic level by grouping related programs and projects into a single workspace.
+Portfolios in OpenProject allow you to organize and manage work at a strategic level by grouping related programs and projects into a single workspace. Information can be gathered about the portfolio in its entirety, allowing to align it to the organization's goals without having to be involved at an operational level.
+
+A portfolio is designed for visibility and coordination rather than execution. It helps stakeholders understand progress, status, and structure across larger initiatives without managing individual tasks or work packages directly.
+
+Portfolios in OpenProject enable you to:
+
+- Group related programs and projects under a common strategic context
+- Track overall progress using aggregated indicators
+- Navigate large sets of initiatives more effectively
+- Provide a clear, structured overview for decision-making and reporting
 
 In OpenProject, projects, programs, and portfolios are all workspaces. While they share common properties — such as members, permissions, status, and description — they serve different purposes:
 
@@ -18,25 +27,13 @@ In OpenProject, projects, programs, and portfolios are all workspaces. While the
 - Programs group related projects
 - Portfolios provide a high-level overview across multiple programs and projects.
 
-A portfolio is designed for visibility and coordination rather than execution. It helps stakeholders understand progress, status, and structure across larger initiatives without managing individual tasks or work packages directly.
-
-Portfolios in OpenProject enable you to:
-
-- Group related programs and projects under a common strategic context
-
-- Track overall progress using aggregated indicators
-
-- Navigate large sets of initiatives more effectively
-
-- Provide a clear, structured overview for decision-making and reporting
-
 
 | Topic | Content |
 |------|---------|
 | [Portfolios structure in OpenProject](#portfolios-structure-in-openproject) | Understand how portfolios, programs, and projects are structured. |
 | [Hierarchy and composition rules](#hierarchy-and-composition-rules) | Learn which workspace types can be combined and how hierarchies are enforced. |
 | [Example portfolio structures](#example-portfolio-structures) | See common portfolio hierarchy examples. |
-| [Select a portfolio](#select-a-portfolio) | Learn how to access portfolios in OpenProject. |
+| [Navigate to portfolios](#navigate-to-portfolios) | Learn how to access portfolios in OpenProject. |
 | [Portfolios overview explained](#portfolios-overview-explained) | Understand the portfolios overview page and its elements. |
 | [Portfolios filters](#portfolio-filters) | Filter portfolios by status, membership, or favorites. |
 | [Portfolio home page](#portfolio-home-page) | Learn what you can do on a portfolio home page. |
@@ -55,7 +52,7 @@ To prevent invalid or unclear workspace structures, there are certain rules for 
 
 - When creating or editing a workspace, following parent assigning rules are true:
 	- Portfolios cannot have a parent and always exist at the top level.
-	- Programs can only have a portfolio as a parent, i.e. they can not be created on their own.
+	- Programs can have a portfolio as a parent, but they can also be created without one. This supports bottom-up portfolio management, where programs exist first and a portfolio may be defined later.
 	- Projects can have a portfolio, program, or another project as a parent.
 - Programs and projects can exist at the same hierarchical level within a portfolio. 
 - Programs can, but are not required to contain projects.
@@ -106,7 +103,7 @@ Portfolio 123
 
 A portfolio can technically remain empty and function as a standalone workspace. However, in such cases, using a project instead of a portfolio is usually sufficient.
 
-## Select a portfolio
+## Navigate to portfolios
 
 To view the portfolio overview, select **Portfolios** from the global modules menu on the left, or from the menu behind the grid icon in the header navigation.
 
@@ -136,22 +133,16 @@ The page includes the following elements (refer to the annotated screenshot for 
 Each portfolio is displayed in a box containing the following information:
 
 - **Portfolio name**
-
 - **Portfolio status**, which can be edited directly
-
 - **Portfolio description**
-
-- **Progress bar** showing the aggregated status of subitems (programs and projects):
-  - Subitems are grouped by status and visualized in the progress bar.
-  
-  - Hovering over the progress bar displays a detailed status breakdown.
-  
-  - The progress bar is shown empty if the portfolio has no subitems or if none of the subitems have a status set.
+- **Status bar** showing the aggregated status of subitems (programs and projects):
+  - Subitems are grouped by status and visualized in the status bar. 
+  - Hovering over the status bar displays a detailed status breakdown.  
+  - The status bar is shown empty if the portfolio has no subitems or if none of the subitems have a status set.
   
     ![Portfolio progress bar in OpenProject showing status breakdown when hovered over](openproject_user_guide_portfolios_overview_status_bar_hover.png)
   
 - **Favorite indicator** (star icon), allowing you to mark or unmark a portfolio as a favorite
-
 - **Number of programs and projects** in the portfolio:
   - This number includes all programs and projects in the hierarchy where the portfolio is the root.
   - For example, in *Portfolio A → Program B → Project C → Project D → Project E*, the count is **1 program** and **3 projects**.
