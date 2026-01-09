@@ -158,7 +158,6 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
   end
   let(:label_default_value) { I18n.t("activerecord.attributes.custom_field.default_value") } # Default value
   let(:label_is_required) { I18n.t("activerecord.attributes.custom_field.is_required") } # Required
-  let(:label_ee_banner_hierarchy) { I18n.t("ee.upsell.custom_field_hierarchies.description") } # Hierarchy Enterprise banner
   # Spent time SFs don't show "Searchable". Not tested here.
   # Project CFs don't show "For all projects" and "Used as a filter". Not tested here.
   # Content right to left is not shown for Project CFs Long text. Strange. Not tested.
@@ -180,8 +179,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
         ],
         no_labels: [
           label_multi_value,
-          label_allow_non_open_versions,
-          label_ee_banner_hierarchy
+          label_allow_non_open_versions
         ],
         no_fieldset: label_possible_values
       )
@@ -196,8 +194,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
         rich_text_field: label_default_value,
         no_labels: [
           label_multi_value,
-          label_allow_non_open_versions,
-          label_ee_banner_hierarchy
+          label_allow_non_open_versions
         ],
         no_fieldset: label_possible_values
       )
@@ -213,8 +210,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
         ],
         no_labels: [
           label_multi_value,
-          label_allow_non_open_versions,
-          label_ee_banner_hierarchy
+          label_allow_non_open_versions
         ],
         no_fieldset: label_possible_values
       )
@@ -230,8 +226,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
         ],
         no_labels: [
           label_multi_value,
-          label_allow_non_open_versions,
-          label_ee_banner_hierarchy
+          label_allow_non_open_versions
         ],
         no_fieldset: label_possible_values
       )
@@ -247,8 +242,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
           label_max_length,
           label_regexp,
           label_allow_non_open_versions,
-          label_default_value,
-          label_ee_banner_hierarchy
+          label_default_value
         ]
       )
     when "Date"
@@ -262,8 +256,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
           label_regexp,
           label_multi_value,
           label_allow_non_open_versions,
-          label_default_value,
-          label_ee_banner_hierarchy
+          label_default_value
         ],
         no_fieldset: label_possible_values
       )
@@ -278,8 +271,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
           label_regexp,
           label_multi_value,
           label_is_required,
-          label_allow_non_open_versions,
-          label_ee_banner_hierarchy
+          label_allow_non_open_versions
         ],
         no_fieldset: label_possible_values
       )
@@ -294,8 +286,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
           label_max_length,
           label_regexp,
           label_allow_non_open_versions,
-          label_default_value,
-          label_ee_banner_hierarchy
+          label_default_value
         ],
         no_fieldset: label_possible_values
       )
@@ -310,8 +301,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
           label_min_length,
           label_max_length,
           label_regexp,
-          label_default_value,
-          label_ee_banner_hierarchy
+          label_default_value
         ],
         no_fieldset: label_possible_values
       )
@@ -319,8 +309,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       expect_page_to_have(
         fields: [
           label_multi_value,
-          label_is_required,
-          label_ee_banner_hierarchy
+          label_is_required
         ],
         no_labels: [
           label_min_length,
@@ -331,7 +320,6 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
         ],
         no_fieldset: label_possible_values
       )
-      expect(page).to have_button("Save", disabled: true)
     when "Link"
       expect_page_to_have(
         fields: [
@@ -343,8 +331,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
           label_min_length,
           label_max_length,
           label_multi_value,
-          label_allow_non_open_versions,
-          label_ee_banner_hierarchy
+          label_allow_non_open_versions
         ],
         no_fieldset: label_possible_values
       )

@@ -240,4 +240,8 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
   end
 
   it_behaves_like "hierarchy custom fields on index page", "Work packages"
+
+  context "with enterprise token", with_ee: [:custom_field_hierarchies] do
+    it_behaves_like "expected fields for the custom field's format", "Work packages", "Hierarchy"
+  end
 end
