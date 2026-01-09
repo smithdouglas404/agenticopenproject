@@ -104,6 +104,17 @@ export function OpBlockNoteInnerContainer({
     }
   }, [connectionError]);
 
+  // Auto-dismiss recovery banner after 5 seconds (matching FlashController SUCCESS_AUTOHIDE_TIMEOUT)
+  useEffect(() => {
+    if (showRecoveryBanner) {
+      const timer = setTimeout(() => {
+        setShowRecoveryBanner(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showRecoveryBanner]);
+
   const { t } = useI18n();
 
   if (isLoading) {
