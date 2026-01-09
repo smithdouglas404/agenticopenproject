@@ -152,3 +152,7 @@ ul.SegmentedControl,
       white-space: normal
       overflow: visible
       text-overflow: clip
+
+.ActionListContent[aria-disabled="true"]
+  .ActionListItem-label[class^="__hl_"], .ActionListItem-label[class*=" __hl_"]
+    color: var(--control-fgColor-disabled) !important

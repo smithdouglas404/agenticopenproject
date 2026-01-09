@@ -198,3 +198,8 @@ en:
   version_settings_display_option_left: "left"
   version_settings_display_option_none: "none"
   version_settings_display_option_right: "right"
+
+  setting_plugin_openproject_backlogs_story_types_caption: |
+    Types treated as backlog stories (e.g., Feature, User story). Must differ from task type.
+  setting_plugin_openproject_backlogs_task_type_caption: |
+    Type used for story tasks. Must differ from story types.

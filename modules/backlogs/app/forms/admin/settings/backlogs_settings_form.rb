@@ -31,11 +31,14 @@
 module Admin
   module Settings
     class BacklogsSettingsForm < ApplicationForm
+      include ::Settings::FormHelper
+
       form do |f|
         f.select_panel(
           name: :story_types,
           label: I18n.t(:backlogs_story_type),
           title: I18n.t(:label_select_types),
+          caption: setting_caption(:plugin_openproject_backlogs, :story_types),
           select_variant: :multiple,
           fetch_strategy: :local,
           dynamic_label: true,
@@ -45,11 +48,14 @@ module Admin
           }
         ) do |select_menu|
           available_types.each do |label, value|
+            active = value.in?(Story.types)
+            in_use = Task.type == value
+
             select_menu.with_item(
               label:,
               content_arguments: { data: { value: } },
-              active: Story.types.include?(value),
-              disabled: Task.type == value,
+              active:,
+              disabled: in_use,
               item_id: "type-#{value}",
               label_arguments: { classes: "__hl_inline_type_#{value}" }
             )
@@ -66,6 +72,7 @@ module Admin
           name: :task_type,
           label: I18n.t(:backlogs_task_type),
           title: I18n.t(:label_select_type),
+          caption: setting_caption(:plugin_openproject_backlogs, :task_type),
           fetch_strategy: :local,
           dynamic_label: true,
           dynamic_label_prefix: I18n.t(:label_selected_type),
@@ -74,11 +81,14 @@ module Admin
           }
         ) do |select_menu|
           available_types.each do |label, value|
+            active = Task.type == value
+            in_use = value.in?(Story.types)
+
             select_menu.with_item(
               label:,
               content_arguments: { data: { value: } },
-              active: Task.type == value,
-              disabled: Story.types.include?(value),
+              active:,
+              disabled: in_use,
               item_id: "type-#{value}",
               label_arguments: { classes: "__hl_inline_type_#{value}" }
             )
