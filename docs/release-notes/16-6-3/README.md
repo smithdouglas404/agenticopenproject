@@ -19,7 +19,7 @@ Below you will find a complete list of all changes and bug fixes.
 OpenProject versions <= 16.6.2 allows users with the View Meetings permission on any project, to access meeting agenda and section titles, notes, and text outcomes of meetings that belonged to projects, the user does not have access to. Linked work packages to projects the user is not allowed to see, are not affected.
 
 This vulnerability was assigned to the CVE CVE-2026-22605.
-For more information, please see the [GitHub Advisory](https://github.com/opf/openproject/security/advisories/GHSA-fq4m-pxvm-8x2j).
+For more information, please see the [GitHub Advisory GHSA-fq4m-pxvm-8x2j](https://github.com/opf/openproject/security/advisories/GHSA-fq4m-pxvm-8x2j).
 
 This vulnerability was reported as part of the [YesWeHack.com OpenProject Bug Bounty program](https://yeswehack.com/programs/openproject), sponsored by the European Commission.
 
