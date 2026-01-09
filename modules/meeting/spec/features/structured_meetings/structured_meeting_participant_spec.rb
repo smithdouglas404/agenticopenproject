@@ -91,4 +91,29 @@ RSpec.describe "Meetings participants",
 
     expect(page).to have_css("#meetings-side-panel-participants-component", text: 2)
   end
+
+  it "sends emails when adding and removing participants" do
+    meeting.update!(notify: true)
+    show_page.visit!
+
+    show_page.open_participant_form
+    show_page.in_participant_form do
+      show_page.select_participant(other_user)
+      show_page.expect_participant(other_user)
+    end
+
+    wait_for_network_idle
+
+    perform_enqueued_jobs
+    expect(ActionMailer::Base.deliveries.size).to eq 1
+
+    show_page.in_participant_form do
+      show_page.remove_participant(other_user)
+    end
+
+    wait_for_network_idle
+
+    perform_enqueued_jobs
+    expect(ActionMailer::Base.deliveries.size).to eq 2
+  end
 end
