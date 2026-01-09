@@ -70,7 +70,12 @@ module Projects
         end
 
         def toggle_enabled?
-          !@project_custom_field.is_for_all?
+          !toggle_disabled?
+        end
+
+        def toggle_disabled?
+          @project_custom_field.is_for_all? ||
+            configured_as_creation_wizard_assignee?
         end
 
         def toggle_data_attributes
@@ -79,6 +84,11 @@ module Projects
             "turbo-stream": true,
             test_selector: "toggle-project-custom-field-mapping-#{@project_custom_field.id}"
           }
+        end
+
+        def configured_as_creation_wizard_assignee?
+          @project.project_creation_wizard_enabled? &&
+            @project.project_creation_wizard_assignee_custom_field_id == @project_custom_field.id
         end
       end
     end

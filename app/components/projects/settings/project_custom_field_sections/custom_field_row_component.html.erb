@@ -33,22 +33,32 @@
       end
       # py: 1 quick fix: prevents the row from bouncing as the toggle switch currently changes height while toggling
       custom_field_container.with_column(py: 1, mr: 2) do
-        # buggy currently:
-        # small variant +  status_label_position: :start leads to a small bounce while toggling
-        # behavior can be seen on primer's viewbook as well -> https://view-components-storybook.eastus.cloudapp.azure.com/view-components/lookbook/inspect/primer/alpha/toggle_switch/small
-        # quick fix: don't display loading indicator which is causing the bounce
-        render(
-          Primer::Alpha::ToggleSwitch.new(
-            src: toggle_path,
-            csrf_token: form_authenticity_token,
-            data: toggle_data_attributes,
-            checked: toggle_checked?,
-            enabled: toggle_enabled?,
-            size: :small,
-            status_label_position: :start,
-            classes: "op-primer-adjustments__toggle-switch--hidden-loading-indicator"
+        if toggle_enabled?
+          # buggy currently:
+          # small variant +  status_label_position: :start leads to a small bounce while toggling
+          # behavior can be seen on primer's viewbook as well -> https://view-components-storybook.eastus.cloudapp.azure.com/view-components/lookbook/inspect/primer/alpha/toggle_switch/small
+          # quick fix: don't display loading indicator which is causing the bounce
+          render(
+            Primer::Alpha::ToggleSwitch.new(
+              src: toggle_path,
+              csrf_token: form_authenticity_token,
+              data: toggle_data_attributes,
+              checked: toggle_checked?,
+              enabled: toggle_enabled?,
+              size: :small,
+              status_label_position: :start,
+              classes: "op-primer-adjustments__toggle-switch--hidden-loading-indicator"
+            )
           )
-        )
+        else
+          render Primer::Beta::Text.new(font_size: :small, color: :muted) do
+            if configured_as_creation_wizard_assignee?
+              "Set as <strong>assignee when submitted</strong> for project initiation requests".html_safe
+            else
+              "Enabled for all projects"
+            end
+          end
+        end
       end
     end
   end
