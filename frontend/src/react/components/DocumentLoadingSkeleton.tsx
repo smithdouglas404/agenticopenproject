@@ -28,18 +28,18 @@
  * ++
  */
 
-const SKELETON_TITLE_STYLE = { width: '25%', height: '40px' };
-const SKELETON_CONTENT_STYLE = { width: '100%', height: '150px' };
+import { SkeletonText, Stack } from '@primer/react/experimental';
 
 export function DocumentLoadingSkeleton() {
   return (
-    <div>
-      <div className={'mb-3'}>
-        <div style={SKELETON_TITLE_STYLE} className={'SkeletonBox'} />
+    <Stack>
+      <div>
+        <SkeletonText size="titleLarge" />
       </div>
-      <div className={'mb-3'}>
-        <div style={SKELETON_CONTENT_STYLE} className={'SkeletonBox'} />
+
+      <div>
+        <SkeletonText lines={3} />
       </div>
-    </div>
+    </Stack>
   );
 }
