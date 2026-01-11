@@ -55,7 +55,7 @@ Also, you will see your newest and favorited projects on the application landing
 
 ## Create a new project
 
-There are several ways to create a new project in OpenProject. 
+There are several ways to create a new project in OpenProject. Keep in mind that the ability to create a new project is tied to correct [permissions](../../system-admin-guide/users-permissions/roles-permissions/).
 
 1. Click the green button **+ Project** directly on the system's home screen in the **Project** section.
 
@@ -113,7 +113,7 @@ The project members of a newly created project depend on how the project was cre
 
 - **Blank project**: The user creating the project will be added automatically as a member, project role is based on the [corresponding setting in administration](../../system-admin-guide/projects/new-project/). 
 - **From a template**: The project inherits the same members and roles as defined in the template.
-- **Copied from another project**: The project inherits the members and roles from the original project. See here [how to copy a project](../../projects/project-settings/project-information/#copy-a-project).
+- **Copied from another project**: The project inherits the members and roles from the original project. See here [how to copy a project](../../projects/project-settings/project-information/#copy-a-project/).
 
 To continue configuring your project, see the documentation on [project settings](../../user-guide/projects/project-settings/project-information/).
 
