@@ -62,7 +62,7 @@ To link a OneDrive file to the current work package, you can either:
 
 ![Select a OneDrive file or folder to link to an OpenProject work package](openproject_onedrive_link_files.png)
 
-Select the folder and file (or multiple files) you want to link, then click the *Link* button.
+Select any folder or file (or multiple ones) you want to link , then click the *Link* button.
 
 ![Select files to link to an OpenProject work package from a OneDrive file storage](openproject_user_guide_onedrive_storage_select_multiple_files_to_link.png)
 

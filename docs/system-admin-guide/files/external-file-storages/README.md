@@ -16,9 +16,9 @@ Please keep in mind that you need to have administrator rights to be able to set
 
 ## Nextcloud integration setup guide
 
-For detailed guide on the initial setup, please consult [Nextcloud integration setup guide](../../integrations/nextcloud/).
+For detailed guide on the initial setup, please consult the [Nextcloud integration setup guide](../../integrations/nextcloud/).
 
-For instructions on using the integration after the setup has been complete please refer to [Nextcloud integration user guide](../../../user-guide/file-management/nextcloud-integration/).
+For instructions on using the integration after the setup has been complete please refer to the [Nextcloud integration user guide](../../../user-guide/file-management/nextcloud-integration/).
 
 [feature: one_drive_sharepoint_file_storage]
 
@@ -27,13 +27,13 @@ For instructions on using the integration after the setup has been complete plea
 
 ## OneDrive integration (Enterprise add-on) setup guide
 
-For detailed guide on the initial setup, please consult [OneDrive integration setup guide](../../integrations/one-drive/).
+For detailed guide on the initial setup, please consult the [OneDrive integration setup guide](../../integrations/one-drive/).
 
-For instructions on using the integration after the setup has been complete please refer to [OneDrive integration user guide](../../../user-guide/file-management/one-drive-integration/).
+For instructions on using the integration after the setup has been complete please refer to the [OneDrive integration user guide](../../../user-guide/file-management/one-drive-integration/).
 
 ## SharePoint integration (Enterprise add-on) setup guide
 
-For detailed guide on the initial setup, please consult [SharePoint integration setup guide](../../integrations/share-point/).
+For detailed guide on the initial setup, please consult the [SharePoint integration setup guide](../../integrations/share-point/).
 
 For instructions on using the integration after the setup has been complete please refer to [SharePoint integration user guide](../../../user-guide/file-management/sharepoint-integration/).
 

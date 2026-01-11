@@ -75,7 +75,7 @@ generated information to the Azure portal. Enter your data and click the green *
 
 ![Setting up a new OneDrive](openproject_system_guide_new_onedrive_storage_details_new.png)
 
-The *Access and project folders* section of the setup will open next, where you can choose between automatically or manually managed access and folders. Choose your preferred option and click the green *Save and continue* button to proceed.
+The *Access and project folders* section of the setup will open next, where you can choose between automatically- or manually-managed access and folders. Choose your preferred option and click the green *Save and continue* button to proceed.
 
 ![Access and project folders details in OneDrive file storages setup in OpenProject](openproject_system_guide_new_onedrive_storage_access_and_project_folders.png)
 
@@ -93,8 +93,7 @@ You will see the following message confirming the successful setup on top of the
 
 > [!IMPORTANT]
 > In Sharepoint you can add (custom) columns in addition to the ones shown by default (*Modified* and *Modified by*).
-> Please keep in mind if these custom columns are added, OpenProject integration can no longer copy the automatically
-> managed project folders. The columns will have to be de-activated, or ideally not be created in the first place.
+> Please keep in mind if these custom columns are added, OpenProject integration can no longer copy the automatically-managed project folders. The columns will have to be de-activated, or ideally not be created in the first place.
 
 ## Enable OneDrive file storage in projects
 
@@ -139,7 +138,7 @@ by clicking on the **Copy-to-Clipboard** element next to the information text, o
 **View** icon.
 
 > [!TIP]
-> If you have selected automatically managed access and folders you will also see the *Health status* message on the right side. If the file storage set-up is incomplete or faulty, an error message will be displayed in that section. Read more about errors and troubleshooting [here](../../files/external-file-storages/health-status/).
+> If you have selected automatically-managed access and folders you will also see the *Health status* message on the right side. If the file storage set-up is incomplete or faulty, an error message will be displayed in that section. Read more about errors and troubleshooting [here](../../files/external-file-storages/health-status/).
 
 ![Edit OneDrive in OpenProject](openproject_system_guide_edit_icon_onedrive_storage.png)
 

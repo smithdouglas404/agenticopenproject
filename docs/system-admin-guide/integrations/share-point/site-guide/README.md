@@ -13,7 +13,7 @@ keywords: SharePoint file storage integration, SharePoint, Sites.Selected, Sites
 You will need to grant the `manage` permission to the Azure Application so that the integration can work.
 
 > [!IMPORTANT]
-> Some of the following descriptions are very tightly connected to the current (2025-10-29) state of SharePoint configuration. This may easily change in the future, as we neither control, nor foresee changes to the configuration UI developed by Microsoft. 
+> Some of the following descriptions are very tightly connected to the current (2025-10-29) state of SharePoint configuration. This may easily change in future, as we neither control, nor foresee changes to the configuration UI developed by Microsoft. 
 
 ### Authentication and permission
 

@@ -76,21 +76,21 @@ You will see the following message confirming the successful setup on top of the
 
 ![System message on successful SharePoint file storages setup in OpenProject](openproject_system_guide_new_sharepoint_message_successful_setup.png)
 
-You can now configure user access and folder creation. Click the *edit* icon next to the relevant section. 
+You can now configure user access management. Click the *edit* icon next to the relevant section. 
 
 ![Configure folder and user access settings for SharePoint file storage in OpenProject administration](openproject_system_guide_new_sharepoint_folder_access_setup.png)
 
 OpenProject can automatically create and manage project folders when a file storage is added. This helps keep folder structures organized and ensures correct access for all project members. You can choose between the following options:
 
-- **Enable automatically managed access and folders** 
+- **Enable automatically-managed access and folders** 
   Projects can decide whether to use automatic or manual folder and access management when adding the storage.
-- **Only allow manually managed access and folders** 
+- **Only allow manually-managed access and folders** 
   Projects must manage folders and access manually. Automatic management is not available.
 
 ![Folder and access management settings for SharePoint integration in OpenProject administration](openproject_system_guide_new_sharepoint_message_folder_setup.png)
 
 > [!IMPORTANT]
-> In SharePoint you can add (custom) columns in addition to the ones shown by default (*Modified* and *Modified by*). Please keep in mind if these custom columns are added, OpenProject integration can no longer copy the automatically managed project folders. The columns will have to be de-activated, or ideally not be created in the first place.
+> In SharePoint you can add (custom) columns in addition to the ones shown by default (*Modified* and *Modified by*). Please keep in mind if these custom columns are added, OpenProject integration can no longer copy the automatically-managed project folders. The columns will have to be de-activated, or ideally not be created in the first place.
 
 
 
@@ -105,11 +105,11 @@ To add a SharePoint storage to one or multiple projects on an instance level, cl
 
 ![Add SharePoint file storage to projects in OpenProject administration](openproject_system_guide_file_storages_add_projects_button_sharepoint.png)
 
-You can use the search bar to select one or multiple projects and optionally include subprojects. Select the type of project folder for file uploads. Depending on whether automatically managed access and folders are enabled, the available folder options may vary. Options include:
+You can use the search bar to select one or multiple projects and optionally include subprojects. Select the type of project folder for file uploads. Depending on whether automatically-managed access and folders are enabled, the available folder options may vary. Options include:
 
-- **No specific folder**: By default, each user will start in their own home folder when uploading a file.
-- **New folder with automatically managed permissions** (only visible if automatically managed access and folders are enabled): A root folder is automatically created for the project, and access permissions are managed for each project member.
-- **Existing folder with manually managed permissions**: You can designate an existing folder as the root folder for the project. Permissions are not managed automatically; the administrator must ensure that relevant users have access. The selected folder can be used by multiple projects.
+- **No specific folder**: By default, each user will start in their own home folder when uploading a file or when browsing for existent files to create file links in the file picker.
+- **New folder with automatically-managed permissions** (only visible if automatically-managed access and folders are enabled): A root folder is automatically created for the project, and access permissions are managed for each project member.
+- **Existing folder with manually-managed permissions**: You can designate an existing folder as the root folder for the project. Permissions are not managed automatically; the administrator must ensure that relevant users have access. The selected folder can be used by multiple projects.
 
 Click **Add** to save your changes.
 
@@ -135,7 +135,7 @@ To update the general storage information, select the **Details** tab, click the
 
 
 > [!TIP]
-> If you have selected automatically managed access and folders you will also see the *Health status* message on the
+> If you have selected automatically-managed access and folders you will also see the *Health status* message on the
 > right side. If the file storage set-up is incomplete or faulty, an error message will be displayed in that section. Read
 > more about errors and troubleshooting [here](../../files/external-file-storages/health-status/).
 
@@ -153,7 +153,6 @@ Deleting a file storage at a project level simply makes it unavailable to that p
 ![Delete a SharePoint storage from an OpenProject project](openproject_system_guide_delete_sharepoint_storage_in_a_project.png)
 
 >  [!WARNING]
->
 > Deleting a file storage at an instance level deletes the SharePoint integration completely, making it inaccessible to all projects in that instance. 
 
 Should an instance administrator nevertheless want to do so, they can navigate to *Administration -> File storages*, hover over the name of the file storage they want to remove and click it to enter the next page. Then they need to click the **Delete** button in the top right corner.

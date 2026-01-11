@@ -53,7 +53,7 @@ Here you can choose which kind of OneDrive project folder will be the default fo
 ![Select OneDrive folder type in OpenProject](onedrive-storage-add-folders-new.png)
 
 1. **No specific folder**: By default, each user will start at their own home folder when they upload a file or select files for linking.
-2. **New folder with automatically managed permissions**: This will automatically create a root folder for this project and manage the access permissions for each project member. Each project member will automatically have access to this folder according to the user permissions defined in [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions). This option will only be available if the system administrator has [set up the storage with automatically managed folders](../../../../system-admin-guide/integrations/one-drive/).
+2. **New folder with automatically-managed permissions**: This will automatically create a root folder for this project and manage the access permissions for each project member. Each project member will automatically have access to this folder according to the user permissions defined in [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions). This option will only be available if the system administrator has [set up the storage with automatically-managed folders](../../../../system-admin-guide/integrations/one-drive/).
 
 Click **Add** to add your new OneDrive file storage to this project.
 
@@ -77,9 +77,9 @@ Here you can choose which kind of SharePoint project folder will be the default 
 
 1. **No specific folder**: By default, each user will start at their own home folder when they upload a file or select files
    for linking.
-2. **New folder with automatically managed permissions**: This will automatically create a root folder for this project and
-   manage the access permissions for each project member.  Each project member will automatically have access to this folder according to the user permissions defined in [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions). This option will only be available if the system administrator has [set up the storage with automatically managed folders](../../../../system-admin-guide/integrations/one-drive/).
-3. **Existing folder with manually managed permissions**: Once you selected this option, you can designate an existing folder as the root folder for this project using the **Select folder** button. The permissions are however not automatically managed, **instead the folder and its content inherits the permissions as configured on the SharePoint site**. The administrator needs to manually ensure relevant users have access. The selected
+2. **New folder with automatically-managed permissions**: This will automatically create a root folder for this project and
+   manage the access permissions for each project member.  Each project member will automatically have access to this folder according to the user permissions defined in [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions). This option will only be available if the system administrator has [set up the storage with automatically-managed folders](../../../../system-admin-guide/integrations/one-drive/).
+3. **Existing folder with manually-managed permissions**: Once you selected this option, you can designate an existing folder as the root folder for this project using the **Select folder** button. The permissions are however not automatically managed, **instead the folder and its content inherits the permissions as configured on the SharePoint site**. The administrator needs to manually ensure relevant users have access. The selected
    folder can be used by multiple projects.
 
 Click on **Add** to add your new SharePoint file storage to this project.
@@ -98,8 +98,8 @@ If you have selected the Nextcloud option in the previous step of storage select
 In the last step of the process, you will be able to choose which kind of project folder will be the default folder for file uploads for this project:
 
 1. **No specific folder**: By default, each user will start at their own home folder when they upload a file.
-2. **New folder with automatically managed permissions**: This will automatically create a folder for this project and manage the access permissions for each project member. Each project member will automatically get read, write and share access permissions (according to defined [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions) in the project) to this folder. This option will only be available if the system administrator has [set up the storage with automatically managed folders](../../../../system-admin-guide/integrations/nextcloud/).
-3. **Existing folder with manually managed permissions**: Once you selected this option, you can designate an existing folder as the project folder for this project using the button **Select folder**. The permissions are however not automatically managed. The administrator needs to manually ensure relevant users have access. The selected folder can be used by multiple projects.
+2. **New folder with automatically-managed permissions**: This will automatically create a folder for this project and manage the access permissions for each project member. Each project member will automatically get read, write and share access permissions (according to defined [File storages permissions](../../../../system-admin-guide/users-permissions/roles-permissions/#permissions) in the project) to this folder. This option will only be available if the system administrator has [set up the storage with automatically-managed folders](../../../../system-admin-guide/integrations/nextcloud/).
+3. **Existing folder with manually-managed permissions**: Once you selected this option, you can designate an existing folder as the project folder for this project using the button **Select folder**. The permissions are however not automatically managed. The administrator needs to manually ensure relevant users have access. The selected folder can be used by multiple projects.
 
 ![Select the project folder type](storage-add-project-folder.png)
 
@@ -116,7 +116,7 @@ If you do not yet have an access token for the file storage in a project, you wi
 
 ### Project folder member connection status
 
-As a project administrator you can see which of the project members have access to the automatically managed folders for Nextcloud integration. To see the list of users click on the users icon on the right side of the list.
+As a project administrator you can see which of the project members have access to the automatically-managed folders for Nextcloud integration. To see the list of users click on the users icon on the right side of the list.
 
 ![Open a list of project members](storage-list-members.png)
 
@@ -135,7 +135,7 @@ For the moment, you will only be able to edit which project folder type is used 
 ![Edit the project folder type](storage-edit.png)
 
 > [!TIP]
-> If the previously selected project folder type was **New folder with automatically managed permissions**, changing the project folder type will not delete the already created project folder. Changing it back will try to reconnect the previously created and used project folder.
+> If the previously selected project folder type was **New folder with automatically-managed permissions**, changing the project folder type will not delete the already created project folder. Changing it back will try to reconnect the previously created and used project folder.
 
 ## Delete an existing file storage
 
@@ -143,7 +143,7 @@ To delete an existing storage, you can click on the delete icon on the right sid
 
 ![Delete an existing file storage in an OpenProject project](storage_delete_icon.png)
 
-To be able to delete a storage from a project you will be asked to confirm the action by introducing the name of the storage. This action is irreversible and will remove all links from work packages of this project to files and folders of that storage. Also, in case this storage has an automatically managed project folder, it and its files will be deleted forever.
+To be able to delete a storage from a project you will be asked to confirm the action by introducing the name of the storage. This action is irreversible and will remove all links from work packages of this project to files and folders of that storage. Also, in case this storage has an automatically-managed project folder, it and its files will be deleted forever.
 
 ![Delete a storage from a project](storage-delete.png)
 

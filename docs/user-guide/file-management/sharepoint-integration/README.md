@@ -61,7 +61,7 @@ To link a SharePoint file to the current work package, you can either:
 
 ![Select a SharePoint file or folder to link to an OpenProject work package](openproject_user_guide_sharepoint_storage_select_files_to_link.png)
 
-Select the folder and file (or multiple files) you want to link, then click the *Link* button.
+Select any folder or file (or multiple ones) you want to link , then click the *Link* button.
 
 ![Select files to link to an OpenProject work package from a SharePoint file storage](openproject_user_guide_sharepoint_storage_select_multiple_files_to_link.png)
 
