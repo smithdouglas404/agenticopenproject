@@ -61,15 +61,15 @@ There are several ways to create a new project in OpenProject.
 
    ![Button to create a new project on the OpenProject homepage](openproject_getting_started_project_new_project_button.png)
 
-2. You can use the **+ Project** button at the bottom of *All projects* dropdown menu in the header navigation to create a new project.
+2. You can also use the **+ (Plus)** button in the top right corner of the header navigation. 
 
-![+Project button to create a new project on the OpenProject overview page](openproject_getting_started_project_new_project_button_projects_dropdown.png)
+![+ Button in the top right corner of the OpenProject head navigation, opened, showing an option to add a new project](openproject_getting_started_project_plust_button_add_project.png)
 
-3. You can also use the **+ (Plus)** button in the top right corner of the header navigation. 
+![+ Button in the top right corner of the OpenProject head navigation, opened, showing an option to add a new project](openproject_getting_started_project_plust_button_add_project.png)
 
-   ![+ Button in the top right corner of the OpenProject head navigation, opened, showing an option to add a new project](openproject_getting_started_project_plust_button_add_project.png)
+3. In addition, you can also create a new project on the [project lists](../../user-guide/projects/project-lists/) overview page. 
 
-4. In addition, you can also create a new project on the [project lists](../../user-guide/projects/project-lists/) overview page. 
+4. If the project you are creating is subproject, navigate to the [project settings](../../user-guide/projects/project-settings/) and use the *+ Subproject* button.
 
 ### Choose how to create your project
 You can create either:
@@ -79,7 +79,10 @@ You can create either:
 
 The **Blank project** option is selected by default.
 
-If you do not see any template options, it means that no projects have been set as [project templates](../../user-guide/projects/project-templates/#create-a-project-template) yet. Click **Continue** to proceed.
+>  [!TIP]
+> If you do not see any template options, this may be because no projects have been set as [project templates](../../user-guide/projects/project-templates/#create-a-project-template) yet, or because you do not have access to any template projects. Only templates that are public or where you are a project member are shown, allowing different user groups to see only the templates relevant to them.
+
+Click **Continue** to proceed.
 
 ![Select a template for creating a new project in OpenProject](openproject_getting_started_create_new_project_select_template.png)
 
@@ -108,19 +111,15 @@ Click **Complete** to finish the setup.
 
 The project members of a newly created project depend on how the project was created:
 
-- **Blank project**: No project members are added automatically.
+- **Blank project**: The user creating the project will be added automatically as a member, project role is based on the [corresponding setting in administration](../../system-admin-guide/projects/new-project/). 
 - **From a template**: The project inherits the same members and roles as defined in the template.
-- **Copied from another project**: The project inherits the members and roles from the original project.
+- **Copied from another project**: The project inherits the members and roles from the original project. See here [how to copy a project](../../projects/project-settings/project-information/#copy-a-project).
 
 To continue configuring your project, see the documentation on [project settings](../../user-guide/projects/project-settings/project-information/).
 
 ## View all projects
 
-To view all your projects in which you are a member, click on the **Project lists** button at the bottom of the action bar after opening the **Select a project** drop-down menu.
-
-!["Project lists" button at the bottom of "All projects" dropdown list in OpenProject header navigation to open a list of all projects](openproject_getting_started_project_lists_button.png)
-
-Alternatively you can use the [**Global modules menu**](../../user-guide/home/global-modules/#projects) on the left or select *Projects* using the grid icon in the top left corner.
+To view all your projects in which you are a member, use the [**Global modules menu**](../../user-guide/home/global-modules/#projects) on the left or select *Projects* using the grid icon in the top left corner.
 
 ![*Global modules* grid icon in OpenProject header navigation, opened, Projects module selected](openproject_getting_started_global_modules_icon_projects.png)
 
