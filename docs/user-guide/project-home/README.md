@@ -44,9 +44,9 @@ Here you can also [mark a project as favorite](#mark-a-project-as-favorite) or [
 
 The **Overview** tab is a pre-configured to provide a concise summary of the project’s status. Its layout is fixed and cannot be modified. It includes the following widgets: 
 
-  - [Description](./project-widgets/#project-description-widget)
+  - [Description](./project-widgets/#description-widget)
 
-  - [Project status](./project-widgets/#project-status-widget) 
+  - [Status](./project-widgets/#status-widget) 
 
   - [Subitems](./project-widgets/#subitems-widget)  
 

@@ -33,12 +33,12 @@ You can add various widgets to your project dashboard. Available widgets in Open
 
 - Calendar
 - Custom text
+- Description
 - Documents
 - Members
 - News
-- Project description
-- Project status
 - Spent time (last 7 days)
+- Status
 - Subitems
 - Work packages graph
 - Work packages overview
@@ -57,6 +57,14 @@ Within the custom text widget you can add any project information which you want
 You can also add files to be displayed or attached to your custom text widget.
 
 ![Custom text widget on a project home page in OpenProject](openproject_user_guide_project_overview_custom_text_widget.png)
+
+### Description widget
+
+The description widget adds the project description to your project home.
+
+The description can be added or changed in the [project settings](../../projects/project-settings).
+
+![Description widget displayed on a project home page in OpenProject](openproject_user_guide_project_overview_dashboard_tab_description_widget.png)
 
 ### Documents widget
 
@@ -78,15 +86,15 @@ Display the latest project news in the news widget on the project home page.
 
 ![News widget displayed on a project home page in OpenProject](openproject_user_guide_project_overview_news_widget.png)
 
-### Project description widget
+### Spent time widget
 
-The project description widget adds the project description to your project home.
+The spent time widget lists the **spent time in this project for the last 7 days**.
 
-The description can be added or changed in the [project settings](../../projects/project-settings).
+![Spent time widget displayed on a project home page in OpenProject](openproject_user_guide_project_overview_project_spent_time_widget.png)
 
-![Project description widget displayed on a project home page in OpenProject](openproject_user_guide_project_overview_project_project_description_widget.png)
+Time entries link to the respective work package and can be edited or deleted. To have a detailed view on all spent time and costs, go to the [Cost reporting](../../time-and-costs/reporting/) module.
 
-### Project status widget
+### Status widget
 
 Add your project status as a widget to display at a glance whether your project is on track, off track or at risk. You can set your project status and give a detailed description.
 
@@ -100,17 +108,9 @@ First, select your project status from the drop-down. You can choose between:
 - Finished
 - Discontinued
 
-![Project status widget displayed on a project home page in OpenProject](openproject_user_guide_project_overview_project_project_status_widget.png)
+![Status widget displayed on a project home page in OpenProject](openproject_user_guide_project_home_page_dashboard_tab_status_widget.png)
 
-Add a **project status description** and further important information, such as project owner, milestones and other important links or status information.
-
-### Spent time widget
-
-The spent time widget lists the **spent time in this project for the last 7 days**.
-
-![Spent time widget displayed on a project home page in OpenProject](openproject_user_guide_project_overview_project_spent_time_widget.png)
-
-Time entries link to the respective work package and can be edited or deleted. To have a detailed view on all spent time and costs, go to the [Cost reporting](../../time-and-costs/reporting/) module.
+Add the project **status description** and further important information, such as project owner, milestones and other important links or status information.
 
 ### Subitems widget
 
