@@ -718,6 +718,9 @@ vi:
       notice_api_token_revoked: "Token API đã bị xóa. Để tạo token mới, vui lòng sử dụng nút trong phần API."
       notice_rss_token_revoked: "Token RSS đã bị xóa. Để tạo token mới, vui lòng sử dụng liên kết trong phần RSS."
       notice_ical_token_revoked: 'Token iCalendar "%{token_name}" cho lịch "%{calendar_name}" của dự án "%{project_name}" đã bị thu hồi. URL iCalendar với token này hiện không hợp lệ.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Hiện không có tin tức báo cáo.
@@ -1502,7 +1505,8 @@ vi:
         not_a_datetime: "không phải là thời gian hợp lệ"
         not_a_number: "không phải là số"
         not_allowed: "không hợp lệ vì thiếu quyền."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "không phải là một số nguyên"
         not_an_iso_date: "không phải là một ngày hợp lệ. Yêu cầu định dạng: YYYY-MM-DD."
         not_same_project: "không thuộc cùng dự án."
@@ -1897,7 +1901,8 @@ vi:
       status: "Tình trạng work package"
       token/api:
         other: Mã truy cập
-      type: "Kiểu"
+      type:
+        other: "Types"
       user: "Người dùng"
       version: "Phiên bản"
       workflow: "Quy trình làm việc"
@@ -2110,6 +2115,7 @@ vi:
   button_click_to_reveal: "Chọn để xem"
   button_close: "Đóng"
   button_collapse_all: "Thu gọn tất cả"
+  button_confirm: "Confirm"
   button_configure: "Thiết lập"
   button_continue: "Tiếp tục"
   button_complete: "Complete"
@@ -2142,6 +2148,7 @@ vi:
   button_print: "In"
   button_quote: "Trích dẫn"
   button_remove: Xoá
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Đổi tên"
   button_replace: "Thay thế"
@@ -3848,7 +3855,7 @@ vi:
   notice_not_authorized: "Bạn không được phép truy cập trang này."
   notice_not_authorized_archived_project: "Dự án bạn đang cố gắng truy cập đã bị lưu trữ."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Mật khẩu của bạn không chính xác. Không thể tiếp tục."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Có %{number} kết quả được tìm thấy. \n Nhấn Tab để tập trung vào kết quả đầu tiên."
   notice_principals_found_single: "Có một kết quả. \n Nhấn Tab để tập trung vào nó."
   notice_parent_item_not_found: "Parent item not found."
@@ -4675,6 +4682,7 @@ vi:
     Lưu ý: nếu được kích hoạt, một bảng thông báo về tình trạng của phần mềm sẽ được hiển thị tại trang quản trị <a href="%{information_panel_path}">%{information_panel_label}</a>, và tại trang chủ. Thông tin này chỉ được thấy bởi Quản trị viên. <br/> Bảng thông báo sẽ kiểm tra các thông tin cập nhật từ OpenProject và thông báo về các cập nhật mới hay các lỗi được phát hiện. Để biết thêm chi tiết, vui lòng tham khảo <a href="%{more_info_url}">tài liệu cấu hình</a>.
   text_own_membership_delete_confirmation: "Bạn sắp xóa một số hoặc tất cả quyền của mình và có thể không còn khả năng chỉnh sửa dự án này sau đó.\nBạn có chắc chắn muốn tiếp tục không?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Thư mục tài sản plugin có thể ghi được"
   text_powered_by: "Được cung cấp bởi %{link}"
   text_project_identifier_info: "Chỉ cho phép chữ cái viết thường (a-z), số, dấu gạch ngang và gạch dưới, phải bắt đầu bằng chữ cái viết thường."

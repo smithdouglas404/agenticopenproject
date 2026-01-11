@@ -96,12 +96,6 @@ fr:
       manual: Dossier existant géré manuellement
     remove_project:
       deletion_failure_flash: Impossible de supprimer le projet du stockage. %{error}
-      dialog:
-        automatically_managed_appendix: En outre, dans ce cas, cet espace de stockage comporte un dossier de projet géré automatiquement qui sera supprimé définitivement, ainsi que ses fichiers.
-        confirmation_text: Veuillez confirmer que vous avez compris et que vous souhaitez supprimer cet espace de stockage de fichiers de ce projet.
-        heading_text: Supprimer le projet de %{storage}
-        text: Cette action est irréversible et supprimera tous les liens des lots de travaux de ce projet vers les fichiers et dossiers de cet espace de stockage.
-        title: Supprimer le projet de l'espace de stockage
       label: Supprimer le projet
   services:
     attributes:
@@ -128,6 +122,7 @@ fr:
     errors:
       messages:
         error: Une erreur inattendue s'est produite. Veuillez consulter les journaux d'OpenProject pour obtenir plus d'informations ou contactez un administrateur
+        forbidden: OpenProject n'a pas pu accéder à la ressource demandée. Veuillez vérifier la configuration de vos permissions sur le fournisseur de stockage.
         unauthorized: OpenProject n'a pas pu s'authentifier auprès du fournisseur de stockage. Veuillez vous assurer que vous y avez accès.
       models:
         copy_project_folders_service:
@@ -226,12 +221,13 @@ fr:
     confirm_replace_oauth_application: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier sur OpenProject. Êtes-vous sûr de vouloir continuer ?
     confirm_replace_oauth_client: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier auprès de %{provider_type} . Êtes-vous sûr de vouloir continuer ?
     delete_warning:
-      project_storage_delete_result_1: Supprimer tous les liens des lots de travaux de ce projet vers les fichiers et dossiers de cet espace de stockage.
-      project_storage_delete_result_2: Si cet espace de stockage a un dossier de projet géré automatiquement, lui et ses fichiers seront définitivement supprimés.
-      storage: 'Voulez-vous vraiment supprimer %{file_storage} ? Cela aura pour effet de :'
-      storage_delete_result_1: Supprimer toutes les configurations de stockage pour tous les projets utilisant ce stockage.
-      storage_delete_result_2: Supprimer tous les liens des lots de travaux de ce projet vers les fichiers et dossiers dans cet espace de stockage.
-      storage_delete_result_3: Si ce stockage contient des dossiers de projet gérés automatiquement, ceux-ci et les fichiers qu'ils contiennent seront supprimés définitivement.
+      project_storage: Êtes-vous sûr de vouloir retirer %{file_storage} de ce projet ?
+      project_storage_delete_result_1: Tous les liens vers les fichiers et dossiers correspondants seront supprimés
+      project_storage_delete_result_2: Le dossier du projet géré automatiquement et tous les fichiers qu'il contient seront supprimés
+      storage: Êtes-vous sûr de vouloir supprimer %{file_storage} en tant que stockage de fichiers externes ?
+      storage_delete_result_1: Le stockage sera retiré de tous les projets qui l'utilisent actuellement.
+      storage_delete_result_2: Tous les liens vers les fichiers et dossiers correspondants seront supprimés
+      storage_delete_result_3: Le dossier du projet géré automatiquement et tous les fichiers qu'il contient seront supprimés.
     dependencies:
       nextcloud:
         group_folders_app: Dossiers de groupe
@@ -502,7 +498,7 @@ fr:
         title: Nous configurons vos permissions sur le dossier du projet.
     page_titles:
       file_storages:
-        delete: Supprimer l'espace de stockage de fichiers
+        delete: Supprimer l'espace de stockage de fichiers ?
         subtitle: Ajouter un stockage de fichiers externe pour télécharger, lier et gérer les fichiers dans les lots de travaux.
       managed_project_folders:
         subtitle: |-
@@ -516,6 +512,8 @@ fr:
       project_storage_members:
         subtitle: Vérifiez l'état de la connexion pour l'espace de stockage %{storage_name_link} de tous les membres du projet.
         title: Statut de connexion des membres
+      project_storages:
+        delete: Supprimer le stockage de fichiers d'un projet ?
     permission_header_explanation: Les droits d'accès aux fichiers sur les supports de stockage externes ne sont appliqués qu'aux dossiers et aux fichiers contenus dans les dossiers de projet gérés automatiquement. Notez que toutes les droits sur les fichiers ne sont pas pris en charge par tous les fournisseurs de stockage. Veuillez consulter la documentation sur <a target='_blank' href='https://www.openproject.org/fr/docs/system-admin-guide/users-permissions/roles-permissions/'>les autorisations de stockage de fichiers</a> pour plus d'informations.
     provider_types:
       label: Type de fournisseur

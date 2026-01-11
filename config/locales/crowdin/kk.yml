@@ -725,6 +725,9 @@ kk:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: There is currently no news to report.
@@ -1511,7 +1514,8 @@ kk:
         not_a_datetime: "is not a valid date time."
         not_a_number: "is not a number."
         not_allowed: "is invalid because of missing permissions."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "is not an integer."
         not_an_iso_date: "is not a valid date. Required format: YYYY-MM-DD."
         not_same_project: "doesn't belong to the same project."
@@ -1919,7 +1923,9 @@ kk:
       token/api:
         one: Access token
         other: Access tokens
-      type: "Type"
+      type:
+        one: "Type"
+        other: "Types"
       user: "User"
       version: "Version"
       workflow: "Workflow"
@@ -2136,6 +2142,7 @@ kk:
   button_click_to_reveal: "Click to reveal"
   button_close: "Close"
   button_collapse_all: "Collapse all"
+  button_confirm: "Confirm"
   button_configure: "Configure"
   button_continue: "Continue"
   button_complete: "Complete"
@@ -2168,6 +2175,7 @@ kk:
   button_print: "Print"
   button_quote: "Quote"
   button_remove: Remove
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Rename"
   button_replace: "Replace"
@@ -3896,7 +3904,7 @@ kk:
   notice_not_authorized: "You are not authorized to access this page."
   notice_not_authorized_archived_project: "The project you're trying to access has been archived."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Your password is not correct. Cannot continue."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "There are %{number} results found. \n Tab to focus the first result."
   notice_principals_found_single: "There is one result. \n Tab to focus it."
   notice_parent_item_not_found: "Parent item not found."
@@ -4724,6 +4732,7 @@ kk:
     Note: if enabled, this will display a badge with your installation status in the <a href="%{information_panel_path}">%{information_panel_label}</a> administration panel, and on the home page. It is displayed to administrators only. <br/> The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit <a href="%{more_info_url}">the configuration documentation</a>.
   text_own_membership_delete_confirmation: "You are about to remove some or all of your permissions and may no longer be able to edit this project after that.\nAre you sure you want to continue?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin assets directory writable"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Only lower case letters (a-z), numbers, dashes and underscores are allowed, must start with a lower case letter."

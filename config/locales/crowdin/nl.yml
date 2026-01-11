@@ -722,6 +722,9 @@ nl:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "Het RSS-sleutel is verwijderd. Gebruik de link in het gedeelte RSS om een nieuwe sleutel aan te maken."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" voor kalender "%{calendar_name}" van project "%{project_name}" is ingetrokken. De iCalendar URL met deze token is nu ongeldig.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Er is momenteel geen nieuws om te rapporteren.
@@ -1507,7 +1510,8 @@ nl:
         not_a_datetime: "is geen geldige datum tijd."
         not_a_number: "is geen getal."
         not_allowed: "is ongeldig vanwege ontbrekende machtigingen."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "is niet een geheel getal."
         not_an_iso_date: "is geen geldige datum. Vereist formaat: JJJJ-MM-DD."
         not_same_project: "hoort niet bij hetzelfde project."
@@ -1915,7 +1919,9 @@ nl:
       token/api:
         one: Toegangstoken
         other: Toegangs-tokens
-      type: "Type"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Gebruiker"
       version: "Versie"
       workflow: "Werkstroom"
@@ -2132,6 +2138,7 @@ nl:
   button_click_to_reveal: "Klik om te onthullen"
   button_close: "Sluiten"
   button_collapse_all: "Alles inklappen"
+  button_confirm: "Confirm"
   button_configure: "Configureer"
   button_continue: "Verdergaan"
   button_complete: "Complete"
@@ -2164,6 +2171,7 @@ nl:
   button_print: "Afdrukken"
   button_quote: "Citeer"
   button_remove: Verwijder
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Naam wijzigen"
   button_replace: "Vervang"
@@ -3891,7 +3899,7 @@ nl:
   notice_not_authorized: "U bent niet gemachtigd om deze pagina te openen."
   notice_not_authorized_archived_project: "Het project dat u probeert te bezoeken is gearchiveerd."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Uw wachtwoord is niet correct. Kan niet doorgaan."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Er zijn %{number} resultaten gevonden.   Tab om het eerste resultaat te tonen."
   notice_principals_found_single: "Er is één resultaat. Tab om te tonen."
   notice_parent_item_not_found: "Parent item not found."
@@ -4719,6 +4727,7 @@ nl:
     Opmerking: indien ingeschakeld zal dit een badge weergeven met uw installatiestatus in de <a href="%{information_panel_path}">%{information_panel_label}</a> administratie paneel, en op de homepage. Deze wordt alleen getoond aan beheerders. <br/> De badge zal uw huidige OpenProject versie controleren tegen de officiële OpenProject-database om u te waarschuwen voor updates of bekende kwetsbaarheden. Voor meer informatie over wat de controle biedt, welke gegevens nodig zijn om beschikbare updates te verstrekken en hoe deze controle kan worden uitgeschakeld, bezoek <a href="%{more_info_url}">de configuratiedocumentatie</a>.
   text_own_membership_delete_confirmation: "U staat op het punt om enkele of alle van uw machtigingen te verwijderen en kan dit project daarna mogelijk niet meer bewerken.\nWeet u zeker dat u wilt doorgaan?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin directory schrijfbaar"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Alleen kleine letters (a-z), cijfers, streepjes en underscores (_) zijn toegestaan, moet beginnen met een kleine letter."

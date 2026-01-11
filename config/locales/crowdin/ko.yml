@@ -718,6 +718,9 @@ ko:
       notice_api_token_revoked: "API 토큰이 삭제되었습니다. 새 토큰을 만들려면 API 섹션의 버튼을 사용하세요."
       notice_rss_token_revoked: "RSS 토큰이 삭제되었습니다. 새 토큰을 만들려면 RSS 섹션의 링크를 사용하세요."
       notice_ical_token_revoked: '"%{project_name}" 프로젝트의 "%{calendar_name}" 캘린더에 대한 iCalendar 토큰 "%{token_name}"이(가) 취소되었습니다. 이 토큰이 포함된 iCalendar URL이 이제 유효하지 않습니다.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: 보고할 소식이 없습니다.
@@ -1502,7 +1505,8 @@ ko:
         not_a_datetime: "은(는) 유효한 날짜가 아닙니다."
         not_a_number: "은(는) 숫자가 아닙니다."
         not_allowed: "- 사용 권한이 없어 유효하지 않습니다."
-        not_json: "- 유효한 JSON 개체가 아닙니다."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "은(는) 정수가 아닙니다."
         not_an_iso_date: "은(는) 유효한 날짜가 아닙니다. 필요한 형식: YYYY-MM-DD."
         not_same_project: "은(는) 동일한 프로젝트에 속하지 않습니다."
@@ -1897,7 +1901,8 @@ ko:
       status: "작업 패키지 상태"
       token/api:
         other: 액세스 토큰
-      type: "타입"
+      type:
+        other: "Types"
       user: "사용자"
       version: "버전"
       workflow: "워크플로"
@@ -2110,6 +2115,7 @@ ko:
   button_click_to_reveal: "표시하려면 클릭"
   button_close: "닫기"
   button_collapse_all: "모두 축소"
+  button_confirm: "Confirm"
   button_configure: "구성"
   button_continue: "계속"
   button_complete: "Complete"
@@ -2142,6 +2148,7 @@ ko:
   button_print: "인쇄"
   button_quote: "인용"
   button_remove: 제거
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "미리 알림 제거"
   button_rename: "이름 바꾸기"
   button_replace: "교체하기"
@@ -3848,7 +3855,7 @@ ko:
   notice_not_authorized: "이 페이지에 액세스할 권한이 없습니다."
   notice_not_authorized_archived_project: "액세스하려는 프로젝트는 이미 보관되어 있습니다."
   notice_requires_enterprise_token: "Enterprise 토큰이 누락되었거나 이 페이지에 대한 액세스를 허용하지 않습니다."
-  notice_password_confirmation_failed: "암호가 올바르지 않습니다. 계속할 수 없습니다."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} 개의 결과가 발견되었습니다.\n첫번째 결과를 보려면 탭 해주세요."
   notice_principals_found_single: "한 개의 결과가 있습니다.\n보려면 탭 해주세요."
   notice_parent_item_not_found: "부모 항목을 찾을 수 없습니다."
@@ -4672,6 +4679,7 @@ ko:
     참고: 활성화하는 경우, <a href="%{information_panel_path}">%{information_panel_label}</a> 관리 패널 및 홈페이지에서 설치 상태가 나오는 배지가 표시됩니다. 배지는 관리자에게만 표시됩니다. <br/> 배지는 공식 OpenProject 릴리스 데이터베이스와 비교하여 현재 OpenProject 버전을 확인하고 업데이트 또는 알려진 취약성에 대해 알려줍니다. 이 검사에서 제공하는 사항, 사용 가능한 업데이트를 제공하기 위해 필요한 데이터 및 이 검사를 비활성화하는 방법에 대한 자세한 내용은 <a href="%{more_info_url}">구성 문서</a>를 참조하십시오.
   text_own_membership_delete_confirmation: "권한의 일부 또는 전부를 삭제하려고 합니다. 이렇게 한 후에는 이 프로젝트를 더 이상 편집하지 못할 수 있습니다.\n계속하시겠습니까?"
   text_permanent_delete_confirmation_checkbox_label: "이 삭제는 되돌릴 수 없음을 이해합니다."
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "플러그인 자산 디렉터리 쓰기 가능"
   text_powered_by: "%{link} 제공"
   text_project_identifier_info: "소문자(a-z), 숫자, 대시(-) 및 밑줄(_)만 허용됩니다. 소문자로 시작해야 합니다."

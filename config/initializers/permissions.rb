@@ -158,7 +158,7 @@ Rails.application.reloader.to_prepare do
 
       map.permission :export_projects,
                      {
-                       projects: %i[export_list_modal export_project_initiation_pdf]
+                       projects: %i[export_project_initiation_pdf]
                      },
                      permissible_on: :project,
                      dependencies: :view_project

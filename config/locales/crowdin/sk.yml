@@ -739,6 +739,9 @@ sk:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: V súčasnosti nie sú žiadne novinky pre nahlásenie.
@@ -1529,7 +1532,8 @@ sk:
         not_a_datetime: "nie je platný dátum a čas."
         not_a_number: "nie je číslo."
         not_allowed: "je neplatné kvôli chýbajúcim oprávneniam."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "nie je celé číslo."
         not_an_iso_date: "nie je platný dátum. Požadovaný formát: RRRR-MM-DD."
         not_same_project: "nepodlieha rovnakému projektu."
@@ -1963,7 +1967,11 @@ sk:
         few: Access tokens
         many: Access tokens
         other: Access tokens
-      type: "Typ"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "Užívateľ(ka)"
       version: "Verzia"
       workflow: "Pracovný postup"
@@ -2188,6 +2196,7 @@ sk:
   button_click_to_reveal: "Kliknutím zobrazíte"
   button_close: "Zatvoriť"
   button_collapse_all: "Zbaliť všetko"
+  button_confirm: "Confirm"
   button_configure: "Konfigurovať"
   button_continue: "Pokračovať"
   button_complete: "Complete"
@@ -2220,6 +2229,7 @@ sk:
   button_print: "Tlač"
   button_quote: "Citovať"
   button_remove: Vymazať
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Premenovať"
   button_replace: "Nahradiť"
@@ -3991,7 +4001,7 @@ sk:
   notice_not_authorized: "Nemáte dostatočné oprávnenia na zobrazenie tejto stránky."
   notice_not_authorized_archived_project: "Projekt, ku ktorému sa snažíte pristupovať, bol archivovaný."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Heslo nie je správne. Nie je možné pokračovať."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Nájdených %{number} výsledkov. \nStlačte TAB pre prechod na prvý výsledok."
   notice_principals_found_single: "Bol nájdený jeden výsledok.\nStlačením tlačidla TAB zobraziť."
   notice_parent_item_not_found: "Parent item not found."
@@ -4821,6 +4831,7 @@ sk:
     Poznámka: Ak je táto možnosť povolená, zobrazí sa v štýle <a href="%{information_panel_path}">%{information_panel_label}</a> na panely správcu, a na domovskej stránke. Zobrazuje sa iba administrátorom. <br/> Znak skontroluje vašu aktuálnu verziu OpenProject s oficiálnou verziu databázy OpenProject, ktorá vás upozorní na akékoľvek aktualizácie alebo známe chyby. Ďalšie informácie o tom, čo daná kontrola poskytuje, aké údaje sú potrebné na poskytovanie dostupných aktualizácií a ako zakázať túto kontrolu, prosím navštívte <a href="%{more_info_url}">dokumentáciu konfigurácie</a>.
   text_own_membership_delete_confirmation: "Chystáte sa odstrániť jedno respektíve viac vašich povolení, pričom po aplikovaní zmien môžte stratiť možnosť naďalej upravovať nastavenia projektu. Naozaj chcete pokračovať?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Povolený zápis do priečinka pre pluginy"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Sú povolené len malé písmená (a-z), čísla, pomlčky a podčiarkovníky, hodnota musí začínať malým písmenom."

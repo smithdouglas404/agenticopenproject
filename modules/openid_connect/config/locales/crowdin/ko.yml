@@ -43,6 +43,10 @@ ko:
               response_is_not_successful: " - 응답 상태는 %{status}입니다."
               response_is_not_json: " - JSON 본문을 반환하지 않습니다."
               response_misses_required_attributes: " - 필수 특성을 반환하지 않습니다. 누락된 특성: %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: 삭제를 확인하려면 공급자 이름 %{name}(을)를 입력하세요.

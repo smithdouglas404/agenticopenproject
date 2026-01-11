@@ -630,9 +630,6 @@ vi:
           add: "Thêm cài đặt cho dự án"
           already_selected: "Dự án này đã được chọn"
           remove: "Xóa cài đặt dự án"
-    password_confirmation:
-      field_description: "Bạn cần nhập mật khẩu tài khoản của mình để xác nhận thay đổi này."
-      title: "Xác nhận mật khẩu của bạn để tiếp tục"
     pagination:
       no_other_page: "Bạn đang trên trang duy nhất."
       pages_skipped: "Pages skipped."

@@ -37,6 +37,7 @@ class LoginForm < ApplicationForm
 
     f.text_field(
       name: :username,
+      id: "username#{@id_suffix}",
       value: @username,
       autofocus: @username.blank?,
       label: User.human_attribute_name(:login),
@@ -46,6 +47,7 @@ class LoginForm < ApplicationForm
 
     f.text_field(
       name: :password,
+      id: "password#{@id_suffix}",
       type: :password,
       autofocus: @username.present?,
       label: User.human_attribute_name(:password),
@@ -55,6 +57,7 @@ class LoginForm < ApplicationForm
 
     if Setting::Autologin.enabled?
       f.check_box name: "autologin",
+                  id: "autologin#{@id_suffix}",
                   checked: false,
                   value: 1,
                   label: I18n.t("users.autologins.prompt",
@@ -85,9 +88,10 @@ class LoginForm < ApplicationForm
     end
   end
 
-  def initialize(back_url: nil, username: nil)
+  def initialize(back_url: nil, username: nil, id_suffix: nil)
     super()
     @back_url = back_url
     @username = username
+    @id_suffix = id_suffix
   end
 end

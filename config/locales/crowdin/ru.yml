@@ -738,6 +738,9 @@ ru:
       notice_api_token_revoked: "API токен был удален. Чтобы создать новый токен, пожалуйста, используйте кнопку в разделе API."
       notice_rss_token_revoked: "Ключ RSS был удален. Чтобы создать новый токен, пожалуйста, используйте ссылку в разделе RSS."
       notice_ical_token_revoked: 'токен iCalendar "%{token_name}" для календаря "%{calendar_name}" проекта "%{project_name}" был отозван. URL-адрес iCalendar с этим токеном недействителен.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: На данный момент новостей для отчета нет.
@@ -1527,7 +1530,8 @@ ru:
         not_a_datetime: "дата и время не являются допустимыми."
         not_a_number: "не является числом."
         not_allowed: "неверно, ввиду отсутствия прав."
-        not_json: "не является допустимым объектом JSON."
+        not_json: "не может быть разобран как JSON."
+        not_json_object: "не является объектом JSON."
         not_an_integer: "не является целым числом."
         not_an_iso_date: "недопустимая дата. Требуемый формат: гггг-мм-дд."
         not_same_project: "не принадлежит тому же проекту."
@@ -1961,7 +1965,11 @@ ru:
         few: Маркеры доступа
         many: Маркеры доступа
         other: Маркеры доступа
-      type: "Тип"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "Пользователь"
       version: "Этапы"
       workflow: "Рабочий поток"
@@ -2186,6 +2194,7 @@ ru:
   button_click_to_reveal: "Нажмите, чтобы раскрыть"
   button_close: "Закрыть"
   button_collapse_all: "Свернуть все"
+  button_confirm: "Confirm"
   button_configure: "Настройка"
   button_continue: "Продолжить"
   button_complete: "Готово"
@@ -2218,6 +2227,7 @@ ru:
   button_print: "Печать"
   button_quote: "Цитата"
   button_remove: Удалить
+  button_remove_permanently: "Удалить навсегда"
   button_remove_reminder: "Удалить напоминание"
   button_rename: "Переименовать"
   button_replace: "Заменить"
@@ -3989,7 +3999,7 @@ ru:
   notice_not_authorized: "Вы не авторизованы для доступа к этой странице."
   notice_not_authorized_archived_project: "Проект, к которому Вы пытаетесь получить доступ, заархивирован."
   notice_requires_enterprise_token: "Токен Enterprise отсутствует или не разрешает доступ к этой странице."
-  notice_password_confirmation_failed: "Пароль не правильный. Продолжить нельзя."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Найдено %{number} результатов. Нажмите <TAB> для перехода к первому."
   notice_principals_found_single: "Найден один результат. Нажмите <TAB> для перехода к нему."
   notice_parent_item_not_found: "Родительский элемент не найден."
@@ -4817,6 +4827,7 @@ ru:
     Примечание: Если этот параметр включен, значок с вашим статусом установки будет отображен в панели администрирования <a href="%{information_panel_path}">%{information_panel_label}</a> и на домашней странице. Он отображается только администраторам. <br/> Знак будет проверять текущую версию OpenProject в официальной базе данных релизов OpenProject для оповещения вас о каких-либо обновлениях или известных уязвимостях. Для дополнительной информации, необходимой для проверки доступных обновлений, и о том как отключить эту проверку, пожалуйста, посетите <a href="%{more_info_url}">конфигурации документации</a>.
   text_own_membership_delete_confirmation: "Вы собираетесь удалить все или некоторые разрешения, доступные Вам. Вы не сможете редактировать проект после этого действия. Вы уверены?"
   text_permanent_delete_confirmation_checkbox_label: "Я понимаю, что это удаление невозможно отменить"
+  text_permanent_remove_confirmation_checkbox_label: "Я понимаю, что это удаление не может быть отменено"
   text_plugin_assets_writable: "Папка активов дополнения(plugin) доступна для записи"
   text_powered_by: "С использованием %{link}"
   text_project_identifier_info: "Разрешены только строчные буквы (a-z), цифры, тире и знаки подчеркивания, начинать с буквы нижнего регистра."

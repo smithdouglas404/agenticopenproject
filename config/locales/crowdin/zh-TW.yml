@@ -717,6 +717,9 @@ zh-TW:
       notice_api_token_revoked: "API 令牌(Token)已被刪除。請使用 API 區段中的按鈕產生新的。"
       notice_rss_token_revoked: "RSS 令牌(Token)已被刪除。 請使用 在RSS 選項裡提供的連結建立新的。"
       notice_ical_token_revoked: '專案「%{project_name}」日曆「%{calendar_name}」的 iCalendar 令牌(Token)「%{token_name}」已被撤銷。 帶有此令牌的 iCalendar URL 無效。'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: 目前沒有新消息報告
@@ -1498,7 +1501,8 @@ zh-TW:
         not_a_datetime: "不是有效的日期時間。"
         not_a_number: "不是數字"
         not_allowed: "是無效的因為缺少權限"
-        not_json: "不是有效的 JSON 物件。"
+        not_json: "無法解析為 JSON。"
+        not_json_object: "不是 JSON 物件。"
         not_an_integer: "不是整數"
         not_an_iso_date: "不是有效日期。所需格式：YYYY-MM-DD。"
         not_same_project: "不屬於相同的專案"
@@ -1893,7 +1897,8 @@ zh-TW:
       status: "工作套件狀態"
       token/api:
         other: 存取令牌(Token)
-      type: "類型"
+      type:
+        other: "Types"
       user: "使用者"
       version: "版本"
       workflow: "工作流程"
@@ -2106,6 +2111,7 @@ zh-TW:
   button_click_to_reveal: "點擊顯示"
   button_close: "關閉"
   button_collapse_all: "全部收合"
+  button_confirm: "Confirm"
   button_configure: "設定"
   button_continue: "繼續"
   button_complete: "完成"
@@ -2138,6 +2144,7 @@ zh-TW:
   button_print: "列印"
   button_quote: "引言"
   button_remove: 刪除
+  button_remove_permanently: "永久移除"
   button_remove_reminder: "移除提醒"
   button_rename: "重新命名"
   button_replace: "取代"
@@ -3140,7 +3147,7 @@ zh-TW:
   label_filter_add: "新增條件"
   label_filter_by: "篩選條件："
   label_filter_any_name_attribute: "名稱屬性"
-  label_filter_plural: "篩選條件"
+  label_filter_plural: "篩選器"
   label_filters_toggle: "顯示/隱藏篩選條件"
   label_float: "浮點數"
   label_folder: "資料夾"
@@ -3155,8 +3162,8 @@ zh-TW:
   label_global_modules: "全域模組"
   label_global_roles: "全域角色"
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: "之前"
-  label_group_by: "分類"
+  label_greater_or_equal: ">="
+  label_group_by: "分組依據"
   label_group_new: "新增群組"
   label_group: "群組"
   label_group_named: "群組名稱 %{name}"
@@ -3168,7 +3175,7 @@ zh-TW:
   label_hierarchy: "階層"
   label_hierarchy_leaf: "頁面結構頁"
   label_home: "Home"
-  label_subject_or_id: "名稱或 id"
+  label_subject_or_id: "主旨或 id"
   label_calendar_subscriptions: "訂閱行事曆"
   label_identifier: "識別碼"
   label_in: "在"
@@ -3217,7 +3224,7 @@ zh-TW:
   label_latest_revision_plural: "最新版本"
   label_ldap_authentication: "LDAP 認證"
   label_learn_more: "了解更多"
-  label_less_or_equal: "之後"
+  label_less_or_equal: "<="
   label_less_than_ago: "幾天內"
   label_link_url: "連結(URL)"
   label_list: "清單"
@@ -3843,7 +3850,7 @@ zh-TW:
   notice_not_authorized: "你沒有存取此頁面的權限"
   notice_not_authorized_archived_project: "你欲存取的專案已被封存"
   notice_requires_enterprise_token: "企業識別碼遺失或不允許存取此頁面。"
-  notice_password_confirmation_failed: "您的密碼不正確。無法繼續。"
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "找到 %{number} 條結果。\n Tab鍵以轉到第一條結果。"
   notice_principals_found_single: "有一個結果。 \n Tab鍵轉到該結果。"
   notice_parent_item_not_found: "未找到父項目。"
@@ -4669,6 +4676,7 @@ zh-TW:
     注：如果啓用，這會在 <a href="%{information_panel_path}">%{information_panel_label}</a> 管理面板中和首頁上顯示一個包含您的安裝狀態的徽章。徽章僅向管理員顯示。<br/>徽章將根據官方的 OpenProject 版本數據庫檢查您當前的 OpenProject 版本，提醒您是否存在任何更新或已知漏洞。如需詳細瞭解檢查可以提供哪些信息，需要哪些數據來提供可用更新，以及如何禁用此檢查，請訪問<a href="%{more_info_url}">配置文檔</a>。
   text_own_membership_delete_confirmation: "您將要刪除部分或全部權限, 之後可能無法再編輯此專案。\n是否要繼續？"
   text_permanent_delete_confirmation_checkbox_label: "我了解此刪除無法逆轉"
+  text_permanent_remove_confirmation_checkbox_label: "我了解此移除無法逆轉"
   text_plugin_assets_writable: "Plugin 資產目錄可寫"
   text_powered_by: "由 %{link} 提供"
   text_project_identifier_info: "僅允許小寫字母(a-z)、數字、破折號(-) 及底線(_)，且必須以小寫字母開頭。"

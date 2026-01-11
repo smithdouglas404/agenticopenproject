@@ -73,8 +73,8 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
         expect(response.body).to be_json_eql("Form".to_json).at_path("_type")
 
         expect(body)
-          .to be_json_eql(user.mail.to_json)
-                .at_path("_embedded/payload/email")
+          .to be_json_eql(user.login.to_json)
+                .at_path("_embedded/payload/login")
 
         expect(body)
           .to be_json_eql(user.firstname.to_json)
@@ -127,8 +127,8 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
         expect(response.body).to be_json_eql("Form".to_json).at_path("_type")
 
         expect(body)
-          .to be_json_eql(user.mail.to_json)
-                .at_path("_embedded/payload/email")
+          .to be_json_eql(user.login.to_json)
+                .at_path("_embedded/payload/login")
 
         expect(body)
           .not_to have_json_path("_embedded/payload/firstName")
@@ -174,7 +174,7 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
         context "when no custom field value is provided" do
           let(:payload) do
             {
-              email: "updated@example.org"
+              login: "new.login"
             }
           end
 
@@ -182,8 +182,8 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
             expect(response).to have_http_status(:ok)
             expect(body).to have_json_size(0).at_path("_embedded/validationErrors")
             expect(body)
-              .to be_json_eql("updated@example.org".to_json)
-              .at_path("_embedded/payload/email")
+              .to be_json_eql("new.login".to_json)
+              .at_path("_embedded/payload/login")
             expect(body)
               .to be_json_eql(api_v3_paths.user(user.id).to_json)
               .at_path("_links/commit/href")
@@ -193,7 +193,7 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
         context "when the custom field is provided but empty" do
           let(:payload) do
             {
-              email: "updated@example.org",
+              login: "new.login",
               required_custom_field.attribute_name(:camel_case) => {
                 raw: ""
               }
@@ -213,7 +213,7 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
         context "when the custom field value is provided and valid" do
           let(:payload) do
             {
-              email: "updated@example.org",
+              login: "new.login",
               required_custom_field.attribute_name(:camel_case) => {
                 raw: "Engineering"
               }
@@ -240,7 +240,7 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
 
         let(:payload) do
           {
-            email: "updated@example.org",
+            login: "new.login",
             visible_custom_field.attribute_name(:camel_case) => {
               raw: "CF text"
             }
@@ -269,7 +269,7 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
           let(:current_user) { create(:admin) }
           let(:payload) do
             {
-              email: "updated@example.org",
+              login: "new.login",
               admin_only_custom_field.attribute_name(:camel_case) => {
                 raw: "CF text"
               }
@@ -291,7 +291,7 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
         context "with non-admin permissions" do
           let(:payload) do
             {
-              email: "updated@example.org",
+              login: "new.login",
               admin_only_custom_field.attribute_name(:camel_case) => {
                 raw: "CF text"
               }
@@ -312,7 +312,7 @@ RSpec.describe API::V3::Users::UpdateFormAPI, content_type: :json do
             let(:is_required) { true }
             let(:payload) do
               {
-                email: "updated@example.org"
+                login: "new.login"
               }
             end
 

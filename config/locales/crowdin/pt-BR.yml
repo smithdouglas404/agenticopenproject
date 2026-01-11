@@ -724,6 +724,9 @@ pt-BR:
       notice_api_token_revoked: "O token de API foi excluído. Para criar um novo token, use o botão na seção de API."
       notice_rss_token_revoked: "O token RSS foi excluído. Para criar um novo token, use o link na seção do RSS."
       notice_ical_token_revoked: 'O token iCalendar "%{token_name}" para o calendário "%{calendar_name}" do projeto "%{project_name}" foi revogado. O URL do iCalendar com este token agora é inválido.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Atualmente, não há notícias para comunicar.
@@ -1508,7 +1511,8 @@ pt-BR:
         not_a_datetime: "não é uma data/hora válida."
         not_a_number: "não é um número."
         not_allowed: "é inválido devido à falta de permissões."
-        not_json: "não é um objeto JSON válido."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "não é um número inteiro."
         not_an_iso_date: "não é uma data válida. Formato exigido: AAAA-MM-DD."
         not_same_project: "não pertence ao mesmo projeto."
@@ -1916,7 +1920,9 @@ pt-BR:
       token/api:
         one: Token de acesso
         other: Tokens de acesso
-      type: "Tipo"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Usuário"
       version: "Versão"
       workflow: "Fluxo de Trabalho"
@@ -2133,6 +2139,7 @@ pt-BR:
   button_click_to_reveal: "Clique para revelar"
   button_close: "Fechar"
   button_collapse_all: "Recolher todos"
+  button_confirm: "Confirm"
   button_configure: "Configurar"
   button_continue: "Continuar"
   button_complete: "Complete"
@@ -2165,6 +2172,7 @@ pt-BR:
   button_print: "Imprimir"
   button_quote: "Citar"
   button_remove: Remover
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remover lembrete"
   button_rename: "Renomear"
   button_replace: "Substituir"
@@ -3892,7 +3900,7 @@ pt-BR:
   notice_not_authorized: "Você não está autorizado a acessar esta página."
   notice_not_authorized_archived_project: "O projeto que você está tentando acessar foi arquivado."
   notice_requires_enterprise_token: "O token Enterprise está ausente ou não permite acesso a esta página."
-  notice_password_confirmation_failed: "Sua senha não está correta. Não é possível continuar."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Existe(m) %{number} resultado(s) encontrado(s).\nTecle tab para ir ao primeiro resultado."
   notice_principals_found_single: "Existe um resultado. Tecle tab para ir para ele."
   notice_parent_item_not_found: "Item pai não encontrado."
@@ -4720,6 +4728,7 @@ pt-BR:
     Nota: se habilitado, isto irá exibir um distintivo com o seu status de instalação no <a href="%{information_panel_path}">%{information_panel_label}</a>painel de administração e na página inicial. Ele é exibido apenas para administradores. <br/> O distintivo verificará sua versão do OpenProject contra o banco de dados oficial de versões do OpenProject para alertá-lo de quaisquer atualizações ou vulnerabilidades conhecidas. Para obter mais informações sobre o que fornece este distintivo, quais dados necessários para fornecer atualizações disponíveis e como desativar este distintivo, por favor verifique <a href="%{more_info_url}">a documentação de configuração</a>.
   text_own_membership_delete_confirmation: "Você está prestes a remover algumas ou todas as permissões e você pode não ser capaz de editar este projeto depois disso. Tem certeza que deseja continuar?"
   text_permanent_delete_confirmation_checkbox_label: "Compreendo que esta exclusão é irreversível"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Diretório de plugins ativos é gravável"
   text_powered_by: "Desenvolvido por %{link}"
   text_project_identifier_info: "Apenas letras minúsculas (a-z), números, hífens e sublinhados são permitidos, deve-se começar com uma letra minúscula."

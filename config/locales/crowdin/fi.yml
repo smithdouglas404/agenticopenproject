@@ -725,6 +725,9 @@ fi:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Tällä hetkellä ei ole uutisia.
@@ -1511,7 +1514,8 @@ fi:
         not_a_datetime: "ei ole kelvollinen aika."
         not_a_number: "ei ole numero."
         not_allowed: "is invalid because of missing permissions."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "ei ole kokonaisluku."
         not_an_iso_date: "ei ole kelvollinen päivämäärä. Vaadittava muoto: VVVV-KK-PP."
         not_same_project: "ei kuulu samaan projektiin."
@@ -1919,7 +1923,9 @@ fi:
       token/api:
         one: API-salasana
         other: Access tokens
-      type: "Tyyppi"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Käyttäjä"
       version: "Versio"
       workflow: "Työnkulku"
@@ -2136,6 +2142,7 @@ fi:
   button_click_to_reveal: "Click to reveal"
   button_close: "Sulje"
   button_collapse_all: "Tiivistä kaikki"
+  button_confirm: "Confirm"
   button_configure: "Asetukset"
   button_continue: "Jatka"
   button_complete: "Complete"
@@ -2168,6 +2175,7 @@ fi:
   button_print: "Tulosta"
   button_quote: "Siteeraa"
   button_remove: Poista
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Nimeä uudelleen"
   button_replace: "Korvaa"
@@ -3896,7 +3904,7 @@ fi:
   notice_not_authorized: "Sinulla ole oikeuksia käyttää tätä sivua."
   notice_not_authorized_archived_project: "Haluamasi projekti on arkistoitu."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Salasana ei ole oikea. Ei voi jatkua."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "There are %{number} results found. \n Tab to focus the first result."
   notice_principals_found_single: "There is one result. \n Tab to focus it."
   notice_parent_item_not_found: "Parent item not found."
@@ -4724,6 +4732,7 @@ fi:
     Note: if enabled, this will display a badge with your installation status in the <a href="%{information_panel_path}">%{information_panel_label}</a> administration panel, and on the home page. It is displayed to administrators only. <br/> The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit <a href="%{more_info_url}">the configuration documentation</a>.
   text_own_membership_delete_confirmation: "Olet aikeissa poistaa yhden tai useamman käyttöoikeuden ja et ehkä voi enää muokata tätä projektia sen jälkeen. Haluatko varmasti jatkaa?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin varat hakemisto kirjoitettavissa"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Vain pienet kirjaimet (a-z), numerot, väliviivat ja alaviivat ovat sallittuja. Ensimmäisenä tulee olla pieni kirjain."

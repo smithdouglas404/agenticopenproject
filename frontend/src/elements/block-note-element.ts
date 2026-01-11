@@ -74,12 +74,17 @@ class BlockNoteElement extends HTMLElement {
     this.reactRoot = createRoot(this.mount);
 
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
-    if (collaborationEnabled) {
-      LiveCollaborationManager.onReady((hocuspocusProvider) =>
-        this.reactRoot?.render(this.BlockNoteReactContainer(hocuspocusProvider))
+
+    const render = (provider?:HocuspocusProvider) => {
+      this.reactRoot?.render(
+        React.createElement(React.StrictMode, null, this.BlockNoteReactContainer(provider))
       );
+    };
+
+    if (collaborationEnabled) {
+      LiveCollaborationManager.onReady(render);
     } else {
-      this.reactRoot.render(this.BlockNoteReactContainer());
+      render();
     }
   }
 
