@@ -41,7 +41,7 @@ it:
         sprint:
           cannot_end_before_it_starts: "Uno sprint non può terminare prima che venga avviato."
   attributes:
-    task_type: "Task type"
+    task_type: "Tipo di attività"
   backlogs:
     add_new_story: "Nuova storia"
     any: "qualsiasi"
@@ -105,7 +105,7 @@ it:
   errors:
     attributes:
       task_type:
-        cannot_be_story_type: "can not also be a story type"
+        cannot_be_story_type: "non può essere anche un tipo di storia"
   error_intro_plural: "Si sono verificati i seguenti errori:"
   error_intro_singular: "È stato rilevato il seguente errore:"
   error_outro: "Si prega di correggere gli errori riportati prima di inviare nuovamente."
@@ -129,10 +129,10 @@ it:
   label_points_burn_up: "Verso l'alto"
   label_product_backlog: "backlog del prodotto"
   label_select_all: "Seleziona tutto"
-  label_select_type: "Select a type"
-  label_select_types: "Select types"
-  label_selected_type: "Selected type"
-  label_selected_types: "Selected types"
+  label_select_type: "Seleziona un tipo"
+  label_select_types: "Seleziona i tipi"
+  label_selected_type: "Tipo selezionato"
+  label_selected_types: "Tipi selezionati"
   label_sprint_backlog: "backlog di sprint"
   label_sprint_cards: "Esporta schede"
   label_sprint_impediments: "Impedimenti allo sprint"
@@ -170,6 +170,6 @@ it:
   version_settings_display_option_none: "nessuno"
   version_settings_display_option_right: "destra"
   setting_plugin_openproject_backlogs_story_types_caption: |
-    Types treated as backlog stories (e.g., Feature, User story). Must differ from task type.
+    Tipi considerati come storie di backlog, ad esempio Feature o User story. Devono essere diversi dal tipo di attività.
   setting_plugin_openproject_backlogs_task_type_caption: |
-    Type used for story tasks. Must differ from story types.
+    Tipo utilizzato per le attività delle storie. Deve essere diverso dai tipi di storia.

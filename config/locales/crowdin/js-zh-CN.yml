@@ -345,7 +345,7 @@ zh-CN:
     label_collapse: "折叠"
     label_collapsed: "折叠"
     label_collapse_all: "全部折叠"
-    label_collapse_text: "Collapse text"
+    label_collapse_text: "折叠文本"
     label_comment: "评论"
     label_committed_at: "在 %{date} %{committed_revision_link}"
     label_committed_link: "上传的修订 %{revision_identifier}"

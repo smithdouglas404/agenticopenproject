@@ -115,7 +115,7 @@ it:
   label_meeting_new_dynamic: "Nuova riunione una tantum"
   label_meeting_new_recurring: "Nuova riunione ricorrente"
   label_meeting_create: "Crea riunione"
-  label_meeting_duplicate: "Duplicate meeting"
+  label_meeting_duplicate: "Duplica la riunione"
   label_meeting_edit: "Modifica riunione"
   label_meeting_agenda: "Ordine del giorno"
   label_meeting_minutes: "Verbali"
@@ -127,8 +127,8 @@ it:
   label_meeting_date_time: "Data/ora"
   label_meeting_date_and_time: "Data e ora"
   label_meeting_diff: "Differenza"
-  label_meeting_send_updates: "Send email calendar invite and updates"
-  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
+  label_meeting_send_updates: "Invia inviti del calendario via email e aggiornamenti"
+  label_meeting_send_updates_caption: "Invia inviti via email a tutti i partecipanti a questa riunione"
   label_recurring_meeting: "Riunione ricorrente"
   label_recurring_meeting_part_of: "Parte di una serie di riunioni"
   label_recurring_meeting_new: "Nuova riunione ricorrente"
@@ -136,7 +136,7 @@ it:
   label_template: "Modello"
   label_recurring_meeting_view: "Visualizza la serie di riunioni"
   label_recurring_meeting_create: "Apri"
-  label_recurring_meeting_duplicate: "Duplicate as a one-time meeting"
+  label_recurring_meeting_duplicate: "Duplica come riunione singola"
   label_recurring_meeting_cancel: "Annulla questa ricorrenza"
   label_recurring_meeting_delete: "Elimina ricorrenza"
   label_recurring_meeting_restore: "Ripristina questa ricorrenza"
@@ -269,8 +269,8 @@ it:
           Qualsiasi informazione sulla riunione non contenuta nel modello andrà persa. Vuole continuare?
         confirm_button: "Cancella l'occorrenza"
     blankslate:
-      title: "There are no meetings to display"
-      desc: "You can create a new meeting or change filter criteria"
+      title: "Non ci sono riunioni da visualizzare"
+      desc: "Puoi creare una nuova riunione o modificare i criteri di filtro"
     label_export_pdf: "Esporta PDF"
     export:
       your_meeting_export: "Riunione in corso di esportazione"
@@ -340,9 +340,9 @@ it:
             Gli aggiornamenti del calendario via e-mail sono disattivati. I partecipanti non riceveranno un'e-mail quando aggiungi o rimuovi partecipanti.
         onetime:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            Tutti i partecipanti riceveranno via e-mail inviti di calendario aggiornati quando aggiungi o rimuovi partecipanti.
           disabled: >
-            Participants will not receive an email informing them of changes to meeting date, time or participants.
+            I partecipanti non riceveranno un'email che li informa delle modifiche alla data, all'orario o ai partecipanti della riunione.
         occurrence:
           enabled: >
             Gli aggiornamenti del calendario via email sono abilitati per la serie di riunioni. Tutti i partecipanti riceveranno inviti aggiornati al calendario, che li informeranno delle modifiche apportate a questo evento.
@@ -354,14 +354,14 @@ it:
           disabled: >
             Gli aggiornamenti del calendario via email sono disabilitati per la serie di riunioni. I partecipanti non riceveranno un'email che li informerà delle modifiche apportate a questo modello o ai singoli eventi.
     presentation_mode:
-      title: "Presentation Mode"
-      button_present: "Present"
-      exit: "Exit presentation"
-      current_item: "Current item"
-      total_items: "%{current} of %{total}"
-      previous: "Previous"
-      next: "Next"
-      no_items: "No agenda items"
+      title: "Modalità Presentazione"
+      button_present: "Presenta"
+      exit: "Esci dalla presentazione"
+      current_item: "Elemento attuale"
+      total_items: "%{current} di %{total}"
+      previous: "Precedente"
+      next: "Successivo"
+      no_items: "Nessun punto all'ordine del giorno"
       no_items_flash: "There are no agenda items to present."
     ical_response:
       update_failed: "Could not update participation status."

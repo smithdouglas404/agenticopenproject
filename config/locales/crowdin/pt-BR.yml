@@ -356,31 +356,31 @@ pt-BR:
         project: "Marcar o atributo como disponível em todos os projetos existentes e novos."
       multi_select:
         all: "Permite que o usuário atribua múltiplos valores a este campo personalizado."
-        project: "Allows the user to assign multiple values to this attribute."
+        project: "Permite que o usuário atribua múltiplos valores a este atributo."
       searchable:
-        all: "Include the field values when using the global search functionality."
-        project: "Check to make this attribute available as a filter in project lists."
+        all: "Incluir os valores do campo ao utilizar a funcionalidade de pesquisa global."
+        project: "Marque para tornar este atributo disponível como filtro nas listas de projetos."
       editable:
-        all: "Allow the field to be editable by users themselves."
+        all: "Permitir que o campo seja editável pelos próprios usuários."
       admin_only:
-        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
-        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+        all: "Marque para tornar este campo personalizado visível apenas para administradores. Usuários sem permissões de administrador não poderão visualizá-lo nem editá-lo."
+        project: "Marque para tornar este atributo visível apenas para administradores. Usuários sem permissões de administrador não poderão visualizá-lo nem editá-lo."
       is_filter:
         all: >
-          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+          Permite que o campo personalizado seja usado como filtro nas visualizações de pacotes de trabalho. Observe que apenas com a opção "Para todos os projetos" selecionada o campo personalizado aparecerá nas visualizações globais.
       formula:
-        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+        project: "Adicione valores numéricos ou digite / para buscar um atributo ou um operador matemático."
     tab:
       no_results_title_text: Atualmente, não há campos personalizados.
       no_results_content_text: Criar um novo campo personalizado
   calculated_values:
     error_dialog:
-      title: "Error with Calculated value"
+      title: "Erro com o valor calculado"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
-      mathematical: "The mathematical formula leads to an error. Please review the project calculation attribute and try again."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
+      unknown: "Ocorreu um erro desconhecido. Revise a fórmula deste valor calculado."
+      mathematical: "A fórmula matemática resulta em um erro. Revise o atributo de cálculo do projeto e tente novamente."
+      missing_value: O atributo “%{custom_field_name}” é obrigatório para este valor calculado, mas está vazio.
+      disabled_value: O atributo “%{custom_field_name}” é obrigatório para este valor calculado, mas está desativado para o projeto.
   concatenation:
     single: "ou"
   danger_dialog:
@@ -404,7 +404,7 @@ pt-BR:
       int?: "deve ser um número inteiro."
       key?: "está faltando."
       not_found: "não encontrado."
-      respond_to?: "does not implement required method."
+      respond_to?: "não implementa o método obrigatório."
       rules:
         copy_workflow_from:
           workflow_missing: "não possui fluxo de trabalho próprio."
@@ -427,7 +427,7 @@ pt-BR:
       depth: "Profundidade"
       item: "Item"
       label: "Rótulo"
-      weight: "Weight"
+      weight: "Peso"
       short: "Nome abreviado"
       parent: "Pai"
       blueprint: "Esquema de padrão"
@@ -466,16 +466,16 @@ pt-BR:
   portfolios:
     index:
       search:
-        label: Portfolio name filter
-        placeholder: Search portfolios
+        label: Filtro de nome do portfólio
+        placeholder: Pesquisar portfólios
       sub_items_html:
-        one: "<strong>1</strong> sub-item"
-        other: "<strong>%{count}</strong> sub-items"
+        one: "<strong>1</strong> subitem"
+        other: "<strong>%{count}</strong> subitens"
     lists:
-      active: "Active portfolios"
-      my: "My portfolios"
-      favorited: "Favorite portfolios"
-      archived: "Archived portfolios"
+      active: "Ativar portfólios"
+      my: "Meus portfólios"
+      favorited: "Portfólios favoritos"
+      archived: "Portfólios ativados"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -488,14 +488,14 @@ pt-BR:
       work_package_file_links: "Pacote de trabalho: links de arquivo"
       work_package_shares: "Pacotes de trabalho: compartilhamento"
     create:
-      notification_email_subject: "Your project '%{project_name}' has been created"
-      complete_wizard_link: "Complete the %{artefact_name}"
+      notification_email_subject: "Seu projeto ‘%{project_name}’ foi criado"
+      complete_wizard_link: "Conclua o %{artefact_name}"
     delete:
       scheduled: "Exclusão foi agendada e será realizada em segundo plano. Você será notificado do resultado."
       schedule_failed: "Projeto não pode ser excluído: %{errors}"
-      failed: "Deletion of project '%{name}' has failed"
-      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
-      completed: "Deletion of project '%{name}' completed"
+      failed: "A exclusão do projeto ‘%{name}’ falhou"
+      failed_text: "A solicitação para excluir o projeto ‘%{name}’ falhou. O projeto foi mantido arquivado."
+      completed: "Exclusão do projeto ‘%{name}’ concluída"
       completed_text: "Foi concluída a solicitação para exclusão do projeto '%{name}'."
       completed_text_children: "Além disso, os seguintes subprojetos foram excluídos:"
     index:
@@ -540,7 +540,7 @@ pt-BR:
       change_identifier: Mudar identificador
       subitems:
         template_section: >
-          Select templates to be used when creating new subitems.
+          Selecione os modelos a serem usados ao criar novos subitens.
         project_template_label: "Template for projects"
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
