@@ -19,7 +19,7 @@ Alternatively, you can also set the project status on the **project home page**.
 
 ![Project status widget on a project overview page in OpenProject](openproject_userguide_projects_project_status_widget.png)
 
-Learn more about [project status widget on a project home page](../../project-home/project-widgets/#project-status-widget).
+Learn more about [project status widget on a project home page](../../project-home/project-widgets/#status-widget).
 
 ## Display the project status
 
