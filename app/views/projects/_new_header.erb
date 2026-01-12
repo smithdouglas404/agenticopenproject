@@ -27,9 +27,27 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
+<% close_href =
+     if @parent
+       project_overview_path(@parent.id)
+     else
+       home_path
+     end %>
+
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title { title }
+
+    header.with_action_icon_button(
+      tag: :a,
+      size: :small,
+      icon: :x,
+      mobile_icon: :x,
+      label: I18n.t(:button_close),
+      href: close_href,
+      aria: { label: I18n.t(:button_close) },
+      title: I18n.t(:button_close)
+    )
 
     if @parent
       header.with_breadcrumbs(
