@@ -20,7 +20,6 @@ import * as TLodash from 'lodash';
 import { Screenfull } from 'screenfull';
 import { ErrorReporterBase } from 'core-app/core/errors/error-reporter-base';
 import { I18n } from 'i18n-js';
-import '@hotwired/turbo';
 
 declare module 'observable-array';
 declare module 'dom-autoscroller';

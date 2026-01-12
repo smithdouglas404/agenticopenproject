@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TurboElement } from 'core-typings/turbo';
+import { type FrameElement } from '@hotwired/turbo';
 import { StateService } from '@uirouter/core';
 
 @Injectable({ providedIn: 'root' })
@@ -11,7 +11,7 @@ export class SubmenuService {
     const menuIdentifier:string|undefined = this.$state.current.data.sideMenuOptions?.sidemenuId;
 
     if (menuIdentifier) {
-      const menu = (document.getElementById(menuIdentifier) as HTMLElement&TurboElement);
+      const menu = document.getElementById(menuIdentifier) as FrameElement;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const sideMenuOptions = this.$state.$current.data?.sideMenuOptions as { hardReloadOnBaseRoute?:boolean, defaultQuery?:string };
       const currentSrc = menu.getAttribute('src');
