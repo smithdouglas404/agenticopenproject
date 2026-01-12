@@ -227,7 +227,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
   end
 
-  describe "breadcrumbs", with_flag: { new_project_overview: true } do
+  describe "breadcrumbs" do
     context "when the project has no parent" do
       before do
         allow(project).to receive(:ancestors).and_return([])
