@@ -250,7 +250,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
         expect(rendered_component).to have_css ".PageHeader"
         expect(rendered_component).to have_link grandparent.name
         expect(rendered_component).to have_link parent.name
-        expect(rendered_component).to have_text project.name
+        expect(rendered_component).to have_heading page.title, class: "PageHeader-title"
       end
     end
   end
