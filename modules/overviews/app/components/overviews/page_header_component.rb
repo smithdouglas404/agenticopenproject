@@ -52,7 +52,7 @@ module Overviews
             skip_for_mobile: true
           }
         end
-      items << project.name
+      items << page_title
 
       items
     end
