@@ -154,6 +154,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
   let(:label_content_right_to_left) do # Right-to-Left content
     I18n.t("activerecord.attributes.custom_field.content_right_to_left")
   end
+  let(:label_editable) { I18n.t("activerecord.attributes.custom_field.editable") } # Editable
   let(:label_min_length) { I18n.t("activerecord.attributes.custom_field.min_length") } # Minimum length
   let(:label_max_length) { I18n.t("activerecord.attributes.custom_field.max_length") } # Maximum length
   let(:label_regexp) { I18n.t("activerecord.attributes.custom_field.regexp") } # Regular expression
@@ -195,6 +196,12 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       expect(page).to have_field(label_content_right_to_left)
     else
       expect(page).to have_no_label(label_content_right_to_left)
+    end
+
+    if type == "User"
+      expect(page).to have_field(label_editable)
+    else
+      expect(page).to have_no_label(label_editable)
     end
 
     if type in "Work package" | "Project"
