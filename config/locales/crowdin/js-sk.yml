@@ -634,9 +634,6 @@ sk:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Ak chcete potvrdiť túto zmenu, musíte zadať heslo svojho účtu."
-      title: "Ak chcete pokračovať, potvrďte svoje heslo"
     pagination:
       no_other_page: "Ste na jedinej stránke."
       pages_skipped: "Pages skipped."

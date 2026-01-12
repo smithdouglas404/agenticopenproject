@@ -632,9 +632,6 @@ fi:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Sinun täytyy syöttää tilisi salasana vahvistaaksesi tämän muutoksen."
-      title: "Vahvista salasanasi jatkaaksesi"
     pagination:
       no_other_page: "Olet jo ainoalla sivulla."
       pages_skipped: "Pages skipped."

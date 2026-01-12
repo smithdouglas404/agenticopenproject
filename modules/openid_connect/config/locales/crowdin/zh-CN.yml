@@ -43,6 +43,10 @@ zh-CN:
               response_is_not_successful: " 响应状态为 %{status}。"
               response_is_not_json: " 不返回 JSON 正文。"
               response_misses_required_attributes: " 不返回所需的属性。缺少的属性有 %{missing_attributes}."
+          invalid_claims_essential: "未在 %{attribute} 中定义布尔值。"
+          invalid_claims_location: "包含不受支持的位置：%{invalid}。支持的位置为：%{supported}。"
+          invalid_claims_values: "未在 %{attribute} 中定义数组。"
+          non_object_attribute: "未在 %{attribute} 中定义 JSON 对象。"
   provider:
     delete_warning:
       input_delete_confirmation: 输入占位符名称 %{name} 以确认删除。

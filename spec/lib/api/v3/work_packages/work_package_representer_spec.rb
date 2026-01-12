@@ -145,6 +145,10 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
 
   include_context "eager loaded work package representer"
 
+  it "fulfills the documented schema" do
+    expect(generated).to match_json_schema.from_docs("work_package_model")
+  end
+
   describe "properties" do
     it { is_expected.to include_json("WorkPackage".to_json).at_path("_type") }
 

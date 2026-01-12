@@ -736,6 +736,9 @@ pl:
       notice_api_token_revoked: "Token API został usunięty. Aby utworzyć nowy token, użyj przycisku w sekcji API."
       notice_rss_token_revoked: "Token RSS został usunięty. Aby utworzyć nowy token użyj linku w sekcji RSS."
       notice_ical_token_revoked: 'Token iCalendar „%{token_name}” kalendarza „%{calendar_name}” projektu „%{project_name}” został unieważniony. Adres URL iCalendar z tym tokenem jest teraz nieprawidłowy.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Nie ma jeszcze żadnych wiadomości do wyświetlenia.
@@ -1525,7 +1528,8 @@ pl:
         not_a_datetime: "nie jest poprawną datą i czasem."
         not_a_number: "nie jest liczbą."
         not_allowed: "jest nieprawidłowy ze względu na brak uprawnień."
-        not_json: "nie jest prawidłowym obiektem JSON."
+        not_json: "nie może być analizowany jako kod JSON."
+        not_json_object: "nie jest obiektem JSON."
         not_an_integer: "nie jest liczbą całkowitą."
         not_an_iso_date: "wprowadzono nieprawidłową datę. Wymagany format: RRRR-MM-DD."
         not_same_project: "nie należy do tego samego projektu."
@@ -1959,7 +1963,11 @@ pl:
         few: Tokeny dostępu
         many: Tokenów dostępu
         other: Tokenu dostępu
-      type: "Typ"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "Użytkownik"
       version: "Wersja"
       workflow: "Przepływ pracy"
@@ -2184,6 +2192,7 @@ pl:
   button_click_to_reveal: "Kliknij aby pokazać"
   button_close: "Zamknij"
   button_collapse_all: "Zwiń wszystko"
+  button_confirm: "Confirm"
   button_configure: "Konfigurowanie"
   button_continue: "Dalej"
   button_complete: "Ukończ"
@@ -2216,6 +2225,7 @@ pl:
   button_print: "Drukuj"
   button_quote: "Cytat"
   button_remove: Usuń
+  button_remove_permanently: "Usuń bezpowrotnie"
   button_remove_reminder: "Usuń przypomnienie"
   button_rename: "Zmień nazwę"
   button_replace: "Zastąp"
@@ -3987,7 +3997,7 @@ pl:
   notice_not_authorized: "Brak uprawnień dostępu do tej strony."
   notice_not_authorized_archived_project: "The project you're trying to access has been archived."
   notice_requires_enterprise_token: "Brak tokenu wersji Enterprise lub nie zezwala ona na dostęp do tej strony."
-  notice_password_confirmation_failed: "Nieprawidłowe hasło. Nie można kontynuować."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Znaleziono %{number} wyników.\nNaciśnij Tab, aby wybrać pierwszy rezultat."
   notice_principals_found_single: "Znaleziono 1 wynik.\nNaciśnij Tab, aby go wybrać."
   notice_parent_item_not_found: "Nie znaleziono elementu nadrzędnego."
@@ -4815,6 +4825,7 @@ pl:
     Uwaga: jeśli opcja jest włączona, w panelu administracyjnym <a href="%{information_panel_path}">%{information_panel_label}</a> oraz na stronie głównej wyświetlona zostanie plakietka ze statusem instalacji. Jest ona wyświetlana tylko administratorom. <br/> Plakietka uruchomi kontrolę bieżącej wersji OpenProject w porównaniu do oficjalnej bazy danych wersji OpenProject, aby ostrzec o wszelkich aktualizacjach lub znanych lukach. Więcej informacji na temat tego, co zapewnia kontrola, jakie dane są potrzebne do podania dostępnych aktualizacji i jak wyłączyć tę kontrolę zawiera <a href="%{more_info_url}">dokumentacja konfiguracji</a>.
   text_own_membership_delete_confirmation: "Chcesz usunąć niektóre lub wszystkie swoje uprawnienia, przez które możesz nie być w stanie edytować tego projektu.\nCzy na pewno chcesz kontynuować?"
   text_permanent_delete_confirmation_checkbox_label: "Rozumiem, że tego usunięcia nie można cofnąć"
+  text_permanent_remove_confirmation_checkbox_label: "Rozumiem, że tego usunięcia nie można cofnąć"
   text_plugin_assets_writable: "Plugin assets directory writable"
   text_powered_by: "Napędzany przez %{link}"
   text_project_identifier_info: "Tylko małe litery (a-z), cyfry, myślniki i podkreślenia są dozwolone, oraz musi zaczynać się małą literą."

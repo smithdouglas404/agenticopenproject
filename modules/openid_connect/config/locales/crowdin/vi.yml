@@ -43,6 +43,10 @@ vi:
               response_is_not_successful: " phản hồi với %{status}."
               response_is_not_json: " không trả về nội dung JSON."
               response_misses_required_attributes: " không trả về thuộc tính cần có. Các thuộc tính bị thiếu là: %{missing_attributes}."
+          invalid_claims_essential: "does not define a boolean at %{attribute}."
+          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
+          invalid_claims_values: "does not define an array at %{attribute}."
+          non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: Nhập tên nhà cung cấp %{name} để xác nhận xóa.

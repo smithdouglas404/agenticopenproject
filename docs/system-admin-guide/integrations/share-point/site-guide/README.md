@@ -34,10 +34,12 @@ Then you will need to grant access to the Azure Application by sending the follo
 
 ```json
 {
-  "roles" : ["manage"],
-  "grantedToIdentities" : [{
-    "application": "<AZURE APPLICATION ID>",
-    "displayName": "<AZURE APPLICATION NAME>"
+  "roles": ["manage"],
+  "grantedToIdentities": [{
+    "application": {
+      "id": "<AZURE APPLICATION ID>",
+      "displayName": "<AZURE APPLICATION NAME>"
+    }
   }]
 }
 ```

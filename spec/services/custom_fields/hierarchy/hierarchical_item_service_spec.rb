@@ -254,10 +254,31 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
       end
 
       context "with a root node" do
-        it "returns a empty list" do
+        it "returns a list with the root node" do
           result = service.get_branch(item: root)
           expect(result).to be_success
           expect(result.value!).to match_array(root)
+        end
+      end
+    end
+
+    describe "#get_ancestors" do
+      context "with a non-root node" do
+        it "returns all the ancestors to that item" do
+          result = service.get_ancestors(item: mara)
+          expect(result).to be_success
+
+          ancestors = result.value!
+          expect(ancestors.size).to eq(2)
+          expect(ancestors).to contain_exactly(root, luke)
+        end
+      end
+
+      context "with a root node" do
+        it "returns a empty list" do
+          result = service.get_ancestors(item: root)
+          expect(result).to be_success
+          expect(result.value!).to be_empty
         end
       end
     end

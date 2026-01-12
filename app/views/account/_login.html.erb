@@ -33,7 +33,14 @@ See COPYRIGHT and LICENSE files for more details.
       url: { controller: "/account", action: "login" },
       method: :post
     ) do |form_builder|
-      render(LoginForm.new(form_builder, back_url: back_url_to_current_page, username: params[:username]))
+      render(
+        LoginForm.new(
+          form_builder,
+          back_url: back_url_to_current_page,
+          username: params[:username],
+          id_suffix: "-pulldown"
+        )
+      )
     end
   %>
 

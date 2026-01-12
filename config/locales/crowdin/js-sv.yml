@@ -631,9 +631,6 @@ sv:
           add: "Lägg till inställning för projekt"
           already_selected: "Detta projekt är redan valt"
           remove: "Ta bort projektinställningar"
-    password_confirmation:
-      field_description: "Du behöver ange ditt lösenord för att bekräfta ändringen."
-      title: "Bekräfta ditt lösenord för att fortsätta"
     pagination:
       no_other_page: "Du befinner dig på den enda sidan."
       pages_skipped: "Sidor överhoppade."

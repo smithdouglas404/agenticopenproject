@@ -722,6 +722,9 @@ ca:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "S'ha suprimit el token RSS. Per crear un token nou, utilitzeu l'enllaç de la secció RSS."
       notice_ical_token_revoked: 'El token d''iCalendar "%{token_name}" per al calendari "%{calendar_name}" en el projecte "%{project_name}" s''ha revocat. L''URL d''iCalendar amb aquest token és ara invàlida.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Actualment no hi ha cap novetat per a informar.
@@ -1508,7 +1511,8 @@ ca:
         not_a_datetime: "no és una data-i-hora vàlida."
         not_a_number: "no és un número."
         not_allowed: "és invàlid perquè falten permisos."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "no és un enter."
         not_an_iso_date: "no és una data vàlida. Format requerit: AAAA-MM-DD."
         not_same_project: "no pertany al mateix projecte."
@@ -1916,7 +1920,9 @@ ca:
       token/api:
         one: Token d'accés
         other: Token d'accés
-      type: "Classe"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Usuari"
       version: "Versió"
       workflow: "Flux de treball"
@@ -2133,6 +2139,7 @@ ca:
   button_click_to_reveal: "Clica per mostrar"
   button_close: "Tanca"
   button_collapse_all: "Replega-ho tot"
+  button_confirm: "Confirm"
   button_configure: "Configurar"
   button_continue: "Continua"
   button_complete: "Complete"
@@ -2165,6 +2172,7 @@ ca:
   button_print: "Imprimir"
   button_quote: "Citar"
   button_remove: Suprimir
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Renombrar"
   button_replace: "Substitueix"
@@ -3890,7 +3898,7 @@ ca:
   notice_not_authorized: "No tens permís per accedir a aquesta pàgina."
   notice_not_authorized_archived_project: "El projecte al que intentes accedir està arxivat."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "La teva contrasenya no és correcta, no es pot continuar."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "S'han trobat %{number} resultats.\nPrem per focalitzar el primer resultat."
   notice_principals_found_single: "S'han trobat un resultat.\nPrem per focalitzar-lo."
   notice_parent_item_not_found: "Parent item not found."
@@ -4715,6 +4723,7 @@ ca:
     Nota: si està activat, es mostra un indicador amb l'estat de la teva instal·lació <a href="%{information_panel_path}">%{information_panel_label}</a> en el panell d'administració i a la pàgina inicial. Només es mostra als administradors. <br/> L'indicador comprova la teva versió d'OpenProject actual amb la versió oficial i t'avisa si hi ha actualitzacions o qualsevol vulnerabilitat. Per a més informació en quina informació es proveïx, quines dades són necessàries per actualitzacions i com desactivar aquesta funció, si us plau, visita <a href="%{more_info_url}">la documentació de configuració</a>.
   text_own_membership_delete_confirmation: "Estàs a punt d'eliminar algun o tots els teus permisos i potser no podreu editar més aquest projecte.\nEstàs segur que vols continuar?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Es pot escriure als complements actius"
   text_powered_by: "Desenvolupat per %{link}"
   text_project_identifier_info: "Només es permeten lletres minúscules (a-z), números, guions i guions baixos, i ha de començar amb una lletra minúscula."

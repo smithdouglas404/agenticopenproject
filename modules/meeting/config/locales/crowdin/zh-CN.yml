@@ -264,8 +264,8 @@ zh-CN:
           任何不在模板中的会议信息都将丢失。 您想要继续吗？
         confirm_button: "取消事件"
     blankslate:
-      title: "无会议显示"
-      desc: "没有符合主动筛选条件的会议。"
+      title: "没有可显示的会议"
+      desc: "您可以创建新会议或更改筛选条件"
     label_export_pdf: "导出 PDF"
     export:
       your_meeting_export: "会议正在导出"
@@ -358,11 +358,21 @@ zh-CN:
       next: "下一页"
       no_items: "无议程条目"
       no_items_flash: "没有要演示的议程条目。"
+    ical_response:
+      update_failed: "无法更新参与状态。"
+      meeting_not_found: "找不到与给定 UID 匹配的会议。"
   meeting_section:
     untitled_title: "无标题章节"
     delete_confirmation: "删除该属性也会删除其在所有项目中的值。您确定要这样做吗？"
     placeholder_title: "新建章节"
     empty_text: "拖动项目到此处或创建一个新项目"
+  meeting_participant:
+    participation_status:
+      needs_action: "无响应"
+      accepted: "已接受"
+      declined: "已拒绝"
+      tentative: "可能"
+      unknown: "未知"
   recurring_meeting:
     time_zone_difference_banner:
       title: "时差"
@@ -504,6 +514,9 @@ zh-CN:
   label_agenda_item_move_to_bottom: "移至底部"
   label_agenda_item_move_up: "向上移动"
   label_agenda_item_move_down: "向下移动"
+  label_agenda_item_duplicate: "复制"
+  label_agenda_item_duplicate_in_next: "下次发生时复制"
+  label_agenda_item_duplicate_in_next_title: "是否在下次发生时复制？"
   label_agenda_item_add_notes: "添加备注"
   label_agenda_item_add_outcome: "添加成果"
   label_agenda_item_work_package_add: "添加工作包"
@@ -577,10 +590,12 @@ zh-CN:
   text_agenda_item_not_editable_anymore: "此议程项目已不可编辑。"
   text_agenda_item_move_next_meeting: "此条目将被移至 %{date} %{time} 召开的下一次会议。"
   text_agenda_item_moved_to_next_meeting: "议程项目移至下次会议，日期 %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "确定要将此议程条目的副本添加到 %{date} %{time} 的下一个会议吗？结果不会复制。"
+  text_agenda_item_duplicated_in_next_meeting: "在 %{date}的下一个会议中复制的议程条目"
   text_work_package_has_no_upcoming_meeting_agenda_items: "该工作包尚未被安排到即将举行的会议议程中。"
   text_agenda_item_move_next_meeting_cancelled: "无法移动到下次会议，因为它已被取消。"
   text_work_package_add_to_meeting_hint: '使用"添加到会议"按钮将此工作包添加到即将举行的会议。'
-  text_work_package_has_no_past_meeting_agenda_items: "在过往会议中没有提及过该工作包。"
+  text_work_package_has_no_past_meeting_agenda_items: "此工作包未作为过往会议中的议程条目添加。"
   text_email_updates_muted: "电子邮件日历更新已静音。当您进行更改时，与会者将不会通过电子邮件收到更新的邀请。"
   text_email_updates_enabled: "电子邮件日历更新已启用。当您进行更改时，所有与会者都会通过电子邮件收到更新的邀请。"
   my_account:
