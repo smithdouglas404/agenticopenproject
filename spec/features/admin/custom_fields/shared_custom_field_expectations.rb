@@ -150,6 +150,10 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
   let(:label_is_for_all) { I18n.t("attributes.is_for_all") } # For all projects
   let(:label_admin_only) { I18n.t("activerecord.attributes.custom_field.admin_only") } # Admin-only
   let(:label_searchable) { I18n.t("activerecord.attributes.custom_field.searchable") } # Searchable
+  let(:label_is_filter) { I18n.t("activerecord.attributes.custom_field.is_filter") } # Used as a filter
+  let(:label_content_right_to_left) do # Right-to-Left content
+    I18n.t("activerecord.attributes.custom_field.content_right_to_left")
+  end
   let(:label_min_length) { I18n.t("activerecord.attributes.custom_field.min_length") } # Minimum length
   let(:label_max_length) { I18n.t("activerecord.attributes.custom_field.max_length") } # Maximum length
   let(:label_regexp) { I18n.t("activerecord.attributes.custom_field.regexp") } # Regular expression
@@ -179,6 +183,18 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       expect(page).to have_field(label_section)
     else
       expect(page).to have_no_label(label_section)
+    end
+
+    if type == "Work package"
+      expect(page).to have_field(label_is_filter)
+    else
+      expect(page).to have_no_label(label_is_filter)
+    end
+
+    if type == "Work package" && format != "Hierarchy"
+      expect(page).to have_field(label_content_right_to_left)
+    else
+      expect(page).to have_no_label(label_content_right_to_left)
     end
 
     if type in "Work package" | "Project"
