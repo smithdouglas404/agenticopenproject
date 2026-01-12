@@ -242,23 +242,23 @@ uk:
     error_invalid_provider_type: Виберіть дійсного постачальника сховища.
     file_storage_view:
       access_management:
-        automatic_management: Enable automatically-managed access and folders
-        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
-        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
-        manual_management: Only allow manually-managed access and folders
-        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+        automatic_management: Увімкнути автоматичне керування доступом і папками
+        automatic_management_description: Для кожного проєкту при додаванні сховища можна вирішити, який підхід до керування папками й доступом слід застосувати — автоматизований чи ручний.
+        description: OpenProject може автоматично створювати папки проєкту й керувати ними, коли в проєкт додається файлове сховище. Це може забезпечити більш організовану структуру папок і просте керування доступом, завдяки чому доступ гарантовано отримають усі відповідні користувачі.
+        manual_management: Дозволяти лише ручне керування доступом і папками
+        manual_management_description: Для проєктів, що використовують це сховище, не буде запропоновано можливість автоматичного керування. Папками й доступом потрібно буде керувати вручну.
         setup_incomplete: Виберіть тип керування доступом користувачів і створенням папок.
-        subtitle: Folder and access management
+        subtitle: Керування папками й доступом
       access_management_section: Доступ і папки проєкту
       automatically_managed_folders: Папки з автоматичним керуванням
       general_information: Загальна інформація
       oauth_configuration: Конфігурація OAuth
       one_drive:
         access_management:
-          automatic_management: Enable automatically-managed access and folders
-          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
-          manual_management: Only allow manually-managed access and folders
-          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+          automatic_management: Увімкнути автоматичне керування доступом і папками
+          automatic_management_description: У кожному проєкті, що використовує це файлове сховище, керування доступом і папками має обов’язково бути автоматичним. Це неможливо робити вручну.
+          manual_management: Дозволяти лише ручне керування доступом і папками
+          manual_management_description: Для проєктів, що використовують це сховище, не буде запропоновано можливість автоматичного керування. Папками й доступом потрібно буде керувати вручну.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Папки проєкту
@@ -558,11 +558,9 @@ uk:
     upsell:
       one_drive:
         description: |-
-          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: OneDrive integration
+          Інтегруйте диск OneDrive як файлове сховище в OpenProject. Додайте файли й прив’яжіть їх безпосередньо до пакетів робіт у проєкті.
+        title: Інтеграція OneDrive
       sharepoint:
         description: |-
-          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: SharePoint integration
+          Інтегруйте сайт SharePoint як файлове сховище в OpenProject. Додайте файли й прив’яжіть їх безпосередньо до пакетів робіт у проєкті.
+        title: Інтеграція SharePoint

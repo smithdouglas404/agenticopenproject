@@ -28,9 +28,9 @@ ko:
       label_add_new: 새로운 Webhook 추가
       label_edit: Webhook 편집
       label_x_events:
-        one: "1 event"
-        other: "%{count} events"
-        zero: "No events"
+        one: "1개 이벤트"
+        other: "%{count}개 이벤트"
+        zero: "이벤트 없음"
       events:
         created: "생성됨"
         updated: "업데이트됨"

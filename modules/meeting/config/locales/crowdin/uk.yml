@@ -246,14 +246,14 @@ uk:
         summary: "«%{title}» скасував(-ла) %{actor}."
         date_time: "Заплановані дата/час"
       ended:
-        header_series: "Ended: Meeting series '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
+        header_series: "Завершено: серія нарад «%{title}»"
+        summary_series: "Серію нарад «%{title}» завершив(-ла) %{actor}."
       updated:
         header: "Нараду «%{title}» оновлено"
         summary: "Нараду «%{title}» оновив(-ла) %{actor}"
         body: "Нараду «%{title}» оновив(-ла) %{actor}."
-        old_title: "Old title"
-        new_title: "New title"
+        old_title: "Стара назва"
+        new_title: "Нова назва"
         old_date_time: "Стара дата/час"
         new_date_time: "Нова дата/час"
         old_location: "Старе розташування"

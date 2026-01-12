@@ -236,14 +236,14 @@ it:
         summary: "\"%{title}\" è stata cancellata da %{actor}."
         date_time: "Data/ora programmata"
       ended:
-        header_series: "Ended: Meeting series '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
+        header_series: "Terminata: serie di riunioni \"%{title}\""
+        summary_series: "La serie di riunioni '%{title}' è stata conclusa da %{actor}."
       updated:
         header: "La riunione \"%{title}\" è stata aggiornata"
         summary: "La riunione \"%{title}\" è stata aggiornata da %{actor}"
         body: "La riunione \"%{title}\" è stata aggiornata da %{actor}."
-        old_title: "Old title"
-        new_title: "New title"
+        old_title: "Vecchio titolo"
+        new_title: "Nuovo titolo"
         old_date_time: "Data/ora precedente"
         new_date_time: "Nuova data/ora"
         old_location: "Posizione precedente"
@@ -362,7 +362,7 @@ it:
       previous: "Precedente"
       next: "Successivo"
       no_items: "Nessun punto all'ordine del giorno"
-      no_items_flash: "There are no agenda items to present."
+      no_items_flash: "Non ci sono punti all'ordine del giorno da presentare."
   meeting_section:
     untitled_title: "Sezione senza titolo"
     delete_confirmation: "L'eliminazione della sezione eliminerà anche tutti i suoi elementi dell'ordine del giorno. Continuare?"
@@ -393,9 +393,9 @@ it:
       label_view_template: "Visualizza modello"
       label_edit_template: "Modifica modello"
       banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+        Stai attualmente modificando un modello di una serie di riunioni: %{link}. Ogni nuova ricorrenza di una riunione della serie userà questo modello. Le modifiche non influenzeranno le riunioni passate o già create.
       draft_banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
+        Stai attualmente modificando un modello di una serie di riunioni: %{link}. Ogni nuova ricorrenza di una riunione della serie userà questo modello. Le modifiche non influenzeranno le riunioni passate o già create. Nella modalità bozza attuale non verranno inviati inviti via email finché non si aprirà la prima riunione.
     frequency:
       x_daily:
         one: "Ogni giorno"
@@ -546,7 +546,7 @@ it:
   label_meeting_series_details: "Dettagli della serie di riunioni"
   label_meeting_details_edit: "Modifica dettagli riunione"
   label_meeting_state: "Stato della riunione"
-  label_meeting_state_draft: "Draft"
+  label_meeting_state_draft: "Bozza"
   label_meeting_state_open: "Aperte"
   label_meeting_state_closed: "Chiuso"
   label_meeting_state_agenda_created: "Ordine del giorno creato"
@@ -557,19 +557,19 @@ it:
   label_meeting_reopen_action: "Riapri la riunione"
   label_meeting_close_action: "Chiudi riunione"
   label_meeting_in_progress_action: "Inizia riunione"
-  label_meeting_open_action: "Open meeting"
-  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  label_meeting_open_action: "Apri riunione"
+  text_meeting_draft_description: "Prepara l'ordine del giorno in modalità bozza. Questa riunione non invierà alcun aggiornamento del calendario né inviti, anche in caso di modifica dei dettagli della riunione o di aggiunta o rimozione di partecipanti."
   text_meeting_open_description: "Puoi aggiungere/rimuovere i punti all'ordine del giorno e i partecipanti. Una volta che l'ordine del giorno è pronto, contrassegna come in corso per documentare i risultati."
   text_meeting_closed_description: "Questa riunione è chiusa. Non puoi più aggiungere/rimuovere i punti all'ordine del giorno."
   text_meeting_in_progress_description: "Puoi modificare l'ordine del giorno, registrare gli esiti di ogni punto e tracciare la presenza dei partecipanti. Una volta conclusa la riunione, puoi segnarla come chiusa per bloccarla."
   text_meeting_open_dropdown_description: "Eventuali risultati esistenti rimarranno, ma gli utenti non potranno aggiungere nuovi risultati."
   text_meeting_in_progress_dropdown_description: "Documenta i risultati, come le esigenze informative o le decisioni prese durante la riunione."
   text_meeting_closed_dropdown_description: "Questa riunione è chiusa. Non puoi più modificare i punti all'ordine del giorno."
-  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
-  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
-  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
-  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
-  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
+  text_meeting_draft_banner: "Al momento sei in modalità bozza. Questa riunione non invierà alcun aggiornamento del calendario né inviti, anche in caso di modifica dei dettagli della riunione o di aggiunta o rimozione di partecipanti."
+  text_exit_draft_mode_dialog_title: "Aprire questa riunione e inviare gli inviti?"
+  text_exit_draft_mode_dialog_subtitle: "Non può tornare alla modalità bozza una volta programmata una riunione."
+  text_exit_draft_mode_dialog_template_title: "Aprire la prima occorrenza di questa serie di riunioni?"
+  text_exit_draft_mode_dialog_template_subtitle: "Non puoi tornare alla modalità bozza dopo averlo fatto."
   text_meeting_not_editable_anymore: "Questa riunione non è più modificabile."
   text_meeting_not_present_anymore: "Questa riunione è stata eliminata. Seleziona un'altra riunione."
   label_add_work_package_to_meeting_dialog_title: "Seleziona riunione"

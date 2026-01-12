@@ -57,8 +57,8 @@ es:
     document_categories_deprecation_notice:
       heading: La categoría del archivo no está en tipo de documentos
       description: |-
-        Your existing file categories have been converted to document types with the introduction of the new Documents module.
-        All existing documents have also been migrated to these new types.
+        Con la introducción del nuevo módulo «Documentos», tus categorías de archivos existentes se han convertido en tipos de documentos.
+        Todos los documentos existentes también se han migrado a estos nuevos tipos.
       primary_action: Configurar los tipos de documento
       secondary_action: Conocer más sobre el módulo de los documentos
     document_type_actions: "Acciones al tipo de archivo"
@@ -76,7 +76,7 @@ es:
       name: "Nombre"
       type: "Tipo"
       updated_at: "Último cambio"
-      label_legacy: "Legacy"
+      label_legacy: "Legado"
     menu:
       all: "Todos los documentos"
       types: "Tipos"
@@ -101,8 +101,8 @@ es:
         El tipo %{type_name} no está siendo usado, eliminarlo no traerá problemas
       select_reassign_to_label: Reasignando el documento a
       reassign_message:
-        one: El tipo"%{type_name}" está siendo usado en un %{document_count} del documento, Por favor selecciona cuáles.
-        other: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+        one: El tipo «%{type_name}» se está utilizando actualmente en %{document_count} documento. Selecciona el tipo al que deseas reasignarlo.
+        other: El tipo «%{type_name}» se está utilizando actualmente en %{document_count} documentos. Selecciona el tipo al que deseas reasignarlo.
       at_least_one_type_required:
         title: No se puede eliminar el tipo de archivo
         heading: No se puede eliminar el último tipo de archivo
@@ -111,18 +111,18 @@ es:
       collaboration_settings:
         page_header:
           description: |-
-            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
-            It requires a working %{hocuspocus_server_link} to function.
+            Cuando está activada, la colaboración en tiempo real permite a varios usuarios editar un documento al mismo tiempo.
+            Requiere un %{hocuspocus_server_link} operativo para funcionar.
         banner:
           none_writable: Estos valores están configurados en las variables de entorno y no se pueden editar aquí.
           some_unwritable: Algunos valores están configurados en las variables de entorno y no pueden ser configurados aquí.
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The address of a working Hocuspocus server."
+          label: "URL del servidor Hocuspocus"
+          caption: "La dirección de un servidor Hocuspocus operativo."
         hocuspocus_server_secret:
           label: "Cliente Secreto"
-          caption: "Paste the secret provided by the Hocuspocus server."
-        hocuspocus_server: Hocuspocus server
+          caption: "Pega el secreto proporcionado por el servidor Hocuspocus."
+        hocuspocus_server: Servidor Hocuspocus
       enable_text_collaboration:
         heading: La colaboración en tiempo real está desactivada
         description: |-

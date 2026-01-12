@@ -7,14 +7,14 @@ it:
     common:
       document_types:
         item_0:
-          name: Note
+          name: Nota
         item_1:
           name: Idea
         item_2:
-          name: Proposal
+          name: Proposta
         item_3:
-          name: Specification
+          name: Specifica
         item_4:
-          name: Report
+          name: Segnalazione
         item_5:
-          name: Documentation
+          name: Documentazione

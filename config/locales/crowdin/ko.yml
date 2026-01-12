@@ -164,9 +164,9 @@ ko:
         title: "액세스 토큰 테이블"
     settings:
       new_project:
-        project_creation: "Project creation"
+        project_creation: "프로젝트 생성"
         notification_text_default: >
-          <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
+          <p>안녕하세요,</p> <p>새 프로젝트가 생성되었습니다: projectValue:name</p> <p>감사합니다.</p>
     workflows:
       tabs:
         default_transitions: "기본 전환"
@@ -190,12 +190,12 @@ ko:
       title: "격리된 첨부 파일"
       error_cannot_act_self: "고유한 업로드 파일에서는 작업을 수행할 수 없습니다."
   attribute_help_texts:
-    caption: "This short version will be displayed as caption of the attribute."
+    caption: "이 짧은 버전은 특성의 캡션으로 표시됩니다."
     note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "이 보기에서 특성 보기에 대한 사용자 지정 도움말 텍스트를 작성할 수 있습니다. 이 텍스트를 정의하면 속하는 특성 옆에 있는 도움말 아이콘을 클릭하여 표시할 수 있습니다."
     show_preview: "미리 보기 텍스트"
     add_new: "도움말 텍스트 추가"
-    edit_field_name: "Edit help text for %{attribute_field_name}"
+    edit_field_name: "%{attribute_field_name}에 대한 도움말 텍스트 편집"
   background_jobs:
     status:
       error_requeue: "작업 중에 오류가 발생했지만 다시 시도 중입니다. 오류 메시지: %{message}"
@@ -310,7 +310,7 @@ ko:
         placeholder:
           label: "항목 레이블"
           short: "짧은 이름"
-          weight: "Weight"
+          weight: "가중치"
       notice:
         remember_items_and_projects: "이 사용자 지정 필드의 각 탭에서 항목과 프로젝트를 설정해야 합니다."
       hierarchy:
@@ -319,24 +319,24 @@ ko:
           one: 하위 항목 1개
           other: "하위 항목 %{count}개"
       role_assignment:
-        title: Role Assignment
-        description: You can automatically grant a certain project role to any user assigned to this project attribute, regardless of that user’s original role in that project.
-        warning: Depending on the role selected below, the user assigned to this project attribute might gain significantly more permissions than they previously had, including the ability to add new members and elevate their role.
-        role_field_label: "Project Role"
-        role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
+        title: 역활 할당
+        description: 이 프로젝트에서 해당 사용자의 원래 역할에 관계없이 이 프로젝트 특성에 할당된 모든 사용자에게 특정 프로젝트 역할을 자동으로 부여할 수 있습니다.
+        warning: 아래에서 선택한 역할에 따라 이 프로젝트 특성에 할당된 사용자는 새 멤버를 추가하고 해당 역할을 승격하는 기능을 포함하여 이전보다 훨씬 더 많은 권한을 갖게 될 수 있습니다.
+        role_field_label: "프로젝트 역할"
+        role_field_caption: 이 프로젝트 역할은 해당 프로젝트 특성에 할당된 모든 사용자에게 자동으로 부여됩니다
         review_hint: >
-          There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
-        review_button: Review users and permissions
+          다양한 프로젝트에서 이 프로젝트 특성에 이미 할당된 %{user_count}명이 있습니다. 해당 사용자는 추가 권한이 부여되고 이전에 액세스할 수 없었던 프로젝트에 추가될 수 있습니다.
+        review_button: 사용자 및 권한 검토
         dialog:
-          title: "Overview of users and permissions"
-          change: Change
+          title: "사용자 및 권한 개요"
+          change: 변경
           changes:
-            new_member: Will be added as a member
-            remove_member: Will be removed as a member
-            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
-            gain_role: Will gain role ‘%{new_role}’
-            lose_role: Will lose role ‘%{old_role}’
-            no_change: No changes
+            new_member: 멤버로 추가됩니다
+            remove_member: 멤버에서 제거됩니다
+            gain_and_lose_role: '''%{old_role}'' 역할을 잃고 ''%{new_role}'' 역할을 얻습니다'
+            gain_role: '‘%{new_role}’ 역할을 얻습니다'
+            lose_role: '‘%{old_role}’ 역할을 잃습니다'
+            no_change: 변경 사항 없음
     text_add_new_custom_field: >
       프로젝트에 새 사용자 지정 필드를 추가하려면 먼저 해당 필드를 만들어야 합니다. 그래야 이 프로젝트에 해당 필드를 추가할 수 있습니다.
     is_enabled_globally: "는 세계적으로 사용 가능합니다."
@@ -347,41 +347,41 @@ ko:
     reorder_confirmation: "경고: 사용 가능한 값의 현재 순서가 손실됩니다. 계속하시겠습니까?"
     placeholder_version_select: "먼저 작업 패키지 또는 프로젝트를 선택해야 합니다"
     calculated_field_not_editable: "편집할 수 없는 특성입니다. 이 값은 자동으로 계산됩니다."
-    no_role_assigment: "No role assignment"
+    no_role_assigment: "역할 할당 없음"
     instructions:
       is_required:
-        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        all: "사용자 지정 필드를 필수로 표시합니다. 이렇게 하면 새 리소스를 만들 때 이 필드를 필수로 입력해야 합니다. 기존 리소스는 업데이트할 때 값이 필요하지 않습니다."
         project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
-        all: "Mark the custom field as available in all existing and new projects."
-        project: "Mark the attribute as available in all existing and new projects."
+        all: "모든 기존 프로젝트와 새 프로젝트에서 사용자 지정 필드를 사용 가능으로 표시합니다."
+        project: "모든 기존 프로젝트와 새 프로젝트에서 특성을 사용 가능으로 표시합니다."
       multi_select:
-        all: "Allows the user to assign multiple values to this custom field."
-        project: "Allows the user to assign multiple values to this attribute."
+        all: "사용자가 이 사용자 지정 필드에 여러 값을 할당할 수 있도록 허용합니다."
+        project: "사용자가 이 특성에 여러 값을 할당할 수 있도록 허용합니다."
       searchable:
-        all: "Include the field values when using the global search functionality."
-        project: "Check to make this attribute available as a filter in project lists."
+        all: "글로벌 검색 기능을 사용할 때 필드 값을 포함합니다."
+        project: "프로젝트 목록에서 이 특성을 필터로 사용 가능하게 설정하려면 선택합니다."
       editable:
-        all: "Allow the field to be editable by users themselves."
+        all: "사용자가 필드를 편집할 수 있도록 허용합니다."
       admin_only:
-        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
-        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+        all: "이 사용자 지정 필드를 관리자에게만 표시하려면 선택합니다. 관리자 권한이 없는 사용자는 이 특성을 보거나 편집할 수 없습니다."
+        project: "이 특성을 관리자에게만 표시하려면 선택합니다. 관리자 권한이 없는 사용자는 이 특성을 보거나 편집할 수 없습니다."
       is_filter:
         all: >
-          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+          작업 패키지 보기의 필터에서 사용자 지정 필드를 사용할 수 있도록 허용합니다. '모든 프로젝트용'을 선택한 경우에만 사용자 지정 필드가 글로벌 보기에 표시됩니다.
       formula:
-        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+        project: "숫자 값을 추가하거나 /를 입력하여 특성 또는 수학 연산자를 검색합니다."
     tab:
       no_results_title_text: 사용자 필드가 없습니다.
       no_results_content_text: 새 사용자 필드 생성
   calculated_values:
     error_dialog:
-      title: "Error with Calculated value"
+      title: "계산된 값 오류"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
-      mathematical: "The mathematical formula leads to an error. Please review the project calculation attribute and try again."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
+      unknown: "알 수 없는 오류가 발생했습니다. 이 계산된 값의 공식을 검토해 주세요."
+      mathematical: "수학 공식으로 인해 오류가 발생했습니다. 프로젝트 계산 특성을 검토한 후 다시 시도하세요."
+      missing_value: '"%{custom_field_name}" 특성은 이 계산된 값에 필요하지만 비어 있습니다.'
+      disabled_value: '"%{custom_field_name}" 특성은 이 계산된 값에 필요하지만 해당 프로젝트에 대해 비활성화되어 있습니다.'
   concatenation:
     single: "또는"
   danger_dialog:
@@ -405,7 +405,7 @@ ko:
       int?: "- 정수여야 합니다."
       key?: "- 누락되었습니다."
       not_found: "- 찾을 수 없습니다."
-      respond_to?: "does not implement required method."
+      respond_to?: "- 필수 메서드를 구현하지 않습니다."
       rules:
         copy_workflow_from:
           workflow_missing: "- 고유한 워크플로가 없습니다."
@@ -428,7 +428,7 @@ ko:
       depth: "깊이"
       item: "항목"
       label: "레이블"
-      weight: "Weight"
+      weight: "가중치"
       short: "짧은 이름"
       parent: "부모"
       blueprint: "패턴 청사진"
@@ -467,15 +467,15 @@ ko:
   portfolios:
     index:
       search:
-        label: Portfolio name filter
-        placeholder: Search portfolios
+        label: 포트폴리오 이름 필터
+        placeholder: 포트폴리오 검색
       sub_items_html:
-        other: "<strong>%{count}</strong> sub-items"
+        other: "<strong>%{count}</strong>개 하위 항목"
     lists:
-      active: "Active portfolios"
-      my: "My portfolios"
-      favorited: "Favorite portfolios"
-      archived: "Archived portfolios"
+      active: "활성 포트폴리오"
+      my: "내 포트폴리오"
+      favorited: "즐겨 찾는 포트폴리오"
+      archived: "보관된 포트폴리오"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -488,14 +488,14 @@ ko:
       work_package_file_links: "작업 패키지: 파일 링크"
       work_package_shares: "작업 패키지: 공유"
     create:
-      notification_email_subject: "Your project '%{project_name}' has been created"
-      complete_wizard_link: "Complete the %{artefact_name}"
+      notification_email_subject: "'%{project_name}' 프로젝트가 생성되었습니다"
+      complete_wizard_link: "%{artefact_name} 완료"
     delete:
       scheduled: "삭제가 예약되었으며 백그라운드에서 수행됩니다. 결과 알림이 제공될 것입니다."
       schedule_failed: "프로젝트를 삭제할 수 없습니다: %{errors}"
-      failed: "Deletion of project '%{name}' has failed"
-      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
-      completed: "Deletion of project '%{name}' completed"
+      failed: "프로젝트 '%{name}' 삭제가 실패했습니다"
+      failed_text: "프로젝트 '%{name}' 삭제 요청이 실패했습니다. 프로젝트가 보관되었습니다."
+      completed: "프로젝트 '%{name}' 삭제가 완료되었습니다"
       completed_text: "프로젝트 '%{name}' 삭제 요청이 완료되었습니다."
       completed_text_children: "또한 다음 하위 프로젝트가 삭제되었습니다."
     index:
@@ -540,12 +540,12 @@ ko:
       change_identifier: 식별자 변경
       subitems:
         template_section: >
-          Select templates to be used when creating new subitems.
-        project_template_label: "Template for projects"
-        project_template_caption: "Select a template project to be used as the default for new subitems of this type."
-        program_template_label: "Template for programs"
-        program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        no_template: "No predefined template"
+          새 하위 항목을 만들 때 사용할 템플릿을 선택합니다.
+        project_template_label: "프로젝트용 템플릿"
+        project_template_caption: "이 유형의 새 하위 항목에 대해 기본값으로 사용할 템플릿 프로젝트를 선택합니다."
+        program_template_label: "프로젝트용 템플릿"
+        program_template_caption: "이 유형의 새 하위 항목에 대해 기본값으로 사용할 템플릿 프로그램을 선택합니다."
+        no_template: "사전 정의된 템플릿 없음"
       template:
         menu_title: "Template"
         title: "Template settings"
@@ -588,8 +588,8 @@ ko:
           label_disable_single: "이 프로젝트에서 비활성화되어 있습니다. 활성화하려면 클릭하세요."
           remove_from_project: "프로젝트에서 제거"
         is_for_all_blank_slate:
-          heading: For all projects
-          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+          heading: 모든 프로젝트용
+          description: '"모든 프로젝트용" 옵션이 선택되었으므로 모든 프로젝트에서 이 프로젝트 특성이 활성화되었습니다. 개별 프로젝트에 대해 비활성화할 수 없습니다.'
       types:
         no_results_title_text: 사용 가능한 타입이 없습니다.
         form:
@@ -605,29 +605,29 @@ ko:
         new_label: "새로운 우선 순위"
       creation_wizard:
         export:
-          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
-          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
-          description_file_storage_selection: "Select which of the configured external file storages should be used."
-          external_file_storage: "External file storage"
-          label_artifact_export: "Artifact export"
-          label_attachment_export: "Save as work package file attachment"
-          label_file_link_export: "Upload file to external file storage and add file link to work package"
-          pdf_file_storage: "PDF file storage"
-          unavailable: "unavailable"
-        label_request_submission: "Request submission"
+          description_attachment_export: "생성된 아티팩트는 아티팩트 작업 패키지에 PDF 첨부 파일로 저장됩니다."
+          description_file_link_export: "아티팩트 작업 패키지에는 외부 파일 저장소에 저장된 PDF에 대한 파일 링크가 있습니다. 이 프로젝트에 대해 자동으로 관리되는 프로젝트 폴더가 있는 작업 파일 저장소가 필요합니다. 현재는 Nextcloud 파일 저장소만 지원됩니다."
+          description_file_storage_selection: "구성된 외부 파일 저장소 중 어떤 저장소를 사용할지 선택합니다."
+          external_file_storage: "외부 파일 저장소"
+          label_artifact_export: "아티팩트 내보내기"
+          label_attachment_export: "작업 패키지 파일 첨부 파일로 저장"
+          label_file_link_export: "외부 파일 저장소에 파일을 업로드하고 작업 패키지에 파일 링크 추가"
+          pdf_file_storage: "PDF 파일 저장소"
+          unavailable: "사용할 수 없음"
+        label_request_submission: "요청 제출"
         project_attributes_description: >
-          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
+          프로젝트 시작 요청에 포함해야 하는 프로젝트 특성을 선택합니다. 이 목록에는 해당 프로젝트에 대해 활성화된 [프로젝트 특성](project_attributes_url)만 포함됩니다.
     status:
       button_edit: Edit status
     wizard:
-      sidebar_content_title: "Content"
-      sections: "Sections"
-      title: "Project initiation request"
-      no_help_text: "This attribute has no help text defined."
-      success: "Project attributes saved and artifact work package created successfully."
-      progress_label: "%{current} of %{total}"
-      create_artifact_work_package_error: "Failed to create artifact work package"
-      create_artifact_storage_error: "Failed to store artifact in file storage"
+      sidebar_content_title: "콘텐츠"
+      sections: "섹션"
+      title: "프로젝트 시작 요청"
+      no_help_text: "이 특성에는 정의된 도움말 텍스트가 없습니다."
+      success: "프로젝트 특성이 저장되고 아티팩트 작업 패키지가 생성되었습니다."
+      progress_label: "%{current}/%{total}"
+      create_artifact_work_package_error: "아티팩트 작업 패키지를 만들지 못했습니다"
+      create_artifact_storage_error: "파일 저장소에 아티팩트를 저장하지 못했습니다"
   lists:
     create:
       success: "수정된 목록이 새 목록으로 저장되었습니다"
@@ -724,15 +724,15 @@ ko:
       no_results_content_text: 소식 항목 추가
   roles:
     permissions:
-      section_check_all_label: "Assign all %{module} permissions"
-      section_uncheck_all_label: "Unassign all %{module} permissions"
+      section_check_all_label: "모든 %{module} 권한 할당"
+      section_uncheck_all_label: "모든 %{module} 권한 할당 취소"
     report:
-      matrix_caption: "Permissions matrix for %{module} module"
-      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
-      matrix_check_all_label: "Assign all %{module} permissions to all roles"
-      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
-      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
-      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
+      matrix_caption: "%{module} 모듈에 대한 권한 매트릭스"
+      matrix_checkbox_label: "%{role} 역할에 %{permission} 권한 할당"
+      matrix_check_all_label: "모든 역할에 모든 %{module} 권한 할당"
+      matrix_uncheck_all_label: "모든 역할에서 모든 %{module} 권한 할당 취소"
+      matrix_check_uncheck_all_in_row_label_html: "<em>%{permission}</em> 모든 역할에 대한 권한 토글"
+      matrix_check_uncheck_all_in_col_label_html: "<em>%{role}</em> 역할에 대한 모든 %{module} 권한 토글"
   users:
     autologins:
       prompt: "%{num_days}일 동안 로그인 상태 유지"
@@ -927,9 +927,9 @@ ko:
       no_results_content_text: 위키 페이지 추가
   workflows:
     form:
-      matrix_caption: "Workflow matrix"
-      matrix_caption_assignee: "Workflow matrix for assignee"
-      matrix_caption_author: "Workflow matrix for author"
+      matrix_caption: "워크플로 매트릭스"
+      matrix_caption_assignee: "담당자에 대한 워크플로 매트릭스"
+      matrix_caption_author: "작성자에 대한 워크플로 매트릭스"
       matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
       matrix_check_all_label: "Allow all transitions"
       matrix_uncheck_all_label: "Disallow all transitions"
@@ -1911,10 +1911,10 @@ ko:
       other: "또한 다음 필드에 문제가 있습니다."
     field_erroneous_label: "이 필드는 유효 하지 않습니다: %{full_errors} \n유효한 값을 입력 해 주십시오."
     messages:
-      must_be_template: "must be template"
-      unsupported_storage_type: "is not a supported storage type."
-      storage_error: "There was an error with the storage connection."
-      invalid_input: "The input is invalid."
+      must_be_template: "- 템플릿이어야 합니다"
+      unsupported_storage_type: "- 지원되는 저장소 유형이 아닙니다."
+      storage_error: "저장소 연결에 오류가 발생했습니다."
+      invalid_input: "입력이 잘못되었습니다."
   activity:
     item:
       created_by_on: "%{datetime}, %{user} 님이 생성함"
@@ -2041,7 +2041,7 @@ ko:
     subject: "제목"
     slug: "슬러그"
     summary: "요약"
-    template: "Template"
+    template: "템플릿"
     time_zone: "표준 시간대"
     text: "텍스트"
     title: "제목"
@@ -2112,7 +2112,7 @@ ko:
   button_collapse_all: "모두 축소"
   button_configure: "구성"
   button_continue: "계속"
-  button_complete: "Complete"
+  button_complete: "완료"
   button_copy: "복사"
   button_copy_to_clipboard: "클립보드 복사"
   button_copy_link_to_clipboard: "클립보드에 링크 복사"
@@ -2123,11 +2123,11 @@ ko:
   button_delete_permanently: "영구 삭제"
   button_delete_watcher: "주시자 %{name} 삭제"
   button_download: "다운로드"
-  button_disable: "Disable"
+  button_disable: "비활성화"
   button_duplicate: "복제"
   button_duplicate_and_follow: "복제하고 팔로우"
   button_edit: "편집"
-  button_enable: "Enable"
+  button_enable: "활성화"
   button_edit_associated_wikipage: "연결된 위키 페이지 편집: %{page_title}"
   button_expand_all: "모두 확장"
   button_favorite: "즐겨찾기에 추가"
@@ -2214,7 +2214,7 @@ ko:
     copy_options:
       dependencies_label: "프로젝트에서 복사"
   create_project:
-    attributes_heading: "Fill in this mandatory information to work on your projects."
+    attributes_heading: "프로젝트에서 작업하려면 이 필수 정보를 입력하세요."
     template_label: "템플릿 사용"
     template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
@@ -3013,7 +3013,7 @@ ko:
   label_select_main_menu_item: 새 기본 메뉴 항목 선택
   label_required_disk_storage: "필요한 디스크 스토리지"
   label_send_invitation: 초대장 보내기
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "계산된 값"
   label_change_parent: "부모 변경"
   label_change_plural: "변경"
   label_change_properties: "속성 변경"
@@ -4025,12 +4025,12 @@ ko:
       other: "%{count} portfolios"
   program:
     count:
-      zero: "0 programs"
-      one: "1 program"
-      other: "%{count} programs"
+      zero: "0개 프로그램"
+      one: "1개 프로그램"
+      other: "%{count}개 프로그램"
   project:
     archive:
-      title: "Archive project"
+      title: "프로젝트 보관"
       are_you_sure: "프로젝트 '%{name}'을(를) 보관하시겠습니까?"
       archived: "보관됨"
     count:
@@ -4057,7 +4057,7 @@ ko:
       title: 프로젝트의 식별자 변경
     not_available: "프로젝트 N/A"
     template:
-      copying_title: "Applying template"
+      copying_title: "템플릿 적용"
       copying: >
         선택한 템플릿 프로젝트에서 프로젝트를 만들고 있습니다. 프로젝트가 사용 가능하게 되면 즉시 메일로 알려드립니다.
       use_template: "템플릿 사용"
@@ -4496,31 +4496,31 @@ ko:
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
       name:
-        artifact_name: "Artifact name"
-        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        artifact_name: "아티팩트 이름"
+        artifact_name_caption: "프로젝트 관리 프레임워크에서 권장하는 이 아티팩트의 이름을 선택합니다."
         options:
-          project_initiation_request: "Project initiation request"
-          project_creation_wizard: "Project creation wizard"
+          project_initiation_request: "프로젝트 시작 요청"
+          project_creation_wizard: "프로젝트 생성 마법사"
           project_mandate: "Project mandate"
       submission:
         description_template: >
           **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
         description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
-        work_package_type: "Work package type"
-        work_package_type_caption: "The work package type that should be used to store the completed artifact."
-        status_when_submitted: "Status when submitted"
-        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
+        work_package_type: "작업 패키지 유형"
+        work_package_type_caption: "완료된 아티팩트를 저장하는 데 사용할 작업 패키지 유형입니다."
+        status_when_submitted: "제출 시 상태"
+        status_when_submitted_caption: "요청이 제출되면 생성된 작업 패키지가 전환되는 상태입니다."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
         assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
-        confirmation_email_text: "Confirmation email text"
-        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
-        work_package_comment: "Work package comment"
-        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
-        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
+        confirmation_email_text: "확인 이메일 텍스트"
+        confirmation_email_default: "안녕하세요,\n\n**%{project_name}**에 대한 프로젝트 시작 요청을 제출하셨습니다. 이제 검토를 기다리고 있습니다.\n요청이 포함된 작업 패키지에 액세스하려면 아래 링크를 클릭하세요."
+        work_package_comment: "작업 패키지 코멘트"
+        work_package_comment_caption: "위에서 선택한 담당자가 코멘트에서 자동으로 @멘션됩니다."
+        work_package_comment_default: "%{project_name}**에 대한 프로젝트 시작 요청이 제출되어 검토를 기다리고 있습니다."
     project_phase_definitions:
       heading: "프로젝트 수명 주기"
-      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
+      heading_description: "프로젝트 수명 주기는 프로젝트 계획에 사용할 수 있는 프로젝트 단계를 정의하며, 각 프로젝트의 개요 페이지에 표시됩니다. 이러한 특성은 활성화 또는 비활성화할 수 있지만 프로젝트 수준에서 재정렬할 수는 없습니다."
       label_add: "추가"
       label_add_description: "프로젝트 단계 정의 추가"
       filter:

@@ -16,10 +16,10 @@ it:
         news:
           title: 'Notizie'
         project_description:
-          title: 'Description'
+          title: 'Descrizione'
           no_results: "Nessuna descrizione ancora scritta. Una può essere fornita nelle \"Impostazioni di progetto\"."
         project_status:
-          title: 'Status'
+          title: 'Stato'
           not_started: 'Non iniziato'
           on_track: 'Nei limiti'
           off_track: 'Fuori limite'
@@ -28,7 +28,7 @@ it:
           finished: 'Terminato'
           discontinued: 'Interrotto'
         project_status_beta:
-          title: 'Status (BETA)'
+          title: 'Stato (BETA)'
         subprojects:
           title: 'Sottoelementi'
         project_favorites:
@@ -52,7 +52,7 @@ it:
           title: 'Tabella delle macro-attività'
         work_packages_graph:
           title: 'Grafico delle macro-attività'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "Grafico %{chartType} che mostra le macro-attività che sono %{description}."
         work_packages_calendar:
           title: 'Calendario'
         work_packages_overview:

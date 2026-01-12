@@ -165,7 +165,7 @@ es:
           group_does_not_exist: "%{group} no existe. Compruebe la configuración de su instancia de Nextcloud."
           insufficient_privileges: OpenProject no tiene suficientes privilegios para añadir a %{user} a %{group}. Compruebe la configuración de su grupo en Nextcloud.
           not_allowed: Nextcloud bloquea la solicitud.
-          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
+          not_found: OpenProject no ha podido encontrar el archivo en el proveedor de almacenamiento Nextcloud. Comprueba si no ha sido eliminado.
           unauthorized: OpenProject no pudo sincronizarse con Nextcloud. Compruebe su almacenamiento y la configuración de Nextcloud.
           user_does_not_exist: "%{user} no existe en Nextcloud."
         one_drive_sync_service:
@@ -242,23 +242,23 @@ es:
     error_invalid_provider_type: Por favor, seleccione un proveedor de almacenamiento válido.
     file_storage_view:
       access_management:
-        automatic_management: Enable automatically-managed access and folders
-        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
-        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
-        manual_management: Only allow manually-managed access and folders
-        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+        automatic_management: Habilitar el acceso y las carpetas gestionados automáticamente
+        automatic_management_description: Cada proyecto podrá decidir, cuando se le añada un almacenamiento, si desea el enfoque de gestión automática o manual para la gestión de carpetas y accesos.
+        description: OpenProject puede crear y gestionar automáticamente carpetas de proyectos cuando se añade un almacenamiento de archivos a un proyecto. Esto puede dar lugar a una estructura de carpetas más organizada y a una gestión de acceso sencilla que garantiza el acceso a todos los usuarios relevantes.
+        manual_management: Solo permitir el acceso y las carpetas gestionados manualmente
+        manual_management_description: Los proyectos que utilicen este almacenamiento no tendrán la opción de utilizar el enfoque de gestión automática. Las carpetas y el acceso deben gestionarse manualmente.
         setup_incomplete: Seleccione el tipo de gestión del acceso de los usuarios y la creación de carpetas.
-        subtitle: Folder and access management
+        subtitle: Gestión del acceso y carpetas
       access_management_section: Carpetas de acceso y de proyecto
       automatically_managed_folders: Carpetas gestionadas automáticamente
       general_information: Información general
       oauth_configuration: Configuración de OAuth
       one_drive:
         access_management:
-          automatic_management: Enable automatically-managed access and folders
-          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
-          manual_management: Only allow manually-managed access and folders
-          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+          automatic_management: Habilitar el acceso y las carpetas gestionados automáticamente
+          automatic_management_description: Cada proyecto que utilice este almacenamiento de archivos tendrá que utilizar necesariamente el enfoque de gestión automática para la gestión de carpetas y accesos. No pueden hacerlo manualmente.
+          manual_management: Solo permitir el acceso y las carpetas gestionados manualmente
+          manual_management_description: Los proyectos que utilicen este almacenamiento no tendrán la opción de utilizar el enfoque de gestión automática. Las carpetas y el acceso deben gestionarse manualmente.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Carpeta del proyecto
@@ -354,10 +354,10 @@ es:
         sp_client_write_permission_missing: Parece que el cliente no tiene permisos de escritura en SharePoint. Consulte la documentación de configuración de su almacenamiento.
         sp_existing_test_folder: La carpeta %{folder_name} necesaria para la prueba ya existe en SharePoint. Elimínela e inténtelo de nuevo.
         sp_oauth_request_error: Ha habido un error en la solicitud vinculada al usuario a SharePoint. Consulte los registros del servidor para obtener más información.
-        sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+        sp_oauth_request_unauthorized: El usuario actual no está autorizado a acceder al almacenamiento remoto de archivos. Consulte los registros del servidor para obtener más información.
         sp_oauth_token_missing: OpenProject no puede probar la comunicación a nivel de usuario con SharePoint, ya que el usuario aún no ha vinculado su cuenta de SharePoint.
         sp_tenant_id_missing: Falta el ID de directorio (inquilino) configurado para SharePoint. Compruebe la configuración.
-        sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
+        sp_unexpected_content: Se ha encontrado contenido inesperado en la biblioteca de documentos de SharePoint.
         unknown_error: No se ha podido validar la conexión. Se ha producido un error desconocido. Compruebe los registros del servidor para obtener más información.
       label_error: Error
       label_failed: Fallido
@@ -553,11 +553,9 @@ es:
     upsell:
       one_drive:
         description: |-
-          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: OneDrive integration
+          Integre su unidad de OneDrive como almacenamiento de archivos con OpenProject. Suba archivos y vincúlelos directamente a paquetes de trabajo en un proyecto.
+        title: Integración de OneDrive
       sharepoint:
         description: |-
-          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: SharePoint integration
+          Integre su SharePoint como almacenamiento de archivos con OpenProject. Suba archivos y vincúlelos directamente a paquetes de trabajo en un proyecto.
+        title: Integración de SharePoint
