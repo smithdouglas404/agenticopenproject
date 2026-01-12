@@ -270,7 +270,7 @@ es:
         confirm_button: "Cancelar repetición"
     blankslate:
       title: "No hay reuniones que mostrar"
-      desc: "No hay reuniones que cumplan los criterios del filtro activo."
+      desc: "Puedes crear una nueva reunión o cambiar los criterios de filtrado"
     label_export_pdf: "Exportar PDF"
     export:
       your_meeting_export: "Se está exportando la reunión"
@@ -363,11 +363,21 @@ es:
       next: "Siguiente"
       no_items: "No hay puntos en el orden del día"
       no_items_flash: "No hay puntos que tratar en el orden del día."
+    ical_response:
+      update_failed: "No se ha podido actualizar el estado de participación."
+      meeting_not_found: "No se ha encontrado ninguna reunión con el UID proporcionado."
   meeting_section:
     untitled_title: "Sección sin título"
     delete_confirmation: "Al eliminar esta sección también se eliminarán todos sus puntos de agenda. ¿Seguro que desea hacerlo?"
     placeholder_title: "Nueva sección"
     empty_text: "Arrastre los elementos aquí o cree uno nuevo"
+  meeting_participant:
+    participation_status:
+      needs_action: "Sin respuesta"
+      accepted: "Aceptado"
+      declined: "Rechazado"
+      tentative: "Tal vez"
+      unknown: "Desconocido"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Diferencia de zona horaria"
@@ -511,6 +521,9 @@ es:
   label_agenda_item_move_to_bottom: "Mover al final"
   label_agenda_item_move_up: "Mover hacia arriba"
   label_agenda_item_move_down: "Mover hacia abajo"
+  label_agenda_item_duplicate: "Duplicar"
+  label_agenda_item_duplicate_in_next: "Duplicar en la próxima repetición"
+  label_agenda_item_duplicate_in_next_title: "¿Duplicar en la próxima repetición?"
   label_agenda_item_add_notes: "Añadir notas"
   label_agenda_item_add_outcome: "Añadir resultado"
   label_agenda_item_work_package_add: "Añadir paquete de trabajo"
@@ -584,10 +597,12 @@ es:
   text_agenda_item_not_editable_anymore: "Este punto de la agenda ya no es editable."
   text_agenda_item_move_next_meeting: "Este punto se trasladará a la próxima reunión el %{date} a las %{time}."
   text_agenda_item_moved_to_next_meeting: "Punto del orden del día movido a la próxima reunión, el %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Este paquete de trabajo no está todavía programado en ninguna agenda de próximas reuniones."
   text_agenda_item_move_next_meeting_cancelled: "No se puede mover a la próxima reunión, ya que ha sido cancelada."
   text_work_package_add_to_meeting_hint: 'Utilice el botón "Añadir a la reunión" para añadir este paquete de trabajo a una próxima reunión.'
-  text_work_package_has_no_past_meeting_agenda_items: "Este paquete de trabajo no se mencionó en ninguna reunión anterior."
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "Las actualizaciones de calendario por correo electrónico están silenciadas. Los participantes no recibirán invitaciones actualizadas por correo electrónico cuando realice cambios."
   text_email_updates_enabled: "Las actualizaciones de calendario por correo electrónico están habilitadas. Los participantes recibirán invitaciones actualizadas por correo electrónico cuando realice cambios."
   my_account:

@@ -714,6 +714,9 @@ id:
       notice_api_token_revoked: "Token API telah dihapus. Untuk membuat token baru, gunakan tombol di bagian API."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'Token iCalendar "%{token_name}" untuk kalender "%{calendar_name}" proyek "%{project_name}" telah dicabut.  URL iCalendar dengan token ini sekarang tidak valid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: There is currently no news to report.
@@ -1498,7 +1501,8 @@ id:
         not_a_datetime: "bukan tanggal waktu yang valid."
         not_a_number: "harus diisi angka."
         not_allowed: "tidak valid karena tidak ada izin."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "harus bilangan bulat."
         not_an_iso_date: "is not a valid date. Required format: YYYY-MM-DD."
         not_same_project: "harus berasal dari proyek yang sama."
@@ -1893,7 +1897,8 @@ id:
       status: "Status Work Package"
       token/api:
         other: Token akses
-      type: "Tipe"
+      type:
+        other: "Types"
       user: "User"
       version: "Versi"
       workflow: "Workflow"
@@ -2106,6 +2111,7 @@ id:
   button_click_to_reveal: "Klik untuk mengungkapkan"
   button_close: "Tutup"
   button_collapse_all: "Tutup semua"
+  button_confirm: "Confirm"
   button_configure: "Konfigurasi"
   button_continue: "Lanjutkan"
   button_complete: "Complete"
@@ -2138,6 +2144,7 @@ id:
   button_print: "Cetak"
   button_quote: "Kutipan"
   button_remove: Remove
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Ubah nama"
   button_replace: "Ganti"
@@ -3844,7 +3851,7 @@ id:
   notice_not_authorized: "Anda tidak diizinkan untuk mengakses halaman ini."
   notice_not_authorized_archived_project: "Project yang Anda coba akses telah diarsipkan."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Password Anda tidak tepat. Tidak dapat melanjutkan."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Ada beberapa %{number} hasil yang ditemukan. \n Tab untuk fokus ke hasil pertama."
   notice_principals_found_single: "Ada satu hasil.\n Tab untuk lebih fokus."
   notice_parent_item_not_found: "Parent item not found."
@@ -4668,6 +4675,7 @@ id:
     Catatan: jika diaktifkan, ini akan menampilkan lencana dengan status pemasangan Anda di panel administrasi <a href="%{information_panel_path}">%{information_panel_label}</a>, dan di beranda. Ini hanya ditampilkan kepada administrator. <br/> Lencana akan memeriksa versi OpenProject Anda saat ini dengan database rilis OpenProject resmi untuk memberi tahu Anda tentang pembaruan atau kerentanan yang diketahui. Untuk informasi lebih lanjut tentang apa yang diberikan pemeriksaan, data apa yang diperlukan untuk menyediakan pembaruan yang tersedia, dan cara menonaktifkan pemeriksaan ini, silakan kunjungi <a href="%{more_info_url}">dokumentasi konfigurasi</a>.
   text_own_membership_delete_confirmation: "Anda akan menghapus hak akses Anda dan mungkin Anda tidak dapat lagi mengedit Project ini. Apakah Anda yakin Anda ingin melanjutkan?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin aset direktori, bisa ditulisi"
   text_powered_by: "Didukung oleh %{link}"
   text_project_identifier_info: "Hanya huruf kecil (a-z), angka, garis dan garis bawah yang diperbolehkan, harus diawali dengan huruf kecil."

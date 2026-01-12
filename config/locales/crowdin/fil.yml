@@ -725,6 +725,9 @@ fil:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Sa kasalukuyan ay walang mga balita para ma-ireport.
@@ -1511,7 +1514,8 @@ fil:
         not_a_datetime: "ay hindi balido ang petsa ng oras."
         not_a_number: "ay hindi numero."
         not_allowed: "is invalid because of missing permissions."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "ay hindi integer."
         not_an_iso_date: "ay hindi balido ang petsa. Ang kinakailangan format: YYYY-MM-DD."
         not_same_project: "ay hindi nabibilang sa parehong proyekto."
@@ -1919,7 +1923,9 @@ fil:
       token/api:
         one: I-access ang token
         other: Access tokens
-      type: "Uri"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Gumagamit"
       version: "Bersyon"
       workflow: "Daloy ng trabaho"
@@ -2136,6 +2142,7 @@ fil:
   button_click_to_reveal: "Click to reveal"
   button_close: "Isara"
   button_collapse_all: "Bumagsak lahat"
+  button_confirm: "Confirm"
   button_configure: "I-configure"
   button_continue: "Ipagpatuloy"
   button_complete: "Complete"
@@ -2168,6 +2175,7 @@ fil:
   button_print: "I-print"
   button_quote: "Quote"
   button_remove: Tanggalin
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Baguhin ang pangalan"
   button_replace: "Palitan"
@@ -3896,7 +3904,7 @@ fil:
   notice_not_authorized: "Hindi ka inanyayahan na i-access ang pahina na ito."
   notice_not_authorized_archived_project: "Ang iyong proyekto na sinusubukan mong i-access ay na archive na."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Ang iyong password ay hindi tama. Hindi maaring magpatuloy."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Mayroong %{number} mga resulta ang natagpuan.\n Ang tab ay tumuon sa unang resulta."
   notice_principals_found_single: "Mayroong isang resulta. \n Tab upang ituon ito."
   notice_parent_item_not_found: "Parent item not found."
@@ -4722,6 +4730,7 @@ fil:
     Note: if enabled, this will display a badge with your installation status in the <a href="%{information_panel_path}">%{information_panel_label}</a> administration panel, and on the home page. It is displayed to administrators only. <br/> The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit <a href="%{more_info_url}">the configuration documentation</a>.
   text_own_membership_delete_confirmation: "Kinakailangan mong alisin ang ilan o lahat ng iyong perniso at hindi na maaring magagawa na i-edit ang itong proyekto pagkatapos na iyan.\nSigurado ka ba gusto mong magpatuloy?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Plugin asstes directory writable"
   text_powered_by: "Pinalatakbo ng %{link}"
   text_project_identifier_info: "Maliit na titik lamang (a-z), mga numero, mga dash at underscore ang pinahintulutan, dapat magsimula sa maliit na titik."

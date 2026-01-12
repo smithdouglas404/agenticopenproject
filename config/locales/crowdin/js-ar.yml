@@ -636,9 +636,6 @@ ar:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "تحتاج إلى إدخال كلمة مرور حسابك لتأكيد هذا التغيير."
-      title: "أكِّد كلمة مرورك للمواصلة"
     pagination:
       no_other_page: "أنت في الصفحة فقط."
       pages_skipped: "Pages skipped."

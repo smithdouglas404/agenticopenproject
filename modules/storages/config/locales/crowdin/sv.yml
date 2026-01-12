@@ -96,12 +96,6 @@ sv:
       manual: Befintlig mapp hanteras manuellt
     remove_project:
       deletion_failure_flash: Det gick inte att ta bort projektet från lagringen. %{error}
-      dialog:
-        automatically_managed_appendix: Dessutom, i detta fall har denna lagring en automatiskt hanterad projektmapp, detta och dess filer kommer att raderas för evigt.
-        confirmation_text: Bekräfta att du förstår och vill ta bort denna fillagring från detta projekt
-        heading_text: Ta bort projekt från %{storage}
-        text: Denna åtgärd är oåterkallelig och kommer att ta bort alla länkar från arbetspaket i detta projekt till filer och mappar för den lagring.
-        title: Ta bort projekt från lagring
       label: Ta bort projekt
   services:
     attributes:
@@ -128,6 +122,7 @@ sv:
     errors:
       messages:
         error: An unexpected error occurred. Please check OpenProject logs for more information or contact an administrator
+        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
         unauthorized: OpenProject could not authenticate with the Storage Provider. Please ensure that you have access to it.
       models:
         copy_project_folders_service:
@@ -226,12 +221,13 @@ sv:
     confirm_replace_oauth_application: Den här åtgärden kommer att återställa de nuvarande OAuth-uppgifterna. Efter att du har bekräftat att du måste ange inloggningsuppgifterna på lagringsleverantören och alla fjärranvändare måste auktorisera mot OpenProject igen. Är du säker du vill fortsätta?
     confirm_replace_oauth_client: Den här åtgärden kommer att återställa de nuvarande OAuth-uppgifterna. När du har bekräftat att du måste ange nya uppgifter från lagringsleverantören och alla användare måste godkänna %{provider_type} igen. Är du säker du vill fortsätta?
     delete_warning:
-      project_storage_delete_result_1: Ta bort alla länkar från arbetspaket i detta projekt till filer och mappar för den lagring.
-      project_storage_delete_result_2: Om denna lagring har en automatiskt hanterad projektmapp, kommer detta och dess filer att raderas för alltid.
-      storage: 'Är du säker på att du vill ta bort %{file_storage}? Detta kommer:'
-      storage_delete_result_1: Ta bort alla lagringsinställningar för alla projekt som använder denna lagring.
-      storage_delete_result_2: Ta bort alla länkar från arbetspaket för alla projekt till filer och mappar för den lagring.
-      storage_delete_result_3: Om denna lagring automatiskt har hanterat projektmappar, kommer dessa och deras innehållna filer att raderas för alltid.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Gruppera mappar
@@ -502,7 +498,7 @@ sv:
         title: We are setting up your permissions on the project folder.
     page_titles:
       file_storages:
-        delete: Delete file storage
+        delete: Delete file storage?
         subtitle: Add an external file storage in order to upload, link and manage files in work packages.
       managed_project_folders:
         subtitle: |-
@@ -517,6 +513,8 @@ sv:
       project_storage_members:
         subtitle: Check the connection status for the storage %{storage_name_link} of all project members.
         title: Members connection status
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'Filrättigheter på externa lagringsplatser tillämpas endast på mappar och filer inom automatiskt hanterade projektmappar. Observera att inte alla filrättigheter stöds av alla lagringsleverantörer. Kontrollera dokumentationen för <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>fillagringsrättigheter</a> för mer information.'
     provider_types:
       label: Provider type

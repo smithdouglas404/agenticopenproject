@@ -62,8 +62,11 @@ module Exports::PDF::Common::Common
            mime_type: "application/pdf"
   end
 
-  def error(message)
-    raise ::Exports::ExportError.new message
+  def error(pdf_error, custom_message = nil)
+    message = custom_message || I18n.t(:error_pdf_failed_to_export, error: pdf_error.message)
+    result = ::Exports::ExportError.new message
+    result.set_backtrace pdf_error.backtrace
+    raise result
   end
 
   def with_padding(opts, &)

@@ -738,6 +738,9 @@ sl:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Trenutno ni nobenih novic za poročanje.
@@ -1528,7 +1531,8 @@ sl:
         not_a_datetime: "ni veljaven datum."
         not_a_number: "ni število."
         not_allowed: "ni veljavno, saj manjka dovoljenje. "
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "ni celo število. "
         not_an_iso_date: "neveljaven čas. Potreben format: YYYY-MM-DD."
         not_same_project: "ne pripada istemu projektu"
@@ -1962,7 +1966,11 @@ sl:
         two: Access tokens
         few: Access tokens
         other: Access tokens
-      type: "Vrsta"
+      type:
+        one: "Type"
+        two: "Types"
+        few: "Types"
+        other: "Types"
       user: "Uporabnik"
       version: "Različica"
       workflow: "Potek dela"
@@ -2187,6 +2195,7 @@ sl:
   button_click_to_reveal: "Klikni za razkritje"
   button_close: "Zapri"
   button_collapse_all: "Strni vse"
+  button_confirm: "Confirm"
   button_configure: "Nastavi"
   button_continue: "Nadaljuj"
   button_complete: "Complete"
@@ -2219,6 +2228,7 @@ sl:
   button_print: "Natisni"
   button_quote: "Citiraj"
   button_remove: Odstrani
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Preimenuj"
   button_replace: "Zamenjaj"
@@ -2364,8 +2374,8 @@ sl:
       - "avgust"
       - "september"
       - "oktober"
-      - "november"
-      - "december"
+      - "November"
+      - "December"
     order:
       - :leto
       - :mesec
@@ -3991,7 +4001,7 @@ sl:
   notice_not_authorized: "Nimate privilegijev za dostop do te strani."
   notice_not_authorized_archived_project: "Projekt, do katerega poskušate dostopati, je bil arhiviran."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Vaše geslo ni pravilno. Ne morete nadaljevati."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Najdeno je %{number} rezultatov.\nKliknite tipko tab da fokusirate prvi rezultat."
   notice_principals_found_single: "Najden je en rezultat.\nPritisnite tab, da ga prikaže."
   notice_parent_item_not_found: "Parent item not found."
@@ -4820,6 +4830,7 @@ sl:
     Note: if enabled, this will display a badge with your installation status in the <a href="%{information_panel_path}">%{information_panel_label}</a> administration panel, and on the home page. It is displayed to administrators only. <br/> The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit <a href="%{more_info_url}">the configuration documentation</a>.
   text_own_membership_delete_confirmation: "Odstranili boste nekaj ali vsa dovoljenja in po tem morda ne boste mogli več urejati tega projekta.\nAli ste prepričani, da želite nadaljevati?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Imenik vtičnikov se lahko zapiše"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Dovoljene so samo male črke (a-z), številke, črtice in podčrtaji, ki se začnejo z malo začetnico."

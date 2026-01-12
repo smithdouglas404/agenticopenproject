@@ -93,6 +93,10 @@ class RecurringMeeting < ApplicationRecord
   has_one :template, -> { where(template: true) },
           class_name: "Meeting"
 
+  has_many :recurring_meeting_interim_responses,
+           inverse_of: :recurring_meeting,
+           dependent: :destroy
+
   scope :visible, ->(*args) {
     includes(:project)
       .references(:projects)

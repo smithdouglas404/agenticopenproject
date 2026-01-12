@@ -631,9 +631,6 @@ ko:
           add: "프로젝트에 대한 설정 추가"
           already_selected: "이 프로젝트는 이미 선택되었습니다."
           remove: "프로젝트 설정 제거"
-    password_confirmation:
-      field_description: "이 변경 내용을 확인하려면 계정 암호를 입력해야 합니다."
-      title: "계속하려면 암호 확인"
     pagination:
       no_other_page: "유일한 페이지에 있습니다."
       pages_skipped: "페이지를 건너뛰었습니다."

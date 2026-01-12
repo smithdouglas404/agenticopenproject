@@ -251,6 +251,20 @@ module Pages::Meetings
       end
     end
 
+    def duplicate_item_in_next_meeting(item)
+      open_menu(item) do
+        click_on "Duplicate"
+        click_on "Duplicate in next occurrence"
+      end
+      expect_modal("Duplicate in next occurrence?")
+
+      retry_block do
+        page.within_modal "Duplicate in next occurrence?" do
+          click_on "Duplicate"
+        end
+      end
+    end
+
     def open_menu(item, &)
       retry_block do
         page.within("#meeting-agenda-item-#{item.id}") do
@@ -559,7 +573,7 @@ module Pages::Meetings
     end
 
     def expect_available_participants(count:)
-      expect(page).to have_link(class: "op-principal--name", count:)
+      expect(page).to have_link(class: "meeting-participant-user-link", count:)
     end
 
     def close_meeting
