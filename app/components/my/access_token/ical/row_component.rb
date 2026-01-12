@@ -76,6 +76,7 @@ module My
                    tag: :a,
                    href: my_access_token_revoke_ical_token_path(access_token_id: api_token.id),
                    "aria-label": t(:button_delete),
+                   tooltip_direction: :w,
                    test_selector: "ical-token-#{api_token.id}-revoke",
                    data: {
                      turbo_method: :delete,

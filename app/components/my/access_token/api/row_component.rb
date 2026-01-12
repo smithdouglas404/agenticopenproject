@@ -63,6 +63,7 @@ module My
                    tag: :a,
                    href: delete_path,
                    "aria-label": t(:button_delete),
+                   tooltip_direction: :w,
                    test_selector: "api-token-revoke",
                    data: {
                      turbo_method: :delete,

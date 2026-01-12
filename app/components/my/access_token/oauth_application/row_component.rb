@@ -69,6 +69,7 @@ module My
                    tag: :a,
                    href: revoke_my_oauth_application_path(application_id: oauth_application.id),
                    "aria-label": t(:button_delete),
+                   tooltip_direction: :w,
                    test_selector: "oauth-token-row-#{oauth_application.id}-revoke",
                    data: {
                      turbo_method: :post,

@@ -74,6 +74,7 @@ module My
                    tag: :a,
                    href: my_access_token_remove_oauth_client_token_path(client_token),
                    "aria-label": t(:button_delete),
+                   tooltip_direction: :w,
                    test_selector: "oauth-client-token-#{client_token.id}-remove",
                    data: {
                      turbo_method: :delete,
