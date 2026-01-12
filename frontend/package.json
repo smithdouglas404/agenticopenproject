@@ -30,7 +30,7 @@
     "@types/mousetrap": "^1.6.3",
     "@types/pako": "^2.0.4",
     "@types/rails__request.js": "^0.0.1",
-    "@types/react": "^19.2.7",
+    "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@types/resize-observer-browser": "^0.1.4",
     "@types/urijs": "^1.19.26",
