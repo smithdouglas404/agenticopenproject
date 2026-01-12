@@ -218,7 +218,7 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
         visit project_settings_project_custom_fields_path(project)
 
         within_custom_field_section_container(section_for_input_fields) do
-          page.find("[data-test-selector='enable-all-project-custom-field-mappings-#{section_for_input_fields.id}']").click
+          page.find_test_selector("enable-all-project-custom-field-mappings-#{section_for_input_fields.id}").click
 
           within_custom_field_container(boolean_project_custom_field) do
             expect_checked_state
@@ -244,7 +244,7 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
         end
 
         within_custom_field_section_container(section_for_input_fields) do
-          page.find("[data-test-selector='disable-all-project-custom-field-mappings-#{section_for_input_fields.id}']").click
+          page.find_test_selector("disable-all-project-custom-field-mappings-#{section_for_input_fields.id}").click
 
           within_custom_field_container(boolean_project_custom_field) do
             expect_unchecked_state
@@ -274,16 +274,13 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
         end
 
         context "with one user field being used as an assignee in the project creation wizard" do
-          before do
+          it "does not allow to disable the user field used as assignee in the project creation wizard" do
             project.project_creation_wizard_enabled = true
             project.project_creation_wizard_assignee_custom_field_id = user_custom_field.id
             project.save!
 
-            login_as user_with_sufficient_permissions
             visit project_settings_project_custom_fields_path(project)
-          end
 
-          it "does not allow to disable the user field used as assignee in the project creation wizard" do
             within_custom_field_section_container(section_for_select_fields) do
               # A regular user custom field can be toggled
               within_custom_field_container(other_user_custom_field) do
@@ -322,6 +319,27 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
                 expect_enabled_state
               end
             end
+          end
+        end
+
+        it "ignores fields being used as an assignee when performing bulk actions" do
+          project.project_creation_wizard_enabled = true
+          project.project_creation_wizard_assignee_custom_field_id = user_custom_field.id
+          project.save!
+
+          visit project_settings_project_custom_fields_path(project)
+
+          within_custom_field_section_container(section_for_select_fields) do
+            page.find_test_selector("enable-all-project-custom-field-mappings-#{section_for_select_fields.id}").click
+            within_custom_field_container(other_user_custom_field) { expect_checked_state }
+            within_custom_field_container(user_custom_field) { expect_checked_state }
+          end
+
+          within_custom_field_section_container(section_for_select_fields) do
+            page.find_test_selector("disable-all-project-custom-field-mappings-#{section_for_select_fields.id}").click
+            within_custom_field_container(other_user_custom_field) { expect_unchecked_state }
+            # still checked, cannot be unchecked
+            within_custom_field_container(user_custom_field) { expect_checked_state }
           end
         end
       end

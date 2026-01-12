@@ -84,12 +84,21 @@ module ProjectCustomFieldProjectMappings
     end
 
     def fetch_custom_field_ids
-      # only custom fields which are not set "for all projects" can be disabled
-      ProjectCustomField
-        .visible(@user)
-        .where(custom_field_section_id: @project_custom_field_section.id)
-        .where(is_for_all: false)
-        .pluck(:id)
+      # Only custom fields which are not set "for all projects" can be disabled
+      cf_ids = ProjectCustomField
+                 .visible(@user)
+                 .where(custom_field_section_id: @project_custom_field_section.id)
+                 .where(is_for_all: false)
+                 .pluck(:id)
+
+      # Fields that are being used in the project creation wizard cannot be disabled
+      cf_active_in_project_creation_wizard = if @project.project_creation_wizard_enabled?
+                                               [@project.project_creation_wizard_assignee_custom_field_id]
+                                             else
+                                               []
+                                             end
+
+      cf_ids - cf_active_in_project_creation_wizard
     end
 
     def enable_custom_fields(custom_field_ids)
