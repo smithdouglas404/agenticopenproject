@@ -16,7 +16,7 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 ## Important feature changes
 
-Take a look at our release video showing the most important features introduced in OpenProject 16.6.0:
+Take a look at our release video showing the most important features introduced in OpenProject 17.0.0:
 
 ![Release video of OpenProject 17.0](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_0_release.mp4)
 
@@ -28,7 +28,7 @@ Real-time collaboration requires a **running Hocuspocus server**:
 
 - **OpenProject Cloud**: Real-time collaboration is enabled automatically for all Cloud instances.
 - **Container-based on-premises installations** (Docker, Docker Compose, Helm/Kubernetes): Intended to work out of the box with 17.0. A Hocuspocus service will be automatically provided as part of the standard setup.
-- **Package-based installations** (DEB/RPM): Does not include Hocuspocus. These installations will continue using CKEditor-based documents unless administrators set up their own Hocuspocus server and configure OpenProject accordingly.
+- **Package-based installations** (DEB/RPM): Does not include Hocuspocus. These installations will continue using CKEditor-based documents unless administrators [set up their own Hocuspocus server and configure OpenProject accordingly](https://github.com/opf/op-blocknote-hocuspocus).
 
 When real-time editing is enabled, Documents support:
 
@@ -51,6 +51,8 @@ When real-time editing is enabled, Documents support:
 
 ![OpenProject Documents module showing a document "Planning of the year 2026" with 3 active editors](openproject-documents-collaboration-1.png)
 
+See our system admin guide for [detailed information on real time collaboration with OpenProject](../../system-admin-guide/documents/#real-time-collaboration-in-documents).
+
 ### Programs and portfolios for strategic structuring (Enterprise add-on)
 
 OpenProject 17.0 introduces hierarchical workspaces to better organize large project landscapes. Customers of the **Enterprise Premium plan** can now structure related items — **projects, programs, and portfolios** — to align operational work with strategic goals.
@@ -67,12 +69,12 @@ Creating workspaces also becomes more consistent: administrators can define defa
 
 A dedicated global permission now controls who may create programs and portfolios, ensuring that the new hierarchy can be introduced in a controlled way.
 
-This update lays the foundation for future portfolio-level and program-level capabilities in OpenProject.
+This update lays the foundation for future portfolio-level and program-level capabilities in OpenProject. [See our user guide to learn more about the portfolio module (Enterprise add-on) in OpenProject](../../user-guide/portfolios/).
 
 >[!NOTE]
 > This new hierarchy is especially valuable for organizations working with structured project management frameworks such as **PM²** or **PMflex**, where programs and portfolios play a central role.
 
-screenshot
+![OpenProject portfolio in global menu](openproject-17-0-portfolios-highlighted.png)
 
 ### Better meeting management with draft mode, presentation mode, multiple outcomes, and iCal subscription
 
@@ -86,6 +88,8 @@ A banner clearly indicates draft mode, and invitations are only sent once the me
 
 ![OpenProject meeting draft mode, indicated by a "Draft" status and a banner explaining draft mode. There is a green button "Open meeting in the upper right corner".](openproject-17-0-meeting-draft-mode.png)
 
+See our user guide to [learn learn more about meeting draft mode in OpenProject](../../user-guide/meetings/one-time-meetings/#meeting-draft-mode).
+
 #### Full-screen presentation mode
 
 The new **presentation mode** offers a distraction-free, full-screen view that focuses on the current agenda item. It shows the meeting title, agenda item details, and navigation controls in a clear layout, including:
@@ -94,6 +98,8 @@ The new **presentation mode** offers a distraction-free, full-screen view that f
 - a sticky footer with progress, previous/next navigation and a running timer.
 
 Unlike the standard view, changes made by participants are reflected **live** in presentation mode, so moderators and attendees always see the current state of the agenda without additional pop-ups. Keyboard navigation using arrow keys is possible.
+
+See our user guide to [learn how to present a meeting in OpenProject](../../user-guide/meetings/one-time-meetings/#present-a-meeting).
 
 #### Multiple text-based outcomes per agenda item
 
@@ -106,6 +112,8 @@ Agenda items can now hold **multiple text-based outcomes**: The **+ Outcome** bu
 To avoid duplicate or confusing calendar invites, **users can now subscribe to all their meetings through a single iCal subscription URL** from the My meetings page or settings. External calendars (for example Outlook, Apple Calendar, or Open-Xchange) stay in sync automatically. Individual *.ics files* remain available when needed, but sending them is now more clearly controlled via dedicated options when creating or updating meetings.
 
 ![My meetings page: Clicking on the More menu on the upper right corner opens a clickable option to "Subscribe to calendar"](openproject-17-0-meeting-subscribe-calendar.png)
+
+See our user guide to [learn how to subscribe to OpenProject meetings](../../user-guide/meetings/#create-a-subscription).
 
 ### Updated SharePoint integration with more restrictive permissions (Enterprise add-on)
 
@@ -124,13 +132,13 @@ When configuring SharePoint storage, administrators now benefit from:
 
 OpenProject continues to support both the legacy permission model and the new *Sites.Selected* approach, allowing administrators to choose whichever fits their security standards.
 
-screenshot
+See our system admin guide to learn more about the [SharePoint integration](../../user-guide/file-management/sharepoint-integration/) and now separate [OneDrive integration](../../user-guide/file-management/one-drive-integration/) for OpenProject.
 
 ### Redesigned project overview with new tabs, configurable widgets, and an improved layout
 
-OpenProject 17.0 introduces a **major redesign of the project overview**, making key information easier to understand and share.
+OpenProject 17.0 introduces a **major redesign of the project overview, which is now called "project home"**, making key information easier to understand and share.
 
-The page is now split into two tabs:
+The project home page is now split into two tabs:
 
 - **Overview** — a clean, structured summary with fixed widgets such as description, status, members, subitems, news, lifecycle dates, and project attributes.
 - **Dashboard** — the fully editable area for custom widgets, now without the previous right-hand panel.
@@ -139,6 +147,8 @@ The redesign also introduces a **new widget for Subitems** and improves existing
 
 ![OpenProject Project home showing both the Overview tab and the Dashboard tab](openproject-17-0-home-dashboard-overview.jpg)
 
+[Learn more about the project home page in our user guide](../../user-guide/project-home/).
+
 ### Improved project creation flow with better template selection
 
 Creating new projects is now easier and more structured. The template selection has been moved to a **dedicated first step**, offering a clearer visual layout and better guidance. After choosing a template or a blank project, users proceed to the regular creation form.
@@ -146,6 +156,8 @@ Creating new projects is now easier and more structured. The template selection 
 When using blank projects, required custom fields are shown in a separate final step. Project templates used for programs and portfolios are also prefilling properly when created from context (e.g., via the Subitems widget or the top navigation).
 
 ![OpenProject "New project" creation showing several pre-created templates to choose from, including a selected "Blank project". Below are buttons to "Cancel" and "Continue"](openproject-17-0-templates.png)
+
+See our user guide to [learn more about project templates in OpenProject](../../user-guide/projects/project-templates/).
 
 ### Option to guard the privacy of users not working in the same project more strictly
 
@@ -167,7 +179,7 @@ Existing permission configurations are automatically migrated so that **current 
 
 The user invitation dialog has been redesigned with Primer for a clearer and more consistent experience. The flow now shows only the projects where a user is allowed to invite members, improves autocompletion for users and emails, and displays errors inline instead of multi-step confirmations. This update also prepares the system for the new [visibility rules introduced in this release](#option-to-guard-the-privacy-of-users-not-working-in-the-same-project-more-strictly).
 
-screenshot
+![User invitation modal in OpenProject, redesigned with Primer design system in 17.0](openproject-17-0_getting_started_invite_new_user_popover_form_invitation_message.png)
 
 ### Smarter global search including type and status, improving precision in several autocompleters
 
@@ -192,7 +204,7 @@ OpenProject 17.0 continues the accessibility initiative with several enhancement
 - Charts on the project overview include improved color contrast and descriptive summaries to support assistive technologies.
 - The Gantt chart is now hidden from screen readers to avoid confusing non-informational output.
 
-These improvements make OpenProject easier to navigate for users relying on screen readers or high-contrast environments.
+These improvements make OpenProject easier to navigate for users relying on screen readers or high-contrast environments. If you're interested in accessibility topics for OpenProject, please see this [accessibility checklist](../../development/accessibility-checklist/). 
 
 ### Enhanced project attribute help texts with captions and direct editing
 
@@ -212,9 +224,7 @@ Depending on screen size:
 - desktop logo only
 - or both (automatically switching between them)
 
-...are shown.
-
-If no custom logo is provided, the OpenProject logo remains the default.
+...are shown. If no custom logo is provided, the OpenProject logo remains the default.
 
 ### Required project attributes
 
@@ -238,7 +248,7 @@ When placed at the start of a line, long text is rendered fully. If inserted mid
 
 ### New permission to export projects
 
-A new permission allows administrators to control who may export project lists as XLS, CSV, or PDF. This helps manage server load and restrict data extraction to authorized users.
+The new permission "Export projects" allows administrators to control who may export project lists as XLS, CSV, or PDF. This helps manage server load and restrict data extraction to authorized users.
 
 ### Updated tab order in the work package view
 
@@ -258,8 +268,6 @@ Our packaged-installations were previously being fetched from `dl.packager.io`, 
 
 To update your local package sources, please remove the package repositories from your file-system and re-add them, following the "Major upgrades" section of [our upgrading installation guide](../../installation-and-operations/operation/upgrading/). This does not affect the actual upgrade of the OpenProject application.
 
-
-
 ### PostgreSQL update to 17.0
 
 The docker and packaged installations are now using PostgreSQL 17.0 by default. Note that there is no automatic upgrade for your cluster if you are running older versions of PostgreSQL. Please see [our database migration guide](../../installation-and-operations/misc/migration-to-postgresql17/) on how to upgrade to newer versions of PostgreSQL.
@@ -273,19 +281,6 @@ OpenProject now includes a built-in OAuth application that simplifies authentica
 ### Improved perceived performance of the project selector
 
 The project selector has been optimised to feel significantly faster, especially in instances with many projects. Instead of loading the full project tree at once, OpenProject now loads up to 300 projects initially and fetches additional entries dynamically during search. This reduces waiting times and improves responsiveness across the application.
-
-### PostgreSQL update to 17.0
-
-The docker and packaged installations are now using PostgreSQL 17.0 by default. Note that there is no automatic upgrade for your cluster if you are running older versions of PostgreSQL. Please see [our database migration guide](../../installation-and-operations/misc/migration-to-postgresql17/) on how to upgrade to newer versions of PostgreSQL.
-
-For packaged installations using SLES 12 and 15, automatic installation of PostgreSQL has been removed due to incompatible repositories being used. Please [follow the official documentation](https://www.postgresql.org/about/news/installing-postgresql-on-sles-15-just-got-easier-and-better-2814/) on how to upgrade your database for these distributions.
-
-### Removal of special semver
-
-We removed the `special` fragment of the semantic version of OpenProject. This has not been in use.
-Unless you are relying on this value in one of your plugins, you can ignore this change.
-
-Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 
 ### Removal of special semver
 
@@ -450,13 +445,14 @@ Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
+
 A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to  Alexander Aleschenko, Stefan Weiberg, and Markus Preisinger.
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
-- [William](https://crowdin.com/profile/williamfromtw), for a great number of translations into Chinese Traditional.
-- [Pickart](https://crowdin.com/profile/fantasmak10), for a great number of translations into Catalan.
-- [Maxime77](https://crowdin.com/profile/maxime77), for a great number of translations into French.
+- [stenberg.thomas](https://crowdin.com/profile/stenberg.thomas), for a great number of translations into Swedish.
+- [natalianikolaieva1803](https://crowdin.com/profile/natalianikolaieva1803), for a great number of translations into Ukrainian.
+- [Sharmin](https://crowdin.com/profile/sh.shokri.software.engineer), for a great number of translations into Persian.
 
 Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
 
