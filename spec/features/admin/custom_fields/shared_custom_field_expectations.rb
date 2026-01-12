@@ -149,6 +149,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
   let(:label_section) { I18n.t("activerecord.attributes.project_custom_field.custom_field_section") } # Section
   let(:label_is_for_all) { I18n.t("attributes.is_for_all") } # For all projects
   let(:label_admin_only) { I18n.t("activerecord.attributes.custom_field.admin_only") } # Admin-only
+  let(:label_searchable) { I18n.t("activerecord.attributes.custom_field.searchable") } # Searchable
   let(:label_min_length) { I18n.t("activerecord.attributes.custom_field.min_length") } # Minimum length
   let(:label_max_length) { I18n.t("activerecord.attributes.custom_field.max_length") } # Maximum length
   let(:label_regexp) { I18n.t("activerecord.attributes.custom_field.regexp") } # Regular expression
@@ -184,6 +185,13 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       expect(page).to have_field(label_is_for_all)
     else
       expect(page).to have_no_label(label_is_for_all)
+    end
+
+    if (type in "Work package" | "Project") &&
+       !(format in "Boolean" | "Date" | "Float" | "Integer" | "User" | "Version" | "Hierarchy")
+      expect(page).to have_field(label_searchable)
+    else
+      expect(page).to have_no_label(label_searchable)
     end
 
     if type in "User" | "Project"
