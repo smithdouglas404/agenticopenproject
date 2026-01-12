@@ -51,7 +51,7 @@ When real-time editing is enabled, Documents support:
 
 ![OpenProject Documents module showing a document "Planning of the year 2026" with 3 active editors](openproject-documents-collaboration-1.png)
 
-See our system admin guide for [detailed information on real time collaboration with OpenProject](../../system-admin-guide/documents/#real-time-collaboration/).
+See our system admin guide for [detailed information on real time collaboration with OpenProject](../../system-admin-guide/documents/#real-time-collaboration-in-documents).
 
 ### Programs and portfolios for strategic structuring (Enterprise add-on)
 
