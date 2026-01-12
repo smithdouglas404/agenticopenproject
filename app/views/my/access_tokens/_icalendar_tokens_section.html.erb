@@ -46,12 +46,6 @@ See COPYRIGHT and LICENSE files for more details.
   <% if Setting.ical_enabled? %>
     <%= render(My::AccessToken::ICal::TableComponent.new(rows: ical_tokens_grouped_by_query.values.flatten)) %>
   <% else %>
-    <div tabindex="0" class="-info op-toast">
-      <div role="alert" aria-atomic="true" class="op-toast--content">
-        <p>
-          <span><%= t("my_account.access_tokens.ical.disabled_text") %></span>
-        </p>
-      </div>
-    </div>
+    <%= render(Primer::Alpha::Banner.new(icon: :info)) { t("my_account.access_tokens.ical.disabled_text") } %>
   <% end %>
 </div>

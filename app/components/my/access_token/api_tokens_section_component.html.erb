@@ -58,12 +58,6 @@ See COPYRIGHT and LICENSE files for more details.
           end %>
     <% end %>
   <% else %>
-    <div tabindex="0" class="-info op-toast">
-      <div role="alert" aria-atomic="true" class="op-toast--content">
-        <p>
-          <span><%= t(:disabled_text, scope: i18n_scope) %></span>
-        </p>
-      </div>
-    </div>
+    <%= render(Primer::Alpha::Banner.new(icon: :info)) { t(:disabled_text, scope: i18n_scope) } %>
   <% end %>
 <% end %>
