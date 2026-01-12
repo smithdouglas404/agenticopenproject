@@ -12,7 +12,9 @@ import { TURBO_EVENTS } from './constants';
 import { StreamActions } from '@hotwired/turbo';
 import { addTurboAngularWrapper } from 'core-turbo/turbo-angular-wrapper';
 import { TurboStreamElement } from 'core-typings/turbo';
+import { confirmDialog } from './confirm-dialog';
 
+(Turbo as any).config.forms.confirm = confirmDialog;
 Turbo.session.drive = true;
 Turbo.setProgressBarDelay(100);
 
