@@ -34,6 +34,7 @@
     class="global-search"
     [placeholder]="effectivePlaceholder"
     [ariaLabel]="effectivePlaceholder"
+    [appendTo]="'#global-search-input'"
     [dropdownPosition]="'bottom'"
     [classes]="{'top-menu-search--input': true, '-markable': markable, '-expanded': expanded, 'ng-select--primerized': true }"
     [inputAttrs]="{ 'class': 'global-search--input', 'name': 'global-search--input', autocomplete: 'off'}"
