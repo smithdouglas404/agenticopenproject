@@ -28,8 +28,8 @@ zh-CN:
       label_add_new: 添加新的 Webhook
       label_edit: 编辑 Webhook
       label_x_events:
-        one: "1 次活动"
-        other: "%{count} 次活动"
+        one: "1 个活动"
+        other: "%{count} 个活动"
         zero: "无活动"
       events:
         created: "已创建"

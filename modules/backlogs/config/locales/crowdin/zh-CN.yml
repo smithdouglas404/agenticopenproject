@@ -170,6 +170,6 @@ zh-CN:
   version_settings_display_option_none: "无"
   version_settings_display_option_right: "右"
   setting_plugin_openproject_backlogs_story_types_caption: |
-    被视为待办事项故事的类型（例如，功能、用户故事）。必须与任务类型不同。
+    被视为积压工作故事的类型（例如，功能、用户故事）。必须与任务类型不同。
   setting_plugin_openproject_backlogs_task_type_caption: |
     用于故事任务的类型。必须与故事类型不同。

@@ -324,7 +324,7 @@ es:
         role_field_caption: This project role will automatically be granted to any user assigned to this project attribute
         review_hint: >
           There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
-        review_button: Review users and permissions
+        review_button: Revisar usuarios y permisos
         dialog:
           title: "Overview of users and permissions"
           change: Change
@@ -376,10 +376,10 @@ es:
     error_dialog:
       title: "Error with Calculated value"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
-      mathematical: "The mathematical formula leads to an error. Please review the project calculation attribute and try again."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
+      unknown: "Se ha producido un error desconocido. Revise la fórmula de este Valor calculado."
+      mathematical: "La fórmula matemática da lugar a un error. Revisa el atributo de cálculo del proyecto y vuelve a intentarlo."
+      missing_value: El atributo «%{custom_field_name}» es obligatorio para este Valor calculado, pero está vacío.
+      disabled_value: El atributo «%{custom_field_name}» es obligatorio para este Valor calculado, pero está desactivado para el proyecto.
   concatenation:
     single: "o bien"
   danger_dialog:
@@ -403,7 +403,7 @@ es:
       int?: "debe ser un número entero."
       key?: "falta."
       not_found: "no encontrado."
-      respond_to?: "does not implement required method."
+      respond_to?: "no implementa el método requerido."
       rules:
         copy_workflow_from:
           workflow_missing: "no tiene flujo de trabajo propio."
@@ -426,7 +426,7 @@ es:
       depth: "Profundidad"
       item: "Elemento"
       label: "Etiqueta"
-      weight: "Weight"
+      weight: "Peso"
       short: "Nombre corto"
       parent: "Principal"
       blueprint: "Plano de patrón"
@@ -465,16 +465,16 @@ es:
   portfolios:
     index:
       search:
-        label: Portfolio name filter
-        placeholder: Search portfolios
+        label: Filtro de nombre de cartera
+        placeholder: Buscar carteras
       sub_items_html:
-        one: "<strong>1</strong> sub-item"
-        other: "<strong>%{count}</strong> sub-items"
+        one: "<strong>1</strong> subelemento"
+        other: "<strong>%{count}</strong> subelementos"
     lists:
-      active: "Active portfolios"
-      my: "My portfolios"
-      favorited: "Favorite portfolios"
-      archived: "Archived portfolios"
+      active: "Carteras activas"
+      my: "Mis carteras"
+      favorited: "Carteras favoritas"
+      archived: "Carteras archivadas"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -487,8 +487,8 @@ es:
       work_package_file_links: "Paquetes de trabajo: enlaces de archivos"
       work_package_shares: "Paquetes de trabajo: comparticiones"
     create:
-      notification_email_subject: "Your project '%{project_name}' has been created"
-      complete_wizard_link: "Complete the %{artefact_name}"
+      notification_email_subject: "Se ha creado el proyecto «%{project_name}»"
+      complete_wizard_link: "Completar el %{artefact_name}"
     delete:
       scheduled: "Se ha programado la eliminación y se ejecutará en segundo plano. Recibirá una notificación con el resultado."
       schedule_failed: "El proyecto no puede ser eliminado: %{errors}"
@@ -552,7 +552,7 @@ es:
         members:
           excluded_roles_label: "Roles to exclude when template is applied"
           excluded_roles_caption: >
-            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
+            Al crear un nuevo proyecto a partir de esta plantilla, se omitirán los roles seleccionados anteriormente. Esto te permite seleccionar qué miembros se excluirán en función de sus roles en el proyecto. Los usuarios podrán acceder a la plantilla para verla sin que se les conceda acceso a los nuevos proyectos creados a partir de ella.
       actions:
         label_enable_all: "Activar todo"
         label_disable_all: "Desactivar todo"
@@ -623,10 +623,10 @@ es:
       sections: "Sections"
       title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
-      success: "Project attributes saved and artifact work package created successfully."
+      success: "Atributos del proyecto guardados y paquete de trabajo de artefactos creado correctamente."
       progress_label: "%{current} of %{total}"
-      create_artifact_work_package_error: "Failed to create artifact work package"
-      create_artifact_storage_error: "Failed to store artifact in file storage"
+      create_artifact_work_package_error: "No se ha podido crear el paquete de trabajo de artefactos"
+      create_artifact_storage_error: "No se ha podido almacenar el artefacto en el almacenamiento de archivos"
   lists:
     create:
       success: "La lista modificada se ha guardado como una nueva lista"
@@ -1391,7 +1391,7 @@ es:
         header_alerts: "Alertas"
         button_update_look_and_feel: "Actualizar apariencia"
         button_update_alerts: "Actualizar alertas"
-        button_update_user_information: "Update profile"
+        button_update_user_information: "Actualizar perfil"
         comments_sorting: "Mostrar la actividad del paquete de trabajo ordenada por"
         disable_keyboard_shortcuts: "Deshabilitar atajos de teclado"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1561,13 +1561,13 @@ es:
             other: "%{name} se utiliza en los cálculos de atributos del proyecto: %{links}."
           attributes:
             formula:
-              blank: "Formula can't be blank."
-              invalid: "Formula is invalid."
-              invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
-              not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
+              blank: "La fórmula no puede estar en blanco."
+              invalid: "La fórmula no es válida."
+              invalid_characters: "Solo se permiten valores numéricos, operadores matemáticos y atributos de proyecto de tipo entero, flotante, valor calculado y lista ponderada."
+              not_allowed_custom_fields_referenced: "El atributo %{custom_fields} no se puede usar porque conduce a una referencia circular; un atributo depende del otro."
               format: "%{message}"
             required:
-              cannot_be_true: "cannot be set to true."
+              cannot_be_true: "no se puede establecer como verdadero."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1641,7 +1641,7 @@ es:
           attributes:
             base:
               archive_permission_missing_on_subprojects: "No tiene los permisos necesarios para archivar todos los subproyectos. Por favor, póngase en contacto con un administrador."
-              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
+              project_initiation_request_disabled: "La solicitud de inicio de proyecto está desactivada. Debe estar activada para crear el paquete de trabajo de artefactos."
             types:
               in_use_by_work_packages: "todavia en uso por los paquetes de trabajo: %{types}"
             enabled_modules:
@@ -1813,7 +1813,7 @@ es:
               cant_exceed_work: "no puede ser superior a Trabajo."
               must_be_set_when_work_is_set: "obligatorio cuando Trabajo está establecido."
               must_be_set_when_work_and_percent_complete_are_set: "obligatorio cuando se fijan Trabajo y % completado."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- debe ser igual a 0 horas si se selecciona la opción «Trabajo» y el atributo «% completado» es 100 %.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 debe estar vacío cuando Trabajo está vacío y % completado es 100 %.
           readonly_status: "El paquete de trabajo está en un estado de sólo lectura por lo que sus atributos no se pueden cambiar."
@@ -2139,10 +2139,10 @@ es:
   button_click_to_reveal: "Haz Click para ver"
   button_close: "Cerrar"
   button_collapse_all: "Colapsar todo"
-  button_confirm: "Confirm"
+  button_confirm: "Confirmar"
   button_configure: "Configurar"
   button_continue: "Continuar"
-  button_complete: "Complete"
+  button_complete: "Completar"
   button_copy: "Copiar"
   button_copy_to_clipboard: "Copiar en el portapapeles"
   button_copy_link_to_clipboard: "Copiar enlace al portapapeles"
@@ -2153,11 +2153,11 @@ es:
   button_delete_permanently: "Eliminar permanentemente"
   button_delete_watcher: "Eliminar observador %{name}"
   button_download: "Descargar"
-  button_disable: "Disable"
+  button_disable: "Deshabilitar"
   button_duplicate: "Duplicar"
   button_duplicate_and_follow: "Duplicar y seguir"
   button_edit: "Editar"
-  button_enable: "Enable"
+  button_enable: "Habilitar"
   button_edit_associated_wikipage: "Editar página wiki asociada: %{page_title}"
   button_expand_all: "Expandir todos"
   button_favorite: "Añadir a favoritos"
@@ -2172,7 +2172,7 @@ es:
   button_print: "Imprimir"
   button_quote: "Comentario"
   button_remove: Eliminar
-  button_remove_permanently: "Remove permanently"
+  button_remove_permanently: "Eliminar permanentemente"
   button_remove_reminder: "Eliminar recordatorio"
   button_rename: "Cambiar el nombre"
   button_replace: "Sustituir"
@@ -2245,7 +2245,7 @@ es:
     copy_options:
       dependencies_label: "Copiar desde el proyecto"
   create_project:
-    attributes_heading: "Fill in this mandatory information to work on your projects."
+    attributes_heading: "Rellena esta información obligatoria para trabajar en tus proyectos."
     template_label: "Usar plantilla"
     template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
     copy_options:
@@ -4275,13 +4275,13 @@ es:
   setting_apiv3_docs_enabled_instructions_html: >
     Si la página de documentos está habilitada, puede obtener una vista interactiva de la documentación de APIv3 en <a href="%{link}" target="_blank">%{link}</a>.
   setting_apiv3_docs_enabled_instructions_warning: >
-    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
+    Ten en cuenta que habilitar la documentación de la API en un sistema de producción puede exponer información confidencial o provocar la pérdida accidental de datos si no se tiene cuidado. Recomendamos habilitar esta configuración solo con fines de desarrollo.
   setting_attachment_whitelist: "Lista de permitidos de carga de archivos adjuntos"
   setting_email_delivery_method: "Método de envío de correo electrónico"
   setting_emails_salutation: "Dirigirse al usuario en los correos como"
   setting_oauth_allow_remapping_of_existing_users: "Permitir la reasignación de usuarios existentes"
   setting_sendmail_location: "Ubicación del ejecutable de sendmail"
-  setting_sendmail_arguments: "Arguments for sendmail"
+  setting_sendmail_arguments: "Argumentos para sendmail"
   setting_smtp_enable_starttls_auto: "Usar STARTTLS automáticamente si está disponible"
   setting_smtp_ssl: "Usar conexión SSL"
   setting_smtp_address: "Servidor SMTP"
@@ -4370,8 +4370,8 @@ es:
   setting_mail_handler_body_delimiter_regex: "Truncar correos que coincidan con esta expresión regular"
   setting_mail_handler_ignore_filenames: "Archivos adjuntos de email ignorados"
   setting_new_project_user_role_id: "Papel ortorgado a usuario no administrador que crea un proyecto"
-  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
-  setting_new_project_notification_text: "Notification text"
+  setting_new_project_send_confirmation_email: "Enviar notificación al autor al crear un nuevo proyecto"
+  setting_new_project_notification_text: "Texto de la notificación"
   setting_password_active_rules: "Activar clases de personajes"
   setting_password_count_former_banned: "Numero de contraseñas usadas mas recientemente bloqueadas para re-uso"
   setting_password_days_valid: "Número de días, después de que sea necesario imponer un cambio de contraseña"
@@ -4418,7 +4418,7 @@ es:
   setting_self_registration_manual_activation: "Activación manual de la cuenta"
   setting_self_registration_manual_activation_caption: >
     Los usuarios pueden registrarse por su cuenta. Sus cuentas están en estado pendiente hasta que un administrador o un usuario con permiso global para crear o gestionar usuarios las activa.
-  setting_session_ttl: "Session expiration time after inactivity"
+  setting_session_ttl: "Tiempo de expiración de sesión por inactividad"
   setting_session_ttl_hint: "Valor por debajo de 5 peticiones como desactivadas"
   setting_session_ttl_enabled: "La sesión expira"
   setting_start_of_week: "La semana empieza el"
@@ -4445,8 +4445,8 @@ es:
   setting_working_days: "Días laborables"
   settings:
     errors:
-      not_writable: "The setting is not writable and can only be changed by a sysadmin."
-      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
+      not_writable: "La configuración no es modificable y solo puede cambiarla un administrador del sistema."
+      failed_to_update: "No se pudo actualizar la configuración de «%{name}»: %{message}"
     authentication:
       login: "Ingresar"
       registration: "Registro"
@@ -5041,7 +5041,7 @@ es:
       unable_to_create_attachment: "No se pudo crear el adjunto"
       unable_to_create_attachment_permissions: "No se pudo guardar el archivo adjunto porque faltan permisos del sistema de archivos"
       user:
-        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
+        name_readonly: "El atributo «Nombre» es de solo lectura. Los cambios se pueden escribir a través de los atributos «Nombre» y «Apellido»."
       render:
         context_not_parsable: "El contexto proporcionado no es un enlace a un recurso."
         unsupported_context: "El recurso dado no es soportado como contexto."
@@ -5056,10 +5056,10 @@ es:
     resources:
       schema: "Esquema"
     undisclosed:
-      parent: Undisclosed - The parent is invisible because of lacking permissions.
-      project: Undisclosed - The project is invisible because of lacking permissions.
+      parent: 'Oculto: el elemento primario no se muestra porque no tiene los permisos necesarios.'
+      project: 'Oculto: el proyecto no se muestra porque no tiene los permisos necesarios.'
       ancestor: No revelado - El antepasado es invisible por falta de permisos.
-      definingProject: Undisclosed - The project is invisible because of lacking permissions.
+      definingProject: 'Oculto: el proyecto no se muestra porque no tiene los permisos necesarios.'
   doorkeeper:
     pre_authorization:
       status: "Pre-autorización"

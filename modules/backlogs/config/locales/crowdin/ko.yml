@@ -41,7 +41,7 @@ ko:
         sprint:
           cannot_end_before_it_starts: "스프린트는 시작되기 전에 끝날 수 없습니다."
   attributes:
-    task_type: "Task type"
+    task_type: "작업 유형"
   backlogs:
     add_new_story: "새로운 스토리"
     any: "모두"
@@ -105,7 +105,7 @@ ko:
   errors:
     attributes:
       task_type:
-        cannot_be_story_type: "can not also be a story type"
+        cannot_be_story_type: "- 스토리 유형도 될 수 없습니다"
   error_intro_plural: "다음 오류가 발생했습니다."
   error_intro_singular: "다음 오류가 발생했습니다."
   error_outro: "다시 제출하기 전에 위의 오류를 수정하세요."
@@ -129,10 +129,10 @@ ko:
   label_points_burn_up: "위"
   label_product_backlog: "제품 백로그"
   label_select_all: "모두 선택"
-  label_select_type: "Select a type"
-  label_select_types: "Select types"
-  label_selected_type: "Selected type"
-  label_selected_types: "Selected types"
+  label_select_type: "유형 선택"
+  label_select_types: "유형 선택"
+  label_selected_type: "선택된 유형"
+  label_selected_types: "선택된 유형"
   label_sprint_backlog: "스프린트 백로그"
   label_sprint_cards: "카드 내보내기"
   label_sprint_impediments: "스프린트 제한"
@@ -170,6 +170,6 @@ ko:
   version_settings_display_option_none: "없음"
   version_settings_display_option_right: "오른쪽"
   setting_plugin_openproject_backlogs_story_types_caption: |
-    Types treated as backlog stories (e.g., Feature, User story). Must differ from task type.
+    백로그 스토리로 처리되는 유형(예: 기능, 사용자 스토리)입니다. 작업 유형과 달라야 합니다.
   setting_plugin_openproject_backlogs_task_type_caption: |
-    Type used for story tasks. Must differ from story types.
+    스토리 작업에 사용되는 유형입니다. 스토리 유형과 달라야 합니다.
