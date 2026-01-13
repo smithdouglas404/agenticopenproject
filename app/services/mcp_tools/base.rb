@@ -65,6 +65,43 @@ module McpTools
         @output_schema
       end
 
+      ##
+      # Defines a filter for selecting results through input parameters. Only one of filter_proc and filter_class are allowed at
+      # the same time. If none is provided, a default where-based filter is created, using name as the filtered attribute name.
+      #
+      # Filters defined here can later be applied by the tool implementation using #apply_filters.
+      #
+      # @param name [Symbol] The name of the input parameter used for filtering.
+      # @param filter_class [Queries::Filters::Base] A shared filter implementation to be used to perform filtering.
+      # @param operator [String] When using a filter_class, this is the operator that will be used for filtering. Default: "="
+      # @param filter_proc [Proc] A callback procedure used for filtering that must accept two arguments:
+      #                           The base scope that the filter applies to and the value that's used as a filter input.
+      # @example
+      #   filter :id
+      #
+      # @example
+      #   filter :name, filter_class: Queries::Projects::Filters::NameFilter, operator: "~"
+      #
+      # @example
+      #   filter :status, filter_proc: ->(scope, value) { scope.where(status_name: value) }
+      def filter(name, filter_class: nil, filter_proc: nil, operator: "=")
+        if filter_class && filter_proc
+          raise ArgumentError, "filter_proc and filter_class are mutually exclusive, please only specify one"
+        end
+
+        if filter_class
+          filter_proc = ->(scope, value) { filter_class.create!(operator:, values: Array(value)).apply_to(scope) }
+        elsif !filter_proc
+          filter_proc = ->(scope, value) { scope.where(name.to_sym => value) }
+        end
+
+        filters[name.to_sym] = filter_proc
+      end
+
+      def filters
+        @filters ||= {}
+      end
+
       def tool
         config = McpConfiguration.find_by(identifier: qualified_name)
         return nil if config.nil?
@@ -98,9 +135,26 @@ module McpTools
       MCP::Tool::Response.new([{ type: "text", text: result.to_json }], structured_content: result)
     end
 
+    private
+
     # Intended to be implemented by subclasses. It should return a structured result (e.g. a Hash or Array).
     def call(**)
       raise NotImplemented, "#{self.class} needs to implement #call method"
+    end
+
+    # Usable by tool implementations. Takes a scope and filters it according to the passed params.
+    # Filtering happens based on the filters defined for the tool, see .filter.
+    def apply_filters(scope, params)
+      params.each do |name, value|
+        filter_proc = filter_proc_for(name)
+        scope = filter_proc.call(scope, value)
+      end
+
+      scope
+    end
+
+    def filter_proc_for(name)
+      self.class.filters[name] || raise(ArgumentError, "Don't know how to handle filter argument called #{name}")
     end
   end
 end

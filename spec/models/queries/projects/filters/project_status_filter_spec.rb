@@ -57,4 +57,10 @@ RSpec.describe Queries::Projects::Filters::ProjectStatusFilter do
       end
     end
   end
+
+  it_behaves_like "list_optional query filter" do
+    let(:attribute) { :status_code }
+    let(:model) { Project }
+    let(:valid_values) { ["0", "1", "2"] }
+  end
 end

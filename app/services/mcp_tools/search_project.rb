@@ -39,6 +39,10 @@ module McpTools
 
     name "search_project"
 
+    filter :name, filter_class: Queries::Projects::Filters::NameFilter, operator: "~"
+    filter :identifier
+    filter :status_code
+
     input_schema(
       properties: {
         name: { type: "string", description: "Name of the project. Accepts partial project names, not case-sensitive." },
@@ -52,23 +56,9 @@ module McpTools
       items: JsonSchemaLoader.new.load("project_model")
     )
 
-    def call(name: nil, identifier: nil, status_code: nil)
-      query = { name:, identifier:, status_code: }.compact
-      if query.present?
-        projects = projects_for_query(query)
-        projects.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user: User.current) }
-      else
-        []
-      end
-    end
-
-    private
-
-    def projects_for_query(query)
-      name = query.delete(:name)
-      projects = Project.visible.where(query).limit(MAX_SIZE)
-      projects = projects.where("name ILIKE '%#{OpenProject::SqlSanitization.quoted_sanitized_sql_like(name)}%'") if name
-      projects
+    def call(**query)
+      projects = apply_filters(Project.visible.limit(MAX_SIZE), query)
+      projects.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user: User.current) }
     end
   end
 end
