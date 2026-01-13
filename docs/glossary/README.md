@@ -345,7 +345,7 @@ PM² is a project management framework developed by the European Commission to s
 
 ### PMflex
 
-PMflex is is a comprehensive and flexible project management system based on the European [PM²](#pm--pm2) standard and further developed for public administration in Germany. [Read more about how to use PMflex with OpenProject](https://www.openproject.org/pmflex). If you're looking for specific PMflex terminology, please see our [use case of implementing PM² and PMflex project management in OpenProject](../../use-cases/project-management-pm2-pmflex/#implementing-pm-and-pmflex-project-management-in-openproject). 
+PMflex is is a comprehensive and flexible project management system based on the European [PM²](#pm--pm2) standard and further developed for public administration in Germany. [Read more about how to use PMflex with OpenProject](https://www.openproject.org/pmflex). If you  are looking for specific PMflex terminology, please see our [use case of implementing PM² and PMflex project management in OpenProject](../use-cases/project-management-pm2-pmflex/#implementing-pm-and-pmflex-project-management-in-openproject). 
 
 ### Portfolio
 
