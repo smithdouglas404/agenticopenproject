@@ -558,7 +558,7 @@ module Journals
         aggregation_active? &&
         within_aggregation_time?(predecessor) &&
         same_user?(predecessor) &&
-        same_cause?(predecessor, cause) &&
+        only_one_or_same_cause?(predecessor, cause) &&
         only_one_note(predecessor, notes) &&
         same_restriction(predecessor, internal)
     end
@@ -583,8 +583,8 @@ module Journals
       predecessor.user_id == user.id
     end
 
-    def same_cause?(predecessor, cause)
-      (predecessor.cause.blank? && cause.blank?) || predecessor.cause == cause
+    def only_one_or_same_cause?(predecessor, cause)
+      predecessor.cause.empty? || cause.empty? || predecessor.cause == cause
     end
 
     def log_journal_creation(predecessor)

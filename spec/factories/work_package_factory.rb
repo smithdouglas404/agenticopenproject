@@ -110,7 +110,8 @@ FactoryBot.define do
                                                 created_at: timestamp,
                                                 updated_at: timestamp,
                                                 user: work_package.author,
-                                                version: version + 1)
+                                                version: version + 1,
+                                                notes: "")
 
           data_attributes = work_package_attributes
                               .extract!(*Journal::WorkPackageJournal.attribute_names)
