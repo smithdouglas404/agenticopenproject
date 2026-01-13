@@ -3,12 +3,12 @@ title: OpenProject 17.0.0
 sidebar_navigation:
     title: 17.0.0
 release_version: 17.0.0
-release_date: 2025-12-17
+release_date: 2026-01-14
 ---
 
 # OpenProject 17.0.0
 
-Release date: 2025-12-17
+Release date: 2026-01-14
 
 We released [OpenProject 17.0.0](https://community.openproject.org/versions/2233).
 The release contains several bug fixes and we recommend updating to the newest version.
@@ -88,7 +88,7 @@ A banner clearly indicates draft mode, and invitations are only sent once the me
 
 ![OpenProject meeting draft mode, indicated by a "Draft" status and a banner explaining draft mode. There is a green button "Open meeting in the upper right corner".](openproject-17-0-meeting-draft-mode.png)
 
-See our user guide to [learn learn more about meeting draft mode in OpenProject](../../user-guide/meetings/one-time-meetings/#meeting-draft-mode).
+See our user guide to [learn more about meeting draft mode in OpenProject](../../user-guide/meetings/one-time-meetings/#meeting-draft-mode).
 
 #### Full-screen presentation mode
 
