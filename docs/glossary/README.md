@@ -517,7 +517,7 @@ In OpenProject, a Weighted item list can be used both as a [custom field](#custo
 
 ### Widget
 
-A widget in OpenProject is defined as a small and customizable element that provides relevant information at a glance. Use widgets on the [My page](#my-page) or on the project dashboardon the [project home page](#project-home). [See all available project overview widgets](../user-guide/project-overview/#available-project-overview-widgets) and read [how to add a widget to the project overview](../user-guide/project-overview/#widgets).
+A widget in OpenProject is defined as a small and customizable element that provides relevant information at a glance. Use widgets on the [My page](#my-page) or on the project dashboardon the [project home page](#project-home). [See all available project overview widgets](../user-guide/project-home/project-widgets/#project-widgets-catalog) and read [how to add a widget to the project overview](../user-guide/project-home/project-widgets/#resize-and-reorder-widgets).
 
 ### Wiki
 
