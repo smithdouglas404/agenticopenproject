@@ -97,6 +97,9 @@ export const overflowingContainerAttribute = 'overflowingIdentifier';
   selector: 'wp-single-view',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
+  providers: [
+    HalResourceEditingService,
+  ],
 })
 export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackage:WorkPackageResource;

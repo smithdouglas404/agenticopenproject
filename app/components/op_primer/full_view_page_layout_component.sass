@@ -1,10 +1,29 @@
 .full-view-page-layout
   display: grid
-  grid-template-columns: 2fr 1fr
+  grid-template-columns: 3fr 1fr
   grid-template-rows: auto 1fr
   grid-template-areas: "header right" "left right"
+  height: 100%
 
-  @media screen and (max-width: $breakpoint-lg)
+  &--left
+    border-right: 1px solid var(--borderColor-default)
+    overflow-x: hidden
+    overflow-y: auto
+    position: relative
+    @include styled-scroll-bar
+
+  &--right
+    display: flex
+    flex-direction: column
+    min-width: 550px
+    overflow: hidden
+    position: relative
+
+  &--right-content
+    overflow: auto
+    @include styled-scroll-bar
+
+  @media screen and (max-width: $breakpoint-xl)
     grid-template-columns: unset
     grid-template-areas: "header" "right"
 
@@ -13,3 +32,6 @@
 
   &--full-width-header
     grid-template-areas: "header header" "left right"
+
+    @media screen and (max-width: $breakpoint-xl)
+      grid-template-areas: "header" "right"

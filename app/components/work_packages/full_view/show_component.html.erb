@@ -1,17 +1,57 @@
-<%=
-  if @work_package.nil?
-    render(Primer::Beta::Blankslate.new(spacious: true)) do |component|
-      component.with_visual_icon(icon: :inbox)
-      component.with_heading(tag: :h2).with_content(
+<% if @work_package.nil? %>
+    <%= render(Primer::Beta::Blankslate.new(spacious: true)) do |component| %>
+      <% component.with_visual_icon(icon: :inbox) %>
+      <% component.with_heading(tag: :h2).with_content(
         I18n.t(:error_work_package_id_not_found)
-      )
-    end
-  else
-    helpers.angular_component_tag "opce-wp-full-view",
-                                  inputs: {
-                                    workPackageId: @id,
-                                    activeTab: @tab,
-                                    routedFromAngular: false
-                                  }
-  end
-%>
+      ) %>
+  <% end %>
+<% else %>
+  <%= render OpPrimer::FullViewPageLayoutComponent.new(
+    nav_arguments: {
+      data: {
+        turbo: true,
+        turbo_stream: true,
+        turbo_action: "replace"
+      }
+    },
+    classes: "work-packages-full-view") do |layout| %>
+    <% layout.with_header(full_width: true, border: :bottom) do %>
+      <%= helpers.angular_component_tag "opce-wp-full-view-header",
+                                        inputs: {
+                                          workPackageId: @id,
+                                        } %>
+    <% end %>
+
+    <% layout.with_left_tab(name: t("js.work_packages.tabs.overview"), href: "TODO") do %>
+      <%= render Primer::BaseComponent.new(tag: :div, classes: "work-packages-full-view--split-left") do %>
+        <div class="work-packages--panel-inner">
+          <%= helpers.angular_component_tag "opce-wp-single-view",
+                                            inputs: {
+                                              workPackageId: @id
+                                            } %>
+          <% end %>
+        </div>
+      <% end %>
+
+    <%  all_tabs.each do |node| %>
+      <% layout.with_tab(name: t("js.work_packages.tabs.#{node.name}"),
+                         href: helpers.url_for_with_params(**node.url),
+                         active: active?(node),
+                         counter: counter_for(node)) do %>
+        <div class="work-packages-full-view--split-right work-packages-tab-view--overflow">
+          <div class="work-packages--panel-inner">
+            <div class="tabcontent"
+                 data-notification-selector='notification-scroll-container'>
+              <%= helpers.angular_component_tag "opce-wp-tab-wrapper",
+                                                inputs: {
+                                                  workPackageId: @id,
+                                                  activeTab: @tab
+                                                } %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+  <% end %>
+<% end %>

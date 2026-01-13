@@ -26,36 +26,45 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
 import {
-  WorkPackageIsolatedQuerySpaceDirective,
-} from 'core-app/features/work-packages/directives/query-space/wp-isolated-query-space.directive';
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+} from '@angular/core';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
+import { WorkPackageIsolatedQuerySpaceDirective } from 'core-app/features/work-packages/directives/query-space/wp-isolated-query-space.directive';
+import { WpSingleViewService } from 'core-app/features/work-packages/routing/wp-view-base/state/wp-single-view.service';
 
 /**
- * An entry component to be rendered by Rails which opens an isolated query space
- * for the work package full view
+ * An entry component to be rendered by Rails which shows the content of an individual WP tab
  */
 @Component({
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
   standalone: false,
   template: `
-    <op-wp-full-view
+    <op-wp-tab
       [workPackageId]="workPackageId"
-      [activeTab]="activeTab"
-      [routedFromAngular]="routedFromAngular"
-    ></op-wp-full-view>
+      [tabIdentifier]="activeTab"
+    ></op-wp-tab>
+
+    <div class="work-packages-full-view--resizer hidden-for-mobile hide-when-print">
+      <wp-resizer [elementClass]="'full-view-page-layout--right'"
+                  [variableName]="'--full-view-split-right-width'"
+                  [localStorageKey]="'openProject-fullViewFlexBasis'" />
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    WpSingleViewService,
+  ]
 })
-export class WorkPackageFullViewEntryComponent {
+export class WpTabWrapperEntryComponent {
   @Input() workPackageId:string;
   @Input() activeTab:string;
-  @Input() routedFromAngular:boolean;
 
   constructor(readonly elementRef:ElementRef) {
     populateInputsFromDataset(this);
-
-    document.body.classList.add('router--work-packages-full-view', 'router--work-packages-base');
+    document.body.classList.add('router--work-packages-base');
   }
 }

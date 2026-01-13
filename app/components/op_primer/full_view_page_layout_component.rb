@@ -139,7 +139,7 @@ module OpPrimer
     end
 
     def mobile?
-      helpers.browser.device.mobile?
+      helpers.browser.device.mobile? || helpers.browser.device.tablet?
     end
 
     def render_tab(nav, tab)

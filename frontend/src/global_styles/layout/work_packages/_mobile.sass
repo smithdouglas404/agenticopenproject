@@ -30,7 +30,6 @@
 
     // ------------- FULL SCREEN -------------------
     &.router--work-packages-full-view
-
       #main
         #content-wrapper
           &.nomenus
@@ -41,38 +40,6 @@
       .work-packages--show-view
         ul#toolbar-items li .wp-create-button .dropdown
           left: 0 !important
-
-      .work-packages-full-view--split-container
-        flex-direction: column
-        // Safari
-        height: initial
-        .work-packages-full-view--split-left
-          margin: 0
-          width: initial
-          border: none
-          // Set overflow to clip so that the editor toolbar can stick, see WP#53451
-          overflow-y: clip
-
-          // We need to cancel out the padding of the page content.
-          // Otherwise, the scrolled content will be visible above the toolbar
-          .document-editor__toolbar
-            top: -10px
-
-          .work-packages--panel-inner
-            padding: 5px 0 20px 0
-
-        .work-packages-full-view--split-right
-          width: initial
-
-          .work-packages--panel-inner
-            padding: 0
-            max-width: calc(100vw - 30px)
-
-            .tabcontent
-              padding: 0
-
-        .work-packages-full-view--resizer
-          display: none
 
 @media screen and (max-width: $breakpoint-xl)
   .router--work-packages-base
@@ -113,9 +80,6 @@
       grid-template-rows: auto auto 1fr
       grid-template-areas: "backButton toolbar" "breadcrumb breadcrumb" "subject subject"
       grid-row-gap: 0.5rem
-
-    .work-packages-full-view--split-container
-      border-top: none
 
   .router--work-packages-partitioned-split-view,
   .router--work-packages-partitioned-split-view-new

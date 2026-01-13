@@ -1,7 +1,6 @@
 @if (workPackage) {
   <div edit-form
-    [resource]="workPackage"
-    class="work-packages--show-view">
+    [resource]="workPackage">
     <div class="toolbar-container">
       <div id="toolbar" class="wp-show--header-container">
         <wp-breadcrumb class="wp-show--header-container--breadcrumb"
@@ -55,34 +54,6 @@
             </button>
           </li>
         </ul>
-      </div>
-    </div>
-    <div class="work-packages-full-view--split-container">
-      <div class="work-packages-full-view--split-left">
-        <div class="work-packages--panel-inner">
-          <wp-single-view [workPackage]="workPackage" />
-        </div>
-      </div>
-      <div class="work-packages-full-view--split-right work-packages-tab-view--overflow">
-        <div class="work-packages--panel-inner">
-          <span class="sr-only" tabindex="-1"  [textContent]="focusAnchorLabel"></span>
-          <op-wp-tabs [workPackage]="workPackage"
-                      [currentTabId]="activeTab"
-                      [view]="'full'"
-                      [routedFromAngular]="routedFromAngular"/>
-          <div class="tabcontent"
-            data-notification-selector='notification-scroll-container'>
-            <op-wp-tab
-              [workPackageId]="workPackage.id!"
-              [tabIdentifier]="activeTab"
-            ></op-wp-tab>
-          </div>
-        </div>
-        <div class="work-packages-full-view--resizer hidden-for-mobile hide-when-print">
-          <wp-resizer [elementClass]="'work-packages-full-view--split-right'"
-            [variableName]="'--full-view-split-right-width'"
-          [localStorageKey]="'openProject-fullViewFlexBasis'" />
-        </div>
       </div>
     </div>
   </div>

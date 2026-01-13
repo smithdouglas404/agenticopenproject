@@ -47,10 +47,8 @@ import { WorkPackageNotificationService } from 'core-app/features/work-packages/
 import { Observable, of } from 'rxjs';
 
 @Component({
-  templateUrl: './wp-full-view.html',
-  selector: 'op-wp-full-view',
-  // Required class to support inner scrolling on page
-  host: { class: 'work-packages-page--ui-view' },
+  templateUrl: './wp-full-view-header.component.html',
+  selector: 'op-wp-full-view-header',
   providers: [
     WpSingleViewService,
     { provide: HalResourceNotificationService, useExisting: WorkPackageNotificationService },
@@ -58,7 +56,7 @@ import { Observable, of } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class WorkPackagesFullViewComponent extends WorkPackageSingleViewBase implements OnInit {
+export class WorkPackagesFullViewHeaderComponent extends WorkPackageSingleViewBase implements OnInit {
   // Watcher properties
   public isWatched:boolean;
 
@@ -70,8 +68,6 @@ export class WorkPackagesFullViewComponent extends WorkPackageSingleViewBase imp
 
   public displayWatchButton = false;
 
-  public watchers:any;
-
   public text = {
     fullView: {
       buttonMore: this.i18n.t('js.button_more'),
@@ -81,19 +77,10 @@ export class WorkPackagesFullViewComponent extends WorkPackageSingleViewBase imp
   constructor(
     public injector:Injector,
     public wpTableSelection:WorkPackageViewSelectionService,
-    public recentItemsService:RecentItemsService,
     readonly $state:StateService,
     readonly currentUserService:CurrentUserService,
   ) {
     super(injector);
-  }
-
-  // enable other parts of the application to trigger an immediate update
-  // e.g. a stimulus controller
-  // currently used by the new activities tab which does its own polling
-  @HostListener('document:ian-update-immediate')
-  triggerImmediateUpdate() {
-    this.storeService.reload();
   }
 
   ngOnInit():void {
@@ -102,13 +89,6 @@ export class WorkPackagesFullViewComponent extends WorkPackageSingleViewBase imp
 
   protected init() {
     super.init();
-
-    if (this.workPackage.id) {
-      this.recentItemsService.add(this.workPackage.id);
-
-      // Set Focused WP
-      this.wpTableFocus.updateFocus(this.workPackage.id);
-    }
 
     this.setWorkPackageScopeProperties(this.workPackage);
   }
@@ -122,10 +102,5 @@ export class WorkPackagesFullViewComponent extends WorkPackageSingleViewBase imp
       'work_packages/read',
       (this.workPackage.project as ProjectResource).id,
     );
-
-    // watchers
-    if (wp.watchers) {
-      this.watchers = (wp.watchers as any).elements;
-    }
   }
 }

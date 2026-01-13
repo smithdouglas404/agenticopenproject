@@ -207,9 +207,6 @@ import { WorkPackagesBaseComponent } from 'core-app/features/work-packages/routi
 import {
   WorkPackageSplitViewComponent,
 } from 'core-app/features/work-packages/routing/wp-split-view/wp-split-view.component';
-import {
-  WorkPackagesFullViewComponent,
-} from 'core-app/features/work-packages/routing/wp-full-view/wp-full-view.component';
 import { QueryFiltersService } from 'core-app/features/work-packages/components/wp-query/query-filters.service';
 import {
   WorkPackageCardViewComponent,
@@ -406,7 +403,10 @@ import {
 } from 'core-app/features/work-packages/components/wp-buttons/wp-reminder-button/wp-reminder-context-menu.directive';
 import { WorkPackageFullCopyEntryComponent } from 'core-app/features/work-packages/routing/wp-full-copy/wp-full-copy-entry.component';
 import { WorkPackageFullCreateEntryComponent } from 'core-app/features/work-packages/routing/wp-full-create/wp-full-create-entry.component';
-import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packages/routing/wp-full-view/wp-full-view-entry.component';
+import { WorkPackageFullViewHeaderEntryComponent } from 'core-app/features/work-packages/components/wp-full-view/wp-full-view-header-entry.component';
+import { WorkPackagesFullViewHeaderComponent } from 'core-app/features/work-packages/components/wp-full-view/wp-full-view-header.component';
+import { WorkPackageSingleViewEntryComponent } from 'core-app/features/work-packages/components/wp-single-view/wp-single-view-entry.component';
+import { WpTabWrapperEntryComponent } from 'core-app/features/work-packages/components/wp-tabs/components/wp-tab-wrapper/wp-tab-wrapper-entry.component';
 
 @NgModule({
   imports: [
@@ -558,6 +558,7 @@ import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packag
     // Single view
     WorkPackageOverviewTabComponent,
     WorkPackageSingleViewComponent,
+    WorkPackageSingleViewEntryComponent,
     WorkPackageStatusButtonComponent,
     WorkPackageReplacementLabelComponent,
     UserLinkComponent,
@@ -566,6 +567,8 @@ import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packag
     WorkPackageFormAttributeGroupComponent,
     BackButtonComponent,
     WorkPackageTimerButtonComponent,
+
+    WpTabWrapperEntryComponent,
 
     // Activity Tab
     WorkPackageActivityTabComponent,
@@ -600,8 +603,8 @@ import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packag
     WorkPackageSubjectComponent,
 
     // Full view
-    WorkPackagesFullViewComponent,
-    WorkPackageFullViewEntryComponent,
+    WorkPackagesFullViewHeaderComponent,
+    WorkPackageFullViewHeaderEntryComponent,
     WorkPackageFullCopyEntryComponent,
     WorkPackageFullCreateEntryComponent,
 

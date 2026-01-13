@@ -91,20 +91,11 @@
 
   body.-browser-firefox,
   body.-browser-edge
-    .work-packages--show-view,
-    .work-packages-full-view--split-container
+    .work-packages--show-view
       display: block
 
   // ------------------Only WP full screen view ------------------
   .router--work-packages-full-view
-    .work-packages-full-view--split-right
-      overflow: visible
-      flex-basis: initial !important
-
-    // Ensure left side is not set to overflow: hidden
-    .work-packages-full-view--split-left
-      overflow: visible
-
     // decrease padding under subject
     .work-packages--show-view > .toolbar-container
       min-height: 42px

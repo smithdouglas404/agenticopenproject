@@ -38,23 +38,10 @@
   height: inherit
 
 .work-packages-full-view
-  &--split-container
-    display: flex
-    flex-shrink: 8
-    border-top: 1px solid var(--borderColor-default)
-    overflow: visible
-    height: 100%
-    // Important for Firefox to let 'flex-shrink' work correctly.
-    min-height: 0
+  &.full-view-page-layout
+    grid-template-columns: 3fr var(--full-view-split-right-width) // This is a really ugly hack to support the resizer functionality.
 
   &--split-left
-    border-right: 1px solid var(--borderColor-default)
-    overflow-y: auto
-    overflow-x: clip
-    flex: 2
-    position: relative
-    @include styled-scroll-bar
-
     .work-packages--panel-inner
       padding: 0px 5px 20px 0
       width: 100%
@@ -71,13 +58,6 @@
             line-height: calc(30px)
 
   &--split-right
-    flex-basis: var(--full-view-split-right-width)
-    min-width: 550px
-    overflow-y: hidden
-    overflow-x: auto
-    position: relative
-    @include styled-scroll-bar
-
     .work-packages--panel-inner
       display: grid
       grid-template-rows: auto auto 1fr
@@ -106,6 +86,9 @@
       display: block !important
       visibility: hidden
 
+  &--resizer
+    margin-left: -15px // Position the resizer closer to the border
+
 .nosidebar
   ul.subject-header
     width: 67%
@@ -124,9 +107,6 @@
   .work-packages--show-view
     // Important for Safari
     height: initial
-  .work-packages-full-view--split-right
-    overflow: visible
-    flex-basis: initial !important
 
 @media only screen and (max-width: $breakpoint-sm)
   #toolbar
