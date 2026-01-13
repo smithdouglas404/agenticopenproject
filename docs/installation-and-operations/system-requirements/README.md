@@ -42,6 +42,7 @@ Using a rough estimate we can give the following recommendations based on the nu
 | <=200              | 4         | 4         | 2           | 1                  | 20               |
 | 500                | 8         | 8         | 4           | 2                  | 40               |
 | 1500               | 16        | 16        | 8          | 4                  | 80               |
+| >1500 | Please refer to the [additional scaling recommendations](#additional-scaling-recommendations)  |
 
 Mind, even just for 5 users we do recommend 2 web workers as each page may require
 multiple requests to be made simultaneously. Having just one will work, but pages may take longer to finish loading.
