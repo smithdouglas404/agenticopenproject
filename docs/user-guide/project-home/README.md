@@ -8,7 +8,7 @@ keywords: project overview page, project home page, project home, project overvi
 
 # Project home page
 
-The **Project home page** page is a dashboard with important information about your respective project(s). This page displays all relevant information for your team, such as members, news, project description, work package reports, or project status. Information on the project overview is presented using [project attributes](./project-attributes/) and [widgets](./project-widgets/).  
+The **Project home page** is a dashboard with important information about your respective project(s). This page displays all relevant information for your team, such as members, news, project description, work package reports, or project status. Information on the project overview is presented using [project attributes](./project-attributes/) and [widgets](./project-widgets/).  
 
 | Topic                                                        | Content                                                      |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |

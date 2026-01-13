@@ -32,10 +32,16 @@ Once it is enabled, you can navigate to the *Documents* module in the sidebar of
 The Documents index page lets you:
 
 1. View all documents
+
 2. Filter by document type
+
 3. Quick-filter the list of documents based on the document title
+
 4. Add a new document
-5. View a list of all available documents, including their type and the date they were last edited
+
+5. View a list of all available documents, including their type and the date they were last edited. Documents created prior to 17.0 release will be marked by *Legacy* label. 
+
+   ![An example of a document marked by a legacy label in OpenProject *Documents* module](openproject-documents-legacy.png)
 
 A document in OpenProject can be:
 
@@ -81,7 +87,7 @@ To edit a document title, click on the *More (three dots)* menu and select *Edit
 
 To edit the document itself simply click anywhere in the document and you can directly start editing. Simply start entering text or use **/** to add headings, blocks, media elements, emojis and link to work packages. 
 
-![Edit a document in OpenProject Documents module](openproject_user_guide_documents_module_add_heading.png)e
+![Edit a document in OpenProject Documents module](openproject_user_guide_documents_module_add_heading.png)
 
 ### Collaborative editing
 
