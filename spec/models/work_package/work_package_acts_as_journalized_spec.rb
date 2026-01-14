@@ -444,123 +444,134 @@ RSpec.describe WorkPackage do
       end
     end
 
-    context "on custom value changes", with_settings: { journal_aggregation_time_minutes: 0 } do
-      let(:custom_field) { create(:work_package_custom_field) }
-      let(:custom_value) do
-        build(:custom_value,
-              value: "false",
-              custom_field:)
-      end
-
-      let(:custom_field_id) { "custom_fields_#{custom_value.custom_field_id}" }
-
-      shared_let(:journable) do
-        create(:work_package)
-      end
-
-      shared_context "for work package with custom value" do
-        before do
+    context "on custom value changes" do
+      # The explicit id is needed so that the accessors ('custom_field_1') can be used
+      shared_let(:custom_field) do
+        create(:boolean_wp_custom_field, id: 1) do |custom_field|
           project.work_package_custom_fields << custom_field
           type.custom_fields << custom_field
-          journable.reload
-          journable.custom_values << custom_value
-          journable.save!
         end
       end
 
-      context "for new custom value" do
-        include_context "for work package with custom value"
+      context "when setting a custom value" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 journals: {
+                   1.day.ago => { user: }
+                 })
+        end
 
-        subject { journable.last_journal.details }
-
-        it { is_expected.to have_key custom_field_id }
-
-        it { expect(subject[custom_field_id]).to eq([nil, custom_value.value]) }
+        include_examples "journaled values for",
+                         new_values_set: {
+                           "custom_field_1" => true
+                         },
+                         expected_values: {
+                           "custom_fields_1" => [nil, "t"]
+                         },
+                         expect_new_journal: true
       end
 
-      context "for custom value modified" do
-        include_context "for work package with custom value"
-
-        let(:modified_custom_value) do
-          create(:work_package_custom_value,
-                 value: "true",
-                 custom_field:)
+      context "when modifying a custom value" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 custom_field_1: false,
+                 journals: {
+                   1.day.ago => { user: }
+                 })
         end
 
-        before do
-          journable.custom_values = [modified_custom_value]
-          journable.save!
-        end
-
-        subject { journable.last_journal.details }
-
-        it { is_expected.to have_key custom_field_id }
-
-        it { expect(subject[custom_field_id]).to eq([custom_value.value.to_s, modified_custom_value.value.to_s]) }
+        include_examples "journaled values for",
+                         new_values_set: {
+                           "custom_field_1" => true
+                         },
+                         expected_values: {
+                           "custom_fields_1" => %w[f t]
+                         },
+                         expect_new_journal: true
       end
 
-      context "when work package saved w/o change" do
-        include_context "for work package with custom value"
-
-        let(:unmodified_custom_value) do
-          create(:work_package_custom_value,
-                 value: "false",
-                 custom_field:)
+      context "when a custom value is removed" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 custom_field_1: false,
+                 journals: {
+                   1.day.ago => { user: }
+                 })
         end
 
-        before do
-          journable.custom_values = [unmodified_custom_value]
-        end
-
-        it { expect { journable.save! }.not_to change(Journal, :count) }
-
-        it "does not set an upper bound to the already existing journal" do
-          journable.save!
-          expect(journable.last_journal.validity_period.end)
-            .to be_nil
-        end
+        include_examples "journaled values for",
+                         new_values_set: {
+                           "custom_field_1" => nil
+                         },
+                         expected_values: {
+                           "custom_fields_1" => ["f", nil]
+                         },
+                         expect_new_journal: true
       end
 
-      context "when custom value removed" do
-        include_context "for work package with custom value"
-
-        before do
-          journable.custom_values.delete(custom_value)
-          journable.save!
+      context "when nothing changed" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 custom_field_1: false,
+                 journals: {
+                   5.days.ago => { user: }
+                 })
         end
 
-        subject { journable.last_journal.details }
-
-        it { is_expected.to have_key custom_field_id }
-
-        it { expect(subject[custom_field_id]).to eq([custom_value.value, nil]) }
+        include_examples "no journaled value changes for",
+                         new_values_set: {}
       end
 
-      context "when custom value did not exist before" do
-        let(:custom_field) do
-          create(:work_package_custom_field,
-                 is_required: false,
-                 field_format: "list",
-                 possible_values: ["", "1", "2", "3", "4", "5", "6", "7"])
-        end
-        let(:custom_value) do
-          create(:custom_value,
-                 value: "",
-                 customized: journable,
-                 custom_field:)
-        end
-
-        describe "empty values are recognized as unchanged" do
-          include_context "for work package with custom value"
-
-          it { expect(journable.last_journal.customizable_journals).to be_empty }
+      context "when nothing changed and a custom field is added after work package creation" do
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 journals: {
+                   5.days.ago => { user: }
+                 }) do
+            create(:boolean_wp_custom_field, id: 2) do |cf|
+              project.work_package_custom_fields << cf
+              type.custom_fields << cf
+            end
+          end
         end
 
-        describe "empty values handled as non existing" do
-          include_context "for work package with custom value"
+        include_examples "no journaled value changes for",
+                         new_values_set: {}
+      end
 
-          it { expect(journable.last_journal.customizable_journals.count).to eq(0) }
+      context "when nothing changed and the work package has multiple values for the same custom field" do
+        shared_let(:list_cf) do
+          create(:list_wp_custom_field, id: 2, possible_values: %w[A B C D]) do |cf|
+            project.work_package_custom_fields << cf
+            type.custom_fields << cf
+          end
         end
+
+        shared_let(:journable) do
+          create(:work_package,
+                 project:,
+                 type:,
+                 custom_field_1: true,
+                 custom_field_2: [list_cf.custom_options.find_by(value: "A"),
+                                  list_cf.custom_options.find_by(value: "D")],
+                 journals: {
+                   5.days.ago => { user: },
+                   4.days.ago => { user:, notes: "First comment" }
+                 })
+        end
+
+        include_examples "no journaled value changes for",
+                         new_values_set: {}
       end
     end
 

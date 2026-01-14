@@ -118,9 +118,13 @@ FactoryBot.define do
                               .symbolize_keys
                               .merge(attributes)
 
+          # Does not yet support overwriting the custom values via the provided attributes.
+          work_package_cv_attributes = work_package.custom_values.map { it.attributes.slice("custom_field_id", "value") }
+
           create(:work_package_journal,
                  **journal_attributes,
-                 data: build(:journal_work_package_journal, data_attributes))
+                 data: build(:journal_work_package_journal, data_attributes),
+                 customizable_journals: work_package_cv_attributes.map { build(:journal_customizable_journal, it) })
         end
 
         work_package.journals.reload
