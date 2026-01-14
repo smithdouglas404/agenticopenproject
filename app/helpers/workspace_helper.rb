@@ -35,14 +35,10 @@ module WorkspaceHelper
     program: :versions
   }.with_indifferent_access.freeze
 
-  def new_workspace_title(workspace, template = nil)
+  def new_workspace_title(workspace)
     return unless Project.workspace_types.key?(workspace.workspace_type)
 
-    if template && OpenProject::FeatureDecisions.project_initiation_active?
-      I18n.t(:"label_#{workspace.project_creation_wizard_artifact_name}")
-    else
-      I18n.t(:"label_#{workspace.workspace_type}_new")
-    end
+    I18n.t(:"label_#{workspace.workspace_type}_new")
   end
 
   def workspace_icon(type) = WORKSPACE_ICON_MAPPING[type]
