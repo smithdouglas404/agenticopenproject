@@ -599,10 +599,10 @@ zh-TW:
   my_account:
     access_tokens:
       token/ical_meeting:
-        blank_description: "You can create one using the button below."
-        blank_title: "No iCalendar meeting token"
+        blank_description: "您可以使用下面的按鈕建立一個。"
+        blank_title: "沒有 iCalendar 會議代碼"
         title: "會議用 iCalendar"
-        table_title: "iCalendar meeting tokens"
+        table_title: "iCalendar 會議令牌"
         text_hint: "iCalendar 會議令牌(Tokens)可讓使用者訂閱其所有會議，並在外部用戶端中檢視最新的會議資訊。"
         disabled_text: "iCalendar 會議訂閱未由管理員啟用。若要使用此功能，請聯絡您的管理員。"
         add_button: "訂閱行事曆"

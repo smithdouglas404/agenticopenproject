@@ -202,8 +202,8 @@ de:
         add_table: "Tabelle mit zugehörigen Arbeitspaketen hinzufügen"
         edit_query: "Abfrage bearbeiten"
         new_group: "Neue Gruppe"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "Gruppe löschen"
+        remove_attribute: "Aus Gruppe entfernen"
         reset_to_defaults: "Auf Standardwerte zurücksetzen"
       working_days:
         calendar:

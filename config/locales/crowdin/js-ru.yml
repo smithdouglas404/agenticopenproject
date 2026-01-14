@@ -303,7 +303,7 @@ ru:
       ical_generation_error_text: "Произошла ошибка при генерации URL-адреса календаря."
       success_message: 'URL-адрес "%{name}" был успешно скопирован в ваш буфер обмена. Вставьте его в свой клиент календаря, чтобы завершить подписку.'
     label_activate: "Активировать"
-    label_assignee: "Назначенный"
+    label_assignee: "Исполнитель"
     label_assignee_alt_text: "Этот пакет работ назначен %{name}"
     label_add_column_after: "Добавить столбец после"
     label_add_column_before: "Добавить столбец перед"
@@ -543,7 +543,7 @@ ru:
       reasons:
         mentioned: "Упомянутый"
         watched: "Наблюдатель"
-        assigned: "Назначенный"
+        assigned: "Исполнитель"
         #The enum value is named 'responsible' in the database and that is what is transported through the API
         #up to the frontend.
         responsible: "Ответственный"
@@ -627,7 +627,7 @@ ru:
             description: "Дополнительные уведомления для деятельности во всех проектах."
           date_alerts:
             title: "Дата оповещения"
-            description: "Автоматическое уведомление, когда приближаются важные даты открытия пакетов работ, в которых вы участвуете (назначение, подотчетность или наблюдатель)."
+            description: "Автоматическое уведомление, когда приближаются важные даты открытия пакетов работ, в которых вы участвуете (исполнитель, ответственный или наблюдатель)."
           overdue: Когда просрочено
         project_specific:
           title: "Конкретные настройки уведомлений проекта"
@@ -924,7 +924,7 @@ ru:
         manually_sorted: "Новый запрос с ручной сортировкой"
         latest_activity: "Последние действия"
         created_by_me: "Создано мной"
-        assigned_to_me: "Предназначено для меня"
+        assigned_to_me: "Я исполнитель"
         recently_created: "Недавно созданное"
         all_open: "Все открытые"
         overdue: "Просрочено"

@@ -41,7 +41,7 @@ fr:
         sprint:
           cannot_end_before_it_starts: "Un sprint ne peut pas se terminer avant d'avoir débuté."
   attributes:
-    task_type: "Task type"
+    task_type: "Type de tâche"
   backlogs:
     add_new_story: "Nouvelle histoire"
     any: "tout"
@@ -105,7 +105,7 @@ fr:
   errors:
     attributes:
       task_type:
-        cannot_be_story_type: "can not also be a story type"
+        cannot_be_story_type: "ne peut pas être également un type d'histoire"
   error_intro_plural: "Les erreurs suivantes ont été rencontrées :"
   error_intro_singular: "L'erreur suivante a été rencontrée :"
   error_outro: "Veuillez corriger les erreurs ci-dessus avant de soumettre à nouveau."
@@ -129,9 +129,9 @@ fr:
   label_points_burn_up: "Vers le haut"
   label_product_backlog: "carnet de produit"
   label_select_all: "Tout sélectionner"
-  label_select_type: "Select a type"
-  label_select_types: "Select types"
-  label_selected_type: "Selected type"
+  label_select_type: "Sélectionnez un type"
+  label_select_types: "Sélectionnez le type"
+  label_selected_type: "Type sélectionné"
   label_selected_types: "Selected types"
   label_sprint_backlog: "carnet de sprint"
   label_sprint_cards: "Exporter les cartes"

@@ -606,10 +606,10 @@ de:
   my_account:
     access_tokens:
       token/ical_meeting:
-        blank_description: "You can create one using the button below."
-        blank_title: "No iCalendar meeting token"
+        blank_description: "Sie können ein Token erstellen, indem sie auf die Schaltfläche unten klicken."
+        blank_title: "Kein iCalendar-Besprechungs-Token"
         title: "iCalendar für Besprechungen"
-        table_title: "iCalendar meeting tokens"
+        table_title: "iCalendar-Besprechungs-Token"
         text_hint: "iCalendar Besprechungs-Token ermöglichen es Benutzern, ihre Besprechungen zu abonnieren und aktuelle Informationen in externen Kalendern anzuzeigen."
         disabled_text: "iCalendar Besprechungs-Abonnements wurden nicht vom Administrator aktiviert. Bitte wenden Sie sich an Ihren Administrator, um diese Funktion zu nutzen."
         add_button: "Im Kalender abonnieren"
