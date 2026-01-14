@@ -410,7 +410,7 @@ module Journals
           cause = :cause
         FROM insert_data
         WHERE journals.id = :predecessor_id
-        #{'AND EXISTS (SELECT 1 from changes)' unless notes.present? || cause.present?}
+        #{only_on_changed_or_forced_condition_sql(notes, cause)}
         RETURNING
           journals.*
       SQL

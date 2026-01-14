@@ -39,10 +39,6 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
     value.is_a?(Symbol) ? public_send(value).id : value
   end
 
-  def last_journal
-    journable.journals.reload.last
-  end
-
   before do
     new_values_set.each do |property, value|
       journable.public_send("#{property}=", value_or_id(value))
@@ -54,8 +50,8 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
       it "tracks the change from old value #{old_value.inspect} to new value #{new_value.inspect}" do
         journable.save!
 
-        expect(last_journal.old_value_for(property)).to eq(value_or_id(old_value))
-        expect(last_journal.new_value_for(property)).to eq(value_or_id(new_value))
+        expect(journable.last_journal.old_value_for(property)).to eq(value_or_id(old_value))
+        expect(journable.last_journal.new_value_for(property)).to eq(value_or_id(new_value))
       end
     end
   end
@@ -64,7 +60,7 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
     it "has no changes tracked" do
       journable.save!
 
-      expect(last_journal.details.except("cause"))
+      expect(journable.last_journal.details.except("cause"))
         .to be_empty
     end
   end
@@ -76,34 +72,28 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
               .by(1)
     end
 
-    it "has the timestamp of the work package update time for created_at" do
+    it "the journal has the timestamp of the journable update time for created_at" do
       journable.save!
 
-      expect(last_journal.created_at)
+      expect(journable.last_journal.created_at)
         .to eql(journable.reload.updated_at)
     end
 
-    it "has the timestamp of the work package update time for updated_at" do
+    it "the journal has the timestamp of the journable update time for updated_at" do
       journable.save!
 
-      expect(last_journal.updated_at)
+      expect(journable.last_journal.updated_at)
         .to eql(journable.reload.updated_at)
     end
 
-    it "has the updated_at of the work package as the lower bound for validity_period and no upper bound" do
+    it "has the updated_at of the journable as the lower bound for validity_period and no upper bound" do
       journable.save!
 
-      expect(last_journal.validity_period)
+      expect(journable.last_journal.validity_period)
         .to eql(journable.reload.updated_at...)
     end
 
-    it "has the current user as the journal's user" do
-      journable.save!
-
-      expect(last_journal.user)
-        .to eql(current_user)
-    end
-
+    # This is currently only used if there is no predecessor
     if expect_predecessor_changed
       it "sets the upper bound of the preceding journal to be the created_at time of the newly created journal" do
         journable.save!
@@ -114,7 +104,7 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
       end
 
       it "keeps the user of the preceding journal" do
-        former_last_journal = last_journal
+        former_last_journal = journable.last_journal
 
         journable.save!
 
@@ -128,37 +118,31 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
         .not_to change { journable.journals.reload.count }
     end
 
-    it "has the current user as the journal's user" do
-      journable.save!
-
-      expect(last_journal.user)
-        .to eql(current_user)
-    end
-
     it "keeps the journal's created_at time" do
       expect { journable.save! }
-        .not_to change(last_journal, :created_at)
+        .not_to change { journable.last_journal.created_at }
     end
 
-    it "sets the journal's updated_at time to the work package's created_at time" do
-      journable.save!
+    it "updates both the journal's updated_at time and the journable's updated_at time to the same value" do
+      expect { journable.save! }
+       .to change { journable.last_journal.updated_at }
 
-      expect(last_journal.updated_at)
+      expect(journable.last_journal.updated_at)
         .to eql(journable.reload.updated_at)
     end
 
     it "keeps created_at of the journal as the lower bound for validity_period and no upper bound" do
       journable.save!
 
-      expect(last_journal.validity_period)
-        .to eql(last_journal.created_at...)
+      expect(journable.last_journal.validity_period)
+        .to eql(journable.last_journal.created_at...)
     end
   end
 
   it "has the current user as the journal's user" do
     journable.save!
 
-    expect(journable.journals.reload.last.user)
+    expect(journable.last_journal.user)
       .to eql(current_user)
   end
 
@@ -178,14 +162,14 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
     it "has the expected cause" do
       journable.save!
 
-      expect(last_journal.cause)
+      expect(journable.last_journal.cause)
         .to eql(expected_cause)
     end
   else
     it "has no cause" do
       journable.save!
 
-      expect(last_journal.cause)
+      expect(journable.last_journal.cause)
         .to be_empty
     end
   end
@@ -194,22 +178,22 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
     it "has the expected notes" do
       journable.save!
 
-      expect(last_journal.notes)
+      expect(journable.last_journal.notes)
         .to eql(expected_notes)
     end
   else
     it "has no notes" do
       journable.save!
 
-      expect(last_journal.notes)
+      expect(journable.last_journal.notes)
         .to be_empty
     end
   end
 
   if expect_journable_update_at_changed
-    it "updates the updated_at time of the work package" do
+    it "updates the updated_at time of the journable" do
       # Using this complicated form of writing to avoid problems
-      # e.g. with reloading before the work package is initially saved
+      # e.g. with reloading before the journable is initially saved
       updated_at_before = journable.updated_at
 
       journable.save!
@@ -218,9 +202,9 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
         .not_to eql(updated_at_before)
     end
   else
-    it "keeps the updated_at time of the work package" do
+    it "keeps the updated_at time of the journable" do
       # Using this complicated form of writing to avoid problems
-      # e.g. with reloading before the work package is initially saved
+      # e.g. with reloading before the journable is initially saved
       expect { journable.save! }
         .not_to change { journable.reload.updated_at }
     end
@@ -251,7 +235,7 @@ RSpec.shared_examples_for "no journaled value changes for" do |new_values_set:, 
   end
 
   unless expect_journable_update_at_changed
-    it "does not update the updated_at time of the work package" do
+    it "does not update the updated_at time of the journable" do
       expect { journable.save! }
         .not_to change(journable, :updated_at)
     end
