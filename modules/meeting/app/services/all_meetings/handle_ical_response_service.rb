@@ -49,9 +49,12 @@ module AllMeetings
 
       result
     rescue ArgumentError => e
+      errors = ActiveModel::Errors.new(self)
+      errors.add(:base, e.message)
+
       ServiceResult.failure(
         message: I18n.t("meeting.ical_response.update_failed"),
-        errors: [e.message]
+        errors: errors
       )
     end
 

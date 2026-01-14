@@ -77,7 +77,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
     it "returns an error" do
       expect(subject).to be_failure
       expect(subject.message).to eq(I18n.t("meeting.ical_response.update_failed"))
-      expect(subject.errors).to include("No events found in the provided iCal data")
+      expect(subject.errors[:base]).to include("No events found in the provided iCal data")
     end
   end
 
@@ -133,7 +133,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
         }
 
         expect(subject).to be_failure
-        expect(subject.errors).to include("'delegated' is not a valid participation_status")
+        expect(subject.errors[:base]).to include("'delegated' is not a valid participation_status")
       end
     end
 
@@ -146,7 +146,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
         }
 
         expect(subject).to be_failure
-        expect(subject.errors).to include("'x-name' is not a valid participation_status")
+        expect(subject.errors[:base]).to include("'x-name' is not a valid participation_status")
       end
     end
 
@@ -182,7 +182,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
       it "returns an error" do
         expect(subject).to be_failure
         expect(subject.message).to eq(I18n.t("meeting.ical_response.update_failed"))
-        expect(subject.errors).to include("Invalid METHOD in iCal data")
+        expect(subject.errors[:base]).to include("Invalid METHOD in iCal data")
       end
     end
 
