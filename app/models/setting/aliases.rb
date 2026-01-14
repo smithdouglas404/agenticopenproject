@@ -61,5 +61,15 @@ class Setting
       weekdays = %i[monday tuesday wednesday thursday friday saturday sunday]
       Setting.working_days.map { |day| weekdays[day - 1] }
     end
+
+    ##
+    # Collaborative editing is enabled based on settings
+    def collaborative_editing_enabled?
+      if Setting.collaborative_editing_hocuspocus_url.present? && Setting.collaborative_editing_hocuspocus_secret.present?
+        true
+      else
+        Setting.real_time_text_collaboration_enabled?
+      end
+    end
   end
 end
