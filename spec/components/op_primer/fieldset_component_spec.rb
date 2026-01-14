@@ -27,60 +27,76 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+
 require "rails_helper"
 
-RSpec.describe OpPrimer::WarningText, type: :component do
+RSpec.describe OpPrimer::FieldsetComponent, type: :component do
   def render_component(**, &)
     render_inline(described_class.new(**), &)
   end
 
-  subject(:rendered_component) do
-    render_component(show_warning_label:) { "Important Message" }
-  end
-
-  shared_examples "rendering container and icon" do
-    it "renders container" do
-      expect(rendered_component).to have_css "span:first-child"
-    end
-
-    it "applies inline flex styling" do
-      expect(rendered_component).to have_css ".d-inline-flex.flex-items-center"
-    end
-
-    it "renders an icon" do
-      expect(rendered_component).to have_octicon :"alert-fill", size: :xsmall, aria: { hidden: true }
-    end
-  end
-
-  context "with default args" do
-    let(:show_warning_label) { true }
-
-    include_examples "rendering container and icon"
-
-    it "renders text, including 'Warning:' prefix" do
-      expect(rendered_component).to have_primer_text "Warning: Important Message", color: :attention do |text|
-        expect(text).to have_css "strong", exact_text: "Warning:"
+  shared_examples_for "rendering fieldset" do
+    it "renders fieldset" do
+      expect(rendered_component).to have_element :fieldset do |fieldset|
+        expect(fieldset).to have_element :legend, text: "My legend"
+        expect(fieldset).to have_content "Fieldset content"
       end
     end
   end
 
-  context "with show_warning_label: false" do
-    let(:show_warning_label) { false }
+  context "with legend slot and text param" do
+    subject(:rendered_component) do
+      render_component do |component|
+        component.with_legend(text: "My legend")
 
-    include_examples "rendering container and icon"
-
-    it "renders just the text" do
-      expect(rendered_component).to have_primer_text "Important Message", color: :attention
+        "Fieldset content"
+      end
     end
+
+    it_behaves_like "rendering fieldset"
   end
 
-  context "with blank content" do
+  context "with legend slot and content" do
     subject(:rendered_component) do
-      render_component { " " }
+      render_component do |component|
+        component.with_legend { "My legend" }
+
+        "Fieldset content"
+      end
+    end
+
+    it_behaves_like "rendering fieldset"
+  end
+
+  context "with legend_text" do
+    subject(:rendered_component) do
+      render_component(legend_text: "My legend") do
+        "Fieldset content"
+      end
+    end
+
+    it_behaves_like "rendering fieldset"
+  end
+
+  context "without legend slot or legend_text" do
+    subject(:rendered_component) do
+      render_component do
+        "Fieldset content"
+      end
     end
 
     it "renders nothing" do
-      expect(rendered_component.to_s).to be_empty
+      expect(rendered_component.to_s).to be_blank
+    end
+  end
+
+  context "without content" do
+    subject(:rendered_component) do
+      render_component(legend_text: "My legend")
+    end
+
+    it "renders nothing" do
+      expect(rendered_component.to_s).to be_blank
     end
   end
 end

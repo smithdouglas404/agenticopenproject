@@ -35,21 +35,51 @@ module OpPrimer
   # uses a leading alert Octicon for additional emphasis. This component
   # is designed to be used "inline", e.g. table cells, and in places
   # where a Banner component might be overkill.
-  class WarningText < Primer::Component # rubocop:disable OpenProject/AddPreviewForViewComponent
-    # @param show_warning_label [Boolean] whether to show a leading "Warning:" label
+  class InlineMessageComponent < Primer::Component # rubocop:disable OpenProject/AddPreviewForViewComponent
+    SCHEME_ICON_MAPPINGS = {
+      warning: :alert,
+      critical: :alert,
+      success: :"check-circle",
+      unavailable: :alert
+    }.freeze
+    private_constant :SCHEME_ICON_MAPPINGS
+    SCHEME_OPTIONS = SCHEME_ICON_MAPPINGS.keys
+
+    SCHEME_SMALL_ICON_MAPPINGS = {
+      warning: :"alert-fill",
+      critical: :"alert-fill",
+      success: :"check-circle-fill",
+      unavailable: :"alert-fill"
+    }.freeze
+    private_constant :SCHEME_SMALL_ICON_MAPPINGS
+    DEFAULT_SIZE = :medium
+    SIZE_OPTIONS = [:small, DEFAULT_SIZE].freeze
+
+    # @param scheme [Symbol] <%= one_of(SCHEME_OPTIONS) %>
+    # @param size [Symbol] <%= one_of(SIZE_OPTIONS) %>
     # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>
-    def initialize(show_warning_label: true, **system_arguments)
-      super()
+    def initialize(scheme:, size: DEFAULT_SIZE, **system_arguments) # rubocop:disable Lint/MissingSuper
+      resolved_scheme = fetch_or_fallback(SCHEME_OPTIONS, scheme)
+      resolved_size   = fetch_or_fallback(SIZE_OPTIONS, size, DEFAULT_SIZE)
 
-      @show_warning_label = show_warning_label
       @system_arguments = system_arguments
-      @system_arguments[:display] = :inline_flex
-      @system_arguments[:align_items] = :center
-      @system_arguments[:color] = :attention
-    end
+      @system_arguments[:tag] ||= :div
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "InlineMessage"
+      )
+      @system_arguments[:data] = merge_data(
+        @system_arguments,
+        { data: { size: resolved_size, variant: resolved_scheme } }
+      )
 
-    def show_warning_label?
-      !!@show_warning_label
+      @icon_arguments = { classes: "InlineMessageIcon" }
+      if resolved_size == :small
+        @icon_arguments[:icon] = SCHEME_SMALL_ICON_MAPPINGS[resolved_scheme]
+        @icon_arguments[:size] = :xsmall
+      else
+        @icon_arguments[:icon] = SCHEME_ICON_MAPPINGS[resolved_scheme]
+      end
     end
 
     def render?

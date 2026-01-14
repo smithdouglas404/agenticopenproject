@@ -28,39 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Decorates a form object to provide a more convenient interface for
-# rendering settings.
-#
-# It automatically sets the label, value, and disabled properties from the
-# setting name and its definition attributes.
-module Settings
-  class FormObjectDecorator < SimpleDelegator
-    include ::ApplicationHelper
-    include InputMethods
+module Primer
+  module OpenProject
+    module Forms
+      module Dsl
+        # :nodoc:
+        class FieldsetInputGroup
+          include Primer::Forms::Dsl::InputMethods
+          include InputMethods
 
-    # @!attribute [r] object
-    #   @return [Primer::Forms::Dsl::FormObject] the original form object
-    alias object __getobj__
+          attr_reader :builder, :form, :system_arguments
 
-    # @!method initialize(object)
-    #   Initializes a new {Settings::FormObjectDecorator}
-    #
-    #   @param object [Primer::Forms::Dsl::FormObject] The form object to be decorated
-    #   @return [FormObjectDecorator]
+          def initialize(builder:, form:, **system_arguments)
+            @builder = builder
+            @form = form
+            @system_arguments = system_arguments
 
-    # Creates a group for a setting
-    #
-    # @param ** [Hash] Additional options for the group
-    # @see Primer::Forms::Dsl::FormObject#group
-    def group(**, &)
-      object.group(**) do |g|
-        yield Settings::FormObjectDecorator.new(g)
-      end
-    end
+            yield(self) if block_given?
+          end
 
-    def fieldset_group(**, &)
-      object.fieldset_group(**) do |g|
-        yield Settings::FormObjectDecorator.new(g)
+          def to_component
+            FieldsetGroup.new(inputs: inputs, builder: builder, form: form, **@system_arguments)
+          end
+
+          def type
+            :group
+          end
+
+          def input?
+            true
+          end
+        end
       end
     end
   end
