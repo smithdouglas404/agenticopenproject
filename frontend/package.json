@@ -163,7 +163,7 @@
     "ng2-dragula": "^6.0.0",
     "ngx-cookie-service": "^20.1.1",
     "observable-array": "0.0.4",
-    "op-blocknote-extensions": "https://github.com/opf/op-blocknote-extensions/releases/download/v0.0.20/op-blocknote-extensions-0.0.20.tgz",
+    "op-blocknote-extensions": "https://github.com/opf/op-blocknote-extensions/releases/download/v0.0.21/op-blocknote-extensions-0.0.21.tgz",
     "pako": "^2.0.3",
     "qr-creator": "^1.0.0",
     "react": "^19.2.0",
