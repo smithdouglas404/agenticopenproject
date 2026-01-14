@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,11 +26,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-require "spec_helper"
-require_relative "../shared_custom_field_expectations"
+Capybara.add_selector(:field_or_rich_text_field, locator_type: [String, Symbol]) do
+  label "field or rich text field (CKEditor)"
 
-RSpec.describe "version text custom fields", :js do
-  it_behaves_like "expected fields for the custom field's format", "Versions", "Text"
+  xpath do |locator, **options|
+    %i[field rich_text_field].map do |selector|
+      expression_for(selector, locator, **options)
+    end.reduce(:union)
+  end
+end
+
+module Capybara
+  module RSpecMatchers
+    def have_field_or_rich_text_field(locator = nil, **, &)
+      Matchers::HaveSelector.new(:field_or_rich_text_field, locator, **, &)
+    end
+
+    def have_no_field_or_rich_text_field(locator = nil, **, &)
+      Matchers::NegatedMatcher.new(have_field_or_rich_text_field(locator, **, &))
+    end
+  end
 end

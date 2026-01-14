@@ -37,10 +37,10 @@ module Pages
         "/custom_fields"
       end
 
-      def visit_tab(name)
+      def visit_page(customizable_name)
         visit!
         within_test_selector("custom-fields--tab-nav") do
-          click_on name.to_s
+          click_on customizable_name.to_s
         end
       end
 

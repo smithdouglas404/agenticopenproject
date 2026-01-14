@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,11 +26,41 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-require "spec_helper"
-require_relative "../shared_custom_field_expectations"
+Capybara.add_selector(:pattern_input, locator_type: [String, Symbol]) do
+  label "pattern input field"
 
-RSpec.describe "version text custom fields", :js do
-  it_behaves_like "expected fields for the custom field's format", "Versions", "Text"
+  # Find a div with contenteditable attribute, which has parent with
+  # data-controller attribute pattern-input, and that has a preceding sibling
+  # hidden input with label matched by locator
+  xpath do |locator, **_options|
+    input_predicate = XPath.attr(:type) == "hidden"
+
+    if locator
+      locator = locator.to_s
+
+      input_predicate &= XPath.attr(:id) == XPath.anywhere(:label)[XPath.string.n.is(locator)].attr(:for)
+    end
+
+    XPath.descendant(:div)[
+      [
+        XPath.attr(:contenteditable),
+        XPath.ancestor.attr(:"data-controller") == "pattern-input",
+        XPath.preceding_sibling(:input)[input_predicate]
+      ].inject(:&)
+    ]
+  end
+end
+
+module Capybara
+  module RSpecMatchers
+    def have_pattern_input(locator = nil, **, &)
+      Matchers::HaveSelector.new(:pattern_input, locator, **, &)
+    end
+
+    def have_no_pattern_input(locator = nil, **, &)
+      Matchers::NegatedMatcher.new(have_pattern_input(locator, **, &))
+    end
+  end
 end

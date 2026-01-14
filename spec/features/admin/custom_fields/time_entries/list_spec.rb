@@ -40,7 +40,7 @@ RSpec.describe "List custom fields edit", :js do
   current_user { admin }
 
   before do
-    index_cf_page.visit_tab("Spent time")
+    index_cf_page.visit_page("Spent time")
   end
 
   it "can create and edit list custom fields (#37654)" do

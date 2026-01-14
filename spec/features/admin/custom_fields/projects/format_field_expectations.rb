@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,11 +26,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-require "spec_helper"
 require_relative "../shared_custom_field_expectations"
 
-RSpec.describe "version text custom fields", :js do
-  it_behaves_like "expected fields for the custom field's format", "Versions", "Text"
+RSpec.shared_examples_for "expected fields for the Project custom field's format" do |format|
+  before do
+    create(:project_custom_field_section)
+  end
+
+  include_examples "expected fields for the custom field's format", "Projects", format do
+    let(:cf_page) { Pages::Admin::Settings::ProjectCustomFields::Index.new }
+  end
 end
