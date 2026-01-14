@@ -120,7 +120,7 @@
     "@stimulus-components/auto-submit": "^6.0.0",
     "@stimulus-components/reveal": "^5.0.0",
     "@tiptap/extensions": "^3.13.0",
-    "@types/hotwired__turbo": "^8.0.1",
+    "@types/hotwired__turbo": "^8.0.5",
     "@types/jquery.cookie": "^1.4.36",
     "@uirouter/angular": "^17.0.0",
     "@uirouter/core": "^6.1.0",
