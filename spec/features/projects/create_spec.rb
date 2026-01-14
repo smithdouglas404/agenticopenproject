@@ -73,6 +73,15 @@ RSpec.describe "Projects", "creation",
     expect(page).to have_content "Foo bar"
   end
 
+  it "redirects to projects#index when users cancels" do
+    visit new_project_path
+
+    expect(page).to have_heading "New project"
+
+    click_on "Cancel"
+    expect(page).to have_current_path projects_path
+  end
+
   it "does not create a project with an already existing identifier" do
     projects_page.create_new_workspace
 

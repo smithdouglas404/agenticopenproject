@@ -43,7 +43,7 @@ module Projects
 
     def call
       render(StepWizard::FooterComponent.new(form_identifier:, total_steps:, current_step:)) do |footer|
-        footer.with_cancel_button(href: projects_path)
+        footer.with_cancel_button(href: href_for_cancel_button)
         footer.with_continue_button(**continue_button_args)
         footer.with_submit_button(**submit_button_args)
         if show_progress_bar?
@@ -77,6 +77,10 @@ module Projects
 
     def total_steps
       template.nil? && project.available_custom_fields.required.any? ? 3 : 2
+    end
+
+    def href_for_cancel_button
+      project.portfolio? ? portfolios_path : projects_path
     end
   end
 end
