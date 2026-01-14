@@ -1,0 +1,1219 @@
+#-- copyright
+#OpenProject is an open source project management software.
+#Copyright (C) the OpenProject GmbH
+#This program is free software; you can redistribute it and/or
+#modify it under the terms of the GNU General Public License version 3.
+#OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+#Copyright (C) 2006-2013 Jean-Philippe Lang
+#Copyright (C) 2010-2013 the ChiliProject Team
+#This program is free software; you can redistribute it and/or
+#modify it under the terms of the GNU General Public License
+#as published by the Free Software Foundation; either version 2
+#of the License, or (at your option) any later version.
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#See COPYRIGHT and LICENSE files for more details.
+#++
+vi:
+  js:
+    ajax:
+      hide: "Ẩn"
+      loading: "Đang tải…"
+      updating: "Đang cập nhật…"
+    attachments:
+      delete: "Xóa tập tin đính kèm"
+      delete_confirmation: |
+        Bạn có chắc chắn muốn xóa tập tin này không? Hành động này không thể hoàn tác.
+      draggable_hint: |
+        Kéo trên trường được soạn thảo để chèn ảnh hoặc file đính kèm. Trường soạn thảo đang được đóng sẽ được mở lại khi bạn kéo thả.
+      quarantined_hint: "Tập tin đã bị cách ly do phát hiện virus. Nó không khả dụng để tải xuống."
+    autocomplete_ng_select:
+      add_tag: "Thêm mục"
+      clear_all: "Xóa tất cả"
+      loading: "Đang tải..."
+      not_found: "Không tìm thấy mục nào"
+      type_to_search: "Gõ để tìm kiếm"
+    autocomplete_select:
+      placeholder:
+        multi: 'Thêm "%{name}"'
+        single: 'Chọn "%{name}"'
+      remove: "Xoá %{name}"
+      active: "Kích hoạt %{label} %{name}"
+    backup:
+      attachments_disabled: Các tệp đính kèm có thể không được thêm vào vì chúng vượt quá kích thước tối đa được phép. Bạn có thể thay đổi điều này thông qua cấu hình (yêu cầu khởi động lại máy chủ).
+      info: >
+        Bạn có thể kích hoạt một bản sao lưu ở đây. Quá trình có thể mất một chút thời gian tùy thuộc vào lượng dữ liệu (đặc biệt là tệp đính kèm) bạn có. Bạn sẽ nhận được một email sau khi nó sẵn sàng.
+      note: >
+        Một bản sao lưu mới sẽ ghi đè cái trước đó. Số lượng bản sao lưu mỗi ngày là bị hạn chế.
+      last_backup: Sao lưu gần đây
+      last_backup_from: Sao lưu gần đây nhất từ
+      title: Sao lưu OpenProject
+      options: Tuỳ chọn
+      include_attachments: Bao gồm các tệp đính kèm
+      download_backup: Tải xuống bản sao lưu
+      request_backup: Yêu cầu sao lưu
+    close_popup_title: "Đóng"
+    close_filter_title: "Đóng bộ lọc"
+    close_form_title: "Đóng biểu mẫu"
+    button_add_watcher: "Thêm người theo dõi"
+    button_add: "Thêm"
+    button_back: "Quay lại"
+    button_back_to_list_view: "Quay lại danh sách"
+    button_cancel: "Hủy"
+    button_close: "Đóng"
+    button_change_project: "Chuyển sang dự án khác"
+    button_check_all: "Đánh dấu tất cả"
+    button_configure-form: "Cấu hình biểu mẫu"
+    button_confirm: "Xác nhận"
+    button_continue: "Tiếp tục"
+    button_copy: "Sao chép"
+    button_copy_to_clipboard: "Sao chép vào bảng tạm"
+    button_copy_link_to_clipboard: "Sao chép liên kết vào bảng tạm"
+    button_copy_to_other_project: "Sao chép trong một dự án khác"
+    button_custom-fields: "Tùy chỉnh mục"
+    button_delete: "Xoá"
+    button_delete_watcher: "Xóa người xem"
+    button_details_view: "Thông tin chi tiết xem"
+    button_duplicate: "Nhân đôi"
+    button_edit: "Chỉnh sửa"
+    button_filter: "Bộ lọc"
+    button_collapse_all: "Thu gọn tất cả"
+    button_expand_all: "Mở rộng tất cả"
+    button_advanced_filter: "Bộ lọc nâng cao"
+    button_list_view: "Xem kiểu danh sách"
+    button_show_view: "Xem toàn màn hình"
+    button_log_time: "Thời gian truy cập"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
+    button_more: "Xem thêm"
+    button_open_details: "Mở thông tin chi tiết xem"
+    button_close_details: "Đóng xem chi tiết"
+    button_open_fullscreen: "Mở chế độ toàn màn hình"
+    button_show_cards: "Hiển thị duới dạng thẻ"
+    button_show_list: "Hiển thị dưới dạng danh sách"
+    button_show_table: "Hiển thị chế độ xem bảng"
+    button_show_gantt: "Hiển thị chế độ xem Gantt"
+    button_show_fullscreen: "Hiển thị chế độ xem toàn màn hình"
+    button_more_actions: "Thao tác thêm"
+    button_quote: "Trích dẫn"
+    button_save: "Lưu"
+    button_settings: "Cài đặt"
+    button_uncheck_all: "Bỏ chọn tất cả"
+    button_update: "Cập Nhật"
+    button_export-atom: "Tải về Atom"
+    button_generate_pdf: "Generate PDF"
+    button_create: "Tạo mới"
+    card:
+      add_new: "Thêm thẻ mới"
+      highlighting:
+        inline: "Đánh dấu nội tuyến:"
+        entire_card_by: "Toàn bộ thẻ của"
+      remove_from_list: "Xóa thẻ khỏi danh sách"
+    caption_rate_history: "Lịch sử tỷ lệ"
+    clipboard:
+      browser_error: "Trình duyệt của bạn không hỗ trợ sao chép vào clipboard. Vui lòng sao chép thủ công: %{content}"
+      copied_successful: "Sao chép vào clipboard thành công!"
+    chart:
+      type: "Kiểu đồ thị"
+      axis_criteria: "Tiêu chí trục"
+      modal_title: "Bảng cấu hình công việc"
+      types:
+        line: "Dòng"
+        horizontal_bar: "Cột ngang"
+        bar: "Thanh"
+        pie: "Biểu đồ tròn"
+        doughnut: "Bánh vòng"
+        radar: "Ra đa"
+        polar_area: "Vùng cực"
+      tabs:
+        graph_settings: "Tổng quan"
+        dataset: "Tập dữ liệu %{number}"
+      errors:
+        could_not_load: "Dữ liệu để hiển thị biểu đồ không thể được tải. Có thể thiếu quyền cần thiết."
+    description_available_columns: "Cột có sẵn"
+    description_current_position: "Bạn đang ở đây:"
+    description_select_work_package: "Chọn work package #%{id}"
+    description_subwork_package: "Con của work package #%{id}"
+    editor:
+      revisions: "Hiển thị các sửa đổi cục bộ"
+      no_revisions: "Không tìm thấy sửa đổi cục bộ"
+      preview: "Bật tắt chế độ xem trước"
+      source_code: "Chuyển đổi chế độ mã Markdown"
+      error_saving_failed: "Lưu tài liệu không thành công với lỗi sau: %{error}"
+      ckeditor_error: "Đã xảy ra lỗi trong CKEditor"
+      mode:
+        manual: "Chuyển sang mã Markdown"
+        wysiwyg: "Chuyển sang trình chỉnh sửa WYSIWYG"
+      macro:
+        error: "Không thể mở rộng macro: %{message}"
+        attribute_reference:
+          macro_help_tooltip: "Đoạn văn bản này đang được hiển thị động bởi macro."
+          not_found: "Tài nguyên yêu cầu không thể được tìm thấy"
+          nested_macro: "Macro này đang tham chiếu đệ quy %{model} %{id}."
+          invalid_attribute: "Thuộc tính '%{name}' đã chọn không tồn tại."
+        child_pages:
+          button: "Liên kết đến trang con"
+          include_parent: "Bao gồm trang trước"
+          text: "[Placeholder] Liên kết tới trang con của"
+          page: "Trang wiki"
+          this_page: "trang này"
+          hint: |
+            Để trường này rỗng đẻ liệt kêtất cả các trang con của trang hiện tại. Nếu bạn muốn tham chiếu đến một trang khác, hãy cung cấp tiêu đề hoặc lời bình của trang.
+        code_block:
+          button: "Chèn đoạn mã"
+          title: "Insert / sửa đoạn mã"
+          language: "Định dạng ngôn ngữ"
+          language_hint: "Nhập ngôn ngữ định dạng sẽ được sử dụng để làm nổi bật (nếu được hỗ trợ)."
+        dropdown:
+          macros: "Macro"
+          chose_macro: "Chọn macro"
+        toc: "Mục lục"
+        toolbar_help: "Bấm vào để chọn tiện ích và hiển thị thanh công cụ. Bấm đúp để chỉnh sửa tiện ích"
+        wiki_page_include:
+          button: "Bao gồm các nội dung của một trang wiki khác"
+          text: "[Placeholder] bao gồm trang wiki của"
+          page: "Trang wiki"
+          not_set: "(Trang chưa được thiết lập)"
+          hint: |
+            Bao gồm các nội dung của các trang wiki khác bằng cách xác định các tiêu đề hoặc bình luận. Bạn có thể bao gồm các trang wiki của dự án khác bằng cách tách chúng với một dấu phẩy như ví dụ sau.
+        work_package_button:
+          button: "Chèn nút tạo gói"
+          type: "Kiểu của gói công việc"
+          button_style: "Sử dụng kiểu nút"
+          button_style_hint: "Tùy chọn: Kiểm tra xem macro xuất hiện như là một nút, chứ không phải là một liên kết."
+          without_type: "Work package liên quan"
+          with_type: "Tạo gói công việc (loại: %{typename})"
+        embedded_table:
+          button: "Nhúng danh sách gói công việc dưới dạng bảng"
+          text: "[Placeholder] gói công việc nhúng"
+        embedded_calendar:
+          text: "[Placeholder] Lịch đã nhúng"
+    admin:
+      type_form:
+        custom_field: "Tùy chỉnh mục"
+        inactive: "Không hoạt động"
+        drag_to_activate: "Kéo các trường từ đây để kích hoạt chúng"
+        add_group: "Thêm 1 nhóm thuộc tính"
+        add_table: "Thêm bảng các công việc liên quan"
+        edit_query: "Chỉnh sửa truy vấn"
+        new_group: "Nhóm mới"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
+        reset_to_defaults: "Đặt lại về mặc định"
+      working_days:
+        calendar:
+          empty_state_header: "Ngày không làm việc"
+          empty_state_description: 'Không có ngày không làm việc cụ thể nào được định nghĩa cho năm nay. Nhấp vào "+ Ngày không làm việc" bên dưới để thêm ngày.'
+          new_date: "(mới)"
+        add_non_working_day: "Ngày không làm việc"
+        already_added_error: "Một ngày không làm việc cho ngày này đã tồn tại. Chỉ có thể tạo một ngày không làm việc cho mỗi ngày duy nhất."
+        change_button: "Lưu và lên lịch lại"
+        change_title: "Thay đổi ngày làm việc"
+        removed_title: "Bạn sẽ xóa các ngày sau khỏi danh sách ngày không làm việc:"
+        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
+        warning: >
+          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+          Are you sure you want to continue?
+      work_packages_settings:
+        warning_progress_calculation_mode_change_from_status_to_field_html: >-
+          Thay đổi chế độ tính toán tiến độ từ dựa trên trạng thái sang dựa trên công việc sẽ làm cho trường <i>% Hoàn thành</i> có thể chỉnh sửa tự do. Nếu bạn tùy ý nhập giá trị cho <i>Công việc</i> hoặc <i>Công việc còn lại</i>, chúng cũng sẽ được liên kết với <i>% Hoàn thành</i>. Thay đổi <i>Công việc còn lại</i> sau đó có thể cập nhật <i>% Hoàn thành</i>.
+        warning_progress_calculation_mode_change_from_field_to_status_html: >-
+          Thay đổi chế độ tính toán tiến độ từ dựa trên công việc sang dựa trên trạng thái sẽ dẫn đến việc tất cả các giá trị hiện tại của <i>% Hoàn thành</i> bị mất và thay thế bằng các giá trị liên kết với từng trạng thái. Các giá trị hiện tại cho <i>Công việc còn lại</i> cũng có thể được tính lại để phản ánh sự thay đổi này. Hành động này không thể hoàn tác.
+    custom_actions:
+      date:
+        specific: "vào"
+        current_date: "Ngày hiện tại"
+    error:
+      internal: "Lỗi nội bộ đã xảy ra."
+      cannot_save_changes_with_message: "Không thể lưu thay đổi của bạn do lỗi sau: %{error}"
+      query_saving: "Các tiêu chí không thể được lưu."
+      embedded_table_loading: "Không thể nạp được vùng nhìn nhúng: %{message}"
+    enumeration_activities: "Hoạt động (theo dõi thời gian)"
+    enumeration_doc_categories: "Danh mục tài liệu"
+    enumeration_work_package_priorities: "Độ ưu tiên của work package"
+    filter:
+      more_values_not_shown: "Có %{total} kết quả nữa, tìm kiếm để lọc kết quả."
+      description:
+        text_open_filter: "Mở bộ lọc này với 'ALT' và phím mũi tên."
+        text_close_filter: "Để nhập thôi ô đang kích hoạt nội dung Vd ấn enter. Nếu không muốn lọc lựa chọn mục rỗng đầu tiên."
+      noneElement: "(không có)"
+      time_zone_converted:
+        two_values: "%{from} - %{to} theo giờ địa phương của bạn."
+        only_start: "Từ %{from} theo giờ địa phương của bạn."
+        only_end: "Đến %{to} theo giờ địa phương của bạn."
+      value_spacer: "-"
+      sorting:
+        criteria:
+          one: "Tiêu chí phân loại đầu tiên"
+          two: "Tiêu chí phân loại thứ hai"
+          three: "Tiêu chí phân loại thứ ba"
+    gantt_chart:
+      label: "Biểu đồ Gantt"
+      quarter_label: "Q%{quarter_number}"
+      labels:
+        title: "Cấu hình nhãn"
+        bar: "Nhãn thanh"
+        left: "Trái"
+        right: "Phải"
+        farRight: "Xa phải"
+        description: >
+          Chọn các thuộc tính bạn muốn hiển thị ở các vị trí tương ứng trên biểu đồ Gantt mọi lúc. Lưu ý rằng khi di chuột qua một phần tử, nhãn ngày của nó sẽ được hiển thị thay vì các thuộc tính này.
+      button_activate: "Xem biểu đồ sự kiện"
+      button_deactivate: "Ân biểu đồ sự kiện"
+      filter:
+        noneSelection: "(không có)"
+      selection_mode:
+        notification: "Nhấp vào bất kỳ gói công việc nào được làm nổi bật để tạo mối quan hệ. Nhấn escape để hủy bỏ."
+      zoom:
+        in: "Phóng to"
+        out: "Thu nhỏ"
+        auto: "Tự động phóng to"
+        days: "Ngày"
+        weeks: "Tuần"
+        months: "Tháng"
+        quarters: "Quý"
+        years: "Năm"
+        description: >
+          Chọn mức phóng to ban đầu sẽ được hiển thị khi phóng tự động không có sẵn.
+    general_text_no: "không"
+    general_text_yes: "có"
+    general_text_No: "Không"
+    general_text_Yes: "Có"
+    hal:
+      error:
+        update_conflict_refresh: "Nhấn vào đây để làm mới tài nguyên và cập nhật lên phiên bản mới nhất."
+        edit_prohibited: "Chỉnh sửa%{attribute} bị chặn đối với tài nguyên này. Thuộc tính này có nguồn gốc từ các mối quan hệ (ví dụ: trẻ em) hoặc mặt khác không thể định cấu hình."
+        format:
+          date: "%{attribute} không phải là ngày hợp lệ - phải là YYYY-MM-DD."
+        general: "Lỗi đã xảy ra."
+    ical_sharing_modal:
+      title: "Đăng ký lịch"
+      inital_setup_error_message: "Đã xảy ra lỗi khi lấy dữ liệu."
+      description: "Bạn có thể sử dụng URL (iCalendar) để đăng ký lịch này trong một ứng dụng bên ngoài và xem thông tin gói công việc cập nhật từ đó."
+      warning: "Vui lòng không chia sẻ URL này với người khác. Bất kỳ ai có liên kết này đều có thể xem chi tiết gói công việc mà không cần tài khoản hoặc mật khẩu."
+      token_name_label: "Bạn sẽ sử dụng cái này ở đâu?"
+      token_name_placeholder: 'Nhập tên, ví dụ: "Điện thoại"'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
+      copy_url_label: "Sao chép URL"
+      ical_generation_error_text: "Đã xảy ra lỗi khi tạo URL lịch."
+      success_message: 'URL "%{name}" đã được sao chép thành công vào clipboard của bạn. Dán nó vào ứng dụng lịch của bạn để hoàn tất việc đăng ký.'
+    label_activate: "Kích hoạt"
+    label_assignee: "Người được giao"
+    label_assignee_alt_text: "This work package is assigned to %{name}"
+    label_add_column_after: "Thêm cột phía sau"
+    label_add_column_before: "Thêm cột phía trước"
+    label_add_columns: "Thêm cột"
+    label_add_comment: "Thêm bình luận"
+    label_add_comment_title: "Thêm bình luận và gõ @ để thông báo cho người khác"
+    label_add_row_after: "Thêm dòng bên dưới"
+    label_add_row_before: "Thêm dòng bên trên"
+    label_add_selected_columns: "Thêm cột đang chọn"
+    label_added_by: "được gửi bởi"
+    label_added_time_by: 'Được thêm bởi <a href="%{authorLink}">%{author}</a> lúc %{age}'
+    label_ago: "vài ngày trước"
+    label_all: "tất cả"
+    label_all_projects: "Tất cả dự án"
+    label_all_uppercase: "Tất cả"
+    label_all_work_packages: "Tất cả công việc"
+    label_and: "và"
+    label_ascending: "Tăng dần"
+    label_author: "Tác giả: %{user}"
+    label_avatar: "Ảnh đại diện"
+    label_between: "giữa"
+    label_board: "Bảng"
+    label_board_locked: "Đã khóa"
+    label_board_plural: "Bảng"
+    label_board_sticky: "Chú ý"
+    label_change: "Thay đổi"
+    label_create: "Tạo mới"
+    label_create_work_package: "Tạo gói công việc mới"
+    label_created_by: "Được tạo bởi"
+    label_current: "hiện tại"
+    label_date: "Ngày"
+    label_date_with_format: "Nhập vào %{date_attribute} bằng cách sử dụng định dạng sau: %{format}"
+    label_deactivate: "Tắt"
+    label_descending: "Giảm dần"
+    label_description: "Mô tả"
+    label_details: "Chi tiết"
+    label_display: "Hiển thị"
+    label_cancel_comment: "Hủy bình luận"
+    label_closed_work_packages: "đã đóng"
+    label_collapse: "Thu gọn"
+    label_collapsed: "đóng"
+    label_collapse_all: "Thu gọn tất cả"
+    label_collapse_text: "Collapse text"
+    label_comment: "Nhận xét"
+    label_committed_at: "%{committed_revision_link} lúc %{date}"
+    label_committed_link: "phiên bản commit %{revision_identifier}"
+    label_contains: "bao gồm"
+    label_created_on: "tạo ngày"
+    label_edit_comment: "Chỉnh sửa chú thích này"
+    label_edit_status: "Trạng thái chỉnh sửa của nhóm công việc"
+    label_email: "Thư điện tử"
+    label_equals: "là"
+    label_expand: "Mở rộng"
+    label_expanded: "đã mở rộng"
+    label_expand_all: "Mở rộng tất cả"
+    label_expand_text: "Show full text"
+    label_expand_project_menu: "Mở rộng menu dự án"
+    label_export: "Xuất"
+    label_export_preparing: "Quá trình xuất đang được chuẩn bị và sẽ được tải xuống ngay."
+    label_favorites: "Yêu thích"
+    label_filename: "Tệp"
+    label_filesize: "Kích cỡ"
+    label_general: "Tổng quan"
+    label_greater_or_equal: ">="
+    label_group: "Nhóm"
+    label_group_by: "Nhóm theo"
+    label_group_plural: "Các Nhóm"
+    label_hide_attributes: "Hiện ít hơn"
+    label_hide_column: "Ẩn cột"
+    label_hide_project_menu: "Thu gọn menu dự án"
+    label_in: "trong"
+    label_in_less_than: "ít hơn"
+    label_in_more_than: "nhiều hơn"
+    label_incoming_emails: "Các thư đến"
+    label_information_plural: "Thông tin"
+    label_invalid: "Không hợp lệ"
+    label_import: "Nhập khẩu"
+    label_latest_activity: "Hoạt động mới nhất"
+    label_last_updated_on: "Cập nhật lần cuối lúc"
+    label_learn_more_link: "Tìm hiểu thêm"
+    label_less_or_equal: "<="
+    label_less_than_ago: "ít hơn ngày trước"
+    label_loading: "Đang tải..."
+    label_mail_notification: "Thông báo qua email"
+    label_manage_columns: "Quản lý và sắp xếp lại các cột"
+    label_me: "tôi"
+    label_meeting_agenda: "Chương trình nghị sự"
+    label_meeting_minutes: "Biên bản cuộc họp"
+    label_menu_collapse: "thu lại"
+    label_menu_expand: "mở rộng"
+    label_more_than_ago: "nhiều hơn mấy ngày trước"
+    label_moderate_comment: "Moderate comment"
+    label_next: "Tiếp"
+    label_no_color: "Không màu"
+    label_no_data: "Không có dữ liệu để hiển thị"
+    label_no_due_date: "không có ngày kết thúc"
+    label_no_start_date: "không có ngày bắt đầu"
+    label_no_date: "không có ngày"
+    label_no_value: "Không có giá trị"
+    label_none: "không"
+    label_not_contains: "không chứa"
+    label_not_equals: "không là"
+    label_on: "lúc"
+    label_open_menu: "Mở trình đơn"
+    label_open_context_menu: "Mở menu ngữ cảnh"
+    label_open_work_packages: "mở"
+    label_password: "Mật khẩu"
+    label_previous: "Trước đó"
+    label_per_page: "Mỗi trang:"
+    label_please_wait: "Vui lòng chờ"
+    label_project: "Dự án"
+    label_project_list: "Danh sách dự án"
+    label_project_plural: "Các dự án"
+    label_visibility_settings: "Cài đặt hiển thị"
+    label_quote_comment: "Trích bình luận này"
+    label_recent: "Gần đây"
+    label_reset: "Reset"
+    label_remove: "Xóa"
+    label_remove_column: "Xóa cột"
+    label_remove_columns: "Loại bỏ cột được chọn"
+    label_remove_row: "Xóa hàng"
+    label_report: "Báo cáo"
+    label_repository_plural: "Kho lưu trữ"
+    label_save_as: "Lưu thành"
+    label_search_columns: "Tìm cột"
+    label_select_watcher: "Chọn một người theo dõi..."
+    label_selected_filter_list: "Các bộ lọc đã chọn: %s"
+    label_show_attributes: "Hiển thị tất cả các thuộc tính"
+    label_show_in_menu: "Hiển thị chế độ xem trong menu"
+    label_sort_by: "Sắp xếp theo"
+    label_sorted_by: "sắp xếp theo"
+    label_sort_higher: "Di chuyển lên"
+    label_sort_lower: "Dịch xuống"
+    label_sorting: "Sắp xếp"
+    label_spent_time: "Thời gian"
+    label_star_query: "Favorited"
+    label_press_enter_to_save: "Nhấn enter để lưu."
+    label_public_query: "Công cộng"
+    label_sum: "Tổng"
+    label_sum_for: "Tổng cho"
+    label_total_sum: "Tổng cộng"
+    label_subject: "Chủ đề"
+    label_this_week: "tuần này"
+    label_today: "Hôm nay"
+    label_time_entry_plural: "Thời gian"
+    label_up: "Lên"
+    label_user_plural: "Người dùng"
+    label_activity_show_only_comments: "Hiển thị các hoạt động với các bình luận"
+    label_activity_show_all: "Hiển thị các hoạt động"
+    label_total_progress: "%{percent}% Tổng tiến độ"
+    label_total_amount: "Tổng số tiền%{amount}"
+    label_updated_on: "cập Nhật ngày"
+    label_value_derived_from_children: "(giá trị lấy từ con)"
+    label_children_derived_duration: "Thời gian gói công việc được lấy từ các con"
+    label_warning: "Cảnh báo"
+    label_work_package: "Work Package"
+    label_work_package_parent: "Gói công việc cha"
+    label_work_package_plural: "Work Packages"
+    label_watch: "Theo dõi"
+    label_watch_work_package: "Xem gói công việc"
+    label_watcher_added_successfully: "Đã thêm nhận xét thành công."
+    label_watcher_deleted_successfully: "Người theo dõi đã được xóa thành công!"
+    label_work_package_details_you_are_here: "Bạn đang ở tab %{tab} cho %{type} %{subject}."
+    label_work_package_context_menu: "Menu ngữ cảnh gói công việc"
+    label_unwatch: "Ngừng theo dõi"
+    label_unwatch_work_package: "Ngừng theo dõi gói công việc"
+    label_uploaded_by: "Tải lên bởi"
+    label_default_queries: "Mặc định"
+    label_starred_queries: "Yêu thích"
+    label_global_queries: "Công cộng"
+    label_custom_queries: "Riêng tư"
+    label_columns: "Cột"
+    label_attachments: Đính kèm
+    label_drop_files: "Kéo các tệp vào đây để đính kèm."
+    label_drop_or_click_files: "Kéo các tệp vào đây hoặc nhấp để đính kèm."
+    label_drop_folders_hint: Bạn không thể tải lên thư mục dưới dạng tài liệu đính kèm. Vui lòng chọn các tệp đơn lẻ.
+    label_add_attachments: "Đính kèm tệp"
+    label_formattable_attachment_hint: "Đính kèm và liên kết tập tin bằng cách thả vào đây, hoặc copy và dán."
+    label_remove_file: "Xóa %{fileName}"
+    label_remove_watcher: "Loại bỏ người theo dõi %{name}"
+    label_remove_all_files: Xóa tất cả các tập tin
+    label_add_description: "Thêm mô tả cho %{file}"
+    label_upload_notification: "Tải lên tệp tin..."
+    label_work_package_upload_notification: "Tải file cho một công việc #%{id}: %{subject}"
+    label_wp_id_added_by: "#%{id} được thêm bởi %{author}"
+    label_files_to_upload: "Những tập tin này sẽ được tải lên:"
+    label_rejected_files: "Các tệp này không thể được tải lên:"
+    label_rejected_files_reason: "Các tệp này không thể được tải lên như kích thước của họ là lớn hơn %{maximumFilesize}"
+    label_wait: "Xin vui lòng chờ cho cấu hình..."
+    label_upload_counter: "%{done} %{count} tập tin hoàn thành"
+    label_validation_error: "Không thể lưu các công việc do các lỗi sau đây:"
+    label_version_plural: "Các phiên bản"
+    label_view_has_changed: "Chế độ xem này có các thay đổi chưa được lưu. Nhấp để lưu chúng."
+    help_texts:
+      show_modal: "Show help text"
+    onboarding:
+      buttons:
+        skip: "Bỏ qua"
+        next: "Tiếp"
+        got_it: "Đã hiểu"
+      steps:
+        help_menu: "Menu Trợ giúp (?) cung cấp <b>các tài nguyên trợ giúp bổ sung</b>. Tại đây bạn có thể tìm thấy hướng dẫn người dùng, video hướng dẫn hữu ích và nhiều hơn nữa. <br> Chúc bạn làm việc vui vẻ với OpenProject!"
+        members: "Mời <b>thành viên mới</b> tham gia dự án của bạn."
+        quick_add_button: "Nhấp vào biểu tượng cộng (+) trong thanh điều hướng tiêu đề để <b>tạo một dự án mới</b> hoặc <b>mời đồng nghiệp</b>."
+        sidebar_arrow: "Sử dụng mũi tên trở lại ở góc trên bên trái để quay lại <b>menu chính</b> của dự án."
+        welcome: "Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time."
+        wiki: "Trong <b>wiki</b>, bạn có thể tài liệu hóa và chia sẻ kiến thức cùng với nhóm của bạn."
+        backlogs:
+          overview: "Quản lý công việc của bạn trong chế độ xem <b>backlogs</b>."
+          sprints: "Bên phải bạn có backlog sản phẩm và backlog lỗi, bên trái bạn có các sprint tương ứng. Tại đây bạn có thể tạo <b>epics, user stories và bugs</b>, ưu tiên qua kéo & thả và thêm chúng vào một sprint."
+          task_board_arrow: "Để xem <b>bảng công việc</b> của bạn, mở menu thả xuống sprint..."
+          task_board_select: "...và chọn mục <b>bảng công việc</b>."
+          task_board: "Bảng công việc hình ảnh hóa <b>tiến độ cho sprint này</b>. Nhấp vào biểu tượng cộng (+) bên cạnh một user story để thêm nhiệm vụ hoặc vấn đề. <br> Trạng thái có thể được cập nhật bằng cách kéo và thả."
+        boards:
+          overview: "Chọn <b>bảng</b> để thay đổi chế độ xem và quản lý dự án của bạn bằng chế độ xem bảng agile."
+          lists_kanban: "Tại đây bạn có thể tạo nhiều danh sách (cột) trong bảng của bạn. Tính năng này cho phép bạn tạo một <b>bảng Kanban</b>, ví dụ."
+          lists_basic: "Tại đây bạn có thể tạo nhiều danh sách (cột) trong bảng agile của bạn."
+          add: "Nhấp vào biểu tượng cộng (+) để <b>tạo một thẻ mới</b> hoặc <b>thêm một thẻ hiện có</b> vào danh sách trên bảng."
+          drag: "Kéo và thả các thẻ của bạn trong một danh sách để thay đổi thứ tự, hoặc di chuyển chúng đến danh sách khác. <br> Bạn có thể nhấp vào biểu tượng thông tin (i) ở góc trên bên phải hoặc nhấp đúp vào thẻ để mở chi tiết của nó."
+        wp:
+          toggler: "Bây giờ hãy xem phần <b>gói công việc</b>, nơi cung cấp cái nhìn chi tiết hơn về công việc của bạn."
+          list: "Danh sách <b>gói công việc</b> này cung cấp danh sách tất cả công việc trong dự án của bạn, chẳng hạn như nhiệm vụ, mốc, giai đoạn, và nhiều hơn nữa. <br> Các gói công việc có thể được tạo và chỉnh sửa trực tiếp từ chế độ xem này. Để truy cập chi tiết của một gói công việc cụ thể, chỉ cần nhấp đúp vào hàng của nó."
+          full_view: "Chế độ xem <b>chi tiết gói công việc</b> cung cấp tất cả thông tin liên quan đến một gói công việc nhất định, chẳng hạn như mô tả, trạng thái, ưu tiên, hoạt động, phụ thuộc và bình luận."
+          back_button: "Sử dụng mũi tên trở lại ở góc trên bên trái để thoát và quay lại danh sách gói công việc."
+          create_button: "Nút <b>+ Tạo</b> sẽ thêm một gói công việc mới vào dự án của bạn."
+          gantt_menu: "Tạo lịch dự án và thời gian một cách dễ dàng bằng cách sử dụng mô-đun biểu đồ Gantt."
+          timeline: "Tại đây bạn có thể <b>chỉnh sửa kế hoạch dự án</b>, tạo các gói công việc mới, chẳng hạn như nhiệm vụ, mốc, giai đoạn, và nhiều hơn nữa, cũng như <b>thêm phụ thuộc</b>. Tất cả các thành viên trong nhóm có thể xem và cập nhật kế hoạch mới nhất bất kỳ lúc nào."
+        team_planner:
+          overview: "Lập kế hoạch đội ngũ cho phép bạn phân công nhiệm vụ cho các thành viên trong nhóm và có cái nhìn tổng quan về ai đang làm gì."
+          calendar: "Bảng kế hoạch hàng tuần hoặc hai tuần hiển thị tất cả các gói công việc được phân công cho các thành viên trong nhóm của bạn."
+          add_assignee: "Để bắt đầu, thêm người thực hiện vào lập kế hoạch đội ngũ."
+          add_existing: "Tìm các gói công việc hiện có và kéo chúng vào lập kế hoạch đội ngũ để ngay lập tức phân công cho một thành viên trong nhóm và xác định ngày bắt đầu và kết thúc."
+          card: "Kéo các gói công việc theo chiều ngang để di chuyển chúng lùi hoặc tiến về phía trước theo thời gian, kéo các cạnh để thay đổi ngày bắt đầu và kết thúc và thậm chí kéo chúng theo chiều dọc đến hàng khác để phân công cho một thành viên khác."
+    notifications:
+      title: "Thông báo"
+      no_unread: "Không có thông báo chưa đọc"
+      reasons:
+        mentioned: "Nhắc đến"
+        watched: "Người quan sát"
+        assigned: "Người được giao"
+        #The enum value is named 'responsible' in the database and that is what is transported through the API
+        #up to the frontend.
+        responsible: "Trách nhiệm"
+        created: "Đã tạo"
+        scheduled: "Đã xếp lịch"
+        commented: "Nhận xét"
+        processed: "đã xử lý"
+        prioritized: "được ưu tiên"
+        dateAlert: "Cảnh báo ngày"
+        shared: "Được chia sẻ"
+        reminder: "Reminder"
+      date_alerts:
+        milestone_date: "Ngày mốc"
+        overdue: "Quá hạn"
+        overdue_since: "for %{difference_in_days}."
+        property_today: "is today."
+        property_is: "is in %{difference_in_days}."
+        property_was: "was %{difference_in_days} ago."
+        property_is_deleted: "is deleted."
+      center:
+        label_actor_and: "và"
+        and_more_users:
+          other: "và %{count} nữa"
+        no_results:
+          at_all: "Thông báo mới sẽ xuất hiện ở đây khi có hoạt động liên quan đến bạn."
+          with_current_filter: "Hiện không có thông báo trong chế độ xem này"
+        mark_all_read: "Đánh dấu tất cả là đã đọc"
+        mark_as_read: "Đánh dấu là đã đọc"
+        mark_all_read_confirmation: "This will mark all notifications in this view as read. Are you sure you want to do this?"
+        text_update_date_by: "%{date} bởi"
+        total_count_warning: "Hiển thị %{newest_count} thông báo gần đây nhất. %{more_count} thông báo khác chưa được hiển thị."
+        empty_state:
+          no_notification: "Có vẻ như bạn đã đọc hết các thông báo."
+          no_notification_with_current_project_filter: "Có vẻ như bạn đã đọc hết các thông báo của dự án đã chọn."
+          no_notification_with_current_filter: "Có vẻ như bạn đã đọc hết thông báo cho bộ lọc %{filter}."
+          no_notification_for_filter: "Có vẻ như bạn đã hiểu hết về bộ lọc này."
+          no_selection: "Nhấp vào thông báo để xem tất cả chi tiết hoạt động."
+        new_notifications:
+          message: "Có thông báo mới."
+          link_text: "Nhấp vào đây để tải chúng."
+      reminders:
+        note: "Note: “%{note}”"
+      settings:
+        change_notification_settings: 'Bạn có thể thay đổi <a target="_blank" href="%{url}">cài đặt thông báo</a> của mình để đảm bảo không bỏ lỡ cập nhật quan trọng nào.'
+        title: "Cài đặt thông báo"
+        notify_me: "Thông báo cho tôi"
+        reminders:
+          no_notification: Không có thông báo
+          timeframes:
+            normal:
+              PT0S: cùng ngày
+              P1D: 1 ngày trước
+              P3D: 3 ngày trước
+              P7D: một tuần trước
+            overdue:
+              P1D: mỗi ngày
+              P3D: mỗi 3 ngày
+              P7D: mỗi tuần
+        reasons:
+          mentioned:
+            title: "nhắc đến"
+            description: "Nhận thông báo mỗi khi ai đó nhắc đến tôi ở bất kỳ đâu"
+          assignee: "Người được giao"
+          responsible: "Trách nhiệm"
+          shared: "được chia sẻ"
+          watched: "Người quan sát"
+          work_package_commented: "Tất cả bình luận mới"
+          work_package_created: "Gói công việc mới"
+          work_package_processed: "Tất cả thay đổi trạng thái"
+          work_package_prioritized: "Tất cả thay đổi ưu tiên"
+          work_package_scheduled: "Tất cả thay đổi ngày"
+        global:
+          immediately:
+            title: "Tham gia"
+            description: "Thông báo cho tất cả hoạt động trong các gói công việc mà bạn tham gia (người được giao, người chịu trách nhiệm hoặc người theo dõi)."
+          delayed:
+            title: "Không tham gia"
+            description: "Thông báo bổ sung cho các hoạt động trong tất cả các dự án."
+          date_alerts:
+            title: "Cảnh báo ngày"
+            description: "Thông báo tự động khi các ngày quan trọng sắp đến cho các gói công việc mở mà bạn tham gia (người được giao, người chịu trách nhiệm hoặc người theo dõi)."
+          overdue: Khi quá hạn
+        project_specific:
+          title: "Cài đặt thông báo theo dự án"
+          description: "Các cài đặt theo dự án này ghi đè các cài đặt mặc định ở trên."
+          add: "Thêm cài đặt cho dự án"
+          already_selected: "Dự án này đã được chọn"
+          remove: "Xóa cài đặt dự án"
+    password_confirmation:
+      field_description: "Bạn cần nhập mật khẩu tài khoản của mình để xác nhận thay đổi này."
+      title: "Xác nhận mật khẩu của bạn để tiếp tục"
+    pagination:
+      no_other_page: "Bạn đang trên trang duy nhất."
+      pages_skipped: "Pages skipped."
+      page_navigation: "Pagination navigation"
+      per_page_navigation: 'Items per page selection'
+      pages:
+        page_number: Page %{number}
+        show_per_page: Show %{number} per page
+    placeholders:
+      default: "-"
+      subject: "Nhập tiêu đề ở đây"
+      selection: "Vui lòng chọn"
+      description: "Mô tả: Nhấp để chỉnh sửa..."
+      relation_description: "Nhấp để thêm mô tả cho mối quan hệ này"
+    project:
+      autocompleter:
+        label: "Hoàn tất tự động dự án"
+      click_to_switch_to_project: "Dự án: %{projectname}"
+      context: "Ngữ cảnh dự án"
+      not_available: "Project N/A"
+      required_outside_context: >
+        Vui lòng chọn một dự án để tạo gói công việc nhằm xem tất cả các thuộc tính. Bạn chỉ có thể chọn các dự án mà loại trên đã được kích hoạt.
+    reminders:
+      settings:
+        daily:
+          add_time: "Thêm thời gian"
+          enable: "Kích hoạt nhắc nhở email hàng ngày"
+          explanation: "Bạn sẽ nhận được các nhắc nhở này chỉ cho các thông báo chưa đọc và chỉ vào những giờ bạn chỉ định. %{no_time_zone}"
+          no_time_zone: "Cho đến khi bạn cấu hình múi giờ cho tài khoản của mình, các giờ sẽ được hiểu là UTC."
+          time_label: "Thời gian %{counter}:"
+          title: "Gửi cho tôi nhắc nhở email hàng ngày cho các thông báo chưa đọc"
+        workdays:
+          title: "Nhận nhắc nhở email vào những ngày này"
+        immediate:
+          title: "Gửi cho tôi nhắc nhở email"
+          mentioned: "Ngay lập tức khi ai đó nhắc đến tôi"
+          personal_reminder: "Immediately when I receive a personal reminder"
+        alerts:
+          title: "Cảnh báo email cho các mục khác (không phải gói công việc)"
+          explanation: >
+            Các thông báo hiện tại chỉ giới hạn cho gói công việc. Bạn có thể chọn tiếp tục nhận cảnh báo email cho các sự kiện này cho đến khi chúng được đưa vào thông báo:
+          news_added: "Đã thêm tin"
+          news_commented: "Bình luận về một tin tức"
+          document_added: "Tài liệu được thêm vào"
+          forum_messages: "Tin nhắn diễn đàn mới"
+          wiki_page_added: "Đã thêm trang Wiki"
+          wiki_page_updated: "Trang Wiki đã được cập nhật"
+          membership_added: "Thành viên được thêm vào"
+          membership_updated: "Thành viên được cập nhật"
+        title: "Nhắc nhở email"
+        pause:
+          label: "Tạm dừng nhắc nhở email hàng ngày"
+          first_day: "Ngày đầu tiên"
+          last_day: "Ngày cuối cùng"
+    text_are_you_sure: "Bạn có chắc không?"
+    text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
+    breadcrumb: "Breadcrumb"
+    text_data_lost: "Tất cả dữ liệu đã nhập sẽ bị mất."
+    text_user_wrote: "%{value} đã viết:"
+    types:
+      attribute_groups:
+        error_duplicate_group_name: "Tên %{group} được sử dụng nhiều hơn một lần. Tên nhóm phải là duy nhất."
+        error_no_table_configured: "Vui lòng cấu hình một bảng cho %{group}."
+        reset_title: "Đặt lại cấu hình biểu mẫu"
+        confirm_reset: >
+          Chú ý: Bạn có chắc bạn muốn đặt lại cấu hình dạng? Điều này sẽ thiết lập lại các thuộc tính của nhóm mặc định và vô hiệu hóa tất cả các trường tùy chỉnh.
+        upgrade_to_ee: "Nâng cấp lên phiên bản Enterprise on-premises"
+        upgrade_to_ee_text: "Wow! Nếu bạn cần tiện ích bổ sung này, bạn là một chuyên gia tuyệt vời! Bạn có thể hỗ trợ chúng tôi, các nhà phát triển OpenSource, bằng cách trở thành khách hàng của phiên bản Enterprise không?"
+        more_information: "Thêm thông tin"
+        nevermind: "Không sao"
+    time_entry:
+      work_package_required: "Yều cầu chọn một gói công việc đầu tiên."
+      title: "Thời gian truy cập"
+      tracking: "Theo dõi thời gian"
+      stop: "Dừng lại"
+    timer:
+      start_new_timer: "Bắt đầu đồng hồ bấm giờ mới"
+      timer_already_running: "Để bắt đầu đồng hồ bấm giờ mới, trước tiên bạn phải dừng đồng hồ bấm giờ hiện tại:"
+      timer_already_stopped: "Không có đồng hồ bấm giờ hoạt động cho gói công việc này, bạn đã dừng nó ở cửa sổ khác chưa?"
+      tracking_time: "Theo dõi thời gian"
+      button_stop: "Dừng đồng hồ bấm giờ hiện tại"
+    two_factor_authentication:
+      label_two_factor_authentication: "Xác thực hai yếu tố"
+    watchers:
+      label_loading: lấy danh sách người theo dõi...
+      label_error_loading: Lỗi khi tải về danh sách người theo dõi
+      label_search_watchers: Tìm kiếm người theo dõi
+      label_add: Thêm người theo dõi
+      label_discard: Loại bỏ lựa chọn
+      typeahead_placeholder: Tìm kiếm người có thể theo dõi
+    relation_labels:
+      parent: "Cha"
+      child: "Child"
+      children: "Con"
+      relates: "Liên quan đến"
+      duplicates: "Trùng lặp"
+      duplicated: "Bị trùng lặp bởi"
+      blocks: "Chặn"
+      blocked: "Bị chặn bởi"
+      precedes: "Tiền nhiệm"
+      follows: "Kế nhiệm"
+      includes: "Bao gồm"
+      partof: "Là một phần của"
+      requires: "Yêu cầu"
+      required: "Yêu cầu bởi"
+      relation_type: "Loại quan hệ"
+    relations_hierarchy:
+      parent_headline: "Cha"
+      hierarchy_headline: "Phân cấp"
+      children_headline: "Con"
+    relation_buttons:
+      set_parent: "Đặt cha"
+      change_parent: "Thay đổi cha"
+      remove_parent: "Xóa cha"
+      hierarchy_indent: "Thụt lề hệ thống phân cấp"
+      hierarchy_outdent: "Bỏ thụt lề hệ thống phân cấp"
+      group_by_wp_type: "Nhóm theo loại gói công việc"
+      group_by_relation_type: "Nhóm theo loại quan hệ"
+      add_parent: "Thêm cha hiện có"
+      add_new_child: "Tạo con mới"
+      create_new: "Tạo mới"
+      add_existing: "Thêm hiện có"
+      add_existing_child: "Add child"
+      remove_child: "Xóa con"
+      add_new_relation: "Tạo quan hệ mới"
+      add_existing_relation: "Thêm quan hệ hiện có"
+      update_description: "Đặt hoặc cập nhật mô tả của quan hệ này"
+      toggle_description: "Chuyển đổi mô tả quan hệ"
+      update_relation: "Nhấp để thay đổi loại quan hệ"
+      show_relations: "Hiển thị các mối quan hệ"
+      add_predecessor: "Thêm người tiền nhiệm"
+      add_successor: "Add successor"
+      remove: "Xóa mối quan hệ"
+      save: "Lưu quan hệ"
+      abort: "Hủy"
+    relations_autocomplete:
+      placeholder: "Gõ để tìm kiếm"
+      parent_placeholder: "Chọn cha mới hoặc nhấn escape để hủy."
+    autocompleter:
+      placeholder: "Gõ để tìm kiếm"
+      notFoundText: "Không tìm thấy mục nào"
+      search: "Tìm kiếm"
+      project:
+        placeholder: "Chọn dự án"
+    repositories:
+      select_tag: "Chọn từ khóa"
+      select_branch: "Chọn nhánh"
+    field_value_enter_prompt: "Nhập giá trị cho '%{field}'"
+    project_menu_details: "Chi tiết"
+    sort:
+      sorted_asc: "Sắp xếp tăng dần đã được áp dụng, "
+      sorted_dsc: "Sắp xếp giảm dần đã được áp dụng, "
+      sorted_no: "Chưa sắp xếp, "
+      sorting_disabled: "sắp xếp bị vô hiệu hóa"
+      activate_asc: "kích hoạt để áp dụng sắp xếp tăng dần"
+      activate_dsc: "kích hoạt để áp dụng sắp xếp giảm dần"
+      activate_no: "kích hoạt để loại bỏ sắp xếp"
+    text_work_packages_destroy_confirmation: "Bạn có chắc chắn muốn xóa gói công việc(s) đã chọn không?"
+    text_query_destroy_confirmation: "Bạn muốn xóa các mục đã chọn?"
+    tl_toolbar:
+      zooms: "Mức thu phóng"
+      outlines: "Mức phân cấp"
+    upsell:
+      ee_only: "Bổ sung phiên bản Doanh nghiệp"
+    wiki_formatting:
+      strong: "In đậm"
+      italic: "In nghiêng"
+      underline: "Gạch chân"
+      deleted: "Đã xóa"
+      code: "Mã nhúng"
+      heading1: "Tiêu đề 1"
+      heading2: "Tiêu đề 2"
+      heading3: "Tiêu đề 3"
+      unordered_list: "Danh sách không có thứ tự"
+      ordered_list: "Danh sách có thứ tự"
+      quote: "Trích dẫn"
+      unquote: "Bỏ trích dẫn"
+      preformatted_text: "Văn bản định dạng trước"
+      wiki_link: "Liên kết đến trang Wiki"
+      image: "Hình ảnh"
+    sharing:
+      share: "Chia sẻ"
+      selected_count: "%{count} đã chọn"
+      selection:
+        mixed: "Lẫn lộn"
+    work_packages:
+      bulk_actions:
+        edit: "Chỉnh sửa hàng loạt"
+        delete: "Xoá hàng loạt"
+        duplicate: "Bulk duplicate"
+        move: "Thay đổi hàng loạt dự án"
+      button_clear: "Xóa"
+      comment_added: "Bình luận được thêm thành công."
+      comment_send_failed: "Lỗi đã xảy ra. Không thể gửi bình luận."
+      comment_updated: "Các bình luận đã được cập nhật thành công."
+      confirm_edit_cancel: "Bạn có chắc bạn muốn hủy bỏ chỉnh sửa work package?"
+      description_filter: "Bộ lọc"
+      description_enter_text: "Nhập văn bản"
+      description_options_hide: "Ẩn tùy chọn"
+      description_options_show: "Hiển thị tùy chọn"
+      edit_attribute: "%{attribute} - chỉnh sửa"
+      key_value: "%{key}: %{value}"
+      label_enable_multi_select: "Kích hoạt chọn nhiều"
+      label_disable_multi_select: "Vô hiệu hóa chọn nhiều"
+      label_filter_add: "Thêm bộ lọc"
+      label_filter_by_text: "Lọc bởi %text"
+      label_options: "Tuỳ chọn"
+      label_column_multiselect: "Trường thả xuống kết hợp: Chọn bằng các phím mũi tên, xác nhận lựa chọn bằng enter, xóa bằng phím backspace"
+      message_error_during_bulk_delete: Đã xảy ra lỗi khi cố gắng xóa gói công việc.
+      message_successful_bulk_delete: Đã xóa gói công việc thành công.
+      message_successful_show_in_fullscreen: "Click vào đây để mở work package này trong chế độ xem toàn màn hình."
+      message_view_spent_time: "Hiển thị thời gian đã sử dụng cho gói công việc này"
+      message_work_package_read_only: "Gói công việc bị khóa ở trạng thái này. Không thể thay đổi thuộc tính khác ngoài trạng thái."
+      message_work_package_status_blocked: "Trạng thái gói công việc không thể viết do trạng thái đã đóng và phiên bản đã đóng được gán."
+      placeholder_filter_by_text: "Chủ đề, mô tả, bình luận, ..."
+      progress:
+        title: "Ước lượng công việc và tiến độ"
+      baseline:
+        addition_label: "Thêm vào chế độ xem trong khoảng thời gian so sánh"
+        removal_label: "Gỡ bỏ khỏi chế độ xem trong khoảng thời gian so sánh"
+        modification_label: "Đã thay đổi trong khoảng thời gian so sánh"
+        column_incompatible: "Cột này không hiển thị thay đổi trong chế độ Baseline."
+      filters:
+        title: "Lọc gói công việc"
+        baseline_incompatible: "Thuộc tính bộ lọc này không được tính đến trong chế độ Baseline."
+        baseline_warning: "Chế độ Baseline đã được bật nhưng một số bộ lọc đang hoạt động của bạn không được đưa vào so sánh."
+      inline_create:
+        title: "Click vào đây để thêm một work package mới vào danh sách này"
+      create:
+        title: "Work package mới"
+        header: "Mới %{type}"
+        header_no_type: "Gói công việc mới (Loại chưa được đặt)"
+        header_with_parent: "Mới %{type} (Con của %{parent_type} #%{id})"
+        button: "Tạo mới"
+      duplicate:
+        title: "Duplicate work package"
+      hierarchy:
+        show: "Hiển thị chế độ phân cấp"
+        hide: "Ẩn chế độ phân cấp"
+        toggle_button: "Nhấp để chuyển đổi chế độ phân cấp."
+        leaf: "Gói công việc lá ở cấp %{level}."
+        children_collapsed: "Mức phân cấp %{level}, bị thu gọn. Nhấp để hiển thị các con đã lọc"
+        children_expanded: "Mức phân cấp %{level}, đã mở rộng. Nhấp để thu gọn các con đã lọc"
+      faulty_query:
+        title: Không thể tải gói công việc.
+        description: Trình bày của bạn là sai và không thể được xử lý.
+      no_results:
+        title: Không có gói công việc để hiển thị.
+        description: Không có gì được tạo ra hoặc tất cả các gói công việc đã được lọc.
+      limited_results: Chỉ có %{count} gói công việc có thể hiển thị trong chế độ sắp xếp thủ công. Vui lòng giảm số lượng kết quả bằng cách lọc, hoặc chuyển sang chế độ sắp xếp tự động.
+      property_groups:
+        details: "Chi tiết"
+        people: "Người"
+        estimatesAndTime: "Ước tính thời gian &"
+        other: "Khác"
+      properties:
+        assignee: "Người được giao"
+        author: "Tác giả"
+        createdAt: "Tạo ngày"
+        description: "Mô tả"
+        date: "Ngày"
+        percentComplete: "% Hoàn thành"
+        percentCompleteAlternative: "Tiến độ"
+        dueDate: "Ngày kết thúc"
+        duration: "Thời gian"
+        spentTime: "Thời gian"
+        category: "Thể loại"
+        percentageDone: "Phần trăm hoàn thành"
+        priority: "Độ ưu tiên"
+        projectName: "Dự án"
+        remainingWork: "Công việc còn lại"
+        remainingWorkAlternative: "Số giờ còn lại"
+        responsible: "Chịu trách nhiệm"
+        startDate: "Ngày bắt đầu"
+        status: "Trạng thái"
+        subject: "Chủ đề"
+        subproject: "Dự án con"
+        title: "Tiêu đề"
+        type: "Kiểu"
+        updatedAt: "Được cập nhật vào lúc"
+        versionName: "Phiên bản"
+        version: "Phiên bản"
+        work: "Công việc"
+        workAlternative: "Thời gian dự kiến"
+        remainingTime: "Công việc còn lại"
+      default_queries:
+        manually_sorted: "Truy vấn được sắp xếp thủ công mới"
+        latest_activity: "Hoạt động mới nhất"
+        created_by_me: "Do tôi tạo ra"
+        assigned_to_me: "Được phân công cho tôi"
+        recently_created: "Đã được tạo gần đây"
+        all_open: "Mở tất cả"
+        overdue: "Quá hạn"
+        summary: "Tóm tắt"
+        shared_with_users: "Chia sẻ với người dùng"
+        shared_with_me: "Chia sẻ với tôi"
+      jump_marks:
+        pagination: "Viet nam"
+        label_pagination: "Viet Nam"
+        content: "Nhảy đến nội dung"
+        label_content: "Nhấp vào đây để bỏ qua menu và đến nội dung"
+      placeholders:
+        default: "-"
+        date: "Chọn ngày"
+      query:
+        column_names: "Cột"
+        group_by: "Nhóm kết quả bởi"
+        group: "Nhóm theo"
+        group_by_disabled_by_hierarchy: "Nhóm theo bị vô hiệu hóa do chế độ phân cấp đang hoạt động."
+        hierarchy_disabled_by_group_by: "Chế độ phân cấp bị vô hiệu hóa do kết quả được nhóm theo %{column}."
+        sort_ascending: "Sắp xếp tăng dần"
+        sort_descending: "Sắp xếp giảm dần"
+        move_column_left: "Di chuyển cột sang trái"
+        move_column_right: "Di chuyển cột sang phải"
+        hide_column: "Ẩn cột"
+        insert_columns: "Chèn cột"
+        filters: "Bộ lọc"
+        display_sums: "Hiển thị tổng"
+        confirm_edit_cancel: "Bạn có chắc bạn muốn hủy bỏ chỉnh sửa tên của trình bày này? Tiêu đề sẽ được đặt trở về giá trị trước đó."
+        click_to_edit_query_name: "Nhấp vào chỉnh sửa tiêu đề của trình bày này."
+        rename_query_placeholder: "Tên của trình bày"
+        star_text: "Đánh dấu chế độ xem này là yêu thích và thêm vào thanh bên chế độ xem đã lưu ở bên trái."
+        public_text: >
+          Công khai chế độ xem này, cho phép người dùng khác truy cập chế độ xem của bạn. Người dùng có quyền 'Quản lý chế độ xem công khai' có thể chỉnh sửa hoặc xóa truy vấn công khai. Điều này không ảnh hưởng đến khả năng nhìn thấy kết quả gói công việc trong chế độ xem đó và tùy thuộc vào quyền của họ, người dùng có thể thấy các kết quả khác nhau.
+        errors:
+          unretrievable_query: "Không thể đọc trình bày từ URL"
+          not_found: "Không có trình bày nào đã được tạo ra"
+          duplicate_query_title: "Tên trình bày đã có, Bạn có muốn thay đổi không?"
+        text_no_results: "Không chuyên mục nào được tìm thấy."
+      reminders:
+        button_label: "Set reminder"
+        title:
+          new: "Set a reminder"
+          edit: "Edit reminder"
+        subtitle: "You will receive a notification for this work package at the chosen time."
+        presets:
+          tomorrow: "Tomorrow"
+          three_days: "In 3 days"
+          week: "In a week"
+          month: "In a month"
+          custom: "At a particular date/time"
+      scheduling:
+        is_parent: "Ngày của gói công việc này được suy ra tự động từ các con của nó. Kích hoạt 'Lên lịch thủ công' để đặt ngày."
+        is_switched_from_manual_to_automatic: "Ngày của gói công việc này có thể cần phải được tính toán lại sau khi chuyển từ lên lịch thủ công sang tự động do mối quan hệ với các gói công việc khác."
+      sharing:
+        title: "Chia sẻ gói công việc"
+        show_all_users: "Hiển thị tất cả người dùng mà gói công việc đã được chia sẻ"
+      table:
+        configure_button: "Cấu hình bảng gói công việc"
+        summary: "Bảng với hàng work package và cột của các thuộc tính work package."
+        text_inline_edit: "Hầu hết các ô của bảng này là các nút kích hoạt chức năng chỉnh sửa nội tuyến của thuộc tính đó."
+        text_sort_hint: "Với các liên kết trong các tiêu đề bảng bạn có thể sắp xếp, nhóm, sắp xếp lại, loại bỏ và thêm bảng cột."
+        text_select_hint: "Các hộp chọn nên được mở bằng 'ALT' và các phím mũi tên."
+      table_configuration:
+        button: "Cấu hình bảng gói công việc này"
+        choose_display_mode: "Hiển thị gói công việc dưới dạng"
+        modal_title: "Bảng cấu hình gói công việc"
+        embedded_tab_disabled: "Tab cấu hình này không khả dụng cho chế độ xem nhúng mà bạn đang chỉnh sửa."
+        default: "mặc định"
+        display_settings: "Cài đặt hiển thị"
+        default_mode: "Danh sách phẳng"
+        hierarchy_mode: "Hệ thống phân cấp"
+        hierarchy_hint: "Tất cả các bảng được lọc sẽ được gắn với tiền bối của nó. Cây công việc có thể đươc mở ra hoặc thu lại."
+        display_sums_hint: "Hiển thị tổng của các cột số trong một hàng phía dưới bảng kết quả."
+        show_timeline_hint: "Hiển thị biểu đồ grantt ở bên phải của bảng. Bạn có thể thay đổi độ rộng của nó bằng cách kéo thanh chia giữa bảng và biểu đồ grantt."
+        highlighting: "Tô sáng"
+        highlighting_mode:
+          description: "Đánh dấu bằng màu sắc"
+          none: "Không tô sáng"
+          inline: "Thuộc tính(s) được tô sáng"
+          inline_all: "Tất cả thuộc tính"
+          entire_row_by: "Toàn bộ hàng theo"
+          status: "Trạng thái"
+          priority: "Độ ưu tiên"
+          type: "Kiểu"
+        sorting_mode:
+          description: "Chọn chế độ sắp xếp gói công việc của bạn:"
+          automatic: "Tự động"
+          manually: "Thủ công"
+          warning: "Bạn sẽ mất sắp xếp trước đó khi kích hoạt chế độ sắp xếp tự động."
+        columns_help_text: "Sử dụng trường đầu vào phía trên để thêm cột vào chế độ xem bảng của bạn. Bạn có thể kéo và thả các cột để thay đổi thứ tự của chúng."
+        relation_filters:
+          filter_work_packages_by_relation_type: "Lọc các gói công việc theo loại quan hệ"
+      tabs:
+        overview: Tổng quan
+        activity: Hoạt động
+        relations: Các mối quan hệ
+        watchers: Người theo dõi
+        files: Tập tin
+      time_relative:
+        days: "ngày"
+        weeks: "tuần"
+        months: "tháng"
+    toolbar:
+      settings:
+        configure_view: "Cấu hình chế độ xem"
+        columns: "Cột"
+        sort_by: "Sắp xếp theo"
+        group_by: "Nhóm theo"
+        display_sums: "Hiển thị tổng"
+        display_hierarchy: "Hiển thị phân cấp"
+        hide_hierarchy: "Ẩn phân cấp"
+        hide_sums: "Ẩn tổng"
+        save: "Lưu"
+        save_as: "Lưu dưới dạng"
+        export: "Xuất"
+        visibility_settings: "Cài đặt hiển thị"
+        share_calendar: "Đăng ký lịch"
+        page_settings: "Đổi tên trang"
+        delete: "Xoá"
+      filter: "Bộ lọc"
+      unselected_title: "Work Package"
+      search_query_label: "Tìm trang đã lưu"
+    modals:
+      label_name: "Tên"
+      label_delete_page: "Xóa trang hiện tại"
+      button_apply: "Áp dụng"
+      button_save: "Lưu"
+      button_submit: "Gửi"
+      button_cancel: "Hủy"
+      button_delete: "Xoá"
+      form_submit:
+        title: "Xác nhận để tiếp tục"
+        text: "Bạn có thực sự muốn thực hiện thao tác này?"
+      destroy_work_package:
+        title: "Xác nhận xóa %{label}"
+        single_text: "Bạn có chắc chắn muốn xóa gói công việc"
+        bulk_text: "Bạn có chắc chắn muốn xóa các %{label} sau đây?"
+        has_children: "Gói công việc có %{childUnits}:"
+        confirm_deletion_children: "Tôi công nhận rằng TẤT CẢ các con của các gói công việc được liệt kê sẽ bị xóa đệ quy."
+        deletes_children: "Các gói công việc con cũng sẽ bị xóa theo."
+      destroy_time_entry:
+        title: "Xác nhận xóa mục thời gian"
+        text: "Bạn có chắc chắn muốn xóa mục thời gian sau đây không?"
+    notice_no_results_to_display: "Không có kết quả để hiển thị."
+    notice_successful_create: "Tạo thành công."
+    notice_successful_delete: "Xóa thành công."
+    notice_successful_update: "Cập nhật thành công."
+    notice_job_started: "Công việc đã bắt đầu."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
+    notice_bad_request: "Yêu cầu không hợp lệ."
+    relations:
+      empty: Không tồn tại mối quan hệ
+      remove: Loại bỏ các mối quan hệ
+    inplace:
+      button_edit: "%{attribute}: Sửa"
+      button_save: "%{attribute}: Lưu"
+      button_cancel: "%{attribute}: Hủy"
+      button_save_all: "Lưu"
+      button_cancel_all: "Hủy"
+      link_formatting_help: "Định dạng văn bản trợ giúp"
+      btn_preview_enable: "Xem trước"
+      btn_preview_disable: "Tắt xem trước"
+      null_value_label: "Không có giá trị"
+      clear_value_label: "-"
+      errors:
+        required: "%{field} không thể để trống"
+        number: "%{field} không phải là số hợp lệ"
+        maxlength: "%{field} không thể chứa hơn %{maxLength} digit(s)"
+        minlength: "%{field} không thể chứa ít hơn %{minLength} digit(s)"
+        messages_on_field: "Mục này không hợp lệ: %{messages}"
+    error_could_not_resolve_version_name: "Không thể phân giải tên phiên bản"
+    error_could_not_resolve_user_name: "Không thể phân giải tên người dùng"
+    error_attachment_upload: "Tập tin tải lên thất bại.%{error}"
+    error_attachment_upload_permission: "Bạn không có quyền tải lên tập tin vào tài nguyên này."
+    units:
+      workPackage:
+        other: "công việc"
+      child_work_packages:
+        other: "%{count} tác phẩm gói phần mềm trẻ em"
+      hour_string: "%{hours} h"
+      hour:
+        one: "1 h"
+        other: "%{count} giờ"
+        zero: "0 giờ"
+      day:
+        one: "1 ngày"
+        other: "%{count} ngày"
+        zero: "0 ngày"
+      word:
+        other: "%{count} từ"
+    zen_mode:
+      button_activate: "Kích hoạt chế độ zen"
+      button_deactivate: "Tắt chế độ zen"
+    global_search:
+      all_projects: "Cho tất cả các dự án"
+      close_search: "Đóng tìm kiếm"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
+      current_project_and_all_descendants: "Trong dự án này + các dự án con"
+      current_project: "Trong dự án này"
+      recently_viewed: "Đã xem gần đây"
+      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
+      title:
+        all_projects: "mọi dự án"
+        project_and_subprojects: "và tất cả các dự án con"
+        search_for: "Tìm kiếm"
+    views:
+      card: "Thẻ"
+      list: "Bảng"
+      timeline: "Biểu đồ sự kiện"
+    invite_user_modal:
+      invite: "Mời"
+      placeholder_add_tag: "Create placeholder user"
+    exclusion_info:
+      modal:
+        title: "Trạng thái loại trừ khỏi tổng hợp phân cấp"
+        content: >-
+          Trạng thái '%{status_name}' đã được cấu hình để loại trừ khỏi tổng hợp của Công việc, Công việc còn lại và % Hoàn thành. Các tổng hợp không tính đến giá trị này.
+    favorite_projects:
+      no_results: "Bạn không có dự án yêu thích"
+      no_results_subtext: "Thêm một hoặc nhiều dự án yêu thích thông qua cái nhìn tổng quan hoặc trong danh sách dự án."
+    include_projects:
+      toggle_title: "Bao gồm dự án"
+      title: "Các dự án"
+      clear_selection: "Xóa lựa chọn"
+      apply: "Áp dụng"
+      selected_filter:
+        all: "Tất cả dự án"
+        selected: "Chỉ các dự án được chọn"
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
+      include_subprojects: "Bao gồm tất cả các dự án con"
+      tooltip:
+        include_all_selected: "Dự án đã được bao gồm vì đã bật Bao gồm tất cả các dự án con."
+        current_project: "Đây là dự án hiện tại của bạn."
+        does_not_match_search: "Dự án không khớp với tiêu chí tìm kiếm."
+      no_results: "Không có dự án nào khớp với tiêu chí tìm kiếm của bạn."
+      no_favorite_results: "No favorite project matches your search criteria."
+    include_workspaces:
+      search_placeholder: "Search..."
+      types:
+        program: "Program"
+        portfolio: "Portfolio"
+    baseline:
+      toggle_title: "Cơ sở"
+      clear: "Xóa"
+      apply: "Áp dụng"
+      header_description: "Nổi bật các thay đổi đã thực hiện đối với danh sách này kể từ bất kỳ thời điểm nào trong quá khứ."
+      show_changes_since: "Hiển thị các thay đổi kể từ"
+      help_description: "Múi giờ tham chiếu cho cơ sở."
+      time_description: "Theo giờ địa phương của bạn: %{datetime}"
+      time: "Thời gian"
+      from: "Từ"
+      to: "Đến"
+      drop_down:
+        none: "-"
+        yesterday: "hôm qua"
+        last_working_day: "ngày làm việc gần nhất"
+        last_week: "tuần trước"
+        last_month: "tháng trước"
+        a_specific_date: "một ngày cụ thể"
+        between_two_specific_dates: "giữa hai ngày cụ thể"
+      legends:
+        changes_since: "Thay đổi kể từ"
+        changes_between: "Thay đổi giữa"
+        now_meets_filter_criteria: "Hiện tại đáp ứng tiêu chí lọc"
+        no_longer_meets_filter_criteria: "Không còn đáp ứng tiêu chí lọc"
+        maintained_with_changes: "Duy trì với các thay đổi"
+        in_your_timezone: "Theo múi giờ của bạn:"
+      icon_tooltip:
+        added: "Đã thêm vào chế độ xem trong khoảng thời gian so sánh"
+        removed: "Đã xóa khỏi chế độ xem trong khoảng thời gian so sánh"
+        changed: "Duy trì với các thay đổi"
+    forms:
+      submit_success_message: "Form đã được gửi thành công"
+      load_error_message: "Đã có lỗi trong khi tải form"
+      validation_error_message: "Vui lòng sửa lỗi có trong mẫu"
+      advanced_settings: "Cài đặt nâng cao"
+    spot:
+      filter_chip:
+        remove: "Xóa"
+      drop_modal:
+        focus_grab: "Đây là điểm tập trung cho các modal. Nhấn shift+tab để quay lại phần tử kích hoạt modal."
+        close: "Đóng modal"
+    open_project_storage_modal:
+      waiting_title:
+        timeout: "Hết thời gian"
+      waiting_subtitle:
+        network_off: "Có vấn đề về mạng."
+        network_on: "Mạng đã trở lại. Chúng tôi đang thử lại."

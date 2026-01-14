@@ -1,0 +1,19 @@
+<%=
+  component_wrapper(style: "position: relative") do
+    render(
+      Primer::Beta::Button.new(
+        scheme: :secondary,
+        tag: :button,
+        classes: "hide-when-print",
+        data: {
+          action: "click->meetings--submit#intercept",
+          href: new_meeting_outcome_path(@meeting, meeting_agenda_item_id: @meeting_agenda_item.id),
+          method: "GET"
+        }
+      )
+    ) do |button|
+      button.with_leading_visual_icon(icon: :plus)
+      t(:label_agenda_outcome)
+    end
+  end
+%>
