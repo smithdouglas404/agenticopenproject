@@ -41,7 +41,7 @@ See the difference between manual scheduling and automatic scheduling in Gantt v
 > [!NOTE]
 > With the updates of the scheduling mode in this release, an automatic entry will be added to the **Activity** of the work package: "*Scheduling mode set to: [..]*". If you are using the *updated at* information of work packages, for example, by including this information in work package lists, be aware that the most recent activity in the work packages will be updated accordingly.
 
-To learn more about how this change might help you manage your projects, please read [this blog article on the new automatic scheduling mode](https://www.openproject.org/blog/new-automatic-scheduling-mode/) that we published some weeks ago. [See our documentation](../../user-guide/work-packages/set-change-dates/) to get detailed information about how to use the automatic scheduling mode.
+To learn more about how this change might help you manage your projects, please read [this blog article on the new automatic scheduling mode](https://www.openproject.org/blog/new-automatic-scheduling-mode/) that we published some weeks ago. [See our documentation](../../../user-guide/work-packages/set-change-dates/) to get detailed information about how to use the automatic scheduling mode.
 
 #### Single date mode
 
@@ -53,7 +53,7 @@ If you need both dates, simply click **+ Start date** or set a duration to switc
 
 ### Set agenda item outcomes for meetings
 
-In February 2025, we already published a milestone for our Meetings module: [Recurring meetings](../../release-notes/15-3-0/#schedule-recurring-meetings-to-streamline-your-weekly-biweekly-or-custom-appointments). With OpenProject 15.4, we released another great new feature that will help users better manage their meeting outcomes. They can now note relevant decisions, questions and follow-up actions for each agenda item. This way, all participants as well as users that could not attend the meeting will have a documentation of the relevant meeting outcome(s), displayed on each agenda item. 
+In February 2025, we already published a milestone for our Meetings module: [Recurring meetings](../15-3-0/#schedule-recurring-meetings-to-streamline-your-weekly-biweekly-or-custom-appointments). With OpenProject 15.4, we released another great new feature that will help users better manage their meeting outcomes. They can now note relevant decisions, questions and follow-up actions for each agenda item. This way, all participants as well as users that could not attend the meeting will have a documentation of the relevant meeting outcome(s), displayed on each agenda item. 
 
 If you add an outcome to a work package in a meeting, this will also be displayed on the work package, if you navigate to the Meetings tab.
 
@@ -85,7 +85,7 @@ Most important, you can now choose between two templates: One is **Attributes an
 
 Read this blog article to learn more about how this feature for automatically creating PDFs from the work package description can be a great help for organizations: [Beyond MS Word: Automatically generate beautifully styled pdf files for contracts, approval notices and project orders](https://www.openproject.org/blog/beyond-documents-generate-pdf-files/).
 
-[See our documentation](../../user-guide/work-packages/exporting/#export-single-work-package-in-pdf-format) for information on how to use this feature.
+[See our documentation](../../../user-guide/work-packages/exporting/#export-single-work-package-in-pdf-format) for information on how to use this feature.
 
 ### Better manage a large number of projects with an enhanced project lists view
 
@@ -108,15 +108,15 @@ With OpenProject 15.4, we restructured some parts in the administration, so that
 
   > [!NOTE]
   >
-  > With 17.0 release Document categories were renamed to Document types and were moved to *Administration -> Documents* [Read more in our system admin guide](../../system-admin-guide/documents/#document-types).
+  > With 17.0 release Document categories were renamed to Document types and were moved to *Administration -> Documents* [Read more in our system admin guide](../../../system-admin-guide/documents/#document-types).
 
 ![Screenshot: The OpenProject administration of document categories](openproject_system_guide_files_categories_overview.png)
 
-- work package priorities under *Administration → Work packages → Priorities*. [Read more in our system admin guide](../../system-admin-guide/manage-work-packages/work-package-priorities/).
+- work package priorities under *Administration → Work packages → Priorities*. [Read more in our system admin guide](../../../system-admin-guide/manage-work-packages/work-package-priorities/).
 
 ![Screenshot: The OpenProject administration of work package priorities](openproject_system_guide_work_package_priorities_overview.png)
 
-- time tracking activities under *Administration* -> *Time and costs*. [Read more in our user guide](../../user-guide/projects/project-settings/activities-time-tracking/).
+- time tracking activities under *Administration* -> *Time and costs*. [Read more in our user guide](../../../user-guide/projects/project-settings/activities-time-tracking/).
 
 ![Screenshot: The OpenProject administration of time tracking activities](openproject_system_guide_time_costs_time_tracking_activities_overview.png)
 
@@ -229,4 +229,4 @@ Also, a big thanks to our Community members for reporting bugs and helping us id
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank user [greench](https://crowdin.com/profile/greench), for an outstanding number of translations into Turkish.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

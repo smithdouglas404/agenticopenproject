@@ -24,9 +24,9 @@ You can now use the Reminder function to receive a reminder about a work package
 ![Set a work package reminder in OpenProject](openproject_set_wp_reminders.png)
 
 > [!TIP]
-> You can also receive immediate notifications via e-mail for personal reminders. To do that, [adjust your account settings](../../user-guide/account-settings/#email-reminders) accordingly.
+> You can also receive immediate notifications via e-mail for personal reminders. To do that, [adjust your account settings](../../../user-guide/account-settings/#email-reminders) accordingly.
 
-[Read more about setting work package reminders](../../user-guide/work-packages/edit-work-package/#work-package-reminders).
+[Read more about setting work package reminders](../../../user-guide/work-packages/edit-work-package/#work-package-reminders).
 
 ### Export timesheets as PDF
 
@@ -41,7 +41,7 @@ Here is an example of a timesheet PDF export:
 > [!TIP]
 > Keep in mind that this time report will only include time entries, but not the cost ones.
 
-[Learn how to export timesheets as PDF](../../user-guide/time-and-costs/reporting/#export-time-sheets).
+[Learn how to export timesheets as PDF](../../../user-guide/time-and-costs/reporting/#export-time-sheets).
 
 ### Add a lag to Predecessor/Successor relations
 
@@ -49,7 +49,7 @@ For Predecessor/Successor relations, you can now specify a **lag**, which repres
 
 ![Specify predecessor/successor work package relations in OpenProject](openproject_user_guide_relations_tab_edit_lag.png)
 
-[Read more about work package relations](../../user-guide/work-packages/work-package-relations-hierarchies).
+[Read more about work package relations](../../../user-guide/work-packages/work-package-relations-hierarchies).
 
 ### Create a new folder directly when using file storages integrations
 
@@ -136,4 +136,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [Alin Marcu](https://crowdin.com/profile/deconfcom), for a great number of translations into Romanian.
 - [Yuliia Pavliuk](https://crowdin.com/profile/pav.yulia), for a great number of translations into Ukrainian.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

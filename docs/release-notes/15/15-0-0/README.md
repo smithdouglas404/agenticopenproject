@@ -16,7 +16,7 @@ We released [OpenProject 15.0.0](https://community.openproject.org/versions/2076
 
 ### A new look-and-feel for the Activity tab, with better structure, real-time loading messages, emoji reactions, and more
 
-A major change in version 15.0 is the overall look-and-feel of the [Activity tab of work packages](../../user-guide/activity/). Users will notice that the Activity tab has a new design with additional options, and that emoji reactions are now enabled. Additionally, new comments will appear directly without having to reload. This also applies to the notification center, where new notifications will appear in real time.
+A major change in version 15.0 is the overall look-and-feel of the [Activity tab of work packages](../../../user-guide/activity/). Users will notice that the Activity tab has a new design with additional options, and that emoji reactions are now enabled. Additionally, new comments will appear directly without having to reload. This also applies to the notification center, where new notifications will appear in real time.
 
 This is a big bundle of new features that will greatly improve communication and interaction within OpenProject, making it simpler, more effective and more fun.
 
@@ -65,7 +65,7 @@ Related features in 15.0:
 - [Show danger zone when deleting SAML or OIDC provider](https://community.openproject.org/wp/58451)
 - [Allow setting omniauth_direct_login_provider through UI](https://community.openproject.org/wp/58437)
 
-Under *Administration > Authentication*, admins can now set up [OpenID](../../system-admin-guide/authentication/openid-providers/) or [SAML providers](../../system-admin-guide/authentication/saml/). Here is an example screenshot for adding an OpenID provider:
+Under *Administration > Authentication*, admins can now set up [OpenID](../../../system-admin-guide/authentication/openid-providers/) or [SAML providers](../../../system-admin-guide/authentication/saml/). Here is an example screenshot for adding an OpenID provider:
 
 ![Example screenshot of the administration screen if you want to add an OpenIDprovider in OpenProject](openproject-15-0-sso-administration-dropdown.png)
 
@@ -77,7 +77,7 @@ See [more technical information about SAML and OIDC providers](#saml-and-openid-
 
 ### A new 'Standard global role' with permissions to view email addresses
 
-With OpenProject 15.0, [a new default 'Standard global role' is automatically and permanently given to all users](../../system-admin-guide/users-permissions/roles-permissions/#standard). If you are an administrator responsible for roles, please check this under *Administration > Users and permissions > Roles and permissions > Standard global role*. This role has several permissions to choose from, one being 'View users' mail addresses'. Enable this permission to allow any user to see everyone's email address in autocomplete situations, such as when they select a work package assignee from a drop-down list.
+With OpenProject 15.0, [a new default 'Standard global role' is automatically and permanently given to all users](../../../system-admin-guide/users-permissions/roles-permissions/#standard). If you are an administrator responsible for roles, please check this under *Administration > Users and permissions > Roles and permissions > Standard global role*. This role has several permissions to choose from, one being 'View users' mail addresses'. Enable this permission to allow any user to see everyone's email address in autocomplete situations, such as when they select a work package assignee from a drop-down list.
 
 Before version 15.0, users could choose whether their email address was displayed. Now this is an administrative decision that applies to either everyone or no one. The reason behind this is that this privacy control should be decided at the organizational level rather than individually.
 
@@ -88,7 +88,7 @@ Before version 15.0, users could choose whether their email address was displaye
 
 ### Quick action table headers in project lists for easier navigation 
 
-With OpenProject 15.0, we are pleased to release another great improvement for our project lists: Clicking on the table headers in a project list now gives you a quick action menu that not only allows you to sort in descending or ascending order, but also to filter or change, remove or add a column. You can still find the same actions in the top-right menu button, but now these actions are much quicker to access. [Read more about the configuration for project lists in our user guide](../../user-guide/projects/project-lists/#configure-project-lists-view).
+With OpenProject 15.0, we are pleased to release another great improvement for our project lists: Clicking on the table headers in a project list now gives you a quick action menu that not only allows you to sort in descending or ascending order, but also to filter or change, remove or add a column. You can still find the same actions in the top-right menu button, but now these actions are much quicker to access. [Read more about the configuration for project lists in our user guide](../../../user-guide/projects/project-lists/#configure-project-lists-view).
 
 ![video showing how quickly you can now change rows in project lists by clicking on the headers](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_15_0_quick_action_table_headers.mp4)
 
@@ -104,17 +104,17 @@ Before version 15.0, the design configuration in the administration was very com
 - Main menu font on hover
 - Main menu border
 
-All these colors will now be calculated depending on the brightness of the respective background to ensure a high-enough contrast. Font colors will either be black or white, and border colors will be set only if there is a bright background. [Read more about design options for Enterprise customers in our system admin guide](../../system-admin-guide/design/).
+All these colors will now be calculated depending on the brightness of the respective background to ensure a high-enough contrast. Font colors will either be black or white, and border colors will be set only if there is a bright background. [Read more about design options for Enterprise customers in our system admin guide](../../../system-admin-guide/design/).
 
 ### Reduce manual cleanup when adding a custom field to a type – no more auto-applying to all projects
 
 With OpenProject 14.6, we released a feature that allows you to enable or disable a custom field for multiple projects at once. This is why with OpenProject 15.0, we remove the automation to apply a new custom field to all projects where the respective type is activated. This reduces manual cleanup in case you did not want to activate the new custom field in all projects. If you do want that, you can use the feature we introduced last release and go to *Administration > Custom Fields* and click on the 'Add projects' button.
 
-[Read more about custom fields in our system admin guide](../../system-admin-guide/custom-fields/).
+[Read more about custom fields in our system admin guide](../../../system-admin-guide/custom-fields/).
 
 ### Improved navigation clarity – 'My account' is renamed to 'Account settings'
 
-In the personal menu that can be accessed by clicking on your avatar, we renamed 'My account' to '[Account settings](../../user-guide/account-settings/)', in order to give you a clearer understanding that this menu item contains settings. It now also differs more clearly from 'My Page' and 'My Activities‘, which provide personal data instead of settings.
+In the personal menu that can be accessed by clicking on your avatar, we renamed 'My account' to '[Account settings](../../../user-guide/account-settings/)', in order to give you a clearer understanding that this menu item contains settings. It now also differs more clearly from 'My Page' and 'My Activities‘, which provide personal data instead of settings.
 
 ### Change the basic work package hovercard to Primer design system
 
@@ -140,8 +140,8 @@ If you configured your provider using environment variables (e.g., in Docker-bas
 
 For more information, please see our updated guides on these topics:
 
-- [Connecting your OpenID connect provider to OpenProject](../../system-admin-guide/authentication/openid-providers/)
-- [Connecting your SAML identity provider to OpenProject](../../system-admin-guide/authentication/saml/)
+- [Connecting your OpenID connect provider to OpenProject](../../../system-admin-guide/authentication/openid-providers/)
+- [Connecting your SAML identity provider to OpenProject](../../../system-admin-guide/authentication/saml/)
 
 ## Bug fixes and changes
 
@@ -239,4 +239,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [hmmftg](https://crowdin.com/profile/hmmftg), for a great number of translations into Persian.
 - [william](https://crowdin.com/profile/WilliamFromTW), for a great number of translations into Chinese Simplified and Chinese Traditional.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

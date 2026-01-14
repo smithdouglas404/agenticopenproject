@@ -43,7 +43,7 @@ The following screenshot shows an example Meetings overview page, highlighting s
 
 Please particularly note that filtering between upcoming and past meetings now happens on top of the page instead of the sidebar on the left. The sidebar now distinguishes between **My meetings**, **Recurring meetings** and **All meetings**, with separate sections for Meeting series and Involvement.
 
-[Learn more about the updated Meetings module and how to use it](../../user-guide/meetings/).
+[Learn more about the updated Meetings module and how to use it](../../../user-guide/meetings/).
 
 ### Create child work packages directly from the Relations tab
 
@@ -57,7 +57,7 @@ Additionally, if child work packages already exist, a **+ Child** button appears
 
 ![Screenshot showing the +Child button in the Relations tab of work packages](openproject-15-3-add-new-child-button-highlighted.png)
 
-[Learn more about work package relations and hierarchies in OpenProject](../../user-guide/work-packages/work-package-relations-hierarchies/).
+[Learn more about work package relations and hierarchies in OpenProject](../../../user-guide/work-packages/work-package-relations-hierarchies/).
 
 ### Include total sums in timesheet PDF exports for better insights
 
@@ -70,7 +70,7 @@ This enhancement simplifies reporting, making it easier to review and analyze tr
 
 ![Screenshot showing a timesheet overview page, including a sum](openproject-15-3-sums-pdf-timesheet-overview.png)
 
-[Learn more about time and cost reporting with OpenProject](../../user-guide/time-and-costs/reporting/).
+[Learn more about time and cost reporting with OpenProject](../../../user-guide/time-and-costs/reporting/).
 
 ### Include child work packages in cost reports for more accurate tracking
 
@@ -80,7 +80,7 @@ OpenProject 15.3 introduces a new filter option for cost reports: **is (includes
 
 ![Screenshot showing the dropdown in a cost report filter, highlighting the new 'is (includes descendants)' option](openproject-15-3-cost-report-children.png)
 
-[Learn more about tracking progress with OpenProject](../../user-guide/time-and-costs/progress-tracking/).
+[Learn more about tracking progress with OpenProject](../../../user-guide/time-and-costs/progress-tracking/).
 
 ### See dates of previously hidden, permission-restricted relations to make informed scheduling decisions
 
@@ -101,7 +101,7 @@ These improvements help teams make informed scheduling decisions while maintaini
 
 ![Mockup showing two relations in a work package, one is displayed in grey with restricted details, only date and lag](openproject-15-3-hidden-relation.png)
 
-[See our user guide to learn more about work package hierarchies in OpenProject](../../user-guide/work-packages/work-package-relations-hierarchies/#display-work-package-hierarchies).
+[See our user guide to learn more about work package hierarchies in OpenProject](../../../user-guide/work-packages/work-package-relations-hierarchies/#display-work-package-hierarchies).
 
 ### Display a deletion dialog with danger zone for deleting items in a hierarchy
 
@@ -125,11 +125,11 @@ Filtering user custom fields is now faster with autocompleters in the project li
 
 ### Centos 8 package support removed
 
-Centos 8 is EOL for quite some time and packages will no longer be built for it, starting with OpenProject 15.3.0. For more information on CentOS installation, please see [our installations and operations guide](../../installation-and-operations/installation/packaged/#centos-installation).
+Centos 8 is EOL for quite some time and packages will no longer be built for it, starting with OpenProject 15.3.0. For more information on CentOS installation, please see [our installations and operations guide](../../../installation-and-operations/installation/packaged/#centos-installation).
 
 ### Seeding of design variables allowed (Enterprise add-on)
 
-It is now possible to set up custom design variables and logos as environment variables. This is useful in automated deployments such as with Kubernetes. For more information, please see [our installations and operations guide](../../installation-and-operations/configuration/#seeding-custom-theme-and-design-enterprise-add-on).
+It is now possible to set up custom design variables and logos as environment variables. This is useful in automated deployments such as with Kubernetes. For more information, please see [our installations and operations guide](../../../installation-and-operations/configuration/#seeding-custom-theme-and-design-enterprise-add-on).
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
@@ -265,4 +265,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [Willers-ICT](https://crowdin.com/profile/willers-ict), for a great number of translations into Dutch.
 - [Vlastislav Dockal](https://crowdin.com/profile/vdockal), for a great number of translations into Czech.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
