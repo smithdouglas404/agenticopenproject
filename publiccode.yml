@@ -7,8 +7,8 @@ name: OpenProject
 applicationSuite: openDesk
 url: 'https://github.com/opf/openproject'
 roadmap: 'https://www.openproject.org/roadmap'
-releaseDate: '2026-01-08'
-softwareVersion: '16.6.4'
+releaseDate: '2026-01-14'
+softwareVersion: '17.0.0'
 developmentStatus: stable
 softwareType: standalone/web
 logo: 'publiccode_logo.svg'
