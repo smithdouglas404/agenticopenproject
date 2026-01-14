@@ -2,6 +2,6 @@
 
 export SECRET="${OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET}"
 
-cd /usr/local/hocuspocus
+cd /opt/hocuspocus
 
 npm start run
