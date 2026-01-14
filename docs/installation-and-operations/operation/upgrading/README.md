@@ -194,12 +194,6 @@ OpenProject 15.3, so if you've had any version between 15.3 and 16.6 running in 
 However, if you directly upgraded from a version before 15.3, make sure to at least leave the background workers running on version 16.6 for a few minutes,
 so that they can process all pending jobs, before continuing the upgrade to 17.0.
 
-
-
-OpenProject 17.0
-
-
-
 ## Upgrade notes from 10.5.x
 
 Generally, there are no special steps or caveats when upgrading to OpenProject 13.x or higher from any version greater than 10.5.x. Simply follow the upgrade steps outlined above for your type of installation.
