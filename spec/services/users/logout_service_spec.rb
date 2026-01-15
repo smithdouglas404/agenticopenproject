@@ -93,6 +93,44 @@ RSpec.describe Users::LogoutService, type: :model do
       end
     end
 
+    context "with session-bound OAuth tokens" do
+      let!(:application) { create(:oauth_application, uid: "test_session_app") }
+      let!(:token) do
+        application.access_tokens.create!(
+          resource_owner_id: user.id,
+          scopes: "api_v3",
+          expires_in: 24.hours.to_i
+        )
+      end
+
+      before do
+        OAuth::SessionBoundApplicationRegistry.register("test_session_app")
+      end
+
+      after do
+        OAuth::SessionBoundApplicationRegistry.reset!
+      end
+
+      it "revokes session-bound OAuth tokens" do
+        expect { subject }.to change { token.reload.revoked? }.from(false).to(true)
+      end
+
+      context "when token revocation fails" do
+        before do
+          allow_any_instance_of(OAuth::RevokeSessionTokensService) # rubocop:disable RSpec/AnyInstance
+            .to receive(:call)
+            .and_raise(StandardError, "DB error")
+          allow(OpenProject.logger).to receive(:warn)
+        end
+
+        it "logs a warning and completes logout" do
+          expect { subject }.not_to raise_error
+          expect(User.current).to eq User.anonymous
+          expect(OpenProject.logger).to have_received(:warn)
+        end
+      end
+    end
+
     context "when config is disabled",
             with_config: { drop_old_sessions_on_logout: false } do
       it "destroys none of the existing sessions" do

@@ -47,6 +47,8 @@ module Users
         remove_matching_autologin_token! user
       end
 
+      revoke_session_bound_oauth_tokens!(user)
+
       controller.reset_session
 
       User.current = User.anonymous
@@ -70,6 +72,12 @@ module Users
       Token::AutoLogin
         .where(user:)
         .find_by_plaintext_value(value)&.destroy
+    end
+
+    def revoke_session_bound_oauth_tokens!(user)
+      OAuth::RevokeSessionTokensService.new(user:).call
+    rescue StandardError => e
+      OpenProject.logger.warn { "Failed to revoke session-bound OAuth tokens for user ##{user.id}: #{e.message}" }
     end
   end
 end
