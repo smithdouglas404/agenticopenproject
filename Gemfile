@@ -333,6 +333,8 @@ group :development do
 
   # git hooks manager
   gem "lefthook", require: false
+
+  gem "yard", require: false
 end
 
 group :development, :test do
