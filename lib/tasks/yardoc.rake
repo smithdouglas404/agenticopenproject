@@ -30,18 +30,14 @@ begin
   require "yard"
 
   YARD::Rake::YardocTask.new do |t|
-    files = ["lib/**/*.rb", "app/**/*.rb"]
-    files << Dir["vendor/plugins/**/*.rb"].reject { |f| f.include?("test") } # Exclude test files
-    t.files = files
-
-    static_files = ["doc/CHANGELOG.rdoc",
-                    "doc/COPYING.rdoc",
-                    "doc/COPYRIGHT.rdoc",
-                    "doc/INSTALL.rdoc",
-                    "doc/RUNNING_TESTS.rdoc",
-                    "doc/UPGRADING.rdoc"].join(",")
-
-    t.options += ["--output-dir", "./doc/app", "--files", static_files]
+    t.files = [
+      "app/**/*.rb",
+      "lib/**/*.rb",
+      "lib_static/**/*.rb",
+      "modules/*/app/**/*.rb",
+      "modules/*/lib/**/*.rb"
+    ]
+    t.options += ["--output-dir", "./doc/app"]
   end
 rescue LoadError
   # yard not installed (gem install yard)
