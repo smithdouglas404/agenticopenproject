@@ -1,0 +1,11 @@
+{
+  "entryPoints": [
+    "src/app/**/*.ts",
+    "src/stimulus/**/*.ts",
+    "src/react/**/*.{ts,tsx}",
+    "src/turbo/**/*.ts"
+  ],
+  "out": "./generated-docs",
+  "projectDocuments": ["doc/**/*.md"],
+  "tsconfig": "tsconfig.app.json"
+}

@@ -201,6 +201,7 @@
     "test:watch": "ng test --watch=true",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
-    "generate-typings": "tsc -d -p tsconfig.app.json"
+    "generate-typings": "tsc -d -p tsconfig.app.json",
+    "generate-docs": "typedoc"
   }
 }
