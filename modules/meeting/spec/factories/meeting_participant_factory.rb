@@ -32,7 +32,7 @@ FactoryBot.define do
   factory :meeting_participant do |_mp|
     user
     meeting
-    participation_status { "unknown" }
+    participation_status { "needs-action" }
 
     trait :invitee do
       invited { true }

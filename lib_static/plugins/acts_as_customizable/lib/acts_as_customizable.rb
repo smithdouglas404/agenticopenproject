@@ -52,7 +52,24 @@ module Redmine
              validate: false,
              autosave: true
 
-          validation_options = options[:validate_on] ? { on: options[:validate_on] } : {}
+          validation_options = {}
+
+          if options[:validate_on]
+            validation_options[:on] = options[:validate_on]
+          end
+
+          if options[:validate_except_on]
+            validation_options[:except_on] = options[:validate_except_on]
+          end
+
+          if options[:validate_if]
+            validation_options[:if] = options[:validate_if]
+          end
+
+          if options[:validate_unless]
+            validation_options[:unless] = options[:validate_unless]
+          end
+
           validate :validate_custom_values, **validation_options
           send :include, Redmine::Acts::Customizable::InstanceMethods
 

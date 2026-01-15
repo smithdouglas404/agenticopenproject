@@ -724,9 +724,11 @@ uk:
           create_button: "Створити"
           name_label: "Ім’я маркера"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "Маркер API згенеровано"
-          warning: "Це єдиний раз, коли ви побачите цей маркер. Обов’язково скопіюйте його зараз."
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "Не вдалося відновити маркер доступу: %{error}"
       failed_to_create_token: "Не вдалося створити маркер доступу: %{error}"
       failed_to_revoke_token: "Не вдалося відкликати маркер доступу: %{error}"
@@ -736,6 +738,9 @@ uk:
       notice_api_token_revoked: "Маркер API видалено. Щоб створити новий, скористайтеся кнопкою в розділі API."
       notice_rss_token_revoked: "Маркер RSS видалено. Щоб створити новий, скористайтеся посиланням у розділі RSS."
       notice_ical_token_revoked: 'Маркер iCalendar «%{token_name}» для календаря «%{calendar_name}» проєкту «%{project_name}» відкликано. URL-адреса iCalendar із цим маркером зараз недійсна.'
+    password_confirmation_dialog:
+      confirmation_required: "Потрібно ввести пароль облікового запису, щоб підтвердити цю зміну."
+      title: "Підтвердьте свій пароль, щоб продовжити"
   news:
     index:
       no_results_title_text: Наразі немає жодної новини.
@@ -1523,7 +1528,8 @@ uk:
         not_a_datetime: "не є дійсним датою."
         not_a_number: "не є числом"
         not_allowed: "недійсний через відсутність дозволів."
-        not_json: "не є припустимим об’єктом JSON."
+        not_json: "не аналізується як JSON."
+        not_json_object: "не є об’єктом JSON."
         not_an_integer: "не є цілим числом"
         not_an_iso_date: "не є дійсною датою. Необхідний формат: YYYY-MM-DD."
         not_same_project: "не належить до одного проекту."
@@ -1957,7 +1963,16 @@ uk:
         few: Маркери доступу
         many: Маркери доступу
         other: Маркери доступу
-      type: "Тип"
+      token/rss:
+        one: "RSS token"
+        few: "RSS tokens"
+        many: "RSS tokens"
+        other: "RSS tokens"
+      type:
+        one: "Тип"
+        few: "Типи"
+        many: "Типи"
+        other: "Типи"
       user: "Користувач"
       version: "Версія"
       workflow: "Робочий процес"
@@ -2182,6 +2197,7 @@ uk:
   button_click_to_reveal: "Натисніть, щоб показати"
   button_close: "Закрити"
   button_collapse_all: "Згорнути все"
+  button_confirm: "Підтвердити"
   button_configure: "Настроювання"
   button_continue: "Продовжити"
   button_complete: "Завершити"
@@ -2214,6 +2230,7 @@ uk:
   button_print: "Друкувати"
   button_quote: "Цитата"
   button_remove: Видалити
+  button_remove_permanently: "Вилучити назавжди"
   button_remove_reminder: "Вилучити нагадування"
   button_rename: "Перейменувати"
   button_replace: "Замінити"
@@ -2997,34 +3014,58 @@ uk:
         expiration: "Закінчується"
       indefinite_expiration: "Ніколи"
       simple_revoke_confirmation: "Справі відкликати цей маркер?"
+      tabs:
+        client:
+          description: "Client tokens are issued by other applications, allowing OpenProject to access them."
+          title: "Client tokens"
+        provider:
+          description: "Provider tokens are issued by OpenProject, allowing other applications to access it."
+          title: "Provider tokens"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "Маркери API дають змогу стороннім додаткам обмінюватися даними із цим екземпляром OpenProject через інтерфейси REST API."
+        static_token_name: "API token"
         disabled_text: "Маркери API не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
         add_button: "Маркер API"
-      api:
-        static_token_name: "Маркер API"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "Маркери iCalendar дають змогу користувачам [підписуватися на календарі OpenProject](docs_url) і переглядати актуальну інформацію про пакети робіт у зовнішніх клієнтах."
         disabled_text: "Підписки на iCalendar не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
-        empty_text_hint: "Щоб додати маркер iCalendar, підпишіться на новий або наявний календар у модулі календаря проєкту. У вас мають бути необхідні дозволи."
-      oauth:
+      oauth_application:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Last used at"
         title: "OAuth"
-        text_hint: "Маркери OAuth дають змогу стороннім додаткам обмінюватися даними із цим екземпляром OpenProject."
-        empty_text_hint: "Для вас не налаштовано й не ввімкнено доступ до сторонніх додатків. Щоб активувати цю функцію, зверніться до адміністратора."
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
-        text_hint: "Маркери RSS дають змогу користувачам зберігати останні зміни в цьому екземплярі OpenProject через зовнішній RSS-агрегатор."
-        static_token_name: "Маркер RSS"
-        disabled_text: "Маркери API не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
+        table_title: "RSS tokens"
+        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
+        static_token_name: "RSS token"
+        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "Файлові сховища"
-        text_hint: "Маркери файлових сховищ підключають цей екземпляр OpenProject до зовнішнього файлового сховища."
-        empty_text_hint: "Немає доступу до сховища, пов’язаного з вашим обліковим записом."
-        revoke_token: "Справді вилучити цей маркер? Вам знадобиться знову ввійти в %{storage}"
-        removed: "Маркер файлового сховища вилучено"
-        failed: "Сталася помилка, і не вдалося вилучити маркет. Повторіть спробу пізніше."
         unknown_storage: "Невідоме сховище"
   notifications:
     reasons:
@@ -3322,7 +3363,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -3985,7 +4026,7 @@ uk:
   notice_not_authorized: "Ви не авторизовані для доступу до цієї сторінки."
   notice_not_authorized_archived_project: "Проект ви намагаєтеся отримати доступ до архіву."
   notice_requires_enterprise_token: "Токен Enterprise відсутній або не надає доступу до цієї сторінки."
-  notice_password_confirmation_failed: "Ваш пароль неправильний. Неможливо продовжити."
+  notice_password_confirmation_failed: "Введений пароль неправильний."
   notice_principals_found_multiple: "There are %{number} знайдені результати. \nВкладка для фокусування першого результату."
   notice_principals_found_single: "Знайдений один результат. Натисніть <TAB> для переходу до нього."
   notice_parent_item_not_found: "Батьківський об’єкт не знайдено."
@@ -4351,11 +4392,17 @@ uk:
   setting_apiv3_cors_origins_text_html: >
     Якщо CORS увімкнено, це джерела, які можуть отримувати доступ до OpenProject API. <br/>Щоб дізнатися, як указати очікувані значення, ознайомтеся з <a href="%{origin_link}" target="_blank">Документацією щодо заголовка джерела</a>.
   setting_apiv3_write_readonly_attributes: "Дозвіл для записування атрибутів лише для читання"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Якщо ввімкнено, адміністратори можуть записувати в API статичні атрибути лише для читання під час створення, такі як createdAt і author. <br/> <strong>Попередження.</strong> Цей параметр призначений, наприклад, для імпорту даних, але дає змогу адміністраторам створювати елементи від імені інших користувачів. Однак усі запити на створення реєструються із зазначенням справжнього автора. </br> Щоб дізнатися більше про атрибути й підтримувані ресурси, перейдіть на сторінку %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "Максимальний розмір сторінки API"
-  setting_apiv3_max_page_instructions_html: >
-    Встановіть максимальний розмір сторінки, яка відповідатиме API. Неможливо виконати запити API, які повертають більше значень на сторінці. Увага: Будь ласка, змінюйте значення тільки у тому разі, якщо ви впевнені у необхідності цієї дії.  Внаслідок встановлення високого значення спостерігатиметься значний вплив на продуктивність, тоді як значення, що є меншим за сторінку, призведе до появи помилок у переглядах сторінок.
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "Документація"
   setting_apiv3_docs_enabled: "Увімкнути сторінку документів"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4814,6 +4861,7 @@ uk:
     Примітка: якщо цей параметр увімкнено, на екрані з'явиться значок із статусом інсталяції <a href="%{information_panel_path}">%{information_panel_label}</a>   панелі адміністрування та на головній сторінці. Він відображається лише адміністраторам.   <br/> Значок перевірить поточну версію OpenProject на основі офіційної бази даних випуску OpenProject, щоб сповістити вас про будь-які оновлення або відомі уразливості. Щоб отримати додаткові відомості про те, що надає перевірка, які дані потрібні для надання доступних оновлень, та про те, як вимкнути цю перевірку, відвідайте сторінку   <a href="%{more_info_url}">конфігураційна документація</a>.
   text_own_membership_delete_confirmation: "Ви збираєтесь видалити деякі або всі права, через що можуть зникнути права на редагування цього проекту.\nВи впевнені що хочете продовжити?"
   text_permanent_delete_confirmation_checkbox_label: "Я розумію, що це видалення не можна відмінити"
+  text_permanent_remove_confirmation_checkbox_label: "Я розумію, що вилучення не можна буде скасувати"
   text_plugin_assets_writable: "Каталог ресурсів модулів доступний для запису"
   text_powered_by: "Працює на %{link}"
   text_project_identifier_info: "Допускаються тільки рядкові малі букви (a-z), цифри, тире та нижнє підкреслення. Початок має бути з малої літери."

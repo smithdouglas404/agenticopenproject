@@ -59,7 +59,7 @@ module Boards
       if render_delete_link?
         link_to(
           "",
-          work_package_board_path(model),
+          project_work_package_board_path(model.project, model),
           class: "icon icon-delete",
           data: {
             turbo_method: :delete,

@@ -633,9 +633,6 @@ zh-CN:
           add: "为项目添加设置"
           already_selected: "此项目已经选定"
           remove: "移除项目设置"
-    password_confirmation:
-      field_description: "输入密码以确认更改"
-      title: "输入密码以继续"
     pagination:
       no_other_page: "您位于唯一页面上。"
       pages_skipped: "跳过的页面。"

@@ -96,12 +96,6 @@ de:
       manual: Vorhandener Ordner manuell verwaltet
     remove_project:
       deletion_failure_flash: Das Projekt konnte nicht vom Dateispeicher entfernt werden. %{error}
-      dialog:
-        automatically_managed_appendix: Falls dieser Speicher einen automatisch verwalteten Projektordner enthält, werden dieser und seine Dateien für immer gelöscht.
-        confirmation_text: Bitte bestätigen Sie die Entfernung des Dateispeichers aus diesem Projekt
-        heading_text: Projekt von %{storage} entfernen
-        text: Diese Aktion ist unumkehrbar und entfernt alle Verknüpfungen von Arbeitspaketen dieses Projekts zu Dateien und Ordnern dieses Speichers.
-        title: Projekt von Speicherung abtrennen
       label: Projekt entfernen
   services:
     attributes:
@@ -227,12 +221,13 @@ de:
     confirm_replace_oauth_application: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie die Anmeldedaten beim Speicheranbieter erneut eingeben und alle Remote-Benutzer müssen sich erneut gegenüber OpenProject autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     confirm_replace_oauth_client: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie neue Anmeldedaten vom Speicheranbieter eingeben und alle Benutzer müssen sich erneut für %{provider_type} autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     delete_warning:
-      project_storage_delete_result_1: Entfernen Sie alle Links von Arbeitspaketen dieses Projekts zu Dateien und Ordnern dieses Speichers.
-      project_storage_delete_result_2: Falls dieser Speicher einen automatisch verwalteten Projektordner hat, werden dieser und seine Dateien unwiderbringlich gelöscht.
-      storage: 'Sind Sie sicher, dass Sie %{file_storage} löschen möchten? Dies wird:'
-      storage_delete_result_1: Alle eingerichteten Projektdateispeicher, die diesen Dateispeicher verwenden, werden gelöscht.
-      storage_delete_result_2: Alle Dateiverknüpfungen aus Arbeitspaketen sämtlicher Projekte zu Dateien und Ordnern auf diesem Dateispeicher werden gelöscht.
-      storage_delete_result_3: Hat dieser Dateispeicher automatisch verwaltete Projektordner, so werden diese und die enthaltenen Dateien permanent gelöscht.
+      project_storage: Sind Sie sicher, dass Sie %{file_storage} löschen möchten?
+      project_storage_delete_result_1: Alle Links zu den entsprechenden Dateien und Ordnern werden entfernt
+      project_storage_delete_result_2: Der automatisch verwaltete Projektordner und alle darin enthaltenen Dateien werden gelöscht
+      storage: Sind Sie sicher, dass Sie %{file_storage} als externen Dateispeicher löschen möchten?
+      storage_delete_result_1: Der Speicher wird aus allen Projekten, die ihn derzeit verwenden, entfernt
+      storage_delete_result_2: Alle Links zu den entsprechenden Dateien und Ordnern werden entfernt
+      storage_delete_result_3: Der automatisch verwaltete Projektordner und alle darin enthaltenen Dateien werden gelöscht
     dependencies:
       nextcloud:
         group_folders_app: Gruppenordner
@@ -503,7 +498,7 @@ de:
         title: Wir richten Ihre Berechtigungen für den Projektordner ein.
     page_titles:
       file_storages:
-        delete: Dateispeicher löschen
+        delete: Dateispeicher löschen?
         subtitle: Fügen Sie einen externen Dateispeicher hinzu, um Dateien in Arbeitspaketen hochzuladen, zu verlinken und zu verwalten.
       managed_project_folders:
         subtitle: |-
@@ -517,6 +512,8 @@ de:
       project_storage_members:
         subtitle: Überprüfen Sie den Verbindungsstatus für den Speicher- %{storage_name_link} aller Projektmitglieder.
         title: Verbindungsstatus der Mitglieder
+      project_storages:
+        delete: Dateispeicher aus dem Projekt entfernen?
     permission_header_explanation: 'Dateiberechtigungen auf externen Speichern werden nur auf Ordner und Dateien in automatisch verwalteten Projektordnern angewendet. Beachten Sie, dass nicht alle Dateiberechtigungen von allen Speicheranbietern unterstützt werden. Weitere Informationen finden Sie in der Dokumentation zu <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>Dateispeicherberechtigungen</a>.'
     provider_types:
       label: Anbieter-Typ

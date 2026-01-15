@@ -95,6 +95,12 @@ module Meetings
         )
       end
 
+      def update_box_row_component_via_turbo_stream(participant:, meeting: @meeting)
+        update_via_turbo_stream(
+          component: Meetings::Participants::BoxRowComponent.new(meeting:, participant:)
+        )
+      end
+
       def update_show_items_via_turbo_stream(meeting: @meeting, current_occurrence: nil)
         meeting.sections.each do |meeting_section|
           update_show_items_of_section_via_turbo_stream(meeting_section:, current_occurrence:)

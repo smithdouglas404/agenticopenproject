@@ -634,9 +634,6 @@ tr:
           add: "Proje için ayar ekle"
           already_selected: "Bu proje zaten seçildi"
           remove: "Proje ayarlarını kaldır"
-    password_confirmation:
-      field_description: "Bu değişikliği onaylamak için hesap parolanızı girmeniz gerekir."
-      title: "Devam etmek için parolanızı doğrulayın"
     pagination:
       no_other_page: "Geçerli tek sayfadasınız."
       pages_skipped: "Sayfalar atlandı."

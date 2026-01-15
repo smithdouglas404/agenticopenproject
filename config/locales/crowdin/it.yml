@@ -711,9 +711,11 @@ it:
           create_button: "Crea"
           name_label: "Nome del token"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "Il token API è stato generato"
-          warning: "Questa è l'unica volta in cui vedrai questo token. Assicurati di copiarlo adesso."
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "Impossibile reimpostare il token di accesso: %{error}"
       failed_to_create_token: "Creazione del token di accesso non riuscita: %{error}"
       failed_to_revoke_token: "Revoca del token di accesso non riuscita: %{error}"
@@ -723,6 +725,9 @@ it:
       notice_api_token_revoked: "Il token API è stato eliminato. Per creare un nuovo token utilizza il pulsante nella sezione API."
       notice_rss_token_revoked: "Il token RSS è stato eliminato. Per creare un nuovo token utilizza il link nella sezione RSS."
       notice_ical_token_revoked: 'Il token di iCalendar "%{token_name}" per il calendario "%{calendar_name}" del progetto "%{project_name}" è stato revocato. L''URL di iCalendar con questo token non è ora valido.'
+    password_confirmation_dialog:
+      confirmation_required: "È necessario inserire la password dell'account per confermare la modifica."
+      title: "Conferma la password per continuare"
   news:
     index:
       no_results_title_text: Al momento non c'è nessuna notizia da segnalare.
@@ -1508,7 +1513,8 @@ it:
         not_a_datetime: "non è un'orario valido."
         not_a_number: "non è un numero."
         not_allowed: "non è valido a causa di autorizzazioni assenti."
-        not_json: "non è un oggetto JSON valido."
+        not_json: "non è analizzabile come JSON."
+        not_json_object: "non è un oggetto JSON."
         not_an_integer: "non è un numero intero."
         not_an_iso_date: "non è una data valida. Formato richiesto: AAAA-MM-GG."
         not_same_project: "non appartiene allo stesso progetto."
@@ -1916,7 +1922,12 @@ it:
       token/api:
         one: Token di accesso
         other: Token di accesso
-      type: "Tipo"
+      token/rss:
+        one: "RSS token"
+        other: "RSS tokens"
+      type:
+        one: "Tipo"
+        other: "Tipi"
       user: "Utente"
       version: "Versione"
       workflow: "Flusso di lavoro"
@@ -2133,6 +2144,7 @@ it:
   button_click_to_reveal: "Clicca per mostrare"
   button_close: "Chiudi"
   button_collapse_all: "Comprimi Tutto"
+  button_confirm: "Conferma"
   button_configure: "Configura"
   button_continue: "Continua"
   button_complete: "Completa"
@@ -2165,6 +2177,7 @@ it:
   button_print: "Stampa"
   button_quote: "Cita"
   button_remove: Rimuovi
+  button_remove_permanently: "Rimuovi permanentemente"
   button_remove_reminder: "Rimuovi promemoria"
   button_rename: "Rinomina"
   button_replace: "Sostituisci"
@@ -2906,34 +2919,58 @@ it:
         expiration: "Scade"
       indefinite_expiration: "Mai"
       simple_revoke_confirmation: "Revocare il token?"
+      tabs:
+        client:
+          description: "Client tokens are issued by other applications, allowing OpenProject to access them."
+          title: "Client tokens"
+        provider:
+          description: "Provider tokens are issued by OpenProject, allowing other applications to access it."
+          title: "Provider tokens"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "I token API consentono alle applicazioni di terze parti di comunicare con questa istanza OpenProject tramite le API REST."
+        static_token_name: "API token"
         disabled_text: "I token API non sono abilitati dall'amministratore. Contatta il tuo amministratore per utilizzare questa funzione."
         add_button: "Token API"
-      api:
-        static_token_name: "Token API"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "I token iCalendar consentono agli utenti di [iscriversi ai calendari di OpenProject](docs_url) e visualizzare informazioni aggiornate sulle macro-attività da client esterni."
         disabled_text: "Le iscrizioni iCalendar non sono abilitate dall'amministratore. Contatta il tuo amministratore per utilizzare questa funzione."
-        empty_text_hint: "Per aggiungere un token iCalendar, iscriviti a un calendario nuovo o esistente dall'interno del modulo Calendario di un progetto. È necessario disporre delle autorizzazioni necessarie."
-      oauth:
+      oauth_application:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Last used at"
         title: "OAuth"
-        text_hint: "I token OAuth consentono alle applicazioni di terze parti di connettersi con questa istanza OpenProject."
-        empty_text_hint: "Nessun accesso ad applicazioni di terze parti è configurato e attivo per te. Contatta il tuo amministratore per attivare questa funzione."
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
-        text_hint: "I token RSS consentono agli utenti di tenere il passo con le ultime modifiche in questa istanza di OpenProject tramite un lettore RSS esterno."
-        static_token_name: "Token RSS"
-        disabled_text: "I token RSS non sono abilitati dall'amministratore. Contatta il tuo amministratore per utilizzare questa funzione."
+        table_title: "RSS tokens"
+        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
+        static_token_name: "RSS token"
+        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "Archivi file"
-        text_hint: "I token di archiviazione dei file connettono questa istanza OpenProject con un sistema di archiviazione file esterno."
-        empty_text_hint: "Non esiste alcun accesso allo spazio di archiviazione collegato al tuo account."
-        revoke_token: "Vuoi davvero rimuovere questo token? Dovrai effettuare nuovamente l'accesso su %{storage}"
-        removed: "Token di archiviazione file rimosso correttamente"
-        failed: "Si è verificato un errore e non è stato possibile rimuovere il token. Riprova più tardi."
         unknown_storage: "Archivio sconosciuto"
   notifications:
     reasons:
@@ -3893,7 +3930,7 @@ it:
   notice_not_authorized: "Non sei autorizzato ad accedere a questa pagina."
   notice_not_authorized_archived_project: "Il progetto che stai tentando di accedere è stato archiviato."
   notice_requires_enterprise_token: "Il token Enterprise è assente o non consente l'accesso a questa pagina."
-  notice_password_confirmation_failed: "La password non è corretta. Impossibile continuare."
+  notice_password_confirmation_failed: "La password inserita non è corretta."
   notice_principals_found_multiple: "Trovati %{number} risultati. \n Premi Tab per evidenziare il primo."
   notice_principals_found_single: "Trovato un solo risultato. \n Premi Tab per evidenziarlo."
   notice_parent_item_not_found: "L'elemento genitore non è stato trovato."
@@ -4258,11 +4295,17 @@ it:
   setting_apiv3_cors_origins_text_html: >
     Se CORS è abilitato, queste sono le origini che possono accedere alle API di OpenProject. <br/> Controlla la <a href="%{origin_link}" target="_blank">Documentazione sull'intestazione dell'origine</a> per sapere come specificare i valori previsti.
   setting_apiv3_write_readonly_attributes: "Accesso in scrittura agli attributi di sola lettura"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Se abilitata, l'API consentirà agli amministratori di scrivere attributi statici di sola lettura durante la creazione, come createdAt e author. <br/> <strong>Attenzione:</strong> Questa impostazione può servire per esempio per l'importazione di dati, ma consente agli amministratori di impersonare la creazione di articoli come altri utenti. Tutte le richieste di creazione vengono comunque registrate con il vero autore. </br> Per maggiori informazioni sugli attributi e sulle risorse supportate, consulta il sito %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "Dimensione massima della pagina API"
-  setting_apiv3_max_page_instructions_html: >
-    Imposta la dimensione massima della pagina con cui l'API risponderà. Non sarà possibile eseguire richieste API che restituiscono più valori su una singola pagina. <br/> <strong>Attenzione:</strong> Si prega di modificare questo valore solo se sei sicuro del motivo per cui ne hai bisogno. La definizione di un valore elevato comporterà un impatto significativo sulle prestazioni, mentre un valore inferiore alle opzioni per pagina causerà errori nelle viste paginate.
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "Documentazione"
   setting_apiv3_docs_enabled: "Abilita pagina di documenti"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4721,6 +4764,7 @@ it:
     Nota: se abilitata questa opzione visualizzerà un badge con lo stato dell'installazione nel pannello di amministrazione di <a href="%{information_panel_path}">%{information_panel_label}</a> e sulla home page. Verrà visualizzata solo agli amministratori. <br/> il badge controllerà la tua attuale versione di OpenProject con l'ultima versione rilasciata per avvisarti di eventuali aggiornamenti o risoluzioni di vulnerabilità note. Per ulteriori informazioni sulle funzionalità offerte dal controllo, su quali dati è necessario fornire per ottenere gli aggiornamenti disponibili e su come disabilitare questo controllo, visita <a href="%{more_info_url}">la documentazione sulla configurazione</a>.
   text_own_membership_delete_confirmation: "Stai per rimuovere qualcuno o tutti i tuoi permessi e potresti non essere più in grado di modificare questo progetto dopo questo passo.\nSei sicuro di voler continuare?"
   text_permanent_delete_confirmation_checkbox_label: "Sono consapevole che questa cancellazione non può essere annullata"
+  text_permanent_remove_confirmation_checkbox_label: "Sono consapevole che questa rimozione non può essere annullata"
   text_plugin_assets_writable: "Cartella del pool di plugin installati scrivibile"
   text_powered_by: "Offerto da %{link}"
   text_project_identifier_info: "Solo le lettere minuscole (a-z), numeri, trattini e trattini bassi sono consentiti, devi iniziare con una lettera maiuscola."

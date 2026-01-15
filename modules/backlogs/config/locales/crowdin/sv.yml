@@ -40,6 +40,8 @@ sv:
               task_version_must_be_the_same_as_story_version: "måste vara samma som föräldraberättelsens version."
         sprint:
           cannot_end_before_it_starts: "En sprint kan inte avslutas innan den startar."
+  attributes:
+    task_type: "Task type"
   backlogs:
     add_new_story: "Ny berättelse"
     any: "någon"
@@ -100,7 +102,10 @@ sv:
   backlogs_empty_title: "Inga versioner är definierade för att användas i backlog"
   backlogs_empty_action_text: "För att komma igång med backlogs, skapa en ny version och tilldela den till en kolumn för backlogs."
   button_edit_wiki: "Redigera wiki-sidor"
-  error_backlogs_task_cannot_be_story: "Inställningarna är ogiltiga. Den valda uppgiftstypen kan inte heller vara av typen story."
+  errors:
+    attributes:
+      task_type:
+        cannot_be_story_type: "can not also be a story type"
   error_intro_plural: "Följande fel uppstod:"
   error_intro_singular: "Följande fel uppstod:"
   error_outro: "Vänligen korrigera ovanstående fel innan du skickar in igen."
@@ -124,6 +129,10 @@ sv:
   label_points_burn_up: "Upp"
   label_product_backlog: "produkt backlog"
   label_select_all: "Markera alla"
+  label_select_type: "Select a type"
+  label_select_types: "Select types"
+  label_selected_type: "Selected type"
+  label_selected_types: "Selected types"
   label_sprint_backlog: "sprint backlogg"
   label_sprint_cards: "Exportera kort"
   label_sprint_impediments: "Sprint hinder"
@@ -160,3 +169,7 @@ sv:
   version_settings_display_option_left: "vänster"
   version_settings_display_option_none: "inga"
   version_settings_display_option_right: "höger"
+  setting_plugin_openproject_backlogs_story_types_caption: |
+    Types treated as backlog stories (e.g., Feature, User story). Must differ from task type.
+  setting_plugin_openproject_backlogs_task_type_caption: |
+    Type used for story tasks. Must differ from story types.

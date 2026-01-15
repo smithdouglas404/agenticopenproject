@@ -713,9 +713,11 @@ sv:
           create_button: "Skapa"
           name_label: "Token name"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "The API token has been generated"
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "Misslyckades med att återställa åtkomst-token: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -725,6 +727,9 @@ sv:
       notice_api_token_revoked: "API-token har tagits bort. För att skapa en ny token använd knappen i API-avsnittet."
       notice_rss_token_revoked: "The RSS token has been deleted. To create a new token please use the link in the RSS section."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for calendar "%{calendar_name}" of project "%{project_name}" has been revoked. The iCalendar URL with this token is now invalid.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Det finns för närvarande inget att rapportera.
@@ -1511,7 +1516,8 @@ sv:
         not_a_datetime: "är inte en giltig datumtid."
         not_a_number: "är inte ett nummer."
         not_allowed: "är inte tillåtet på grund av saknade behörigheter."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "är inte ett heltal."
         not_an_iso_date: "är inte ett giltigt datum. Använd formatet ÅÅÅÅ-MM-DD."
         not_same_project: "tillhör inte samma projekt."
@@ -1919,7 +1925,12 @@ sv:
       token/api:
         one: Åtkomstnyckel
         other: Åtkomstnycklar
-      type: "Typ"
+      token/rss:
+        one: "RSS token"
+        other: "RSS tokens"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Användare"
       version: "Version"
       workflow: "Arbetsflöde"
@@ -2136,6 +2147,7 @@ sv:
   button_click_to_reveal: "Klicka för att visa"
   button_close: "Stäng"
   button_collapse_all: "Fäll ihop alla"
+  button_confirm: "Confirm"
   button_configure: "Konfigurera"
   button_continue: "Fortsätt"
   button_complete: "Complete"
@@ -2168,6 +2180,7 @@ sv:
   button_print: "Skriv ut"
   button_quote: "Citat"
   button_remove: Ta bort
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Ta bort påminnelse"
   button_rename: "Ändra namn"
   button_replace: "Ersätt"
@@ -2909,34 +2922,58 @@ sv:
         expiration: "Upphör"
       indefinite_expiration: "Aldrig"
       simple_revoke_confirmation: "Are you sure you want to revoke this token?"
+      tabs:
+        client:
+          description: "Client tokens are issued by other applications, allowing OpenProject to access them."
+          title: "Client tokens"
+        provider:
+          description: "Provider tokens are issued by OpenProject, allowing other applications to access it."
+          title: "Provider tokens"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
+        static_token_name: "API token"
         disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
         add_button: "API Token"
-      api:
-        static_token_name: "API-token"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
-        empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
-      oauth:
+      oauth_application:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Last used at"
         title: "OAuth"
-        text_hint: "OAuth tokens allow third-party applications to connect with this OpenProject instance."
-        empty_text_hint: "There is no third-party application access configured and active for you. Please contact your administrator to activate this feature."
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
+        table_title: "RSS tokens"
         text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
-        static_token_name: "RSS-token"
+        static_token_name: "RSS token"
         disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "Fillagring"
-        text_hint: "File Storage tokens connect this OpenProject instance with an external File Storage."
-        empty_text_hint: "There is no storage access linked to your account."
-        revoke_token: "Do you really want to remove this token? You will need to login again on %{storage}"
-        removed: "File Storage token successfully removed"
-        failed: "An error occurred and the token couldn't be removed. Please try again later."
         unknown_storage: "Okänd lagring"
   notifications:
     reasons:
@@ -3896,7 +3933,7 @@ sv:
   notice_not_authorized: "Du har inte behörighet att komma åt denna sida."
   notice_not_authorized_archived_project: "Projektet som du försöker komma åt har arkiverats."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Ditt lösenord är inte korrekt. Kan inte fortsätta."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} resultat hittades. Använd TAB för att fokusera på det första."
   notice_principals_found_single: "Ett resultat. Använd TAB för att fokusera på det."
   notice_parent_item_not_found: "Parent item not found."
@@ -4259,11 +4296,17 @@ sv:
   setting_apiv3_cors_origins_text_html: >
     If CORS is enabled, these are the origins that are allowed to access OpenProject API. <br/> Please check the <a href="%{origin_link}" target="_blank">Documentation on the Origin header</a> on how to specify the expected values.
   setting_apiv3_write_readonly_attributes: "Write access to read-only attributes"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author. <br/> <strong>Warning:</strong> This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author. </br> For more information on attributes and supported resources, please see the %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "Maximum API page size"
-  setting_apiv3_max_page_instructions_html: >
-    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page. <br/> <strong>Warning:</strong> Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "Dokumentation"
   setting_apiv3_docs_enabled: "Enable docs page"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4722,6 +4765,7 @@ sv:
     Obs: om aktiverad, kommer detta att visa ett märke med din installationsstatus i administrationspanelen <a href="%{information_panel_path}">%{information_panel_label}</a> och på startsidan. Det visas endast för administratörer. <br/> Emblemet kommer att kontrollera din nuvarande OpenProject-version mot den officiella OpenProject-utgåvans databas för att varna dig om eventuella uppdateringar eller kända sårbarheter. För mer information om vad kontrollen ger, vilka uppgifter som behövs för att tillhandahålla tillgängliga uppdateringar, och hur du inaktiverar denna kontroll, besök <a href="%{more_info_url}">konfigurationsdokumentationen</a>.
   text_own_membership_delete_confirmation: "Du håller på att ta bort några eller alla av dina behörigheter och kommer därefter inte längre att kunna redigera detta projekt. Är du säker på att du vill fortsätta?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Katalogen \"Plugin assets\" skrivbar"
   text_powered_by: "Drivs av %{link}"
   text_project_identifier_info: "Bara gemena bokstäver (a-z), siffror, bindestreck och understreck tillåts och måste dessutom börja med en gemen bokstav."

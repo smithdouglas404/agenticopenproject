@@ -713,9 +713,11 @@
           create_button: "Opprett"
           name_label: "Token name"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "The API token has been generated"
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "Tilgangstoken kunne ikke tilbakestilles: %{error}"
       failed_to_create_token: "Tilgangsnøkkelen kunne ikke opprettes: %{error}"
       failed_to_revoke_token: "Kunne ikke oppheve tilgangstoken: %{error}"
@@ -725,6 +727,9 @@
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "RSS-koden er slettet. For å opprette et nytt token må du bruke linken i RSS-avsnittet."
       notice_ical_token_revoked: 'iCalendar token "%{token_name}" for kalender "%{calendar_name}" i prosjekt "%{project_name}" er trukket tilbake. iCalendar-URL''en med dette tokenet er nå ugyldig.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Det er ingen nyheter å vise.
@@ -1510,7 +1515,8 @@
         not_a_datetime: "er ikke et gyldig tidspunkt for datoen."
         not_a_number: "er ikke et tall."
         not_allowed: "er ugyldig på grunn av manglende tillatelser."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "er ikke et heltall."
         not_an_iso_date: "er ikke en gyldig dato. Påkrevd format: ÅÅÅÅ-MM-DD."
         not_same_project: "hører ikke til samme prosjekt."
@@ -1918,7 +1924,12 @@
       token/api:
         one: Access token
         other: Tilgangsnøkler
-      type: "Type"
+      token/rss:
+        one: "RSS token"
+        other: "RSS tokens"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Bruker"
       version: "Versjon"
       workflow: "Arbeidsflyt"
@@ -2135,6 +2146,7 @@
   button_click_to_reveal: "Klikk for å vise"
   button_close: "Lukk"
   button_collapse_all: "Skjul alle"
+  button_confirm: "Confirm"
   button_configure: "Konfigurer"
   button_continue: "Fortsette"
   button_complete: "Complete"
@@ -2167,6 +2179,7 @@
   button_print: "Skriv ut"
   button_quote: "Sitèr"
   button_remove: Fjern
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Endre navn"
   button_replace: "Erstatt"
@@ -2908,34 +2921,58 @@
         expiration: "Utløper"
       indefinite_expiration: "Aldri"
       simple_revoke_confirmation: "Er du sikker på at du vil oppheve denne nøkkelen?"
+      tabs:
+        client:
+          description: "Client tokens are issued by other applications, allowing OpenProject to access them."
+          title: "Client tokens"
+        provider:
+          description: "Provider tokens are issued by OpenProject, allowing other applications to access it."
+          title: "Provider tokens"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "API-tokens tillater tredjepartsapplikasjoner å kommunisere med denne OpenProject instansen via REST APIs."
+        static_token_name: "API token"
         disabled_text: "API-nøkler er ikke aktivert av administratoren. Kontakt systemansvarlig for å bruke denne funksjonen."
         add_button: "API Token"
-      api:
-        static_token_name: "API-nøkkel"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar-abonnement er ikke aktivert av administratoren. Vennligst kontakt systemansvarlig for å bruke denne funksjonen."
-        empty_text_hint: "For å legge til et iCalendar-nøkkel, abonnér på en ny eller eksisterende kalender fra kalender-modulen til et prosjekt. Du må ha de nødvendige tillatelsene."
-      oauth:
+      oauth_application:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Last used at"
         title: "OAuth"
-        text_hint: "OAuth nøkler tillater tredjepartssøknader å koble til denne OpenProject instansen."
-        empty_text_hint: "Det er ingen tredjeparts-tilgang konfigurert og aktiv for deg. Kontakt systemansvarlig for å aktivere denne funksjonen."
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
-        text_hint: "RSS-nøkler tillater brukere å holde de siste endringene i denne OpenProject forekomsten via en ekstern RSS-leser."
-        static_token_name: "RSS nøkkel"
-        disabled_text: "RSS-nøkler er ikke aktivert av administrator. Kontakt systemansvarlig for å bruke denne funksjonen."
+        table_title: "RSS tokens"
+        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
+        static_token_name: "RSS token"
+        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "Fillagringer"
-        text_hint: "Fillagrings-nøkler kobler til dette OpenProjectets instansen med et eksternt fillager."
-        empty_text_hint: "Det er ingen lagringstilgang knyttet til kontoen din."
-        revoke_token: "Vil du virkelig fjerne denne nøkkelen? Du må logge inn igjen på %{storage}"
-        removed: "Lagringsnøkkelen for fillagring ble fjernet"
-        failed: "En feil oppstod, nøkkelen kunne ikke fjernes. Prøv igjen senere."
         unknown_storage: "Ukjent lagring"
   notifications:
     reasons:
@@ -3895,7 +3932,7 @@
   notice_not_authorized: "Du har ikke tilgang til å åpne denne siden."
   notice_not_authorized_archived_project: "Prosjektet du forsøker å åpne er arkivert."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Passordet er ikke riktig. Kan ikke fortsette."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Det finnes %{number} resultater. \n bruk tab for å fokusere det første resultatet."
   notice_principals_found_single: "Det er ett resultat. \n Bruk tab for å fokusere det."
   notice_parent_item_not_found: "Parent item not found."
@@ -4260,11 +4297,17 @@
   setting_apiv3_cors_origins_text_html: >
     Hvis CORS er aktivert, er dette opprinnelsen som har tilgang til OpenProject API. <br/> Kontroller <a href="%{origin_link}" target="_blank">Dokumentasjonen på Origin header</a> på hvordan angi de forventede verdiene.
   setting_apiv3_write_readonly_attributes: "Skrivetilgang til skrivebeskyttede egenskaper"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Hvis aktivert, vil API-et tillate at administratorer skriver statiske skrivebeskyttede egenskaper under oppretting, som OpprettetPå og forfatter. <br/> <strong>Advarsel:</strong> Denne innstillingen har et brukstilfelle for f.eks importere data, men lar administratorer personliggjøre etableringen av elementer som andre brukere. Alle forespørsler om opprettelse blir imidlertid logget med virkelig forfatter. </br> For mer informasjon om egenskaper og støttede ressurser, se %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "Maksimal størrelse på API side"
-  setting_apiv3_max_page_instructions_html: >
-    Angi den maksimale sidestørrelsen API vil svare med. (Automatic Translation) Det vil ikke være mulig å utføre API-forespørsler som returnerer flere verdier på én side. <br/> <strong>Advarsel:</strong> Endre denne verdien hvis du er sikker på hvorfor du trenger den. Ved å sette en høy verdi vil det ha betydelig innvirkning på ytelsen, mens en verdi lavere enn per sidealternativer vil forårsake feil i sidevisning
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "Dokumentasjon"
   setting_apiv3_docs_enabled: "Aktiver dokumenter"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4723,6 +4766,7 @@
     Merk: Hvis aktivert, vil dette vise et merke med din installasjonsstatus i <a href="%{information_panel_path}">%{information_panel_label}</a> administrasjonspanel, og på hjemmesiden. Det er kun vist til administratorer. <br/> Merket sjekker din nåværende OpenProject versjon mot den offisielle OpenProject utgivelsesdatabasen for å varsle deg om oppdateringer og kjente sårbarheter. For mer informasjon om hva som finnes av kontrollen, hvilke data som er nødvendig for å framskaffe tilgjengelige oppdateringer, og hvordan denne sjekken kan deaktiveres, besøk <a href="%{more_info_url}">konfigurasjonsdokumentasjonen</a>.
   text_own_membership_delete_confirmation: "Du er i ferd med å fjerne noen eller alle dine egne rettigheter og du vil kanskje ikke kunne redigere dette prosjektet etterpå.\nEr du sikker på at du vil fortsette?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Mappen for programtillegg er skrivbar"
   text_powered_by: "Driftes med %{link}"
   text_project_identifier_info: "Kun små bokstaver (a-z), tall, bindestrek og understrek er tillatt. Første tegn må være liten bokstav."

@@ -85,11 +85,11 @@ de:
         title: "Enterprise-Token hinzufügen"
         type_token_text: "Enterprise-Token Text"
         token_placeholder: "Enterprise-Token Text hier einfügen"
-      add_token: "Enterprise-Edition Support Token hochladen"
+      add_token: "Enterprise edition Support Token hochladen"
       replace_token: "Aktuellen Enterprise edition Support Token ersetzen"
       order: "Enterprise on-premises bestellen"
-      paste: "Enterprise-Edition Support Token hier einfügen"
-      required_for_feature: "Dieses Add-on ist nur mit einem aktiven Enterprise-Edition Support-Token verfügbar."
+      paste: "Enterprise edition Support Token hier einfügen"
+      required_for_feature: "Dieses Add-on ist nur mit einem aktiven Enterprise edition Support-Token verfügbar."
       enterprise_link: "Klicken Sie hier für weitere Informationen."
       start_trial: "Kostenlose Testversion starten"
       book_now: "Jetzt buchen"
@@ -710,9 +710,11 @@ de:
           create_button: "Anlegen"
           name_label: "Token-Name"
       created_dialog:
+        one_time_warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
         token/api:
           title: "Der API-Token wurde generiert"
-          warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
+        token/rss:
+          title: "Das RSS-Token wurde generiert"
       failed_to_reset_token: "Zusatztoken konnte nicht zurückgesetzt werden: %{error}"
       failed_to_create_token: "Zugriffstoken konnte nicht erstellt werden: %{error}"
       failed_to_revoke_token: "Zugriffstoken kann nicht widerrufen werden: %{error}"
@@ -722,6 +724,9 @@ de:
       notice_api_token_revoked: "Das API-Token wurde gelöscht. Nutzen Sie bitte den Knopf in der API-Sektion für die Erstellung eines neues Token. "
       notice_rss_token_revoked: "Der RSS-Token wurde gelöscht. Um ein neues Token zu erstellen, benutzen Sie bitte den Link im RSS-Bereich."
       notice_ical_token_revoked: 'iCalendar-Token „%{token_name}“ für Kalender „%{calendar_name}“ des Projekts „%{project_name}“ wurde widerrufen. Die iCal-URL mit diesem Token ist jetzt ungültig.'
+    password_confirmation_dialog:
+      confirmation_required: "Sie müssen Ihr Passwort eingeben, um diese Änderung zu bestätigen."
+      title: "Bestätigen Sie Ihr Passwort um fortzufahren"
   news:
     index:
       no_results_title_text: Es gibt aktuell keine Neuigkeiten.
@@ -894,10 +899,10 @@ de:
         tab: "Titel konfigurieren"
         manually_editable_subjects:
           label: "Manuell bearbeitbare Titel"
-          caption: "Nutzer:innen können die Titel der Arbeitspakete ohne Einschränkungen manuell eingeben und bearbeiten."
+          caption: "Benutzer können die Titel der Arbeitspakete ohne Einschränkungen manuell eingeben und bearbeiten."
         automatically_generated_subjects:
           label: "Automatisch generierte Titel"
-          caption: "Definieren Sie ein Schema aus referenzierten Attributen und Freitext für die automatische Generierung von Arbeitspakettiteln. Nutzer:innen können diese nicht manuell editieren."
+          caption: "Definieren Sie ein Schema aus referenzierten Attributen und Freitext für die automatische Generierung von Arbeitspakettiteln. Nutzer können diese nicht manuell editieren."
         token:
           label_with_context: "%{attribute_context}: %{attribute_label}"
           context:
@@ -951,7 +956,7 @@ de:
           manual_with_children: "Hat Unteraufgaben aber ihre Startdaten werden ignoriert."
         title:
           automatic_mobile: "Automatisch geplant."
-          automatic_with_children: "Unteraufgaben bestimmen Termine."
+          automatic_with_children: "Die Termine sind durch untergeordnete Arbeitspakete bestimmt."
           automatic_with_predecessor: "Der Anfangstermin wird von einem Vorgänger festgelegt."
           manual_mobile: "Manuell geplant."
           manually_scheduled: "Manuell geplant – Daten unabhängig von Beziehungen."
@@ -1054,7 +1059,7 @@ de:
       label_child_plural: "Unteraufgaben"
       new_child: "Neue Unteraufgabe"
       new_child_description: "Erstellt ein zugehöriges Arbeitspaket als Unteraufgabe des aktuellen (übergeordneten) Arbeitspakets"
-      child: "Unteraufgabe"
+      child: "Kind"
       child_description: "Macht das zugehörige Arbeitspaket zu einer Unteraufgabe des aktuellen (übergeordneten) Arbeitspakets"
       parent: "Übergeordnetes Arbeitspaket"
       parent_description: "Wandelt das verknüpfte in ein übergeordnetes Arbeitspaket dieses Arbeitspakets um"
@@ -1294,7 +1299,7 @@ de:
         column_names: "Spalten"
         relations_to_type_column: "Beziehungen zu %{type}"
         relations_of_type_column: "Beziehungen der Art: %{type}"
-        child_work_packages: "Unteraufgaben"
+        child_work_packages: "Kinder"
         group_by: "Gruppiere Ergebnisse nach"
         sort_by: "Ergebnisse sortieren nach"
         filters: "Filter"
@@ -1503,7 +1508,8 @@ de:
         not_a_datetime: "ist kein gültiges Datum."
         not_a_number: "ist keine Zahl."
         not_allowed: "ist ungültig aufgrund fehlender Berechtigungen."
-        not_json: "ist kein gültiges JSON-Objekt."
+        not_json: "konnte nicht als JSON gelsen werden."
+        not_json_object: "ist kein gültiges JSON-Objekt."
         not_an_integer: "ist keine ganzzahlige Zahl."
         not_an_iso_date: "ist kein gültiges Datum - Erwartetes Format: YYY-MM-DD."
         not_same_project: "gehört nicht zum selben Projekt."
@@ -1789,7 +1795,7 @@ de:
               status_transition_invalid: "ist ungültig, da kein valider Übergang vom alten zum neuen Status für die aktuelle Rolle des Nutzers existiert."
               status_invalid_in_type: "ist ungültig, da der aktuelle Status nicht in diesem Typ vorhanden ist."
             type:
-              cannot_be_milestone_due_to_children: "kann kein Meilenstein werden, da dieses Arbeitspaket Unteraufgaben besitzt."
+              cannot_be_milestone_due_to_children: "kann kein Meilenstein werden, da dieses Arbeitspaket Unterelemente besitzt."
             priority_id:
               only_active_priorities_allowed: "muss aktiv sein."
             category:
@@ -1911,7 +1917,12 @@ de:
       token/api:
         one: Zugangs-Token
         other: Zugangs-Token
-      type: "Typ"
+      token/rss:
+        one: "RSS-Token"
+        other: "RSS-Token"
+      type:
+        one: "Typ"
+        other: "Typen"
       user: "Benutzer"
       version: "Version"
       workflow: "Workflow"
@@ -2128,6 +2139,7 @@ de:
   button_click_to_reveal: "Klicke, um anzuzeigen"
   button_close: "Schließen"
   button_collapse_all: "Alle zuklappen"
+  button_confirm: "Bestätigen"
   button_configure: "Konfigurieren"
   button_continue: "Fortfahren"
   button_complete: "Fertigstellen"
@@ -2160,6 +2172,7 @@ de:
   button_print: "Drucken"
   button_quote: "Zitieren"
   button_remove: Entfernen
+  button_remove_permanently: "Endgültig löschen"
   button_remove_reminder: "Erinnerung entfernen"
   button_rename: "Umbenennen"
   button_replace: "Ersetzen"
@@ -2580,7 +2593,7 @@ de:
   error_custom_option_not_found: "Option ist nicht vorhanden."
   error_enterprise_plan_needed: "Sie benötigen den Enterprise-Plan %{plan}, um diese Aktion durchzuführen."
   error_enterprise_activation_user_limit: "Ihr Konto konnte nicht aktiviert werden (Nutzerlimit erreicht). Bitte kontaktieren Sie Ihren Administrator um Zugriff zu erhalten."
-  error_enterprise_token_invalid_domain: "Die Enterprise-Edition ist nicht aktiv. Die aktuelle Domain (%{actual}) entspricht nicht dem erwarteten Hostnamen (%{expected})."
+  error_enterprise_token_invalid_domain: "Die Enterprise edition ist nicht aktiv. Die aktuelle Domain (%{actual}) entspricht nicht dem erwarteten Hostnamen (%{expected})."
   error_failed_to_delete_entry: "Fehler beim Löschen dieses Eintrags."
   error_in_dependent: "Fehler beim Versuch, abhängiges Objekt zu ändern: %{dependent_class} #%{related_id} - %{related_subject}: %{error}"
   error_in_new_dependent: "Fehler beim Versuch, abhängiges Objekt zu erstellen: %{dependent_class} - %{related_subject}: %{error}"
@@ -2857,7 +2870,7 @@ de:
         dates:
           working: "%{date} ist jetzt ein Arbeitstag"
           non_working: "%{date} ist jetzt ein arbeitsfreier Tag"
-      progress_mode_changed_to_status_based: Fortschrittberechnung wurde auf Status-bezogen gesetzt
+      progress_mode_changed_to_status_based: Fortschrittberechnung wurde auf Status-basiert gesetzt
       status_excluded_from_totals_set_to_false_message: jetzt in den Gesamtwerten der Hierarchie enthalten
       status_excluded_from_totals_set_to_true_message: jetzt von den Hierarchie-Gesamtwerten ausgeschlossen
       status_percent_complete_changed: "% abgeschlossen von %{old_value}% auf %{new_value} % geändert"
@@ -2901,34 +2914,58 @@ de:
         expiration: "Läuft aus"
       indefinite_expiration: "Nie"
       simple_revoke_confirmation: "Sind Sie sicher, dass Sie dieses Token widerrufen möchten?"
+      tabs:
+        client:
+          description: "Client-Tokens werden von anderen Anwendungen ausgestellt und ermöglichen OpenProject den Zugriff auf die ausstellende Anwendungen."
+          title: "Client-Tokens"
+        provider:
+          description: "Provider-Tokens werden von OpenProject ausgestellt und ermöglichen anderen Anwendungen den Zugriff."
+          title: "Provider-Tokens"
       token/api:
+        blank_description: "Es gibt noch kein API-Token. Sie können eines erstellen, indem Sie auf die Schaltfläche unten klicken."
+        blank_title: "Kein API-Token"
         title: "Schnittstelle (API)"
+        table_title: "API-Token"
         text_hint: "API-Token erlauben es Drittanbieter-Anwendungen, mit dieser OpenProject-Instanz über REST-APIs zu kommunizieren."
+        static_token_name: "API-Token"
         disabled_text: "API-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
         add_button: "API-Token"
-      api:
-        static_token_name: "API-Token"
       ical:
+        blank_description: "Um einen iCalendar-Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
+        blank_title: "Kein iCalendar-Token"
         title: "iCalendar"
+        table_title: "iCalendar-Token"
         text_hint_link: "iCalendar-Token ermöglichen es Benutzern, [OpenProject-Kalender zu abonnieren](docs_url) und aktuelle Arbeitspaketinformationen in externen Anwendungen anzuzeigen."
         disabled_text: "iCalendar Abonnements sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
-        empty_text_hint: "Um einen iCalendar Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
-      oauth:
+      oauth_application:
+        active_tokens: "Aktive Token"
+        blank_description: "Für Sie ist kein Zugriff auf Anwendungen von Drittanbietern konfiguriert und aktiv."
+        blank_title: "Kein OAuth-Anwendungs-Token"
+        last_used_at: "Zuletzt verwendet am"
         title: "OAuth"
-        text_hint: "OAuth Tokens erlauben es Drittanbieter-Anwendungen, sich mit dieser OpenProject Instanz zu verbinden."
-        empty_text_hint: "Für Sie ist kein Zugriff auf die Anwendung von Drittanbietern konfiguriert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu aktivieren."
-      rss:
+        table_title: "OAuth-Anwendungs-Tokens"
+        text_hint: "OAuth-Tokens erlauben es Drittanbieter-Anwendungen, sich mit dieser OpenProject Instanz zu verbinden."
+      oauth_client:
+        blank_description: "Es gibt noch keine OAuth-Client-Tokens."
+        blank_title: "Keine OAuth-Client-Tokens"
+        failed: "Ein Fehler ist aufgetreten und das Token konnte nicht entfernt werden. Bitte versuchen Sie es später erneut."
+        integration_type: "Integrations-Typ"
+        table_title: "Keine OAuth-Client-Tokens"
+        text_hint: "OAuth-Client-Tokens ermöglichen es dieser OpenProject-Instanz, sich mit externen Anwendungen zu verbinden, z. B. mit Dateispeichern."
+        title: "OAuth"
+        remove_token: "Möchten Sie dieses Token wirklich entfernen? Sie müssen sich erneut bei %{integration} anmelden."
+        removed: "OAuth-Client-Token erfolgreich entfernt"
+        unknown_integration: "Unbekannt"
+      token/rss:
+        add_button: "RSS-Token"
+        blank_description: "Es gibt noch kein RSS-Token. Sie können eines erstellen, indem Sie auf die Schaltfläche unten klicken."
+        blank_title: "Kein RSS-Token"
         title: "RSS"
+        table_title: "RSS-Token"
         text_hint: "RSS-Token erlauben es Benutzern über einen externen RSS-Reader auf dem Laufenden zu bleiben."
         static_token_name: "RSS-Token"
         disabled_text: "RSS-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
       storages:
-        title: "Dateispeicher"
-        text_hint: "Dateispeicher-Tokens verbinden diese OpenProject Instanz mit einem externen Dateispeicher."
-        empty_text_hint: "Es gibt keinen Dateispeicher, der mit Ihrem Konto verknüpft ist."
-        revoke_token: "Möchten Sie dieses Token wirklich entfernen? Sie müssen sich erneut bei %{storage} anmelden"
-        removed: "Dateispeicher-Token erfolgreich entfernt"
-        failed: "Ein Fehler ist aufgetreten und das Token konnte nicht entfernt werden. Bitte versuchen Sie es später erneut."
         unknown_storage: "Unbekannter Speicher"
   notifications:
     reasons:
@@ -3155,7 +3192,7 @@ de:
   label_enumerations: "Aufzählungen"
   label_enterprise: "Enterprise"
   label_enterprise_active_users: "%{current}/%{limit} gebuchte aktive Nutzer"
-  label_enterprise_edition: "Enterprise Edition"
+  label_enterprise_edition: "Enterprise edition"
   label_enterprise_support: "Enterprise Support"
   label_environment: "Umgebung"
   label_estimates_and_progress: "Schätzungen und Fortschritt"
@@ -3888,7 +3925,7 @@ de:
   notice_not_authorized: "Sie sind nicht berechtigt, auf diese Seite zuzugreifen."
   notice_not_authorized_archived_project: "Das Projekt wurde archiviert und ist daher nicht verfügbar."
   notice_requires_enterprise_token: "Kein Enterprise-Token vorhanden oder das vorhandene Token erlaubt keinen Zugriff auf diese Seite."
-  notice_password_confirmation_failed: "Ihr Passwort ist nicht korrekt. Kann nicht fortgesetzt werden."
+  notice_password_confirmation_failed: "Das eingegebene Passwort ist nicht korrekt."
   notice_principals_found_multiple: "Es wurden %{number} Ergebnisse gefunden.\nDrücke Tab um das erste Ergebnis zu fokussieren."
   notice_principals_found_single: "Es wurde ein Ergebnis gefunden.\nDrücke Tab um es zu fokussieren."
   notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."
@@ -4213,7 +4250,7 @@ de:
       update_timeout: "Speichere die Informationen bzgl. des genutzten Festplattenspeichers eines Projektarchivs für N Minuten.\nErhöhen Sie diesen Wert zur Verbesserung der Performance, da die Erfassung des genutzten Festplattenspeichers Ressourcen-intensiv ist."
       oauth_application_details: "Der Client Geheimcode wird nach dem Schließen dieses Fensters nicht mehr zugänglich sein. Bitte kopieren Sie diese Werte in die Nextcloud OpenProject Integrationseinstellungen:"
       oauth_application_details_link_text: "Zu den Einstellungen gehen"
-      setup_documentation_details: "Wenn Sie Hilfe bei der Konfiguration eines neuen Dateispeichers benötigen, konsultieren Sie bitte die Dokumentation: "
+      setup_documentation_details: "Wenn Sie Hilfe bei der Konfiguration eines neuen Datei-Speichers benötigen, konsultieren Sie bitte die Dokumentation: "
       setup_documentation_details_link_text: "Dateispeicher einrichten"
       show_warning_details: "Um diesen Dateispeicher nutzen zu können, müssen Sie das Modul und den spezifischen Speicher in den Projekteinstellungen jedes gewünschten Projekts aktivieren."
     subversion:
@@ -4253,11 +4290,17 @@ de:
   setting_apiv3_cors_origins_text_html: >
     Wenn CORS aktiviert ist, sind dies die Origins, die auf die OpenProject API zugreifen dürfen. <br/> Bitte überprüfen Sie die <a href="%{origin_link}" target="_blank">Dokumentation über den Origin Header</a>, wie die Werte anzugeben sind.
   setting_apiv3_write_readonly_attributes: "Schreibzugriff auf schreibgeschützte Attribute"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Diese Option erlaubt API Administratoren, bei der Erstellung statische schreibgeschützte Attribute wie createdAt und author zu schreiben. <br/> <strong>Warnung:</strong> Diese Einstellung ist z.B. für den Import von Daten nützlich, ermöglicht es aber Administratoren, sich bei der Erstellung von Objekten als andere Benutzer auszugeben. Alle Anfragen werden jedoch immer auch mit dem wahren Autor protokolliert. </br> Weitere Informationen zu Attributen und unterstützten Ressourcen finden Sie unter %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "Maximale API-Seitengröße"
-  setting_apiv3_max_page_instructions_html: >
-    Legen Sie die maximale Seitengröße fest, mit der die API antworten soll. Es wird nicht möglich sein, API-Anfragen durchzuführen, die mehr Werte auf einer einzelnen Seite zurückgeben. <br/> <strong>Warnung:</strong> Bitte ändern Sie diesen Wert nur, wenn Sie sicher sind, warum Sie ihn benötigen. Die Einstellung auf einen hohen Wert führt zu erheblichen Performance-Auswirkungen, während ein Wert niedriger als die Einstellung "Objekte pro Seite" zu Fehlern in paginierten Ansichten führt.
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "Dokumentation"
   setting_apiv3_docs_enabled: "Dokumentationsseite aktivieren"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4718,6 +4761,7 @@ de:
     Hinweis: Wenn aktiviert, wird dies eine Plakette mit dem Status Ihrer Installation in der <a href="%{information_panel_path}">%{information_panel_label}</a> unter Administration und auf der Startseite anzeigen. Es wird nur Administratoren gezeigt. <br/> Die Plakette überprüft Ihre aktuelle OpenProject-Version gegen die offizielle Release Datenbank, um Sie über Updates oder bekannten Sicherheitslücken zu informieren. Für die Überprüfung der Version werden Daten benötigt, um verfügbare Updates für Ihre Umgebung zurückzugeben. Für mehr Informationen über die Plakette, welche Daten sie benötigt und wie Sie diese Überprüfung deaktivieren können, besuchen Sie bitte <a href="%{more_info_url}">die Konfigurationsdokumentation</a>.
   text_own_membership_delete_confirmation: "Sie sind dabei, einige oder alle Ihre Berechtigungen zu entfernen. Es ist möglich, dass Sie danach das Projekt nicht mehr ansehen oder bearbeiten dürfen.\nSind Sie sicher, dass Sie dies tun möchten?"
   text_permanent_delete_confirmation_checkbox_label: "Ich verstehe, dass diese Löschung nicht rückgängig gemacht werden kann"
+  text_permanent_remove_confirmation_checkbox_label: "Ich verstehe, dass diese Löschung nicht rückgängig gemacht werden kann"
   text_plugin_assets_writable: "Verzeichnis für Plugin-Assets beschreibbar"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Kleinbuchstaben (a-z), Ziffern, Binde- und Unterstriche erlaubt. Muss mit einem Kleinbuchstaben beginnen."
@@ -4839,7 +4883,7 @@ de:
   warning_user_limit_reached_admin: >
     Das Hinzufügen zusätzlicher Benutzer überschreitet das aktuelle Benutzerlimit. Bitte <a href="%{upgrade_url}">aktualisieren Sie Ihr Abonnement</a> um sicherzustellen, dass externe Benutzer auf diese Instanz zugreifen können.
   warning_user_limit_reached_instructions: >
-    Du hast dein Nutzerlimit erreicht (%{current}/%{max} active users). Bitte kontaktiere sales@openproject.com um deinen Enterprise Edition Plan upzugraden und weitere Nutzer hinzuzufügen.
+    Du hast dein Nutzerlimit erreicht (%{current}/%{max} active users). Bitte kontaktiere sales@openproject.com um deinen Enterprise edition Plan upzugraden und weitere Nutzer hinzuzufügen.
   warning_protocol_mismatch_html: >
 
   warning_bar:

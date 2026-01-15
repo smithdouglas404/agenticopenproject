@@ -635,9 +635,6 @@ sl:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Prosimo vnesite svoje uporabniško geslo za potrditev te spremembe. "
-      title: "Potrdite svoje geslo za nadaljevanje"
     pagination:
       no_other_page: "Ste na edini strani. "
       pages_skipped: "Pages skipped."

@@ -706,9 +706,11 @@ vi:
           create_button: "Tạo mới"
           name_label: "Token name"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "The API token has been generated"
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "Lỗi cập nhật mã truy cập: %{error}"
       failed_to_create_token: "Không thể tạo token truy cập: %{error}"
       failed_to_revoke_token: "Không thể thu hồi token truy cập: %{error}"
@@ -718,6 +720,9 @@ vi:
       notice_api_token_revoked: "Token API đã bị xóa. Để tạo token mới, vui lòng sử dụng nút trong phần API."
       notice_rss_token_revoked: "Token RSS đã bị xóa. Để tạo token mới, vui lòng sử dụng liên kết trong phần RSS."
       notice_ical_token_revoked: 'Token iCalendar "%{token_name}" cho lịch "%{calendar_name}" của dự án "%{project_name}" đã bị thu hồi. URL iCalendar với token này hiện không hợp lệ.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Hiện không có tin tức báo cáo.
@@ -1502,7 +1507,8 @@ vi:
         not_a_datetime: "không phải là thời gian hợp lệ"
         not_a_number: "không phải là số"
         not_allowed: "không hợp lệ vì thiếu quyền."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "không phải là một số nguyên"
         not_an_iso_date: "không phải là một ngày hợp lệ. Yêu cầu định dạng: YYYY-MM-DD."
         not_same_project: "không thuộc cùng dự án."
@@ -1897,7 +1903,10 @@ vi:
       status: "Tình trạng work package"
       token/api:
         other: Mã truy cập
-      type: "Kiểu"
+      token/rss:
+        other: "RSS tokens"
+      type:
+        other: "Types"
       user: "Người dùng"
       version: "Phiên bản"
       workflow: "Quy trình làm việc"
@@ -2110,6 +2119,7 @@ vi:
   button_click_to_reveal: "Chọn để xem"
   button_close: "Đóng"
   button_collapse_all: "Thu gọn tất cả"
+  button_confirm: "Confirm"
   button_configure: "Thiết lập"
   button_continue: "Tiếp tục"
   button_complete: "Complete"
@@ -2142,6 +2152,7 @@ vi:
   button_print: "In"
   button_quote: "Trích dẫn"
   button_remove: Xoá
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Đổi tên"
   button_replace: "Thay thế"
@@ -2862,34 +2873,58 @@ vi:
         expiration: "Hết hạn"
       indefinite_expiration: "Không bao giờ"
       simple_revoke_confirmation: "Bạn có chắc chắn muốn thu hồi mã truy cập này không?"
+      tabs:
+        client:
+          description: "Client tokens are issued by other applications, allowing OpenProject to access them."
+          title: "Client tokens"
+        provider:
+          description: "Provider tokens are issued by OpenProject, allowing other applications to access it."
+          title: "Provider tokens"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "Mã API cho phép các ứng dụng của bên thứ ba giao tiếp với phiên bản OpenProject này qua REST APIs."
+        static_token_name: "API token"
         disabled_text: "Mã API không được kích hoạt bởi quản trị viên. Vui lòng liên hệ với quản trị viên của bạn để sử dụng tính năng này."
         add_button: "API Token"
-      api:
-        static_token_name: "Mã API"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "Đăng ký iCalendar không được kích hoạt bởi quản trị viên. Vui lòng liên hệ với quản trị viên của bạn để sử dụng tính năng này."
-        empty_text_hint: "Để thêm mã iCalendar, hãy đăng ký một lịch mới hoặc hiện có từ module Lịch của một dự án. Bạn phải có quyền cần thiết."
-      oauth:
+      oauth_application:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Last used at"
         title: "OAuth"
-        text_hint: "Mã OAuth cho phép các ứng dụng bên thứ ba kết nối với phiên bản OpenProject này."
-        empty_text_hint: "Không có quyền truy cập ứng dụng bên thứ ba nào được cấu hình và hoạt động cho bạn. Vui lòng liên hệ với quản trị viên của bạn để kích hoạt tính năng này."
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
-        text_hint: "Mã RSS cho phép người dùng theo dõi các thay đổi mới nhất trong phiên bản OpenProject này qua một trình đọc RSS bên ngoài."
-        static_token_name: "Mã RSS"
-        disabled_text: "Mã RSS không được kích hoạt bởi quản trị viên. Vui lòng liên hệ với quản trị viên của bạn để sử dụng tính năng này."
+        table_title: "RSS tokens"
+        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
+        static_token_name: "RSS token"
+        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "File storages"
-        text_hint: "Mã Lưu trữ Tệp kết nối phiên bản OpenProject này với một lưu trữ tệp bên ngoài."
-        empty_text_hint: "Không có quyền truy cập lưu trữ nào liên kết với tài khoản của bạn."
-        revoke_token: "Bạn có thực sự muốn xóa mã truy cập này không? Bạn sẽ cần phải đăng nhập lại trên %{storage}"
-        removed: "Mã Lưu trữ Tệp đã được xóa thành công"
-        failed: "Đã xảy ra lỗi và mã truy cập không thể được xóa. Vui lòng thử lại sau."
         unknown_storage: "Lưu trữ không xác định"
   notifications:
     reasons:
@@ -3848,7 +3883,7 @@ vi:
   notice_not_authorized: "Bạn không được phép truy cập trang này."
   notice_not_authorized_archived_project: "Dự án bạn đang cố gắng truy cập đã bị lưu trữ."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Mật khẩu của bạn không chính xác. Không thể tiếp tục."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Có %{number} kết quả được tìm thấy. \n Nhấn Tab để tập trung vào kết quả đầu tiên."
   notice_principals_found_single: "Có một kết quả. \n Nhấn Tab để tập trung vào nó."
   notice_parent_item_not_found: "Parent item not found."
@@ -4212,11 +4247,17 @@ vi:
   setting_apiv3_cors_origins_text_html: >
     Nếu CORS được kích hoạt, đây là các nguồn gốc được phép truy cập API của OpenProject. <br/> Vui lòng kiểm tra <a href="%{origin_link}" target="_blank">Tài liệu về Header Origin</a> để biết cách chỉ định các giá trị mong đợi.
   setting_apiv3_write_readonly_attributes: "Quyền ghi vào thuộc tính chỉ đọc"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Nếu được kích hoạt, API sẽ cho phép quản trị viên ghi các thuộc tính chỉ đọc tĩnh trong quá trình tạo, chẳng hạn như createdAt và author. <br/> <strong>Cảnh báo:</strong> Cài đặt này có trường hợp sử dụng cho ví dụ, nhập dữ liệu, nhưng cho phép quản trị viên giả mạo việc tạo các mục như các người dùng khác. Tuy nhiên, tất cả các yêu cầu tạo đều được ghi lại với tác giả thực sự. </br> Để biết thêm thông tin về các thuộc tính và tài nguyên được hỗ trợ, vui lòng xem %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "Kích thước trang API tối đa"
-  setting_apiv3_max_page_instructions_html: >
-    Đặt kích thước trang tối đa mà API sẽ phản hồi. Sẽ không thể thực hiện các yêu cầu API trả về nhiều giá trị trên một trang. <br/> <strong>Cảnh báo:</strong> Vui lòng chỉ thay đổi giá trị này nếu bạn chắc chắn về lý do cần thiết. Thiết lập giá trị cao sẽ dẫn đến tác động đáng kể đến hiệu suất, trong khi giá trị thấp hơn các tùy chọn trên trang sẽ gây lỗi trong các chế độ xem phân trang.
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "Tài liệu"
   setting_apiv3_docs_enabled: "Kích hoạt trang tài liệu"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4675,6 +4716,7 @@ vi:
     Lưu ý: nếu được kích hoạt, một bảng thông báo về tình trạng của phần mềm sẽ được hiển thị tại trang quản trị <a href="%{information_panel_path}">%{information_panel_label}</a>, và tại trang chủ. Thông tin này chỉ được thấy bởi Quản trị viên. <br/> Bảng thông báo sẽ kiểm tra các thông tin cập nhật từ OpenProject và thông báo về các cập nhật mới hay các lỗi được phát hiện. Để biết thêm chi tiết, vui lòng tham khảo <a href="%{more_info_url}">tài liệu cấu hình</a>.
   text_own_membership_delete_confirmation: "Bạn sắp xóa một số hoặc tất cả quyền của mình và có thể không còn khả năng chỉnh sửa dự án này sau đó.\nBạn có chắc chắn muốn tiếp tục không?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Thư mục tài sản plugin có thể ghi được"
   text_powered_by: "Được cung cấp bởi %{link}"
   text_project_identifier_info: "Chỉ cho phép chữ cái viết thường (a-z), số, dấu gạch ngang và gạch dưới, phải bắt đầu bằng chữ cái viết thường."

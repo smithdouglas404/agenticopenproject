@@ -706,9 +706,11 @@ ko:
           create_button: "만들기"
           name_label: "토큰 이름"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "API 토큰이 생성되었습니다"
-          warning: "이번에만 이 토큰이 표시됩니다. 지금 이 토큰을 복사해야 합니다."
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "액세스 토큰을 재설정하지 못함: %{error}"
       failed_to_create_token: "액세스 토큰을 만들지 못했습니다: %{error}"
       failed_to_revoke_token: "액세스 토큰을 취소하지 못했습니다: %{error}"
@@ -718,6 +720,9 @@ ko:
       notice_api_token_revoked: "API 토큰이 삭제되었습니다. 새 토큰을 만들려면 API 섹션의 버튼을 사용하세요."
       notice_rss_token_revoked: "RSS 토큰이 삭제되었습니다. 새 토큰을 만들려면 RSS 섹션의 링크를 사용하세요."
       notice_ical_token_revoked: '"%{project_name}" 프로젝트의 "%{calendar_name}" 캘린더에 대한 iCalendar 토큰 "%{token_name}"이(가) 취소되었습니다. 이 토큰이 포함된 iCalendar URL이 이제 유효하지 않습니다.'
+    password_confirmation_dialog:
+      confirmation_required: "이 변경 내용을 확인하려면 계정 암호를 입력해야 합니다."
+      title: "계속하려면 암호 확인"
   news:
     index:
       no_results_title_text: 보고할 소식이 없습니다.
@@ -1502,7 +1507,8 @@ ko:
         not_a_datetime: "은(는) 유효한 날짜가 아닙니다."
         not_a_number: "은(는) 숫자가 아닙니다."
         not_allowed: "- 사용 권한이 없어 유효하지 않습니다."
-        not_json: "- 유효한 JSON 개체가 아닙니다."
+        not_json: "- JSON으로 구문 분석할 수 없습니다."
+        not_json_object: "- JSON 개체가 아닙니다."
         not_an_integer: "은(는) 정수가 아닙니다."
         not_an_iso_date: "은(는) 유효한 날짜가 아닙니다. 필요한 형식: YYYY-MM-DD."
         not_same_project: "은(는) 동일한 프로젝트에 속하지 않습니다."
@@ -1897,7 +1903,10 @@ ko:
       status: "작업 패키지 상태"
       token/api:
         other: 액세스 토큰
-      type: "타입"
+      token/rss:
+        other: "RSS tokens"
+      type:
+        other: "유형"
       user: "사용자"
       version: "버전"
       workflow: "워크플로"
@@ -2110,6 +2119,7 @@ ko:
   button_click_to_reveal: "표시하려면 클릭"
   button_close: "닫기"
   button_collapse_all: "모두 축소"
+  button_confirm: "확인"
   button_configure: "구성"
   button_continue: "계속"
   button_complete: "완료"
@@ -2142,6 +2152,7 @@ ko:
   button_print: "인쇄"
   button_quote: "인용"
   button_remove: 제거
+  button_remove_permanently: "영구적으로 제거"
   button_remove_reminder: "미리 알림 제거"
   button_rename: "이름 바꾸기"
   button_replace: "교체하기"
@@ -2862,34 +2873,58 @@ ko:
         expiration: "만료"
       indefinite_expiration: "사용 안 함"
       simple_revoke_confirmation: "이 토큰을 취소하시겠습니까?"
+      tabs:
+        client:
+          description: "Client tokens are issued by other applications, allowing OpenProject to access them."
+          title: "Client tokens"
+        provider:
+          description: "Provider tokens are issued by OpenProject, allowing other applications to access it."
+          title: "Provider tokens"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "API 토큰을 사용하면 타사 애플리케이션이 REST API를 통해 이 OpenProject 인스턴스와 통신할 수 있습니다."
+        static_token_name: "API token"
         disabled_text: "관리자가 API 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
         add_button: "API 토큰"
-      api:
-        static_token_name: "API 토큰"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "iCalendar 토큰을 사용하여 사용자가 [OpenProject 캘린더를 구독](docs_url)하고 외부 클라이언트의 최신 작업 패키지 정보를 볼 수 있습니다."
         disabled_text: "관리자가 iCalendar 구독을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
-        empty_text_hint: "iCalendar 토큰을 추가하려면 프로젝트의 캘린더 모듈 내에서 새 캘린더 또는 기존 캘린더를 구독하세요. 필요한 권한이 있어야 합니다."
-      oauth:
+      oauth_application:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Last used at"
         title: "OAuth"
-        text_hint: "OAuth 토큰을 사용하면 타사 애플리케이션이 이 OpenProject 인스턴스와 연결할 수 있습니다."
-        empty_text_hint: "사용자를 위해 구성되고 활성화된 타사 애플리케이션 액세스가 없습니다. 이 기능을 활성화하려면 관리자에게 문의하세요."
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
-        text_hint: "RSS 토큰을 사용하면 외부 RSS 리더를 통해 이 OpenProject 인스턴스의 최신 변경 사항을 확인할 수 있습니다."
-        static_token_name: "RSS 토큰"
-        disabled_text: "관리자가 RSS 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
+        table_title: "RSS tokens"
+        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
+        static_token_name: "RSS token"
+        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "파일 저장소"
-        text_hint: "파일 저장소 토큰은 이 OpenProject 인스턴스를 외부 파일 저장소에 연결합니다."
-        empty_text_hint: "사용자 계정에 연결된 저장소 액세스 권한이 없습니다."
-        revoke_token: "이 토큰을 제거하시겠습니까? %{storage}에서 다시 로그인해야 합니다."
-        removed: "파일 저장소 토큰이 제거되었습니다."
-        failed: "오류가 발생하여 토큰을 제거할 수 없습니다. 나중에 다시 시도하세요."
         unknown_storage: "알 수 없는 저장소"
   notifications:
     reasons:
@@ -3848,7 +3883,7 @@ ko:
   notice_not_authorized: "이 페이지에 액세스할 권한이 없습니다."
   notice_not_authorized_archived_project: "액세스하려는 프로젝트는 이미 보관되어 있습니다."
   notice_requires_enterprise_token: "Enterprise 토큰이 누락되었거나 이 페이지에 대한 액세스를 허용하지 않습니다."
-  notice_password_confirmation_failed: "암호가 올바르지 않습니다. 계속할 수 없습니다."
+  notice_password_confirmation_failed: "입력한 암호가 올바르지 않습니다."
   notice_principals_found_multiple: "%{number} 개의 결과가 발견되었습니다.\n첫번째 결과를 보려면 탭 해주세요."
   notice_principals_found_single: "한 개의 결과가 있습니다.\n보려면 탭 해주세요."
   notice_parent_item_not_found: "부모 항목을 찾을 수 없습니다."
@@ -4209,11 +4244,17 @@ ko:
   setting_apiv3_cors_origins_text_html: >
     CORS가 활성화된 경우, OpenProject API에 액세스하도록 허용된 원본이 있습니다. <br/> <a href="%{origin_link}" target="_blank">원본 헤더의 설명서</a>에서 예상 값 지정 방법을 확인하세요.
   setting_apiv3_write_readonly_attributes: "읽기 전용 특성에 대한 쓰기 액세스"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    활성화하면, API를 통해 관리자가 생성 중에 createdAt 및 author 등의 정적 읽기 전용 특성을 작성할 수 있습니다. <br/> <strong>경고:</strong> 이 설정은 데이터 가져오기 등의 사용 사례가 있지만 관리자가 다른 사용자로 가장하여 항목을 만들 수 있습니다. 그러나 모든 생성 요청은 실제 작성자와 함께 기록되고 있습니다. </br> 특성 및 지원되는 리소스에 대한 자세한 내용은 %{api_documentation_link}에서 참조하세요.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "최대 API 페이지 크기"
-  setting_apiv3_max_page_instructions_html: >
-    API가 응답할 최대 페이지 크기를 설정하세요. 단일 페이지에서 더 많은 값을 반환하는 API 요청을 수행할 수 없습니다. <br/> <strong>경고:</strong> 이 값이 필요한 이유가 확실한 경우에만 이 값을 변경하세요. 높은 값으로 설정하면 성능에 상당한 영향을 미치고, 페이지당 옵션보다 낮은 값은 페이지가 매겨진 보기에서 오류를 일으킵니다.
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "설명서"
   setting_apiv3_docs_enabled: "문서 페이지 활성화"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4672,6 +4713,7 @@ ko:
     참고: 활성화하는 경우, <a href="%{information_panel_path}">%{information_panel_label}</a> 관리 패널 및 홈페이지에서 설치 상태가 나오는 배지가 표시됩니다. 배지는 관리자에게만 표시됩니다. <br/> 배지는 공식 OpenProject 릴리스 데이터베이스와 비교하여 현재 OpenProject 버전을 확인하고 업데이트 또는 알려진 취약성에 대해 알려줍니다. 이 검사에서 제공하는 사항, 사용 가능한 업데이트를 제공하기 위해 필요한 데이터 및 이 검사를 비활성화하는 방법에 대한 자세한 내용은 <a href="%{more_info_url}">구성 문서</a>를 참조하십시오.
   text_own_membership_delete_confirmation: "권한의 일부 또는 전부를 삭제하려고 합니다. 이렇게 한 후에는 이 프로젝트를 더 이상 편집하지 못할 수 있습니다.\n계속하시겠습니까?"
   text_permanent_delete_confirmation_checkbox_label: "이 삭제는 되돌릴 수 없음을 이해합니다."
+  text_permanent_remove_confirmation_checkbox_label: "이 제거는 되돌릴 수 없음을 이해합니다"
   text_plugin_assets_writable: "플러그인 자산 디렉터리 쓰기 가능"
   text_powered_by: "%{link} 제공"
   text_project_identifier_info: "소문자(a-z), 숫자, 대시(-) 및 밑줄(_)만 허용됩니다. 소문자로 시작해야 합니다."

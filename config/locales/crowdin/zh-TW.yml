@@ -705,9 +705,11 @@ zh-TW:
           create_button: "建立"
           name_label: "令牌名稱"
       created_dialog:
+        one_time_warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
         token/api:
           title: "API 令牌(Token)已生成。"
-          warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
+        token/rss:
+          title: "已產生 RSS 令牌"
       failed_to_reset_token: "無法重置訪問令牌(Token): %{error}"
       failed_to_create_token: "無法建立訪問令牌(Token): %{error}"
       failed_to_revoke_token: "無法撤銷訪問令牌(Token): %{error}"
@@ -717,6 +719,9 @@ zh-TW:
       notice_api_token_revoked: "API 令牌(Token)已被刪除。請使用 API 區段中的按鈕產生新的。"
       notice_rss_token_revoked: "RSS 令牌(Token)已被刪除。 請使用 在RSS 選項裡提供的連結建立新的。"
       notice_ical_token_revoked: '專案「%{project_name}」日曆「%{calendar_name}」的 iCalendar 令牌(Token)「%{token_name}」已被撤銷。 帶有此令牌的 iCalendar URL 無效。'
+    password_confirmation_dialog:
+      confirmation_required: "您需要輸入帳戶密碼來確認這項變更。"
+      title: "確認您的密碼以便繼續"
   news:
     index:
       no_results_title_text: 目前沒有新消息報告
@@ -1498,7 +1503,8 @@ zh-TW:
         not_a_datetime: "不是有效的日期時間。"
         not_a_number: "不是數字"
         not_allowed: "是無效的因為缺少權限"
-        not_json: "不是有效的 JSON 物件。"
+        not_json: "無法解析為 JSON。"
+        not_json_object: "不是 JSON 物件。"
         not_an_integer: "不是整數"
         not_an_iso_date: "不是有效日期。所需格式：YYYY-MM-DD。"
         not_same_project: "不屬於相同的專案"
@@ -1893,7 +1899,10 @@ zh-TW:
       status: "工作套件狀態"
       token/api:
         other: 存取令牌(Token)
-      type: "類型"
+      token/rss:
+        other: "RSS 令牌(Token)"
+      type:
+        other: "類型"
       user: "使用者"
       version: "版本"
       workflow: "工作流程"
@@ -2106,6 +2115,7 @@ zh-TW:
   button_click_to_reveal: "點擊顯示"
   button_close: "關閉"
   button_collapse_all: "全部收合"
+  button_confirm: "確認"
   button_configure: "設定"
   button_continue: "繼續"
   button_complete: "完成"
@@ -2138,6 +2148,7 @@ zh-TW:
   button_print: "列印"
   button_quote: "引言"
   button_remove: 刪除
+  button_remove_permanently: "永久移除"
   button_remove_reminder: "移除提醒"
   button_rename: "重新命名"
   button_replace: "取代"
@@ -2858,34 +2869,58 @@ zh-TW:
         expiration: "過期"
       indefinite_expiration: "無"
       simple_revoke_confirmation: "你確定要撤銷此令牌(Token)？"
+      tabs:
+        client:
+          description: "用戶端令牌由其他應用程式發行，允許 OpenProject 存取。"
+          title: "用戶端令牌"
+        provider:
+          description: "服務提供者令牌由 OpenProject 發出，允許其他應用程式存取。"
+          title: "服務提供者令牌"
       token/api:
+        blank_description: "目前還沒有 API 令牌。您可以使用下面的按鈕建立一個。"
+        blank_title: "無 API 令牌"
         title: "API"
+        table_title: "API 令牌(Token)"
         text_hint: "API 令牌(Tokens)允許第三方應用程式透過 REST API 與此 OpenProject 實例進行通訊。"
+        static_token_name: "API 令牌(Token)"
         disabled_text: "API 令牌(Tokens)未由管理員啟用。若要使用此功能，請聯絡您的管理員。"
         add_button: "API 令牌"
-      api:
-        static_token_name: "API 令牌(Token)"
       ical:
+        blank_description: "若要新增 iCalendar 令牌，請從專案的行事曆模組中訂閱新的或現有的行事曆。您必須擁有必要的權限。"
+        blank_title: "沒有 iCalendar 令牌"
         title: "iCalendar "
+        table_title: "iCalendar 令牌"
         text_hint_link: "iCalendar 權杖可讓使用者[訂閱 OpenProject 行事曆](docs_url)，並在外部用戶端中檢視最新的工作套件資訊。"
         disabled_text: "管理員未啟用 iCalendar 訂閱。 請聯絡您的管理員以使用此功能。"
-        empty_text_hint: "新增 iCalendar 令牌(Token)，可訂閱各專案裡面的日曆( 需擁有相關權限)。"
-      oauth:
+      oauth_application:
+        active_tokens: "有效令牌"
+        blank_description: "沒有為您設定和啟用第三方應用程式存取。"
+        blank_title: "沒有 OAuth 應用程式令牌"
+        last_used_at: "最後使用於"
         title: "OAuth"
-        text_hint: "OAuth 令牌(Token)允許第三方應用程式與此 OpenProject 連線。"
-        empty_text_hint: "沒有為您設定和啟動第三方應用程式存取權限。請聯絡您的管理員以啟動此功能"
-      rss:
-        title: "RSS訂閱"
-        text_hint: "RSS 令牌(Token)可讓使用者透過外部 RSS 閱讀器了解本專案管理系統中最新異動。"
+        table_title: "OAuth 應用程式令牌"
+        text_hint: "OAuth 應用程式令牌允許第三方應用程式與此 OpenProject 範例連線。"
+      oauth_client:
+        blank_description: "目前還沒有 OAuth 用戶端令牌。"
+        blank_title: "沒有 OAuth 用戶端令牌"
+        failed: "發生錯誤，令牌無法移除。請稍後再試。"
+        integration_type: "整合類型"
+        table_title: "OAuth 用戶端令牌"
+        text_hint: "OAuth 客戶端令牌允許此 OpenProject 實例與外部應用程式連線，例如檔案儲存。"
+        title: "OAuth"
+        remove_token: "您真的要移除此令牌？您需要重新登入 %{integration}。"
+        removed: "成功移除 OAuth 用戶端令牌"
+        unknown_integration: "未知"
+      token/rss:
+        add_button: "RSS 令牌(Token)"
+        blank_description: "目前尚未有 RSS 令牌。您可以使用下面的按鈕建立一個。"
+        blank_title: "沒有 RSS 令牌"
+        title: "RSS"
+        table_title: "RSS 令牌(Token)"
+        text_hint: "RSS 令牌允許使用者透過外部 RSS 閱讀器，瞭解此 OpenProject 實例的最新變更。"
         static_token_name: "RSS 令牌(Token)"
-        disabled_text: "尚未啟用 RSS令牌(Token)功能。 請聯絡您的管理員。"
+        disabled_text: "RSS 令牌並非由管理員啟用。請聯絡您的管理員以使用此功能。"
       storages:
-        title: "檔案儲存"
-        text_hint: "檔案儲存區令牌(Token)，可將本專案管理系統與外部檔案儲存系統連接。"
-        empty_text_hint: "沒有與您帳戶連動的儲存裝置存取權限。"
-        revoke_token: "是否確實要移除此令牌(Token)？您需要再次登錄 %{storage}"
-        removed: "文件存儲區令牌(Token)已成功移除"
-        failed: "出錯了，無法移除令牌(Token)。請稍後再試。"
         unknown_storage: "不明的儲存區"
   notifications:
     reasons:
@@ -3140,7 +3175,7 @@ zh-TW:
   label_filter_add: "新增條件"
   label_filter_by: "篩選條件："
   label_filter_any_name_attribute: "名稱屬性"
-  label_filter_plural: "篩選條件"
+  label_filter_plural: "篩選器"
   label_filters_toggle: "顯示/隱藏篩選條件"
   label_float: "浮點數"
   label_folder: "資料夾"
@@ -3155,8 +3190,8 @@ zh-TW:
   label_global_modules: "全域模組"
   label_global_roles: "全域角色"
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: "之前"
-  label_group_by: "分類"
+  label_greater_or_equal: ">="
+  label_group_by: "分組依據"
   label_group_new: "新增群組"
   label_group: "群組"
   label_group_named: "群組名稱 %{name}"
@@ -3168,7 +3203,7 @@ zh-TW:
   label_hierarchy: "階層"
   label_hierarchy_leaf: "頁面結構頁"
   label_home: "Home"
-  label_subject_or_id: "名稱或 id"
+  label_subject_or_id: "主旨或 id"
   label_calendar_subscriptions: "訂閱行事曆"
   label_identifier: "識別碼"
   label_in: "在"
@@ -3217,7 +3252,7 @@ zh-TW:
   label_latest_revision_plural: "最新版本"
   label_ldap_authentication: "LDAP 認證"
   label_learn_more: "了解更多"
-  label_less_or_equal: "之後"
+  label_less_or_equal: "<="
   label_less_than_ago: "幾天內"
   label_link_url: "連結(URL)"
   label_list: "清單"
@@ -3843,7 +3878,7 @@ zh-TW:
   notice_not_authorized: "你沒有存取此頁面的權限"
   notice_not_authorized_archived_project: "你欲存取的專案已被封存"
   notice_requires_enterprise_token: "企業識別碼遺失或不允許存取此頁面。"
-  notice_password_confirmation_failed: "您的密碼不正確。無法繼續。"
+  notice_password_confirmation_failed: "輸入的密碼不正確。"
   notice_principals_found_multiple: "找到 %{number} 條結果。\n Tab鍵以轉到第一條結果。"
   notice_principals_found_single: "有一個結果。 \n Tab鍵轉到該結果。"
   notice_parent_item_not_found: "未找到父項目。"
@@ -4206,11 +4241,17 @@ zh-TW:
   setting_apiv3_cors_origins_text_html: >
     如果啓用了 CORS ，這些是允許訪問 OpenProject API 的源。<br/>請查看<a href="%{origin_link}" target="_blank">有關“源”標題的文檔</a>，瞭解如何指定預期值。
   setting_apiv3_write_readonly_attributes: "對唯讀屬性的寫入存取權限"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    若啟用，API 將允許管理員在建立時寫入靜態唯讀屬性，例如 createdAt 與 author。<br/> <strong>警告：</strong> 此設定適用於例如匯入資料的情境，但同時也允許管理員在建立項目時冒充其他使用者。不過，所有建立請求都會記錄實際作者。</br>如需屬性與支援資源的更多資訊，請參閱 %{api_documentation_link}。
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "API 每頁最大值"
-  setting_apiv3_max_page_instructions_html: >
-    設定 API 回應的最大值。 無法執行單一頁面上傳回更多值的 API 請求。 <br/> <strong>警告：</strong>如果您很確定，才變更該值。 設定為高值將導致效能不彰，數值過低也將造成檢視錯誤。
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "說明文件"
   setting_apiv3_docs_enabled: "啟用文件頁面"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4669,6 +4710,7 @@ zh-TW:
     注：如果啓用，這會在 <a href="%{information_panel_path}">%{information_panel_label}</a> 管理面板中和首頁上顯示一個包含您的安裝狀態的徽章。徽章僅向管理員顯示。<br/>徽章將根據官方的 OpenProject 版本數據庫檢查您當前的 OpenProject 版本，提醒您是否存在任何更新或已知漏洞。如需詳細瞭解檢查可以提供哪些信息，需要哪些數據來提供可用更新，以及如何禁用此檢查，請訪問<a href="%{more_info_url}">配置文檔</a>。
   text_own_membership_delete_confirmation: "您將要刪除部分或全部權限, 之後可能無法再編輯此專案。\n是否要繼續？"
   text_permanent_delete_confirmation_checkbox_label: "我了解此刪除無法逆轉"
+  text_permanent_remove_confirmation_checkbox_label: "我了解此移除無法逆轉"
   text_plugin_assets_writable: "Plugin 資產目錄可寫"
   text_powered_by: "由 %{link} 提供"
   text_project_identifier_info: "僅允許小寫字母(a-z)、數字、破折號(-) 及底線(_)，且必須以小寫字母開頭。"
