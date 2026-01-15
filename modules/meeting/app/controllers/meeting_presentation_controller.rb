@@ -66,7 +66,7 @@ class MeetingPresentationController < ApplicationController
   private
 
   def find_meeting
-    @meeting = Meeting.find(params[:meeting_id])
+    @meeting = Meeting.visible.find(params[:meeting_id])
     @project = @meeting.project
   end
 
