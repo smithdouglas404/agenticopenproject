@@ -62,10 +62,16 @@ class Exports::PDF::Common::View
     CustomStyle.current.present? &&
       CustomStyle.current.export_font_regular.present? &&
       CustomStyle.current.export_font_regular.local_file.present?
+  rescue StandardError => e
+    Rails.logger.error "Failed to access custom PDF font file: #{e}"
+    false # Fallback to default fonts
   end
 
   def self.valid_custom_font_cut?(cut)
     cut.present? && cut.local_file.present?
+  rescue StandardError => e
+    Rails.logger.error "Failed to access custom PDF font file: #{e}"
+    false # Fallback to default fonts
   end
 
   def options
@@ -118,6 +124,9 @@ class Exports::PDF::Common::View
 
   def font_or_default(cut, default)
     cut.present? && cut.local_file.present? ? cut.local_file : default
+  rescue StandardError => e
+    Rails.logger.error "Failed to access custom PDF font file: #{e}"
+    default
   end
 
   def custom_font_files
