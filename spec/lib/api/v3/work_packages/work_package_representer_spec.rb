@@ -1481,40 +1481,36 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
           work_package.project_phase_definition = nil
         end
 
-        it_behaves_like "has a titled link" do
+        it_behaves_like "has an untitled link" do
           let(:link) { "projectPhaseDefinition" }
           let(:href) { nil }
-          let(:title) { nil }
         end
       end
 
       context "with the phase not existing in the project" do
         let(:project_phases) { [other_project_phase] }
 
-        it_behaves_like "has a titled link" do
+        it_behaves_like "has an untitled link" do
           let(:link) { "projectPhaseDefinition" }
           let(:href) { nil }
-          let(:title) { nil }
         end
       end
 
       context "with the phase being inactive in the project" do
         let(:project_phase) { build_stubbed(:project_phase, active: false, definition: project_phase_definition) }
 
-        it_behaves_like "has a titled link" do
+        it_behaves_like "has an untitled link" do
           let(:link) { "projectPhaseDefinition" }
           let(:href) { nil }
-          let(:title) { nil }
         end
       end
 
       context "without the user being allowed to see the reference" do
         let(:permissions) { all_permissions - [:view_project_phases] }
 
-        it_behaves_like "has a titled link" do
+        it_behaves_like "has an untitled link" do
           let(:link) { "projectPhaseDefinition" }
           let(:href) { nil }
-          let(:title) { nil }
         end
       end
     end
