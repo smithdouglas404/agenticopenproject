@@ -33,8 +33,6 @@ class MeetingPresentationController < ApplicationController
   include Meetings::AgendaComponentStreams
   include Meetings::PresentationComponentStreams
 
-  before_action :check_feature_flag
-
   before_action :find_meeting
   before_action :check_presentable
   before_action :determine_current_id
@@ -72,12 +70,6 @@ class MeetingPresentationController < ApplicationController
 
   def find_agenda_item
     @meeting_agenda_item = @meeting.agenda_items.find(params[:meeting_agenda_item_id])
-  end
-
-  def check_feature_flag
-    unless OpenProject::FeatureDecisions.meetings_presentation_mode_active?
-      render_404
-    end
   end
 
   def set_started_at
