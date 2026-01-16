@@ -75,9 +75,7 @@ module Users
     end
 
     def revoke_session_bound_oauth_tokens!(user)
-      OAuth::RevokeSessionTokensService.new(user:).call
-    rescue StandardError => e
-      OpenProject.logger.warn { "Failed to revoke session-bound OAuth tokens for user ##{user.id}: #{e.message}" }
+      OAuth::RevokeSessionTokensService.call(user)
     end
   end
 end

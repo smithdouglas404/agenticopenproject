@@ -29,22 +29,14 @@
 #++
 
 module OAuth
-  class RevokeSessionTokensService < BaseServices::BaseCallable
-    def initialize(user:)
-      super()
-      @user = user
-    end
-
-    def perform
+  class RevokeSessionTokensService
+    def self.call(user)
       application_uids = SessionBoundApplicationRegistry.registered_uids
-      return ServiceResult.success if application_uids.empty?
 
       applications = Doorkeeper::Application.where(uid: application_uids)
       applications.each do |app|
-        Doorkeeper::Application.revoke_tokens_and_grants_for(app.id, @user)
+        Doorkeeper::Application.revoke_tokens_and_grants_for(app.id, user)
       end
-
-      ServiceResult.success
     end
   end
 end

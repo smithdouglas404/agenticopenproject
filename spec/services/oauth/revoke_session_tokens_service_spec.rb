@@ -31,7 +31,7 @@
 require "spec_helper"
 
 RSpec.describe OAuth::RevokeSessionTokensService do
-  subject(:service_call) { described_class.new(user:).call }
+  subject(:service_call) { described_class.call(user) }
 
   let(:user) { create(:user) }
 
@@ -39,12 +39,12 @@ RSpec.describe OAuth::RevokeSessionTokensService do
     OAuth::SessionBoundApplicationRegistry.reset!
   end
 
-  describe "#call" do
+  describe ".call" do
     context "when no applications are registered" do
-      it "returns success" do
+      it "passes through" do
         result = service_call
 
-        expect(result).to be_success
+        expect(result).to be_empty
       end
     end
 
@@ -53,10 +53,10 @@ RSpec.describe OAuth::RevokeSessionTokensService do
         OAuth::SessionBoundApplicationRegistry.register("non_existent_app")
       end
 
-      it "returns success" do
+      it "passes through" do
         result = service_call
 
-        expect(result).to be_success
+        expect(result).to be_empty
       end
     end
 
@@ -70,10 +70,10 @@ RSpec.describe OAuth::RevokeSessionTokensService do
       end
 
       context "with no tokens for the user" do
-        it "returns success" do
+        it "passes through" do
           result = service_call
 
-          expect(result).to be_success
+          expect(result).to contain_exactly(application)
         end
       end
 
@@ -98,12 +98,6 @@ RSpec.describe OAuth::RevokeSessionTokensService do
           expect { service_call }
             .to change { token1.reload.revoked? }.from(false).to(true)
             .and change { token2.reload.revoked? }.from(false).to(true)
-        end
-
-        it "returns success" do
-          result = service_call
-
-          expect(result).to be_success
         end
       end
 

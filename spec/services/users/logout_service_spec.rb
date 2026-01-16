@@ -114,21 +114,6 @@ RSpec.describe Users::LogoutService, type: :model do
       it "revokes session-bound OAuth tokens" do
         expect { subject }.to change { token.reload.revoked? }.from(false).to(true)
       end
-
-      context "when token revocation fails" do
-        before do
-          allow_any_instance_of(OAuth::RevokeSessionTokensService) # rubocop:disable RSpec/AnyInstance
-            .to receive(:call)
-            .and_raise(StandardError, "DB error")
-          allow(OpenProject.logger).to receive(:warn)
-        end
-
-        it "logs a warning and completes logout" do
-          expect { subject }.not_to raise_error
-          expect(User.current).to eq User.anonymous
-          expect(OpenProject.logger).to have_received(:warn)
-        end
-      end
     end
 
     context "when config is disabled",
