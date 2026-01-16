@@ -38,7 +38,7 @@ import * as Y from 'yjs';
 export default class extends Controller {
   static values = {
     hocuspocusUrl: String,
-    oauthToken: String,
+    tokenPayload: String,
     documentName: String,
     tokenExpiresAt: String,
     tokenExpiresInSeconds: Number,
@@ -46,7 +46,7 @@ export default class extends Controller {
   };
 
   declare readonly hocuspocusUrlValue:string;
-  declare readonly oauthTokenValue:string;
+  declare readonly tokenPayloadValue:string;
   declare readonly documentNameValue:string;
   declare readonly tokenExpiresAtValue:string;
   declare readonly tokenExpiresInSecondsValue:number;
@@ -69,7 +69,7 @@ export default class extends Controller {
   };
 
   connect():void {
-    this.currentToken = this.oauthTokenValue;
+    this.currentToken = this.tokenPayloadValue;
 
     const ydoc:Doc = new Y.Doc();
     const provider = new HocuspocusProvider({

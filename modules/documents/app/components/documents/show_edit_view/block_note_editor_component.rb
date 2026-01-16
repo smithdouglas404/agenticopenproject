@@ -36,16 +36,9 @@ module Documents
 
       alias_method :document, :model
 
-      options :project, :oauth_token, :token_expires_at, :token_expires_in_seconds, :state, :readonly
+      options :project, :token_payload, :resource_url, :token_expires_at, :token_expires_in_seconds, :state, :readonly
 
       private
-
-      def resource_url
-        URI.join(
-          root_url,
-          API::V3::Utilities::PathHelper::ApiV3Path.document(document.id)
-        ).to_s
-      end
 
       def refresh_token_url
         document_oauth_refresh_token_path(document)

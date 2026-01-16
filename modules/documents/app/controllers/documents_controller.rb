@@ -61,8 +61,7 @@ class DocumentsController < ApplicationController
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
 
     if @document.collaborative? && Setting.real_time_text_collaboration_enabled?
-      generate_encrypted_oauth_token
-      derive_readonly_from_permissions
+      setup_collaboration_context
       derive_show_edit_state_from_params
     end
   end
@@ -222,19 +221,21 @@ class DocumentsController < ApplicationController
     redirect_to document_path(call.result, state: :edit)
   end
 
-  def generate_encrypted_oauth_token
+  def setup_collaboration_context
     return unless current_user.allowed_in_project?(:view_documents, @project)
 
     token_result = Documents::OAuth::TokenWithMetadataService
-      .new(user: current_user)
+      .new(user: current_user, document: @document, project: @project)
       .call
 
     if token_result.failure?
-      Rails.logger.error("Failed to generate OAuth token for document #{@document.id}: #{token_result.errors}")
+      Rails.logger.error("Failed to generate token payload for document #{@document.id}: #{token_result.errors}")
       return
     end
 
-    @oauth_token = token_result.result[:encrypted_token]
+    @token_payload = token_result.result[:encrypted_token]
+    @resource_url = token_result.result[:resource_url]
+    @readonly = token_result.result[:readonly]
     @token_expires_at = token_result.result[:expires_at]
     @token_expires_in_seconds = token_result.result[:expires_in_seconds]
   end
@@ -247,10 +248,5 @@ class DocumentsController < ApplicationController
 
   def derive_show_edit_state_from_params
     @state = params[:state] == "edit" ? :edit : :show
-  end
-
-  def derive_readonly_from_permissions
-    @readonly = current_user.allowed_in_project?(:view_documents, @project) &&
-      !current_user.allowed_in_project?(:manage_documents, @project)
   end
 end
