@@ -87,11 +87,11 @@ See COPYRIGHT and LICENSE files for more details.
        class="<%= initial_classes %>"
        data-controller="menus--main-toggle">
     <% if (side_displayed && show_decoration) %>
-      <div
+      <nav
         id="main-menu"
         class="main-menu"
-        data-controller="menus--main">
-        <h1 class="sr-only"><%= t(:label_main_menu) %></h1>
+        data-controller="menus--main"
+        aria-label="<%= t(:label_main_menu) %>">
         <opce-main-menu-resizer></opce-main-menu-resizer>
         <div id="menu-sidebar">
           <div class="main-menu--top-container">
@@ -127,7 +127,7 @@ See COPYRIGHT and LICENSE files for more details.
             <%= call_hook :view_layouts_base_sidebar %>
           </div>
         </div>
-      </div>
+      </nav>
     <% end %>
     <div class="content-overlay"
          data-action="click->menus--main-toggle#toggleNavigation"></div>
