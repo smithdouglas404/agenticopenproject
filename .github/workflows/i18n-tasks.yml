@@ -23,7 +23,7 @@ jobs:
   i18n-tasks:
     permissions:
       contents: read
-    if: github.repository_owner == 'opf'
+    if: github.repository == 'opf/openproject'
     name: I18n inconsistency check
     runs-on: ubuntu-latest
     steps:
