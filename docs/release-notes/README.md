@@ -19,13 +19,17 @@ Release date: 2026-01-16
 
 [Release Notes](17-0-1/)
 
-
 ## 17.0.0
 
 Release date: 2026-01-14
 
 [Release Notes](17-0-0/)
 
+## 16.6.5
+
+Release date: 2026-01-16
+
+[Release Notes](16-6-5/)
 
 ## 16.6.4
 
