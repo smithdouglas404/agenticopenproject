@@ -257,6 +257,49 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
             expect(subject).not_to include work_package
           end
         end
+
+        context "with the 'is empty' operator" do
+          let(:list_custom_field) do
+            create(:list_wp_custom_field,
+                   name: "List CF",
+                   types: project.types,
+                   projects: [project])
+          end
+          let!(:wednesday_list_cf_journal) do
+            create(:journal_customizable_journal, journal: wednesday_journal, custom_field: list_custom_field, value: "1")
+          end
+          let!(:work_package_without_cf) do
+            create(:work_package, project:, journals: { monday => {}, wednesday => {}, friday => {} })
+          end
+          let(:filter) do
+            Queries::WorkPackages::Filter::CustomFieldFilter.create!(
+              name: list_custom_field.column_name,
+              context: build_stubbed(:query, project:),
+              operator: "!*",
+              values: []
+            )
+          end
+          let(:relation) { WorkPackage.where(filter.where) }
+          let(:historic_relation) { relation.at_timestamp(wednesday) }
+
+          it "transforms the expression to join the customizable_journals with correct value substitutions" do
+            subject.to_sql.squish.tap do |subject_sql|
+              expect(subject_sql)
+                .to include <<~SQL.squish
+                  JOIN customizable_journals ON
+                  customizable_journals.journal_id = work_packages.journal_id
+                  AND customizable_journals.custom_field_id = #{list_custom_field.id}
+                SQL
+              expect(subject_sql).to include "customizable_journals.value IS NULL"
+              expect(subject_sql).not_to include "custom_values.value"
+            end
+          end
+
+          it "returns work packages without the custom field value at the timestamp" do
+            expect(subject).to include work_package_without_cf
+            expect(subject).not_to include work_package
+          end
+        end
       end
 
       describe "when searching for two custom fields (concatenated into string as Query#results does)" do
