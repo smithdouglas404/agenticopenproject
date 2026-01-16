@@ -146,14 +146,30 @@ See COPYRIGHT and LICENSE files for more details.
         <h1 class="sr-only accessibility-helper"><%= t(:label_content) %></h1>
         <% if content_for?(:content_header) %>
           <div id="content-header">
-            <%= render(OpenProject::Common::MainMenuToggleComponent.new(expanded: false)) %>
+            <%=
+              render(
+                OpenProject::Common::MainMenuToggleComponent.new(
+                  expanded: false,
+                  aria: { controls: "main-menu" }
+                )
+              )
+            %>
 
             <%= content_for :content_header %>
           </div>
         <% end %>
 
         <div id="content-body">
-          <%= render(OpenProject::Common::MainMenuToggleComponent.new(expanded: false)) unless content_for?(:content_header) %>
+          <% unless content_for?(:content_header) %>
+            <%=
+              render(
+                OpenProject::Common::MainMenuToggleComponent.new(
+                  expanded: false,
+                  aria: { controls: "main-menu" }
+                )
+              )
+            %>
+          <% end %>
 
           <%= content_for :content_body %>
           <% unless local_assigns[:no_layout_yield] %>
