@@ -66,6 +66,8 @@ module Storages
 
                 expect(result).to be_success
                 expect(result.value!).to include(:listItem)
+                expect(result.value!.dig(:listItem, :parentReference, :id))
+                  .to eq("0c9632a6-7219-4422-b66f-324a6f61eecd")
               end
             end
           end
