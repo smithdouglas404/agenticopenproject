@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal } from '@angular/core';
 import { ResizeDelta } from 'core-app/shared/components/resizer/resizer.component';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { MainMenuToggleService } from 'core-app/core/main-menu/main-menu-toggle.service';
@@ -85,13 +85,11 @@ export class MainMenuResizerComponent extends UntilDestroyedMixin {
   constructor() {
     super();
 
-    effect(() => {
-      const subscription = this.toggleService.changeData$.subscribe(() => {
+    this.toggleService.changeData$
+      .pipe(this.untilDestroyed())
+      .subscribe(() => {
         this.isOpen.set(this.toggleService.showNavigation);
       });
-
-      return () => subscription.unsubscribe();
-    });
   }
 
   public resizeStart() {
