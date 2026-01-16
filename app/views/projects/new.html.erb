@@ -42,6 +42,8 @@ See COPYRIGHT and LICENSE files for more details.
     )
   %>
 <% else %>
+  <% cancel_href = workspace_creation_cancel_href(@new_project, @parent) %>
+
   <%= render(StepWizard::PageLayoutComponent.new) do |layout| %>
     <%=
       layout.with_page_header do
@@ -86,7 +88,8 @@ See COPYRIGHT and LICENSE files for more details.
           form_identifier: "project-create-form",
           project: @new_project,
           template: @template,
-          current_step: params.fetch(:step, 1).to_i
+          current_step: params.fetch(:step, 1).to_i,
+          cancel_href:
         )
       end
     %>

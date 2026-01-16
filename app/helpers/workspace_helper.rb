@@ -46,4 +46,16 @@ module WorkspaceHelper
   end
 
   def workspace_icon(type) = WORKSPACE_ICON_MAPPING[type]
+
+  # Returns a path to which the user should be redirected when cancelling the creation process of
+  # a workspace item
+  def workspace_creation_cancel_href(workspace, parent = nil)
+    if parent.present?
+      project_overview_path(parent.id)
+    elsif workspace.portfolio?
+      portfolios_path
+    else
+      projects_path
+    end
+  end
 end
