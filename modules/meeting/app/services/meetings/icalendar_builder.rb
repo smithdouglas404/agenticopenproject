@@ -90,9 +90,9 @@ module Meetings
         e.last_modified = [recurring_meeting.template.updated_at, recurring_meeting.updated_at].max.utc
         e.sequence = recurring_meeting.template.lock_version
 
-        e.rrule = recurring_meeting.schedule.rrules.first.to_ical # We currently only have one recurrence rule
-        e.dtstart = ical_datetime(recurring_meeting.template.start_time, timezone: recurring_meeting.time_zone)
-        e.dtend = ical_datetime(recurring_meeting.template.end_time, timezone: recurring_meeting.time_zone)
+        e.rrule = recurring_meeting.ical_schedule.rrules.first.to_ical # We currently only have one recurrence rule
+        e.dtstart = ical_datetime(recurring_meeting.current_schedule_start, timezone: recurring_meeting.time_zone)
+        e.dtend = ical_datetime(recurring_meeting.current_schedule_end, timezone: recurring_meeting.time_zone)
         e.location = recurring_meeting.template.location.presence
         e.status = if cancelled
                      "CANCELLED"
