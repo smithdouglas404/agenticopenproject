@@ -43,11 +43,10 @@ module Users
       if OpenProject::Configuration.drop_old_sessions_on_logout?
         remove_all_autologin_tokens! user
         remove_all_sessions! user
+        revoke_session_bound_oauth_tokens!(user)
       else
         remove_matching_autologin_token! user
       end
-
-      revoke_session_bound_oauth_tokens!(user)
 
       controller.reset_session
 

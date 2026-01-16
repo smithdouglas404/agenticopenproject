@@ -91,28 +91,28 @@ RSpec.describe Users::LogoutService, type: :model do
           expect(Token::AutoLogin.where(user_id: user.id)).to be_empty
         end
       end
-    end
 
-    context "with session-bound OAuth tokens" do
-      let!(:application) { create(:oauth_application, uid: "test_session_app") }
-      let!(:token) do
-        application.access_tokens.create!(
-          resource_owner_id: user.id,
-          scopes: "api_v3",
-          expires_in: 24.hours.to_i
-        )
-      end
+      describe "session-bound OAuth tokens" do
+        let!(:application) { create(:oauth_application, uid: "test_session_app") }
+        let!(:oauth_token) do
+          application.access_tokens.create!(
+            resource_owner_id: user.id,
+            scopes: "api_v3",
+            expires_in: 24.hours.to_i
+          )
+        end
 
-      before do
-        OAuth::SessionBoundApplicationRegistry.register("test_session_app")
-      end
+        before do
+          OAuth::SessionBoundApplicationRegistry.register("test_session_app")
+        end
 
-      after do
-        OAuth::SessionBoundApplicationRegistry.reset!
-      end
+        after do
+          OAuth::SessionBoundApplicationRegistry.reset!
+        end
 
-      it "revokes session-bound OAuth tokens" do
-        expect { subject }.to change { token.reload.revoked? }.from(false).to(true)
+        it "revokes session-bound OAuth tokens" do
+          expect { subject }.to change { oauth_token.reload.revoked? }.from(false).to(true)
+        end
       end
     end
 
