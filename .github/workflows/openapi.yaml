@@ -15,7 +15,7 @@ on:
 jobs:
   api-spec:
     name: APIv3 specification (OpenAPI 3.0)
-    if: github.repository == 'opf/openproject'
+    if: github.repository_owner == 'opf'
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v5
