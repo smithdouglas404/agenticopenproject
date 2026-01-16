@@ -189,7 +189,7 @@ The [package-based installation](../installation/packaged) requires one of the f
 
 ### Overview of dependencies
 
-Both the package and docker based installations will install and setup the the [Ruby runtime](https://www.ruby-lang.org/en/)  as well as the [Puma application server](https://puma.io/) that are required by OpenProject to run.
+Both the package and docker based installations will install and setup the the [Ruby runtime](https://www.ruby-lang.org/en/), as well as the [Puma application server](https://puma.io/) that are required by OpenProject to run.
 
 For the [packaged installation](../installation/packaged/) and the [all-in-one docker container](../installation/docker#all-in-one-container) container, an [Apache](https://httpd.apache.org/) web server and a [PostgreSQL 17](https://www.postgresql.org/) database are installed.
 The all-in-one container only will additionally install [hocuspocus](https://github.com/opf/op-blocknote-hocuspocus) which is required for the real-time collaboration feature in OpenProject.
