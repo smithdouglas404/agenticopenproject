@@ -14,6 +14,8 @@ We released OpenProject [OpenProject 16.6.3](https://community.openproject.org/v
 The release contains security relevant bug fixes and we strongly urge updating to the newest version.
 Below you will find a complete list of all changes and bug fixes.
 
+## CVEs
+
 ### CVE-2026-22605 - Insecure Direct Object Reference in Meetings
 
 OpenProject versions <= 16.6.2 allows users with the View Meetings permission on any project, to access meeting agenda and section titles, notes, and text outcomes of meetings that belonged to projects, the user does not have access to. Linked work packages to projects the user is not allowed to see, are not affected.

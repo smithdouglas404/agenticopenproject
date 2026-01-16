@@ -43,4 +43,4 @@ At the end, you will find a complete list of all changes and bug fixes.
 A big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
 This release, special thanks for reporting and finding bugs go to Boris Lukashev, Serg Baranov, Lars Briem, Andrey Dermeyko.
 
-A special thanks goes out to [Kanitin Pholngam](https://github.com/meanknt) for responsible disclosure of a potential security vulnerability. Thank you for reaching out to us and your help in identifying this issue. If you have a security vulnerability you would like to disclose, please see our [statement on security](../../security-and-privacy/statement-on-security/).
+A special thanks goes out to [Kanitin Pholngam](https://github.com/meanknt) for responsible disclosure of a potential security vulnerability. Thank you for reaching out to us and your help in identifying this issue. If you have a security vulnerability you would like to disclose, please see our [statement on security](../../../security-and-privacy/statement-on-security/).

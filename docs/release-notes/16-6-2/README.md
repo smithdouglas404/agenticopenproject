@@ -17,6 +17,8 @@ Below you will find a complete list of all changes and bug fixes.
 The reported vulnerabilities have been reported as part of a Pentest by [Mantodea Security GmbH](https://mantodeasecurity.de/).
 Thank you for your cooperation and responsible disclosure of the vulnerabilities
 
+## CVEs
+
 ### CVE-2026-22601 - Code Execution in E-Mail function
 
 For OpenProject version 16.6.1 and below, a registered administrator can execute arbitrary command by configuring sendmail binary path and sending a test email.

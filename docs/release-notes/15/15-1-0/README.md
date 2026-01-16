@@ -23,7 +23,7 @@ Each custom field of type hierarchy can be given a short name (e.g. B for Berlin
 
 ![Example screenshot of custom fields of type hierarchy, displaying different cities as main offices](openproject-15-1-custom-field-hierarchy.jpg)
 
-[Read all about this new type of custom field in our system admin guide](../../system-admin-guide/custom-fields/#hierarchy-custom-field-enterprise-add-on).
+[Read all about this new type of custom field in our system admin guide](../../../system-admin-guide/custom-fields/#hierarchy-custom-field-enterprise-add-on).
 
 ### Redesign of the Relations tab in work packages
 
@@ -37,11 +37,11 @@ Additionally, you can now add a description to add further information about the
 ![Screenshot showing the new Relations tab in a work package](openproject-15-1-relations.png)
 
 > [!TIP]
-> As a workaround you can [include a table of related work packages to work package forms (Enterprise add-on)](../../system-admin-guide/manage-work-packages/work-package-types/#add-table-of-related-work-packages-to-a-work-package-form-enterprise-add-on). Under this table you can directly create new children work packages or link existing ones. 
+> As a workaround you can [include a table of related work packages to work package forms (Enterprise add-on)](../../../system-admin-guide/manage-work-packages/work-package-types/#add-table-of-related-work-packages-to-a-work-package-form-enterprise-add-on). Under this table you can directly create new children work packages or link existing ones. 
 
 ![A table of related work packages in OpenProject](open_project_admin_related_wp_table.png)
 
-[Read all about work package relations and hierarchies in our user guide](../../user-guide/work-packages/work-package-relations-hierarchies/).
+[Read all about work package relations and hierarchies in our user guide](../../../user-guide/work-packages/work-package-relations-hierarchies/).
 
 ### Redesign of the Meetings index page
 
@@ -53,7 +53,7 @@ Here's an example screenshot of the redesigned Meetings index page:
 
 ![Example screenshot of the redesigned Meetings index page](openproject-15-1-meetings.png)
 
-[Learn what is possible with OpenProject's dynamic meetings to improve collaboration with your colleagues](../../user-guide/meetings/).
+[Learn what is possible with OpenProject's dynamic meetings to improve collaboration with your colleagues](../../../user-guide/meetings/).
 
 ### Manual page breaks in PDF work package exports
 
@@ -61,7 +61,7 @@ With our work package export feature, people can generate good-looking PDFs. Som
 
 ![Example of a work package description with an employee contract and inserted page breaks](openproject-15-1-page-break-contract-highlighted.png)
 
-[Learn how to export work packages and what options you have](../../user-guide/work-packages/exporting/).
+[Learn how to export work packages and what options you have](../../../user-guide/work-packages/exporting/).
 
 ### Zen mode for project lists
 
@@ -71,7 +71,7 @@ Here is how zen mode for project lists looks like:
 
 ![Example screenshot of a project list in zen mode](openproject-15-1-zen-mode-highlighted.png)
 
-[Read all about OpenProject's project lists in our user guide](../../user-guide/projects/project-lists/).
+[Read all about OpenProject's project lists in our user guide](../../../user-guide/projects/project-lists/).
 
 ## Important technical updates
 
@@ -79,7 +79,7 @@ Here is how zen mode for project lists looks like:
 
 Administrators of automated deployments can now choose to skip the automatically integrated creation of an admin user. This is useful if you have set up an LDAP or SSO integration – such as those used for openDesk environments – and you want to prevent the admin user from logging in. Administrators no longer have to manually disable this automatically created admin user and thus run the risk of forgetting to do so, which would pose a security risk.
 
-Read more about [seeding through environment for OpenProject configuration in our Installation & operations guide](../../installation-and-operations/configuration/#seeding-through-environment).
+Read more about [seeding through environment for OpenProject configuration in our Installation & operations guide](../../../installation-and-operations/configuration/#seeding-through-environment).
 
 <!--more-->
 
@@ -148,4 +148,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [José Helbert Pina](https://crowdin.com/profile/GZTranslations), for a great number of translations into Portuguese.
 - [BigSeung](https://crowdin.com/profile/BigSeung), for a great number of translations into Korean.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

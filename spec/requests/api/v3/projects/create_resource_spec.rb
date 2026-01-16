@@ -302,6 +302,58 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
 
         it_behaves_like "creates a project with a custom value", "Engineering"
       end
+
+      context "with another custom field present" do
+        shared_let(:other_custom_field) do
+          create(:text_project_custom_field,
+                 name: "Other CF")
+        end
+
+        context "when a value for the other cf is provided but the required one is missing (regression #70107)" do
+          let(:body) do
+            {
+              identifier: "new_project_identifier",
+              name: "Project name",
+              other_custom_field.attribute_name(:camel_case) => {
+                raw: "Other value"
+              }
+            }.to_json
+          end
+
+          it "responds with 422 and explains the custom field error" do
+            expect(last_response).to have_http_status(:unprocessable_entity)
+
+            expect(last_response.body)
+              .to be_json_eql("Department can't be blank.".to_json)
+                    .at_path("message")
+          end
+        end
+      end
+
+      context "with another custom field present that is required but not for_all" do
+        shared_let(:required_not_for_all_custom_field) do
+          create(:text_project_custom_field,
+                 name: "Not for all CF",
+                 is_required: true,
+                 is_for_all: false)
+        end
+
+        context "when a value for the required field is provided, but no value for the required not for_all custom_field" do
+          let(:body) do
+            {
+              identifier: "new_project_identifier",
+              name: "Project name",
+              shared_custom_field.attribute_name(:camel_case) => {
+                raw: "Engineering"
+              }
+            }.to_json
+          end
+
+          it "responds with 201 and does not validate the required not for_all custom_field" do
+            expect(last_response).to have_http_status(:created)
+          end
+        end
+      end
     end
 
     context "with a visible custom field" do

@@ -83,9 +83,9 @@ This change improves clarity by showing relations in the exact order they were a
 
 To improve navigation, related project settings have been grouped under a new **Work packages** section in the project settings. This section includes three tabs:
 
-- [Types](../../user-guide/projects/project-settings/work-packages/#work-package-types)
-- [Categories](../../user-guide/projects/project-settings/work-packages/#work-package-categories)
-- [Custom fields](../../user-guide/projects/project-settings/work-packages/#work-package-custom-fields)
+- [Types](../../../user-guide/projects/project-settings/work-packages/#work-package-types)
+- [Categories](../../../user-guide/projects/project-settings/work-packages/#work-package-categories)
+- [Custom fields](../../../user-guide/projects/project-settings/work-packages/#work-package-custom-fields)
 
 The previous individual entries have been moved into this grouped view. Existing URLs now redirect to their new locations, ensuring a smooth transition. This is a structural improvement only — no changes were made to permissions or underlying functionality.
 
@@ -180,4 +180,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [greench](https://crowdin.com/profile/greench), for a great number of translations into Turkish.
 
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

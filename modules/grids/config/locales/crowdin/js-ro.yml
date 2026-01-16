@@ -19,7 +19,7 @@ ro:
           title: 'Description'
           no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi adăugată în \"Setări proiect\"."
         project_status:
-          title: 'Status'
+          title: 'Stare'
           not_started: 'Neînceput'
           on_track: 'În lucru'
           off_track: 'Întârziat'
@@ -28,7 +28,7 @@ ro:
           finished: 'Finalizat'
           discontinued: 'Anulat'
         project_status_beta:
-          title: 'Status (BETA)'
+          title: 'Stare (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

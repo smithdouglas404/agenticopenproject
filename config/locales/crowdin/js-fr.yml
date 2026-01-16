@@ -203,8 +203,8 @@ fr:
         add_table: "Ajouter un tableau des lots de travaux associés"
         edit_query: "Modifier la requête"
         new_group: "Nouveau groupe"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "Supprimer le groupe"
+        remove_attribute: "Retirer du groupe"
         reset_to_defaults: "Rétablir les valeurs par défaut"
       working_days:
         calendar:

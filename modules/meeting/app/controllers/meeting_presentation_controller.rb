@@ -33,15 +33,14 @@ class MeetingPresentationController < ApplicationController
   include Meetings::AgendaComponentStreams
   include Meetings::PresentationComponentStreams
 
-  before_action :check_feature_flag
+  load_and_authorize_with_permission_in_project :view_meetings
 
   before_action :find_meeting
+  before_action :check_feature_flag
   before_action :check_presentable
   before_action :determine_current_id
   before_action :set_started_at
   before_action :find_agenda_item, only: [:check_for_updates]
-
-  load_and_authorize_with_permission_in_optional_project :view_meetings
 
   layout "meetings/presentation"
 
@@ -66,8 +65,7 @@ class MeetingPresentationController < ApplicationController
   private
 
   def find_meeting
-    @meeting = Meeting.find(params[:meeting_id])
-    @project = @meeting.project
+    @meeting = @project.meetings.visible.find(params[:meeting_id])
   end
 
   def find_agenda_item

@@ -115,7 +115,7 @@ ro:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Bun venit
               item_1:
                 options:
                   name: Începe
@@ -174,7 +174,7 @@ ro:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Bun venit
               item_1:
                 options:
                   name: Noțiuni de bază
@@ -428,7 +428,7 @@ ro:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Bun venit
               item_1:
                 options:
                   name: Noțiuni de bază
@@ -704,7 +704,7 @@ ro:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Bun venit
               item_1:
                 options:
                   name: Noțiuni de bază
