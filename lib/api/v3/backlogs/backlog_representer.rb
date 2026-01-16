@@ -26,18 +26,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class RbMasterBacklogsController < RbApplicationController
-  menu_item :backlogs
+require "roar/decorator"
+require "roar/json/hal"
 
-  def index
-    @owner_backlogs = Backlog.owner_backlogs(@project)
-    @sprint_backlogs = Backlog.sprint_backlogs(@project)
+module API
+  module V3
+    module Backlogs
+      class BacklogRepresenter < ::API::Decorators::Single
+        include ::API::Caching::CachedRepresenter
 
-    @last_update = (@sprint_backlogs + @owner_backlogs).filter_map(&:updated_at).max
+        link :self do
+          {
+            href: "something",
+            title: represented.name
+          }
+        end
 
-    respond_to do |format|
-      format.html { }
-      format.json { render json: { owner_backlogs: @owner_backlogs, sprint_backlogs: @sprint_backlogs }.to_json }
+        # link :project do
+        #   {
+        #     href: api_v3_paths.project(represented.project.id),
+        #     title: represented.project.name
+        #   }
+        # end
+
+        property :id, render_nil: true
+        property :name, render_nil: true
+
+        def _type
+          "Backlog"
+        end
+      end
     end
   end
 end

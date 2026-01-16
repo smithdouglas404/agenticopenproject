@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,18 +28,35 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class RbMasterBacklogsController < RbApplicationController
-  menu_item :backlogs
+require "spec_helper"
 
-  def index
-    @owner_backlogs = Backlog.owner_backlogs(@project)
-    @sprint_backlogs = Backlog.sprint_backlogs(@project)
+RSpec.describe API::V3::Backlogs::BacklogRepresenter do
+  let(:type) { build_stubbed(:type, color: build_stubbed(:color)) }
+  let(:representer) { described_class.new(type, current_user: double("current_user")) }
 
-    @last_update = (@sprint_backlogs + @owner_backlogs).filter_map(&:updated_at).max
+  include API::V3::Utilities::PathHelper
 
-    respond_to do |format|
-      format.html { }
-      format.json { render json: { owner_backlogs: @owner_backlogs, sprint_backlogs: @sprint_backlogs }.to_json }
+  context "generation" do
+    subject { representer.to_json }
+
+    describe "links" do
+      it_behaves_like "has a titled link" do
+        let(:link) { "self" }
+        let(:href) { api_v3_paths.type(type.id) }
+        let(:title) { type.name }
+      end
+    end
+
+    it "indicates its id" do
+      expect(subject).to be_json_eql(type.id.to_json).at_path("id")
+    end
+
+    it "indicates its name" do
+      expect(subject).to be_json_eql(type.name.to_json).at_path("name")
+    end
+
+    it "indicates its color" do
+      expect(subject).to be_json_eql(type.color.hexcode.to_json).at_path("color")
     end
   end
 end

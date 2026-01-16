@@ -29,6 +29,8 @@
 class Backlog
   attr_accessor :sprint, :stories
 
+  delegate :project_id, to: :sprint
+
   def self.owner_backlogs(project, options = {})
     options.reverse_merge!(limit: nil)
 
