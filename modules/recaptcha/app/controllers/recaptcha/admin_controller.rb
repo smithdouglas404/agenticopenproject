@@ -1,7 +1,5 @@
 module ::Recaptcha
   class AdminController < ApplicationController
-    include ::RecaptchaHelper
-
     before_action :require_admin
     before_action :validate_settings, only: :update
     layout "admin"
