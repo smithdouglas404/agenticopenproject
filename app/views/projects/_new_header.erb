@@ -27,12 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% close_href =
-     if @parent
-       project_overview_path(@parent.id)
-     else
-       home_path
-     end %>
+<% close_href = workspace_creation_cancel_href(@new_project, @parent) %>
 
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
