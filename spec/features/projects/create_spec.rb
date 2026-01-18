@@ -73,6 +73,21 @@ RSpec.describe "Projects", "creation",
     expect(page).to have_content "Foo bar"
   end
 
+  it "redirects to the parent project page when users cancels while creating subproject" do
+    # Go to parent project page
+    visit project_overview_path(project.id)
+
+    # Start creating a subproject from parent context
+    page.find_test_selector("quick-add-menu-button").click
+    page.find_test_selector("quick-add-menu-item", text: "Project", wait: 5).click
+
+    expect(page).to have_heading "New project"
+
+    click_on "Cancel"
+
+    expect(page).to have_current_path project_overview_path(project.id)
+  end
+
   it "redirects to projects#index when users cancels" do
     visit new_project_path
 
@@ -98,13 +113,13 @@ RSpec.describe "Projects", "creation",
     expect(page).to have_current_path project_overview_path(project.id)
   end
 
-  it "redirects to projects#index when users click on close icon while creating subproject" do
+  it "redirects to projects#index when users click on close icon" do
     visit new_project_path
 
     expect(page).to have_heading "New project"
 
     find_test_selector("new_project_form_close_icon").click
-    expect(page).to have_current_path project_overview_path(project.id)
+    expect(page).to have_current_path projects_path
   end
 
   it "does not create a project with an already existing identifier" do
