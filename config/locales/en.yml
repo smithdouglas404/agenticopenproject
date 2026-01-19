@@ -3528,6 +3528,7 @@ en:
   label_lock_user: "Lock user"
   label_logged_as: "Logged in as"
   label_login: "Sign in"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Custom logo desktop"
   label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Custom export logo"
