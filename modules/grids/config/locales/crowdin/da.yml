@@ -1,35 +1,35 @@
 da:
   grids:
-    label_widget_in_grid: "Widget contained in Grid %{grid_name}"
+    label_widget_in_grid: "Widget indeholdt i gitter %{grid_name}"
     widgets:
-      empty: "This widget is currently empty."
-      not_available: "This widget is not available."
+      empty: "Denne widget er i øjeblikket tom."
+      not_available: "Denne widget er ikke tilgængelig."
       subitems:
-        title: "Subitems"
-        no_results: "There are no visible children."
-        view_all_subitems: "View all subitems"
-        button_text: "Subitem"
+        title: "Underpunkter"
+        no_results: "Der er ingen synlige underordnede."
+        view_all_subitems: "Vis alle underpunkter"
+        button_text: "Underpunkt"
       members:
-        title: "Members"
-        no_results: "No visible members."
+        title: "Medlemmer"
+        no_results: "Ingen synlige medlemmer."
         view_all_members: "Vis alle medlemmer"
-        show_members_count: "Show all %{count} members"
+        show_members_count: "Vis alle %{count} medlemmer"
         x_more:
-          one: "and one more member."
-          other: "and %{count} more members."
+          one: "og et medlem mere."
+          other: "og %{count} flere medlemmer."
       news:
-        no_results: "Nothing new to report."
+        no_results: "Intet nyt at rapportere."
   activerecord:
     attributes:
       grids/grid:
-        page: "Page"
-        row_count: "Number of rows"
-        column_count: "Number of columns"
+        page: "Side"
+        row_count: "Antal rækker"
+        column_count: "Antal kolonner"
         widgets: "Widgets"
         scope: "Omfang"
     errors:
       models:
         grids/grid:
           overlaps: 'overlap.'
-          outside: 'is outside of the grid.'
-          end_before_start: 'end value needs to be larger than the start value.'
+          outside: 'er uden for gitteret.'
+          end_before_start: 'Slutværdien skal være større end startværdien.'

@@ -34,14 +34,14 @@ da:
         notes: "Kommentarer"
         participants: "Deltagere"
         participant:
-          one: "1 Participant"
-          other: "%{count} Participants"
+          one: "1 deltager"
+          other: "%{count} deltagere"
         participants_attended: "Tilsluttede"
         participants_invited: "Inviterede"
         project: "Prjoekt"
         start_date: "Dato"
-        start_time: "Start time"
-        start_time_hour: "Start time"
+        start_time: "Starttidspunkt"
+        start_time_hour: "Starttidspunkt"
       meeting_agenda_item:
         title: "Titel"
         author: "Forfatter"
@@ -51,14 +51,14 @@ da:
       meeting_section:
         title: "Titel"
       recurring_meeting:
-        frequency: "Frequency"
+        frequency: "Hyppighed"
         interval: "Interval"
-        start_date: "Starts on"
+        start_date: "Starter"
         start_time: "Start time"
         start_time_hour: "Start time"
-        end_after: "Meeting series ends"
+        end_after: "Møderækken slutter"
         end_date: "Slutdato"
-        iterations: "Occurrences"
+        iterations: "Forekomster"
       meeting_participant:
         invited: "Invited"
         attended: "Attended"

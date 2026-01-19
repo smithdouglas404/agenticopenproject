@@ -369,9 +369,9 @@ ro:
       label_pending: în așteptare
       label_skipped: Skipped
       label_warning: Avertizare
-      no_report: No report available
-      no_report_description: Run the checks now for a full health status report for this file storage.
-      open_report: Open full health report
+      no_report: Niciun raport disponibil
+      no_report_description: Rulează acum verificările pentru un raport complet privind starea de sănătate pentru acest fișier de stocare.
+      open_report: Deschide raportul complet de sănătate
       project_folders:
         subtitle: Automatically managed project folders
       since: since %{datetime}
@@ -379,7 +379,7 @@ ro:
         failure: Some checks failed and the system does not work as expected.
         success: All connections and systems are working as expected.
         warning: Some checks returned a warning. This can lead to unexpected behaviour.
-      title: Health status report
+      title: Raport privind starea de sănătate
     health_email_notifications:
       description_disabled: Admins will not receive updates by email when there are important updates.
       description_enabled: Admins will receive updates by email when there are important updates.
@@ -473,7 +473,7 @@ ro:
       not_connectable: Not connectable. The storage requires login through an SSO provider, but the user is not logging in through SSO.
       not_connected: Not connected. The user should login to the storage via the following %{link}.
       not_connected_sso: Not yet connected, SSO should automatically connect them, once looking at files.
-    members_no_results: No members to display.
+    members_no_results: Niciun membru de afișat.
     no_results: Nu sunt încă setate stocări.
     oauth_access_granted_modal:
       access_granted: Access granted

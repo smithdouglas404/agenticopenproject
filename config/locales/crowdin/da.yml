@@ -1209,9 +1209,9 @@ da:
       favorite:
         favorited: "Item"
       grids/grid:
-        page: "Page"
-        row_count: "Number of rows"
-        column_count: "Number of columns"
+        page: "Side"
+        row_count: "Antal rækker"
+        column_count: "Antal kolonner"
         widgets: "Widgets"
       journal:
         notes: "Kommentarer"
@@ -1600,8 +1600,8 @@ da:
           already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "overlap."
-          outside: "is outside of the grid."
-          end_before_start: "end value needs to be larger than the start value."
+          outside: "er uden for gitteret."
+          end_before_start: "Slutværdien skal være større end startværdien."
         ical_token_query_assignment:
           attributes:
             name:
