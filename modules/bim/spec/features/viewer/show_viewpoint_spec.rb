@@ -28,7 +28,10 @@
 
 require_relative "../../spec_helper"
 
-RSpec.describe "Show viewpoint in model viewer", :js, with_config: { edition: "bim" } do
+RSpec.describe "Show viewpoint in model viewer",
+               :js,
+               driver: :firefox_de,
+               with_config: { edition: "bim" } do
   let(:project) do
     create(:project,
            enabled_module_names: %i[bim work_package_tracking],

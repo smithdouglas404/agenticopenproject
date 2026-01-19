@@ -31,6 +31,7 @@ require_relative "../../spec_helper"
 RSpec.describe "Create viewpoint from BCF details page",
                :js,
                :selenium,
+               driver: :firefox_de,
                with_config: { edition: "bim" } do
   let(:project) { create(:project, enabled_module_names: %i[bim work_package_tracking]) }
   let(:user) { create(:admin) }

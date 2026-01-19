@@ -1,6 +1,7 @@
 require_relative "../../spec_helper"
 
 RSpec.describe "Create BCF", :js,
+               driver: :firefox_de,
                with_config: { edition: "bim" } do
   let(:project) do
     create(:project,
