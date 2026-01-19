@@ -48,7 +48,7 @@ RSpec.describe "Meeting sections requests",
       let(:other_section) { create(:meeting_section, meeting: other_meeting) }
 
       it "returns 404" do
-        get edit_meeting_section_path(other_meeting, other_section)
+        get edit_project_meeting_section_path(other_meeting.project, other_meeting, other_section)
 
         expect(response).to have_http_status(:not_found)
       end
@@ -61,7 +61,7 @@ RSpec.describe "Meeting sections requests",
       let(:other_meeting) { create(:meeting, project: other_project) }
 
       it "returns 404" do
-        post meeting_sections_path(other_meeting)
+        post project_meeting_sections_path(other_meeting.project, other_meeting)
 
         expect(response).to have_http_status(:not_found)
       end
@@ -75,7 +75,7 @@ RSpec.describe "Meeting sections requests",
       let(:other_section) { create(:meeting_section, meeting: other_meeting) }
 
       it "returns 404" do
-        put meeting_section_path(other_meeting, other_section),
+        put project_meeting_section_path(other_meeting.project, other_meeting, other_section),
             params: { meeting_section: { title: "New title" } }
 
         expect(response).to have_http_status(:not_found)
@@ -90,7 +90,7 @@ RSpec.describe "Meeting sections requests",
       let(:other_section) { create(:meeting_section, meeting: other_meeting) }
 
       it "returns 404" do
-        delete meeting_section_path(other_meeting, other_section)
+        delete project_meeting_section_path(other_meeting.project, other_meeting, other_section)
 
         expect(response).to have_http_status(:not_found)
       end

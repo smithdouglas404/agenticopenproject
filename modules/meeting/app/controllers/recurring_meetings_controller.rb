@@ -183,9 +183,9 @@ class RecurringMeetingsController < ApplicationController
       init_next_occurrence_job(@first_occurrence)
       deliver_invitation_mails
 
-      flash[:success] = I18n.t("recurring_meeting.occurrence.first_created")
+      flash.now[:success] = I18n.t("recurring_meeting.occurrence.first_created")
     else
-      flash[:error] = call.message
+      flash.now[:error] = call.message
     end
 
     respond_to do |format|
@@ -289,7 +289,7 @@ class RecurringMeetingsController < ApplicationController
     end
   end
 
-  def upcoming_meetings(count:)
+  def upcoming_meetings(count:) # rubocop:disable Metrics/AbcSize
     opened = @recurring_meeting
       .upcoming_instantiated_meetings
       .index_by(&:start_time)

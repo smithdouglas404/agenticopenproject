@@ -13,11 +13,7 @@
           data: {
             "turbo-stream": true,
             action: "click->meetings--submit#intercept",
-            href: new_meeting_outcome_path(
-              @meeting,
-              meeting_agenda_item_id: @meeting_agenda_item.id,
-              kind: :information
-            ),
+            href: new_project_meeting_outcome_path(@meeting.project, @meeting, meeting_agenda_item_id: @meeting_agenda_item.id),
             method: "GET"
           }
         }

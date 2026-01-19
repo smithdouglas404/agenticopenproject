@@ -105,7 +105,10 @@ module MeetingSections
                      tag: :button,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: move_meeting_section_path(@meeting_section.meeting, @meeting_section, move_to:),
+                       href: move_project_meeting_section_path(@meeting_section.meeting.project,
+                                                               @meeting_section.meeting,
+                                                               @meeting_section,
+                                                               move_to:),
                        test_selector: "meeting-section-move-#{move_to}"
                      } }) do |item|
         item.with_leading_visual_icon(icon:)
@@ -114,7 +117,9 @@ module MeetingSections
 
     def edit_action_item(menu)
       menu.with_item(label: t("label_section_rename"),
-                     href: edit_meeting_section_path(@meeting_section.meeting, @meeting_section),
+                     href: edit_project_meeting_section_path(@meeting_section.meeting.project,
+                                                             @meeting_section.meeting,
+                                                             @meeting_section),
                      content_arguments: {
                        data: { "turbo-stream": true, "test-selector": "meeting-section-edit" }
                      }) do |item|
@@ -125,7 +130,10 @@ module MeetingSections
     def add_agenda_item_action(menu)
       menu.with_item(
         label: t("label_agenda_item_add"),
-        href: new_meeting_agenda_item_path(@meeting_section.meeting, type: "simple", meeting_section_id: @meeting_section&.id),
+        href: new_project_meeting_agenda_item_path(@meeting_section.meeting.project,
+                                                   @meeting_section.meeting,
+                                                   type: "simple",
+                                                   meeting_section_id: @meeting_section&.id),
         content_arguments: {
           data: { "turbo-stream": true, "test-selector": "meeting-section-add-agenda-item-from-menu" }
         }
@@ -137,8 +145,9 @@ module MeetingSections
     def add_work_package_action(menu)
       menu.with_item(
         label: t("label_agenda_item_work_package_add"),
-        href: new_meeting_agenda_item_path(@meeting_section.meeting, type: "work_package",
-                                                                     meeting_section_id: @meeting_section&.id),
+        href: new_project_meeting_agenda_item_path(@meeting_section.meeting.project,
+                                                   @meeting_section.meeting,
+                                                   meeting_section_id: @meeting_section&.id),
         content_arguments: {
           data: { "turbo-stream": true, "test-selector": "meeting-section-add-work-package-from-menu" }
         }
@@ -159,7 +168,9 @@ module MeetingSections
                      scheme: :danger,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: meeting_section_path(@meeting_section.meeting, @meeting_section),
+                       href: project_meeting_section_path(@meeting_section.meeting.project,
+                                                          @meeting_section.meeting,
+                                                          @meeting_section),
                        method: "DELETE",
                        confirm_message: confirm_text,
                        test_selector: "meeting-section-delete"

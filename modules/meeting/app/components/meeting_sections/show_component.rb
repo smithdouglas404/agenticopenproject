@@ -85,7 +85,7 @@ module MeetingSections
       {
         "draggable-id": @meeting_section.id,
         "draggable-type": "section",
-        "drop-url": drop_meeting_section_path(@meeting, @meeting_section)
+        "drop-url": drop_project_meeting_section_path(@meeting.project, @meeting, @meeting_section)
       }
     end
 

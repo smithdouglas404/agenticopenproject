@@ -34,7 +34,8 @@ See COPYRIGHT and LICENSE files for more details.
       confirm_button_text: I18n.t(:label_agenda_item_move),
       title:,
       form_arguments: {
-        action: move_to_next_meeting_agenda_item_path(
+        action: move_to_next_project_meeting_agenda_item_path(
+          @agenda_item.meeting.project,
           @agenda_item.meeting,
           @agenda_item,
           datetime: @datetime,

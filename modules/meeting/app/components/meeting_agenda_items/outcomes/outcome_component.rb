@@ -72,7 +72,7 @@ module MeetingAgendaItems::Outcomes
                      tag: :button,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: edit_meeting_outcome_path(meeting, meeting_outcome),
+                       href: edit_project_meeting_outcome_path(meeting.project, meeting, meeting_outcome),
                        method: "GET"
                      } }) do |item|
         item.with_leading_visual_icon(icon: :pencil)
@@ -98,7 +98,7 @@ module MeetingAgendaItems::Outcomes
                      scheme: :danger,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: meeting_outcome_path(meeting, meeting_outcome),
+                       href: project_meeting_outcome_path(meeting.project, meeting, meeting_outcome),
                        method: "DELETE",
                        confirm_message: t(:text_are_you_sure)
                      } }) do |item|

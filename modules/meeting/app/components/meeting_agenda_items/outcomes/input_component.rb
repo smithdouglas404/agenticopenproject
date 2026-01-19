@@ -63,17 +63,22 @@ module MeetingAgendaItems::Outcomes
 
     def submit_path
       if @meeting_outcome.id.present?
-        meeting_outcome_path(@meeting, @meeting_outcome.id, format: :turbo_stream)
+        project_meeting_outcome_path(@meeting.project, @meeting, @meeting_outcome.id, format: :turbo_stream)
       else
-        meeting_outcomes_path(@meeting, meeting_agenda_item_id: @meeting_agenda_item.id, format: :turbo_stream)
+        project_meeting_outcomes_path(@meeting.project,
+                                      @meeting,
+                                      meeting_agenda_item_id: @meeting_agenda_item.id,
+                                      format: :turbo_stream)
       end
     end
 
     def cancel_path
       if @meeting_outcome.id.present?
-        cancel_edit_meeting_outcome_path(@meeting, @meeting_outcome)
+        cancel_edit_project_meeting_outcome_path(@meeting.project, @meeting, @meeting_outcome)
       else
-        cancel_new_meeting_outcomes_path(@meeting, meeting_agenda_item_id: @meeting_agenda_item.id)
+        cancel_new_project_meeting_outcomes_path(@meeting.project,
+                                                 @meeting,
+                                                 meeting_agenda_item_id: @meeting_agenda_item.id)
       end
     end
   end

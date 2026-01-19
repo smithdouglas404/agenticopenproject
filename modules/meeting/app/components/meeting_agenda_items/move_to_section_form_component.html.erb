@@ -33,7 +33,8 @@ See COPYRIGHT and LICENSE files for more details.
       id: "move-to-section-form",
       model: @agenda_item,
       method: :post,
-      url: move_to_section_meeting_agenda_item_path(
+      url: move_to_section_project_meeting_agenda_item_path(
+        @agenda_item.meeting.project,
         @agenda_item.meeting,
         @agenda_item,
         collapsed: @collapsed

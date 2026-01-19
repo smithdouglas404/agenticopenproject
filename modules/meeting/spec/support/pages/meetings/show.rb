@@ -701,7 +701,7 @@ module Pages::Meetings
           add_section_link = find_link("Section")
           url = add_section_link[:href]
 
-          expect(URI.parse(url).path).to eq(meeting_sections_path(meeting))
+          expect(URI.parse(url).path).to eq(project_meeting_sections_path(meeting.project, meeting))
         end
       end
     end
