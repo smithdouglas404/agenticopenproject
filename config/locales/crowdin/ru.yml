@@ -3563,9 +3563,6 @@ ru:
   label_project_hierarchy: "Иерархия проектов"
   label_project_mappings: "Проекты"
   label_project_new: "Новый проект"
-  label_project_initiation_request: "Запрос на инициирование нового проекта"
-  label_project_creation_wizard: "Мастер создания нового проекта"
-  label_project_mandate: "Новый мандат проекта"
   label_project_plural: "Проекты"
   label_project_list_plural: "Списки проектов"
   label_project_life_cycle: "Жизненный цикл проекта"
@@ -4590,7 +4587,7 @@ ru:
       omniauth_direct_login_hint_html: >
         Если эта опция включена, запросы на вход в систему будут перенаправлены на настроенный провайдер omniauth. Выпадающий список входа и страница входа будут отключены. <br/> <strong>Примечание:</strong> Если вы также не отключите вход по паролю, то пользователи все еще могут войти внутри системы, посетив страницу входа <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        Если эта опция включена, она позволяет любому сконфигурированному провайдеру идентификации регистрировать существующих пользователей на основе их адреса электронной почты, даже если пользователь никогда раньше не регистрировался через этого провайдера. Это может быть полезно при переносе OpenProject на нового провайдера SSO, но не рекомендуется при использовании провайдера, которому не доверяют все пользователи OpenProject.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Определите список допустимых расширений файлов и/или mime типов для загруженных файлов. <br/> Введите расширения файлов (например, <code>%{ext_example}</code>) или mime типы (e. ., <code>%{mime_example}</code>). <br/> Оставьте пустым, чтобы разрешить загрузку любого типа файла. Допустимы несколько значений (одна строка для каждого значения).

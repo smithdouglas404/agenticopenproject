@@ -3466,9 +3466,6 @@
   label_project_hierarchy: "Prosjekthierarki"
   label_project_mappings: "Prosjekter"
   label_project_new: "Nytt prosjekt"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "Prosjekter"
   label_project_list_plural: "Prosjektlister"
   label_project_life_cycle: "Project life cycle"
@@ -4492,7 +4489,7 @@
       omniauth_direct_login_hint_html: >
         If this option is active, login requests will redirect to the configured omniauth provider. The login dropdown and sign-in page will be disabled. <br/> <strong>Note:</strong> Unless you also disable password logins, with this option enabled, users can still log in internally by visiting the <code>%{internal_path}</code> login page.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Definer en liste over gydlige fil-typer og/eller mime typer for opplastingsfiler.<br/>Sett inn fil-typer (f.eks. <code>%{ext_example}</code>) eller mime typer (f.eks. <code>%{mime_example}</code>).<br/> La stå tom for å godta at alle filtyper kan lastes opp.  Flere verdier er tillatt (en linje for hver verdi).

@@ -539,6 +539,8 @@ ro:
   label_agenda_outcome_actions: "Agenda outcome actions"
   label_agenda_outcome_edit: "Edit outcome"
   label_agenda_outcome_delete: "Remove outcome"
+  label_write_outcome: "Write outcome"
+  label_existing_work_package: "Existing work package"
   text_outcome_not_editable_anymore: "This outcome is not editable anymore."
   text_outcome_cannot_be_added: "An outcome can no longer be added."
   label_backlog_clear: "Clear backlog"

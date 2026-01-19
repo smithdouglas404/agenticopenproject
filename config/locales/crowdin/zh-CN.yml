@@ -3414,9 +3414,6 @@ zh-CN:
   label_project_hierarchy: "项目层次结构"
   label_project_mappings: "项目"
   label_project_new: "新的项目"
-  label_project_initiation_request: "新项目启动请求"
-  label_project_creation_wizard: "新项目创建向导"
-  label_project_mandate: "新项目授权"
   label_project_plural: "项目"
   label_project_list_plural: "项目列表"
   label_project_life_cycle: "项目生命周期"
@@ -4433,7 +4430,7 @@ zh-CN:
       omniauth_direct_login_hint_html: >
         如果激活该选项，登录请求将重定向到已配置的 omniauth 提供商。登录下拉菜单和登录页面将被禁用。 <br/> <strong>注意：</strong>除非同时禁用密码登录，否则启用此选项后，用户仍可通过访问 <code>%{internal_path}</code>登录页面。
       remapping_existing_users_hint: >
-        如果启用，则任何已配置的身份提供商均可根据电子邮件地址允许现有用户登录，即使用户此前从未通过该提供商登录过也是如此。在将 OpenProject 实例迁移到新的 SSO 提供商时，此功能会有一定的帮助，但如果使用的提供商并未受到您的实例所有用户的信任，则不建议启用。
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         为上传的文件定义有效文件扩展名和/或 MIME 类型列表。<br/>输入文件扩展名（例如 <code>%{ext_example}</code>）或 MIME 类型（例如 <code>%{mime_example}</code>）。<br/>留空以允许上传任何文件类型。允许输入多个值（每个值一行）。

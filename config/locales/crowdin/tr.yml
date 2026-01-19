@@ -3467,9 +3467,6 @@ tr:
   label_project_hierarchy: "Proje hiyerarşisi"
   label_project_mappings: "Projeler"
   label_project_new: "Yeni proje"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "Projeler"
   label_project_list_plural: "Proje listesi"
   label_project_life_cycle: "Proje yaşam döngüsü"
@@ -4491,7 +4488,7 @@ tr:
       omniauth_direct_login_hint_html: >
         Bu seçenek etkinse, oturum açma istekleri yapılandırılmış omniauth sağlayıcısına yönlendirilir. Oturum açma açılır menüsü ve oturum açma sayfası devre dışı bırakılacaktır. <br/> <strong>Not:</strong> Parola girişlerini de devre dışı bırakmadığınız sürece, bu seçenek etkinleştirildiğinde kullanıcılar <code>%{internal_path}</code> giriş sayfasından giriş yapabilirler.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Yüklenen dosyalar için geçerli dosya uzantılarının ve/veya mim türlerinin bir listesini tanımlayın. <br/> Dosya uzantılarını (ör. <code>%{ext_example}</code>) veya mime türlerini (ör. <code>%{mime_example}</code>) girin. <br/> Herhangi bir dosya türünün yüklenmesine izin vermek için boş bırakın. Birden çok değere izin verilir (her değer için bir satır).

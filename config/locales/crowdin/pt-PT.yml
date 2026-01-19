@@ -3464,9 +3464,6 @@ pt-PT:
   label_project_hierarchy: "Hierarquia do projeto"
   label_project_mappings: "Projetos"
   label_project_new: "Novo Projecto"
-  label_project_initiation_request: "Pedido de início de novo projeto"
-  label_project_creation_wizard: "Assistente para criação de novos projetos"
-  label_project_mandate: "Mandato para novo projeto"
   label_project_plural: "Projetos"
   label_project_list_plural: "Listas do projeto"
   label_project_life_cycle: "Ciclo de vida do projeto"
@@ -4487,7 +4484,7 @@ pt-PT:
       omniauth_direct_login_hint_html: >
         Se esta opção estiver ativa, os pedidos de início de sessão serão redirecionados para o fornecedor omniauth configurado. O menu pendente de início de sessão e a página de início de sessão serão desativados. <br/> <strong>Nota:</strong> a menos que também desative os inícios de sessão com palavra-passe, com esta opção ativada, os utilizadores ainda podem iniciar sessão internamente ao visitar a página de início de sessão <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        Se ativado, permite que qualquer provedor de identidade configurado faça o início de sessão de utilizadores existentes com base em seu endereço de e-mail, mesmo que o utilizador nunca tenha iniciado sessão através desse provedor. Pode ser útil ao migrar a instância do OpenProject para um novo provedor SSO, mas não é recomendado ao usar um provedor que não seja fiável para todos os utilizadores da sua instância.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Defina uma lista de extensões de ficheiros e/ou de tipos mime para ficheiros carregados. <br/> Insira extensões de ficheiro (por exemplo, <code>%{ext_example}</code>) ou tipos mime (ex., <code>%{mime_example}</code>). <br/> Deixe em branco para permitir que qualquer tipo de ficheiro seja carregado. Vários valores permitidos (uma linha para cada valor).

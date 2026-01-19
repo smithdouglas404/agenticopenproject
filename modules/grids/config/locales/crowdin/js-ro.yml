@@ -16,7 +16,7 @@ ro:
         news:
           title: 'Noutăţi'
         project_description:
-          title: 'Description'
+          title: 'Descriere'
           no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi adăugată în \"Setări proiect\"."
         project_status:
           title: 'Stare'
@@ -30,7 +30,7 @@ ro:
         project_status_beta:
           title: 'Stare (BETA)'
         subprojects:
-          title: 'Subitems'
+          title: 'Subelemente'
         project_favorites:
           title: 'Proiecte favorite'
           no_results: 'Nu ai niciun proiect favorit. Clic pe pictograma cu steluță din tabloul de bord al proiectului pentru a adăuga unul la favorite.'

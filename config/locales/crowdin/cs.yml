@@ -3565,9 +3565,6 @@ cs:
   label_project_hierarchy: "Hierarchie projektu"
   label_project_mappings: "Projekty"
   label_project_new: "Nový projekt"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "Projekty"
   label_project_list_plural: "Seznamy projektů"
   label_project_life_cycle: "Životní cyklus projektu"
@@ -4594,7 +4591,7 @@ cs:
       omniauth_direct_login_hint_html: >
         If this option is active, login requests will redirect to the configured omniauth provider. The login dropdown and sign-in page will be disabled. <br/> <strong>Note:</strong> Unless you also disable password logins, with this option enabled, users can still log in internally by visiting the <code>%{internal_path}</code> login page.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Definujte seznam platných přípon souborů a/nebo mime typů pro nahrané soubory. <br/> Zadejte přípony souborů (např. <code>%{ext_example}</code>) nebo mime typy (např. ., <code>%{mime_example}</code>). <br/> Ponechte prázdné pro nahrání jakéhokoli typu souboru. Povoleno více hodnot (jeden řádek pro každou hodnotu).

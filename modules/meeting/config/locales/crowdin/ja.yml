@@ -525,6 +525,8 @@ ja:
   label_agenda_outcome_actions: "議題の結果アクション"
   label_agenda_outcome_edit: "結果を編集"
   label_agenda_outcome_delete: "結果を削除"
+  label_write_outcome: "Write outcome"
+  label_existing_work_package: "Existing work package"
   text_outcome_not_editable_anymore: "この結果は編集できません。"
   text_outcome_cannot_be_added: "結果は追加できなくなります。"
   label_backlog_clear: "バックログをクリア"

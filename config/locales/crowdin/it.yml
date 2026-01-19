@@ -3464,9 +3464,6 @@ it:
   label_project_hierarchy: "Gerarchia del progetto"
   label_project_mappings: "Progetti"
   label_project_new: "Nuovo progetto"
-  label_project_initiation_request: "Nuova richiesta di avvio del progetto"
-  label_project_creation_wizard: "Creazione guidata nuovo progetto"
-  label_project_mandate: "Nuovo mandato di progetto"
   label_project_plural: "Progetti"
   label_project_list_plural: "Elenchi progetto"
   label_project_life_cycle: "Ciclo di vita del progetto"
@@ -4490,7 +4487,7 @@ it:
       omniauth_direct_login_hint_html: >
         Se questa opzione è attiva, le richieste di accesso saranno reindirizzate al fornitore omniauth configurato. Il menu a tendina di accesso e la pagina di accesso saranno disabilitate. <br/> <strong>Nota:</strong> a meno che non si disabiliti anche l'accesso con password, con questa opzione abilitata, gli utenti possono ancora accedere internamente visitando la pagina di accesso <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        Se abilitata, consente a qualsiasi provider di identità configurato di far accedere gli utenti esistenti in base al loro indirizzo e-mail, anche se l'utente non ha mai effettuato l'accesso tramite quel provider in precedenza. Questo può essere utile durante la migrazione dell'istanza OpenProject a un nuovo provider SSO, ma non è raccomandato quando si utilizza un provider non considerato affidabile da tutti gli utenti dell'istanza.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Definisci un elenco di estensioni di file valide e/o tipi MIME per i file caricati. <br/> Inserisci le estensioni dei file (ad es. <code>%{ext_example}</code>) o i tipi MIME (ad es. <code>%{mime_example}</code>). <br/> Lascia vuoto per consentire il caricamento di qualsiasi tipo di file. Sono consentiti più valori (una riga per ogni valore).

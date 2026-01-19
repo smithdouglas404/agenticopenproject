@@ -525,6 +525,8 @@ zh-TW:
   label_agenda_outcome_actions: "議程結果行動"
   label_agenda_outcome_edit: "編輯結果"
   label_agenda_outcome_delete: "移除結果"
+  label_write_outcome: "編輯結果"
+  label_existing_work_package: "現有工作套件"
   text_outcome_not_editable_anymore: "此結果已不可編輯。"
   text_outcome_cannot_be_added: "無法再新增會議結果。"
   label_backlog_clear: "清除待辦事項"

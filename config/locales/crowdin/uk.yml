@@ -3559,9 +3559,6 @@ uk:
   label_project_hierarchy: "Ієрархія проектів"
   label_project_mappings: "Проєкти"
   label_project_new: "Новий проект"
-  label_project_initiation_request: "Новий запит на ініціювання проєкту"
-  label_project_creation_wizard: "Новий майстер створення проєктів"
-  label_project_mandate: "Новий мандат проєкту"
   label_project_plural: "Проєкти"
   label_project_list_plural: "Списки проєкту"
   label_project_life_cycle: "Життєвий цикл проєкту"
@@ -4587,7 +4584,7 @@ uk:
       omniauth_direct_login_hint_html: >
         Якщо цей параметр увімкнено, запити на вхід переспрямовуватимуться налаштованому постачальнику omniauth. Спадний список і сторінку входу буде вимкнено. <br/> <strong>Примітка.</strong> Якщо цей параметр увімкнено й вхід за допомогою пароля дозволено, користувачі зможуть входити зі сторінки входу <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        Якщо увімкнено, дає змогу будь-якому налаштованому постачальнику ідентифікаційних даних виконувати вхід в облікові записи наявних користувачів за допомогою їхніх електронних адрес, навіть якщо користувач ніколи раніше не входив через цього постачальника. Це може бути корисно при перенесенні екземпляра OpenProject в сервіс нового постачальника SSO, але не рекомендовано, якщо використовується постачальник, якому не довіряють усі користувачі вашого екземпляра.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Визначте список дійсних розширень файлів і/або типів MIME для завантажених файлів. <br/>Введіть розширення файлу (напр., <code>%{ext_example}</code>) або типи MIME (напр., <code>%{mime_example}</code>). Не вказуйте нічого, щоб дозволити завантаження будь-яких типів файлів. Ви можете вводити кілька значень (по одному в кожному рядку).

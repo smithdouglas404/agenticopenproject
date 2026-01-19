@@ -3561,9 +3561,6 @@ pl:
   label_project_hierarchy: "Hierarchia projektu"
   label_project_mappings: "Projekty"
   label_project_new: "Nowy projekt"
-  label_project_initiation_request: "Żądanie zainicjowania nowego projektu"
-  label_project_creation_wizard: "Kreator tworzenia nowego projektu"
-  label_project_mandate: "Nowe zlecenie projektowe"
   label_project_plural: "Projekty"
   label_project_list_plural: "Listy projektów"
   label_project_life_cycle: "Cykl życia projektu"
@@ -4588,7 +4585,7 @@ pl:
       omniauth_direct_login_hint_html: >
         Jeśli ta opcja jest aktywna, żądania logowania będą przekierowywane do skonfigurowanego dostawcy omniauth. Lista rozwijana logowania i strona logowania zostaną wyłączone. <br/> <strong>Uwaga:</strong> o ile nie wyłączono również logowania hasłem, przy włączonej tej opcji użytkownicy mogą nadal logować się wewnętrznie, odwiedzając stronę logowania <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        Jeśli opcja ta jest włączona, umożliwia dowolnemu skonfigurowanemu dostawcy tożsamości logowanie istniejących użytkowników na podstawie ich adresów e-mail, nawet jeśli użytkownik nigdy wcześniej nie logował się za pośrednictwem tego dostawcy. Może to być przydatne podczas migracji wystąpienia OpenProject do nowego dostawcy SSO, ale nie jest zalecane w przypadku korzystania z dostawcy, który nie jest zaufany dla wszystkich użytkowników wystąpienia.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Zdefiniuj listę poprawnych rozszerzeń plików i/lub typów mime dla przesłanych plików. <br/> Wprowadź rozszerzenia plików (np. <code>%{ext_example}</code>) lub typy mime (np. <code>%{mime_example}</code>). <br/> Pozostaw puste, aby umożliwić przesłanie dowolnego typu pliku. Dozwolone wielokrotne wartości (jeden wiersz dla każdej wartości).

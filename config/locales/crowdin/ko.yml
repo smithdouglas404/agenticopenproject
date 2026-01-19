@@ -3418,9 +3418,6 @@ ko:
   label_project_hierarchy: "프로젝트 계층 구조"
   label_project_mappings: "프로젝트"
   label_project_new: "새 프로젝트"
-  label_project_initiation_request: "새 프로젝트 시작 요청"
-  label_project_creation_wizard: "새 프로젝트 생성 마법사"
-  label_project_mandate: "새 프로젝트 위임"
   label_project_plural: "프로젝트"
   label_project_list_plural: "프로젝트 목록"
   label_project_life_cycle: "프로젝트 수명 주기"
@@ -4439,7 +4436,7 @@ ko:
       omniauth_direct_login_hint_html: >
         이 옵션이 활성화된 경우, 로그인 요청은 구성된 omniauth 공급자로 리디렉션됩니다. 로그인 드롭다운 및 로그인 페이지가 비활성화됩니다. <br/> <strong>참고:</strong> 또한 암호 로그인을 비활성화하지 않는 경우에는 이 옵션이 활성화된 상태에서 사용자가 <code>%{internal_path}</code> 로그인 페이지를 방문하여 내부에서 계속 로그인할 수 있습니다.
       remapping_existing_users_hint: >
-        활성화된 경우, 사용자가 이전에 해당 공급자를 통해 로그인한 적이 없더라도, 구성된 모든 ID 공급자가 이메일 주소를 기반으로 기존 사용자에 로그인하도록 허용합니다. 이 옵션은 OpenProject 인스턴스를 새 SSO 공급자로 마이그레이션할 때 유용할 수 있지만 인스턴스의 일부 사용자가 신뢰하지 않는 공급자를 이용할 때는 권장되지 않습니다.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         업로드된 파일의 유효한 파일 확장명 및/또는 MIME 형식 목록을 정의합니다. <br/> 파일 확장명(예: <code>%{ext_example}</code>) 또는 MIME 형식(예: <code>%{mime_example}</code>)을 입력합니다. <br/> 모든 파일 형식을 업로드할 수 있도록 허용하려면 비워 둡니다. 여러 값이 허용됩니다(각 값에 대해 한 줄).

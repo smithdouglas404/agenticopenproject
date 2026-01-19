@@ -3414,9 +3414,6 @@ zh-TW:
   label_project_hierarchy: "專案結構"
   label_project_mappings: "專案"
   label_project_new: "新增專案"
-  label_project_initiation_request: "新專案啟動請求"
-  label_project_creation_wizard: "新專案建立精靈"
-  label_project_mandate: "新的專案任務"
   label_project_plural: "專案"
   label_project_list_plural: "專案列表"
   label_project_life_cycle: "專案生命週期"
@@ -4242,16 +4239,16 @@ zh-TW:
     如果啓用了 CORS ，這些是允許訪問 OpenProject API 的源。<br/>請查看<a href="%{origin_link}" target="_blank">有關“源”標題的文檔</a>，瞭解如何指定預期值。
   setting_apiv3_write_readonly_attributes: "對唯讀屬性的寫入存取權限"
   setting_apiv3_write_readonly_attributes_instructions: >
-    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+    如果啟用，API 將允許管理員在建立時寫入靜態唯讀屬性，例如 createdAt 和 author。
   setting_apiv3_write_readonly_attributes_warning: >
-    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+    此設定可用於匯入資料，但允許管理員冒充其他使用者建立項目。所有建立請求都會以真正的作者記錄。
   setting_apiv3_write_readonly_attributes_additional: >
-    For more information on attributes and supported resources, please see the %{api_documentation_link}.
+    有關屬性和支援資源的詳細資訊，請參閱 %{api_documentation_link}。
   setting_apiv3_max_page_size: "API 每頁最大值"
   setting_apiv3_max_page_size_instructions: >
-    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+    設定 API 回應的最大頁面大小。將無法執行在單一頁面上回傳更多值的 API 請求。
   setting_apiv3_max_page_size_warning: >
-    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
+    請僅在確定為何需要時變更此值。設定為較高的值會導致顯著的效能影響，而低於每頁選項的值則會在分頁檢視中導致錯誤。
   setting_apiv3_docs: "說明文件"
   setting_apiv3_docs_enabled: "啟用文件頁面"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4436,7 +4433,7 @@ zh-TW:
       omniauth_direct_login_hint_html: >
         如果此選項處於活動狀態，登入請求將重新導向至已設定的omniauth 提供者。登入下拉選單和登入頁面將被停用。 <br/> <strong>注意：</strong>除非您也停用密碼登錄，否則啟用此選項後，使用者仍可透過造訪 <code>%{internal_path}</code> 登入頁面進行內部登入。
       remapping_existing_users_hint: >
-        若啟用，將允許任何已設定的身份提供者根據使用者的電子郵件登入，即使該使用者之前從未透過該提供者登入過。這在將 OpenProject 實例遷移到新的 SSO 提供者時非常有用，但若使用的提供者並非所有使用者都信任，則不建議啟用此功能。
+        如果啟用，允許任何已設定的身分提供者根據使用者名稱登入現有使用者，即使使用者之前從未透過該提供者登入。這在將 OpenProject 實例遷移至新的 SSO 提供者時可能很有用，但在使用並非所有實例使用者都信任的提供者時，則不建議使用。
     attachments:
       whitelist_text_html: >
         為上傳的文件定義有效文件副檔名和/或 MIME 類型的列表。 <br/> 輸入文件副檔名（例如 <code>%{ext_example}</code>）或 MIME 類型（例如 <code>%{mime_example}</code>）。 <br/> 留空以允許上傳任何文件類型。允許多個值（每個值一行）。

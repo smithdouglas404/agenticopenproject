@@ -3414,9 +3414,6 @@ id:
   label_project_hierarchy: "Hirarki proyek"
   label_project_mappings: "Project"
   label_project_new: "Project baru"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "Project"
   label_project_list_plural: "Project lists"
   label_project_life_cycle: "Project life cycle"
@@ -4435,7 +4432,7 @@ id:
       omniauth_direct_login_hint_html: >
         If this option is active, login requests will redirect to the configured omniauth provider. The login dropdown and sign-in page will be disabled. <br/> <strong>Note:</strong> Unless you also disable password logins, with this option enabled, users can still log in internally by visiting the <code>%{internal_path}</code> login page.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Define a list of valid file extensions and/or mime types for uploaded files. <br/> Enter file extensions (e.g., <code>%{ext_example}</code>) or mime types (e.g., <code>%{mime_example}</code>). <br/> Leave empty to allow any file type to be uploaded. Multiple values allowed (one line for each value).

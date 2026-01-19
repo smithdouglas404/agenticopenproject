@@ -532,6 +532,8 @@ pt-BR:
   label_agenda_outcome_actions: "Ações resultantes da pauta"
   label_agenda_outcome_edit: "Editar resultado"
   label_agenda_outcome_delete: "Remover resultado"
+  label_write_outcome: "Write outcome"
+  label_existing_work_package: "Existing work package"
   text_outcome_not_editable_anymore: "Este resultado não pode mais ser editado."
   text_outcome_cannot_be_added: "Não é mais possível adicionar um resultado."
   label_backlog_clear: "Limpar backlog"

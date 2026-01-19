@@ -1106,7 +1106,7 @@ GEM
     prawn-table (0.2.2)
       prawn (>= 1.3.0, < 3.0.0)
     prettyprint (0.2.0)
-    prism (1.7.0)
+    prism (1.8.0)
     prometheus-client-mmap (1.5.0)
       base64
       bigdecimal
@@ -1249,7 +1249,7 @@ GEM
       msgpack (>= 0.4.3)
       optimist (>= 3.0.0)
     rbtree3 (0.7.1)
-    rdoc (7.0.3)
+    rdoc (7.1.0)
       erb
       psych (>= 4.0.0)
       tsort
@@ -1457,9 +1457,9 @@ GEM
       public_suffix
     vcr (6.4.0)
     vernier (1.9.0)
-    view_component (4.1.1)
-      actionview (>= 7.1.0, < 8.2)
-      activesupport (>= 7.1.0, < 8.2)
+    view_component (4.2.0)
+      actionview (>= 7.1.0)
+      activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)
     virtus (2.0.0)
       axiom-types (~> 0.1)
@@ -1743,7 +1743,7 @@ DEPENDENCIES
   validate_url
   vcr
   vernier
-  view_component (~> 4.1.1)
+  view_component (~> 4.2.0)
   warden (~> 1.2)
   warden-basic_auth (~> 0.2.1)
   webmock (~> 3.26)
@@ -2119,7 +2119,7 @@ CHECKSUMS
   prawn (2.4.0) sha256=82062744f7126c2d77501da253a154271790254dfa8c309b8e52e79bc5de2abd
   prawn-table (0.2.2) sha256=336d46e39e003f77bf973337a958af6a68300b941c85cb22288872dc2b36addb
   prettyprint (0.2.0) sha256=2bc9e15581a94742064a3cc8b0fb9d45aae3d03a1baa6ef80922627a0766f193
-  prism (1.7.0) sha256=10062f734bf7985c8424c44fac382ac04a58124ea3d220ec3ba9fe4f2da65103
+  prism (1.8.0) sha256=84453a16ef5530ea62c5f03ec16b52a459575ad4e7b9c2b360fd8ce2c39c1254
   prometheus-client-mmap (1.5.0) sha256=361eb98d6c19ae0f44ae5e02f9e6750436fd92d1c501d1c69843609c1daf0117
   prometheus-client-mmap (1.5.0-aarch64-linux-gnu) sha256=e7fe1a630dda83a237efb0eb4a29ee3da37922722fc89ecac6057a1187372c5d
   prometheus-client-mmap (1.5.0-aarch64-linux-musl) sha256=897fa5d82150ddcb3bc30dfa7af0deb85930655500e71bd8879daa86b5e690ff
@@ -2163,7 +2163,7 @@ CHECKSUMS
   rb_sys (0.9.124) sha256=513476557b12eaf73764b3da9f8746024558fe8699bda785fb548c9aa3877ae7
   rbtrace (0.5.3) sha256=c432292f305d9ab12fd47d9722e0d5210d983758a951fe6107c36cc955cb923f
   rbtree3 (0.7.1) sha256=ab60ead728a5491b70df4f4065e180b18dbab5319f817ce1dbf5dd906f26d8ba
-  rdoc (7.0.3) sha256=dfe3d0981d19b7bba71d9dbaeb57c9f4e3a7a4103162148a559c4fc687ea81f9
+  rdoc (7.1.0) sha256=494899df0706c178596ca6e1d50f1b7eb285a9b2aae715be5abd742734f17363
   recaptcha (5.21.1) sha256=e003e9ceba9b993a9f0c6a828c192f2d46693cd2aa0b0beae94f936649507adb
   redcarpet (3.6.1) sha256=d444910e6aa55480c6bcdc0cdb057626e8a32c054c29e793fa642ba2f155f445
   redis (5.4.1) sha256=b5e675b57ad22b15c9bcc765d5ac26f60b675408af916d31527af9bd5a81faae
@@ -2259,7 +2259,7 @@ CHECKSUMS
   validate_url (1.0.15) sha256=72fe164c0713d63a9970bd6700bea948babbfbdcec392f2342b6704042f57451
   vcr (6.4.0) sha256=077ac92cc16efc5904eb90492a18153b5e6ca5398046d8a249a7c96a9ea24ae6
   vernier (1.9.0) sha256=3aa6169804144ef27744123525f8f884541185a2eeb53c77afb28ad33c4be3cd
-  view_component (4.1.1) sha256=179f63b0db1d1a8f6af635dd684456b2bcdf6b6f4da2ef276bbe0579c17b377e
+  view_component (4.2.0) sha256=f250a3397a794336354f73c229b3b7549af0b24906551b99a03492b54cb5233d
   virtus (2.0.0) sha256=8841dae4eb7fcc097320ba5ea516bf1839e5d056c61ee27138aa4bddd6e3d1c2
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   warden-basic_auth (0.2.1) sha256=bfc752e0109c0182c3e69e930284c5e1e81e7b4a354aeb2b5914ead1391f3c6e

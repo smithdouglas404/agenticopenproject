@@ -31,12 +31,8 @@
 require "rails_helper"
 
 RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
-  def render_component(...)
-    render_inline(described_class.new(...))
-  end
-
-  subject(:rendered_component) do
-    render_component(checkable_id:)
+  def render_component(**, &)
+    render_inline(described_class.new(**), &)
   end
 
   shared_examples "rendering Link-style buttons" do
@@ -48,7 +44,9 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
   end
 
   context "when :checkable_id is present" do
-    let(:checkable_id) { "foo" }
+    subject(:rendered_component) do
+      render_component(checkable_id: "foo")
+    end
 
     include_examples "rendering Link-style buttons"
 
@@ -89,7 +87,9 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
   end
 
   context "when :checkable_id is nil" do
-    let(:checkable_id) { nil }
+    subject(:rendered_component) do
+      render_component
+    end
 
     include_examples "rendering Link-style buttons"
 
@@ -129,6 +129,39 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
 
     it "applies an ID to 'Uncheck all'" do
       expect(subject).to have_button id: /check-all-component-([\w-]+)-uncheck-all/
+    end
+  end
+
+  context "with button slots" do
+    subject(:rendered_component) do
+      render_component do |check_all|
+        check_all.with_check_all_button(scheme: :primary) do
+          "Select all"
+        end
+        check_all.with_uncheck_all_button(scheme: :danger) do
+          "Unselect all"
+        end
+      end
+    end
+
+    it "renders custom buttons", :aggregate_failures do
+      expect(rendered_component).to have_button count: 2
+      expect(rendered_component).to have_button "Select all", class: "Button--primary"
+      expect(rendered_component).to have_button "Unselect all", class: "Button--danger"
+    end
+  end
+
+  context "with separator slot" do
+    subject(:rendered_component) do
+      render_component do |check_all|
+        check_all.with_separator do
+          "♾️"
+        end
+      end
+    end
+
+    it "renders custom separator" do
+      expect(rendered_component).to have_content "♾️"
     end
   end
 end

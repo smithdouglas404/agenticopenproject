@@ -3465,9 +3465,6 @@ fr:
   label_project_hierarchy: "Hiérarchie du projet"
   label_project_mappings: "Projets"
   label_project_new: "Nouveau projet"
-  label_project_initiation_request: "Demande de lancement d'un nouveau projet"
-  label_project_creation_wizard: "Assistant de création de nouveau projet"
-  label_project_mandate: "Mandat de nouveau projet"
   label_project_plural: "Projets"
   label_project_list_plural: "Listes de projets"
   label_project_life_cycle: "Cycle de vie du projet"
@@ -4491,7 +4488,7 @@ fr:
       omniauth_direct_login_hint_html: >
         Si cette option est activée, les demandes de connexion seront redirigées vers le fournisseur omniauth configuré. La liste déroulante de connexion et la page de connexion seront désactivées. <br/> <strong>Remarque :</strong> lorsque cette option est activée, les utilisateurs peuvent toujours se connecter en interne en visitant la page de connexion <code>%{internal_path}</code>, sauf si vous désactivez également les connexions par mot de passe.
       remapping_existing_users_hint: >
-        Si cette option est activée, elle permet à tout fournisseur d'identité configuré de connecter des utilisateurs existants en fonction de leur adresse e-mail, même si l'utilisateur ne s'est jamais connecté auparavant via ce fournisseur. Cela peut être utile lors de la migration de l'instance OpenProject vers un nouveau fournisseur SSO, mais n'est pas recommandé si vous utilisez un fournisseur qui n'est pas approuvé par l'ensemble des utilisateurs de votre instance.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Définissez une liste d'extensions de fichiers et/ou de types MIME valides pour les fichiers téléversés. <br/> Entrez les extensions de fichier (par exemple, <code>%{ext_example}</code>) ou les types mime (par exemple, <code>%{mime_example}</code>). <br/> Laissez vide pour permettre le téléversement de tout type de fichier. Plusieurs valeurs autorisées (une ligne pour chaque valeur).

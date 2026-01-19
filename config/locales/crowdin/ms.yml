@@ -3416,9 +3416,6 @@ ms:
   label_project_hierarchy: "Hierarki projek"
   label_project_mappings: "Projek-projek"
   label_project_new: "Projek baharu"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "Projek-projek"
   label_project_list_plural: "Senarai projek"
   label_project_life_cycle: "Project life cycle"
@@ -4439,7 +4436,7 @@ ms:
       omniauth_direct_login_hint_html: >
         Jika pilihan ini aktif, permintaan log masuk akan mengubah hala ke penyedia omniaut yang dikonfigurasikan. Halaman lungsur turun dan log masuk log masuk akan dilumpuhkan. <br/> <strong>Nota:</strong> Melainkan anda juga melumpuhkan log masuk kata laluan, dengan pilihan ini didayakan, pengguna masih boleh log masuk secara dalaman dengan melawati halaman log masuk <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Jelaskan senarai sambungan fail yang sah dan/atau jenis mime bagi fail yang telah dimuat naik. <br/> Masukkan sambungan fail (cth., <code>%{ext_example}</code>) atau jenis mime (cth., <code>%{mime_example}</code>). <br/> Tinggalkan kosong untuk benarkan sebarang jenis fail untuk dimuat naik. Pelbagai nilai juga dibenarkan. (satu baris untuk setiap nilai)

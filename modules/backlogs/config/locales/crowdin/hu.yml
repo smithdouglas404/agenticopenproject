@@ -41,7 +41,7 @@ hu:
         sprint:
           cannot_end_before_it_starts: "Sprint nem érhet véget, mielőtt elindul."
   attributes:
-    task_type: "Task type"
+    task_type: "Feladat típusa"
   backlogs:
     add_new_story: "Új story"
     any: "bármely"
@@ -105,7 +105,7 @@ hu:
   errors:
     attributes:
       task_type:
-        cannot_be_story_type: "can not also be a story type"
+        cannot_be_story_type: "nem lehet egyúttal történet típus is"
   error_intro_plural: "The following errors were encountered:"
   error_intro_singular: "The following error was encountered:"
   error_outro: "Please correct the above errors before submitting again."
@@ -129,10 +129,10 @@ hu:
   label_points_burn_up: "Fel"
   label_product_backlog: "termék backlog"
   label_select_all: "Összes kijelölése"
-  label_select_type: "Select a type"
-  label_select_types: "Select types"
-  label_selected_type: "Selected type"
-  label_selected_types: "Selected types"
+  label_select_type: "Válasszon típust"
+  label_select_types: "Típusok kiválasztása"
+  label_selected_type: "Kiválasztott típus"
+  label_selected_types: "Kiválasztott típusok"
   label_sprint_backlog: "sprint backlog"
   label_sprint_cards: "Kártyák exportálása"
   label_sprint_impediments: "Sprint akadályai"
@@ -170,6 +170,6 @@ hu:
   version_settings_display_option_none: "none"
   version_settings_display_option_right: "jobbra"
   setting_plugin_openproject_backlogs_story_types_caption: |
-    Types treated as backlog stories (e.g., Feature, User story). Must differ from task type.
+    Backlog történetekként kezelt típusok (pl. Feature, User story). Különbözniük kell a feladattípustól.
   setting_plugin_openproject_backlogs_task_type_caption: |
     Type used for story tasks. Must differ from story types.

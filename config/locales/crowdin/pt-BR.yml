@@ -3464,9 +3464,6 @@ pt-BR:
   label_project_hierarchy: "Hierarquia de projeto"
   label_project_mappings: "Projetos"
   label_project_new: "Novo projeto"
-  label_project_initiation_request: "Nova solicitação de início de projeto"
-  label_project_creation_wizard: "Novo assistente de criação de projeto"
-  label_project_mandate: "Nova autorização de projeto"
   label_project_plural: "Projetos"
   label_project_list_plural: "Listas de projeto"
   label_project_life_cycle: "Ciclo de vida do projeto"
@@ -4489,7 +4486,7 @@ pt-BR:
       omniauth_direct_login_hint_html: >
         Se esta opção estiver ativada, as solicitações de login serão redirecionadas para o provedor omniauth configurado. O menu suspenso de login e a página de login serão desativados. <br/> <strong>Obs.:</strong> A menos que você também desative os logins por senha, com esta opção ativada, os usuários ainda poderão fazer login internamente acessando a página de login em <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        Se ativado, permite que qualquer provedor de identidade configurado faça login de usuários existentes com base em seu endereço de e-mail, mesmo que o usuário nunca tenha acessado através desse provedor antes. Isso pode ser útil ao migrar a instância do OpenProject para um novo provedor SSO, mas não é recomendado ao usar um provedor que não seja confiável para todos os usuários da sua instância.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Defina uma lista de extensões de arquivo válidas e/ou tipos MIME para arquivos carregados. <br/> Insira as extensões de arquivo  (e.x., <code>%{ext_example}</code>) ou tipos de mime (e.x., <code>%{mime_example}</code>). <br/> Deixe em branco para permitir que qualquer tipo de arquivo seja carregado. Vários valores permitidos (uma linha para cada valor).

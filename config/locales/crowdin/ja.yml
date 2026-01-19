@@ -3417,9 +3417,6 @@ ja:
   label_project_hierarchy: "プロジェクトの階層構造"
   label_project_mappings: "プロジェクト"
   label_project_new: "新規プロジェクト"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "プロジェクト"
   label_project_list_plural: "プロジェクト一覧"
   label_project_life_cycle: "プロジェクトのライフ サイクル"
@@ -4441,7 +4438,7 @@ ja:
       omniauth_direct_login_hint_html: >
         このオプションが有効な場合、ログイン要求は設定された omniauth プロバイダにリダイレクトされます。ログインドロップダウンとサインインページは無効になります。 <br/> <strong>注意:</strong>パスワードログインも無効にしない限り、このオプションを有効にした場合でも、ユーザは内部的に <code>%{internal_path}</code>ログインページにアクセスしてログインすることができます。
       remapping_existing_users_hint: >
-        有効にすると、設定された ID プロバイダは、ユーザが以前にそのプロバイダを通してサインインしたことがなくても、メールアドレスに基づいて既存のユーザにログインできるようになります。これは、OpenProject サイトを新しい SSO プロバイダに移行するときに便利ですが、サイトのすべてのユーザから信頼されていないプロバイダを使用するときには推奨されません。
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         アップロードされたファイルに有効なファイル拡張子および/または MIME タイプのリストを定義します。 <br/> ファイル拡張子（例． <code>%{ext_example}</code>)またはMIMEタイプ(例、 <code>%{mime_example}</code>). <br/> 任意のファイル タイプをアップロードできるようにするには、空のままにします。複数の値を指定できます (各値に 1 行)。
