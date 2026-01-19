@@ -66,17 +66,17 @@ module Projects
         end
 
         def toggle_checked?
-          active_in_project?
+          active_in_project? || toggle_force_checked?
         end
 
-        def toggle_enabled?
-          !toggle_disabled?
-        end
-
-        def toggle_disabled?
+        def toggle_force_checked?
           @project_custom_field.is_for_all? ||
             configured_as_creation_wizard_assignee?
         end
+
+        def toggle_enabled? = !toggle_disabled?
+
+        def toggle_disabled? = toggle_force_checked?
 
         def toggle_data_attributes
           {

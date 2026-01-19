@@ -45,6 +45,8 @@ module Projects
           end
 
           def toggle_checked?
+            return true if toggle_force_checked?
+
             mapping = @project_custom_field_project_mappings.find do |m|
               m.custom_field_id == @project_custom_field.id
             end
@@ -55,6 +57,11 @@ module Projects
             else
               true
             end
+          end
+
+          def toggle_force_checked?
+            @project_custom_field.required? ||
+              configured_as_creation_wizard_assignee?
           end
 
           def toggle_data_attributes
