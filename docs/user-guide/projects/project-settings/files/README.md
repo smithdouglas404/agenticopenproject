@@ -87,7 +87,7 @@ Click on **Add** to add your new SharePoint file storage to this project.
 The SharePoint file storage is now available to all work packages in this project.
 
 > [!TIP]
-> Please refer to the [OneDrive user guide](../../../file-management/sharepoint-integration) for further instructions on using the integration from a project member perspective.
+> Please refer to the [SharePoint user guide](../../../file-management/sharepoint-integration) for further instructions on using the integration from a project member perspective.
 
 ## Add a Nextcloud storage to a project
 
