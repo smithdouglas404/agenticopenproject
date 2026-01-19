@@ -137,45 +137,53 @@ module MeetingAgendaItems
       end
     end
 
-    def add_outcome_action_item(menu)
+    def add_outcome_action_items(menu)
       menu.with_sub_menu_item(label: t("label_agenda_item_add_outcome")) do |submenu|
         submenu.with_leading_visual_icon(icon: :plus)
 
         with_item_group(submenu) do
-          submenu.with_item(label: t("label_write_outcome"),
-                            tag: :button,
-                            content_arguments: { data: {
-                              action: "click->meetings--submit#intercept",
-                              href: new_meeting_outcome_path(@meeting_agenda_item.meeting,
-                                                             meeting_agenda_item_id: @meeting_agenda_item&.id,
-                                                             kind: :information,
-                                                             current_occurrence: @current_occurrence),
-                              method: "GET"
-                            } })
-
-          submenu.with_item(label: t("label_existing_work_package"),
-                            tag: :button,
-                            content_arguments: { data: {
-                              action: "click->meetings--submit#intercept",
-                              href: new_meeting_outcome_path(@meeting_agenda_item.meeting,
-                                                             meeting_agenda_item_id: @meeting_agenda_item&.id,
-                                                             kind: :work_package,
-                                                             current_occurrence: @current_occurrence),
-                              method: "GET"
-                            } })
-
-          if User.current.allowed_in_project?(:add_work_packages, @meeting.project)
-            submenu.with_item(label: t("label_work_package_new"),
-                              tag: :button,
-                              content_arguments: { data: {
-                                action: "click->meetings--submit#intercept",
-                                href: create_work_package_dialog_meeting_outcomes_path(@meeting,
-                                                                                       meeting_agenda_item_id: @meeting_agenda_item.id), # rubocop:disable Layout/LineLength
-                                method: "GET"
-                              } })
-          end
+          add_write_outcome_item(submenu)
+          add_existing_work_package_item(submenu)
+          add_new_work_package_item(submenu)
         end
       end
+    end
+
+    def add_write_outcome_item(submenu)
+      submenu.with_item(label: t("label_write_outcome"),
+                        tag: :button,
+                        content_arguments: outcome_action_data(
+                          new_meeting_outcome_path(@meeting_agenda_item.meeting,
+                                                   meeting_agenda_item_id: @meeting_agenda_item&.id,
+                                                   kind: :information,
+                                                   current_occurrence: @current_occurrence)
+                        ))
+    end
+
+    def add_existing_work_package_item(submenu)
+      submenu.with_item(label: t("label_existing_work_package"),
+                        tag: :button,
+                        content_arguments: outcome_action_data(
+                          new_meeting_outcome_path(@meeting_agenda_item.meeting,
+                                                   meeting_agenda_item_id: @meeting_agenda_item&.id,
+                                                   kind: :work_package,
+                                                   current_occurrence: @current_occurrence)
+                        ))
+    end
+
+    def add_new_work_package_item(submenu)
+      return unless User.current.allowed_in_project?(:add_work_packages, @meeting.project)
+
+      submenu.with_item(label: t("label_work_package_new"),
+                        tag: :button,
+                        content_arguments: outcome_action_data(
+                          create_work_package_dialog_meeting_outcomes_path(@meeting,
+                                                                           meeting_agenda_item_id: @meeting_agenda_item.id)
+                        ))
+    end
+
+    def outcome_action_data(href)
+      { data: { action: "click->meetings--submit#intercept", href:, method: "GET" } }
     end
 
     def copy_action_item(menu)
