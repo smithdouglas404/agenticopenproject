@@ -118,7 +118,7 @@ The subitems widget lists all subitems of the respective entity:
 
 - Subitems of a project are subprojects
 - Subitems of a program are projects
-- Subitems of a portfolio are programs are projects
+- Subitems of a portfolio are programs and projects
 
 The *Subitems* widget under the *Overview* tab allows adding subitems directly within the widget (click the **Plus** icon in the top right corner of the widget and select *Project*). That same widget under that *Dashboard* tab lists all subitems of a project, but offers no option to add subitems directly. 
 
