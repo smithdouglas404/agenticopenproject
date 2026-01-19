@@ -40,13 +40,8 @@ module Documents
       end
 
       def perform
-        key = Documents::OAuth::DigestSecretService
-            .new(Setting.collaborative_editing_hocuspocus_secret)
-            .call
-        raise "Invalid encryption key" if key.failure?
-
         encryptor = ActiveSupport::MessageEncryptor.new(
-          key.result,
+          key,
           cipher: ALGORITHM,
           serializer: ActiveSupport::MessageEncryptor::NullSerializer
         )
@@ -60,6 +55,15 @@ module Documents
       private
 
       attr_reader :token
+
+      def key
+        @key ||= begin
+          secret = Setting.collaborative_editing_hocuspocus_secret
+          raise "Collaborative editing secret is not set. Cannot encrypt token." if secret.blank?
+
+          Digest::SHA256.digest(secret)
+        end
+      end
     end
   end
 end
