@@ -30,36 +30,18 @@
 
 module Documents
   module OAuth
-    class EncryptTokenService < BaseServices::BaseCallable
-      ALGORITHM = "aes-256-gcm"
-
-      def initialize(token:)
+    class DigestSecretService < BaseServices::BaseCallable
+      def initialize(secret)
         super()
 
-        @token = token
+        @secret = secret
       end
 
       def perform
-        key = Documents::OAuth::DigestSecretService
-            .new(Setting.collaborative_editing_hocuspocus_secret)
-            .call
-        raise "Invalid encryption key" if key.failure?
+        return ServiceResult.failure if @secret.blank?
 
-        encryptor = ActiveSupport::MessageEncryptor.new(
-          key.result,
-          cipher: ALGORITHM,
-          serializer: ActiveSupport::MessageEncryptor::NullSerializer
-        )
-        encrypted = encryptor.encrypt_and_sign(token)
-
-        ServiceResult.success(result: encrypted)
-      rescue StandardError => e
-        ServiceResult.failure(errors: e)
+        ServiceResult.success(result: Digest::SHA256.digest(@secret))
       end
-
-      private
-
-      attr_reader :token
     end
   end
 end

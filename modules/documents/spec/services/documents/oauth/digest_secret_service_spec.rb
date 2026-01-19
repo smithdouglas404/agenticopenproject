@@ -28,38 +28,32 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Documents
-  module OAuth
-    class EncryptTokenService < BaseServices::BaseCallable
-      ALGORITHM = "aes-256-gcm"
+require "spec_helper"
 
-      def initialize(token:)
-        super()
+RSpec.describe Documents::OAuth::DigestSecretService do
+  subject(:service_call) { described_class.new(secret).call }
 
-        @token = token
+  describe "#call" do
+    context "with an empty value" do
+      let(:secret) { nil }
+
+      it "returns an failure" do
+        result = service_call
+        expect(result).to be_failure
       end
+    end
 
-      def perform
-        key = Documents::OAuth::DigestSecretService
-            .new(Setting.collaborative_editing_hocuspocus_secret)
-            .call
-        raise "Invalid encryption key" if key.failure?
+    context "with a value" do
+      let(:secret) { "secret12345" }
 
-        encryptor = ActiveSupport::MessageEncryptor.new(
-          key.result,
-          cipher: ALGORITHM,
-          serializer: ActiveSupport::MessageEncryptor::NullSerializer
-        )
-        encrypted = encryptor.encrypt_and_sign(token)
+      it "returns a successful result with a digested value" do
+        result = service_call
+        expect(result).to be_success
 
-        ServiceResult.success(result: encrypted)
-      rescue StandardError => e
-        ServiceResult.failure(errors: e)
+        digested = result.result
+
+        expect(digested).not_to eq(secret)
       end
-
-      private
-
-      attr_reader :token
     end
   end
 end
