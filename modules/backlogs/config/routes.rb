@@ -27,11 +27,23 @@
 #++
 
 Rails.application.routes.draw do
+  concern :with_split_view do |options|
+    get "details/:work_package_id(/:tab)",
+        action: options.fetch(:action, :split_view),
+        defaults: { tab: :overview },
+        as: :details,
+        work_package_split_view: true
+  end
+
   scope "", as: "backlogs" do
     scope "projects/:project_id", as: "project" do
-      resources :backlogs,         controller: :rb_master_backlogs,  only: :index
+      resources :backlogs, controller: :rb_master_backlogs, only: :index do
+        collection do
+          concerns :with_split_view, base_route: :backlogs_project_backlogs_path
+        end
+      end
 
-      resources :sprints,          controller: :rb_sprints,          only: %i[show update] do
+      resources :sprints, controller: :rb_sprints, only: %i[update] do
         resource :query,            controller: :rb_queries,          only: :show
 
         resource :taskboard,        controller: :rb_taskboards,       only: :show
@@ -44,7 +56,17 @@ Rails.application.routes.draw do
 
         resources :tasks,            controller: :rb_tasks,            only: %i[create update]
 
-        resources :stories, controller: :rb_stories, only: %i[create update]
+        resources :stories, controller: :rb_stories, only: %i[create update] do
+          member do
+            put :move
+            post :reorder
+          end
+        end
+
+        member do
+          get :edit_name
+          get :show_name
+        end
       end
 
       resource :query, controller: :rb_queries, only: :show

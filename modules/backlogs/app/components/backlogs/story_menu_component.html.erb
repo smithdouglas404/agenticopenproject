@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,27 +25,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 
-<%
-  folded = current_user.backlogs_preference(:versions_default_fold_state) == "closed"
-  editable = User.current.allowed_in_project?(:edit_work_packages, @project)
+<%=
+  render(Primer::Alpha::ActionMenu.new(anchor_align: :end, classes: "hide-when-print")) do |menu|
+    menu.with_show_button(
+      scheme: :invisible,
+      icon: :"kebab-horizontal",
+      "aria-label": t(".label_actions"),
+      tooltip_direction: :se
+    )
+
+    menu.with_item(
+      tag: :a,
+      label: t(:"js.button_open_details"),
+      href: details_backlogs_project_backlogs_path(project, story),
+      content_arguments: { turbo_frame: "content-bodyRight", turbo_action: "advance" }
+    ) do |item|
+      item.with_leading_visual_icon(icon: :"op-view-split")
+    end
+
+    menu.with_item(
+      tag: :a,
+      label: t(:"js.button_open_fullscreen"),
+      href: work_package_path(story),
+      content_arguments: { turbo_frame: "_top" }
+    ) do |item|
+      item.with_leading_visual_icon(icon: :"screen-full")
+    end
+
+    menu.with_divider
+
+    build_move_menu(menu)
+  end
 %>
-<div class="backlog" id="backlog_<%= backlog.sprint.id %>">
-  <div class="header">
-    <% icon = folded ? "icon-arrow-down1" : "icon-arrow-up1" %>
-    <div class="toggler <%= icon %> icon-small<%= " closed" if folded %>"> </div>
-    <%= render partial: "rb_sprints/sprint", object: backlog.sprint %>
-    <div class="velocity"> </div>
-    <%= render_backlog_menu backlog %>
-  </div>
-  <ul class="stories<%= " closed" if folded %><%= " prevent_drag" unless editable %>">
-    <% reset_cycle "stories" %>
-    <% backlog.stories.each_with_index do |story, index| %>
-      <% higher_item = index == 0 ? nil : backlog.stories[index - 1] %>
-
-      <%= render partial: "rb_stories/story",
-                 locals: { story:, higher_item: } %>
-    <% end %>
-  </ul>
-</div>

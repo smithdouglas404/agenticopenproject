@@ -1,0 +1,104 @@
+<%# -- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++# %>
+
+<%= component_wrapper(tag: :header) do %>
+  <% if show? %>
+      <%=
+        stack(
+          tag: :"collapsible-header",
+          direction: :horizontal,
+          align: :center,
+          justify: :space_between,
+          classes: class_names(
+            "CollapsibleHeader",
+            "CollapsibleHeader--collapsed" => @collapsed
+          ),
+          data: { collapsed: (@collapsed if @collapsed) }
+        ) do
+      %>
+        <%= stack_item(classes: "hide-when-print") do %>
+        <%=
+          render(
+            Primer::BaseComponent.new(
+              tag: :div,
+              role: "button",
+              tabindex: 0,
+              classes: "CollapsibleSection--triggerArea",
+              aria: {
+                label: t(".label_toggle_backlog", name: sprint.name),
+                controls: "#{dom_id(backlog)}-list",
+                expanded: !@collapsed
+              },
+              data: {
+                target: "collapsible-header.triggerElement",
+                action: "click:collapsible-header#toggle keydown:collapsible-header#toggleViaKeyboard"
+              }
+            )
+          ) do
+        %>
+          <%= render(Primer::Beta::Octicon.new(icon: "chevron-up", hidden: @collapsed, data: { target: "collapsible-header.arrowUp" })) %>
+          <%= render(Primer::Beta::Octicon.new(icon: "chevron-down", hidden: !@collapsed, data: { target: "collapsible-header.arrowDown" })) %>
+        <% end %>
+      <% end %>
+      <%= stack_item(grow: true) do %>
+        <%= stack(direction: :horizontal, align: :center) do %>
+          <%= render Primer::Beta::Truncate.new(tag: :h4, classes: "Box-title") do %>
+            <%= sprint.name %>
+          <% end %>
+
+          <%= stack_item do %>
+            <%= render(Primer::Beta::Counter.new(count: story_count, round: true)) %>
+          <% end %>
+
+          <%= stack_item(grow: true) do %>
+            <%= render(Primer::Beta::Text.new(color: :subtle, role: "group")) do %>
+              <%= format_date_range(date_range) %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <%= render(Primer::Beta::Truncate.new(color: :subtle, classes: "velocity")) do %>
+        <%= t(:"backlogs.points", count: story_points) %>
+      <% end %>
+
+      <%= render(Backlogs::BacklogMenuComponent.new(backlog:, project: @project)) %>
+    <% end %>
+  <% else %>
+    <%=
+      primer_form_with(
+        url: backlogs_project_sprint_path(project, sprint),
+        model: sprint,
+        method: :patch
+      ) do |f|
+        render(Backlogs::BacklogHeaderForm.new(f, cancel_path: show_name_backlogs_project_sprint_path(project, sprint)))
+      end
+    %>
+  <% end %>
+<% end %>

@@ -146,8 +146,7 @@ RSpec.describe "rb_taskboards/show" do
       stories.each do |story|
         assert_select "tr.story_#{story.id} td.add_new" do |td|
           expect(td.count).to eq 1
-          expect(td.first).to have_content "+"
-          expect(td.first[:class]).to include "clickable"
+          expect(td.first).to have_link
         end
       end
     end
@@ -160,8 +159,7 @@ RSpec.describe "rb_taskboards/show" do
       stories.each do |story|
         assert_select "tr.story_#{story.id} td.add_new" do |td|
           expect(td.count).to eq 1
-          expect(td.first).to have_no_content "+"
-          expect(td.first[:class]).not_to include "clickable"
+          expect(td.first).to have_no_link
         end
       end
     end
@@ -174,8 +172,7 @@ RSpec.describe "rb_taskboards/show" do
       stories.each do |_story|
         assert_select "#impediments td.add_new" do |td|
           expect(td.count).to eq 1
-          expect(td.first).to have_content "+"
-          expect(td.first[:class]).to include "clickable"
+          expect(td.first).to have_link
         end
       end
     end

@@ -32,10 +32,6 @@ class RbApplicationController < ApplicationController
 
   before_action :load_sprint_and_project, :check_if_plugin_is_configured, :authorize
 
-  # Use special backlogs layout to initialize stimulus side-loading legacy backlogs scripts
-  # and CSS from frontend
-  layout "backlogs"
-
   private
 
   # Loads the project to be used by the authorize filter to determine if

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,11 +28,54 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  js:
-    work_packages:
-      properties:
-        storyPoints: "Story Points"
-    burndown:
-      day: "Day"
-      points: "Points"
+module Backlogs
+  class BacklogHeaderComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include Primer::ComponentHelpers
+    include Redmine::I18n
+    include RbCommonHelper
+
+    STATE_DEFAULT = :show
+    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
+
+    attr_reader :backlog, :project, :state, :collapsed, :current_user
+
+    delegate :sprint, :stories, to: :backlog
+    delegate :name, to: :sprint, prefix: :sprint
+    delegate :edit?, :show?, to: :state
+
+    def initialize(
+      backlog:,
+      project:,
+      state: STATE_DEFAULT,
+      folded: false,
+      current_user: User.current
+    )
+      super()
+
+      @backlog = backlog
+      @project = project
+      @state = ActiveSupport::StringInquirer.new(state.to_s)
+      @collapsed = folded
+      @current_user = current_user
+    end
+
+    def wrapper_uniq_by
+      backlog.sprint_id
+    end
+
+    private
+
+    def story_points
+      @story_points ||= stories.sum { |story| story.story_points || 0 }
+    end
+
+    def story_count
+      @story_count ||= stories.size
+    end
+
+    def date_range
+      [sprint.start_date, sprint.effective_date].compact
+    end
+  end
+end

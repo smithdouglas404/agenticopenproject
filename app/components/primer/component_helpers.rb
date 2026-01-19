@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,11 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  js:
-    work_packages:
-      properties:
-        storyPoints: "Story Points"
-    burndown:
-      day: "Day"
-      points: "Points"
+module Primer
+  module ComponentHelpers
+    def stack(**, &)
+      render(Primer::Alpha::Stack.new(**), &)
+    end
+
+    def stack_item(**, &)
+      render(Primer::Alpha::StackItem.new(**), &)
+    end
+  end
+end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,11 +28,43 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  js:
-    work_packages:
-      properties:
-        storyPoints: "Story Points"
-    burndown:
-      day: "Day"
-      points: "Points"
+require "rails_helper"
+
+RSpec.describe RbMasterBacklogsController do
+  shared_let(:type_feature) { create(:type_feature) }
+  shared_let(:type_task) { create(:type_task) }
+  shared_let(:user) { create(:admin) }
+  current_user { user }
+
+  let(:project) { create(:project) }
+  let(:status)  { create(:status, name: "status 1", is_default: true) }
+  let(:sprint)  { create(:sprint, project:) }
+  let(:story)   { create(:story, status:, version: sprint, project:) }
+
+  before do
+    allow(Setting)
+      .to receive(:plugin_openproject_backlogs)
+      .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
+  end
+
+  describe "GET #index" do
+    it do
+      get :index, params: { project_id: project.id }
+
+      expect(response).to be_successful
+    end
+  end
+
+  describe "GET #split_view" do
+    it do
+      get :split_view, params: {
+        project_id: project.id,
+        tab: :overview,
+        work_package_id: story.id,
+        work_package_split_view: true
+      }
+
+      expect(response).to be_successful
+    end
+  end
+end

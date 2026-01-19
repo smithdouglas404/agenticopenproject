@@ -113,9 +113,9 @@ RSpec.describe "Backlogs context menu", :js do
       sprint.update(start_date: nil)
     end
 
-    it 'does not display the "Burndown chart" menu entry' do
+    it 'disables the "Burndown chart" menu entry' do
       within_backlog_context_menu do |menu|
-        expect(menu).to have_no_link I18n.t("backlogs.show_burndown_chart")
+        expect(menu).to have_link I18n.t("backlogs.show_burndown_chart", aria: { disabled: true })
       end
     end
   end
@@ -125,9 +125,9 @@ RSpec.describe "Backlogs context menu", :js do
       sprint.update(effective_date: nil)
     end
 
-    it 'does not display the "Burndown chart" menu entry' do
+    it 'disables the "Burndown chart" menu entry' do
       within_backlog_context_menu do |menu|
-        expect(menu).to have_no_link I18n.t("backlogs.show_burndown_chart")
+        expect(menu).to have_link I18n.t("backlogs.show_burndown_chart", aria: { disabled: true })
       end
     end
   end

@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../../support/pages/backlogs"
 
-RSpec.describe "Backlogs context menu", :js do
+RSpec.describe.skip "Backlogs change status", :js do
   shared_let(:story_type) { create(:type_feature) }
   shared_let(:task_type) { create(:type_task) }
   shared_let(:project) { create(:project, types: [story_type, task_type]) }

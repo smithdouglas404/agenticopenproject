@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,12 +29,14 @@
 #++
 
 class RbStoriesController < RbApplicationController
+  include OpTurbo::ComponentStream
+
   # This is a constant here because we will recruit it elsewhere to whitelist
   # attributes. This is necessary for now as we still directly use `attributes=`
   # in non-controller code.
   PERMITTED_PARAMS = %i[id status_id version_id
                         story_points type_id subject author_id
-                        sprint_id]
+                        sprint_id].freeze
 
   def create
     call = Stories::CreateService
@@ -59,15 +63,71 @@ class RbStoriesController < RbApplicationController
     respond_with_story(call)
   end
 
+  def move
+    story = Story.find(params[:id])
+
+    # call = Stories::UpdateService
+    #        .new(user: current_user, story:)
+    #        .call(attributes: move_params)
+
+    if story.update(version_id: move_params[:target_id], **move_params.except(:target_id))
+      render_success_flash_message_via_turbo_stream(
+        message: I18n.t(:enumeration_caption_order_changed)
+      )
+    else
+      render_error_flash_message_via_turbo_stream(
+        message: I18n.t(:enumeration_could_not_be_moved) + call.errors.full_messages.to_sentence
+      )
+    end
+
+    backlog = Backlog.for(sprint: @sprint, project: @project)
+    replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog:, project: @project))
+
+    if story.saved_change_to_version_id?
+      new_sprint  = story.version.becomes(Sprint)
+      new_backlog = Backlog.for(sprint: new_sprint, project: @project)
+      replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog: new_backlog, project: @project))
+    end
+
+    respond_with_turbo_streams
+  end
+
+  def reorder
+    story = Story.find(params[:id])
+
+    if story.update(move_to: reorder_param)
+      render_success_flash_message_via_turbo_stream(
+        message: I18n.t(:enumeration_caption_order_changed)
+      )
+    else
+      render_error_flash_message_via_turbo_stream(
+        message: I18n.t(:enumeration_could_not_be_moved) + call.errors.full_messages.to_sentence
+      )
+    end
+
+    backlog = Backlog.for(sprint: @sprint, project: @project)
+
+    replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog:, project: @project))
+
+    respond_with_turbo_streams
+  end
+
   private
 
   def respond_with_story(call)
     status = call.success? ? 200 : 400
     story = call.result
 
-    respond_to do |format|
-      format.html { render partial: "story", object: story, status:, locals: { errors: call.errors } }
-    end
+    respond_with_turbo_streams
+  end
+
+  def move_params
+    params.require(%i[position target_id])
+    params.permit(:position, :target_id)
+  end
+
+  def reorder_param
+    params.expect(:direction)
   end
 
   def story_params

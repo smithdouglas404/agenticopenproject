@@ -1,0 +1,14 @@
+<canvas baseChart 
+  [data]="lineChartData()" 
+  [options]="lineChartOptions()"
+  [type]="'line'"></canvas>
+
+<hr/>
+
+<details>
+  <summary>Debug</summary>
+  <code>
+    <pre>{{maxValue() }}</pre>
+    <pre>{{lineChartData() | json}}</pre>
+  </code>
+</details>

@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,12 +25,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 
-<%= validation_errors.length > 1 ? t(:error_intro_plural) : t(:error_intro_singular) %>
-<ul>
-  <%- validation_errors.each_full do |msg| %>
-  <li><%= msg %></li>
-  <%- end %>
-</ul>
-<%= t(:error_outro) %>
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title_content(@sprint.name)
+
+    header.with_description do
+      format_date_range(date_range)
+    end
+
+    header.with_breadcrumbs(breadcrumb_items)
+  end
+%>

@@ -34,6 +34,8 @@ en:
 
   activerecord:
     attributes:
+      sprint:
+        duration: "Sprint duration"
       work_package:
         position: "Position"
         story_points: "Story Points"
@@ -73,7 +75,9 @@ en:
     work_package_is_closed: "Work package is done, when"
     label_is_done_status: "Status %{status_name} means done"
     no_burndown_data: "No burndown data available. It is necessary to have the sprint start- and end dates set."
-    points: "Points"
+    points:
+      one: "%{count} point"
+      other: "%{count} points"
     positions_could_not_be_rebuilt: "Positions could not be rebuilt."
     positions_rebuilt_successfully: "Positions rebuilt successfully."
     properties: "Properties"
@@ -83,8 +87,9 @@ en:
     remaining_hours_ideal: "Remaining work (ideal)"
     show_burndown_chart: "Burndown Chart"
     story: "Story"
-    story_points: "Story Points"
-    story_points_ideal: "Story Points (ideal)"
+    story_points:
+      one: "%{count} story point"
+      other: "%{count} story points"
     task: "Task"
     task_color: "Task color"
     unassigned: "Unassigned"
@@ -93,12 +98,31 @@ en:
       button_update_backlogs: "Update backlogs module"
     x_more: "%{count} more..."
 
+    backlog_component:
+      sprint_backlog:
+        blank_slate_title: "Sprint Backlog is empty"
+        blank_slate_description: "No items planned yet. Drag items here to add them to the Sprint."
+      product_backlog:
+        blank_slate_title: "Product Backlog is empty"
+        blank_slate_description: "There is no upcoming work defined in the Product Backlog"
+
+    backlog_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+
+    backlog_menu_component:
+      label_actions: "Backlog actions"
+
+    story_component:
+      label_drag_story: "Move %{name}"
+
+    story_menu_component:
+      label_actions: "Story actions"
+
   backlogs_active: "active"
   backlogs_any: "any"
   backlogs_inactive: "Project shows no activity"
   backlogs_points_burn_direction: "Points burn up/down"
   backlogs_product_backlog: "Product backlog"
-  backlogs_product_backlog_is_empty: "Product backlog is empty"
   backlogs_product_backlog_unsized: "The top of the product backlog has unsized stories"
   backlogs_sizing_inconsistent: "Story sizes vary against their estimates"
   backlogs_sprint_notes_missing: "Closed sprints without retrospective/review notes"
@@ -115,6 +139,9 @@ en:
   backlogs_empty_title: "No versions are defined to be used in backlogs"
   backlogs_empty_action_text: "To get started with backlogs, create a new version and assign it to a backlogs column."
 
+  burndown:
+    story_points: "Story points"
+    story_points_ideal: "Story points (ideal)"
 
   button_edit_wiki: "Edit wiki page"
 

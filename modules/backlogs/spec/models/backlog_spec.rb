@@ -53,4 +53,19 @@ RSpec.describe Backlog do
       end
     end
   end
+
+  describe "ActiveModel naming" do
+    let(:sprint) { build_stubbed(:sprint) }
+
+    subject(:instance) { described_class.new(sprint:, stories: []) }
+
+    it "exposes an ActiveModel model_name" do
+      expect(described_class).to respond_to(:model_name)
+      expect(described_class.model_name).to respond_to(:param_key)
+    end
+
+    it "implements #to_key" do
+      expect(instance).to respond_to(:to_key)
+    end
+  end
 end

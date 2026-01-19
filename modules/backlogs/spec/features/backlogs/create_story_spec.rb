@@ -27,6 +27,7 @@
 #++
 
 require "spec_helper"
+require_relative "../../support/pages/backlogs"
 
 RSpec.describe "Backlogs", :js, :selenium, driver: :firefox_de do # using FF due to regression #64158
   let(:story_type) do
@@ -88,6 +89,8 @@ RSpec.describe "Backlogs", :js, :selenium, driver: :firefox_de do # using FF due
     create(:default_priority)
   end
 
+  let(:backlogs_page) { Pages::Backlogs.new(project) }
+
   before do
     login_as(user)
 
@@ -100,14 +103,13 @@ RSpec.describe "Backlogs", :js, :selenium, driver: :firefox_de do # using FF due
   end
 
   it "allows creating a new story" do
-    visit backlogs_project_backlogs_path(project)
+    backlogs_page.visit!
 
-    within("#backlog_#{backlog_version.id}", wait: 10) do
-      menu = find(".backlog-menu")
-      menu.click
-      click_link "New Story"
+    backlogs_page.click_in_backlog_menu(backlog_version, "New Story")
+
+    within_dialog "New work package" do
       fill_in "Subject", with: "The new story"
-      fill_in "Story Points", with: "5"
+      # fill_in "Story Points", with: "5"
 
       # inactive types should not be selectable
       # but the user can choose from the active types

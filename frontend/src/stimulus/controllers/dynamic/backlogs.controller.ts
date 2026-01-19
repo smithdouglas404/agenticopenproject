@@ -1,15 +1,9 @@
 import { Controller } from '@hotwired/stimulus';
 
-import 'jquery.flot';
-import 'jquery.flot/excanvas';
-
 import 'core-vendor/jquery.jeditable.mini';
 import 'core-vendor/jquery.colorcontrast';
 
 import './backlogs/common';
-import './backlogs/master_backlog';
-import './backlogs/backlog';
-import './backlogs/burndown';
 import './backlogs/model';
 import './backlogs/editable_inplace';
 import './backlogs/sprint';

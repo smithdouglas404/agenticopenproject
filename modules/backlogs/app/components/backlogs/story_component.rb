@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,11 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  js:
-    work_packages:
-      properties:
-        storyPoints: "Story Points"
-    burndown:
-      day: "Day"
-      points: "Points"
+module Backlogs
+  class StoryComponent < ApplicationComponent
+    include Primer::ComponentHelpers
+
+    attr_reader :story, :sprint, :max_position, :current_user
+
+    def initialize(story:, sprint:, max_position:, current_user: User.current)
+      super()
+
+      @story = story
+      @sprint = sprint
+      @max_position = max_position
+      @current_user = current_user
+    end
+
+    private
+
+    def story_points
+      story.story_points || 0
+    end
+  end
+end

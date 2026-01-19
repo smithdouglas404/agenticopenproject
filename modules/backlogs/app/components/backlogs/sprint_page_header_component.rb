@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,13 +26,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-en:
-  js:
-    work_packages:
-      properties:
-        storyPoints: "Story Points"
-    burndown:
-      day: "Day"
-      points: "Points"
+module Backlogs
+  class SprintPageHeaderComponent < ApplicationComponent
+    include Primer::ComponentHelpers
+    include ApplicationHelper
+    include RbCommonHelper
+
+    def initialize(sprint:, project:)
+      super
+
+      @sprint  = sprint
+      @project = project
+    end
+
+    def breadcrumb_items
+      [{ href: project_overview_path(@project.id), text: @project.name },
+       { href: backlogs_project_backlogs_path(@project), text: t(:label_backlogs) },
+       @sprint.name]
+    end
+
+    private
+
+    def date_range
+      [@sprint.start_date, @sprint.effective_date].compact
+    end
+  end
+end

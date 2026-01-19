@@ -45,8 +45,8 @@ module Pages
     end
 
     def enter_edit_backlog_mode(backlog)
-      within_backlog(backlog) do
-        find(".start_date.editable").click
+      within_backlog_menu(backlog) do |menu|
+        menu.find(:menuitem, "Edit title").click
       end
     end
 
@@ -77,11 +77,11 @@ module Pages
         attributes.each do |key, value|
           case key
           when :name
-            find("input[name=name]").set value
+            fill_in "Name", with: value
           when :start_date
-            find("input[name=start_date]").set value
+            fill_in "Start date", with: value
           when :effective_date
-            find("input[name=effective_date]").set value
+            fill_in "Finish date", with: value
           else
             raise NotImplementedError
           end
@@ -109,10 +109,7 @@ module Pages
 
     def save_backlog_from_edit_mode(backlog)
       within_backlog(backlog) do
-        find("input[name=name]").native.send_key :return
-
-        expect(page)
-          .to have_css(".start_date.editable")
+        find_field("Name").send_keys :return
       end
     end
 
@@ -136,17 +133,9 @@ module Pages
       save_story_from_edit_mode(story)
     end
 
-    def edit_new_story(attributes)
-      within(".story.editing") do
-        alter_attributes_in_edit_story_mode(nil, attributes)
-
-        save_story_from_edit_mode(nil)
-      end
-    end
-
     def click_in_backlog_menu(backlog, item_name)
       within_backlog_menu(backlog) do |menu|
-        menu.find(".item", text: item_name).click
+        menu.find(:menuitem, text: item_name).click
       end
     end
 
@@ -160,7 +149,7 @@ module Pages
 
     def fold_backlog(backlog)
       within_backlog(backlog) do
-        find(".toggler").click
+        find(:button, accessible_name: "Collapse/Expand #{backlog.name}").click
       end
     end
 
@@ -252,12 +241,9 @@ module Pages
     end
 
     def expect_and_dismiss_error(message)
-      within ".ui-dialog" do
-        expect(page)
-          .to have_content message
+      expect(page).to have_content message
 
-        click_button("OK")
-      end
+      click_on "Cancel"
     end
 
     def path
@@ -266,10 +252,9 @@ module Pages
 
     def within_backlog_menu(backlog, &)
       within_backlog(backlog) do
-        menu = find(".backlog-menu")
-        menu.click
+        find(:button, accessible_name: "Backlog actions").click
 
-        yield menu
+        within(:menu, &)
       end
     end
 
