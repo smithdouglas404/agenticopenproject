@@ -1,5 +1,7 @@
 # OpenProject AI Coding Agent Instructions
 
+> **Note for developers**: You can create `AGENTS.local.md` (or `CLAUDE.local.md`) in this directory to add your own custom instructions or preferences for AI coding agents. These files are git-ignored and will not be committed to the repository.
+
 ## Repository Overview
 
 **OpenProject** is a web-based, open-source project management software written in Ruby on Rails with PostgreSQL for data persistence.
