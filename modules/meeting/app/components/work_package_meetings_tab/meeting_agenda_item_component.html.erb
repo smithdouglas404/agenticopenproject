@@ -10,11 +10,12 @@
       end
     end
 
-    if @meeting_agenda_item.outcomes.exists?
-      outcome = @meeting_agenda_item.outcomes.information_kind.last
+    outcomes = @meeting_agenda_item.outcomes.information_kind.to_a
+    outcomes.each_with_index do |outcome, index|
       flex.with_row do
         render(OpPrimer::InsetBoxComponent.new(border: false, mt: 2, classes: "outcome-container")) do
-          concat render(Primer::Beta::Heading.new(tag: :h5)) { t(:label_agenda_outcome) }
+          heading = outcomes.size > 1 ? "#{t(:label_agenda_outcome)} #{index + 1}" : t(:label_agenda_outcome)
+          concat render(Primer::Beta::Heading.new(tag: :h5)) { heading }
           concat render(Primer::Box.new(classes: "op-uc-container", pb: 0, mt: 1)) { format_text(outcome, :notes) }
         end
       end
