@@ -50,6 +50,10 @@ Rails.application.routes.draw do
       get :render_connection_error, defaults: { format: :turbo_stream }
       get :render_connection_recovery, defaults: { format: :turbo_stream }
     end
+
+    namespace :oauth do
+      resource :refresh_token, only: [:create], controller: "/documents/oauth/refresh_tokens", defaults: { format: :json }
+    end
   end
 
   scope module: :documents do

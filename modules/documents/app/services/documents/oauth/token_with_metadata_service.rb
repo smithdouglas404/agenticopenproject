@@ -30,39 +30,28 @@
 
 module Documents
   module OAuth
-    class EncryptTokenService < BaseServices::BaseCallable
-      ALGORITHM = "aes-256-gcm"
-
-      def initialize(token:)
+    class TokenWithMetadataService < BaseServices::BaseCallable
+      def initialize(user:)
         super()
 
-        @token = token
+        @user = user
       end
 
       def perform
-        encryptor = ActiveSupport::MessageEncryptor.new(
-          key,
-          cipher: ALGORITHM,
-          serializer: ActiveSupport::MessageEncryptor::NullSerializer
+        token_result = GenerateTokenService.new(user: @user).call
+        return token_result unless token_result.success?
+
+        access_token = token_result.result
+        encrypt_result = EncryptTokenService.new(token: access_token.plaintext_token).call
+        return encrypt_result unless encrypt_result.success?
+
+        ServiceResult.success(
+          result: {
+            encrypted_token: encrypt_result.result,
+            expires_at: access_token.expires_in.seconds.from_now.iso8601,
+            expires_in_seconds: access_token.expires_in
+          }
         )
-        encrypted = encryptor.encrypt_and_sign(token)
-
-        ServiceResult.success(result: encrypted)
-      rescue StandardError => e
-        ServiceResult.failure(errors: e)
-      end
-
-      private
-
-      attr_reader :token
-
-      def key
-        @key ||= begin
-          secret = Setting.collaborative_editing_hocuspocus_secret
-          raise "Collaborative editing secret is not set. Cannot encrypt token." if secret.blank?
-
-          Digest::SHA256.digest(secret)
-        end
       end
     end
   end

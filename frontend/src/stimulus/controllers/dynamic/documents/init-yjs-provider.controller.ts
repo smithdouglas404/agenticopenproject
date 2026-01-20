@@ -31,6 +31,7 @@
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { Controller } from '@hotwired/stimulus';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
+import { TokenRefreshService } from 'core-stimulus/services/documents/token-refresh.service';
 import type { Doc } from 'yjs';
 import * as Y from 'yjs';
 
@@ -39,11 +40,19 @@ export default class extends Controller {
     hocuspocusUrl: String,
     oauthToken: String,
     documentName: String,
+    tokenExpiresAt: String,
+    tokenExpiresInSeconds: Number,
+    refreshUrl: String,
   };
 
   declare readonly hocuspocusUrlValue:string;
   declare readonly oauthTokenValue:string;
   declare readonly documentNameValue:string;
+  declare readonly tokenExpiresAtValue:string;
+  declare readonly tokenExpiresInSecondsValue:number;
+  declare readonly refreshUrlValue:string;
+
+  private tokenRefreshService:TokenRefreshService | null = null;
 
   connect():void {
     const ydoc:Doc = new Y.Doc();
@@ -52,12 +61,22 @@ export default class extends Controller {
       name: this.documentNameValue,
       token: this.oauthTokenValue,
       document: ydoc,
+      onAuthenticationFailed: () => {
+        console.warn('[InitYjsProvider] Authentication failed');
+      },
     });
 
     LiveCollaborationManager.initializeYjsProvider(provider, ydoc);
+
+    if (this.refreshUrlValue && this.tokenExpiresInSecondsValue) {
+      this.tokenRefreshService = new TokenRefreshService(provider, this.refreshUrlValue);
+      this.tokenRefreshService.scheduleRefresh(this.tokenExpiresInSecondsValue);
+    }
   }
 
   disconnect():void {
+    this.tokenRefreshService?.destroy();
+    this.tokenRefreshService = null;
     LiveCollaborationManager.destroy();
   }
 }

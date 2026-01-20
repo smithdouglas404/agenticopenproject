@@ -222,33 +222,22 @@ class DocumentsController < ApplicationController
     redirect_to document_path(call.result, state: :edit)
   end
 
-  # rubocop:disable Metrics/AbcSize
   def generate_encrypted_oauth_token
-    if !current_user.allowed_in_project?(:view_documents, @project)
-      return
-    end
+    return unless current_user.allowed_in_project?(:view_documents, @project)
 
-    result = Documents::OAuth::GenerateTokenService
+    token_result = Documents::OAuth::TokenWithMetadataService
       .new(user: current_user)
       .call
 
-    if result.failure?
-      Rails.logger.error("Failed to generate OAuth token for document #{@document.id}: #{result.errors}")
+    if token_result.failure?
+      Rails.logger.error("Failed to generate OAuth token for document #{@document.id}: #{token_result.errors}")
       return
     end
 
-    result = Documents::OAuth::EncryptTokenService
-      .new(token: result.result.plaintext_token)
-      .call
-
-    if result.failure?
-      Rails.logger.error("Failed to encrypt OAuth token for document #{@document.id}: #{result.errors}")
-      return
-    end
-
-    @oauth_token = result.result
+    @oauth_token = token_result.result[:encrypted_token]
+    @token_expires_at = token_result.result[:expires_at]
+    @token_expires_in_seconds = token_result.result[:expires_in_seconds]
   end
-  # rubocop:enable Metrics/AbcSize
 
   def update_header_component_via_turbo_stream(state: :show)
     update_via_turbo_stream(
