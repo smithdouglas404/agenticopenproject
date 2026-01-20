@@ -34,6 +34,20 @@ describe("OpenProjectApi", () => {
       ).rejects.toThrowError("Unsupported state or unable to authenticate data");
     });
 
+    test("when the origin does not match the one in the token", async () => {
+      await expect(() =>
+        new OpenProjectApi().onAuthenticate({
+          token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
+          documentName: "https://test.api/api/v3/documents/1",
+          request: {
+            headers: {
+              origin: "https://different.origin",
+            },
+          },
+        } as unknown as onAuthenticatePayload)
+      ).rejects.toThrowError("Unauthorized: Token origin does not match request origin.");
+    });
+
     test("when the resourceUrl does not match the one in the token", async () => {
       fetchMock.mockResolvedValueOnce({ throws: new TypeError("is not a valid URL") });
 

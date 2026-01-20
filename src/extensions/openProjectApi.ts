@@ -41,6 +41,11 @@ export class OpenProjectApi implements Extension {
       // readonly,
     } = decryptedToken;
 
+    const requestOrigin = data.request?.headers?.origin;
+    if (requestOrigin && !tokenResourceUrl?.startsWith(requestOrigin)) {
+      throw new Error('Unauthorized: Token origin does not match request origin.');
+    }
+
     if (tokenResourceUrl !== resourceUrl) {
       throw new Error('Unauthorized: Token resource URL does not match document.');
     }
