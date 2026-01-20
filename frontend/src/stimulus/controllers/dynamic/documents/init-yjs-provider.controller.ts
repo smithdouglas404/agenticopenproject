@@ -53,13 +53,14 @@ export default class extends Controller {
   declare readonly refreshUrlValue:string;
 
   private tokenRefreshService:TokenRefreshService | null = null;
+  private isFirstConnection = true;
 
   connect():void {
     const ydoc:Doc = new Y.Doc();
     const provider = new HocuspocusProvider({
       url: this.hocuspocusUrlValue,
       name: this.documentNameValue,
-      token: this.oauthTokenValue,
+      token: async () => this.getToken(),
       document: ydoc,
       onAuthenticationFailed: () => {
         console.warn('[InitYjsProvider] Authentication failed');
@@ -72,6 +73,20 @@ export default class extends Controller {
       this.tokenRefreshService = new TokenRefreshService(provider, this.refreshUrlValue);
       this.tokenRefreshService.scheduleRefresh(this.tokenExpiresInSecondsValue);
     }
+  }
+
+  private async getToken():Promise<string> {
+    if (this.isFirstConnection) {
+      this.isFirstConnection = false;
+      return this.oauthTokenValue;
+    }
+
+    return this.fetchFreshToken();
+  }
+
+  private async fetchFreshToken():Promise<string> {
+    const data = await TokenRefreshService.fetchToken(this.refreshUrlValue);
+    return data.encrypted_token;
   }
 
   disconnect():void {

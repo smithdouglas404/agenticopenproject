@@ -31,7 +31,7 @@
 import type { HocuspocusProvider } from '@hocuspocus/provider';
 import { getMetaContent } from 'core-app/core/setup/globals/global-helpers';
 
-interface TokenResponse {
+export interface TokenResponse {
   encrypted_token:string;
   expires_at:string;
   expires_in_seconds:number;
@@ -80,36 +80,43 @@ export class TokenRefreshService {
     }, refreshDelayMs);
   }
 
+  static async fetchToken(refreshUrl:string):Promise<TokenResponse> {
+    const response = await fetch(refreshUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': getMetaContent('csrf-token'),
+        'X-Authentication-Scheme': 'Session',
+      },
+      credentials: 'same-origin',
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      throw new Error('Session expired');
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    return response.json() as Promise<TokenResponse>;
+  }
+
   async performRefresh():Promise<void> {
     if (this.destroyed) {
       return;
     }
 
     try {
-      const response = await fetch(this.refreshUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': getMetaContent('csrf-token'),
-          'X-Authentication-Scheme': 'Session',
-        },
-        credentials: 'same-origin',
-      });
-
-      if (response.status === 401 || response.status === 403) {
-        console.warn('[TokenRefresh] Session expired, stopping refresh');
-        return;
-      }
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json() as TokenResponse;
+      const data = await TokenRefreshService.fetchToken(this.refreshUrl);
 
       this.sendTokenToServer(data.encrypted_token);
       this.scheduleRefresh(data.expires_in_seconds);
     } catch (error) {
+      if (error instanceof Error && error.message === 'Session expired') {
+        console.warn('[TokenRefresh] Session expired, stopping refresh');
+        return;
+      }
       console.error('[TokenRefresh] Refresh failed, retrying...', error);
       this.scheduleRetry();
     }
