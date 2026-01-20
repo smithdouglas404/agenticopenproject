@@ -87,7 +87,9 @@ The default view will include the **Shared with** column, which lists all users 
 
 If you want to see all shared work packages within a specific project, navigate to that project first and then select the same filter. You can also [adjust this filter](../work-package-table-configuration/#filter-work-packages) and save it under your private work package filters.
 
-You (with the correct permissions) can always change or remove sharing options![Filter for work packages shared with other users in OpenProject](openproject_user_guide_shared_with_users_filter_new.png)
+You (with the correct permissions) can always change or remove sharing options.
+
+![Filter for work packages shared with other users in OpenProject](openproject_user_guide_shared_with_users_filter_new.png)
 
 ## Configuration
 
