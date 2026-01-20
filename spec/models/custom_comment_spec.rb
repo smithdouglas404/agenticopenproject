@@ -46,4 +46,13 @@ RSpec.describe CustomComment do
       expect(duplicate.errors).to be_of_kind(:custom_field, :taken)
     end
   end
+
+  describe "comment normalization" do
+    let(:comment) { create(:custom_comment, text: "Line 1\r\nLine 2\rLine 3\nLine 4") }
+
+    it "normalizes newlines on save to not need to deal with it in journal" do
+      expect(comment.text).to eq("Line 1\nLine 2\nLine 3\nLine 4")
+      expect(comment.reload.text).to eq("Line 1\nLine 2\nLine 3\nLine 4")
+    end
+  end
 end

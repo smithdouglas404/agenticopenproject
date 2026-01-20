@@ -32,6 +32,15 @@ class CustomComment < ApplicationRecord
   belongs_to :custom_field, inverse_of: "comments"
   belongs_to :customized, polymorphic: true
 
+  before_save :normalize_newlines
+
   validates :custom_field, presence: true, uniqueness: { scope: :customized }
   validates :customized, presence: true
+
+  private
+
+  # to not deal with it in Journals::CreateService::CustomComment#changes_sql
+  def normalize_newlines
+    self.text = text.gsub(/\r\n?/, "\n") if text
+  end
 end
