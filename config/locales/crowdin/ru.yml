@@ -730,7 +730,7 @@ ru:
         token/api:
           title: "Токен доступа к API сгенерирован"
         token/rss:
-          title: "The RSS token has been generated"
+          title: "Токен RSS сгенерирован"
       failed_to_reset_token: "Не удалось сбросить маркер доступа: %{error}"
       failed_to_create_token: "Не удалось создать токен доступа: %{error}"
       failed_to_revoke_token: "Не удалось отозвать токен доступа: %{error}"
@@ -1968,7 +1968,7 @@ ru:
         many: Маркеры доступа
         other: Маркеры доступа
       token/rss:
-        one: "RSS token"
+        one: "Токен RSS"
         few: "RSS tokens"
         many: "RSS tokens"
         other: "RSS tokens"
@@ -3021,7 +3021,7 @@ ru:
       tabs:
         client:
           description: "Client tokens are issued by other applications, allowing OpenProject to access them."
-          title: "Client tokens"
+          title: "Клиентские токены"
         provider:
           description: "Provider tokens are issued by OpenProject, allowing other applications to access it."
           title: "Provider tokens"
@@ -3054,20 +3054,20 @@ ru:
         blank_title: "No OAuth client tokens"
         failed: "An error occurred and the token couldn't be removed. Please try again later."
         integration_type: "Integration type"
-        table_title: "OAuth client tokens"
+        table_title: "Клиентские токены OAuth"
         text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
         title: "OAuth"
-        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
-        removed: "OAuth client token successfully removed"
-        unknown_integration: "Unknown"
+        remove_token: "Вы действительно хотите удалить этот токен? Вам нужно будет снова войти в систему %{integration}."
+        removed: "Токен OAuth успешно удален"
+        unknown_integration: "Неизвестная"
       token/rss:
-        add_button: "RSS Token"
-        blank_description: "There is no RSS token yet. You can create one using the button below."
-        blank_title: "No RSS token"
+        add_button: "Токен RSS"
+        blank_description: "Токен RSS пока не создан. Вы можете создать его с помощью кнопки ниже."
+        blank_title: "Нет токена RSS"
         title: "RSS"
-        table_title: "RSS tokens"
-        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
-        static_token_name: "RSS token"
+        table_title: "Токены RSS"
+        text_hint: "Токены RSS позволяют пользователям следить за последними изменениями в этом экземпляре OpenProject через внешний RSS-трекер."
+        static_token_name: "Токен RSS"
         disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
         unknown_storage: "Неизвестное хранилище"
