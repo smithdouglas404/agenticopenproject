@@ -55,7 +55,7 @@ class JiraImport < ApplicationRecord
     STATE_REVERTING,
     STATE_REVERT_ERROR,
     STATE_REVERTED
-  ]
+  ].freeze
 
   def status_equal_or_after?(check_status)
     STATES.index(status) >= STATES.index(check_status)

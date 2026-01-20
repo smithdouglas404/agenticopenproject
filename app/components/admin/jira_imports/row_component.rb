@@ -45,12 +45,14 @@ module Admin::JiraImports
     end
 
     def edit_button
-      render(Primer::Beta::IconButton.new(
-               icon: :pencil,
-               tag: :a,
-               href: admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id),
-               "aria-label": "Edit"
-      ))
+      render(
+        Primer::Beta::IconButton.new(
+          icon: :pencil,
+          tag: :a,
+          href: admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id),
+          "aria-label": "Edit"
+        )
+      )
     end
 
     def status

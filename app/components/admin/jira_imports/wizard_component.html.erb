@@ -119,13 +119,13 @@ See COPYRIGHT and LICENSE files for more details.
               flex.with_column(flex: 1, mr: 1) do
                 render(Admin::JiraImports::InfoListBoxComponent.new(
                   title: I18n.t(:"admin.jiras.run.body.sections.import_scope.label_available_data"),
-                  list: @import_stats_available
+                  list: import_stats_available
                 ))
               end
               flex.with_column(flex: 1, ml: 1) do
                 render(Admin::JiraImports::InfoListBoxComponent.new(
                   title: I18n.t(:"admin.jiras.run.body.sections.import_scope.label_not_available_data"),
-                  list: @import_stats_unavailable
+                  list: import_stats_unavailable
                 ))
               end
             end
@@ -149,7 +149,7 @@ See COPYRIGHT and LICENSE files for more details.
           end
           box.with_row(mb: 3) do
             render(Primer::Alpha::CheckBoxGroup.new) do |component|
-              @import_settings.each do |item|
+              import_settings.each do |item|
                 component.check_box(label: item[:label], caption: item[:caption], checked: item[:checked], value: item[:value])
               end
             end
@@ -161,7 +161,7 @@ See COPYRIGHT and LICENSE files for more details.
               href: select_projects_modal_admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id),
               data: { controller: "async-dialog" }
             )) {
-             "Select projects"
+              "Select projects"
             }
           end
           if model.status == JiraImport::STATE_IMPORT_ERROR
@@ -199,7 +199,7 @@ See COPYRIGHT and LICENSE files for more details.
           box.with_row(mb: 3) do
             render(Admin::JiraImports::InfoListBoxComponent.new(
               title: I18n.t(:"admin.jiras.run.body.sections.import_scope.label_importing"),
-              list: @import_settings
+              list: import_settings
             ))
           end
           box.with_row(mb: 3) do
@@ -238,9 +238,18 @@ See COPYRIGHT and LICENSE files for more details.
           box.with_row(mb: 3) do
             render(Admin::JiraImports::InfoListBoxComponent.new(
               title: I18n.t(:"admin.jiras.run.body.sections.import_result.label_results"),
-              list: @import_settings
+              list: import_settings
             ))
           end
+        end
+        if model.status == JiraImport::STATE_REVERT_ERROR
+          box.with_row(mb: 3) do
+            render(Primer::Alpha::Banner.new(scheme: :danger, icon: :stop)) {
+              model.error || I18n.t('js.error.internal')
+            }
+          end
+        end
+        if [JiraImport::STATE_REVERT_ERROR, JiraImport::STATE_IMPORTED].include?(model.status)
           box.with_row(mb: 3) do
             concat(render(Primer::Beta::Button.new(
               scheme: :primary,
@@ -264,12 +273,6 @@ See COPYRIGHT and LICENSE files for more details.
                 I18n.t(:"admin.jiras.run.body.sections.import_result.label_revert_progress")
               }
             end
-          end
-        elsif model.status == JiraImport::STATE_REVERT_ERROR
-          box.with_row(mb: 3) do
-            render(Primer::Alpha::Banner.new(scheme: :danger, icon: :stop)) {
-              model.error || I18n.t('js.error.internal')
-            }
           end
         elsif model.status == JiraImport::STATE_REVERTED
           box.with_row(mb: 3, mt: 3) do

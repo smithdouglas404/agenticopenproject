@@ -32,6 +32,7 @@ module Admin
   module Jiras
     class JiraImportsController < ApplicationController
       include OpTurbo::ComponentStream
+
       layout "admin"
 
       menu_item :jira_import
@@ -39,13 +40,13 @@ module Admin
       before_action :require_admin
       before_action :find_jira_and_jira_import, only: %i[show continue remove select_projects select_projects_modal]
 
+      def show
+      end
+
       def new
         jira = Jira.find(params[:jira_id])
         jira_import = JiraImport.create!(author_id: current_user.id, jira_id: jira.id, status: JiraImport::STATE_INITIAL)
         redirect_to(admin_jira_jira_import_path(jira_id: jira.id, id: jira_import.id))
-      end
-
-      def show
       end
 
       def continue
@@ -56,8 +57,6 @@ module Admin
           import
         when "configure"
           configure
-        else
-          # nop
         end
         render_wizard
       end

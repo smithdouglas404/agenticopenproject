@@ -50,17 +50,21 @@ module Admin
             end
             list.each do |item|
               flex.with_row(mt: 2) do
-                concat(render(
-                         Primer::Beta::Octicon.new(
-                           icon: item[:checked] ? :"check-circle" : :"x-circle",
-                           color: item[:checked] ? :success : :danger
-                         )
-                       ))
-                concat(render(Primer::Beta::Text.new(ml: 1)) { item[:label] })
+                render_item(item)
               end
             end
           end
         end
+      end
+
+      def render_item(item)
+        concat(render(
+                 Primer::Beta::Octicon.new(
+                   icon: item[:checked] ? :"check-circle" : :"x-circle",
+                   color: item[:checked] ? :success : :danger
+                 )
+               ))
+        concat(render(Primer::Beta::Text.new(ml: 1)) { item[:label] })
       end
     end
   end
