@@ -45,7 +45,7 @@ module Documents
         ).call
 
         if token_result.success?
-          render json: token_result.result, status: :ok
+          render json: token_result.result.slice(:encrypted_token, :expires_at, :expires_in_seconds), status: :ok
         else
           render json: { error: token_result.message }, status: :unprocessable_entity
         end
