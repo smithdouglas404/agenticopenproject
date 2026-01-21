@@ -21,30 +21,45 @@ describe("OpenProjectApi", () => {
         new OpenProjectApi().onAuthenticate({
           token: null,
         } as unknown as onAuthenticatePayload)
-      ).rejects.toThrowError("Unauthorized: Token missing.");
+      ).rejects.toThrowError("Unauthorized: Missing auth params");
     });
 
-    test("when the token is invalid throw an error", async () => {
+    test("when the oauth_token is invalid throw an error", async () => {
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
-          // Invalid token, generated with a different secret
-          token: "5Sm4blMLhP8PFS67xw==--br8L/7YDX3rbTLpT--HHEi+SnNdmHmH90N3mHY9A==",
+          // invalid token generated with a different secret
+          token: "mXPMUDJ41lbo0xc0qjgeUrk0nYfuCKMxPZa+/euNNM8jVpeZI5uU/YQQa60WnLoYo7gkCKlOCcdY5BVS2MqkpnSf5RWQPhNjm0czkiZ6hK4G6Y3EJOZkE67MPyVmyYFGgxnoGajwMAI=--gyIqET3MOf8a+HDk--DW5I6ZOWaGHRgiJ6FjOcZQ==",
+          documentName: "https://test.api/api/v3/documents/1",
         } as unknown as onAuthenticatePayload)
       ).rejects.toThrowError("Unsupported state or unable to authenticate data");
     });
 
-    test("when the resourceUrl has invalid format throw an error", async () => {
+    test("when the origin does not match the one in the token", async () => {
+      await expect(() =>
+        new OpenProjectApi().onAuthenticate({
+          token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
+          documentName: "https://test.api/api/v3/documents/1",
+          request: {
+            headers: {
+              origin: "https://different.origin",
+            },
+          },
+        } as unknown as onAuthenticatePayload)
+      ).rejects.toThrowError("Unauthorized: Token origin does not match request origin.");
+    });
+
+    test("when the resourceUrl does not match the one in the token", async () => {
       fetchMock.mockResolvedValueOnce({ throws: new TypeError("is not a valid URL") });
 
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
-          token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
-          documentName: "not a valid url",
+          token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
+          documentName: "https://indemiddle/api/v3/documents/1",
         } as unknown as onAuthenticatePayload)
-      ).rejects.toThrowError("Unauthorized: Invalid token or document access denied.");
+      ).rejects.toThrowError("Unauthorized: Token resource URL does not match document.");
     });
 
-    test("when the server does not authorize the request throw an error", async () => {
+    test("when the auth server does not authorize the request throw an error", async () => {
       fetchMock.mockResolvedValueOnce({
         ok: false,
         status: 401,
@@ -52,18 +67,18 @@ describe("OpenProjectApi", () => {
 
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
-          token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
-          documentName: "https://test.api/api/v3/documents/121",
+          token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
+          documentName: "https://test.api/api/v3/documents/1",
         } as unknown as onAuthenticatePayload)
       ).rejects.toThrowError("Unauthorized: Invalid token or document access denied.");
 
       expect(fetchMock).toHaveBeenCalledWith(
-        "https://test.api/api/v3/documents/121",
+        "https://test.api/api/v3/documents/1",
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer valid_token",
+            "Authorization": "Bearer some_token_value",
           },
         }
       );
@@ -79,15 +94,15 @@ describe("OpenProjectApi", () => {
       const data = {
         context: {},
         connectionConfig: {},
-        token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
-        documentName: "https://test.api/api/v3/documents/121",
+        token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
+        documentName: "https://test.api/api/v3/documents/1",
       } as unknown as onAuthenticatePayload;
 
       await new OpenProjectApi().onAuthenticate(data);
 
-      expect(data.context.resourceUrl).toEqual("https://test.api/api/v3/documents/121");
-      expect(data.context.token).toEqual("valid_token");
-      expect(data.documentName).toEqual("https://test.api/api/v3/documents/121");
+      expect(data.context.resourceUrl).toEqual("https://test.api/api/v3/documents/1");
+      expect(data.context.token).toEqual("some_token_value");
+      expect(data.documentName).toEqual("https://test.api/api/v3/documents/1");
     });
 
     test("when there is no update link, setup the connection as readonly", async () => {
@@ -96,7 +111,7 @@ describe("OpenProjectApi", () => {
         status: 200,
         json: () => Promise.resolve({
           _links: {
-            self: { href: "/api/v3/documents/121" }
+            self: { href: "/api/v3/documents/1" }
           }
         }),
       });
@@ -104,8 +119,8 @@ describe("OpenProjectApi", () => {
       const data = {
         context: {},
         connectionConfig: {},
-        token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
-        documentName: "https://test.api/api/v3/documents/121",
+        token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
+        documentName: "https://test.api/api/v3/documents/1",
       } as unknown as onAuthenticatePayload;
 
       await new OpenProjectApi().onAuthenticate(data);
@@ -121,8 +136,8 @@ describe("OpenProjectApi", () => {
         json: () => Promise.resolve({
           title: "TheDocName",
           _links: {
-            self: { href: "/api/v3/documents/121" },
-            update: { href: "/api/v3/documents/121" }
+            self: { href: "/api/v3/documents/1" },
+            update: { href: "/api/v3/documents/1" }
           }
         }),
       });
@@ -130,8 +145,8 @@ describe("OpenProjectApi", () => {
       const data = {
         context: {},
         connectionConfig: {},
-        token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
-        documentName: "https://test.api/api/v3/documents/121",
+        token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
+        documentName: "https://test.api/api/v3/documents/1",
       } as unknown as onAuthenticatePayload;
 
       await new OpenProjectApi().onAuthenticate(data);

@@ -1,11 +1,11 @@
+import { BlockNoteSchema } from "@blocknote/core";
+import { ServerBlockNoteEditor } from "@blocknote/server-util";
 import type { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
 import { Extension } from "@hocuspocus/server";
-import * as Y from "yjs";
-import type { ApiResponseDocument } from "../types";
-import { ServerBlockNoteEditor } from "@blocknote/server-util";
-import { BlockNoteSchema } from "@blocknote/core";
 import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
+import * as Y from "yjs";
 import { decryptToken } from "../services/decryptTokenService";
+import type { ApiResponseDocument } from "../types";
 
 export const editorSchema = BlockNoteSchema.create().extend({
   blockSpecs: {
@@ -26,19 +26,35 @@ export class OpenProjectApi implements Extension {
     * Authenticate the user by validating the token and document access
     */
   async onAuthenticate(data: onAuthenticatePayload) {
-    const { token, documentName } = data;
+    const { token: packedParams, documentName } = data;
     const resourceUrl = documentName;
 
-    if (!token) {
-      throw new Error('Unauthorized: Token missing.');
+    if (!packedParams) {
+      throw new Error('Unauthorized: Missing auth params');
     }
-    const decryptedToken = decryptToken(token);
+
+    const decryptedToken = decryptToken(packedParams);
+
+    const {
+      resource_url: tokenResourceUrl,
+      oauth_token,
+      // readonly,
+    } = decryptedToken;
+
+    const requestOrigin = data.request?.headers?.origin;
+    if (requestOrigin && !tokenResourceUrl?.startsWith(requestOrigin)) {
+      throw new Error('Unauthorized: Token origin does not match request origin.');
+    }
+
+    if (tokenResourceUrl !== resourceUrl) {
+      throw new Error('Unauthorized: Token resource URL does not match document.');
+    }
 
     const response = await fetch(resourceUrl, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${decryptedToken}`,
+        "Authorization": `Bearer ${oauth_token}`,
       },
     });
 
@@ -48,7 +64,7 @@ export class OpenProjectApi implements Extension {
     const jsonData = await response.json() as ApiResponseDocument;
 
     data.context.resourceUrl = resourceUrl;
-    data.context.token = decryptedToken;
+    data.context.token = oauth_token;
     if (!jsonData._links?.update) {
       // https://tiptap.dev/docs/hocuspocus/guides/auth#read-only-mode
       data.connectionConfig.readOnly = true;

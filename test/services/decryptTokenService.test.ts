@@ -3,8 +3,10 @@ import { decryptToken } from "../../src/services/decryptTokenService";
 
 describe("decryptToken", () => {
   test("should decrypt a valid encrypted token", () => {
-    const encrypted = "WMQFd3AwwHfm0KISsw==--J/B7zDes29uvIkc5--e2kVs6LdIw8UAJc0P8DVaA==";
+    const encrypted = "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==";
     const decrypted = decryptToken(encrypted);
-    expect(decrypted).toBe("ze123token123");
+    expect(decrypted.resource_url).toBe("https://test.api/api/v3/documents/1");
+    expect(decrypted.oauth_token).toBe("some_token_value");
+    expect(decrypted.readonly).toBe(false);
   });
 });
