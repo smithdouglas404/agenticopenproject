@@ -100,6 +100,7 @@ export class TokenRefreshService {
 
   scheduleRefresh(expiresInSeconds:number):void {
     this.clearTimer();
+    this.retryCount = 0;
 
     if (this.destroyed) {
       return;
@@ -131,7 +132,12 @@ export class TokenRefreshService {
       throw new RefreshError('http_error', `HTTP ${response.status}: ${response.statusText}`, response.status);
     }
 
-    return response.json() as Promise<TokenResponse>;
+    try {
+      return await response.json() as TokenResponse;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to parse token response JSON';
+      throw new RefreshError('http_error', message, response.status);
+    }
   }
 
   async performRefresh():Promise<void> {
@@ -140,7 +146,6 @@ export class TokenRefreshService {
     try {
       const data = await TokenRefreshService.fetchToken(this.refreshUrl);
 
-      this.retryCount = 0;
       this.sendTokenToServer(data.encrypted_token);
       this.scheduleRefresh(data.expires_in_seconds);
     } catch (error) {
