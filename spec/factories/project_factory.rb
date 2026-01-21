@@ -30,10 +30,55 @@
 
 FactoryBot.define do
   factory :project, parent: :workspace do
+    transient do
+      # example:
+      #   member_with_permissions: {
+      #     user => [:view_work_packages]
+      #     other_user => [:view_work_packages, :edit_work_packages]
+      #   }
+      member_with_permissions { {} }
+
+      # example:
+      #   member_wih_roles: {
+      #     user => [role1],
+      #     other_user => [role2, role3]
+      #   }
+      member_with_roles { {} }
+    end
+
     workspace_type { "project" }
 
     sequence(:name) { |n| "My Project No. #{n}" }
     sequence(:identifier) { |n| "myproject_no_#{n}" }
+
+    callback(:after_build) do |_project, evaluator|
+      is_build_strategy = evaluator.instance_eval { @build_strategy.is_a? FactoryBot::Strategy::Build }
+      uses_member_association = evaluator.member_with_permissions.present? || evaluator.member_with_roles.present?
+      if is_build_strategy && uses_member_association
+        raise ArgumentError,
+              "Use create(...) with principals and member_with_permissions, member_with_roles traits."
+      end
+    end
+
+    callback(:after_stub) do |_project, evaluator|
+      uses_member_association = evaluator.member_with_permissions.present? || evaluator.member_with_roles.present?
+      if uses_member_association
+        raise ArgumentError,
+              "To create memberships, you either need to use create(...) or use the `mock_permissions_for` " \
+              "helper on the stubbed models"
+      end
+    end
+
+    callback(:after_create) do |project, evaluator|
+      evaluator.member_with_permissions.each do |principal, permissions|
+        role = create(:project_role, permissions:)
+        create(:member, principal:, project: project, roles: [role])
+      end
+
+      evaluator.member_with_roles.each do |principal, role_or_roles|
+        create(:member, principal:, project: project, roles: Array(role_or_roles))
+      end
+    end
 
     factory :public_project do
       public { true } # Remark: public defaults to true
