@@ -33,14 +33,14 @@ FactoryBot.define do
     transient do
       # example:
       #   member_with_permissions: {
-      #     user => [:view_work_packages]
+      #     user => :view_work_packages
       #     other_user => [:view_work_packages, :edit_work_packages]
       #   }
       member_with_permissions { {} }
 
       # example:
       #   member_wih_roles: {
-      #     user => [role1],
+      #     user => role1,
       #     other_user => [role2, role3]
       #   }
       member_with_roles { {} }
@@ -70,8 +70,8 @@ FactoryBot.define do
     end
 
     callback(:after_create) do |project, evaluator|
-      evaluator.member_with_permissions.each do |principal, permissions|
-        role = create(:project_role, permissions:)
+      evaluator.member_with_permissions.each do |principal, permission_or_permissions|
+        role = create(:project_role, permissions: Array(permission_or_permissions))
         create(:member, principal:, project: project, roles: [role])
       end
 
