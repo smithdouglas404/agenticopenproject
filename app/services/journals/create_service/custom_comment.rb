@@ -31,7 +31,7 @@
 class Journals::CreateService
   class CustomComment < Association
     def associated?
-      journable.customizable?
+      journable.respond_to?(:custom_comments)
     end
 
     def cleanup_predecessor(predecessor)
@@ -54,6 +54,10 @@ class Journals::CreateService
           custom_comments.custom_field_id,
           custom_comments.text
         FROM custom_comments
+        INNER JOIN custom_fields
+          ON custom_fields.id = custom_comments.custom_field_id
+          AND custom_fields.has_comment = TRUE
+        #{availability_join}
         WHERE
           #{only_if_created_sql}
           AND custom_comments.customized_id = :journable_id
@@ -73,13 +77,30 @@ class Journals::CreateService
         ON
           custom_comment_journals.journal_id = max_journals.id
         FULL JOIN
-          (SELECT *
+          (SELECT custom_comments.*
            FROM custom_comments
-           WHERE custom_comments.customized_id = :journable_id AND custom_comments.customized_type = :customized_type) custom_comments
+           INNER JOIN custom_fields
+             ON custom_fields.id = custom_comments.custom_field_id
+             AND custom_fields.has_comment = TRUE
+           #{availability_join}
+           WHERE custom_comments.customized_id = :journable_id
+             AND custom_comments.customized_type = :customized_type) custom_comments
         ON
           custom_comments.custom_field_id = custom_comment_journals.custom_field_id
         WHERE
           COALESCE(custom_comments.text, '') != COALESCE(custom_comment_journals.text, '')
+      SQL
+    end
+
+    private
+
+    def availability_join
+      return "" unless journable.is_a?(Project)
+
+      <<~SQL # rubocop:disable Rails/SquishedSQLHeredocs
+        INNER JOIN project_custom_field_project_mappings
+          ON project_custom_field_project_mappings.custom_field_id = custom_fields.id
+          AND project_custom_field_project_mappings.project_id = :journable_id
       SQL
     end
   end
