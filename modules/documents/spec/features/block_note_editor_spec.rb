@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe "BlockNote editor rendering", :js, with_settings: { real_time_text_collaboration_enabled: true } do
+RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { real_time_text_collaboration_enabled: true } do
   let(:admin) { create(:admin) }
   let(:type) { create(:document_type, :experimental) }
   let(:document) { create(:document, type:) }
@@ -68,11 +68,10 @@ RSpec.describe "BlockNote editor rendering", :js, with_settings: { real_time_tex
   end
 
   it "renders the BlockNote editor with custom menu entries for work package linking" do
-    pending("handling tests with shadow dom")
     visit document_path(document)
 
     expect(page).to have_test_selector("blocknote-document-description")
-    editor.fill_in_with_content("/openproject")
-    expect(page).to have_content("Link to existing work package")
+    editor.fill_in("/openproject")
+    expect(editor.content).to have_content("Link existing work package")
   end
 end

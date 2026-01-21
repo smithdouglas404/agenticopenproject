@@ -5,28 +5,27 @@ module FormFields
     class BlockNoteEditorInput
       include Capybara::DSL
 
-      def open_add_image_dialog
-        send_keys_to_editor("/image")
-        send_keys_to_editor(:enter)
-      end
-
       def open_command_dialog
         send_keys_to_editor("/")
       end
 
-      def fill_in_with_content(content)
+      def open_add_image_dialog
+        send_keys_to_editor("/image")
+        send_keys(:enter)
+      end
+
+      def fill_in(content)
         send_keys_to_editor(content)
       end
 
-      def text
-        page.evaluate_script(<<~JS)
-          document.querySelector('op-block-note')
-            .shadowRoot.querySelector('div[role="textbox"]')
-            .textContent;
-        JS
+      def attach_file(path)
+        input = shadow_root.find("input[type='file']", visible: false)
+        input.attach_file(path, make_visible: true)
       end
 
       def content
+        # capybara does not yet support getting content directly
+        # on shadow roots
         page.evaluate_script(<<~JS)
           document.querySelector('op-block-note')
             .shadowRoot
@@ -34,23 +33,20 @@ module FormFields
         JS
       end
 
+      def shadow_root
+        page.find("op-block-note").shadow_root
+      end
+
+      def element
+        shadow_root.find("div[role='textbox']")
+      end
+
       private
 
+      # Attention: This only works with selenium, not with cuprite,
+      # as cuprite does not support shadow dom (yet).
       def send_keys_to_editor(keys)
-        page.execute_script(<<~JS, keys.to_s)
-          const editor = document.querySelector('op-block-note')
-            .shadowRoot.querySelector('div[role="textbox"]');
-
-          editor.focus();
-
-          const text = arguments[0];
-          if (text === 'enter') {
-            editor.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
-          } else {
-            document.execCommand('insertText', false, text);
-            editor.dispatchEvent(new Event('change', {bubbles: true}));
-          }
-        JS
+        element.send_keys(keys)
       end
     end
   end
