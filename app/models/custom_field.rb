@@ -258,7 +258,7 @@ class CustomField < ApplicationRecord
     name =~ /\A(.+)CustomField\z/
     begin
       $1.constantize
-    rescue StandardError
+    rescue NameError
       nil
     end
   end
