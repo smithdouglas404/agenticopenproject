@@ -47,6 +47,12 @@ module Admin
         ]
       end
 
+      def selected_stats
+        [
+          { label: projects_label(selected_projects_count), checked: true }
+        ]
+      end
+
       def available_projects_count
         model.available['projects']&.count
       end
@@ -65,27 +71,27 @@ module Admin
 
       def import_stats_unavailable
         [
-          { label: "Relations between issues", checked: false },
-          { label: "Custom workflow", checked: false },
-          { label: "Users", checked: false },
-          { label: "User, group and project permissions", checked: false }
+          { label: I18n.t(:"admin.jiras.run.wizard.sections.import_scope.unavailable.relations"), checked: false },
+          { label: I18n.t(:"admin.jiras.run.wizard.sections.import_scope.unavailable.workflows"), checked: false },
+          { label: I18n.t(:"admin.jiras.run.wizard.sections.import_scope.unavailable.users"), checked: false },
+          { label: I18n.t(:"admin.jiras.run.wizard.sections.import_scope.unavailable.permissions"), checked: false }
         ]
       end
 
       def projects_label(count)
-        "#{count || '?'} projects"
+        I18n.t(:"admin.jiras.run.wizard.parts.projects", count: count || 0)
       end
 
       def issues_label(count)
-        "#{count || '?'} issues"
+        I18n.t(:"admin.jiras.run.wizard.parts.issues", count: count || 0)
       end
 
       def statuses_label(count)
-        "#{count || '?'} statuses"
+        I18n.t(:"admin.jiras.run.wizard.parts.statuses", count: count || 0)
       end
 
       def types_label(count)
-        "#{count || '?'} types"
+        I18n.t(:"admin.jiras.run.wizard.parts.types", count: count || 0)
       end
 
       def import_selection
@@ -97,26 +103,20 @@ module Admin
         ]
       end
 
-      def selected_projects
-        (model.projects || []).map do |project_id|
-          model.available['projects']&.find { |p| p['id'] == project_id }
-        end.compact
-      end
-
       def selected_projects_count
         model.projects&.count || 0
       end
 
       def selected_issues_count
-        selected_projects.sum { |project| project['issue_count'] || 0 }
+        model.selected["issues_count"] || 0
       end
 
       def selected_types_count
-        selected_projects.flat_map { |project| project['issue_type_ids'] || [] }.uniq.count
+        model.selected["issue_type_ids"]&.count || 0
       end
 
       def selected_statuses_count
-        selected_projects.flat_map { |project| project['status_ids'] || [] }.uniq.count
+        model.selected["status_ids"]&.count || 0
       end
     end
   end

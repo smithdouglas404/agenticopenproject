@@ -57,6 +57,10 @@ curl --request GET \
     ).json
   end
 
+  def issues_count(jql: nil)
+    issues(jql:, max_results: 0, fields: "id")["total"]
+  end
+
   def projects(expand = "description,projectKeys")
     @httpx.get("#{@url}/rest/api/2/project", params: { "expand" => expand }).json
   end
@@ -67,6 +71,15 @@ curl --request GET \
 
   def issue_types
     @httpx.get("#{@url}/rest/api/2/issuetype").json
+  end
+
+  def issue_types_count
+    response = @httpx.get("#{@url}/rest/api/2/issuetype/page", params: { maxResults: 0 })
+    if response.status == 200
+      response.json["total"]
+    else
+      issue_types.count
+    end
   end
 
   def issue_types_schemes
@@ -83,6 +96,15 @@ curl --request GET \
 
   def statuses
     @httpx.get("#{@url}/rest/api/2/status").json
+  end
+
+  def statuses_count
+    response = @httpx.get("#{@url}/rest/api/2/status/search", params: { maxResults: 0 })
+    if response.status == 200
+      response.json["total"]
+    else
+      statuses.count
+    end
   end
 
   def status_categories

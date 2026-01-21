@@ -32,10 +32,13 @@ class JiraImport < ApplicationRecord
   belongs_to :jira
 
   INITIAL = "initial"
-  FETCHING = "fetching"
-  FETCH_ERROR = "fetch-error"
-  FETCHED = "fetched"
+  INSTANCE_META_FETCHING = "instance-meta-fetching"
+  INSTANCE_META_ERROR = "instance-meta-error"
+  INSTANCE_META_DONE = "instance-meta-done"
   CONFIGURING = "configuring"
+  PROJECTS_META_FETCHING = "projects-meta-fetching"
+  PROJECTS_META_ERROR = "projects-meta-error"
+  PROJECTS_META_DONE = "projects-meta-done"
   IMPORTING = "importing"
   IMPORT_ERROR = "import-error"
   IMPORTED = "imported"
@@ -45,10 +48,13 @@ class JiraImport < ApplicationRecord
 
   STATUSES = [
     INITIAL,
-    FETCHING,
-    FETCH_ERROR,
-    FETCHED,
+    INSTANCE_META_FETCHING,
+    INSTANCE_META_ERROR,
+    INSTANCE_META_DONE,
     CONFIGURING,
+    PROJECTS_META_FETCHING,
+    PROJECTS_META_ERROR,
+    PROJECTS_META_DONE,
     IMPORTING,
     IMPORT_ERROR,
     IMPORTED,
@@ -79,7 +85,8 @@ class JiraImport < ApplicationRecord
 
   def status_running?
     [
-      FETCHING,
+      INSTANCE_META_FETCHING,
+      PROJECTS_META_FETCHING,
       IMPORTING,
       REVERTING
     ].include?(status)

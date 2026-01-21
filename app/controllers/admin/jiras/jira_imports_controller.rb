@@ -55,7 +55,9 @@ module Admin
           when "init"
             init
           when "fetch"
-            fetch
+            fetch_instance_meta
+          when "stats"
+            fetch_projects_meta
           when "import"
             import
           when "configure"
@@ -63,10 +65,7 @@ module Admin
           end
         end
 
-        respond_to do |format|
-          format.turbo_stream { render_wizard }
-          format.html { render_wizard }
-        end
+        render_wizard
       rescue StandardError => e
         respond_to do |format|
           format.turbo_stream do
@@ -104,22 +103,29 @@ module Admin
         @jira_import.update!(status: JiraImport::INITIAL)
       end
 
-      def fetch
+      def fetch_instance_meta
         return unless @jira_import.status_between?(JiraImport::INITIAL, JiraImport::CONFIGURING)
 
-        job = JiraMetaDataJob.perform_later(@jira_import.id)
-        @jira_import.update!(status: JiraImport::FETCHING, job_id: job.job_id)
+        job = JiraInstanceMetaDataJob.perform_later(@jira_import.id)
+        @jira_import.update!(status: JiraImport::INSTANCE_META_FETCHING, job_id: job.job_id)
+      end
+
+      def fetch_projects_meta
+        return unless @jira_import.status?(JiraImport::CONFIGURING, JiraImport::PROJECTS_META_ERROR)
+
+        job = JiraProjectsMetaDataJob.perform_later(@jira_import.id)
+        @jira_import.update!(status: JiraImport::PROJECTS_META_FETCHING, job_id: job.job_id)
       end
 
       def import
-        return unless @jira_import.status?(JiraImport::IMPORT_ERROR, JiraImport::CONFIGURING)
+        return unless @jira_import.status?(JiraImport::IMPORT_ERROR, JiraImport::PROJECTS_META_DONE)
 
         # job = JiraImportDataJob.perform_later(@jira_import.id)
         @jira_import.update!(status: JiraImport::IMPORTING)
       end
 
       def configure
-        return unless @jira_import.status?(JiraImport::FETCHED)
+        return unless @jira_import.status?(JiraImport::INSTANCE_META_DONE)
 
         @jira_import.update!(status: JiraImport::CONFIGURING)
       end
