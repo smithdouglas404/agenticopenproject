@@ -95,6 +95,8 @@ RSpec.describe "Work package meeting outcomes", :js do
             click_on "Add"
           end
 
+          wait_for_network_idle
+
           show_page.in_outcome_component(meeting_agenda_item) do
             expect(page).to have_link(work_package1.subject)
           end
@@ -131,6 +133,8 @@ RSpec.describe "Work package meeting outcomes", :js do
             show_page.select_outcome_action "Remove outcome"
           end
 
+          wait_for_network_idle
+
           expect(page).to have_no_link(work_package1.subject)
           expect { outcome.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
@@ -154,7 +158,9 @@ RSpec.describe "Work package meeting outcomes", :js do
             click_on "Create"
           end
 
-          expect(page).to have_no_dialog(I18n.t(:label_work_package_new))
+          wait_for_network_idle
+
+          expect(page).to have_no_selector(:dialog, I18n.t(:label_work_package_new), wait: 10)
 
           created_wp = WorkPackage.find_by(subject: "New WP from meeting outcome")
           expect(created_wp).to be_present
@@ -179,10 +185,13 @@ RSpec.describe "Work package meeting outcomes", :js do
 
           page.within_dialog(I18n.t(:label_work_package_new)) do
             fill_in "Subject", with: ""
-            click_on "Create"
 
-            expect(page).to have_text("Subject can't be blank")
+            click_on "Create"
           end
+
+          wait_for_network_idle
+
+          expect(page).to have_text("Subject can't be blank")
 
           expect(page).to have_dialog(I18n.t(:label_work_package_new))
           expect(WorkPackage.find_by(subject: "")).to be_nil
@@ -207,7 +216,7 @@ RSpec.describe "Work package meeting outcomes", :js do
             click_on "Cancel"
           end
 
-          expect(page).to have_no_dialog(I18n.t(:label_work_package_new))
+          expect(page).to have_no_selector(:dialog, I18n.t(:label_work_package_new), wait: 10)
           expect(WorkPackage.count).to eq(initial_wp_count)
         end
       end
