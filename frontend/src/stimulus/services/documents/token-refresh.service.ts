@@ -61,7 +61,8 @@ const RETRY_DELAY_MS = 5000;
 const MAX_RETRIES = 3;
 const MIN_REFRESH_DELAY_MS = 1000;
 
-export const TOKEN_REFRESH_FAILED_EVENT = 'op:token-refresh-failed';
+export type ProviderAuthErrorKind = 'token_refresh' | 'authentication';
+export const PROVIDER_AUTH_ERROR_EVENT = 'op:provider-auth-error';
 
 /**
  * Manages OAuth token refresh for Hocuspocus collaborative editing sessions.
@@ -176,8 +177,8 @@ export class TokenRefreshService {
   }
 
   private emitFailureEvent(error:RefreshError):void {
-    document.dispatchEvent(new CustomEvent(TOKEN_REFRESH_FAILED_EVENT, {
-      detail: { kind: error.kind, message: error.message },
+    document.dispatchEvent(new CustomEvent(PROVIDER_AUTH_ERROR_EVENT, {
+      detail: { kind: 'token_refresh' as ProviderAuthErrorKind, message: error.message },
     }));
   }
 

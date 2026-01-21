@@ -31,7 +31,7 @@
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { Controller } from '@hotwired/stimulus';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
-import { TokenRefreshService } from 'core-stimulus/services/documents/token-refresh.service';
+import { PROVIDER_AUTH_ERROR_EVENT, ProviderAuthErrorKind, TokenRefreshService } from 'core-stimulus/services/documents/token-refresh.service';
 import type { Doc } from 'yjs';
 import * as Y from 'yjs';
 
@@ -78,7 +78,9 @@ export default class extends Controller {
       token: this.getToken,
       document: ydoc,
       onAuthenticationFailed: () => {
-        console.warn('[InitYjsProvider] Authentication failed');
+        document.dispatchEvent(new CustomEvent(PROVIDER_AUTH_ERROR_EVENT, {
+          detail: { kind: 'authentication' as ProviderAuthErrorKind, message: 'Authentication failed' },
+        }));
       },
     });
 

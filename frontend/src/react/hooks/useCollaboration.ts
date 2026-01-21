@@ -30,7 +30,7 @@
 
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
-import { TOKEN_REFRESH_FAILED_EVENT } from 'core-stimulus/services/documents/token-refresh.service';
+import { PROVIDER_AUTH_ERROR_EVENT, ProviderAuthErrorKind } from 'core-stimulus/services/documents/token-refresh.service';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Y from 'yjs';
 
@@ -143,14 +143,14 @@ export function useCollaboration(
   }, [hasTimedOut]);
 
   useEffect(() => {
-    const handleTokenRefreshFailed = (event:Event) => {
-      const customEvent = event as CustomEvent<{ kind:string; message:string }>;
-      debugLog(`(BlockNote Editor) Token refresh failed: ${customEvent.detail.kind} - ${customEvent.detail.message}`);
+    const handleProviderAuthError = (event:Event) => {
+      const customEvent = event as CustomEvent<{ kind:ProviderAuthErrorKind; message:string }>;
+      debugLog(`(BlockNote Editor) Provider auth error: ${customEvent.detail.kind} - ${customEvent.detail.message}`);
       setConnectionError(true);
     };
 
-    document.addEventListener(TOKEN_REFRESH_FAILED_EVENT, handleTokenRefreshFailed);
-    return () => document.removeEventListener(TOKEN_REFRESH_FAILED_EVENT, handleTokenRefreshFailed);
+    document.addEventListener(PROVIDER_AUTH_ERROR_EVENT, handleProviderAuthError);
+    return () => document.removeEventListener(PROVIDER_AUTH_ERROR_EVENT, handleProviderAuthError);
   }, []);
 
   return { isLoading, connectionError } as const;
