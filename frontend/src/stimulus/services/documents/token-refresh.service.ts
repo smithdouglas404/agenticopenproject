@@ -67,20 +67,20 @@ export const TOKEN_REFRESH_FAILED_EVENT = 'op:token-refresh-failed';
  * Manages OAuth token refresh for Hocuspocus collaborative editing sessions.
  *
  * Proactively refreshes tokens at 80% of lifetime using session auth,
- * then sends new token to Hocuspocus server via stateless channel.
+ * then syncs new token to Hocuspocus server via built-in onTokenSync hook.
  *
  * ```
  * Client                              OpenProject                         Hocuspocus
  *   │  [80% of token TTL]                  │                                   │
- *   │── POST /refresh_token ─────────────────►│                                │
+ *   │── POST /refresh_token ──────────────►│                                   │
  *   │                                      │                                   │
  *   │  [success]                           │                                   │
  *   │◄─────────────── {encrypted_token} ───│                                   │
- *   │── REFRESH:<token> ───────────────────┼──────────────────────────────────►│ updates context.token
+ *   │── sendToken() ───────────────────────┼──────────────────────────────────►│ onTokenSync updates context
  *   │  [schedule next refresh]             │                                   │
  *   │                                      │                                   │
  *   │  [5xx error] retry up to 3x          │                                   │
- *   │── POST /refresh_token ─────────────────►│                                │
+ *   │── POST /refresh_token ──────────────►│                                   │
  *   │                                      │                                   │
  *   │  [401/403] stop - session expired    │                                   │
  *   │  [4xx] stop - non-retryable          │                                   │
@@ -90,12 +90,18 @@ export class TokenRefreshService {
   private refreshTimer:ReturnType<typeof setTimeout> | null = null;
   private provider:HocuspocusProvider;
   private refreshUrl:string;
+  private onTokenRefreshed:(token:string) => void;
   private destroyed = false;
   private retryCount = 0;
 
-  constructor(provider:HocuspocusProvider, refreshUrl:string) {
+  constructor(
+    provider:HocuspocusProvider,
+    refreshUrl:string,
+    onTokenRefreshed:(token:string) => void,
+  ) {
     this.provider = provider;
     this.refreshUrl = refreshUrl;
+    this.onTokenRefreshed = onTokenRefreshed;
   }
 
   scheduleRefresh(expiresInSeconds:number):void {
@@ -146,7 +152,8 @@ export class TokenRefreshService {
     try {
       const data = await TokenRefreshService.fetchToken(this.refreshUrl);
 
-      this.sendTokenToServer(data.encrypted_token);
+      this.onTokenRefreshed(data.encrypted_token);
+      void this.provider.sendToken();
       this.scheduleRefresh(data.expires_in_seconds);
     } catch (error) {
       const refreshError = error instanceof RefreshError
@@ -166,10 +173,6 @@ export class TokenRefreshService {
   destroy():void {
     this.destroyed = true;
     this.clearTimer();
-  }
-
-  private sendTokenToServer(encryptedToken:string):void {
-    this.provider.sendStateless(`REFRESH:${encryptedToken}`);
   }
 
   private emitFailureEvent(error:RefreshError):void {

@@ -53,14 +53,29 @@ export default class extends Controller {
   declare readonly refreshUrlValue:string;
 
   private tokenRefreshService:TokenRefreshService | null = null;
-  private isFirstConnection = true;
+  private currentToken = '';
+  private canUseCachedToken = true;
+
+  // On initial load, the DOM token is fresh. On reconnection (e.g., after server restart),
+  // we must fetch a fresh token since the cached one may be expired.
+  private getToken = async ():Promise<string> => {
+    if (this.canUseCachedToken) {
+      this.canUseCachedToken = false;
+      return this.currentToken;
+    }
+    const data = await TokenRefreshService.fetchToken(this.refreshUrlValue);
+    this.currentToken = data.encrypted_token;
+    return this.currentToken;
+  };
 
   connect():void {
+    this.currentToken = this.oauthTokenValue;
+
     const ydoc:Doc = new Y.Doc();
     const provider = new HocuspocusProvider({
       url: this.hocuspocusUrlValue,
       name: this.documentNameValue,
-      token: async () => this.getToken(),
+      token: this.getToken,
       document: ydoc,
       onAuthenticationFailed: () => {
         console.warn('[InitYjsProvider] Authentication failed');
@@ -70,23 +85,13 @@ export default class extends Controller {
     LiveCollaborationManager.initializeYjsProvider(provider, ydoc);
 
     if (this.refreshUrlValue && this.tokenExpiresInSecondsValue) {
-      this.tokenRefreshService = new TokenRefreshService(provider, this.refreshUrlValue);
+      this.tokenRefreshService = new TokenRefreshService(
+        provider,
+        this.refreshUrlValue,
+        (newToken) => { this.currentToken = newToken; },
+      );
       this.tokenRefreshService.scheduleRefresh(this.tokenExpiresInSecondsValue);
     }
-  }
-
-  private async getToken():Promise<string> {
-    if (this.isFirstConnection) {
-      this.isFirstConnection = false;
-      return this.oauthTokenValue;
-    }
-
-    return this.fetchFreshToken();
-  }
-
-  private async fetchFreshToken():Promise<string> {
-    const data = await TokenRefreshService.fetchToken(this.refreshUrlValue);
-    return data.encrypted_token;
   }
 
   disconnect():void {
