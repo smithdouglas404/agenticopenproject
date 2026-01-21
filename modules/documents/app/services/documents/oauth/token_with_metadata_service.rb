@@ -31,10 +31,14 @@
 module Documents
   module OAuth
     class TokenWithMetadataService < BaseServices::BaseCallable
-      def initialize(user:)
+      include API::V3::Utilities::PathHelper
+
+      def initialize(user:, document:, project:)
         super()
 
         @user = user
+        @document = document
+        @project = project
       end
 
       def perform
@@ -42,16 +46,39 @@ module Documents
         return token_result unless token_result.success?
 
         access_token = token_result.result
-        encrypt_result = EncryptTokenService.new(token: access_token.plaintext_token).call
+
+        payload = {
+          resource_url:,
+          oauth_token: access_token.plaintext_token,
+          readonly:
+        }
+
+        encrypt_result = EncryptTokenService.new(token: payload.to_json).call
         return encrypt_result unless encrypt_result.success?
 
         ServiceResult.success(
           result: {
             encrypted_token: encrypt_result.result,
+            resource_url:,
+            readonly:,
             expires_at: access_token.expires_in.seconds.from_now.iso8601,
             expires_in_seconds: access_token.expires_in
           }
         )
+      end
+
+      private
+
+      def resource_url
+        @resource_url ||= URI.join(
+          OpenProject::StaticRouting::StaticUrlHelpers.new.root_url,
+          api_v3_paths.document(@document.id)
+        ).to_s
+      end
+
+      def readonly
+        @readonly ||= @user.allowed_in_project?(:view_documents, @project) &&
+          !@user.allowed_in_project?(:manage_documents, @project)
       end
     end
   end
