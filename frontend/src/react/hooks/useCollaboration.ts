@@ -30,6 +30,7 @@
 
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import { TOKEN_REFRESH_FAILED_EVENT } from 'core-stimulus/services/documents/token-refresh.service';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Y from 'yjs';
 
@@ -140,6 +141,17 @@ export function useCollaboration(
       setIsLoading(false);
     }
   }, [hasTimedOut]);
+
+  useEffect(() => {
+    const handleTokenRefreshFailed = (event:Event) => {
+      const customEvent = event as CustomEvent<{ kind:string; message:string }>;
+      debugLog(`(BlockNote Editor) Token refresh failed: ${customEvent.detail.kind} - ${customEvent.detail.message}`);
+      setConnectionError(true);
+    };
+
+    document.addEventListener(TOKEN_REFRESH_FAILED_EVENT, handleTokenRefreshFailed);
+    return () => document.removeEventListener(TOKEN_REFRESH_FAILED_EVENT, handleTokenRefreshFailed);
+  }, []);
 
   return { isLoading, connectionError } as const;
 }

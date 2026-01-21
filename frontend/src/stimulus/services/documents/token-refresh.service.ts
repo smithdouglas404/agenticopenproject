@@ -57,8 +57,11 @@ export class RefreshError extends Error {
 }
 
 const REFRESH_THRESHOLD = 0.8; // 80% of the token lifetime
-const RETRY_DELAY_MS = 5000; // 5 seconds
+const RETRY_DELAY_MS = 5000;
 const MAX_RETRIES = 3;
+const MIN_REFRESH_DELAY_MS = 1000;
+
+export const TOKEN_REFRESH_FAILED_EVENT = 'op:token-refresh-failed';
 
 /**
  * Manages OAuth token refresh for Hocuspocus collaborative editing sessions.
@@ -102,7 +105,7 @@ export class TokenRefreshService {
       return;
     }
 
-    const refreshDelayMs = Math.max(0, Math.floor(expiresInSeconds * REFRESH_THRESHOLD * 1000));
+    const refreshDelayMs = Math.max(MIN_REFRESH_DELAY_MS, Math.floor(expiresInSeconds * REFRESH_THRESHOLD * 1000));
 
     this.refreshTimer = setTimeout(() => {
       void this.performRefresh();
@@ -132,9 +135,7 @@ export class TokenRefreshService {
   }
 
   async performRefresh():Promise<void> {
-    if (this.destroyed) {
-      return;
-    }
+    if (this.destroyed) return;
 
     try {
       const data = await TokenRefreshService.fetchToken(this.refreshUrl);
@@ -147,7 +148,10 @@ export class TokenRefreshService {
         ? error
         : new RefreshError('unknown', error instanceof Error ? error.message : 'Unknown error');
 
-      if (!refreshError.isRetryable || this.retryCount >= MAX_RETRIES) return;
+      if (!refreshError.isRetryable || this.retryCount >= MAX_RETRIES) {
+        this.emitFailureEvent(refreshError);
+        return;
+      }
 
       this.retryCount += 1;
       this.scheduleRetry();
@@ -161,6 +165,12 @@ export class TokenRefreshService {
 
   private sendTokenToServer(encryptedToken:string):void {
     this.provider.sendStateless(`REFRESH:${encryptedToken}`);
+  }
+
+  private emitFailureEvent(error:RefreshError):void {
+    document.dispatchEvent(new CustomEvent(TOKEN_REFRESH_FAILED_EVENT, {
+      detail: { kind: error.kind, message: error.message },
+    }));
   }
 
   private scheduleRetry():void {
