@@ -40,6 +40,8 @@ ja:
               task_version_must_be_the_same_as_story_version: "親ストーリーのバージョンと同じでなければなりません。"
         sprint:
           cannot_end_before_it_starts: "スプリントは開始する前に終了できません。"
+  attributes:
+    task_type: "Task type"
   backlogs:
     add_new_story: "新しいストーリー"
     any: "全て"
@@ -100,7 +102,10 @@ ja:
   backlogs_empty_title: "バックログで使用するバージョンは定義されていません"
   backlogs_empty_action_text: "バックログを開始するには、新しいバージョンを作成しそれをバックログ列に割り当てます。"
   button_edit_wiki: "Wikiページの編集"
-  error_backlogs_task_cannot_be_story: "設定が無効です。選択したタスクのタイプはストーリータイプにはできません。"
+  errors:
+    attributes:
+      task_type:
+        cannot_be_story_type: "can not also be a story type"
   error_intro_plural: "次のエラーが発生しました："
   error_intro_singular: "次のエラーが発生しました："
   error_outro: "送信する前に上記のエラーを修正してください。"
@@ -124,6 +129,10 @@ ja:
   label_points_burn_up: "アップ"
   label_product_backlog: "プロダクトバックログ"
   label_select_all: "全てを選択"
+  label_select_type: "Select a type"
+  label_select_types: "Select types"
+  label_selected_type: "Selected type"
+  label_selected_types: "Selected types"
   label_sprint_backlog: "スプリントバックログ"
   label_sprint_cards: "カードをエクスポート"
   label_sprint_impediments: "スプリント障害事項"
@@ -160,3 +169,7 @@ ja:
   version_settings_display_option_left: "左へ"
   version_settings_display_option_none: "なし"
   version_settings_display_option_right: "右へ"
+  setting_plugin_openproject_backlogs_story_types_caption: |
+    Types treated as backlog stories (e.g., Feature, User story). Must differ from task type.
+  setting_plugin_openproject_backlogs_task_type_caption: |
+    Type used for story tasks. Must differ from story types.

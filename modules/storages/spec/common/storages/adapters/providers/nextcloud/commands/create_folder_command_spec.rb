@@ -60,6 +60,9 @@ module Storages
               let(:parent_location) { "/Folder" }
               let(:path) { "/Folder/#{folder_name}" }
 
+              # If you need to re-record this VCR cassete, execute "when folder already exists" first to make sure the
+              # parent folder already exists
+
               it_behaves_like "adapter create_folder_command: successful folder creation"
             end
 
@@ -75,6 +78,10 @@ module Storages
               let(:folder_name) { "Folder" }
               let(:parent_location) { "/" }
               let(:error_source) { described_class }
+
+              # If you need to re-record this VCR cassette, execute the spec twice:
+              # * first time to ensure the conflict occurs
+              # * second time to record the conflict case
 
               it_behaves_like "storage adapter: error response", :conflict
             end
@@ -104,6 +111,8 @@ module Storages
             private
 
             def delete_created_folder(folder)
+              return if folder.nil?
+
               Input::DeleteFolder.build(location: folder.location).bind do |input_data|
                 Registry.resolve("nextcloud.commands.delete_folder").call(storage:, auth_strategy:, input_data:)
               end

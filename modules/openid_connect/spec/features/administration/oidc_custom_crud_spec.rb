@@ -40,7 +40,7 @@ RSpec.describe "OIDC administration CRUD",
     login_as(user)
   end
 
-  context "with EE", with_ee: %i[sso_auth_providers], with_flag: { oidc_group_sync: true } do
+  context "with EE", with_ee: %i[sso_auth_providers] do
     it "can manage OIDC providers through the UI" do
       visit "/admin/openid_connect/providers"
       expect(page).to have_text "No OpenID providers configured yet."

@@ -63,8 +63,7 @@ module Meetings
     end
 
     def can_start_presentation?
-      OpenProject::FeatureDecisions.meetings_presentation_mode_active? &&
-        !@meeting.template? &&
+      !@meeting.template? &&
         !@meeting.draft? &&
         @meeting.agenda_items.any?
     end
@@ -77,7 +76,7 @@ module Meetings
 
     def finish_setup_enabled?
       @meeting.draft? &&
-        User.current.allowed_in_project?(:create_meetings, @meeting.project)
+        User.current.allowed_in_project?(:edit_meetings, @meeting.project)
     end
 
     def action_button_params

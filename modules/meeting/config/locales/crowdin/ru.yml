@@ -280,7 +280,7 @@ ru:
         confirm_button: "Отменить событие"
     blankslate:
       title: "Нет совещаний для отображения"
-      desc: "Нет совещаний, удовлетворяющих критериям активного фильтра."
+      desc: "Вы можете создать новое совещание или изменить критерии фильтра"
     label_export_pdf: "Экспорт в PDF"
     export:
       your_meeting_export: "Совещание экспортируется"
@@ -373,11 +373,21 @@ ru:
       next: "Следующий"
       no_items: "Нет пунктов повестки дня"
       no_items_flash: "На повестке дня нет никаких вопросов."
+    ical_response:
+      update_failed: "Не удалось обновить статус участия."
+      meeting_not_found: "Совещание для данного UID не найдено."
   meeting_section:
     untitled_title: "Раздел без названия"
     delete_confirmation: "Удаление раздела также удалит все пункты его повестки дня. Вы уверены, что хотите это сделать?"
     placeholder_title: "Новый раздел"
     empty_text: "Перенесите элементы сюда или создайте новые"
+  meeting_participant:
+    participation_status:
+      needs_action: "Нет ответа"
+      accepted: "Принято"
+      declined: "Отклонено"
+      tentative: "Возможно"
+      unknown: "Неизвестно"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Разница часового пояса"
@@ -523,6 +533,9 @@ ru:
   label_agenda_item_move_to_bottom: "В конец"
   label_agenda_item_move_up: "Вверх"
   label_agenda_item_move_down: "Вниз"
+  label_agenda_item_duplicate: "Дубликат"
+  label_agenda_item_duplicate_in_next: "Дублировать при следующем совещании"
+  label_agenda_item_duplicate_in_next_title: "Дублировать при следующем совещании?"
   label_agenda_item_add_notes: "Добавить заметки"
   label_agenda_item_add_outcome: "Добавить итог"
   label_agenda_item_work_package_add: "Добавить пакет работ"
@@ -533,6 +546,8 @@ ru:
   label_agenda_outcome_actions: "Действия по итогам"
   label_agenda_outcome_edit: "Редактировать итог"
   label_agenda_outcome_delete: "Удалить итог"
+  label_write_outcome: "Зафиксировать итог"
+  label_existing_work_package: "Существующий пакет работ"
   text_outcome_not_editable_anymore: "Этот итог недоступен для редактирования."
   text_outcome_cannot_be_added: "Итог больше нельзя добавить."
   label_backlog_clear: "Очистить бэклог"
@@ -596,19 +611,23 @@ ru:
   text_agenda_item_not_editable_anymore: "Этот пункт повестки больше не редактируется."
   text_agenda_item_move_next_meeting: "Этот элемент будет перемещен на следующую встречу на %{date} в %{time}."
   text_agenda_item_moved_to_next_meeting: "Пункт повестки дня перенесен на следующее совещание на %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Вы уверены, что хотите добавить копию этого пункта повестки дня к следующему совещанию на %{date} в %{time}? Результаты не будут дублироваться."
+  text_agenda_item_duplicated_in_next_meeting: "Пункт повестки дня дублируется на следующем совещании %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Этот пакет работ пока не включен в повестку предстоящего совещания."
   text_agenda_item_move_next_meeting_cancelled: "Не удалось переместить на следующее совещание, так как оно было отменено."
   text_work_package_add_to_meeting_hint: 'Используйте кнопку "Добавить к совещанию", чтобы добавить этот пакет работ к предстоящему совещанию.'
-  text_work_package_has_no_past_meeting_agenda_items: "Этот пакет работ не упоминался на прошлом совещании."
+  text_work_package_has_no_past_meeting_agenda_items: "Этот рабочий пакет не был добавлен в качестве пункта повестки дня на прошлом совещании."
   text_email_updates_muted: "Обновления календаря по электронной почте отключены. Участники не будут получать обновленные приглашения по электронной почте, когда Вы вносите изменения."
   text_email_updates_enabled: "Обновления календаря по электронной почте включены. Все участники получат обновленные приглашения по электронной почте, когда Вы внесете изменения."
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "Вы можете создать его, воспользовавшись кнопкой ниже."
+        blank_title: "Нет токена совещания для iCalendar"
         title: "iCalendar для совещаний"
+        table_title: "Токен совещания для iCalendar"
         text_hint: "Токены iCalendar позволяют пользователям подписываться на все свои совещания и просматривать актуальную информацию о них во внешних клиентах."
         disabled_text: "Подписки на совещания iCalendar не включены администратором. Пожалуйста, свяжитесь с администратором для использования этой функции."
-        empty_text_hint: 'Чтобы добавить токен iCalendar, перейдите в <a href="%{path}">раздел совещаний</a> и оформите подписку там.'
         add_button: "Подписаться на календарь"
   my:
     access_token:
@@ -623,7 +642,6 @@ ru:
         token/ical_meeting:
           title: "Сгенерирован токен подписки на совещание iCal"
           body: "Относитесь к следующему URL-адресу так же, как к паролю. Любой, кто имеет к нему доступ, может просматривать все Ваши совещания."
-          warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
       revocation:
         token/ical_meeting:
           notice_success: "Подписка на совещания iCalendar была успешно отменена."

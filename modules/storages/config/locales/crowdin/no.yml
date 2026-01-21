@@ -96,12 +96,6 @@
       manual: Eksisterende mappe administrert manuelt
     remove_project:
       deletion_failure_flash: Fjerning av prosjektet feilet. %{error}
-      dialog:
-        automatically_managed_appendix: I dette tilfellet har denne lagringen automatisk administrert prosjektmappe, disse filene og filene vil slettes for alltid.
-        confirmation_text: Vennligst bekreft at du forstår og ønsker å fjerne fillagringen fra dette prosjektet
-        heading_text: Fjern prosjektet fra %{storage}
-        text: Denne handlingen er irreversibel, og vil fjerne alle koblinger fra arbeidspakker i dette prosjektet til filer og mapper i denne lagringen.
-        title: Remove project from storage
       label: Slett prosjekt
   services:
     attributes:
@@ -227,12 +221,13 @@
     confirm_replace_oauth_application: Denne handlingen vil tilbakestille gjeldende OAuth legitimasjon. Etter å ha bekreftet vil du måtte skrive inn innloggingsdetaljene hos lagringsleverandøren, og alle eksterne brukere må autorisere mot OpenProject igjen. Er du sikker på at du vil fortsette?
     confirm_replace_oauth_client: Denne handlingen vil tilbakestille gjeldende OAuth legitimasjon. Etter bekreftelse må du skrive inn ny påloggingsinformasjon fra leverandøren, og alle brukere må autorisere mot %{provider_type} igjen. Er du sikker på at du vil fortsette?
     delete_warning:
-      project_storage_delete_result_1: Fjern alle koblinger fra arbeidspakker i dette prosjektet til filer og mapper på denne lagringen.
-      project_storage_delete_result_2: Dersom denne lagringen har en automatisk administrert prosjektmappe, vil disse filene slettes for alltid.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
-      storage_delete_result_1: Fjern alle lagringsoppsett for alle prosjekter som bruker denne lagringen.
-      storage_delete_result_2: Fjern alle koblinger til filer og mapper fra arbeidspakker i alle prosjekter på denne lagringen.
-      storage_delete_result_3: Hvis denne lagringen har automatisk administrert prosjektmapper, vil disse og deres filer slettes for alltid.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
         group_folders_app: Group Folders
@@ -503,7 +498,7 @@
         title: Vi setter opp dine tillatelser på prosjektmappen.
     page_titles:
       file_storages:
-        delete: Slett fillagring
+        delete: Delete file storage?
         subtitle: Legg til en ekstern fillagring for å laste opp, koble og administrere filer i arbeidspakker.
       managed_project_folders:
         subtitle: |-
@@ -518,6 +513,8 @@
       project_storage_members:
         subtitle: Sjekk tilkoblingsstatusen for lagringsstedet  %{storage_name_link} for alle prosjektmedlemmer.
         title: Medlemmers tilkoblingsstatus
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'Filtillatelser til eksterne lagringsplasser brukes bare på mapper og filer innenfor automatisk administrerte prosjektmapper. Merk at ikke alle filtillatelser støttes av alle lagringstilbydere. Kontroller dokumentasjonen for <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>-filens lagringsrettigheter</a> for mer informasjon.'
     provider_types:
       label: Tjenestetype

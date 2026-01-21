@@ -57,5 +57,11 @@ module Settings
         yield Settings::FormObjectDecorator.new(g)
       end
     end
+
+    def fieldset_group(**, &)
+      object.fieldset_group(**) do |g|
+        yield Settings::FormObjectDecorator.new(g)
+      end
+    end
   end
 end

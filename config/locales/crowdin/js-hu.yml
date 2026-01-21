@@ -633,9 +633,6 @@ hu:
           add: "Beállítás hozzáadása a projekthez"
           already_selected: "A projekt már ki lett választva"
           remove: "Projekt beállítások eltávolítása"
-    password_confirmation:
-      field_description: "A változás megerősítéséhez adja meg jelszavát."
-      title: "Adja meg a jelszavát a folytatáshoz"
     pagination:
       no_other_page: "Csak egyetlen oldalon tartózkodik."
       pages_skipped: "Pages skipped."

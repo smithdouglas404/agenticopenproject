@@ -636,9 +636,6 @@ pl:
           add: "Dodaj ustawienie dla projektu"
           already_selected: "Ten projekt jest już wybrany"
           remove: "Usuń ustawienia projektu"
-    password_confirmation:
-      field_description: "Musisz wprowadzić hasło do twojego konta aby potwierdzić te zmiany."
-      title: "Potwierdź hasło aby kontynuować"
     pagination:
       no_other_page: "Jesteś na jedynej stronie."
       pages_skipped: "Pominięte strony."

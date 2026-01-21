@@ -39,7 +39,7 @@ RSpec.describe "Meeting Backlogs", :js do
     create :user,
            lastname: "First",
            preferences: { time_zone: "Etc/UTC" },
-           member_with_permissions: { project => %i[view_meetings manage_agendas manage_outcomes] }
+           member_with_permissions: { project => %i[view_meetings edit_meetings manage_agendas manage_outcomes] }
   end
   shared_let(:reader) do
     create :user,

@@ -33,8 +33,10 @@ services:
     networks:
       - external
     volumes:
-      # Linux
+      # Debian/Arch
       - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      # Fedora
+      - /etc/pki/tls/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro
       # Mac OS
       # - ~/.step/certs:/etc/ssl/certs
       # - ~/.step/certs:/usr/local/share/ca-certificates
@@ -49,8 +51,10 @@ services:
     networks:
       - external
     volumes:
-      # Linux
+      # Debian/Arch
       - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      # Fedora
+      - /etc/pki/tls/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro
       # Mac OS
       # - ~/.step/certs:/etc/ssl/certs
       # - ~/.step/certs:/usr/local/share/ca-certificates
@@ -60,8 +64,10 @@ services:
     networks:
       - external
     volumes:
-      # Linux
+      # Debian/Arch
       - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      # Fedora
+      - /etc/pki/tls/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro
       # Mac OS
       # - ~/.step/certs:/etc/ssl/certs
       # - ~/.step/certs:/usr/local/share/ca-certificates

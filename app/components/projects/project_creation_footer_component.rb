@@ -32,18 +32,19 @@ module Projects
   class ProjectCreationFooterComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    def initialize(form_identifier:, project:, template:, current_step:)
+    def initialize(form_identifier:, project:, template:, current_step:, cancel_href:)
       @form_identifier = form_identifier
       @project = project
       @template = template
       @current_step = current_step
+      @cancel_href = cancel_href
 
       super
     end
 
     def call
       render(StepWizard::FooterComponent.new(form_identifier:, total_steps:, current_step:)) do |footer|
-        footer.with_cancel_button(href: projects_path)
+        footer.with_cancel_button(href: cancel_href)
         footer.with_continue_button(**continue_button_args)
         footer.with_submit_button(**submit_button_args)
         if show_progress_bar?
@@ -52,7 +53,7 @@ module Projects
       end
     end
 
-    attr_reader :form_identifier, :project, :template, :current_step
+    attr_reader :form_identifier, :project, :template, :current_step, :cancel_href
 
     private
 

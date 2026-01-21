@@ -96,12 +96,6 @@ zh-CN:
       manual: 手动管理现有文件夹
     remove_project:
       deletion_failure_flash: 无法从存储中删除此项目。 %{error}
-      dialog:
-        automatically_managed_appendix: 而且，在这种情况下，这个存储有一个自动托管的项目文件夹，它和它的文件将被永久删除。
-        confirmation_text: 请确认您已理解并要从此项目中删除此文件存储
-        heading_text: 从 %{storage} 中删除项目
-        text: 此操作不可逆，将从此项目的工作包中删除所有链接到该存储的文件和文件夹。
-        title: 从存储中删除项目
       label: 删除项目
   services:
     attributes:
@@ -227,12 +221,13 @@ zh-CN:
     confirm_replace_oauth_application: 此操作将重置当前的 OAuth 凭据。确认后，您必须在存储提供商处重新输入凭据，并且所有远程用户都必须再次针对 OpenProject 进行授权。您确定要继续吗？
     confirm_replace_oauth_client: 此操作将重置当前的 OAuth 凭据。确认后，您必须输入存储提供商的新凭据，并且所有用户都必须再次针对 %{provider_type} 进行授权。您确定要继续吗？
     delete_warning:
-      project_storage_delete_result_1: 从此项目的工作包中移除该存储区的文件和文件夹的所有链接。
-      project_storage_delete_result_2: 如果这个存储库具有自动托管的项目文件夹，那么该文件夹及其文件将被永久删除。
-      storage: '确定要删除 %{file_storage} 吗？此操作将：'
-      storage_delete_result_1: 删除所有使用此存储的项目的所有存储设置。
-      storage_delete_result_2: 从所有项目的工作包中删除所有链接到该存储的文件和文件夹。
-      storage_delete_result_3: 如果此存储具有自动托管的项目文件夹，这些文件夹及其包含的文件将被永久删除。
+      project_storage: 确定要从此项目中移除 %{file_storage} 吗？
+      project_storage_delete_result_1: 相应文件和文件夹的所有链接都将被移除
+      project_storage_delete_result_2: 自动管理的项目文件夹及其中的所有文件都将被删除
+      storage: 确定要删除作为外部文件存储空间的 %{file_storage} 吗？
+      storage_delete_result_1: 该存储空间将从所有当前使用该存储空间的项目中移除
+      storage_delete_result_2: 相应文件和文件夹的所有链接都将被移除
+      storage_delete_result_3: 自动管理的项目文件夹及其中的所有文件都将被删除
     dependencies:
       nextcloud:
         group_folders_app: 组文件夹
@@ -501,7 +496,7 @@ zh-CN:
         title: 我们正在设置您对项目文件夹的权限。
     page_titles:
       file_storages:
-        delete: 删除文件存储
+        delete: 是否删除文件存储空间？
         subtitle: 添加外部文件存储以便在工作包中上传、链接和管理文件。
       managed_project_folders:
         subtitle: |-
@@ -515,6 +510,8 @@ zh-CN:
       project_storage_members:
         subtitle: 检查所有项目成员的存储区 %{storage_name_link} 的连接状态。
         title: 成员连接状态
+      project_storages:
+        delete: 是否从项目中移除文件存储空间？
     permission_header_explanation: '外部存储器上的文件权限仅适用于自动管理的项目文件夹内的文件夹和文件。请注意，并非所有存储提供商都支持所有文件权限。更多信息请查看<a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>文件存储权限</a>文档。'
     provider_types:
       label: 提供商类型

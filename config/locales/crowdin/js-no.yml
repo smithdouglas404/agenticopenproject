@@ -104,7 +104,7 @@
     button_save: "Lagre"
     button_settings: "Innstillinger"
     button_uncheck_all: "Avmerk alle"
-    button_update: "Oppdater"
+    button_update: "Oppdatèr"
     button_export-atom: "Last ned Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Opprett"
@@ -634,9 +634,6 @@
           add: "Legg til innstilling for prosjekt"
           already_selected: "Dette prosjektet er allerede valgt"
           remove: "Fjern prosjektinnstillinger"
-    password_confirmation:
-      field_description: "Du må skrive inn ditt passord for å bekrefte denne endringen."
-      title: "Bekreft ditt passord for å fortsette"
     pagination:
       no_other_page: "Du er på den eneste siden."
       pages_skipped: "Pages skipped."

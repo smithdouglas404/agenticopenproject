@@ -38,7 +38,7 @@ class CalculatedValueError < ApplicationRecord
                          ERROR_DISABLED_VALUE].freeze
 
   validates :customized, presence: true
-  validates :custom_field_id, presence: true
+  validates :custom_field, presence: true
 
   validates :error_code, inclusion: { in: VALID_ERROR_CODES }
 

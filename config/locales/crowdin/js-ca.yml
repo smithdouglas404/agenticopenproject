@@ -104,7 +104,7 @@ ca:
     button_save: "Desa"
     button_settings: "Configuració"
     button_uncheck_all: "Desmarca-ho tot"
-    button_update: "Actualitzar"
+    button_update: "Actualitza"
     button_export-atom: "Descarregar Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Crear"
@@ -634,9 +634,6 @@ ca:
           add: "Afegeix configuracions pel projecte"
           already_selected: "Aquest projecte ja està seleccionat"
           remove: "Elimina les configuracions del projecte"
-    password_confirmation:
-      field_description: "Necessites introduir la contrasenya del teu compte per a confirmar aquest canvi."
-      title: "Confirma la teva contrasenya per continuar"
     pagination:
       no_other_page: "Estàs en la pàgina única."
       pages_skipped: "Pages skipped."
