@@ -32,20 +32,54 @@ require "spec_helper"
 
 RSpec.describe Documents::OAuth::TokenWithMetadataService,
                with_settings: { collaborative_editing_hocuspocus_secret: "test_secret_for_encryption" } do
-  subject(:service_call) { described_class.new(user:).call }
+  subject(:service_call) { described_class.new(user:, document:, project:).call }
 
-  let(:user) { create(:user) }
+  let(:project) { create(:project) }
+  let(:document) { create(:document, project:) }
+  let(:manage_role) { create(:project_role, permissions: %i[view_documents manage_documents]) }
+  let(:view_only_role) { create(:project_role, permissions: [:view_documents]) }
+  let(:user) { create(:user, member_with_roles: { project => manage_role }) }
+
+  def decrypt_token(encrypted_token)
+    key = Digest::SHA256.digest("test_secret_for_encryption")
+    encryptor = ActiveSupport::MessageEncryptor.new(
+      key,
+      cipher: "aes-256-gcm",
+      serializer: ActiveSupport::MessageEncryptor::NullSerializer
+    )
+    encryptor.decrypt_and_verify(encrypted_token)
+  end
 
   describe "#call" do
     it "returns a successful service result" do
       expect(service_call).to be_success
     end
 
-    it "returns an encrypted token" do
+    it "returns an encrypted token containing packed params" do
       result = service_call.result
 
       expect(result[:encrypted_token]).to be_a(String)
       expect(result[:encrypted_token]).not_to be_empty
+
+      # Verify the encrypted token contains packed params by decrypting
+      decrypted = decrypt_token(result[:encrypted_token])
+      payload = JSON.parse(decrypted)
+
+      expect(payload["resource_url"]).to include("/api/v3/documents/#{document.id}")
+      expect(payload["oauth_token"]).to be_present
+      expect(payload["readonly"]).to be false
+    end
+
+    it "returns resource_url in the result" do
+      result = service_call.result
+
+      expect(result[:resource_url]).to include("/api/v3/documents/#{document.id}")
+    end
+
+    it "returns readonly in the result" do
+      result = service_call.result
+
+      expect(result[:readonly]).to be false
     end
 
     it "returns expires_at as ISO8601 timestamp" do
@@ -63,6 +97,18 @@ RSpec.describe Documents::OAuth::TokenWithMetadataService,
 
     it "creates a new access token" do
       expect { service_call }.to change(Doorkeeper::AccessToken, :count).by(1)
+    end
+
+    context "when user only has view_documents permission (readonly)" do
+      let(:user) { create(:user, member_with_roles: { project => view_only_role }) }
+
+      it "includes readonly: true in the packed params" do
+        result = service_call.result
+        decrypted = decrypt_token(result[:encrypted_token])
+        payload = JSON.parse(decrypted)
+
+        expect(payload["readonly"]).to be true
+      end
     end
   end
 

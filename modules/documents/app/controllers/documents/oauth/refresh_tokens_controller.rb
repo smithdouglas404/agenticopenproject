@@ -38,7 +38,11 @@ module Documents
       before_action :authorize
 
       def create
-        token_result = TokenWithMetadataService.new(user: current_user).call
+        token_result = TokenWithMetadataService.new(
+          user: current_user,
+          document: @document,
+          project: @project
+        ).call
 
         if token_result.success?
           render json: token_result.result, status: :ok

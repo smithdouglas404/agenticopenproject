@@ -61,8 +61,7 @@ class DocumentsController < ApplicationController
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
 
     if @document.collaborative? && Setting.real_time_text_collaboration_enabled?
-      derive_readonly_from_permissions
-      define_token_payload
+      setup_collaboration_context
       derive_show_edit_state_from_params
     end
   end
@@ -222,46 +221,23 @@ class DocumentsController < ApplicationController
     redirect_to document_path(call.result, state: :edit)
   end
 
-  def define_token_payload
-    oauth_token = generate_oauth_token
-    return if oauth_token.nil?
-
-    @resource_url = URI.join(
-      root_url,
-      API::V3::Utilities::PathHelper::ApiV3Path.document(@document.id)
-    ).to_s
-
-    payload = {
-      resource_url: @resource_url,
-      oauth_token:,
-      readonly: @readonly
-    }
-
-    encrypted_payload = Documents::OAuth::EncryptTokenService.new(token: payload.to_json).call
-    if encrypted_payload.failure?
-      Rails.logger.error("Failed to encrypt OAuth token payload for document #{@document.id}: #{encrypted_payload.errors}")
-      return
-    end
-
-    @token_payload = encrypted_payload.result
-  end
-
-  def generate_oauth_token
+  def setup_collaboration_context
     return unless current_user.allowed_in_project?(:view_documents, @project)
 
     token_result = Documents::OAuth::TokenWithMetadataService
-      .new(user: current_user)
+      .new(user: current_user, document: @document, project: @project)
       .call
 
     if token_result.failure?
-      Rails.logger.error("Failed to generate OAuth token for document #{@document.id}: #{token_result.errors}")
+      Rails.logger.error("Failed to generate token payload for document #{@document.id}: #{token_result.errors}")
       return
     end
 
+    @token_payload = token_result.result[:encrypted_token]
+    @resource_url = token_result.result[:resource_url]
+    @readonly = token_result.result[:readonly]
     @token_expires_at = token_result.result[:expires_at]
     @token_expires_in_seconds = token_result.result[:expires_in_seconds]
-
-    token_result.result.plaintext_token
   end
 
   def update_header_component_via_turbo_stream(state: :show)
@@ -272,10 +248,5 @@ class DocumentsController < ApplicationController
 
   def derive_show_edit_state_from_params
     @state = params[:state] == "edit" ? :edit : :show
-  end
-
-  def derive_readonly_from_permissions
-    @readonly = current_user.allowed_in_project?(:view_documents, @project) &&
-      !current_user.allowed_in_project?(:manage_documents, @project)
   end
 end
