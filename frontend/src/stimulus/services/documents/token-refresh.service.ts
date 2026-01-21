@@ -37,8 +37,28 @@ export interface TokenResponse {
   expires_in_seconds:number;
 }
 
+export type RefreshErrorKind = 'session_expired' | 'http_error' | 'unknown';
+
+export class RefreshError extends Error {
+  constructor(
+    public readonly kind:RefreshErrorKind,
+    message:string,
+    public readonly status?:number,
+  ) {
+    super(message);
+    this.name = 'RefreshError';
+  }
+
+  get isRetryable():boolean {
+    if (this.kind === 'session_expired') return false;
+    if (this.status !== undefined) return this.status >= 500 || this.status === 429;
+    return this.kind === 'unknown';
+  }
+}
+
 const REFRESH_THRESHOLD = 0.8; // 80% of the token lifetime
 const RETRY_DELAY_MS = 5000; // 5 seconds
+const MAX_RETRIES = 3;
 
 /**
  * Manages OAuth token refresh for Hocuspocus collaborative editing sessions.
@@ -49,10 +69,18 @@ const RETRY_DELAY_MS = 5000; // 5 seconds
  * ```
  * Client                              OpenProject                         Hocuspocus
  *   │  [80% of token TTL]                  │                                   │
- *   │── POST /documents/{id}/oauth/refresh_token ──►│                          │
+ *   │── POST /refresh_token ─────────────────►│                                │
+ *   │                                      │                                   │
+ *   │  [success]                           │                                   │
  *   │◄─────────────── {encrypted_token} ───│                                   │
  *   │── REFRESH:<token> ───────────────────┼──────────────────────────────────►│ updates context.token
  *   │  [schedule next refresh]             │                                   │
+ *   │                                      │                                   │
+ *   │  [5xx error] retry up to 3x          │                                   │
+ *   │── POST /refresh_token ─────────────────►│                                │
+ *   │                                      │                                   │
+ *   │  [401/403] stop - session expired    │                                   │
+ *   │  [4xx] stop - non-retryable          │                                   │
  * ```
  */
 export class TokenRefreshService {
@@ -60,6 +88,7 @@ export class TokenRefreshService {
   private provider:HocuspocusProvider;
   private refreshUrl:string;
   private destroyed = false;
+  private retryCount = 0;
 
   constructor(provider:HocuspocusProvider, refreshUrl:string) {
     this.provider = provider;
@@ -73,7 +102,7 @@ export class TokenRefreshService {
       return;
     }
 
-    const refreshDelayMs = Math.floor(expiresInSeconds * REFRESH_THRESHOLD * 1000);
+    const refreshDelayMs = Math.max(0, Math.floor(expiresInSeconds * REFRESH_THRESHOLD * 1000));
 
     this.refreshTimer = setTimeout(() => {
       void this.performRefresh();
@@ -92,11 +121,11 @@ export class TokenRefreshService {
     });
 
     if (response.status === 401 || response.status === 403) {
-      throw new Error('Session expired');
+      throw new RefreshError('session_expired', 'Session expired', response.status);
     }
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      throw new RefreshError('http_error', `HTTP ${response.status}: ${response.statusText}`, response.status);
     }
 
     return response.json() as Promise<TokenResponse>;
@@ -110,14 +139,17 @@ export class TokenRefreshService {
     try {
       const data = await TokenRefreshService.fetchToken(this.refreshUrl);
 
+      this.retryCount = 0;
       this.sendTokenToServer(data.encrypted_token);
       this.scheduleRefresh(data.expires_in_seconds);
     } catch (error) {
-      if (error instanceof Error && error.message === 'Session expired') {
-        console.warn('[TokenRefresh] Session expired, stopping refresh');
-        return;
-      }
-      console.error('[TokenRefresh] Refresh failed, retrying...', error);
+      const refreshError = error instanceof RefreshError
+        ? error
+        : new RefreshError('unknown', error instanceof Error ? error.message : 'Unknown error');
+
+      if (!refreshError.isRetryable || this.retryCount >= MAX_RETRIES) return;
+
+      this.retryCount += 1;
       this.scheduleRetry();
     }
   }
