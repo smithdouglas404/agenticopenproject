@@ -95,8 +95,8 @@ RSpec.describe "my routes" do
                                                                             access_token_id: "123")
     end
 
-    it "/my/revoke_storage_token DELETE routes to my/access_tokens#revoke_storage_token" do
-      expect(delete("/my/access_tokens/123/revoke_storage_token")).to route_to("my/access_tokens#revoke_storage_token",
+    it "/my/remove_oauth_client_token DELETE routes to my/access_tokens#remove_oauth_client_token" do
+      expect(delete("/my/access_tokens/123/remove_oauth_client_token")).to route_to("my/access_tokens#remove_oauth_client_token",
                                                                                access_token_id: "123")
     end
   end

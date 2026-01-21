@@ -61,8 +61,8 @@ class DocumentsController < ApplicationController
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
 
     if @document.collaborative? && Setting.real_time_text_collaboration_enabled?
-      generate_encrypted_oauth_token
       derive_readonly_from_permissions
+      define_token_payload
       derive_show_edit_state_from_params
     end
   end
@@ -222,7 +222,31 @@ class DocumentsController < ApplicationController
     redirect_to document_path(call.result, state: :edit)
   end
 
-  def generate_encrypted_oauth_token
+  def define_token_payload
+    oauth_token = generate_oauth_token
+    return if oauth_token.nil?
+
+    @resource_url = URI.join(
+      root_url,
+      API::V3::Utilities::PathHelper::ApiV3Path.document(@document.id)
+    ).to_s
+
+    payload = {
+      resource_url: @resource_url,
+      oauth_token:,
+      readonly: @readonly
+    }
+
+    encrypted_payload = Documents::OAuth::EncryptTokenService.new(token: payload.to_json).call
+    if encrypted_payload.failure?
+      Rails.logger.error("Failed to encrypt OAuth token payload for document #{@document.id}: #{encrypted_payload.errors}")
+      return
+    end
+
+    @token_payload = encrypted_payload.result
+  end
+
+  def generate_oauth_token
     return unless current_user.allowed_in_project?(:view_documents, @project)
 
     token_result = Documents::OAuth::TokenWithMetadataService
@@ -234,9 +258,10 @@ class DocumentsController < ApplicationController
       return
     end
 
-    @oauth_token = token_result.result[:encrypted_token]
     @token_expires_at = token_result.result[:expires_at]
     @token_expires_in_seconds = token_result.result[:expires_in_seconds]
+
+    token_result.result.plaintext_token
   end
 
   def update_header_component_via_turbo_stream(state: :show)

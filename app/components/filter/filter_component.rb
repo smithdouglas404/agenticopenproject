@@ -168,7 +168,6 @@ module Filter
         resource: "principals",
         url: ::API::V3::Utilities::PathHelper::ApiV3Path.principals,
         filters: [
-          { name: "type", operator: "=", values: ["User"] },
           { name: "status", operator: "!", values: [Principal.statuses["locked"].to_s] }
         ],
         searchKey: "any_name_attribute",

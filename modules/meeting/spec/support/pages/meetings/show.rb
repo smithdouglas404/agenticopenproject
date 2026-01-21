@@ -235,6 +235,8 @@ module Pages::Meetings
       open_menu(item) do
         if action.downcase.include?("move")
           click_on "Move"
+        elsif action.downcase.include?("outcome")
+          click_on "Add outcome"
         end
         click_on action
       end
@@ -247,6 +249,20 @@ module Pages::Meetings
       retry_block do
         page.within_modal "Move to next meeting?" do
           click_on "Move"
+        end
+      end
+    end
+
+    def duplicate_item_in_next_meeting(item)
+      open_menu(item) do
+        click_on "Duplicate"
+        click_on "Duplicate in next occurrence"
+      end
+      expect_modal("Duplicate in next occurrence?")
+
+      retry_block do
+        page.within_modal "Duplicate in next occurrence?" do
+          click_on "Duplicate"
         end
       end
     end
@@ -311,15 +327,21 @@ module Pages::Meetings
     end
 
     def add_outcome(item, &)
-      page.within("#meeting-agenda-items-outcomes-wrapper-component-#{item.id}") do
-        click_link_or_button "Outcome"
+      page.within("#meeting-agenda-items-outcomes-new-button-component-#{item.id}") do
+        click_on "Outcome"
       end
+      expect(page).to have_text("Write outcome", wait: 2)
+      page.find("a", text: "Write outcome").click
       expect_outcome_form(item)
       page.within("#meeting-agenda-items-outcomes-input-component-#{item.id}", &)
     end
 
     def add_outcome_from_menu(item, &)
-      select_action item, "Add outcome"
+      open_menu(item) do
+        click_on "Add outcome"
+        expect(page).to have_text("Write outcome", wait: 2)
+        click_on "Write outcome"
+      end
       expect_outcome_form(item)
       page.within("#meeting-agenda-items-outcomes-input-component-#{item.id}", &)
     end
@@ -559,7 +581,7 @@ module Pages::Meetings
     end
 
     def expect_available_participants(count:)
-      expect(page).to have_link(class: "op-principal--name", count:)
+      expect(page).to have_link(class: "meeting-participant-user-link", count:)
     end
 
     def close_meeting

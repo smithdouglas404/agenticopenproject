@@ -90,6 +90,10 @@ class User < Principal
            inverse_of: :user,
            dependent: :destroy
 
+  has_many :recurring_meeting_interim_responses,
+           inverse_of: :user,
+           dependent: :destroy
+
   has_many :notification_settings,
            dependent: :destroy
 
@@ -739,7 +743,7 @@ class User < Principal
 
   def self.register_failed_login_attempt_if_user_exists_for(login)
     user = User.find_by_login(login)
-    user.log_failed_login if user.present?
+    user.presence&.log_failed_login
     nil
   end
 

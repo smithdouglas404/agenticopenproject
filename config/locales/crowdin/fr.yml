@@ -713,9 +713,11 @@ fr:
           create_button: "Créer"
           name_label: "Nom du jeton"
       created_dialog:
+        one_time_warning: "C'est la seule fois que vous verrez ce jeton. Veillez à le copier maintenant."
         token/api:
           title: "Le jeton d'API a été généré"
-          warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
+        token/rss:
+          title: "Le jeton RSS a été généré"
       failed_to_reset_token: "Impossible de réinitialiser le jeton d’accès : %{error}"
       failed_to_create_token: "Impossible de créer le jeton d'accès : %{error}"
       failed_to_revoke_token: "Impossible de révoquer le jeton d'accès : %{error}"
@@ -725,6 +727,9 @@ fr:
       notice_api_token_revoked: "Le jeton d'API a été supprimé. Pour créer un nouveau jeton, veuillez utiliser le bouton dans la section API."
       notice_rss_token_revoked: "Le jeton d'API a été supprimé. Pour créer un nouveau jeton, veuillez utiliser le lien dans la section RSS."
       notice_ical_token_revoked: 'Le jeton iCalendar « %{token_name} » pour le calendrier « %{calendar_name} » du projet « %{project_name} » a été révoqué. L''URL iCalendar liée à ce jeton est maintenant invalide.'
+    password_confirmation_dialog:
+      confirmation_required: "Vous devez saisir le mot de passe de votre compte pour confirmer cette modification."
+      title: "Confirmez votre mot de passe pour continuer"
   news:
     index:
       no_results_title_text: Il n'y a actuellement aucune actualité à publier.
@@ -1509,7 +1514,8 @@ fr:
         not_a_datetime: "n'est pas une heure valide."
         not_a_number: "n'est pas un nombre."
         not_allowed: "est invalide en raison d’autorisations insuffisantes."
-        not_json: "n'est pas un objet JSON valide."
+        not_json: "ne peut pas être analysé en tant que JSON."
+        not_json_object: "n'est pas un objet JSON."
         not_an_integer: "n'est pas un entier."
         not_an_iso_date: "n’est pas une date valide. Format requis : AAAA-MM-JJ."
         not_same_project: "n'appartient pas au même projet."
@@ -1917,7 +1923,12 @@ fr:
       token/api:
         one: Jeton d'accès
         other: Jetons d’accès
-      type: "Type"
+      token/rss:
+        one: "Jeton RSS"
+        other: "Jetons RSS"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Utilisateur"
       version: "Version"
       workflow: "Flux de travail"
@@ -2134,6 +2145,7 @@ fr:
   button_click_to_reveal: "Cliquez pour révéler"
   button_close: "Fermer"
   button_collapse_all: "Tout replier"
+  button_confirm: "Confirmer"
   button_configure: "Configurer"
   button_continue: "Continuer"
   button_complete: "Compléter"
@@ -2166,6 +2178,7 @@ fr:
   button_print: "Imprimer"
   button_quote: "Citer"
   button_remove: Supprimer
+  button_remove_permanently: "Supprimer définitivement"
   button_remove_reminder: "Supprimer le rappel"
   button_rename: "Renommer"
   button_replace: "Remplacer"
@@ -2898,6 +2911,7 @@ fr:
       label: "Ajouter…"
   my_account:
     access_tokens:
+      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
       no_results:
         title: "Aucun jeton d'accès à afficher"
         description: "Tous ont été désactivés. Ils peuvent être ré-activés dans le menu d'administration."
@@ -2907,34 +2921,56 @@ fr:
         expiration: "Expiration"
       indefinite_expiration: "Jamais"
       simple_revoke_confirmation: "Voulez-vous vraiment révoquer ce jeton ?"
+      tabs:
+        client:
+          title: "Jetons de client"
+        provider:
+          title: "Jetons du fournisseur"
       token/api:
+        blank_description: "Il n'y a pas encore de jeton API. Vous pouvez en créer un en utilisant le bouton ci-dessous."
+        blank_title: "Pas de jeton API"
         title: "API"
+        table_title: "Jetons d'API"
         text_hint: "Les jetons d'API permettent aux applications tierces de communiquer avec cette instance OpenProject via les API REST."
+        static_token_name: "Jeton API"
         disabled_text: "Les jetons d'API ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
         add_button: "Jeton d'API"
-      api:
-        static_token_name: "Jeton d'API"
       ical:
+        blank_description: "Pour ajouter un jeton iCalendar, abonnez-vous à un calendrier nouveau ou existant à partir du module Calendrier d'un projet. Vous devez disposer des autorisations nécessaires."
+        blank_title: "Pas de jeton iCalendar"
         title: "iCalendar"
+        table_title: "Jetons iCalendar"
         text_hint_link: "Les jetons iCalendar permettent aux utilisateurs de [s'abonner aux calendriers OpenProject](docs_url) et d'afficher des informations à jour sur les lots de travaux provenant de clients externes."
         disabled_text: "Les abonnements iCalendar ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
-        empty_text_hint: "Pour ajouter un jeton iCalendar, abonnez-vous à un nouveau calendrier ou à un calendrier existant depuis le module Calendrier d'un projet. Vous devez avoir les autorisations nécessaires."
-      oauth:
+      oauth_application:
+        active_tokens: "Jetons actifs"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Dernière utilisation à"
         title: "OAuth"
-        text_hint: "Les jetons OAuth permettent à des applications tierces de se connecter à cette instance OpenProject."
-        empty_text_hint: "Il n'y a pas d'accès à des applications tierces configuré et actif pour vous. Veuillez contacter votre administrateur pour activer cette fonctionnalité."
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
-        text_hint: "Les jetons RSS permettent aux utilisateurs de suivre les derniers changements de cette instance OpenProject via un lecteur RSS externe."
-        static_token_name: "Jeton RSS"
-        disabled_text: "Les jetons RSS ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
+        table_title: "RSS tokens"
+        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
+        static_token_name: "RSS token"
+        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "Espaces de stockage de fichiers"
-        text_hint: "Les jetons de stockage de fichiers connectent cette instance OpenProject à une solution de stockage de fichiers externe."
-        empty_text_hint: "Il n'y a pas d'accès à l'espace de stockage lié à votre compte."
-        revoke_token: "Voulez-vous vraiment supprimer ce jeton ? Vous devrez vous reconnecter sur %{storage}"
-        removed: "Jeton de stockage de fichiers supprimé avec succès"
-        failed: "Une erreur s'est produite et le jeton n'a pas pu être supprimé. Veuillez réessayer plus tard."
         unknown_storage: "Espace de stockage inconnu"
   notifications:
     reasons:
@@ -3428,9 +3464,6 @@ fr:
   label_project_hierarchy: "Hiérarchie du projet"
   label_project_mappings: "Projets"
   label_project_new: "Nouveau projet"
-  label_project_initiation_request: "Demande de lancement d'un nouveau projet"
-  label_project_creation_wizard: "Assistant de création de nouveau projet"
-  label_project_mandate: "Mandat de nouveau projet"
   label_project_plural: "Projets"
   label_project_list_plural: "Listes de projets"
   label_project_life_cycle: "Cycle de vie du projet"
@@ -3894,7 +3927,7 @@ fr:
   notice_not_authorized: "Vous n'êtes pas autorisé à accéder à cette page."
   notice_not_authorized_archived_project: "Le projet auquel vous essayer d'accéder a été archivé."
   notice_requires_enterprise_token: "Le jeton Enterprise est manquant ou n'autorise pas l'accès à cette page."
-  notice_password_confirmation_failed: "Votre mot de passe est incorrect. Impossible de continuer."
+  notice_password_confirmation_failed: "Le mot de passe saisi est incorrect."
   notice_principals_found_multiple: "Il y a %{number} résultats trouvés. Tabulation pour sélectionner le premier résultat."
   notice_principals_found_single: "Il y a un seul résultat. Tabulation pour le sélectionner."
   notice_parent_item_not_found: "L'élément parent est introuvable."
@@ -4259,11 +4292,17 @@ fr:
   setting_apiv3_cors_origins_text_html: >
     Si CORS est activé, ce sont les origines qui sont autorisées à accéder à l'API OpenProject. <br/> Veuillez vérifier la <a href="%{origin_link}" target="_blank">documentation sur l'en-tête Origin</a> sur la façon de spécifier les valeurs attendues.
   setting_apiv3_write_readonly_attributes: "Accès en écriture aux attributs en lecture seule"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Si cette option est activée, l'API permettra aux administrateurs d'écrire des attributs statiques en lecture seule lors de la création, tels que createdAt et author. <br/> <strong>Avertissement :</strong> Ce paramètre est utile, par exemple, pour l'importation de données, mais il permet aux administrateurs de se faire passer pour d'autres utilisateurs lors de la création d'éléments. Toutes les demandes de création sont toutefois enregistrées au nom du véritable auteur. </br> Pour plus d'informations sur les attributs et les ressources prises en charge, veuillez consulter la %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "Taille maximale de page d'API"
-  setting_apiv3_max_page_instructions_html: >
-    Définissez la taille maximale de la page avec laquelle l'API répondra. Il ne sera pas possible d'effectuer des requêtes API qui retournent plus de valeurs sur une seule page. <br/> <strong>Avertissement :</strong> veuillez modifier cette valeur uniquement si vous êtes sûr de savoir pourquoi vous en avez besoin. Définir à une valeur élevée entraînera des impacts significatifs sur les performances, alors qu'une valeur inférieure aux options de chaque page provoquera des erreurs dans les vues paginées.
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "Documentation"
   setting_apiv3_docs_enabled: "Activer la page docs"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4448,7 +4487,7 @@ fr:
       omniauth_direct_login_hint_html: >
         Si cette option est activée, les demandes de connexion seront redirigées vers le fournisseur omniauth configuré. La liste déroulante de connexion et la page de connexion seront désactivées. <br/> <strong>Remarque :</strong> lorsque cette option est activée, les utilisateurs peuvent toujours se connecter en interne en visitant la page de connexion <code>%{internal_path}</code>, sauf si vous désactivez également les connexions par mot de passe.
       remapping_existing_users_hint: >
-        Si cette option est activée, elle permet à tout fournisseur d'identité configuré de connecter des utilisateurs existants en fonction de leur adresse e-mail, même si l'utilisateur ne s'est jamais connecté auparavant via ce fournisseur. Cela peut être utile lors de la migration de l'instance OpenProject vers un nouveau fournisseur SSO, mais n'est pas recommandé si vous utilisez un fournisseur qui n'est pas approuvé par l'ensemble des utilisateurs de votre instance.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Définissez une liste d'extensions de fichiers et/ou de types MIME valides pour les fichiers téléversés. <br/> Entrez les extensions de fichier (par exemple, <code>%{ext_example}</code>) ou les types mime (par exemple, <code>%{mime_example}</code>). <br/> Laissez vide pour permettre le téléversement de tout type de fichier. Plusieurs valeurs autorisées (une ligne pour chaque valeur).
@@ -4722,6 +4761,7 @@ fr:
     Remarque : si cette option est activée, un badge indiquant l'état de votre installation s'affichera dans le panneau <a href="%{information_panel_path}">%{information_panel_label}</a> administration et sur la page d'accueil. Il n'est affiché que pour les administrateurs. <br/>Le badge vérifiera votre version actuelle d'OpenProject par rapport à la base de données officielle d'OpenProject pour vous avertir de toute mise à jour ou vulnérabilité connue. Pour plus d'informations sur ce que la vérification fournit, quelles données sont nécessaires pour fournir les mises à jour disponibles, et comment désactiver cette vérification, veuillez visiter <a href="%{more_info_url}">la documentation de configuration</a>.
   text_own_membership_delete_confirmation: "Vous êtes sur le point de retirer tout ou partie de vos permissions et ne pourrez peut-être plus modifier le projet par la suite.\nÊtes vous sûr de vouloir continuer?"
   text_permanent_delete_confirmation_checkbox_label: "Je comprends que cette suppression ne peut pas être annulée"
+  text_permanent_remove_confirmation_checkbox_label: "Je comprends que cette suppression ne peut pas être annulée"
   text_plugin_assets_writable: "Répertoire des « plugin assets » est accessible en écriture"
   text_powered_by: "Propulsé par %{link}"
   text_project_identifier_info: "Seulement les lettres en minuscule (a-z), les nombres, les tirets et les underscores sont autorisés, il est obligatoire de commencer avec une lettre en minuscule."

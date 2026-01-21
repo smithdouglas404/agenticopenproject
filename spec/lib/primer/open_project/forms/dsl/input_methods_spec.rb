@@ -271,5 +271,12 @@ RSpec.describe Primer::OpenProject::Forms::Dsl::InputMethods, type: :forms do
       include_examples "input class", Primer::OpenProject::Forms::Dsl::WorkPackageAutocompleterInput
       it_behaves_like "supporting help texts"
     end
+
+    describe "#select_panel" do
+      let(:field_group) { form_dsl.select_panel(name:, label:, **options) }
+
+      include_examples "input class", Primer::OpenProject::Forms::Dsl::SelectPanelInput
+      it_behaves_like "supporting help texts"
+    end
   end
 end

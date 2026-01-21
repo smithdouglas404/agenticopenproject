@@ -36,7 +36,6 @@ class MeetingPresentationController < ApplicationController
   load_and_authorize_with_permission_in_project :view_meetings
 
   before_action :find_meeting
-  before_action :check_feature_flag
   before_action :check_presentable
   before_action :determine_current_id
   before_action :set_started_at
@@ -70,12 +69,6 @@ class MeetingPresentationController < ApplicationController
 
   def find_agenda_item
     @meeting_agenda_item = @meeting.agenda_items.find(params[:meeting_agenda_item_id])
-  end
-
-  def check_feature_flag
-    unless OpenProject::FeatureDecisions.meetings_presentation_mode_active?
-      render_404
-    end
   end
 
   def set_started_at

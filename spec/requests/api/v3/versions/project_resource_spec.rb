@@ -45,7 +45,7 @@ RSpec.describe "API v3 version's projects resource" do
   let(:program) { create(:program, public: false) }
   let(:portfolio) { create(:portfolio, public: false) }
   let(:inaccessible_project) { create(:project, public: false) }
-  let(:version) { create(:version, project:, sharing: "system") }
+  let(:version) { create(:version, project:) }
 
   subject(:response) { last_response }
 

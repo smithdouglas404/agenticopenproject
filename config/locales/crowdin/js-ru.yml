@@ -104,7 +104,7 @@ ru:
     button_save: "Сохранить"
     button_settings: "Настройки"
     button_uncheck_all: "Снять все отметки"
-    button_update: "Обновить"
+    button_update: "Обновление"
     button_export-atom: "Скачать Atom"
     button_generate_pdf: "Создать PDF"
     button_create: "Создать"
@@ -202,8 +202,8 @@ ru:
         add_table: "Добавить таблицу связанных пакетов работ"
         edit_query: "Редактировать запрос"
         new_group: "Новая группа"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "Удалить группу"
+        remove_attribute: "Удалить из группы"
         reset_to_defaults: "Восстановить значения по умолчанию"
       working_days:
         calendar:
@@ -635,9 +635,6 @@ ru:
           add: "Добавить настройку для проекта"
           already_selected: "Этот проект уже выбран"
           remove: "Удалить настройки проекта"
-    password_confirmation:
-      field_description: "Чтобы подтвердить изменения, введите пароль учетной записи."
-      title: "Для продолжения введите свой пароль"
     pagination:
       no_other_page: "Вы находитесь на единственной странице."
       pages_skipped: "Страницы пропущены."

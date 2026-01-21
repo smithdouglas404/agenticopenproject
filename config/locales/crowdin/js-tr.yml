@@ -634,9 +634,6 @@ tr:
           add: "Proje için ayar ekle"
           already_selected: "Bu proje zaten seçildi"
           remove: "Proje ayarlarını kaldır"
-    password_confirmation:
-      field_description: "Bu değişikliği onaylamak için hesap parolanızı girmeniz gerekir."
-      title: "Devam etmek için parolanızı doğrulayın"
     pagination:
       no_other_page: "Geçerli tek sayfadasınız."
       pages_skipped: "Sayfalar atlandı."
@@ -722,7 +719,7 @@ tr:
       label_two_factor_authentication: "İki aşamalı kimlik doğrulama"
     watchers:
       label_loading: takipçiler yükleniyor...
-      label_error_loading: Takipçileri yüklerken bir hata oluştu
+      label_error_loading: Takip edenleri yüklerken bir hata oluştu
       label_search_watchers: Takipçi arama
       label_add: Takip eden ekle
       label_discard: Seçimi gözardı et

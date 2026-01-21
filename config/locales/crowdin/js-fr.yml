@@ -634,9 +634,6 @@ fr:
           add: "Ajouter un paramètre pour le projet"
           already_selected: "Ce projet est déjà sélectionné"
           remove: "Suppression des paramètres de projet"
-    password_confirmation:
-      field_description: "Vous devez saisir le mot de passe de votre compte pour confirmer ce changement."
-      title: "Confirmez votre mot de passe pour continuer"
     pagination:
       no_other_page: "Vous êtes sur la seule page."
       pages_skipped: "Pages ignorées."

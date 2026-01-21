@@ -226,4 +226,32 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       end
     end
   end
+
+  describe "breadcrumbs" do
+    context "when the project has no parent" do
+      before do
+        allow(project).to receive(:ancestors).and_return([])
+      end
+
+      it "does not render breadcrumbs" do
+        expect(rendered_component).to have_css ".PageHeader--noBreadcrumb"
+      end
+    end
+
+    context "when the project has ancestors" do
+      let(:grandparent) { build_stubbed(:project) }
+      let(:parent) { build_stubbed(:project) }
+
+      before do
+        allow(project).to receive(:ancestors).and_return([grandparent, parent])
+      end
+
+      it "renders the full hierarchy breadcrumb path and ends with the current project name", :aggregate_failures do
+        expect(rendered_component).to have_css ".PageHeader"
+        expect(rendered_component).to have_link grandparent.name
+        expect(rendered_component).to have_link parent.name
+        expect(rendered_component).to have_heading page.title, class: "PageHeader-title"
+      end
+    end
+  end
 end

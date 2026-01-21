@@ -30,7 +30,7 @@ tr:
           one_or_more_required: "Cannot delete the last document type"
     models:
       document: "Belge"
-      documents: "Documents"
+      documents: "Belgeler"
     attributes:
       document:
         content_binary: "Content binary"
@@ -43,10 +43,10 @@ tr:
   enumeration_doc_categories: "Belge kategorileri"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "Tüm belgeler"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "Doküman hareketleri"
+        edit_title: "Başlığı düzenle"
     subheader:
       filter:
         label: "Document name filter"

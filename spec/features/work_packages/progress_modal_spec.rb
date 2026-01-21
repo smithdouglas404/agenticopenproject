@@ -219,7 +219,9 @@ RSpec.describe "Progress modal", :js do
 
         wait_for_reload
 
-        progress_popover.open
+        retry_block do
+          progress_popover.open
+        end
 
         progress_popover.expect_select_with_options(:status, "open (0%)", "in progress (50%)", "complete (100%)")
       end

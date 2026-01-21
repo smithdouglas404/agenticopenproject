@@ -296,7 +296,7 @@ class MeetingsController < ApplicationController
       .call
       .on_failure { |call| render_500(message: call.message) }
       .on_success do |call|
-      send_data call.result, filename: filename_for_content_disposition("#{@meeting.title}.ics")
+        send_data call.result, filename: filename_for_content_disposition("#{@meeting.title}.ics")
     end
   end
 
@@ -382,11 +382,11 @@ class MeetingsController < ApplicationController
       .participants
       .invited
       .find_each do |participant|
-      MeetingMailer.invited(
-        @meeting,
-        participant.user,
-        User.current
-      ).deliver_later
+        MeetingMailer.invited(
+          @meeting,
+          participant.user,
+          User.current
+        ).deliver_later
     end
   end
 
@@ -604,11 +604,11 @@ class MeetingsController < ApplicationController
       .participants
       .invited
       .find_each do |participant|
-      MeetingSeriesMailer.invited(
-        recurring_meeting,
-        participant.user,
-        User.current
-      ).deliver_later
+        MeetingSeriesMailer.invited(
+          recurring_meeting,
+          participant.user,
+          User.current
+        ).deliver_later
     end
 
     render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_notification))

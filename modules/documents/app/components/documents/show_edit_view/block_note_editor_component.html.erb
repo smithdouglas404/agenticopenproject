@@ -33,7 +33,7 @@
   helpers.content_controller(
     "documents--init-yjs-provider",
     "documents--init-yjs-provider-hocuspocus-url-value": Setting.collaborative_editing_hocuspocus_url,
-    "documents--init-yjs-provider-oauth-token-value": oauth_token,
+    "documents--init-yjs-provider-token-payload-value": token_payload,
     "documents--init-yjs-provider-document-name-value": resource_url,
     "documents--init-yjs-provider-token-expires-at-value": token_expires_at,
     "documents--init-yjs-provider-token-expires-in-seconds-value": token_expires_in_seconds,
@@ -46,7 +46,7 @@
     component.with_main(classes: "op-document-view--main") do
       flex_layout(align_items: :center) do |flex|
         flex.with_row(classes: "op-document-view--header") do
-          render Documents::ShowEditView::PageHeaderComponent.new(document, project:, state:, readonly:)
+          render Documents::ShowEditView::PageHeaderComponent.new(document, project:, state:)
         end
 
         flex.with_row(classes: "op-document-view--editor") do
@@ -56,7 +56,7 @@
             method: :patch,
             data: { turbo: false }
           ) do |form|
-            render Documents::BlockNoteEditorForm.new(form, oauth_token:, readonly:)
+            render Documents::BlockNoteEditorForm.new(form, token_payload:, readonly:)
           end
         end
       end

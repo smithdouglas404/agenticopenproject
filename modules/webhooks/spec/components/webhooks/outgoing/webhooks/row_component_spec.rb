@@ -70,8 +70,8 @@ RSpec.describe Webhooks::Outgoing::Webhooks::RowComponent, type: :component do
       let(:webhook) { build_stubbed(:webhook, all_projects: false) }
 
       it "renders 'No projects'" do
-        expect(rendered_component).to have_octicon :"alert-fill"
-        expect(rendered_component).to have_primer_text "No projects", color: "attention"
+        expect(rendered_component).to have_octicon :alert
+        expect(rendered_component).to have_content "No projects"
       end
     end
   end
@@ -84,8 +84,8 @@ RSpec.describe Webhooks::Outgoing::Webhooks::RowComponent, type: :component do
       let(:event_names) { [] }
 
       it "renders 'No events'" do
-        expect(rendered_component).to have_octicon :"alert-fill"
-        expect(rendered_component).to have_primer_text "No events", color: "attention"
+        expect(rendered_component).to have_octicon :alert
+        expect(rendered_component).to have_content "No events"
       end
     end
 

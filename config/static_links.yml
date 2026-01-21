@@ -107,6 +107,8 @@ manual_installation:
 newsletter:
   href: https://www.openproject.org/newsletter
   label: homescreen.links.newsletter
+oauth_applications:
+  href: https://www.openproject.org/docs/system-admin-guide/authentication/oauth-applications/
 security_alerts:
   href: https://www.openproject.org/security-and-privacy/#mailing-list
   label: homescreen.links.security_alerts

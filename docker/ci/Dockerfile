@@ -11,7 +11,9 @@ RUN apt-get update -qq && \
   apt-get install -y wget gnupg lsb-release curl && \
   wget --quiet -O- https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/postgrsql.gpg - && \
   echo "deb [signed-by=/usr/share/keyrings/postgrsql.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg  main" > /etc/apt/sources.list.d/pgdg.list
-ENV CHROME_SOURCE_URL="https://dl.google.com/dl/linux/direct/google-chrome-stable_current_amd64.deb"
+# Temporarily use a mirror for Chrome until the official one no longer has issues with xeokit. Can be tested by running
+# rspec ./modules/bim/spec/features/bcf/create_spec.rb:107 after switching to the official package source.
+ENV CHROME_SOURCE_URL="https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/google-chrome-stable_142.0.7444.134-1_amd64.deb"
 RUN --mount=type=cache,target=/var/cache/apt export f="/tmp/chrome.deb" && wget --no-verbose -O $f $CHROME_SOURCE_URL && \
   apt-get update -qq && apt-get install -y "$f" postgresql-$PGVERSION postgresql-client-$PGVERSION time imagemagick default-jre-headless firefox-esr && \
   rm -f "$f" && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/lib/postgresql && find /usr/share/locale/* -maxdepth 0 -type d ! -name 'en' -exec rm -rf {} \;
