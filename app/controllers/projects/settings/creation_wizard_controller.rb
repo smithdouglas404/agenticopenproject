@@ -71,11 +71,23 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
   end
 
   def toggle_project_custom_field
-    mapping = ProjectCustomFieldProjectMapping.find_by(
-      project_id: permitted_params.project_custom_field_project_mapping[:project_id],
-      custom_field_id: permitted_params.project_custom_field_project_mapping[:custom_field_id]
-    )
-    if mapping&.update(creation_wizard: !mapping.creation_wizard)
+    # mapping = ProjectCustomFieldProjectMapping.find_by(
+    #   project_id: @project.id,
+    #   custom_field_id: permitted_params.project_custom_field_project_mapping[:custom_field_id]
+    # )
+
+    cf = ProjectCustomField
+           .visible(project: @project)
+           .where(is_required: false)
+           .find_by(id: permitted_params.project_custom_field_project_mapping[:custom_field_id])
+
+    mapping = cf&.project_custom_field_project_mappings&.find_by(project_id: @project.id)
+
+    cf_is_used_as_assignee_field = mapping &&
+                                   @project.project_creation_wizard_enabled? &&
+                                   @project.project_creation_wizard_assignee_custom_field_id == cf.id
+
+    if !cf_is_used_as_assignee_field && mapping&.update(creation_wizard: !mapping.creation_wizard)
       render json: {}, status: :ok
     else
       render json: {}, status: :unprocessable_entity
@@ -94,15 +106,24 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   def update_section_mappings(value)
     section_id = permitted_params.project_custom_field_project_mapping[:custom_field_section_id]
-    project_id = permitted_params.project_custom_field_project_mapping[:project_id]
 
     custom_field_ids = ProjectCustomField
+                         .visible(project: @project)
                          .where(custom_field_section_id: section_id)
                          .where(is_required: false)
                          .pluck(:id)
 
+    # Fields that are being used in the project creation wizard cannot be disabled
+    cf_active_in_project_creation_wizard = if @project.project_creation_wizard_enabled?
+                                             [@project.project_creation_wizard_assignee_custom_field_id]
+                                           else
+                                             []
+                                           end
+
+    cf_ids_to_toggle = custom_field_ids - cf_active_in_project_creation_wizard
+
     ProjectCustomFieldProjectMapping
-      .where(project_id:, custom_field_id: custom_field_ids)
+      .where(project_id: @project.id, custom_field_id: cf_ids_to_toggle)
       .update_all(creation_wizard: value)
 
     redirect_to project_settings_creation_wizard_path(@project, tab: "attributes"), status: :see_other
