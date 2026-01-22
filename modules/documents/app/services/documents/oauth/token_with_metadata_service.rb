@@ -33,6 +33,8 @@ module Documents
     class TokenWithMetadataService < BaseServices::BaseCallable
       include API::V3::Utilities::PathHelper
 
+      attr_reader :user, :document, :project
+
       def initialize(user:, document:, project:)
         super()
 
@@ -41,9 +43,13 @@ module Documents
         @project = project
       end
 
-      def perform
-        token_result = GenerateTokenService.new(user: @user).call
-        return token_result unless token_result.success?
+      def perform # rubocop:disable Metrics/AbcSize
+        token_result = GenerateTokenService.new(user:).call
+
+        if token_result.failure?
+          Rails.logger.error("Failed to generate OAuth token for document #{document.id}: #{token_result.errors}")
+          return token_result
+        end
 
         access_token = token_result.result
 
@@ -53,12 +59,16 @@ module Documents
           readonly:
         }
 
-        encrypt_result = EncryptTokenService.new(token: payload.to_json).call
-        return encrypt_result unless encrypt_result.success?
+        encrypted_result = EncryptTokenService.new(token: payload.to_json).call
+
+        if encrypted_result.failure?
+          Rails.logger.error("Failed to encrypt OAuth token payload for document #{document.id}: #{encrypted_result.errors}")
+          return encrypted_result
+        end
 
         ServiceResult.success(
           result: {
-            encrypted_token: encrypt_result.result,
+            encrypted_token: encrypted_result.result,
             resource_url:,
             readonly:,
             expires_in_seconds: access_token.expires_in
@@ -71,13 +81,13 @@ module Documents
       def resource_url
         @resource_url ||= URI.join(
           OpenProject::StaticRouting::StaticUrlHelpers.new.root_url,
-          api_v3_paths.document(@document.id)
+          api_v3_paths.document(document.id)
         ).to_s
       end
 
       def readonly
-        @readonly ||= @user.allowed_in_project?(:view_documents, @project) &&
-          !@user.allowed_in_project?(:manage_documents, @project)
+        @readonly ||= user.allowed_in_project?(:view_documents, project) &&
+          !user.allowed_in_project?(:manage_documents, project)
       end
     end
   end

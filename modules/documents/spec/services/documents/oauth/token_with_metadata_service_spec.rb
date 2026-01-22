@@ -110,10 +110,15 @@ RSpec.describe Documents::OAuth::TokenWithMetadataService,
       allow_any_instance_of(Documents::OAuth::GenerateTokenService) # rubocop:disable RSpec/AnyInstance
         .to receive(:call)
         .and_return(ServiceResult.failure(errors: "Token generation failed"))
+
+      allow(Rails.logger).to receive(:error)
     end
 
-    it "returns a failure" do
+    it "returns a failure, logs error message" do
       expect(service_call).to be_failure
+
+      expect(Rails.logger).to have_received(:error)
+        .with("Failed to generate OAuth token for document #{document.id}: Token generation failed")
     end
   end
 
@@ -122,10 +127,15 @@ RSpec.describe Documents::OAuth::TokenWithMetadataService,
       allow(Setting)
         .to receive(:collaborative_editing_hocuspocus_secret)
         .and_return(nil)
+
+      allow(Rails.logger).to receive(:error)
     end
 
-    it "returns a failure" do
+    it "returns a failure, logs error message" do
       expect(service_call).to be_failure
+      expect(Rails.logger).to have_received(:error)
+        .with("Failed to encrypt OAuth token payload for document #{document.id}: " \
+              "Collaborative editing secret is not set. Cannot encrypt token.")
     end
   end
 end
