@@ -67,11 +67,28 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
     expect(editor.content).to include("Heading")
   end
 
-  it "renders the BlockNote editor with custom menu entries for work package linking" do
-    visit document_path(document)
+  describe "with op-blocknote-extensions" do
+    it "renders the BlockNote editor with custom menu entries for work package linking" do
+      visit document_path(document)
 
-    expect(page).to have_test_selector("blocknote-document-description")
-    editor.fill_in("/openproject")
-    expect(editor.content).to have_content("Link existing work package")
+      expect(page).to have_test_selector("blocknote-document-description")
+      editor.fill_in("/openproject")
+      expect(editor.content).to have_content("Link existing work package")
+    end
+
+    it "orders results of the work package search by updated at DESC" do
+      create(:work_package, project: document.project, subject: "BBB test", updated_at: 4.hours.ago)
+      create(:work_package, project: document.project, subject: "AAA test", updated_at: 2.hours.ago)
+      create(:work_package, project: document.project, subject: "CCC test", updated_at: 3.hours.ago)
+
+      visit document_path(document)
+      expect(page).to have_test_selector("blocknote-document-description")
+      editor.fill_in("/openproject")
+      send_keys(:enter)
+
+      editor.element.fill_in("Link existing work package", with: "test")
+      expect(editor.element).to have_content("AAA test") # wait for dropdown to open
+      expect(editor.element.text).to match(/AAA test.*CCC test.*BBB test/m)
+    end
   end
 end
