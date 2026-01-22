@@ -47,7 +47,7 @@ Rails.application.config.after_initialize do
       frame_src << OpenProject::Configuration[:security_badge_url] if OpenProject::Configuration[:security_badge_displayed]
 
       # Default src
-      default_src = %w('self') # rubocop:disable Lint/PercentStringArray
+      default_src = %w('self' openprojectapp:) # rubocop:disable Lint/PercentStringArray
 
       # Attachment uploaders
       default_src += OpenProject::Configuration.remote_storage_hosts
