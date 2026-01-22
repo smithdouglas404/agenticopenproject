@@ -89,33 +89,54 @@ class CustomActions::Conditions::Base
   end
 
   def self.custom_action_scope(work_packages, user)
-    custom_action_scope_has_current(work_packages, user)
-      .or(custom_action_scope_has_no)
+    join_scope Array(work_packages).map { |w| w.send(key_id) }.uniq
   end
 
-  def self.custom_action_scope_has_current(work_packages, _user)
+  def self.join_scope(ids)
+    join_conditions = custom_actions
+      .join(association_alias, Arel::Nodes::OuterJoin)
+      .on(
+        association_alias[:conditionable_type].eq(conditionable_type)
+          .and(association_alias[:custom_action_id].eq(custom_actions[:id]))
+      )
+      .join_sources
+
+    join_target = custom_actions
+      .join(target_table, Arel::Nodes::OuterJoin)
+      .on(
+        target_table[:id].eq(association_alias[:conditionable_id])
+      )
+      .join_sources
+
+    where_clause = target_table[:id].in(ids)
+      .or(target_table[:id].eq(nil))
+
     CustomAction
-      .includes(association_key)
-      .where(habtm_table => { key_id => Array(work_packages).map { |w| w.send(key_id) }.uniq })
+      .joins(join_conditions)
+      .joins(join_target)
+      .where(where_clause)
   end
-  private_class_method :custom_action_scope_has_current
+  private_class_method :join_scope
 
-  def self.custom_action_scope_has_no
-    CustomAction
-      .includes(association_key)
-      .where(habtm_table => { key_id => nil })
+  def self.custom_actions
+    @custom_actions ||= CustomAction.arel_table
   end
-  private_class_method :custom_action_scope_has_no
+  private_class_method :custom_actions
 
-  def self.pluralized_key
-    key.to_s.pluralize.to_sym
+  def self.association_alias
+    @association_alias ||= CustomActionCondition.arel_table.alias("#{key}_conditions")
   end
-  private_class_method :pluralized_key
+  private_class_method :association_alias
 
-  def self.habtm_table
-    :"custom_actions_#{pluralized_key}"
+  def self.target_table
+    @target_table ||= conditionable_type.constantize.arel_table
   end
-  private_class_method :habtm_table
+  private_class_method :target_table
+
+  def self.conditionable_type
+    @conditionable_type ||= key.to_s.camelize
+  end
+  private_class_method :conditionable_type
 
   def self.key_id
     @key_id ||= :"#{key}_id"
@@ -123,7 +144,7 @@ class CustomActions::Conditions::Base
   private_class_method :key_id
 
   def self.association_key
-    :"#{key}_conditions"
+    @association_key ||= "#{key}_conditions"
   end
   private_class_method :association_key
 
