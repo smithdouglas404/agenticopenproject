@@ -95,11 +95,11 @@ class MeetingParticipantsController < ApplicationController
   private
 
   def set_meeting
-    @meeting = Meeting.find(params[:meeting_id])
+    @meeting = Meeting.visible.find(params[:meeting_id])
   end
 
   def set_participant
-    @participant = MeetingParticipant.find(params[:id])
+    @participant = @meeting.participants.find(params[:id])
   end
 
   def create_new_participants(user_ids)

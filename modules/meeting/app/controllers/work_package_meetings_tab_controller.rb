@@ -114,7 +114,7 @@ class WorkPackageMeetingsTabController < ApplicationController
   private
 
   def set_work_package
-    @work_package = WorkPackage.find(params[:work_package_id])
+    @work_package = WorkPackage.visible.find(params[:work_package_id])
     @project = @work_package.project # required for authorization via before_action
   end
 
@@ -126,7 +126,7 @@ class WorkPackageMeetingsTabController < ApplicationController
     meeting_id = add_work_package_to_meeting_params[:meeting_id]
     return if meeting_id.blank?
 
-    meeting = Meeting.find(meeting_id)
+    meeting = Meeting.visible.find(meeting_id)
     return if meeting.recurring?
 
     meeting.backlog.id
