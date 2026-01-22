@@ -202,6 +202,8 @@ de:
         add_table: "Tabelle mit zugehörigen Arbeitspaketen hinzufügen"
         edit_query: "Abfrage bearbeiten"
         new_group: "Neue Gruppe"
+        delete_group: "Gruppe löschen"
+        remove_attribute: "Aus Gruppe entfernen"
         reset_to_defaults: "Auf Standardwerte zurücksetzen"
       working_days:
         calendar:
@@ -631,9 +633,6 @@ de:
           add: "Einstellung für Projekt hinzufügen"
           already_selected: "Dieses Projekt ist bereits ausgewählt"
           remove: "Projektspezifische Einstellungen entfernen"
-    password_confirmation:
-      field_description: "Sie müssen Ihr Kennwort eingeben, um diese Änderungen zu speichern."
-      title: "Geben Sie Ihr Kennwort ein, um fortzufahren"
     pagination:
       no_other_page: "Sie befinden sich auf der einzigen Seite."
       pages_skipped: "Seiten übersprungen."
@@ -1125,6 +1124,8 @@ de:
     global_search:
       all_projects: "In allen Projekten"
       close_search: "Suche schließen"
+      items_available: "%{count} Verfügbare Artikel"
+      direct_hit_available: "Arbeitspaket mit exakter ID gefunden. Drücken Sie Enter um es zu öffnen."
       current_project_and_all_descendants: "In diesem Projekt + Unterprojekten"
       current_project: "In diesem Projekt"
       recently_viewed: "Vor Kurzem angesehen"

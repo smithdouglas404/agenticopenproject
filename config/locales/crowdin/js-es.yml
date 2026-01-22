@@ -203,6 +203,8 @@ es:
         add_table: "Agregar tabla de paquetes de trabajo relacionados"
         edit_query: "Editar consulta"
         new_group: "Nuevo grupo"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Restablecer valores predeterminados"
       working_days:
         calendar:
@@ -297,13 +299,13 @@ es:
       warning: "No comparta esta URL con otros usuarios. Cualquiera que tenga este enlace podrá ver los detalles del paquete de trabajo sin necesidad de una cuenta o contraseña."
       token_name_label: "¿Dónde lo utilizará?"
       token_name_placeholder: 'Escriba un nombre, por ejemplo «Teléfono».'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
+      token_name_description_text: 'Si se suscribe a este calendario desde varios dispositivos, este nombre le ayudará a distinguirlos en su lista de <a href="%{myAccessTokensUrl}" target="_blank">tokens de acceso</a>.'
       copy_url_label: "Copiar URL"
       ical_generation_error_text: "Se ha producido un error al generar la URL del calendario."
       success_message: 'La URL «%{name}» se ha copiado correctamente en su portapapeles. Péguela en su cliente de calendario para completar la suscripción.'
     label_activate: "Activar"
     label_assignee: "Asignado a"
-    label_assignee_alt_text: "This work package is assigned to %{name}"
+    label_assignee_alt_text: "Este paquete de trabajo está asignado a %{name}"
     label_add_column_after: "Añadir columna a la derecha"
     label_add_column_before: "Añadir columna a la izquierda"
     label_add_columns: "Añadir columnas"
@@ -345,7 +347,7 @@ es:
     label_collapse: "Colapsar"
     label_collapsed: "colapsado"
     label_collapse_all: "Colapsar todo"
-    label_collapse_text: "Collapse text"
+    label_collapse_text: "Colapsar texto"
     label_comment: "Comentario"
     label_committed_at: "%{committed_revision_link} el %{date}"
     label_committed_link: "revisión confirmada %{revision_identifier}"
@@ -358,7 +360,7 @@ es:
     label_expand: "Expandir"
     label_expanded: "expandido"
     label_expand_all: "Expandir todos"
-    label_expand_text: "Show full text"
+    label_expand_text: "Mostrar texto completo"
     label_expand_project_menu: "Expandir menú de proyecto"
     label_export: "Exportar"
     label_export_preparing: "La exportación se está preparando y se descargará en breve."
@@ -557,7 +559,7 @@ es:
       date_alerts:
         milestone_date: "Fecha de hito"
         overdue: "Vencido"
-        overdue_since: "for %{difference_in_days}."
+        overdue_since: "durante %{difference_in_days}."
         property_today: "es hoy."
         property_is: "está en %{difference_in_days}."
         property_was: "fue hace %{difference_in_days}."
@@ -632,9 +634,6 @@ es:
           add: "Añadir configuración para el proyecto"
           already_selected: "Este proyecto ya está seleccionado"
           remove: "Eliminar configuración del proyecto"
-    password_confirmation:
-      field_description: "Necesitas introducir la contraseña de tu cuenta para confirmar este cambio."
-      title: "Confirma tu contraseña para continuar"
     pagination:
       no_other_page: "Usted está en la única página."
       pages_skipped: "Páginas omitidas."
@@ -1126,10 +1125,12 @@ es:
     global_search:
       all_projects: "En todos los proyectos"
       close_search: "Cerrar búsqueda"
+      items_available: "%{count} elementos disponibles"
+      direct_hit_available: "Se ha encontrado el paquete de trabajo con el ID exacto. Pulsa «Intro» para abrirlo."
       current_project_and_all_descendants: "En este proyecto + subproyectos"
       current_project: "En este proyecto"
       recently_viewed: "Vistos recientemente"
-      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
+      search_placeholder_expanded: "Buscar paquetes de trabajo por asunto, proyecto, tipo, estado o ID"
       title:
         all_projects: "todos los proyectos"
         project_and_subprojects: "y todos los subproyectos"
@@ -1167,10 +1168,10 @@ es:
       no_results: "Ningún producto coincide con tu criterio de búsqueda"
       no_favorite_results: "Ningún proyecto favorito coincide con sus criterios de búsqueda."
     include_workspaces:
-      search_placeholder: "Search..."
+      search_placeholder: "Buscar…"
       types:
-        program: "Program"
-        portfolio: "Portfolio"
+        program: "Programa"
+        portfolio: "Cartera"
     baseline:
       toggle_title: "Referencia"
       clear: "Despejar"

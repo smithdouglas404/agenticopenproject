@@ -43,10 +43,10 @@ ko:
               response_is_not_successful: " - 응답 상태는 %{status}입니다."
               response_is_not_json: " - JSON 본문을 반환하지 않습니다."
               response_misses_required_attributes: " - 필수 특성을 반환하지 않습니다. 누락된 특성: %{missing_attributes}."
-          invalid_claims_essential: "does not define a boolean at %{attribute}."
-          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
-          invalid_claims_values: "does not define an array at %{attribute}."
-          non_object_attribute: "does not define a JSON object at %{attribute}."
+          invalid_claims_essential: "- %{attribute}에서 부울을 정의하지 않습니다."
+          invalid_claims_location: "- 지원되지 않는 위치가 포함되어 있습니다: %{invalid}. 지원되는 위치는 다음과 같습니다: %{supported}."
+          invalid_claims_values: "- %{attribute}에서 배열을 정의하지 않습니다."
+          non_object_attribute: "- %{attribute}에서 JSON 개체를 정의하지 않습니다."
   provider:
     delete_warning:
       input_delete_confirmation: 삭제를 확인하려면 공급자 이름 %{name}(을)를 입력하세요.

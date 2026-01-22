@@ -2,21 +2,21 @@ pt-PT:
   grids:
     label_widget_in_grid: "Widget contido na Grelha %{grid_name}"
     widgets:
-      empty: "This widget is currently empty."
-      not_available: "This widget is not available."
+      empty: "Este widget está vazio."
+      not_available: "Este widget não está disponível."
       subitems:
         title: "Sub-elementos"
         no_results: "Não há filhos visíveis."
         view_all_subitems: "Ver todos os sub-elemntos"
-        button_text: "Subitem"
+        button_text: "Sub-elemento"
       members:
-        title: "Members"
+        title: "Membros"
         no_results: "Nenhum membro visível."
         view_all_members: "Ver todos os membros"
-        show_members_count: "Show all %{count} members"
+        show_members_count: "Mostrar todos os %{count} membros"
         x_more:
-          one: "and one more member."
-          other: "and %{count} more members."
+          one: "e mais um membro."
+          other: "e mais %{count} membros."
       news:
         no_results: "Nada de novo no relatório."
   activerecord:

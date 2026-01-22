@@ -31,6 +31,9 @@ Navigate to the [project settings](../project-settings), click the **More (three
 
 You can create a new project by using an existing template. This copies the template’s settings and structure to the new project. Find out in our Getting started guide how to [create a new project](../../../getting-started/projects/#create-a-new-project) in OpenProject.
 
+>  [!TIP]
+>  If you do not see any template options, this may be because no projects have been set as project templates yet, or because you do not have access to any template projects. Only templates that are public or where you are a project member are shown, allowing different user groups to see only the templates relevant to them.
+
 Alternatively, you can [copy the project](../project-settings/project-information/#copy-a-project) to use it as a template.
 
 <video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Project-Templates.mp4"></video>

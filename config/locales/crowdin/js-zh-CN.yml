@@ -203,6 +203,8 @@ zh-CN:
         add_table: "添加相关工作包表"
         edit_query: "编辑查询"
         new_group: "新建组"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "重置为默认值"
       working_days:
         calendar:
@@ -297,13 +299,13 @@ zh-CN:
       warning: "请不要与其他用户共享此 URL 。拥有这个链接的任何人都可以在没有帐户或密码的情况下查看工作包的详细信息。"
       token_name_label: "您将在哪里使用它？"
       token_name_placeholder: '输入名称，例如“Phone”'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
+      token_name_description_text: '如果您从多个设备订阅此日历，此名称将有助于在<a href="%{myAccessTokensUrl}" target="_blank">访问令牌</a>列表中区分它们。'
       copy_url_label: "复制链接"
       ical_generation_error_text: "生成日历 URL 时出错。"
       success_message: 'URL“%{name}”已成功复制到剪贴板。请将其粘贴到日历客户端中以完成订阅。'
     label_activate: "激活"
     label_assignee: "指定"
-    label_assignee_alt_text: "This work package is assigned to %{name}"
+    label_assignee_alt_text: "此工作包被指定至 %{name}"
     label_add_column_after: "之后添加列"
     label_add_column_before: "在之前添加列"
     label_add_columns: "添加列"
@@ -345,7 +347,7 @@ zh-CN:
     label_collapse: "折叠"
     label_collapsed: "折叠"
     label_collapse_all: "全部折叠"
-    label_collapse_text: "Collapse text"
+    label_collapse_text: "收起文本"
     label_comment: "评论"
     label_committed_at: "在 %{date} %{committed_revision_link}"
     label_committed_link: "上传的修订 %{revision_identifier}"
@@ -358,7 +360,7 @@ zh-CN:
     label_expand: "展开"
     label_expanded: "展开"
     label_expand_all: "全部展开"
-    label_expand_text: "Show full text"
+    label_expand_text: "显示完整文本"
     label_expand_project_menu: "展开项目菜单"
     label_export: "导出"
     label_export_preparing: "导出文件已开始准备并将很快被下载。"
@@ -557,7 +559,7 @@ zh-CN:
       date_alerts:
         milestone_date: "里程碑日期"
         overdue: "逾期"
-        overdue_since: "for %{difference_in_days}."
+        overdue_since: "%{difference_in_days}。"
         property_today: "今天。"
         property_is: "%{difference_in_days}后。"
         property_was: "%{difference_in_days}前。"
@@ -631,9 +633,6 @@ zh-CN:
           add: "为项目添加设置"
           already_selected: "此项目已经选定"
           remove: "移除项目设置"
-    password_confirmation:
-      field_description: "输入密码以确认更改"
-      title: "输入密码以继续"
     pagination:
       no_other_page: "您位于唯一页面上。"
       pages_skipped: "跳过的页面。"
@@ -1122,10 +1121,12 @@ zh-CN:
     global_search:
       all_projects: "在所有项目中"
       close_search: "关闭搜索"
+      items_available: "%{count} 个可用条目"
+      direct_hit_available: "找到与 ID 完全匹配的工作包。按 Enter 可打开。"
       current_project_and_all_descendants: "在当前项目和子项目中"
       current_project: "在当前项目中"
       recently_viewed: "最近浏览"
-      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
+      search_placeholder_expanded: "按主题、项目、类型、状态或 ID 搜索工作包"
       title:
         all_projects: "所有项目"
         project_and_subprojects: "和所有子项目"
@@ -1163,10 +1164,10 @@ zh-CN:
       no_results: "没有项目符合您的搜索条件。"
       no_favorite_results: "没有收藏的项目符合您的搜索条件。"
     include_workspaces:
-      search_placeholder: "Search..."
+      search_placeholder: "搜索…"
       types:
-        program: "Program"
-        portfolio: "Portfolio"
+        program: "项目群"
+        portfolio: "项目组合"
     baseline:
       toggle_title: "基线"
       clear: "清除"

@@ -27,10 +27,10 @@ ko:
     errors:
       models:
         document_type:
-          one_or_more_required: "Cannot delete the last document type"
+          one_or_more_required: "마지막 문서 유형을 삭제할 수 없습니다"
     models:
       document: "문서"
-      documents: "Documents"
+      documents: "문서"
     attributes:
       document:
         content_binary: "콘텐츠 바이너리"
@@ -45,8 +45,8 @@ ko:
     page_header:
       heading: "모든 문서"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "문서 작업"
+        edit_title: "제목 편집"
     subheader:
       filter:
         label: "문서 이름 필터"
@@ -55,90 +55,89 @@ ko:
       heading: "아직 문서가 없습니다"
       description: "이 보기에는 문서가 없습니다. 아래 버튼을 클릭하여 문서를 추가할 수 있습니다."
     document_categories_deprecation_notice:
-      heading: File categories are now called 'Document types'
+      heading: 파일 카테고리는 이제 '문서 유형'이라고 합니다
       description: |-
-        Your existing file categories have been converted to document types with the introduction of the new Documents module.
-        All existing documents have also been migrated to these new types.
-      primary_action: Configure document types
-      secondary_action: Learn more about the Documents module
-    document_type_actions: "Document type actions"
+        새로운 문서 모듈이 도입됨에 따라 기존 파일 카테고리가 문서 유형으로 변환되었습니다.
+        기존의 모든 문서도 이 새로운 유형으로 마이그레이션되었습니다.
+      primary_action: 문서 유형 구성
+      secondary_action: 문서 모듈에 대해 자세히 알아보기
+    document_type_actions: "문서 유형 작업"
     text_collaboration_disabled_notice:
       description: |-
-        Unable to open document because real-time text collaboration is disabled.
-        Please contact your administrator to enable real-time text collaboration if you want to access this document.
+        실시간 텍스트 공동 작업이 비활성화되어 있으므로 문서를 열 수 없습니다.
+        이 문서에 액세스하려면 관리자에게 문의하여 실시간 텍스트 공동 작업을 활성화하세요.
     show_edit_view:
       connection_error_notice:
         description: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
-        action: Try again
+          실시간 텍스트 공동 작업 서버에 연결할 수 없으므로 문서를 열 수 없습니다.
+          문제가 지속되면 관리자에게 문의하세요.
+        action: 다시 시도
       connection_recovery_notice:
-        description: "The connection to the real-time text collaboration server has been restored."
+        description: "실시간 텍스트 공동 작업 서버에 대한 연결이 복원되었습니다."
     index_page:
       name: "이름"
       type: "타입"
       updated_at: "마지막 편집"
-      label_legacy: "Legacy"
+      label_legacy: "레거시"
     menu:
       all: "모든 문서"
       types: "유형"
-      collaboration_settings: "Real-time collaboration"
-    last_updated_at: "Last saved %{time}."
-    active_editors: "Active editors"
+      collaboration_settings: "실시간 공동 작업"
+    last_updated_at: "마지막으로 저장 %{time}."
+    active_editors: "활성 편집자"
     active_editors_count:
-      other: "%{count} active editors"
+      other: "활성 편집자 %{count}명"
     label_attachment_author: "첨부 파일 작성자"
     label_categories: "카테고리"
     new_category: "새 카테고리"
-    new_type: "New type"
+    new_type: "새 유형"
     delete_dialog:
-      title: "Delete document"
-      heading: "Delete this document?"
-      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
+      title: "문서 삭제"
+      heading: "이 문서를 삭제하시겠습니까?"
+      confirmation_message_html: "이렇게 하면 이 문서와 모든 첨부 파일이 영구적으로 삭제됩니다. 계속하시겠습니까?"
     delete_document_type_dialog:
-      title: Delete document type
-      heading: Delete this document type?
+      title: 문서 유형 삭제
+      heading: 이 문서 유형을 삭제하시겠습니까?
       confirmation_message: |-
-        The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
-      select_reassign_to_label: Reassign documents to
+        "%{type_name}" 유형은 현재 사용되지 않습니다. 이 유형을 삭제해도 기존 문서에는 영향을 미치지 않습니다.
+      select_reassign_to_label: 문서 다시 할당 대상
       reassign_message:
-        other: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+        other: '%{document_count} 문서에서 "%{type_name}" 유형이 현재 사용되고 있습니다. 다시 할당할 유형을 선택하세요.'
       at_least_one_type_required:
-        title: Cannot delete document type
-        heading: Cannot delete the last document type
-        message: There must always be at least one document type configured. Create another one first if you want to delete this one.
+        title: 문서 유형을 삭제할 수 없음
+        heading: 마지막 문서 유형을 삭제할 수 없음
+        message: 항상 문서 유형이 하나 이상 구성되어 있어야 합니다. 이 문서 유형을 삭제하려면 다른 문서 유형을 먼저 만드세요.
     admin:
       collaboration_settings:
         page_header:
           description: |-
-            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
-            It requires a working %{hocuspocus_server_link} to function.
+            실시간 공동 작업을 활성화하면 여러 사용자가 동시에 문서를 편집할 수 있습니다.
+            이 기능을 사용하려면 %{hocuspocus_server_link}이(가) 작동해야 합니다.
         banner:
-          none_writable: These values are configured via environment variables and cannot be edited here.
-          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+          none_writable: 이러한 값은 환경 변수를 통해 구성되며 여기에서 편집할 수 없습니다.
+          some_unwritable: 일부 값은 환경 변수를 통해 구성되며 여기에서 편집할 수 없습니다.
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The address of the working Hocuspocus server."
+          label: "Hocuspocus 서버 URL"
+          caption: "작동 중인 Hocuspocus 서버의 주소입니다."
         hocuspocus_server_secret:
-          label: "Client secret"
-          caption: "Paste the secret provided by the Hocuspocus server."
-        hocuspocus_server: Hocuspocus server
+          label: "클라이언트 비밀번호"
+          caption: "Hocuspocus 서버에서 제공한 비밀번호를 붙여넣으세요."
+        hocuspocus_server: Hocuspocus 서버
       enable_text_collaboration:
-        heading: Real-time collaboration is not enabled
+        heading: 실시간 공동 작업이 활성화되지 않았습니다
         description: |-
-          Once enabled, multiple users will be able to work together on a document at the same time.
-          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
-          Hocuspocus server.
-        primary_action: Enable real-time collaboration
-        success: Real-time collaboration has been enabled.
+          이 옵션을 활성화하면 여러 사용자가 동시에 문서에서 함께 작업할 수 있습니다.
+          모든 새 문서는 새 편집기(BlockNote)를 기반으로 하며 Hocuspocus 서버에 대한 연결이 필요합니다.
+        primary_action: 실시간 공동 작업 활성화
+        success: 실시간 공동 작업이 활성화되었습니다.
       disable_text_collaboration_dialog:
-        title: Disable real-time collaboration
-        heading: Disable real-time collaboration?
+        title: 실시간 공동 작업 비활성화
+        heading: 실시간 공동 작업을 비활성화하시겠습니까?
         confirmation_message: |-
-          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
-          real-time collaboration and the BlockNote editor in this instance.
-        confirmation_checkbox_message: I understand that I might permanently lose data
-        success: Real-time collaboration has been disabled.
+          기존의 모든 문서에 액세스할 수 없게 될 수 있습니다. 이러한 경우 실시간 공동 작업과 BlockNote 편집기를 
+          비활성화하려는 경우에만 이 작업을 수행하세요.
+        confirmation_checkbox_message: 데이터가 영구적으로 손실될 수 있음을 이해합니다
+        success: 실시간 공동 작업이 비활성화되었습니다.
   label_document_added: "문서 추가됨"
   label_document_new: "새 문서"
   label_document_plural: "문서"
@@ -146,7 +145,7 @@ ko:
   label_document_title: "제목"
   label_document_description: "설명"
   label_document_category: "카테고리"
-  label_document_type: "Type"
+  label_document_type: "유형"
   permission_manage_documents: "문서 관리"
   permission_view_documents: "문서 보기"
   project_module_documents: "문서"

@@ -49,7 +49,13 @@ module AllMeetings
 
       result
     rescue ArgumentError => e
-      ServiceResult.failure(message: I18n.t("meeting.ical_response.update_failed"), errors: [e.message])
+      errors = ActiveModel::Errors.new(self)
+      errors.add(:base, e.message)
+
+      ServiceResult.failure(
+        message: I18n.t("meeting.ical_response.update_failed"),
+        errors: errors
+      )
     end
 
     private
@@ -95,14 +101,18 @@ module AllMeetings
         # We have an instantiated meeting, so update that one
         update_participation_status(scheduled_meeting.meeting, event)
       else
-        # No instantiated meeting, so create an interim response
-        RecurringMeetingInterimResponse.create!(
+        # No instantiated meeting, create or update an interim response
+        response = RecurringMeetingInterimResponse.find_or_initialize_by(
           user: user,
           recurring_meeting: recurring_meeting,
-          start_time: recurrence_id,
-          participation_status: partstat(event),
-          comment: comment(event)
+          start_time: recurrence_id
         )
+
+        attendee_from_event = attendee(event)
+        response.participation_status = partstat(attendee_from_event)
+        response.comment = comment(attendee_from_event, event)
+
+        response.save!
       end
 
       ServiceResult.success
@@ -120,17 +130,15 @@ module AllMeetings
     end
 
     def attendee(event)
-      event.attendee.find { it.value_ical == "mailto:#{user.mail}" }.tap do |attendee|
-        raise ArgumentError, "No attendee found for mailto:#{user.mail}" unless attendee
-      end
+      event.attendee.find { it.value_ical == "mailto:#{user.mail}" }
     end
 
-    def partstat(event)
-      attendee(event).ical_params["partstat"].first.downcase
+    def partstat(attendee)
+      attendee.ical_params["partstat"].first.downcase
     end
 
-    def comment(event)
-      comment = attendee(event).ical_params["x-response-comment"]&.first || event.comment&.first
+    def comment(attendee, event)
+      comment = attendee.ical_params["x-response-comment"]&.first || event.comment&.first
       return if comment.blank?
 
       if comment.is_a?(Array)
@@ -141,8 +149,18 @@ module AllMeetings
     end
 
     def update_participation_status(meeting, event)
-      participant = meeting.participants.find_by!(user: user)
-      participant.update!(participation_status: partstat(event), comment: comment(event))
+      attendee_from_event = attendee(event)
+
+      if attendee_from_event.present?
+        participant = meeting.participants.find_by!(user: user)
+        participant.update!(
+          participation_status: partstat(attendee_from_event),
+          comment: comment(attendee_from_event, event)
+        )
+      else
+        Rails.logger.warn("[iCal Meeting Response] No attendee found for user #{user.mail} in " \
+                          "event #{event.uid}#{" with recurrence ID #{event.recurrence_id.iso8601}" if event.recurrence_id}")
+      end
     end
 
     def instantiated_scheduled_meetings_awaiting_responses(recurring_meeting)

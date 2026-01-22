@@ -372,6 +372,51 @@ RSpec.describe "Meeting notifications", :js do
       perform_enqueued_jobs
       expect(ActionMailer::Base.deliveries.size).to eq 0
     end
+
+    it "sends out an invite notification when enabling notifications on a series template (Bug #70178)" do
+      template_page.visit!
+
+      template_page.open_first_meeting
+      wait_for_network_idle
+
+      # check for initial invitation mail
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+      ActionMailer::Base.deliveries.clear
+
+      template_page.visit!
+      expect(meeting.template.reload.notify).to be true
+
+      page.within("[data-test-selector='email-updates-mode-selector']") do
+        click_on "Disable"
+      end
+
+      template_page.expect_modal "Disable email calendar updates?"
+      template_page.within_modal "Disable email calendar updates?" do
+        click_on "Disable email updates"
+      end
+
+      wait_for_network_idle
+      expect(meeting.template.reload.notify).to be false
+
+      page.within("[data-test-selector='email-updates-mode-selector']") do
+        click_on "Enable"
+      end
+
+      template_page.expect_modal "Enable email calendar updates?"
+      template_page.within_modal "Enable email calendar updates?" do
+        click_on "Enable email updates"
+      end
+
+      wait_for_network_idle
+
+      expect_flash(message: "Email calendar update sent to all participants")
+      expect(meeting.template.reload.notify).to be true
+
+      # check for invitation mail on re-enabling notifications
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+    end
   end
 
   context "when a meeting is closed" do

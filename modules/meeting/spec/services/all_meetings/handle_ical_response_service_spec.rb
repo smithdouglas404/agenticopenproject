@@ -71,6 +71,16 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
 
   subject { service.call(ical_string: ical_string) }
 
+  context "when the iCal string is malformed" do
+    let(:ical_string) { "" }
+
+    it "returns an error" do
+      expect(subject).to be_failure
+      expect(subject.message).to eq(I18n.t("meeting.ical_response.update_failed"))
+      expect(subject.errors[:base]).to include("No events found in the provided iCal data")
+    end
+  end
+
   context "with a regular meeting" do
     let(:meeting) do
       create(:meeting, project: project) do |meeting|
@@ -123,7 +133,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
         }
 
         expect(subject).to be_failure
-        expect(subject.errors).to include("'delegated' is not a valid participation_status")
+        expect(subject.errors[:base]).to include("'delegated' is not a valid participation_status")
       end
     end
 
@@ -136,7 +146,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
         }
 
         expect(subject).to be_failure
-        expect(subject.errors).to include("'x-name' is not a valid participation_status")
+        expect(subject.errors[:base]).to include("'x-name' is not a valid participation_status")
       end
     end
 
@@ -156,20 +166,12 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
       let(:partstat) { "ACCEPTED" }
       let(:participant_email) { other_user.mail }
 
-      it "returns an error" do
-        expect(subject).to be_failure
-        expect(subject.message).to eq(I18n.t("meeting.ical_response.update_failed"))
-        expect(subject.errors).to include("No attendee found for mailto:#{user.mail}")
-      end
-    end
-
-    context "when the iCal string is malformed" do
-      let(:ical_string) { "not-a-valid-ical-string" }
-
-      it "returns an error" do
-        expect(subject).to be_failure
-        expect(subject.message).to eq(I18n.t("meeting.ical_response.update_failed"))
-        expect(subject.errors).to include("No events found in the provided iCal data")
+      it "warns on the console" do
+        allow(Rails.logger).to receive(:warn)
+        expect(subject).to be_success
+        expect(Rails.logger).to have_received(:warn).with(
+          "[iCal Meeting Response] No attendee found for user #{user.mail} in event #{meeting.uid}"
+        )
       end
     end
 
@@ -180,7 +182,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
       it "returns an error" do
         expect(subject).to be_failure
         expect(subject.message).to eq(I18n.t("meeting.ical_response.update_failed"))
-        expect(subject.errors).to include("Invalid METHOD in iCal data")
+        expect(subject.errors[:base]).to include("Invalid METHOD in iCal data")
       end
     end
 
@@ -290,6 +292,21 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
         end
       end
 
+      context "when the user is not a participant" do
+        let(:other_user) { create(:user) }
+        let(:partstat) { "ACCEPTED" }
+        let(:participant_email) { other_user.mail }
+
+        it "warns on the console" do
+          allow(Rails.logger).to receive(:warn)
+          expect(subject).to be_success
+          expect(Rails.logger).to have_received(:warn).with(
+            "[iCal Meeting Response] No attendee found for user #{user.mail} " \
+            "in event #{recurring_meeting.uid} with recurrence ID #{recurrence_id.iso8601}"
+          )
+        end
+      end
+
       context "when no meeting occurrence is found for the recurrence ID" do
         let(:partstat) { "ACCEPTED" }
         let(:recurrence_date) { 2.years.from_now.change(usec: 0) }
@@ -308,6 +325,33 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
           expect(interim_response.recurring_meeting).to eq(recurring_meeting)
           expect(interim_response.start_time).to eq(recurrence_date)
           expect(interim_response.participation_status).to eq("accepted")
+        end
+      end
+
+      context "when an interim response already for this recurrence (the user has already responded and changes)" do
+        let(:partstat) { "DECLINED" }
+        let(:recurrence_date) { recurring_meeting.start_time + 1.month }
+        let!(:existing_response) do
+          RecurringMeetingInterimResponse.create!(
+            user: user,
+            recurring_meeting: recurring_meeting,
+            start_time: recurrence_date,
+            participation_status: "accepted"
+          )
+        end
+
+        let(:additional_ical_properties) do
+          "RECURRENCE-ID:#{recurrence_date.utc.strftime('%Y%m%dT%H%M%SZ')}"
+        end
+
+        it "updates the existing interim response" do
+          expect { subject }.not_to change(RecurringMeetingInterimResponse, :count)
+
+          expect(subject).to be_success
+
+          expect do
+            existing_response.reload
+          end.to change(existing_response, :participation_status).from("accepted").to("declined")
         end
       end
     end
@@ -366,6 +410,77 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
         expect { subject }.to change {
           recurring_meeting.template.participants.find_by(user: user).participation_status
         }.from("needs_action").to("accepted").and change {
+          meeting.participants.find_by(user: user).participation_status
+        }.from("needs_action").to("declined")
+
+        expect(subject).to be_success
+
+        expect(meeting.participants.find_by(user: user).comment).to eq("Sorry, I cannot attend this occurrence.")
+      end
+    end
+
+    context "when responding to the occurence, but the series is already part of the response, " \
+            "eventhough the user is only added to the occurence" do
+      let(:recurrence_id) { recurring_meeting.start_time + 7.days }
+      let!(:meeting) do
+        RecurringMeetings::InitOccurrenceService
+          .new(user: User.system, recurring_meeting:)
+          .call(start_time: recurrence_id)
+          .result
+      end
+
+      let(:ical_string) do
+        <<~ICAL
+          BEGIN:VCALENDAR
+          PRODID:-//OpenProject//Test Meeting Responder 1.0//EN
+          VERSION:2.0
+          CALSCALE:GREGORIAN
+          METHOD:REPLY
+          BEGIN:VEVENT
+          DTSTART:#{recurring_meeting.template.start_time.utc.strftime('%Y%m%dT%H%M%SZ')}
+          DTEND:#{recurring_meeting.template.end_time.utc.strftime('%Y%m%dT%H%M%SZ')}
+          DTSTAMP:#{Time.current.utc.strftime('%Y%m%dT%H%M%SZ')}
+          ORGANIZER;CN=OpenProject:mailto:meetingresponse@example.com
+          UID:#{recurring_meeting.uid}
+          CREATED:#{recurring_meeting.template.created_at.utc.strftime('%Y%m%dT%H%M%SZ')}
+          LAST-MODIFIED:#{Time.current.utc.strftime('%Y%m%dT%H%M%SZ')}
+          SEQUENCE:0
+          STATUS:CONFIRMED
+          SUMMARY:#{recurring_meeting.title}
+          TRANSP:OPAQUE
+          END:VEVENT
+          BEGIN:VEVENT
+          DTSTART:#{meeting.start_time.utc.strftime('%Y%m%dT%H%M%SZ')}
+          DTEND:#{meeting.end_time.utc.strftime('%Y%m%dT%H%M%SZ')}
+          DTSTAMP:#{Time.current.utc.strftime('%Y%m%dT%H%M%SZ')}
+          ORGANIZER;CN=OpenProject:mailto:meetingresponse@example.com
+          UID:#{recurring_meeting.uid}
+          RECURRENCE-ID:#{recurrence_id.utc.strftime('%Y%m%dT%H%M%SZ')}
+          ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=DECLINED;CN=#{user.name}:mailto:#{participant_email}
+          COMMENT:Sorry\\, I cannot attend this occurrence.
+          CREATED:#{meeting.created_at.utc.strftime('%Y%m%dT%H%M%SZ')}
+          LAST-MODIFIED:#{Time.current.utc.strftime('%Y%m%dT%H%M%SZ')}
+          SEQUENCE:0
+          STATUS:CONFIRMED
+          SUMMARY:#{meeting.title}
+          TRANSP:OPAQUE
+          END:VEVENT
+          END:VCALENDAR
+        ICAL
+      end
+
+      before do
+        # remove user from template participants
+        recurring_meeting.template.participants.where(user: user).destroy_all
+      end
+
+      it "has correct participation as we intended" do
+        expect(recurring_meeting.template.participants.find_by(user: user)).to be_nil
+        expect(meeting.participants.find_by(user: user)).not_to be_nil
+      end
+
+      it "only changes the participant's status on the occurrence" do
+        expect { subject }.to change {
           meeting.participants.find_by(user: user).participation_status
         }.from("needs_action").to("declined")
 

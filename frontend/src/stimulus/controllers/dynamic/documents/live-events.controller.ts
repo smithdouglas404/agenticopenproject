@@ -117,7 +117,10 @@ export default class extends ApplicationController {
   private fetchTemplate(url:string) {
     void fetch(url, {
       method: 'GET',
-      headers: { Accept: 'text/vnd.turbo-stream.htm' },
+      headers: {
+        Accept: 'text/vnd.turbo-stream.html',
+        'X-Authentication-Scheme': 'Session',
+      },
     })
       .then((response:Response) => {
         if (response.ok) {

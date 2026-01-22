@@ -84,6 +84,7 @@ import { OpenprojectModalModule } from 'core-app/shared/components/modal/modal.m
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { OpDatePickerModule } from 'core-app/shared/components/datepicker/datepicker.module';
 import { OpBreadcrumbsComponent } from './components/breadcrumbs/op-breadcrumbs.component';
+import { PrimerIconButtonComponent } from './components/primer/icon-button.component';
 
 export function bootstrapModule(injector:Injector):void {
   // Ensure error reporter is run
@@ -125,6 +126,8 @@ export function bootstrapModule(injector:Injector):void {
     AttributeHelpTextModule,
     FullCalendarModule,
     OpDatePickerModule,
+
+    PrimerIconButtonComponent
   ],
   exports: [
     // Re-export all commonly used
@@ -177,6 +180,8 @@ export function bootstrapModule(injector:Injector):void {
     OpLoadingProjectListComponent,
 
     OpNonWorkingDaysListComponent,
+
+    PrimerIconButtonComponent
   ],
   providers: [
     CopyToClipboardService,

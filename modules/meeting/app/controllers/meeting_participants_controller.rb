@@ -72,13 +72,19 @@ class MeetingParticipantsController < ApplicationController
   end
 
   def destroy
-    if @participant.destroy!
+    call = MeetingParticipants::DeleteService
+      .new(user: User.current, model: @participant)
+      .call
+
+    if call.success?
       update_add_user_form_component_via_turbo_stream
       update_list_component_via_turbo_stream
       update_sidebar_participants_component_via_turbo_stream(meeting: @meeting)
-
-      respond_with_turbo_streams
+    else
+      render_error_flash_message_via_turbo_stream(message: join_flash_messages(call.errors))
     end
+
+    respond_with_turbo_streams
   end
 
   def manage_participants_dialog

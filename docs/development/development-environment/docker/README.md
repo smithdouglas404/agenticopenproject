@@ -347,6 +347,28 @@ update-ca-certificates
 
 After that the generated root CA should be inside `/etc/ssl/certs/ca-certificates.crt`.
 
+#### Fedora
+
+On Fedora, you need to add the root CA to the trusted system authorities.
+
+```shell
+# Copy root certificate to any temporary location
+docker compose --project-directory docker/dev/tls cp step:/home/step/certs/root_ca.crt $HOME/tmp/root_ca.crt
+sudo cp $HOME/tmp/root_ca.crt /etc/pki/ca-trust/source/anchors/OpenProject_Development_Root_CA.crt
+sudo update-ca-trust
+```
+
+#### Arch
+
+On ArchLinux, you need to install the root CA into the trusted system authorities.
+
+```shell
+# Copy root certificate to any temporary location
+docker compose --project-directory docker/dev/tls cp step:/home/step/certs/root_ca.crt $HOME/tmp/root_ca.crt
+sudo install -Dm644 $HOME/tmp/root_ca.crt /etc/ca-certificates/trust-source/anchors/OpenProject_Development_Root_CA.crt
+sudo update-ca-trust
+```
+
 #### NixOS
 
 On NixOS, you need to add the generated root CA to system certificates bundle. To do so, you need to persist the

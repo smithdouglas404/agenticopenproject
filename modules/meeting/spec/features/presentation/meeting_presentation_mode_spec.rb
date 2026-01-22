@@ -32,9 +32,7 @@ require "spec_helper"
 
 require_relative "../../support/pages/meetings/show"
 
-RSpec.describe "Meeting Presentation Mode",
-               :js,
-               with_flag: { meetings_presentation_mode: true } do
+RSpec.describe "Meeting Presentation Mode", :js do
   shared_let(:project) { create(:project, enabled_module_names: %w[meetings]) }
   shared_let(:user) do
     create :user,

@@ -1,5 +1,5 @@
 name: Package
-on: 
+on:
   push:
     branches:
       - packaging/*

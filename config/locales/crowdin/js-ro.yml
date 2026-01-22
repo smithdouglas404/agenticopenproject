@@ -88,7 +88,7 @@ ro:
     button_list_view: "Vizualizare listă"
     button_show_view: "Vizualizare pe tot ecranul"
     button_log_time: "Înregistrare timp"
-    button_start_timer: "Start timer"
+    button_start_timer: "Pornește cronometrul"
     button_stop_timer: "Oprește cronometrul"
     button_more: "Mai mult"
     button_open_details: "Deschide vizualizare detaliată"
@@ -140,8 +140,8 @@ ro:
     description_select_work_package: "Selectează pachet de lucru #%{id}"
     description_subwork_package: "Copil al pachetului de lucru #%{id}"
     editor:
-      revisions: "Show local modifications"
-      no_revisions: "No local modifications found"
+      revisions: "Arată modificările locale"
+      no_revisions: "Nicio modificare locală găsită"
       preview: "Activaţi/Dezactivați previzualizarea"
       source_code: "Clic pentru a activa/dezactiva modul ierarhic"
       error_saving_failed: "Salvarea documentului a eșuat cu următoarea eroare: %{error}"
@@ -154,7 +154,7 @@ ro:
         attribute_reference:
           macro_help_tooltip: "Acest segment de text este redat în mod dinamic de o macro."
           not_found: "Resursa solicitată nu a fost găsită."
-          nested_macro: "This macro is recursively referencing %{model} %{id}."
+          nested_macro: "Acest macro face trimitere recursivă la %{model} %{id}."
           invalid_attribute: "Atributul selectat \"%{name}\" nu există."
         child_pages:
           button: "Legături către paginile pentru copii"
@@ -200,8 +200,10 @@ ro:
         drag_to_activate: "Mutați câmpuri de aici pentru a le activa"
         add_group: "Adaugă grup atribut"
         add_table: "Adaugă pachet de lucru asociat"
-        edit_query: "Editare query"
+        edit_query: "Editează interogare"
         new_group: "Grupare nouă"
+        delete_group: "Șterge grup"
+        remove_attribute: "Elimină din grup"
         reset_to_defaults: "Resetare AVATAR implicit"
       working_days:
         calendar:
@@ -290,19 +292,19 @@ ro:
           date: "%{attribute} nu este o dată validă - Este necesar formatul AAAA-LL-ZZ."
         general: "A apărut o eroare."
     ical_sharing_modal:
-      title: "Subscribe to calendar"
-      inital_setup_error_message: "An error occured while fetching data."
+      title: "Abonează-te la calendar"
+      inital_setup_error_message: "A apărut o eroare la preluarea datelor."
       description: "You can use the URL (iCalendar) to subscribe to this calendar in an external client and view up-to-date work package information from there."
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
-      token_name_label: "Where will you be using this?"
-      token_name_placeholder: 'Type a name, e.g. "Phone"'
+      token_name_label: "Unde vei folosi acesta?"
+      token_name_placeholder: 'Introdu un nume, de ex. "Telefon"'
       token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copiază URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'URL-ul "%{name}" a fost copiat cu succes în clipboard-ul tău. Lipiți-l în clientul calendar pentru a finaliza abonamentul.'
     label_activate: "Activează"
     label_assignee: "Executant"
-    label_assignee_alt_text: "This work package is assigned to %{name}"
+    label_assignee_alt_text: "Acest pachet de lucru este atribuit %{name}"
     label_add_column_after: "Adaugă coloană după"
     label_add_column_before: "Adaugă coloană înainte"
     label_add_columns: "Adaugă coloane"
@@ -344,7 +346,7 @@ ro:
     label_collapse: "Restrângere"
     label_collapsed: "restrâns"
     label_collapse_all: "Restrângere totală"
-    label_collapse_text: "Collapse text"
+    label_collapse_text: "Restrânge text"
     label_comment: "Comentariu"
     label_committed_at: "%{committed_revision_link} la data de %{date}"
     label_committed_link: "revizia încărcată %{revision_identifier}"
@@ -357,7 +359,7 @@ ro:
     label_expand: "Extindere"
     label_expanded: "extins"
     label_expand_all: "Extindere totală"
-    label_expand_text: "Show full text"
+    label_expand_text: "Arată textul complet"
     label_expand_project_menu: "Deschide meniu proiect"
     label_export: "Exportă"
     label_export_preparing: "Exportul este în curs de pregătire și va fi descărcat în curând."
@@ -393,7 +395,7 @@ ro:
     label_menu_collapse: "restrângere"
     label_menu_expand: "extindere"
     label_more_than_ago: "acum mai mult de zile"
-    label_moderate_comment: "Moderate comment"
+    label_moderate_comment: "Moderează comentariu"
     label_next: "Înainte"
     label_no_color: "Nicio culoare"
     label_no_data: "Nu există date de afișat"
@@ -437,7 +439,7 @@ ro:
     label_sort_lower: "Mută în jos"
     label_sorting: "Sortare"
     label_spent_time: "Timp consumat"
-    label_star_query: "Favorited"
+    label_star_query: "Favorit"
     label_press_enter_to_save: "Apăsați tasta ”Enter” pentru a salva."
     label_public_query: "Public"
     label_sum: "Sumă"
@@ -632,16 +634,13 @@ ro:
           add: "Adaugă o setare pentru proiect"
           already_selected: "Acest proiect este deja selectat"
           remove: "Elimină setările proiectului"
-    password_confirmation:
-      field_description: "Trebuie să introduci parola contului tău pentru a confirma această schimbare."
-      title: "Te rog să confirmi parola pentru a continua"
     pagination:
       no_other_page: "Ești pe singura pagină."
       pages_skipped: "Pagini sărite."
       page_navigation: "Pagination navigation"
       per_page_navigation: 'Elemente pe pagina de selecție'
       pages:
-        page_number: Page %{number}
+        page_number: Pagina %{number}
         show_per_page: Arată %{number} per pagină
     placeholders:
       default: "-"
@@ -654,7 +653,7 @@ ro:
         label: "Completarea automată a proiectului"
       click_to_switch_to_project: "Proiect: %{projectname}"
       context: "Contextul proiectului"
-      not_available: "Project N/A"
+      not_available: "Proiect N/A"
       required_outside_context: >
         Te rog să alegi un proiect în care să creezi pachetul de lucru pentru a vedea toate atributele. Poți selecta numai proiectele care au tipul de mai sus activat.
     reminders:
@@ -709,13 +708,13 @@ ro:
       work_package_required: "Necesită să se selecteze mai întâi un pachet de lucru."
       title: "Registru timp"
       tracking: "Monitorizare efort"
-      stop: "Stop"
+      stop: "Oprire"
     timer:
-      start_new_timer: "Start new timer"
+      start_new_timer: "Pornește cronometru nou"
       timer_already_running: "To start a new timer, you must first stop the current timer:"
       timer_already_stopped: "No active timer for this work package, have you stopped it in another window?"
       tracking_time: "Tracking time"
-      button_stop: "Stop current timer"
+      button_stop: "Oprește cronometrul curent"
     two_factor_authentication:
       label_two_factor_authentication: "Autentificare doi factori"
     watchers:
@@ -778,7 +777,7 @@ ro:
       notFoundText: "Niciun articol găsit"
       search: "Căutare"
       project:
-        placeholder: "Select project"
+        placeholder: "Alege proiect"
     repositories:
       select_tag: "Selectează etichetă"
       select_branch: "Selectează ramură"
@@ -817,7 +816,7 @@ ro:
       image: "Imagine"
     sharing:
       share: "Distribuie"
-      selected_count: "%{count} selected"
+      selected_count: "%{count} selectate"
       selection:
         mixed: "Amestecat"
     work_packages:
@@ -1129,6 +1128,8 @@ ro:
     global_search:
       all_projects: "In toate proiectele"
       close_search: "Închide căutarea"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "In acest proiect + subproiecte"
       current_project: "În acest proiect"
       recently_viewed: "Vizualizate recent"

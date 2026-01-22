@@ -203,6 +203,8 @@ ms:
         add_table: "Tambah jadual pakej kerja yang berkaitan"
         edit_query: "Edit pertanyaan"
         new_group: "Kumpulan baharu"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Set semula ke default"
       working_days:
         calendar:
@@ -631,9 +633,6 @@ ms:
           add: "Tambah tetapan untuk projek"
           already_selected: "Projek ini telah dipilih"
           remove: "Keluarkan tetapan projek"
-    password_confirmation:
-      field_description: "Anda perlu memasukkan kata laluan akaun anda untuk mengesahkan perubahan ini."
-      title: "Sahkan kata laluan anda untuk teruskan"
     pagination:
       no_other_page: "Anda berada di satu-satunya halaman."
       pages_skipped: "Pages skipped."
@@ -1122,6 +1121,8 @@ ms:
     global_search:
       all_projects: "Dalam semua projek"
       close_search: "Tutup carian"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Dalam projek ini + subprojek"
       current_project: "Dalam projek ini"
       recently_viewed: "Dilihat baru-baru ini"

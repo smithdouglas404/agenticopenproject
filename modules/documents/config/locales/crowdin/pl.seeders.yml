@@ -7,14 +7,14 @@ pl:
     common:
       document_types:
         item_0:
-          name: Note
+          name: Uwaga
         item_1:
-          name: Idea
+          name: Pomysł
         item_2:
-          name: Proposal
+          name: Propozycja
         item_3:
-          name: Specification
+          name: Specyfikacja
         item_4:
-          name: Report
+          name: Raport
         item_5:
-          name: Documentation
+          name: Dokumentacja

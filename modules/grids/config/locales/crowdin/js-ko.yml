@@ -16,10 +16,10 @@ ko:
         news:
           title: '뉴스'
         project_description:
-          title: '프로젝트 설명'
+          title: '설명'
           no_results: "설명이 아직 작성되지 않았습니다. '프로젝트 설정'에서 입력할 수 있습니다."
         project_status:
-          title: '프로젝트 상태'
+          title: '상태'
           not_started: '시작되지 않음'
           on_track: '정상 상태'
           off_track: '비정상 상태'
@@ -28,7 +28,7 @@ ko:
           finished: '마침'
           discontinued: '중단됨'
         project_status_beta:
-          title: '프로젝트 상태(베타)'
+          title: '상태(BETA)'
         subprojects:
           title: '하위 항목'
         project_favorites:
@@ -52,7 +52,7 @@ ko:
           title: '작업 패키지 테이블'
         work_packages_graph:
           title: '작업 패키지 그래프'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "%{description}인 작업 패키지를 보여주는 %{chartType} 차트입니다."
         work_packages_calendar:
           title: '달력'
         work_packages_overview:

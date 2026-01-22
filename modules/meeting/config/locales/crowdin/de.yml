@@ -235,10 +235,15 @@ de:
         summary_series: "Die Terminserie '%{title}' wurde von %{actor} abgesagt."
         summary: "Besprechung '%{title}' wurde von %{actor} abgesagt."
         date_time: "Geplanter Zeitpunkt"
+      ended:
+        header_series: "Beendet: Terminserie '%{title}'"
+        summary_series: "Die Terminserie '%{title}' wurde von %{actor} beendet."
       updated:
         header: "Besprechung '%{title}' wurde aktualisiert"
         summary: "Die Besprechung '%{title}' wurde durch %{actor} aktualisiert"
         body: "Die Besprechung '%{title}' wurde durch %{actor} aktualisiert."
+        old_title: "Alter Titel"
+        new_title: "Neuer Titel"
         old_date_time: "Alte(s) Datum/Zeit"
         new_date_time: "Neue(s) Datum/Zeit"
         old_location: "Alter Ort"
@@ -393,8 +398,6 @@ de:
       blank_title: "Die Vorlage für die wiederkehrenden Besprechungen ist leer"
       description: >
         Diese Vorlage wird immer dann verwendet, wenn neue Besprechungen der Terminserie erstellt werden. Sie können zu dieser Vorlage Tagesordnungspunkte, Teilnehmer und Anhänge hinzufügen.
-      blankslate_finalize: >
-        Wenn Sie mit der Vorbereitung dieser Vorlage fertig sind, klicken Sie oben auf die Schaltfläche '%{button_title}', um die Einrichtung abzuschließen und die erste Besprechung der Terminserie anzulegen.
       label_view_template: "Vorlage ansehen"
       label_edit_template: "Vorlage bearbeiten"
       banner_html: >
@@ -529,6 +532,8 @@ de:
   label_agenda_outcome_actions: "Aktionen für die Ergebnisse von Agendapunkten"
   label_agenda_outcome_edit: "Ergebnis bearbeiten"
   label_agenda_outcome_delete: "Ergebnis entfernen"
+  label_write_outcome: "Write outcome"
+  label_existing_work_package: "Existing work package"
   text_outcome_not_editable_anymore: "Dieses Ergebnis ist nicht mehr bearbeitbar."
   text_outcome_cannot_be_added: "Ein Ergebnis kann nicht mehr hinzugefügt werden."
   label_backlog_clear: "Backlog leeren"
@@ -603,10 +608,12 @@ de:
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "Sie können ein Token erstellen, indem sie auf die Schaltfläche unten klicken."
+        blank_title: "Kein iCalendar-Besprechungs-Token"
         title: "iCalendar für Besprechungen"
+        table_title: "iCalendar-Besprechungs-Token"
         text_hint: "iCalendar Besprechungs-Token ermöglichen es Benutzern, ihre Besprechungen zu abonnieren und aktuelle Informationen in externen Kalendern anzuzeigen."
         disabled_text: "iCalendar Besprechungs-Abonnements wurden nicht vom Administrator aktiviert. Bitte wenden Sie sich an Ihren Administrator, um diese Funktion zu nutzen."
-        empty_text_hint: 'Um ein iCalendar Besprechungs-Token hinzuzufügen, gehen Sie zum <a href="%{path}">Abschnitt zu Besprechungen</a> und erzeugen Sie dort einen Token.'
         add_button: "Im Kalender abonnieren"
   my:
     access_token:
@@ -621,7 +628,6 @@ de:
         token/ical_meeting:
           title: "Ein iCal-Abonnement-Token für Besprechungen wurde erstellt"
           body: "Behandeln Sie die folgende URL wie ein Passwort. Jeder, der Zugriff darauf hat, kann alle Ihre Meetings einsehen."
-          warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
       revocation:
         token/ical_meeting:
           notice_success: "Das iCal-Abonnement-Token für Besprechungen wurde erfolgreich widerrufen."

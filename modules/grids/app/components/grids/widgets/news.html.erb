@@ -36,7 +36,6 @@ See COPYRIGHT and LICENSE files for more details.
 
         if project_scoped? && can_manage_news?
           component.with_primary_action(
-            tag: :a,
             href: new_project_news_path(project),
             test_selector: "news-widget-add-button",
             scheme: :secondary

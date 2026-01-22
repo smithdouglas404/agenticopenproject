@@ -120,7 +120,7 @@ hu:
           some_unwritable: Egyes értékek környezeti változókon keresztül vannak beállítva, és itt nem szerkeszthetők.
         hocuspocus_server_url:
           label: "Hocuspocus szerver URL címe"
-          caption: "A működő Hocuspocus-kiszolgáló címe."
+          caption: "The address of a working Hocuspocus server."
         hocuspocus_server_secret:
           label: "Kliens szerver"
           caption: "Paste the secret provided by the Hocuspocus server."

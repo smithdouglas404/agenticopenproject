@@ -235,10 +235,15 @@ tr:
         summary_series: "'%{title}' toplantı serisi %{actor} tarafından iptal edilmiştir."
         summary: "'%{title}' %{actor} tarafından iptal edilmiştir."
         date_time: "Planlanan tarih/saat"
+      ended:
+        header_series: "Ended: Meeting series '%{title}'"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
       updated:
         header: "'%{title}' toplantısı güncellendi"
         summary: "'%{title}' toplantısı %{actor} tarafından güncellendi"
         body: "'%{title}' toplantısı %{actor} tarafından güncellendi."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Eski tarih/saat"
         new_date_time: "Yeni tarih/saat"
         old_location: "Eski konum"
@@ -393,8 +398,6 @@ tr:
       blank_title: "Toplantı serisi şablonunuz boş"
       description: >
         Bu şablon, seride her yeni toplantı oluşturulduğunda kullanılacaktır. Bu şablona gündem maddeleri, katılımcılar ve ekler ekleyebilirsiniz.
-      blankslate_finalize: >
-        Bu şablonu hazırlamayı tamamlandığınızda kurulumu tamamlamak ve serinin ilk toplantısını zamanlamak için '%{button_title}' düğmesine tıklayın.
       label_view_template: "Şablonu görüntüle"
       label_edit_template: "Şablonu düzenle"
       banner_html: >
@@ -529,6 +532,8 @@ tr:
   label_agenda_outcome_actions: "Gündem sonuçları eylemleri"
   label_agenda_outcome_edit: "Sonuç düzenle"
   label_agenda_outcome_delete: "Sonuç kaldır"
+  label_write_outcome: "Write outcome"
+  label_existing_work_package: "Existing work package"
   text_outcome_not_editable_anymore: "Bu sonuç artık düzenlenemez."
   text_outcome_cannot_be_added: "Artık gündem maddesi sonucu eklenemez."
   label_backlog_clear: "Birikmiş işleri temizle"
@@ -603,10 +608,12 @@ tr:
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "You can create one using the button below."
+        blank_title: "No iCalendar meeting token"
         title: "Toplantılar için iCalendar"
+        table_title: "iCalendar meeting tokens"
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
-        empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
         add_button: "Takvime abone ol"
   my:
     access_token:
@@ -621,7 +628,6 @@ tr:
         token/ical_meeting:
           title: "Bir iCal toplantı abonelik anahtarı oluşturuldu"
           body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "Bu anahtarı sadece bir kez göreceksiniz. Şimdi kopyaladığınızdan emin olun."
       revocation:
         token/ical_meeting:
           notice_success: "The iCalendar meeting subscription has been revoked successfully."

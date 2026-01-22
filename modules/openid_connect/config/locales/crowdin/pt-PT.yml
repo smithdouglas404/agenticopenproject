@@ -43,10 +43,10 @@ pt-PT:
               response_is_not_successful: " responde com %{status}."
               response_is_not_json: " não devolve o corpo JSON."
               response_misses_required_attributes: " não devolve os atributos necessários. Os atributos em falta são: %{missing_attributes}."
-          invalid_claims_essential: "does not define a boolean at %{attribute}."
-          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
-          invalid_claims_values: "does not define an array at %{attribute}."
-          non_object_attribute: "does not define a JSON object at %{attribute}."
+          invalid_claims_essential: "não define um booleano em %{attribute}."
+          invalid_claims_location: "contém localizações não suportadas: %{invalid}. As localizações suportadas são: %{supported}."
+          invalid_claims_values: "não define uma matriz em %{attribute}."
+          non_object_attribute: "não define um objeto JSON em %{attribute}."
   provider:
     delete_warning:
       input_delete_confirmation: Insira o nome do fornecedor %{name} para confirmar a eliminação.

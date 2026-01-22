@@ -109,8 +109,7 @@ export class WorkPackageBreadcrumbParentComponent {
     }
   }
 
-  public switchToFullscreenForWp(wp:WorkPackageResource):void {
-    const link = this.pathHelper.genericWorkPackagePath(wp.project?.identifier, wp.id!) + window.location.search;
-    Turbo.visit(link, { action: 'advance' });
+  public parentLink(parent:WorkPackageResource):string {
+    return this.pathHelper.genericWorkPackagePath(parent.project?.identifier, parent.id!) + window.location.search;
   }
 }

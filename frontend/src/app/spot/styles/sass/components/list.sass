@@ -95,7 +95,8 @@
         max-width: 100%
         width: 100%
 
-        &:has(.description)
+        &:has(.description),
+        &:has(.op-primer--star-icon)
           display: flex
           align-items: center
 
@@ -106,6 +107,9 @@
 
         .description
           @extend %autocomplete-description
+
+    &-remove
+      margin-left: $spot-spacing-0_5
 
     &-action_disabled &-title
       opacity: 0.5

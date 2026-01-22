@@ -230,10 +230,15 @@ ja:
         summary_series: "ミーティングシリーズ '%{title}' は、 %{actor} によってキャンセルされました。"
         summary: "'%{title}' は %{actor} によってキャンセルされました。"
         date_time: "スケジュールされた日時"
+      ended:
+        header_series: "Ended: Meeting series '%{title}'"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
       updated:
         header: "ミーティング '%{title}' が更新されました"
         summary: "ミーティング '%{title}' は %{actor} によって更新されました"
         body: "ミーティング '%{title}' は、 %{actor} によって更新されました。"
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "古い日付/時刻"
         new_date_time: "新しい日付/時刻"
         old_location: "古い場所"
@@ -388,8 +393,6 @@ ja:
       blank_title: "一連の会議のテンプレートがありません"
       description: >
         このテンプレートは、シリーズの新しい会議が作成されるたびに使用されます。このテンプレートに議題、参加者、添付ファイルを追加できます。
-      blankslate_finalize: >
-        このテンプレートの準備が完了したら、上の「%{button_title}」ボタンをクリックしてセットアップを完了し、シリーズの最初のミーティングをスケジュールします。
       label_view_template: "テンプレートを表示"
       label_edit_template: "テンプレートを編集"
       banner_html: >
@@ -522,6 +525,8 @@ ja:
   label_agenda_outcome_actions: "議題の結果アクション"
   label_agenda_outcome_edit: "結果を編集"
   label_agenda_outcome_delete: "結果を削除"
+  label_write_outcome: "Write outcome"
+  label_existing_work_package: "Existing work package"
   text_outcome_not_editable_anymore: "この結果は編集できません。"
   text_outcome_cannot_be_added: "結果は追加できなくなります。"
   label_backlog_clear: "バックログをクリア"
@@ -596,10 +601,12 @@ ja:
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "You can create one using the button below."
+        blank_title: "No iCalendar meeting token"
         title: "iCalendar for meetings"
+        table_title: "iCalendar meeting tokens"
         text_hint: "iCalendarミーティングトークンを使用すると、ユーザーはすべてのミーティングを購読し、外部クライアントで最新のミーティング情報を表示できます。"
         disabled_text: "iCalendarの会議予約は管理者によって有効化されていません。この機能を使用するには、管理者に連絡してください。"
-        empty_text_hint: 'iCalendarのミーティングトークンを追加するには、<a href="%{path}">ミーティングセクションに</a>行き、そこから登録します。'
         add_button: "カレンダーを購読する"
   my:
     access_token:
@@ -614,7 +621,6 @@ ja:
         token/ical_meeting:
           title: "iCalミーティング購読トークンが生成されました"
           body: "以下のURLをパスワードと同じように扱ってください。アクセス権を持っている人はすべてのミーティングを閲覧できます。"
-          warning: "このトークンが表示される唯一の時間です。今すぐコピーしてください。"
       revocation:
         token/ical_meeting:
           notice_success: "iCalendar ミーティング購読が正常に取り消されました。"

@@ -37,16 +37,12 @@
 
       component.with_description { I18n.t("documents.document_categories_deprecation_notice.description") }
       component.with_primary_action(
-        scheme: :primary,
         label: I18n.t("documents.document_categories_deprecation_notice.primary_action"),
-        tag: :a,
         href: admin_settings_document_types_path
       ).with_content(I18n.t("documents.document_categories_deprecation_notice.primary_action"))
 
       component.with_secondary_action(
-        scheme: :default,
         label: I18n.t("documents.document_categories_deprecation_notice.secondary_action"),
-        tag: :a,
         href: OpenProject::Static::Links.url_for(:documents_docs)
       ).with_content(I18n.t("documents.document_categories_deprecation_notice.secondary_action"))
     end %>

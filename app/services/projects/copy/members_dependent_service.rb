@@ -66,7 +66,7 @@ module Projects::Copy
 
       # There should only be zero or one members in this new project
       # which gets created from the default +ProjectRole.in_new_project+ if enabled.
-      target_member = target.members.detect { |m| m.principal == member.user }
+      target_member = target.members.detect { |m| m.principal == member.principal }
       if target_member
         Members::UpdateService
           .new(model: target_member, user: User.current, contract_class: EmptyContract)

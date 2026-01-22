@@ -349,27 +349,27 @@ ru:
     no_role_assigment: "Роль не назначена"
     instructions:
       is_required:
-        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        all: "Отметьте пользовательское поле как обязательное. Это сделает обязательным заполнение поля при создании новых ресурсов. Существующие ресурсы не будут требовать ввода значения при обновлении."
+        project: "Обязательные атрибуты должны быть заполнены пользователем при создании проекта, если поле активно (\"Для всех проектов\" или копирование из проекта/шаблона, в котором поле активно). Существующие проекты не требуют ввода значения при обновлении."
       is_for_all:
-        all: "Mark the custom field as available in all existing and new projects."
-        project: "Mark the attribute as available in all existing and new projects."
+        all: "Отметьте пользовательское поле как доступное во всех существующих и новых проектах."
+        project: "Отметьте атрибут как доступный во всех существующих и новых проектах."
       multi_select:
-        all: "Allows the user to assign multiple values to this custom field."
-        project: "Allows the user to assign multiple values to this attribute."
+        all: "Разрешить пользователю присвоить несколько значений этому пользовательскому полю."
+        project: "Разрешить пользователю присвоить несколько значений этому атрибуту."
       searchable:
-        all: "Include the field values when using the global search functionality."
-        project: "Check to make this attribute available as a filter in project lists."
+        all: "Включать значения полей при использовании функции глобального поиска."
+        project: "Установите флажок, чтобы сделать этот атрибут доступным в качестве фильтра в списках проектов."
       editable:
-        all: "Allow the field to be editable by users themselves."
+        all: "Разрешить редактирование поля самими пользователями."
       admin_only:
-        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
-        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+        all: "Установите флажок, чтобы сделать это пользовательское поле видимым только для администраторов. Пользователи без прав администратора не смогут просматривать или редактировать его."
+        project: "Установите флажок, чтобы сделать этот атрибут видимым только для администраторов. Пользователи без прав администратора не смогут просматривать или редактировать его."
       is_filter:
         all: >
-          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+          Разрешить использовать пользовательское поле в качестве фильтра в представлениях пакетов работ. Обратите внимание, что только при выборе опции 'Для всех проектов' пользовательское поле будет отображаться в глобальных представлениях.
       formula:
-        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+        project: "Добавьте числовые значения или введите / для поиска атрибута или математического оператора."
     tab:
       no_results_title_text: Нет настраиваемых полей.
       no_results_content_text: Создать новое настраиваемое поле
@@ -522,7 +522,7 @@ ru:
         text: "Это действие не приведет к удалению ни одного проекта, содержащегося в списке. Вы уверены, что хотите удалить этот список проектов?"
     settings:
       header_details: Основные сведения
-      header_status: Состояние проекта
+      header_status: Статус
       header_relations: Отношения с проектом
       button_update_details: Обновить детали
       button_update_status_description: Обновить описание статуса
@@ -590,8 +590,8 @@ ru:
           label_disable_single: "Неактивно в этом проекте, нажмите для включения"
           remove_from_project: "Удалить из проекта"
         is_for_all_blank_slate:
-          heading: For all projects
-          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+          heading: Для всех проектов
+          description: Этот атрибут проекта включен во всех проектах, поскольку опция "Для всех проектов" отмечена. Его нельзя отключить для отдельных проектов.
       types:
         no_results_title_text: На данный момент доступных типов нет.
         form:
@@ -620,7 +620,7 @@ ru:
         project_attributes_description: >
           Выберите, какие атрибуты проекта должны быть включены в запрос на инициацию проекта. В этот список входят только [атрибуты проекта](project_attributes_url), включенные для этого проекта.
     status:
-      button_edit: Редактировать статус проекта
+      button_edit: Редактировать статус
     wizard:
       sidebar_content_title: "Содержимое"
       sections: "Разделы"
@@ -726,9 +726,11 @@ ru:
           create_button: "Создать"
           name_label: "Название токена"
       created_dialog:
+        one_time_warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
         token/api:
           title: "Токен доступа к API сгенерирован"
-          warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
+        token/rss:
+          title: "Токен RSS сгенерирован"
       failed_to_reset_token: "Не удалось сбросить маркер доступа: %{error}"
       failed_to_create_token: "Не удалось создать токен доступа: %{error}"
       failed_to_revoke_token: "Не удалось отозвать токен доступа: %{error}"
@@ -738,21 +740,24 @@ ru:
       notice_api_token_revoked: "API токен был удален. Чтобы создать новый токен, пожалуйста, используйте кнопку в разделе API."
       notice_rss_token_revoked: "Ключ RSS был удален. Чтобы создать новый токен, пожалуйста, используйте ссылку в разделе RSS."
       notice_ical_token_revoked: 'токен iCalendar "%{token_name}" для календаря "%{calendar_name}" проекта "%{project_name}" был отозван. URL-адрес iCalendar с этим токеном недействителен.'
+    password_confirmation_dialog:
+      confirmation_required: "Чтобы подтвердить изменения, введите пароль учетной записи."
+      title: "Подтвердите свой пароль, чтобы продолжить"
   news:
     index:
       no_results_title_text: На данный момент новостей для отчета нет.
       no_results_content_text: Добавить новость
   roles:
     permissions:
-      section_check_all_label: "Assign all %{module} permissions"
-      section_uncheck_all_label: "Unassign all %{module} permissions"
+      section_check_all_label: "Назначьте все разрешения %{module}"
+      section_uncheck_all_label: "Отменить все разрешения %{module}"
     report:
-      matrix_caption: "Permissions matrix for %{module} module"
-      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
-      matrix_check_all_label: "Assign all %{module} permissions to all roles"
-      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
-      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
-      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
+      matrix_caption: "Матрица разрешений для модуля %{module}"
+      matrix_checkbox_label: "Назначьте разрешение %{permission} на роль %{role}"
+      matrix_check_all_label: "Назначьте все разрешения %{module} всем ролям"
+      matrix_uncheck_all_label: "Отмените все разрешения %{module} всех ролей"
+      matrix_check_uncheck_all_in_row_label_html: "Переключить разрешение <em>%{permission}</em> для всех ролей"
+      matrix_check_uncheck_all_in_col_label_html: "Переключить все разрешения %{module} для роли <em>%{role}</em>"
   users:
     autologins:
       prompt: "Оставаться в системе %{num_days}"
@@ -949,14 +954,14 @@ ru:
       no_results_content_text: Добавить новую wiki-страницу
   workflows:
     form:
-      matrix_caption: "Workflow matrix"
-      matrix_caption_assignee: "Workflow matrix for assignee"
-      matrix_caption_author: "Workflow matrix for author"
-      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
-      matrix_check_all_label: "Allow all transitions"
-      matrix_uncheck_all_label: "Disallow all transitions"
-      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
-      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
+      matrix_caption: "Матрица рабочего процесса"
+      matrix_caption_assignee: "Матрица рабочего процесса для назначенного"
+      matrix_caption_author: "Матрица рабочего процесса для автора"
+      matrix_checkbox_label: "Разрешить переход от %{old_status} к %{new_status}"
+      matrix_check_all_label: "Разрешить все переходы"
+      matrix_uncheck_all_label: "Запретить все переходы"
+      matrix_check_uncheck_all_in_row_label_html: "Переключить переходы от <em>%{old_status}</em> ко всем новым статусам"
+      matrix_check_uncheck_all_in_col_label_html: "Переключить переходы от всех старых статусов к <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: В данный момент рабочих потоков нет.
@@ -1270,8 +1275,8 @@ ru:
           true: "публичный"
           false: "приватный"
         queries: "Запросы"
-        status_code: "Статус проекта"
-        status_explanation: "Описание статуса проекта"
+        status_code: "Статус"
+        status_explanation: "Описание статуса"
         status_codes:
           not_started: "Не начат"
           on_track: "По плану"
@@ -1279,7 +1284,7 @@ ru:
           off_track: "Приостановлен"
           finished: "Завершен"
           discontinued: "Прекращен"
-        project_creation_wizard_assignee_custom_field: "Назначенный при отправке"
+        project_creation_wizard_assignee_custom_field: "Исполнитель при отправке"
         project_creation_wizard_notification_text: "Текст уведомления"
         project_creation_wizard_send_confirmation_email: "Подтверждающее письмо"
         project_creation_wizard_status_when_submitted: "Статус при отправке"
@@ -1295,7 +1300,6 @@ ru:
         work_packages: "Задачи"
         workspace_type: "Тип рабочего пространства"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: Раздел
       subproject_template_assignment:
         workspace_type: "Тип рабочего пространства"
@@ -1586,7 +1590,7 @@ ru:
               not_allowed_custom_fields_referenced: "Атрибут %{custom_fields} не может быть использован, потому что это приводит к циклической ссылке, один атрибут зависит от другого."
               format: "%{message}"
             required:
-              cannot_be_true: "cannot be set to true."
+              cannot_be_true: "не может быть установлено в true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1904,9 +1908,9 @@ ru:
         other: "Тексты справки атрибутов"
       auth_provider:
         one: "Провайдер аутентификации"
-        few: "Authentication providers"
-        many: "Authentication providers"
-        other: "Authentication providers"
+        few: "Провайдера аутентификации"
+        many: "Провайдеров аутентификации"
+        other: "Провайдеры аутентификации"
       category: "Категория"
       color: "Цвет"
       comment: "Комментарий"
@@ -1915,9 +1919,9 @@ ru:
       "doorkeeper/application": "Приложение OAuth"
       enterprise_token:
         one: "Корпоративный токен"
-        few: "Enterprise tokens"
-        many: "Enterprise tokens"
-        other: "Корпоративные токены"
+        few: "Корпоративных токена"
+        many: "Корпоративных токенов"
+        other: "Корпоративных токенов"
       forum: "Форум"
       global_role: "Глобальная роль"
       group: "Группа"
@@ -1963,7 +1967,16 @@ ru:
         few: Маркеры доступа
         many: Маркеры доступа
         other: Маркеры доступа
-      type: "Тип"
+      token/rss:
+        one: "Токен RSS"
+        few: "RSS tokens"
+        many: "RSS tokens"
+        other: "RSS tokens"
+      type:
+        one: "Тип"
+        few: "Типа"
+        many: "Типов"
+        other: "Типов"
       user: "Пользователь"
       version: "Этапы"
       workflow: "Рабочий поток"
@@ -2188,6 +2201,7 @@ ru:
   button_click_to_reveal: "Нажмите, чтобы раскрыть"
   button_close: "Закрыть"
   button_collapse_all: "Свернуть все"
+  button_confirm: "Подтвердить"
   button_configure: "Настройка"
   button_continue: "Продолжить"
   button_complete: "Готово"
@@ -2622,9 +2636,9 @@ ru:
         description: Приведите Ваши проекты в соответствии с Вашими стратегическими целями, организовав их в портфолио и программы.
     teaser:
       title:
-        one: "Остался день для пробного токена %{trial_plan}"
-        few: "%{count} days left of %{trial_plan} trial token"
-        many: "%{count} days left of %{trial_plan} trial token"
+        one: "Остался один день для пробного токена %{trial_plan}"
+        few: "Осталось %{count} дня для пробного токена %{trial_plan}"
+        many: "Осталось %{count} дней для пробного токена %{trial_plan}"
         other: "Осталось %{count} дней для пробного токена %{trial_plan}"
       description: "У вас есть доступ ко всем функциям %{trial_plan}."
     trial:
@@ -2656,7 +2670,7 @@ ru:
       enabled: "Отключить"
   enumeration_activities: "Отслеживание времени"
   enumeration_work_package_priorities: "Приоритеты пакета работ"
-  enumeration_reported_project_statuses: "Перечень отчетов о статусах проекта"
+  enumeration_reported_project_statuses: "Переданный статус"
   enumeration_caption_order_changed: "Порядок успешно изменен."
   enumeration_could_not_be_moved: "Перечисление не может быть перенесено."
   enterprise_trials:
@@ -2995,6 +3009,7 @@ ru:
       label: "Добавить…"
   my_account:
     access_tokens:
+      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
       no_results:
         title: "Нет маркеров доступа для отображения"
         description: "Все они были отключены. Они могут быть включены вновь в меню Администрирование."
@@ -3004,38 +3019,60 @@ ru:
         expiration: "Срок действия"
       indefinite_expiration: "Никогда"
       simple_revoke_confirmation: "Вы уверены, что хотите отменить этот токен?"
+      tabs:
+        client:
+          title: "Клиентские токены"
+        provider:
+          title: "Провайдерские токены"
       token/api:
+        blank_description: "Токен API еще не создан. Вы можете создать его с помощью кнопки ниже."
+        blank_title: "Нет токена API"
         title: "API"
+        table_title: "Токены API"
         text_hint: "Токены API позволяют приложениям общаться с этим экземпляром OpenProject через REST API."
+        static_token_name: "Токен API"
         disabled_text: "Токены API не включены администратором. Пожалуйста, обратитесь к администратору для использования этой функции."
         add_button: "API токен"
-      api:
-        static_token_name: "API-токен"
       ical:
+        blank_description: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
+        blank_title: "Нет токена iCalendar"
         title: "iCalendar"
+        table_title: "Токены iCalendar"
         text_hint_link: "Токены iCalendar позволяют пользователям [подписываться на календари OpenProject](docs_url) и просматривать актуальную информацию о пакетах работ во внешних клиентах."
         disabled_text: "Подписки на iCalendar не включены администратором. Обратитесь к администратору для использования этой функции."
-        empty_text_hint: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
-      oauth:
+      oauth_application:
+        active_tokens: "Активные токены"
+        blank_description: "Для Вас не будет настроен и активен доступ к сторонним приложениям."
+        blank_title: "Нет токена приложения OAuth"
+        last_used_at: "Последний раз использовался в"
         title: "OAuth"
-        text_hint: "Токены OAuth позволяют сторонним приложениям подключаться к этому экземпляру OpenProject."
-        empty_text_hint: "Для вас не настроен и не активирован доступ к сторонним приложениям. Пожалуйста, свяжитесь с вашим администратором, чтобы активировать эту функцию."
-      rss:
+        table_title: "Токены приложения OAuth"
+        text_hint: "Токены приложений OAuth позволяют сторонним приложениям подключаться к данному экземпляру OpenProject."
+      oauth_client:
+        blank_description: "Клиентских токенов OAuth пока не существует."
+        blank_title: "Нет клиентских токенов OAuth"
+        failed: "Произошла ошибка, и токен не удалось удалить.  Пожалуйста, повторите попытку позже."
+        integration_type: "Тип интеграции"
+        table_title: "Клиентские токены OAuth"
+        text_hint: "Клиентские токены OAuth позволяют данному экземпляру OpenProject соединяться с внешними приложениями, например, с файловыми хранилищами."
+        title: "OAuth"
+        remove_token: "Вы действительно хотите удалить этот токен? Вам нужно будет снова войти в систему %{integration}."
+        removed: "Токен OAuth успешно удален"
+        unknown_integration: "Неизвестная"
+      token/rss:
+        add_button: "Токен RSS"
+        blank_description: "Токен RSS пока не создан. Вы можете создать его с помощью кнопки ниже."
+        blank_title: "Нет токена RSS"
         title: "RSS"
+        table_title: "Токены RSS"
         text_hint: "Токены RSS позволяют пользователям следить за последними изменениями в этом экземпляре OpenProject через внешний RSS-трекер."
         static_token_name: "Токен RSS"
         disabled_text: "Токены RSS не включены администратором. Пожалуйста, обратитесь к администратору, чтобы использовать эту функцию."
       storages:
-        title: "Файловые хранилища"
-        text_hint: "Токены хранения файлов подключают этот экземпляр OpenProject к внешнему хранилищу файлов."
-        empty_text_hint: "Нет доступа к хранилищу, связанному с вашей учетной записью."
-        revoke_token: "Вы действительно хотите удалить этот токен?  Вам нужно будет снова войти в систему на %{storage}"
-        removed: "Токен хранилища файлов успешно удален"
-        failed: "Произошла ошибка, и токен не удалось удалить.  Пожалуйста, повторите попытку позже."
         unknown_storage: "Неизвестное хранилище"
   notifications:
     reasons:
-      assigned: "Назначенный"
+      assigned: "Исполнитель"
       dateAlert: "Дата оповещения"
       mentioned: "Упомянутый"
       responsible: "Ответственный"
@@ -3525,9 +3562,6 @@ ru:
   label_project_hierarchy: "Иерархия проектов"
   label_project_mappings: "Проекты"
   label_project_new: "Новый проект"
-  label_project_initiation_request: "Запрос на инициирование нового проекта"
-  label_project_creation_wizard: "Мастер создания нового проекта"
-  label_project_mandate: "Новый мандат проекта"
   label_project_plural: "Проекты"
   label_project_list_plural: "Списки проектов"
   label_project_life_cycle: "Жизненный цикл проекта"
@@ -3992,7 +4026,7 @@ ru:
   notice_not_authorized: "Вы не авторизованы для доступа к этой странице."
   notice_not_authorized_archived_project: "Проект, к которому Вы пытаетесь получить доступ, заархивирован."
   notice_requires_enterprise_token: "Токен Enterprise отсутствует или не разрешает доступ к этой странице."
-  notice_password_confirmation_failed: "Пароль не правильный. Продолжить нельзя."
+  notice_password_confirmation_failed: "Введенный пароль неверен."
   notice_principals_found_multiple: "Найдено %{number} результатов. Нажмите <TAB> для перехода к первому."
   notice_principals_found_single: "Найден один результат. Нажмите <TAB> для перехода к нему."
   notice_parent_item_not_found: "Родительский элемент не найден."
@@ -4153,7 +4187,7 @@ ru:
   permission_view_user_email: "Просмотр почтовых адресов пользователей"
   permission_view_wiki_edits: "Просмотр истории wiki"
   permission_view_wiki_pages: "Просмотр wiki"
-  permission_work_package_assigned: "Становиться назначенным/ответственным"
+  permission_work_package_assigned: "Становиться исполнителем/ответственным"
   permission_work_package_assigned_explanation: "Пакеты работ могут быть привязаны к пользователям и группам в зависимости от этой роли в рамках соответствующего проекта"
   permission_view_project_activity: "Просмотр деятельности по проекту"
   permission_view_project_attributes: "Просмотр атрибутов проекта"
@@ -4357,15 +4391,23 @@ ru:
   setting_apiv3_cors_origins_text_html: >
     Если CORS включен, то это источники, которым разрешен доступ к OpenProject API. <br/> Пожалуйста, проверьте <a href="%{origin_link}" target="_blank">документацию по происхождению</a> о том, как указывать ожидаемые значения.
   setting_apiv3_write_readonly_attributes: "Доступ на запись к атрибутам, доступным только для чтения"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Если этот параметр включен, API позволит администраторам записывать во время создания статические атрибуты, доступные только для чтения, такие как «Создано в» и «Автор». <br/> <strong>Внимание!</strong> Этот параметр можно использовать, например, для импорта данных, но он позволяет администраторам выдавать себя при создании элементов за других пользователей. Однако все запросы на создание регистрируются с указанием истинного автора. </br> Для получения дополнительной информации об атрибутах и ​​поддерживаемых ресурсах см. %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    Если эта опция включена, API позволит администраторам записывать статические атрибуты, доступные только для чтения, во время создания, такие как createdAt и author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    Эта настройка используется, например, для импорта данных, но позволяет администраторам выдавать себя за других пользователей при создании элементов. Однако все запросы на создание регистрируются с указанием истинного автора.
+  setting_apiv3_write_readonly_attributes_additional: >
+    Более подробную информацию об атрибутах и поддерживаемых ресурсах см. на сайте %{api_documentation_link}.
   setting_apiv3_max_page_size: "Максимальный размер страницы API"
-  setting_apiv3_max_page_instructions_html: >
-    Установите максимальный размер страницы, который будет отвечать API. Невозможно выполнить API-запросы, возвращающие много значений на одной странице. <br/> <strong>Предупреждение:</strong> Пожалуйста, измените это значение, только если вы уверены, зачем вам это нужно. Установка большого значения приведет к значительному снижению производительности, в то время как значение ниже, чем для параметров страницы, вызовет ошибки в представлениях с разбивкой на страницы.
+  setting_apiv3_max_page_size_instructions: >
+    Установите максимальный размер страницы, на которую будет отвечать API. Запросы API, возвращающие больше значений на одной странице, выполнить будет невозможно.
+  setting_apiv3_max_page_size_warning: >
+    Пожалуйста, изменяйте это значение только в том случае, если Вы уверены, зачем оно Вам нужно. Установка большого значения приведет к значительному снижению производительности, в то время как значение, меньшее, чем опции для каждой страницы, приведет к ошибкам при постраничном просмотре.
   setting_apiv3_docs: "Документация"
   setting_apiv3_docs_enabled: "Включить страницу с документами"
   setting_apiv3_docs_enabled_instructions_html: >
     Если включена страница документации к документации, вы можете получить интерактивный вид документации APIv3 под <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Пожалуйста, имейте в виду, что включение доступа к документам API на рабочей системе может привести к раскрытию конфиденциальной информации или к случайной потере данных, если не соблюдать осторожность. Мы рекомендуем включать эту настройку только для целей разработки.
   setting_attachment_whitelist: "Белый список загрузки вложений"
   setting_email_delivery_method: "Метод доставки электронной почты"
   setting_emails_salutation: "Адрес пользователя в письмах с"
@@ -4544,7 +4586,7 @@ ru:
       omniauth_direct_login_hint_html: >
         Если эта опция включена, запросы на вход в систему будут перенаправлены на настроенный провайдер omniauth. Выпадающий список входа и страница входа будут отключены. <br/> <strong>Примечание:</strong> Если вы также не отключите вход по паролю, то пользователи все еще могут войти внутри системы, посетив страницу входа <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        Если эта опция включена, она позволяет любому сконфигурированному провайдеру идентификации регистрировать существующих пользователей на основе их адреса электронной почты, даже если пользователь никогда раньше не регистрировался через этого провайдера. Это может быть полезно при переносе OpenProject на нового провайдера SSO, но не рекомендуется при использовании провайдера, которому не доверяют все пользователи OpenProject.
+        Если эта опция включена, она позволяет любому сконфигурированному провайдеру идентификации регистрировать существующих пользователей на основе их имени пользователя, даже если пользователь никогда раньше не входил в систему через этого провайдера. Это может быть полезно при переносе экземпляра OpenProject на нового провайдера SSO, но не рекомендуется при использовании провайдера, которому не доверяют все пользователи Вашего экземпляра.
     attachments:
       whitelist_text_html: >
         Определите список допустимых расширений файлов и/или mime типов для загруженных файлов. <br/> Введите расширения файлов (например, <code>%{ext_example}</code>) или mime типы (e. ., <code>%{mime_example}</code>). <br/> Оставьте пустым, чтобы разрешить загрузку любого типа файла. Допустимы несколько значений (одна строка для каждого значения).
@@ -4597,7 +4639,7 @@ ru:
     passwords: "Пароли"
     project_attributes:
       heading: "Атрибуты проекта"
-      label_for_all_projects: "All projects"
+      label_for_all_projects: "Все проекты"
       label_new_attribute: "Атрибут проекта"
       label_new_section: "Раздел"
       label_edit_section: "Переименовать"
@@ -4657,7 +4699,7 @@ ru:
         status_when_submitted: "Статус на момент подачи"
         status_when_submitted_caption: "Статус, в который перейдет созданный пакет работ после отправки запроса."
         send_confirmation_email: "Отправить подтверждение по электронной почте пользователю, подавшему запрос на инициирование проекта"
-        assignee: "Назначенный при отправке"
+        assignee: "Исполнитель при отправке"
         assignee_caption_html: "Пользователь или группа, назначенная этому атрибуту проекта, также станет получателем нового пакета работ. Этот список включает активные атрибуты проекта только типа <i>Пользователь</i>."
         confirmation_email_text: "Текст письма подтверждения"
         confirmation_email_default: "Здравствуйте,\n\nВы подали запрос на инициирование проекта **%{project_name}**. Сейчас он ожидает рассмотрения.\nЩелкните по ссылке ниже, чтобы получить доступ к пакету работ с Вашим запросом."

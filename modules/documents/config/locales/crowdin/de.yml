@@ -50,7 +50,7 @@ de:
     subheader:
       filter:
         label: "Filter nach Dokumentnamen"
-        placeholder: "Geben Sie einen Suchtext ein, um nach Dokumentnamen zu suchen"
+        placeholder: "Suche nach Dokumentnamen"
     documents_list_blank_slate:
       heading: "Es sind noch keine Dokumente vorhanden"
       description: "Es sind keine Dokumente in dieser Ansicht vorhanden. Sie können auf die Schaltfläche unten klicken, um eines hinzuzufügen."
@@ -113,7 +113,7 @@ de:
         page_header:
           description: |-
             Wenn die Echtzeit-Kollaboration aktiviert ist, können mehrere Benutzer ein Dokument zur gleichen Zeit bearbeiten.
-            Sie erfordert eine funktionierende %{hocuspocus_server_link}, um zu funktionieren.
+            Sie erfordert einen funktionierenden %{hocuspocus_server_link}, um zu funktionieren.
         banner:
           none_writable: Diese Werte werden über Umgebungsvariablen konfiguriert und können hier nicht bearbeitet werden.
           some_unwritable: Einige Werte werden über Umgebungsvariablen konfiguriert und können hier nicht bearbeitet werden.

@@ -162,7 +162,7 @@ A dashboard is defined as an overview page in a software. In OpenProject, you ha
 
 1. You have the [My page](#my-page), which shows your personal customized [widgets](#widget) on one page, for example a calendar or work package reports.
 
-2. You have the [project overview](#project-overview) dashboard, which gives you an overview of your project. Please note that only project admins can add and remove widgets to the project overview.
+2. You have the [project home page](#project-home), which is divided into Overview and Dashboard. Please note that only project admins can add and remove widgets to the project dashboard.
 
 In addition to those overview dashboard options, you can create a [custom query](#custom-query) to save a filtered work package view, which might serve you as kind of a dashboard as well.
 
@@ -216,9 +216,13 @@ A group in OpenProject is defined as a list of users which can be added as a mem
 
 OpenProject offers light and dark high contrast modes to make it easier for visually impaired people to use the software. These modes can be selected in the personal [account settings](../user-guide/account-settings/) and will only affect the individual user's experience.
 
+### Home dashboard (mobile app)
+
+The Home Dashboard is the central hub for project management with the OpenProject mobile app. [Read more in our mobile app guide](../mobile-app-guide/core-features/home-dashboard).
+
 ### Home page
 
-In the OpenProject application, the home page is defined as a start page for your instance, where you get an overview about important information. From the home page you can access all global [modules](#module) of OpenProject. To get to the OpenProject application home page, click on the logo in the header of the application. [Read more about the OpenProject application home page](../user-guide/home/#application-home-page).
+In the OpenProject application, the (global application) home page is defined as a start page for your instance, where you get an overview about important information. From the home page you can access all global [modules](#module) of OpenProject. To get to the OpenProject application home page, click on the logo in the header of the application. [Read more about the OpenProject application home page](../user-guide/home/#application-home-page).
 
 ### Hybrid project management
 
@@ -276,7 +280,7 @@ The My page in OpenProject is defined as your personal [dashboard](#dashboard) w
 
 ### News
 
-In OpenProject, News is defined as a [module](#module) that allows the publication and use of news entries. On the news page, you can see the latest news in a project in reverse chronological order. News communicate general topics to all team members. They can be displayed on the [project overview](#project-overview). [Read more about how to work with the News module in OpenProject](../user-guide/news/).
+In OpenProject, News is defined as a [module](#module) that allows the publication and use of news entries. On the news page, you can see the latest news in a project in reverse chronological order. News communicate general topics to all team members. They can be displayed on the [project home page](#project-home). [Read more about how to work with the News module in OpenProject](../user-guide/news/).
 
 ### Nextcloud integration
 
@@ -337,15 +341,16 @@ Your activated plugins are listed together with your [modules](#module) in your 
 
 ### PM² / PM2
 
-PM² is a project management framework developed by the European Commission to support the successful delivery of projects, especially in the public sector. It combines best practices from various methodologies and provides clear guidance, templates, and governance structures. In OpenProject, the [project life cycle](#project-life-cycle) can be structured according to PM², with predefined [project phases](#phase), [phase gates](#phase-gate), and roles based on this framework. [Read more about PM² and its role for OpenProject](https://www.openproject.org/pm2/).
+PM² is a project management framework developed by the European Commission to support the successful delivery of projects, especially in the public sector. It combines best practices from various methodologies and provides clear guidance, templates, and governance structures. In OpenProject, the [project life cycle](#project-life-cycle) can be structured according to PM², with predefined [project phases](#phase), [phase gates](#phase-gate), and roles based on this framework. [Read more about PM² and its role for OpenProject](https://www.openproject.org/pm2/). If you are looking for specific PM² terminology, please see our [use case of implementing PM² and PMflex project management in OpenProject](../use-cases/project-management-pm2-pmflex/#implementing-pm-and-pmflex-project-management-in-openproject). 
 
 ### PMflex
 
-PMflex is is a comprehensive and flexible project management system based on the European [PM²](#pm--pm2) standard and further developed for public administration in Germany. [Read more about how to use PMflex with OpenProject](https://www.openproject.org/pmflex).
+PMflex is is a comprehensive and flexible project management system based on the European [PM²](#pm--pm2) standard and further developed for public administration in Germany. [Read more about how to use PMflex with OpenProject](https://www.openproject.org/pmflex). If you  are looking for specific PMflex terminology, please see our [use case of implementing PM² and PMflex project management in OpenProject](../use-cases/project-management-pm2-pmflex/#implementing-pm-and-pmflex-project-management-in-openproject). 
 
 ### Portfolio
 
-In OpenProject, you can manage your project portfolio by creating, filtering and sorting [project lists](#project-lists). [Learn more about project portfolio management with OpenProject](https://www.openproject.org/collaboration-software-features/project-portfolio-management/).
+In OpenProject, you can manage your project portfolio by creating, filtering and sorting [project lists](#project-lists). To work with portfolios, programs and projects (according to [PM²](#pm--pm2) or [PMflex](#pmflex)), you can use our [portfolio module (Enterprise add-on)](../user-guide/portfolios).
+[Learn more about project portfolio management with OpenProject](https://www.openproject.org/collaboration-software-features/project-portfolio-management/).
 
 ### Primer design system
 
@@ -361,13 +366,21 @@ In OpenProject, a [project](../user-guide/projects/) is defined as an individual
 
 ### Project attribute
 
-A project attribute in OpenProject is a [custom field](#custom-field) that applies to an entire project. It is displayed in the right-hand column on the project overview page and can be divided into sections for a better structure. Project attributes can be activated and deactivated either on the respective [project overview](#project-overview) page or, for managing multiple projects at once, in the global administration.
+A project attribute in OpenProject is a [custom field](#custom-field) that applies to an entire project. It is displayed in the right-hand column on the project overview page and can be divided into sections for a better structure. Project attributes can be activated and deactivated either on the respective [project home](#project-home) page or, for managing multiple projects at once, in the global administration.
 
 ### Project folder
 
 Project folders help collaborating in the most efficient way. They can be used with
 OpenProject's [Nextcloud integration](#nextcloud-integration) or with
 OpenProject's [OneDrive integration](#onedrive-integration). [Read more about project folders in OpenProject](../user-guide/projects/project-settings/files/#project-folders).
+
+### Project home
+
+In the OpenProject application, the project home page is defined as a start page for your project, where all important information of the selected project is displayed. The idea is to provide a central repository of information for the whole project team.
+
+The default view is the **Overview** – a page that shows the project description, project status, subitems, members and news. While you can edit the content, the widgets themselves are fixed. On a second tab, you can access the **Dashboard**. Here, [widgets](#widget) can be added, edited and removed by a project [admin](#admin).
+
+Open the project home by navigating to "Project home" in the project menu on the left. [Read more about the project home in OpenProject](../user-guide/project-home/#project-overview).
 
 ### Project identifier
 
@@ -377,7 +390,7 @@ The project identifier is defined as the unique name used to identify and refere
 
 In OpenProject, the project life cycle consists of [phases](#phase) and [phase gates](#phase-gate) that help you structure your projects and work packages methodically. By default, these follow the [PM² project management framework](#pm--pm2), using the phases *Initiating*, *Planning*, *Executing*, and *Closing*.
 
-Phases and phase gates are visible on the [project overview](#project-overview) page, in [work package tables](#work-package-table), and in [project lists](#project-lists). They can be used for filtering, grouping, and scheduling. Project administrators can activate relevant phases and gates for each project, while the global configuration of phases is an [Enterprise add-on](#enterprise-add-on).
+Phases and phase gates are visible on the [project home](#project-home) page, in [work package tables](#work-package-table), and in [project lists](#project-lists). They can be used for filtering, grouping, and scheduling. Project administrators can activate relevant phases and gates for each project, while the global configuration of phases is an [Enterprise add-on](#enterprise-add-on).
 
 [Read more about the project life cycle in our system admin guide](../system-admin-guide/projects/project-life-cycle).
 
@@ -388,10 +401,6 @@ In OpenProject, project lists are very useful for project portfolio managers to 
 ### Project navigation
 
 The project navigation is the side navigation within a project. Entries in the project navigation can be added and removed by activating and deactivating [modules](#module) in the [project settings](#project-settings).
-
-### Project overview
-
-In OpenProject, the project overview is defined as a single [dashboard](#dashboard) page where all important information of a selected project can be displayed. The idea is to provide a central repository of information for the whole project team. Project information is added to the dashboard as [widgets](#widget). Open the project overview by navigating to "Overview" in the project menu on the left. [Read more about the project overview in OpenProject](../user-guide/project-overview/#project-overview).
 
 ### Project phase
 
@@ -509,7 +518,7 @@ In OpenProject, a Weighted item list can be used both as a [custom field](#custo
 
 ### Widget
 
-A widget in OpenProject is defined as a small and customizable element that provides relevant information at a glance. Use widgets on your [My page](#my-page) dashboard or on the [project overview](#project-overview). [See all available project overview widgets](../user-guide/project-overview/#available-project-overview-widgets) and read [how to add a widget to the project overview](../user-guide/project-overview/#widgets).
+A widget in OpenProject is defined as a small and customizable element that provides relevant information at a glance. Use widgets on the [My page](#my-page) or on the project dashboardon the [project home page](#project-home). [See all available project overview widgets](../user-guide/project-home/project-widgets/#project-widgets-catalog) and read [how to add a widget to the project overview](../user-guide/project-home/project-widgets/#resize-and-reorder-widgets).
 
 ### Wiki
 

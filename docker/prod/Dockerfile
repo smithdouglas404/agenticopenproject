@@ -40,6 +40,11 @@ ENV OPENPROJECT_ATTACHMENTS__STORAGE__PATH=$APP_DATA_PATH/files
 ENV OPENPROJECT_RAILS__CACHE__STORE=file_store
 ENV OPENPROJECT_ANGULAR_UGLIFY=true
 
+# set the following to an empty string if you don't want to automatically use the bundled hocuspocus
+# (or set an external hocuspocus directly - if empty you can set it in the UI)
+ENV OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL=auto
+ENV OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET=
+
 RUN useradd -d /home/$APP_USER -m $APP_USER && \
   mkdir -p $APP_PATH && chown $APP_USER:$APP_USER $APP_PATH && \
   mkdir -p $APP_DATA_PATH && chown $APP_USER:$APP_USER $APP_DATA_PATH && chmod g+rwx $APP_DATA_PATH
@@ -107,6 +112,8 @@ ENV PGDATA=/var/openproject/pgdata
 
 COPY --from=openproject/gosu /go/bin/gosu /usr/local/bin/gosu
 RUN chmod +x /usr/local/bin/gosu && gosu nobody true
+
+COPY --from=openproject/hocuspocus:release-38128805 --chown=$APP_USER:$APP_USER /app /opt/hocuspocus
 
 RUN ./docker/prod/setup/postinstall-onprem.sh && \
   ln -s /app/docker/prod/setup/.irbrc /root/

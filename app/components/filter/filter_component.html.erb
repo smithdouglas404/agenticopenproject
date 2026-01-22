@@ -34,10 +34,18 @@
             }
           ) do %>
         <fieldset class="advanced-filters--container">
-          <a title="<%= t("js.close_form_title") %>"
-             href=""
-             class="advanced-filters--close icon-context icon-close"
-             data-action="filter--filters-form#toggleDisplayFilters"></a>
+          <%=
+            render(
+              Primer::Beta::IconButton.new(
+                icon: :x,
+                scheme: :invisible,
+                classes: "advanced-filters--close",
+                tooltip_direction: :se,
+                aria: { label: t("js.close_form_title") },
+                data: { action: "filter--filters-form#toggleDisplayFilters" }
+              )
+            )
+          %>
           <legend><%= t(:label_filter_plural) %></legend>
           <ul class="advanced-filters--filters">
             <% each_filter do |filter, filter_active, additional_options| %>

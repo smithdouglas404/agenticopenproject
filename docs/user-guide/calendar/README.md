@@ -90,7 +90,7 @@ Much like with work package tables, it is possible to display work packages from
 
 ### Embed a calendar in the project overview
 
-You can also display the calendar on the dashboard in the [project overview](../project-overview/#calendar-widget).
+You can also display the calendar on the dashboard in the [project overview](../project-home/project-widgets/#calendar-widget).
 
 ### Zen mode
 

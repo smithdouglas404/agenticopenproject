@@ -122,7 +122,7 @@ ko:
     errors:
       messages:
         error: 예기치 않은 오류가 발생했습니다. OpenProject 로그에서 자세한 내용을 확인하거나 관리자에게 문의하세요
-        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
+        forbidden: 요청된 리소스에 OpenProject가 액세스할 수 없습니다. 저장소 공급자의 권한 구성을 확인하세요.
         unauthorized: OpenProject가 저장소 공급자를 인증할 수 없습니다. 액세스 권한이 있는지 확인하세요.
       models:
         copy_project_folders_service:
@@ -160,7 +160,7 @@ ko:
           group_does_not_exist: "%{group}이(가) 없습니다. Nextcloud 인스턴스 구성을 확인하세요."
           insufficient_privileges: OpenProject에는 %{user}을(를) %{group}에 추가할 수 있는 권한이 충분하지 않습니다. Nextcloud에서 그룹 설정을 확인하세요.
           not_allowed: Nextcloud가 요청을 차단합니다.
-          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
+          not_found: OpenProject가 Nextcloud 저장소 공급자에서 파일을 찾을 수 없습니다. 파일이 삭제되지 않았는지 확인하세요.
           unauthorized: OpenProject가 Nextcloud와 동기화할 수 없습니다. 저장소 및 Nextcloud 구성을 확인하세요.
           user_does_not_exist: "%{user}이(가) Nextcloud에 없습니다."
         one_drive_sync_service:
@@ -221,13 +221,13 @@ ko:
     confirm_replace_oauth_application: 이 작업은 현재 OAuth 자격 증명을 재설정합니다. 확인 후 저장소 공급자에서 자격 증명을 다시 입력해야 하며 모든 원격 사용자는 OpenProject에 대해 다시 인증해야 합니다. 계속하시겠습니까?
     confirm_replace_oauth_client: 이 작업은 현재 OAuth 자격 증명을 재설정합니다. 확인 후 저장소 공급자의 새로운 자격 증명을 입력해야 하며 모든 사용자는 %{provider_type}에 대해 다시 인증해야 합니다. 계속하시겠습니까?
     delete_warning:
-      project_storage: Are you sure you want to remove %{file_storage} from this project?
-      project_storage_delete_result_1: All links to corresponding files and folders will be removed
-      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
-      storage: Are you sure you want to delete %{file_storage} as an external file storage?
-      storage_delete_result_1: The storage will be removed from all projects currently using it
-      storage_delete_result_2: All links to corresponding files and folders will be removed
-      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
+      project_storage: 이 프로젝트에서 %{file_storage}을(를) 제거하시겠습니까?
+      project_storage_delete_result_1: 해당 파일 및 폴더에 대한 모든 링크가 제거됩니다
+      project_storage_delete_result_2: 자동으로 관리되는 프로젝트 폴더 및 이 폴더 내 모든 파일이 삭제됩니다
+      storage: 외부 파일 저장소로 사용 중인 %{file_storage}을(를) 삭제하시겠습니까?
+      storage_delete_result_1: 저장소를 현재 사용 중인 모든 프로젝트에서 이 저장소가 제거됩니다
+      storage_delete_result_2: 해당 파일 및 폴더에 대한 모든 링크가 제거됩니다
+      storage_delete_result_3: 자동으로 관리되는 프로젝트 폴더 및 이 폴더 내 모든 파일이 삭제됩니다
     dependencies:
       nextcloud:
         group_folders_app: 그룹 폴더
@@ -238,23 +238,23 @@ ko:
     error_invalid_provider_type: 유효한 저장소 공급자를 선택하세요.
     file_storage_view:
       access_management:
-        automatic_management: Enable automatically-managed access and folders
-        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
-        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
-        manual_management: Only allow manually-managed access and folders
-        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+        automatic_management: 자동으로 관리되는 액세스 및 폴더 활성화
+        automatic_management_description: 각 프로젝트는 저장소가 해당 프로젝트에 추가될 때 폴더 및 액세스 관리에 대한 자동 관리 또는 수동 접근 방식을 적용할지 결정할 수 있습니다.
+        description: OpenProject는 프로젝트에 파일 저장소가 추가되면 자동으로 프로젝트 폴더를 생성하고 관리할 수 있습니다. 따라서 폴더 구조가 더욱 체계적으로 정리되고 모든 관련 사용자에게 액세스를 보장하는 간편한 액세스 관리가 가능합니다.
+        manual_management: 수동으로 관리되는 액세스 및 폴더만 허용
+        manual_management_description: 이 저장소를 사용하는 프로젝트에는 자동 관리 접근 방식의 옵션이 제공되지 않습니다. 폴더 및 액세스를 수동으로 관리해야 합니다.
         setup_incomplete: 사용자 액세스 및 폴더 생성의 관리 유형을 선택합니다.
-        subtitle: Folder and access management
+        subtitle: 폴더 및 액세스 관리
       access_management_section: 액세스 및 프로젝트 폴더
       automatically_managed_folders: 자동으로 관리되는 폴더
       general_information: 일반 정보
       oauth_configuration: OAuth 구성
       one_drive:
         access_management:
-          automatic_management: Enable automatically-managed access and folders
-          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
-          manual_management: Only allow manually-managed access and folders
-          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+          automatic_management: 자동으로 관리되는 액세스 및 폴더 활성화
+          automatic_management_description: 이 파일 저장소를 사용하는 각 프로젝트는 반드시 폴더 및 액세스 관리에 대한 자동 관리 접근 방식을 사용해야 합니다. 수동으로 수행할 수 없습니다.
+          manual_management: 수동으로 관리되는 액세스 및 폴더만 허용
+          manual_management_description: 이 저장소를 사용하는 프로젝트에는 자동 관리 접근 방식의 옵션이 제공되지 않습니다. 폴더 및 액세스를 수동으로 관리해야 합니다.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: 프로젝트 폴더
@@ -348,10 +348,10 @@ ko:
         sp_client_write_permission_missing: 클라이언트가 SharePoint에서 쓰기 권한이 없는 것 같습니다. 저장소에 대한 설정 설명서를 확인하세요.
         sp_existing_test_folder: 테스트에 필요한 %{folder_name} 폴더가 SharePoint에 이미 있습니다. 이 폴더를 삭제한 후에 다시 시도하세요.
         sp_oauth_request_error: SharePoint에 대한 사용자 바인딩 요청이 실패했습니다. 자세한 내용은 서버 로그를 확인하세요.
-        sp_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+        sp_oauth_request_unauthorized: 현재 사용자는 원격 파일 저장소에 액세스할 수 있는 권한이 없습니다. 자세한 내용은 서버 로그를 확인하세요.
         sp_oauth_token_missing: 사용자가 아직 SharePoint 계정을 링크하지 않았기 때문에 OpenProject가 SharePoint와의 사용자 수준 통신을 테스트할 수 없습니다.
         sp_tenant_id_missing: 구성된 디렉터리(테넌트) ID가 SharePoint에서 누락되었습니다. 구성을 확인하세요.
-        sp_unexpected_content: Unexpected content found in the SharePoint Document Library.
+        sp_unexpected_content: SharePoint 문서 라이브러리에서 예기치 않은 콘텐츠가 발견되었습니다.
         unknown_error: 연결에 대한 유효성 검사를 할 수 없습니다. 알 수 없는 오류가 발생했습니다. 자세한 내용은 서버 로그를 확인하세요.
       label_error: 오류
       label_failed: 실패함
@@ -496,7 +496,7 @@ ko:
         title: 프로젝트 폴더에 대한 권한을 설정하는 중입니다.
     page_titles:
       file_storages:
-        delete: Delete file storage?
+        delete: 파일 저장소를 삭제하시겠습니까?
         subtitle: 작업 패키지의 파일을 업로드하고, 링크하고, 관리하려면 외부 파일 저장소를 추가하세요.
       managed_project_folders:
         subtitle: |-
@@ -511,7 +511,7 @@ ko:
         subtitle: 모든 프로젝트 멤버의 저장소 %{storage_name_link}에 대한 연결 상태를 확인하세요.
         title: 멤버 연결 상태
       project_storages:
-        delete: Remove file storage from project?
+        delete: 프로젝트에서 파일 저장소를 제거하시겠습니까?
     permission_header_explanation: '외부 저장소에 대한 파일 권한은 자동으로 관리되는 프로젝트 폴더 내의 폴더와 파일에만 적용됩니다. 모든 저장소 공급자가 모든 파일 권한을 지원하는 것은 아닙니다. 자세한 내용은 <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>파일 저장소 권한</a>에 대한 설명서를 참조하세요.'
     provider_types:
       label: 공급자 유형
@@ -549,11 +549,9 @@ ko:
     upsell:
       one_drive:
         description: |-
-          Integrate your OneDrive drive as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: OneDrive integration
+          OpenProject를 사용하여 OneDrive 드라이브를 파일 저장소로 통합합니다. 파일을 업로드하고 프로젝트의 작업 패키지에 직접 링크합니다.
+        title: OneDrive 통합
       sharepoint:
         description: |-
-          Integrate your SharePoint site as a file storage with OpenProject. Upload files and link them directly to
-          work packages in a project.
-        title: SharePoint integration
+          OpenProject를 사용하여 SharePoint 사이트를 파일 저장소로 통합합니다. 파일을 업로드하고 프로젝트의 작업 패키지에 직접 링크합니다.
+        title: SharePoint 통합

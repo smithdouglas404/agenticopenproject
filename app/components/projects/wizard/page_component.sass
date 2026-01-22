@@ -59,3 +59,11 @@
 
   @media screen and (max-width: $breakpoint-md)
     grid-template-columns: 170px 1fr
+
+  @media screen and (max-width: $breakpoint-sm)
+    grid-template-areas: "main"
+    grid-template-columns: 1fr
+
+    &--sidebar,
+    &--help
+      display: none

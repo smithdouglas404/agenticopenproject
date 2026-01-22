@@ -50,7 +50,7 @@ delete:
   description: |-
     Removes the project from the current user's favorites.
 
-    This endpoint is deprecated and replaced by [`/api/v3/workspaces/{id}/favorite`](https://www.openproject.org/docs/api/endpoints/workspaces/#unfavorite-project)
+    This endpoint is deprecated and replaced by [`/api/v3/workspaces/{id}/favorite`](https://www.openproject.org/docs/api/endpoints/workspaces/#unfavorite-workspace)
   operationId: Unfavorite_Project
   summary: Unfavorite Project
 post:
@@ -103,6 +103,6 @@ post:
   description: |-
     Adds the project to the current user's favorites.
 
-    This endpoint is deprecated and replaced by [`/api/v3/workspaces/{id}/favorite`](https://www.openproject.org/docs/api/endpoints/workspaces/#favorite-project)
+    This endpoint is deprecated and replaced by [`/api/v3/workspaces/{id}/favorite`](https://www.openproject.org/docs/api/endpoints/workspaces/#favorite-workspace)
   operationId: Favorite_Project
   summary: Favorite Project

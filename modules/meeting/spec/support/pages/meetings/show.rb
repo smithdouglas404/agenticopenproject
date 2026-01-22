@@ -235,6 +235,8 @@ module Pages::Meetings
       open_menu(item) do
         if action.downcase.include?("move")
           click_on "Move"
+        elsif action.downcase.include?("outcome")
+          click_on "Add outcome"
         end
         click_on action
       end
@@ -325,15 +327,21 @@ module Pages::Meetings
     end
 
     def add_outcome(item, &)
-      page.within("#meeting-agenda-items-outcomes-wrapper-component-#{item.id}") do
-        click_link_or_button "Outcome"
+      page.within("#meeting-agenda-items-outcomes-new-button-component-#{item.id}") do
+        click_on "Outcome"
       end
+      expect(page).to have_text("Write outcome", wait: 2)
+      page.find("a", text: "Write outcome").click
       expect_outcome_form(item)
       page.within("#meeting-agenda-items-outcomes-input-component-#{item.id}", &)
     end
 
     def add_outcome_from_menu(item, &)
-      select_action item, "Add outcome"
+      open_menu(item) do
+        click_on "Add outcome"
+        expect(page).to have_text("Write outcome", wait: 2)
+        click_on "Write outcome"
+      end
       expect_outcome_form(item)
       page.within("#meeting-agenda-items-outcomes-input-component-#{item.id}", &)
     end
@@ -779,6 +787,11 @@ module Pages::Meetings
       expect(page).to have_css("#meetings-header-component page-header") do |element|
         element["data-reference-value"] != old_reference_value
       end
+    end
+
+    def section_headers
+      page.all(".op-meeting-section-container[data-test-selector^='meeting-section-header-container-']")
+          .map(&:text)
     end
   end
 end

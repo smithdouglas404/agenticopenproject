@@ -16,10 +16,10 @@ sl:
         news:
           title: 'Novice'
         project_description:
-          title: 'Opis projekta'
+          title: 'Description'
           no_results: "Opis še ni bil napisan. Lahko ga dodate v 'Projektnih nastavitvah'. "
         project_status:
-          title: 'Status projekta'
+          title: 'Status'
           not_started: 'Ni začeto'
           on_track: 'Na dobri poti'
           off_track: 'Izven poti'
@@ -28,7 +28,7 @@ sl:
           finished: 'Končano'
           discontinued: 'Opuščeno'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

@@ -203,6 +203,8 @@ id:
         add_table: "Add table of related work packages"
         edit_query: "Edit query"
         new_group: "Grup baru"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Disetel ulang ke kondisi bawaan"
       working_days:
         calendar:
@@ -631,9 +633,6 @@ id:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Anda harus mengisi kata sandi akun untuk mengkonfirmasi perubahan."
-      title: "Konfirmasi kata sandi anda untuk melanjutkan"
     pagination:
       no_other_page: "You are on the only page."
       pages_skipped: "Pages skipped."
@@ -1122,6 +1121,8 @@ id:
     global_search:
       all_projects: "In all projects"
       close_search: "Close search"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "In this project + subprojects"
       current_project: "In this project"
       recently_viewed: "Recently viewed"

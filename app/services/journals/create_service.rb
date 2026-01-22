@@ -361,7 +361,7 @@ module Journals
     # will already have been increased so nothing needs to be done.
     # But if any of the associated data is updated or if only a cause or note is added, the journable would
     # otherwise not have receive an updated timestamp.
-    def touch_journable_sql(predecessor, notes, cause)
+    def touch_journable_sql(predecessor, notes, cause) # rubocop:disable Metrics/AbcSize
       if journable.class.aaj_options[:timestamp].to_sym == :updated_at
         sql = <<~SQL
           UPDATE
@@ -375,8 +375,9 @@ module Journals
           RETURNING updated_at
         SQL
 
+        keep_same_updated_at = journable.updated_at_previously_changed? && !journable.previously_new_record?
         sanitize(sql,
-                 update_timestamp: journable.updated_at_previously_changed? ? journable.updated_at : nil,
+                 update_timestamp: keep_same_updated_at ? journable.updated_at : nil,
                  predecessor_timestamp: predecessor&.updated_at,
                  id: journable.id)
       else

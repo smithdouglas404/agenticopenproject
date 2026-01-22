@@ -3,12 +3,12 @@ title: OpenProject 17.0.0
 sidebar_navigation:
     title: 17.0.0
 release_version: 17.0.0
-release_date: 2025-12-17
+release_date: 2026-01-14
 ---
 
 # OpenProject 17.0.0
 
-Release date: 2025-12-17
+Release date: 2026-01-14
 
 We released [OpenProject 17.0.0](https://community.openproject.org/versions/2233).
 The release contains several bug fixes and we recommend updating to the newest version.
@@ -16,7 +16,7 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 ## Important feature changes
 
-Take a look at our release video showing the most important features introduced in OpenProject 16.6.0:
+Take a look at our release video showing the most important features introduced in OpenProject 17.0.0:
 
 ![Release video of OpenProject 17.0](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_0_release.mp4)
 
@@ -28,7 +28,7 @@ Real-time collaboration requires a **running Hocuspocus server**:
 
 - **OpenProject Cloud**: Real-time collaboration is enabled automatically for all Cloud instances.
 - **Container-based on-premises installations** (Docker, Docker Compose, Helm/Kubernetes): Intended to work out of the box with 17.0. A Hocuspocus service will be automatically provided as part of the standard setup.
-- **Package-based installations** (DEB/RPM): Does not include Hocuspocus. These installations will continue using CKEditor-based documents unless administrators set up their own Hocuspocus server and configure OpenProject accordingly.
+- **Package-based installations** (DEB/RPM): Does not include Hocuspocus. These installations will continue using CKEditor-based documents unless administrators [set up their own Hocuspocus server and configure OpenProject accordingly](https://github.com/opf/op-blocknote-hocuspocus).
 
 When real-time editing is enabled, Documents support:
 
@@ -51,6 +51,8 @@ When real-time editing is enabled, Documents support:
 
 ![OpenProject Documents module showing a document "Planning of the year 2026" with 3 active editors](openproject-documents-collaboration-1.png)
 
+See our system admin guide for [detailed information on real time collaboration with OpenProject](../../system-admin-guide/documents/#real-time-collaboration-in-documents).
+
 ### Programs and portfolios for strategic structuring (Enterprise add-on)
 
 OpenProject 17.0 introduces hierarchical workspaces to better organize large project landscapes. Customers of the **Enterprise Premium plan** can now structure related items — **projects, programs, and portfolios** — to align operational work with strategic goals.
@@ -67,12 +69,12 @@ Creating workspaces also becomes more consistent: administrators can define defa
 
 A dedicated global permission now controls who may create programs and portfolios, ensuring that the new hierarchy can be introduced in a controlled way.
 
-This update lays the foundation for future portfolio-level and program-level capabilities in OpenProject.
+This update lays the foundation for future portfolio-level and program-level capabilities in OpenProject. [See our user guide to learn more about the portfolio module (Enterprise add-on) in OpenProject](../../user-guide/portfolios/).
 
 >[!NOTE]
 > This new hierarchy is especially valuable for organizations working with structured project management frameworks such as **PM²** or **PMflex**, where programs and portfolios play a central role.
 
-screenshot
+![OpenProject portfolio in global menu](openproject-17-0-portfolios-highlighted.png)
 
 ### Better meeting management with draft mode, presentation mode, multiple outcomes, and iCal subscription
 
@@ -86,6 +88,8 @@ A banner clearly indicates draft mode, and invitations are only sent once the me
 
 ![OpenProject meeting draft mode, indicated by a "Draft" status and a banner explaining draft mode. There is a green button "Open meeting in the upper right corner".](openproject-17-0-meeting-draft-mode.png)
 
+See our user guide to [learn more about meeting draft mode in OpenProject](../../user-guide/meetings/one-time-meetings/#meeting-draft-mode).
+
 #### Full-screen presentation mode
 
 The new **presentation mode** offers a distraction-free, full-screen view that focuses on the current agenda item. It shows the meeting title, agenda item details, and navigation controls in a clear layout, including:
@@ -94,6 +98,8 @@ The new **presentation mode** offers a distraction-free, full-screen view that f
 - a sticky footer with progress, previous/next navigation and a running timer.
 
 Unlike the standard view, changes made by participants are reflected **live** in presentation mode, so moderators and attendees always see the current state of the agenda without additional pop-ups. Keyboard navigation using arrow keys is possible.
+
+See our user guide to [learn how to present a meeting in OpenProject](../../user-guide/meetings/one-time-meetings/#present-a-meeting).
 
 #### Multiple text-based outcomes per agenda item
 
@@ -106,6 +112,8 @@ Agenda items can now hold **multiple text-based outcomes**: The **+ Outcome** bu
 To avoid duplicate or confusing calendar invites, **users can now subscribe to all their meetings through a single iCal subscription URL** from the My meetings page or settings. External calendars (for example Outlook, Apple Calendar, or Open-Xchange) stay in sync automatically. Individual *.ics files* remain available when needed, but sending them is now more clearly controlled via dedicated options when creating or updating meetings.
 
 ![My meetings page: Clicking on the More menu on the upper right corner opens a clickable option to "Subscribe to calendar"](openproject-17-0-meeting-subscribe-calendar.png)
+
+See our user guide to [learn how to subscribe to OpenProject meetings](../../user-guide/meetings/#create-a-subscription).
 
 ### Updated SharePoint integration with more restrictive permissions (Enterprise add-on)
 
@@ -124,13 +132,13 @@ When configuring SharePoint storage, administrators now benefit from:
 
 OpenProject continues to support both the legacy permission model and the new *Sites.Selected* approach, allowing administrators to choose whichever fits their security standards.
 
-screenshot
+See our system admin guide to learn more about the [SharePoint integration](../../user-guide/file-management/sharepoint-integration/) and now separate [OneDrive integration](../../user-guide/file-management/one-drive-integration/) for OpenProject.
 
 ### Redesigned project overview with new tabs, configurable widgets, and an improved layout
 
-OpenProject 17.0 introduces a **major redesign of the project overview**, making key information easier to understand and share.
+OpenProject 17.0 introduces a **major redesign of the project overview, which is now called "project home"**, making key information easier to understand and share.
 
-The page is now split into two tabs:
+The project home page is now split into two tabs:
 
 - **Overview** — a clean, structured summary with fixed widgets such as description, status, members, subitems, news, lifecycle dates, and project attributes.
 - **Dashboard** — the fully editable area for custom widgets, now without the previous right-hand panel.
@@ -139,6 +147,8 @@ The redesign also introduces a **new widget for Subitems** and improves existing
 
 ![OpenProject Project home showing both the Overview tab and the Dashboard tab](openproject-17-0-home-dashboard-overview.jpg)
 
+[Learn more about the project home page in our user guide](../../user-guide/project-home/).
+
 ### Improved project creation flow with better template selection
 
 Creating new projects is now easier and more structured. The template selection has been moved to a **dedicated first step**, offering a clearer visual layout and better guidance. After choosing a template or a blank project, users proceed to the regular creation form.
@@ -146,6 +156,8 @@ Creating new projects is now easier and more structured. The template selection 
 When using blank projects, required custom fields are shown in a separate final step. Project templates used for programs and portfolios are also prefilling properly when created from context (e.g., via the Subitems widget or the top navigation).
 
 ![OpenProject "New project" creation showing several pre-created templates to choose from, including a selected "Blank project". Below are buttons to "Cancel" and "Continue"](openproject-17-0-templates.png)
+
+See our user guide to [learn more about project templates in OpenProject](../../user-guide/projects/project-templates/).
 
 ### Option to guard the privacy of users not working in the same project more strictly
 
@@ -167,7 +179,7 @@ Existing permission configurations are automatically migrated so that **current 
 
 The user invitation dialog has been redesigned with Primer for a clearer and more consistent experience. The flow now shows only the projects where a user is allowed to invite members, improves autocompletion for users and emails, and displays errors inline instead of multi-step confirmations. This update also prepares the system for the new [visibility rules introduced in this release](#option-to-guard-the-privacy-of-users-not-working-in-the-same-project-more-strictly).
 
-screenshot
+![User invitation modal in OpenProject, redesigned with Primer design system in 17.0](openproject-17-0_getting_started_invite_new_user_popover_form_invitation_message.png)
 
 ### Smarter global search including type and status, improving precision in several autocompleters
 
@@ -192,7 +204,7 @@ OpenProject 17.0 continues the accessibility initiative with several enhancement
 - Charts on the project overview include improved color contrast and descriptive summaries to support assistive technologies.
 - The Gantt chart is now hidden from screen readers to avoid confusing non-informational output.
 
-These improvements make OpenProject easier to navigate for users relying on screen readers or high-contrast environments.
+These improvements make OpenProject easier to navigate for users relying on screen readers or high-contrast environments. If you're interested in accessibility topics for OpenProject, please see this [accessibility checklist](../../development/accessibility-checklist/). 
 
 ### Enhanced project attribute help texts with captions and direct editing
 
@@ -212,9 +224,7 @@ Depending on screen size:
 - desktop logo only
 - or both (automatically switching between them)
 
-...are shown.
-
-If no custom logo is provided, the OpenProject logo remains the default.
+...are shown. If no custom logo is provided, the OpenProject logo remains the default.
 
 ### Required project attributes
 
@@ -238,7 +248,7 @@ When placed at the start of a line, long text is rendered fully. If inserted mid
 
 ### New permission to export projects
 
-A new permission allows administrators to control who may export project lists as XLS, CSV, or PDF. This helps manage server load and restrict data extraction to authorized users.
+The new permission "Export projects" allows administrators to control who may export project lists as XLS, CSV, or PDF. This helps manage server load and restrict data extraction to authorized users.
 
 ### Updated tab order in the work package view
 
@@ -252,18 +262,17 @@ To reflect usage patterns, the tab order in the work package view has been updat
 
 ## Important technical changes
 
+### Package sources updates to packages.openproject.com
+
+Our packaged-installations were previously being fetched from `dl.packager.io`, hosted by our package provider. Starting with 17.0, the package source has been changed to `packages.openproject.com`. This new package source includes previous releases of 16.X.
+
+To update your local package sources, please remove the package repositories from your file-system and re-add them, following the "Major upgrades" section of [our upgrading installation guide](../../installation-and-operations/operation/upgrading/). This does not affect the actual upgrade of the OpenProject application.
+
 ### PostgreSQL update to 17.0
 
 The docker and packaged installations are now using PostgreSQL 17.0 by default. Note that there is no automatic upgrade for your cluster if you are running older versions of PostgreSQL. Please see [our database migration guide](../../installation-and-operations/misc/migration-to-postgresql17/) on how to upgrade to newer versions of PostgreSQL.
 
 For packaged installations using SLES 12 and 15, automatic installation of PostgreSQL has been removed due to incompatible repositories being used. Please [follow the official documentation](https://www.postgresql.org/about/news/installing-postgresql-on-sles-15-just-got-easier-and-better-2814/) on how to upgrade your database for these distributions.
-
-### Removal of special semver
-
-We removed the `special` fragment of the semantic version of OpenProject. This has not been in use.
-Unless you are relying on this value in one of your plugins, you can ignore this change.
-
-Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 
 ### Built-in OAuth application for easier external client setup
 
@@ -272,16 +281,6 @@ OpenProject now includes a built-in OAuth application that simplifies authentica
 ### Improved perceived performance of the project selector
 
 The project selector has been optimised to feel significantly faster, especially in instances with many projects. Instead of loading the full project tree at once, OpenProject now loads up to 300 projects initially and fetches additional entries dynamically during search. This reduces waiting times and improves responsiveness across the application.
-
-
-
-### PostgreSQL update to 17.0
-
-The docker and packaged installations are now using PostgreSQL 17.0 by default. Note that there is no automatic upgrade for your cluster if you are running older versions of PostgreSQL. Please see [our database migration guide](../../installation-and-operations/misc/migration-to-postgresql17/) on how to upgrade to newer versions of PostgreSQL.
-
-For packaged installations using SLES 12 and 15, automatic installation of PostgreSQL has been removed due to incompatible repositories being used. Please [follow the official documentation](https://www.postgresql.org/about/news/installing-postgresql-on-sles-15-just-got-easier-and-better-2814/) on how to upgrade your database for these distributions.
-
-
 
 ### Removal of special semver
 
@@ -304,68 +303,93 @@ Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 - Bugfix: Back navigation from Full work package page to Rails pages broken \[[#60636](https://community.openproject.org/wp/60636)\]
 - Bugfix: List of supported environment variables doesn&#39;t contain OIDC variables \[[#61278](https://community.openproject.org/wp/61278)\]
 - Bugfix: Time is not displayed clearly in an auto-generated subject \[[#63477](https://community.openproject.org/wp/63477)\]
+- Bugfix: Page subheadings do not go full width \[[#63744](https://community.openproject.org/wp/63744)\]
 - Bugfix: Low contrast in dark mode: links in ckEditor \[[#64461](https://community.openproject.org/wp/64461)\]
 - Bugfix: SSO users can still use the internal login but can&#39;t change password \[[#64567](https://community.openproject.org/wp/64567)\]
+- Bugfix: When a hierarchy cf value is deleted in Administration, the old value still applies in wp and prevents updating \[[#64827](https://community.openproject.org/wp/64827)\]
+- Bugfix: Wiki: Breadcrumbs return 404 page error \[[#65031](https://community.openproject.org/wp/65031)\]
 - Bugfix: Global search is not usable via keyboard \[[#65066](https://community.openproject.org/wp/65066)\]
-- Bugfix: Truncation of &quot;Tage&quot; (Days) in duration field when language=DE \[[#65227](https://community.openproject.org/wp/65227)\]
-- Bugfix: Validation of essential OIDC claims causes server error when failing \[[#66289](https://community.openproject.org/wp/66289)\]
 - Bugfix: Insufficient contrast in color mode light high contrast \[[#67175](https://community.openproject.org/wp/67175)\]
 - Bugfix: Wrong time indicated for some meetings in iCal download \[[#67330](https://community.openproject.org/wp/67330)\]
 - Bugfix: BlockNote: bullet points don&#39;t show when saved if followed by checklist \[[#67383](https://community.openproject.org/wp/67383)\]
 - Bugfix: BlockNote: Toggle lists appear as bullet points after a document is saved \[[#67384](https://community.openproject.org/wp/67384)\]
 - Bugfix: BlockNote: Always adding an extra row (header) in the table \[[#67389](https://community.openproject.org/wp/67389)\]
-- Bugfix: Fix accessibility issues in Angular templates detected by ESLint \[[#67399](https://community.openproject.org/wp/67399)\]
-- Bugfix: BlockNote: Color for text not applied from the block side menu \[[#67507](https://community.openproject.org/wp/67507)\]
 - Bugfix: BlockNote: Video and audio don&#39;t play and don&#39;t show when saved \[[#67533](https://community.openproject.org/wp/67533)\]
-- Bugfix: BlockNote: OpenProject work packages are sorted by their ID instead of the last updated by \[[#67536](https://community.openproject.org/wp/67536)\]
 - Bugfix: BlockNote: Work package macro loses its styling upon save and also loses its functionality on edit \[[#67537](https://community.openproject.org/wp/67537)\]
 - Bugfix: BlockNote: On the Work package macro the status is invisible on black background \[[#67538](https://community.openproject.org/wp/67538)\]
 - Bugfix: BlockNote: work package search does not list the correct wp when searching with ID \[[#67540](https://community.openproject.org/wp/67540)\]
-- Bugfix: BlockNote: searching for a non-existent work package results in placeholder string being saved in the editor \[[#67554](https://community.openproject.org/wp/67554)\]
 - Bugfix: BlockNote: underline functionality doesn&#39;t render correctly when saved \[[#67555](https://community.openproject.org/wp/67555)\]
 - Bugfix: Low color contrast on Buy now button on enterprise banners \[[#67834](https://community.openproject.org/wp/67834)\]
-- Bugfix: BlockNote on mobile: slash menu almost out of sight \[[#67849](https://community.openproject.org/wp/67849)\]
-- Bugfix: BlockNote on mobile: placeholder text overlaps the list element in toggle list \[[#67850](https://community.openproject.org/wp/67850)\]
-- Bugfix: BlockNote on mobile: emoji picker overflows horizontally and unable to scroll \[[#67852](https://community.openproject.org/wp/67852)\]
-- Bugfix: BlockNote on mobile: impossible to scroll through work package dropdown \[[#67853](https://community.openproject.org/wp/67853)\]
 - Bugfix: TypeError in Storages::AutomaticallyManagedStorageSyncJob#perform \[[#68026](https://community.openproject.org/wp/68026)\]
-- Bugfix: Mobile web: When deep linking to a comment the comment is not fully scrolled into view \[[#68221](https://community.openproject.org/wp/68221)\]
-- Bugfix: Updating the activity anchor URL without a page load does not highlight the relevant target element \[[#68262](https://community.openproject.org/wp/68262)\]
-- Bugfix: DangerDialog text is unnecessarily convoluted \[[#68377](https://community.openproject.org/wp/68377)\]
-- Bugfix: When deep linking after a large image comment, the highlighted comment is out of view \[[#68409](https://community.openproject.org/wp/68409)\]
 - Bugfix: When logging out, display shortly defaults to light mode before detecting OS display mode \[[#68459](https://community.openproject.org/wp/68459)\]
 - Bugfix: Sending a &quot;name&quot; property to the users API crashes \[[#68501](https://community.openproject.org/wp/68501)\]
 - Bugfix: User with readonly access to documents can connect to hocuspocus and make changes \[[#68503](https://community.openproject.org/wp/68503)\]
-- Bugfix: Documents index page: pagination per page options overflow on mobile \[[#68533](https://community.openproject.org/wp/68533)\]
 - Bugfix: UI broken when user with whom a wp has been shared opens the project \[[#68561](https://community.openproject.org/wp/68561)\]
 - Bugfix: Health check for offline\_access happens too late \[[#68615](https://community.openproject.org/wp/68615)\]
-- Bugfix: Documents index page: loading indicator for search is old \[[#68625](https://community.openproject.org/wp/68625)\]
 - Bugfix: Opening placeholder user profile gives a 500 \[[#68655](https://community.openproject.org/wp/68655)\]
-- Bugfix: User cannot correct input in user invite modal \[[#68658](https://community.openproject.org/wp/68658)\]
 - Bugfix: Fix various Browser console warnings 😈 \[[#68666](https://community.openproject.org/wp/68666)\]
 - Bugfix: &quot;Session expiry time after inactivity&quot; always shown in Admin &gt; Authentication &gt; Login and registration form \[[#68679](https://community.openproject.org/wp/68679)\]
 - Bugfix: Form state is not initialized when rendering a tree view with already selected items \[[#68698](https://community.openproject.org/wp/68698)\]
-- Bugfix: Project CF of type user does not display groups or placeholder users \[[#68702](https://community.openproject.org/wp/68702)\]
 - Bugfix: Incorrect (British) usage: &quot;expiry&quot; vs &quot;expiration&quot; \[[#68715](https://community.openproject.org/wp/68715)\]
 - Bugfix: Radio buttons to compare Repository Revisions do not adjust correctly \[[#68740](https://community.openproject.org/wp/68740)\]
 - Bugfix: Custom logos with higher details than OpenProject might look small \[[#68766](https://community.openproject.org/wp/68766)\]
 - Bugfix: Adding 1 meeting outcome actually adds 2 \[[#68770](https://community.openproject.org/wp/68770)\]
 - Bugfix: Incorrect phrasing &quot;Copy as one-time&quot; in More menu of meeting series \[[#68825](https://community.openproject.org/wp/68825)\]
+- Bugfix: Filter changes are not persisted when editing an existing project query \[[#68936](https://community.openproject.org/wp/68936)\]
 - Bugfix: Grammatical error in Project life cycle description \[[#68966](https://community.openproject.org/wp/68966)\]
-- Bugfix: Angular widget titles are truncated too much on mobile \[[#68969](https://community.openproject.org/wp/68969)\]
 - Bugfix: When a hierarchy/weighted item list is used as filter, sub-items show the short name/score of the ancestor \[[#69014](https://community.openproject.org/wp/69014)\]
 - Bugfix: Draft meetings don&#39;t show up in the meetings selector \[[#69015](https://community.openproject.org/wp/69015)\]
-- Bugfix: Shared work package not showing images of comments \[[#69056](https://community.openproject.org/wp/69056)\]
+- Bugfix: It should not be possible to type in our custom BlockNote blocks \[[#69067](https://community.openproject.org/wp/69067)\]
+- Bugfix: The URL for the background job dialog is not generated correctly. \[[#69119](https://community.openproject.org/wp/69119)\]
 - Bugfix: Ungracefully stop synchronization if Nextcloud plugin is disabled \[[#69177](https://community.openproject.org/wp/69177)\]
 - Bugfix: 500er when changing sort order of work package status in administration \[[#69186](https://community.openproject.org/wp/69186)\]
-- Bugfix: Reduce the amount of Document journals being created \[[#69228](https://community.openproject.org/wp/69228)\]
 - Bugfix: SSO Logout Url not correctly forwarded to Logout Endpoint \[[#69234](https://community.openproject.org/wp/69234)\]
-- Bugfix: Label for the admin document types reflects &quot;priorities&quot; instead of &quot;types&quot; in it&#39;s messaging \[[#69304](https://community.openproject.org/wp/69304)\]
 - Bugfix: Clicking &quot;Check all&quot;/&quot;Uncheck all&quot; opens and closes collapsible sections \[[#69325](https://community.openproject.org/wp/69325)\]
 - Bugfix: The step counter is incorrect for templates \[[#69348](https://community.openproject.org/wp/69348)\]
 - Bugfix: Adding child items to a hierarchy sometimes inserts them at the wrong place \[[#69358](https://community.openproject.org/wp/69358)\]
 - Bugfix: Subitems overview widget can be navigated until blankslate + does not update URL \[[#69359](https://community.openproject.org/wp/69359)\]
-- Bugfix: Project filter does not work \[[#69439](https://community.openproject.org/wp/69439)\]
+- Bugfix: Error when accepting meeting invite in Outlook \[[#69361](https://community.openproject.org/wp/69361)\]
+- Bugfix: Complete specs for autocompleter changes \[[#69450](https://community.openproject.org/wp/69450)\]
+- Bugfix: User who is not an instance admin cannot create a PIR \[[#69497](https://community.openproject.org/wp/69497)\]
+- Bugfix: Deep links to the create project form are not redirected after login \[[#69520](https://community.openproject.org/wp/69520)\]
+- Bugfix: PIR folder name should use the system&#39;s default locale \[[#69560](https://community.openproject.org/wp/69560)\]
+- Bugfix: Status in portfolio index gets squashed by too long title \[[#69563](https://community.openproject.org/wp/69563)\]
+- Bugfix: AXe accessibility violations in Workflows, Permissions Report checkbox matrices \[[#69564](https://community.openproject.org/wp/69564)\]
+- Bugfix: &quot;Check all&quot;/&quot;Uncheck all&quot; is truncated in Work Packages &gt; Workflow grid headers \[[#69565](https://community.openproject.org/wp/69565)\]
+- Bugfix: Workspace not updated in API after favoring it \[[#69598](https://community.openproject.org/wp/69598)\]
+- Bugfix: News widget is also shown if module is deactivated \[[#69599](https://community.openproject.org/wp/69599)\]
+- Bugfix: Not possible to add create\_project role when the template permissions feature is disabled \[[#69627](https://community.openproject.org/wp/69627)\]
+- Bugfix: Performance of project list poor in instances with multiple project attributes \[[#69648](https://community.openproject.org/wp/69648)\]
+- Bugfix: &quot;New project&quot; role is assigned after dependencies are copied \[[#69667](https://community.openproject.org/wp/69667)\]
+- Bugfix: Adjust the workspace badge icon style to primer \[[#69693](https://community.openproject.org/wp/69693)\]
+- Bugfix: Missing notification when participants are removed from a meeting \[[#69744](https://community.openproject.org/wp/69744)\]
+- Bugfix: All custom fields activated in the project end up in the PIR \[[#69796](https://community.openproject.org/wp/69796)\]
+- Bugfix: Missing field caption for &quot;Custom logo mobile&quot; section in administration - design \[[#69905](https://community.openproject.org/wp/69905)\]
+- Bugfix: Wrong field caption in a new project attribute creation form \[[#69923](https://community.openproject.org/wp/69923)\]
+- Bugfix: Click to select work package on slash menu does not work under a shadow root \[[#69924](https://community.openproject.org/wp/69924)\]
+- Bugfix: Grammar issue: &quot;since X days&quot; on Notifications page \[[#69927](https://community.openproject.org/wp/69927)\]
+- Bugfix: Inconsistent widget name for &quot;project description&quot; widget on project home page \[[#69972](https://community.openproject.org/wp/69972)\]
+- Bugfix: Fix invisible skeleton loader cause by primer stylesheets exclusion in blocknote shadow dom \[[#69986](https://community.openproject.org/wp/69986)\]
+- Bugfix: Special letters like Umlaute in file links to project initiation requests \[[#70004](https://community.openproject.org/wp/70004)\]
+- Bugfix: Grammatical error on attribute help texts \[[#70006](https://community.openproject.org/wp/70006)\]
+- Bugfix: Multi-select filters do not show filtered list in cost reports \[[#70048](https://community.openproject.org/wp/70048)\]
+- Bugfix: PDF export of work packages does not resolve macros of custom fields successfully \[[#70083](https://community.openproject.org/wp/70083)\]
+- Bugfix: Missing notification when a one-time meeting exits draft mode \[[#70109](https://community.openproject.org/wp/70109)\]
+- Bugfix: Missing notification when the title of a one-time meeting is updated \[[#70110](https://community.openproject.org/wp/70110)\]
+- Bugfix: Missing notification when a series is ended \[[#70111](https://community.openproject.org/wp/70111)\]
+- Bugfix: Race condition allows to create resurces with the same name, bypassing our uniqueness validation \[[#70112](https://community.openproject.org/wp/70112)\]
+- Bugfix: Missing notification when restoring a cancelled occurrence \[[#70113](https://community.openproject.org/wp/70113)\]
+- Bugfix: Inconsistent label for „Status“ and „Project status“ \[[#70142](https://community.openproject.org/wp/70142)\]
+- Bugfix: Newly created project attributes are added as columns to the default project list \[[#70147](https://community.openproject.org/wp/70147)\]
+- Bugfix: Filters close button in Project members page lacks sufficient spacing \[[#70167](https://community.openproject.org/wp/70167)\]
+- Bugfix: Ambiguous icon for Session revocation on Session management page \[[#70168](https://community.openproject.org/wp/70168)\]
+- Bugfix: Missing notification when enabling email notifications for a series \[[#70178](https://community.openproject.org/wp/70178)\]
+- Bugfix: More resources do not properly validate name uniqueness on the database level \[[#70224](https://community.openproject.org/wp/70224)\]
+- Bugfix: Sections in meeting agenda not displayed correctly when moved \[[#70336](https://community.openproject.org/wp/70336)\]
+- Bugfix: Global search box in small devices misses the drop down list \[[#70352](https://community.openproject.org/wp/70352)\]
+- Bugfix: There is a recent change in Capabilities API without backward compatibility  \[[#70356](https://community.openproject.org/wp/70356)\]
+- Bugfix: Fix close button accessibility errors found by eslint, ERB Lint \[[#70420](https://community.openproject.org/wp/70420)\]
+- Feature: Have specific role or permission to access templated project, but membership is not instantiated on copy \[[#43571](https://community.openproject.org/wp/43571)\]
 - Feature: Reduce visibility of all users when addings members to a project \[[#55270](https://community.openproject.org/wp/55270)\]
 - Feature: Add work package type, status and meta status to what the global search is searching on during typeahead  \[[#56831](https://community.openproject.org/wp/56831)\]
 - Feature: Configure project attribute sections to be shown as widgets on the project overview page \[[#61445](https://community.openproject.org/wp/61445)\]
@@ -378,7 +402,6 @@ Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 - Feature: Primerize user invitation flow \[[#64879](https://community.openproject.org/wp/64879)\]
 - Feature: Redesign the &quot;My Account&quot; page using Primer \[[#65402](https://community.openproject.org/wp/65402)\]
 - Feature: Project attribute help texts can be added directly in creation or edit of the attribute \[[#65413](https://community.openproject.org/wp/65413)\]
-- Feature: Add SharePoint documentation \[[#65553](https://community.openproject.org/wp/65553)\]
 - Feature: Create &quot;Portfolio&quot; and &quot;Program&quot; \[[#65850](https://community.openproject.org/wp/65850)\]
 - Feature: Visualize &quot;Portfolio&quot;, &quot;Program&quot; and &quot;Project&quot; differently in dropdowns and lists \[[#66307](https://community.openproject.org/wp/66307)\]
 - Feature: Limit hierarchy options based on workspace type \[[#66308](https://community.openproject.org/wp/66308)\]
@@ -412,11 +435,10 @@ Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 - Feature: Administration of real-time collaboration settings \[[#68732](https://community.openproject.org/wp/68732)\]
 - Feature: Enforce EE level for portfolio module and the creation of programs and portfolios \[[#68763](https://community.openproject.org/wp/68763)\]
 - Feature: List currently connected users \[[#68764](https://community.openproject.org/wp/68764)\]
-- Feature: Add translations to the rich-link workpackage macro \[[#68811](https://community.openproject.org/wp/68811)\]
+- Feature: Add capability for translations to the rich-link workpackage macro \[[#68811](https://community.openproject.org/wp/68811)\]
 - Feature: Improve project create form by moving template selection to a separate page \[[#68856](https://community.openproject.org/wp/68856)\]
 - Feature: Set project roles based on selection in user project attribute \[[#68859](https://community.openproject.org/wp/68859)\]
 - Feature: Send out notification on creation of a project \[[#68860](https://community.openproject.org/wp/68860)\]
-- Feature: Create work package to submit project initiation request \[[#68862](https://community.openproject.org/wp/68862)\]
 - Feature: Store PDF export of project wizard in Nextcloud/project storage \[[#68864](https://community.openproject.org/wp/68864)\]
 - Feature: Remove experimental feature flag for built-in OAuth2 application \[[#68875](https://community.openproject.org/wp/68875)\]
 - Feature: Truncate breadcrumb in PageHeader \[[#68906](https://community.openproject.org/wp/68906)\]
@@ -425,7 +447,7 @@ Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 - Feature: Primerize Administation &gt; Attribute help texts forms \[[#68953](https://community.openproject.org/wp/68953)\]
 - Feature: Style the rich-link workpackage macro (dark theme) \[[#68978](https://community.openproject.org/wp/68978)\]
 - Feature: Primerize Admin &gt; System Settings forms \[[#69095](https://community.openproject.org/wp/69095)\]
-- Feature: Move &quot;meetings&quot; tab before GitHub and GitHub \[[#69118](https://community.openproject.org/wp/69118)\]
+- Feature: Move &quot;meetings&quot; tab before GitHub and GitLab \[[#69118](https://community.openproject.org/wp/69118)\]
 - Feature: Introduce permission to export projects \[[#69124](https://community.openproject.org/wp/69124)\]
 - Feature: Design Custom Admin Page for associating the custom field with a role \[[#69164](https://community.openproject.org/wp/69164)\]
 - Feature: When changing roles associated with a custom field, modify existing memberships \[[#69166](https://community.openproject.org/wp/69166)\]
@@ -433,26 +455,29 @@ Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 - Feature: Max width for create wizard and centered design \[[#69194](https://community.openproject.org/wp/69194)\]
 - Feature: Use caption text for project attributes \[[#69198](https://community.openproject.org/wp/69198)\]
 - Feature: Add high contrast color variants for status and type to BlockNote work package link block \[[#69224](https://community.openproject.org/wp/69224)\]
+- Feature: Update phrasing and explanation of automatically-managed project folders (at an admin level) \[[#69324](https://community.openproject.org/wp/69324)\]
 - Feature: Button to create a project from the subitem widget in a portfolio overview with pre-selected templates \[[#69347](https://community.openproject.org/wp/69347)\]
-- Feature: Button to open project creation wizard from overview \[[#69402](https://community.openproject.org/wp/69402)\]
-- Feature: Add relative link to project initiation request from work package comment \[[#69403](https://community.openproject.org/wp/69403)\]
+- Feature: Required project attributes (which are not activated for all project) \[[#69399](https://community.openproject.org/wp/69399)\]
 - Feature: Remove border box in project creation form \[[#69405](https://community.openproject.org/wp/69405)\]
 - Feature: Filter project attributes of type hierarchy by short name \[[#69412](https://community.openproject.org/wp/69412)\]
 - Feature: Better naming of the project copy status when copying from template \[[#69418](https://community.openproject.org/wp/69418)\]
 - Feature: Hide &quot;Subproject of&quot; field when selected from inside a parent \[[#69419](https://community.openproject.org/wp/69419)\]
+- Feature: Seeder + Migration: Enable Documents module per default for new projects \[[#69562](https://community.openproject.org/wp/69562)\]
+- Feature: Enable hocuspocus in on-prem deployments by default \[[#70461](https://community.openproject.org/wp/70461)\]
 - Feature: Allow SharePoint integration setup with more restrictive permissions \[[#58445](https://community.openproject.org/wp/58445)\]
 
 <!-- END AUTOMATED SECTION -->
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
+
 A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to  Alexander Aleschenko, Stefan Weiberg, and Markus Preisinger.
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
-- [William](https://crowdin.com/profile/williamfromtw), for a great number of translations into Chinese Traditional.
-- [Pickart](https://crowdin.com/profile/fantasmak10), for a great number of translations into Catalan.
-- [Maxime77](https://crowdin.com/profile/maxime77), for a great number of translations into French.
+- [stenberg.thomas](https://crowdin.com/profile/stenberg.thomas), for a great number of translations into Swedish.
+- [natalianikolaieva1803](https://crowdin.com/profile/natalianikolaieva1803), for a great number of translations into Ukrainian.
+- [Sharmin](https://crowdin.com/profile/sh.shokri.software.engineer), for a great number of translations into Persian.
 
 Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
 

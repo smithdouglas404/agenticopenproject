@@ -54,7 +54,7 @@ Use the [OpenProject REST API](https://www.openproject.org/docs/api) to migrate 
 
 ### 3. Excel synchronization
 
-The [Excel synchronization integration](https://www.openproject.org/docs/system-admin-guide/integrations/excel-synchronization) allows you to import and export tabular data between JIRA, Confluence, and OpenProject using spreadsheets.
+The [Excel synchronization integration](../../system-admin-guide/integrations/excel-synchronization) allows you to import and export tabular data between JIRA, Confluence, and OpenProject using spreadsheets.
 This method is suitable for small- to medium-sized migrations and provides an opportunity to review and clean data manually before import.
 
 ### 4. Confluence → Markdown → Wiki

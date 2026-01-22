@@ -203,6 +203,8 @@ cs:
         add_table: "Přidat seznam se souvisejícími pracovními balíčky"
         edit_query: "Upravit dotaz"
         new_group: "Nová skupina"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Obnovit výchozí nastavení"
       working_days:
         calendar:
@@ -634,9 +636,6 @@ cs:
           add: "Přidat nastavení pro projekt"
           already_selected: "Tento projekt je již vybrán"
           remove: "Odstranit nastavení projektu"
-    password_confirmation:
-      field_description: "Pro potvrzení této změny je třeba zadat heslo k účtu."
-      title: "Pro pokračování potvrďte vaše heslo"
     pagination:
       no_other_page: "Jste na jediné stránce."
       pages_skipped: "Pages skipped."
@@ -1134,6 +1133,8 @@ cs:
     global_search:
       all_projects: "Ve všech projektech"
       close_search: "Zavřít hledání"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "V tomto projektu + podprojektech"
       current_project: "V tomto projektu"
       recently_viewed: "Nedávno zobrazené"

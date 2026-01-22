@@ -145,6 +145,8 @@ Rails.application.routes.draw do
       collection do
         get :new, action: :new, as: :new
         get :cancel_new
+        get :create_work_package_dialog
+        post :create_work_package
       end
       member do
         get :cancel_edit

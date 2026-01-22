@@ -15,10 +15,10 @@ uk:
         view_all_members: "Переглянути всіх учасників"
         show_members_count: "Показати всі %{count} користувачів"
         x_more:
-          one: "та ще один учасник."
-          few: "and %{count} more members."
-          many: "and %{count} more members."
-          other: "та ще %{count} учасників."
+          one: "і ще один учасник."
+          few: "і ще %{count} учасники."
+          many: "і ще %{count} учасників."
+          other: "і ще %{count} учасника."
       news:
         no_results: "Нічого нового для звітування."
   activerecord:

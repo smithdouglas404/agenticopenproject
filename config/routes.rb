@@ -45,6 +45,8 @@ Rails.application.routes.draw do
 
   get "/api/docs" => "api_docs#index"
 
+  mount API::Mcp => "/mcp"
+
   # Redirect deprecated issue links to new work packages uris
   get "/issues(/)" => redirect("#{rails_relative_url_root}/work_packages")
   # The URI.escape doesn't escape / unless you ask it to.
@@ -368,10 +370,6 @@ Rails.application.routes.draw do
       # Destroy uses a get request to prompt the user before the actual DELETE request
       get :destroy_info, as: "confirm_destroy"
       post :deactivate_work_package_attachments
-    end
-
-    collection do
-      get :export_list_modal
     end
 
     resources :versions, only: %i[new create] do
@@ -948,7 +946,7 @@ Rails.application.routes.draw do
     get "/deletion_info" => "users#deletion_info", as: "delete_my_account_info"
     post "/oauth/revoke_application/:application_id" => "oauth/grants#revoke_application", as: "revoke_my_oauth_application"
 
-    resources :sessions, controller: "my/sessions", as: "my_sessions", only: %i[index show destroy]
+    resources :sessions, controller: "my/sessions", as: "my_sessions", only: %i[index destroy]
     resources :auto_login_tokens, controller: "my/auto_login_tokens", as: "my_auto_login_tokens", only: %i[destroy]
 
     get "/banner" => "my/enterprise_banners#show", as: "show_enterprise_banner"
@@ -965,15 +963,16 @@ Rails.application.routes.draw do
         post :generate_api_key
       end
 
+      delete :remove_oauth_client_token
       delete :revoke_api_key
       delete :revoke_ical_token
-      delete :revoke_storage_token
       delete :revoke_ical_meeting_token
     end
   end
 
   scope controller: "my" do
     get "/my/password", action: "password"
+    get "/my/password_confirmation_dialog", action: "password_confirmation_dialog"
     post "/my/change_password", action: "change_password"
 
     get "/my/account", action: "account"

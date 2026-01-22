@@ -16,10 +16,10 @@ fr:
         news:
           title: 'Actualités'
         project_description:
-          title: 'Description du projet'
+          title: 'Description'
           no_results: "Aucune description n'a encore été écrite. Vous pouvez en trouver une dans les \"Paramètres du projet\"."
         project_status:
-          title: 'Statut du projet'
+          title: 'Statut'
           not_started: 'Non démarré'
           on_track: 'Sur la bonne voie'
           off_track: 'Sur la mauvaise voie'
@@ -28,7 +28,7 @@ fr:
           finished: 'Terminé'
           discontinued: 'Interrompu'
         project_status_beta:
-          title: 'Statut du projet (BÊTA)'
+          title: 'Statut (BETA)'
         subprojects:
           title: 'Sous-éléments'
         project_favorites:

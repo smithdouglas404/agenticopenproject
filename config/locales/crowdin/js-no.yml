@@ -203,6 +203,8 @@
         add_table: "Legg til tabell over tilknyttede arbeidspakker"
         edit_query: "Rediger spørring"
         new_group: "Ny gruppe"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Tilbakestill til standard"
       working_days:
         calendar:
@@ -632,9 +634,6 @@
           add: "Legg til innstilling for prosjekt"
           already_selected: "Dette prosjektet er allerede valgt"
           remove: "Fjern prosjektinnstillinger"
-    password_confirmation:
-      field_description: "Du må skrive inn ditt passord for å bekrefte denne endringen."
-      title: "Bekreft ditt passord for å fortsette"
     pagination:
       no_other_page: "Du er på den eneste siden."
       pages_skipped: "Pages skipped."
@@ -1126,6 +1125,8 @@
     global_search:
       all_projects: "I alle prosjekter"
       close_search: "Lukk søk"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "I dette prosjektet + underprosjekter"
       current_project: "I dette prosjektet"
       recently_viewed: "Nylig sett"

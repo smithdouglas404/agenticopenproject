@@ -37,7 +37,7 @@ module Grids
       param :project
 
       def title
-        Project.human_attribute_name(:status_code)
+        Project.human_attribute_name(:status)
       end
     end
   end

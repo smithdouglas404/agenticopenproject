@@ -203,6 +203,8 @@ tr:
         add_table: "Bağlantılı iş paketlerinin tablosunu ekle"
         edit_query: "Sorguyu düzenle"
         new_group: "Yeni grup"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Varsayılanlara geri yükle"
       working_days:
         calendar:
@@ -632,9 +634,6 @@ tr:
           add: "Proje için ayar ekle"
           already_selected: "Bu proje zaten seçildi"
           remove: "Proje ayarlarını kaldır"
-    password_confirmation:
-      field_description: "Bu değişikliği onaylamak için hesap parolanızı girmeniz gerekir."
-      title: "Devam etmek için parolanızı doğrulayın"
     pagination:
       no_other_page: "Geçerli tek sayfadasınız."
       pages_skipped: "Sayfalar atlandı."
@@ -720,7 +719,7 @@ tr:
       label_two_factor_authentication: "İki aşamalı kimlik doğrulama"
     watchers:
       label_loading: takipçiler yükleniyor...
-      label_error_loading: Takipçileri yüklerken bir hata oluştu
+      label_error_loading: Takip edenleri yüklerken bir hata oluştu
       label_search_watchers: Takipçi arama
       label_add: Takip eden ekle
       label_discard: Seçimi gözardı et
@@ -1126,6 +1125,8 @@ tr:
     global_search:
       all_projects: "Tüm projelerde"
       close_search: "Aramayı kapat"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Bu projede + alt projelerde"
       current_project: "Bu projede"
       recently_viewed: "Son görüntülenenler"

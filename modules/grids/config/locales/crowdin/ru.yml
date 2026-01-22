@@ -16,8 +16,8 @@ ru:
         show_members_count: "Показать всех %{count} участников"
         x_more:
           one: "и еще один участник."
-          few: "and %{count} more members."
-          many: "and %{count} more members."
+          few: "и еще %{count} участника."
+          many: "и еще %{count} участников."
           other: "и еще %{count} участников."
       news:
         no_results: "Ничего нового для отчета."

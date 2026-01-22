@@ -50,12 +50,20 @@ RSpec.describe Queries::Capabilities::Filters::ContextFilter do
         let(:values) { [] }
 
         it "is invalid" do
-          expect(instance)
-            .to be_invalid
+          expect(instance).not_to be_valid
         end
       end
 
       context "with valid value" do
+        it "is valid" do
+          expect(instance)
+            .to be_valid
+        end
+      end
+
+      context "with deprecated but still supported values" do
+        let(:values) { ["p3"] }
+
         it "is valid" do
           expect(instance)
             .to be_valid
@@ -75,8 +83,7 @@ RSpec.describe Queries::Capabilities::Filters::ContextFilter do
         let(:values) { ["a5"] }
 
         it "is invalid" do
-          expect(instance)
-            .to be_invalid
+          expect(instance).not_to be_valid
         end
       end
     end

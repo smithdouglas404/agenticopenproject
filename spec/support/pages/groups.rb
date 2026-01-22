@@ -63,7 +63,7 @@ module Pages
     end
 
     def has_group?(name)
-      has_selector? ".op-border-box-grid--row-item", text: name
+      has_selector? ".op-border-box-grid__row-item", text: name
     end
 
     def group(group_name)

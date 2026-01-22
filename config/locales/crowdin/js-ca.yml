@@ -203,6 +203,8 @@ ca:
         add_table: "Afegeix una taula de paquets de treball relacionats"
         edit_query: "Editar consulta"
         new_group: "Nou grup"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Restableix als valors per defecte"
       working_days:
         calendar:
@@ -632,9 +634,6 @@ ca:
           add: "Afegeix configuracions pel projecte"
           already_selected: "Aquest projecte ja està seleccionat"
           remove: "Elimina les configuracions del projecte"
-    password_confirmation:
-      field_description: "Necessites introduir la contrasenya del teu compte per a confirmar aquest canvi."
-      title: "Confirma la teva contrasenya per continuar"
     pagination:
       no_other_page: "Estàs en la pàgina única."
       pages_skipped: "Pages skipped."
@@ -1126,6 +1125,8 @@ ca:
     global_search:
       all_projects: "En tots els projectes"
       close_search: "Tanca la cerca"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "En aquest projecte + subprojectes"
       current_project: "En aquest projecte"
       recently_viewed: "Vist recentment"

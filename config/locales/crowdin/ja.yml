@@ -191,7 +191,7 @@ ja:
       error_cannot_act_self: "アップロードしたファイルに対してアクションを実行できません。"
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "このビューは、属性表示のカスタム ヘルプ テキストを作成できます。定義すると、このテキストはその属性の横にあるヘルプ アイコンをクリックして表示できます。"
     show_preview: "テキストをプレビュー"
     add_new: "ヘルプ テキストを追加"
@@ -349,7 +349,7 @@ ja:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Check to enable this attribute and make it required in all projects. It cannot be deactivated for individual projects. Existing projects will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -518,7 +518,7 @@ ja:
         text: "この操作では、リストに含まれるプロジェクトは削除されません。本当にこのプロジェクトリストを削除しますか？"
     settings:
       header_details: 基本情報
-      header_status: プロジェクトの進捗状況
+      header_status: Status
       header_relations: プロジェクトの関係
       button_update_details: 基本情報の更新
       button_update_status_description: ステータスの概要を更新
@@ -616,7 +616,7 @@ ja:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: プロジェクトの状態を編集
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -704,9 +704,11 @@ ja:
           create_button: "作成"
           name_label: "トークン名"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "API トークンが生成されました"
-          warning: "このトークンが表示される唯一の時間です。今すぐコピーしてください。"
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "アクセストークンをリセットできませんでした: %{error}"
       failed_to_create_token: "アクセストークンの作成に失敗しました: %{error}"
       failed_to_revoke_token: "アクセストークンの取り消しに失敗しました: %{error}"
@@ -716,6 +718,9 @@ ja:
       notice_api_token_revoked: "APIトークンが削除されました。新しいトークンを作成するには、APIセクションの作成ボタンを使用してください。"
       notice_rss_token_revoked: "RSSトークンが削除されました。新しいトークンを作成するには、RSSセクションのリンクを使用してください。"
       notice_ical_token_revoked: 'プロジェクト "%{token_name}" のカレンダー "%{calendar_name}" の iCalendar トークン "%{project_name}" が取り消されました。 このトークンのiCalendar URLは無効です。'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: 現在、報告するニュースはありません。
@@ -1244,8 +1249,8 @@ ja:
           true: "公開"
           false: "非公開"
         queries: "クエリ"
-        status_code: "プロジェクトステータス"
-        status_explanation: "プロジェクト進捗の概要"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "未着手"
           on_track: "順調"
@@ -1269,7 +1274,6 @@ ja:
         work_packages: "ワークパッケージ"
         workspace_type: "ワークスペースのタイプ"
       project_custom_field:
-        is_required: "Required"
         custom_field_section: セクション
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1898,7 +1902,10 @@ ja:
       status: "ステータス名"
       token/api:
         other: アクセストークン
-      type: "タイプ"
+      token/rss:
+        other: "RSS tokens"
+      type:
+        other: "Types"
       user: "ユーザ"
       version: "バージョン"
       workflow: "ワークフロー"
@@ -2111,6 +2118,7 @@ ja:
   button_click_to_reveal: "明らかにするためにクリック"
   button_close: "閉じる"
   button_collapse_all: "全てを折りたたむ"
+  button_confirm: "Confirm"
   button_configure: "設定"
   button_continue: "続行"
   button_complete: "Complete"
@@ -2516,7 +2524,7 @@ ja:
       enabled: "無効"
   enumeration_activities: "タイムトラッキングアクティビティ"
   enumeration_work_package_priorities: "ワークパッケージの優先度"
-  enumeration_reported_project_statuses: "報告されるプロジェクト進捗状況"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "オーダーの変更に成功しました。"
   enumeration_could_not_be_moved: "列挙は移動できなかった。"
   enterprise_trials:
@@ -2855,6 +2863,7 @@ ja:
       label: "追加"
   my_account:
     access_tokens:
+      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
       no_results:
         title: "表示するアクセス トークンはありません"
         description: "すべてが無効になっています。管理メニューで再度有効にすることができます。"
@@ -2864,34 +2873,56 @@ ja:
         expiration: "有効期限"
       indefinite_expiration: "なし"
       simple_revoke_confirmation: "このトークンを取り消してもよろしいですか？"
+      tabs:
+        client:
+          title: "Client tokens"
+        provider:
+          title: "Provider tokens"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "API トークンを使用すると、サードパーティのアプリケーションが REST API 経由でこの OpenProject サイトと通信できます。"
+        static_token_name: "API token"
         disabled_text: "API トークンは管理者によって有効化されていません。この機能を使用するには管理者に問い合わせてください。"
         add_button: "API トークン"
-      api:
-        static_token_name: "APIトークン"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar サブスクリプションは管理者によって有効になっていません。この機能を使用するには管理者に問い合わせてください。"
-        empty_text_hint: "iCalendar トークンを追加するには、プロジェクトの Calendar モジュール内から新規または既存のカレンダーを購読します。 必要な権限が必要です。"
-      oauth:
+      oauth_application:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Last used at"
         title: "OAuth"
-        text_hint: "OAuth トークンにより、サードパーティ製アプリケーションがこの OpenProject サイトと接続できます。"
-        empty_text_hint: "サードパーティーのアプリケーションへのアクセスが設定されておらず、アクティブになっていません。この機能を有効にするには管理者に問い合わせてください。"
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
-        text_hint: "RSS トークンにより、ユーザーは外部 RSS リーダーを介してこの OpenProject サイトの最新の変更に追いつくことができます。"
-        static_token_name: "RSS トークン"
-        disabled_text: "RSSトークンは管理者によって有効になっていません。この機能を使用するには管理者に問い合わせてください。"
+        table_title: "RSS tokens"
+        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
+        static_token_name: "RSS token"
+        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "ファイルストレージ"
-        text_hint: "ファイルストレージトークンは、このOpenProjectサイトを外部ファイルストレージと接続します。"
-        empty_text_hint: "アカウントにリンクされたストレージへのアクセス権がありません。"
-        revoke_token: "本当にこのトークンを削除しますか？ %{storage}に再度ログインする必要があります"
-        removed: "ファイルストレージトークンを削除しました"
-        failed: "エラーが発生し、トークンを削除できませんでした。後でもう一度お試しください。"
         unknown_storage: "不明なストレージ"
   notifications:
     reasons:
@@ -3385,9 +3416,6 @@ ja:
   label_project_hierarchy: "プロジェクトの階層構造"
   label_project_mappings: "プロジェクト"
   label_project_new: "新規プロジェクト"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "プロジェクト"
   label_project_list_plural: "プロジェクト一覧"
   label_project_life_cycle: "プロジェクトのライフ サイクル"
@@ -3850,7 +3878,7 @@ ja:
   notice_not_authorized: "このページにアクセスする権限がありません。"
   notice_not_authorized_archived_project: "アクセスしようとしたプロジェクトはアーカイブされています。"
   notice_requires_enterprise_token: "エンタープライズトークンが見つからないか、このページへのアクセスを許可していません。"
-  notice_password_confirmation_failed: "パスワードが正しくありません。続行できません。"
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} の検索結果があります。 \n タブで最初の結果へフォーカスします。"
   notice_principals_found_single: "1 つの結果があります。 \n タブでフォーカスします。"
   notice_parent_item_not_found: "Parent item not found."
@@ -4214,15 +4242,23 @@ ja:
   setting_apiv3_cors_origins_text_html: >
     CORS が有効になっている場合、これらは OpenProject API へのアクセスが許可されている起源です。 <br/> 期待される値を指定する方法については、 <a href="%{origin_link}" target="_blank">Origin ヘッダー</a> のドキュメントを確認してください。
   setting_apiv3_write_readonly_attributes: "読み取り専用属性への書き込み権限"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    この API を有効にすると、管理者は作成時に createdAt や author などの静的な読み取り専用属性を書き込むことができるようになります。 <br/> <strong>警告</strong>この設定はデータのインポートなどのユースケースを持ちますが、管理者が他のユーザーになりすましてアイテムを作成することを可能にします。しかし、すべての作成リクエストは真の作成者として記録されます。 </br> 属性とサポートされるリソースの詳細については、 %{api_documentation_link}を参照してください。
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "API ページの最大サイズ"
-  setting_apiv3_max_page_instructions_html: >
-    API が応答する最大ページサイズを設定します。 単一ページでより多くの値を返すAPIリクエストを実行することはできません。 <br/> <strong>警告:</strong> 必要な理由がわかった場合にのみ、この値を変更してください。 高い値に設定すると、パフォーマンスへの影響が大きくなります。 に対し、ページ化されたビューでは、ページ化されたビューでエラーが発生します。
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "文章"
   setting_apiv3_docs_enabled: "ドキュメントページを有効にする"
   setting_apiv3_docs_enabled_instructions_html: >
     Docsページが有効になっている場合は、 <a href="%{link}" target="_blank">%{link}</a> の下でAPIv3 ドキュメントのインタラクティブなビューを取得できます。
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "添付ファイルのアップロードホワイトリスト"
   setting_email_delivery_method: "メールの配信方法"
   setting_emails_salutation: "メール中のアドレス ユーザー"
@@ -4401,7 +4437,7 @@ ja:
       omniauth_direct_login_hint_html: >
         このオプションが有効な場合、ログイン要求は設定された omniauth プロバイダにリダイレクトされます。ログインドロップダウンとサインインページは無効になります。 <br/> <strong>注意:</strong>パスワードログインも無効にしない限り、このオプションを有効にした場合でも、ユーザは内部的に <code>%{internal_path}</code>ログインページにアクセスしてログインすることができます。
       remapping_existing_users_hint: >
-        有効にすると、設定された ID プロバイダは、ユーザが以前にそのプロバイダを通してサインインしたことがなくても、メールアドレスに基づいて既存のユーザにログインできるようになります。これは、OpenProject サイトを新しい SSO プロバイダに移行するときに便利ですが、サイトのすべてのユーザから信頼されていないプロバイダを使用するときには推奨されません。
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         アップロードされたファイルに有効なファイル拡張子および/または MIME タイプのリストを定義します。 <br/> ファイル拡張子（例． <code>%{ext_example}</code>)またはMIMEタイプ(例、 <code>%{mime_example}</code>). <br/> 任意のファイル タイプをアップロードできるようにするには、空のままにします。複数の値を指定できます (各値に 1 行)。

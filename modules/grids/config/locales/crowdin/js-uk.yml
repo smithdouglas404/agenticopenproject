@@ -16,10 +16,10 @@ uk:
         news:
           title: 'Новини'
         project_description:
-          title: 'Опис проекту'
+          title: 'Опис'
           no_results: "Опис ще не створено. Можна вказати в налаштуваннях проекту."
         project_status:
-          title: 'Статус Проекту'
+          title: 'Статус'
           not_started: 'Не почато'
           on_track: 'За графіком'
           off_track: 'Не за графіком'
@@ -28,7 +28,7 @@ uk:
           finished: 'Завершено'
           discontinued: 'Припинено'
         project_status_beta:
-          title: 'Статус проєкту (BETA)'
+          title: 'Статус (BETA)'
         subprojects:
           title: 'Піделементи'
         project_favorites:
@@ -52,7 +52,7 @@ uk:
           title: 'Таблиця робочих пакетів'
         work_packages_graph:
           title: 'Графік робочих пакетів'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "Графік %{chartType} показує пакети робіт, серед яких %{description}."
         work_packages_calendar:
           title: 'Календар'
         work_packages_overview:

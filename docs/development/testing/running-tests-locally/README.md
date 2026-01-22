@@ -256,7 +256,6 @@ To easily change the RSpec examples being run without relaunching `watchexec` ev
 ## Manual acceptance tests
 
 * Sometimes you want to test things manually. Always remember: If you test something more than once, write an automated test for it.
-* Assuming you do not have a version of Edge already installed on your computer, you can grab a VM with preinstalled IE's directly from [Microsoft](https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/)
 
 ### Accessing a local OpenProject instance from a VM or mobile phone
 

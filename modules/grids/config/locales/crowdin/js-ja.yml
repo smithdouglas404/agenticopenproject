@@ -16,10 +16,10 @@ ja:
         news:
           title: 'ニュース'
         project_description:
-          title: 'プロジェクトの説明'
+          title: 'Description'
           no_results: "説明はまだ記載されていません。 1つは「プロジェクト設定」で入力できます。"
         project_status:
-          title: 'プロジェクトの進捗状況'
+          title: 'Status'
           not_started: '未着手'
           on_track: '順調'
           off_track: '脱線'
@@ -28,7 +28,7 @@ ja:
           finished: '完了'
           discontinued: '中止'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

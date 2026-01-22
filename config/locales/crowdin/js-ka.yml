@@ -203,6 +203,8 @@ ka:
         add_table: "Add table of related work packages"
         edit_query: "მოთხოვნის ჩასწორება"
         new_group: "ახალი ჯგუფი"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Reset to defaults"
       working_days:
         calendar:
@@ -632,9 +634,6 @@ ka:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "You need to enter your account password to confirm this change."
-      title: "Confirm your password to continue"
     pagination:
       no_other_page: "You are on the only page."
       pages_skipped: "Pages skipped."
@@ -1126,6 +1125,8 @@ ka:
     global_search:
       all_projects: "In all projects"
       close_search: "ძებნის დახურვა"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "In this project + subprojects"
       current_project: "In this project"
       recently_viewed: "Recently viewed"

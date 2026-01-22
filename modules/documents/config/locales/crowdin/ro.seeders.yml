@@ -7,14 +7,14 @@ ro:
     common:
       document_types:
         item_0:
-          name: Note
+          name: Notă
         item_1:
-          name: Idea
+          name: Idee
         item_2:
-          name: Proposal
+          name: Propunere
         item_3:
-          name: Specification
+          name: Specificație
         item_4:
-          name: Report
+          name: Raport
         item_5:
-          name: Documentation
+          name: Documentație

@@ -36,16 +36,28 @@ Choose **Account settings**.
 
 To change your email address or your name, navigate to **Profile** on the left side menu of **Account settings** page.
 
-Here you can update the information and **save** your changes. If you're changing the email address of your account, you will be requested to confirm your account password before you can continue. 
+Here you can **update** or delete your profile. If you're changing the email address of your account, you will be requested to confirm your account password before you can continue. 
 
 > [!NOTE] 
->
 > This applies only to internal accounts where OpenProject can verify the password.
 
 > [!TIP]
 > Please note that 'Hide my email' checkbox was removed from account settings with OpenProject 15.0.  The function was replaced by [the new Standard global role](../../system-admin-guide/users-permissions/roles-permissions/#standard), which regulates this permission on an instance level. 
 
 ![Profile settings in OpenProject](openproject_account_settings_profile.png)
+
+## Delete account
+
+You can delete your own account in **Account settings**.
+
+To delete your account, navigate to *Account settings* -> *Account* and click the **Delete** button in the top right corner.  You will be asked to confirm that you understand that this deletion is permanent. 
+
+![Confirmation dialog to delete account under OpenProject account settings](openproject_account_settings_delete_account.png)
+
+> [!WARNING]
+> Deleting a user account is permanent and cannot be reversed.
+
+If you cannot see the entry **Delete** button under your **Account settings**, make sure the option "Users allowed to delete their account" is [activated in the administration](../../system-admin-guide/users-permissions/settings/#user-deletion).
 
 ## Language and region settings
 
@@ -238,6 +250,31 @@ You will then see a message informing you that the the token und the iCal URL ar
 
 ![OpenProject calendar access token is invalid](openproject_account_settings_access_tokens_calendar_invalid.png)
 
+### iCalendar for meetings
+iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients. 
+
+This list will be empty if you have no calendar subscriptions yet. Once you subscribe to a meetings calendar, a list of all the iCalendar meeting tokens will appear here. 
+
+To subscribe click the **Subscribe to calendar** button directly in your account settings or in the [meetings module](../meetings/#subscribe-to-meetings). 
+
+![A "subscribe to calendar" button to subscribe to OpenProject meetings under account settings](openproject_account_settings_access_tokens_subscribe_button.png)
+
+You can then name the subscription meeting token and click **Create subscription**.
+
+![Form to create a new iCal subscription token for meetings in OpenProject account settings](openproject_account_settings_access_tokens_subscribe_meetings_form.png)
+
+You will then see the newly generated token. 
+
+> [!IMPORTANT]
+>
+> This is the only time that it will be displayed. Make sure that you copy it and safely save it. 
+
+![A newly generated iCal meeting subscription token in OpenProject account settings](openproject_account_settings_access_tokens_subscribe_meetings_form_confirmation.png)
+
+To delete an iCal meeting token under Account settings click the *Delete* icon next to the respective token name. 
+
+![Delete icon to remove a meeting iCal token under OpenProject account settings](openproject_account_settings_access_tokens_meetings_delete.png)
+
 ### OAUTH
 
 OAuth tokens allow third-party applications to connect with this OpenProject instance, for example Nextcloud (see [here](../../user-guide/file-management/nextcloud-integration/) how to set up Nextcloud integration).  OAuth tokens can be created under [*Administration-> Authentication*](../../system-admin-guide/authentication/).
@@ -326,17 +363,4 @@ OpenProject uses Gravatar as default profile image. It displays a preview of you
 Also, you can upload a **Custom Avatar** by choosing a Avatar to be uploaded from a file. Press the blue **Update** button to change your profile picture.
 
 > [!TIP]
-> The optimum size to upload a new profile picture is 128 by 128 pixel. Larger files will be cropped.
-
-## Delete account
-
-You can delete your own account in **Account settings**.
-
-To delete your account, select **Delete account** from the side menu and enter your login to confirm the deletion.
-
-![Delete account under OpenProject account settings](openproject_account_settings_delete_account.png)
-
-> [!WARNING]
-> Deleting a user account is permanent and cannot be reversed.
-
-If you cannot see the entry **Delete account** in the **Account settings** side menu, make sure the option "Users allowed to delete their account" is [activated in the administration](../../system-admin-guide/users-permissions/settings/#user-deletion).
+> The optimum size to upload a new profile picture is 128 by 128 pixels. Larger files will be cropped.

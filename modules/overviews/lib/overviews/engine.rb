@@ -92,12 +92,8 @@ module Overviews
 
         OpenProject::AccessControl.map do |ac_map|
           ac_map.project_module nil do |map|
-            map.permission :manage_overview,
-                           { "overviews/overviews": %i[show] },
-                           permissible_on: :project,
-                           require: :member
             map.permission :manage_dashboards,
-                           { "overviews/overviews": %i[dashboard] },
+                           { "overviews/overviews": %i[show dashboard] },
                            permissible_on: :project,
                            require: :member
           end

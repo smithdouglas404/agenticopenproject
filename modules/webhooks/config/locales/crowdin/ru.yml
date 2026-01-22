@@ -28,9 +28,9 @@ ru:
       label_add_new: Добавить новый вебхук
       label_edit: Изменить вебхук
       label_x_events:
-        one: "1 event"
-        other: "%{count} events"
-        zero: "No events"
+        one: "1 событие"
+        other: "%{count} событий"
+        zero: "Нет событий"
       events:
         created: "Создан"
         updated: "Обновлено"

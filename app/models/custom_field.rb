@@ -64,17 +64,10 @@ class CustomField < ApplicationRecord
   validates :custom_options,
             presence: { message: ->(*) { I18n.t(:"activerecord.errors.models.custom_field.at_least_one_custom_option") } },
             if: ->(*) { field_format == "list" }
-  validates :name, presence: true, length: { maximum: 256 }
-
-  validate :uniqueness_of_name_with_scope
-
-  def uniqueness_of_name_with_scope
-    taken_names = CustomField.where(type:)
-    taken_names = taken_names.where.not(id:) if id
-    taken_names = taken_names.pluck(:name)
-
-    errors.add(:name, :taken) if name.in?(taken_names)
-  end
+  validates :name,
+            presence: true,
+            length: { maximum: 256 },
+            uniqueness: { case_sensitive: false, scope: :type }
 
   validate :validate_field_format_inclusion
   validate :validate_default_value

@@ -202,6 +202,8 @@ el:
         add_table: "Προσθήκη πίνακα με σχετιζόμενες εργασίες"
         edit_query: "Επεξεργασία αναζήτησης"
         new_group: "Νέα ομάδα"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Επαναφορά στα προεπιλεγμένα"
       working_days:
         calendar:
@@ -631,9 +633,6 @@ el:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Πρέπει να εισάγετε τον κωδικό πρόσβασης του λογαριασμού σας για να επιβεβαιώσετε αυτή την αλλαγή."
-      title: "Επιβεβαιώστε τον κωδικό πρόσβασης σας για να συνεχίσετε"
     pagination:
       no_other_page: "Βρίσκεστε στη μοναδική σελίδα."
       pages_skipped: "Pages skipped."
@@ -1125,6 +1124,8 @@ el:
     global_search:
       all_projects: "Σε όλα τα έργα"
       close_search: "Κλείσιμο αναζήτησης"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Σε αυτό το έργο + υποέργα"
       current_project: "Σε αυτό το έργο"
       recently_viewed: "Recently viewed"

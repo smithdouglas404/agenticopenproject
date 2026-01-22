@@ -202,6 +202,8 @@ sl:
         add_table: "Dodajte tabelo povezanih delovnih paketov"
         edit_query: "Uredi poizvedbo"
         new_group: "Nova skupina"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Ponastavi na privzete vrednosti"
       working_days:
         calendar:
@@ -633,9 +635,6 @@ sl:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Prosimo vnesite svoje uporabniško geslo za potrditev te spremembe. "
-      title: "Potrdite svoje geslo za nadaljevanje"
     pagination:
       no_other_page: "Ste na edini strani. "
       pages_skipped: "Pages skipped."
@@ -1133,6 +1132,8 @@ sl:
     global_search:
       all_projects: "V vseh projektih"
       close_search: "Zapri iskanje"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "V tem projektu + podprojektu"
       current_project: "V tem projektu"
       recently_viewed: "Recently viewed"

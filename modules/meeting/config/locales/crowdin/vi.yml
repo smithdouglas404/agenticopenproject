@@ -230,10 +230,15 @@ vi:
         summary_series: "Meeting series '%{title}' has been cancelled by %{actor}."
         summary: "'%{title}' has been cancelled by %{actor}."
         date_time: "Scheduled date/time"
+      ended:
+        header_series: "Ended: Meeting series '%{title}'"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
       updated:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
+        old_title: "Old title"
+        new_title: "New title"
         old_date_time: "Ngày/giờ cũ"
         new_date_time: "Ngày/giờ mới"
         old_location: "Old location"
@@ -388,8 +393,6 @@ vi:
       blank_title: "Mẫu chuỗi họp của bạn đang trống"
       description: >
         Mẫu này sẽ được sử dụng bất cứ khi nào các cuộc họp mới trong chuỗi được tạo. Bạn có thể thêm các mục chương trình làm việc, người tham gia và tệp đính kèm vào mẫu này.
-      blankslate_finalize: >
-        Khi bạn chuẩn bị xong mẫu này, hãy nhấp vào nút '%{button_title}' ở trên để hoàn tất thiết lập và lên lịch cuộc họp đầu tiên của chuỗi.
       label_view_template: "Xem Mẫu"
       label_edit_template: "Sửa mẫu"
       banner_html: >
@@ -522,6 +525,8 @@ vi:
   label_agenda_outcome_actions: "Agenda outcome actions"
   label_agenda_outcome_edit: "Edit outcome"
   label_agenda_outcome_delete: "Remove outcome"
+  label_write_outcome: "Write outcome"
+  label_existing_work_package: "Existing work package"
   text_outcome_not_editable_anymore: "This outcome is not editable anymore."
   text_outcome_cannot_be_added: "An outcome can no longer be added."
   label_backlog_clear: "Clear backlog"
@@ -596,10 +601,12 @@ vi:
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "You can create one using the button below."
+        blank_title: "No iCalendar meeting token"
         title: "iCalendar for meetings"
+        table_title: "iCalendar meeting tokens"
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
-        empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
         add_button: "Đăng ký lịch"
   my:
     access_token:
@@ -614,7 +621,6 @@ vi:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"
           body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "This is the only time you will see this token. Make sure to copy it now."
       revocation:
         token/ical_meeting:
           notice_success: "The iCalendar meeting subscription has been revoked successfully."
