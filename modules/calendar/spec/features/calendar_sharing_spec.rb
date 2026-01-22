@@ -211,7 +211,11 @@ RSpec.describe "Calendar sharing via ical", :js do
 
         # implicitly testing for success -> modal is closed and fallback message is shown
         expect(page).to have_no_css(".spot-modal--header", text: "Subscribe to calendar")
-        expect(page).to have_content("/projects/#{saved_query.project.id}/calendars/#{saved_query.id}/ical?ical_token=")
+        expect(page).to have_message_copied_to_clipboard(
+          "/projects/#{saved_query.project.id}/calendars/#{saved_query.id}/ical?ical_token=",
+          successful_copy_message: 'The URL "A token name" was successfully copied to your clipboard. ' \
+                                   "Paste it in your calendar client to complete the subscription."
+        )
 
         # explictly testing for success message is not working in test env, probably
         # due to missing clipboard permissions of the headless browser
@@ -243,7 +247,11 @@ RSpec.describe "Calendar sharing via ical", :js do
         click_button "Copy URL"
 
         expect(page).to have_no_css(".spot-modal--header", text: "Subscribe to calendar")
-        expect(page).to have_content("/projects/#{saved_query.project.id}/calendars/#{saved_query.id}/ical?ical_token=")
+        expect(page).to have_message_copied_to_clipboard(
+          "/projects/#{saved_query.project.id}/calendars/#{saved_query.id}/ical?ical_token=",
+          successful_copy_message: 'The URL "A token name" was successfully copied to your clipboard. ' \
+                                   "Paste it in your calendar client to complete the subscription."
+        )
 
         # do the same thing again, now expect validation error
 
