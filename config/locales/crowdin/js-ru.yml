@@ -594,7 +594,7 @@ ru:
         title: "Настройки уведомлений"
         notify_me: "Уведомлять меня"
         reminders:
-          no_notification: Нет уведомлений
+          no_notification: Нет уведомления
           timeframes:
             normal:
               PT0S: тот же день

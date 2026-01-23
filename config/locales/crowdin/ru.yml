@@ -1971,7 +1971,7 @@ ru:
         one: "Токен RSS"
         few: "RSS tokens"
         many: "RSS tokens"
-        other: "RSS tokens"
+        other: "Токены RSS"
       type:
         one: "Тип"
         few: "Типа"
@@ -2184,7 +2184,7 @@ ru:
   button_add_comment: "Добавить комментарий"
   button_add_item_above: "Добавить элемент выше"
   button_add_item_below: "Добавить элемент ниже"
-  button_add_sub_item: "Добавить подпункт"
+  button_add_sub_item: "Добавить подпроект"
   button_add_member: Добавить участника
   button_add_watcher: "Добавить наблюдателя"
   button_annotate: "Комментировать"
@@ -2889,7 +2889,7 @@ ru:
       all: "Bсе"
       label: "Режим фильтрации"
       selected: "Выбрано"
-    include_sub_items: "Включить подпункты"
+    include_sub_items: "Включить подпроекты"
     no_results_text: "Нет результатов"
   toggle_switch:
     label_on: "Включено"
@@ -3009,7 +3009,7 @@ ru:
       label: "Добавить…"
   my_account:
     access_tokens:
-      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
+      description: "Провайдерские токены выпускаются OpenProject, позволяя другим приложениям получать к ним доступ. Клиентские токены выпускаются другими приложениями, позволяя OpenProject получить к ним доступ."
       no_results:
         title: "Нет маркеров доступа для отображения"
         description: "Все они были отключены. Они могут быть включены вновь в меню Администрирование."
@@ -3489,7 +3489,7 @@ ru:
   label_no_due_date: "нет даты окончания"
   label_no_start_date: "нет даты начала"
   label_no_parent_page: "Без родительской страницы"
-  label_notification_center_plural: "Уведомлений"
+  label_notification_center_plural: "Уведомления"
   label_nothing_display: "Нет данных для отображения"
   label_nobody: "никто"
   label_not_configured: "Не настроено"
@@ -3662,7 +3662,7 @@ ru:
   label_subproject: "Подпроект"
   label_subproject_new: "Новый подпроект"
   label_subproject_plural: "Подпроекты"
-  label_subitems: "Подпункты"
+  label_subitems: "Подпроекты"
   label_subtask_plural: "Подзадачи"
   label_summary: "Сводка"
   label_system: "Система"
