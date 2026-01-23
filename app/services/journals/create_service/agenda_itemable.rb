@@ -34,13 +34,13 @@ class Journals::CreateService
       journable.respond_to?(:agenda_items)
     end
 
-    def cleanup_predecessor(predecessor, notes, cause)
-      cleanup_predecessor_for(predecessor,
-                              notes,
-                              cause,
-                              "meeting_agenda_item_journals",
-                              :journal_id,
-                              :id)
+    def delete_predecessor(predecessor, notes, cause)
+      delete_predecessor_for(predecessor,
+                             notes,
+                             cause,
+                             "meeting_agenda_item_journals",
+                             :journal_id,
+                             :id)
     end
 
     def insert_sql

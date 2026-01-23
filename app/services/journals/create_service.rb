@@ -146,10 +146,10 @@ module Journals
     #   aggregated with)
     # * OR a predecessor is replaced
     #
-    # If a change has been identified (not for a note or a cause) and a predecessor to aggregate with exists, the predecessor's
-    # data is stripped. this is done by the CTEs 'cleanup_predecessor_data' and the ones for the associated data,
-    # 'cleanup_predecessor_XYZ' (where XYZ is e.g. attachable or customizable). If no predecessor exists,
-    # a noop SQL statement is run instead.
+    # If a change has been identified (not for a note or a cause) and a predecessor to aggregate with exists, the
+    # predecessor's data is removed. This is done by the CTEs 'delete_predecessor_data' for the journable and
+    # by 'delete_predecessor_XYZ' for the associated data, where XYZ is e.g. attachable, customizable, etc.
+    # If no predecessor exists, these CTEs are skipped.
     # To strip the information from the journal, the data record (e.g. from work_packages_journals) as well as the
     # associated data information is removed. The journal itself is kept and will later on have its
     # updated_at and possibly its notes property updated.
@@ -201,13 +201,13 @@ module Journals
       journal_cte_clauses = [
         select_max_journal_cte_clause,
         select_changes_cte_clause,
-        cleanup_predecessor_data_cte_clause(predecessor, notes, cause),
+        delete_predecessor_data_cte_clause(predecessor, notes, cause),
         touch_journable_cte_clause(notes, cause),
-        fetch_time_cte_clause,
+        select_fetch_time_cte_clause,
         insert_data_cte_clause(notes, cause),
         update_predecessor_cte_clause(predecessor, notes, cause),
         update_or_insert_journal_cte_clause(predecessor, notes, internal, cause),
-        *associations.map { cleanup_predecessor_association_cte_clause(it, predecessor, notes, cause) },
+        *associations.map { delete_predecessor_association_cte_clause(it, predecessor, notes, cause) },
         *associations.map { insert_association_cte_clause(it) }
       ].compact_blank
 
@@ -268,17 +268,17 @@ module Journals
       SQL
     end
 
-    def cleanup_predecessor_data_cte_clause(predecessor, notes, cause)
+    def delete_predecessor_data_cte_clause(predecessor, notes, cause)
       return unless predecessor
 
-      sql = cleanup_predecessor_for(predecessor,
-                                    notes,
-                                    cause,
-                                    data_table_name,
-                                    :id,
-                                    :data_id)
+      sql = delete_predecessor_for(predecessor,
+                                   notes,
+                                   cause,
+                                   data_table_name,
+                                   :id,
+                                   :data_id)
       <<~SQL
-        cleanup_predecessor_data AS (
+        delete_predecessor_data AS (
           #{sql}
         )
       SQL
@@ -322,7 +322,7 @@ module Journals
     # * setting the created_at and updated_at timestamps of the newly created journal
     # * setting the updated_at timestamp on an updated (aggregated with) journal
     # * setting the validity_period (upper bound) of the preceding journal.
-    def fetch_time_cte_clause
+    def select_fetch_time_cte_clause
       sanitize(<<~SQL, journable_timestamp:)
         fetch_time AS (
           SELECT COALESCE((SELECT updated_at FROM touch_journable), :journable_timestamp) AS updated_at
@@ -458,12 +458,12 @@ module Journals
                data_type: journable.class.journal_class.name)
     end
 
-    def cleanup_predecessor_association_cte_clause(association, predecessor, notes, cause)
+    def delete_predecessor_association_cte_clause(association, predecessor, notes, cause)
       return unless predecessor
 
       <<~SQL
-        cleanup_predecessor_#{association.name} AS (
-          #{association.cleanup_predecessor(predecessor, notes, cause)}
+        delete_predecessor_#{association.name} AS (
+          #{association.delete_predecessor(predecessor, notes, cause)}
         )
       SQL
     end
