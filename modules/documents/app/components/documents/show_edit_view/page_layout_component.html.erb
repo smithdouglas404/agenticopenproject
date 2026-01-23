@@ -29,38 +29,18 @@
   ++#
 %>
 
-<%=
-  if allow_uploading?
-    flex_layout do |flex|
-      flex.with_row do
-        list_attachments(
-          api_v3_document_resource(document),
-          inputs: {
-            allowUploading: true,
-            showTimestamp: false,
-            externalUploadButton: "#documents-add-attachments"
-          }
-        )
-      end
-      flex.with_row do
-        render Primer::Beta::Button.new(
-          color: :accent,
-          scheme: :link,
-          id: "documents-add-attachments",
-          classes: "hide-when-print"
-        ) do |button|
-          button.with_leading_visual_icon(icon: "op-add-attachment")
-          I18n.t("js.label_add_attachments")
-        end
-      end
-    end
-  else
-    list_attachments(
-      api_v3_document_resource(document),
-      inputs: {
-        allowUploading: false,
-        showTimestamp: false
-      }
-    )
-  end
-%>
+<%= grid_layout("document-page-layout", tag: :div, **@system_arguments) do |page| %>
+  <% page.with_area("header", **@header_arguments) do %>
+    <%= header %>
+  <% end %>
+
+  <% if @left_content.present? %>
+    <% page.with_area("left", **@left_panel_arguments) do %>
+      <%= @left_content %>
+    <% end %>
+  <% end %>
+
+  <% page.with_area("right", **@right_panel_arguments) do %>
+    <%= render @underline_panels %>
+  <% end %>
+<% end %>
