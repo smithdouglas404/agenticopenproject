@@ -63,9 +63,10 @@ class ProjectCustomField < CustomField
       end
     end
 
-    def toggleable_ids_in_project_settings(project, custom_field_section_id)
+    def toggleable_ids_in_project_settings(project, user, custom_field_section_id)
       toggleable_ids(
         project:,
+        user:,
         custom_field_section_id:,
         options: { is_for_all: false }
       ).first

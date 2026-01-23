@@ -56,7 +56,7 @@ module ProjectCustomFieldProjectMappings
 
     def perform_bulk_edit(service_call, params)
       action = params[:action]
-      custom_field_ids = ProjectCustomField.toggleable_ids_in_project_settings(@project, @project_custom_field_section.id)
+      custom_field_ids = ProjectCustomField.toggleable_ids_in_project_settings(@project, @user, @project_custom_field_section.id)
 
       begin
         case action
