@@ -25,7 +25,7 @@ See COPYRIGHT and LICENSE files for more details.
     <%= t("custom_actions.conditions.name") %>
   </legend>
 
-  <div id="custom-actions-form--active-conditions" >
+  <div id="custom-actions-form--active-conditions">
     <% all_conditions.each do |condition| %>
       <% condition_key = "condition_#{condition.key}" %>
       <section class="hide-section"
@@ -36,39 +36,39 @@ See COPYRIGHT and LICENSE files for more details.
         <div class="form--field">
           <%= styled_label_tag("custom_action_conditions_#{condition.key}", condition.human_name, class: "-top") %>
           <% input_name = "custom_action[conditions][#{condition.key}]" %>
-            <div class="form--field-container">
-              <div class="form--select-container -middle">
-                <% if condition.key == :project %>
-                  <%= angular_component_tag "opce-project-autocompleter",
-                                            inputs: {
-                                              multiple: true,
-                                              filters: [{ name: "active", operator: "=", values: ["t"] }],
-                                              resource: "projects",
-                                              inputName: input_name,
-                                              appendTo: "body",
-                                              labelForId: "custom_action_actions_#{condition_key}",
-                                              inputValue: condition.values
-                                            } %>
-                <% else %>
-                  <%= angular_component_tag "opce-autocompleter",
-                                            inputs: {
-                                              multiple: true,
-                                              defaultData: false,
-                                              items: condition.allowed_values.map { { id: it[:value], name: it[:label] } },
-                                              model: condition.value_objects.map { { id: it[:value], name: it[:label] } },
-                                              inputName: input_name,
-                                              bindLabel: "name",
-                                              labelForId: "custom_action_conditions_#{condition_key}",
-                                              appendTo: "body"
-                                            } %>
-                <% end %>
-              </div>
+          <div class="form--field-container">
+            <div class="form--select-container -middle">
+              <% if condition.key == :project %>
+                <%= angular_component_tag "opce-project-autocompleter",
+                                          inputs: {
+                                            multiple: true,
+                                            filters: [{ name: "active", operator: "=", values: ["t"] }],
+                                            resource: "projects",
+                                            inputName: input_name,
+                                            appendTo: "body",
+                                            labelForId: "custom_action_conditions_#{condition.key}",
+                                            inputValue: condition.values
+                                          } %>
+              <% else %>
+                <%= angular_component_tag "opce-autocompleter",
+                                          inputs: {
+                                            multiple: true,
+                                            defaultData: false,
+                                            items: condition.allowed_values.map { { id: it[:value], name: it[:label] } },
+                                            model: condition.value_objects.map { { id: it[:value], name: it[:label] } },
+                                            inputName: input_name,
+                                            bindLabel: "name",
+                                            labelForId: "custom_action_conditions_#{condition.key}",
+                                            appendTo: "body"
+                                          } %>
+              <% end %>
             </div>
-            <button type="button"
-              class="spot-link"
-              data-action="click->hide-sections#hide">
-                <i class="icon-close icon-small" aria-hidden="true"></i>
-            </button>
+          </div>
+          <button type="button"
+            class="spot-link"
+            data-action="click->hide-sections#hide">
+              <i class="icon-close icon-small" aria-hidden="true"></i>
+          </button>
         </div>
       </section>
     <% end %>

@@ -81,6 +81,12 @@ module Pages
           end
         end
 
+        def set_action(name, value)
+          set_action_value(name, value)
+        rescue Capybara::ElementNotFound
+          add_action(name, value)
+        end
+
         def add_condition(name, value)
           retry_block do
             select name, from: "Add condition"
@@ -92,10 +98,12 @@ module Pages
           set_condition_value(name, value)
         end
 
-        def set_action(name, value)
-          set_action_value(name, value)
-        rescue Capybara::ElementNotFound
-          add_action(name, value)
+        def remove_condition(name)
+          within "#custom-actions-form--active-conditions" do
+            find(".form--field", text: name)
+              .find(".icon-close")
+              .click
+          end
         end
 
         private
