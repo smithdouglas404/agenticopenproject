@@ -29,8 +29,33 @@
 #++
 
 Rails.application.routes.draw do
+  # Global route to show recurring meetings over all projects and create form from the global view
+  resources :recurring_meetings, only: %i[index show new create] do
+    collection do
+      get :humanize_schedule, controller: "recurring_meetings/schedule", action: :humanize_schedule
+    end
+  end
+
+  # Global route to show meetings over all projects and create form from the global view
+  resources :meetings, only: %i[index show new create] do
+    collection do
+      get :new_dialog
+      get "menu" => "meetings/menus#show"
+      get :fetch_timezone
+
+      get "ical/:token", controller: "meetings/ical", action: :index, as: "ical_feed"
+    end
+  end
+
+  # All other routes are project scoped for correct permission handling
   resources :projects, only: %i[] do
     resources :meetings do
+      collection do
+        get :new_dialog
+        get "menu" => "meetings/menus#show"
+        get :fetch_timezone
+      end
+
       member do
         get :copy
         get :check_for_updates
@@ -48,12 +73,6 @@ Rails.application.routes.draw do
         post :toggle_notifications
         get :exit_draft_mode_dialog
         post :exit_draft_mode
-      end
-
-      collection do
-        get :new_dialog
-        get "menu" => "meetings/menus#show"
-        get :fetch_timezone
       end
 
       resources :agenda_items, controller: "meeting_agenda_items" do
@@ -80,6 +99,7 @@ Rails.application.routes.draw do
           post :clear_backlog
           get :clear_backlog_dialog
         end
+
         member do
           post :cancel_edit
           put :drop
@@ -104,6 +124,7 @@ Rails.application.routes.draw do
           get :manage_participants_dialog
           post :mark_all_attended
         end
+
         member do
           post :toggle_attendance
         end
@@ -141,28 +162,13 @@ Rails.application.routes.draw do
         end
       end
     end
+
     resources :meeting_agenda_items, only: %i[] do
       collection do
         get :dialog, controller: "work_package_meetings_tab", action: :add_work_package_to_meeting_dialog
         post :create, controller: "work_package_meetings_tab", action: :add_work_package_to_meeting
         get :refresh_form, controller: "work_package_meetings_tab", action: :refresh_form
       end
-    end
-  end
-
-  resources :recurring_meetings, only: %i[index show new create] do
-    collection do
-      get :humanize_schedule, controller: "recurring_meetings/schedule", action: :humanize_schedule
-    end
-  end
-
-  resources :meetings, only: %i[index show new create] do
-    collection do
-      get :new_dialog
-      get "menu" => "meetings/menus#show"
-      get :fetch_timezone
-
-      get "ical/:token", controller: "meetings/ical", action: :index, as: "ical_feed"
     end
   end
 end
