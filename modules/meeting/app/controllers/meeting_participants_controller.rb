@@ -33,7 +33,8 @@ class MeetingParticipantsController < ApplicationController
   include OpTurbo::FlashStreamHelper
   include Meetings::AgendaComponentStreams
 
-  before_action :authorize
+  load_and_authorize_with_permission_in_project :edit_meetings
+
   before_action :set_meeting
   before_action :set_participant, only: %i[toggle_attendance destroy]
 
@@ -94,7 +95,7 @@ class MeetingParticipantsController < ApplicationController
   private
 
   def set_meeting
-    @meeting = Meeting.visible.find(params[:meeting_id])
+    @meeting = @project.meetings.visible.find(params[:meeting_id])
   end
 
   def set_participant
@@ -114,9 +115,9 @@ class MeetingParticipantsController < ApplicationController
       .new(user: User.current)
       .call(meeting: @meeting, user_id: user_id, invited: true, attended: false)
       .on_failure do |call|
-      call.errors.full_messages.each do |msg|
-        @meeting.errors.add(:base, msg)
-      end
+        call.errors.full_messages.each do |msg|
+          @meeting.errors.add(:base, msg)
+        end
     end
   end
 end

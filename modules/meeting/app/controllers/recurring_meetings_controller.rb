@@ -81,6 +81,10 @@ class RecurringMeetingsController < ApplicationController
     )
   end
 
+  def edit
+    redirect_to controller: "meetings", action: "show", id: @recurring_meeting.template, status: :see_other
+  end
+
   def create # rubocop:disable Metrics/AbcSize
     call = ::RecurringMeetings::CreateService
       .new(user: current_user)
@@ -110,10 +114,6 @@ class RecurringMeetingsController < ApplicationController
     end
   end
 
-  def edit
-    redirect_to controller: "meetings", action: "show", id: @recurring_meeting.template, status: :see_other
-  end
-
   def update
     call = ::RecurringMeetings::UpdateService
       .new(model: @recurring_meeting, user: current_user)
@@ -121,7 +121,7 @@ class RecurringMeetingsController < ApplicationController
 
     if call.success?
       fallback_location = project_recurring_meeting_path(@project, call.result)
-      redirect_back(fallback_location:, status: :see_other, turbo: false)
+      redirect_back_or_to(fallback_location, status: :see_other, turbo: false)
     else
       respond_to do |format|
         format.turbo_stream do
@@ -225,7 +225,7 @@ class RecurringMeetingsController < ApplicationController
     result
       .on_failure { |call| render_500(message: call.message) }
       .on_success do |call|
-      send_data call.result, filename: filename_for_content_disposition("#{filename}.ics")
+        send_data call.result, filename: filename_for_content_disposition("#{filename}.ics")
     end
   end
 
@@ -265,11 +265,11 @@ class RecurringMeetingsController < ApplicationController
       .participants
       .invited
       .find_each do |participant|
-      MeetingSeriesMailer.invited(
-        @recurring_meeting,
-        participant.user,
-        User.current
-      ).deliver_later
+        MeetingSeriesMailer.invited(
+          @recurring_meeting,
+          participant.user,
+          User.current
+        ).deliver_later
     end
   end
 
@@ -280,12 +280,12 @@ class RecurringMeetingsController < ApplicationController
       .participants
       .invited
       .find_each do |participant|
-      MeetingMailer
-        .invited(
-          meeting,
-          participant.user,
-          User.current
-        ).deliver_later
+        MeetingMailer
+          .invited(
+            meeting,
+            participant.user,
+            User.current
+          ).deliver_later
     end
   end
 
