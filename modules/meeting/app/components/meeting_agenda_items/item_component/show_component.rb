@@ -176,8 +176,8 @@ module MeetingAgendaItems
                         tag: :button,
                         content_arguments: outcome_action_data(
                           new_project_meeting_outcome_path(
-                            @meeting_agenda_item.meeting.project,
-                            @meeting_agenda_item.meeting,
+                            @meeting.project,
+                            @meeting,
                             meeting_agenda_item_id: @meeting_agenda_item&.id,
                             kind: :work_package,
                             current_occurrence: @current_occurrence
@@ -216,7 +216,7 @@ module MeetingAgendaItems
       next_meeting_action_item(
         menu,
         label: t(:label_agenda_item_move_to_next),
-        path_helper: :move_to_next_dialog_meeting_agenda_item_path,
+        path_helper: :move_to_next_dialog_project_meeting_agenda_item_path,
         icon: "arrow-right"
       )
     end
@@ -225,12 +225,12 @@ module MeetingAgendaItems
       next_meeting_action_item(
         menu,
         label: t(:label_agenda_item_duplicate_in_next),
-        path_helper: :duplicate_in_next_dialog_meeting_agenda_item_path,
+        path_helper: :duplicate_in_next_dialog_project_meeting_agenda_item_path,
         icon: :duplicate
       )
     end
 
-    def next_meeting_action_item(menu, label:, path_helper:, icon:) # rubocop:disable Metrics/AbcSize
+    def next_meeting_action_item(menu, label:, path_helper:, icon:)
       return unless editable?
       return if in_template?
       return if @series.nil?
@@ -246,8 +246,8 @@ module MeetingAgendaItems
           action: "click->meetings--submit#intercept",
           # TODO let's see if wen can avoid using send here
           href: send(path_helper,
-                     @meeting_agenda_item.meeting.project,
-                     @meeting_agenda_item.meeting,
+                     @meeting.project,
+                     @meeting,
                      @meeting_agenda_item,
                      datetime: next_date.iso8601),
           method: "GET"
@@ -274,8 +274,8 @@ module MeetingAgendaItems
       menu.with_item(label:,
                      scheme: :danger,
                      href: project_meeting_agenda_item_path(
-                       @meeting_agenda_item.meeting.project,
-                       @meeting_agenda_item.meeting,
+                       @meeting.project,
+                       @meeting,
                        @meeting_agenda_item,
                        current_occurrence: @current_occurrence
                      ),
@@ -296,8 +296,8 @@ module MeetingAgendaItems
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
                        href: move_project_meeting_agenda_item_path(
-                         @meeting_agenda_item.meeting.project,
-                         @meeting_agenda_item.meeting,
+                         @meeting.project,
+                         @meeting,
                          @meeting_agenda_item,
                          move_to:,
                          current_occurrence: @current_occurrence
@@ -315,8 +315,8 @@ module MeetingAgendaItems
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
                        href: drop_project_meeting_agenda_item_path(
-                         @meeting_agenda_item.meeting.project,
-                         @meeting_agenda_item.meeting,
+                         @meeting.project,
+                         @meeting,
                          @meeting_agenda_item,
                          type: :to_backlog,
                          current_occurrence: @current_occurrence
@@ -335,8 +335,8 @@ module MeetingAgendaItems
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
                        href: drop_project_meeting_agenda_item_path(
-                         @meeting_agenda_item.meeting.project,
-                         @meeting_agenda_item.meeting,
+                         @meeting.project,
+                         @meeting,
                          @meeting_agenda_item,
                          type: :to_current,
                          current_occurrence: @current_occurrence
@@ -355,8 +355,8 @@ module MeetingAgendaItems
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
                        href: move_to_section_dialog_project_meeting_agenda_item_path(
-                         @meeting_agenda_item.meeting.project,
-                         @meeting_agenda_item.meeting,
+                         @meeting.project,
+                         @meeting,
                          @meeting_agenda_item,
                          current_occurrence: @current_occurrence
                        )

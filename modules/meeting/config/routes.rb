@@ -31,12 +31,29 @@
 Rails.application.routes.draw do
   resources :projects, only: %i[] do
     resources :meetings do
+      member do
+        get :copy
+        get :check_for_updates
+        get :cancel_edit
+        get :download_ics
+        put :update_title
+        get :details_dialog
+        put :update_details
+        put :change_state
+        post :notify
+        get :history
+        get :delete_dialog
+        get :generate_pdf_dialog
+        get :toggle_notifications_dialog
+        post :toggle_notifications
+        get :exit_draft_mode_dialog
+        post :exit_draft_mode
+      end
+
       collection do
         get :new_dialog
         get "menu" => "meetings/menus#show"
         get :fetch_timezone
-
-        get "ical/:token", controller: "meetings/ical", action: :index, as: "ical_feed"
       end
 
       resources :agenda_items, controller: "meeting_agenda_items" do
@@ -44,6 +61,7 @@ Rails.application.routes.draw do
           get :new, action: :new, as: :new
           get :cancel_new
         end
+
         member do
           get :cancel_edit
           put :drop
@@ -56,6 +74,7 @@ Rails.application.routes.draw do
           post :move_to_section
         end
       end
+
       resources :sections, controller: "meeting_sections" do
         collection do
           post :clear_backlog
@@ -67,6 +86,7 @@ Rails.application.routes.draw do
           put :move
         end
       end
+
       resources :outcomes, controller: "meeting_outcomes" do
         collection do
           get :new, action: :new, as: :new
@@ -78,6 +98,7 @@ Rails.application.routes.draw do
           get :cancel_edit
         end
       end
+
       resources :participants, controller: "meeting_participants" do
         collection do
           get :manage_participants_dialog
@@ -88,35 +109,11 @@ Rails.application.routes.draw do
         end
       end
 
-      resource :agenda, controller: "meeting_agendas", only: [:update] do
-        member do
-          get :history
-          get :diff
-          put :close
-          put :open
-          post :preview
+      resource :presentation, only: %i[show edit], controller: "meeting_presentation" do
+        collection do
+          get :check_for_updates
+          post :start
         end
-
-        resources :versions, only: [:show],
-                             controller: "meeting_agendas"
-      end
-
-      resource :contents, controller: "meeting_contents", only: %i[show update] do
-        member do
-          get :history
-          get :diff
-        end
-      end
-
-      resource :minutes, controller: "meeting_minutes", only: [:update] do
-        member do
-          get :history
-          get :diff
-          post :preview
-        end
-
-        resources :versions, only: [:show],
-                             controller: "meeting_minutes"
       end
     end
 
