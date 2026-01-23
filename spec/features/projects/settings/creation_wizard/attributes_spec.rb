@@ -221,6 +221,9 @@ RSpec.describe "Project creation wizard settings - attributes tab",
         expect_disabled_state
       end
     end
+
+    required_int_mapping.reload
+    expect(required_int_mapping.creation_wizard).to be true
   end
 
   context "with a user custom field" do
@@ -266,6 +269,23 @@ RSpec.describe "Project creation wizard settings - attributes tab",
             expect_disabled_state
           end
         end
+      end
+
+      it "is excluded from 'disable all' action" do
+        within_custom_field_section_container(section2) do
+          within_custom_field_container(user_custom_field) do
+            expect_checked_state
+          end
+
+          click_link "Disable all"
+
+          within_custom_field_container(user_custom_field) do
+            expect_checked_state
+          end
+        end
+
+        user_custom_field_mapping.reload
+        expect(user_custom_field_mapping.creation_wizard).to be true
       end
     end
   end
@@ -322,6 +342,23 @@ RSpec.describe "Project creation wizard settings - attributes tab",
 
     list_mapping.reload
     expect(list_mapping.creation_wizard).to be false
+  end
+
+  it "excludes required fields from 'disable all' action" do
+    within_custom_field_section_container(section2) do
+      within_custom_field_container(required_int_custom_field) do
+        expect_checked_state
+      end
+
+      click_link "Disable all"
+
+      within_custom_field_container(required_int_custom_field) do
+        expect_checked_state
+      end
+    end
+
+    required_int_mapping.reload
+    expect(required_int_mapping.creation_wizard).to be true
   end
 
   context "when a field is not mapped to the project" do

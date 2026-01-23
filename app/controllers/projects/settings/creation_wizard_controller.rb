@@ -79,6 +79,7 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
     toggleable = if mapping
                    ProjectCustomField
                      .toggleable_ids_in_creation_wizard_settings(@project, cf.custom_field_section_id)
+                     .first
                      .include?(cf.id)
                  else
                    false
@@ -104,13 +105,21 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
   def update_section_mappings(value)
     section_id = permitted_params.project_custom_field_project_mapping[:custom_field_section_id]
 
-    cf_ids_to_toggle = ProjectCustomField.toggleable_ids_in_creation_wizard_settings(@project, section_id)
+    cf_ids_to_toggle, force_enabled_cf_ids = ProjectCustomField.toggleable_ids_in_creation_wizard_settings(@project, section_id)
 
     ProjectCustomFieldProjectMapping
       .where(project_id: @project.id, custom_field_id: cf_ids_to_toggle)
       .update_all(creation_wizard: value)
 
+    enable_creation_wizard!(force_enabled_cf_ids)
+
     redirect_to project_settings_creation_wizard_path(@project, tab: "attributes"), status: :see_other
+  end
+
+  def enable_creation_wizard!(custom_field_ids)
+    ProjectCustomFieldProjectMapping
+      .where(project_id: @project.id, custom_field_id: custom_field_ids)
+      .update_all(creation_wizard: true)
   end
 
   def check_feature_flag

@@ -68,7 +68,7 @@ class ProjectCustomField < CustomField
         project:,
         custom_field_section_id:,
         options: { is_for_all: false }
-      )
+      ).first
     end
 
     def toggleable_ids_in_creation_wizard_settings(project, custom_field_section_id)
@@ -81,7 +81,9 @@ class ProjectCustomField < CustomField
 
     private
 
-    # Returns a list of custom field ids that can be toggled = activated/enabled or disabled/deactivated.
+    # Returns an array with:
+    # 1. a list of custom field ids that can be toggled = activated/enabled or disabled/deactivated.
+    # 2. a list of custom field ids that cannot be toggled and should always be active/enabled.
     def toggleable_ids(project:, custom_field_section_id:, user: User.current, options: {})
       # Fetch project custom field ids that can be enabled/disabled
       mutable_cf_ids = visible(user, project:)
@@ -96,7 +98,7 @@ class ProjectCustomField < CustomField
                            []
                          end
 
-      mutable_cf_ids - immutable_cf_ids
+      [mutable_cf_ids - immutable_cf_ids, immutable_cf_ids]
     end
 
     def mappings_with_view_project_attributes_permission(user, project) # rubocop:disable Metrics/AbcSize
