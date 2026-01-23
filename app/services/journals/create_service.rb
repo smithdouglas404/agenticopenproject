@@ -310,8 +310,8 @@ module Journals
     # otherwise not have received an updated timestamp.
     #
     # Therefore, this is only carried out if:
-    # * the journable doesn't already have a newer timestamp than the most recent journal AND
     # * if there are changes or a note or a cause
+    # * AND the journable doesn't already have a newer timestamp than the most recent journal
     def touch_journable_sql(notes, cause)
       if journable.class.aaj_options[:timestamp].to_sym == :updated_at
         sql = <<~SQL
@@ -557,8 +557,8 @@ module Journals
         within_aggregation_time?(predecessor) &&
         same_user?(predecessor) &&
         only_one_or_same_cause?(predecessor, cause) &&
-        only_one_note(predecessor, notes) &&
-        same_restriction(predecessor, internal)
+        only_one_note?(predecessor, notes) &&
+        same_restriction?(predecessor, internal)
     end
 
     def aggregation_active?
@@ -569,20 +569,20 @@ module Journals
       predecessor.updated_at >= (Time.zone.now - Setting.journal_aggregation_time_minutes.to_i.minutes)
     end
 
-    def only_one_note(predecessor, notes)
-      predecessor.notes.empty? || notes.empty?
-    end
-
-    def same_restriction(predecessor, internal)
-      predecessor.internal == internal
-    end
-
     def same_user?(predecessor)
       predecessor.user_id == user.id
     end
 
     def only_one_or_same_cause?(predecessor, cause)
       predecessor.cause.empty? || cause.blank? || predecessor.cause == cause
+    end
+
+    def only_one_note?(predecessor, notes)
+      predecessor.notes.empty? || notes.empty?
+    end
+
+    def same_restriction?(predecessor, internal)
+      predecessor.internal == internal
     end
 
     def log_journal_creation(predecessor)

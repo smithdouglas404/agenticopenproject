@@ -146,7 +146,7 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
       .to eql(current_user)
   end
 
-  it "sends an OpenProject notification" do
+  it "sends an OpenProject JOURNAL_CREATED notification" do
     allow(OpenProject::Notifications)
       .to receive(:send)
 
@@ -154,8 +154,16 @@ RSpec.shared_examples_for "journaled values for" do |new_values_set:,
 
     expect(OpenProject::Notifications)
       .to have_received(:send)
-            .with(OpenProject::Events::JOURNAL_CREATED,
-                  anything)
+            .with(OpenProject::Events::JOURNAL_CREATED, anything)
+            .once
+
+    # only one notification is sent even if the journable is saved multiple times
+    journable.save!
+
+    expect(OpenProject::Notifications)
+    .to have_received(:send)
+          .with(OpenProject::Events::JOURNAL_CREATED, anything)
+          .once
   end
 
   if expected_cause

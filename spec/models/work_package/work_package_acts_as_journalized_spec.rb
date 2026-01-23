@@ -962,7 +962,7 @@ RSpec.describe WorkPackage do
     # DETAIL:  Failing row contains (1178, WorkPackage, 481, 1252, , 2025-12-04 07:58:21.028586+00, 1,
     #          2025-12-04 07:58:21.028586+00, Journal::WorkPackageJournal, 833, {}, empty, f).
     context "on adding two notes right after creation" do
-      let(:journable) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject") do |wp|
           wp.add_journal(user:, notes: "First comment")
