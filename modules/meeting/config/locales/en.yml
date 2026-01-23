@@ -592,6 +592,7 @@ en:
   label_agenda_outcome_actions: "Agenda outcome actions"
   label_agenda_outcome_edit: "Edit outcome"
   label_agenda_outcome_delete: "Remove outcome"
+  label_added_as_outcome: "Added as outcome"
   label_write_outcome: "Write outcome"
   label_existing_work_package: "Existing work package"
   text_outcome_not_editable_anymore: "This outcome is not editable anymore."

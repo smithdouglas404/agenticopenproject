@@ -32,6 +32,7 @@
         flex.with_row do
           render(
             WorkPackageMeetingsTab::ListComponent.new(
+              work_package: @work_package,
               agenda_items_grouped_by_meeting: @agenda_items_grouped_by_meeting,
               direction: @direction
             )
