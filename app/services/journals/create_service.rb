@@ -198,11 +198,18 @@ module Journals
     # used as the values returned by the overall SQL statement so that an AR instance can be instantiated with it.
     #
     def create_journal_sql(predecessor, notes, internal, cause)
-      journal_modifications = journal_modification_sql(predecessor, notes, internal, cause)
-      relation_modifications = relation_modifications_sql(predecessor, notes, cause)
-
-      journal_cte_clauses = [journal_modifications]
-      journal_cte_clauses << relation_modifications if relation_modifications.any?
+      journal_cte_clauses = [
+        select_max_journal_cte_clause,
+        select_changes_cte_clause,
+        cleanup_predecessor_data_cte_clause(predecessor, notes, cause),
+        touch_journable_cte_clause(notes, cause),
+        fetch_time_cte_clause,
+        insert_data_cte_clause(notes, cause),
+        update_predecessor_cte_clause(predecessor, notes, cause),
+        update_or_insert_journal_cte_clause(predecessor, notes, internal, cause),
+        *associations.map { cleanup_predecessor_association_cte_clause(it, predecessor, notes, cause) },
+        *associations.map { insert_association_cte_clause(it) }
+      ].compact_blank
 
       <<~SQL
         WITH #{journal_cte_clauses.join(',')}
@@ -210,70 +217,34 @@ module Journals
       SQL
     end
 
-    def journal_modification_sql(predecessor, notes, internal, cause)
-      <<~SQL
-        max_journals AS (
-          #{select_max_journal_sql}
-        ), changes AS (
-          #{select_changed_sql}
-        ), cleanup_predecessor_data AS (
-          #{cleanup_predecessor_data_sql(predecessor, notes, cause)}
-        ), touch_journable AS (
-          #{touch_journable_sql(notes, cause)}
-        ), fetch_time AS (
-          #{fetch_time_sql}
-        ), insert_data AS (
-          #{insert_data_sql(notes, cause)}
-        ), update_predecessor AS (
-          #{update_predecessor_sql(predecessor, notes, cause)}
-        ), inserted_journal AS (
-          #{update_or_insert_journal_sql(predecessor, notes, internal, cause)}
-        )
-      SQL
-    end
-
-    def relation_modifications_sql(predecessor, notes, cause)
-      associations.map do |association|
-        association_modifications_sql(association, predecessor, notes, cause)
-      end
-    end
-
-    def association_modifications_sql(association, predecessor, notes, cause)
-      <<~SQL
-        cleanup_predecessor_#{association.name} AS (
-          #{association.cleanup_predecessor(predecessor, notes, cause)}
-        ), insert_#{association.name} AS (
-          #{association.insert_sql}
-        )
-      SQL
-    end
-
-    def select_max_journal_sql
+    def select_max_journal_cte_clause
       sanitize(<<~SQL, journable_id:, journable_type:)
-        SELECT
-          :journable_id journable_id,
-          :journable_type journable_type,
-          updated_at,
-          COALESCE(journals.version, fallback.version) AS version,
-          COALESCE(journals.id, 0) id,
-          COALESCE(journals.data_id, 0) data_id
-        FROM
-          journals
-        RIGHT OUTER JOIN
-          (SELECT 0 AS version) fallback
-        ON
-          journals.journable_id = :journable_id
-          AND journals.journable_type = :journable_type
-          AND journals.version IN (
-            SELECT MAX(version)
-            FROM journals
-            WHERE journable_id = :journable_id
-            AND journable_type = :journable_type
-          )
+        max_journals AS (
+          SELECT
+            :journable_id journable_id,
+            :journable_type journable_type,
+            updated_at,
+            COALESCE(journals.version, fallback.version) AS version,
+            COALESCE(journals.id, 0) id,
+            COALESCE(journals.data_id, 0) data_id
+          FROM
+            journals
+          RIGHT OUTER JOIN
+            (SELECT 0 AS version) fallback
+          ON
+            journals.journable_id = :journable_id
+            AND journals.journable_type = :journable_type
+            AND journals.version IN (
+              SELECT MAX(version)
+              FROM journals
+              WHERE journable_id = :journable_id
+              AND journable_type = :journable_type
+            )
+        )
       SQL
     end
 
-    def select_changed_sql
+    def select_changes_cte_clause
       sql = <<~SQL
         SELECT
            *
@@ -290,16 +261,27 @@ module Journals
         SQL
       end
 
-      sql
+      <<~SQL
+        changes AS (
+          #{sql}
+        )
+      SQL
     end
 
-    def cleanup_predecessor_data_sql(predecessor, notes, cause)
-      cleanup_predecessor_for(predecessor,
-                              notes,
-                              cause,
-                              data_table_name,
-                              :id,
-                              :data_id)
+    def cleanup_predecessor_data_cte_clause(predecessor, notes, cause)
+      return unless predecessor
+
+      sql = cleanup_predecessor_for(predecessor,
+                                    notes,
+                                    cause,
+                                    data_table_name,
+                                    :id,
+                                    :data_id)
+      <<~SQL
+        cleanup_predecessor_data AS (
+          #{sql}
+        )
+      SQL
     end
 
     # Updates the updated_at timestamp of the journable.
@@ -312,25 +294,26 @@ module Journals
     # Therefore, this is only carried out if:
     # * if there are changes or a note or a cause
     # * AND the journable doesn't already have a newer timestamp than the most recent journal
-    def touch_journable_sql(notes, cause)
+    def touch_journable_cte_clause(notes, cause)
       if journable.class.aaj_options[:timestamp].to_sym == :updated_at
-        sql = <<~SQL
-          UPDATE
-            #{journable_table_name}
-          SET
-            updated_at = statement_timestamp()
-          WHERE
-            id = :id
-            #{only_on_changed_or_forced_condition_sql(notes, cause)}
-            AND NOT updated_at > (SELECT updated_at FROM max_journals)
-          RETURNING updated_at
+        sanitize(<<~SQL, id: journable.id)
+          touch_journable AS (
+            UPDATE
+              #{journable_table_name}
+            SET
+              updated_at = statement_timestamp()
+            WHERE
+              id = :id
+              #{only_on_changed_or_forced_condition_sql(notes, cause)}
+              AND NOT updated_at > (SELECT updated_at FROM max_journals)
+            RETURNING updated_at
+          )
         SQL
-
-        sanitize(sql,
-                 id: journable.id)
       else
         <<~SQL
-          SELECT NULL::timestamp with time zone AS updated_at
+          touch_journable AS (
+            SELECT NULL::timestamp with time zone AS updated_at
+          )
         SQL
       end
     end
@@ -339,26 +322,30 @@ module Journals
     # * setting the created_at and updated_at timestamps of the newly created journal
     # * setting the updated_at timestamp on an updated (aggregated with) journal
     # * setting the validity_period (upper bound) of the preceding journal.
-    def fetch_time_sql
+    def fetch_time_cte_clause
       sanitize(<<~SQL, journable_timestamp:)
-        SELECT COALESCE((SELECT updated_at FROM touch_journable), :journable_timestamp) AS updated_at
+        fetch_time AS (
+          SELECT COALESCE((SELECT updated_at FROM touch_journable), :journable_timestamp) AS updated_at
+        )
       SQL
     end
 
-    def insert_data_sql(notes, cause)
+    def insert_data_cte_clause(notes, cause)
       sanitize(<<~SQL, journable_id:)
-        INSERT INTO
-          #{data_table_name} (
-            #{data_sink_columns}
-          )
-        SELECT
-          #{data_source_columns}
-        FROM #{journable_table_name}
-        #{journable_data_sql_addition}
-        WHERE
-          #{journable_table_name}.id = :journable_id
-          #{only_on_changed_or_forced_condition_sql(notes, cause)}
-        RETURNING *
+        insert_data AS (
+          INSERT INTO
+            #{data_table_name} (
+              #{data_sink_columns}
+            )
+          SELECT
+            #{data_source_columns}
+          FROM #{journable_table_name}
+          #{journable_data_sql_addition}
+          WHERE
+            #{journable_table_name}.id = :journable_id
+            #{only_on_changed_or_forced_condition_sql(notes, cause)}
+          RETURNING *
+        )
       SQL
     end
 
@@ -367,29 +354,31 @@ module Journals
     # If there is a predecessor (meaning we are aggregating/updating an existing journal), nothing is done.
     # In that case, the preceding journal is the one we are currently aggregating with so it will still remain
     # the most recent one.
-    def update_predecessor_sql(predecessor, notes, cause)
-      return "SELECT 1" if predecessor.present?
+    def update_predecessor_cte_clause(predecessor, notes, cause)
+      return if predecessor.present?
 
       <<~SQL
-        UPDATE
-          journals
-        SET
-          validity_period = tstzrange(lower(validity_period), (SELECT updated_at FROM fetch_time), '[)')
-        WHERE
-          id = (SELECT id from max_journals)
-          #{only_on_changed_or_forced_condition_sql(notes, cause)}
+        update_predecessor AS (
+          UPDATE
+            journals
+          SET
+            validity_period = tstzrange(lower(validity_period), (SELECT updated_at FROM fetch_time), '[)')
+          WHERE
+            id = (SELECT id from max_journals)
+            #{only_on_changed_or_forced_condition_sql(notes, cause)}
+        )
       SQL
     end
 
-    def update_or_insert_journal_sql(predecessor, notes, internal, cause)
+    def update_or_insert_journal_cte_clause(predecessor, notes, internal, cause)
       if predecessor
-        update_journal_sql(predecessor, notes, cause)
+        update_journal_cte_clause(predecessor, notes, cause)
       else
-        insert_journal_sql(notes, internal, cause)
+        insert_journal_cte_clause(notes, internal, cause)
       end
     end
 
-    def update_journal_sql(predecessor, notes, cause)
+    def update_journal_cte_clause(predecessor, notes, cause)
       # If there is a predecessor, we don't want to create a new one, we simply rewrite it.
       # The original data of that predecessor (data e.g. work_package_journals, customizable_journals, attachable_journals)
       # has been deleted before but the notes need to be taken over and the timestamps updated as if the
@@ -401,18 +390,20 @@ module Journals
       # In case there is no change at all, the journal will not need to be modified. But even
       # without a change, having notes or a cause will require to have the journal written.
       sql = <<~SQL
-        UPDATE
-          journals
-        SET
-          notes = :notes,
-          updated_at = (SELECT updated_at FROM fetch_time),
-          data_id = insert_data.id,
-          cause = :cause
-        FROM insert_data
-        WHERE journals.id = :predecessor_id
-        #{only_on_changed_or_forced_condition_sql(notes, cause)}
-        RETURNING
-          journals.*
+        inserted_journal AS (
+          UPDATE
+            journals
+          SET
+            notes = :notes,
+            updated_at = (SELECT updated_at FROM fetch_time),
+            data_id = insert_data.id,
+            cause = :cause
+          FROM insert_data
+          WHERE journals.id = :predecessor_id
+          #{only_on_changed_or_forced_condition_sql(notes, cause)}
+          RETURNING
+            journals.*
+        )
       SQL
 
       sanitize(sql,
@@ -421,38 +412,40 @@ module Journals
                cause: cause_sql(cause))
     end
 
-    def insert_journal_sql(notes, internal, cause)
+    def insert_journal_cte_clause(notes, internal, cause)
       sql = <<~SQL
-        INSERT INTO
-          journals (
-            journable_id,
-            journable_type,
-            version,
-            user_id,
-            notes,
-            restricted,
-            created_at,
-            updated_at,
-            data_id,
-            data_type,
-            cause,
-            validity_period
-          )
-        SELECT
-          :journable_id,
-          :journable_type,
-          COALESCE(max_journals.version, 0) + 1,
-          :user_id,
-          :notes,
-          :restricted,
-          (SELECT updated_at FROM fetch_time),
-          (SELECT updated_at FROM fetch_time),
-          insert_data.id,
-          :data_type,
-          :cause,
-          tstzrange((SELECT updated_at FROM fetch_time), NULL)
-        FROM max_journals, insert_data
-        RETURNING *
+        inserted_journal AS (
+          INSERT INTO
+            journals (
+              journable_id,
+              journable_type,
+              version,
+              user_id,
+              notes,
+              restricted,
+              created_at,
+              updated_at,
+              data_id,
+              data_type,
+              cause,
+              validity_period
+            )
+          SELECT
+            :journable_id,
+            :journable_type,
+            COALESCE(max_journals.version, 0) + 1,
+            :user_id,
+            :notes,
+            :restricted,
+            (SELECT updated_at FROM fetch_time),
+            (SELECT updated_at FROM fetch_time),
+            insert_data.id,
+            :data_type,
+            :cause,
+            tstzrange((SELECT updated_at FROM fetch_time), NULL)
+          FROM max_journals, insert_data
+          RETURNING *
+        )
       SQL
 
       sanitize(sql,
@@ -463,6 +456,24 @@ module Journals
                journable_type:,
                user_id: user.id,
                data_type: journable.class.journal_class.name)
+    end
+
+    def cleanup_predecessor_association_cte_clause(association, predecessor, notes, cause)
+      return unless predecessor
+
+      <<~SQL
+        cleanup_predecessor_#{association.name} AS (
+          #{association.cleanup_predecessor(predecessor, notes, cause)}
+        )
+      SQL
+    end
+
+    def insert_association_cte_clause(association)
+      <<~SQL
+        insert_#{association.name} AS (
+          #{association.insert_sql}
+        )
+      SQL
     end
 
     def changes_data_sql
