@@ -174,10 +174,10 @@ RSpec.describe "Custom actions", :js, with_ee: %i[custom_actions] do
     new_ca_page.add_action("Status", "Close")
     new_ca_page.expect_action("status", closed_status.id)
 
-    new_ca_page.set_condition("Role", role.name)
+    new_ca_page.add_condition("Role", role.name)
     new_ca_page.expect_selected_option role.name
 
-    new_ca_page.set_condition("Status", [default_status.name, rejected_status.name])
+    new_ca_page.add_condition("Status", [default_status.name, rejected_status.name])
     new_ca_page.expect_selected_option default_status.name
     new_ca_page.expect_selected_option rejected_status.name
 
@@ -233,7 +233,7 @@ RSpec.describe "Custom actions", :js, with_ee: %i[custom_actions] do
     new_ca_page.add_action(int_custom_field.name, "1")
     new_ca_page.expect_action(int_custom_field.attribute_name, "1")
 
-    new_ca_page.set_condition("Status", closed_status.name)
+    new_ca_page.add_condition("Status", closed_status.name)
     new_ca_page.expect_selected_option closed_status.name
 
     new_ca_page.create
@@ -254,7 +254,7 @@ RSpec.describe "Custom actions", :js, with_ee: %i[custom_actions] do
     new_ca_page.add_action("Status", default_status.name)
     new_ca_page.expect_action("status", default_status.id)
 
-    new_ca_page.set_condition("Role", other_role.name)
+    new_ca_page.add_condition("Role", other_role.name)
     new_ca_page.expect_selected_option other_role.name
     new_ca_page.create
 
@@ -292,7 +292,7 @@ RSpec.describe "Custom actions", :js, with_ee: %i[custom_actions] do
       new_ca_page.add_action("Project", other_project.name)
       new_ca_page.expect_action("project", other_project.id)
 
-      new_ca_page.set_condition("Project", project.name)
+      new_ca_page.add_condition("Project", project.name)
       new_ca_page.expect_selected_option project.name
     end
 
@@ -366,7 +366,7 @@ RSpec.describe "Custom actions", :js, with_ee: %i[custom_actions] do
       edit_ca_page.set_action "Status", rejected_status.name
       edit_ca_page.expect_action "status", rejected_status.id
 
-      edit_ca_page.set_condition "Status", default_status.name
+      edit_ca_page.add_condition "Status", default_status.name
       edit_ca_page.expect_selected_option default_status.name
     end
 
