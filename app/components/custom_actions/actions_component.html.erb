@@ -27,14 +27,14 @@ See COPYRIGHT and LICENSE files for more details.
 
   <div id="custom-actions-form--active-actions">
     <% all_actions.each do |action| %>
+      <% action_key = "action_#{action.key}" %>
       <section class="hide-section"
-               data-hide-sections-target="section"
-               data-name="<%= action.key %>"
-               <%= tag.attributes(data: { section_name: action.key }, hidden: active_section_keys.include?(action.key) ? nil : true) %>
+        data-hide-sections-target="section"
+        data-name="<%= action_key %>"
+        <%= tag.attributes(data: { section_name: action_key }, hidden: active_section_keys.include?(action_key) ? nil : true) %>
       >
         <div class="form--field">
           <%= styled_label_tag("custom_action_actions_#{action.key}", action.human_name, class: "-top") %>
-
           <% input_name = "custom_action[actions][#{action.key}]" %>
           <% if %i(associated_property boolean user project).include?(action.type) %>
             <div class="form--field-container">
@@ -153,7 +153,7 @@ See COPYRIGHT and LICENSE files for more details.
       <span class="form--select-container -middle">
         <%= select_tag "add_action",
                        options_for_select(
-                         @custom_action.all_actions.map { |a| [a.human_name, a.key] },
+                         @custom_action.all_actions.map { [it.human_name, "action_#{it.key}"] },
                          disabled: active_section_keys
                        ),
                        id: "add-custom-action-select",

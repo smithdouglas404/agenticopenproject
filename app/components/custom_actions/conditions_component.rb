@@ -44,7 +44,7 @@ module CustomActions
     private
 
     def active_section_keys
-      @active_section_keys ||= @custom_action.conditions.map(&:key)
+      @active_section_keys ||= @custom_action.conditions.map { "condition_#{it.key}" }
     end
 
     def all_conditions

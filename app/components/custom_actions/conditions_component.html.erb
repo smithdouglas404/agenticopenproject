@@ -20,53 +20,62 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 ++# %>
 
-<fieldset class="form--fieldset" id="custom-actions-form-conditions">
-  <legend class="form--fieldset-legend"><%= t("custom_actions.conditions.name") %></legend>
+<fieldset class="form--fieldset" id="custom-actions-form--conditions">
+  <legend class="form--fieldset-legend">
+    <%= t("custom_actions.conditions.name") %>
+  </legend>
 
-  <% all_conditions.each do |condition| %>
-    <section class="hide-section"
-      data-hide-sections-target="section"
-      data-name="<%= condition.key %>"
-      <%= tag.attributes(data: { section_name: condition.key }, hidden: active_section_keys.include?(condition.key) ? nil : true) %>
-    >
-      <div class="form--field">
-        <%= styled_label_tag("custom_action_conditions_#{condition.key}", condition.human_name, class: "-top") %>
-        <% input_name = "custom_action[conditions][#{condition.key}]" %>
-          <div class="form--field-container">
-            <div class="form--select-container -middle">
-              <% if condition.key == :project %>
-                <%= angular_component_tag "opce-project-autocompleter",
-                                          inputs: {
-                                            multiple: true,
-                                            filters: [{ name: "active", operator: "=", values: ["t"] }],
-                                            resource: "projects",
-                                            inputName: input_name,
-                                            appendTo: "body",
-                                            labelForId: "custom_action_actions_#{condition.key}",
-                                            inputValue: condition.values
-                                          } %>
-              <% else %>
-                <%= angular_component_tag "opce-autocompleter",
-                                          inputs: {
-                                            multiple: true,
-                                            defaultData: false,
-                                            items: condition.allowed_values.map { { id: it[:value], name: it[:label] } },
-                                            model: condition.value_objects.map { { id: it[:value], name: it[:label] } },
-                                            inputName: input_name,
-                                            bindLabel: "name",
-                                            labelForId: "custom_action_conditions_#{condition.key}",
-                                            appendTo: "body"
-                                          } %>
-              <% end %>
+  <div id="custom-actions-form--active-conditions" >
+    <% all_conditions.each do |condition| %>
+      <% condition_key = "condition_#{condition.key}" %>
+      <section class="hide-section"
+        data-hide-sections-target="section"
+        data-name="<%= condition_key %>"
+        <%= tag.attributes(data: { section_name: condition_key }, hidden: active_section_keys.include?(condition_key) ? nil : true) %>
+      >
+        <div class="form--field">
+          <%= styled_label_tag("custom_action_conditions_#{condition.key}", condition.human_name, class: "-top") %>
+          <% input_name = "custom_action[conditions][#{condition.key}]" %>
+            <div class="form--field-container">
+              <div class="form--select-container -middle">
+                <% if condition.key == :project %>
+                  <%= angular_component_tag "opce-project-autocompleter",
+                                            inputs: {
+                                              multiple: true,
+                                              filters: [{ name: "active", operator: "=", values: ["t"] }],
+                                              resource: "projects",
+                                              inputName: input_name,
+                                              appendTo: "body",
+                                              labelForId: "custom_action_actions_#{condition_key}",
+                                              inputValue: condition.values
+                                            } %>
+                <% else %>
+                  <%= angular_component_tag "opce-autocompleter",
+                                            inputs: {
+                                              multiple: true,
+                                              defaultData: false,
+                                              items: condition.allowed_values.map { { id: it[:value], name: it[:label] } },
+                                              model: condition.value_objects.map { { id: it[:value], name: it[:label] } },
+                                              inputName: input_name,
+                                              bindLabel: "name",
+                                              labelForId: "custom_action_conditions_#{condition_key}",
+                                              appendTo: "body"
+                                            } %>
+                <% end %>
+              </div>
             </div>
-          </div>
-            <button type="button" class="spot-link" data-action="click->hide-sections#hide">
-              <i class="icon-close icon-small" aria-hidden="true"></i>
+            <button type="button"
+              class="spot-link"
+              data-action="click->hide-sections#hide">
+                <i class="icon-close icon-small" aria-hidden="true"></i>
             </button>
         </div>
-        <div class="form--space"></div>
-    </section>
-  <% end %>
+      </section>
+    <% end %>
+  </div>
+
+  <div class="form--space"></div>
+
   <div class="form--field">
     <label class="form--label" for="add-custom-action-condition-select">
       <%= op_icon("icon-add icon4") %>
@@ -76,7 +85,7 @@ See COPYRIGHT and LICENSE files for more details.
       <span class="form--select-container -middle">
         <%= select_tag "add_action",
           options_for_select(
-                         all_conditions.map { |a| [a.human_name, a.key] },
+                       all_conditions.map { [it.human_name, "condition_#{it.key}"] },
                          disabled: active_section_keys
                        ),
                        id: "add-custom-action-condition-select",

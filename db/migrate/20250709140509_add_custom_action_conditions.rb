@@ -32,7 +32,7 @@ class AddCustomActionConditions < ActiveRecord::Migration[7.1]
   ASSOCIATIONS = %w[Project Type Role Status].freeze
 
   def up
-    create_table :custom_action_conditions, id: :integer do |t|
+    create_table :custom_action_conditions, id: :integer do |t| # rubocop:disable Rails/CreateTableWithTimestamps
       t.references :custom_action
       t.references :conditionable, polymorphic: true, null: false
     end
@@ -56,7 +56,7 @@ class AddCustomActionConditions < ActiveRecord::Migration[7.1]
       condition_name = klass.downcase
       table_name = "custom_actions_#{condition_name.pluralize}"
 
-      create_table table_name, id: :integer do |t|
+      create_table table_name, id: :integer do |t| # rubocop:disable Rails/CreateTableWithTimestamps
         t.references :custom_action
         t.references condition_name
       end
