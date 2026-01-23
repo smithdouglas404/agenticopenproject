@@ -146,15 +146,22 @@ class MeetingOutcomesController < ApplicationController
   private
 
   def set_meeting
-    @meeting = Meeting.find(params[:meeting_id])
+    @meeting = Meeting.visible.find(params[:meeting_id])
     @project = @meeting.project # required for authorization via before_action
   end
 
   def set_meeting_agenda_item
-    @meeting_agenda_item = MeetingAgendaItem.find(params[:meeting_agenda_item_id])
+    @meeting_agenda_item = @meeting.agenda_items.find(params[:meeting_agenda_item_id])
   end
 
   def set_meeting_outcome
-    @meeting_outcome = MeetingOutcome.find(params[:id])
+    @meeting_outcome = if @meeting_agenda_item
+                         @meeting_agenda_item.outcomes.find(params[:id])
+                       else
+                         MeetingOutcome
+                         .joins(meeting_agenda_item: :meeting)
+                         .where(meetings: { id: @meeting.id })
+                         .find(params[:id])
+                       end
   end
 end

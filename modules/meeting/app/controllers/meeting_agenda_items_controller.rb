@@ -285,7 +285,7 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def set_meeting
-    @meeting = Meeting.find(params[:meeting_id])
+    @meeting = Meeting.visible.find(params[:meeting_id])
     @project = @meeting.project # required for authorization via before_action
   end
 
@@ -300,11 +300,11 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def set_meeting_agenda_item
-    @meeting_agenda_item = MeetingAgendaItem.find(params[:id])
+    @meeting_agenda_item = @meeting.agenda_items.find(params[:id])
   end
 
   def set_current_occurrence
-    @current_occurrence = Meeting.find_by(id: params[:current_occurrence])
+    @current_occurrence = Meeting.visible.find_by(id: params[:current_occurrence])
   end
 
   def set_presentation_mode
