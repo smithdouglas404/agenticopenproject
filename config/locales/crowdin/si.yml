@@ -4814,6 +4814,8 @@ si:
       other: "තාවකාලිකව අගුළු දමා ඇත (%{count} අසාර්ථක පිවිසුම් උත්සාහයන්)"
     confirm_status_change: "ඔබ '%{name}' හි තත්වය වෙනස් කිරීමට ආසන්නව සිටී. ඔබට දිගටම කරගෙන යාමට අවශ්ය බව ඔබට විශ්වාසද?"
     deleted: "මකාදැමූ පරිශීලක"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "පහත සඳහන් දෝෂ හේතුවෙන් පරිශීලක තත්ත්වය වෙනස් කිරීම අසාර්ථක විය: %{errors}"
     invite: ඊමේල් හරහා පරිශීලකයාට ආරාධනා කරන්න
     invited: ආරාධනා

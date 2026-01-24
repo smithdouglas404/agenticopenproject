@@ -4805,6 +4805,8 @@ ca:
       other: "bloquejat temporalment (%{count} d'intents de connexió)"
     confirm_status_change: "Estàs a punt de canviar l'estat de \"%{name}\". Estàs segur que vols continuar?"
     deleted: "Usuari eliminat"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Canviant l'estat de l'usuari ha fallat a causa dels errors següents: %{errors}"
     invite: Invita l'usuari mitjançant e-mail
     invited: convidat

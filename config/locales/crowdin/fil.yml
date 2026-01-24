@@ -4812,6 +4812,8 @@ fil:
       other: "pansamantalang nakandado (%{count} ay nabigo sa mga pagtatangkang paglog-in)"
     confirm_status_change: "Ikaw ay malapit ng magpabago sa estado na '%{name}'. Sigurado ka bang gusto mong magpatuloy?"
     deleted: "Binurang gumagamit"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Ang pagbabago sa estado sa gumagamit ay nabigo dahil sa mga sumusunod na pagkakamali: %{errors}"
     invite: Imbitahan ang user gamit ang email
     invited: imbitado

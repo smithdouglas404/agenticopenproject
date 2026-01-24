@@ -4755,6 +4755,8 @@ zh-CN:
       other: "暂时锁定（%{count} 次尝试登录失败）"
     confirm_status_change: "您即将更改 \"%{name}\" 的状态。确实要继续吗？"
     deleted: "已删除的用户"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "用户状态更改失败，因为以下错误: %{errors}"
     invite: 通过电子邮件邀请用户
     invited: 已邀请

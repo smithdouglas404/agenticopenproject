@@ -4808,6 +4808,8 @@ pt-PT:
       other: "bloqueada temporariamente (%{count} tentativas de início de sessão falhadas)"
     confirm_status_change: "Está prestes a mudar o estado de '%{name}'. Tem certeza que deseja continuar?"
     deleted: "Eliminar Utilizador"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "A alteração do estado do utilizador falhou devido aos seguintes erros: %{errors}"
     invite: Convidar utilizador via email
     invited: convidado

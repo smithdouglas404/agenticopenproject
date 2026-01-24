@@ -55,7 +55,7 @@ cs:
     hours: "Hodiny"
     impediment: "Impediment"
     label_versions_default_fold_state: " Verze zobrazit srolovaně"
-    caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
+    caption_versions_default_fold_state: "Verze se při prohlížení nevyřízených žádostí ve výchozím nastavení nerozbalují. Každou z nich je třeba rozbalit ručně."
     work_package_is_closed: "Pracovní balíček je hotov, když"
     label_is_done_status: "Stav %{status_name} znamená hotovo"
     no_burndown_data: "Nejsou k dispozici žádná data o vypálení. Je nutné mít nastavena data zahájení a ukončení sprintu."

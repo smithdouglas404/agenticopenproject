@@ -4812,6 +4812,8 @@ hu:
       other: "ideiglenesen zárolva (%{count} sikertelen bejelentkezési kísérlet)"
     confirm_status_change: "'%{name}' állapotát készül megváltoztatni. Biztosan folytatja?"
     deleted: "Törölt felhasználó"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "A felhasználó állapotának a módosítása nem sikerült a következő hiba miatt: %{errors}"
     invite: Felhasználó meghívása email-ben
     invited: meghívott

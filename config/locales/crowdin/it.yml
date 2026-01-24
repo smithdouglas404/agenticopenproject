@@ -4811,6 +4811,8 @@ it:
       other: "bloccato temporaneamente (%{count} tentativi di accesso falliti)"
     confirm_status_change: "Stai per modificare lo stato di '%{name}'. Continuare?"
     deleted: "Utente cancellato"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Il cambiamento dello stato dell'utente è fallito a causa dei seguenti errori: %{errors}"
     invite: Invita l'utente via e-mail
     invited: invitato

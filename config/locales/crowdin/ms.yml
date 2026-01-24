@@ -4761,6 +4761,8 @@ ms:
       other: "dikunci sementara (%{count} percubaan log masuk gagal)"
     confirm_status_change: "Anda akan mengubah status '%{name}'. Adakah anda pasti anda ingin teruskan?"
     deleted: "Pengguna yang dipadam"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Penukaran status pengguna gagal kerana ralat tersebut: %{errors}"
     invite: Jemput pengguna melalui e-mel
     invited: dijemput

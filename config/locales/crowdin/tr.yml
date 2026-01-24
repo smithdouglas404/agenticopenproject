@@ -4812,6 +4812,8 @@ tr:
       other: "geçici olarak kilitlenmiştir (%{count} başarısız giriş denemeleri)"
     confirm_status_change: "'%{name}' durumunu değiştirmek üzeresiniz. Devam etmek istediğinizden emin misiniz?"
     deleted: "Kullanıcı silindi"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Kullanıcı durumunu değiştirmek aşağıdaki hatalardan dolayı başarısız oldu:%{errors}"
     invite: Kullanıcı e-posta ile davet
     invited: davet

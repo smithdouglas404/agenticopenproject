@@ -4864,6 +4864,8 @@ hr:
       other: "privremeno zaključano (%{count} neuspjela pokušaja spajanja)"
     confirm_status_change: "You are about to change the status of '%{name}'. Are you sure you want to continue?"
     deleted: "Izbrisani korisnik"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Promjena korisničkog statusa nije uspjela zbog sljedeće pogreške: %{errors}"
     invite: Pozovi korisnika pomoću email-a
     invited: pozvani

@@ -4761,6 +4761,8 @@ ko:
       other: "일시적으로 잠김 (%{count} 로그인 시도 실패)"
     confirm_status_change: "%{name} 상태가 변경됩니다. 계속하시겠습니까?"
     deleted: "사용자 삭제됨"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "다음 오류 때문에 사용자 상태 변경 실패함: %{errors}"
     invite: 이메일을 통해 사용자 초대
     invited: 초대됨

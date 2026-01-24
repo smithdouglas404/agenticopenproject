@@ -4813,6 +4813,8 @@
       other: "midlertidig låst (%{count} mislykkede innloggingsforsøk)"
     confirm_status_change: "Du er i ferd med å endre status for '%{name}'. Er du sikker på at du vil fortsette?"
     deleted: "Slettet bruker"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Endring av brukerstatus mislyktes på grunn av følgende feil: %{errors}"
     invite: Inviter bruker via e-post
     invited: invitert

@@ -4810,6 +4810,8 @@ da:
       other: "midlertidigt låst (%{count} mislykkede log ind-forsøg)"
     confirm_status_change: "You are about to change the status of '%{name}'. Are you sure you want to continue?"
     deleted: "Slettet bruger"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Det lykkedes ikke at ændre brugerens status på grund af denne fejl: %{errors}"
     invite: Invitér bruger via e-mail
     invited: inviteret

@@ -4812,6 +4812,8 @@ fr:
       other: "verrouillé temporairement (%{count} tentatives de connexion échouées)"
     confirm_status_change: "Vous êtes sur le point de changer le statut de '%{name}'. Voulez-vous vraiment continuer ?"
     deleted: "Utilisateur supprimé"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Le changement du statut de l'utilisateur a échoué dû aux erreurs suivantes: %{errors}"
     invite: Inviter l'utilisateur par e-mail
     invited: invité
