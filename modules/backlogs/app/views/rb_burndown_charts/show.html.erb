@@ -29,6 +29,10 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% html_title @sprint.name %>
 
+<%= content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<% end -%>
+
 <%= render(Backlogs::SprintPageHeaderComponent.new(sprint: @sprint, project: @project)) %>
 
 <% if @burndown %>
