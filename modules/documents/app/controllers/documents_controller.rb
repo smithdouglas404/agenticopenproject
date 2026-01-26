@@ -236,7 +236,6 @@ class DocumentsController < ApplicationController
     @token_payload = token_result.result[:encrypted_token]
     @resource_url = token_result.result[:resource_url]
     @readonly = token_result.result[:readonly]
-    @token_expires_at = token_result.result[:expires_at]
     @token_expires_in_seconds = token_result.result[:expires_in_seconds]
   end
 

@@ -40,7 +40,6 @@ export default class extends Controller {
     hocuspocusUrl: String,
     tokenPayload: String,
     documentName: String,
-    tokenExpiresAt: String,
     tokenExpiresInSeconds: Number,
     refreshUrl: String,
   };
@@ -48,7 +47,6 @@ export default class extends Controller {
   declare readonly hocuspocusUrlValue:string;
   declare readonly tokenPayloadValue:string;
   declare readonly documentNameValue:string;
-  declare readonly tokenExpiresAtValue:string;
   declare readonly tokenExpiresInSecondsValue:number;
   declare readonly refreshUrlValue:string;
 

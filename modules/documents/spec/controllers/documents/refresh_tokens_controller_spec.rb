@@ -81,12 +81,10 @@ RSpec.describe Documents::RefreshTokensController do
 
         aggregate_failures "returns token metadata" do
           expect(json).to have_key("encrypted_token")
-          expect(json).to have_key("expires_at")
           expect(json).to have_key("expires_in_seconds")
         end
 
         aggregate_failures "valid expiration values" do
-          expect { Time.iso8601(json["expires_at"]) }.not_to raise_error
           expect(json["expires_in_seconds"]).to eq(5.minutes.to_i)
         end
       end

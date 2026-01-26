@@ -61,7 +61,6 @@ RSpec.describe Documents::OAuth::TokenWithMetadataService,
 
       expect(result[:encrypted_token]).to be_a(String)
       expect(result[:encrypted_token]).not_to be_empty
-      expect(result[:expires_at]).to eq("2025-01-04T09:05:00Z")
 
       # Verify the encrypted token contains packed params by decrypting
       decrypted = decrypt_token(result[:encrypted_token])
@@ -83,13 +82,6 @@ RSpec.describe Documents::OAuth::TokenWithMetadataService,
       result = service_call.result
 
       expect(result[:readonly]).to be false
-    end
-
-    it "returns expires_at as ISO8601 timestamp" do
-      result = service_call.result
-
-      expect(result[:expires_at]).to be_a(String)
-      expect { Time.iso8601(result[:expires_at]) }.not_to raise_error
     end
 
     it "returns expires_in_seconds matching the token expiry" do
