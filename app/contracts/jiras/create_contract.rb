@@ -29,11 +29,6 @@
 #++
 
 module Jiras
-  class CreateContract < ModelContract
-    attribute :url
-    validates :url, presence: true
-
-    attribute :personal_access_token
-    validates :personal_access_token, presence: true
+  class CreateContract < BaseContract
   end
 end

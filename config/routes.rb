@@ -725,6 +725,7 @@ Rails.application.routes.draw do
             get :continue
             get :remove
             get :select_projects_modal
+            get :revert_modal
             post :select_projects
           end
         end

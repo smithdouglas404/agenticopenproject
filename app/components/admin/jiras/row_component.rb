@@ -31,7 +31,7 @@
 module Admin::Jiras
   class RowComponent < OpPrimer::BorderBoxRowComponent
     def name
-      render(Primer::Beta::Link.new(href: admin_import_jira_path(model), font_weight: :bold)) { model.url }
+      render(Primer::Beta::Link.new(href: admin_import_jira_path(model), font_weight: :bold)) { model.name || model.url }
     end
   end
 end

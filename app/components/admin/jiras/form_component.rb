@@ -35,30 +35,20 @@ module Admin
       include OpPrimer::ComponentHelpers
       include OpTurbo::Streamable
 
-      def self.wrapper_key = :jiras_form
+      def self.wrapper_key = :jira_form
 
       private
 
       def form_options
-        form_target.merge(stimulus_controller_options)
-                   .merge(model:)
+        form_target.merge(model:)
       end
 
       def form_target
         if model.new_record?
-          { method: :post, url: admin_import_jira_path }
+          { method: :post, url: admin_import_jira_index_path }
         else
           { method: :patch, url: admin_import_jira_path(model) }
         end
-      end
-
-      def stimulus_controller_options
-        {
-          # data: {
-          #   controller: "scim-clients--form-inputs",
-          #   turbo_frame: "_top"
-          # }
-        }
       end
     end
   end

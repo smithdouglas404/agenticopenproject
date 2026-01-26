@@ -38,7 +38,7 @@ module Admin
       menu_item :jira_import
 
       before_action :require_admin
-      before_action :find_jira_and_jira_import, only: %i[show continue remove select_projects select_projects_modal]
+      before_action :find_jira_and_jira_import, only: %i[show continue remove select_projects select_projects_modal revert_modal]
 
       def show; end
 
@@ -89,8 +89,12 @@ module Admin
         respond_with_dialog Admin::JiraImports::SelectProjectsModalComponent.new(jira_import: @jira_import)
       end
 
+      def revert_modal
+        respond_with_dialog Admin::JiraImports::RevertConfirmDialogComponent.new(jira_import: @jira_import)
+      end
+
       def remove
-        raise StandardError.new(I18n.t(:"admin.jiras.run.remove_error")) if @jira_import.status_running?
+        raise StandardError.new(I18n.t(:"admin.jira.run.remove_error")) if @jira_import.status_running?
 
         @jira_import.destroy!
         redirect_to(admin_import_jira_path(@jira))

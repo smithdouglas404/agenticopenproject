@@ -33,10 +33,16 @@ module Admin
     class Form < ApplicationForm
       form do |client_form|
         client_form.text_field(
+          name: :name,
+          label: Jira.human_attribute_name(:name),
+          required: true,
+          input_width: :medium
+        )
+
+        client_form.text_field(
           name: :url,
           label: Jira.human_attribute_name(:url),
           required: true,
-          caption: I18n.t("admin.jiras.form.url_description"),
           input_width: :large,
           type: :url
         )
@@ -45,14 +51,13 @@ module Admin
           name: :personal_access_token,
           label: Jira.human_attribute_name(:personal_access_token),
           required: true,
-          caption: I18n.t("admin.jiras.form.personal_access_token_description"),
           input_width: :large
         )
 
         client_form.submit(
           name: :submit,
-          label: model.persisted? ? I18n.t(:button_save) : I18n.t(:button_create),
-          scheme: :primary,
+          label: model.persisted? ? I18n.t("admin.jira.form.button_save") : I18n.t("admin.jira.form.button_add"),
+          scheme: :primary
         )
       end
     end

@@ -35,31 +35,33 @@ See COPYRIGHT and LICENSE files for more details.
       test_selector:
     )
   ) do |component|
-    component.with_header(classes: grid_class, color: :muted) do
-      headers.each do |name, args|
+    if has_header?
+      component.with_header(classes: grid_class, color: :muted) do
+        headers.each do |name, args|
+          concat render(
+            Primer::Beta::Text.new(
+              classes: header_classes(name),
+              font_weight: :semibold,
+              **header_args(name)
+            )
+          ) { args[:caption] }
+        end
+
         concat render(
           Primer::Beta::Text.new(
-            classes: header_classes(name),
-            font_weight: :semibold,
-            **header_args(name)
+            classes: "op-border-box-grid--mobile-heading",
+            font_weight: :semibold
           )
-        ) { args[:caption] }
-      end
+        ) { mobile_title }
 
-      concat render(
-        Primer::Beta::Text.new(
-          classes: "op-border-box-grid--mobile-heading",
-          font_weight: :semibold
-        )
-      ) { mobile_title }
-
-      if has_actions?
-        concat render(
-          Primer::BaseComponent.new(
-            classes: header_classes(:actions),
-            tag: :span
-          )
-        ) { action_row_header_content }
+        if has_actions?
+          concat render(
+            Primer::BaseComponent.new(
+              classes: header_classes(:actions),
+              tag: :span
+            )
+          ) { action_row_header_content }
+        end
       end
     end
 

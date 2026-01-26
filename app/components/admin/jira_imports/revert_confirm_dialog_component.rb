@@ -28,38 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Jiras
-  class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name
+module Admin
+  module JiraImports
+    class RevertConfirmDialogComponent < ApplicationComponent
+      include OpTurbo::Streamable
 
-    def mobile_title
-      Jira.model_name.human(count: 2)
-    end
+      def initialize(jira_import:)
+        super
+        @jira_import = jira_import
+      end
 
-    def row_class
-      RowComponent
-    end
+      def form_arguments
+        {
+          action: url,
+          method: :get
+        }
+      end
 
-    def has_header?
-      rows.any?
-    end
+      private
 
-    def headers
-      [
-        [:name, { caption: Jira.human_attribute_name(:name) }]
-      ]
-    end
-
-    def blank_title
-      I18n.t(:"admin.jira.blank.title")
-    end
-
-    def blank_description
-      I18n.t(:"admin.jira.blank.description")
-    end
-
-    def blank_icon
-      :tools
+      def url
+        continue_admin_import_jira_run_path(jira_id: @jira_import.jira.id, id: @jira_import.id, step: "revert")
+      end
     end
   end
 end

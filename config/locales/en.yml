@@ -118,12 +118,30 @@ en:
       explanation:
         text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
         link: "webhook"
-    jiras:
+    import:
+      title: "Import"
+    jira:
+      title: "Jira import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions."
       form:
-        url_description: "Jira host URL description"
-        personal_access_token_description: "Personal Access Token description"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
       run:
+        title: "Import run"
         remove_error: "A Jira import cannot be removed while it is running"
+        last_changed: "Last changed"
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
         index:
           description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
           button_import_run: "Import run"
@@ -168,8 +186,7 @@ en:
               label_not_available_data: "Not available for import"
               button_select_projects: "Select projects to import"
               button_continue: "Continue"
-              label_import: "Of the following items that can be imported, select what you would like to include in this import run."
-              button_fetch: "Get project meta data"
+              label_import: "Select which projects you would like to import."
               button_select:  "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
@@ -192,11 +209,18 @@ en:
               title: "Import run results"
               caption: "Review import run or revert import"
               info: "Import run successful."
-              label_results: "Import results"
+              label_results: "Imported"
               button_revert: "Revert import"
-              button_done: "Done"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in preview mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
               label_revert_progress: "Reverting import..."
               label_reverted: "Import reverted."
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          select_projects:
+            title: "Select projects"
 
     scim_clients:
       authentication_methods:
@@ -3449,7 +3473,7 @@ en:
   label_languages: "Languages"
   label_locale: "Language and region"
   label_jump_to_a_project: "Jump to a project..."
-  label_jira_import: "Jira"
+  label_jira_import: "Jira Import"
   label_keyword_plural: "Keywords"
   label_language_based: "Based on user's language"
   label_last_activity: "Last activity"

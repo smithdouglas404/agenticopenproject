@@ -27,20 +27,18 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title t(:label_administration), Jira.model_name, @jira.url %>
-
 <%=
-  render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { @jira.name || @jira.url }
-    header.with_breadcrumbs(
-      [
-        { href: admin_index_path, text: t(:label_administration) },
-        { href: admin_import_path, text: t(:"admin.import.title") },
-        { href: admin_import_jira_index_path, text: I18n.t(:"admin.jira.title") },
-        @jira.name || @jira.url
-      ]
+  render(
+    Primer::OpenProject::DangerDialog.new(
+      title: I18n.t("admin.jira.run.wizard.revert_dialog.title"),
+      form_arguments:,
+      size: :large
     )
+  ) do |dialog|
+    dialog.with_confirmation_message do |message|
+      message.with_heading(tag: :h2) { I18n.t("admin.jira.run.wizard.revert_dialog.title") }
+      message.with_description_content(I18n.t("admin.jira.run.wizard.revert_dialog.description"))
+    end
+    dialog.with_confirmation_check_box_content(I18n.t("admin.jira.run.wizard.revert_dialog.confirm"))
   end
 %>
-
-<%= render(Admin::Jiras::FormComponent.new(@jira)) %>

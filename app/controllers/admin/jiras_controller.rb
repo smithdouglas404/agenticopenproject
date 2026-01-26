@@ -31,6 +31,7 @@
 module Admin
   class JirasController < ApplicationController
     include OpTurbo::ComponentStream
+
     layout "admin"
 
     menu_item :jira_import
@@ -50,6 +51,10 @@ module Admin
       @jira = Jira.new
     end
 
+    def edit
+      @jira = Jira.find(params[:id])
+    end
+
     def create
       result = ::Jiras::CreateService.new(user: User.current).call(jira_params)
       result.on_failure do
@@ -61,12 +66,8 @@ module Admin
 
       result.on_success do
         flash[:notice] = t(:notice_successful_create)
-        redirect_to(edit_admin_import_jira_path(result.result))
+        redirect_to(admin_import_jira_path(result.result.id))
       end
-    end
-
-    def edit
-      @jira = Jira.find(params[:id])
     end
 
     def update
@@ -85,13 +86,12 @@ module Admin
       end
     end
 
-    def destroy
-    end
+    def destroy; end
 
     private
 
     def jira_params
-      params.expect(jira: %i[url personal_access_token])
+      params.expect(jira: %i[name url personal_access_token])
     end
 
     def stream_form_component(&)

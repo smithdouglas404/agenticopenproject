@@ -31,12 +31,16 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { @jira_import.id }
+    header.with_title {
+      "#{I18n.t(:"admin.jira.run.title")} #{@jira_import.id.to_s}"
+    }
     header.with_breadcrumbs(
-      [{ href: admin_index_path, text: t(:label_administration) },
-       { href: admin_import_jira_path, text: "Jira import" },
-       { href: admin_import_jira_path(@jira), text: @jira.url },
-       "Jira import #{@jira_import.id.to_s}",
+      [
+        { href: admin_index_path, text: t(:label_administration) },
+        { href: admin_import_path, text: t(:"admin.import.title") },
+        { href: admin_import_jira_index_path, text: I18n.t(:"admin.jira.title") },
+        { href: admin_import_jira_path(@jira), text: @jira.name || @jira.url },
+        "#{I18n.t(:"admin.jira.run.title")} #{@jira_import.id.to_s}"
       ]
     )
   end

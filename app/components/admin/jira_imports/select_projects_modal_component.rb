@@ -36,11 +36,13 @@ module Admin
       include OpTurbo::Streamable
 
       MODAL_ID = "op-jira-select-projects-list-dialog"
+      FORM_ID = "op-jira-select-projects-list-form"
 
       options :jira_import
 
       def form_options
         {
+          id: FORM_ID,
           url: select_projects_admin_import_jira_run_path(jira_id: jira_import.jira.id, id: jira_import.id),
           method: :post
         }

@@ -31,11 +31,27 @@
 module Admin::JiraImports
   class RowComponent < OpPrimer::BorderBoxRowComponent
     def id
-      render(Primer::Beta::Link.new(href: admin_import_jira_run_path(jira_id: model.jira.id, id: model.id), font_weight: :bold)) { "Import ##{model.id}" }
+      render(
+        Primer::Beta::Link.new(
+          href: admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
+          font_weight: :bold
+        )
+      ) do
+        "#{I18n.t('admin.jira.run.title')} ##{model.id}"
+      end
     end
 
-    def author
-      User.find(model.author_id)
+    def status
+      render(
+        Primer::Beta::Text.new(
+          font_weight: :bold,
+          pl: 2
+        )
+      ) { model.status.to_s }
+    end
+
+    def last_changed
+      helpers.format_time(model.updated_at)
     end
 
     def button_links
@@ -53,24 +69,6 @@ module Admin::JiraImports
           "aria-label": "Edit"
         )
       )
-    end
-
-    def status
-      render(
-        Primer::Beta::Text.new(
-          font_weight: :bold,
-          pl: 2
-        )
-      ) { model.status.to_s }
-    end
-
-    def projects
-      render(
-        Primer::Beta::Text.new(
-          font_weight: :bold,
-          pl: 2
-        )
-      ) { model.projects.join(" ") }
     end
   end
 end

@@ -40,17 +40,16 @@ module Admin
       end
 
       form do |f|
-        f.check_box_group(name: "projects", label: "Jira Projects") do |check_group|
+        f.check_box_group(name: :projects) do |check_group|
           (@jira_import.available["projects"] || []).each do |project|
-            check_group.check_box(value: project["id"], label: project["name"], caption: project["key"], checked: @jira_import.projects&.include?(project["id"]))
+            check_group.check_box(
+              value: project["id"],
+              label: project["name"],
+              caption: project["key"],
+              checked: @jira_import.projects&.include?(project["id"])
+            )
           end
         end
-
-        f.submit(
-          name: :submit,
-          label: I18n.t(:button_save),
-          scheme: :primary
-        )
       end
     end
   end

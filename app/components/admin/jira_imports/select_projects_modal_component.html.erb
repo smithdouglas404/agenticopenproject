@@ -1,6 +1,6 @@
 <%= render(
       Primer::Alpha::Dialog.new(
-        title: "Select projects to import",
+        title: I18n.t(:"admin.jira.run.wizard.select_projects.title"),
         id: MODAL_ID
       )
     ) do |d| %>
@@ -10,4 +10,26 @@
       <% render(Admin::JiraImports::Form.new(f, jira_import:)) %>
     <% end %>
   <% end %>
+  <%
+    d.with_footer do
+      component_collection do |modal_footer|
+        modal_footer.with_component(
+          Primer::Beta::Button.new(
+            data: { "close-dialog-id": MODAL_ID }
+          )
+        ) do
+          I18n.t(:button_cancel)
+        end
+        modal_footer.with_component(
+          Primer::Beta::Button.new(
+            scheme: :primary,
+            form: FORM_ID,
+            type: :submit
+          )
+        ) do
+          I18n.t(:button_continue)
+        end
+      end
+    end
+  %>
 <% end %>

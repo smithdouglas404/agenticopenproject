@@ -30,7 +30,7 @@
 
 module Admin::JiraImports
   class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :id, :status, :projects, :author
+    columns :id, :status, :last_changed
 
     def initialize(jira:, **)
       @jira = jira
@@ -49,38 +49,24 @@ module Admin::JiraImports
       true
     end
 
+    def has_header?
+      rows.any?
+    end
+
     def headers
       [
-        [:id, { caption: JiraImport.human_attribute_name(:id) }],
+        [:id, { caption: I18n.t(:"admin.jira.run.title") }],
         [:status, { caption: JiraImport.human_attribute_name(:status) }],
-        [:projects, { caption: JiraImport.human_attribute_name(:projects) }],
-        [:author, { caption: JiraImport.human_attribute_name(:author_id) }],
+        [:last_changed, { caption: I18n.t(:"admin.jira.run.last_changed") }]
       ]
     end
 
     def blank_title
-      "No import runs set up yet"
+      I18n.t(:"admin.jira.run.blank.title")
     end
 
     def blank_description
-      render(Primer::OpenProject::FlexLayout.new) do |flex|
-        flex.with_row do
-          render(Primer::Beta::Text.new(color: :muted)) do
-            "Create an import run to start importing information from this Jira instance"
-          end
-        end
-        flex.with_row(p: 3) do
-          render(Primer::Beta::Button.new(
-                   scheme: :primary,
-                   size: :medium,
-                   tag: :a,
-                   href: new_admin_import_jira_run_path(jira_id: @jira.id)
-                 )) do |button|
-            button.with_leading_visual_icon(icon: :plus)
-            "Import run"
-          end
-        end
-      end
+      I18n.t(:"admin.jira.run.blank.description")
     end
 
     def blank_icon

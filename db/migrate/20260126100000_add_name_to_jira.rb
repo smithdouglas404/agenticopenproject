@@ -28,38 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Jiras
-  class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name
-
-    def mobile_title
-      Jira.model_name.human(count: 2)
-    end
-
-    def row_class
-      RowComponent
-    end
-
-    def has_header?
-      rows.any?
-    end
-
-    def headers
-      [
-        [:name, { caption: Jira.human_attribute_name(:name) }]
-      ]
-    end
-
-    def blank_title
-      I18n.t(:"admin.jira.blank.title")
-    end
-
-    def blank_description
-      I18n.t(:"admin.jira.blank.description")
-    end
-
-    def blank_icon
-      :tools
+class AddNameToJira < ActiveRecord::Migration[8.0]
+  def change
+    change_table :jiras, bulk: true do |t|
+      t.string :name
     end
   end
 end

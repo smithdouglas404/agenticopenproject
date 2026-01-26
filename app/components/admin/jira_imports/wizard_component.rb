@@ -47,12 +47,6 @@ module Admin
         ]
       end
 
-      def selected_stats
-        [
-          { label: projects_label(selected_projects_count), checked: true }
-        ]
-      end
-
       def available_projects_count
         model.available['projects']&.count
       end
@@ -71,27 +65,27 @@ module Admin
 
       def import_stats_unavailable
         [
-          { label: I18n.t(:"admin.jiras.run.wizard.sections.import_scope.unavailable.relations"), checked: false },
-          { label: I18n.t(:"admin.jiras.run.wizard.sections.import_scope.unavailable.workflows"), checked: false },
-          { label: I18n.t(:"admin.jiras.run.wizard.sections.import_scope.unavailable.users"), checked: false },
-          { label: I18n.t(:"admin.jiras.run.wizard.sections.import_scope.unavailable.permissions"), checked: false }
+          { label: I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.relations"), checked: false },
+          { label: I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.workflows"), checked: false },
+          { label: I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.users"), checked: false },
+          { label: I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.permissions"), checked: false }
         ]
       end
 
       def projects_label(count)
-        I18n.t(:"admin.jiras.run.wizard.parts.projects", count: count || 0)
+        I18n.t(:"admin.jira.run.wizard.parts.projects", count: count || 0)
       end
 
       def issues_label(count)
-        I18n.t(:"admin.jiras.run.wizard.parts.issues", count: count || 0)
+        I18n.t(:"admin.jira.run.wizard.parts.issues", count: count || 0)
       end
 
       def statuses_label(count)
-        I18n.t(:"admin.jiras.run.wizard.parts.statuses", count: count || 0)
+        I18n.t(:"admin.jira.run.wizard.parts.statuses", count: count || 0)
       end
 
       def types_label(count)
-        I18n.t(:"admin.jiras.run.wizard.parts.types", count: count || 0)
+        I18n.t(:"admin.jira.run.wizard.parts.types", count: count || 0)
       end
 
       def import_selection

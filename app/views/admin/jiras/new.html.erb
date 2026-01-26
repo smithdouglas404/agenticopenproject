@@ -27,15 +27,18 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title t(:label_administration), Jira.model_name, t(".title") %>
+<% html_title t(:label_administration), t(:"admin.jira.title") %>
 
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { t(".title") }
+    header.with_title { t(:"admin.jira.configuration.new") }
     header.with_breadcrumbs(
-      [{ href: admin_index_path, text: t(:label_administration) },
-       { href: admin_import_jira_path, text: Jira.model_name },
-       t(".title")]
+      [
+        { href: admin_index_path, text: t(:label_administration) },
+        { href: admin_import_path, text: t(:"admin.import.title") },
+        { href: admin_import_jira_index_path, text: I18n.t(:"admin.jira.title") },
+        t(:"admin.jira.configuration.new")
+      ]
     )
   end
 %>

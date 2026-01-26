@@ -27,37 +27,46 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title t(:label_administration), Jira.model_name, @jira.url %>
+<% html_title t(:label_administration), Jira.model_name, @jira.name || @jira.url %>
 
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { @jira.url }
+    header.with_title { @jira.name || @jira.url }
     header.with_breadcrumbs(
-      [{ href: admin_index_path, text: t(:label_administration) },
-       { href: admin_import_jira_path, text: t(:label_jira_import) },
-       @jira.url]
+      [
+        { href: admin_index_path, text: t(:label_administration) },
+        { href: admin_import_path, text: t(:"admin.import.title") },
+        { href: admin_import_jira_index_path, text: I18n.t(:"admin.jira.title") },
+        @jira.name || @jira.url
+      ]
     )
     header.with_description do
-      I18n.t(:"admin.jiras.run.index.description")
-    end
-    if @jira_imports.any?
-      header.with_action_button(
-        scheme: :primary,
-        mobile_icon: nil,
-        mobile_label: nil,
-        tag: :a,
-        href: new_admin_import_jira_run_path(jira_id: @jira.id)
-      ) do |button|
-        button.with_leading_visual_icon(icon: :plus)
-        I18n.t(:"admin.jiras.run.index.button_import_run")
-      end
+      I18n.t(:"admin.jira.run.index.description")
     end
     header.with_action_button(
       mobile_icon: nil,
       mobile_label: nil,
       tag: :a,
       href: edit_admin_import_jira_path(@jira)
-    ) { I18n.t(:"admin.jiras.run.index.button_edit_configuration") }
+    ) { I18n.t(:"admin.jira.run.index.button_edit_configuration") }
+  end
+%>
+
+<%=
+  flex_layout(mb: 3, flex_layout: true, justify_content: :flex_end) do |flex|
+    flex.with_column do
+      render(
+        Primer::Beta::Button.new(
+          scheme: :primary,
+          tag: :a,
+          size: :medium,
+          href: new_admin_import_jira_run_path(jira_id: @jira.id)
+        )
+      ) do |button|
+        button.with_leading_visual_icon(icon: :plus)
+        I18n.t(:"admin.jira.run.index.button_import_run")
+      end
+    end
   end
 %>
 

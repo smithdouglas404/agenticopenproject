@@ -28,38 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Jiras
-  class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name
+module Jiras
+  class BaseContract < ModelContract
+    attribute :name
+    validates :name, presence: true
 
-    def mobile_title
-      Jira.model_name.human(count: 2)
-    end
+    attribute :url
+    validates :url, presence: true
 
-    def row_class
-      RowComponent
-    end
-
-    def has_header?
-      rows.any?
-    end
-
-    def headers
-      [
-        [:name, { caption: Jira.human_attribute_name(:name) }]
-      ]
-    end
-
-    def blank_title
-      I18n.t(:"admin.jira.blank.title")
-    end
-
-    def blank_description
-      I18n.t(:"admin.jira.blank.description")
-    end
-
-    def blank_icon
-      :tools
-    end
+    attribute :personal_access_token
+    validates :personal_access_token, presence: true
   end
 end
