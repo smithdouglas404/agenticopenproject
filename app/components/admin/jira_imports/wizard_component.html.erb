@@ -59,7 +59,7 @@ See COPYRIGHT and LICENSE files for more details.
                     icon: :"op-reload",
                     tag: :a,
                     scheme: :invisible,
-                    href: continue_admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id, step: 'fetch'),
+                    href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'fetch'),
                     aria: { label: "Back to fetch data" },
                     data: { turbo_frame: "jira_import_status" }
                   )
@@ -79,7 +79,7 @@ See COPYRIGHT and LICENSE files for more details.
               scheme: :primary,
               tag: :a,
               size: :medium,
-              href: continue_admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id, step: 'fetch'),
+              href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'fetch'),
               data: { turbo_frame: "jira_import_status" }
             )) do
               I18n.t(:"admin.jiras.run.wizard.sections.fetch_data.button_fetch")
@@ -155,7 +155,7 @@ See COPYRIGHT and LICENSE files for more details.
               scheme: :primary,
               size: :medium,
               tag: :a,
-              href: continue_admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id, step: 'configure'),
+              href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'configure'),
               data: { turbo_frame: "jira_import_status" }
             )) {
               I18n.t(:"admin.jiras.run.wizard.sections.import_scope.button_continue")
@@ -177,7 +177,7 @@ See COPYRIGHT and LICENSE files for more details.
             render(Primer::Beta::Button.new(
               size: :medium,
               tag: :a,
-              href: select_projects_modal_admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id),
+              href: select_projects_modal_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
               data: { controller: "async-dialog" }
             )) {
               I18n.t(:"admin.jiras.run.wizard.sections.import_scope.button_select")
@@ -194,7 +194,7 @@ See COPYRIGHT and LICENSE files for more details.
               scheme: :primary,
               size: :medium,
               tag: :a,
-              href: continue_admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id, step: 'stats'),
+              href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'stats'),
               data: { turbo_frame: "jira_import_status" },
               disabled: model.projects.nil? || model.projects.empty?
             )) {
@@ -259,7 +259,7 @@ See COPYRIGHT and LICENSE files for more details.
               scheme: :primary,
               size: :medium,
               tag: :a,
-              href: continue_admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id, step: 'import'),
+              href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'import'),
               data: { turbo_frame: "jira_import_status" }
             )) {
               I18n.t(:"admin.jiras.run.wizard.sections.confirm_import.button_start")
@@ -327,13 +327,13 @@ See COPYRIGHT and LICENSE files for more details.
               scheme: :primary,
               tag: :a,
               size: :medium,
-              href: admin_jira_path(model.jira.id)
+              href: admin_import_jira_path(model.jira.id)
             )) { I18n.t(:"admin.jiras.run.wizard.sections.import_result.button_done") })
             concat(render(Primer::Beta::Button.new(
               scheme: :default,
               tag: :a,
               size: :medium,
-              href: continue_admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id, step: 'revert'),
+              href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'revert'),
               data: { turbo_frame: "jira_import_status" }
             )) { I18n.t(:"admin.jiras.run.wizard.sections.import_result.button_revert") })
           end
@@ -357,7 +357,7 @@ See COPYRIGHT and LICENSE files for more details.
               scheme: :primary,
               tag: :a,
               size: :medium,
-              href: admin_jira_path(model.jira.id)
+              href: admin_import_jira_path(model.jira.id)
             )) { I18n.t(:"admin.jiras.run.wizard.sections.import_result.button_done") }
           end
         end

@@ -31,7 +31,7 @@
 module Admin::JiraImports
   class RowComponent < OpPrimer::BorderBoxRowComponent
     def id
-      render(Primer::Beta::Link.new(href: admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id), font_weight: :bold)) { "Import ##{model.id}" }
+      render(Primer::Beta::Link.new(href: admin_import_jira_run_path(jira_id: model.jira.id, id: model.id), font_weight: :bold)) { "Import ##{model.id}" }
     end
 
     def author
@@ -49,7 +49,7 @@ module Admin::JiraImports
         Primer::Beta::IconButton.new(
           icon: :pencil,
           tag: :a,
-          href: admin_jira_jira_import_path(jira_id: model.jira.id, id: model.id),
+          href: admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
           "aria-label": "Edit"
         )
       )

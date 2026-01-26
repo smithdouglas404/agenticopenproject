@@ -40,13 +40,12 @@ module Admin
       before_action :require_admin
       before_action :find_jira_and_jira_import, only: %i[show continue remove select_projects select_projects_modal]
 
-      def show
-      end
+      def show; end
 
       def new
         jira = Jira.find(params[:jira_id])
         jira_import = JiraImport.create!(author_id: current_user.id, jira_id: jira.id, status: JiraImport::INITIAL)
-        redirect_to(admin_jira_jira_import_path(jira_id: jira.id, id: jira_import.id))
+        redirect_to(admin_import_jira_run_path(jira_id: jira.id, id: jira_import.id))
       end
 
       def continue
@@ -83,7 +82,7 @@ module Admin
 
       def select_projects
         @jira_import.update!(projects: params[:projects])
-        redirect_to(admin_jira_jira_import_path(jira_id: @jira.id, id: @jira_import.id))
+        redirect_to(admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id))
       end
 
       def select_projects_modal
@@ -94,7 +93,7 @@ module Admin
         raise StandardError.new(I18n.t(:"admin.jiras.run.remove_error")) if @jira_import.status_running?
 
         @jira_import.destroy!
-        redirect_to(admin_jira_path(@jira))
+        redirect_to(admin_import_jira_path(@jira))
       end
 
       private

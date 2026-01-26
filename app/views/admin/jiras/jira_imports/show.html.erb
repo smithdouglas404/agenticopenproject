@@ -34,8 +34,8 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_title { @jira_import.id }
     header.with_breadcrumbs(
       [{ href: admin_index_path, text: t(:label_administration) },
-       { href: admin_jiras_path, text: "Jira import" },
-       { href: admin_jira_path(@jira), text: @jira.url },
+       { href: admin_import_jira_path, text: "Jira import" },
+       { href: admin_import_jira_path(@jira), text: @jira.url },
        "Jira import #{@jira_import.id.to_s}",
       ]
     )
@@ -44,7 +44,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   turbo_frame_tag(
     "jira_import_status",
-    src: continue_admin_jira_jira_import_path(jira_id: @jira.id, id: @jira_import.id),
+    src: continue_admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id),
     data: { controller: "jira-import", "jira-import-target": "frame" }
   )
 %>

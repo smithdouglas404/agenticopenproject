@@ -41,7 +41,7 @@ module Admin
 
       def form_options
         {
-          url: select_projects_admin_jira_jira_import_path(jira_id: jira_import.jira.id, id: jira_import.id),
+          url: select_projects_admin_import_jira_run_path(jira_id: jira_import.jira.id, id: jira_import.id),
           method: :post
         }
       end

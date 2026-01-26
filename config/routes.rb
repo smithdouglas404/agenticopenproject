@@ -717,13 +717,16 @@ Rails.application.routes.draw do
       post "plugin/:id", action: :update_plugin
     end
 
-    resources :jiras do
-      resources :jira_imports, module: :jiras do
-        member do
-          get :continue
-          get :remove
-          get :select_projects_modal
-          post :select_projects
+    namespace :import do
+      get "/", to: redirect("/admin/import/jira")
+      resources :jira, controller: "/admin/jiras" do
+        resources :run, controller: "/admin/jiras/jira_imports", module: :jiras do
+          member do
+            get :continue
+            get :remove
+            get :select_projects_modal
+            post :select_projects
+          end
         end
       end
     end

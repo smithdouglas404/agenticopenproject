@@ -34,7 +34,7 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_title { @jira.url }
     header.with_breadcrumbs(
       [{ href: admin_index_path, text: t(:label_administration) },
-       { href: admin_jiras_path, text: t(:label_jira_import) },
+       { href: admin_import_jira_path, text: t(:label_jira_import) },
        @jira.url]
     )
     header.with_description do
@@ -46,7 +46,7 @@ See COPYRIGHT and LICENSE files for more details.
         mobile_icon: nil,
         mobile_label: nil,
         tag: :a,
-        href: new_admin_jira_jira_import_path(jira_id: @jira.id)
+        href: new_admin_import_jira_run_path(jira_id: @jira.id)
       ) do |button|
         button.with_leading_visual_icon(icon: :plus)
         I18n.t(:"admin.jiras.run.index.button_import_run")
@@ -56,7 +56,7 @@ See COPYRIGHT and LICENSE files for more details.
       mobile_icon: nil,
       mobile_label: nil,
       tag: :a,
-      href: edit_admin_jira_path(@jira)
+      href: edit_admin_import_jira_path(@jira)
     ) { I18n.t(:"admin.jiras.run.index.button_edit_configuration") }
   end
 %>

@@ -46,9 +46,9 @@ module Admin
 
       def form_target
         if model.new_record?
-          { method: :post, url: admin_jiras_path }
+          { method: :post, url: admin_import_jira_path }
         else
-          { method: :patch, url: admin_jira_path(model) }
+          { method: :patch, url: admin_import_jira_path(model) }
         end
       end
 

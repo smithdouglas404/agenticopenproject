@@ -74,7 +74,7 @@ module Admin::JiraImports
                    scheme: :primary,
                    size: :medium,
                    tag: :a,
-                   href: new_admin_jira_jira_import_path(jira_id: @jira.id)
+                   href: new_admin_import_jira_run_path(jira_id: @jira.id)
                  )) do |button|
             button.with_leading_visual_icon(icon: :plus)
             "Import run"

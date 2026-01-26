@@ -61,7 +61,7 @@ module Admin
 
       result.on_success do
         flash[:notice] = t(:notice_successful_create)
-        redirect_to(edit_admin_jira_path(result.result))
+        redirect_to(edit_admin_import_jira_path(result.result))
       end
     end
 
