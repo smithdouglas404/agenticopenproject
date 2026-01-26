@@ -404,12 +404,7 @@ module OpenProject
         end
 
         def diff(path, identifier_from, identifier_to = nil)
-          args = []
-          if identifier_to
-            args << "diff" << "--no-abbrev-commit" << "--no-color" << identifier_to << identifier_from
-          else
-            args << "show" << "--no-abbrev-commit" << "--no-color" << identifier_from
-          end
+          args = build_diff_range(identifier_from, identifier_to)
           args << "--" << scm_encode(@path_encoding, "UTF-8", path) unless path.empty?
           capture_git(args).lines
         rescue Exceptions::CommandFailed
@@ -469,6 +464,20 @@ module OpenProject
         protected
 
         ##
+        # Build diff range given one or two user inputs
+        # first resolving them to actual commits.
+        def build_diff_range(identifier_from, identifier_to = nil)
+          from_sha = resolve_commit(identifier_from)
+
+          if identifier_to
+            to_sha = resolve_commit(identifier_to)
+            ["diff", "--no-abbrev-commit", "--no-color", to_sha, from_sha]
+          else
+            ["show", "--no-abbrev-commit", "--no-color", from_sha]
+          end
+        end
+
+        ##
         # Builds the full git arguments from the parameters
         # and return the executed stdout as a string
         def capture_git(args, opt = {})
@@ -519,6 +528,12 @@ module OpenProject
           # make sure to use bare repository path to initialize a managed repository
           args.unshift("--git-dir", git_dir) unless checkout? && !opts[:no_chdir]
           args
+        end
+
+        # Resolve any user-provided commit-ish (branch, tag, HEAD~1, etc.) to a commit SHA,
+        # so we can be sure to work with a valid commit identifier.
+        def resolve_commit(rev)
+          capture_git(["rev-parse", "--verify", "--quiet", "--end-of-options", "#{rev}^{commit}"]).strip
         end
       end
     end
