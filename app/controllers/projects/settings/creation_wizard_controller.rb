@@ -71,21 +71,10 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
   end
 
   def toggle_project_custom_field
-    custom_field_id = permitted_params.project_custom_field_project_mapping[:custom_field_id]
-
-    cf = ProjectCustomField.find(custom_field_id)
+    cf = ProjectCustomField.find(permitted_params.project_custom_field_project_mapping[:custom_field_id])
     mapping = cf.project_custom_field_project_mappings.find_by(project: @project)
 
-    toggleable = if mapping
-                   ProjectCustomField
-                     .toggleable_ids_in_creation_wizard_settings(@project, cf.custom_field_section_id)
-                     .first
-                     .include?(cf.id)
-                 else
-                   false
-                 end
-
-    if toggleable && mapping&.update(creation_wizard: !mapping.creation_wizard)
+    if custom_field_toggleable?(cf) && toggle_mapping(mapping)
       render json: {}, status: :ok
     else
       render json: {}, status: :unprocessable_entity
@@ -120,6 +109,18 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
     ProjectCustomFieldProjectMapping
       .where(project_id: @project.id, custom_field_id: custom_field_ids)
       .update_all(creation_wizard: true)
+  end
+
+  def custom_field_toggleable?(custom_field)
+    toggleable_ids = ProjectCustomField
+                       .toggleable_ids_in_creation_wizard_settings(@project, custom_field.custom_field_section_id)
+                       .first
+
+    toggleable_ids.include?(custom_field.id)
+  end
+
+  def toggle_mapping(mapping)
+    mapping&.update(creation_wizard: !mapping.creation_wizard)
   end
 
   def check_feature_flag
