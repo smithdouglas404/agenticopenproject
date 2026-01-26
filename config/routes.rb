@@ -138,6 +138,11 @@ Rails.application.routes.draw do
   # don't understand why that should make sense.
   mount API::Root => "/api"
 
+  # if Rails.env.development?
+  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+  # end
+  post "/graphql", to: "graphql#execute"
+
   # OAuth authorization routes
   use_doorkeeper do
     # Do not add global application controller

@@ -33,9 +33,28 @@ class RbTaskboardsController < RbApplicationController
 
   def show
     @statuses     = Type.find(Task.type).statuses
-    @story_ids    = @sprint.stories(@project).map(&:id)
+    @stories      = @sprint.stories(@project)
+    @story_ids    = @stories.map(&:id)
     @last_updated = Task.children_of(@story_ids)
                         .order(Arel.sql("updated_at DESC"))
                         .first
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        render json: {
+          statuses: @statuses,
+          stories: @stories.as_json(
+            include: {
+              assigned_to: { only: %i[id], methods: :name },
+              tasks: {
+                only: %i[id subject status_id remaining_hours],
+                include: { assigned_to: { only: %i[id], methods: :name } }
+              }
+            }
+          )
+        }.as_json
+      end
+    end
   end
 end

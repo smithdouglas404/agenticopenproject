@@ -34,5 +34,10 @@ class RbMasterBacklogsController < RbApplicationController
     @sprint_backlogs = Backlog.sprint_backlogs(@project)
 
     @last_update = (@sprint_backlogs + @owner_backlogs).filter_map(&:updated_at).max
+
+    respond_to do |format|
+      format.html { }
+      format.json { render json: { owner_backlogs: @owner_backlogs, sprint_backlogs: @sprint_backlogs }.to_json }
+    end
   end
 end

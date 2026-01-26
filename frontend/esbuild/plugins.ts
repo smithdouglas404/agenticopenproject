@@ -29,6 +29,8 @@
  */
 
 import type { Plugin } from 'esbuild';
+import { readFile } from 'fs/promises';
+import crypto from 'crypto';
 
 const customConfigPlugin:Plugin = {
   name: 'custom-config',
@@ -37,6 +39,43 @@ const customConfigPlugin:Plugin = {
       options.chunkNames = '[dir]/[name]-[hash]';
     }
   }
-}
+};
 
-export default [customConfigPlugin];
+const cssModulesPlugin:Plugin = {
+  name: 'css-modules',
+  setup(build) {
+    build.onLoad({ filter: /\.module\.css$/ }, async (args) => {
+      const css = await readFile(args.path, 'utf8');
+      const classMap:Record<string, string> = {};
+
+      // Generate hash from file path for scoping
+      const hash = crypto.createHash('md5')
+        .update(args.path)
+        .digest('hex')
+        .slice(0, 8);
+
+      // Transform .ClassName to .ClassName_hash
+      const scopedCss = css.replace(
+        /\.([a-zA-Z_][\w-]*)/g,
+        (match, className) => {
+          const scopedName = `${className}_${hash}`;
+          classMap[className] = scopedName;
+          return `.${scopedName}`;
+        }
+      );
+
+      // Return JS that exports class map and injects CSS
+      return {
+        contents: `
+          const style = document.createElement('style');
+          style.textContent = ${JSON.stringify(scopedCss)};
+          document.head.appendChild(style);
+          export default ${JSON.stringify(classMap)};
+        `,
+        loader: 'js',
+      };
+    });
+  },
+};
+
+export default [customConfigPlugin, cssModulesPlugin];
