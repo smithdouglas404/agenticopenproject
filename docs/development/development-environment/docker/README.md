@@ -264,13 +264,6 @@ define for your services to your `/etc/hosts`.
 ::1         openproject.local openproject-assets.local traefik.local
 ```
 
-#### DNS? Where are you?
-
-We have plans to add a local DNS to this development setup, making two things possible:
-
-1. No requirement to amend your `/etc/hosts` file anymore.
-2. Being accessible from another device within your internal network (e.g. a cellphone).
-
 ### Local certificate authority
 
 We use [traefik](https://traefik.io/) as a reverse proxy and [step-ca](https://smallstep.com/docs/step-ca/) as a local
@@ -457,6 +450,23 @@ to have Nextcloud running to test the Nextcloud-OpenProject integration. To do t
 2. Make sure step-ca can reach it to validate it for SSH. In `docker/dev/tls/docker-compose.override.yml`, add the host
    to the `aliases` section of the traefik networking.
 
+### Alternative: Using Let's encrypt
+
+An alternative approach is to issue certificates through Let's encrypt. This allows you to skip steps related to usage and setup
+of a custom, non-trusted CA. However, it requires that you have access to a domain name that you control and requires additional
+step to make the reverse proxy publicly reachable, which is not in scope of what this documentation can cover.
+
+If you need such a setup, you can change the `docker-compose.override.yml` for the reverse proxy, to use `letsencrypt` (see the
+corresponding `docker-compose.override.example.yml`). Make sure to export an environment variable with your alternative DNS zone
+before starting anything via docker compose. For example:
+
+```bash
+export OPENPROJECT_DOCKER_DEV_TLD=dev.example.com
+docker compose up -d backend frontend
+```
+
+Will make your containers available under openproject.dev.example.com and openproject-assets.dev.example.com respectively.
+
 ### Troubleshooting
 
 After this setup you should be able to access your OpenProject development instance at `https://openproject.local`. If
@@ -564,7 +574,7 @@ Upon setting up all the things correctly, we can see a login with `keycloak` opt
 
 ## MinIO Service (local S3 storage backend)
 
-Within `docker/dev/minio` a compose file is provided for running a local MinIO instance with TLS support which can be used as a S3 storage for uploading files. 
+Within `docker/dev/minio` a compose file is provided for running a local MinIO instance with TLS support which can be used as a S3 storage for uploading files.
 When running with TLS support, the MinIO instance will be accessible on `https://minio.local` and a management UI (MinIO Console) will be available on `https://minioadmin.local/`.
 
 ### Running the MinIO Instance
@@ -578,8 +588,8 @@ docker compose --project-directory docker/dev/minio up -d
 ```
 This will automatically create a bucket named `openproject-uploads` which is used to store uploaded files.
 
-If you want to use TLS support, make sure to copy and uncomment the MinIO configuration environment variables in `docker/dev/tls/docker-compose.core.override.example.yml` to your `docker-compose.override.yml` file in the project root directory. If you want to use MinIO without TLS support, make sure to copy the environment variables from `docker/dev/minio/docker-compose.core-override.example.yml` to your `docker-compose.override.yml` file (in the project root directory). 
-After that, hard restart the `backend` service to apply the changes: 
+If you want to use TLS support, make sure to copy and uncomment the MinIO configuration environment variables in `docker/dev/tls/docker-compose.core.override.example.yml` to your `docker-compose.override.yml` file in the project root directory. If you want to use MinIO without TLS support, make sure to copy the environment variables from `docker/dev/minio/docker-compose.core-override.example.yml` to your `docker-compose.override.yml` file (in the project root directory).
+After that, hard restart the `backend` service to apply the changes:
 
 ```
 docker compose down backend

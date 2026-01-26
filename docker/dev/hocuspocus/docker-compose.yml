@@ -5,7 +5,7 @@ services:
     image:  openproject/hocuspocus:latest
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.hocuspocus.rule=Host(`hocuspocus.local`)"
+      - "traefik.http.routers.hocuspocus.rule=Host(`hocuspocus.${OPENPROJECT_DOCKER_DEV_TLD}`)"
       - "traefik.http.routers.hocuspocus.service=hocuspocus-service"
       - "traefik.http.routers.hocuspocus.tls=true"
       - "traefik.http.services.hocuspocus-service.loadbalancer.server.port=1234"
@@ -14,7 +14,7 @@ services:
     networks:
       - gateway
     environment:
-      - ALLOWED_DOMAINS=openproject.local,localhost
+      - ALLOWED_DOMAINS=openproject.${OPENPROJECT_DOCKER_DEV_TLD},localhost
       - NODE_TLS_REJECT_UNAUTHORIZED=0
       - SECRET=secret12345
 networks:

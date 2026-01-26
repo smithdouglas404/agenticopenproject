@@ -1,9 +1,15 @@
 log:
   level: INFO
+
+api:
+  dashboard: true
+  disabledashboardad: true
+
 providers:
   docker:
     network: gateway
     exposedByDefault: false
+
 entryPoints:
   web:
     address: ":80"
@@ -16,6 +22,7 @@ entryPoints:
     http:
       tls:
         certresolver: step # Using step by default, overwritable via CLI
+
 certificatesresolvers:
   step:
     acme:
