@@ -58,14 +58,25 @@ class Meeting::Participant < ApplicationForm
 
   private
 
+  def meeting
+    @builder.object.meeting
+  end
+
   def excluded_ids
-    @excluded_ids ||= @builder.object.meeting.participants.filter_map(&:user_id)
+    @excluded_ids ||= begin
+      participant_ids = meeting.participants.filter_map(&:user_id)
+      users_without_permission_ids = User.in_project(meeting.project)
+                                         .where.not(id: User.allowed_members(:view_meetings, meeting.project).select(:id))
+                                         .pluck(:id)
+
+      (participant_ids + users_without_permission_ids).uniq
+    end
   end
 
   def filters
     list = [
       { name: "type", operator: "=", values: %w[User] },
-      { name: "member", operator: "=", values: [@builder.object.meeting.project_id] },
+      { name: "member", operator: "=", values: [meeting.project_id] },
       { name: "status", operator: "=", values: [Principal.statuses[:active], Principal.statuses[:invited]] }
     ]
 
