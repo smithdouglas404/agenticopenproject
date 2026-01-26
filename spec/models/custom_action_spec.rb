@@ -228,8 +228,8 @@ RSpec.describe CustomAction do
 
   describe ".all_conditions" do
     it "returns all available conditions with the default value initialized" do
-      expect(stubbed_instance.all_conditions.map { |a| [a.key, a.values] })
-        .to contain_exactly([:status, []], [:role, []], [:type, []], [:project, []])
+      expect(stubbed_instance.all_conditions.map { [it.key, it.values] })
+        .to contain_exactly([:priority, []], [:status, []], [:role, []], [:type, []], [:project, []])
     end
   end
 end
