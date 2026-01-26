@@ -152,3 +152,8 @@ ul.SegmentedControl,
 .ActionListContent[aria-disabled="true"]
   .ActionListItem-label[class^="__hl_"], .ActionListItem-label[class*=" __hl_"]
     color: var(--control-fgColor-disabled) !important
+
+// avoid the dialog size being overriden by the h1 rule in typography-base.scss
+// FIXME: move to cascade layers
+.ConfirmDialog h1
+  font: var(--text-title-shorthand-small)
