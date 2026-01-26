@@ -201,7 +201,7 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
     # Replace all occurrences of `custom_values.value` within the WHERE clause.
     # This handles operators like "is empty" which generate multiple references:
     # e.g. `WHERE custom_values.value IS NULL OR custom_values.value = ''`
-    predicate.gsub!(/WHERE #{Regexp.escape(custom_values)}\.value.*/) do |match|
+    predicate.gsub!(/WHERE.*#{Regexp.escape(custom_values)}\.value.*/) do |match|
       match.gsub!("#{custom_values}.value", "#{customizable_journals}.value")
     end
   end
