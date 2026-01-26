@@ -75,10 +75,12 @@ module JournalChanges
   def get_custom_comments_changes
     return unless journable.respond_to?(:custom_comments)
 
+    association = ->(journal) { filter_admin_only_custom_fields(journal.custom_comment_journals) }
+
     ::Acts::Journalized::Differ::Association.new(
       predecessor,
       self,
-      association: :custom_comment_journals,
+      association:,
       id_attribute: :custom_field_id
     ).single_attribute_changes(
       :text,
@@ -89,15 +91,14 @@ module JournalChanges
   def get_custom_fields_changes
     return unless journable&.customizable?
 
-    association = if journable.is_a?(::Project)
-                    ->(journal) {
-                      journal.customizable_journals
-                             .with(cf_mappings: journable.project_custom_field_project_mappings)
-                             .joins("INNER JOIN cf_mappings USING (custom_field_id)")
-                    }
-                  else
-                    :customizable_journals
-                  end
+    association = ->(journal) {
+      relation = journal.customizable_journals
+      if journable.is_a?(::Project)
+        relation = relation.with(cf_mappings: journable.project_custom_field_project_mappings)
+                           .joins("INNER JOIN cf_mappings USING (custom_field_id)")
+      end
+      filter_admin_only_custom_fields(relation)
+    }
 
     ::Acts::Journalized::Differ::Association.new(
       predecessor,
@@ -147,5 +148,13 @@ module JournalChanges
       %i[title duration_in_minutes notes position work_package_id],
       key_prefix: "agenda_items"
     )
+  end
+
+  private
+
+  def filter_admin_only_custom_fields(relation)
+    return relation if User.current.admin?
+
+    relation.joins(:custom_field).where(custom_fields: { admin_only: false })
   end
 end

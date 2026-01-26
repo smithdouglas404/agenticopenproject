@@ -35,12 +35,6 @@ class OpenProject::JournalFormatter::CustomField
   end
 
   def render(key, values, options = { html: true })
-    unless User.current.admin?
-      custom_field = custom_field_for_key(key)
-      # consider admin_only to be true if custom field was deleted
-      return if !custom_field || custom_field.admin_only
-    end
-
     formatter_for_key(key).render(key, values, options)
   end
 
