@@ -28,34 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module CustomActions::Register
-  class << self
-    def actions
-      [
-        CustomActions::Actions::AssignedTo,
-        CustomActions::Actions::Responsible,
-        CustomActions::Actions::Status,
-        CustomActions::Actions::Priority,
-        CustomActions::Actions::CustomField,
-        CustomActions::Actions::Type,
-        CustomActions::Actions::Project,
-        CustomActions::Actions::Notify,
-        CustomActions::Actions::DoneRatio,
-        CustomActions::Actions::EstimatedHours,
-        CustomActions::Actions::StartDate,
-        CustomActions::Actions::DueDate,
-        CustomActions::Actions::Date
-      ]
-    end
+class CustomActions::Conditions::Priority < CustomActions::Conditions::Base
+  def self.key
+    :priority
+  end
 
-    def conditions
-      [
-        CustomActions::Conditions::Status,
-        CustomActions::Conditions::Role,
-        CustomActions::Conditions::Type,
-        CustomActions::Conditions::Priority,
-        CustomActions::Conditions::Project
-      ]
-    end
+  def self.type
+    IssuePriority
+  end
+
+  private
+
+  def associated
+    ::IssuePriority
+      .active
+      .select(:id, :name)
+      .order(Arel.sql("LOWER(name)"))
+      .map { [it.id, it.name] }
   end
 end

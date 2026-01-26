@@ -34,6 +34,10 @@ class CustomAction < ApplicationRecord
 
   has_many :custom_action_conditions, dependent: :destroy
 
+  has_many :priority_conditions, through: :custom_action_conditions,
+                                 source: :conditionable,
+                                 source_type: "IssuePriority"
+
   %w[Project Role Status Type].each do |source_type|
     has_many :"#{source_type.underscore}_conditions", through: :custom_action_conditions,
                                                       source: :conditionable,

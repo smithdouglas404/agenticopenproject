@@ -133,8 +133,13 @@ class CustomActions::Conditions::Base
   end
   private_class_method :target_table
 
+  def self.type
+    nil
+  end
+  private_class_method :type
+
   def self.conditionable_type
-    @conditionable_type ||= key.to_s.camelize
+    @conditionable_type ||= (type || key).to_s.camelize
   end
   private_class_method :conditionable_type
 
