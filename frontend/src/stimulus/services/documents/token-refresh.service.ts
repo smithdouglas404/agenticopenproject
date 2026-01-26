@@ -106,18 +106,12 @@ export class TokenRefreshService {
   }
 
   scheduleRefresh(expiresInSeconds:number):void {
-    this.clearTimer();
     this.retryCount = 0;
-
-    if (this.destroyed) {
-      return;
-    }
-
-    const refreshDelayMs = Math.max(MIN_REFRESH_DELAY_MS, Math.floor(expiresInSeconds * REFRESH_THRESHOLD * 1000));
-
-    this.refreshTimer = setTimeout(() => {
-      void this.performRefresh();
-    }, refreshDelayMs);
+    const delayMs = Math.max(
+      MIN_REFRESH_DELAY_MS,
+      Math.floor(expiresInSeconds * REFRESH_THRESHOLD * 1000),
+    );
+    this.scheduleRefreshAfter(delayMs);
   }
 
   static async fetchToken(refreshUrl:string):Promise<TokenResponse> {
@@ -183,6 +177,10 @@ export class TokenRefreshService {
   }
 
   private scheduleRetry():void {
+    this.scheduleRefreshAfter(RETRY_DELAY_MS);
+  }
+
+  private scheduleRefreshAfter(delayMs:number):void {
     this.clearTimer();
 
     if (this.destroyed) {
@@ -191,7 +189,7 @@ export class TokenRefreshService {
 
     this.refreshTimer = setTimeout(() => {
       void this.performRefresh();
-    }, RETRY_DELAY_MS);
+    }, delayMs);
   }
 
   private clearTimer():void {
