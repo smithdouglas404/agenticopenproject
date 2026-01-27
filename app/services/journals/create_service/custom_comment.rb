@@ -34,8 +34,10 @@ class Journals::CreateService
       journable.respond_to?(:custom_comments)
     end
 
-    def cleanup_predecessor(predecessor)
+    def cleanup_predecessor(predecessor, notes, cause)
       cleanup_predecessor_for(predecessor,
+                              notes,
+                              cause,
                               "custom_comment_journals",
                               :journal_id,
                               :id)
