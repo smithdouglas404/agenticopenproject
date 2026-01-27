@@ -4758,8 +4758,8 @@ zh-TW:
       other: "暫時鎖定 (%{count} 登錄失敗)"
     confirm_status_change: "您將更改 \"%{name}\" 的狀態。是否確實要繼續？"
     deleted: "刪除使用者"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "您無法變更自己的使用者狀態。"
+    error_admin_change_on_non_admin: "只有管理員可以變更管理員使用者的狀態。"
     error_status_change_failed: "由於以下錯誤, 更改使用者狀態失敗: %{errors}"
     invite: 透過電子郵件邀請使用者
     invited: 已邀請
