@@ -17,7 +17,7 @@ Configure everything you want included in future projects:
 - Add project members 
 - Select and populate the necessary modules 
 > [!IMPORTANT]
-> Content from the *Budgets* and *Time and costs* modules is not included when copying a template. For this reason, these modules should not be configured in templates, as any projects created from them will not contain the corresponding data.
+> Settings and data from the *Budgets* and *Time and costs* modules is not included when copying a template. For this reason, these modules should not be configured in templates, as any projects created from them will not contain the corresponding data.
 
 - Set up the default project structure in the Gantt chart  
 - Create work package templates  
