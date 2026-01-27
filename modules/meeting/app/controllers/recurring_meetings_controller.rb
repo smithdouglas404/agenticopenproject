@@ -7,7 +7,7 @@ class RecurringMeetingsController < ApplicationController
   include OpTurbo::FlashStreamHelper
 
   before_action :load_and_authorize_in_optional_project
-  before_action :find_meeting, except: %i[index new create]
+  before_action :find_recurring_meeting, except: %i[index new create]
 
   before_action :get_scheduled_meeting, only: %i[delete_scheduled_dialog destroy_scheduled]
   before_action :redirect_to_project, only: %i[show]
@@ -19,14 +19,7 @@ class RecurringMeetingsController < ApplicationController
   menu_item :meetings
 
   def index
-    results =
-      if @project
-        RecurringMeeting.visible.where(project_id: @project.id)
-      else
-        RecurringMeeting.visible
-      end
-
-    @recurring_meetings = show_more_pagination(results, limit: params[:limit])
+    @recurring_meetings = show_more_pagination(visible_recurring_meetings_scope, limit: params[:limit])
 
     respond_to do |format|
       format.html do
@@ -337,8 +330,16 @@ class RecurringMeetingsController < ApplicationController
     render_400 unless @scheduled_meeting.meeting_id.nil?
   end
 
-  def find_meeting
-    @recurring_meeting = RecurringMeeting.visible.find(params[:id])
+  def visible_recurring_meetings_scope
+    if @project
+      @project.recurring_meetings.visible
+    else
+      RecurringMeeting.visible
+    end
+  end
+
+  def find_recurring_meeting
+    @recurring_meeting = visible_recurring_meetings_scope.find(params[:id])
   end
 
   def convert_params
