@@ -104,7 +104,7 @@ export class OpenProjectApi implements Extension {
     * Store data to the API. The data is a YDoc update
     */
   async onStoreDocument(data: onStoreDocumentPayload): Promise<void> {
-    const { resourceUrl, readonly, tokenExpiresAt } = data.context;
+    const { resourceUrl, readonly } = data.context;
 
     if (!resourceUrl) {
       console.warn("Missing parameters in context. Skipping store.");
@@ -112,10 +112,6 @@ export class OpenProjectApi implements Extension {
     }
     if (readonly) {
       console.warn("Readonly user cannot make requests to store the document");
-      return;
-    }
-    if (!tokenExpiresAt || tokenExpiresAt <= new Date()) {
-      console.warn("Token expired or missing expiry. Skipping store.");
       return;
     }
 

@@ -2,7 +2,7 @@ import { beforeHandleMessagePayload, Document, onAuthenticatePayload, onLoadDocu
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import * as Y from "yjs";
 import { TokenExpired, TokenExpiryMissing, unauthorized } from "../../src/closeEvents";
-import { OpenProjectApi, createEditor } from "../../src/extensions/openProjectApi";
+import { createEditor, OpenProjectApi } from "../../src/extensions/openProjectApi";
 import { createExpiredToken, createTestToken } from "../helpers/tokenHelper";
 
 describe("OpenProjectApi", () => {
@@ -321,41 +321,6 @@ describe("OpenProjectApi", () => {
           body: expect.stringContaining("content_binary"),
         })
       );
-    });
-
-    test("should skip store when token has expired", async () => {
-      const document = new Y.Doc();
-      const data = {
-        context: {
-          token: "superValidToken",
-          resourceUrl: "https://test.api/api/v3/documents/121",
-          readonly: false,
-          tokenExpiresAt: new Date(Date.now() - 60 * 1000), // 1 min ago
-        },
-        document: { ...document, connections: [] } as unknown as Document,
-      } as onStoreDocumentPayload;
-
-      const api = new OpenProjectApi();
-      await api.onStoreDocument(data);
-
-      expect(fetchMock).not.toHaveBeenCalled();
-    });
-
-    test("should skip store when tokenExpiresAt is not set", async () => {
-      const document = new Y.Doc();
-      const data = {
-        context: {
-          token: "superValidToken",
-          resourceUrl: "https://test.api/api/v3/documents/121",
-          readonly: false,
-        },
-        document: { ...document, connections: [] } as unknown as Document,
-      } as onStoreDocumentPayload;
-
-      const api = new OpenProjectApi();
-      await api.onStoreDocument(data);
-
-      expect(fetchMock).not.toHaveBeenCalled();
     });
   });
 
