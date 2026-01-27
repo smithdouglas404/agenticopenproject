@@ -26,18 +26,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class RbMasterBacklogsController < RbApplicationController
-  menu_item :backlogs
+require "api/v3/backlogs/backlog_representer"
 
-  def index
-    @owner_backlogs = Backlog.owner_backlogs(@project)
-    @sprint_backlogs = Backlog.sprint_backlogs(@project)
-
-    @last_update = (@sprint_backlogs + @owner_backlogs).filter_map(&:updated_at).max
-
-    respond_to do |format|
-      format.html { }
-      format.json { render json: { owner_backlogs: @owner_backlogs, sprint_backlogs: @sprint_backlogs }.to_json }
+module API
+  module V3
+    module Backlogs
+      class BacklogsAPI < ::API::OpenProjectAPI
+        resources :backlogs do
+          route_param :id, type: Integer, desc: "Backlog ID" do
+            get do
+              BacklogRepresenter.new(@category, current_user:)
+            end
+          end
+        end
+      end
     end
   end
 end

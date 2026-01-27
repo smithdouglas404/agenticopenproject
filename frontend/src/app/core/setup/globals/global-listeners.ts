@@ -39,10 +39,10 @@ export function initializeGlobalListeners():void {
       const target = evt.target as HTMLElement;
 
       // Avoid defaulting clicks on elements already removed from DOM
-      if (!document.contains(target)) {
-        evt.preventDefault();
-        return;
-      }
+      // if (!document.contains(target)) {
+      //   evt.preventDefault();
+      //   return;
+      // }
 
       // Avoid handling clicks on anything other than a
       const linkElement = target.closest<HTMLAnchorElement>('a');

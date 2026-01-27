@@ -31,3 +31,9 @@ en:
     work_packages:
       properties:
         storyPoints: "Story Points"
+    new_story: "New Story"
+    stories_tasks: "Stories/Tasks"
+    task_board: "Task board"
+    burndown_chart: "Burndown chart"
+    wiki: "Wiki"
+    properties: "Properties"

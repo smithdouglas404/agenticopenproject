@@ -34,6 +34,8 @@ class RbStoriesController < RbApplicationController
                         story_points type_id subject author_id
                         sprint_id]
 
+  layout nil
+
   def create
     call = Stories::CreateService
            .new(user: current_user)
@@ -67,6 +69,7 @@ class RbStoriesController < RbApplicationController
 
     respond_to do |format|
       format.html { render partial: "story", object: story, status:, locals: { errors: call.errors } }
+      format.json { render json: @story.to_json }
     end
   end
 

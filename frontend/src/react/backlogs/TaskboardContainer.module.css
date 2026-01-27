@@ -1,0 +1,121 @@
+.Taskboard {
+  display: grid;
+  gap: 8px;
+  min-width: fit-content;
+  padding: 16px;
+}
+
+.HeaderRow {
+  display: contents;
+}
+
+.HeaderCell {
+  padding: 12px;
+  font-weight: 600;
+  background-color: var(--bgColor-muted, #f6f8fa);
+  border-radius: 6px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.StoryRow {
+  display: contents;
+}
+
+.StoryCard {
+  padding: 12px;
+  border: 1px solid var(--borderColor-default, #d0d7de);
+  border-radius: 6px;
+  background-color: var(--bgColor-default, #ffffff);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.StoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--fgColor-muted, #656d76);
+}
+
+.StorySubject {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.StoryFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.Assignee {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.AddCell {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12px;
+}
+
+.TaskCell {
+  min-height: 100px;
+  padding: 8px;
+  border: 1px dashed var(--borderColor-muted, #d8dee4);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: var(--bgColor-subtle, #f6f8fa);
+}
+
+.TaskCellClosed {
+  opacity: 0.7;
+}
+
+.TaskCard {
+  padding: 10px;
+  border: 1px solid var(--borderColor-default, #d0d7de);
+  border-radius: 6px;
+  background-color: var(--bgColor-default, #ffffff);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.TaskHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--fgColor-muted, #656d76);
+}
+
+.TaskSubject {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.TaskFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--fgColor-muted, #656d76);
+}
+
+.Unassigned {
+  font-style: italic;
+  color: var(--fgColor-muted, #656d76);
+  font-size: 12px;
+}
