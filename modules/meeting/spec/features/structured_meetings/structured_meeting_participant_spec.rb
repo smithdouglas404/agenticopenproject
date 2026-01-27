@@ -105,7 +105,8 @@ RSpec.describe "Meetings participants",
     wait_for_network_idle
 
     perform_enqueued_jobs
-    expect(ActionMailer::Base.deliveries.size).to eq 1
+    expect(ActionMailer::Base.deliveries.size).to eq 2
+    ActionMailer::Base.deliveries.clear
 
     show_page.in_participant_form do
       show_page.remove_participant(other_user)

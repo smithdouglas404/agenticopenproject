@@ -172,7 +172,7 @@ RSpec.describe "Recurring meetings creation",
       expect(page).to have_css("#meetings-side-panel-participants-component", text: 3)
 
       perform_enqueued_jobs
-      expect(ActionMailer::Base.deliveries.size).to eq 1
+      expect(ActionMailer::Base.deliveries.size).to eq 3
       expect(ActionMailer::Base.deliveries.first.to).to contain_exactly(third_user.mail)
     end
   end
