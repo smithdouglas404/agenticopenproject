@@ -66,7 +66,7 @@ See COPYRIGHT and LICENSE files for more details.
             <div>
               <ul>
                 <%- issues.each do |issue| -%>
-                  <li><%= link_to_work_package(issue, project: (@project != issue.project)) %></li>
+                  <li><%= link_to_work_package(issue, display_project: (@project != issue.project)) %></li>
                 <%- end -%>
               </ul>
             </div>

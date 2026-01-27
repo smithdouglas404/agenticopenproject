@@ -125,7 +125,7 @@ module OpenProject
         link_to(project_name, project_path_or_url(project, options), html_options)
       else
         project_name
-      end.html_safe
+      end
     end
 
     # Like #link_to_user, but will render a Primer link instead of a regular link.
