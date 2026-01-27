@@ -78,6 +78,11 @@ module Settings
         tabs
       end
 
+      def page_title
+        concat @custom_field.attribute_in_database("name")
+        concat render(Primer::Beta::Text.new(color: :muted)) { " (#{helpers.label_for_custom_field_format(@custom_field.field_format)})" }
+      end
+
       def breadcrumbs_items
         [{ href: admin_index_path, text: t("label_administration") },
          { href: admin_settings_project_custom_fields_path, text: t("label_project_plural") },
