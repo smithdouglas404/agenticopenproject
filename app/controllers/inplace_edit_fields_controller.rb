@@ -91,7 +91,17 @@ class InplaceEditFieldsController < ApplicationController
       raise ArgumentError, "Unsupported model for inplace edit"
     end
 
-    class_name.constantize
+    model_class = class_name.safe_constantize
+
+    # Guard against resolving arbitrary non-ActiveRecord constants.
+    unless model_class.is_a?(Class) &&
+           defined?(ApplicationRecord) &&
+           model_class < ApplicationRecord &&
+           model_class.respond_to?(:visible)
+      raise ArgumentError, "Model is not an ActiveRecord model"
+    end
+
+    model_class
   end
 
   def set_attribute
