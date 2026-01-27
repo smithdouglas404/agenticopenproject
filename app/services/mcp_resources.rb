@@ -28,20 +28,49 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
+module McpResources
   class << self
     def all
       [
-        McpTools::SearchProject
+        Project,
+        Status,
+        StatusList,
+        Type,
+        TypeList,
+        User,
+        Version,
+        WorkPackage
       ]
     end
 
     def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
+      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| resources_by_name[name] }
     end
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def resources_by_name
+      @resources_by_name ||= all.index_by(&:qualified_name)
+    end
+
+    def enabled_resources
+      enabled.select(&:uri)
+    end
+
+    def enabled_resource_templates
+      enabled.select(&:uri_template)
+    end
+
+    def read_resource(uri)
+      resource_class = enabled.find { |r| r.uri == uri || r.uri_template&.match?(uri) }
+      content = resource_class&.read(uri)
+      return [] if content.nil?
+
+      [
+        {
+          uri: uri,
+          mimeType: "application/json",
+          text: content.to_json
+        }
+      ]
     end
   end
 end

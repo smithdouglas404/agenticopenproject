@@ -31,11 +31,11 @@ class McpConfigurationSeeder < Seeder
   def seed_data!
     seed_server_config if server_missing?
 
-    seed_tool_configs
+    seed_resource_and_tool_configs
   end
 
   def applicable?
-    server_missing? || tools_missing?
+    server_missing? || tools_missing? || resources_missing?
   end
 
   def not_applicable_message
@@ -53,8 +53,8 @@ class McpConfigurationSeeder < Seeder
     )
   end
 
-  def seed_tool_configs
-    McpTools.all.each do |thing| # rubocop:disable Rails/FindEach
+  def seed_resource_and_tool_configs
+    (McpTools.all + McpResources.all).each do |thing|
       next if McpConfiguration.find_by(identifier: thing.qualified_name)
 
       McpConfiguration.create!(
@@ -72,5 +72,9 @@ class McpConfigurationSeeder < Seeder
 
   def tools_missing?
     (McpTools.all.map(&:qualified_name) - McpConfiguration.pluck(:identifier)).any?
+  end
+
+  def resources_missing?
+    (McpResources.all.map(&:qualified_name) - McpConfiguration.pluck(:identifier)).any?
   end
 end

@@ -57,8 +57,12 @@ module API
         # description: server_config.description, # not yet supported by mcp gem
         version: "1.0.0",
         tools: McpTools.enabled.map(&:tool),
+        resources: McpResources.enabled_resources.map(&:resource),
+        resource_templates: McpResources.enabled_resource_templates.map(&:resource_template),
         server_context: { user_id: User.current.id }
       )
+
+      server.resources_read_handler { |params| McpResources.read_resource(params[:uri]) }
 
       status 200
 

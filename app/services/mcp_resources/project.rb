@@ -28,20 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
-  class << self
-    def all
-      [
-        McpTools::SearchProject
-      ]
-    end
+module McpResources
+  class Project < Base
+    name "project"
+    uri_template "/api/v3/projects/{id}"
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    default_title "Project"
+    default_description "Access projects of this OpenProject instance."
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def read(id:)
+      project = ::Project.visible(current_user).find_by(id:)
+      return nil if project.nil?
+
+      API::V3::Projects::ProjectRepresenter.create(project, current_user:)
     end
   end
 end

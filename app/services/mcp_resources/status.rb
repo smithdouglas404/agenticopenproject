@@ -28,20 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
-  class << self
-    def all
-      [
-        McpTools::SearchProject
-      ]
-    end
+module McpResources
+  class Status < Base
+    name "status"
+    uri_template "/api/v3/statuses/{id}"
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    default_title "Work Package Status"
+    default_description "Access work package statuses of this OpenProject instance."
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def read(id:)
+      status = ::Status.find_by(id:)
+      return nil if status.nil?
+
+      API::V3::Statuses::StatusRepresenter.new(status, current_user:)
     end
   end
 end

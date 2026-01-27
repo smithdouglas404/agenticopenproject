@@ -28,20 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
-  class << self
-    def all
-      [
-        McpTools::SearchProject
-      ]
-    end
+module McpResources
+  class User < Base
+    name "user"
+    uri_template "/api/v3/users/{id}"
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    default_title "User"
+    default_description "Access users of this OpenProject instance."
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def read(id:)
+      user = ::User.visible(current_user).find_by_unique(id) # rubocop:disable Rails/DynamicFindBy
+      return nil if user.nil?
+
+      API::V3::Users::UserRepresenter.create(user, current_user:)
     end
   end
 end

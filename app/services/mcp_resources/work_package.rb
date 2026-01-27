@@ -28,20 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
-  class << self
-    def all
-      [
-        McpTools::SearchProject
-      ]
-    end
+module McpResources
+  class WorkPackage < Base
+    name "work_package"
+    uri_template "/api/v3/work_packages/{id}"
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    default_title "Work Package"
+    default_description "Access work packages of this OpenProject instance."
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def read(id:)
+      work_package = ::WorkPackage.find_by(id:)
+      return nil if work_package.nil?
+      return nil unless current_user.allowed_in_work_package?(:view_work_packages, work_package)
+
+      API::V3::WorkPackages::WorkPackageRepresenter.create(work_package, current_user:, embed_links: true)
     end
   end
 end

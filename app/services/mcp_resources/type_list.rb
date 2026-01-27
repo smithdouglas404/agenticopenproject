@@ -28,20 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
-  class << self
-    def all
-      [
-        McpTools::SearchProject
-      ]
-    end
+module McpResources
+  class TypeList < Base
+    name "type_list"
+    uri "/api/v3/types"
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    default_title "Work Package Types List"
+    default_description "A list of all work package types configured in this OpenProject instance."
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def read
+      API::V3::Types::TypeCollectionRepresenter.new(::Type.includes(:color).all, self_link: api_v3_paths.types, current_user:)
     end
   end
 end

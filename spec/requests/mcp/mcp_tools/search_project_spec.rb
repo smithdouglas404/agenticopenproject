@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "MCP search_project tool", with_flag: { mcp_server: true } do
+RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -58,7 +58,7 @@ RSpec.describe "MCP search_project tool", with_flag: { mcp_server: true } do
   let!(:project_b) { create(:project, identifier: "def", name: "The DEF Project", status_code: :off_track) }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
-  let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name) }
+  let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
 
   before do
     server_config.save!
@@ -149,7 +149,7 @@ RSpec.describe "MCP search_project tool", with_flag: { mcp_server: true } do
     end
 
     context "when the tool is disabled via configuration" do
-      let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name, enabled: false) }
+      let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
 
       it_behaves_like "MCP error response"
     end

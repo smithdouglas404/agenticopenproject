@@ -79,7 +79,52 @@ RSpec.shared_examples_for "MCP response with structured content" do
 
   it "fulfills the schema of a structured MCP response" do
     subject
-    expect(last_response.body).to match_json_schema(json_rpc_response_schema)
+    expect(last_response.body).to match_json_schema(result_schema)
+  end
+end
+
+RSpec.shared_examples_for "MCP text resource response" do
+  let(:result_schema) do
+    {
+      required: %w[result],
+      properties: {
+        result: {
+          type: "object",
+          required: %w[contents],
+          properties: {
+            contents: {
+              type: "array",
+              items: {
+                type: "object",
+                required: %w[uri text],
+                properties: {
+                  uri: { type: "string" },
+                  mimeType: { type: "string" },
+                  text: { type: "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  end
+
+  include_context "MCP result response"
+
+  it "fulfills the schema of a text resource" do
+    subject
+    expect(last_response.body).to match_json_schema(result_schema)
+  end
+end
+
+RSpec.shared_examples_for "MCP empty resource response" do
+  include_context "MCP text resource response"
+
+  it "has no contents" do
+    subject
+    parsed = JSON.parse(last_response.body)
+    expect(parsed.dig("result", "contents")).to be_empty
   end
 end
 

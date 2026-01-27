@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
+RSpec.describe McpResources::User, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -38,73 +38,56 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
     post "/mcp", request_body.to_json
   end
 
-  let(:access_token) { create(:oauth_access_token, scopes: "mcp") }
+  let(:access_token) { create(:oauth_access_token, scopes: "mcp", resource_owner: user) }
+  let(:user) { create(:admin) } # using an admin, to ensure visibility of everything
   let(:request_body) do
     {
       jsonrpc: "2.0",
       id: "Test-Request",
-      method: "tools/list",
-      params: {}
+      method: "resources/read",
+      params: { uri: resource_uri }
     }
   end
+  let(:resource_uri) { "http://test.host/api/v3/users/#{requested_user.id}" }
+
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
+  let(:requested_user) { create(:user) }
+
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
-  let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name) }
+  let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
 
   before do
     server_config.save!
-    tool_config.save!
+    resource_config.save!
   end
 
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
-    it_behaves_like "MCP result response"
+    it_behaves_like "MCP text resource response"
 
-    it "includes the search_project tool" do
+    it "responds with a properly formatted user" do
       subject
-
-      tool = parsed_results.fetch("tools").find { |t| t.fetch("name") == "search_project" }
-      expect(tool).not_to be_nil
-      expect(tool.fetch("title")).to eq(tool_config.title)
-      expect(tool.fetch("description")).to eq(tool_config.description)
+      text_content = parsed_results.fetch("contents").first
+      user_json = text_content.fetch("text")
+      expect(user_json).to match_json_schema.from_docs("user_model")
     end
 
-    context "when not passing a Bearer token" do
-      subject do
-        header "X-Authentication-Scheme", "Bearer"
-        header "Content-Type", "application/json"
-        post "/mcp", request_body.to_json
-      end
+    context "when the resource is disabled via configuration" do
+      let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
 
-      it_behaves_like "MCP unauthenticated response"
+      it_behaves_like "MCP empty resource response"
     end
 
-    context "when passing a Bearer token with a wrong scope" do
-      let(:access_token) { create(:oauth_access_token, scopes: "api_v3") }
+    context "when requesting a non-existing user" do
+      let(:resource_uri) { "http://test.host/api/v3/users/#{requested_user.id + 10}" }
 
-      it_behaves_like "MCP unauthenticated response"
+      it_behaves_like "MCP empty resource response"
     end
 
-    context "when the MCP server is disabled via configuration" do
-      let(:server_config) { create(:mcp_configuration, identifier: "mcp_server", enabled: false) }
+    context "when requesting a user not visible to the user" do
+      let(:user) { create(:user) }
 
-      it "responds in a 404" do
-        subject
-        expect(last_response).to have_http_status(404)
-      end
-    end
-
-    context "when the search_project tool is disabled" do
-      let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name, enabled: false) }
-
-      it_behaves_like "MCP result response"
-
-      it "does not include the search_project tool" do
-        subject
-
-        tool = parsed_results.fetch("tools").find { |t| t.fetch("name") == "search_project" }
-        expect(tool).to be_nil
-      end
+      it_behaves_like "MCP empty resource response"
     end
   end
 

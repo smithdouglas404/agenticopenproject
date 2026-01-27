@@ -28,20 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
-  class << self
-    def all
-      [
-        McpTools::SearchProject
-      ]
-    end
+module McpResources
+  class Version < Base
+    name "version"
+    uri_template "/api/v3/versions/{id}"
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    default_title "Work Package Version"
+    default_description "Access work package versions of this OpenProject instance."
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def read(id:)
+      version = ::Version.visible.find_by(id:)
+      return nil if version.nil?
+
+      API::V3::Versions::VersionRepresenter.create(version, current_user:)
     end
   end
 end

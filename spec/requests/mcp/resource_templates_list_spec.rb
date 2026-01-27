@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
+RSpec.describe "MCP resources/templates/list", with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -43,30 +43,46 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
     {
       jsonrpc: "2.0",
       id: "Test-Request",
-      method: "tools/list",
+      method: "resources/templates/list",
       params: {}
     }
   end
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
-  let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name) }
+  let(:resource_config) { create(:mcp_configuration, identifier: McpResources::StatusList.qualified_name) }
+  let(:resource_template_config) { create(:mcp_configuration, identifier: McpResources::Status.qualified_name) }
 
   before do
     server_config.save!
-    tool_config.save!
+    resource_config.save!
+    resource_template_config.save!
   end
 
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP result response"
 
-    it "includes the search_project tool" do
+    it "includes the status resource template" do
       subject
 
-      tool = parsed_results.fetch("tools").find { |t| t.fetch("name") == "search_project" }
-      expect(tool).not_to be_nil
-      expect(tool.fetch("title")).to eq(tool_config.title)
-      expect(tool.fetch("description")).to eq(tool_config.description)
+      resource = parsed_results.fetch("resourceTemplates").find { |t| t.fetch("name") == "status" }
+      expect(resource).not_to be_nil
+      expect(resource.fetch("title")).to eq(resource_config.title)
+      expect(resource.fetch("description")).to eq(resource_config.description)
+    end
+
+    it "returns a fully qualified uriTemplate" do
+      subject
+
+      resource = parsed_results.fetch("resourceTemplates").find { |t| t.fetch("name") == "status" }
+      expect(resource.fetch("uriTemplate")).to eq("http://test.host/api/v3/statuses/{id}")
+    end
+
+    it "does not include resources" do
+      subject
+
+      resource = parsed_results.fetch("resourceTemplates").find { |t| t.fetch("name") == "status_list" }
+      expect(resource).to be_nil
     end
 
     context "when not passing a Bearer token" do
@@ -94,16 +110,18 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
       end
     end
 
-    context "when the search_project tool is disabled" do
-      let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name, enabled: false) }
+    context "when the status resource template is disabled" do
+      let(:resource_template_config) do
+        create(:mcp_configuration, identifier: McpResources::Status.qualified_name, enabled: false)
+      end
 
       it_behaves_like "MCP result response"
 
-      it "does not include the search_project tool" do
+      it "does not include the status resource template" do
         subject
 
-        tool = parsed_results.fetch("tools").find { |t| t.fetch("name") == "search_project" }
-        expect(tool).to be_nil
+        resource = parsed_results.fetch("resourceTemplates").find { |t| t.fetch("name") == "status" }
+        expect(resource).to be_nil
       end
     end
   end

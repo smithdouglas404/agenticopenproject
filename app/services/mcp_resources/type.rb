@@ -28,20 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
-  class << self
-    def all
-      [
-        McpTools::SearchProject
-      ]
-    end
+module McpResources
+  class Type < Base
+    name "type"
+    uri_template "/api/v3/types/{id}"
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    default_title "Work Package Type"
+    default_description "Access work package types of this OpenProject instance."
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def read(id:)
+      type = ::Type.find_by(id:)
+      return nil if type.nil?
+
+      API::V3::Types::TypeRepresenter.new(type, current_user:)
     end
   end
 end

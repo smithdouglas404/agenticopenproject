@@ -28,20 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
-  class << self
-    def all
-      [
-        McpTools::SearchProject
-      ]
-    end
+# A simple implementation of the essential parts of https://datatracker.ietf.org/doc/html/rfc6570
+# So far we only need it to parse simple URI templates we defined ourselves and match them, so this is what's implemented.
+# If we start needing more, we either need to add more or start double checking existing solutions.
+class UriTemplate
+  def initialize(template_string)
+    raise ArgumentError, "template_string can't be nil" if template_string.nil?
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    @template_string = template_string
+    @variables = template_string.scan(/\{(\w+)\}/).flatten
+    matcher_string = "^#{Regexp.escape(template_string)}$"
+    @variables.each { |v| matcher_string.gsub!(/\\\{#{v}\\\}/, "(?<#{v}>[\\w-]+)") }
+    @matcher = Regexp.new(matcher_string)
+  end
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
-    end
+  delegate :match?, to: :@matcher
+  delegate :as_json, to: :to_s
+
+  def parse(uri)
+    match = @matcher.match(uri)
+    return nil if match.nil?
+
+    @variables.to_h { |v| [v.to_sym, match[v]] }
+  end
+
+  def to_s
+    @template_string
   end
 end
