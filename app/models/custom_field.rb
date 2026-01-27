@@ -354,9 +354,7 @@ class CustomField < ApplicationRecord
     self == ProjectCustomField
   end
 
-  def can_have_comment?
-    self.class.can_have_comment?
-  end
+  delegate :can_have_comment?, to: :class
 
   ##
   # Overrides cache key so that a custom field's representation
