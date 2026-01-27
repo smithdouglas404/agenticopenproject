@@ -71,14 +71,13 @@ module BaseServices
 
       custom_field_ids = custom_field_ids_to_validate(params)
 
-      # Only update custom_values_to_validate when the custom field params are provided.
+      # Update custom_values_to_validate when the custom field params are provided,
+      # or when the model is a new record.
       # Otherwise keep them intact, so other services can still set them.
       return unless custom_field_ids.any?
 
       # Validate the custom values updated via the params only.
-      model.custom_values_to_validate = model.custom_field_values.filter do |cv|
-        custom_field_ids.include?(cv.custom_field_id)
-      end
+      set_custom_field_ids_to_validate(custom_field_ids)
     end
 
     def ensure_default_attributes(_params)
@@ -103,6 +102,12 @@ module BaseServices
       # allowing the default behaviour to set the id's to be validated in the
       # model.custom_values_to_validate method.
       model.persisted? ? custom_field_ids_from(params) : []
+    end
+
+    def set_custom_field_ids_to_validate(custom_field_ids)
+      model.custom_values_to_validate = model.custom_field_values.filter do |cv|
+        custom_field_ids.include?(cv.custom_field_id)
+      end
     end
 
     def custom_field_ids_from(params)

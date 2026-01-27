@@ -4814,6 +4814,8 @@ rw:
       other: "locked temporarily (%{count} failed login attempts)"
     confirm_status_change: "You are about to change the status of '%{name}'. Are you sure you want to continue?"
     deleted: "Deleted user"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Changing the user status failed due to the following errors: %{errors}"
     invite: Invite user via email
     invited: invited

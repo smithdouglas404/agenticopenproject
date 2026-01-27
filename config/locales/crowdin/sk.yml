@@ -4913,6 +4913,8 @@ sk:
       other: "dočasne zamknuté (%{count} neúspešných pokusov o prihlásenie)"
     confirm_status_change: "Chystáte sa zmeniť stav \"%{name}\". Naozaj chcete pokračovať?"
     deleted: "Odstránený používateľ"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Uloženie dokumentu zlyhalo s nasledujúcou chybou: %{errors}"
     invite: Pozvať používateľa prostredníctvom e-mailu
     invited: pozvaný

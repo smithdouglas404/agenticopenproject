@@ -4812,6 +4812,8 @@ sv:
       other: "tillfälligt låst (%{count} misslyckade inloggningsförsök)"
     confirm_status_change: "Du håller på att ändra statusen för '%{name}'. Är du säker på att du vill fortsätta?"
     deleted: "Raderad användare"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Misslyckades med att ändra användarstatus på grund av följande fel: %{errors}"
     invite: Bjud in användare via e-post
     invited: inbjuden

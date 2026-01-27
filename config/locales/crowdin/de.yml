@@ -4808,6 +4808,8 @@ de:
       other: "temporär gesperrt (%{count} fehlgeschlagene Loginversuche)"
     confirm_status_change: "Sie sind dabei den Status von '%{name}' zu ändern. Möchten Sie wirklich fortfahren?"
     deleted: "Gelöschter Nutzer"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Der Nutzerstatus konnte nicht geändert werden aufgrund folgender Fehler: %{errors}"
     invite: Nutzer via E-Mail einladen
     invited: eingeladen

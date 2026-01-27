@@ -111,13 +111,13 @@ module Projects
       (Project.status_codes.keys - [model.status_code]).first
     end
 
-    def custom_field_ids_to_validate(params)
+    def set_custom_values_to_validate(params)
       # In case of new records, validate custom fields that are enabled for all projects
       # and also required.
-      if model.new_record?
-        model.available_custom_fields.for_all.required.pluck(:id)
+      if model.new_record? && !contract_options[:skip_custom_field_validation]
+        set_custom_field_ids_to_validate(model.available_custom_fields.for_all.required.pluck(:id))
       else
-        custom_field_ids_from(params)
+        super
       end
     end
   end

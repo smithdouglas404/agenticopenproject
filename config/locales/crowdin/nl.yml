@@ -4809,6 +4809,8 @@ nl:
       other: "tijdelijk geblokkeerd (%{count} mislukte login pogingen)"
     confirm_status_change: "U bent bezig met het wijzigen van de status van '%{name}'. Weet u zeker dat u wilt doorgaan?"
     deleted: "Gebruiker verwijderen"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Veranderen van de gebruikersstatus is mislukt vanwege de volgende fouten: %{errors}"
     invite: Uitnodigen via e-mail
     invited: uitgenodigd

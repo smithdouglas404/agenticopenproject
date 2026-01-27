@@ -5012,6 +5012,8 @@ ar:
       other: "مغلق مؤقتا ( فشل واحد في محاولة تسجيل الدخول)\nمغلق مؤقتا\"(محاولات تسجيل الدخول الفاشلة%{count})"
     confirm_status_change: "You are about to change the status of '%{name}'. Are you sure you want to continue?"
     deleted: "حذف المستخدم"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "فشل تغيير حالة المستخدم نتيجة للأخطاء التالية: %{errors}"
     invite: دعوة المستخدم عن طريق البريد الإلكتروني
     invited: مدعوّ

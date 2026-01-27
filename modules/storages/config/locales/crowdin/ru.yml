@@ -128,7 +128,7 @@ ru:
     errors:
       messages:
         error: Произошла непредвиденная ошибка. Пожалуйста, проверьте журналы OpenProject для получения дополнительной информации или свяжитесь с администратором
-        forbidden: OpenProject could not access the requested resource. Please check your permissions configuration on the Storage Provider.
+        forbidden: OpenProject не смог получить доступ к запрашиваемому ресурсу. Пожалуйста, проверьте конфигурацию разрешений хранилища.
         unauthorized: OpenProject не смог аутентифицироваться у поставщика хранилища. Пожалуйста, убедитесь, что у вас есть к нему доступ.
       models:
         copy_project_folders_service:

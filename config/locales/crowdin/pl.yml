@@ -4907,6 +4907,8 @@ pl:
       other: "tymczasowo zablokowane (%{count} nieudanych prób zalogowania)"
     confirm_status_change: "Zamierzasz zmienić status „%{name}”. Na pewno chcesz kontynuować?"
     deleted: "Usunięty uźytkownik"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Zmiana statusu użytkownika nie powiodło się z powodu następujących błędów: %{errors}"
     invite: Zaproś użytkownika przez email
     invited: zaproszony

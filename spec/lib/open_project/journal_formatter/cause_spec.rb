@@ -39,7 +39,7 @@ RSpec.describe OpenProject::JournalFormatter::Cause do
   shared_let(:work_package) { create(:work_package) }
   let(:instance) { described_class.new(build(:work_package_journal)) }
   let(:work_package_html_link) do
-    link_to_work_package(work_package, all_link: true)
+    link_to_work_package(work_package, link_subject: true)
   end
   let(:work_package_raw_link) { "##{work_package.id}" }
 

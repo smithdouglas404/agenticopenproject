@@ -42,11 +42,11 @@ module Documents
       )
     end
 
-    attr_reader :oauth_token, :readonly
+    attr_reader :token_payload, :readonly
 
-    def initialize(oauth_token: nil, readonly: false)
+    def initialize(token_payload: nil, readonly: false)
       super()
-      @oauth_token = oauth_token
+      @token_payload = token_payload
       @readonly = readonly
     end
 

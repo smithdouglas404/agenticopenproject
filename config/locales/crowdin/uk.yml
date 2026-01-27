@@ -4906,6 +4906,8 @@ uk:
       other: "тимчасово заблоковано (%{count} спроби входу в систему)"
     confirm_status_change: "Ви збираєтеся змінити статус %{name} Ви дійсно бажаєте продовжити?"
     deleted: "Видалити користувача"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Не вдалося змінити статус користувача через такі помилки: %{errors}"
     invite: Запросити користувача електронною поштою
     invited: запрошені

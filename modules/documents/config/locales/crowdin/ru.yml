@@ -86,7 +86,7 @@ ru:
     last_updated_at: "Последнее сохранение %{time}."
     active_editors: "Активные редакторы"
     active_editors_count:
-      one: "1 active editor"
+      one: "1 активный редактор"
       few: "%{count} активных редактора"
       many: "%{count} активных редакторов"
       other: "%{count} активных редакторов"
@@ -106,7 +106,7 @@ ru:
       select_reassign_to_label: Переназначить документы на
       reassign_message:
         one: Тип "%{type_name}" в настоящее время используется в документе %{document_count}. Пожалуйста, выберите, в какой тип его переназначить.
-        few: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+        few: Тип "%{type_name}" в настоящее время используется в документах %{document_count}. Пожалуйста, выберите, в какой тип их переназначить.
         many: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
         other: Тип "%{type_name}" в настоящее время используется в документах %{document_count}. Пожалуйста, выберите, в какой тип их переназначить.
       at_least_one_type_required:

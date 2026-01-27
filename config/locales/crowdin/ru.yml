@@ -350,7 +350,7 @@ ru:
     instructions:
       is_required:
         all: "Отметьте пользовательское поле как обязательное. Это сделает обязательным заполнение поля при создании новых ресурсов. Существующие ресурсы не будут требовать ввода значения при обновлении."
-        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+        project: "Обязательные атрибуты должны быть заполнены пользователем при создании проекта, если поле активно (\"Для всех проектов\" или копирование из проекта/шаблона, в котором поле активно). Существующие проекты не требуют ввода значения при обновлении."
       is_for_all:
         all: "Отметьте пользовательское поле как доступное во всех существующих и новых проектах."
         project: "Отметьте атрибут как доступный во всех существующих и новых проектах."
@@ -2169,7 +2169,7 @@ ru:
   button_add_comment: "Добавить комментарий"
   button_add_item_above: "Добавить элемент выше"
   button_add_item_below: "Добавить элемент ниже"
-  button_add_sub_item: "Добавить подпункт"
+  button_add_sub_item: "Добавить подпроект"
   button_add_member: Добавить участника
   button_add_watcher: "Добавить наблюдателя"
   button_annotate: "Комментировать"
@@ -2653,7 +2653,7 @@ ru:
       enabled: "Отключить"
   enumeration_activities: "Отслеживание времени"
   enumeration_work_package_priorities: "Приоритеты пакета работ"
-  enumeration_reported_project_statuses: "Reported status"
+  enumeration_reported_project_statuses: "Переданный статус"
   enumeration_caption_order_changed: "Порядок успешно изменен."
   enumeration_could_not_be_moved: "Перечисление не может быть перенесено."
   enterprise_trials:
@@ -2872,7 +2872,7 @@ ru:
       all: "Bсе"
       label: "Режим фильтрации"
       selected: "Выбрано"
-    include_sub_items: "Включить подпункты"
+    include_sub_items: "Включить подпроекты"
     no_results_text: "Нет результатов"
   toggle_switch:
     label_on: "Включено"
@@ -3449,7 +3449,7 @@ ru:
   label_no_due_date: "нет даты окончания"
   label_no_start_date: "нет даты начала"
   label_no_parent_page: "Без родительской страницы"
-  label_notification_center_plural: "Уведомлений"
+  label_notification_center_plural: "Уведомления"
   label_nothing_display: "Нет данных для отображения"
   label_nobody: "никто"
   label_not_configured: "Не настроено"
@@ -3625,7 +3625,7 @@ ru:
   label_subproject: "Подпроект"
   label_subproject_new: "Новый подпроект"
   label_subproject_plural: "Подпроекты"
-  label_subitems: "Подпункты"
+  label_subitems: "Подпроекты"
   label_subtask_plural: "Подзадачи"
   label_summary: "Сводка"
   label_system: "Система"
@@ -4364,7 +4364,7 @@ ru:
   setting_apiv3_docs_enabled_instructions_html: >
     Если включена страница документации к документации, вы можете получить интерактивный вид документации APIv3 под <a href="%{link}" target="_blank">%{link}</a>.
   setting_apiv3_docs_enabled_instructions_warning: >
-    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
+    Пожалуйста, имейте в виду, что включение доступа к документам API на рабочей системе может привести к раскрытию конфиденциальной информации или к случайной потере данных, если не соблюдать осторожность. Мы рекомендуем включать эту настройку только для целей разработки.
   setting_attachment_whitelist: "Белый список загрузки вложений"
   setting_email_delivery_method: "Метод доставки электронной почты"
   setting_emails_salutation: "Адрес пользователя в письмах с"
@@ -4909,6 +4909,8 @@ ru:
       other: "временно заблокирован (%{count} неудачные попытки авторизации)"
     confirm_status_change: "Вы собираетесь изменить статус '%{name}'. Хотите продолжить?"
     deleted: "Удалённый пользователь"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Изменение статуса пользователя не удалось из-за следующей ошибки: %{errors}"
     invite: Пригласить пользователя по электронной почте
     invited: приглашен

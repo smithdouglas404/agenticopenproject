@@ -4809,6 +4809,8 @@ el:
       other: "κλειδωμένο προσωρινά (%{count} αποτυχημένες προσπάθειες σύνδεσης)"
     confirm_status_change: "Πρόκειται να αλλάξετε την κατάσταση του '%{name}'. Είστε βέβαιοι ότι θέλετε να συνεχίσετε;"
     deleted: "Διεγραμμένος χρήστης"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Η αλλαγή της κατάστασης του χρήστη απέτυχε λόγω των ακολούθων σφαλμάτων: %{errors}"
     invite: Πρόσκληση χρήστη μέσω email
     invited: προσκεκλημένος

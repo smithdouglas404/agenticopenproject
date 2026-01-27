@@ -1391,7 +1391,7 @@ tr:
         header_alerts: "Uyarılar"
         button_update_look_and_feel: "Görünümü ve hissi güncelle"
         button_update_alerts: "Uyarıları güncelle"
-        button_update_user_information: "Update profile"
+        button_update_user_information: "Profili güncelle"
         comments_sorting: "İş paketi faaliyetini aşağıdakilere göre sıralanmış olarak görüntüle"
         disable_keyboard_shortcuts: "Klavye kısayollarını devre dışı bırak"
         disable_keyboard_shortcuts_caption_html: |-
@@ -2948,7 +2948,7 @@ tr:
       watched: "Takip edilen"
       reminder: "Hatırlatıcı"
     facets:
-      unread: "okunmamış"
+      unread: "Okunmamış"
       unread_title: "Okunmayanları göster"
       all: "Hepsi"
       all_title: "Tümünü göster"
@@ -3699,7 +3699,7 @@ tr:
     digests:
       including_mention_singular: "bahsetme dahil"
       including_mention_plural: "%{number_mentioned} bahsetme dahil"
-      unread_notification_singular: "Okunmamış 1 bildirim"
+      unread_notification_singular: "1 okunmamış bildirim"
       unread_notification_plural: "%{number_unread} okunmamış bildirim"
       you_have: "Var"
     logo_alt_text: "Logo"
@@ -4812,6 +4812,8 @@ tr:
       other: "geçici olarak kilitlenmiştir (%{count} başarısız giriş denemeleri)"
     confirm_status_change: "'%{name}' durumunu değiştirmek üzeresiniz. Devam etmek istediğinizden emin misiniz?"
     deleted: "Kullanıcı silindi"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Kullanıcı durumunu değiştirmek aşağıdaki hatalardan dolayı başarısız oldu:%{errors}"
     invite: Kullanıcı e-posta ile davet
     invited: davet

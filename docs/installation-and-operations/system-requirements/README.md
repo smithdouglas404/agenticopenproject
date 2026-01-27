@@ -22,6 +22,21 @@ The server hardware requirements should be roughly the same for both the package
 
 This is for a single server running OpenProject for up to 200 total users. Depending on your number of concurrent users,  these requirements might vary drastically.
 
+## Database
+
+OpenProject officially supports [PostgreSQL version 16](https://www.postgresql.org/) or above since [OpenProject 16.0.0](https://www.openproject.org/docs/release-notes/16-0-0/).
+
+PostgreSQL versions 13 - 15 are not officially supported, but MAY continue to work, but could result in incompatibilities and degraded performance in the future. If you are using one of these versions currently, we have a [migration guide on how to upgrade to PostgreSQL 17](../misc/migration-to-postgresql17/) and strongly recommend you to upgrade your DBMS, as there are significant performance improvements.
+
+OpenProject currently requires some bundled extensions, that should be available in all distributions, but may require additional packages:
+
+- [pg_trgm:  support for similarity of text using trigram matching](https://www.postgresql.org/docs/current/pgtrgm.html)
+- [btree_gist: GiST operator classes with B-tree behavior](https://www.postgresql.org/docs/current/btree-gist.html)
+- [unaccent: a text search dictionary which removes diacritics](https://www.postgresql.org/docs/current/unaccent.html)
+
+Additionally, OpenProject will try to create a [custom collation](https://www.postgresql.org/docs/current/collation.html) for version sorting that depends on `und-u-kn-true` ICU collation. 
+
+
 ## Scaling requirements
 
 Generally speaking you will need more CPUs (the faster the better) and more RAM with an increasing number of users.
@@ -174,17 +189,10 @@ The [package-based installation](../installation/packaged) requires one of the f
 
 ### Overview of dependencies
 
-Both the package and docker based installations will install and setup the following dependencies that are required by OpenProject to run:
+Both the package and docker based installations will install and setup the the [Ruby runtime](https://www.ruby-lang.org/en/), as well as the [Puma application server](https://puma.io/) that are required by OpenProject to run.
 
-* __Runtime:__ [Ruby](https://www.ruby-lang.org/en/) Version = 3.3.x
-* __Webserver:__ [Apache](https://httpd.apache.org/)
-  or [nginx](https://nginx.org/en/docs/)
-* __Application server:__ [Puma](https://puma.io/)
-* __Database__: [PostgreSQL](https://www.postgresql.org/) Version >= 16
-
-Starting in OpenProject 16.0, PostgreSQL 16.0 will be a minimum requirement.
-PostgreSQL versions 13. and up will continue to work, but may result in incompatibilities and degraded performance in the future. We have a [migration guide on how to upgrade to PostgreSQL 17](../misc/migration-to-postgresql17/).
-
+For the [packaged installation](../installation/packaged/) and the [all-in-one docker container](../installation/docker#all-in-one-container) container, an [Apache](https://httpd.apache.org/) web server and a [PostgreSQL 17](https://www.postgresql.org/) database are installed.
+The all-in-one container will only additionally install [hocuspocus](https://github.com/opf/op-blocknote-hocuspocus), which is required for the [real-time collaboration](../../user-guide/documents/#collaborative-editing) feature in OpenProject.
 ## Client
 
 OpenProject supports the latest versions of the major browsers.

@@ -29,6 +29,7 @@ apt-get upgrade -y
 
 apt-get install -yq --no-install-recommends \
 	curl \
+	wget \
 	file \
 	gnupg2 \
 	lsb-release
@@ -51,7 +52,9 @@ apt-get install -yq --no-install-recommends \
 	imagemagick \
 	libclang-dev \
 	libjemalloc2 \
-	git
+	git \
+	build-essential \
+	libyaml-dev \
 
 for version in $PGVERSION_CHOICES ; do
 	apt-get install -yq --no-install-recommends postgresql-client-$version

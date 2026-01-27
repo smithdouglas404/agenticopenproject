@@ -61,8 +61,8 @@ class DocumentsController < ApplicationController
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
 
     if @document.collaborative? && Setting.real_time_text_collaboration_enabled?
-      generate_encrypted_oauth_token
       derive_readonly_from_permissions
+      define_token_payload
       derive_show_edit_state_from_params
     end
   end
@@ -222,8 +222,30 @@ class DocumentsController < ApplicationController
     redirect_to document_path(call.result, state: :edit)
   end
 
-  # rubocop:disable Metrics/AbcSize
-  def generate_encrypted_oauth_token
+  def define_token_payload
+    oauth_token = generate_oauth_token
+
+    @resource_url = URI.join(
+      root_url,
+      API::V3::Utilities::PathHelper::ApiV3Path.document(@document.id)
+    ).to_s
+
+    payload = {
+      resource_url: @resource_url,
+      oauth_token:,
+      readonly: @readonly
+    }
+
+    encrypted_payload = Documents::OAuth::EncryptTokenService.new(token: payload.to_json).call
+    if encrypted_payload.failure?
+      Rails.logger.error("Failed to encrypt OAuth token payload for document #{@document.id}: #{encrypted_payload.errors}")
+      return
+    end
+
+    @token_payload = encrypted_payload.result
+  end
+
+  def generate_oauth_token
     if !current_user.allowed_in_project?(:view_documents, @project)
       return
     end
@@ -237,18 +259,8 @@ class DocumentsController < ApplicationController
       return
     end
 
-    result = Documents::OAuth::EncryptTokenService
-      .new(token: result.result.plaintext_token)
-      .call
-
-    if result.failure?
-      Rails.logger.error("Failed to encrypt OAuth token for document #{@document.id}: #{result.errors}")
-      return
-    end
-
-    @oauth_token = result.result
+    result.result.plaintext_token
   end
-  # rubocop:enable Metrics/AbcSize
 
   def update_header_component_via_turbo_stream(state: :show)
     update_via_turbo_stream(

@@ -4762,6 +4762,8 @@ ja:
       other: "一時的にロックされています（ログインに %{count} 回失敗しました）"
     confirm_status_change: "'%{name}' のステータスを変更しようとしています。続行してもよろしいですか?"
     deleted: "削除されたユーザー"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "次のエラーによりユーザのステータスの変更が失敗しました：%{errors}"
     invite: メールでユーザを招待
     invited: 招待済み

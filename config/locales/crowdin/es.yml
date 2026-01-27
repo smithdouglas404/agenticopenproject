@@ -4810,6 +4810,8 @@ es:
       other: "bloqueada temporalmente (%{count} intentos fallidos de inicio de sesión)"
     confirm_status_change: "Va a cambiar el estado de “%{name}”. ¿Está seguro de que quiere continuar?"
     deleted: "Usuarios Eliminados"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Cambiar la condición de usuario falló debido a los errores siguientes: %{errors}"
     invite: Invitar a un usuario por email
     invited: invitado

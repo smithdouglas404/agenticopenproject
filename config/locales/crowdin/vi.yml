@@ -4764,6 +4764,8 @@ vi:
       other: "bị khóa tạm thời (%{count} lần đăng nhập không thành công)"
     confirm_status_change: "Bạn sắp thay đổi trạng thái của '%{name}'. Bạn có chắc chắn muốn tiếp tục không?"
     deleted: "Người dùng đã bị xóa"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Thay đổi trạng thái người dùng không thành công do các lỗi sau: %{errors}"
     invite: Mời người dùng qua email
     invited: được mời

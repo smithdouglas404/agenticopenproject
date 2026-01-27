@@ -202,8 +202,8 @@ ru:
         add_table: "Добавить таблицу связанных пакетов работ"
         edit_query: "Редактировать запрос"
         new_group: "Новая группа"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "Удалить группу"
+        remove_attribute: "Удалить из группы"
         reset_to_defaults: "Восстановить значения по умолчанию"
       working_days:
         calendar:
@@ -392,8 +392,6 @@ ru:
     label_me: "я"
     label_meeting_agenda: "Повестка совещания"
     label_meeting_minutes: "Протокол(-ы)"
-    label_menu_collapse: "свернуть"
-    label_menu_expand: "развернуть"
     label_more_than_ago: "более нескольких дней назад"
     label_moderate_comment: "Модерировать комментарий"
     label_next: "Следующий"
@@ -427,6 +425,7 @@ ru:
     label_remove_row: "Удалить строку"
     label_report: "Отчет"
     label_repository_plural: "Репозитории"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Сохранить как"
     label_search_columns: "Поиск столбца"
     label_select_watcher: "Выберите наблюдателя..."
@@ -594,7 +593,7 @@ ru:
         title: "Настройки уведомлений"
         notify_me: "Уведомлять меня"
         reminders:
-          no_notification: Нет уведомлений
+          no_notification: Нет уведомления
           timeframes:
             normal:
               PT0S: тот же день

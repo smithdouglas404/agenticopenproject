@@ -4757,6 +4757,8 @@ id:
       other: "dilock sementara (karena %{count} kali gagal login)"
     confirm_status_change: "Anda sedang mengubah status '%{name}'. Apakah Anda yakin ingin melanjutkan?"
     deleted: "User telah dihapus"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Mengubah status user gagal karena : %{errors}"
     invite: Invite user via email
     invited: invited
