@@ -15,14 +15,16 @@ You can create a project template in OpenProject by [creating a new project](../
 
 Configure everything you want included in future projects:
 - Add project members 
-- Select the necessary modules  
+- Select and populate the necessary modules 
+> [!IMPORTANT]
+> Content from the *Budgets* and *Time and costs* modules is not included when copying a template. For this reason, these modules should not be configured in templates, as any projects created from them will not contain the corresponding data.
+
 - Set up the default project structure in the Gantt chart  
 - Create work package templates  
 
 Navigate to the [project settings](../project-settings), click the **More (three dots)** icon in the upper right corner and select **Set as template** from the dropdown menu. You can later remove the project from the template list at the same location.
 
 > [!NOTE]
->
 > Only administrators can set or remove projects as templates
 
 ![Icon to set a project as a template under project settings in OpenProject](openproject_userguide_projects_project_template.png)
