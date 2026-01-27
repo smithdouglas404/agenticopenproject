@@ -160,8 +160,13 @@ ul.SegmentedControl,
 .Box-row--clickable
   cursor: pointer
 
-.Box-row--draggable
-  padding-left: calc(var(--stack-padding-normal) / 2)
+.Box-row:is(.Box-row--draggable)
+  padding-left: 0
 
-.Box-header--collapsible
-  padding-left: calc(var(--stack-padding-normal) / 2)
+  .DragHandle
+    visibility: hidden
+
+  &:focus-visible,
+  &:hover
+    .DragHandle
+      visibility: visible

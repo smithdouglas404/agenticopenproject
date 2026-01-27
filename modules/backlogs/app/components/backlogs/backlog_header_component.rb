@@ -30,8 +30,8 @@
 
 module Backlogs
   class BacklogHeaderComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
-    include Primer::ComponentHelpers
     include Redmine::I18n
     include RbCommonHelper
 

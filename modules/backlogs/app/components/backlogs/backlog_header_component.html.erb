@@ -29,66 +29,50 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= component_wrapper(tag: :header) do %>
   <% if show? %>
-      <%=
-        stack(
-          tag: :"collapsible-header",
-          direction: :horizontal,
-          align: :center,
-          justify: :space_between,
-          classes: class_names(
-            "CollapsibleHeader",
-            "CollapsibleHeader--collapsed" => @collapsed
-          ),
-          data: { collapsed: (@collapsed if @collapsed) }
-        ) do
-      %>
-        <%= stack_item(classes: "hide-when-print") do %>
+    <%= grid_layout("op-backlogs-header", tag: :div) do |grid| %>
+      <% grid.with_area(:collapsible) do %>
         <%=
           render(
-            Primer::BaseComponent.new(
-              tag: :div,
-              role: "button",
-              tabindex: 0,
-              classes: "CollapsibleSection--triggerArea",
+            Backlogs::CollapsibleComponent.new(
+              collapsible_id: "#{dom_id(backlog)}-list",
+              toggle_label: t(".label_toggle_backlog", name: sprint.name),
+              collapsed:
+            )
+          ) do |collapsible|
+            collapsible.with_title { sprint.name }
+            collapsible.with_count(
+              scheme: :default,
+              count: story_count,
+              round: true,
               aria: {
-                label: t(".label_toggle_backlog", name: sprint.name),
-                controls: "#{dom_id(backlog)}-list",
-                expanded: !@collapsed
-              },
-              data: {
-                target: "collapsible-header.triggerElement",
-                action: "click:collapsible-header#toggle keydown:collapsible-header#toggleViaKeyboard"
+                label: t(".label_story_count", count: story_count),
+                live: "polite"
               }
+            )
+            collapsible.with_description(role: "group") do
+              format_date_range(date_range)
+            end
+          end
+        %>
+      <% end %>
+
+      <% grid.with_area(:points) do %>
+        <%=
+          render(
+            Primer::Beta::Truncate.new(
+              color: :subtle,
+              classes: "velocity",
+              aria: { live: "polite" }
             )
           ) do
         %>
-          <%= render(Primer::Beta::Octicon.new(icon: "chevron-up", hidden: @collapsed, data: { target: "collapsible-header.arrowUp" })) %>
-          <%= render(Primer::Beta::Octicon.new(icon: "chevron-down", hidden: !@collapsed, data: { target: "collapsible-header.arrowDown" })) %>
-        <% end %>
-      <% end %>
-      <%= stack_item(grow: true) do %>
-        <%= stack(direction: :horizontal, align: :center) do %>
-          <%= render Primer::Beta::Truncate.new(tag: :h4, classes: "Box-title") do %>
-            <%= sprint.name %>
-          <% end %>
-
-          <%= stack_item do %>
-            <%= render(Primer::Beta::Counter.new(count: story_count, round: true)) %>
-          <% end %>
-
-          <%= stack_item(grow: true) do %>
-            <%= render(Primer::Beta::Text.new(color: :subtle, role: "group")) do %>
-              <%= format_date_range(date_range) %>
-            <% end %>
-          <% end %>
+          <%= t(:"backlogs.points", count: story_points) %>
         <% end %>
       <% end %>
 
-      <%= render(Primer::Beta::Truncate.new(color: :subtle, classes: "velocity")) do %>
-        <%= t(:"backlogs.points", count: story_points) %>
+      <% grid.with_area(:menu) do %>
+        <%= render(Backlogs::BacklogMenuComponent.new(backlog:, project: @project)) %>
       <% end %>
-
-      <%= render(Backlogs::BacklogMenuComponent.new(backlog:, project: @project)) %>
     <% end %>
   <% else %>
     <%=

@@ -31,7 +31,6 @@
 module Backlogs
   class BacklogComponent < ApplicationComponent
     include Primer::AttributesHelper
-    include Primer::ComponentHelpers
     include OpTurbo::Streamable
     include RbCommonHelper
 
@@ -49,6 +48,7 @@ module Backlogs
       @system_arguments = system_arguments
       @system_arguments[:id] = dom_id(backlog)
       @system_arguments[:list_id] = "#{@system_arguments[:id]}-list"
+      @system_arguments[:padding] = :condensed
       @system_arguments[:data] = merge_data(
         @system_arguments,
         { data: drop_target_config }

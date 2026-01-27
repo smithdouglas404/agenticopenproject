@@ -91,7 +91,7 @@ RSpec.describe Backlogs::BacklogHeaderComponent, type: :component do
       it "displays sprint name in h4" do
         render_component
 
-        expect(page).to have_css("h4", text: "Sprint 1")
+        expect(page).to have_css("h3", text: "Sprint 1")
       end
 
       it "shows story count via Primer::Beta::Counter" do

@@ -108,6 +108,10 @@ en:
 
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in backlog"
+        one: "%{count} story in backlog"
+        other: "%{count} stories in backlog"
 
     backlog_menu_component:
       label_actions: "Backlog actions"

@@ -30,7 +30,7 @@
 
 module Backlogs
   class StoryComponent < ApplicationComponent
-    include Primer::ComponentHelpers
+    include OpPrimer::ComponentHelpers
 
     attr_reader :story, :sprint, :max_position, :current_user
 

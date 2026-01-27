@@ -30,7 +30,6 @@
 
 module Backlogs
   class SprintPageHeaderComponent < ApplicationComponent
-    include Primer::ComponentHelpers
     include ApplicationHelper
     include RbCommonHelper
 

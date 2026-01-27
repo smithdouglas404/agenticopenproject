@@ -94,7 +94,7 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
       it "renders BacklogHeaderComponent in header" do
         render_component
 
-        expect(page).to have_css(".Box-header h4", text: "Sprint 1")
+        expect(page).to have_css(".Box-header h3", text: "Sprint 1")
       end
 
       it "renders StoryComponent for each story" do

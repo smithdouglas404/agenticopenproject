@@ -27,12 +27,13 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%= stack(tag: :article, direction: :horizontal, justify: :space_between) do %>
-  <%= stack_item(classes: "hide-when-print") do %>
+<%= grid_layout("op-backlogs-story", tag: :article) do |grid| %>
+  <% grid.with_area(:drag_handle, classes: "hide-when-print") do %>
     <%=
       render(
         Primer::OpenProject::DragHandle.new(
           role: "button",
+          classes: "op-backlogs-story--drag_handle_button",
           tabindex: 0,
           aria: {
             label: t(".label_drag_story", name: story.subject)
@@ -42,16 +43,23 @@ See COPYRIGHT and LICENSE files for more details.
     %>
   <% end %>
 
-  <%= stack_item(grow: true) do %>
+  <% grid.with_area(:info_line) do %>
     <%= render(WorkPackages::InfoLineComponent.new(work_package: story)) %>
+  <% end %>
+
+  <% grid.with_area(:points) do %>
+    <%= render(Primer::Beta::Truncate.new(color: :subtle, mt: 1)) do %>
+      <%= t(:"backlogs.points", count: story_points) %>
+    <% end %>
+  <% end %>
+
+  <% grid.with_area(:menu) do %>
+    <%= render(Backlogs::StoryMenuComponent.new(story:, sprint:, max_position:)) %>
+  <% end %>
+
+  <% grid.with_area(:subject) do %>
     <%= render(Primer::Beta::Text.new(font_weight: :semibold)) do %>
       <%= story.subject %>
     <% end %>
   <% end %>
-
-  <%= render(Primer::Beta::Truncate.new(color: :subtle, mt: 1)) do %>
-    <%= t(:"backlogs.points", count: story_points) %>
-  <% end %>
-
-  <%= render(Backlogs::StoryMenuComponent.new(story:, sprint:, max_position:)) %>
 <% end %>

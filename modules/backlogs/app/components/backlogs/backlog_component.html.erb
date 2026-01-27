@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= component_wrapper(tag: :section) do %>
   <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
-    <% border_box.with_header(classes: "Box-header--collapsible") do %>
+    <% border_box.with_header do %>
       <%= render(Backlogs::BacklogHeaderComponent.new(backlog:, project: @project, folded: folded?)) %>
     <% end %>
     <% border_box.with_row(data: { empty_list_item: true }) do %>
