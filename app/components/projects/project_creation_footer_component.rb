@@ -77,7 +77,7 @@ module Projects
     end
 
     def total_steps
-      template.nil? && project.available_custom_fields.required.any? ? 3 : 2
+      template.nil? && project.available_custom_fields.for_all.required.any? ? 3 : 2
     end
   end
 end
