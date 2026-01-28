@@ -66,14 +66,12 @@ module Projects
       changed_by_user == ["active"] # Allow archiving, permission checked in manage_permission
     end
 
-    def without_custom_fields(changes) = changes.grep_v(/^custom_field_/)
+    def without_custom_fields(changes) = changes.grep_v(/^custom_(field|comment)_/)
 
-    def with_available_custom_fields_only(changes) = changes & available_custom_fields.map(&:attribute_name)
+    def with_available_custom_fields_only(changes) = changes & custom_field_attributes(model.available_custom_fields)
 
     def with_all_available_custom_fields(changes)
-      allowed_attributes = changes.grep_v(/^custom_field_/)
-      allowed_attributes += changes & all_available_custom_fields.map(&:attribute_name)
-      allowed_attributes
+      without_custom_fields(changes) + (changes & custom_field_attributes(model.all_available_custom_fields))
     end
 
     def manage_permission
