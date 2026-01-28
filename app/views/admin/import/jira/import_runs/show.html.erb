@@ -30,9 +30,12 @@ See COPYRIGHT and LICENSE files for more details.
 <% html_title t(:label_administration), JiraImport.model_name, @jira_import.id %>
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title {
-      "#{I18n.t(:"admin.jira.run.title")} #{@jira_import.id.to_s}"
-    }
+    header.with_title do
+      concat(render(Primer::Beta::Text.new(mr: 2)) {
+        "#{I18n.t(:"admin.jira.run.title")} #{@jira_import.id.to_s}"
+      })
+      concat(render(Admin::Import::Jira::ImportRuns::StreamableStatusBadgeComponent.new(@jira_import.status)))
+    end
     header.with_breadcrumbs(
       [
         { href: admin_index_path, text: t(:label_administration) },
@@ -47,7 +50,6 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render Primer::BaseComponent.new(
     tag: :div,
-    id: "jira_import_wizard_frame",
     data: {
       controller: "jira-import",
       "jira-import-url-value": continue_admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id)

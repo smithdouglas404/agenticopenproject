@@ -115,6 +115,10 @@ module Admin::Import::Jira
             component: Admin::Import::Jira::ImportRuns::WizardComponent.new(@jira_import),
             method: "morph"
           )
+          update_via_turbo_stream(
+            component: Admin::Import::Jira::ImportRuns::StreamableStatusBadgeComponent.new(@jira_import.status),
+            method: "morph"
+          )
           render turbo_stream: turbo_streams
         end
         format.html do

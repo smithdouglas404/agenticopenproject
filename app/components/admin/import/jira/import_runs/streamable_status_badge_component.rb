@@ -29,29 +29,14 @@
 #++
 
 module Admin::Import::Jira::ImportRuns
-  class StatusBadgeComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+  class StreamableStatusBadgeComponent < ApplicationComponent
+    include OpTurbo::Streamable
 
     def initialize(status, **system_arguments)
       super
 
-      @title = I18n.t(status.to_s, default: "", scope: "admin.jira.run.status")
-      @system_arguments = system_arguments.merge({ bg: status_color_scheme(status) })
-    end
-
-    def status_color_scheme(status)
-      case status
-      when JiraImport::IMPORT_ERROR, JiraImport::REVERT_ERROR,
-        JiraImport::INSTANCE_META_ERROR, JiraImport::PROJECTS_META_ERROR
-        :danger
-      when JiraImport::COMPLETED, JiraImport::REVERTED
-        :success
-      when JiraImport::INSTANCE_META_FETCHING, JiraImport::PROJECTS_META_FETCHING,
-        JiraImport::IMPORTING, JiraImport::REVERTING
-        :accent
-      else
-        :attention
-      end
+      @status = status
+      @system_arguments = system_arguments
     end
   end
 end
