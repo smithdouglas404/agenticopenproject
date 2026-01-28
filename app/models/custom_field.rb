@@ -284,6 +284,10 @@ class CustomField < ApplicationRecord
     "custom_field_#{id}"
   end
 
+  def comment_attribute_name
+    "custom_comment_#{id}" if can_have_comment?
+  end
+
   def attribute_getter
     attribute_name.to_sym
   end
