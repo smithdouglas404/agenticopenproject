@@ -1,5 +1,5 @@
 ---
-Sidebar_navigation:
+sidebar_navigation:
   title: OpenID providers
   priority: 800
 description: OpenID providers for OpenProject.
