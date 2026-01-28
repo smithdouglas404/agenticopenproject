@@ -425,7 +425,7 @@ ru:
     label_remove_row: "Удалить строку"
     label_report: "Отчет"
     label_repository_plural: "Репозитории"
-    label_resize_project_menu: "Resize project menu"
+    label_resize_project_menu: "Изменить размер меню проекта"
     label_save_as: "Сохранить как"
     label_search_columns: "Поиск столбца"
     label_select_watcher: "Выберите наблюдателя..."

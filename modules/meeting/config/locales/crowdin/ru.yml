@@ -546,7 +546,7 @@ ru:
   label_agenda_outcome_actions: "Действия по итогам"
   label_agenda_outcome_edit: "Редактировать итог"
   label_agenda_outcome_delete: "Удалить итог"
-  label_added_as_outcome: "Added as outcome"
+  label_added_as_outcome: "Добавлено как итог"
   label_write_outcome: "Зафиксировать итог"
   label_existing_work_package: "Существующий пакет работ"
   text_outcome_not_editable_anymore: "Этот итог недоступен для редактирования."

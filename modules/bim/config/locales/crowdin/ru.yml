@@ -140,4 +140,4 @@ ru:
   permission_manage_ifc_models: "Импорт моделей IFC и управление ими"
   extraction:
     available:
-      ifc_convert: "Доступен конверсионный конвейер IFC"
+      ifc_convert: "Конвертер IFC"
