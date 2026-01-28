@@ -27,8 +27,6 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% close_href = workspace_creation_cancel_href(@new_project, @parent) %>
-
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title { title }
@@ -39,7 +37,7 @@ See COPYRIGHT and LICENSE files for more details.
       icon: :x,
       mobile_icon: :x,
       label: I18n.t(:button_close),
-      href: close_href,
+      href: workspace_creation_cancel_href(@new_project, @parent),
       test_selector: "new_project_form_close_icon"
     )
 
