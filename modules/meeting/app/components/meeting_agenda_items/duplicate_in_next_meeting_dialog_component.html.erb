@@ -47,7 +47,8 @@ See COPYRIGHT and LICENSE files for more details.
           Primer::Beta::Button.new(
             tag: :a,
             scheme: :primary,
-            href: duplicate_in_next_meeting_agenda_item_path(
+            href: duplicate_in_next_project_meeting_agenda_item_path(
+              @agenda_item.meeting.project,
               @agenda_item.meeting,
               @agenda_item,
               datetime: @datetime

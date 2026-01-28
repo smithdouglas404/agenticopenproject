@@ -34,6 +34,8 @@ class MeetingAgendaItemsController < ApplicationController
   include OpTurbo::FlashStreamHelper
   include Meetings::AgendaComponentStreams
 
+  load_and_authorize_with_permission_in_project :manage_agendas
+
   before_action :set_meeting
   before_action :set_agenda_item_type, only: %i[new create]
   before_action :set_meeting_agenda_item,
@@ -41,7 +43,6 @@ class MeetingAgendaItemsController < ApplicationController
   before_action :set_current_occurrence,
                 :set_presentation_mode,
                 only: %i[new cancel_new edit cancel_edit create update destroy drop move move_to_section_dialog]
-  before_action :authorize
   before_action :check_recurring_meeting_param, only: %i[move_to_next_meeting duplicate_in_next_meeting]
   before_action :assign_drop_params, only: %i[drop]
 
@@ -231,7 +232,7 @@ class MeetingAgendaItemsController < ApplicationController
     )
   end
 
-  def move_to_next_meeting # rubocop:disable Metrics/AbcSize
+  def move_to_next_meeting
     next_occurrence = init_next_meeting_occurrence
     return if next_occurrence.nil?
 
@@ -322,8 +323,7 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def set_meeting
-    @meeting = Meeting.visible.find(params[:meeting_id])
-    @project = @meeting.project # required for authorization via before_action
+    @meeting = @project.meetings.visible.find(params[:meeting_id])
   end
 
   # In case we updated the meeting as part of the service flow

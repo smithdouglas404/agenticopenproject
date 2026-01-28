@@ -84,7 +84,12 @@ module MeetingAgendaItems::Outcomes
                      scheme: :danger,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: meeting_outcome_path(meeting, meeting_outcome),
+                       href: project_meeting_agenda_item_outcome_path(
+                         meeting.project,
+                         meeting,
+                         agenda_item,
+                         meeting_outcome
+                       ),
                        method: "DELETE",
                        confirm_message: t(:text_are_you_sure)
                      } }) do |item|

@@ -72,10 +72,17 @@ class Meeting < ApplicationRecord
     order("#{Meeting.table_name}.title ASC")
       .includes({ participants: :user }, :author)
   }
+
   scope :visible, ->(*args) {
     includes(:project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_meetings))
+  }
+
+  scope :allowed_to, ->(user, permission) {
+    includes(:project)
+      .references(:projects)
+      .merge(Project.allowed_to(user, permission))
   }
 
   scope :participated_by, ->(user) {

@@ -54,15 +54,16 @@ module MeetingAgendaItems
             meeting_section: @meeting_agenda_item.meeting_section,
             meeting_agenda_item: @meeting_agenda_item,
             method: :put,
-            submit_path: meeting_agenda_item_path(
+            submit_path: project_meeting_agenda_item_path(
+              @meeting_agenda_item.meeting.project,
               @meeting_agenda_item.meeting,
               @meeting_agenda_item,
               format: :turbo_stream,
               current_occurrence: @current_occurrence,
               presentation_mode: @presentation_mode
             ),
-            cancel_path: cancel_edit_meeting_agenda_item_path(
-              @meeting_agenda_item.meeting, @meeting_agenda_item,
+            cancel_path: cancel_edit_project_meeting_agenda_item_path(
+              @meeting_agenda_item.meeting.project, @meeting_agenda_item.meeting, @meeting_agenda_item,
               current_occurrence: @current_occurrence,
               presentation_mode: @presentation_mode
             ),

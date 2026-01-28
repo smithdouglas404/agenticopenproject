@@ -67,7 +67,7 @@ export function workPackageMeetingsCount(
       throttleTime(1000),
       switchMap(() => {
         return http
-          .get(`${pathHelperService.workPackagePath(workPackage.id as string)}/meetings/tab/count`)
+          .get(`${pathHelperService.projectWorkPackagePath(workPackage.project.id as string, workPackage.id as string)}/meetings/tab/count`)
           .pipe(
             map((res:{ count:number }) => res.count),
           );

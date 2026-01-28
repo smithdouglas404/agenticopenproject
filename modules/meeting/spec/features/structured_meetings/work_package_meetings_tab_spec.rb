@@ -49,7 +49,7 @@ RSpec.describe "Open the Meetings tab",
            member_with_roles: { project => role })
   end
 
-  let(:meetings_tab) { Pages::MeetingsTab.new(work_package.id) }
+  let(:meetings_tab) { Pages::MeetingsTab.new(project_id: project.id, work_package_id: work_package.id) }
 
   let(:tabs) { Components::WorkPackages::Tabs.new(work_package) }
   let(:meetings_tab_element) { find(".op-tab-row--link_selected", text: "MEETINGS") }

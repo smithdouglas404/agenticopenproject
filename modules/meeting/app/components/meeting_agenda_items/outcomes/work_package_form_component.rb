@@ -55,11 +55,11 @@ module MeetingAgendaItems::Outcomes
     end
 
     def submit_path
-      meeting_outcomes_path(@meeting, meeting_agenda_item_id: @meeting_agenda_item.id, format: :turbo_stream)
+      project_meeting_agenda_item_outcomes_path(@meeting.project, @meeting, @meeting_agenda_item, format: :turbo_stream)
     end
 
     def cancel_path
-      cancel_new_meeting_outcomes_path(@meeting, meeting_agenda_item_id: @meeting_agenda_item.id)
+      cancel_new_project_meeting_agenda_item_outcomes_path(@meeting.project, @meeting, @meeting_agenda_item)
     end
   end
 end

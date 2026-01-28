@@ -32,8 +32,9 @@ class WorkPackageMeetingsTabController < ApplicationController
   include OpTurbo::ComponentStream
   include Meetings::WorkPackageMeetingsTabComponentStreams
 
+  load_and_authorize_with_permission_in_project :view_work_packages
+
   before_action :set_work_package
-  before_action :authorize_global
 
   def index
     direction = params[:direction]&.to_sym || :upcoming # default to upcoming
@@ -91,7 +92,7 @@ class WorkPackageMeetingsTabController < ApplicationController
 
   def refresh_form
     @meeting_agenda_item = MeetingAgendaItem.new(
-      meeting: Meeting.find(params[:meeting_agenda_item][:meeting_id]),
+      meeting: meeting_for(params[:meeting_agenda_item][:meeting_id]),
       notes: params[:meeting_agenda_item][:notes]
     )
 
@@ -116,8 +117,12 @@ class WorkPackageMeetingsTabController < ApplicationController
   private
 
   def set_work_package
-    @work_package = WorkPackage.visible.find(params[:work_package_id])
-    @project = @work_package.project # required for authorization via before_action
+    @work_package = @project.work_packages.visible.find(params[:work_package_id])
+  end
+
+  def meeting_for(meeting_id)
+    # TODO: Should this be scoped to the project?
+    Meeting.visible.find(meeting_id)
   end
 
   def add_work_package_to_meeting_params
