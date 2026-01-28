@@ -30,9 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Project creation wizard name settings",
-               :js,
-               with_flag: { project_initiation_active: true } do
+RSpec.describe "Project creation wizard name settings", :js do
   shared_let(:admin) { create(:admin) }
 
   let(:project_creation_wizard_enabled) { true }

@@ -729,8 +729,7 @@ Redmine::MenuManager.map :project_menu do |menu|
     },
     project_custom_fields: { caption: :label_project_attributes_plural },
     creation_wizard: {
-      caption: :"settings.project_initiation_request.name.options.project_initiation_request",
-      if: ->(_) { OpenProject::FeatureDecisions.project_initiation_active? }
+      caption: :"settings.project_initiation_request.name.options.project_initiation_request"
     },
     modules: { caption: :label_module_plural },
     template: { caption: :"projects.settings.template.menu_title" },
