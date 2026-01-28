@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,22 +26,40 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module Queries::Principals
-  ::Queries::Register.register(PrincipalQuery) do
-    filter Filters::AccessToAnythingInProjectFilter
-    filter Filters::TypeFilter
-    filter Filters::MemberFilter
-    filter Filters::MentionableOnWorkPackageFilter
-    filter Filters::InternalMentionableOnWorkPackageFilter
-    filter Filters::InvitableToMeetingInProjectFilter
-    filter Filters::StatusFilter
-    filter Filters::NameFilter
-    filter Filters::AnyNameAttributeFilter
-    filter Filters::TypeaheadFilter
-    filter Filters::IdFilter
+class Queries::Principals::Filters::InvitableToMeetingInProjectFilter <
+  Queries::Principals::Filters::PrincipalFilter
+  def allowed_values
+    Project.visible(User.current).active.pluck(:name, :id)
+  end
 
-    order Orders::NameOrder
+  def type
+    :list_optional
+  end
+
+  def self.key
+    :invitable_to_meeting_in_project
+  end
+
+  def human_name
+    "invitable_to_meeting"
+  end
+
+  def apply_to(query_scope)
+    case operator
+    when "="
+      query_scope.visible.where(id: members_with_view_meetings.select(:user_id))
+    when "!"
+      query_scope.visible.where.not(id: members_with_view_meetings.select(:user_id))
+    end
+  end
+
+  private
+
+  def members_with_view_meetings
+    Member.of_project(values)
+          .joins(member_roles: { role: :role_permissions })
+          .where(role_permissions: { permission: "view_meetings" })
   end
 end

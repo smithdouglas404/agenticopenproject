@@ -575,6 +575,12 @@ module Pages::Meetings
       click_on "Add"
     end
 
+    def expect_no_participant(participant)
+      autocomplete = page.find('[data-test-selector="participants-dialog-autocomplete"]')
+      search_autocomplete(autocomplete, query: participant.lastname, results_selector: "body")
+      expect_no_ng_option(autocomplete, participant.name, results_selector: "body")
+    end
+
     def remove_participant(participant)
       expect(page).to have_text(participant.name)
       click_link_or_button("remove_button_#{participant.id}")
