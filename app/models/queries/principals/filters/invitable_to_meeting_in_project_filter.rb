@@ -49,9 +49,9 @@ class Queries::Principals::Filters::InvitableToMeetingInProjectFilter <
   def apply_to(query_scope)
     case operator
     when "="
-      query_scope.where(id: members_with_view_meetings.select(:user_id))
+      query_scope.visible.where(id: members_with_view_meetings.select(:user_id))
     when "!"
-      query_scope.where.not(id: members_with_view_meetings.select(:user_id))
+      query_scope.visible.where.not(id: members_with_view_meetings.select(:user_id))
     end
   end
 
