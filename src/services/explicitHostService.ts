@@ -8,6 +8,10 @@ if (OPENPROJECT_DIRECT_URL) {
   console.log(`using OPENPROJECT_DIRECT_URL: ${OPENPROJECT_DIRECT_URL}`);
 }
 
+export function shouldReplaceHost():boolean {
+  return !!OPENPROJECT_DIRECT_URL;
+}
+
 /**
  * Replaces the hostname of the given resource URL with the explicit host
  * if a direct hostname is defined

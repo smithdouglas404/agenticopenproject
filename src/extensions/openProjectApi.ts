@@ -6,7 +6,7 @@ import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
 import * as Y from "yjs";
 import { decryptToken } from "../services/decryptTokenService";
 import type { ApiResponseDocument } from "../types";
-import { replaceWithExplicitHost } from "../services/explicitHostService";
+import { replaceWithExplicitHost, shouldReplaceHost } from "../services/explicitHostService";
 
 export const editorSchema = BlockNoteSchema.create().extend({
   blockSpecs: {
@@ -51,8 +51,10 @@ export class OpenProjectApi implements Extension {
       throw new Error('Unauthorized: Token resource URL does not match document.');
     }
 
-    resourceUrl = replaceWithExplicitHost(resourceUrl);
-    printLog(`fetching resource from: ${resourceUrl}`);
+    if (shouldReplaceHost()) {
+      resourceUrl = replaceWithExplicitHost(resourceUrl);
+      printLog(`fetching resource from: ${resourceUrl}`);
+    }
 
     const response = await fetch(resourceUrl, {
       method: "GET",
