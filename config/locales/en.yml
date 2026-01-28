@@ -2555,6 +2555,7 @@ en:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
       calculated_values: Calculated values
+      capture_external_links: Capture External Links
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2612,6 +2613,8 @@ en:
         description: "Create and organize different project phases than the ones provided by PM2 project cycle planning."
       conditional_highlighting:
         description: "Need certain work packages to stand out from the mass? Use conditional highlighting in the work packages table."
+      capture_external_links:
+        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
         description: "Need to see relations or child elements in the work package list?"
       edit_attribute_groups:
@@ -3441,6 +3444,7 @@ en:
   label_journal_diff: "Description Comparison"
   label_language: "Language"
   label_languages: "Languages"
+  label_external_links: "External links"
   label_locale: "Language and region"
   label_jump_to_a_project: "Jump to a project..."
   label_keyword_plural: "Keywords"
@@ -4465,6 +4469,10 @@ en:
     For example, %{tel_code} or %{element_code}. Enter one protocol per line.
     <br/>
     Protocols %{http_code}, %{https_code}, and %{mailto_code} are always allowed.
+  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links_text: >
+    When enabled, all external links in formatted text will redirect through a warning page
+    before leaving the application. This helps protect users from potentially malicious external websites.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour.
@@ -5599,3 +5607,9 @@ en:
   token:
     hashed_token:
       display_value_placeholder: "***"
+
+  external_link_warning:
+    title: "Leaving OpenProject"
+    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
+    continue_message: "Are you sure you want to proceed to the following external link?"
+    continue_button: "Continue to external website"

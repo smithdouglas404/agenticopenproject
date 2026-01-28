@@ -1281,6 +1281,11 @@ module Settings
       youtube_channel: {
         description: "Link to YouTube channel in help menu",
         default: "https://www.youtube.com/c/OpenProjectCommunity"
+      },
+      capture_external_links: {
+        description: "Redirect external links through a warning page before leaving the application",
+        default: false,
+        writable: -> { EnterpriseToken.allows_to?(:capture_external_links) }
       }
     }.freeze
 

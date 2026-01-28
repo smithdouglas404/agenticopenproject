@@ -125,6 +125,8 @@ Rails.application.routes.draw do
     post "/account/confirm_consent", action: "confirm_consent", as: "account_confirm_consent"
   end
 
+  get "/external_redirect", to: "external_link_warning#show", as: "external_redirect"
+
   resources :attribute_help_texts, only: [] do
     member do
       get :show_dialog
@@ -625,6 +627,7 @@ Rails.application.routes.draw do
     namespace :settings do
       resource :general, controller: "/admin/settings/general_settings", only: %i[show update]
       resource :languages, controller: "/admin/settings/languages_settings", only: %i[show update]
+      resource :external_links, controller: "/admin/settings/external_links_settings", only: %i[show update]
       resource :repositories, controller: "/admin/settings/repositories_settings", only: %i[show update]
       resource :experimental, controller: "/admin/settings/experimental_settings", only: %i[show update]
 
