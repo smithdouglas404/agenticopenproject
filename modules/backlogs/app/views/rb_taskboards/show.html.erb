@@ -35,7 +35,21 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% html_title @sprint.name %>
 
-<%= render(Backlogs::SprintPageHeaderComponent.new(sprint: @sprint, project: @project)) %>
+<%=
+  render(Backlogs::SprintPageHeaderComponent.new(sprint: @sprint, project: @project)) do |header|
+    header.with_action_button(
+      tag: :a,
+      href: backlogs_project_sprint_burndown_chart_path(@project, @sprint),
+      mobile_icon: :graph,
+      mobile_label: t(:"backlogs.show_burndown_chart"),
+      aria: { label: t(:"backlogs.show_burndown_chart") },
+      disabled: !@sprint.has_burndown?
+    ) do |button|
+      button.with_leading_visual_icon(icon: :graph)
+      t(:"backlogs.show_burndown_chart")
+    end
+  end
+%>
 
 <%= render(Primer::OpenProject::SubHeader.new) do |component| %>
   <% component.with_filter_component(id: "col_width") do %>

@@ -27,14 +27,9 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%=
-  render Primer::OpenProject::PageHeader.new do |header|
-    header.with_title_content(@sprint.name)
-
-    header.with_description do
-      format_date_range(date_range)
-    end
-
-    header.with_breadcrumbs(breadcrumb_items)
-  end
-%>
+<%= render(@page_header) do |header| %>
+  <% header.with_title_content(@sprint.name) %>
+  <% header.with_description { format_date_range(date_range) } %>
+  <% header.with_breadcrumbs(breadcrumb_items) %>
+  <%= content %>
+<% end %>

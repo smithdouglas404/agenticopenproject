@@ -33,7 +33,20 @@ See COPYRIGHT and LICENSE files for more details.
   <meta name="turbo-visit-control" content="reload">
 <% end -%>
 
-<%= render(Backlogs::SprintPageHeaderComponent.new(sprint: @sprint, project: @project)) %>
+<%=
+  render(Backlogs::SprintPageHeaderComponent.new(sprint: @sprint, project: @project)) do |header|
+    header.with_action_button(
+      tag: :a,
+      href: backlogs_project_sprint_taskboard_path(@project, @sprint),
+      mobile_icon: :"op-view-cards",
+      mobile_label: t(:label_task_board),
+      aria: { label: t(:label_task_board) }
+    ) do |button|
+      button.with_leading_visual_icon(icon: :"op-view-cards")
+      t(:label_task_board)
+    end
+  end
+%>
 
 <% if @burndown %>
   <%= render partial: "burndown", locals: { div: "burndown_", burndown: @burndown } %>

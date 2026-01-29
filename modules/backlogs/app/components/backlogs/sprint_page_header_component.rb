@@ -33,11 +33,15 @@ module Backlogs
     include ApplicationHelper
     include RbCommonHelper
 
+    delegate :with_action_button, to: :@page_header
+
     def initialize(sprint:, project:)
       super
 
       @sprint  = sprint
       @project = project
+
+      @page_header = Primer::OpenProject::PageHeader.new
     end
 
     def breadcrumb_items
