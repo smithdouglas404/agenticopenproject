@@ -32,7 +32,6 @@ class JournalsController < ApplicationController
   before_action :load_and_authorize_in_optional_project, only: [:index]
   before_action :find_journal,
                 :ensure_permitted,
-                :find_custom_field,
                 :ensure_valid_for_diffing,
                 only: [:diff]
   authorization_checked! :diff
@@ -103,33 +102,44 @@ class JournalsController < ApplicationController
     @field_param ||= params[:field].parameterize.underscore
   end
 
-  def find_custom_field
-    return unless /\Acustom_(?:fields|comment)_(?<id>\d+)\z/ =~ field_param
-
-    @custom_field = CustomField.select(:field_format, :admin_only).find_by(id:)
-  end
-
   def ensure_valid_for_diffing
     case field_param
     when "description",
          "status_explanation",
          /\Aagenda_items_\d+_notes\z/
       # no additional checks
-    when /\Acustom_fields_\d+\z/
-      if (!@custom_field || @custom_field.admin_only) && !User.current.admin?
-        render_403
-      elsif @custom_field && @custom_field.field_format != "text"
-        render_404
-      end
-    when /\Acustom_comment_\d+\z/
-      if (!@custom_field || @custom_field.admin_only) && !User.current.admin?
-        render_403
-        # elsif !@custom_field.has_comment # TODO: should we rely on current state and not on state when journaling
-        # render_404
-      end
+    when /\Acustom_fields_(?<cf_id>\d+)\z/
+      ensure_custom_value_valid_for_diffing(Regexp.last_match(:cf_id))
+    when /\Acustom_comment_(?<cf_id>\d+)\z/
+      ensure_custom_comment_valid_for_diffing(Regexp.last_match(:cf_id))
     else
       render_404
     end
+  end
+
+  def ensure_custom_value_valid_for_diffing(cf_id)
+    custom_field = CustomField.select(:field_format, :admin_only).find_by(id: cf_id)
+
+    if !allowed_to_view_custom_field_changes?(custom_field)
+      render_403
+    elsif custom_field && custom_field.field_format != "text"
+      render_404
+    end
+  end
+
+  def ensure_custom_comment_valid_for_diffing(cf_id)
+    custom_field = CustomField.select(:admin_only).find_by(id: cf_id)
+
+    if !allowed_to_view_custom_field_changes?(custom_field)
+      render_403
+    end
+  end
+
+  def allowed_to_view_custom_field_changes?(custom_field)
+    return true if User.current.admin?
+    return false unless custom_field # don't reveal changes of deleted custom fields
+
+    !custom_field.admin_only
   end
 
   def journals_index_title
