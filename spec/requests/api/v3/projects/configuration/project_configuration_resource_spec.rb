@@ -86,6 +86,23 @@ RSpec.describe "API v3 Project Configuration resource" do
         end
       end
 
+      context "when enabled_internal_comments is true but enterprise token does not allow it", with_ee: [] do
+        before do
+          project.update!(enabled_internal_comments: true)
+        end
+
+        it "returns enabledInternalComments as true (project setting)" do
+          expect(response.body)
+            .to be_json_eql(true.to_json)
+            .at_path("enabledInternalComments")
+        end
+
+        it "does not include internalComments in availableFeatures" do
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response["availableFeatures"]).not_to include("internalComments")
+        end
+      end
+
       context "when enabled_internal_comments is false" do
         before do
           project.update!(enabled_internal_comments: false)
@@ -141,6 +158,10 @@ RSpec.describe "API v3 Project Configuration resource" do
         expect(response.body)
           .to be_json_eql("Configuration".to_json)
           .at_path("_type")
+      end
+
+      it "includes enabledInternalComments property" do
+        expect(response.body).to have_json_path("enabledInternalComments")
       end
     end
   end

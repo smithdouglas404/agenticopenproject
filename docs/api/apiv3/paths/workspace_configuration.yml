@@ -1,8 +1,8 @@
-# /api/v3/projects/{id}/configuration
+# /api/v3/workspaces/{id}/configuration
 ---
 get:
   parameters:
-  - description: Project id
+  - description: Workspace id
     example: '1'
     in: path
     name: id
@@ -19,7 +19,7 @@ get:
                 _type: Configuration
                 _links:
                   self:
-                    href: "/api/v3/projects/1/configuration"
+                    href: "/api/v3/workspaces/1/configuration"
                   userPreferences:
                     href: "/api/v3/my_preferences"
                 maximumAttachmentFileSize: 5242880
@@ -42,13 +42,13 @@ get:
                 _type: Error
                 errorIdentifier: urn:openproject-org:api:v3:errors:NotFound
                 message: The requested resource could not be found.
-      description: Returned if the project does not exist or the user cannot view it.
+      description: Returned if the workspace does not exist or the user cannot view it.
       headers: {}
   tags:
     - Configuration
-    - Projects
+    - Workspaces
   description: |-
-    Returns the configuration scoped to a specific project, including all global
-    configuration properties plus project-specific settings.
-  operationId: View_project_configuration
-  summary: View project configuration
+    Returns the configuration scoped to a specific workspace, including all global
+    configuration properties plus workspace-specific settings.
+  operationId: View_workspace_configuration
+  summary: View workspace configuration
