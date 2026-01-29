@@ -32,6 +32,7 @@ module Backlogs
   class BacklogHeaderComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
+    include Primer::FetchOrFallbackHelper
     include Redmine::I18n
     include RbCommonHelper
 
@@ -55,7 +56,7 @@ module Backlogs
 
       @backlog = backlog
       @project = project
-      @state = ActiveSupport::StringInquirer.new(state.to_s)
+      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
       @collapsed = folded
       @current_user = current_user
     end
