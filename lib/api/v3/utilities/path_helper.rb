@@ -226,10 +226,6 @@ module API
             "#{project(project_id)}/configuration"
           end
 
-          def self.workspace_configuration(workspace_id)
-            "#{workspace(workspace_id)}/configuration"
-          end
-
           def self.create_project_work_package_form(project_id)
             "#{work_packages_by_project(project_id)}/form"
           end

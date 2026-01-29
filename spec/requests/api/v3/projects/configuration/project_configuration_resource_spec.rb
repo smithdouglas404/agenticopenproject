@@ -140,29 +140,4 @@ RSpec.describe "API v3 Project Configuration resource" do
       end
     end
   end
-
-  describe "GET /api/v3/workspaces/:id/configuration" do
-    let(:path) { api_v3_paths.workspace_configuration(project.id) }
-
-    subject(:response) do
-      get path
-      last_response
-    end
-
-    context "when user can view project" do
-      it "returns 200 OK" do
-        expect(response).to have_http_status(:ok)
-      end
-
-      it "returns Configuration type" do
-        expect(response.body)
-          .to be_json_eql("Configuration".to_json)
-          .at_path("_type")
-      end
-
-      it "includes enabledInternalComments property" do
-        expect(response.body).to have_json_path("enabledInternalComments")
-      end
-    end
-  end
 end
