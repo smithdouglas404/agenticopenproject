@@ -31,7 +31,7 @@
 require "spec_helper"
 require "support/flash/expectations"
 
-RSpec.describe "Work package activity", :js, :with_cuprite do
+RSpec.describe "Work package activity", :js, :with_cuprite, with_ee: %i[internal_comments] do
   include Flash::Expectations
 
   let(:project) { create(:project, enabled_internal_comments: true) }

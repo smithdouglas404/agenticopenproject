@@ -343,7 +343,7 @@ RSpec.describe WorkPackagesController do
         end
       end
 
-      context "and the user has permission to see such comments" do
+      context "and the user has permission to see such comments", with_ee: [:internal_comments] do
         before do
           login_as admin
         end

@@ -1142,7 +1142,7 @@ RSpec.describe WorkPackage do
       login_as user
     end
 
-    context "when internal_comments is enabled" do
+    context "when enterprise token allows internal_comments", with_ee: [:internal_comments] do
       context "and setting is enabled for the project" do
         before do
           work_package.project.enabled_internal_comments = true
@@ -1192,14 +1192,17 @@ RSpec.describe WorkPackage do
       end
     end
 
-    context "when internal_comments is disabled" do
+    context "when enterprise token does not allow internal_comments" do
       before do
+        work_package.project.enabled_internal_comments = true
+        work_package.project.save!
+
         mock_permissions_for(user) do |mock|
           mock.allow_in_project(:view_internal_comments, project: work_package.project)
         end
       end
 
-      it "does not return the internal journal regardless of permissions" do
+      it "does not return the internal journal regardless of permissions and project setting" do
         expect(journals.map(&:id)).not_to include(internal_note.id)
         expect(journals.map(&:id)).to include(public_note.id)
       end

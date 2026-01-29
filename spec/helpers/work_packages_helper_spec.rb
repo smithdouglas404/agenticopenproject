@@ -154,7 +154,7 @@ RSpec.describe WorkPackagesHelper do
         end
       end
 
-      context "and the user has permissions to see internal notes" do
+      context "and the user has permissions to see internal notes", with_ee: [:internal_comments] do
         let(:permissions) { %i[view_work_packages view_internal_comments] }
 
         it "returns the last unrestricted note" do
