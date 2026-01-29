@@ -49,5 +49,34 @@ module WorkPackageMeetingsTab
 
       heading
     end
+
+    def work_package_outcome_text(outcome) # rubocop:disable Metrics/AbcSize
+      if outcome.visible_work_package?
+        concat render(Primer::Box.new(classes: "op-uc-container", pb: 0, mt: 1)) {
+          flex_layout do |flex|
+            flex.with_row do
+              render(WorkPackages::InfoLineComponent.new(work_package: outcome.work_package))
+            end
+            flex.with_row do
+              render(
+                Primer::Beta::Link.new(
+                  href: work_package_path(outcome.work_package),
+                  font_size: :normal,
+                  font_weight: :bold
+                )
+              ) { outcome.work_package.subject }
+            end
+          end
+        }
+      elsif outcome.linked_work_package?
+        concat render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
+          I18n.t(:label_agenda_item_undisclosed_wp, id: outcome.work_package_id)
+        }
+      elsif outcome.deleted_work_package?
+        concat render(Primer::Beta::Text.new(font_size: :small, color: :danger, tag: :s)) {
+          I18n.t(:label_agenda_item_deleted_wp)
+        }
+      end
+    end
   end
 end
