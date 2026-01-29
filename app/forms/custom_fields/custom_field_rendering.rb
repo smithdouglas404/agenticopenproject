@@ -55,6 +55,11 @@ module CustomFields::CustomFieldRendering
       form.fields_for(:custom_field_values) do |builder|
         custom_field_input(builder, custom_field)
       end
+      if custom_field.has_comment?
+        form.fields_for(:custom_comments) do |builder|
+          CustomFields::CommentField.new(builder, custom_field: custom_field, object: model)
+        end
+      end
     end
   end
 
