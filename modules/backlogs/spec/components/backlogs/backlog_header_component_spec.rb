@@ -211,4 +211,14 @@ RSpec.describe Backlogs::BacklogHeaderComponent, type: :component do
       expect(page).to have_link(I18n.t(:button_cancel))
     end
   end
+
+  describe "state validation" do
+    it "falls back to default show state for invalid state values" do
+      render_component(state: :invalid)
+
+      # Should render in show state (not edit)
+      expect(page).to have_no_css("form")
+      expect(page).to have_css("h3", text: "Sprint 1")
+    end
+  end
 end
