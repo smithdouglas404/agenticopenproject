@@ -32,6 +32,7 @@ class HourlyRatesController < ApplicationController
   helper :users
   helper :sort
   include SortHelper
+
   helper :hourly_rates
   include HourlyRatesHelper
 
@@ -48,15 +49,11 @@ class HourlyRatesController < ApplicationController
 
   # TODO: this should be an index
   def show
-    if @project
-      return deny_access unless User.current.allowed_in_project?(:view_hourly_rates, @project)
+    return deny_access if @project.nil?
+    return deny_access unless User.current.allowed_in_project?(:view_hourly_rates, @project)
 
-      @rates = HourlyRate.where(user_id: @user, project_id: @project)
-               .order("#{HourlyRate.table_name}.valid_from desc")
-    else
-      @rates = HourlyRate.history_for_user(@user)
-      @rates_default = @rates.delete(nil)
-    end
+    @rates = HourlyRate.where(user_id: @user, project_id: @project)
+             .order("#{HourlyRate.table_name}.valid_from desc")
   end
 
   def edit # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
@@ -171,10 +168,10 @@ class HourlyRatesController < ApplicationController
   end
 
   def find_project
-    @project = Project.find(params[:project_id])
+    @project = Project.visible.find(params[:project_id])
   end
 
   def find_user
-    @user = params[:id] ? User.find(params[:id]) : User.current
+    @user = params[:id] ? User.visible.find(params[:id]) : User.current
   end
 end

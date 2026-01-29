@@ -225,7 +225,7 @@ class TimeEntriesController < ApplicationController
 
   def load_or_build_and_authorize_time_entry
     @time_entry = if params[:id]
-                    entry = TimeEntry.find_by(id: params[:id])
+                    entry = TimeEntry.visible.find_by(id: params[:id])
                     if entry.blank? || !TimeEntries::UpdateContract.new(entry, current_user).user_allowed_to_update?
                       deny_access(not_found: true)
                     else
