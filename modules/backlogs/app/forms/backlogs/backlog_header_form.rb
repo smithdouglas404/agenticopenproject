@@ -33,17 +33,17 @@ module Backlogs
     attr_reader :cancel_path
 
     form do |f|
-      f.group(layout: :horizontal) do |group|
-        group.text_field(
-          name: :name,
-          label: attribute_name(:name),
-          placeholder: attribute_name(:name),
-          visually_hide_label: true,
-          autofocus: true,
-          autocomplete: "off"
-        )
+      f.text_field(
+        name: :name,
+        label: attribute_name(:name),
+        placeholder: attribute_name(:name),
+        visually_hide_label: true,
+        autofocus: true,
+        autocomplete: "off"
+      )
 
-        group.single_date_picker(
+      f.group(layout: :horizontal) do |dates|
+        dates.single_date_picker(
           name: :start_date,
           label: attribute_name(:start_date),
           placeholder: attribute_name(:start_date),
@@ -51,7 +51,7 @@ module Backlogs
           leading_visual: { icon: :calendar },
           datepicker_options: {}
         )
-        group.single_date_picker(
+        dates.single_date_picker(
           name: :effective_date,
           label: attribute_name(:effective_date),
           placeholder: attribute_name(:effective_date),
@@ -59,9 +59,11 @@ module Backlogs
           leading_visual: { icon: :calendar },
           datepicker_options: {}
         )
+      end
 
-        group.submit(scheme: :primary, name: :submit, label: I18n.t(:button_save))
-        group.button(
+      f.group(layout: :horizontal) do |buttons|
+        buttons.submit(scheme: :primary, name: :submit, label: I18n.t(:button_save))
+        buttons.button(
           scheme: :secondary,
           name: :cancel,
           label: I18n.t(:button_cancel),

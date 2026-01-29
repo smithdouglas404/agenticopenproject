@@ -79,7 +79,8 @@ See COPYRIGHT and LICENSE files for more details.
       primer_form_with(
         url: backlogs_project_sprint_path(project, sprint),
         model: sprint,
-        method: :patch
+        method: :patch,
+        class: "op-backlogs-header-form"
       ) do |f|
         render(Backlogs::BacklogHeaderForm.new(f, cancel_path: show_name_backlogs_project_sprint_path(project, sprint)))
       end
