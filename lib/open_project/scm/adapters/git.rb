@@ -399,18 +399,36 @@ module OpenProject
         end
 
         def build_revision_args(path, identifier_from, identifier_to, options)
+          args = build_revision_options(options)
+
+          range = build_revision_range(identifier_from, identifier_to)
+          args << range if range.present?
+
+          args << "--" << scm_encode(@path_encoding, "UTF-8", path) if path.present?
+
+          args
+        end
+
+        def build_revision_options(options)
           args = %w|log --no-abbrev-commit --no-color --encoding=UTF-8 --raw --date=iso --pretty=fuller|
           args << "--reverse" if options[:reverse]
           args << "--all" if options[:all]
           args << "-n" << options[:limit].to_i.to_s if options[:limit]
-          from_to = ""
-          from_to += "#{identifier_from}.." if identifier_from
-          from_to += identifier_to.to_s if identifier_to
-          args << from_to if from_to.present?
           args << "--since=#{options[:since].strftime('%Y-%m-%d %H:%M:%S')}" if options[:since]
-          args << "--" << scm_encode(@path_encoding, "UTF-8", path) if path.present?
 
           args
+        end
+
+        def build_revision_range(identifier_from, identifier_to)
+          from_to = ""
+
+          commit_from = resolve_commit(identifier_from) if identifier_from
+          commit_to = resolve_commit(identifier_to) if identifier_to
+
+          from_to += "#{commit_from}.." if commit_from
+          from_to += commit_to.to_s if commit_to
+
+          from_to
         end
 
         def diff(path, identifier_from, identifier_to = nil)
