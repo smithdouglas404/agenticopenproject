@@ -1485,6 +1485,7 @@ vi:
         even: "phải là số chẵn."
         exclusion: "được bảo lưu."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "quá lớn (kích thước tối đa là %{count} bytes)"
         filter_does_not_exist: "bộ lọc không tồn tại."
         format: "không khớp với định dạng mong đợi '%{expected}'."

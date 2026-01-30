@@ -231,15 +231,15 @@ zh-TW:
         summary: "%{title}' 已被 %{actor}取消。"
         date_time: "排定日期/時間"
       participant_added:
-        header: "Meeting '%{title}' - Participant added"
-        header_series: "Meeting series '%{title}' - Participant added"
-        summary: "%{actor} added %{participant} to the meeting '%{title}'"
-        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
+        header: "會議 '%{title}' - 與會者"
+        header_series: "系列會議 '%{title}' - 與會者"
+        summary: "%{actor} 加入 %{participant} 至會議 '%{title}'"
+        summary_series: "%{actor} 加入 %{participant} 至會議系列 '%{title}'"
       participant_removed:
-        header: "Meeting '%{title}' - Participant removed"
-        header_series: "Meeting series '%{title}' - Participant removed"
-        summary: "%{actor} removed %{participant} from the meeting '%{title}'"
-        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
+        header: "會議 '%{title}' - 參與者已移除"
+        header_series: "會議系列 '%{title}' - 已移除參與者"
+        summary: "%{actor} 從會議中移除 %{participant} '%{title}'"
+        summary_series: "%{actor} 從會議系列中移除 %{participant} '%{title}'"
       ended:
         header_series: "結束：會議系列 '%{title}'"
         summary_series: "會議系列 '%{title}' 已由 %{actor}結束。"

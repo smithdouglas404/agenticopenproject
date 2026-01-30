@@ -1481,6 +1481,7 @@ id:
         even: "harus imbang."
         exclusion: "telah dipesan."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "ukuran maksimum yang diperbolehkan %{count} Bytes."
         filter_does_not_exist: "filter tidak ada."
         format: "tidak cocok dengan format yang diharapkan '%{expected}'."

@@ -1503,6 +1503,7 @@ lv:
         even: "jābūt vienlīdzīgiem."
         exclusion: "rezervēts."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "ir pārāk liels (maksimālais lielums ir %{count} baiti)."
         filter_does_not_exist: "filter does not exist."
         format: "does not match the expected format '%{expected}'."

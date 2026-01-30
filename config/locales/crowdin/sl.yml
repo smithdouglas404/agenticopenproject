@@ -1511,6 +1511,7 @@ sl:
         even: "mora biti enakomerno."
         exclusion: "je rezervirano."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "je preveliko (največja velikost je %{count} Bytov)."
         filter_does_not_exist: "filter does not exist."
         format: "se ne ujema s pričakovano obliko '%{expected}'."
@@ -2381,8 +2382,8 @@ sl:
       - "avgust"
       - "september"
       - "oktober"
-      - "November"
-      - "December"
+      - "november"
+      - "december"
     order:
       - :leto
       - :mesec

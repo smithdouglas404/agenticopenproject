@@ -1493,6 +1493,7 @@
         even: "må være partall"
         exclusion: "er reservert."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "er for stor (maks størrelse er %{count} Bytes)."
         filter_does_not_exist: "filter finnes ikke."
         format: "samsvarer ikke med det forventede formatet '%{expected}'."

@@ -1490,6 +1490,7 @@ nl:
         even: "moet gelijk zijn."
         exclusion: "is gereserveerd."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "is te groot (maximum grootte is %{count} Bytes)."
         filter_does_not_exist: "filter bestaat niet."
         format: "komt niet overeen met het verwachte formaat '%{expected}' '."

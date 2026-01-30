@@ -246,15 +246,15 @@ ru:
         summary: "'%{title}' было отменено %{actor}."
         date_time: "Запланированная дата/время"
       participant_added:
-        header: "Meeting '%{title}' - Participant added"
-        header_series: "Meeting series '%{title}' - Participant added"
-        summary: "%{actor} added %{participant} to the meeting '%{title}'"
-        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
+        header: "Совещание '%{title}' - участник добавлен"
+        header_series: "Серия совещаний '%{title}' - участник добавлен"
+        summary: "%{actor} добавил %{participant} в совещание '%{title}'"
+        summary_series: "%{actor} добавил %{participant} в серию совещаний '%{title}'"
       participant_removed:
-        header: "Meeting '%{title}' - Participant removed"
-        header_series: "Meeting series '%{title}' - Participant removed"
-        summary: "%{actor} removed %{participant} from the meeting '%{title}'"
-        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
+        header: "Совещание '%{title}' - участник удален"
+        header_series: "Серия совещаний '%{title}' - участник удален"
+        summary: "%{actor} удалил %{participant} из совещания '%{title}'"
+        summary_series: "%{actor} удалил %{participant} из серии совещаний '%{title}'"
       ended:
         header_series: "Завершено: Серия совещаний '%{title}'"
         summary_series: "Серия совещаний '%{title}' была завершена %{actor}."

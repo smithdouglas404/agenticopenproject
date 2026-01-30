@@ -75,7 +75,7 @@ id:
   label_yes: "Yes"
   label_budget_totals: "Total"
   label_budget_details: "Rincian anggaran"
-  notice_budget_conflict: "Work packages must be of the same project."
+  notice_budget_conflict: "Paket kerja harus berasal dari proyek yang sama."
   notice_no_budgets_available: "Pilihan budget tidak tersedia."
   permission_edit_budgets: "Edit budget"
   permission_view_budgets: "Tampilkan seluruh budget"

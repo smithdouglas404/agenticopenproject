@@ -1506,6 +1506,7 @@ uk:
         even: "має бути рівним."
         exclusion: "зарезервовано."
         feature_disabled: недоступна.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "занадто великий (максимальний розмір -%{count} байт)"
         filter_does_not_exist: "фільтр не існує."
         format: "не відповідає очікуваному формату «%{expected}»."
@@ -3365,7 +3366,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції зі встановлення"
+  label_installation_guides: "Інструкції із встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"

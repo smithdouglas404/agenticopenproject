@@ -21,8 +21,8 @@
 #++
 id:
   plugin_openproject_backlogs:
-    name: "OpenProject Backlogs"
-    description: "This module adds features enabling agile teams to work with OpenProject in Scrum projects."
+    name: "Backlog OpenProject"
+    description: "Modul ini menambahkan fitur yang memungkinkan tim yang gesit bekerja dengan OpenProject dalam proyek Scrum."
   activerecord:
     attributes:
       work_package:

@@ -1493,6 +1493,7 @@ hu:
         even: "kell még."
         exclusion: "foglalt."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "túl nagy fájlméret (maximális méret %{count} Byte)."
         filter_does_not_exist: "szűrő nem létezik."
         format: "nem felel meg az elvárt '%{expected}' formátumnak."

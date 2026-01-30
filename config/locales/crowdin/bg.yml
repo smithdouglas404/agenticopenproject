@@ -1494,6 +1494,7 @@ bg:
         even: "трябва да бъде четно число."
         exclusion: "е запазено."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "е твърде голям (максимален размер %{count} байта)."
         filter_does_not_exist: "филтърът не съществува."
         format: "не съответства на очаквания формат '%{expected}'."

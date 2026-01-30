@@ -22,7 +22,7 @@
 id:
   plugin_costs:
     name: "Waktu dan biaya"
-    description: "This module adds features for planning and tracking costs of projects."
+    description: "Modul ini menambahkan fitur untuk perencanaan dan pelacakan biaya proyek."
   activerecord:
     attributes:
       cost_entry:
@@ -204,8 +204,8 @@ id:
   setting_costs_currency_format: "Format mata uang"
   setting_enforce_tracking_start_and_end_times: "Butuh waktu mulai dan selesai"
   setting_enforce_without_allow: "Membutuhkan waktu mulai dan selesai tidak mungkin dilakukan tanpa mengizinkannya"
-  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
-  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
+  setting_allow_tracking_start_and_end_times_caption: "Memungkinkan untuk memasukkan waktu mulai dan selesai saat mencatat waktu."
+  setting_enforce_tracking_start_and_end_times_caption: "Membuat pengisian waktu mulai dan selesai menjadi wajib saat mencatat waktu."
   text_assign_time_and_cost_entries_to_project: "Masukkan laporan per-jam dan laporan biaya ke proyek"
   text_destroy_cost_entries_question: "%{cost_entries} digunakan pada work package yang akan dihapus. Keputusan anda?"
   text_destroy_time_and_cost_entries: "Hapus jumlah jam dan biaya yang terlapor"

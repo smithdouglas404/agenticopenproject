@@ -1,8 +1,8 @@
 id:
   label_job_status_plural: "Status pekerjaan"
   plugin_openproject_job_status:
-    name: "OpenProject Job status"
-    description: "Listing and status of background jobs."
+    name: "Status Pekerjaan OpenProject"
+    description: "Daftar dan status pekerjaan latar belakang."
   job_status_dialog:
     download_starts: 'Unduhan dimulai secara otomatis.'
     link_to_download: 'Atau %{link} untuk mengunduh.'

@@ -1481,6 +1481,7 @@ zh-TW:
         even: "必須是偶數"
         exclusion: "已保留"
         feature_disabled: 不可用。
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "太大 (最大為 %{count} Bytes)."
         filter_does_not_exist: "過濾條件不存在"
         format: "與預期的格式“%{expected}”不符"
@@ -2380,7 +2381,7 @@ zh-TW:
       baseline_comparison: 比較差異
       board_view: 進階看板
       calculated_values: 計算值
-      capture_external_links: Capture External Links
+      capture_external_links: 擷取外部連結
       conditional_highlighting: 條件強調
       internal_comments: 內部備註
       custom_actions: 自訂動作
@@ -2438,7 +2439,7 @@ zh-TW:
       conditional_highlighting:
         description: "想讓特定工作套件從眾多套件中脫穎而出？在工作套件列表中使用條件式醒目標示功能。"
       capture_external_links:
-        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
+        description: "透過在使用者造訪外部連結前擷取外部連結並發出警告，防止社交工程攻擊。"
       work_package_query_relation_columns:
         description: "需要在工作套件清單中查看關聯或子套件嗎？"
       edit_attribute_groups:
@@ -3177,7 +3178,7 @@ zh-TW:
   label_filter_add: "新增條件"
   label_filter_by: "篩選條件："
   label_filter_any_name_attribute: "名稱屬性"
-  label_filter_plural: "篩選器"
+  label_filter_plural: "篩選條件"
   label_filters_toggle: "顯示/隱藏篩選條件"
   label_float: "浮點數"
   label_folder: "資料夾"
@@ -3192,8 +3193,8 @@ zh-TW:
   label_global_modules: "全域模組"
   label_global_roles: "全域角色"
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: ">="
-  label_group_by: "分組依據"
+  label_greater_or_equal: "之前"
+  label_group_by: "分類"
   label_group_new: "新增群組"
   label_group: "群組"
   label_group_named: "群組名稱 %{name}"
@@ -3205,7 +3206,7 @@ zh-TW:
   label_hierarchy: "階層"
   label_hierarchy_leaf: "頁面結構頁"
   label_home: "Home"
-  label_subject_or_id: "主旨或 id"
+  label_subject_or_id: "名稱或 id"
   label_calendar_subscriptions: "訂閱行事曆"
   label_identifier: "識別碼"
   label_in: "在"
@@ -3239,7 +3240,7 @@ zh-TW:
   label_journal_diff: "內容對比"
   label_language: "語言"
   label_languages: "語言"
-  label_external_links: "External links"
+  label_external_links: "外部連結"
   label_locale: "語言和地區"
   label_jump_to_a_project: "前往一個專案..."
   label_keyword_plural: "關鍵字"
@@ -3255,7 +3256,7 @@ zh-TW:
   label_latest_revision_plural: "最新版本"
   label_ldap_authentication: "LDAP 認證"
   label_learn_more: "了解更多"
-  label_less_or_equal: "<="
+  label_less_or_equal: "之後"
   label_less_than_ago: "幾天內"
   label_link_url: "連結(URL)"
   label_list: "清單"
@@ -4229,9 +4230,9 @@ zh-TW:
   setting_allowed_link_protocols: "允許連結"
   setting_allowed_link_protocols_text_html: >-
     允許在工作套件描述、長文字欄位與留言中，將這些協定顯示為連結。例如：%{tel_code} 或 %{element_code}。每行輸入一個協定。<br/>協定 %{http_code}、%{https_code} 與 %{mailto_code} 一律允許使用。
-  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links: "擷取外部連結"
   setting_capture_external_links_text: >
-    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+    啟用後，格式化文字中的所有外部連結都會在離開應用程式前透過警告頁重定向。這有助於保護使用者遠離潛在的惡意外部網站。
   setting_after_first_login_redirect_url: "首次登入重新導向"
   setting_after_first_login_redirect_url_text_html: >
     設定使用者首次登入後的重新導向路徑。如果為空，則會重定向到上線導覽的首頁。 <br/> 範例：<code>/my/page</code>
@@ -4545,7 +4546,7 @@ zh-TW:
           project_mandate: "項目任務"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+          此工作套件是在完成 %{wizard_name} 工作流程後自動建立的。 系統已產生一份包含所有已提交資訊的 PDF 成品，並已附加至此工作套件，供日後查閱與稽核使用。 若您需要更新內容或重新執行啟動步驟，可隨時透過下方連結重新開啟精靈：
         description: "當使用者提交專案啟動請求時，將會建立一個新的工作套件，並將請求成品以 PDF 檔案的形式附加到其中。下方的設定將定義這個新工作套件的類型、狀態和指派對象。"
         work_package_type: "工作套件類型"
         work_package_type_caption: "應用於儲存已完成成品之工作套件的類型。"
@@ -5209,7 +5210,7 @@ zh-TW:
     hashed_token:
       display_value_placeholder: "***"
   external_link_warning:
-    title: "Leaving OpenProject"
-    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
-    continue_message: "Are you sure you want to proceed to the following external link?"
-    continue_button: "Continue to external website"
+    title: "離開 OpenProject"
+    warning_message: "您即將離開 OpenProject 並訪問外部網站。請注意，外部網站不受我們控制，可能有不同的隱私和安全政策。"
+    continue_message: "您確定要前往下列外部連結嗎？"
+    continue_button: "繼續到外部網站"

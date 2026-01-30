@@ -1492,6 +1492,7 @@ fr:
         even: "doit être pair."
         exclusion: "est réservé."
         feature_disabled: n'est pas disponible.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "est trop volumineux (la taille maximale est de %{count} octets)."
         filter_does_not_exist: "le filtre n'existe pas."
         format: "ne correspond pas au format attendu « %{expected} »."

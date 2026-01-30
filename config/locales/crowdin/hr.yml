@@ -1503,6 +1503,7 @@ hr:
         even: "mora biti izjednačeno."
         exclusion: "je rezerviran."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "je prevelik (maksimalna veličina iznosi %{count} bajta)."
         filter_does_not_exist: "filter does not exist."
         format: "does not match the expected format '%{expected}'."

@@ -1494,6 +1494,7 @@ sv:
         even: "måste vara jämn."
         exclusion: "är reserverat."
         feature_disabled: är inte tillgänglig.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "är för stor (största storleken är %{count} Bytes)."
         filter_does_not_exist: "filter does not exist."
         format: "does not match the expected format '%{expected}'."

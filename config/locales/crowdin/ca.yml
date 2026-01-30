@@ -1491,6 +1491,7 @@ ca:
         even: "ha de ser parell."
         exclusion: "està reservat."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "és massa gran (la mida màxima és de %{count} Bytes)."
         filter_does_not_exist: "el filtre no existeix."
         format: "no coincideix  amb el format esperat '%{expected}'."

@@ -1494,6 +1494,7 @@ fi:
         even: "täytyy olla parillinen."
         exclusion: "on jo varattu."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "on liian suuri (suurin sallittu koko on %{count} tavua)."
         filter_does_not_exist: "filter does not exist."
         format: "does not match the expected format '%{expected}'."

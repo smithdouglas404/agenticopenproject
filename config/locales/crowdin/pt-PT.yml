@@ -1491,6 +1491,7 @@ pt-PT:
         even: "deve ser par."
         exclusion: "é reservado."
         feature_disabled: não está disponível.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "é muito grande (tamanho máximo é %{count} Bytes)."
         filter_does_not_exist: "filtro não existe."
         format: "não corresponde ao formato esperado '%{expected}'."

@@ -1494,6 +1494,7 @@ tr:
         even: "çift olmalı."
         exclusion: "ayrılmıştır."
         feature_disabled: mevcut değil.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "çok büyük (en büyük boyut %{count} bayt)."
         filter_does_not_exist: "Filtre mevcut değil"
         format: "Beklenen biçim '%{expected}' ile eşleşmiyor."

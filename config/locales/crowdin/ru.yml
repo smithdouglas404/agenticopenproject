@@ -1510,6 +1510,7 @@ ru:
         even: "должно быть чётным."
         exclusion: "зарезервировано."
         feature_disabled: недоступно.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "слишком большой (максимальный размер составляет %{count} байт)."
         filter_does_not_exist: "фильтр не существует."
         format: "не соответствует ожидаемому формату '%{expected}'."
