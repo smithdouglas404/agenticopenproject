@@ -241,18 +241,24 @@ module OpenProject
           entries = Entries.new
           path = scm_encode(@path_encoding, "UTF-8", path)
           args = %w|ls-tree -l|
-          args << "HEAD:#{path}" if identifier.nil?
-          args << "#{identifier}:#{path}" if identifier
+          commit = resolve_commit(identifier) if identifier.present?
+
+          args <<
+            if commit.nil?
+              "HEAD:#{path}"
+            else
+              "#{commit}:#{path}"
+            end
 
           parse_by_line(args, binmode: true) do |line|
-            e = parse_entry(line, path, identifier)
+            e = parse_entry(line, path, commit)
             entries << e unless entries.detect { |entry| entry.name == e.name }
           end
 
           entries.sort_by_name
         end
 
-        def parse_entry(line, path, identifier)
+        def parse_entry(line, path, commit)
           if line.chomp =~ /^\d+\s+(\w+)\s+([0-9a-f]{40})\s+([0-9-]+)\t(.+)$/
             type = $1
             size = $3
@@ -264,7 +270,7 @@ module OpenProject
               path:,
               kind: type == "tree" ? "dir" : "file",
               size: type == "tree" ? nil : size,
-              lastrev: @flag_report_last_commit ? lastrev(path, identifier) : Revision.new
+              lastrev: @flag_report_last_commit ? lastrev(path, commit) : Revision.new
             )
           end
         end
@@ -274,11 +280,11 @@ module OpenProject
           scm_encode("UTF-8", @path_encoding, full_path)
         end
 
-        def lastrev(path, rev)
+        def lastrev(path, commit)
           return nil if path.nil?
 
           args = %w|log --no-abbrev-commit --no-color --encoding=UTF-8 --date=iso --pretty=fuller --no-merges -n 1|
-          args << rev if rev
+          args << commit if commit
           args << "--" << path unless path.empty?
           lines = capture_git(args).lines
           begin
