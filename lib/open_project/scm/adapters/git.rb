@@ -283,6 +283,10 @@ module OpenProject
         def lastrev(path, commit)
           return nil if path.nil?
 
+          if commit.present? && !commit_hash?(commit)
+            raise ArgumentError, "commit must be a valid SHA (40 or 64 hex characters), got: #{commit.inspect}"
+          end
+
           args = %w|log --no-abbrev-commit --no-color --encoding=UTF-8 --date=iso --pretty=fuller --no-merges -n 1|
           args << commit if commit
           args << "--" << path unless path.empty?
@@ -540,6 +544,11 @@ module OpenProject
         # so we can be sure to work with a valid commit identifier.
         def resolve_commit(rev)
           capture_git(["rev-parse", "--verify", "--quiet", "--end-of-options", "#{rev}^{commit}"]).strip
+        end
+
+        # Check if a value is a valid commit hash
+        def commit_hash?(value)
+          value.to_s.match?(/\A[0-9a-f]{40,64}\z/)
         end
       end
     end
