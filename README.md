@@ -38,13 +38,39 @@ docker run -d \
 
 ### Configuration
 
-By default the Hoscuspocus server will sync with the instance of OpenProject trying to connect to it. But depending on the setup being used there can be some mismatching URLs. So it's possible to set an explicit configuration to which OpenProject instance the Hocuspocus server will send requests to:
+#### `OPENPROJECT_URL` (default `undefined`)
 
-```
-OPENPROJECT_DIRECT_URL=https://my.openproject-instance.com/
+This is the base URL hocuspocus will use to connect to OpenProject.
+It is undefined by default, in which case the URL is derived from the edited resources (e.g. documents) in OpenProject.
+
+This can fail in some cases where hocuspocus cannot reach the host under the given URL,
+for instance when using the docker compose setup with `localhost` for the OpenProject host.
+In this case hocuspocus would try to connect to itself.
+
+To fix that you can configure `OPENPROJECT_URL` to 'rebase' the resource URLs to the given value.
+
+For instance, in the case of docker compose:
+
+```bash
+OPENPROJECT_URL=http://web
 ```
 
-This ensures the Hocuspocus server uses the defined host for authentication, fetching, and persisting documents. It is useful when the server needs to communicate via localhost or internal networks, or if you want to set an explicit host.
+Where `web` is the DNS name for the OpenProject container in the docker compose setup.
+
+> When overriding the base URL like this, you also need to set `OPENPROJECT_HOST` (see below) to make requests work.
+
+#### `OPENPROJECT_HOST` (default `undefined`)
+
+When connecting to OpenProject using a different URL than the one OpenProject is configured to be accessd from publicly,
+you also need to make sure to override the `Host` header used in requests made to OpenProject by hocuspocus.
+
+Looking at the example above, accessing OpenProject under `http://web` will not work, because OpenProject will return
+an `Invalid host_name configuration` error.
+Overriding the `Host` header with OpenProject's public host addresses this error.
+
+```bash
+OPENPROJECT_HOST=localhost
+```
 
 ### Starting the Server
 

@@ -5,7 +5,7 @@ import { OpenProjectApi } from "../../src/extensions/openProjectApi";
 describe("OpenProjectApi with stubbed env", () => {
   beforeAll(() => {
     vi.hoisted(() => {
-      vi.stubEnv("OPENPROJECT_DIRECT_URL", "https://my.op-instance.com/");
+      vi.stubEnv("OPENPROJECT_URL", "https://my.op-instance.com/");
     });
   });
 
