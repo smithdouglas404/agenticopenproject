@@ -27,34 +27,26 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
-class FixUniquenessOnEnumerations < ActiveRecord::Migration[8.0]
+class AddUniquenessForWatchersTable < ActiveRecord::Migration[8.0]
   disable_ddl_transaction!
 
   def up
-    # Get rid of old index
-    remove_index :enumerations, name: "index_enumerations_on_type_project_id_and_LOWER_name", algorithm: :concurrently
-
-    # As we did not really validate uniqueness before, we need to fix existing duplicates
     execute <<~SQL.squish
-      UPDATE enumerations SET name = enumerations.name || ' ' || counter.rn
-      FROM (SELECT id, row_number() OVER (PARTITION BY type, COALESCE(project_id, -1), LOWER(name) ORDER BY id) AS rn FROM enumerations) AS counter
-      WHERE enumerations.id = counter.id AND counter.rn > 1;
+      DELETE FROM watchers w1
+      USING watchers w2
+      WHERE w1.id > w2.id
+        AND w1.user_id = w2.user_id
+        AND w1.watchable_type = w2.watchable_type
+        AND w1.watchable_id = w2.watchable_id;
     SQL
 
-    # Add the index again
-    add_index :enumerations,
-              "type, project_id, LOWER(name)",
+    add_index :watchers, ["user_id", "watchable_type", "watchable_id"],
               unique: true,
               algorithm: :concurrently,
-              nulls_not_distinct: true,
-              name: "index_enumerations_on_type_project_id_and_LOWER_name"
+              name: "index_watchers_on_user_id_and_watchable"
   end
 
   def down
-    # roll back to the old version of the index
-    remove_index :enumerations, name: "index_enumerations_on_type_project_id_and_LOWER_name", algorithm: :concurrently
-    add_index :enumerations, "type, project_id, LOWER(name)", unique: true, algorithm: :concurrently,
-                                                              name: "index_enumerations_on_type_project_id_and_LOWER_name"
+    remove_index :watchers, name: "index_watchers_on_user_id_and_watchable", algorithm: :concurrently
   end
 end
