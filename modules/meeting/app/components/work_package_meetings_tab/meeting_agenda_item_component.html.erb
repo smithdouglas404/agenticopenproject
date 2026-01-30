@@ -24,7 +24,11 @@
         flex.with_row do
           render(OpPrimer::InsetBoxComponent.new(border: false, mt: 2, classes: "outcome-container")) do
             concat render(Primer::Beta::Heading.new(tag: :h5)) { outcome_heading(outcomes, index) }
-            concat render(Primer::Box.new(classes: "op-uc-container", pb: 0, mt: 1)) { format_text(outcome, :notes) }
+            if outcome.work_package_kind?
+              work_package_outcome_text(outcome)
+            else
+              concat render(Primer::Box.new(classes: "op-uc-container", pb: 0, mt: 1)) { format_text(outcome, :notes) }
+            end
           end
         end
       end

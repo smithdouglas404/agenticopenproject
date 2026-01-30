@@ -305,6 +305,10 @@ RSpec.describe "Open the Meetings tab",
         create(:meeting_outcome, meeting_agenda_item:, notes: "Second decision")
       end
 
+      let!(:third_outcome) do
+        create(:meeting_outcome, meeting_agenda_item:, notes: "Third decision")
+      end
+
       it "shows all outcomes with numbered headings" do
         work_package_page.visit!
         switch_to_meetings_tab
@@ -317,6 +321,23 @@ RSpec.describe "Open the Meetings tab",
           expect(page).to have_content(second_outcome.notes)
           expect(page).to have_content("#{I18n.t(:label_agenda_outcome)} 1")
           expect(page).to have_content("#{I18n.t(:label_agenda_outcome)} 2")
+          expect(page).to have_content("#{I18n.t(:label_agenda_outcome)} 3")
+        end
+      end
+
+      it "displays outcomes in ascending order of their ids" do
+        work_package_page.visit!
+        switch_to_meetings_tab
+
+        meetings_tab.expect_upcoming_counter_to_be(1)
+
+        page.within_test_selector("op-meeting-container-#{meeting.id}") do
+          outcome_containers = page.all(".outcome-container")
+
+          expect(outcome_containers.size).to eq(3)
+          expect(outcome_containers[0]).to have_content(first_outcome.notes)
+          expect(outcome_containers[1]).to have_content(second_outcome.notes)
+          expect(outcome_containers[2]).to have_content(third_outcome.notes)
         end
       end
     end
@@ -344,6 +365,35 @@ RSpec.describe "Open the Meetings tab",
           expect(page).to have_content(I18n.t(:label_added_as_outcome))
 
           expect(page).to have_no_content(meeting_agenda_item.notes)
+        end
+      end
+    end
+
+    context "when another work_package is linked as an outcome to this work_package's agenda item" do
+      let!(:meeting) { create(:meeting, project:) }
+      let!(:outcome_work_package) { create(:work_package, project:, subject: "Linked as outcome WP") }
+
+      let!(:meeting_agenda_item) do
+        create(:meeting_agenda_item, meeting:, work_package:, notes: "WP agenda item")
+      end
+
+      let!(:work_package_outcome) do
+        create(:meeting_outcome, meeting_agenda_item:, work_package: outcome_work_package, kind: :work_package)
+      end
+
+      it "shows the other work package as an outcome in the list (Bug #71038)" do
+        work_package_page.visit!
+        switch_to_meetings_tab
+
+        meetings_tab.expect_upcoming_counter_to_be(1)
+
+        page.within_test_selector("op-meeting-container-#{meeting.id}") do
+          expect(page).to have_content(meeting.title)
+          expect(page).to have_content(I18n.t(:label_agenda_outcome))
+          expect(page).to have_content(meeting_agenda_item.notes)
+          expect(page).to have_content(outcome_work_package.subject)
+
+          expect(page).to have_no_content(I18n.t(:label_added_as_outcome))
         end
       end
     end
