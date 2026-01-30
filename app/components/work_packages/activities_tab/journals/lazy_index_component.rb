@@ -31,12 +31,19 @@
 module WorkPackages
   module ActivitiesTab
     module Journals
-      class LazyIndexComponent < IndexComponent
-        def initialize(work_package:, journals:, paginator:, filter: :all)
-          super(work_package:, filter:, deferred: false)
+      class LazyIndexComponent < ApplicationComponent
+        include ApplicationHelper
+        include OpPrimer::ComponentHelpers
+        include OpTurbo::Streamable
+        include WorkPackages::ActivitiesTab::SharedHelpers
 
+        def initialize(work_package:, journals:, paginator:, filter: :all)
+          super
+
+          @work_package = work_package
           @journals = journals
           @paginator = paginator
+          @filter = filter
         end
 
         def pages
@@ -67,10 +74,29 @@ module WorkPackages
 
         private
 
-        attr_reader :journals, :paginator
+        attr_reader :work_package, :journals, :paginator, :filter
 
         def insert_target_modified?
           true
+        end
+
+        def empty_state?
+          filter == :only_comments && journal_with_notes.empty?
+        end
+
+        def wp_journals_grouped_emoji_reactions
+          @wp_journals_grouped_emoji_reactions ||=
+            EmojiReactions::GroupedQueries.grouped_work_package_journals_emoji_reactions_by_reactable(work_package)
+        end
+
+        def inner_container_margin_bottom
+          journal_sorting.desc? ? 3 : 0
+        end
+
+        def journal_with_notes
+          work_package
+            .journals
+            .where.not(notes: "")
         end
       end
     end

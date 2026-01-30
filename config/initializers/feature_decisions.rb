@@ -67,8 +67,5 @@ OpenProject::FeatureDecisions.add :new_project_overview,
                                   description: "Enables the new project overview experience.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :wp_activity_tab_lazy_pagination,
-                                  description: "Enables lazy pagination for the activity tab."
-
 OpenProject::FeatureDecisions.add :project_initiation,
                                   description: "Activate the project creation and initiation wizard"
