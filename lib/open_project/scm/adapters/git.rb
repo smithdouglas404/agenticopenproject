@@ -101,7 +101,7 @@ module OpenProject
 
           # If it is not empty, it should have at least one branch
           # Any exit code != 0 will raise here
-          raise Exceptions::SCMEmpty unless branches.count > 0
+          raise Exceptions::SCMEmpty unless branches.any?
         rescue Exceptions::CommandFailed => e
           logger.error("Availability check failed due to failed Git command: #{e.message}")
           raise Exceptions::SCMUnavailable
@@ -196,7 +196,7 @@ module OpenProject
         def checkout?
           parsed = URI.parse checkout_uri
           %w(file http https git).include? parsed.scheme
-        rescue StandardError => e
+        rescue StandardError
           false
         end
 
@@ -319,76 +319,19 @@ module OpenProject
           revisions = Revisions.new
           args = build_revision_args(path, identifier_from, identifier_to, options)
 
-          files = []
-          changeset = {}
-          parsing_descr = 0 # 0: not parsing desc or files, 1: parsing desc, 2: parsing files
+          parser = RevisionParser.new
           parse_by_line(args, binmode: true) do |line|
-            if line =~ /^commit ([0-9a-f]{40})$/
-              key = "commit"
-              value = $1
-              if [1, 2].include?(parsing_descr)
-                parsing_descr = 0
-                revision = Revision.new(
-                  identifier: changeset[:commit],
-                  scmid: changeset[:commit],
-                  author: changeset[:author],
-                  time: Time.parse(changeset[:date]),
-                  message: changeset[:description],
-                  paths: files
-                )
-                if block_given?
-                  yield revision
-                else
-                  revisions << revision
-                end
-                changeset = {}
-                files = []
+            if (revision = parser.parse_line(line, @path_encoding))
+              if block_given?
+                yield revision
+              else
+                revisions << revision
               end
-              changeset[:commit] = $1
-            elsif (parsing_descr == 0) && line =~ /^(\w+):\s*(.*)$/
-              key = $1
-              value = $2
-              if key == "Author"
-                changeset[:author] = value
-              elsif key == "CommitDate"
-                changeset[:date] = value
-              end
-            elsif (parsing_descr == 0) && line.chomp.to_s == ""
-              parsing_descr = 1
-              changeset[:description] = ""
-            elsif [1, 2, 1, 2, 1, 2].include?(parsing_descr) &&
-                  (line =~ /^:\d+\s+\d+\s+[0-9a-f.]+\s+[0-9a-f.]+\s+(\w)\t(.+)$/)
-
-              parsing_descr = 2
-              fileaction = $1
-              filepath = $2
-              p = scm_encode("UTF-8", @path_encoding, filepath)
-              files << { action: fileaction, path: p }
-            elsif [1, 2, 1, 2, 1, 2, 1, 2, 1, 2].include?(parsing_descr) &&
-                  (line =~ /^:\d+\s+\d+\s+[0-9a-f.]+\s+[0-9a-f.]+\s+(\w)\d+\s+(\S+)\t(.+)$/)
-
-              parsing_descr = 2
-              fileaction = $1
-              filepath = $3
-              p = scm_encode("UTF-8", @path_encoding, filepath)
-              files << { action: fileaction, path: p }
-            elsif (parsing_descr == 1) && line.chomp.to_s == ""
-              parsing_descr = 2
-            elsif parsing_descr == 1
-              changeset[:description] += line[4..-1]
             end
           end
 
-          if changeset[:commit]
-            revision = Revision.new(
-              identifier: changeset[:commit],
-              scmid: changeset[:commit],
-              author: changeset[:author],
-              time: Time.parse(changeset[:date]),
-              message: changeset[:description],
-              paths: files
-            )
-
+          # Handle final changeset
+          if (revision = parser.finalize)
             if block_given?
               yield revision
             else
@@ -397,6 +340,90 @@ module OpenProject
           end
 
           revisions
+        end
+
+        # Parser for git log output with state machine
+        class RevisionParser
+          def initialize
+            @changeset = {}
+            @files = []
+            @parsing_descr = 0 # 0: headers, 1: description, 2: files
+          end
+
+          def parse_line(line, path_encoding)
+            case line
+            when /^commit ([0-9a-f]{40})$/
+              handle_commit_line($1)
+            when /^(\w+):\s*(.*)$/
+              handle_header_line($1, $2) if @parsing_descr == 0
+              nil
+            when /^:\d+\s+\d+\s+[0-9a-f.]+\s+[0-9a-f.]+\s+(\w)\t(.+)$/
+              handle_file_line($1, $2, path_encoding)
+              nil
+            when /^:\d+\s+\d+\s+[0-9a-f.]+\s+[0-9a-f.]+\s+(\w)\d+\s+(\S+)\t(.+)$/
+              handle_file_line($1, $3, path_encoding)
+              nil
+            else
+              handle_other_line(line)
+              nil
+            end
+          end
+
+          def finalize
+            build_revision if @changeset[:commit]
+          end
+
+          private
+
+          def handle_commit_line(commit_sha)
+            revision = build_revision if [1, 2].include?(@parsing_descr)
+            reset_state
+            @changeset[:commit] = commit_sha
+            revision
+          end
+
+          def handle_header_line(key, value)
+            case key
+            when "Author"
+              @changeset[:author] = value
+            when "CommitDate"
+              @changeset[:date] = value
+            end
+          end
+
+          def handle_file_line(action, filepath, path_encoding)
+            @parsing_descr = 2
+            encoded_path = filepath.encode("UTF-8", path_encoding, invalid: :replace, undef: :replace)
+            @files << { action:, path: encoded_path }
+          end
+
+          def handle_other_line(line)
+            if line.chomp.to_s == ""
+              @parsing_descr = @parsing_descr == 0 ? 1 : 2
+              @changeset[:description] = "" if @parsing_descr == 1
+            elsif @parsing_descr == 1
+              @changeset[:description] += line[4..]
+            end
+          end
+
+          def build_revision
+            return nil unless @changeset[:commit]
+
+            Git::Revision.new(
+              identifier: @changeset[:commit],
+              scmid: @changeset[:commit],
+              author: @changeset[:author],
+              time: Time.zone.parse(@changeset[:date]),
+              message: @changeset[:description],
+              paths: @files
+            )
+          end
+
+          def reset_state
+            @changeset = {}
+            @files = []
+            @parsing_descr = 0
+          end
         end
 
         def build_revision_args(path, identifier_from, identifier_to, options)
@@ -443,19 +470,30 @@ module OpenProject
         def annotate(path, ref = nil)
           ref = "HEAD" if ref.blank?
           commit = resolve_commit(ref)
+          content = fetch_blame_content(commit, path)
+          return nil if binary_content?(content)
+
+          parse_blame_content(content)
+        end
+
+        def fetch_blame_content(commit, path)
           args = %w|blame --encoding=UTF-8 --porcelain|
           args << commit << "--" << scm_encode(@path_encoding, "UTF-8", path)
-          content = capture_git(args, binmode: true)
+          capture_git(args, binmode: true)
+        end
 
-          # Deny to parse large binary files
-          # Quick test for null bytes, this may not match all files,
-          # but should be a reasonable workaround
-          return nil if content.dup.force_encoding("BINARY").count("\x00") > 0
+        def binary_content?(content)
+          # Quick test for null bytes to deny parsing large binary files
+          # This may not match all files, but should be a reasonable workaround
+          content.dup.force_encoding("BINARY").count("\x00") > 0
+        end
 
+        def parse_blame_content(content)
           blame = Annotate.new
           identifier = ""
           # git shows commit author on the first occurrence only
           authors_by_commit = {}
+
           content.scrub.split("\n").each do |line|
             case line
             when /^([0-9a-f]{39,40})\s.*/
@@ -463,16 +501,11 @@ module OpenProject
             when /^author (.+)/
               authors_by_commit[identifier] = $1.strip
             when /^\t(.*)/
-              blame.add_line(
-                $1,
-                Revision.new(
-                  identifier:,
-                  author: authors_by_commit[identifier]
-                )
-              )
+              blame.add_line($1, Revision.new(identifier:, author: authors_by_commit[identifier]))
               identifier = ""
             end
           end
+
           blame
         end
 
