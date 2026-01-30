@@ -295,7 +295,7 @@ You will then see the newly generated token.
 
 To delete an iCal meeting token under Account settings click the *Delete* icon next to the respective token name. 
 
-![Delete icon to remove a meeting iCal token under OpenProject account settings](openproject_ccount_settings_access_tokens_meetings_delete.png)
+![Delete icon to remove a meeting iCal token under OpenProject account settings](openproject_account_settings_access_tokens_meetings_delete.png)
 
 
 
