@@ -421,10 +421,11 @@ module OpenProject
           nil
         end
 
-        def annotate(path, identifier = nil)
-          identifier = "HEAD" if identifier.blank?
+        def annotate(path, ref = nil)
+          ref = "HEAD" if ref.blank?
+          commit = resolve_commit(ref)
           args = %w|blame --encoding=UTF-8|
-          args << "-p" << identifier << "--" << scm_encode(@path_encoding, "UTF-8", path)
+          args << "-p" << commit << "--" << scm_encode(@path_encoding, "UTF-8", path)
           blame = Annotate.new
           content = capture_git(args, binmode: true)
 
