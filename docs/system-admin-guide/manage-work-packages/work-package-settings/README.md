@@ -21,9 +21,7 @@ You can adjust the following:
 
 4. **Default highlighting mode** defines which should be the default [attribute highlighting](../../../user-guide/work-packages/work-package-table-configuration/#attribute-highlighting-enterprise-add-on) mode, e.g. to highlight the following criteria in the work package table. 
 
-[feature: conditional_highlighting ]
-
-   ![default highlighting mode](openproject_system_guide_default_highlighting_mode.png)
+![default highlighting mode](openproject_system_guide_default_highlighting_mode.png)
 
 5. Customize the appearance of the work package lists to **define which work package attributes are displayed in the work package lists by default and in what order**.
 

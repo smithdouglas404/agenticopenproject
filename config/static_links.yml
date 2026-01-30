@@ -42,14 +42,10 @@ docker_installation:
 documents_docs:
   href: https://www.openproject.org/docs/user-guide/documents/
 enterprise_features:
-  attribute_highlighting:
-    href: https://www.openproject.org/docs/user-guide/work-packages/work-package-table-configuration/#attribute-highlighting-enterprise-add-on
   board_view:
     href: https://www.openproject.org/docs/user-guide/agile-boards/#action-boards-enterprise-add-on
   boards:
     href: https://www.openproject.org/docs/user-guide/agile-boards/#action-boards-enterprise-add-on
-  conditional_highlighting:
-    href: https://www.openproject.org/enterprise-edition/?op_referrer=settings-wp-attribute-highlighting#attribute-highlighting
   custom_field_hierarchies:
     href: https://www.openproject.org/docs/system-admin-guide/custom-fields/#hierarchy-custom-field-enterprise-add-on
   custom_field_multiselect:

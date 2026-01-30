@@ -316,16 +316,8 @@ RSpec.describe Setting do
 
   # Check that when reading certain setting values that they get overwritten if needed.
   describe "filter saved settings" do
-    describe "with EE token", with_ee: %i[conditional_highlighting] do
-      it "returns the value for 'work_package_list_default_highlighting_mode' without changing it" do
-        expect(described_class.work_package_list_default_highlighting_mode).to eq("inline")
-      end
-    end
-
-    describe "without EE" do
-      it "return 'none' as 'work_package_list_default_highlighting_mode'" do
-        expect(described_class.work_package_list_default_highlighting_mode).to eq("none")
-      end
+    it "returns the value for 'work_package_list_default_highlighting_mode' without changing it" do
+      expect(described_class.work_package_list_default_highlighting_mode).to eq("inline")
     end
   end
 

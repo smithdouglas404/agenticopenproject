@@ -235,8 +235,6 @@ If you group the work package table, sums will be shown for each group.
 
 ## Attribute highlighting (Enterprise add-on)
 
-[feature: conditional_highlighting ]
-
 You can highlight attributes in the work package table to emphasize the importance of certain attributes and have important topics at a glance. To activate attribute highlighting open the work package configuration table and select the **Highlighting** tab.
 
 The following attributes can be highlighted in the table:

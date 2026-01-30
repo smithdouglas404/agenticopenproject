@@ -2557,7 +2557,6 @@ en:
       board_view: Advanced Boards
       calculated_values: Calculated values
       capture_external_links: Capture External Links
-      conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
       custom_field_hierarchies: Hierarchies
@@ -2612,8 +2611,6 @@ en:
         description: "Create automatically generated subjects using referenced attributes and text."
       customize_life_cycle:
         description: "Create and organize different project phases than the ones provided by PM2 project cycle planning."
-      conditional_highlighting:
-        description: "Need certain work packages to stand out from the mass? Use conditional highlighting in the work packages table."
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
