@@ -456,12 +456,11 @@ module OpenProject
           blame
         end
 
-        def cat(path, identifier = nil)
-          if identifier.nil?
-            identifier = "HEAD"
-          end
+        def cat(path, ref = nil)
+          ref = "HEAD" if ref.nil?
+          commit = resolve_commit(ref)
           args = %w|show --no-color|
-          args << "#{identifier}:#{scm_encode(@path_encoding, 'UTF-8', path)}"
+          args << "#{commit}:#{scm_encode(@path_encoding, 'UTF-8', path)}"
           capture_git(args, binmode: true)
         end
 
