@@ -19,7 +19,7 @@ You can adjust the following:
 
 3. **Use current date as start date for new work packages**. This way the current date will always be set as a start date if your create new work packages. Also, if you copy projects, the new work packages will get the current date as start date.
 
-4. **Default highlighting mode** defines which should be the default [attribute highlighting](../../../user-guide/work-packages/work-package-table-configuration/#attribute-highlighting-enterprise-add-on) mode, e.g. to highlight the following criteria in the work package table. 
+4. **Default highlighting mode** defines which should be the default [attribute highlighting](../../../user-guide/work-packages/work-package-table-configuration/#attribute-highlighting) mode, e.g. to highlight the following criteria in the work package table. 
 
 ![default highlighting mode](openproject_system_guide_default_highlighting_mode.png)
 
