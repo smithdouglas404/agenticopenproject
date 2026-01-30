@@ -170,7 +170,7 @@ module OpenProject
           Rails.logger.info("Setting up new branch: #{local_branch} -> #{remote_branch}")
 
           capture_out(
-            ["branch", "--track", local_branch, remote_branch],
+            ["branch", "--track", "--end-of-options", local_branch, remote_branch],
             error_message: "Failed to track new branch #{remote_branch}"
           )
         end
@@ -179,7 +179,7 @@ module OpenProject
           Rails.logger.debug { "Updating branch: #{local_branch}" }
 
           capture_out(
-            ["update-ref", local_branch, remote_branch],
+            ["update-ref", "--end-of-options", local_branch, remote_branch],
             error_message: "Failed update ref to #{remote_branch}"
           )
         end
@@ -240,7 +240,7 @@ module OpenProject
         def entries(path, identifier = nil)
           entries = Entries.new
           path = scm_encode(@path_encoding, "UTF-8", path)
-          args = %w|ls-tree -l|
+          args = %w|ls-tree -l --end-of-options|
           commit = resolve_commit(identifier) if identifier.present?
 
           args <<
@@ -284,10 +284,11 @@ module OpenProject
           return nil if path.nil?
 
           if commit.present? && !commit_hash?(commit)
-            raise ArgumentError, "commit must be a valid SHA (40 or 64 hex characters), got: #{commit.inspect}"
+            raise ArgumentError, "input must be a valid commit hash"
           end
 
-          args = %w|log --no-abbrev-commit --no-color --encoding=UTF-8 --date=iso --pretty=fuller --no-merges -n 1|
+          args = %w|log --no-abbrev-commit --no-color --encoding=UTF-8 --date=iso
+                    --pretty=fuller --no-merges -n 1 --end-of-options|
           args << commit if commit
           args << "--" << path unless path.empty?
           lines = capture_git(args).lines
@@ -302,7 +303,7 @@ module OpenProject
         def build_lastrev(lines)
           id = lines[0].split[1]
           author = lines[1].match('Author:\s+(.*)$')[1]
-          time = Time.parse(lines[4].match('CommitDate:\s+(.*)$')[1])
+          time = Time.zone.parse(lines[4].match('CommitDate:\s+(.*)$')[1])
 
           Revision.new(
             identifier: id,
@@ -442,9 +443,8 @@ module OpenProject
         def annotate(path, ref = nil)
           ref = "HEAD" if ref.blank?
           commit = resolve_commit(ref)
-          args = %w|blame --encoding=UTF-8|
-          args << "-p" << commit << "--" << scm_encode(@path_encoding, "UTF-8", path)
-          blame = Annotate.new
+          args = %w|blame --encoding=UTF-8 --porcelain|
+          args << commit << "--" << scm_encode(@path_encoding, "UTF-8", path)
           content = capture_git(args, binmode: true)
 
           # Deny to parse large binary files
@@ -452,15 +452,17 @@ module OpenProject
           # but should be a reasonable workaround
           return nil if content.dup.force_encoding("BINARY").count("\x00") > 0
 
+          blame = Annotate.new
           identifier = ""
           # git shows commit author on the first occurrence only
           authors_by_commit = {}
           content.scrub.split("\n").each do |line|
-            if line =~ /^([0-9a-f]{39,40})\s.*/
+            case line
+            when /^([0-9a-f]{39,40})\s.*/
               identifier = $1
-            elsif line =~ /^author (.+)/
+            when /^author (.+)/
               authors_by_commit[identifier] = $1.strip
-            elsif line =~ /^\t(.*)/
+            when /^\t(.*)/
               blame.add_line(
                 $1,
                 Revision.new(
@@ -477,7 +479,7 @@ module OpenProject
         def cat(path, ref = nil)
           ref = "HEAD" if ref.nil?
           commit = resolve_commit(ref)
-          args = %w|show --no-color|
+          args = %w|show --no-color --end-of-options|
           args << "#{commit}:#{scm_encode(@path_encoding, 'UTF-8', path)}"
           capture_git(args, binmode: true)
         end
@@ -499,9 +501,9 @@ module OpenProject
 
           if identifier_to
             to_sha = resolve_commit(identifier_to)
-            ["diff", "--no-abbrev-commit", "--no-color", to_sha, from_sha]
+            ["diff", "--no-abbrev-commit", "--no-color", "--end-of-options", to_sha, from_sha]
           else
-            ["show", "--no-abbrev-commit", "--no-color", from_sha]
+            ["show", "--no-abbrev-commit", "--no-color", "--end-of-options", from_sha]
           end
         end
 
