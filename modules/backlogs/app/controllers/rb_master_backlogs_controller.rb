@@ -33,25 +33,31 @@ class RbMasterBacklogsController < RbApplicationController
 
   menu_item :backlogs
 
+  before_action :load_backlogs, only: :index
+
   def index
-    @owner_backlogs = Backlog.owner_backlogs(@project)
-    @sprint_backlogs = Backlog.sprint_backlogs(@project)
+    if turbo_frame_request?
+      render partial: "list", layout: false
+    else
+      render :index
+    end
   end
 
-  def split_view
-    @owner_backlogs = Backlog.owner_backlogs(@project)
-    @sprint_backlogs = Backlog.sprint_backlogs(@project)
-
-    respond_to do |format|
-      format.html do
-        if turbo_frame_request?
-          render "work_packages/split_view", layout: false
-        else
-          render :index
-        end
-      end
+  def details
+    if turbo_frame_request?
+      render "work_packages/split_view", layout: false
+    else
+      load_backlogs
+      render :index
     end
   end
 
   def split_view_base_route = backlogs_project_backlogs_path(request.query_parameters)
+
+  private
+
+  def load_backlogs
+    @owner_backlogs = Backlog.owner_backlogs(@project)
+    @sprint_backlogs = Backlog.sprint_backlogs(@project)
+  end
 end

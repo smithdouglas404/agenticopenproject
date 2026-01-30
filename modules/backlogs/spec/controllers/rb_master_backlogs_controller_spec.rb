@@ -48,16 +48,23 @@ RSpec.describe RbMasterBacklogsController do
   end
 
   describe "GET #index" do
-    it do
+    it "is successful" do
       get :index, params: { project_id: project.id }
 
       expect(response).to be_successful
     end
+
+    it "assigns @owner_backlogs and @sprint_backlogs" do
+      get :index, params: { project_id: project.id }
+
+      expect(assigns(:owner_backlogs)).to be_an(Array)
+      expect(assigns(:sprint_backlogs)).to be_an(Array)
+    end
   end
 
-  describe "GET #split_view" do
-    it do
-      get :split_view, params: {
+  describe "GET #details" do
+    it "is successful" do
+      get :details, params: {
         project_id: project.id,
         tab: :overview,
         work_package_id: story.id,
@@ -65,6 +72,18 @@ RSpec.describe RbMasterBacklogsController do
       }
 
       expect(response).to be_successful
+    end
+
+    it "assigns @owner_backlogs and @sprint_backlogs" do
+      get :details, params: {
+        project_id: project.id,
+        tab: :overview,
+        work_package_id: story.id,
+        work_package_split_view: true
+      }
+
+      expect(assigns(:owner_backlogs)).to be_an(Array)
+      expect(assigns(:sprint_backlogs)).to be_an(Array)
     end
   end
 end

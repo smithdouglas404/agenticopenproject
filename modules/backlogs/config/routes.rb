@@ -27,19 +27,15 @@
 #++
 
 Rails.application.routes.draw do
-  concern :with_split_view do |options|
-    get "details/:work_package_id(/:tab)",
-        action: options.fetch(:action, :split_view),
-        defaults: { tab: :overview },
-        as: :details,
-        work_package_split_view: true
-  end
-
   scope "", as: "backlogs" do
     scope "projects/:project_id", as: "project" do
       resources :backlogs, controller: :rb_master_backlogs, only: :index do
         collection do
-          concerns :with_split_view, base_route: :backlogs_project_backlogs_path
+          get "details/:work_package_id(/:tab)",
+              action: :details,
+              as: :details,
+              work_package_split_view: true,
+              defaults: { tab: :overview }
         end
       end
 

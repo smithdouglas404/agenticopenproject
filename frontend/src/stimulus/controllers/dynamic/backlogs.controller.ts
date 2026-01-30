@@ -27,6 +27,40 @@
 //++
 
 import { Controller } from '@hotwired/stimulus';
+import { FrameElement } from '@hotwired/turbo';
+import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
+import { filter, Subscription } from 'rxjs';
 
-export default class BacklogsController extends Controller {
+export default class BacklogsController extends Controller<HTMLElement> {
+  static values = {
+    listUrl: String,
+  };
+
+  declare listUrlValue:string;
+  private service:HalEventsService|null = null;
+  private subscription:Subscription|null = null;
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  async connect() {
+    const { services: { halEvents } } = await window.OpenProject.getPluginContext();
+
+    this.service = halEvents;
+    this.subscription = this.service.aggregated$('WorkPackage')
+      .pipe(filter((events) => events.some((event) => event.eventType === 'updated')))
+      .subscribe(() => { this.refreshList(); });
+  }
+
+  disconnect() {
+    this.subscription?.unsubscribe();
+    this.subscription = null;
+    this.service = null;
+  }
+
+  private refreshList() {
+    this.listElement.src = this.listUrlValue;
+  }
+
+  private get listElement() {
+    return this.element.querySelector<FrameElement>('#backlogs_container')!;
+  }
 }
