@@ -287,6 +287,7 @@ module OpenProject
             raise ArgumentError, "input must be a valid commit hash"
           end
 
+          path = scm_encode(@path_encoding, "UTF-8", path)
           args = %w|log --no-abbrev-commit --no-color --encoding=UTF-8 --date=iso
                     --pretty=fuller --no-merges -n 1 --end-of-options|
           args << commit if commit
