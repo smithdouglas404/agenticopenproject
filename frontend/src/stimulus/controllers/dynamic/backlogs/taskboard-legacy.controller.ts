@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 
+import './init-jquery';
 import 'core-vendor/jquery.jeditable.mini';
 import 'core-vendor/jquery.colorcontrast';
 
