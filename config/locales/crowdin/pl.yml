@@ -109,6 +109,23 @@ pl:
       explanation:
         text: "Indywidualne działania użytkownika (np. dwukrotna aktualizacja pakietu roboczego) są agregowane w jedno działanie, jeśli różnica czasowa między nimi jest mniejsza niż określony przedział czasowy. Będą one wyświetlane jako jedno działanie w aplikacji. Spowoduje to również opóźnienie powiadomień o tę samą ilość czasu, zmniejszając liczbę wysyłanych wiadomości e-mail i wpłynie też na opóźnienie %{webhook_link}."
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "JWT od dostawcy tożsamości"
@@ -1250,6 +1267,10 @@ pl:
         onthefly: "Automatyczne tworzenie użytkowników"
         port: "Port"
         tls_certificate_string: "Certyfikat SSL serwera LDAP"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "Role"
       notification:
@@ -2526,7 +2547,6 @@ pl:
       board_view: Tablice zaawansowane
       calculated_values: Obliczane wartości
       capture_external_links: Capture External Links
-      conditional_highlighting: Wyróżnianie warunkowe
       internal_comments: Komentarze wewnętrzne
       custom_actions: Działania niestandardowe
       custom_field_hierarchies: Hierarchie
@@ -2536,6 +2556,7 @@ pl:
       edit_attribute_groups: Edytuj grupy atrybutów
       gantt_pdf_export: Eksport wykresu Gantta w formacie PDF
       ldap_groups: Synchronizacja użytkowników i grup LDAP
+      mcp_server: MCP Server
       nextcloud_sso: Logowanie jednokrotne do magazynu Nextcloud
       one_drive_sharepoint_file_storage: Magazyn plików OneDrive/SharePoint
       placeholder_users: Użytkownicy zastępczy
@@ -2580,8 +2601,6 @@ pl:
         description: "Utwórz automatycznie generowane tematy za pomocą wywoływanych atrybutów i tekstu."
       customize_life_cycle:
         description: "Twórz i organizuj fazy projektu inne niż zapewniane przez planowanie cyklu projektu PM2."
-      conditional_highlighting:
-        description: "Chcesz, aby niektóre pakiety robocze wyróżniały się na tle innych? Użyj wyróżnienia warunkowego w tabeli pakietów roboczych."
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2613,6 +2632,8 @@ pl:
       custom_actions:
         title: "Działania niestandardowe"
         description: "Akcje niestandardowe są skrótami do zestawu predefiniowanych akcji, które można udostępnić w określonych pakietach roboczych na podstawie statusu, roli, typu lub projektu."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Logowanie jednokrotne do magazynu Nextcloud"
         description: "Włącz bezproblemowe, bezpieczne uwierzytelnianie dla swojego magazynu Nextcloud za pomocą logowania jednokrotnego. Uprość zarządzanie dostępem i zwiększ wygodę użytkowników."
@@ -3003,10 +3024,12 @@ pl:
   instructions_after_error: "Można spróbować się zalogować ponownie klikając %{signin}. Jeśli ten błąd będzie się powtarzał, poproś swojego admina o pomoc."
   menus:
     admin:
-      mail_notification: "Powiadomienia e-mail"
-      mails_and_notifications: "Wiadomości e-mail i powiadomienia"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "Agregacja"
       api_and_webhooks: "Interfejs API i webhooki"
+      mail_notification: "Powiadomienia e-mail"
+      mails_and_notifications: "Wiadomości e-mail i powiadomienia"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Dodaj…"
   my_account:

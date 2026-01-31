@@ -109,6 +109,23 @@ tr:
       explanation:
         text: "Bir kullanıcının bireysel eylemleri (örneğin, bir iş paketini iki kez güncelleme), yaş farkı belirtilen zaman aralığından azsa tek bir eylemde toplanır. Uygulama içinde tek bir eylem olarak görüntülenecektir. Bu aynı zamanda gönderilen e-posta sayısını azaltarak bildirimleri aynı süre kadar geciktirecek ve ayrıca %{webhook_link} gecikmesini etkileyecektir."
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "Kimlik sağlayıcıdan JWT"
@@ -1236,6 +1253,10 @@ tr:
         onthefly: "Otomatik kullanıcı oluşturma"
         port: "Port"
         tls_certificate_string: "LDAP sunucusu SSL sertifikası"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "Yetkiler"
       notification:
@@ -2434,7 +2455,6 @@ tr:
       board_view: Gelişmiş Panolar
       calculated_values: Calculated values
       capture_external_links: Capture External Links
-      conditional_highlighting: Koşullu Vurgulama
       internal_comments: Dahili Yorumlar
       custom_actions: Özel Eylemler
       custom_field_hierarchies: Hierarchies
@@ -2444,6 +2464,7 @@ tr:
       edit_attribute_groups: Özellik Grubunu Düzenleme
       gantt_pdf_export: Gantt PDF Dışa Aktarma
       ldap_groups: LDAP kullanıcıları ve grup senkronizasyonu
+      mcp_server: MCP Server
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint Dosya Depolama
       placeholder_users: Yer Tutucu Kullanıcılar
@@ -2488,8 +2509,6 @@ tr:
         description: "Referens öznitelikleri ve metni kullanarak otomatik konular oluşturun."
       customize_life_cycle:
         description: "PM2 proje döngüsü planlaması tarafından sağlananlardan farklı proje aşamaları oluşturun ve düzenleyin."
-      conditional_highlighting:
-        description: "Need certain work packages to stand out from the mass? Use conditional highlighting in the work packages table."
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2521,6 +2540,8 @@ tr:
       custom_actions:
         title: "Özel eylemler"
         description: "Özel eylemler, duruma, role, türe veya projeye göre belirli iş paketlerinde kullanıma sunabileceğiniz bir dizi önceden tanımlanmış eylemin tek tıkla kısayollarıdır."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
@@ -2909,10 +2930,12 @@ tr:
   instructions_after_error: "%{signin} düğmesini tıklayarak tekrar oturum açmayı deneyebilirsiniz. Hata devam ederse, yöneticinizden yardım isteyin."
   menus:
     admin:
-      mail_notification: "E-posta bildirimleri"
-      mails_and_notifications: "E-postalar ve bildirimler"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "Birleştirme"
       api_and_webhooks: "API ve web kancaları"
+      mail_notification: "E-posta bildirimleri"
+      mails_and_notifications: "E-postalar ve bildirimler"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Ekle…"
   my_account:

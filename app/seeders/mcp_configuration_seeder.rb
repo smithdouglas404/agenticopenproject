@@ -46,7 +46,7 @@ class McpConfigurationSeeder < Seeder
 
   def seed_server_config
     McpConfiguration.create!(
-      identifier: API::Mcp::CONFIGURATION_IDENTIFIER,
+      identifier: McpConfiguration::SERVER_CONFIGURATION_IDENTIFIER,
       title: Setting.app_title,
       description: "Performs project management tasks on the given installation of OpenProject.",
       enabled: true
@@ -67,7 +67,7 @@ class McpConfigurationSeeder < Seeder
   end
 
   def server_missing?
-    McpConfiguration.where(identifier: API::Mcp::CONFIGURATION_IDENTIFIER).empty?
+    McpConfiguration.where(identifier: McpConfiguration::SERVER_CONFIGURATION_IDENTIFIER).empty?
   end
 
   def tools_missing?

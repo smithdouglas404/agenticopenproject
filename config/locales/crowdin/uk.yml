@@ -109,6 +109,23 @@ uk:
       explanation:
         text: "Окремі дії користувача (напр., оновлення робочого пакета двічі) зводяться в одну дію, якщо відмінність у часі між ними менша за вказаний проміжок часу. Їх буде виведено як окремі дії в межах додатка. Крім того, це призведе до затримки сповіщень на такий самий проміжок часу, що зменшить кількість електронних листів, які надсилатимуться, а також вплине на затримку %{webhook_link}."
         link: "вебгука"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "JWT від постачальника ідентифікаційних даних"
@@ -1248,6 +1265,10 @@ uk:
         onthefly: "Автоматичне створення користувачів"
         port: "Порт"
         tls_certificate_string: "Сертифікат SSL сервера LDAP"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "Роль"
       notification:
@@ -2524,7 +2545,6 @@ uk:
       board_view: Покращені Дошки
       calculated_values: Розраховані значення
       capture_external_links: Capture External Links
-      conditional_highlighting: Умовне виділення
       internal_comments: Внутрішні коментарі
       custom_actions: Користувацькі дії
       custom_field_hierarchies: Ієрархії
@@ -2534,6 +2554,7 @@ uk:
       edit_attribute_groups: Редагування груп атрибутів
       gantt_pdf_export: Експорт діаграми Ґантта в PDF
       ldap_groups: Синхронізація користувачів і груп LDAP
+      mcp_server: MCP Server
       nextcloud_sso: Єдиний вхід для сховища Nextcloud
       one_drive_sharepoint_file_storage: Сховище файлів OneDrive / SharePoint
       placeholder_users: Прототипи користувачів
@@ -2578,8 +2599,6 @@ uk:
         description: "Створюйте автоматично згенеровані теми на основі атрибутів і тексту."
       customize_life_cycle:
         description: "Створюйте й упорядковуйте етапи й проєкту, відмінні від тих, що передбачено плануванням циклу проєкту PM2."
-      conditional_highlighting:
-        description: "Потрібно, щоб виокремити певні пакети робіт? Скористайтесь умовним виділенням у таблиці пакетів робіт."
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2611,6 +2630,8 @@ uk:
       custom_actions:
         title: "Користувацькі дії"
         description: "Користувацькі дії – це ярлики набору попередньо визначених дій, які ви можете включати в певні пакети робіт залежно від статусу, ролі, типу або проєкту."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Єдиний вхід для сховища Nextcloud"
         description: "Увімкніть швидку й безпечну автентифікацію для свого сховища Nextcloud завдяки технології єдиного входу. Спростіть керування доступом і покращте взаємодію користувачів зі своїм продуктом."
@@ -3001,10 +3022,12 @@ uk:
   instructions_after_error: "Ви можете спробувати ввійти знову, натиснувши %{signin}. Якщо помилка не зникне, зверніться до адміністратора за допомогою."
   menus:
     admin:
-      mail_notification: "Email сповіщення"
-      mails_and_notifications: "Електронні листи й сповіщення"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "Агрегація"
       api_and_webhooks: "API та вебгуки"
+      mail_notification: "Email сповіщення"
+      mails_and_notifications: "Електронні листи й сповіщення"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Додати…"
   my_account:

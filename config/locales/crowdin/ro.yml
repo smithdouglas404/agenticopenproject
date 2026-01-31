@@ -109,6 +109,23 @@ ro:
       explanation:
         text: "Acțiunile individuale ale unui utilizator (de exemplu, actualizarea de două ori a unui pachet de lucru) sunt agregate într-o singură acțiune dacă diferența de vechime dintre ele este mai mică decât intervalul de timp specificat. Acestea vor fi afișate ca o singură acțiune în cadrul aplicației. De asemenea, acest lucru va întârzia notificările cu aceeași perioadă de timp, reducând numărul de e-mailuri trimise și va afecta, de asemenea, întârzierea %{webhook_link}."
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "JWT from identity provider"
@@ -1245,6 +1262,10 @@ ro:
         onthefly: "Crearea automată a utilizatorilor"
         port: "Port"
         tls_certificate_string: "Certificat SSL pentru serverul LDAP"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "Roluri"
       notification:
@@ -2482,7 +2503,6 @@ ro:
       board_view: Advanced Boards
       calculated_values: Calculated values
       capture_external_links: Capture External Links
-      conditional_highlighting: Evidențiere condiționată
       internal_comments: Comentarii interne
       custom_actions: Custom Actions
       custom_field_hierarchies: Hierarchies
@@ -2492,6 +2512,7 @@ ro:
       edit_attribute_groups: Edit Attribute Groups
       gantt_pdf_export: Gantt PDF Export
       ldap_groups: LDAP users and group sync
+      mcp_server: MCP Server
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
       placeholder_users: Placeholder Users
@@ -2536,8 +2557,6 @@ ro:
         description: "Create automatically generated subjects using referenced attributes and text."
       customize_life_cycle:
         description: "Creează și organizează diferite faze de proiect decât cele furnizate de planificarea ciclului proiectului PM2."
-      conditional_highlighting:
-        description: "Ai nevoie de anumite pachete de lucru pentru a ieși în evidență? Utilizează evidențierea condiționată în tabelul pachetelor de lucru."
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2569,6 +2588,8 @@ ro:
       custom_actions:
         title: "Acțiuni personalizate"
         description: "Acțiunile personalizate sunt comenzi rapide cu un singur clic către un set de acțiuni predefinite pe care le puteți face disponibile pentru anumite pachete de lucru în funcție de statut, rol, tip sau proiect."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
@@ -2958,10 +2979,12 @@ ro:
   instructions_after_error: "Poţi încerca să te autentifici din nou dând click pe %{signin}. Dacă eroarea persistă, cere ajutorul administratorului."
   menus:
     admin:
-      mail_notification: "Notificări prin e-mail"
-      mails_and_notifications: "E-mailuri și notificări"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "Agregare"
       api_and_webhooks: "API și webhook-uri"
+      mail_notification: "Notificări prin e-mail"
+      mails_and_notifications: "E-mailuri și notificări"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Add…"
   my_account:

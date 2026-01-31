@@ -476,6 +476,19 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_calendars_and_dates,
             icon: "calendar"
 
+  menu.push :ai,
+            { controller: "/admin/mcp_configurations", action: :index },
+            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            caption: I18n.t("menus.admin.ai"),
+            icon: :"sparkle-fill"
+
+  menu.push :mcp_configurations,
+            { controller: "/admin/mcp_configurations", action: :index },
+            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            caption: I18n.t("menus.admin.mcp_configurations"),
+            enterprise_feature: "mcp_server",
+            parent: :ai
+
   menu.push :working_days_and_hours,
             { controller: "/admin/settings/working_days_and_hours_settings", action: :show },
             if: ->(_) { User.current.admin? },

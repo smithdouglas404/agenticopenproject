@@ -109,6 +109,23 @@ es:
       explanation:
         text: "Las acciones individuales de un usuario (como actualizar dos veces un paquete de trabajo) se combinan en una sola acción si la diferencia de antigüedad es inferior al intervalo de tiempo especificado. Se mostrarán como una sola acción en la aplicación. También se retrasarán las notificaciones por la misma cantidad de tiempo, lo que reducirá el número de correos electrónicos enviados y causará también que se retrase el %{webhook_link}."
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "JWT del proveedor de identidad"
@@ -1233,6 +1250,10 @@ es:
         onthefly: "Creación automática de usuarios"
         port: "Puerto"
         tls_certificate_string: "Certificado SSL del servidor LDAP"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "Perfiles"
       notification:
@@ -2431,7 +2452,6 @@ es:
       board_view: Tableros avanzados
       calculated_values: Valores calculados
       capture_external_links: Capture External Links
-      conditional_highlighting: Resaltado condicional
       internal_comments: Comentarios Internos
       custom_actions: Acciones personalizadas
       custom_field_hierarchies: Jerarquías
@@ -2441,6 +2461,7 @@ es:
       edit_attribute_groups: Editar grupos de atributos
       gantt_pdf_export: Exportación de Gantt a PDF
       ldap_groups: Usuarios de LDAP y sincronización de grupos
+      mcp_server: MCP Server
       nextcloud_sso: Inicio de sesión único para almacenamiento en la nube
       one_drive_sharepoint_file_storage: Almacenamiento de archivos OneDrive/SharePoint
       placeholder_users: Usuarios de marcadores de posición
@@ -2485,8 +2506,6 @@ es:
         description: "Cree asuntos generados automáticamente utilizando atributos y texto referenciados."
       customize_life_cycle:
         description: "Cree y organice fases de proyecto diferentes a las previstas en la planificación del ciclo del proyecto PM2."
-      conditional_highlighting:
-        description: "¿Necesita que determinados paquetes de trabajo destaquen entre la masa? Utilice el resaltado condicional en la tabla de paquetes de trabajo."
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2518,6 +2537,8 @@ es:
       custom_actions:
         title: "Acciones personalizadas"
         description: "Las acciones personalizadas son accesos directos con un solo clic a un conjunto de acciones predefinidas que puede mostrar en determinados paquetes de trabajo según el estado, rol, tipo o proyecto."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Inicio de sesión único para almacenamiento en la nube"
         description: "Habilite una autenticación fluida y segura para su almacenamiento Nextcloud con el inicio de sesión único. Simplifique la gestión del acceso y mejore la comodidad de los usuarios."
@@ -2906,10 +2927,12 @@ es:
   instructions_after_error: "Puedes intentar entrar nuevamente haciendo clic sobre %{signin}. Si el error persiste, contacta a tu administrador para que te ayude."
   menus:
     admin:
-      mail_notification: "Notificaciones de correo electrónico"
-      mails_and_notifications: "Correos electrónicos y notificaciones"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "Agregación"
       api_and_webhooks: "API y webhooks"
+      mail_notification: "Notificaciones de correo electrónico"
+      mails_and_notifications: "Correos electrónicos y notificaciones"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Añadir…"
   my_account:

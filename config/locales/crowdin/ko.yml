@@ -109,6 +109,23 @@ ko:
       explanation:
         text: "사용자의 개별 작업(예: 작업 패키지를 두 번 업데이트)은 연령 차이가 지정된 기간 미만인 경우 단일 작업으로 집계됩니다. 애플리케이션 내에서 단일 작업으로 표시됩니다. 또한 이는 전송되는 이메일 수를 줄이는 동일한 시간만큼 알림을 지연시키고 %{webhook_link} 지연에도 영향을 미칩니다."
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "ID 공급자의 JWT"
@@ -1227,6 +1244,10 @@ ko:
         onthefly: "자동 사용자 생성"
         port: "포트"
         tls_certificate_string: "LDAP 서버 SSL 인증서"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "역할"
       notification:
@@ -2386,7 +2407,6 @@ ko:
       board_view: 고급 보드
       calculated_values: 계산된 값
       capture_external_links: Capture External Links
-      conditional_highlighting: 조건부 강조 표시
       internal_comments: 내부 코멘트
       custom_actions: 사용자 지정 작업
       custom_field_hierarchies: 계층
@@ -2396,6 +2416,7 @@ ko:
       edit_attribute_groups: 특성 그룹 편집
       gantt_pdf_export: Gantt PDF 내보내기
       ldap_groups: LDAP 사용자 및 그룹 동기화
+      mcp_server: MCP Server
       nextcloud_sso: Nextcloud 저장소용 Single Sign-On
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 파일 저장소
       placeholder_users: 플레이스홀더 사용자
@@ -2440,8 +2461,6 @@ ko:
         description: "참조된 특성과 텍스트를 사용하여 자동으로 생성되는 제목을 만듭니다."
       customize_life_cycle:
         description: "PM2 프로젝트 사이클 계획에서 제공되는 것과는 다른 프로젝트 단계를 만들고 구성합니다."
-      conditional_highlighting:
-        description: "대다수와 차별화되는 특정 작업 패키지가 필요하신가요? 작업 패키지 테이블에서 조건부 강조 표시를 사용하세요."
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2473,6 +2492,8 @@ ko:
       custom_actions:
         title: "사용자 지정 작업"
         description: "사용자 지정 작업은 상태, 역할, 유형 또는 프로젝트를 기반으로 특정 작업 패키지에서 사용할 수 있도록 미리 정의된 작업 세트에 대한 원클릭 바로 가기입니다."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Nextcloud 저장소용 Single Sign-On"
         description: "Single Sign-On을 사용하여 Nextcloud 저장소에 대한 원활하고 안전한 인증을 활성화합니다. 액세스 관리를 간소화하고 사용자 편의성을 개선합니다."
@@ -2860,10 +2881,12 @@ ko:
   instructions_after_error: "%{signin}을(를) 클릭하여 다시 로그인해 볼 수 있습니다. 오류가 계속되면 관리자에게 도움을 요청하세요."
   menus:
     admin:
-      mail_notification: "이메일 알림"
-      mails_and_notifications: "이메일 및 알림"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "집계"
       api_and_webhooks: "API 및 webhook"
+      mail_notification: "이메일 알림"
+      mails_and_notifications: "이메일 및 알림"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "추가…"
   my_account:

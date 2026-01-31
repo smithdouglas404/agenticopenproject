@@ -109,6 +109,23 @@ zh-CN:
       explanation:
         text: "如果用户的多项操作（例如，更新工作包两次）的时间间隔小于指定的时间跨度，则这些操作将被聚合为单个操作，并在应用程序中显示为单个操作。这也会将通知延迟同等的时间，从而减少电子邮件的发送数量，并且还会影响 %{webhook_link} 延迟。"
         link: "Webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "来自身份提供商的 JWT"
@@ -1223,6 +1240,10 @@ zh-CN:
         onthefly: "自动创建用户"
         port: "端口"
         tls_certificate_string: "LDAP 服务器 SSL 证书"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "角色"
       notification:
@@ -2382,7 +2403,6 @@ zh-CN:
       board_view: 高级面板
       calculated_values: 计算值
       capture_external_links: Capture External Links
-      conditional_highlighting: 条件高亮
       internal_comments: 内部评论
       custom_actions: 自定义操作
       custom_field_hierarchies: 层级
@@ -2392,6 +2412,7 @@ zh-CN:
       edit_attribute_groups: 编辑属性组
       gantt_pdf_export: 甘特图 PDF 导出
       ldap_groups: LDAP 用户和群组同步
+      mcp_server: MCP Server
       nextcloud_sso: Nextcloud存储的单点登录(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 文件存储
       placeholder_users: 占位符用户
@@ -2436,8 +2457,6 @@ zh-CN:
         description: "使用引用的属性和文本自动生成主题。"
       customize_life_cycle:
         description: "创建和组织与PM2项目周期规划不同的项目阶段。"
-      conditional_highlighting:
-        description: "想让工作包脱颖而出吗？在工作包表中使用条件高亮显示。"
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2469,6 +2488,8 @@ zh-CN:
       custom_actions:
         title: "自定义操作"
         description: "自定义操作是一键快捷方式，指向一组预定义的操作，您可以根据状态、角色、类型或项目在某些工作包上使用这些操作。"
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Nextcloud存储的单点登录(SSO)"
         description: "使用单点登录为您的 Nextcloud 存储启用无缝且安全的身份验证。简化访问管理并提升用户便利性。"
@@ -2856,10 +2877,12 @@ zh-CN:
   instructions_after_error: "你可以尝试点击 %{signin} 重新登录。如果错误仍然存在，请向您的管理员寻求帮助。"
   menus:
     admin:
-      mail_notification: "电子邮件通知"
-      mails_and_notifications: "电子邮件和通知"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "聚合"
       api_and_webhooks: "API 和 Webhook"
+      mail_notification: "电子邮件通知"
+      mails_and_notifications: "电子邮件和通知"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "添加…"
   my_account:

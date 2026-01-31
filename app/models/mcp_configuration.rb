@@ -29,4 +29,11 @@
 #++
 
 class McpConfiguration < ApplicationRecord
+  SERVER_CONFIGURATION_IDENTIFIER = "mcp_server"
+
+  class << self
+    def server_config
+      McpConfiguration.find_or_initialize_by(identifier: SERVER_CONFIGURATION_IDENTIFIER)
+    end
+  end
 end

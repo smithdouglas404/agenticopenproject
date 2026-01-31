@@ -612,6 +612,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :mcp_configurations, only: %i[index update], controller: "admin/mcp_configurations" do
+      collection do
+        post :multi_update
+      end
+    end
+
     resources :custom_actions, except: :show
 
     namespace :oauth do

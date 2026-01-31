@@ -42,14 +42,10 @@ docker_installation:
 documents_docs:
   href: https://www.openproject.org/docs/user-guide/documents/
 enterprise_features:
-  attribute_highlighting:
-    href: https://www.openproject.org/docs/user-guide/work-packages/work-package-table-configuration/#attribute-highlighting-enterprise-add-on
   board_view:
     href: https://www.openproject.org/docs/user-guide/agile-boards/#action-boards-enterprise-add-on
   boards:
     href: https://www.openproject.org/docs/user-guide/agile-boards/#action-boards-enterprise-add-on
-  conditional_highlighting:
-    href: https://www.openproject.org/enterprise-edition/?op_referrer=settings-wp-attribute-highlighting#attribute-highlighting
   custom_field_hierarchies:
     href: https://www.openproject.org/docs/system-admin-guide/custom-fields/#hierarchy-custom-field-enterprise-add-on
   custom_field_multiselect:
@@ -181,6 +177,10 @@ sysadmin_docs:
     href: https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions
   ldap:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/ldap-connections/
+  mcp_resources:
+   href: https://www.openproject.org/docs/system-admin-guide/integrations/mcp-server/#resources
+  mcp_tools:
+   href: https://www.openproject.org/docs/system-admin-guide/integrations/mcp-server/#tools
   oidc:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/openid-providers/
   oidc_acr_values:

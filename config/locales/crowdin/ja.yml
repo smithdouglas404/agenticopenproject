@@ -109,6 +109,23 @@ ja:
       explanation:
         text: "ユーザーの個々のアクション (例:ワークパッケージを2回更新する)は、指定された時間範囲よりも時間差が小さい場合、単一のアクションに集約されます。 これらはアプリケーション内で単一のアクションとして表示されます。 これにより、送信されるメールの数が減少し、 %{webhook_link} の遅延にも影響します。"
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "アイデンティティプロバイダからのJWT"
@@ -1226,6 +1243,10 @@ ja:
         onthefly: "ユーザーの自動作成"
         port: "ポート番号"
         tls_certificate_string: "LDAP サーバ SSL 証明書"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "ロール"
       notification:
@@ -2385,7 +2406,6 @@ ja:
       board_view: 高度なボード
       calculated_values: Calculated values
       capture_external_links: Capture External Links
-      conditional_highlighting: 条件付きハイライト
       internal_comments: 内部コメント
       custom_actions: カスタムアクション
       custom_field_hierarchies: Hierarchies
@@ -2395,6 +2415,7 @@ ja:
       edit_attribute_groups: 属性グループを編集
       gantt_pdf_export: ガントPDFをエクスポート
       ldap_groups: LDAP ユーザーとグループ同期
+      mcp_server: MCP Server
       nextcloud_sso: Nextcloudストレージのシングルサインオン。
       one_drive_sharepoint_file_storage: OneDrive/SharePointファイルストレージ
       placeholder_users: プレースホルダー ユーザー
@@ -2439,8 +2460,6 @@ ja:
         description: "参照された属性とテキストを使用して自動生成された件名を作成します。"
       customize_life_cycle:
         description: "PM2プロジェクトサイクル計画で提供されるものとは異なるプロジェクトフェーズを作成して整理します。"
-      conditional_highlighting:
-        description: "質量から目立つ特定のワークパッケージが必要ですか? ワークパッケージテーブルで条件付きハイライトを使用します。"
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2472,6 +2491,8 @@ ja:
       custom_actions:
         title: "カスタムアクション"
         description: "カスタムアクションは、ステータスに基づいて特定のワークパッケージで利用できる、事前に定義されたアクションです。"
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Nextcloudストレージへのシングルサインオン"
         description: "シングルサインオンでNextcloudストレージのシームレスかつセキュアな認証を可能にします。アクセス管理を簡素化し、ユーザーの利便性を向上させます。"
@@ -2859,10 +2880,12 @@ ja:
   instructions_after_error: "%{signin} をクリックして再びログインを試行できます。エラーが解決しない場合は、管理者にお問い合わせください。"
   menus:
     admin:
-      mail_notification: "電子メールの通知"
-      mails_and_notifications: "電子メールと通知"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "集計"
       api_and_webhooks: "APIとWebhooks"
+      mail_notification: "電子メールの通知"
+      mails_and_notifications: "電子メールと通知"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "追加"
   my_account:

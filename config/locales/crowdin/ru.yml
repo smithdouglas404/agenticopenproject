@@ -109,6 +109,23 @@ ru:
       explanation:
         text: "Личные действия пользователя (например, обновление пакета работ дважды) агрегируются в одно действие, если их разница во времени не больше указанной. Они будут отображаться как одно действие внутри приложения. Это также задерживает уведомление на такое же количество времени, уменьшая количество отправляемых писем и также повлияет на %{webhook_link} задержки."
         link: "вебхук"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "JWT от поставщика идентификации"
@@ -1252,6 +1269,10 @@ ru:
         onthefly: "Автоматическое создание пользователя"
         port: "Порт"
         tls_certificate_string: "SSL-сертификат сервера LDAP"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "Роль"
       notification:
@@ -2528,7 +2549,6 @@ ru:
       board_view: Расширенные доски
       calculated_values: Рассчитываемые значения
       capture_external_links: Capture External Links
-      conditional_highlighting: Условное выделение
       internal_comments: Служебный комментарий
       custom_actions: Пользовательские действия
       custom_field_hierarchies: Иерархии
@@ -2538,6 +2558,7 @@ ru:
       edit_attribute_groups: Редактирование атрибутов групп
       gantt_pdf_export: Экспорт диаграммы Ганта в PDF
       ldap_groups: Синхронизация пользователей LDAP и групп
+      mcp_server: MCP Server
       nextcloud_sso: Единый вход для Nextcloud хранения
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
@@ -2582,8 +2603,6 @@ ru:
         description: "Создать автоматически генерируемые темы, используя атрибуты и текст."
       customize_life_cycle:
         description: "Создание и организация этапов и стадий проекта, отличных от тех, что предусмотрены планированием цикла проекта PM2."
-      conditional_highlighting:
-        description: "Нужно ли выделять определённые пакеты работ из общего списка? Используйте условное выделение в таблице пакетов работ."
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2615,6 +2634,8 @@ ru:
       custom_actions:
         title: "Пользовательские действия"
         description: "Пользовательские действия являются ярлыками к набору заранее определенных действий, которые вы можете сделать доступными для определенных пакетов работ на основе статуса, роли, типа или проекта."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Единый вход для Nextcloud хранения"
         description: "Включите бесшовную и безопасную аутентификацию для вашего Nextcloud хранилища с помощью Single Sign-On. Упростите управление доступом и сделайте удобным для пользователя."
@@ -3005,10 +3026,12 @@ ru:
   instructions_after_error: "Вы можете попробовать войти снова, нажав %{signin}. Если ошибка повторится, обратитесь к вашему администратору за помощью."
   menus:
     admin:
-      mail_notification: "Уведомления по электронной почте"
-      mails_and_notifications: "Письма и уведомления"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "Агрегация"
       api_and_webhooks: "API и вебхуки"
+      mail_notification: "Уведомления по электронной почте"
+      mails_and_notifications: "Письма и уведомления"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Добавить…"
   my_account:

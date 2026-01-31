@@ -109,6 +109,23 @@ pt-BR:
       explanation:
         text: "As ações individuais de um usuário (por exemplo, atualizar um pacote de trabalho duas vezes) são agregadas em uma única ação se o intervalo de tempo for menor que o intervalo especificado. Eles serão exibidos como uma única ação dentro do aplicativo. Isso também atrasará as notificações no mesmo intervalo de tempo, reduzindo o número de e-mails enviados e também afetará o atraso de %{webhook_link}."
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "JWT do provedor de identidade"
@@ -1233,6 +1250,10 @@ pt-BR:
         onthefly: "Criação automática de usuário"
         port: "Porta"
         tls_certificate_string: "Certificado SSL do servidor LDAP"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "Papéis"
       notification:
@@ -2431,7 +2452,6 @@ pt-BR:
       board_view: Quadros avançados
       calculated_values: Valores calculados
       capture_external_links: Capture External Links
-      conditional_highlighting: Realce condicional
       internal_comments: Comentários internos
       custom_actions: Ações Personalizadas
       custom_field_hierarchies: Hierarquias
@@ -2441,6 +2461,7 @@ pt-BR:
       edit_attribute_groups: Editar atributo de grupos
       gantt_pdf_export: Exportar diagrama de Gantt para PDF
       ldap_groups: Sincronização de usuários e grupos LDAP
+      mcp_server: MCP Server
       nextcloud_sso: Autenticação única para o armazenamento do Nextcloud
       one_drive_sharepoint_file_storage: Armazenamento de Arquivos OneDrive/SharePoint
       placeholder_users: Usuários Genéricos
@@ -2485,8 +2506,6 @@ pt-BR:
         description: "Crie assuntos gerados automaticamente com base em atributos e textos referenciados."
       customize_life_cycle:
         description: "Criar e organizar fases do projeto diferentes das fornecidas pelo planejamento do ciclo de projeto PM2."
-      conditional_highlighting:
-        description: "Precisa que determinados pacotes de trabalho se destaquem? Utilize o destaque condicional na tabela de pacotes de trabalho."
       capture_external_links:
         description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
@@ -2518,6 +2537,8 @@ pt-BR:
       custom_actions:
         title: "Ações personalizadas"
         description: "As ações personalizadas são atalhos de clique único para um conjunto de ações pré-definidas que você pode disponibilizar em certos pacotes de trabalho com base no estado, função, tipo ou projeto."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Autenticação única para o armazenamento do Nextcloud"
         description: "Ative a autenticação segura e contínua para o seu armazenamento Nextcloud com Autenticação única. Simplifique o gerenciamento de acessos e melhore a experiência do usuário."
@@ -2906,10 +2927,12 @@ pt-BR:
   instructions_after_error: "Você pode tentar entrar novamente, clicando em %{signin}. Se o erro persistir, consulte seu administrador para obter ajuda."
   menus:
     admin:
-      mail_notification: "Notificações por e-mail"
-      mails_and_notifications: "E-mails e notificações"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "Agregação"
       api_and_webhooks: "API e webhooks"
+      mail_notification: "Notificações por e-mail"
+      mails_and_notifications: "E-mails e notificações"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Adicionar…"
   my_account:

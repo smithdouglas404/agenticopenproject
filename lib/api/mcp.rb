@@ -30,8 +30,6 @@
 
 module API
   class Mcp < ::API::RootAPI
-    CONFIGURATION_IDENTIFIER = "mcp_server"
-
     include ::API::AppsignalAPI
 
     default_format :json
@@ -41,7 +39,7 @@ module API
 
     helpers do
       def server_config
-        @server_config ||= McpConfiguration.find_or_initialize_by(identifier: CONFIGURATION_IDENTIFIER)
+        @server_config ||= McpConfiguration.server_config
       end
     end
 
