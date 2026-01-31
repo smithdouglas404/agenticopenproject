@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpResources
+module MCPResources
   class WorkPackage < Base
     name "work_package"
     uri_template "/api/v3/work_packages/{id}"

@@ -50,7 +50,7 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
-  let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name) }
+  let(:tool_config) { create(:mcp_configuration, identifier: MCPTools::SearchProject.qualified_name) }
 
   before do
     server_config.save!
@@ -95,7 +95,7 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
     end
 
     context "when the search_project tool is disabled" do
-      let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name, enabled: false) }
+      let(:tool_config) { create(:mcp_configuration, identifier: MCPTools::SearchProject.qualified_name, enabled: false) }
 
       it_behaves_like "MCP result response"
 

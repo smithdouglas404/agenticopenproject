@@ -27,7 +27,7 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-class McpConfigurationSeeder < Seeder
+class MCPConfigurationSeeder < Seeder
   def seed_data!
     seed_server_config if server_missing?
 
@@ -45,8 +45,8 @@ class McpConfigurationSeeder < Seeder
   private
 
   def seed_server_config
-    McpConfiguration.create!(
-      identifier: API::Mcp::CONFIGURATION_IDENTIFIER,
+    MCPConfiguration.create!(
+      identifier: API::MCP::CONFIGURATION_IDENTIFIER,
       title: Setting.app_title,
       description: "Performs project management tasks on the given installation of OpenProject.",
       enabled: true
@@ -54,10 +54,10 @@ class McpConfigurationSeeder < Seeder
   end
 
   def seed_resource_and_tool_configs
-    (McpTools.all + McpResources.all).each do |thing|
-      next if McpConfiguration.find_by(identifier: thing.qualified_name)
+    (MCPTools.all + MCPResources.all).each do |thing|
+      next if MCPConfiguration.find_by(identifier: thing.qualified_name)
 
-      McpConfiguration.create!(
+      MCPConfiguration.create!(
         identifier: thing.qualified_name,
         title: thing.default_title,
         description: thing.default_description,
@@ -67,14 +67,14 @@ class McpConfigurationSeeder < Seeder
   end
 
   def server_missing?
-    McpConfiguration.where(identifier: API::Mcp::CONFIGURATION_IDENTIFIER).empty?
+    MCPConfiguration.where(identifier: API::MCP::CONFIGURATION_IDENTIFIER).empty?
   end
 
   def tools_missing?
-    (McpTools.all.map(&:qualified_name) - McpConfiguration.pluck(:identifier)).any?
+    (MCPTools.all.map(&:qualified_name) - MCPConfiguration.pluck(:identifier)).any?
   end
 
   def resources_missing?
-    (McpResources.all.map(&:qualified_name) - McpConfiguration.pluck(:identifier)).any?
+    (MCPResources.all.map(&:qualified_name) - MCPConfiguration.pluck(:identifier)).any?
   end
 end

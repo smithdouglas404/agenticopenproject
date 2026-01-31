@@ -182,8 +182,8 @@ class RootSeeder < Seeder
 
   def seed_mcp_configuration
     print_status "*** Seeding MCP configuration"
-    McpConfigurationSeeder.new(seed_data).seed!
-    McpConfigurationSeeder
+    MCPConfigurationSeeder.new(seed_data).seed!
+    MCPConfigurationSeeder
   end
 
   def desired_lang

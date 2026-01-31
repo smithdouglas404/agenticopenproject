@@ -29,7 +29,7 @@
 #++
 
 module API
-  class Mcp
+  class MCP
     class ErrorRepresenter
       INVALID_REQUEST = -32600
       INTERNAL_ERROR = -32603

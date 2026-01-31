@@ -29,19 +29,19 @@
 #++
 
 module API
-  class Mcp < ::API::RootAPI
+  class MCP < ::API::RootAPI
     CONFIGURATION_IDENTIFIER = "mcp_server"
 
     include ::API::AppsignalAPI
 
     default_format :json
 
-    error_representer ::API::Mcp::ErrorRepresenter, :json
+    error_representer ::API::MCP::ErrorRepresenter, :json
     authentication_scope OpenProject::Authentication::Scope::MCP_SCOPE
 
     helpers do
       def server_config
-        @server_config ||= McpConfiguration.find_or_initialize_by(identifier: CONFIGURATION_IDENTIFIER)
+        @server_config ||= MCPConfiguration.find_or_initialize_by(identifier: CONFIGURATION_IDENTIFIER)
       end
     end
 
@@ -56,13 +56,13 @@ module API
         title: server_config.title,
         # description: server_config.description, # not yet supported by mcp gem
         version: "1.0.0",
-        tools: McpTools.enabled.map(&:tool),
-        resources: McpResources.enabled_resources.map(&:resource),
-        resource_templates: McpResources.enabled_resource_templates.map(&:resource_template),
+        tools: MCPTools.enabled.map(&:tool),
+        resources: MCPResources.enabled_resources.map(&:resource),
+        resource_templates: MCPResources.enabled_resource_templates.map(&:resource_template),
         server_context: { user_id: User.current.id }
       )
 
-      server.resources_read_handler { |params| McpResources.read_resource(params[:uri]) }
+      server.resources_read_handler { |params| MCPResources.read_resource(params[:uri]) }
 
       status 200
 

@@ -28,16 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
+module MCPTools
   class << self
     def all
       [
-        McpTools::SearchProject
+        MCPTools::SearchProject
       ]
     end
 
     def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
+      MCPConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
     end
 
     def tools_by_name

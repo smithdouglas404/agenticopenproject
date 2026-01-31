@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpResources
+module MCPResources
   class Status < Base
     name "status"
     uri_template "/api/v3/statuses/{id}"

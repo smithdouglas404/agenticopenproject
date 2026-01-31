@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
+module MCPTools
   class Base
     class << self
       def qualified_name
@@ -119,7 +119,7 @@ module McpTools
       end
 
       def tool
-        config = McpConfiguration.find_by(identifier: qualified_name)
+        config = MCPConfiguration.find_by(identifier: qualified_name)
         return nil if config.nil?
 
         implementation = self

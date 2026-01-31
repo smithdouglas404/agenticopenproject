@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
+module MCPTools
   class SearchProject < Base
     # TODO: The mcp gem does not support pagination, so we only limit the number of results for now
     MAX_SIZE = 100

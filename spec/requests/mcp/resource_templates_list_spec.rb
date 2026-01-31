@@ -50,8 +50,8 @@ RSpec.describe "MCP resources/templates/list", with_flag: { mcp_server: true } d
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
-  let(:resource_config) { create(:mcp_configuration, identifier: McpResources::StatusList.qualified_name) }
-  let(:resource_template_config) { create(:mcp_configuration, identifier: McpResources::Status.qualified_name) }
+  let(:resource_config) { create(:mcp_configuration, identifier: MCPResources::StatusList.qualified_name) }
+  let(:resource_template_config) { create(:mcp_configuration, identifier: MCPResources::Status.qualified_name) }
 
   before do
     server_config.save!
@@ -112,7 +112,7 @@ RSpec.describe "MCP resources/templates/list", with_flag: { mcp_server: true } d
 
     context "when the status resource template is disabled" do
       let(:resource_template_config) do
-        create(:mcp_configuration, identifier: McpResources::Status.qualified_name, enabled: false)
+        create(:mcp_configuration, identifier: MCPResources::Status.qualified_name, enabled: false)
       end
 
       it_behaves_like "MCP result response"

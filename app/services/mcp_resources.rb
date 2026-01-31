@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpResources
+module MCPResources
   class << self
     def all
       [
@@ -44,7 +44,7 @@ module McpResources
     end
 
     def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| resources_by_name[name] }
+      MCPConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| resources_by_name[name] }
     end
 
     def resources_by_name

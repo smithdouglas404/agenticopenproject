@@ -50,8 +50,8 @@ RSpec.describe "MCP resources/list", with_flag: { mcp_server: true } do
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
-  let(:resource_config) { create(:mcp_configuration, identifier: McpResources::StatusList.qualified_name) }
-  let(:resource_template_config) { create(:mcp_configuration, identifier: McpResources::Status.qualified_name) }
+  let(:resource_config) { create(:mcp_configuration, identifier: MCPResources::StatusList.qualified_name) }
+  let(:resource_template_config) { create(:mcp_configuration, identifier: MCPResources::Status.qualified_name) }
 
   before do
     server_config.save!
@@ -111,7 +111,7 @@ RSpec.describe "MCP resources/list", with_flag: { mcp_server: true } do
     end
 
     context "when the status_list resource is disabled" do
-      let(:resource_config) { create(:mcp_configuration, identifier: McpResources::StatusList.qualified_name, enabled: false) }
+      let(:resource_config) { create(:mcp_configuration, identifier: MCPResources::StatusList.qualified_name, enabled: false) }
 
       it_behaves_like "MCP result response"
 

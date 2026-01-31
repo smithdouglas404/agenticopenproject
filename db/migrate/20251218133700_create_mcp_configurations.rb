@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CreateMcpConfigurations < ActiveRecord::Migration[8.0]
+class CreateMCPConfigurations < ActiveRecord::Migration[8.0]
   def change
     create_table :mcp_configurations do |t|
       t.string :identifier, null: false

@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpResources
+module MCPResources
   class Version < Base
     name "version"
     uri_template "/api/v3/versions/{id}"

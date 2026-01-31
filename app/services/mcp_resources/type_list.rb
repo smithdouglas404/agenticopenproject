@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpResources
+module MCPResources
   class TypeList < Base
     name "type_list"
     uri "/api/v3/types"

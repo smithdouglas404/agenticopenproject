@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe McpResources::Version, with_flag: { mcp_server: true } do
+RSpec.describe MCPResources::Version, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"

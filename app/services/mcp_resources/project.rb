@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpResources
+module MCPResources
   class Project < Base
     name "project"
     uri_template "/api/v3/projects/{id}"

@@ -46,6 +46,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym "API"
   inflect.acronym "ClamAV"
   inflect.acronym "ICal"
+  inflect.acronym "MCP"
   inflect.acronym "OAuth"
   inflect.acronym "OpenID"
 end

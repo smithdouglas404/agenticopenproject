@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpResources
+module MCPResources
   class Base
     include APIV3Helper
 
@@ -72,7 +72,7 @@ module McpResources
       def resource
         raise ArgumentError, "#{self.class.name} can't be used as resource, uri is blank" if uri.blank?
 
-        config = McpConfiguration.find_by(identifier: qualified_name)
+        config = MCPConfiguration.find_by(identifier: qualified_name)
         return nil if config.nil?
 
         MCP::Resource.new(
@@ -87,7 +87,7 @@ module McpResources
       def resource_template
         raise ArgumentError, "#{self.class.name} can't be used as resource_template, uri_template is blank" if uri_template.blank?
 
-        config = McpConfiguration.find_by(identifier: qualified_name)
+        config = MCPConfiguration.find_by(identifier: qualified_name)
         return nil if config.nil?
 
         MCP::ResourceTemplate.new(
