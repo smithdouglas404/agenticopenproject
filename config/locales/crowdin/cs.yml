@@ -3031,7 +3031,7 @@ cs:
       ai: "Artificial Intelligence (AI)"
       aggregation: "Agregace"
       api_and_webhooks: "API & Webhooky"
-      mail_notification: "E-mailové notifikace"
+      mail_notification: "E-mailová upozornění"
       mails_and_notifications: "E-maily a oznámení"
       mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
