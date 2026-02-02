@@ -80,11 +80,69 @@ From a technical perspective, real-time collaboration relies on a running [Hocus
 
 ### Enable real-time collaboration for packaged installations
 
-To enable real-time collaboration in packaged installations, follow these steps:
-1. Download and install [op-blocknote-hocuspocus](https://github.com/opf/op-blocknote-hocuspocus)
-2. Set up the server by following the instructions in the GitHub repository
-3. Manually configure the server URL & secret in the *Documents* administration settings in OpenProject.
-> [!NOTE]
+#### 1. Install hocuspocus
+
+The easiest way to install hocuspocus is by using the Docker container.
+You can do so by using the following steps.
+
+Create a hocuspocus directory:
+
+```shell
+mkdir hocuspocus
+cd hocuspocus
+```
+Then you can create a `docker-compose.yml` file with the following content inside the `hocuspocus` directory:
+
+```yaml
+services:
+  hocuspocus:
+    image: <hocuspocus_image>
+    restart: unless-stopped
+    environment:
+      SECRET: "secret123"
+    ports:
+      - "127.0.0.1:8080:1234"
+```
+Replace the `<hocuspocus_image>` with the image from [here](https://github.com/opf/openproject-docker-compose/blob/stable/17/docker-compose.yml#L122).
+
+Run hocuspocus:
+
+```shell
+docker compose up -d
+```
+
+#### 2. Configure Apache
+
+> [!NOTE]  
+> This part of the docs assumes that you are using the generated Apache config by the OpenProject wizard 
+
+Create `/etc/openproject/addons/apache2/custom/vhost/hocuspocus.conf` with the following content:
+
+```apache
+ProxyPass        /hocuspocus  ws://127.0.0.1:8080/hocuspocus
+ProxyPassReverse /hocuspocus  ws://127.0.0.1:8080/hocuspocus
+```
+
+Enable the `proxy_wstunnel` module:
+
+```shell
+sudo a2enmod proxy_wstunnel
+```
+
+Restart Apache:
+
+```shell
+sudo service apache2 restart
+```
+
+
+#### 3. Enable real-time collaboration
+
+Manually configure the server URL & secret in the *Documents* administration settings in OpenProject.
+> [!NOTE]  
 > The secret must be identical in both op-blocknote-hocuspocus and OpenProject.
+
+
+![Administration settings for real-time documents collaboration in OpenProject](openproject_system_guide_documents_real_time_collaboration_settings.png)
 
 For more background on this feature, see [this blog article](https://www.openproject.org/blog/real-time-collaboration-in-documents/) on the introduction of real-time collaboration in documents.
