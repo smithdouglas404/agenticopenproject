@@ -127,11 +127,11 @@ class WorkPackageRelationsController < ApplicationController
   end
 
   def set_work_package
-    @work_package = WorkPackage.find(params[:work_package_id])
+    @work_package = WorkPackage.visible.find(params[:work_package_id])
   end
 
   def set_relation
-    @relation = @work_package.relations.find(params[:id])
+    @relation = @work_package.relations.visible.find(params[:id])
   end
 
   def create_relation_params

@@ -227,7 +227,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def find_work_package
-    @work_package = WorkPackage.find(params[:work_package_id])
+    @work_package = WorkPackage.visible.find(params[:work_package_id])
   rescue ActiveRecord::RecordNotFound
     respond_with_error(I18n.t("label_not_found"))
   end

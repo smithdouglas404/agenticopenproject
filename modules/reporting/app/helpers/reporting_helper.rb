@@ -119,7 +119,7 @@ module ReportingHelper
     when :budget_id
       budget_link value
     when :work_package_id
-      link_to_work_package(WorkPackage.find(value.to_i))
+      link_to_work_package(WorkPackage.visible.find(value.to_i))
     when :entity_gid
       allowed_types = (TimeEntry::ALLOWED_ENTITY_TYPES | CostEntry::ALLOWED_ENTITY_TYPES).map(&:safe_constantize)
       entity = begin

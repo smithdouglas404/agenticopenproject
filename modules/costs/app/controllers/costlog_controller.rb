@@ -99,13 +99,13 @@ class CostlogController < ApplicationController
   def find_project
     # copied from timelog_controller.rb
     if params[:id]
-      @cost_entry = CostEntry.find(params[:id])
+      @cost_entry = CostEntry.visible.find(params[:id])
       @project = @cost_entry.project
     elsif params[:work_package_id]
-      @work_package = WorkPackage.find(params[:work_package_id])
+      @work_package = WorkPackage.visible.find(params[:work_package_id])
       @project = @work_package.project
     elsif params[:project_id]
-      @project = Project.find(params[:project_id])
+      @project = Project.visible.find(params[:project_id])
     else
       render_404
       false
@@ -125,7 +125,7 @@ class CostlogController < ApplicationController
     @work_package = if @cost_entry.present? && @cost_entry.entity_type == "WorkPackage" && @cost_entry.entity_id == entity_id
                       @cost_entry.entity
                     elsif entity_type == "WorkPackage"
-                      WorkPackage.find_by(id: entity_id)
+                      WorkPackage.visible.find_by(id: entity_id)
                     end
 
     cost_type_id = cost_entry_params.delete(:cost_type_id)
