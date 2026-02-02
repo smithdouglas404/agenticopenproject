@@ -32,21 +32,23 @@ See COPYRIGHT and LICENSE files for more details.
     <% border_box.with_header do %>
       <%= render(Backlogs::BacklogHeaderComponent.new(backlog:, project: @project, folded: folded?)) %>
     <% end %>
-    <% border_box.with_row(data: { empty_list_item: true }) do %>
-      <% if backlog.sprint_backlog? %>
-        <%=
-          render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
-            blankslate.with_heading(tag: :h4).with_content(t(".sprint_backlog.blankslate_title"))
-            blankslate.with_description_content(t(".sprint_backlog.blankslate_description"))
-          end
-        %>
-      <% else %>
-        <%=
-          render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
-            blankslate.with_heading(tag: :h4).with_content(t(".product_backlog.blankslate_title"))
-            blankslate.with_description_content(t(".product_backlog.blankslate_description"))
-          end
-        %>
+    <% if backlog.stories.empty? %>
+      <% border_box.with_row(data: { empty_list_item: true }) do %>
+        <% if backlog.sprint_backlog? %>
+          <%=
+            render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
+              blankslate.with_heading(tag: :h4).with_content(t(".sprint_backlog.blankslate_title"))
+              blankslate.with_description_content(t(".sprint_backlog.blankslate_description"))
+            end
+          %>
+        <% else %>
+          <%=
+            render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
+              blankslate.with_heading(tag: :h4).with_content(t(".product_backlog.blankslate_title"))
+              blankslate.with_description_content(t(".product_backlog.blankslate_description"))
+            end
+          %>
+        <% end %>
       <% end %>
     <% end %>
     <% backlog.stories.each do |story| %>

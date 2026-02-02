@@ -100,16 +100,9 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
       it "renders StoryComponent for each story" do
         render_component
 
-        expect(page).to have_css(".Box-row", count: 3) # 2 stories + 1 empty list item
+        expect(page).to have_css(".Box-row", count: 2) # 2 stories
         expect(page).to have_text(story1.subject)
         expect(page).to have_text(story2.subject)
-      end
-
-      it "has the empty blankslate row with data attribute" do
-        render_component
-
-        # The empty row has data-empty-list-item attribute
-        expect(page).to have_css("[data-empty-list-item]", visible: :all)
       end
 
       it "has drop target data attributes" do
