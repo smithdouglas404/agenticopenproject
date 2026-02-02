@@ -320,7 +320,7 @@ This will create your token and trigger a message showing you the access token.
 
 ![New RSS token created in OpenProject](openproject_account_settings_access_tokens_rss_new.png)
 
-Once an  RSS token was created,, you will see the details here and will be able to delete it by clicking the **Delete** icon.
+Once an  RSS token was created, you will see the details here and will be able to delete it by clicking the **Delete** icon.
 
 ![Delete RSS token icon under OpenProject account settings](openproject_account_settings_access_tokens_rss_delete.png)
 
