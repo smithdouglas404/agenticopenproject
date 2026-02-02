@@ -86,7 +86,6 @@ RSpec.describe RbStoriesController do
       expect(response).to be_successful
       expect(response).to have_http_status :ok
       expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
-      expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
     end
   end
 

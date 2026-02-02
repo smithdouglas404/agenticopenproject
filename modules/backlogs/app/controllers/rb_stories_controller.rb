@@ -70,14 +70,8 @@ class RbStoriesController < RbApplicationController
     #        .new(user: current_user, story:)
     #        .call(attributes: move_params)
 
-    if story.update(version_id: move_params[:target_id], **move_params.except(:target_id))
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:enumeration_caption_order_changed)
-      )
-    else
-      render_error_flash_message_via_turbo_stream(
-        message: I18n.t(:enumeration_could_not_be_moved) + call.errors.full_messages.to_sentence
-      )
+    unless story.update(version_id: move_params[:target_id], **move_params.except(:target_id))
+      render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_unsuccessful_update)) #  TODO: display reason
     end
 
     backlog = Backlog.for(sprint: @sprint, project: @project)
@@ -86,6 +80,10 @@ class RbStoriesController < RbApplicationController
     if story.saved_change_to_version_id?
       new_sprint  = story.version.becomes(Sprint)
       new_backlog = Backlog.for(sprint: new_sprint, project: @project)
+
+      render_success_flash_message_via_turbo_stream(
+        message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
+      )
       replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog: new_backlog, project: @project))
     end
 
@@ -95,14 +93,8 @@ class RbStoriesController < RbApplicationController
   def reorder
     story = Story.find(params[:id])
 
-    if story.update(move_to: reorder_param)
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:enumeration_caption_order_changed)
-      )
-    else
-      render_error_flash_message_via_turbo_stream(
-        message: I18n.t(:enumeration_could_not_be_moved) + call.errors.full_messages.to_sentence
-      )
+    unless story.update(move_to: reorder_param)
+      render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_unsuccessful_update)) #  TODO: display reason
     end
 
     backlog = Backlog.for(sprint: @sprint, project: @project)
