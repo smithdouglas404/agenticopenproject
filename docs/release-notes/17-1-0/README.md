@@ -59,7 +59,7 @@ Users can now add work packages as meeting outcomes, allowing teams to turn meet
 
 Each linked work package automatically shows a reference to the meeting in its Meetings tab, making the connection between the agenda item and the follow-up item explicit.
 
-Since OpenProject 17.0 allows multiple outcomes per agenda item, it is now also possible to link multiple work packages to the same agenda item.
+Since we already introduced multiple outcomes per agenda item in OpenProject 17.0, it is now also possible to link multiple work packages to the same agenda item.
 
 #### Show meeting participant responses in iCal subscriptions
 
@@ -90,6 +90,10 @@ Here's an example of highlighting work packages by priority:
 ![A work package table in OpenProject, highlighted by Priority](openproject-attribute-highlighting-priority.png)
 
 ### Warning before opening external links in user-provided content (Enterprise add-on)
+
+OpenProject introduces a warning before opening external links in user-provided content, available as an Enterprise add-on in the Premium plan. The warning adds an additional security layer by making users aware that they are about to leave OpenProject.
+
+When users click on an external link, a confirmation dialog is displayed indicating that the link leads outside of OpenProject. This applies to links added by users, for example in descriptions, comments, or other text fields. In SaaS trial environments, external link handling is enforced to ensure that warnings for user-provided external links cannot be bypassed.
 
 ### Improved performance in work package Activity tab
 
