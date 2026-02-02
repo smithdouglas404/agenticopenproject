@@ -381,6 +381,14 @@ RSpec.describe Exports::PDF::Common::Macro do
       end
     end
 
+    describe "with two macros in a single line" do
+      let(:markdown) { 'workPackageValue:"Custom Field 1" workPackageValue:subject' }
+
+      it "renders both macro values" do
+        expect(formatted).to eq("Custom value 1 Work package 1")
+      end
+    end
+
     describe "with markdown formatting" do
       let(:markdown) { "**workPackageValue:subject**" }
 
@@ -699,7 +707,7 @@ RSpec.describe Exports::PDF::Common::Macro do
       let(:markdown) { "projectLabel:status_code" }
 
       it "outputs the status label" do
-        expect(formatted).to eq("Project status")
+        expect(formatted).to eq("Status")
       end
     end
 

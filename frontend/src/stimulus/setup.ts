@@ -11,7 +11,7 @@ import TableHighlightingController from './controllers/table-highlighting.contro
 import OpShowWhenCheckedController from './controllers/show-when-checked.controller';
 import OpShowWhenValueSelectedController from './controllers/show-when-value-selected.controller';
 import FlashController from './controllers/flash.controller';
-import PasswordConfirmationDialogController from './controllers/password-confirmation-dialog.controller';
+import RequirePasswordConfirmationController from './controllers/require-password-confirmation.controller';
 import PreviewController from './controllers/dynamic/work-packages/date-picker/preview.controller';
 import KeepScrollPositionController from './controllers/keep-scroll-position.controller';
 import PatternInputController from './controllers/pattern-input.controller';
@@ -37,6 +37,9 @@ import DisableWhenClickedController from 'core-stimulus/controllers/disable-when
 import HighlightTargetElementController from 'core-stimulus/controllers/highlight-target-element.controller';
 import SelectAutosizeController from 'core-stimulus/controllers/select-autosize.controller';
 import OpZenModeController from 'core-stimulus/controllers/zen-mode.controller';
+import CheckAllController from 'core-stimulus/controllers/check-all.controller';
+import CheckableController from 'core-stimulus/controllers/checkable.controller';
+import TruncationController from 'core-stimulus/controllers/truncation.controller';
 
 declare global {
   interface Window {
@@ -50,7 +53,7 @@ OpenProjectStimulusApplication.preregister('disable-when-checked', OpDisableWhen
 OpenProjectStimulusApplication.preregister('disable-when-clicked', DisableWhenClickedController);
 OpenProjectStimulusApplication.preregister('flash', FlashController);
 OpenProjectStimulusApplication.preregister('menus--main', MainMenuController);
-OpenProjectStimulusApplication.preregister('password-confirmation-dialog', PasswordConfirmationDialogController);
+OpenProjectStimulusApplication.preregister('require-password-confirmation', RequirePasswordConfirmationController);
 OpenProjectStimulusApplication.preregister('poll-for-changes', PollForChangesController);
 OpenProjectStimulusApplication.preregister('print', PrintController);
 OpenProjectStimulusApplication.preregister('refresh-on-form-changes', RefreshOnFormChangesController);
@@ -79,6 +82,9 @@ OpenProjectStimulusApplication.preregister('external-links', ExternalLinksContro
 OpenProjectStimulusApplication.preregister('highlight-target-element', HighlightTargetElementController);
 OpenProjectStimulusApplication.preregister('select-autosize', SelectAutosizeController);
 OpenProjectStimulusApplication.preregister('editable-page-header-title', EditablePageHeaderTitleController);
+OpenProjectStimulusApplication.preregister('check-all', CheckAllController);
+OpenProjectStimulusApplication.preregister('checkable', CheckableController);
+OpenProjectStimulusApplication.preregister('truncation', TruncationController);
 
 const instance = OpenProjectStimulusApplication.start();
 window.Stimulus = instance;

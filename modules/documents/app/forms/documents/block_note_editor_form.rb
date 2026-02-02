@@ -36,18 +36,17 @@ module Documents
         label: I18n.t("label_document_description"),
         readonly: readonly,
         visually_hide_label: true,
-        classes: "document-form--long-description",
         value: model.content_binary,
         attachments_upload_url:,
         attachments_collection_key:
       )
     end
 
-    attr_reader :oauth_token, :readonly
+    attr_reader :token_payload, :readonly
 
-    def initialize(oauth_token: nil, readonly: false)
+    def initialize(token_payload: nil, readonly: false)
       super()
-      @oauth_token = oauth_token
+      @token_payload = token_payload
       @readonly = readonly
     end
 

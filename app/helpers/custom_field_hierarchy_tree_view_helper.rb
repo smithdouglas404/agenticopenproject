@@ -43,6 +43,12 @@ module CustomFieldHierarchyTreeViewHelper
     add_sub_tree(tree_view, hierarchy_hash, item_options)
   end
 
+  def standard_tree_view_item_formatter
+    ::CustomFields::Hierarchy::HierarchicalItemFormatter.new(number_integer_digit_limit: 8,
+                                                             number_length_limit: 9,
+                                                             number_precision: 4)
+  end
+
   private
 
   def add_sub_tree(tree, hierarchy_hash, item_options)
@@ -63,9 +69,9 @@ module CustomFieldHierarchyTreeViewHelper
       value: item.id,
       select_variant: options[:select_variant] || :none,
       checked: options[:checked_fn]&.call(item) || false,
-      current: options[:current_fn]&.call(item) || false,
-      disabled: options[:disabled_fn]&.call(item) || false,
-      expanded: options[:expanded_fn]&.call(item) || false,
+      current: options[:current] == item,
+      disabled: options[:disabled]&.include?(item) || false,
+      expanded: options[:expanded]&.include?(item) || false,
       href: options[:href_fn]&.call(item)
     }
   end

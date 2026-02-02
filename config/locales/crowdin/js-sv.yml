@@ -202,6 +202,8 @@ sv:
         add_table: "Lägg till tabell med relaterade arbetspaket"
         edit_query: "Redigera fråga"
         new_group: "Ny grupp"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Återställ standardinställningar"
       working_days:
         calendar:
@@ -344,6 +346,7 @@ sv:
     label_collapse: "Fäll ihop"
     label_collapsed: "hopfällda"
     label_collapse_all: "Fäll ihop alla"
+    label_collapse_text: "Collapse text"
     label_comment: "Kommentar"
     label_committed_at: "%{committed_revision_link} den %{date}"
     label_committed_link: "lade till revision %{revision_identifier}"
@@ -356,6 +359,7 @@ sv:
     label_expand: "Expandera"
     label_expanded: "expanderade"
     label_expand_all: "Expandera alla"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Expandera projektmenyn"
     label_export: "Exportera"
     label_export_preparing: "Exporten förbereds och kommer att laddas ner inom kort."
@@ -388,8 +392,6 @@ sv:
     label_me: "mig"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Protokoll"
-    label_menu_collapse: "fäll ihop"
-    label_menu_expand: "expandera"
     label_more_than_ago: "mer än dagar sedan"
     label_moderate_comment: "Moderera kommentar"
     label_next: "Nästa"
@@ -423,6 +425,7 @@ sv:
     label_remove_row: "Ta bort rad"
     label_report: "Rapport"
     label_repository_plural: "Versionsarkiv"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Spara som"
     label_search_columns: "Sök i en kolumn"
     label_select_watcher: "Välj en bevakare..."
@@ -554,7 +557,7 @@ sv:
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "Overdue"
-        overdue_since: "sedan %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "är idag."
         property_is: "är i %{difference_in_days}."
         property_was: "var %{difference_in_days} sedan."
@@ -629,9 +632,6 @@ sv:
           add: "Lägg till inställning för projekt"
           already_selected: "Detta projekt är redan valt"
           remove: "Ta bort projektinställningar"
-    password_confirmation:
-      field_description: "Du behöver ange ditt lösenord för att bekräfta ändringen."
-      title: "Bekräfta ditt lösenord för att fortsätta"
     pagination:
       no_other_page: "Du befinner dig på den enda sidan."
       pages_skipped: "Sidor överhoppade."
@@ -1123,6 +1123,8 @@ sv:
     global_search:
       all_projects: "I alla projekt"
       close_search: "Stäng sökning"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "I detta projekt + delprojekt"
       current_project: "I detta projekt"
       recently_viewed: "Nyligen visade"

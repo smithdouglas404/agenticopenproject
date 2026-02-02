@@ -68,9 +68,6 @@ import { ConfirmDialogService } from 'core-app/shared/components/modals/confirm-
 import { ConfirmDialogModalComponent } from 'core-app/shared/components/modals/confirm-dialog/confirm-dialog.modal';
 import { DynamicContentModalComponent } from 'core-app/shared/components/modals/modal-wrapper/dynamic-content.modal';
 import {
-  PasswordConfirmationModalComponent,
-} from 'core-app/shared/components/modals/request-for-confirmation/password-confirmation.modal';
-import {
   OpHeaderProjectSelectComponent,
 } from 'core-app/shared/components/header-project-select/header-project-select.component';
 import {
@@ -256,7 +253,6 @@ export function runBootstrap(appRef:ApplicationRef) {
     // Modals
     ConfirmDialogModalComponent,
     DynamicContentModalComponent,
-    PasswordConfirmationModalComponent,
 
     // Main menu
     MainMenuResizerComponent,

@@ -57,10 +57,7 @@ See COPYRIGHT and LICENSE files for more details.
 </noscript>
 <opce-toasts-container></opce-toasts-container>
 <opce-modal-overlay></opce-modal-overlay>
-<live-region>
-  <div id="polite" aria-live="polite" aria-atomic="true" class="sr-only"></div>
-  <div id="assertive" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
-</live-region>
+<live-region></live-region>
 <span id="open-blank-target-link-description" class="sr-only"><%= I18n.t("open_link_in_a_new_tab") %></span>
 <opce-spot-drop-modal-portal></opce-spot-drop-modal-portal>
 <% main_menu = render_main_menu(local_assigns.fetch(:menu_name, nil), @project) %>
@@ -70,9 +67,6 @@ See COPYRIGHT and LICENSE files for more details.
   <% if show_decoration %>
     <header class="op-app-header<%= " op-app-header_development" if OpenProject::Configuration.development_highlight_enabled? %>">
       <div class="op-app-header--start">
-        <h1 class="sr-only">
-          <%= t(:label_top_menu) %>
-        </h1>
         <a href="" class="sr-only skip-navigation-link"
            id="skip-navigation--content"
            aria-label="<%= I18n.t("js.work_packages.jump_marks.label_content") %>">
@@ -93,11 +87,11 @@ See COPYRIGHT and LICENSE files for more details.
        class="<%= initial_classes %>"
        data-controller="menus--main-toggle">
     <% if (side_displayed && show_decoration) %>
-      <div
+      <nav
         id="main-menu"
         class="main-menu"
-        data-controller="menus--main">
-        <h1 class="sr-only"><%= t(:label_main_menu) %></h1>
+        data-controller="menus--main"
+        aria-label="<%= t(:label_main_menu) %>">
         <opce-main-menu-resizer></opce-main-menu-resizer>
         <div id="menu-sidebar">
           <div class="main-menu--top-container">
@@ -133,7 +127,7 @@ See COPYRIGHT and LICENSE files for more details.
             <%= call_hook :view_layouts_base_sidebar %>
           </div>
         </div>
-      </div>
+      </nav>
     <% end %>
     <div class="content-overlay"
          data-action="click->menus--main-toggle#toggleNavigation"></div>
@@ -152,14 +146,30 @@ See COPYRIGHT and LICENSE files for more details.
         <h1 class="sr-only accessibility-helper"><%= t(:label_content) %></h1>
         <% if content_for?(:content_header) %>
           <div id="content-header">
-            <%= render(OpenProject::Common::MainMenuToggleComponent.new(expanded: false)) %>
+            <%=
+              render(
+                OpenProject::Common::MainMenuToggleComponent.new(
+                  expanded: false,
+                  aria: { controls: "main-menu" }
+                )
+              )
+            %>
 
             <%= content_for :content_header %>
           </div>
         <% end %>
 
         <div id="content-body">
-          <%= render(OpenProject::Common::MainMenuToggleComponent.new(expanded: false)) unless content_for?(:content_header) %>
+          <% unless content_for?(:content_header) %>
+            <%=
+              render(
+                OpenProject::Common::MainMenuToggleComponent.new(
+                  expanded: false,
+                  aria: { controls: "main-menu" }
+                )
+              )
+            %>
+          <% end %>
 
           <%= content_for :content_body %>
           <% unless local_assigns[:no_layout_yield] %>

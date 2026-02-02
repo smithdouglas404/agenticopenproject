@@ -76,14 +76,24 @@ module Redmine::MenuManager::TopMenu::ModuleMenu
 
   def render_action_list_items(list, items)
     items.each do |item|
+      label = if item.enterprise_feature_missing?
+                h(item.caption) + upsell_icon
+              else
+                item.caption
+              end
+
       list.with_item(
         href: url_for(item.url),
-        label: item.caption,
+        label:,
         test_selector: "op-menu--item-action"
       ) do |menu_item|
         menu_item.with_leading_visual_icon(icon: item.icon) if item.icon
       end
     end
+  end
+
+  def upsell_icon
+    render(Primer::Beta::Octicon.new(icon: "op-enterprise-addons", classes: "upsell-colored", ml: 2))
   end
 
   def module_top_menu_item_groups

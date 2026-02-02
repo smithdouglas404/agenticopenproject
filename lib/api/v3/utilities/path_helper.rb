@@ -222,6 +222,10 @@ module API
             "#{root}/configuration"
           end
 
+          def self.project_configuration(project_id)
+            "#{project(project_id)}/configuration"
+          end
+
           def self.create_project_work_package_form(project_id)
             "#{work_packages_by_project(project_id)}/form"
           end

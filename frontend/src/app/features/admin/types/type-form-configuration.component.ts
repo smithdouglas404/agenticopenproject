@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import {
   ExternalRelationQueryConfigurationService,
@@ -32,6 +39,7 @@ export const emptyTypeGroup = '__empty';
 
 @Component({
   selector: 'opce-admin-type-form-configuration',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './type-form-configuration.html',
   providers: [
     TypeBannerService,
@@ -99,24 +107,6 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
     this.no_filter_query = this.element.dataset.noFilterQuery!;
     this.form = this.element.closest('form')!;
     this.submit = this.form.querySelector('.form-configuration--save')!;
-
-    // In the following we are triggering the form submit ourselves to work around
-    // a firefox shortcoming. But to avoid double submits which are sometimes not canceled fast
-    // enough, we need to memoize whether we have already submitted.
-    let submitted = false;
-
-    this.form.addEventListener('submit', () => {
-      submitted = true;
-    });
-
-    // Capture mousedown on button because firefox breaks blur on click
-    this.submit.addEventListener('mousedown', () => {
-      setTimeout(() => {
-        if (!submitted) {
-          this.form.requestSubmit();
-        }
-      }, 50);
-    });
 
     // Capture regular form submit
     this.form.addEventListener('submit', this.eventListeners.typeFormUpdater);

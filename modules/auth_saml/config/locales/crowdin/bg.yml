@@ -32,7 +32,7 @@ bg:
           unmatched_private_key: "не принадлежи към дадения сертификат"
   saml:
     menu_title: Доставчици на SAML
-    delete_title: Delete SAML provider
+    delete_title: Изтриване на SAML доставчик
     info:
       title: "Параметри на конфигурацията на протокола SAML"
       description: >
@@ -66,7 +66,7 @@ bg:
       metadata:
         dialog: "Това е URL адресът, на който са налични SAML метаданните на OpenProject. По желание го използвайте, за да конфигурирате вашия доставчик на идентичност:"
       upsell:
-        title: "Single Sign-On (SSO) with SAML"
+        title: "Единично влизане (SSO) със SAML"
         description: Свързване на OpenProject с доставчик на SAML идентичност
       request_attributes:
         title: 'Искани атрибути'

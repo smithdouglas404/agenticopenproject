@@ -63,11 +63,7 @@ sudo passwd openproject #(enter desired password)
 
 ## Install and setup the database server (PostgreSQL)
 
-OpenProject requires PostgreSQL v9.5+. If you system package is too old, you can check [postgresql.org](https://www.postgresql.org/download/) to get a newer version installed. In our case, Ubuntu 18.04 comes with a recent-enough version so we can use the system packages:
-
-```shell
-[root@host] apt-get install postgresql postgresql-contrib libpq-dev
-```
+OpenProject requires PostgreSQL 16 or newer. If you system package is too old, you can check [postgresql.org](https://www.postgresql.org/download/) to get a newer version installed. Please use their installation documentation to install the appropriate version for your system.
 
 Once installed, switch to the PostgreSQL system user.
 

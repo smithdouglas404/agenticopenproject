@@ -154,19 +154,45 @@ module Projects
     end
 
     def name
-      content = [content_tag(:i, "", class: "projects-table--hierarchy-icon")]
+      content = [
+        hierarchy_icon,
+        name_link_section,
+        archived_label,
+        workspace_type_badge
+      ].compact_blank
 
-      content << helpers.link_to_project(project, {}, { data: { turbo: false } }, false)
+      content_tag(:div, safe_join(content), class: "projects-table--name")
+    end
 
-      if project.archived?
-        content << content_tag(:span, "(#{I18n.t('project.archive.archived')})", class: "archived-label")
+    def hierarchy_icon
+      content_tag(:i, "", class: "projects-table--hierarchy-icon")
+    end
+
+    def name_link_section
+      content_tag(:span, class: "projects-table--name-text") do
+        helpers.link_to_project(project, {}, { data: { turbo: false } }, false)
       end
+    end
 
-      if workspace_type_badge && OpenProject::FeatureDecisions.portfolio_models_active?
-        content << workspace_type_badge
+    def workspace_type_badge
+      return unless OpenProject::FeatureDecisions.portfolio_models_active?
+      # Only show icon and type for non-project workspaces
+      return unless project.workspace_type.in?(["portfolio", "program"])
+
+      render(Primer::Beta::Text.new(classes: "projects-table--name-description")) do
+        icon = render(Primer::Beta::Octicon.new(
+                        icon: helpers.workspace_icon(project.workspace_type),
+                        size: :xsmall
+                      ))
+
+        safe_join([icon, " ", I18n.t(:"label_#{project.workspace_type}")])
       end
+    end
 
-      safe_join(content, " ")
+    def archived_label
+      return unless project.archived?
+
+      content_tag(:span, "(#{I18n.t('project.archive.archived')})", class: "archived-label")
     end
 
     def project_status
@@ -428,16 +454,6 @@ module Projects
 
     def current_page
       table.model.current_page.to_s
-    end
-
-    def workspace_type_badge
-      # Only show icon and type for non-project workspaces
-      return unless project.workspace_type.in?(["portfolio", "program"])
-
-      render(Primer::Beta::Text.new(color: :muted)) do
-        icon = render(Primer::Beta::Octicon.new(icon: helpers.workspace_icon(project.workspace_type)))
-        safe_join([icon, " ", I18n.t(:"label_#{project.workspace_type}")])
-      end
     end
   end
 end

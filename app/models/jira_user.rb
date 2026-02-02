@@ -1,4 +1,7 @@
 class JiraUser < ApplicationRecord
+  belongs_to :jira
+  belongs_to :jira_import
+
   def self.groups
     all.map { |x| x.payload["groups"]["items"] }.flatten.uniq {|x| x["name"]}
   end

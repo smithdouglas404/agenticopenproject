@@ -42,7 +42,7 @@ export default class extends ApplicationController {
   declare readonly usersTarget:HTMLElement;
   declare readonly popoverTarget:HTMLElement;
 
-  private provider:HocuspocusProvider|undefined;
+  private provider:HocuspocusProvider|null = null;
   private currentUsers = new Map<number, LiveUser>();
 
   connect() {
@@ -57,8 +57,11 @@ export default class extends ApplicationController {
 
   disconnect() {
     this.currentUsers.clear();
+
     this.provider?.off('awarenessUpdate', this.onAwarenessUpdate);
-    this.provider?.on('stateless', this.onStateless);
+    this.provider?.off('stateless', this.onStateless);
+
+    this.provider = null;
   }
 
   toggle_popover() {
@@ -66,7 +69,11 @@ export default class extends ApplicationController {
   }
 
   private onAwarenessUpdate = (data:onAwarenessUpdateParameters) => {
-    const changed = this.updateUsers(data.states);
+    const awarenessStates = data.states;
+
+    if (awarenessStates.length === 0) return;
+
+    const changed = this.updateUsers(awarenessStates);
     if (changed) {
       this.triggerUpdateUsersUI();
     }
@@ -110,7 +117,10 @@ export default class extends ApplicationController {
   private fetchTemplate(url:string) {
     void fetch(url, {
       method: 'GET',
-      headers: { Accept: 'text/vnd.turbo-stream.htm' },
+      headers: {
+        Accept: 'text/vnd.turbo-stream.html',
+        'X-Authentication-Scheme': 'Session',
+      },
     })
       .then((response:Response) => {
         if (response.ok) {

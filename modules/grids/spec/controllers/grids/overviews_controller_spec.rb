@@ -48,7 +48,7 @@ RSpec.describe Overviews::OverviewsController do
 
   before do
     mock_permissions_for(current_user) do |mock|
-      mock.allow_in_project *permissions, :view_news, :manage_overview, project:
+      mock.allow_in_project *permissions, :view_news, :manage_dashboards, project:
     end
 
     login_as current_user

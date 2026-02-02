@@ -47,7 +47,7 @@ class Project < ApplicationRecord
   IDENTIFIER_MAX_LENGTH = 100
 
   # reserved identifiers
-  RESERVED_IDENTIFIERS = %w[new menu queries export_list_modal].freeze
+  RESERVED_IDENTIFIERS = %w[new menu queries filters].freeze
 
   enum :workspace_type, {
     project: "project",
@@ -126,6 +126,7 @@ class Project < ApplicationRecord
 
   store_attribute :settings, :deactivate_work_package_attachments, :boolean
   store_attribute :settings, :enabled_internal_comments, :boolean
+  store_attribute :settings, :excluded_role_ids_on_copy, :json, default: []
 
   acts_as_favoritable
 
@@ -216,9 +217,10 @@ class Project < ApplicationRecord
 
   scopes :activated_in_storage,
          :allowed_to,
+         :assignable_parents,
          :available_custom_fields,
-         :visible,
-         :assignable_parents
+         :available_templates,
+         :visible
 
   scope :has_module, ->(mod) {
     where(["#{Project.table_name}.id IN (SELECT em.project_id FROM #{EnabledModule.table_name} em WHERE em.name=?)", mod.to_s])

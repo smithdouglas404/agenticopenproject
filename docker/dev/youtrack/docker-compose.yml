@@ -3,11 +3,9 @@ services:
     image:  jetbrains/youtrack:2025.2.98373
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.youtrack.rule=Host(`youtrack.local`)"
+      - "traefik.http.routers.youtrack.rule=Host(`youtrack.${OPENPROJECT_DOCKER_DEV_TLD}`)"
       - "traefik.http.routers.youtrack.service=youtrack-service"
-      - "traefik.http.routers.youtrack.tls=true"
       - "traefik.http.services.youtrack-service.loadbalancer.server.port=8080"
-      - "traefik.http.routers.youtrack.tls.certresolver=step"
     networks:
       - gateway
     volumes:

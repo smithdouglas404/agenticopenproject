@@ -116,38 +116,9 @@ install_postgres_server() {
 
 			;;
 		"suse")
-			case $(wiz_fact "osversion") in
-                                12*)
-                                        repo="https://download.postgresql.org/pub/repos/zypp/repo/pgdg-sles-17.repo"
-                                        ;;
-                                15*)
-                                        repo="https://download.postgresql.org/pub/repos/zypp/reporpms/SLES-15-x86_64/pgdg-suse-repo-latest.noarch.rpm"
-                                        ;;
-                                *)
-                                        repo=""
-                                        ;;
-                        esac
-
-                        if [ "$repo" == "" ]; then
-                                echo "$MSG_UNKNOWN_DISTRIBUTION_VERSION"
-                                exit 1
-                        else
-                                if ! wiz_check_package "postgresql17-server" ; then
-                                         _ensure_port_available
-                                        echo "INFO: Installing PostgreSQL v17..."
-                                        zypper addrepo "$repo"
-                                        zypper --gpg-auto-import-keys install --repo pgdg-17 -y postgresql17-server postgresql17-contrib
-
-                                        PGSETUP_INITDB_OPTIONS="--auth-local peer --auth-host md5" /usr/pgsql-17/bin/postgresql-17-setup initdb
-                                        _configure_postgres_server "/var/lib/pgsql/17/data"
-                                        systemctl enable postgresql-17
-                                        systemctl restart postgresql-17
-                                else
-                                        _error_if_conflicting_install
-                                fi
-                                _configure_database_and_user
-                        fi
-                        ;;
+			echo "$MSG_UNKNOWN_DISTRIBUTION_VERSION"
+			exit 1
+			;;
 	esac
 }
 

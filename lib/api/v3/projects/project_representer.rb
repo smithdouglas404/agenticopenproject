@@ -189,7 +189,10 @@ module API
 
         property :favorited,
                  exec_context: :decorator,
-                 getter: ->(*) { represented.favorited_by?(current_user) }
+                 uncacheable: true, # this is user specific
+                 getter: ->(*) {
+                   represented.favorited_by?(current_user)
+                 }
 
         formattable_property :description,
                              cache_if: current_user_view_allowed_lambda

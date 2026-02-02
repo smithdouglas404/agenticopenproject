@@ -31,7 +31,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= format_text(@notification_text, project: @project) %>
 
-<% if @work_package %>
+<% if @work_package&.visible? %>
   <p>
     <%= link_to(
           I18n.t(

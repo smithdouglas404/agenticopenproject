@@ -204,6 +204,8 @@ ja:
         add_table: "関係するワークパッケージのテーブルを追加する"
         edit_query: "クエリの編集"
         new_group: "新規グループ"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "デフォルトに戻す"
       working_days:
         calendar:
@@ -346,6 +348,7 @@ ja:
     label_collapse: "折りたたむ"
     label_collapsed: "折りたたまれている。"
     label_collapse_all: "全てを折りたたむ"
+    label_collapse_text: "Collapse text"
     label_comment: "コメント"
     label_committed_at: "%{date}で%{committed_revision_link}"
     label_committed_link: "コミットされたバージョン%{revision_identifier}"
@@ -358,6 +361,7 @@ ja:
     label_expand: "展開"
     label_expanded: "展開"
     label_expand_all: "全てを展開"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "プロジェクトメニューを展開"
     label_export: "エクスポート"
     label_export_preparing: "エクスポートは準備中です。まもなくダウンロードされます。"
@@ -390,8 +394,6 @@ ja:
     label_me: "自分"
     label_meeting_agenda: "アジェンダ"
     label_meeting_minutes: "議事録"
-    label_menu_collapse: "折りたたむ"
-    label_menu_expand: "展開する"
     label_more_than_ago: "今日より○日前以前"
     label_moderate_comment: "コメントをモデレートする"
     label_next: "次へ"
@@ -425,6 +427,7 @@ ja:
     label_remove_row: "行を削除"
     label_report: "レポート"
     label_repository_plural: "リポジトリ"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "名前をつけて保存"
     label_search_columns: "列を検索する"
     label_select_watcher: "ウォッチャーを選択..."
@@ -556,7 +559,7 @@ ja:
       date_alerts:
         milestone_date: "マイルストーン"
         overdue: "期限切れ"
-        overdue_since: "%{difference_in_days}以降。"
+        overdue_since: "for %{difference_in_days}."
         property_today: "は今日です。"
         property_is: "は%{difference_in_days}後。"
         property_was: "は、 %{difference_in_days} 前です。"
@@ -630,9 +633,6 @@ ja:
           add: "プロジェクトの設定を追加する"
           already_selected: "このプロジェクトはすでに選ばれている"
           remove: "プロジェクトの設定を削除する"
-    password_confirmation:
-      field_description: "この変更を確認するには、アカウントのパスワードを入力する必要があります。"
-      title: "続行するにはパスワードを確認してください"
     pagination:
       no_other_page: "このページだけです。"
       pages_skipped: "ページスキップ。"
@@ -1121,6 +1121,8 @@ ja:
     global_search:
       all_projects: "すべてのプロジェクトで"
       close_search: "検索を閉じる"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "このプロジェクトと子プロジェクトでは"
       current_project: "このプロジェクトでは"
       recently_viewed: "最近閲覧した記事"

@@ -1,6 +1,5 @@
 hu:
   overviews:
-    label_home: "%{workspace_type} home"
+    label_home: "%{workspace_type} főoldal"
     label_dashboard: "Vezérlőpult"
-    label_overview: 'Áttekintés'
-  permission_manage_overview: 'Áttekintő nézet szerkesztése'
+    label_overview: "Áttekintés"

@@ -36,8 +36,6 @@ RSpec.describe ProjectsController do
   let(:user) { admin }
 
   before do
-    allow(controller).to receive(:set_localization)
-
     login_as user
   end
 
@@ -136,93 +134,16 @@ RSpec.describe ProjectsController do
       end
     end
 
-    context "for portfolio" do
-      let(:template) { nil }
+    context "when not being logged in but login is required", with_settings: { login_required: true } do
+      let(:user) { User.anonymous }
       let(:workspace_type) { "portfolio" }
-      let(:parent) { nil }
+      let(:parent) { build_stubbed(:project) }
+      let(:template) { build_stubbed(:project) }
 
-      context "as an admin" do
-        context "with flag enabled", with_flag: { portfolio_models: true } do
-          it_behaves_like "successful request"
-        end
-
-        context "with flag disabled", with_flag: { portfolio_models: false } do
-          it "returns 403 Not Authorized" do
-            expect(response).not_to be_successful
-            expect(response).to have_http_status :forbidden
-          end
-        end
-      end
-
-      context "as a non-admin with global add_portfolios permission" do
-        let(:user) { create(:user, global_permissions: [:add_portfolios]) }
-
-        context "with flag enabled", with_flag: { portfolio_models: true } do
-          it_behaves_like "successful request"
-        end
-
-        context "with flag disabled", with_flag: { portfolio_models: false } do
-          it "returns 403 Not Authorized" do
-            expect(response).not_to be_successful
-            expect(response).to have_http_status :forbidden
-          end
-        end
-      end
-
-      context "as a non-admin without add_portfolios permission" do
-        let(:user) { create(:user) }
-
-        context "with flag enabled", with_flag: { portfolio_models: true } do
-          it "returns 403 Not Authorized" do
-            expect(response).not_to be_successful
-            expect(response).to have_http_status :forbidden
-          end
-        end
-      end
-    end
-
-    context "for program" do
-      let(:template) { nil }
-      let(:workspace_type) { "program" }
-      let(:parent) { nil }
-
-      context "as an admin" do
-        context "with flag enabled", with_flag: { portfolio_models: true } do
-          it_behaves_like "successful request"
-        end
-
-        context "with flag disabled", with_flag: { portfolio_models: false } do
-          it "returns 403 Not Authorized" do
-            expect(response).not_to be_successful
-            expect(response).to have_http_status :forbidden
-          end
-        end
-      end
-
-      context "as a non-admin with global add_programs permission" do
-        let(:user) { create(:user, global_permissions: [:add_programs]) }
-
-        context "with flag enabled", with_flag: { portfolio_models: true } do
-          it_behaves_like "successful request"
-        end
-
-        context "with flag disabled", with_flag: { portfolio_models: false } do
-          it "returns 403 Not Authorized" do
-            expect(response).not_to be_successful
-            expect(response).to have_http_status :forbidden
-          end
-        end
-      end
-
-      context "as a non-admin without add_programs permission" do
-        let(:user) { create(:user) }
-
-        context "with flag enabled", with_flag: { portfolio_models: true } do
-          it "returns 403 Not Authorized" do
-            expect(response).not_to be_successful
-            expect(response).to have_http_status :forbidden
-          end
-        end
+      it "redirects to the sign in page with the parameters provided in the back url" do
+        expect(response).to be_redirect
+        expect(response).to redirect_to signin_path(back_url: new_project_url(parent_id: parent.id,
+                                                                              template_id: template.id))
       end
     end
   end
@@ -293,18 +214,6 @@ RSpec.describe ProjectsController do
           it_behaves_like "successful create request"
         end
       end
-
-      context "as a non-admin with global add_portfolios permission", with_flag: { portfolio_models: true } do
-        let(:user) { create(:user, global_permissions: [:add_portfolios]) }
-
-        it_behaves_like "successful create request"
-      end
-
-      context "as a non-admin with global add_programs permission", with_flag: { portfolio_models: true } do
-        let(:user) { create(:user, global_permissions: [:add_programs]) }
-
-        it_behaves_like "successful create request"
-      end
     end
 
     context "without a template" do
@@ -336,7 +245,7 @@ RSpec.describe ProjectsController do
         end
 
         context "when there is a required custom field" do
-          shared_let(:custom_field) { create(:string_project_custom_field, is_required: true) }
+          shared_let(:custom_field) { create(:string_project_custom_field, is_required: true, is_for_all: true) }
 
           context "when the name is missing" do
             let(:project_params) { { name: "" } }
@@ -450,7 +359,7 @@ RSpec.describe ProjectsController do
       end
 
       context "when submitted from step 3" do
-        shared_let(:custom_field) { create(:string_project_custom_field, is_required: true) }
+        shared_let(:custom_field) { create(:string_project_custom_field, is_required: true, is_for_all: true) }
 
         it "does not clear custom field errors", :aggregate_failures do
           post :create,
@@ -533,7 +442,7 @@ RSpec.describe ProjectsController do
     end
   end
 
-  describe "index.html" do
+  describe "#index" do
     shared_let(:project_a) { create(:project, name: "Project A", public: false, active: true) }
     shared_let(:project_b) { create(:project, name: "Project B", public: false, active: true) }
     shared_let(:project_c) { create(:project, name: "Project C", public: true, active: true) }

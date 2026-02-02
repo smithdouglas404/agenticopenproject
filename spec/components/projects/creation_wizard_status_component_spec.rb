@@ -60,8 +60,66 @@ RSpec.describe Projects::CreationWizardStatusComponent, type: :component do
     context "when project_creation_wizard_enabled is true" do
       let(:project_creation_wizard_enabled) { true }
 
-      it "returns true" do
-        expect(component.render?).to be true
+      context "when artifact_id is present" do
+        let(:project_creation_wizard_artifact_work_package_id) { 123 }
+
+        before do
+          allow(WorkPackage).to receive_message_chain(:visible, :find_by).with(id: 123).and_return(nil) # rubocop:disable RSpec/MessageChain
+        end
+
+        context "when user has view_work_packages permission" do
+          before do
+            allow(current_user).to receive(:allowed_in_project?).with(:view_work_packages, project).and_return(true)
+          end
+
+          it "returns true" do
+            expect(component.render?).to be true
+          end
+        end
+
+        context "when user does not have view_work_packages permission" do
+          before do
+            allow(current_user).to receive(:allowed_in_project?).with(:view_work_packages, project).and_return(false)
+          end
+
+          it "returns false" do
+            expect(component.render?).to be false
+          end
+
+          it "does not render the component" do
+            rendered = render_inline(component)
+            expect(rendered.to_s).to be_empty
+          end
+        end
+      end
+
+      context "when artifact_id is not present" do
+        let(:project_creation_wizard_artifact_work_package_id) { nil }
+
+        context "when user has edit_project_attributes permission" do
+          before do
+            allow(current_user).to receive(:allowed_in_project?).with(:edit_project_attributes, project).and_return(true)
+          end
+
+          it "returns true" do
+            expect(component.render?).to be true
+          end
+        end
+
+        context "when user does not have edit_project_attributes permission" do
+          before do
+            allow(current_user).to receive(:allowed_in_project?).with(:edit_project_attributes, project).and_return(false)
+          end
+
+          it "returns false" do
+            expect(component.render?).to be false
+          end
+
+          it "does not render the component" do
+            rendered = render_inline(component)
+            expect(rendered.to_s).to be_empty
+          end
+        end
       end
     end
   end
@@ -69,6 +127,10 @@ RSpec.describe Projects::CreationWizardStatusComponent, type: :component do
   describe "rendered status text" do
     context "when artifact_id is not present" do
       let(:project_creation_wizard_artifact_work_package_id) { nil }
+
+      before do
+        allow(current_user).to receive(:allowed_in_project?).with(:edit_project_attributes, project).and_return(true)
+      end
 
       it "renders not_completed status text" do
         rendered = render_inline(component)
@@ -81,6 +143,7 @@ RSpec.describe Projects::CreationWizardStatusComponent, type: :component do
       let(:project_creation_wizard_artifact_work_package_id) { 123 }
 
       before do
+        allow(current_user).to receive(:allowed_in_project?).with(:view_work_packages, project).and_return(true)
         allow(WorkPackage).to receive_message_chain(:visible, :find_by).with(id: 123).and_return(nil) # rubocop:disable RSpec/MessageChain
       end
 
@@ -95,6 +158,10 @@ RSpec.describe Projects::CreationWizardStatusComponent, type: :component do
   describe "rendered status explanation" do
     context "when artifact_id is not present" do
       let(:project_creation_wizard_artifact_work_package_id) { nil }
+
+      before do
+        allow(current_user).to receive(:allowed_in_project?).with(:edit_project_attributes, project).and_return(true)
+      end
 
       it "renders not_completed_description" do
         rendered = render_inline(component)
@@ -113,6 +180,7 @@ RSpec.describe Projects::CreationWizardStatusComponent, type: :component do
       let(:work_package) { build_stubbed(:work_package, id: 123) }
 
       before do
+        allow(current_user).to receive(:allowed_in_project?).with(:view_work_packages, project).and_return(true)
         allow(WorkPackage).to receive_message_chain(:visible, :find_by).with(id: 123).and_return(work_package) # rubocop:disable RSpec/MessageChain
       end
 
@@ -134,6 +202,10 @@ RSpec.describe Projects::CreationWizardStatusComponent, type: :component do
 
     context "when artifact_id is present but work package is not visible" do
       let(:project_creation_wizard_artifact_work_package_id) { 123 }
+
+      before do
+        allow(current_user).to receive(:allowed_in_project?).with(:view_work_packages, project).and_return(true)
+      end
 
       it "does not render submitted_description" do
         rendered = render_inline(component)

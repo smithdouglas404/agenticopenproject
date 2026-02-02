@@ -30,7 +30,6 @@
 
 module Projects
   class SetAttributesService < ::BaseServices::SetAttributes
-
     private
 
     def set_attributes(params)
@@ -110,6 +109,16 @@ module Projects
 
     def first_not_set_code
       (Project.status_codes.keys - [model.status_code]).first
+    end
+
+    def set_custom_values_to_validate(params)
+      # In case of new records, validate custom fields that are enabled for all projects
+      # and also required.
+      if model.new_record? && !contract_options[:skip_custom_field_validation]
+        set_custom_field_ids_to_validate(model.available_custom_fields.for_all.required.pluck(:id))
+      else
+        super
+      end
     end
   end
 end

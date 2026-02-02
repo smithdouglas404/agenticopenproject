@@ -28,24 +28,14 @@
  * ++
  */
 
-import { BlockNoteEditorOptions, BlockNoteSchema, filterSuggestionItems } from '@blocknote/core';
 import { User } from '@blocknote/core/comments';
-import { BlockNoteView } from '@blocknote/mantine';
-import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { IUploadFile } from 'core-app/core/upload/upload.service';
-import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
-import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
-import { firstValueFrom } from 'rxjs';
+import { useEffect, useRef } from 'react';
 import * as Y from 'yjs';
-import { BlockNoteLocaleResult, useBlockNoteLocale } from './hooks/useBlockNoteLocale';
+import { DocumentLoadingSkeleton } from './components/DocumentLoadingSkeleton';
+import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
+import { fetchConnectionTemplate } from './helpers/connection-template-fetcher';
 import { useCollaboration } from './hooks/useCollaboration';
-import { useOpTheme } from './hooks/useOpTheme';
-
-interface CollaborativeUser {
-  name:string;
-  color:string;
-}
 
 export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
@@ -56,13 +46,8 @@ export interface OpBlockNoteContainerProps {
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
   hocuspocusProvider?:HocuspocusProvider;
+  errorContainer?:HTMLElement;
 }
-
-const schema = BlockNoteSchema.create().extend({
-  blockSpecs: {
-    openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
-  },
-});
 
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
@@ -71,134 +56,60 @@ export default function OpBlockNoteContainer({ inputField,
                                                openProjectUrl,
                                                attachmentsUploadUrl,
                                                attachmentsCollectionKey,
-                                               hocuspocusProvider }:OpBlockNoteContainerProps) {
-  const { localeString, localeDictionary }:BlockNoteLocaleResult = useBlockNoteLocale(window.I18n.locale);
-
-  initializeOpBlockNoteExtensions({ baseUrl: openProjectUrl, locale: localeString });
-
-  let doc = LiveCollaborationManager.ydoc;
-
-  let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
-  if(hocuspocusProvider) {
-    editorParams = {
-      schema,
-      collaboration: {
-        provider: hocuspocusProvider,
-        fragment: doc.getXmlFragment('document-store'),
-        user: {
-          id: activeUser.id,
-          name: activeUser.username,
-          color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
-        } as unknown as CollaborativeUser,
-        showCursorLabels: 'activity'
-      },
-      dictionary: localeDictionary,
-      ...(isReadyForAttachmentUpload() && { uploadFile }),
-    };
-  } else { // collaboration disabled
-    if (inputText) {
-      try {
-        const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
-        Y.applyUpdate(doc, update);
-      } catch (e) {
-        console.error('Failed to load document binary', e);
-        doc = new Y.Doc();
+                                               hocuspocusProvider,
+                                               errorContainer }:OpBlockNoteContainerProps) {
+  const doc:Y.Doc = hocuspocusProvider
+    ? hocuspocusProvider.document
+    : (() => {
+      // NOTE: This should only be used in TEST environments where there is no provider.
+      const newDoc = new Y.Doc();
+      if (inputText) {
+        try {
+          const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
+          Y.applyUpdate(newDoc, update);
+        } catch (e) {
+          console.error('Failed to load document binary', e);
+          return new Y.Doc();
+        }
       }
-    }
-
-    editorParams = {
-      schema,
-      collaboration: {
-        provider: null,
-        fragment: doc.getXmlFragment('document-store'),
-        user: {
-          name: activeUser.username,
-          color: '#333333',
-        },
-      },
-      dictionary: localeDictionary,
-      ...(isReadyForAttachmentUpload() && { uploadFile }),
-    };
-  }
-
-  const editor = useCreateBlockNote(editorParams, [activeUser]);
-  type EditorType = typeof editor;
-
-  function isReadyForAttachmentUpload():boolean {
-    return (
-      attachmentsCollectionKey !== undefined &&
-      attachmentsCollectionKey !== '' &&
-      attachmentsUploadUrl !== undefined &&
-      attachmentsUploadUrl !== ''
-    );
-  }
-  const fileToIUploadFile = (file:File):IUploadFile => ({
-    file: file
-  });
-
-  async function uploadFile(file:File) {
-    const pluginContext = await window.OpenProject.getPluginContext();
-    try {
-      const service = pluginContext.services.attachmentsResourceService;
-      const iUploadFile = fileToIUploadFile(file);
-      const result = await firstValueFrom(
-        service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile])
-      );
-
-      return result?.[0]._links.staticDownloadLocation.href ?? '';
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch(error:any) {
-      const toastService = pluginContext.services.notifications;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      toastService.addError(error);
-
-      return '';
-    }
-  }
-
-  const getCustomSlashMenuItems = (editor:EditorType) => {
-    return [
-      ...getDefaultReactSlashMenuItems(editor),
-      openProjectWorkPackageSlashMenu(editor),
-    ];
-  };
+      return newDoc;
+    })();
 
   const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
-  const theme = useOpTheme();
+  const hadErrorRef = useRef(false);
+
+  // Fetch error/recovery template based on connection state
+  useEffect(() => {
+    if (!errorContainer) return;
+
+    if (connectionError) {
+      hadErrorRef.current = true;
+      void fetchConnectionTemplate('error', errorContainer);
+    } else if (hadErrorRef.current) {
+      // Only fetch recovery if we previously had an error (avoid fetching on initial render)
+      void fetchConnectionTemplate('recovery', errorContainer);
+    }
+  }, [connectionError, errorContainer]);
+
+  if (isLoading) {
+    return <DocumentLoadingSkeleton />;
+  }
 
   if (connectionError) {
-    return (
-      <div
-        id="documents-show-edit-view-connection-error-notice-component"
-        data-controller="documents--connection-error-handler"
-      />
-    );
+    // Error UI is rendered in errorContainer via fetchConnectionTemplate (outside React tree)
+    return null;
   }
 
   return (
-    <>
-      {isLoading ? <div>
-        <div className={'mb-3'}>
-          <div style={{width: '25%', height: '40px'}} className={'SkeletonBox'}/>
-        </div>
-        <div className={'mb-3'}>
-          <div style={{width: '100%', height: '150px'}} className={'SkeletonBox'}/>
-        </div>
-      </div>
-        :
-        <BlockNoteView
-          editor={editor}
-          slashMenu={false}
-          theme={theme}
-          editable={!readOnly}
-          className={'block-note-editor-container'}
-        >
-          <SuggestionMenuController
-            triggerCharacter="/"
-            getItems={async (query:string) => Promise.resolve(filterSuggestionItems(getCustomSlashMenuItems(editor), query))}
-          />
-        </BlockNoteView>
-      }
-    </>
+    <OpBlockNoteEditor
+      activeUser={activeUser}
+      readOnly={readOnly}
+      openProjectUrl={openProjectUrl}
+      attachmentsUploadUrl={attachmentsUploadUrl}
+      attachmentsCollectionKey={attachmentsCollectionKey}
+      hocuspocusProvider={hocuspocusProvider}
+      doc={doc}
+    />
   );
 }
+

@@ -16,10 +16,10 @@ hu:
         news:
           title: 'Hírek'
         project_description:
-          title: 'Projekt leírása'
+          title: 'Description'
           no_results: "Még nem írt leírást. Az egyik megtalálható a 'Projekt beállításai' részben."
         project_status:
-          title: 'Projekt állapot'
+          title: 'Status'
           not_started: 'El nem kezdett'
           on_track: 'Terv szerint'
           off_track: 'Kisiklott'
@@ -28,7 +28,7 @@ hu:
           finished: 'Befejezett'
           discontinued: 'Megszakított'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

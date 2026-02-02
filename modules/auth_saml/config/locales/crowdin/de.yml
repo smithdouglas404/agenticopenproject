@@ -111,7 +111,7 @@ de:
       idp_sso_service_url: >
         Die URL des Endpunkts für die Anmeldung beim Identitätsanbieter.
       idp_slo_service_url: >
-        The URL of the identity provider logout endpoint.
+        Die URL des Endpunkts für die Abmeldung beim Identitätsanbieter.
       idp_cert: >
         Geben Sie das öffentliche X509 PEM formatierte Zertifikat des Identitätsanbieters ein. Sie können mehrere Zertifikate eingeben, indem Sie sie durch einen Zeilenumbruch trennen.
       name_identifier_format: >

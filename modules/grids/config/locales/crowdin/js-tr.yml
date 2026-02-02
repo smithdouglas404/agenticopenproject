@@ -16,10 +16,10 @@ tr:
         news:
           title: 'Haberler'
         project_description:
-          title: 'Proje tanımı'
+          title: 'Description'
           no_results: "Henüz bir açıklama yazılmadı. Biri 'Proje ayarları' içinde sağlanabilir."
         project_status:
-          title: 'Proje durumu'
+          title: 'Status'
           not_started: 'Başlatılmadı'
           on_track: 'Takipte'
           off_track: 'Hedeften uzaklaşmış'
@@ -28,7 +28,7 @@ tr:
           finished: 'Tamamlandı'
           discontinued: 'Durduruldu'
         project_status_beta:
-          title: 'Proje durumu (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

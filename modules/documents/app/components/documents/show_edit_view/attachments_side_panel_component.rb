@@ -35,12 +35,15 @@ module Documents
       include AngularHelper
       include AttachmentsHelper
       include DocumentsHelper
+      include OpPrimer::ComponentHelpers
 
-      options allow_uploading: true
+      options :readonly
 
       alias_method :document, :model
 
       private
+
+      def allow_uploading? = !readonly
 
       def current_user
         User.current

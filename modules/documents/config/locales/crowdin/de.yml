@@ -50,7 +50,7 @@ de:
     subheader:
       filter:
         label: "Filter nach Dokumentnamen"
-        placeholder: "Geben Sie einen Suchtext ein, um nach Dokumentnamen zu suchen"
+        placeholder: "Suche nach Dokumentnamen"
     documents_list_blank_slate:
       heading: "Es sind noch keine Dokumente vorhanden"
       description: "Es sind keine Dokumente in dieser Ansicht vorhanden. Sie können auf die Schaltfläche unten klicken, um eines hinzuzufügen."
@@ -73,6 +73,7 @@ de:
         action: Noch einmal versuchen
       connection_recovery_notice:
         description: "Die Verbindung zum Server für Echtzeit-Kollaboration wurde wiederhergestellt."
+      tabs: "Document tabs"
     index_page:
       name: "Name"
       type: "Art"
@@ -82,9 +83,11 @@ de:
       all: "Alle Dokumente"
       types: "Typen"
       collaboration_settings: "Echtzeit-Kollaboration"
-    last_updated_at: "Last saved %{time}."
+    last_updated_at: "Zuletzt gespeichert %{time}."
     active_editors: "Aktive Bearbeiter"
-    active_editors_count: "%{count} aktive Bearbeiter"
+    active_editors_count:
+      one: "Ein aktiver Bearbeiter"
+      other: "%{count} aktive Bearbeiter"
     label_attachment_author: "Autor des Dokuments"
     label_categories: "Kategorien"
     new_category: "Neue Kategorie"
@@ -111,7 +114,7 @@ de:
         page_header:
           description: |-
             Wenn die Echtzeit-Kollaboration aktiviert ist, können mehrere Benutzer ein Dokument zur gleichen Zeit bearbeiten.
-            Sie erfordert eine funktionierende %{hocuspocus_server_link}, um zu funktionieren.
+            Sie erfordert einen funktionierenden %{hocuspocus_server_link}, um zu funktionieren.
         banner:
           none_writable: Diese Werte werden über Umgebungsvariablen konfiguriert und können hier nicht bearbeitet werden.
           some_unwritable: Einige Werte werden über Umgebungsvariablen konfiguriert und können hier nicht bearbeitet werden.

@@ -83,7 +83,7 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
 
       projects_page.set_columns("Name", "Status", integer_custom_field.name)
 
-      projects_page.expect_no_columns("Public", "Description", "Project status description")
+      projects_page.expect_no_columns("Public", "Description", "Project description")
 
       projects_page.within_row(project) do
         expect(page)

@@ -78,11 +78,8 @@ module Projects
 
     def available_templates
       @available_templates ||= Project
-        .visible(current_user)
-        .active
-        .templated
-        .workspace_type(workspace_type)
-        .order(name: :asc)
+                                 .available_templates(workspace_type)
+                                 .order(name: :asc)
     end
 
     def format_caption(text)

@@ -45,6 +45,8 @@ Rails.application.routes.draw do
 
   get "/api/docs" => "api_docs#index"
 
+  mount API::Mcp => "/mcp"
+
   # Redirect deprecated issue links to new work packages uris
   get "/issues(/)" => redirect("#{rails_relative_url_root}/work_packages")
   # The URI.escape doesn't escape / unless you ask it to.
@@ -72,6 +74,9 @@ Rails.application.routes.draw do
   get "/auth/failure", to: "omni_auth_login#failure", as: "omni_auth_failure"
   get "/auth/:provider", to: proc { [404, {}, [""]] }, as: "omni_auth_start"
   match "/auth/:provider/callback", to: "omni_auth_login#callback", as: "omni_auth_callback", via: %i[get post]
+
+  get "/.well-known/oauth-authorization-server", to: "oauth_metadata#authorization_server", as: :authorization_server_metadata
+  get "/.well-known/oauth-protected-resource", to: "oauth_metadata#protected_resource", as: :protected_resource_metadata
 
   # In case assets are actually delivered by a node server (e.g. in test env)
   # forward requests to the proxy
@@ -119,6 +124,8 @@ Rails.application.routes.draw do
     get "/account/decline_consent", action: "decline_consent", as: "account_decline_consent"
     post "/account/confirm_consent", action: "confirm_consent", as: "account_confirm_consent"
   end
+
+  get "/external_redirect", to: "external_link_warning#show", as: "external_redirect"
 
   resources :attribute_help_texts, only: [] do
     member do
@@ -222,6 +229,7 @@ Rails.application.routes.draw do
             get :change_parent, action: :change_parent_dialog
             post :change_parent, action: :change_parent
             get :delete, action: :deletion_dialog
+            get :item_actions
             post :move
             get :new_child, action: :new
             post :new_child, action: :create
@@ -272,13 +280,15 @@ Rails.application.routes.draw do
 
   namespace :projects do
     resource :menu, only: %i[show]
+    resource :filters, only: %i[show]
   end
 
-  # Extracted from the resources definition right below so that the
-  # default parameters can be defined.
-  resources :projects,
-            only: %i[new create],
-            defaults: { workspace_type: "project" }
+  %w[portfolio project program].each do |workspace_type|
+    resources workspace_type.pluralize,
+              only: %i[new create],
+              defaults: { workspace_type: },
+              controller: workspace_type.pluralize
+  end
 
   resources :projects, except: %i[new create show edit update] do
     scope module: "projects" do
@@ -289,6 +299,9 @@ Rails.application.routes.draw do
         end
         resource :modules, only: %i[show update]
         resource :subitems, only: %i[show update]
+        resource :template, only: %i[show update], controller: "template" do
+          post :toggle_template, on: :member
+        end
         resource :creation_wizard, controller: "creation_wizard", only: %i[show] do
           get :disable_dialog
           post :toggle
@@ -359,10 +372,6 @@ Rails.application.routes.draw do
       # Destroy uses a get request to prompt the user before the actual DELETE request
       get :destroy_info, as: "confirm_destroy"
       post :deactivate_work_package_attachments
-    end
-
-    collection do
-      get :export_list_modal
     end
 
     resources :versions, only: %i[new create] do
@@ -509,14 +518,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # Portfolio and program creation is handled by the projects controller
-  %w[portfolio program].each do |workspace_type|
-    resources workspace_type.pluralize,
-              only: %i[new create],
-              defaults: { workspace_type: },
-              controller: "projects"
-  end
-
   resources :portfolios,
             only: %i[index]
 
@@ -611,6 +612,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :mcp_configurations, only: %i[index update], controller: "admin/mcp_configurations" do
+      collection do
+        post :multi_update
+      end
+    end
+
     resources :custom_actions, except: :show
 
     namespace :oauth do
@@ -626,6 +633,7 @@ Rails.application.routes.draw do
     namespace :settings do
       resource :general, controller: "/admin/settings/general_settings", only: %i[show update]
       resource :languages, controller: "/admin/settings/languages_settings", only: %i[show update]
+      resource :external_links, controller: "/admin/settings/external_links_settings", only: %i[show update]
       resource :repositories, controller: "/admin/settings/repositories_settings", only: %i[show update]
       resource :experimental, controller: "/admin/settings/experimental_settings", only: %i[show update]
 
@@ -687,6 +695,7 @@ Rails.application.routes.draw do
             get :change_parent, action: :change_parent_dialog
             post :change_parent, action: :change_parent
             get :delete, action: :deletion_dialog
+            get :item_actions
             post :move
             get :new_child, action: :new
             post :new_child, action: :create
@@ -776,10 +785,11 @@ Rails.application.routes.draw do
     get "menu" => "menus#show"
 
     match "auto_complete" => "auto_completes#index", via: %i[get post]
-    resource :bulk, controller: "bulk", only: %i[edit update destroy]
-    # FIXME: this is kind of evil!! We need to remove this soonest and
-    # cover the functionality. Route is being used in work-package-service.js:331
-    get "/bulk" => "bulk#destroy"
+    resource :bulk, controller: "bulk", only: %i[edit update destroy] do
+      collection do
+        match :reassign, via: %i[get delete]
+      end
+    end
   end
 
   resources :work_packages, only: %i[index show new] do
@@ -968,7 +978,7 @@ Rails.application.routes.draw do
     get "/deletion_info" => "users#deletion_info", as: "delete_my_account_info"
     post "/oauth/revoke_application/:application_id" => "oauth/grants#revoke_application", as: "revoke_my_oauth_application"
 
-    resources :sessions, controller: "my/sessions", as: "my_sessions", only: %i[index show destroy]
+    resources :sessions, controller: "my/sessions", as: "my_sessions", only: %i[index destroy]
     resources :auto_login_tokens, controller: "my/auto_login_tokens", as: "my_auto_login_tokens", only: %i[destroy]
 
     get "/banner" => "my/enterprise_banners#show", as: "show_enterprise_banner"
@@ -985,15 +995,16 @@ Rails.application.routes.draw do
         post :generate_api_key
       end
 
+      delete :remove_oauth_client_token
       delete :revoke_api_key
       delete :revoke_ical_token
-      delete :revoke_storage_token
       delete :revoke_ical_meeting_token
     end
   end
 
   scope controller: "my" do
     get "/my/password", action: "password"
+    get "/my/password_confirmation_dialog", action: "password_confirmation_dialog"
     post "/my/change_password", action: "change_password"
 
     get "/my/account", action: "account"

@@ -78,7 +78,9 @@ module Admin
               ->(*) { redirect_to action: :show, id: @active_item.parent, status: :see_other },
               lambda do |validation_result|
                 add_errors_to_edit_form(validation_result)
-                update_via_turbo_stream(component: ItemComponent.new(item: @active_item, show_edit_form: true))
+                update_via_turbo_stream(
+                  component: ItemComponent.new(item: @active_item, custom_field: @custom_field, show_edit_form: true)
+                )
                 respond_with_turbo_streams
               end
             )
@@ -112,7 +114,11 @@ module Admin
           item_service
             .delete_branch(item: @active_item)
             .either(
-              ->(_) { update_via_turbo_stream(component: ItemsComponent.new(item: @active_item.parent.reload)) },
+              ->(_) do
+                update_via_turbo_stream(
+                  component: ItemsComponent.new(item: @active_item.parent.reload)
+                )
+              end,
               ->(errors) { render_error_flash_message_via_turbo_stream(message: errors.full_messages) }
             )
 
@@ -128,6 +134,10 @@ module Admin
             custom_field: @custom_field,
             hierarchy_item: @active_item
           )
+        end
+
+        def item_actions
+          render Item::ActionsComponent.new(@active_item), layout: false
         end
 
         private

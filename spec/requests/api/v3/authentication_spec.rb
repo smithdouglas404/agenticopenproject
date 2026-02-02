@@ -40,6 +40,7 @@ RSpec.describe "API V3 Authentication" do
       "message" => expected_message
     }
   end
+  let(:resource_metadata) { 'resource_metadata="http://test.host/.well-known/oauth-protected-resource"' }
 
   describe "oauth" do
     let(:oauth_access_token) { "" }
@@ -64,7 +65,9 @@ RSpec.describe "API V3 Authentication" do
 
     context "with an invalid access token" do
       let(:oauth_access_token) { "1337" }
-      let(:expected_www_auth_header) { 'Bearer realm="OpenProject API", scope="api_v3", error="invalid_token"' }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
 
       it "returns unauthorized" do
         expect(last_response).to have_http_status :unauthorized
@@ -76,7 +79,9 @@ RSpec.describe "API V3 Authentication" do
     context "with a revoked access token" do
       let(:token) { create(:oauth_access_token, resource_owner: user, revoked_at: DateTime.now) }
       let(:oauth_access_token) { token.plaintext_token }
-      let(:expected_www_auth_header) { 'Bearer realm="OpenProject API", scope="api_v3", error="invalid_token"' }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
 
       it "returns unauthorized" do
         expect(last_response).to have_http_status :unauthorized
@@ -88,7 +93,9 @@ RSpec.describe "API V3 Authentication" do
     context "when the token's application is disabled" do
       let(:token) { create(:oauth_access_token, resource_owner: user, application: create(:oauth_application, enabled: false)) }
       let(:oauth_access_token) { token.plaintext_token }
-      let(:expected_www_auth_header) { 'Bearer realm="OpenProject API", scope="api_v3", error="invalid_token"' }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
 
       it "returns unauthorized" do
         expect(last_response).to have_http_status :unauthorized
@@ -100,7 +107,9 @@ RSpec.describe "API V3 Authentication" do
     context "with an expired access token" do
       let(:token) { create(:oauth_access_token, resource_owner: user) }
       let(:oauth_access_token) { token.plaintext_token }
-      let(:expected_www_auth_header) { 'Bearer realm="OpenProject API", scope="api_v3", error="invalid_token"' }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
 
       around do |ex|
         Timecop.freeze(Time.current + (token.expires_in + 5).seconds) do
@@ -118,7 +127,9 @@ RSpec.describe "API V3 Authentication" do
     context "with wrong scope" do
       let(:token) { create(:oauth_access_token, resource_owner: user, scopes: "unknown_scope") }
       let(:oauth_access_token) { token.plaintext_token }
-      let(:expected_www_auth_header) { 'Bearer realm="OpenProject API", scope="api_v3", error="insufficient_scope"' }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="insufficient_scope"}
+      end
 
       it "returns forbidden" do
         expect(last_response).to have_http_status :forbidden
@@ -131,7 +142,9 @@ RSpec.describe "API V3 Authentication" do
       let(:token) { create(:oauth_access_token, resource_owner: user, application:) }
       let(:application) { create(:oauth_application) }
       let(:oauth_access_token) { token.plaintext_token }
-      let(:expected_www_auth_header) { 'Bearer realm="OpenProject API", scope="api_v3", error="invalid_token"' }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
 
       around do |ex|
         user.destroy
@@ -159,7 +172,9 @@ RSpec.describe "API V3 Authentication" do
       let(:token) { create(:oauth_access_token, resource_owner: user) }
       let(:oauth_access_token) { token.plaintext_token }
       let(:user) { create(:user, :locked) }
-      let(:expected_www_auth_header) { 'Bearer realm="OpenProject API", scope="api_v3", error="invalid_token"' }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
 
       it "returns unauthorized" do
         expect(last_response).to have_http_status :unauthorized
@@ -196,7 +211,9 @@ RSpec.describe "API V3 Authentication" do
         context "and the client credentials user is locked" do
           let(:user) { create(:user, :locked) }
           let(:expected_message) { "You did not provide the correct credentials." }
-          let(:expected_www_auth_header) { 'Bearer realm="OpenProject API", scope="api_v3", error="invalid_token"' }
+          let(:expected_www_auth_header) do
+            %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+          end
 
           it "returns unauthorized" do
             expect(last_response).to have_http_status :unauthorized
@@ -500,7 +517,7 @@ RSpec.describe "API V3 Authentication" do
     let(:token_scope) { "email profile api_v3" }
     let(:expected_message) { "You did not provide the correct credentials." }
     let(:expected_www_auth_header) do
-      "Bearer realm=\"OpenProject API\", scope=\"api_v3\", error=\"#{expected_error}\", " \
+      "Bearer realm=\"OpenProject API\", #{resource_metadata}, scope=\"api_v3\", error=\"#{expected_error}\", " \
         "error_description=\"#{expected_error_description}\""
     end
     let(:expected_error) { "invalid_token" }

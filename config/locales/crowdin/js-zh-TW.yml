@@ -202,6 +202,8 @@ zh-TW:
         add_table: "新增相關工作套件表格"
         edit_query: "編輯查詢"
         new_group: "新增群組"
+        delete_group: "刪除群組"
+        remove_attribute: "從群組中移除"
         reset_to_defaults: "重設為預設值"
       working_days:
         calendar:
@@ -344,6 +346,7 @@ zh-TW:
     label_collapse: "收合"
     label_collapsed: "已收合"
     label_collapse_all: "全部摺疊"
+    label_collapse_text: "折疊文字"
     label_comment: "留言"
     label_committed_at: "在 %{date} %{committed_revision_link}"
     label_committed_link: "上傳修訂的 %{revision_identifier}"
@@ -356,6 +359,7 @@ zh-TW:
     label_expand: "展開"
     label_expanded: "已展開"
     label_expand_all: "全部展開"
+    label_expand_text: "顯示全文"
     label_expand_project_menu: "展開專案選單"
     label_export: "匯出"
     label_export_preparing: "導出文件已開始準備並將很快被下載。"
@@ -388,8 +392,6 @@ zh-TW:
     label_me: "我"
     label_meeting_agenda: "會議大綱"
     label_meeting_minutes: "會議記錄"
-    label_menu_collapse: "收合"
-    label_menu_expand: "展開"
     label_more_than_ago: "超過幾天"
     label_moderate_comment: "審閱留言"
     label_next: "下一個"
@@ -423,6 +425,7 @@ zh-TW:
     label_remove_row: "移除列"
     label_report: "報表"
     label_repository_plural: "版本庫"
+    label_resize_project_menu: "調整專案功能表大小"
     label_save_as: "另存為"
     label_search_columns: "選取欄位"
     label_select_watcher: "選擇監看者"
@@ -554,7 +557,7 @@ zh-TW:
       date_alerts:
         milestone_date: "里程碑日期"
         overdue: "逾期"
-        overdue_since: "自 %{difference_in_days} 天."
+        overdue_since: "剩 %{difference_in_days} 天。"
         property_today: "今天"
         property_is: "剩 %{difference_in_days} 天。"
         property_was: " %{difference_in_days}天前"
@@ -628,9 +631,6 @@ zh-TW:
           add: "新增設定"
           already_selected: "已選取此專案"
           remove: "移除專案設定"
-    password_confirmation:
-      field_description: "您需要輸入您的帳戶密碼，以確認此更改。"
-      title: "確認您的密碼以便繼續"
     pagination:
       no_other_page: "您位於唯一頁面上。"
       pages_skipped: "跳過的頁面。"
@@ -1119,6 +1119,8 @@ zh-TW:
     global_search:
       all_projects: "在所有的專案"
       close_search: "關閉搜尋"
+      items_available: "%{count} 可提供的項目"
+      direct_hit_available: "找到具有精確 ID 的工作套件。按 Enter 開啟它。"
       current_project_and_all_descendants: "目前專案和子專案"
       current_project: "目前專案"
       recently_viewed: "最近檢視"

@@ -2,5 +2,4 @@ bg:
   overviews:
     label_home: "%{workspace_type} home"
     label_dashboard: "Табло"
-    label_overview: 'Общ преглед'
-  permission_manage_overview: 'Управление на страницата с общ преглед'
+    label_overview: "Общ преглед"

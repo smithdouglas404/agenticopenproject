@@ -72,7 +72,6 @@
       component.with_description { I18n.t("documents.admin.enable_text_collaboration.description") }
 
       component.with_primary_action(
-        scheme: :primary,
         label: I18n.t("documents.admin.enable_text_collaboration.primary_action"),
         href: url_helpers.admin_settings_document_collaboration_settings_path,
         data: { turbo_method: :post }

@@ -33,10 +33,8 @@
   component_wrapper do
     render(Primer::Alpha::Banner.new(icon: :stop, scheme: :danger)) do |banner|
       banner.with_action_button(
-        data: {
-          turbo: false,
-          action: "click->documents--connection-error-handler#reloadPage"
-        },
+        id: "connection-error-reload-button",
+        data: { turbo: false },
         size: :medium
       ) { I18n.t("documents.show_edit_view.connection_error_notice.action") }
       I18n.t("documents.show_edit_view.connection_error_notice.description")

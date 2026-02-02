@@ -1,4 +1,6 @@
 class JiraImportProjectsJob < ApplicationJob
+  include ::OpenProjectJiraReferenceCreation
+
   def perform(jira_import_id)
     jira_import  = JiraImport.find(jira_import_id)
     project_ids = jira_import.projects
@@ -7,10 +9,32 @@ class JiraImportProjectsJob < ApplicationJob
     updated_at = Time.now
     created_at = updated_at
     user = User.system
+    j = J.new(url: jira.url, personal_access_token: jira.personal_access_token)
 
     ActiveRecord::Base.transaction do
       created_projects = []
       created_wps = {}
+
+      service_call = Roles::CreateService.new(user:).call(
+        name: "JiraMember",
+        permissions: [:add_work_packages,
+                      :view_work_packages,
+                      :add_work_package_comments,
+                      :add_work_package_attachments,
+                      :work_package_assigned]
+      )
+      if service_call.success?
+        create_reference!(
+          op_leg: service_call.result,
+          jira_leg: nil,
+          jira_import:,
+          uses_existing: false
+        )
+      else
+        raise ActiveRecord::Rollback
+      end
+      project_role = service_call.result
+
       JiraProject.where(jira_id:, jira_project_id: project_ids).each do |jira_project|
         ### PROJECT
         service_call = Projects::CreateService
@@ -55,7 +79,6 @@ class JiraImportProjectsJob < ApplicationJob
                 type = service_call.result
                 uses_existing = false
               else
-                binding.pry
                 raise ActiveRecord::Rollback
               end
             end
@@ -76,7 +99,6 @@ class JiraImportProjectsJob < ApplicationJob
                 uses_existing:
               )
             else
-              binding.pry
               raise ActiveRecord::Rollback
             end
 
@@ -119,26 +141,69 @@ class JiraImportProjectsJob < ApplicationJob
             ### WORK PACKAGE
             # required because otherwise project.types does not include type and then wp creation fails.
             project.reload
+            author_name = jira_issue.payload.dig("fields", "creator", "name")
+            author = if author_name.present?
+                       User.find_by!(login: author_name)
+                     end
+            assignee_name = jira_issue.payload.dig("fields", "assignee", "name")
+            assigned_to = if assignee_name.present?
+                            User.find_by!(login: assignee_name)
+                          end
+            members = [author, assigned_to]
+            members.uniq!
+            members.compact!
+            members.each do |member|
+              service_call = Members::CreateService
+                               .new(user:)
+                               .call(
+                                 project:,
+                                 roles: [project_role],
+                                 user_id: member.id,
+                                 principal: member
+                               )
+              if service_call.success?
+
+              else
+                if service_call.errors.find { |error| error.type == :taken }.blank?
+                  raise ActiveRecord::Rollback
+                end
+              end
+            end
+
             service_call = WorkPackages::CreateService
-              .new(user:)
+              .new(user: author || User.system)
               .call(
                 project: project,
                 subject: jira_issue.payload["fields"]["summary"],
                 description: jira_issue.payload["fields"]["description"],
                 type:,
                 priority:,
-                status:
+                status:,
+                assigned_to:
               )
             if service_call.success?
-              created_wps[project.id] << service_call.result
+              work_package = service_call.result
+              created_wps[project.id] << work_package
               create_reference!(
                 op_leg: service_call.result,
                 jira_leg: jira_issue,
                 jira_import:,
                 uses_existing: false
               )
+
+              history = jira_issue.payload["changelog"]["histories"]
+              add_history_comment(work_package:, history:, user:) if history.present?
+
+              comments = jira_issue.payload["fields"]["comment"]["comments"]
+              comments.each do |comment|
+                add_comment(work_package:, comment:)
+              end
+
+              attachments = jira_issue.payload["fields"]["attachment"]
+              attachments.each do |attachment|
+                add_attachment(j:,work_package:, attachment:)
+              end
             else
-              binding.pry
               raise ActiveRecord::Rollback
             end
           end
@@ -151,18 +216,67 @@ class JiraImportProjectsJob < ApplicationJob
 
   private
 
-  def create_reference!(op_leg:, jira_leg:, jira_import:, uses_existing:)
-    OpenProjectJiraReference.insert_all(
-      [
-        op_entity_id: op_leg.id,
-        op_entity_class: op_leg.class.to_s,
-        jira_entity_id: jira_leg.id,
-        jira_entity_class: jira_leg.class.to_s,
-        jira_import_id: jira_import.id,
-        jira_id: jira_import.jira.id,
-        uses_existing:
-      ],
-      unique_by: %i[op_entity_id op_entity_class]
-    )
+  def add_history_comment(work_package:, history:, user:)
+    notes = history.map do |entry|
+      items = entry["items"]
+      author = entry["author"]
+      created = entry["created"]
+      field_changes = items.map do |item|
+        "### Field: #{item['field']}\n\n#### from\n\n#{item['fromString']}\n\n### to\n\n#{item['toString']}"
+      end.join("\n\n")
+      "## #{author["displayName"]} | #{created}\n\n#{field_changes}"
+    end.join("\n\n")
+    service_call = AddWorkPackageNoteService
+                     .new(user:, work_package: )
+                     .call(notes,
+                       send_notifications: false,
+                       internal: false)
+
+    if service_call.failure?
+      raise ActiveRecord::Rollback
+    end
+  end
+
+  def add_comment(work_package:, comment:)
+    author = User.find_by!(login: comment["author"]["name"])
+    body = comment["body"]
+    notes = "## #{author["displayName"]}\n\n ### Comment\n\n#{body}"
+    service_call = AddWorkPackageNoteService
+                     .new(user: author, work_package: )
+                     .call(notes,
+                       send_notifications: false,
+                       internal: false)
+
+    if service_call.failure?
+      raise ActiveRecord::Rollback
+    end
+  end
+
+  def add_attachment(j:, work_package:, attachment:)
+    filename = attachment["filename"]
+    content_url = attachment["content"]
+    author = User.find_by!(login: attachment["author"]["name"])
+    created_at = attachment["created"]
+    mime_type = attachment["mimeType"]
+    size = attachment["size"]
+    response_body = j.download_attachment(content_url)
+
+    Tempfile.create(filename, binmode: true) do |tempfile|
+      response_body.copy_to(tempfile)
+      tempfile.rewind
+      tempfile.define_singleton_method(:original_filename) { filename }
+      tempfile.define_singleton_method(:content_type) { mime_type }
+      tempfile.define_singleton_method(:size) { size }
+      call = Attachments::CreateService
+               .new(user: author)
+               .call(container: work_package, filename: filename, file: tempfile)
+
+      call.on_success do
+      end
+
+      call.on_failure do
+        raise ActiveRecord::Rollback
+      end
+    end
   end
 end

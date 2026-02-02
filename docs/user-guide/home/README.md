@@ -36,7 +36,7 @@ The header navigation in OpenProject is divided into **three sections**:
 
 ## Home page overview
 
-![User-guide-application-start-page](openproject_user_guide_home_page1.png)
+![Application home page of OpenProject instance](openproject_user_guide_home_page.png)
 
 1. **Welcome text block** to welcome your team members, share important project information, or any other information. You can configure the [welcome text](../../system-admin-guide/system-settings/general-settings/#welcome-block-text) block under -> *Administration* -> *System settings* -> *General*.
 2. The **Projects block** displays your latest project. You can [create a new project](../../getting-started/projects/#create-a-new-project) or [view all projects](../../user-guide/projects/project-lists/).

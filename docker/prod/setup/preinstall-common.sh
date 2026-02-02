@@ -29,6 +29,7 @@ apt-get upgrade -y
 
 apt-get install -yq --no-install-recommends \
 	curl \
+	wget \
 	file \
 	gnupg2 \
 	lsb-release
@@ -51,7 +52,9 @@ apt-get install -yq --no-install-recommends \
 	imagemagick \
 	libclang-dev \
 	libjemalloc2 \
-	git
+	git \
+	build-essential \
+	libyaml-dev \
 
 for version in $PGVERSION_CHOICES ; do
 	apt-get install -yq --no-install-recommends postgresql-client-$version
@@ -60,14 +63,6 @@ done
 # Specifics for BIM edition
 if [ ! "$BIM_SUPPORT" = "false" ]; then
 	apt-get install -y wget unzip
-
-	# https://learn.microsoft.com/en-gb/dotnet/core/install/linux-debian#debian-12
-	wget --no-verbose --tries 3 https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O /tmp/packages-microsoft-prod.deb
-	dpkg -i /tmp/packages-microsoft-prod.deb
-	rm /tmp/packages-microsoft-prod.deb
-
-	apt-get update -qq
-	apt-get install -y dotnet-runtime-6.0 # required for BIM edition
 
 	tmpdir=$(mktemp -d)
 	cd $tmpdir
@@ -85,7 +80,7 @@ if [ ! "$BIM_SUPPORT" = "false" ]; then
 	unzip -q IfcConvert-v0.7.11-fea8e3a-linux64.zip
 	mv IfcConvert "/usr/local/bin/IfcConvert"
 
-	wget --no-verbose --tries 3 https://github.com/bimspot/xeokit-metadata/releases/download/1.0.1/xeokit-metadata-linux-x64.tar.gz
+	wget --no-verbose --tries 3 https://github.com/opf/xeokit-metadata/releases/download/v1.1.0/xeokit-metadata-linux-x64.tar.gz
 	tar -zxvf xeokit-metadata-linux-x64.tar.gz
 	chmod +x xeokit-metadata-linux-x64/xeokit-metadata
 	cp -r xeokit-metadata-linux-x64/ "/usr/lib/xeokit-metadata"

@@ -96,8 +96,9 @@ import {
   ListUnorderedIconComponent,
   OpStopwatchStartIconComponent,
   ChevronDownIconComponent,
+  VersionsIconComponent,
+  BriefcaseIconComponent,
 } from '@openproject/octicons-angular';
-import { OpBaselineComponent } from 'core-app/features/work-packages/components/wp-baseline/baseline/baseline.component';
 
 @NgModule({
   imports: [
@@ -200,6 +201,8 @@ import { OpBaselineComponent } from 'core-app/features/work-packages/components/
     PlusIconComponent,
     ReplyIconComponent,
     TriangleDownIconComponent,
+    VersionsIconComponent,
+    BriefcaseIconComponent,
   ],
   declarations: [
     OpIconComponent,
@@ -304,6 +307,8 @@ import { OpBaselineComponent } from 'core-app/features/work-packages/components/
     PlusIconComponent,
     ReplyIconComponent,
     TriangleDownIconComponent,
+    VersionsIconComponent,
+    BriefcaseIconComponent,
   ],
 })
 

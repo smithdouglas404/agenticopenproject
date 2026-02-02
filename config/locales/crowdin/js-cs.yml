@@ -203,6 +203,8 @@ cs:
         add_table: "Přidat seznam se souvisejícími pracovními balíčky"
         edit_query: "Upravit dotaz"
         new_group: "Nová skupina"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Obnovit výchozí nastavení"
       working_days:
         calendar:
@@ -345,6 +347,7 @@ cs:
     label_collapse: "Sbalit"
     label_collapsed: "sbalené"
     label_collapse_all: "Sbalit vše"
+    label_collapse_text: "Collapse text"
     label_comment: "Komentář"
     label_committed_at: "%{committed_revision_link} v %{date}"
     label_committed_link: "provedené revize %{revision_identifier}"
@@ -357,6 +360,7 @@ cs:
     label_expand: "Rozbalit"
     label_expanded: "rozšířené"
     label_expand_all: "Rozbalit vše"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Rozbalit nabídku projektu"
     label_export: "Export"
     label_export_preparing: "Export je připraven a bude brzy k stažení."
@@ -389,8 +393,6 @@ cs:
     label_me: "já"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Zápis"
-    label_menu_collapse: "sbalit"
-    label_menu_expand: "rozbalit"
     label_more_than_ago: "před více jak (dny)"
     label_moderate_comment: "Moderate comment"
     label_next: "Další"
@@ -424,6 +426,7 @@ cs:
     label_remove_row: "Odstranit řádek"
     label_report: "Hlášení"
     label_repository_plural: "Repozitáře"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Uložit jako"
     label_search_columns: "Vyhledávání ve sloupci"
     label_select_watcher: "Zvolte sledujícího..."
@@ -555,7 +558,7 @@ cs:
       date_alerts:
         milestone_date: "Datum milníku"
         overdue: "Po termínu"
-        overdue_since: "od %{difference_in_days}"
+        overdue_since: "for %{difference_in_days}."
         property_today: "je dnes."
         property_is: "je v %{difference_in_days}"
         property_was: "byl před %{difference_in_days}"
@@ -632,9 +635,6 @@ cs:
           add: "Přidat nastavení pro projekt"
           already_selected: "Tento projekt je již vybrán"
           remove: "Odstranit nastavení projektu"
-    password_confirmation:
-      field_description: "Pro potvrzení této změny je třeba zadat heslo k účtu."
-      title: "Pro pokračování potvrďte vaše heslo"
     pagination:
       no_other_page: "Jste na jediné stránce."
       pages_skipped: "Pages skipped."
@@ -1132,6 +1132,8 @@ cs:
     global_search:
       all_projects: "Ve všech projektech"
       close_search: "Zavřít hledání"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "V tomto projektu + podprojektech"
       current_project: "V tomto projektu"
       recently_viewed: "Nedávno zobrazené"

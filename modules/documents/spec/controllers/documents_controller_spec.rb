@@ -186,8 +186,11 @@ RSpec.describe DocumentsController do
     end
   end
 
-  describe "generate_oauth_token",
-           with_config: { collaborative_editing_hocuspocus_secret: "secret1234" } do
+  describe "define_token_payload",
+           with_config: {
+             collaborative_editing_hocuspocus_url: "wss://hocuspocus.local",
+             collaborative_editing_hocuspocus_secret: "secret1234"
+           } do
     let(:manage_role) { create(:project_role, permissions: %i[view_documents manage_documents]) }
     let(:view_only_role) { create(:project_role, permissions: [:view_documents]) }
     let(:user_with_manage) { create(:user) }
@@ -203,18 +206,18 @@ RSpec.describe DocumentsController do
     context "when user has manage_documents permission" do
       current_user { user_with_manage }
 
-      it "generates an OAuth token for show action" do
+      it "generates a token payload for show action" do
         get :show, params: { id: document.id }
-        expect(assigns(:oauth_token)).to be_present
+        expect(assigns(:token_payload)).to be_present
       end
     end
 
     context "when user does not have manage_documents permission" do
       current_user { user_without_manage }
 
-      it "generates an OAuth token for show action" do
+      it "generates a token payload for show action" do
         get :show, params: { id: document.id }
-        expect(assigns(:oauth_token)).to be_present
+        expect(assigns(:token_payload)).to be_present
       end
     end
   end

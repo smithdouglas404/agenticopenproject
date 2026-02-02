@@ -36,9 +36,15 @@ RSpec.describe WorkPackage, ".allowed_to" do
   shared_let(:private_project) { create(:project, public: false, active: project_status) }
   shared_let(:public_project) { create(:project, public: true, active: project_status) }
 
-  shared_let(:work_package_in_public_project) { create(:work_package, project: public_project) }
-  shared_let(:work_package_in_private_project) { create(:work_package, project: private_project) }
-  shared_let(:other_work_package_in_private_project) { create(:work_package, project: private_project) }
+  shared_let(:work_package_in_public_project) do
+    create(:work_package, project: public_project, subject: "work_package_in_public_project")
+  end
+  shared_let(:work_package_in_private_project) do
+    create(:work_package, project: private_project, subject: "work_package_in_private_project")
+  end
+  shared_let(:other_work_package_in_private_project) do
+    create(:work_package, project: private_project, subject: "other_work_package_in_private_project")
+  end
 
   let(:project_permissions) { [] }
   let(:project_role) { create(:project_role, permissions: project_permissions) }
@@ -132,6 +138,21 @@ RSpec.describe WorkPackage, ".allowed_to" do
 
       it "returns the authorized work package" do
         expect(subject).to contain_exactly(work_package_in_private_project)
+      end
+
+      context "when the user has the permission on another work package of the same project" do
+        shared_let(:work_package_in_private_project2) do
+          create(:work_package, project: private_project, subject: "work_package_in_private_project2")
+        end
+
+        before do
+          create(:member, project: private_project, entity: work_package_in_private_project2,
+                          user:, roles: [work_package_role])
+        end
+
+        it "returns both authorized work packages" do
+          expect(subject).to contain_exactly(work_package_in_private_project, work_package_in_private_project2)
+        end
       end
 
       context "when the project is archived" do

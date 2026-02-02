@@ -33,39 +33,37 @@
   helpers.content_controller(
     "documents--init-yjs-provider",
     "documents--init-yjs-provider-hocuspocus-url-value": Setting.collaborative_editing_hocuspocus_url,
-    "documents--init-yjs-provider-oauth-token-value": oauth_token,
+    "documents--init-yjs-provider-token-payload-value": token_payload,
     "documents--init-yjs-provider-document-name-value": resource_url
   )
 %>
 
 <%=
-  render(Primer::Alpha::Layout.new(stacking_breakpoint: :md, classes: "op-document-view")) do |component|
-    component.with_main(classes: "op-document-view--main") do
-      flex_layout(align_items: :center) do |flex|
-        flex.with_row(classes: "op-document-view--header") do
-          render Documents::ShowEditView::PageHeaderComponent.new(document, project:, state:)
-        end
+  render(
+    Documents::ShowEditView::PageLayoutComponent.new(
+      left_panel_arguments: { classes: "op-document-view--main op-document-view--editor" },
+      right_panel_arguments: { classes: "op-document-view--sidebar" },
+      header_arguments: { classes: "op-document-view--header" },
+      classes: "op-document-view"
+    )
+  ) do |layout|
+    layout.with_header do
+      render Documents::ShowEditView::PageHeaderComponent.new(document, project:, state:)
+    end
 
-        flex.with_row(classes: "op-document-view--editor") do
-          primer_form_with(
-            model: document,
-            url: document_path(document),
-            method: :patch,
-            data: { turbo: false }
-          ) do |form|
-            render Documents::BlockNoteEditorForm.new(form, oauth_token:, readonly:)
-          end
-        end
+    layout.with_tab(name: I18n.t("activerecord.models.document"), show_left: true) do
+      primer_form_with(
+        model: document,
+        url: document_path(document),
+        method: :patch,
+        data: { turbo: false }
+      ) do |form|
+        render Documents::BlockNoteEditorForm.new(form, token_payload:, readonly:)
       end
     end
 
-    component.with_sidebar(
-      row_placement: :end,
-      col_placement: :end,
-      px: 3,
-      classes: "op-document-view--sidebar"
-    ) do
-      render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document)
+    layout.with_tab(name: t(:label_attachment_plural), active: true) do
+      render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document, readonly:)
     end
   end
 %>

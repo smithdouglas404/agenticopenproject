@@ -29,6 +29,10 @@
 #++
 
 class Grids::Widgets::ProjectStatusesController < Grids::WidgetController
+  def show
+    render_widget Grids::Widgets::ProjectStatus.new(@project, current_user:)
+  end
+
   def update
     call = Projects::UpdateService
       .new(model: @project, user: current_user)

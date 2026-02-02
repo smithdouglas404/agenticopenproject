@@ -54,7 +54,7 @@ module Storages
     has_many :remote_identities, as: :integration, dependent: :destroy
 
     validates :host, uniqueness: { allow_nil: true }
-    validates :name, uniqueness: true
+    validates :name, uniqueness: { case_sensitive: false }
 
     scope :visible, lambda { |user = User.current|
       if user.allowed_in_any_project?(:manage_files_in_project)

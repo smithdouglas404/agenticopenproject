@@ -54,7 +54,7 @@ Use the [OpenProject REST API](https://www.openproject.org/docs/api) to migrate 
 
 ### 3. Excel synchronization
 
-The [Excel synchronization integration](https://www.openproject.org/docs/system-admin-guide/integrations/excel-synchronization) allows you to import and export tabular data between JIRA, Confluence, and OpenProject using spreadsheets.
+The [Excel synchronization integration](../../system-admin-guide/integrations/excel-synchronization) allows you to import and export tabular data between JIRA, Confluence, and OpenProject using spreadsheets.
 This method is suitable for small- to medium-sized migrations and provides an opportunity to review and clean data manually before import.
 
 ### 4. Confluence → Markdown → Wiki
@@ -67,6 +67,10 @@ You can migrate Confluence content into OpenProject using Markdown export and ma
 4. Upload attachments manually (these are not included in the Markdown export).
 
 This approach preserves most layout elements and is recommended for documentation or knowledge base content.
+
+> [!TIP]
+>
+> This approach is only suitable for very few wiki pages. For a comprehensive Confluence migration, consider using our recommended alternative: migrating your Confluence spaces to [XWiki](https://migration.xwiki.com/en/Alternatives/xwiki-vs-confluence ), our open source partner for advanced and large-scale wiki and knowledge-base migrations. XWiki provides a more complete and scalable path when moving extensive Confluence content. [Find out more](https://www.openproject.org/alternative-atlassian-jira-data-center/).
 
 ### 5. Community-developed JIRA importer
 

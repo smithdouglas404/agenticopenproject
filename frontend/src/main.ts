@@ -1,13 +1,15 @@
 import { OpenProjectModule } from 'core-app/app.module';
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
 
 import 'core-app/core/setup/init-jquery';
+import 'core-app/core/setup/init-js-patches';
 
 import { initializeLocale } from 'core-app/core/setup/init-locale';
 import { environment } from './environments/environment';
 import { configureErrorReporter } from 'core-app/core/errors/configure-reporter';
 import { initializeGlobalListeners } from 'core-app/core/setup/globals/global-listeners';
 import { getMetaElement } from 'core-app/core/setup/globals/global-helpers';
+import 'core-elements/block-note-element';
 
 import 'core-app/core/setup/init-vendors';
 import 'core-app/core/setup/init-globals';
@@ -44,5 +46,5 @@ void initializeLocale()
     initializeGlobalListeners();
 
     // Due to the behaviour of the Edge browser we need to wait for 'DOM ready'
-    void platformBrowser().bootstrapModule(OpenProjectModule);
+    void platformBrowser().bootstrapModule(OpenProjectModule, { applicationProviders: [provideZoneChangeDetection()], });
   });

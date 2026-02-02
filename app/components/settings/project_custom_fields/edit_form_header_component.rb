@@ -72,17 +72,25 @@ module Settings
           {
             name: "attribute_help_text",
             path: attribute_help_text_admin_settings_project_custom_field_path(@custom_field),
-            label: AttributeHelpText.human_plural_model_name
+            label: AttributeHelpText.human_attribute_name(:help_text)
           }
 
         tabs
       end
 
+      def page_title
+        concat @custom_field.attribute_in_database("name")
+        concat render(Primer::Beta::Text.new(color: :muted)) { " (#{helpers.label_for_custom_field_format(@custom_field.field_format)})" }
+      end
+
       def breadcrumbs_items
-        [{ href: admin_index_path, text: t("label_administration") },
-         { href: admin_settings_project_custom_fields_path, text: t("label_project_plural") },
-         { href: admin_settings_project_custom_fields_path, text: t("settings.project_attributes.heading") },
-         @custom_field.attribute_in_database("name")]
+        [
+          { href: admin_index_path, text: t("label_administration") },
+          { href: admin_settings_project_custom_fields_path, text: t("label_project_plural") },
+          { href: admin_settings_project_custom_fields_path, text: t("settings.project_attributes.heading") },
+          helpers.nested_breadcrumb_element(helpers.label_for_custom_field_format(@custom_field.field_format),
+                                            @custom_field.attribute_in_database("name"))
+        ]
       end
 
       def hide_description?

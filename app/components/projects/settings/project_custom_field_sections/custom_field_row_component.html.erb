@@ -16,10 +16,17 @@
             helpers.label_for_custom_field_format(@project_custom_field.field_format)
           end
         end
+        if @project_custom_field.is_for_all?
+          title_container.with_column(pt: 1, mr: 2) do
+            render(Primer::Beta::Text.new(font_size: :small)) do
+              t("settings.project_attributes.label_for_all_projects")
+            end
+          end
+        end
         if @project_custom_field.required?
           title_container.with_column(pt: 1) do
             render(Primer::Beta::Label.new(scheme: :attention, size: :medium)) do
-              t("label_required")
+              ProjectCustomField.human_attribute_name(:required)
             end
           end
         end

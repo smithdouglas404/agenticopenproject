@@ -33,12 +33,13 @@ class MeetingSectionsController < ApplicationController
   include OpTurbo::ComponentStream
   include Meetings::AgendaComponentStreams
 
+  load_and_authorize_with_permission_in_project :manage_agendas
+
   before_action :set_meeting
   before_action :set_meeting_section,
                 except: %i[create clear_backlog clear_backlog_dialog]
   before_action :set_collapsed_state, only: %i[create cancel_edit destroy]
   before_action :set_current_occurrence, only: %i[clear_backlog clear_backlog_dialog]
-  before_action :authorize
 
   def edit
     if @meeting_section.editable?
@@ -204,8 +205,7 @@ class MeetingSectionsController < ApplicationController
   private
 
   def set_meeting
-    @meeting = Meeting.find(params[:meeting_id])
-    @project = @meeting.project # required for authorization via before_action
+    @meeting = @project.meetings.visible.find(params[:meeting_id])
   end
 
   # In case we updated the meeting as part of the service flow
@@ -219,11 +219,11 @@ class MeetingSectionsController < ApplicationController
   end
 
   def set_meeting_section
-    @meeting_section = MeetingSection.find(params[:id])
+    @meeting_section = @meeting.sections.find(params[:id])
   end
 
   def set_current_occurrence
-    @current_occurrence = Meeting.find_by(id: params[:current_occurrence])
+    @current_occurrence = @project.meetings.visible.find_by(id: params[:current_occurrence])
   end
 
   def set_collapsed_state
@@ -231,9 +231,7 @@ class MeetingSectionsController < ApplicationController
   end
 
   def meeting_section_params
-    params
-      .require(:meeting_section)
-      .permit(:title)
+    params.expect({ meeting_section: [:title] })
   end
 
   def generic_call_failure_response(call)

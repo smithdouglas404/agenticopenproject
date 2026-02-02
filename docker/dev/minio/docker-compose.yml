@@ -19,13 +19,13 @@ services:
       - "traefik.enable=true"
       # MinIO API
       - "traefik.http.routers.minio.entrypoints=websecure"
-      - "traefik.http.routers.minio.rule=Host(`minio.local`)"
+      - "traefik.http.routers.minio.rule=Host(`minio.${OPENPROJECT_DOCKER_DEV_TLD}`)"
       - "traefik.http.routers.minio.service=minio"
       - "traefik.http.routers.minio.tls.certresolver=step"
       - "traefik.http.services.minio.loadbalancer.server.port=9000"
       # MinIO Admin Console (Management UI)
       - "traefik.http.routers.minioadmin.entrypoints=websecure"
-      - "traefik.http.routers.minioadmin.rule=Host(`minioadmin.local`)"
+      - "traefik.http.routers.minioadmin.rule=Host(`minioadmin.${OPENPROJECT_DOCKER_DEV_TLD}`)"
       - "traefik.http.routers.minioadmin.service=minioadmin"
       - "traefik.http.routers.minioadmin.tls.certresolver=step"
       - "traefik.http.services.minioadmin.loadbalancer.server.port=9001"

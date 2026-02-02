@@ -16,10 +16,10 @@ pt-BR:
         news:
           title: 'Notícias'
         project_description:
-          title: 'Descrição do projeto'
+          title: 'Descrição'
           no_results: "Nenhuma descrição foi escrita. Uma pode ser fornecida nas 'Configurações do Projeto'."
         project_status:
-          title: 'Situação do projeto'
+          title: 'Status'
           not_started: 'Não iniciado'
           on_track: 'Sob controle'
           off_track: 'Fora de controle'
@@ -28,7 +28,7 @@ pt-BR:
           finished: 'Finalizado'
           discontinued: 'Descontinuado'
         project_status_beta:
-          title: 'Status do projeto (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitens'
         project_favorites:
@@ -52,7 +52,7 @@ pt-BR:
           title: 'Tabela de pacotes de trabalho'
         work_packages_graph:
           title: 'Gráfico de pacotes de trabalho'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "Gráfico %{chartType} mostrando os pacotes de trabalho que estão %{description}."
         work_packages_calendar:
           title: 'Calendário'
         work_packages_overview:

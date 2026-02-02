@@ -27,7 +27,10 @@ hu:
       no_results_table: Nincs definiált webhook
       label_add_new: Webhook hozzáadása
       label_edit: Webhook szerkesztése
-      label_event_resources: Esemény források
+      label_x_events:
+        one: "1 event"
+        other: "%{count} events"
+        zero: "No events"
       events:
         created: "Létrehoz"
         updated: "Frissítve"

@@ -35,43 +35,21 @@ Rails.application.reloader.to_prepare do
                      { projects: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     contract_actions: { projects: %i[create] },
-                     dependencies: :add_project_from_template
-
-      map.permission :add_portfolios,
-                     { projects: %i[new create] },
-                     permissible_on: :global,
-                     require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
-                     contract_actions: { portfolios: %i[create] },
-                     dependencies: :add_portfolios_from_template
-
-      map.permission :add_programs,
-                     { projects: %i[new create] },
-                     permissible_on: :global,
-                     require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
-                     contract_actions: { programs: %i[create] },
-                     dependencies: :add_programs_from_template
-
-      map.permission :add_project_from_template,
-                     { projects: %i[new create] },
-                     permissible_on: :global,
-                     require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? },
                      contract_actions: { projects: %i[create] }
 
-      map.permission :add_portfolios_from_template,
-                     { projects: %i[new create] },
+      map.permission :add_portfolios,
+                     { portfolios: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? }
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     contract_actions: { portfolios: %i[create] }
 
-      map.permission :add_programs_from_template,
-                     { projects: %i[new create] },
+      map.permission :add_programs,
+                     { programs: %i[new create] },
                      permissible_on: :global,
                      require: :loggedin,
-                     visible: -> { OpenProject::FeatureDecisions.create_from_template_permissions_active? }
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? },
+                     contract_actions: { programs: %i[create] }
 
       map.permission :archive_project,
                      {
@@ -157,6 +135,7 @@ Rails.application.reloader.to_prepare do
                                                                toggle_project_custom_field
                                                                disable_all_of_section enable_all_of_section],
                        "projects/settings/subitems": %i[show update],
+                       "projects/settings/template": %i[show update toggle_template],
                        "projects/templated": %i[create destroy],
                        "projects/identifier": %i[show update],
                        "projects/status": %i[update destroy]
@@ -179,7 +158,7 @@ Rails.application.reloader.to_prepare do
 
       map.permission :export_projects,
                      {
-                       projects: %i[export_list_modal export_project_initiation_pdf]
+                       projects: %i[export_project_initiation_pdf]
                      },
                      permissible_on: :project,
                      dependencies: :view_project
@@ -441,7 +420,7 @@ Rails.application.reloader.to_prepare do
       wpt.permission :delete_work_packages,
                      {
                        work_packages: :destroy,
-                       "work_packages/bulk": :destroy
+                       "work_packages/bulk": %i[destroy reassign]
                      },
                      permissible_on: :project,
                      require: :member,

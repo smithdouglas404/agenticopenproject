@@ -31,26 +31,33 @@
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { Controller } from '@hotwired/stimulus';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
+import type { Doc } from 'yjs';
+import * as Y from 'yjs';
 
 export default class extends Controller {
   static values = {
     hocuspocusUrl: String,
-    oauthToken: String,
+    tokenPayload: String,
     documentName: String,
   };
 
   declare readonly hocuspocusUrlValue:string;
-  declare readonly oauthTokenValue:string;
+  declare readonly tokenPayloadValue:string;
   declare readonly documentNameValue:string;
 
   connect():void {
-    LiveCollaborationManager.initializeYjsProvider(
-      new HocuspocusProvider({
-        url: this.hocuspocusUrlValue,
-        name: this.documentNameValue,
-        token: this.oauthTokenValue,
-        document: LiveCollaborationManager.ydoc,
-      })
-    );
+    const ydoc:Doc = new Y.Doc();
+    const provider = new HocuspocusProvider({
+      url: this.hocuspocusUrlValue,
+      name: this.documentNameValue,
+      token: this.tokenPayloadValue,
+      document: ydoc,
+    });
+
+    LiveCollaborationManager.initializeYjsProvider(provider, ydoc);
+  }
+
+  disconnect():void {
+    LiveCollaborationManager.destroy();
   }
 }

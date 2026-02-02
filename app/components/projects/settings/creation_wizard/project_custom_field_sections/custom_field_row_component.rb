@@ -57,6 +57,10 @@ module Projects
             end
           end
 
+          def toggle_enabled?
+            !@project_custom_field.required?
+          end
+
           def toggle_data_attributes
             {
               "turbo-method": :post,

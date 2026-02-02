@@ -34,15 +34,12 @@ class ProjectsController < ApplicationController
   menu_item :overview
   menu_item :roadmap, only: :roadmap
 
-  before_action :find_project, except: %i[index new create export_list_modal]
-  before_action :load_query_or_deny_access, only: %i[index export_list_modal]
+  before_action :find_project, except: %i[index new create]
+  before_action :load_query_or_deny_access, only: %i[index]
   before_action :authorize,
-                only: %i[copy_form copy deactivate_work_package_attachments export_list_modal export_project_initiation_pdf]
+                only: %i[copy_form copy deactivate_work_package_attachments export_project_initiation_pdf]
   before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
-  before_action :not_authorized_on_feature_flag_inactive,
-                only: %i[new create],
-                if: :portfolio_management_feature_required?
   before_action :find_optional_parent, only: :new
   before_action :find_optional_template, only: %i[new create]
 
@@ -173,10 +170,6 @@ class ProjectsController < ApplicationController
     else
       head :no_content
     end
-  end
-
-  def export_list_modal
-    respond_with_dialog Projects::ExportListModalComponent.new(query: @query)
   end
 
   def export_project_initiation_pdf
@@ -340,6 +333,10 @@ class ProjectsController < ApplicationController
     else
       "no_menu"
     end
+  end
+
+  def login_back_url_params
+    params.permit(:parent_id, :template_id, :step, :next_section)
   end
 
   def portfolio_management_feature_required? = params[:workspace_type].in?(%w[portfolio program])

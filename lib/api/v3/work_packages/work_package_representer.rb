@@ -535,8 +535,7 @@ module API
             }
           else
             {
-              href: nil,
-              title: nil
+              href: nil
             }
           end
         end
@@ -581,8 +580,7 @@ module API
                                 }
                               else
                                 {
-                                  href: nil,
-                                  title: nil
+                                  href: nil
                                 }
                               end
                             },

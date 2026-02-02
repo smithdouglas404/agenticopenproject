@@ -81,7 +81,6 @@ function useCollaborationProvider(
     return () => {
       provider.off('synced', onSynced);
       provider.off('disconnect', onDisconnect);
-      provider.destroy();
     };
   }, [provider, onSynced, onDisconnect]);
 }
@@ -100,6 +99,7 @@ function useLocalDocumentSync(doc:Y.Doc, inputField:HTMLInputElement, enabled:bo
 
     return () => {
       doc.off('update', updateInput);
+      doc.destroy();
     };
   }, [doc, inputField, enabled]);
 }
@@ -135,7 +135,9 @@ export function useCollaboration(
 
   useEffect(() => {
     if (hasTimedOut) {
+      debugLog('(BlockNote Editor) Connection to collaboration server timed out');
       setConnectionError(true);
+      setIsLoading(false);
     }
   }, [hasTimedOut]);
 

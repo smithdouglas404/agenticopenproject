@@ -159,10 +159,8 @@ RSpec.describe "Upload attachment to documents",
       editor.open_add_image_dialog
 
       expect do
-        attach_file(image_fixture.path, make_visible: true) do
-          find(:button, text: "Upload image").click
-        end
-        expect(page).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
+        editor.attach_file(image_fixture.path)
+        expect(editor.element).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
       end.to change { document.attachments.count }.by(1)
     end
   end
@@ -173,12 +171,10 @@ RSpec.describe "Upload attachment to documents",
       it "shows a nice error" do
         editor.open_add_image_dialog
         expect do
-          attach_file(image_fixture.path, make_visible: true) do
-            find(:button, text: "Upload image").click
-          end
+          editor.attach_file(image_fixture.path)
           expect(page).to have_content I18n.t("activerecord.errors.models.attachment.attributes.content_type.not_allowlisted",
                                               value: "image/png")
-          expect(page).to have_no_css("img[alt='image.png']")
+          expect(editor.element).to have_no_css("img[alt='image.png']")
         end.not_to change { document.attachments.count }
       end
     end
@@ -212,7 +208,7 @@ RSpec.describe "Upload attachment to documents",
     end
   end
 
-  context "for collaborative documents", with_flag: { block_note_editor: true } do
+  context "for collaborative documents", with_settings: { real_time_text_collaboration_enabled: true } do
     let(:document) { create(:document, project:) }
     let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
     let(:attachments_list) { Components::AttachmentsList.new }
@@ -220,7 +216,7 @@ RSpec.describe "Upload attachment to documents",
     before do
       DocumentType.destroy_all
       visit document_path(document)
-      expect(page).to have_css(".document-form--long-description") # rubocop:disable RSpec/ExpectInHook
+      expect(page).to have_css("op-block-note") # rubocop:disable RSpec/ExpectInHook
       expect(page).not_to have_element("opce-ckeditor-augmented-textarea") # rubocop:disable RSpec/ExpectInHook
     end
 

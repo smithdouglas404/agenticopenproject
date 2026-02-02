@@ -16,10 +16,10 @@ lt:
         news:
           title: 'Naujienos'
         project_description:
-          title: 'Projekto aprašymas'
+          title: 'Description'
           no_results: "Dar neįrašytas aprašymas. Jį galima nurodyti „Projekto nustatymuose“."
         project_status:
-          title: 'Projekto būsena'
+          title: 'Status'
           not_started: 'Nepradėta'
           on_track: 'Teisingame kelyje'
           off_track: 'Pasiklydęs'
@@ -28,7 +28,7 @@ lt:
           finished: 'Baigta'
           discontinued: 'Nutrauktas'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

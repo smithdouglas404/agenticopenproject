@@ -33,7 +33,7 @@ module Admin
     module GeneralSettings
       class WelcomeBlockForm < ApplicationForm
         settings_form do |sf|
-          sf.text_field(name: :welcome_title)
+          sf.text_field(name: :welcome_title, input_width: :medium)
 
           sf.rich_text_area(
             name: :welcome_text,

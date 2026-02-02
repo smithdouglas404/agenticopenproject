@@ -5,23 +5,53 @@ module FormFields
     class BlockNoteEditorInput
       include Capybara::DSL
 
-      def open_add_image_dialog
-        editor = find_editor
-        editor.send_keys("/image")
-        editor.send_keys(:enter)
-      end
-
       def open_command_dialog
-        find_editor.send_keys("/")
+        send_keys_to_editor("/")
       end
 
-      def fill_in_with_content(content)
-        editor = find_editor
-        editor.send_keys(content)
+      def open_add_image_dialog
+        send_keys_to_editor("/image")
+        send_keys(:enter)
       end
 
-      def find_editor
-        page.find("div[role='textbox']")
+      def open_add_work_package_dialog
+        send_keys_to_editor("/work package")
+        send_keys(:enter)
+      end
+
+      def fill_in(content)
+        send_keys_to_editor(content)
+      end
+
+      def attach_file(path)
+        input = shadow_root.find("input[type='file']", visible: false)
+        input.attach_file(path, make_visible: true)
+      end
+
+      def content
+        # capybara does not yet support getting content directly
+        # on shadow roots
+        page.evaluate_script(<<~JS)
+          document.querySelector('op-block-note')
+            .shadowRoot
+            .innerHTML;
+        JS
+      end
+
+      def shadow_root
+        page.find("op-block-note").shadow_root
+      end
+
+      def element
+        shadow_root.find("div[role='textbox']")
+      end
+
+      private
+
+      # Attention: This only works with selenium, not with cuprite,
+      # as cuprite does not support shadow dom (yet).
+      def send_keys_to_editor(keys)
+        element.send_keys(keys)
       end
     end
   end

@@ -15,11 +15,9 @@ services:
     image:  atlassian/jira-software:10.3.11
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jira-software.rule=Host(`jira-software.local`)"
+      - "traefik.http.routers.jira-software.rule=Host(`jira-software.${OPENPROJECT_DOCKER_DEV_TLD}`)"
       - "traefik.http.routers.jira-software.service=jira-software-service"
-      - "traefik.http.routers.jira-software.tls=true"
       - "traefik.http.services.jira-software-service.loadbalancer.server.port=8080"
-      - "traefik.http.routers.jira-software.tls.certresolver=step"
     networks:
       - gateway
     volumes:

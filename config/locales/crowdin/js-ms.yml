@@ -203,6 +203,8 @@ ms:
         add_table: "Tambah jadual pakej kerja yang berkaitan"
         edit_query: "Edit pertanyaan"
         new_group: "Kumpulan baharu"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Set semula ke default"
       working_days:
         calendar:
@@ -345,6 +347,7 @@ ms:
     label_collapse: "Sembunyi"
     label_collapsed: "disembunyikan"
     label_collapse_all: "Sembunyikan semua"
+    label_collapse_text: "Collapse text"
     label_comment: "Komen"
     label_committed_at: "%{committed_revision_link} pada %{date}"
     label_committed_link: "semakan yang dilakukan %{revision_identifier}"
@@ -357,6 +360,7 @@ ms:
     label_expand: "Kembangkan"
     label_expanded: "dikembangkan"
     label_expand_all: "Kembangkan semua"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Kembangkan menu projek"
     label_export: "Eksport"
     label_export_preparing: "Eksport sedang disediakan dan akan dimuat turun sebentar lagi."
@@ -389,8 +393,6 @@ ms:
     label_me: "saya"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Minit Mesyuarat"
-    label_menu_collapse: "sembunyikan"
-    label_menu_expand: "kembangkan"
     label_more_than_ago: "lebih dari beberapa hari yang lalu"
     label_moderate_comment: "Moderate comment"
     label_next: "Seterusnya"
@@ -424,6 +426,7 @@ ms:
     label_remove_row: "Alih keluar baris"
     label_report: "Laporan"
     label_repository_plural: "Repositori"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Simpan sebagai"
     label_search_columns: "Cari kolum"
     label_select_watcher: "Pilih pemerhati..."
@@ -555,7 +558,7 @@ ms:
       date_alerts:
         milestone_date: "Tarikh pencapaian"
         overdue: "Tertangguh"
-        overdue_since: "since %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "is today."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
@@ -629,9 +632,6 @@ ms:
           add: "Tambah tetapan untuk projek"
           already_selected: "Projek ini telah dipilih"
           remove: "Keluarkan tetapan projek"
-    password_confirmation:
-      field_description: "Anda perlu memasukkan kata laluan akaun anda untuk mengesahkan perubahan ini."
-      title: "Sahkan kata laluan anda untuk teruskan"
     pagination:
       no_other_page: "Anda berada di satu-satunya halaman."
       pages_skipped: "Pages skipped."
@@ -1120,6 +1120,8 @@ ms:
     global_search:
       all_projects: "Dalam semua projek"
       close_search: "Tutup carian"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Dalam projek ini + subprojek"
       current_project: "Dalam projek ini"
       recently_viewed: "Dilihat baru-baru ini"

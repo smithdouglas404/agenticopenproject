@@ -203,6 +203,8 @@
         add_table: "Legg til tabell over tilknyttede arbeidspakker"
         edit_query: "Rediger spørring"
         new_group: "Ny gruppe"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Tilbakestill til standard"
       working_days:
         calendar:
@@ -345,6 +347,7 @@
     label_collapse: "Skjul"
     label_collapsed: "skjult"
     label_collapse_all: "Skjul alle"
+    label_collapse_text: "Collapse text"
     label_comment: "Kommentar"
     label_committed_at: "%{committed_revision_link} den %{date}"
     label_committed_link: "engasjert revisjon %{revision_identifier}"
@@ -357,6 +360,7 @@
     label_expand: "Utvid"
     label_expanded: "utvidet"
     label_expand_all: "Utvid alle"
+    label_expand_text: "Show full text"
     label_expand_project_menu: "Utvid prosjektmeny"
     label_export: "Eksportèr"
     label_export_preparing: "Eksporten forberedes og lastes ned i løpet av kort tid."
@@ -389,8 +393,6 @@
     label_me: "meg"
     label_meeting_agenda: "Saksliste"
     label_meeting_minutes: "Referat"
-    label_menu_collapse: "skjul"
-    label_menu_expand: "utvid"
     label_more_than_ago: "mer enn dager siden"
     label_moderate_comment: "Moderate comment"
     label_next: "Neste"
@@ -424,6 +426,7 @@
     label_remove_row: "Slett rad"
     label_report: "Rapport"
     label_repository_plural: "Pakkebrønner"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Lagre som"
     label_search_columns: "Søk i en kolonne"
     label_select_watcher: "Velg en overvåker..."
@@ -555,7 +558,7 @@
       date_alerts:
         milestone_date: "Milepæl dato"
         overdue: "Forfalt"
-        overdue_since: "since %{difference_in_days}."
+        overdue_since: "for %{difference_in_days}."
         property_today: "is today."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
@@ -630,9 +633,6 @@
           add: "Legg til innstilling for prosjekt"
           already_selected: "Dette prosjektet er allerede valgt"
           remove: "Fjern prosjektinnstillinger"
-    password_confirmation:
-      field_description: "Du må skrive inn ditt passord for å bekrefte denne endringen."
-      title: "Bekreft ditt passord for å fortsette"
     pagination:
       no_other_page: "Du er på den eneste siden."
       pages_skipped: "Pages skipped."
@@ -1124,6 +1124,8 @@
     global_search:
       all_projects: "I alle prosjekter"
       close_search: "Lukk søk"
+      items_available: "%{count} items available"
+      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "I dette prosjektet + underprosjekter"
       current_project: "I dette prosjektet"
       recently_viewed: "Nylig sett"

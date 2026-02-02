@@ -98,8 +98,7 @@ RSpec.describe "Recurring meetings creation",
       # quick fix as wait_for_network_idle isn't working all the time
       expect(page).to have_text("Every week on Tuesday at 01:30 PM", wait: 2)
 
-      click_on "Create meeting"
-      wait_for_network_idle
+      meetings_page.click_create
       expect_and_dismiss_flash(type: :success, message: "Successful creation.")
 
       # User is redirected to the template
@@ -173,7 +172,7 @@ RSpec.describe "Recurring meetings creation",
       expect(page).to have_css("#meetings-side-panel-participants-component", text: 3)
 
       perform_enqueued_jobs
-      expect(ActionMailer::Base.deliveries.size).to eq 1
+      expect(ActionMailer::Base.deliveries.size).to eq 3
       expect(ActionMailer::Base.deliveries.first.to).to contain_exactly(third_user.mail)
     end
   end

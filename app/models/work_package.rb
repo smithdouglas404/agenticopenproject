@@ -72,6 +72,7 @@ class WorkPackage < ApplicationRecord
   has_and_belongs_to_many :github_pull_requests # rubocop:disable Rails/HasAndBelongsToMany
 
   has_many :meeting_agenda_items, dependent: :nullify
+  has_many :meeting_outcomes, dependent: :nullify
   # The MeetingAgendaItem has a default order, but the ordered field is not part of the select
   # that retrieves the meetings, hence we need to remove the order.
   has_many :meetings, -> { unscope(:order).distinct }, through: :meeting_agenda_items, source: :meeting

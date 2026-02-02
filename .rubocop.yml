@@ -311,8 +311,7 @@ RSpec/SpecFilePathFormat:
   CustomTransform:
     OpenIDConnect: openid_connect
     OAuthClients: oauth_clients
-    OAuth: oauth
-    ICal: ical
+  EnforcedInflector: active_support
   IgnoreMethods: true
 
 RSpec/NamedSubject:

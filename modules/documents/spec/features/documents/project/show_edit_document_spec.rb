@@ -33,8 +33,7 @@ require_module_spec_helper
 
 RSpec.describe "Show/Edit Document View",
                :js,
-               :selenium,
-               with_flag: { block_note_editor: true } do
+               :selenium do
   shared_let(:project) { create(:project) }
   shared_let(:member_role) { create(:existing_project_role, permissions: %i[view_documents manage_documents]) }
   shared_let(:member) { create(:user, member_with_roles: { project => member_role }) }
@@ -53,14 +52,15 @@ RSpec.describe "Show/Edit Document View",
     # rubocop:enable RSpec/AnyInstance
   end
 
-  it "renders a collaborative document" do
+  it "renders a collaborative document",
+     with_settings: { real_time_text_collaboration_enabled: true } do
     visit document_path(document)
 
     expect(page).to have_content("Collaborative document")
 
     aggregate_failures "can see live users" do
       within_test_selector("live-events") do
-        expect(page).to have_content("1 active editors")
+        expect(page).to have_content("1 active editor")
       end
     end
 
@@ -98,9 +98,9 @@ RSpec.describe "Show/Edit Document View",
 
     aggregate_failures "can edit document content" do
       editor = FormFields::Primerized::BlockNoteEditorInput.new
-      editor.fill_in_with_content("This is the new **content**.")
+      editor.fill_in("This is the new **content**.")
 
-      expect(page).to have_content("This is the new content.")
+      expect(editor.element).to have_content("This is the new content.") # bold is applied
     end
   end
 

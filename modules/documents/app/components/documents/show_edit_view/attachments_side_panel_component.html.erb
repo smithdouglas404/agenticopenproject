@@ -30,26 +30,37 @@
 %>
 
 <%=
-  render(Primer::OpenProject::SidePanel.new) do |panel|
-    panel.with_section do |section|
-      section.with_title { t(:label_attachment_plural) }
-
-      section.with_footer_button(
-        color: :accent,
-        id: "documents-add-attachments",
-        classes: "hide-when-print"
-      ) do |button|
-        button.with_leading_visual_icon(icon: "op-add-attachment")
-        I18n.t("js.label_add_attachments")
+  if allow_uploading?
+    flex_layout do |flex|
+      flex.with_row do
+        list_attachments(
+          api_v3_document_resource(document),
+          inputs: {
+            allowUploading: true,
+            showTimestamp: false,
+            externalUploadButton: "#documents-add-attachments"
+          }
+        )
       end
-
-      list_attachments(
-        api_v3_document_resource(document),
-        inputs: {
-          allowUploading: allow_uploading,
-          externalUploadButton: "#documents-add-attachments"
-        }
-      )
+      flex.with_row do
+        render Primer::Beta::Button.new(
+          color: :accent,
+          scheme: :link,
+          id: "documents-add-attachments",
+          classes: "hide-when-print"
+        ) do |button|
+          button.with_leading_visual_icon(icon: "op-add-attachment")
+          I18n.t("js.label_add_attachments")
+        end
+      end
     end
+  else
+    list_attachments(
+      api_v3_document_resource(document),
+      inputs: {
+        allowUploading: false,
+        showTimestamp: false
+      }
+    )
   end
 %>

@@ -202,6 +202,8 @@ ru:
         add_table: "Добавить таблицу связанных пакетов работ"
         edit_query: "Редактировать запрос"
         new_group: "Новая группа"
+        delete_group: "Удалить группу"
+        remove_attribute: "Удалить из группы"
         reset_to_defaults: "Восстановить значения по умолчанию"
       working_days:
         calendar:
@@ -301,7 +303,7 @@ ru:
       ical_generation_error_text: "Произошла ошибка при генерации URL-адреса календаря."
       success_message: 'URL-адрес "%{name}" был успешно скопирован в ваш буфер обмена. Вставьте его в свой клиент календаря, чтобы завершить подписку.'
     label_activate: "Активировать"
-    label_assignee: "Назначенный"
+    label_assignee: "Исполнитель"
     label_assignee_alt_text: "Этот пакет работ назначен %{name}"
     label_add_column_after: "Добавить столбец после"
     label_add_column_before: "Добавить столбец перед"
@@ -344,6 +346,7 @@ ru:
     label_collapse: "свернуть"
     label_collapsed: "свернуто"
     label_collapse_all: "Свернуть все"
+    label_collapse_text: "Свернуть текст"
     label_comment: "Комментарий"
     label_committed_at: "%{committed_revision_link} в %{date}"
     label_committed_link: "завершенная версия %{revision_identifier}"
@@ -356,6 +359,7 @@ ru:
     label_expand: "Развернуть"
     label_expanded: "развернуто"
     label_expand_all: "Развернуть все"
+    label_expand_text: "Показать полный текст"
     label_expand_project_menu: "Развернуть меню проекта"
     label_export: "Экспортировать"
     label_export_preparing: "Экспорт готовится и будет загружен в ближайшее время."
@@ -388,8 +392,6 @@ ru:
     label_me: "я"
     label_meeting_agenda: "Повестка совещания"
     label_meeting_minutes: "Протокол(-ы)"
-    label_menu_collapse: "свернуть"
-    label_menu_expand: "развернуть"
     label_more_than_ago: "более нескольких дней назад"
     label_moderate_comment: "Модерировать комментарий"
     label_next: "Следующий"
@@ -423,6 +425,7 @@ ru:
     label_remove_row: "Удалить строку"
     label_report: "Отчет"
     label_repository_plural: "Репозитории"
+    label_resize_project_menu: "Изменить размер меню проекта"
     label_save_as: "Сохранить как"
     label_search_columns: "Поиск столбца"
     label_select_watcher: "Выберите наблюдателя..."
@@ -539,7 +542,7 @@ ru:
       reasons:
         mentioned: "Упомянутый"
         watched: "Наблюдатель"
-        assigned: "Назначенный"
+        assigned: "Исполнитель"
         #The enum value is named 'responsible' in the database and that is what is transported through the API
         #up to the frontend.
         responsible: "Ответственный"
@@ -554,7 +557,7 @@ ru:
       date_alerts:
         milestone_date: "Дата вехи"
         overdue: "Просрочено"
-        overdue_since: "с %{difference_in_days}."
+        overdue_since: "для %{difference_in_days}."
         property_today: "сегодня."
         property_is: "в %{difference_in_days}."
         property_was: "было %{difference_in_days} назад."
@@ -590,7 +593,7 @@ ru:
         title: "Настройки уведомлений"
         notify_me: "Уведомлять меня"
         reminders:
-          no_notification: Нет уведомлений
+          no_notification: Нет уведомления
           timeframes:
             normal:
               PT0S: тот же день
@@ -623,7 +626,7 @@ ru:
             description: "Дополнительные уведомления для деятельности во всех проектах."
           date_alerts:
             title: "Дата оповещения"
-            description: "Автоматическое уведомление, когда приближаются важные даты открытия пакетов работ, в которых вы участвуете (назначение, подотчетность или наблюдатель)."
+            description: "Автоматическое уведомление, когда приближаются важные даты открытия пакетов работ, в которых вы участвуете (исполнитель, ответственный или наблюдатель)."
           overdue: Когда просрочено
         project_specific:
           title: "Конкретные настройки уведомлений проекта"
@@ -631,9 +634,6 @@ ru:
           add: "Добавить настройку для проекта"
           already_selected: "Этот проект уже выбран"
           remove: "Удалить настройки проекта"
-    password_confirmation:
-      field_description: "Чтобы подтвердить изменения, введите пароль учетной записи."
-      title: "Для продолжения введите свой пароль"
     pagination:
       no_other_page: "Вы находитесь на единственной странице."
       pages_skipped: "Страницы пропущены."
@@ -923,7 +923,7 @@ ru:
         manually_sorted: "Новый запрос с ручной сортировкой"
         latest_activity: "Последние действия"
         created_by_me: "Создано мной"
-        assigned_to_me: "Предназначено для меня"
+        assigned_to_me: "Я исполнитель"
         recently_created: "Недавно созданное"
         all_open: "Все открытые"
         overdue: "Просрочено"
@@ -1131,6 +1131,8 @@ ru:
     global_search:
       all_projects: "Во всех проектах"
       close_search: "Закрыть поиск"
+      items_available: "%{count} доступных элементов"
+      direct_hit_available: "Пакет работ с точным идентификатором найден. Нажмите Enter для его открытия."
       current_project_and_all_descendants: "В этом проекте + подпроектах"
       current_project: "В этом проекте"
       recently_viewed: "Недавно просмотренные"

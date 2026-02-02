@@ -4,7 +4,7 @@
       id: "add-work-package-to-meeting-form",
       model: @meeting_agenda_item,
       method: :post,
-      url: work_package_meeting_agenda_items_path(@work_package),
+      url: project_work_package_meeting_agenda_items_path(@work_package.project, @work_package),
       data: data_attributes
     ) do |f|
       flex_layout(mb: 3) do |flex|

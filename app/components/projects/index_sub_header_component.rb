@@ -54,7 +54,8 @@ module Projects
       {
         controller: "filter--filters-form",
         "filter--filters-form-perform-turbo-requests-value": true,
-        "filter--filters-form-clear-button-id-value": clear_button_id
+        "filter--filters-form-clear-button-id-value": clear_button_id,
+        "filter--filters-form-display-filters-value": filters_expanded?
       }
     end
 
@@ -103,10 +104,14 @@ module Projects
       yield allowed_new_workspace_types
     end
 
-    def worspace_type_enterprise_feature_allowed?(workspace_type)
+    def workspace_type_enterprise_feature_allowed?(workspace_type)
       return EnterpriseToken.allows_to?(:portfolio_management) if workspace_type.in?(%w[portfolio program])
 
       true
+    end
+
+    def filters_expanded?
+      params[:filters].present?
     end
   end
 end

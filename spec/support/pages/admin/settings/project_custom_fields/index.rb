@@ -28,71 +28,77 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "support/pages/custom_fields/index_page"
+require "support/pages/custom_fields/index"
 
 module Pages
   module Admin
     module Settings
       module ProjectCustomFields
-        class Index < ::Pages::CustomFields::IndexPage
+        class Index < ::Pages::CustomFields::Index
           def path
             "/admin/settings/project_custom_fields"
           end
 
-          def expect_add_project_attribute_submenu(close_dialog: true)
-            wait_for_network_idle
+          def visit_page(customizable_name)
+            fail "Only Project type is expected" unless customizable_name == "Projects"
 
-            click_button "Add"
-
-            expect(page).to have_test_selector("add-project-custom-field-attribute")
-
-            click_button "Add" if close_dialog
+            visit!
           end
 
-          def expect_no_add_project_attribute_submenu(close_dialog: true)
-            wait_for_network_idle
+          def expect_add_project_attribute_submenu(close: true)
+            within_add_menu(close:) do
+              expect(page).to have_test_selector("add-project-custom-field-attribute")
+            end
+          end
 
-            click_button "Add"
-
-            expect(page).not_to have_test_selector("add-project-custom-field-attribute")
-
-            click_button "Add" if close_dialog
+          def expect_no_add_project_attribute_submenu(close: true)
+            within_add_menu(close:) do
+              expect(page).to have_no_test_selector("add-project-custom-field-attribute")
+            end
           end
 
           def click_to_create_new_custom_field(type)
-            wait_for_network_idle
+            within_add_menu do
+              click_button "Project attribute"
 
-            click_button "Add"
-
-            click_button "Project attribute"
-
-            click_on type
+              click_on type
+            end
           end
 
           def expect_having_create_item(type, enterprise_icon:)
-            wait_for_network_idle
+            within_add_menu do
+              click_button "Project attribute"
 
-            click_button "Add"
+              expect(page).to have_link(type)
 
-            click_button "Project attribute"
-
-            expect(page).to have_link(type)
-
-            if enterprise_icon
-              expect(page.find(:link, type)).to have_css(".octicon-op-enterprise-addons.upsell-colored")
-            else
-              expect(page.find(:link, type)).to have_no_css(".octicon-op-enterprise-addons.upsell-colored")
+              if enterprise_icon
+                expect(page.find(:link, type)).to have_css(".octicon-op-enterprise-addons.upsell-colored")
+              else
+                expect(page.find(:link, type)).to have_no_css(".octicon-op-enterprise-addons.upsell-colored")
+              end
             end
           end
 
           def expect_not_having_create_item(type)
+            within_add_menu do
+              click_button "Project attribute"
+
+              expect(page).to have_no_link(type)
+            end
+          end
+
+          private
+
+          def within_add_menu(close: false, &)
             wait_for_network_idle
 
-            click_button "Add"
+            button = find_button("Add")
 
-            click_button "Project attribute"
+            button.click
 
-            expect(page).to have_no_link(type)
+            within(button.ancestor("action-menu").find("action-list"), &)
+
+            button.click if close
           end
         end
       end

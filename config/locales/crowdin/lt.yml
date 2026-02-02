@@ -109,6 +109,23 @@ lt:
       explanation:
         text: "Visi atskiri naudotojo veiksmai (t.y. darbų paketo atnaujinimas du kartus) yra sugrupuojami į vieną veiksmą, jei laiko tarpas tarp jų yra mažesnis už šį nustatymą. Programoje jie bus rodomi kaip vienas veiksmas. Tiek pat bus pavėlinti ir pranešimai. Dėl to sumažės siunčiamų el.laiškų skaičius ir taipogi įtakos %{webhook_link} delsimą."
         link: "tinklo jungtis"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "JWT from identity provider"
@@ -191,7 +208,7 @@ lt:
       error_cannot_act_self: "Negalima atlikti veiksmų su savo įkeltais failais."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field is publicly visible to all logged in users."
+    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
     text_overview: "Šioje peržiūroje Jūs galite kurti pritaikytus pagalbos tekstus atributams. Kai nustatyti, šie tekstai gali būti rodomi paspaudžiant pagalbos piktogramą šalia atitinkamo atributo."
     show_preview: "Peržiūrėti tekstą"
     add_new: "Pridėti pagalbos tekstą"
@@ -346,17 +363,28 @@ lt:
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
-      is_for_all: "Pažymėti savo lauką kaip prieinamą visuose esamuose ir naujuose projektuose."
-      multi_select: "Allows the user to assign multiple values to this custom field."
-      searchable: "Įtraukti lauko reikšmes naudojant globalios paieškos funkcionalumą."
-      searchable_for_project: "Check to make this attribute available as a filter in project lists."
-      editable: "Leisti keisti lauką patiems naudotojams."
-      admin_only: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
-      is_filter: >
-        Leisi naudoti savo lauką darbo paketų vaizdų filtruose. Pastebėtina, kad globaliuose vaizduose matysis savi laukai, kuriuose pažymėta „Visiems projektams“.
-      formula: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      is_required:
+        all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+      is_for_all:
+        all: "Mark the custom field as available in all existing and new projects."
+        project: "Mark the attribute as available in all existing and new projects."
+      multi_select:
+        all: "Allows the user to assign multiple values to this custom field."
+        project: "Allows the user to assign multiple values to this attribute."
+      searchable:
+        all: "Include the field values when using the global search functionality."
+        project: "Check to make this attribute available as a filter in project lists."
+      editable:
+        all: "Allow the field to be editable by users themselves."
+      admin_only:
+        all: "Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it."
+        project: "Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it."
+      is_filter:
+        all: >
+          Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
+      formula:
+        project: "Add numeric values or type / to search for an attribute or a mathematical operator."
     tab:
       no_results_title_text: Nėra jokių pasirinktinų laukų.
       no_results_content_text: Sukurti naują pasirinktinį lauką
@@ -509,7 +537,7 @@ lt:
         text: "Atlikus šį veiksmą nebus ištrintas nė vienas sąraše esantis projektas. Ar tikrai norite ištrinti šį projektų sąrašą?"
     settings:
       header_details: Basic details
-      header_status: Projekto būsena
+      header_status: Status
       header_relations: Project relations
       button_update_details: Update details
       button_update_status_description: Update status description
@@ -534,9 +562,15 @@ lt:
         project_template_caption: "Select a template project to be used as the default for new subitems of this type."
         program_template_label: "Template for programs"
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
-        portfolio_template_label: "Template for portfolios"
-        portfolio_template_caption: "Select a template portfolio to be used as the default for new subitems of this type."
         no_template: "No predefined template"
+      template:
+        menu_title: "Template"
+        title: "Template settings"
+        enable_failed: "Failed to enable template mode."
+        members:
+          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_caption: >
+            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
       actions:
         label_enable_all: "Įjungti visus"
         label_disable_all: "Išjungti visus"
@@ -570,9 +604,9 @@ lt:
           label_enable_single: "Aktyvus šiame projekte, spauskite, jei norite išjungti"
           label_disable_single: "Neakvyus šiame projekte, spauskite, jei norite įjungti"
           remove_from_project: "Pašalinti iš projekto"
-        is_required_blank_slate:
-          heading: Required in all projects
-          description: This project attribute is activated in all projects since the "Required in all projects" option is checked. It cannot be deactivated for individual projects.
+        is_for_all_blank_slate:
+          heading: For all projects
+          description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       types:
         no_results_title_text: Nėra prieinamų tipų.
         form:
@@ -601,7 +635,7 @@ lt:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
     status:
-      button_edit: Edit project status
+      button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -707,9 +741,11 @@ lt:
           create_button: "Sukurti"
           name_label: "Žetono pavadinimas"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "The API token has been generated"
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "Atpažinimo rakto nepavyko nustatyti iš naujo: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -719,10 +755,24 @@ lt:
       notice_api_token_revoked: "The API token has been deleted. To create a new token please use the button in the API section."
       notice_rss_token_revoked: "RSS žetonas buvo ištrintas. Norėdami sukurti naują žetoną, prašome naudoti nuorodą RSS sekcijoje."
       notice_ical_token_revoked: 'iCalendar žetonas „%{token_name}“ projekto „%{project_name}“ kalendoriui „%{calendar_name}“ buvo atšauktas. iCalendar URL su šituo žetonu dabar nebetinkamas.'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: Nėra jokių naujienų.
       no_results_content_text: Pridėti kaip naujieną
+  roles:
+    permissions:
+      section_check_all_label: "Assign all %{module} permissions"
+      section_uncheck_all_label: "Unassign all %{module} permissions"
+    report:
+      matrix_caption: "Permissions matrix for %{module} module"
+      matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
+      matrix_check_all_label: "Assign all %{module} permissions to all roles"
+      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
       prompt: "Likti prisijungus %{num_days}"
@@ -794,7 +844,7 @@ lt:
         required: "Prašome parinkti vaidmenį"
       message:
         label: "Kvietimo pranešimas"
-        description: "Mes siųsime el. pašto laišką naudotojui, į kurį jūs galite pridėti asmeninį pranešimą. Paaiškinimas, kodėl šis pranešimas buvo atsiųstas, galėtų būti naudingas gavėjui. Taipogi šiek tiek informacijos apie projektą galbūt galėtų padėti pradėti darbą su projektu."
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Siųsti pakvietimą"
       success_message:
@@ -918,6 +968,16 @@ lt:
     print_hint: Tai atspausdins šio wiki puslapio turinį be jokių navigacijos juostų.
     index:
       no_results_content_text: Pridėti naują wiki puslapį
+  workflows:
+    form:
+      matrix_caption: "Workflow matrix"
+      matrix_caption_assignee: "Workflow matrix for assignee"
+      matrix_caption_author: "Workflow matrix for author"
+      matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
+      matrix_check_all_label: "Allow all transitions"
+      matrix_uncheck_all_label: "Disallow all transitions"
+      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
       no_results_title_text: Šiuo metu darbo sekų.
@@ -1208,6 +1268,10 @@ lt:
         onthefly: "Automatinis naudotojų kūrimas"
         port: "Prievadas"
         tls_certificate_string: "LDAP serverio SSL sertifikatas"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "Vaidmenys"
       notification:
@@ -1231,8 +1295,8 @@ lt:
           true: "vieša"
           false: "privatus"
         queries: "Užklausos"
-        status_code: "Projekto būsena"
-        status_explanation: "Projekto būsenos aprašymas"
+        status_code: "Status"
+        status_explanation: "Status description"
         status_codes:
           not_started: "Nepradėta"
           on_track: "Teisingame kelyje"
@@ -1256,7 +1320,6 @@ lt:
         work_packages: "Darbų paketai"
         workspace_type: "Workspace type"
       project_custom_field:
-        is_required: "Required for all projects"
         custom_field_section: Skiltis
       subproject_template_assignment:
         workspace_type: "Workspace type"
@@ -1467,6 +1530,7 @@ lt:
         even: "turi būti lyginis."
         exclusion: "yra rezervuotas."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "per didelis (didžiausias leistinas dydis yra %{count} baitų)."
         filter_does_not_exist: "filtras neegzistuoja."
         format: "neatitinka laukiamo formato '%{expected}'."
@@ -1489,7 +1553,8 @@ lt:
         not_a_datetime: "nėra tinkama data ir laikas."
         not_a_number: "nėra skaičius."
         not_allowed: "netinkamas dėl trūkstamų teisių."
-        not_json: "is not a valid JSON object."
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "nėra sveikasis skaičius."
         not_an_iso_date: "nėra tinkama data. Reikalingas formatas: YYYY-MM-DD."
         not_same_project: "nepriklauso tam pačiam projektui."
@@ -1545,6 +1610,8 @@ lt:
               invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
               not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
               format: "%{message}"
+            required:
+              cannot_be_true: "cannot be set to true."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1921,7 +1988,16 @@ lt:
         few: Prieigos žetonai
         many: Prieigos žetonai
         other: Prieigos žetonai
-      type: "Tipas"
+      token/rss:
+        one: "RSS token"
+        few: "RSS tokens"
+        many: "RSS tokens"
+        other: "RSS tokens"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "Naudotojas"
       version: "Versija"
       workflow: "Darbų eiga"
@@ -2146,6 +2222,7 @@ lt:
   button_click_to_reveal: "Spauskite, kad atskleistumėte"
   button_close: "Uždaryti"
   button_collapse_all: "Sutraukti visus"
+  button_confirm: "Confirm"
   button_configure: "Konfigūruoti"
   button_continue: "Tęsti"
   button_complete: "Complete"
@@ -2178,6 +2255,7 @@ lt:
   button_print: "Spausdinti"
   button_quote: "Cituoti"
   button_remove: Pašalinti
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "Remove reminder"
   button_rename: "Pervardinti"
   button_replace: "Pakeisti"
@@ -2469,7 +2547,7 @@ lt:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
       calculated_values: Calculated values
-      conditional_highlighting: Conditional Highlighting
+      capture_external_links: Capture External Links
       internal_comments: Internal Comments
       custom_actions: Custom Actions
       custom_field_hierarchies: Hierarchies
@@ -2479,6 +2557,7 @@ lt:
       edit_attribute_groups: Edit Attribute Groups
       gantt_pdf_export: Gantt PDF Export
       ldap_groups: LDAP users and group sync
+      mcp_server: MCP Server
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
       placeholder_users: Placeholder Users
@@ -2523,8 +2602,8 @@ lt:
         description: "Create automatically generated subjects using referenced attributes and text."
       customize_life_cycle:
         description: "Create and organize different project phases than the ones provided by PM2 project cycle planning."
-      conditional_highlighting:
-        description: "Need certain work packages to stand out from the mass? Use conditional highlighting in the work packages table."
+      capture_external_links:
+        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
         description: "Need to see relations or child elements in the work package list?"
       edit_attribute_groups:
@@ -2554,6 +2633,8 @@ lt:
       custom_actions:
         title: "Pasirinktiniai veiksmai"
         description: "Savo veiksmai yra vieno paspaudimo kombinacijos, leidžiančios nustatyti veiksmus, kuriuos galite padaryti preinamais kai kuriuose darbo paketuose pagal jų būseną, rolę, tipą ar projektą."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
@@ -2576,7 +2657,7 @@ lt:
         title: "Write internal comments only a small group can see"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -2613,7 +2694,7 @@ lt:
       enabled: "Disable"
   enumeration_activities: "Laiko sekimo veiklos"
   enumeration_work_package_priorities: "Darbų paketo prioritetai"
-  enumeration_reported_project_statuses: "Pranešta projekto būsena"
+  enumeration_reported_project_statuses: "Reported status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
   enterprise_trials:
@@ -2864,15 +2945,19 @@ lt:
         learn_about: "Learn more about all new features"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "16_6":
+        "17_0":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Real-time documents collaboration.
+            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
+            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
+            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
+            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
+            line_5: Option to guard the privacy of users not working in the same project more strictly.
+            line_6: Improved project creation flow with better template selection.
+            line_7: Smarter global search including type and status, improving precision in several autocompleters.
+            line_8: Accessibility improvements with ALT texts and improved chart colors.
     links:
       upgrade_enterprise_edition: "Pagerinti į Enterprise versiją"
       postgres_migration: "Migruojame jūsų instaliaciją į PostgreSQL"
@@ -2940,14 +3025,17 @@ lt:
   instructions_after_error: "Bandykite prisijungti dar kartą spustelėdami %{signin}. Jei klaida kartosis, kreipkitės į administratorių."
   menus:
     admin:
-      mail_notification: "El. pašto priminimai"
-      mails_and_notifications: "Laiškai ir pranešimai"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "Agregacija"
       api_and_webhooks: "API ir tinklo jungtys"
+      mail_notification: "El. pašto priminimai"
+      mails_and_notifications: "Laiškai ir pranešimai"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Add…"
   my_account:
     access_tokens:
+      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
       no_results:
         title: "Nėra rodytinų prieigos raktų"
         description: "Visi iš jų buvo išjungti. Jie gali būti vėl įgalinti administravimo meniu."
@@ -2957,34 +3045,56 @@ lt:
         expiration: "Baigiasi"
       indefinite_expiration: "Niekada"
       simple_revoke_confirmation: "Ar tikrai norite atšaukti šį raktą?"
+      tabs:
+        client:
+          title: "Client tokens"
+        provider:
+          title: "Provider tokens"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "API žetonai leidžia trečiųjų šalių aplikacijoms komunikuoti su šiuo OpenProject per REST"
+        static_token_name: "API token"
         disabled_text: "Administratorius neįjungė API žetonų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
         add_button: "API Token"
-      api:
-        static_token_name: "API žetonas"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "Administratorius neįjungė iCalendar prenumeratų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
-        empty_text_hint: "Norėdami pridėti iCalendar žetoną, prenumeruokite naują ar esamą kalendorių iš projekto kalendoriaus modulio. Jūs turite turėti reikiamas teises."
-      oauth:
+      oauth_application:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Last used at"
         title: "OAuth"
-        text_hint: "OAuth žetonai leidžia trečiųjų šalių aplikacijoms prisijungti prie šio OpenProject."
-        empty_text_hint: "Nėra sukonfigūruotos ir jums aktyvios prieigos trečiųjų šalių aplikacijai. Prašome susisiekti su administratoriumi, kad būtų aktyvuota ši savybė."
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS Token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
-        text_hint: "RSS žetonai leidžia naudotojams gauti informaciją apie paskutinius šio OpenProject egzemplioriaus pasikeitimus per išorinę RSS skaityklę."
-        static_token_name: "RSS žetonas"
-        disabled_text: "Administratorius neįjungė RSS žetonų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
+        table_title: "RSS tokens"
+        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
+        static_token_name: "RSS token"
+        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "Failų saugyklos"
-        text_hint: "Failų saugyklų žetonai jungia šį OpenProject egzempliorių su išorine failų saugykla."
-        empty_text_hint: "Su jūsų paskyra nėra susietos saugyklos prieigos."
-        revoke_token: "Ar tikrai norite išimti šį žetoną? Jums vėl reikės prisijungti prie %{storage}"
-        removed: "Failų saugykla sėkmingai pašalinta"
-        failed: "Įvyko klaida ir žetono išimti nepavyko. Prašome pabandyti dar kartą vėliau."
         unknown_storage: "Nežinoma saugykla"
   notifications:
     reasons:
@@ -3095,6 +3205,7 @@ lt:
   label_board_plural: "Lentos"
   label_branch: "Šaka"
   label_browse: "Naršyti"
+  label_builtin: "Built-in"
   label_bulk_edit_selected_work_packages: "Masiškai redaguoti pasirinktus darbų paketus"
   label_bundled: "(Įtrauktas)"
   label_calendar: "Kalendorius"
@@ -3300,6 +3411,7 @@ lt:
   label_journal_diff: "Aprašymų palyginimas"
   label_language: "Kalba"
   label_languages: "Kalbos"
+  label_external_links: "External links"
   label_locale: "Language and region"
   label_jump_to_a_project: "Peršokti į projektą..."
   label_keyword_plural: "Raktažodžiai"
@@ -3477,9 +3589,6 @@ lt:
   label_project_hierarchy: "Projekto hierarchija"
   label_project_mappings: "Projektai"
   label_project_new: "Naujas projektas"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "Projektai"
   label_project_list_plural: "Projektų sąrašai"
   label_project_life_cycle: "Project life cycle"
@@ -3945,7 +4054,7 @@ lt:
   notice_not_authorized: "Jūs neturite prieigos teisių prie šio puslapio."
   notice_not_authorized_archived_project: "Projektas, kurį bandote atidaryti, buvo suarchyvuotas."
   notice_requires_enterprise_token: "Enterprise token missing or doesn't allow access to this page."
-  notice_password_confirmation_failed: "Jūsų slaptažodis yra neteisingas. Negalima tęsti."
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "Rasta %{number} rezultatai (-as, -ų).\nPaspauskite 'Tab', kad susikoncentruotumėte į pirmą rezultatą."
   notice_principals_found_single: "Yra vienas rezultatas.\nPaspauskite 'Tab', kad susikoncentruotumėte į jį."
   notice_parent_item_not_found: "Parent item not found."
@@ -4005,9 +4114,6 @@ lt:
   permission_add_project: "Kurti projektus"
   permission_add_portfolios: "Create portfolios"
   permission_add_programs: "Create programs"
-  permission_add_project_from_template: "Create project from template"
-  permission_add_portfolios_from_template: "Create portfolio from template"
-  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Prisegti priedus"
   permission_add_work_package_attachments_explanation: "Leidžia pridėti priedus be darbo paketo keitimo teisių"
   permission_add_internal_comments: "Write internal comments"
@@ -4025,6 +4131,7 @@ lt:
   permission_comment_news: "Komentuoti naujienas"
   permission_commit_access: "Skaitymo/rašymo prieiga į repozitoriją"
   permission_copy_projects: "Kopijuoti projekus"
+  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
   permission_copy_work_packages: "Duplicate work packages"
   permission_create_backup: "Kurti atsargines kopijas"
   permission_delete_work_package_watchers: "Pašalinti stebėtojus"
@@ -4299,6 +4406,9 @@ lt:
   setting_allowed_link_protocols: "Allowed link protocols"
   setting_allowed_link_protocols_text_html: >-
     Allow these protocols to be rendered as links in work package descriptions, long text fields and comments. For example, %{tel_code} or %{element_code}. Enter one protocol per line. <br/> Protocols %{http_code}, %{https_code}, and %{mailto_code} are always allowed.
+  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links_text: >
+    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4311,15 +4421,23 @@ lt:
   setting_apiv3_cors_origins_text_html: >
     Jei CORS yra įgalinta, tai yra kilmės domenai, kuriems leidžiama pasiekti OpenProject API. <br/> Kaip nurodyti reikšmes aprašoma <a href="%{origin_link}" target="_blank">Origin antraštės dokumentacijoje</a>.
   setting_apiv3_write_readonly_attributes: "Rašymo prieiga prie tik skaitymui skirtų atributų"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Įjungus API leis administratoriams kūrimo metu rašyti statinius tik skaitymui skirtus atributus, tokius kaip createdAt ir author. <br/> <strong>Įspėjimas:</strong> Šis nustatymas naudojamas pavyzdžiui importuojant duomenis, bet leidžia administratoriams apsimesti, kad elementus sukuria kiti naudotojai. Visos kūrimo užklausos žurnalizuojamos su tikru autoriumi. </br> Daugiau informacijos apie atributus ir palaikomus resursus rasite %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "Maksimalus API puslapio dydis"
-  setting_apiv3_max_page_instructions_html: >
-    Nustatykite maksimalų API atsakymo puslapio dydį. Bus neįmanoma vykdyti API užklausas, kurios grąžina daugiau reikšmių viename puslapyje. <br/> <strong>Įspėjimas</strong> Prašome keisti šią reikšmę jei jums to tikrai reikia. Nustatyta didelė reikšmė stipriai įtakos greitaveiką, o maža reikšmė mažesnė už puslapiavimo parinktis reikš klaida puslapiuojamuose vaizduose.
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "Dokumentacija"
   setting_apiv3_docs_enabled: "Įjungti dokumentų puslapį"
   setting_apiv3_docs_enabled_instructions_html: >
     Jei dokumentų puslapis yra įjungtas, jūs galite gauti interaktyvią APIv3 dokumentaciją <a href="%{link}" target="_blank">%{link}</a>.
+  setting_apiv3_docs_enabled_instructions_warning: >
+    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
   setting_attachment_whitelist: "Leidžiamų failų tipų sąrašas"
   setting_email_delivery_method: "El. pašto pristatymo metodas"
   setting_emails_salutation: "Kreiptis į naudotojus e-laiškuose su"
@@ -4498,7 +4616,7 @@ lt:
       omniauth_direct_login_hint_html: >
         If this option is active, login requests will redirect to the configured omniauth provider. The login dropdown and sign-in page will be disabled. <br/> <strong>Note:</strong> Unless you also disable password logins, with this option enabled, users can still log in internally by visiting the <code>%{internal_path}</code> login page.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Sudarykite sąrašą leidžiamų failų praplėtimų ir/arba MIME tipų su kuriais bus leidžiama įkelti failus. <br/> Įveskite failų praplėtimus (t.y., <code>%{ext_example}</code>) arba MIME tipus (t.y., <code>%{mime_example}</code>). <br/> Palikite tuščią, jei norite leisti visus tipus. Leidžiama daugiau nei viena reikšmė (po vieną kiekvienoje eilutėje).
@@ -4551,6 +4669,7 @@ lt:
     passwords: "Slaptažodžiai"
     project_attributes:
       heading: "Projekto atributai"
+      label_for_all_projects: "All projects"
       label_new_attribute: "Projekto atributas"
       label_new_section: "Skiltis"
       label_edit_section: "Keisti pavadinimą"
@@ -4574,7 +4693,8 @@ lt:
               label: "Side panel"
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
-      header_description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document."
+      header_description: >
+        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
       status:
         submitted: "%{wizard_name} has been submitted"
         submitted_description: "Click the button below to go to the work package for the submission process."
@@ -4602,7 +4722,7 @@ lt:
           project_mandate: "Project mandate"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
         description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
@@ -4610,7 +4730,7 @@ lt:
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption: "The user or group assigned to this project attribute will also become the assignee of the new work package."
+        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"
@@ -4693,6 +4813,8 @@ lt:
     Enterprise versija pridės šiuos papildomus priedus projekto saviems laukams: <br> <ul> <li><b>Galimybė pridėti savo laukus į jūsų projekto sąrašą ir kurti projekto projektų portfolio vaizdą</b></li> </ul>
   text_custom_logo_instructions: >
     The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+  text_custom_logo_mobile_instructions: >
+    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
   text_custom_export_logo_instructions: >
     Tai logotipas, kuris rodomas jūsų PDF eksportuose. Tai turi būti PNG arba JPEG piešinio failas. Rekomenduojamas juodas arba spalvotas logotipas ant permatomo balto fono.
   text_custom_export_cover_instructions: >
@@ -4768,6 +4890,7 @@ lt:
     Pastaba: įjungus bus rodomas ženkliukas su jūsų diegimo būsena <a href="%{information_panel_path}">%{information_panel_label}</a> administravimo skydelyje. Rodoma tik administratoriams. <br/> Ženkliukas palygins jūsų OpenProject versiją su oficialia OpenProject laidų duomenų baze ir praneš, jei yra atnaujinimų dėl žinomų saugumo problemų. Daugiau informacijos, ką daro šis tikrinimas, kokią reikia pateikti informaciją ir kaip šį tikrinimą išjungti, rasite <a href="%{more_info_url}">konfigūravimo dokumentacijoje</a>.
   text_own_membership_delete_confirmation: "Jūs ketinate pašalinti keletą ar visus leidimus ir gali būti, kad nebegalėsite redaguoti šio projekto po to.\nAr jūs tikrai norite tęsti?"
   text_permanent_delete_confirmation_checkbox_label: "I understand that this deletion cannot be reversed"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "Į papildinių katalogą galima rašyti"
   text_powered_by: "Parengta pagal %{link}"
   text_project_identifier_info: "Leidžiamos tik mažosios raidės (a-z), skaitmenys, paprasti (-) ir žemi brūkšneliai (_). Taip pat privalo prasidėti mažąja raide."
@@ -4860,6 +4983,8 @@ lt:
       other: "laikinai užrakintas (%{count} nesėkmingi prisijungimai)"
     confirm_status_change: "Jūs pakeisti „%{name}“ būseną. Ar tikrai norite tęsti?"
     deleted: "Ištrintas vartotojas"
+    error_status_change_self: "You cannot change your own user status."
+    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
     error_status_change_failed: "Vartotojo būsenos keitimas nepavyko dėl šių klaidų: %{errors}"
     invite: Pakviesti vartotoją naudojant el. paštą
     invited: pakviestas
@@ -5265,3 +5390,8 @@ lt:
   token:
     hashed_token:
       display_value_placeholder: "***"
+  external_link_warning:
+    title: "Leaving OpenProject"
+    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
+    continue_message: "Are you sure you want to proceed to the following external link?"
+    continue_button: "Continue to external website"

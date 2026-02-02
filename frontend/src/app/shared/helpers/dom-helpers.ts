@@ -143,3 +143,103 @@ export function ensureId(el:HTMLElement, prefix = 'el'):string {
   }
   return el.id;
 }
+
+/**
+ * Returns a `DOMTokenList`-like facade for an arbitrary attribute.
+ *
+ * Mimics `element.classList` for space-separated attributes (e.g.
+ * `aria-describedby`). It reads and writes the underlying attribute and
+ * supports `contains`, `add`, `remove`, `toggle`, `replace`, iteration, and a
+ * `.value` accessor.
+ *
+ * @example
+ * ```ts
+ * const tokens = attributeTokenList(el, 'aria-describedby');
+ * tokens.add('hint-1', 'hint-2'); // sets attribute to "hint-1 hint-2"
+ * ```
+ *
+ * @param element Target element whose attribute holds space-separated tokens.
+ * @param attribute Attribute name to manage (e.g. "aria-describedby").
+ * @returns A `DOMTokenList`-like object bound to the given attribute.
+ */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any */
+export function attributeTokenList(element:HTMLElement, attribute:string):DOMTokenList {
+  const list:any = {};
+
+  const getTokens = ():string[] =>
+    (element.getAttribute(attribute) ?? '').trim().split(/\s+/).filter(Boolean);
+
+  const setTokens = (tokens:string[]):void =>
+    element.setAttribute(attribute, tokens.join(' '));
+
+  const syncIndexes = ():void => {
+    // remove old indexed properties
+    const keys = Object.keys(list).filter((key) => /^\d+$/.test(key));
+    for (const key of keys) {
+      delete list[key];
+    }
+
+    const tokens = getTokens();
+    tokens.forEach((token, index) => {
+      list[index] = token;
+    });
+    list.length = tokens.length;
+  };
+
+  // Initialize indexed properties and length
+  syncIndexes();
+
+  list.add = (...tokens:string[]):void => {
+    const set = new Set(getTokens());
+    tokens.forEach((token) => {
+      set.add(token);
+    });
+    setTokens([...set]);
+    syncIndexes();
+  };
+
+  list.remove = (...tokens:string[]):void => {
+    setTokens(getTokens().filter((token) => !tokens.includes(token)));
+    syncIndexes();
+  };
+
+  list.toggle = (token:string, force?:boolean):boolean => {
+    const exists = list.contains(token);
+    const shouldAdd = force ?? !exists;
+    if (shouldAdd) {
+      list.add(token);
+    } else {
+      list.remove(token);
+    }
+    return shouldAdd;
+  };
+
+  list.replace = (oldToken:string, newToken:string):boolean => {
+    if (!list.contains(oldToken)) return false;
+    list.remove(oldToken);
+    list.add(newToken);
+    return true;
+  };
+
+  list.contains = (token:string):boolean => getTokens().includes(token);
+
+  list.item = (index:number):string|null => getTokens()[index] ?? null;
+
+  Object.defineProperty(list, 'value', {
+    get: ():string => element.getAttribute(attribute) ?? '',
+    set: (value:string):void => {
+      setTokens(value.trim().split(/\s+/).filter(Boolean));
+      syncIndexes();
+    }
+  });
+
+  list.toString = ():string => list.value;
+
+  // Iterable support
+  list[Symbol.iterator] = function* () {
+    yield* getTokens();
+  };
+
+  return list as DOMTokenList;
+}
+/* eslint-enable */

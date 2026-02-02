@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -44,6 +46,8 @@ gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
 
+gem "connection_pool", "~> 2.5.5"
+
 gem "rdoc", ">= 2.4.2"
 
 gem "doorkeeper", "~> 5.8.0"
@@ -58,13 +62,13 @@ gem "warden-basic_auth", "~> 0.2.1"
 gem "pagy"
 gem "will_paginate", "~> 4.0.0"
 
-gem "friendly_id", "~> 5.5.0"
+gem "friendly_id", "~> 5.6.0"
 
 gem "scimitar", "~> 2.13"
 
 gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
-gem "awesome_nested_set", "~> 3.8.0"
+gem "awesome_nested_set", "~> 3.9.0"
 gem "closure_tree", "~> 9.3.0"
 gem "rubytree", "~> 2.1.0"
 
@@ -83,7 +87,7 @@ gem "htmldiff"
 gem "stringex", "~> 2.8.5"
 
 # CommonMark markdown parser with GFM extension
-gem "commonmarker", "~> 2.5.0"
+gem "commonmarker", "~> 2.6.0"
 
 # HTML pipeline for transformations on text formatter output
 # such as sanitization or additional features
@@ -93,7 +97,7 @@ gem "deckar01-task_list", "~> 2.3.1"
 # Requires escape-utils for faster escaping
 gem "escape_utils", "~> 1.3"
 # Syntax highlighting used in html-pipeline with rouge
-gem "rouge", "~> 4.6.1"
+gem "rouge", "~> 4.7.0"
 # HTML sanitization used for html-pipeline
 gem "sanitize", "~> 7.0.0"
 # HTML autolinking for mails and urls (replaces autolink)
@@ -107,7 +111,7 @@ gem "svg-graph", "~> 2.2.0"
 
 gem "date_validator", "~> 0.12.0"
 gem "email_validator", "~> 2.2.3"
-gem "json_schemer", "~> 2.4.0"
+gem "json_schemer", "~> 2.5.0"
 gem "ruby-duration", "~> 3.2.0"
 
 gem "mail", "2.9.0"
@@ -119,7 +123,7 @@ gem "sys-filesystem", "~> 1.5.0", require: false
 
 gem "bcrypt", "~> 3.1.6"
 
-gem "multi_json", "~> 1.17.0"
+gem "multi_json", "~> 1.19.0"
 gem "oj", "~> 3.16.12"
 
 gem "daemons"
@@ -137,7 +141,7 @@ gem "rack-attack", "~> 6.8.0"
 gem "browser", "~> 6.2.0"
 
 # Providing health checks
-gem "okcomputer", "~> 1.19.0"
+gem "okcomputer", "~> 1.19.1"
 
 # Lograge to provide sane and non-verbose logging
 gem "lograge", "~> 0.14.0"
@@ -156,6 +160,8 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
+
+gem "mcp", "~> 0.4.0"
 
 gem "meta-tags", "~> 2.22.2"
 
@@ -177,7 +183,7 @@ group :production do
 end
 
 gem "i18n-js", "~> 4.2.4"
-gem "rails-i18n", "~> 8.0.0"
+gem "rails-i18n", "~> 8.1.0"
 
 gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
 gem "sprockets-rails", "~> 3.5.1"
@@ -186,17 +192,17 @@ gem "puma", "~> 7.1"
 gem "puma-plugin-statsd", "~> 2.7"
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
-gem "nokogiri", "~> 1.18.10"
+gem "nokogiri", "~> 1.19.0"
 
 gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
 gem "fog-aws"
 
-gem "aws-sdk-core", "~> 3.239"
+gem "aws-sdk-core", "~> 3.241"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.205"
+gem "aws-sdk-s3", "~> 1.213"
 
-gem "openproject-token", "~> 8.2.0"
+gem "openproject-token", "~> 8.5.0"
 
 gem "plaintext", "~> 0.3.7"
 
@@ -225,12 +231,12 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.87.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.89.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.1.1"
+gem "view_component", "~> 4.2.0"
 # Lookbook
-gem "lookbook", "2.3.13"
+gem "lookbook", "2.3.14"
 
 gem "inline_svg", "~> 1.10.0"
 
@@ -246,7 +252,7 @@ gem "turbo-rails", "~> 2.0.20"
 # happenning in failing tests when WebMock or VCR stub cannot be found.
 gem "httpx", "~> 1.6.3"
 
-# Brings actual deep freezing to most ruby objects
+# Brings actual deep-freezing to most ruby objects
 gem "ice_nine"
 
 group :test do
@@ -356,7 +362,7 @@ group :development, :test do
   gem "rubocop-factory_bot", require: false
   gem "rubocop-openproject", require: false
   gem "rubocop-performance", require: false
-  gem "rubocop-rails", "2.34.2", require: false # 2.33.4 has issues with Rails/ActionControllerFlashBeforeRender
+  gem "rubocop-rails", "~> 2.34.2"
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
 
@@ -374,7 +380,7 @@ group :development, :test do
   gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem "bootsnap", "~> 1.19.0", require: false
+gem "bootsnap", "~> 1.20.0", require: false
 
 # API gems
 gem "grape", "~> 2.4.0"
@@ -394,12 +400,15 @@ gem "disposable", "~> 0.6.2"
 # Used for formula evaluation of calculated values
 gem "dentaku", "~> 3.5"
 
+# Used for more powerful counter caches
+gem "counter_culture", "~> 3.11"
+
 group :postgres do
   gem "pg", "~> 1.6.2"
 end
 
 # Support application loading when no database exists yet.
-gem "activerecord-nulldb-adapter", "~> 1.1.1"
+gem "activerecord-nulldb-adapter", "~> 1.2.2"
 
 # Have application level locks on the database to have a mutex shared between workers/hosts.
 # We e.g. employ this to safeguard the creation of journals.
@@ -417,6 +426,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.31.1"
-gem "openproject-octicons_helper", "~>19.31.1"
-gem "openproject-primer_view_components", "~>0.78.1"
+gem "openproject-octicons", "~>19.32.0"
+gem "openproject-octicons_helper", "~>19.32.0"
+gem "openproject-primer_view_components", "~>0.80.1"

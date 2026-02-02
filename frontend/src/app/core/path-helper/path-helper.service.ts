@@ -134,6 +134,10 @@ export class PathHelperService {
     return `${this.staticBase}/my/notifications`;
   }
 
+  public myPasswordConfirmationDialogPath() {
+    return `${this.staticBase}/my/password_confirmation_dialog`;
+  }
+
   public newsPath(newsId:string) {
     return `${this.staticBase}/news/${newsId}`;
   }
@@ -401,6 +405,10 @@ export class PathHelperService {
 
   public workPackagesBulkDeletePath() {
     return `${this.workPackagesPath(null)}/bulk`;
+  }
+
+  public workPackagesBulkReassignmentPath() {
+    return `${this.workPackagesPath(null)}/bulk/reassign`;
   }
 
   public textFormattingHelp() {

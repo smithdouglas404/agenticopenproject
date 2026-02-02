@@ -192,6 +192,26 @@ class J
       })
   end
 
+  def download_attachment(content_url)
+    case (response = @httpx.get(content_url))
+    in {status: 200..299}
+      response.body
+    in {status: 300..399}
+      case (redirect_response =  @httpx.get(response.headers["location"]))
+      in {status: 200..299}
+        redirect_response.body
+      in {status: 300..}
+        raise "BAD RESPONSE: #{redirect_response.status}, #{redirect_response.body}"
+      in {error: error}
+        raise error
+      end
+    in {status: 400..}
+      raise "BAD RESPONSE: #{response}"
+    in {error: error}
+      raise error
+    end
+  end
+
   private
 
   def get(path, params: {})

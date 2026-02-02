@@ -31,8 +31,7 @@
 class Projects::CreationWizardController < ApplicationController
   include OpTurbo::ComponentStream
 
-  before_action :find_project_by_project_id
-  load_and_authorize_with_permission_in_optional_project :edit_project_attributes
+  load_and_authorize_with_permission_in_project :edit_project_attributes
   before_action :load_sections_and_fields, only: %i[show update]
   before_action :find_current_section, only: %i[show update]
 
@@ -48,38 +47,49 @@ class Projects::CreationWizardController < ApplicationController
     respond_with_turbo_streams
   end
 
-  def update # rubocop:disable Metrics/AbcSize
+  def update
     service_call = Projects::UpdateService
-      .new(user: current_user, model: @project)
+      .new(user: current_user, model: @project, contract_options: { project_attributes_only: true })
       .call(permitted_params.project)
 
     if service_call.success?
       if last_page?
-        creation_call = Projects::CreateArtifactWorkPackageService.new(user: current_user, model: @project).call
-
-        # even when successful, there can be errors related to the artifact
-        # upload to Nextcloud that needs to be shown to the user
-        flash[:error] = creation_call.errors.full_messages # rubocop:disable Rails/ActionControllerFlashBeforeRender
-        if creation_call.success?
-          redirect_to project_work_packages_path(@project, @project.project_creation_wizard_artifact_work_package_id),
-                      notice: I18n.t("projects.wizard.success")
-        else
-          render :show,
-                 locals: { menu_name: :none },
-                 status: :unprocessable_entity
-        end
+        create_work_package_artifact
       else
         redirect_to project_creation_wizard_path(@project, section: params[:next_section])
       end
     else
       @project = service_call.result
-      render :show,
-             locals: { menu_name: :none },
-             status: :unprocessable_entity
+      render_wizard_error_step
     end
   end
 
   private
+
+  def render_wizard_error_step
+    render :show,
+           locals: { menu_name: :none },
+           status: :unprocessable_entity
+  end
+
+  def create_work_package_artifact # rubocop:disable Metrics/AbcSize
+    creation_call = User.execute_as_admin(current_user) do
+      Projects::CreationWizard::CreateArtifactWorkPackageService
+        .new(user: current_user, model: @project)
+        .call
+    end
+
+    # even when successful, there can be errors related to the artifact
+    # upload to Nextcloud that needs to be shown to the user
+    if creation_call.success?
+      flash[:error] = creation_call.errors.full_messages if creation_call.errors.any?
+      redirect_to project_work_packages_path(@project, @project.project_creation_wizard_artifact_work_package_id),
+                  notice: I18n.t("projects.wizard.success")
+    else
+      flash.now[:error] = creation_call.errors.full_messages
+      render_wizard_error_step
+    end
+  end
 
   def last_page?
     params[:finish]

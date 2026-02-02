@@ -307,7 +307,7 @@ module Components
         expect(page).to have_test_selector("no-relations-blankslate", text: "This work package does not have any relations yet.")
       end
 
-      def add_parent(query, work_package)
+      def add_parent(work_package)
         # Open the parent edit
         SeleniumHubWaiter.wait
         find(".wp-relation--parent-change").click
@@ -316,9 +316,8 @@ module Components
         SeleniumHubWaiter.wait
         autocomplete = page.find_test_selector("wp-relations-autocomplete")
         select_autocomplete autocomplete,
-                            query:,
-                            results_selector: ".ng-dropdown-panel-items",
-                            select_text: work_package.id
+                            query: work_package.subject,
+                            results_selector: ".ng-dropdown-panel-items"
       end
 
       def expect_parent(work_package)

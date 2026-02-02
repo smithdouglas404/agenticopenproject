@@ -281,6 +281,7 @@ RSpec.describe "Edit project phases on project overview page", :js do
         # The earliest enabled date should be after initiating date's finish date
         initiating_finish_date_succesor = initiating_finish_date + 1.day
 
+        datepicker.show_date(initiating_finish_date)
         datepicker.expect_not_disabled(initiating_finish_date)
         datepicker.expect_not_disabled(initiating_finish_date_succesor)
 
@@ -300,6 +301,7 @@ RSpec.describe "Edit project phases on project overview page", :js do
         dialog.expect_input("Finish date", value: "")
         dialog.expect_input("Duration", value: "", disabled: true)
 
+        datepicker.show_date(initiating_finish_date)
         datepicker.expect_disabled(initiating_finish_date)
         datepicker.expect_not_disabled(initiating_finish_date_succesor)
 
