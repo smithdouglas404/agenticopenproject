@@ -77,8 +77,6 @@ To duplicate an agenda item, users can select the corresponding option from the 
 
 ### Release Attribute highlighting to Community
 
-### Release Attribute highlighting to Community
-
 The Attribute highlighting feature, previously available only as an Enterprise add-on, is now included in the free Community plan.
 
 Users can configure attribute highlighting in work package table views by opening the table configuration and selecting the **Highlighting** tab. Attributes such as Status, Priority, and Finish date can be highlighted inline or applied as full-row highlights based on attribute values. This makes key attributes visually distinguishable directly in the work package list without opening individual items.
@@ -95,15 +93,24 @@ OpenProject introduces a warning before opening external links in user-provided 
 
 When users click on an external link, a confirmation dialog is displayed indicating that the link leads outside of OpenProject. This applies to links added by users, for example in descriptions, comments, or other text fields. In SaaS trial environments, external link handling is enforced to ensure that warnings for user-provided external links cannot be bypassed.
 
+### Show short and weight values for Hierarchy and Weighted item list fields
+
+Users now see an item’s short or weight wherever values from Hierarchy or Weighted item list custom fields (work packages) and project attributes are shown. This provides an extra hint to confirm that the right item was selected.
+
+This information is displayed in:
+- Work package details (for assigned values).
+- Work package tables (for assigned values).
+- Project attributes (for assigned values).
+- The tree view selector while selecting a value (work packages and projects).
+- The admin Items tab when editing the field, including the tree overview.
+
+## Important technical changes
+
 ### Improved performance in work package Activity tab
 
 OpenProject improved the performance of the work package Activity tab when working with a large number of comments and activities. Previously, work packages with a very high number of comments could cause the browser to become slow or unresponsive when opening the Activity tab. With this release, activities are now loaded progressively instead of all at once. An initial subset of activities is loaded first, and additional entries are fetched as needed, with a loading indicator shown while more items are being loaded.
 
 This change prevents browser freezes and significantly improves responsiveness when opening and navigating work packages with extensive activity histories.
-
-## Important technical changes
-
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
 <!--more-->
 
