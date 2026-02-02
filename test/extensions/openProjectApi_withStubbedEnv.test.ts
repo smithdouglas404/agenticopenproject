@@ -1,8 +1,9 @@
 import { onAuthenticatePayload } from "@hocuspocus/server";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from "vitest";
 import { OpenProjectApi } from "../../src/extensions/openProjectApi";
+import { server } from "../mocks/node";
 
-describe("OpenProjectApi with stubbed env", () => {
+describe("when an override URL for the OpenProject instance is defined", () => {
   beforeAll(() => {
     vi.hoisted(() => {
       vi.stubEnv("OPENPROJECT_URL", "https://my.op-instance.com/");
@@ -13,22 +14,12 @@ describe("OpenProjectApi with stubbed env", () => {
     vi.unstubAllEnvs();
   });
 
-  let fetchMock: any;
-  beforeEach(() => {
-    fetchMock = vi.fn();
-    vi.stubGlobal("fetch", fetchMock);
-  });
+  test("the request is made to the override URL transparently", async () => {
+    const requestedUrls: string[] = [];
 
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
-
-  test("when the url for the OpenProject instance is manually defined", async () => {
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      status: 200,
-      json: () => Promise.resolve({}),
-    });
+    server.events.on('request:end', ({ request }) => {
+      requestedUrls.push(request.url);
+    })
 
     const data = {
       context: {},
@@ -39,8 +30,11 @@ describe("OpenProjectApi with stubbed env", () => {
 
     await new OpenProjectApi().onAuthenticate(data);
 
-    expect(data.context.resourceUrl).toEqual("https://my.op-instance.com/api/v3/documents/1");
+    expect(data.context.resourceUrl).toEqual("https://test.api/api/v3/documents/1");
     expect(data.context.token).toEqual("some_token_value");
     expect(data.documentName).toEqual("https://test.api/api/v3/documents/1");
+
+    // request by onAuthenticate made against override URL
+    expect(requestedUrls).toEqual(["https://my.op-instance.com/api/v3/documents/1"])
   });
 });

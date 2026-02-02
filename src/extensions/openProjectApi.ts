@@ -6,7 +6,7 @@ import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
 import * as Y from "yjs";
 import { decryptToken } from "../services/decryptTokenService";
 import type { ApiResponseDocument } from "../types";
-import { fetchResource, overrideUrl } from "../services/resourceService";
+import { fetchResource } from "../services/resourceService";
 
 export const editorSchema = BlockNoteSchema.create().extend({
   blockSpecs: {
@@ -27,8 +27,7 @@ export class OpenProjectApi implements Extension {
     * Authenticate the user by validating the token and document access
     */
   async onAuthenticate(data: onAuthenticatePayload) {
-    const { token: packedParams, documentName } = data;
-    const resourceUrl = documentName;
+    const { token: packedParams, documentName: resourceUrl } = data;
 
     if (!packedParams) {
       throw new Error('Unauthorized: Missing auth params');
@@ -48,17 +47,17 @@ export class OpenProjectApi implements Extension {
     }
 
     if (tokenResourceUrl !== resourceUrl) {
-      throw new Error('Unauthorized: Token resource URL does not match document.');
+      throw new Error(`Unauthorized: Token resource URL does not match document. (Token: ${tokenResourceUrl}, Resource: ${resourceUrl})`);
     }
 
-    const response: Response = await fetchResource(resourceUrl, oauth_token);
+    const response = await fetchResource(resourceUrl, oauth_token);
 
-    if (!response.ok) {
-      throw new Error('Unauthorized: Invalid token or document access denied.');
+    if (response.status != 200) {
+      throw new Error(`Unauthorized: Invalid token or document access denied. (${response.status}: ${response.statusText})`);
     }
-    const jsonData = await response.json() as ApiResponseDocument;
+    const jsonData = await response.data as ApiResponseDocument;
 
-    data.context.resourceUrl = overrideUrl(resourceUrl);
+    data.context.resourceUrl = resourceUrl;
     data.context.token = oauth_token;
     if (!jsonData._links?.update) {
       // https://tiptap.dev/docs/hocuspocus/guides/auth#read-only-mode
@@ -73,16 +72,14 @@ export class OpenProjectApi implements Extension {
   async onLoadDocument(data: onLoadDocumentPayload) {
     const { resourceUrl } = data.context;
 
-    printLog(`GET ${resourceUrl}`);
-
     const response = await fetchResource(resourceUrl, data.context.token);
 
-    if (!response.ok) {
-      console.warn(`Error fetching document: ${response.statusText}`);
+    if (response.status != 200) {
+      console.warn(`Error fetching document (${response.status}: ${response.statusText})`);
       return;
     }
 
-    const jsonData = await response.json() as ApiResponseDocument;
+    const jsonData = await response.data as ApiResponseDocument;
     if (jsonData.contentBinary) {
       const update = new Uint8Array(Buffer.from(jsonData.contentBinary, 'base64'));
       Y.applyUpdate(data.document, update);
@@ -121,14 +118,14 @@ export class OpenProjectApi implements Extension {
 
     const response = await fetchResource(resourceUrl, data.context.token, {
       method: "PATCH",
-      body: JSON.stringify({
+      data: {
         content_binary: base64Data,
         description: markdownData,
-      }),
+      },
     });
 
-    if (!response.ok) {
-      console.warn(`Error storing document: ${response.statusText}`);
+    if (response.status != 200) {
+      console.warn(`Error storing document (${response.status}: ${response.statusText})`);
       return;
     }
 

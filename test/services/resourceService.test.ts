@@ -1,22 +1,11 @@
 import { describe, expect, test, vi } from "vitest";
 import { fetchResource } from "../../src/services/resourceService";
 
-const oauthToken: string = "xxxxx.yyyyy.zzzzz";
-const fetchParams = {
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${oauthToken}`,
-  },
-  method: "GET"
-};
-
 describe("fetchResource", () => {
-  test("returns the host if a direct host is not defined", () => {
-    using fetch = vi.spyOn(global, "fetch");
-    const resourceUrl = "https://example.com/path/to/resource";
-    
-    fetchResource(resourceUrl, oauthToken);
+  test("requests the resource at the original URL, with the original host header", async () => {
+    const resourceUrl = "https://test.openproject.com/api/v3/documents/42";
+    const response = await fetchResource(resourceUrl, "__valid_oauth_token");
 
-    expect(fetch).toHaveBeenCalledWith(resourceUrl, fetchParams);
+    expect(response.data).toMatchObject({ __echo: { url: resourceUrl, hostHeader: 'test.openproject.com' }})
   });
 });
