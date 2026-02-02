@@ -97,6 +97,10 @@ When users click on an external link, a confirmation dialog is displayed indicat
 
 ### Improved performance in work package Activity tab
 
+OpenProject improved the performance of the work package Activity tab when working with a large number of comments and activities. Previously, work packages with a very high number of comments could cause the browser to become slow or unresponsive when opening the Activity tab. With this release, activities are now loaded progressively instead of all at once. An initial subset of activities is loaded first, and additional entries are fetched as needed, with a loading indicator shown while more items are being loaded.
+
+This change prevents browser freezes and significantly improves responsiveness when opening and navigating work packages with extensive activity histories.
+
 ## Important technical changes
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
