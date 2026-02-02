@@ -33,11 +33,11 @@ When a project initiation request is submitted, OpenProject automatically create
 
 The work package is created based on the wizard configuration, including work package type, status, and assignee. Assignment can be derived from a project attribute or a project role, such as a project owner. The work package contains links back to the wizard and can be processed using existing workflows.
 
-#### Automatically generated project initiation artefact (PDF)
+#### Automatically generated project initiation artifact (PDF)
 
-Upon submission of the project initiation request, a PDF artefact is automatically generated. The artefact contains all information entered in the wizard and is attached to the corresponding work package for documentation and audit purposes.
+Upon submission of the project initiation request, a PDF artifact is automatically generated. The artifact contains all information entered in the wizard and is attached to the corresponding work package for documentation and audit purposes.
 
-The artefact is updated automatically whenever the status of the project initiation request work package changes, ensuring that the documentation always reflects the current state.
+The artifact is updated automatically whenever the status of the project initiation request work package changes, ensuring that the documentation always reflects the current state.
 
 #### Changed enforcement of required project attributes when using templates
 
@@ -48,11 +48,32 @@ When projects are created from templates with an enabled initiation wizard, requ
 
 ### Updates for the Meetings module
 
+The Meetings module received several improvements that extend how meeting results are documented, reused, and shared.
+
 #### Add new or existing work packages as meeting outcomes
+
+Users can now add work packages as meeting outcomes, allowing teams to turn meeting results into actionable follow-up items without leaving the meeting context. They can either:
+
+- link an existing work package, or
+- create a new work package as an outcome.
+
+Each linked work package automatically shows a reference to the meeting in its Meetings tab, making the connection between the agenda item and the follow-up item explicit.
+
+Since OpenProject 17.0 allows multiple outcomes per agenda item, it is now also possible to link multiple work packages to the same agenda item.
 
 #### Show meeting participant responses in iCal subscriptions
 
+Meeting participant responses are now handled more consistently across OpenProject and external calendars. Responses such as accepted, declined, or no response are visible directly in the meeting, making it easier to see the current participation status of all attendees.
+
+In addition, participant responses are now included in iCal subscriptions. This allows calendar applications to display the response status of meeting participants and keep it in sync with the information shown in OpenProject.
+
 #### Duplicate agenda items to the next recurring meeting occurrence
+
+Users can now duplicate agenda items to the next occurrence of a recurring meeting. This makes it possible to carry over open topics or recurring discussion points without recreating them manually.
+
+To duplicate an agenda item, users can select the corresponding option from the agenda item actions menu. The duplicated agenda item is added to the next meeting occurrence and can be edited independently.
+
+![OpenProject meeting showing option to duplicate an agenda item to the next meeting occurrence by clicking the More menu of an agenda item --> Duplicate --> Duplicate in next occurrence](openproject-17-1-meetings-duplicate-agenda-item.png)
 
 ### Release Attribute highlighting to Community
 
