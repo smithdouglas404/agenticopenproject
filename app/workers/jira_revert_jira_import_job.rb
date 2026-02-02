@@ -28,10 +28,45 @@ class JiraRevertJiraImportJob < ApplicationJob
           op_leg.destroy unless uses_existing
         end
       end
-      OpenProjectJiraReference.where(jira_import_id: jira_import.id).delete_all
-    end
+      OpenProjectJiraReference
+        .where(jira_import_id: jira_import.id,)
+        .where(op_entity_class: "User")
+        .find_each do |ref|
+        op_leg = ref.op_leg
+        uses_existing = ref.uses_existing
+        # EmptyContract is used to make deletion not dependent on Setting.users_deletable_by_admins
+        service_call = ::Users::DeleteService.new(user:, model: op_leg, contract_class: EmptyContract).call
+        if service_call.failure?
+          raise ActiveRecord::Rollback
+        end
+      end
+      OpenProjectJiraReference
+        .where(jira_import_id: jira_import.id,)
+        .where(op_entity_class: "Group")
+        .find_each do |ref|
+        op_leg = ref.op_leg
+        uses_existing = ref.uses_existing
+        service_call = ::Groups::DeleteService.new(user:, model: op_leg).call
+        if service_call.failure?
+          raise ActiveRecord::Rollback
+        end
+      end
+      OpenProjectJiraReference
+        .where(jira_import_id: jira_import.id,)
+        .where(op_entity_class: "ProjectRole")
+        .find_each do |ref|
+        op_leg = ref.op_leg
+        uses_existing = ref.uses_existing
+        service_call = ::Roles::DeleteService.new(user:, model: op_leg).call
+        if service_call.failure?
+          raise ActiveRecord::Rollback
+        end
+      end
 
-    jira_import.update!(status: JiraImport::REVERTED, job_id: nil)
+      OpenProjectJiraReference.where(jira_import_id: jira_import.id).delete_all
+
+      jira_import.update!(status: JiraImport::REVERTED, job_id: nil)
+    end
   rescue StandardError => e
     jira_import.update!(status: JiraImport::REVERT_ERROR, job_id: nil, error: e.message)
   end
