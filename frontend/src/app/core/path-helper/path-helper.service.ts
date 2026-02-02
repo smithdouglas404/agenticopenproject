@@ -407,6 +407,10 @@ export class PathHelperService {
     return `${this.workPackagesPath(null)}/bulk`;
   }
 
+  public workPackagesBulkReassignmentPath() {
+    return `${this.workPackagesPath(null)}/bulk/reassign`;
+  }
+
   public textFormattingHelp() {
     return `${this.staticBase}/help/text_formatting`;
   }
