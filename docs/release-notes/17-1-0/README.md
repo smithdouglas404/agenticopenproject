@@ -17,7 +17,34 @@ release_date: 2026-02-11
 <!-- END CVE SECTION -->
 ## Important feature changes
 
-### Automated project initiation request (Enterprise add-on)
+### Automated project initiation request with a guided wizard (Enterprise add-on)
+
+OpenProject introduces a configurable wizard for project initiation requests. The wizard is available as an **Enterprise add-on in the Premium plan** and can be enabled per project template.
+
+#### Configurable project initiation wizard
+
+Administrators can configure a project initiation wizard to define how new project requests are submitted. This includes selecting which project attributes and sections are shown in the wizard, and which fields are required or optional.
+
+The wizard guides users step by step through the initiation process using a fullscreen, three-column layout with section navigation, contextual help, and a progress indicator. Instead of completing required project attributes during project creation, users provide this information as part of the initiation request.
+
+#### Create a project initiation request as a work package
+
+When a project initiation request is submitted, OpenProject automatically creates a work package that represents the request and serves as its central tracking artifact.
+
+The work package is created based on the wizard configuration, including work package type, status, and assignee. Assignment can be derived from a project attribute or a project role, such as a project owner. The work package contains links back to the wizard and can be processed using existing workflows.
+
+#### Automatically generated project initiation artefact (PDF)
+
+Upon submission of the project initiation request, a PDF artefact is automatically generated. The artefact contains all information entered in the wizard and is attached to the corresponding work package for documentation and audit purposes.
+
+The artefact is updated automatically whenever the status of the project initiation request work package changes, ensuring that the documentation always reflects the current state.
+
+#### Changed enforcement of required project attributes when using templates
+
+When projects are created from templates with an enabled initiation wizard, required project attributes are no longer enforced during project creation. Instead, they are collected as part of the initiation request workflow. For projects created without templates, required attributes continue to be enforced during project creation.
+
+>[!NOTE]
+> The project initiation request workflow is particularly well suited for structured frameworks such as PM² or PMflex, while remaining flexible enough to be used independently of any specific methodology. Read this blog article for more information: https://www.openproject.org/blog/project-initiation-workflow-pm2/
 
 ### Updates for the Meetings module
 
@@ -31,7 +58,7 @@ release_date: 2026-02-11
 
 ### Warning before opening external links in user-provided content (Enterprise add-on)
 
-### Improved performance and user experience
+### Improved performance in work package Activity tab
 
 ## Important technical changes
 
