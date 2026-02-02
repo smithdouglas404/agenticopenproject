@@ -1,0 +1,78 @@
+<style>
+    @media (min-width: 640px) {
+        #jira-projects-list {
+            column-count: 2;
+            column-gap: 2rem;
+        }
+    }
+
+    @media (min-width: 340px) {
+        #jira-filter-column {
+            min-width: 300px;
+        }
+    }
+
+    #jira-projects-list .FormControl-checkbox-wrap {
+        break-inside: avoid-column;
+    }
+</style>
+
+<%= flex_layout(flex_wrap: :wrap, mb: 3) do |flex|
+  flex.with_column(flex: 1, id: "jira-filter-column") do
+    render(Primer::Alpha::TextField.new(
+      name: :filter,
+      label: "Filter by text",
+      placeholder: "Filter by text",
+      visually_hide_label: true,
+      input_width: :large,
+      leading_visual: { icon: :search },
+      data: {
+        "admin--jira-projects-filter-target": "filterInput",
+        action: "input->admin--jira-projects-filter#filter"
+      }
+    ))
+  end
+  flex.with_column do
+    render(OpenProject::Common::CheckAllComponent.new(checkable_id: "jira-projects-list")) do |check_all|
+      check_all.with_check_all_button(scheme: :invisible) do |button|
+        button.with_leading_visual_icon(icon: :"check-circle")
+        I18n.t(:button_check_all)
+      end
+      check_all.with_separator_content("")
+      check_all.with_uncheck_all_button(scheme: :invisible) do |button|
+        button.with_leading_visual_icon(icon: :"x-circle")
+        I18n.t(:button_uncheck_all)
+      end
+    end
+  end
+end %>
+
+<%= settings_primer_form_with(**form_options) do %>
+  <section id="jira-projects-list">
+    <%=
+      render(
+        Primer::Alpha::CheckBoxGroup.new(
+          name: :projects,
+          label: I18n.t(:"admin.jira.columns.projects"),
+          visually_hide_label: true,
+          data: { controller: "checkable" }
+        )
+      ) do |group|
+        available_projects.each do |project|
+          group.check_box(
+            value: project["id"],
+            label: project["name"],
+            caption: project["key"],
+            checked: checked?(project["id"]),
+            data: {
+              checkable_target: "checkbox",
+              "admin--jira-projects-filter-target": "project",
+              project_name: project["name"],
+              project_key: project["key"]
+            }
+          )
+        end
+      end
+    %>
+  </section>
+<% end %>

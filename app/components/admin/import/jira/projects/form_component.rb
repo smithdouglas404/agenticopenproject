@@ -29,30 +29,40 @@
 #++
 
 module Admin::Import::Jira::Projects
-  class Form < ApplicationForm
-    attr_reader :jira_import
+  class FormComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpPrimer::ComponentHelpers
+
+    FORM_ID = "op-jira-select-projects-list-form"
 
     def initialize(jira_import:)
       super()
-
       @jira_import = jira_import
+    end
+
+    private
+
+    attr_reader :jira_import
+
+    def available_projects
+      @jira_import.available&.dig("projects") || []
     end
 
     def project_ids
       @project_ids ||= jira_import.project_ids || []
     end
 
-    form do |f|
-      f.check_box_group(name: :projects) do |check_group|
-        (@jira_import.available&.dig("projects") || []).each do |project|
-          check_group.check_box(
-            value: project["id"],
-            label: project["name"],
-            caption: project["key"],
-            checked: project_ids.include?(project["id"])
-          )
-        end
-      end
+    def checked?(project_id)
+      project_ids.include?(project_id)
+    end
+
+    def form_options
+      {
+        style: "height: 500px; overflow-y: auto;",
+        id: FORM_ID,
+        url: select_projects_admin_import_jira_run_path(jira_id: jira_import.jira.id, id: jira_import.id),
+        method: :post
+      }
     end
   end
 end

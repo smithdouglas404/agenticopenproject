@@ -2,35 +2,39 @@
       Primer::Alpha::Dialog.new(
         title: I18n.t(:"admin.jira.run.wizard.select_projects.title"),
         id: MODAL_ID,
-        size: :medium_portrait
+        size: :xlarge
       )
-    ) do |d| %>
-  <% d.with_header(variant: :large) %>
-  <% d.with_body do %>
-    <% settings_primer_form_with(**form_options) do |f| %>
-      <% render(Admin::Import::Jira::Projects::Form.new(f, jira_import:)) %>
-    <% end %>
-  <% end %>
-  <%
-    d.with_footer do
-      component_collection do |modal_footer|
-        modal_footer.with_component(
-          Primer::Beta::Button.new(
-            data: { "close-dialog-id": MODAL_ID }
-          )
-        ) do
-          I18n.t(:button_cancel)
-        end
-        modal_footer.with_component(
-          Primer::Beta::Button.new(
-            scheme: :primary,
-            form: FORM_ID,
-            type: :submit
-          )
-        ) do
-          I18n.t(:button_continue)
-        end
+    ) do |d|
+  d.with_header(
+    show_divider: true,
+    variant: :medium
+  )
+  d.with_body(
+    classes: "Overlay-body_autocomplete_height",
+    data: { controller: "admin--jira-projects-filter" }
+  ) do
+    render(Admin::Import::Jira::Projects::FormComponent.new(jira_import:))
+  end
+  d.with_footer(
+    show_divider: true
+  ) do
+    component_collection do |modal_footer|
+      modal_footer.with_component(
+        Primer::Beta::Button.new(
+          data: { "close-dialog-id": MODAL_ID }
+        )
+      ) do
+        I18n.t(:button_cancel)
+      end
+      modal_footer.with_component(
+        Primer::Beta::Button.new(
+          scheme: :primary,
+          form: Admin::Import::Jira::Projects::FormComponent::FORM_ID,
+          type: :submit
+        )
+      ) do
+        I18n.t(:button_continue)
       end
     end
-  %>
-<% end %>
+  end
+end %>

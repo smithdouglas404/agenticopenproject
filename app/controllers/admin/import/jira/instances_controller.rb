@@ -55,40 +55,19 @@ module Admin::Import::Jira
 
     def create
       result = ::Jiras::CreateService.new(user: User.current).call(jira_params)
-      result.on_failure do
-        @jira = result.result
-        stream_form_component do |format|
-          format.html { render :new }
-        end
-      end
-
-      result.on_success do
-        flash[:notice] = t(:notice_successful_create)
-        redirect_to(admin_import_jira_path(result.result.id))
-      end
+      handle_service_result(result, success_path: -> { admin_import_jira_path(result.result.id) }, failure_view: :new)
     end
 
     def update
       result = ::Jiras::UpdateService.new(user: User.current, model: @jira).call(jira_params)
-
-      result.on_failure do
-        @jira = result.result
-        stream_form_component do |format|
-          format.html { render :edit }
-        end
-      end
-
-      result.on_success do
-        flash[:notice] = t(:notice_successful_update)
-        redirect_to action: :index
-      end
+      handle_service_result(result, success_path: -> { admin_import_jiras_path }, failure_view: :edit)
     end
 
     def destroy
       if JiraImport.exists?(jira_id: @jira.id)
         flash[:error] = t(:"admin.jira.errors.cannot_delete_with_imports")
       else
-        @jira.destroy
+        @jira.destroy!
         flash[:notice] = t(:notice_successful_delete)
       end
       redirect_to action: :index
@@ -133,6 +112,16 @@ module Admin::Import::Jira
       permitted
     end
 
+    def handle_service_result(result, success_path:, failure_view:)
+      if result.failure?
+        @jira = result.result
+        stream_form_component { |format| format.html { render failure_view } }
+      else
+        flash[:notice] = t(action_name == "create" ? :notice_successful_create : :notice_successful_update)
+        redirect_to success_path.call
+      end
+    end
+
     def stream_form_component(&)
       update_via_turbo_stream(component: Admin::Import::Jira::FormComponent.new(@jira))
       respond_with_turbo_streams(&)
@@ -158,12 +147,9 @@ module Admin::Import::Jira
       response = client.server_info
 
       if response.is_a?(Hash)
-        render_success_flash_message_via_turbo_stream(
-          message: t(:"admin.jira.test.success",
-                     server: response["serverTitle"] || Jira.model_name,
-                     version: response["version"] || "?"
-          )
-        )
+        server = response["serverTitle"] || Jira.model_name
+        version = response["version"] || "?"
+        render_success_flash_message_via_turbo_stream(message: t(:"admin.jira.test.success", server:, version:))
       else
         render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.failed"))
       end

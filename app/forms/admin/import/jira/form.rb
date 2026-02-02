@@ -73,7 +73,7 @@ module Admin::Import::Jira
           type: :button,
           data: {
             "admin--jira-configuration-form-target": "testButton",
-            "action": "click->admin--jira-configuration-form#testConnection"
+            action: "click->admin--jira-configuration-form#testConnection"
           }
         )
 
