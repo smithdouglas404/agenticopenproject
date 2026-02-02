@@ -2992,7 +2992,7 @@ en:
         learn_about: "Learn more about all new features"
         missing: "There are no highlighted features yet."
         # We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
@@ -3000,7 +3000,7 @@ en:
             line_1: "Meetings: add new or existing work packages as outcomes."
             line_2: "Meetings: show participant responses in iCal subscriptions."
             line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
-            line_4: "Release to Community: Attribute highlighting"
+            line_4: "Release to Community: Attribute highlighting."
             line_5: Warning before opening external links in user-provided content (Enterprise add-on).
             line_6: Improved performance and user experience, including the Activity tab and Documents module.
     links:
