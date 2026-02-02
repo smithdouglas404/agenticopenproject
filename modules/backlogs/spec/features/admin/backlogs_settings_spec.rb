@@ -36,6 +36,9 @@ RSpec.describe "Backlogs Admin Settings", :js do
   let!(:type3) { create(:type_task,           position: 3) }
   let!(:type4) { create(:type_milestone,      position: 4) }
 
+  let(:story_autocompleter) { FormFields::Primerized::AutocompleteField.new("story_types", selector: "[data-test-selector='story_type_autocomplete']") }
+  let(:task_autocompleter) { FormFields::Primerized::AutocompleteField.new("story_types", selector: "[data-test-selector='task_type_autocomplete']") }
+
   let(:current_user) { create(:admin) }
 
   before do
@@ -47,103 +50,51 @@ RSpec.describe "Backlogs Admin Settings", :js do
   scenario "updating story types" do
     expect(page).to have_heading "Backlogs"
 
-    click_on accessible_description: "Story types"
-
-    within_dialog "Select types" do
-      within(:role, :listbox, accessible_name: "Select types options") do
-        page.find(:role, :option, accessible_name: "FEATURE").click
-        page.find(:role, :option, accessible_name: "STORY").click
-      end
-
-      click_on "Apply"
-    end
-
-    expect(page).to have_button accessible_description: "Story types", text: "Selected types: Story, Feature"
+    story_autocompleter.select_option "Feature", "Story"
 
     click_on "Save"
 
     expect_and_dismiss_flash type: :success, message: "Successful update."
 
-    expect(page).to have_button accessible_description: "Story types", text: "Selected types: Story, Feature"
+    story_autocompleter.expect_selected "Feature", "Story"
   end
 
-  scenario "filtering story types" do
-    expect(page).to have_heading "Backlogs"
-
-    click_on accessible_description: "Story types"
-
-    within_dialog "Select types" do
-      within(:role, :listbox, accessible_name: "Select types options") do
-        expect(page).to have_selector :role, :option, count: 4, visible: :visible
-      end
-      fill_in "Filter", with: "f"
-
-      within(:role, :listbox, accessible_name: "Select types options") do
-        expect(page).to have_selector :role, :option, count: 1, visible: :visible
-      end
-
-      click_on "Apply"
-    end
-  end
 
   scenario "updating task type" do
     expect(page).to have_heading "Backlogs"
 
-    click_on accessible_description: "Task type"
-
-    within_dialog "Select a type" do
-      within(:role, :listbox, accessible_name: "Select a type options") do
-        page.find(:role, :option, accessible_name: "TASK").click
-      end
-    end
-
-    expect(page).to have_button accessible_description: "Task type", text: "Selected type: Task"
+    task_autocompleter.select_option "Task"
 
     click_on "Save"
 
     expect_and_dismiss_flash type: :success, message: "Successful update."
 
-    expect(page).to have_button accessible_description: "Task type", text: "Selected type: Task"
+    task_autocompleter.expect_selected "Task"
   end
 
   scenario "ensuring the same type is not selected as story and task type" do
     expect(page).to have_heading "Backlogs"
 
-    click_on accessible_description: "Story types"
+    wait_for_network_idle
+    # Select a value in the story autocompleter...
+    story_autocompleter.select_option "Feature"
+    story_autocompleter.expect_selected "Feature"
+    story_autocompleter.expect_not_disabled "Story"
+    story_autocompleter.close_autocompleter
 
-    within_dialog "Select types" do
-      within(:role, :listbox, accessible_name: "Select types options") do
-        expect(page).to have_selector(:role, :option, accessible_name: "STORY")
+    # ... which is then disabled in the task autocompleter.
+    task_autocompleter.open_options
+    task_autocompleter.expect_disabled "Feature"
 
-        page.find(:role, :option, accessible_name: "FEATURE").click
-      end
+    # Other way around: Select a value in the task automcompleter...
+    task_autocompleter.select_option "Story"
+    task_autocompleter.expect_selected "Story"
+    task_autocompleter.close_autocompleter
 
-      click_on "Apply"
-    end
-
-    expect(page).to have_button accessible_description: "Story types", text: "Selected types: Feature"
-
-    click_on accessible_description: "Task type"
-
-    within_dialog "Select a type" do
-      within(:role, :listbox, accessible_name: "Select a type options") do
-        expect(page).to have_selector(:role, :option, accessible_name: "FEATURE", aria: { disabled: true })
-
-        page.find(:role, :option, accessible_name: "STORY").click
-      end
-    end
-
-    expect(page).to have_button accessible_description: "Task type", text: "Selected type: Story"
-
-    click_on accessible_description: "Story types"
-
-    within_dialog "Select types" do
-      within(:role, :listbox, accessible_name: "Select types options") do
-        expect(page).to have_selector(:role, :option, accessible_name: "STORY", aria: { disabled: true })
-      end
-
-      click_on "Apply"
-    end
+    # ... which will be disabled in the story autocompleter
+    story_autocompleter.open_options
+    story_autocompleter.expect_disabled "Story"
+    story_autocompleter.expect_selected "Feature"
   end
 
   scenario "updating points burn direction" do

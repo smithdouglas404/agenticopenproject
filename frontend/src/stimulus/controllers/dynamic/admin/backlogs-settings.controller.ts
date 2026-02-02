@@ -29,8 +29,10 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { type SelectPanelElement, type SelectPanelItem } from '@openproject/primer-view-components/app/components/primer/alpha/select_panel_element';
-import { type ItemActivatedEvent } from '@openproject/primer-view-components/app/components/primer/shared_events';
+import {
+  NgOption,
+  NgSelectComponent,
+} from '@ng-select/ng-select';
 
 /**
  * Stimulus Controller adding behavior to Admin > Backlogs page.
@@ -38,94 +40,95 @@ import { type ItemActivatedEvent } from '@openproject/primer-view-components/app
 export default class BacklogsSettings extends Controller<HTMLElement> {
   static targets = ['storyTypes', 'taskType'];
 
-  declare readonly storyTypesTarget:SelectPanelElement;
-  declare readonly taskTypeTarget:SelectPanelElement;
+  declare readonly storyTypesTarget:HTMLElement;
+  declare readonly taskTypeTarget:HTMLElement;
   declare readonly hasStoryTypesTarget:boolean;
   declare readonly hasTaskTypeTarget:boolean;
 
-  private originalLabel?:string;
+  private isUpdating = false;
 
-  storyTypesTargetConnected(target:SelectPanelElement) {
-    target.addEventListener('itemActivated', this.onStoryTypesActivated);
-
-    // this can be removed once implemented upstream: https://github.com/primer/view_components/pull/3825
-    this.setDynamicLabel(this.storyTypesTarget);
+  storyTypesTargetConnected(target:HTMLElement) {
+    target.addEventListener('change', this.onStoryTypesActivated);
   }
 
-  storyTypesTargetDisconnected(target:SelectPanelElement) {
-    target.removeEventListener('itemActivated', this.onStoryTypesActivated);
+  storyTypesTargetDisconnected(target:HTMLElement) {
+    target.removeEventListener('change', this.onStoryTypesActivated);
   }
 
-  taskTypeTargetConnected(target:SelectPanelElement) {
-    target.addEventListener('itemActivated', this.onTaskTypeActivated);
+  taskTypeTargetConnected(target:HTMLElement) {
+    target.addEventListener('change', this.onTaskTypeActivated);
   }
 
-  taskTypeTargetDisconnected(target:SelectPanelElement) {
-    target.removeEventListener('itemActivated', this.onTaskTypeActivated);
+  taskTypeTargetDisconnected(target:HTMLElement) {
+    target.removeEventListener('change', this.onTaskTypeActivated);
   }
 
-  private onStoryTypesActivated = (_event:CustomEvent<ItemActivatedEvent>) => {
-    if (!this.hasTaskTypeTarget) return;
-    this.syncSelectPanels(this.storyTypesTarget, this.taskTypeTarget);
+  private onStoryTypesActivated = (_event:CustomEvent) => {
+    if (this.isUpdating || !this.hasStoryTypesTarget) return;
 
-    // this can be removed once implemented upstream: https://github.com/primer/view_components/pull/3825
-    this.setDynamicLabel(this.storyTypesTarget);
+    const taskAutocomplete = this.autocompleterElementFor(this.taskTypeTarget);
+    const storyAutocomplete = this.autocompleterElementFor(this.storyTypesTarget);
+
+    if (!taskAutocomplete || !storyAutocomplete) return;
+
+    this.isUpdating = true;
+    try {
+      this.syncAutocompleters(storyAutocomplete, taskAutocomplete);
+    } finally {
+      this.isUpdating = false;
+    }
   };
 
-  private onTaskTypeActivated = (_event:CustomEvent<ItemActivatedEvent>) => {
+  private onTaskTypeActivated = (_event:CustomEvent) => {
     if (!this.hasStoryTypesTarget) return;
-    this.syncSelectPanels(this.taskTypeTarget, this.storyTypesTarget);
+
+    const taskAutocomplete = this.autocompleterElementFor(this.taskTypeTarget);
+    const storyAutocomplete = this.autocompleterElementFor(this.storyTypesTarget);
+
+    if (!taskAutocomplete || !storyAutocomplete) return;
+
+    this.syncAutocompleters(taskAutocomplete, storyAutocomplete);
   };
 
   /**
-   * Syncs two select panels - ensuring selections are mutually exclusive.
+   * Syncs two autocompleters - ensuring selections are mutually exclusive.
    *
-   * @param source source select panel
-   * @param target target select panel
+   * @param source source autocompleter
+   * @param target target autocompleter
    */
-  private syncSelectPanels(source:SelectPanelElement, target:SelectPanelElement) {
-    const sourceSelectedValues = new Set(
+  private syncAutocompleters(source:NgSelectComponent, target:NgSelectComponent) {
+    const sourceSelectedIds = new Set(
       source.selectedItems
-        .map((item) => item.value)
-        .filter((value):value is string => value != null && value !== '')
+        .map((item) => item.value.id)
+        .filter((id) => id != null)
     );
 
-    target.items.forEach((targetItem:SelectPanelItem) => {
-      const itemContent = targetItem.querySelector<HTMLElement>('.ActionListContent');
-      const itemValue   = itemContent?.dataset.value;
-      if (!itemValue) return;
+    const updatedItems = target.items?.map((targetItem:NgOption) => {
+      const itemId = targetItem.id;
 
-      if (sourceSelectedValues.has(itemValue)) {
-        target.disableItem(targetItem);
-        target.uncheckItem(targetItem);
-      } else {
-        target.enableItem(targetItem);
+      if (!itemId) return targetItem;
+
+      const shouldBeDisabled = sourceSelectedIds.has(itemId);
+      if (targetItem.disabled !== shouldBeDisabled) {
+        return {
+          ...targetItem,
+          disabled: shouldBeDisabled
+        };
       }
+
+      return targetItem;
     });
+
+    if (!updatedItems) return;
+
+    target.itemsList.setItems(updatedItems);
   }
 
-  // this can be removed once implemented upstream: https://github.com/primer/view_components/pull/3825
-  private setDynamicLabel(panel:SelectPanelElement) {
-    const invokerLabel = panel.invokerLabel!;
-    this.originalLabel ??= invokerLabel.textContent ?? '';
-    const selectedLabels = Array.from(panel.querySelectorAll(`[${panel.ariaSelectionType}=true] .ActionListItem-label`))
-        .map((label) => label.textContent?.trim() ?? '')
-        .join(', ');
+  private autocompleterElementFor(el:HTMLElement):NgSelectComponent|null {
+    const ngSelectElement = el.querySelector('ng-select');
+    if (!ngSelectElement) return null;
 
-    if (selectedLabels) {
-      const prefixSpan = document.createElement('span');
-      prefixSpan.classList.add('color-fg-muted');
-      const contentSpan = document.createElement('span');
-      prefixSpan.textContent = `${panel.dynamicLabelPrefix} `;
-      contentSpan.textContent = selectedLabels;
-      invokerLabel.replaceChildren(prefixSpan, contentSpan);
-
-      if (panel.dynamicAriaLabelPrefix) {
-        panel.invokerElement?.setAttribute('aria-label', `${panel.dynamicAriaLabelPrefix} ${selectedLabels}`);
-      }
-    } else {
-      invokerLabel.textContent = this.originalLabel;
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    return (window as any).ng.getComponent(ngSelectElement) ?? null;
   }
 }
-

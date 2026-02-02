@@ -41,11 +41,13 @@ RSpec.describe Admin::Settings::BacklogsSettingsForm, type: :forms do
   end
 
   it "renders", :aggregate_failures do
-    expect(rendered_form).to have_element "select-panel", "data-dynamic-label-prefix": "Selected types"
-    expect(rendered_form).to have_field "settings[story_types][]", type: :hidden, multiple: true
+    expect(rendered_form).to have_element "opce-autocompleter", "data-label-for-id": "\"settings_story_types\"" do |autocompleter|
+      expect(autocompleter["data-multiple"]).to be_json_eql(%{true})
+    end
 
-    expect(rendered_form).to have_element "select-panel", "data-dynamic-label-prefix": "Selected type"
-    expect(rendered_form).to have_field "settings[task_type]", type: :hidden
+    expect(rendered_form).to have_element "opce-autocompleter", "data-label-for-id": "\"settings_task_type\"" do |autocompleter|
+      expect(autocompleter["data-multiple"]).to be_json_eql(%{false})
+    end
 
     expect(rendered_form).to have_field "Template for sprint wiki page", type: :text do |field|
       expect(field["name"]).to eq "settings[wiki_template]"
