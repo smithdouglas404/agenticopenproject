@@ -763,10 +763,11 @@ Rails.application.routes.draw do
     get "menu" => "menus#show"
 
     match "auto_complete" => "auto_completes#index", via: %i[get post]
-    resource :bulk, controller: "bulk", only: %i[edit update destroy]
-    # FIXME: this is kind of evil!! We need to remove this soonest and
-    # cover the functionality. Route is being used in work-package-service.js:331
-    get "/bulk" => "bulk#destroy"
+    resource :bulk, controller: "bulk", only: %i[edit update destroy] do
+      collection do
+        match :reassign, via: %i[get delete]
+      end
+    end
   end
 
   resources :work_packages, only: %i[index show new] do
