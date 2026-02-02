@@ -296,7 +296,6 @@ To delete an iCal meeting token under Account settings click the *Delete* icon n
 
 #### OAuth
 
-Original text:
 OAuth tokens allow third-party applications to connect with this OpenProject instance, for example Nextcloud (see [here](../../user-guide/file-management/nextcloud-integration/) how to set up Nextcloud integration).  OAuth applications can be created under [*Administration-> Authentication*](../../system-admin-guide/authentication/).
 
 OAuth tokens are not created directly in OpenProject. Instead, the authorization process is started from the external application. During setup, you will be redirected to OpenProject to confirm access and then returned to the external application to complete the connection.
