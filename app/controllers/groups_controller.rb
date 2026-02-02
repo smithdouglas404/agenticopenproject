@@ -150,7 +150,7 @@ class GroupsController < ApplicationController
   protected
 
   def find_group
-    @group = Group.find(params[:id])
+    @group = Group.visible.find(params[:id])
   end
 
   def group_members
