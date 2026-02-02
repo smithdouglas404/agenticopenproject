@@ -77,6 +77,18 @@ To duplicate an agenda item, users can select the corresponding option from the 
 
 ### Release Attribute highlighting to Community
 
+### Release Attribute highlighting to Community
+
+The Attribute highlighting feature, previously available only as an Enterprise add-on, is now included in the free Community plan.
+
+Users can configure attribute highlighting in work package table views by opening the table configuration and selecting the **Highlighting** tab. Attributes such as Status, Priority, and Finish date can be highlighted inline or applied as full-row highlights based on attribute values. This makes key attributes visually distinguishable directly in the work package list without opening individual items.
+
+[Read more about attribute highlighting in our documentation](../../user-guide/work-packages/work-package-table-configuration/#attribute-highlighting).
+
+Here's an example of highlighting work packages by priority:
+
+![A work package table in OpenProject, highlighted by Priority](openproject-attribute-highlighting-priority.png)
+
 ### Warning before opening external links in user-provided content (Enterprise add-on)
 
 ### Improved performance in work package Activity tab
