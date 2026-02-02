@@ -103,8 +103,6 @@ export class OpenProjectApi implements Extension {
       return;
     }
 
-    printLog(`PATCH ${resourceUrl}`);
-
     const base64Data = Buffer.from(Y.encodeStateAsUpdate(data.document)).toString("base64");
 
     // Create a copy of the document to avoid side effects

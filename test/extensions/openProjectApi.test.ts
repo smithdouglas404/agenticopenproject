@@ -6,6 +6,10 @@ import { server } from "../mocks/node";
 import { http, HttpResponse } from "msw";
 import { text } from 'stream/consumers';
 
+// All web requests that aren't explicitly mocked via `server.use`, are using the dynamic document
+// request mock defined in `handlers.ts`, returning a document for any id that isn't a
+// specific status code (that is defined there).
+// Missing Content-type or Authorization headers lead to client error responses (415, 401).
 describe("OpenProjectApi", () => {
   describe("onAuthenticate", () => {
     test("when the token is not present throw an error", async () => {
@@ -50,9 +54,9 @@ describe("OpenProjectApi", () => {
     });
 
     test("when the auth server does not authorize the request throw an error", async () => {
-      let authHeader: string | null = "some_token_value";
+      let authHeader: string = "";
       server.events.on('request:end', ({ request }) => {
-        authHeader = request.headers.get("Authorization");
+        authHeader = request.headers.get("Authorization") || "";
       });
       server.use(http.get('https://test.api/api/v3/documents/1', () => { return HttpResponse.json({id: 42}, {status: 401})}));
 
@@ -222,7 +226,7 @@ describe("OpenProjectApi", () => {
       const api = new OpenProjectApi();
       await api.onStoreDocument(data);
 
-      expect(await body).toContain("content_binary");
+      await expect(body).resolves.toContain("content_binary");
     });
   });
 });
