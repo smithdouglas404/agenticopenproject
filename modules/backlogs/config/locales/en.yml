@@ -57,7 +57,6 @@ en:
     task_type: "Task type"
 
   backlogs:
-    add_new_story: "New story"
     any: "any"
     backlog_settings: "Backlogs settings"
     burndown_graph: "Burndown Graph"
@@ -79,7 +78,6 @@ en:
       other: "%{count} points"
     positions_could_not_be_rebuilt: "Positions could not be rebuilt."
     positions_rebuilt_successfully: "Positions rebuilt successfully."
-    properties: "Properties"
     rebuild: "Rebuild"
     rebuild_positions: "Rebuild positions"
     remaining_hours: "Remaining work"
@@ -116,6 +114,12 @@ en:
       label_actions: "Backlog actions"
       action_menu:
         edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
+        wiki: "Wiki"
+        properties: "Properties"
 
     story_component:
       label_drag_story: "Move %{name}"
@@ -192,7 +196,6 @@ en:
   label_sprint_name: "Sprint \"%{name}\""
   label_sprint_velocity: "Velocity %{velocity}, based on %{sprints} sprints with an average %{days} days"
   label_stories: "Stories"
-  label_stories_tasks: "Stories/Tasks"
   label_task_board: "Task board"
   label_version_setting: "Versions"
   label_version: 'Version'

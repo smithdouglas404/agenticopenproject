@@ -44,13 +44,11 @@ See COPYRIGHT and LICENSE files for more details.
       ) do |item|
         item.with_leading_visual_icon(icon: :pencil)
       end
-
-      menu.with_divider
     end
 
     if user_allowed?(:add_work_packages)
       menu.with_item(
-        label: t(:"backlogs.add_new_story"),
+        label: t(".action_menu.new_story"),
         href: new_project_work_packages_dialog_path(
           project,
           version_id: sprint.id,
@@ -62,28 +60,22 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
+    if user_allowed?(:update_sprints) || user_allowed?(:add_work_packages)
+      menu.with_divider
+    end
+
     menu.with_item(
-      label: t(:label_stories_tasks),
+      label: t(".action_menu.stories_tasks"),
       tag: :a,
       href: backlogs_project_sprint_query_path(project, sprint)
     ) do |item|
       item.with_leading_visual_icon(icon: :"op-view-list")
     end
 
-    if user_allowed?(:manage_versions)
-      menu.with_item(
-        label: t(:"backlogs.properties"),
-        tag: :a,
-        href: edit_version_path(sprint, back_url: backlogs_project_backlogs_path(project), project_id: project.id)
-      ) do |item|
-        item.with_leading_visual_icon(icon: :gear)
-      end
-    end
-
     if backlog.sprint_backlog?
       if user_allowed?(:view_taskboards)
         menu.with_item(
-          label: t(:label_task_board),
+          label: t(".action_menu.task_board"),
           tag: :a,
           href: backlogs_project_sprint_taskboard_path(project, sprint)
         ) do |item|
@@ -92,7 +84,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
 
       menu.with_item(
-        label: t(:"backlogs.show_burndown_chart"),
+        label: t(".action_menu.burndown_chart"),
         tag: :a,
         href: backlogs_project_sprint_burndown_chart_path(project, sprint),
         disabled: !sprint.has_burndown?
@@ -102,12 +94,22 @@ See COPYRIGHT and LICENSE files for more details.
 
       if project.module_enabled? "wiki"
         menu.with_item(
-          label: t(:label_wiki),
+          label: t(".action_menu.wiki"),
           tag: :a,
           href: edit_backlogs_project_sprint_wiki_path(project, sprint)
         ) do |item|
           item.with_leading_visual_icon(icon: :book)
         end
+      end
+    end
+
+    if user_allowed?(:manage_versions)
+      menu.with_item(
+        label: t(".action_menu.properties"),
+        tag: :a,
+        href: edit_version_path(sprint, back_url: backlogs_project_backlogs_path(project), project_id: project.id)
+      ) do |item|
+        item.with_leading_visual_icon(icon: :gear)
       end
     end
   end

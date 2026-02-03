@@ -87,7 +87,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "shows Add new story item with compose icon" do
         render_component
 
-        expect(page).to have_text(I18n.t(:"backlogs.add_new_story"))
+        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
         expect(page).to have_octicon(:compose)
       end
     end
@@ -98,7 +98,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "does not show Add new story item" do
         render_component
 
-        expect(page).to have_no_text(I18n.t(:"backlogs.add_new_story"))
+        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "shows Properties item with gear icon" do
         render_component
 
-        expect(page).to have_text(I18n.t(:"backlogs.properties"))
+        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
         expect(page).to have_octicon(:gear)
       end
     end
@@ -119,7 +119,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "does not show Properties item" do
         render_component
 
-        expect(page).to have_no_text(I18n.t(:"backlogs.properties"))
+        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
       end
     end
 
@@ -129,7 +129,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "shows Task board item" do
         render_component
 
-        expect(page).to have_text(I18n.t(:label_task_board))
+        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.task_board"))
       end
     end
 
@@ -139,7 +139,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "does not show Task board item" do
         render_component
 
-        expect(page).to have_no_text(I18n.t(:label_task_board))
+        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.task_board"))
       end
     end
   end
@@ -150,13 +150,13 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
     it "shows Stories/Tasks link" do
       render_component
 
-      expect(page).to have_text(I18n.t(:label_stories_tasks))
+      expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.stories_tasks"))
     end
 
     it "shows Burndown chart link" do
       render_component
 
-      expect(page).to have_text(I18n.t(:"backlogs.show_burndown_chart"))
+      expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
     end
 
     context "when sprint has no burndown (no dates)" do
@@ -165,7 +165,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "shows Burndown chart link as disabled" do
         render_component
 
-        burndown_item = page.find("li", text: I18n.t(:"backlogs.show_burndown_chart"))
+        burndown_item = page.find("li", text: I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
         expect(burndown_item[:class]).to include("ActionListItem--disabled")
       end
     end
@@ -174,7 +174,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "shows Burndown chart link as enabled" do
         render_component
 
-        burndown_item = page.find("li", text: I18n.t(:"backlogs.show_burndown_chart"))
+        burndown_item = page.find("li", text: I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
         expect(burndown_item[:class]).not_to include("ActionListItem--disabled")
       end
     end
@@ -188,7 +188,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "shows Wiki item" do
         render_component
 
-        expect(page).to have_text(I18n.t(:label_wiki))
+        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.wiki"))
         expect(page).to have_octicon(:book)
       end
     end
@@ -200,7 +200,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "does not show Wiki item" do
         render_component
 
-        expect(page).to have_no_text(I18n.t(:label_wiki))
+        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.wiki"))
       end
     end
   end
