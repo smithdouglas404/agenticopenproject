@@ -354,9 +354,7 @@ class CustomField < ApplicationRecord
     version?
   end
 
-  def self.can_have_comment?
-    self == ProjectCustomField
-  end
+  def self.can_have_comment? = customized_class&.can_have_custom_comments?
 
   delegate :can_have_comment?, to: :class
 

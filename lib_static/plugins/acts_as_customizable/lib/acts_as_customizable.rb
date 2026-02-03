@@ -495,6 +495,8 @@ module Redmine
               CustomField.where(type: "#{name}CustomField").order(:position)
             end
           end
+
+          def can_have_custom_comments? = customizable_options[:comments]
         end
       end
 
