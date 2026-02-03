@@ -63,15 +63,11 @@ Since we already introduced multiple outcomes per agenda item in OpenProject 17.
 
 ![OpenProject meeting showing dropdown options for Outcome button: Write outcome, Existing work package, New workpackage](openproject-17-1-meeting-outcome-work-package-highlighted.png)
 
-#### Mark meeting participants as attended
-
-![OpenProject meeting showing modal to mark single or all participants as attended, with updated participants list](openproject-17-1-meetings-mark-as-attended-highlighted.png)
-
 #### Show meeting participant responses in iCal subscriptions
 
-Meeting participant responses are now handled more consistently across OpenProject and external calendars. Responses such as accepted, declined, or no response are visible directly in the meeting, making it easier to see the current participation status of all attendees.
+Meeting participant responses such as accepted, declined, or tentative are now visible directly in the meeting sidebar. These responses are collected from calendar invitations (for example when an ICS event is sent by email or downloaded and shared), making it easier to see the current participation status of all attendees in OpenProject.
 
-In addition, participant responses are now included in iCal subscriptions. This allows calendar applications to display the response status of meeting participants and keep it in sync with the information shown in OpenProject.
+![OpenProject meeting showing participants with statuses such as "accepted" or "maybe"](openproject-17-1-meetings-participtants-status-highlighted.png)
 
 #### Duplicate agenda items to the next recurring meeting occurrence
 
@@ -98,6 +94,8 @@ Here's an example of highlighting work packages by priority:
 OpenProject introduces a warning before opening external links in user-provided content, available as an Enterprise add-on in the Premium plan. The warning adds an additional security layer by making users aware that they are about to leave OpenProject.
 
 When users click on an external link, a confirmation dialog is displayed indicating that the link leads outside of OpenProject. This applies to links added by users, for example in descriptions, comments, or other text fields. In SaaS trial environments, external link handling is enforced to ensure that warnings for user-provided external links cannot be bypassed.
+
+![Warning in OpenProject: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies. Are you sure you want to proceed to the following external link?" with button "continue to external website"](openproject-17-1-warning-external-link.png)
 
 ### Show short and weight values for Hierarchy and Weighted item list fields
 
