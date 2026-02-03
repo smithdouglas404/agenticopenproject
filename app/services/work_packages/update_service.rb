@@ -41,22 +41,7 @@ class WorkPackages::UpdateService < BaseServices::Update
 
   private
 
-  # TODO: check if this can be removed as currently, only the subject
-  # can be updated automatically anyway and that is handled in the SetAttributesService.
-  def set_templated_attributes
-    # Subject is handled separately in SetAttributesService.
-    # Other templated attributes are set here.
-    # TODO: code smell here: saving the automatically generated attributes depends
-    # on running the UpdateAncestorsService right after. The attributes get saved
-    # only thanks to this. If the UpdateAncestorsService is not run, the attributes
-    # are not saved. That's an odd coupling.
-    model.type.enabled_patterns.except(:subject).each do |key, pattern|
-      model.public_send(:"#{key}=", pattern.resolve(model))
-    end
-  end
-
   def after_perform(service_call)
-    set_templated_attributes
     update_related_work_packages(service_call)
     cleanup(service_call.result)
 

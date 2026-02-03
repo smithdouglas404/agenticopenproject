@@ -2286,10 +2286,10 @@ RSpec.describe WorkPackages::SetAttributesService,
     let(:type) { build_stubbed(:type, patterns: { subject: { blueprint: "{{type}} {{project_name}}", enabled: true } }) }
     let(:work_package) { WorkPackage.new(type:, project:) }
     let(:resolved_subject) { "#{type.name} #{project.name}" }
-    let(:pattern_resolver) { instance_double(WorkPackageTypes::PatternResolver, resolve: resolved_subject) }
-
-    before do
-      allow(WorkPackageTypes::PatternResolver).to receive(:new).and_return(pattern_resolver)
+    let(:pattern_resolver) do
+      instance_double(WorkPackageTypes::PatternResolver, resolve: resolved_subject).tap do |resolver|
+        allow(WorkPackageTypes::PatternResolver).to receive(:new).and_return(resolver)
+      end
     end
 
     it "sets the resolved subject from the pattern" do
