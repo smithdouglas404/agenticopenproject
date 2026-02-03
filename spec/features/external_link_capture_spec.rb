@@ -34,7 +34,7 @@ RSpec.describe "External link capture", :js, :selenium do
   shared_let(:admin) { create(:admin) }
 
   let(:project) { create(:project, enabled_module_names: %w[wiki]) }
-  let(:external_url) { "http://0.0.0.0:3001/" }
+  let(:external_url) { "https://www.openprojet.org/" }
   let!(:wiki_page) do
     create(:wiki_page,
            wiki: project.wiki,
@@ -51,7 +51,8 @@ RSpec.describe "External link capture", :js, :selenium do
     it "keeps the default external link behaviour" do
       visit project_wiki_path(project, wiki_page)
 
-      link = page.find(%(a[href^="#{external_url}"]))
+      href = external_redirect_path(url: external_url)
+      link = page.find_link("OpenProject", href:)
       new_window = window_opened_by { link.click }
 
       within_window new_window do

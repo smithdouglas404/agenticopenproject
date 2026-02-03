@@ -81,7 +81,7 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
 
     allow(OpenProject::Static::Links)
       .to receive(:url_for)
-      .with(:enterprise_features, :some_enterprise_feature)
+      .with(:enterprise_features, :some_enterprise_feature, any_args)
       .and_return(enterprise_feature_link)
 
     allow(OpenProject::Token)
