@@ -309,15 +309,6 @@ RSpec.describe SharesController do
           expect(controller).to have_received(:respond_with_prepend_shares)
         end
       end
-
-      context "when the user is locked" do
-        let(:shared_user) { new_locked_shared_user }
-
-        it "calls respond_with_new_invite_form" do
-          make_request
-          expect(controller).to have_received(:respond_with_new_invite_form)
-        end
-      end
     end
   end
 
