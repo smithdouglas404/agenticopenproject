@@ -92,6 +92,13 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
       expect(page).to have_text("5 points")
     end
 
+    it "shows Open details link (split view)" do
+      render_component
+
+      expect(page).to have_text(I18n.t(:"js.button_open_details"))
+      expect(page).to have_octicon(:"op-view-split")
+    end
+
     it "renders StoryMenuComponent" do
       render_component
 

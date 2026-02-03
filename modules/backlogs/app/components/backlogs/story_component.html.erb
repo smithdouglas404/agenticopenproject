@@ -53,6 +53,22 @@ See COPYRIGHT and LICENSE files for more details.
     <% end %>
   <% end %>
 
+  <% grid.with_area(:show_button) do %>
+    <%=
+      render(
+        Primer::Beta::IconButton.new(
+          tag: :a,
+          scheme: :invisible,
+          icon: :"op-view-split",
+          "aria-label": t(:"js.button_open_details"),
+          href: details_backlogs_project_backlogs_path(project, story),
+          data: { turbo_frame: "content-bodyRight", turbo_action: "advance" },
+          tooltip_direction: :se
+        )
+      )
+    %>
+  <% end %>
+
   <% grid.with_area(:menu) do %>
     <%= render(Backlogs::StoryMenuComponent.new(story:, sprint:, max_position:)) %>
   <% end %>
