@@ -2467,6 +2467,7 @@ fr:
       one_drive_sharepoint_file_storage: Stockage de fichiers OneDrive/SharePoint
       placeholder_users: Utilisateurs fictifs
       portfolio_management: Gestion du portefeuille
+      project_creation_wizard: Project initiation request
       project_list_sharing: Partage de liste de projets
       readonly_work_packages: Lots de travaux en lecture seule
       scim_api: API du serveur SCIM
@@ -2551,6 +2552,8 @@ fr:
         description: "Permettez aux utilisateurs de se connecter via des fournisseurs SSO externes utilisant SAML ou OpenID Connect pour assurer un accès transparent et une intégration fluide avec les systèmes d'identité existants."
       virus_scanning:
         description: "Assurez-vous que les fichiers téléversés dans OpenProject sont analysés pour détecter les virus avant d'être accessibles aux autres utilisateurs."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Utilisateurs fictifs
         description: >

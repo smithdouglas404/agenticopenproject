@@ -1507,7 +1507,7 @@ de:
         even: "muss gerade sein."
         exclusion: "ist nicht verfügbar."
         feature_disabled: ist nicht verfügbar.
-        feature_disabled_for_project: is disabled for this project.
+        feature_disabled_for_project: ist für dieses Projekt deaktiviert.
         file_too_large: "ist zu groß (nicht mehr als %{count} Bytes erlaubt)."
         filter_does_not_exist: "Filter existiert nicht."
         format: "stimmt nicht mit dem erwarteten Format '%{expected} ' überein."
@@ -2446,7 +2446,7 @@ de:
       baseline_comparison: Grundlinie (Planungsvergleich)
       board_view: Erweiterte agile Boards
       calculated_values: Berechnete Werte
-      capture_external_links: Capture External Links
+      capture_external_links: Externe Links abfangen
       internal_comments: Interne Kommentare
       custom_actions: Benutzerdefinierte Aktionen
       custom_field_hierarchies: Hierarchien
@@ -2461,6 +2461,7 @@ de:
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
       portfolio_management: Portfolioverwaltung
+      project_creation_wizard: Project initiation request
       project_list_sharing: Projektlistenfreigabe
       readonly_work_packages: Schreibgeschützte Arbeitspakete
       scim_api: SCIM-Server-API
@@ -2502,7 +2503,7 @@ de:
       customize_life_cycle:
         description: "Erstellen und organisieren Sie von PM2 abweichende Projektlebenszyklen."
       capture_external_links:
-        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
+        description: "Verhindern Sie Social-Engineering-Angriffe, indem Sie externe Links erfassen und davor warnen, bevor Benutzer sie besuchen."
       work_package_query_relation_columns:
         description: "Möchten Sie Beziehungen oder Unteraufgaben als Spalten in der Arbeitspaketliste sehen können?"
       edit_attribute_groups:
@@ -2545,6 +2546,8 @@ de:
         description: "Ermöglichen Sie es Benutzern, sich über externe SSO-Anbieter mit SAML oder OpenID Connect anzumelden, um einen nahtlosen Zugriff und die Integration mit bestehenden Identitätssystemen zu ermöglichen."
       virus_scanning:
         description: "Stellen Sie sicher, dass hochgeladene Dateien in OpenProject auf Viren gescannt werden, bevor sie für andere Benutzer zugänglich sind."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Platzhalter-Konten
         description: >
@@ -3308,7 +3311,7 @@ de:
   label_journal_diff: "Beschreibungsvergleich"
   label_language: "Sprache"
   label_languages: "Sprachen"
-  label_external_links: "External links"
+  label_external_links: "Externe Links"
   label_locale: "Sprache und Region"
   label_jump_to_a_project: "Zu einem Projekt springen..."
   label_keyword_plural: "Schlüsselwörter"
@@ -4302,9 +4305,9 @@ de:
   setting_allowed_link_protocols: "Erlaubte Link-Protokolle"
   setting_allowed_link_protocols_text_html: >-
     Erlauben Sie es, diese Protokolle als Links in Arbeitspaket-Beschreibungen, langen Textfeldern und Kommentaren darzustellen. Zum Beispiel %{tel_code} oder %{element_code}. Geben Sie ein Protokoll pro Zeile ein. <br/> Protokolle %{http_code}, %{https_code} und %{mailto_code} sind immer erlaubt.
-  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links: "Externe Links abfangen"
   setting_capture_external_links_text: >
-    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+    Wenn diese Funktion aktiviert ist, werden alle externen Links in formatiertem Text auf eine vor dem Link warnende Seite in der Applikation umgeleitet, bevor sie die Anwendung verlassen. Dies hilft, Benutzer vor potenziell bösartigen externen Websites zu schützen.
   setting_after_first_login_redirect_url: "Weiterleitung nach erster Anmeldung"
   setting_after_first_login_redirect_url_text_html: >
     Legen Sie einen Pfad fest, an den Nutzer:innen nach der ersten Anmeldung weitergeleitet werden. Wenn leer, führt er auf die Startseite des Onboarding-Tours. <br/> Beispiel: <code>/meine/seite</code>
@@ -4618,7 +4621,9 @@ de:
           project_mandate: "Projektmandat"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+          **Dieses Arbeitspaket wurde automatisch nach Abschluss des %{wizard_name} Workflows erstellt.**
+          Ein PDF-Artefakt mit allen eingereichten Informationen wurde generiert und zu Referenz- und Prüfzwecken an dieses Arbeitspaket angehängt.
+          Wenn Sie die Einleitungsschritte aktualisieren oder erneut ausführen müssen, können Sie den Assistenten jederzeit über den unten stehenden Link erneut öffnen:
         description: "Wenn ein Benutzer eine Anfrage zur Projektinitiierung einreicht, wird ein neues Arbeitspaket erstellt, an das ein Artefakt der Anfrage als PDF-Datei angehängt wird. Die folgenden Einstellungen definieren den Typ, den Status und den Empfänger für dieses neue Arbeitspaket."
         work_package_type: "Arbeitspaket-Typ"
         work_package_type_caption: "Der Arbeitspaket-Typ, der zum Speichern des Artefakts verwendet wird."
@@ -4877,8 +4882,8 @@ de:
       other: "temporär gesperrt (%{count} fehlgeschlagene Loginversuche)"
     confirm_status_change: "Sie sind dabei den Status von '%{name}' zu ändern. Möchten Sie wirklich fortfahren?"
     deleted: "Gelöschter Nutzer"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "Sie können Ihren eigenen Benutzerstatus nicht ändern."
+    error_admin_change_on_non_admin: "Nur Administratoren können den Status von Administratorbenutzern ändern."
     error_status_change_failed: "Der Nutzerstatus konnte nicht geändert werden aufgrund folgender Fehler: %{errors}"
     invite: Nutzer via E-Mail einladen
     invited: eingeladen
@@ -5283,7 +5288,7 @@ de:
     hashed_token:
       display_value_placeholder: "***"
   external_link_warning:
-    title: "Leaving OpenProject"
-    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
-    continue_message: "Are you sure you want to proceed to the following external link?"
-    continue_button: "Continue to external website"
+    title: "OpenProject verlassen"
+    warning_message: "Sie sind im Begriff, die OpenProject Anwendung zu verlassen und eine externe Website zu besuchen. Bitte beachten Sie, dass die externen Websites nicht unter unserer Kontrolle stehen und möglicherweise andere Datenschutz- und Sicherheitsrichtlinien haben."
+    continue_message: "Sind Sie sicher, dass Sie zu dem folgenden externen Link fortfahren möchten?"
+    continue_button: "Zur externen Webseite fortfahren"

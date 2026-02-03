@@ -1270,9 +1270,9 @@ ru:
         port: "Порт"
         tls_certificate_string: "SSL-сертификат сервера LDAP"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: Включено
+        title: Название
+        description: Описание
       member:
         roles: "Роль"
       notification:
@@ -2558,11 +2558,12 @@ ru:
       edit_attribute_groups: Редактирование атрибутов групп
       gantt_pdf_export: Экспорт диаграммы Ганта в PDF
       ldap_groups: Синхронизация пользователей LDAP и групп
-      mcp_server: MCP Server
+      mcp_server: MCP-сервер
       nextcloud_sso: Единый вход для Nextcloud хранения
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
       portfolio_management: Управление портфолио
+      project_creation_wizard: Project initiation request
       project_list_sharing: Совместное использование списка проектов
       readonly_work_packages: Пакеты работ только для чтения
       scim_api: API сервера SCIM
@@ -2635,7 +2636,7 @@ ru:
         title: "Пользовательские действия"
         description: "Пользовательские действия являются ярлыками к набору заранее определенных действий, которые вы можете сделать доступными для определенных пакетов работ на основе статуса, роли, типа или проекта."
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Интегрируйте агентов искусственного интеллекта в Ваш OpenProject с помощью MCP."
       nextcloud_sso:
         title: "Единый вход для Nextcloud хранения"
         description: "Включите бесшовную и безопасную аутентификацию для вашего Nextcloud хранилища с помощью Single Sign-On. Упростите управление доступом и сделайте удобным для пользователя."
@@ -2647,6 +2648,8 @@ ru:
         description: "Разрешить пользователям входить через внешние SSO провайдеры, используя SAML или OpenID Connect для бесшовного доступа и интеграции с существующими идентификационными системами."
       virus_scanning:
         description: "Будьте уверены в том, что загруженные в OpenProject файлы проверены на наличие вирусов, прежде чем они станут доступны другим пользователям."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Пользователи-заполнители
         description: >
@@ -3026,7 +3029,7 @@ ru:
   instructions_after_error: "Вы можете попробовать войти снова, нажав %{signin}. Если ошибка повторится, обратитесь к вашему администратору за помощью."
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "Искусственный интеллект (AI)"
       aggregation: "Агрегация"
       api_and_webhooks: "API и вебхуки"
       mail_notification: "Уведомления по электронной почте"
@@ -3412,7 +3415,7 @@ ru:
   label_journal_diff: "Описание сравнения"
   label_language: "Язык"
   label_languages: "Языки"
-  label_external_links: "External links"
+  label_external_links: "Внешние ссылки"
   label_locale: "Язык и регион"
   label_jump_to_a_project: "Перейти к проекту..."
   label_keyword_plural: "Ключевые слова"
@@ -5395,4 +5398,4 @@ ru:
     title: "Leaving OpenProject"
     warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
     continue_message: "Are you sure you want to proceed to the following external link?"
-    continue_button: "Continue to external website"
+    continue_button: "Перейти на внешний сайт"

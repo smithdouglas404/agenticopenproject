@@ -2419,6 +2419,7 @@ ja:
       one_drive_sharepoint_file_storage: OneDrive/SharePointファイルストレージ
       placeholder_users: プレースホルダー ユーザー
       portfolio_management: Portfolio management
+      project_creation_wizard: Project initiation request
       project_list_sharing: プロジェクトリストの共有
       readonly_work_packages: 読み取り専用のワークパッケージ
       scim_api: SCIMサーバーAPI
@@ -2503,6 +2504,8 @@ ja:
         description: "SAML または OpenID Connect を使用して外部の SSO プロバイダ経由でログインし、既存の ID システムとのシームレスなアクセスと統合を可能にします。"
       virus_scanning:
         description: "他のユーザーがアクセスできるようになる前に、OpenProjectにアップロードされたファイルがウイルスでスキャンされていることを確認してください。"
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: プレースホルダー ユーザー
         description: >
