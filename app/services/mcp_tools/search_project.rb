@@ -67,7 +67,7 @@ module McpTools
       projects = apply_filters(Project.visible.limit(MAX_SIZE), query)
 
       {
-        items: projects.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user: User.current) }
+        items: projects.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user:) }
       }
     end
   end

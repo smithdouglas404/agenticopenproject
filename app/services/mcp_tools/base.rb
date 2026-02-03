@@ -130,13 +130,14 @@ module McpTools
           input_schema:,
           output_schema:,
           annotations: read_annotations
-        ) do |opts|
-          implementation.new(tool_context: self).handle_request(**opts)
+        ) do |server_context: {}, **opts|
+          implementation.new(server_context:, tool_context: self).handle_request(**opts)
         end
       end
     end
 
-    def initialize(tool_context:)
+    def initialize(server_context:, tool_context:)
+      @server_context = server_context
       @tool_context = tool_context
     end
 
@@ -158,6 +159,10 @@ module McpTools
     # Intended to be implemented by subclasses. It should return a structured result (e.g. a Hash or Array).
     def call(**)
       raise NotImplemented, "#{self.class} needs to implement #call method"
+    end
+
+    def current_user
+      @server_context[:current_user]
     end
 
     def validate_root_output_schema!(output_schema)
