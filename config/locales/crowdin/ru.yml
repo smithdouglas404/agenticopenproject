@@ -2563,6 +2563,7 @@ ru:
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
       portfolio_management: Управление портфолио
+      project_creation_wizard: Project initiation request
       project_list_sharing: Совместное использование списка проектов
       readonly_work_packages: Пакеты работ только для чтения
       scim_api: API сервера SCIM
@@ -2647,6 +2648,8 @@ ru:
         description: "Разрешить пользователям входить через внешние SSO провайдеры, используя SAML или OpenID Connect для бесшовного доступа и интеграции с существующими идентификационными системами."
       virus_scanning:
         description: "Будьте уверены в том, что загруженные в OpenProject файлы проверены на наличие вирусов, прежде чем они станут доступны другим пользователям."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Пользователи-заполнители
         description: >

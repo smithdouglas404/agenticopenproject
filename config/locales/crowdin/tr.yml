@@ -2469,6 +2469,7 @@ tr:
       one_drive_sharepoint_file_storage: OneDrive/SharePoint Dosya Depolama
       placeholder_users: Yer Tutucu Kullanıcılar
       portfolio_management: Portfolio management
+      project_creation_wizard: Project initiation request
       project_list_sharing: Proje Listesi Paylaşımı
       readonly_work_packages: Salt Okunur İş Paketleri
       scim_api: SCIM server API
@@ -2553,6 +2554,8 @@ tr:
         description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
       virus_scanning:
         description: "OpenProject'te yüklenen dosyaların diğer kullanıcılar tarafından erişilmeden önce virüslere karşı tarandığından emin olun."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Yer tutucu kullanıcı
         description: >

@@ -30,8 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Project creation wizard submission settings", :js,
-               with_flag: { project_initiation_active: true } do
+RSpec.describe "Project creation wizard submission settings", :js do
   include Components::Autocompleter::NgSelectAutocompleteHelpers
 
   shared_let(:admin) { create(:admin) }

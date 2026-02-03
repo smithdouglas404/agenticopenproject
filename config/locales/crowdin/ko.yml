@@ -2421,6 +2421,7 @@ ko:
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 파일 저장소
       placeholder_users: 플레이스홀더 사용자
       portfolio_management: 포트폴리오 관리
+      project_creation_wizard: Project initiation request
       project_list_sharing: 프로젝트 목록 공유
       readonly_work_packages: 읽기 전용 작업 패키지
       scim_api: SCIM 서버 API
@@ -2505,6 +2506,8 @@ ko:
         description: "기존 ID 시스템에서 원활하게 액세스하고 통합할 수 있도록 SAML 또는 OpenID Connect를 사용하여 외부 SSO 공급자를 통해 사용자가 로그인할 수 있게 합니다."
       virus_scanning:
         description: "OpenProject에서 업로드된 파일은 바이러스 검사를 수행한 후에 다른 사용자가 액세스해야 합니다."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: 플레이스홀더 사용자
         description: >

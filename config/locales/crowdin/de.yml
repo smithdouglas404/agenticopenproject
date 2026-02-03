@@ -2461,6 +2461,7 @@ de:
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
       portfolio_management: Portfolioverwaltung
+      project_creation_wizard: Project initiation request
       project_list_sharing: Projektlistenfreigabe
       readonly_work_packages: Schreibgeschützte Arbeitspakete
       scim_api: SCIM-Server-API
@@ -2545,6 +2546,8 @@ de:
         description: "Ermöglichen Sie es Benutzern, sich über externe SSO-Anbieter mit SAML oder OpenID Connect anzumelden, um einen nahtlosen Zugriff und die Integration mit bestehenden Identitätssystemen zu ermöglichen."
       virus_scanning:
         description: "Stellen Sie sicher, dass hochgeladene Dateien in OpenProject auf Viren gescannt werden, bevor sie für andere Benutzer zugänglich sind."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Platzhalter-Konten
         description: >

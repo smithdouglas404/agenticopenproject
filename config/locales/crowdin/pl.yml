@@ -2561,6 +2561,7 @@ pl:
       one_drive_sharepoint_file_storage: Magazyn plików OneDrive/SharePoint
       placeholder_users: Użytkownicy zastępczy
       portfolio_management: Zarządzanie portfoliami
+      project_creation_wizard: Project initiation request
       project_list_sharing: Udostępnianie listy projektów
       readonly_work_packages: Pakiety robocze tylko do odczytu
       scim_api: Interfejs API serwera SCIM
@@ -2645,6 +2646,8 @@ pl:
         description: "Umożliw użytkownikom logowanie się za pośrednictwem zewnętrznych dostawców SSO przy użyciu SAML lub OpenID Connect, aby zapewnić bezproblemowy dostęp i integrację z istniejącymi systemami sprawdzania tożsamości."
       virus_scanning:
         description: "Upewnij się, że przesłane do OpenProject pliki  są przeskanowane pod kątem wirusów, zanim będą dostępne dla innych użytkowników."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Użytkownicy zastępczy
         description: >

@@ -30,8 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Projects::CreationWizard::ReuploadArtifactOnStatusChangesService,
-               with_flag: { project_initiation: true } do
+RSpec.describe Projects::CreationWizard::ReuploadArtifactOnStatusChangesService do
   shared_let(:status_new) { create(:status, name: "New") }
   shared_let(:status_approved) { create(:status, name: "Approved") }
   shared_let(:type) { create(:type, name: "Project initiation") }

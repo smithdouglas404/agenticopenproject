@@ -33,7 +33,7 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   menu_item :settings_creation_wizard
 
-  before_action :check_feature_flag
+  before_action :check_enterprise_plan, only: :toggle
 
   def show; end
 
@@ -92,6 +92,16 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   private
 
+  def check_enterprise_plan
+    # Allow disabling even without enterprise plan
+    return if @project.project_creation_wizard_enabled
+
+    unless EnterpriseToken.allows_to?(:project_creation_wizard)
+      flash[:error] = I18n.t(:notice_requires_enterprise_token)
+      redirect_to project_settings_creation_wizard_path(@project, tab: "attributes"), status: :see_other
+    end
+  end
+
   def update_section_mappings(value)
     section_id = permitted_params.project_custom_field_project_mapping[:custom_field_section_id]
     project_id = permitted_params.project_custom_field_project_mapping[:project_id]
@@ -106,12 +116,6 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
       .update_all(creation_wizard: value)
 
     redirect_to project_settings_creation_wizard_path(@project, tab: "attributes"), status: :see_other
-  end
-
-  def check_feature_flag
-    unless OpenProject::FeatureDecisions.project_initiation_active?
-      render_404
-    end
   end
 
   def update_settings_for_tab(tab, settings_params)
