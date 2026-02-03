@@ -22,7 +22,7 @@ Here you can:
 
 In OpenProject, work packages can have different **types** (for example *User story*, *Task*, *Bug*, etc.). In the Backlogs settings, you define which of these work package types are used as **stories** and which type is used as **tasks** in the Backlogs module.
 
- - **Story types** are the work package types that appear in Backlogs module such as the product backlog, wish list, and sprint backlog. Work packages of these types can be created, prioritized, and managed directly in Backlogs.
+ - **Story types** are the work package types configured to be available in the **Backlogs** module. These types appear in backlogs versions, such as the product backlog, wish list, and sprint backlog (i.e., versions). Work packages of these types can be created, prioritized, and managed directly in Backlogs.
  - **Task type** is the work package type that appears on [task boards](../../user-guide/backlogs-scrum/taskboard/) and is used to manage day-to-day work, for example during stand-ups.
 
 ### Select story types
@@ -59,10 +59,12 @@ For example, if you want to create a template page for all Sprint retros, follow
 
    ![Create a scrum wiki template in OpenProject](openproject_system_admin_guide_backlogs_wiki_template.png)
 
-3. Assign this wiki page to a [sprint version](../../user-guide/projects/project-settings/versions/). You can also share this version with other projects to streamline processes across your organization.
-
-   ![Assign a wiki page template to a sprint version in OpenProject](openproject_system_admin_guide_backlogs_wiki_template_assign_to_version.png)
+   
 
 4. You can create a new sprint wiki page directly from the sprint drop-down menu in the Backlogs module. The new wiki page will be based on the template, so you can reuse the same structure for every sprint.
 
 ![New wiki page created based on a backlogs wiki template in OpenProject](openproject_system_admin_guide_backlogs_wiki_template_in_use.png)
+
+> [!TIP]
+>
+> If instead of creating a new wiki page you want to link a specific wiki page, you can assign a pre-defined wiki page to a [sprint version](../../user-guide/projects/project-settings/versions/). It can be assigned to multiple versions. This wiki page is maintained centrally, changing it will show changes for all linked versions. 
