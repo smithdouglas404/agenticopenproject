@@ -34,7 +34,11 @@ module Overviews
       private
 
       def body_component
-        Primer::Beta::Text.new.with_content("TODO")
+        Overviews::ProjectCustomFields::ShowComponent.new(
+          project_custom_field: @project_custom_field,
+          project_custom_field_values: @project.custom_values_for_custom_field(@project_custom_field),
+          project: @project
+        )
       end
 
       def close_button_title
