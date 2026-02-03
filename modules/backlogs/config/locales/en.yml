@@ -145,8 +145,8 @@ en:
   backlogs_velocity_missing: "No velocity could be calculated for this project"
   backlogs_velocity_varies: "Velocity varies significantly over sprints"
   backlogs_wiki_template: "Template for sprint wiki page"
-  backlogs_empty_title: "No versions are defined to be used in backlogs"
-  backlogs_empty_action_text: "To get started with backlogs, create a new version and assign it to a backlogs column."
+  backlogs_empty_title: "No versions are defined yet"
+  backlogs_empty_action_text: "To start using backlogs, please create a version first"
 
   burndown:
     story_points: "Story points"
