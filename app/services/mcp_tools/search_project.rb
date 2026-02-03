@@ -38,9 +38,9 @@ module McpTools
 
     default_title "Search projects"
     default_description "Search projects matching all of the passed input parameters. " \
-                          "Parameters not passed are ignored. Results are limited to a maximum " \
-                          "of #{page_size} projects. To get the rest of the results, call the tool again with a" \
-                          "page number of 1 or higher."
+                        "Parameters not passed are ignored. Results are limited to a maximum " \
+                        "of #{page_size} projects. To get the rest of the results, call the tool again with a" \
+                        "page number of 1 or higher."
 
     name "search_project"
     annotations read_only: true, idempotent: true, destructive: false

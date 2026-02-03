@@ -59,7 +59,7 @@ OpenProject::Authentication.update_strategies(OpenProject::Authentication::Scope
 end
 
 OpenProject::Authentication.update_strategies(OpenProject::Authentication::Scope::MCP_SCOPE, { store: false }) do |_|
-  %i[oauth jwt_oidc]
+  %i[oauth jwt_oidc user_basic_auth basic_auth_failure]
 end
 
 Rails.application.configure do |app|

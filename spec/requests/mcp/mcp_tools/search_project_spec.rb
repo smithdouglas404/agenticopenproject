@@ -98,20 +98,22 @@ RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
     end
 
     describe "pagination" do
-      page_size = 10
-      overspilling_projects = 5
+      let(:page_size) { 10 }
+      let(:overspilling_projects) { 5 }
+      let(:project_count) { page_size + overspilling_projects }
 
       before do
-        allow(McpTools::SearchProject).to receive(:page_size).and_return(page_size)
+        allow(described_class).to receive(:page_size).and_return(page_size)
+
+        project_count.times do |idx|
+          create(:project,
+                 identifier: "p#{idx}",
+                 name: "Death Star construction phase #{idx}",
+                 status_code: :on_track)
+        end
       end
 
-      context "if there are more then #{page_size} projects" do
-        (0..(page_size + overspilling_projects - 1)).each do |idx|
-          let!(:"project_#{idx}") do
-            create(:project, identifier: "p#{idx}", name: "Death Star construction phase #{idx}", status_code: :on_track)
-          end
-        end
-
+      context "if there are more projects then the page size allows" do
         let(:call_args) { { name: "Death Star" } }
 
         it "paginates the results" do
