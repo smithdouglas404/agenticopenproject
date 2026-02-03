@@ -120,6 +120,18 @@ jobs:
           owner: opf
           repositories: saas-deploy
 
+      - name: Set inputs JSON
+        id: build-inputs
+        env:
+          HOCUSPOCUS_TAG: ${{ steps.compute.outputs.tag }}
+          THIS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          inputs_json=$(jq -cn \
+            --arg tag "$HOCUSPOCUS_TAG" \
+            --arg url "$THIS_RUN_URL" \
+            '{hocuspocus_image_tag: $tag, triggered_by_url: $url}')
+          echo "inputs_json=$inputs_json" >> $GITHUB_OUTPUT
+
       - name: Deploy EDGE
         if: github.ref == 'refs/heads/dev'
         uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
@@ -127,7 +139,7 @@ jobs:
           workflow: edge-deploy-shards.yml
           repo: opf/saas-deploy
           ref: master
-          inputs: '{ "hocuspocus_image_tag": "${{ steps.compute.outputs.tag }}" }'
+          inputs: ${{ steps.build-inputs.outputs.inputs_json }}
           token: "${{ steps.generate-gha-token.outputs.token }}"
 
       - name: Deploy STAGE
@@ -137,5 +149,5 @@ jobs:
           workflow: stage-deploy-shards.yml
           repo: opf/saas-deploy
           ref: master
-          inputs: '{ "hocuspocus_image_tag": "${{ steps.compute.outputs.tag }}" }'
+          inputs: ${{ steps.build-inputs.outputs.inputs_json }}
           token: "${{ steps.generate-gha-token.outputs.token }}"
