@@ -91,7 +91,7 @@ Here's an example of highlighting work packages by priority:
 
 ### Warning before opening external links in user-provided content (Enterprise add-on)
 
-OpenProject introduces a warning before opening external links in user-provided content, available as an Enterprise add-on in the Premium plan. The warning adds an additional security layer by making users aware that they are about to leave OpenProject.
+OpenProject introduces a warning before opening external links in user-provided content, available as an **Enterprise add-on in the Premium plan**. The warning adds an additional security layer by making users aware that they are about to leave OpenProject.
 
 When users click on an external link, a confirmation dialog is displayed indicating that the link leads outside of OpenProject. This applies to links added by users, for example in descriptions, comments, or other text fields. In SaaS trial environments, external link handling is enforced to ensure that warnings for user-provided external links cannot be bypassed.
 
@@ -107,6 +107,8 @@ This information is displayed in:
 - Project attributes (for assigned values).
 - The tree view selector while selecting a value (work packages and projects).
 - The admin Items tab when editing the field, including the tree overview.
+
+![OpenProject administration for custom fields, example of "Bending factor" for different materials, each one displayed with a specific value in brackets, e.g. "Aluminium (0.4)".](openproject-17-1-custom-fields-values.jpg)
 
 ## Important technical changes
 
