@@ -111,21 +111,21 @@ zh-TW:
         link: "webhook"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
-        resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
-        tools_heading: "Tools"
-        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        description: "模型上下文協定允許 AI 代理向其使用者提供此 OpenProject 實體所揭露的工具與資源。"
+        resources_heading: "資源"
+        resources_description: "OpenProject 實作下列工具。每個工具都可以依您的需求啟用、重新命名和描述。如需詳細資訊，請參閱 [MCP 資源文件](docs_url)。"
+        resources_submit: "更新資源"
+        tools_heading: "工具"
+        tools_description: "OpenProject 實作下列工具。每個工具都可以依您的需求啟用、重新命名和描述。如需詳細資訊，請參閱 [MCP 工具說明文件](docs_url)。"
+        tools_submit: "更新工具"
       multi_update:
-        success: "MCP configurations were updated successfully."
+        success: "MCP 組態已成功更新。"
       server_form:
-        description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        description_caption: "MCP 伺服器將如何描述給連線到它的其他應用程式。"
+        title_caption: "顯示給與 MCP 伺服器連線的應用程式的簡短標題。"
       update:
-        failure: "MCP configuration could not be updated."
-        success: "MCP configuration was updated successfully."
+        failure: "無法更新 MCP 設定。"
+        success: "MCP 組態已成功更新。"
     scim_clients:
       authentication_methods:
         sso: "來自身份提供者的 JWT"
@@ -1241,9 +1241,9 @@ zh-TW:
         port: "埠"
         tls_certificate_string: "LDAP伺服器SSL證書"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: 已啟用
+        title: 標題
+        description: 說明
       member:
         roles: "角色"
       notification:
@@ -2412,7 +2412,7 @@ zh-TW:
       edit_attribute_groups: 編輯群組屬性
       gantt_pdf_export: 以PDF匯出甘特圖
       ldap_groups: 同步LDAP使用者與群組
-      mcp_server: MCP Server
+      mcp_server: MCP 伺服器
       nextcloud_sso: Nextcloud 儲存空間的單一登入(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 檔案儲存
       placeholder_users: 佔位符使用者
@@ -2489,7 +2489,7 @@ zh-TW:
         title: "自訂動作"
         description: "自訂動作是一系列預先定義動作的單鍵捷徑，您可以根據狀態、角色、類型或專案，在特定工作套件上使用這些動作。"
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "透過 MCP 將 AI 代理與您的 OpenProject 實例整合。"
       nextcloud_sso:
         title: "Nextcloud 儲存空間的單一登入(SSO)"
         description: "使用單一登入為您的 Nextcloud 儲存空間啟用無縫且安全的驗證。簡化存取管理並提升使用者便利性。"
@@ -2877,12 +2877,12 @@ zh-TW:
   instructions_after_error: "你可以試著再按一次 %{signin} 來嘗試登入。如果持續發生錯誤，請向您的管理員尋求幫助。"
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "人工智慧 (AI)"
       aggregation: "合併"
       api_and_webhooks: "API 和 Webhook"
       mail_notification: "電子郵件通知"
       mails_and_notifications: "郵件與通知"
-      mcp_configurations: "Model Context Protocol (MCP)"
+      mcp_configurations: "模型上下文通訊協定 (MCP)"
     quick_add:
       label: "新增…"
   my_account:
