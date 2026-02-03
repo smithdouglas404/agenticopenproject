@@ -2161,6 +2161,7 @@ en:
     estimated_hours: "Work"
     estimated_time: "Work"
     email: "Email"
+    end_date: "End date"
     entity_type: "Entity"
     expires_at: "Expires on"
     firstname: "First name"

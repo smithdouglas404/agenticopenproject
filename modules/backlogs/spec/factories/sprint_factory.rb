@@ -33,4 +33,11 @@ FactoryBot.define do
     sharing { "none" }
     status { "open" }
   end
+
+  factory :agile_sprint, class: "Agile::Sprint" do
+    sequence(:name) { |n| "Sprint #{n}" }
+    status { "in_planning" }
+    start_date { Time.zone.today }
+    end_date { Time.zone.today + 14.days }
+  end
 end
