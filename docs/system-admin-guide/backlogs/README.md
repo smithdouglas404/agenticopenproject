@@ -51,6 +51,18 @@ You can select:
 ## Sprint wiki
 With OpenProject you can set a template for the [**sprint wiki page**](../../user-guide/backlogs-scrum/work-with-backlogs/#sprint-wiki) to standardize how your team documents each sprint. Using a sprint wiki template makes it easy to create consistent pages for sprint goals, planning notes, review outcomes, and retrospective action items.
 
-Assign a name to the *Template for sprint wiki page* field, then [create a wiki page](../../user-guide/wiki/create-edit-wiki/#create-a-new-wiki-page) in the Wiki module of a project with the same name. This is your sprint wiki template. 
+For example, if you want to create a template page for all Sprint retros, follow these steps:
 
-Once a template is configured, you can create a new sprint wiki page directly from the sprint drop-down menu in the Backlogs module. The new page will be based on the template, so you can reuse the same structure for every sprint.
+1. Assign a name to the *Template for sprint wiki page* field, e.g. "Sprint retro".
+
+2. [Create a wiki page](../../user-guide/wiki/create-edit-wiki/#create-a-new-wiki-page) in the Wiki module of a project with the exact same name "Sprint retro". This is your sprint wiki template. Configure it to the needs of your team.
+
+   ![Create a scrum wiki template in OpenProject](openproject_system_admin_guide_backlogs_wiki_template.png)
+
+3. Assign this wiki page to a [sprint version](../../user-guide/projects/project-settings/versions/). You can also share this version with other projects to streamline processes across your organization.
+
+   ![Assign a wiki page template to a sprint version in OpenProject](openproject_system_admin_guide_backlogs_wiki_template_assign_to_version.png)
+
+4. You can create a new sprint wiki page directly from the sprint drop-down menu in the Backlogs module. The new wiki page will be based on the template, so you can reuse the same structure for every sprint.
+
+![New wiki page created based on a backlogs wiki template in OpenProject](openproject_system_admin_guide_backlogs_wiki_template_in_use.png)
