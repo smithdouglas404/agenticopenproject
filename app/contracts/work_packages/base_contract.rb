@@ -131,6 +131,9 @@ module WorkPackages
 
     attribute :budget
 
+    # TODO: add validation, check permission
+    attribute :sprint_id
+
     validates :due_date,
               date: { after_or_equal_to: :start_date,
                       message: :greater_than_or_equal_to_start_date,

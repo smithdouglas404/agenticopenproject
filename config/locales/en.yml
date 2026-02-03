@@ -2175,6 +2175,7 @@ en:
     role: "Role"
     roles: "Roles"
     search: "Search"
+    sprint: "Sprint"
     start_date: "Start date"
     status: "Status"
     state: "State"
