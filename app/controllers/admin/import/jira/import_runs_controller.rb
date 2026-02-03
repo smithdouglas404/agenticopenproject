@@ -81,7 +81,7 @@ module Admin::Import::Jira
       raise StandardError.new(I18n.t(:"admin.jira.run.remove_error")) if @jira_import.status_running?
 
       @jira_import.destroy!
-      redirect_to(admin_import_jira_path(@jira))
+      redirect_to admin_import_jira_path(@jira), status: :see_other
     end
 
     private

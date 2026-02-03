@@ -38,15 +38,17 @@ export default class extends Controller {
         url: String
     };
 
+    private pollingInterval = 3000;
+
     declare urlValue:string;
 
     interval?:ReturnType<typeof setInterval>;
 
     pollTargetConnected() {
         this.interval ??= setInterval(() => {
-                this.reload()
-                    .catch((error) => this.handleError(error));
-            }, 10000);
+            this.reload()
+                .catch((error) => this.handleError(error));
+        }, this.pollingInterval);
     }
 
     finishedTargetConnected() {

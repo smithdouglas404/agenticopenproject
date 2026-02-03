@@ -66,7 +66,7 @@ module Admin::Import::Jira::ImportRuns
           icon: :pencil,
           tag: :a,
           href: admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
-          "aria-label": "Edit"
+          "aria-label": I18n.t(:button_edit)
         )
       )
     end
@@ -77,8 +77,12 @@ module Admin::Import::Jira::ImportRuns
           icon: :trash,
           scheme: :danger,
           tag: :a,
-          href: admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
-          "aria-label": "Edit"
+          href: remove_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
+          "aria-label": I18n.t(:button_delete),
+          data: {
+            turbo_method: :delete,
+            turbo_confirm: I18n.t(:text_are_you_sure)
+          }
         )
       )
     end
