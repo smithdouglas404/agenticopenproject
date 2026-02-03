@@ -314,6 +314,7 @@ Create a new token by clicking the **RSS token** button.
 
 ![OpenProject RSS token under account settings](openproject_account_settings_access_tokens_rss.png)
 This will create your token and trigger a message showing you the access token.
+
 > [!IMPORTANT]
 > You will only be able to see the RSS access token once, directly after you create it. Make sure to copy it.
 
