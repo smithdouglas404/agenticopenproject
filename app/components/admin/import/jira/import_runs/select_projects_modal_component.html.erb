@@ -3,7 +3,7 @@
         title: I18n.t(:"admin.jira.run.wizard.select_projects.title"),
         id: MODAL_ID,
         size: :xlarge,
-        data: { controller: "admin--jira-projects-filter" }
+        data: { controller: "admin--jira-projects" }
       )
     ) do |d|
   d.with_header(
@@ -29,12 +29,12 @@
           scheme: :primary,
           form: Admin::Import::Jira::Projects::FormComponent::FORM_ID,
           type: :submit,
-          data: { "admin--jira-projects-filter-target": "counterButton" }
+          data: { "admin--jira-projects-target": "counterButton" }
         )
       ) do |button|
         button.with_trailing_visual_counter(
           count: jira_import.projects&.count || 0,
-          data: { "admin--jira-projects-filter-target": "counter" }
+          data: { "admin--jira-projects-target": "counter" }
         )
         I18n.t(:button_continue)
       end

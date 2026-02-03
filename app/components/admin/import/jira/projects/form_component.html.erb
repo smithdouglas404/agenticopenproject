@@ -28,8 +28,8 @@
       leading_visual: { icon: :search },
       show_clear_button: true,
       data: {
-        "admin--jira-projects-filter-target": "filterInput",
-        action: "input->admin--jira-projects-filter#filter"
+        "admin--jira-projects-target": "filterInput",
+        action: "input->admin--jira-projects#filter"
       }
     ))
   end
@@ -37,7 +37,7 @@
     render(Primer::Beta::Button.new(
       scheme: :invisible,
       tag: :a,
-      data: { action: "click->admin--jira-projects-filter#checkAll" }
+      data: { action: "click->admin--jira-projects#checkAll" }
     )) do |button|
       button.with_leading_visual_icon(icon: :"check-circle")
       I18n.t(:button_check_all)
@@ -47,7 +47,7 @@
     render(Primer::Beta::Button.new(
       scheme: :invisible,
       tag: :a,
-      data: { action: "click->admin--jira-projects-filter#uncheckAll" }
+      data: { action: "click->admin--jira-projects#uncheckAll" }
       )) do |button|
       button.with_leading_visual_icon(icon: :"x-circle")
       I18n.t(:button_uncheck_all)
@@ -72,7 +72,7 @@ end %>
             caption: project["key"],
             checked: checked?(project["id"]),
             data: {
-              "admin--jira-projects-filter-target": "project",
+              "admin--jira-projects-target": "project",
               project_name: project["name"],
               project_key: project["key"]
             }
