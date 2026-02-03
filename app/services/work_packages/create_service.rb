@@ -31,6 +31,7 @@
 class WorkPackages::CreateService < BaseServices::BaseCallable
   include ::WorkPackages::Shared::UpdateAncestors
   include ::Shared::ServiceContext
+  include Types::ApplyPatterns
 
   attr_reader :user, :contract_class, :contract_options
 
@@ -60,6 +61,8 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
       # Avoid running validations again as we might be in a project copy scenario.
       work_package.attachments = work_package.attachments_replacements if work_package.attachments_replacements
       work_package.save(validate: false)
+
+      apply_patterns(work_package)
 
       # update ancestors before rescheduling, as the parent might switch to automatic mode
       multi_update_ancestors(result.all_results).each do |ancestor_result|

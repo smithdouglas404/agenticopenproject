@@ -31,6 +31,7 @@
 class WorkPackages::UpdateService < BaseServices::Update
   include ::WorkPackages::Shared::UpdateAncestors
   include Attachments::ReplaceAttachments
+  include Types::ApplyPatterns
 
   attr_accessor :cause_of_rescheduling
 
@@ -42,6 +43,11 @@ class WorkPackages::UpdateService < BaseServices::Update
   private
 
   def after_perform(service_call)
+    # TODO: code smell here: saving the automatically generated subject depends
+    # on running the UpdateAncestorsService right after. The subject gets saved
+    # only thanks to this. If the UpdateAncestorsService is not run, the subject
+    # is not saved. That's an odd coupling.
+    apply_patterns(service_call.result, save: false)
     update_related_work_packages(service_call)
     cleanup(service_call.result)
 

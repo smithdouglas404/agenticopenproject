@@ -2292,42 +2292,17 @@ RSpec.describe WorkPackages::SetAttributesService,
       end
     end
 
-    it "sets the resolved subject from the pattern" do
+    # Testing this because the behaviour used to be different.
+    it "does not set the resolved subject from the pattern" do
       instance.call({})
 
-      expect(work_package.subject).to eq(resolved_subject)
+      expect(work_package.subject).to be_blank
     end
 
-    it "marks the subject change as changed by system" do
-      instance.call({})
+    it "keeps an overridden subject" do
+      instance.call(subject: "My custom subject")
 
-      expect(work_package.changed_by_system).to include("subject" => ["", resolved_subject])
-    end
-
-    context "when subject is overridden" do
-      it "keeps the overridden value" do
-        instance.call(subject: "My custom subject")
-
-        expect(work_package.subject).to eq("My custom subject")
-      end
-
-      it "does not mark subject as changed by system" do
-        instance.call(subject: "My custom subject")
-
-        expect(work_package.changed_by_system).not_to include("subject")
-      end
-    end
-
-    context "when the pattern is disabled" do
-      let(:type) do
-        build_stubbed(:type, patterns: { subject: { blueprint: "{{type}} {{project_name}}", enabled: false } })
-      end
-
-      it "does not auto-generate the subject" do
-        instance.call(subject: "I will be kept")
-
-        expect(work_package.subject).to eq("I will be kept")
-      end
+      expect(work_package.subject).to eq("My custom subject")
     end
   end
 end

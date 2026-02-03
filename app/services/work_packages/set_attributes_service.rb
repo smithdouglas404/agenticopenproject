@@ -47,19 +47,6 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
 
     set_custom_attributes(attributes)
     set_custom_values_to_validate(attributes, validate_custom_fields)
-
-    # Needs to be late so that updates to values can be taken into account.
-    model.change_by_system do
-      set_templated_attributes
-    end
-  end
-
-  def set_templated_attributes
-    model.type&.enabled_patterns&.each do |key, pattern|
-      next if model.changed_attribute_keys.include?(key)
-
-      model.public_send(:"#{key}=", pattern.resolve(model))
-    end
   end
 
   def set_custom_values_to_validate(attributes, validate_custom_fields = nil)
