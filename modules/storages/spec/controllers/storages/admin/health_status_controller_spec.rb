@@ -36,7 +36,9 @@ RSpec.describe Storages::Admin::HealthStatusController do
   let(:params) { { storage_id: storage.id } }
 
   before do
-    allow(Storages::Storage).to receive(:find).with(storage.id.to_s).and_return(storage)
+    visible_relation = instance_double(ActiveRecord::Relation)
+    allow(Storages::Storage).to receive(:visible).and_return(visible_relation)
+    allow(visible_relation).to receive(:find).with(storage.id.to_s).and_return(storage)
 
     login_as user
   end

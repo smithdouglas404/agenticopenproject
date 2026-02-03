@@ -82,7 +82,7 @@ module Storages
       end
 
       def find_storage
-        @storage = Storages::Storage.find(params[:storage_id])
+        @storage = ::Storages::Storage.visible.find(params[:storage_id])
       end
 
       def create_and_cache_report

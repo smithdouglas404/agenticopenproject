@@ -37,6 +37,7 @@ class DocumentsController < ApplicationController
   default_search_scope :documents
 
   before_action :find_project_by_project_id, only: %i[index search new create]
+  before_action :find_document, except: %i[index search new create]
   before_action :authorize
 
   def index
