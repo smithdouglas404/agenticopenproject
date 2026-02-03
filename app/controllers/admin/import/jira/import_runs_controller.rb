@@ -66,7 +66,7 @@ module Admin::Import::Jira
 
     def select_projects
       @jira_import.update!(projects: select_projects_params)
-      redirect_to(admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id))
+      stream_wizard
     end
 
     def select_projects_modal

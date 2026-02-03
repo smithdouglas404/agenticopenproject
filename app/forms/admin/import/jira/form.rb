@@ -63,7 +63,7 @@ module Admin::Import::Jira
           name: :submit,
           label: model.persisted? ? I18n.t("admin.jira.form.button_save") : I18n.t("admin.jira.form.button_add"),
           scheme: :primary,
-          data: { "admin--jira-configuration-form-target": "submitButton" }
+          data: { "admin--jira-configuration-form-target": "button" }
         )
 
         button_group.button(
@@ -72,7 +72,7 @@ module Admin::Import::Jira
           scheme: :default,
           type: :button,
           data: {
-            "admin--jira-configuration-form-target": "testButton",
+            "admin--jira-configuration-form-target": "button",
             action: "click->admin--jira-configuration-form#testConnection"
           }
         )
@@ -87,8 +87,10 @@ module Admin::Import::Jira
             href: url_helpers.delete_token_admin_import_jira_path(model),
             icon: :trash,
             data: {
+              "admin--jira-configuration-form-target": "button",
               turbo_method: :delete,
-              turbo_confirm: I18n.t("admin.jira.form.delete_token_confirm")
+              turbo_confirm: I18n.t("admin.jira.form.delete_token_confirm"),
+              action: "click->admin--jira-configuration-form#disableButtons"
             }
           )
         end

@@ -60,7 +60,7 @@ module Admin::Import::Jira
 
     def update
       result = ::Jiras::UpdateService.new(user: User.current, model: @jira).call(jira_params)
-      handle_service_result(result, success_path: -> { admin_import_jiras_path }, failure_view: :edit)
+      handle_service_result(result, success_path: -> { admin_import_jira_path(result.result.id) }, failure_view: :edit)
     end
 
     def destroy

@@ -33,10 +33,9 @@ import * as Turbo from '@hotwired/turbo';
 import {useMeta} from 'stimulus-use';
 
 export default class extends Controller {
-    static targets = ['submitButton', 'testButton', 'progressBanner', 'urlInput', 'tokenInput'];
+    static targets = ['button', 'progressBanner', 'urlInput', 'tokenInput'];
 
-    declare readonly submitButtonTarget:HTMLButtonElement;
-    declare readonly testButtonTarget:HTMLButtonElement;
+    declare readonly buttonTargets:HTMLButtonElement[];
     declare readonly progressBannerTarget:HTMLButtonElement;
     declare readonly urlInputTarget:HTMLInputElement;
     declare readonly tokenInputTarget:HTMLInputElement;
@@ -56,14 +55,17 @@ export default class extends Controller {
         useMeta(this, {suffix: false});
     }
 
+    disableButtons():void {
+        this.buttonTargets.forEach(button => { button.disabled = true; });
+    }
+
     async testConnection(event:Event):Promise<void> {
         event.preventDefault();
 
         const url = this.urlInputTarget.value.trim();
         const token = this.tokenInputTarget.value.trim();
 
-        this.submitButtonTarget.disabled = true;
-        this.testButtonTarget.disabled = true;
+        this.disableButtons();
         this.progressBannerTarget.hidden = false;
 
         try {
@@ -87,8 +89,7 @@ export default class extends Controller {
         } catch (error) {
             console.error(error);
         } finally {
-            this.submitButtonTarget.disabled = false;
-            this.testButtonTarget.disabled = false;
+            this.buttonTargets.forEach(button => { button.disabled = false; });
             this.progressBannerTarget.hidden = true;
         }
     }

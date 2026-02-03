@@ -58,7 +58,6 @@ module Admin::Import::Jira::Projects
 
     def form_options
       {
-        style: "height: 500px; overflow-y: auto;",
         id: FORM_ID,
         url: select_projects_admin_import_jira_run_path(jira_id: jira_import.jira.id, id: jira_import.id),
         method: :post

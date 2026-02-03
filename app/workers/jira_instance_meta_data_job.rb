@@ -59,11 +59,13 @@ class JiraInstanceMetaDataJob < ApplicationJob
     projects = client.projects.map do |project|
       { "id" => project["id"], "key" => project["key"], "name" => project["name"] }
     end
+    server_info = client.server_info
     {
       "projects" => projects,
       "total_issues" => issues_count,
       "total_statuses" => statuses_count,
-      "total_issue_types" => issue_types_count
+      "total_issue_types" => issue_types_count,
+      "server_info" => server_info
     }
   end
 end
