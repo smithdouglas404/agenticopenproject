@@ -97,6 +97,39 @@ RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
       end
     end
 
+    describe "pagination" do
+      page_size = 10
+      overspilling_projects = 5
+
+      before do
+        allow(McpTools::SearchProject).to receive(:page_size).and_return(page_size)
+      end
+
+      context "if there are more then #{page_size} projects" do
+        (0..(page_size + overspilling_projects - 1)).each do |idx|
+          let!(:"project_#{idx}") do
+            create(:project, identifier: "p#{idx}", name: "Death Star construction phase #{idx}", status_code: :on_track)
+          end
+        end
+
+        let(:call_args) { { name: "Death Star" } }
+
+        it "paginates the results" do
+          subject
+          expect(parsed_results.dig("structuredContent", "items").count).to eq(page_size)
+        end
+
+        context "and the next page is requested" do
+          let(:call_args) { { name: "Death Star", page: 1 } }
+
+          it "returns the next page on request" do
+            subject
+            expect(parsed_results.dig("structuredContent", "items").count).to eq(overspilling_projects)
+          end
+        end
+      end
+    end
+
     context "when passing a non-exact name" do
       let(:call_args) { { name: "The abc" } }
 

@@ -30,12 +30,17 @@
 
 module McpTools
   class SearchProject < Base
-    # TODO: The mcp gem does not support pagination, so we only limit the number of results for now
-    MAX_SIZE = 100
+    class << self
+      def page_size
+        100
+      end
+    end
 
     default_title "Search projects"
     default_description "Search projects matching all of the passed input parameters. " \
-                        "Parameters not passed are ignored. Results are limited to a maximum of #{MAX_SIZE} projects."
+                          "Parameters not passed are ignored. Results are limited to a maximum " \
+                          "of #{page_size} projects. To get the rest of the results, call the tool again with a" \
+                          "page number of 1 or higher."
 
     name "search_project"
     annotations read_only: true, idempotent: true, destructive: false
@@ -45,10 +50,16 @@ module McpTools
     filter :status_code
 
     input_schema(
+      type: :object,
       properties: {
         name: { type: "string", description: "Name of the project. Accepts partial project names, not case-sensitive." },
         identifier: { type: "string", description: "Project indentifier. Case-sensitive, matching exactly." },
-        status_code: { type: "string", enum: Project.status_codes.keys, description: "The project status." }
+        status_code: { type: "string", enum: Project.status_codes.keys, description: "The project status." },
+        page: {
+          type: "number",
+          description: "Page number for pagination. If no page is defined, the first result set is returned. " \
+                       "To get the rest of the results, use a page number of 1 or higher."
+        }
       }
     )
 
@@ -63,8 +74,9 @@ module McpTools
       }
     )
 
-    def call(**query)
-      projects = apply_filters(Project.visible.limit(MAX_SIZE), query)
+    def call(page: 0, **filters)
+      page_size = self.class.page_size
+      projects = apply_filters(Project.visible.offset(page * page_size).limit(page_size), filters)
 
       {
         items: projects.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user: User.current) }
