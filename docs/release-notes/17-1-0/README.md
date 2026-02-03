@@ -27,7 +27,7 @@ Administrators can configure a project initiation wizard to define how new proje
 
 The wizard guides users step by step through the initiation process using a fullscreen, three-column layout with section navigation, contextual help, and a progress indicator. Instead of completing required project attributes during project creation, users provide this information as part of the initiation request.
 
-#### Create a project initiation request as a work package
+#### Work package created for a project initiation request
 
 When a project initiation request is submitted, OpenProject automatically creates a work package that represents the request and serves as its central tracking artifact.
 
@@ -60,6 +60,12 @@ Users can now add work packages as meeting outcomes, allowing teams to turn meet
 Each linked work package automatically shows a reference to the meeting in its Meetings tab, making the connection between the agenda item and the follow-up item explicit.
 
 Since we already introduced multiple outcomes per agenda item in OpenProject 17.0, it is now also possible to link multiple work packages to the same agenda item.
+
+![OpenProject meeting showing dropdown options for Outcome button: Write outcome, Existing work package, New workpackage](openproject-17-1-meeting-outcome-work-package-highlighted.png)
+
+#### Mark meeting participants as attended
+
+![OpenProject meeting showing modal to mark single or all participants as attended, with updated participants list](openproject-17-1-meetings-mark-as-attended-highlighted.png)
 
 #### Show meeting participant responses in iCal subscriptions
 
