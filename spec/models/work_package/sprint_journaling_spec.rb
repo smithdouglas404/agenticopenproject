@@ -34,8 +34,8 @@ RSpec.describe "WorkPackage sprint association journaling", # rubocop:disable RS
                with_settings: { journal_aggregation_time_minutes: 0 } do
   shared_let(:project) { create(:project) }
   shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_work_packages edit_work_packages] }) }
-  shared_let(:sprint1) { create(:agile_sprint, name: "Sprint 1") }
-  shared_let(:sprint2) { create(:agile_sprint, name: "Sprint 2") }
+  shared_let(:sprint1) { create(:agile_sprint, name: "Sprint 1", project:) }
+  shared_let(:sprint2) { create(:agile_sprint, name: "Sprint 2", project:) }
   shared_let(:work_package) { create(:work_package, project:) }
 
   before do
