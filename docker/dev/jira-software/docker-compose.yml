@@ -18,6 +18,11 @@ services:
       - "traefik.http.routers.jira-software.rule=Host(`jira-software.${OPENPROJECT_DOCKER_DEV_TLD}`)"
       - "traefik.http.routers.jira-software.service=jira-software-service"
       - "traefik.http.services.jira-software-service.loadbalancer.server.port=8080"
+    environment:
+      - ATL_PROXY_NAME=jira-software.${OPENPROJECT_DOCKER_DEV_TLD}
+      - ATL_PROXY_PORT=443
+      - ATL_TOMCAT_SCHEME=https
+      - ATL_TOMCAT_SECURE=true
     networks:
       - gateway
     volumes:
