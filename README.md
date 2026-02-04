@@ -57,20 +57,8 @@ OPENPROJECT_URL=http://web
 
 Where `web` is the DNS name for the OpenProject container in the docker compose setup.
 
-> When overriding the base URL like this, you also need to set `OPENPROJECT_HOST` (see below) to make requests work.
-
-#### `OPENPROJECT_HOST` (default `undefined`)
-
-When connecting to OpenProject using a different URL than the one OpenProject is configured to be accessd from publicly,
-you also need to make sure to override the `Host` header used in requests made to OpenProject by hocuspocus.
-
-Looking at the example above, accessing OpenProject under `http://web` will not work, because OpenProject will return
-an `Invalid host_name configuration` error.
-Overriding the `Host` header with OpenProject's public host addresses this error.
-
-```bash
-OPENPROJECT_HOST=localhost
-```
+> When overriding the base URL like this, you may also need to set `OPENPROJECT_ADDITIONAL__HOST__NAMES`
+> on the OpenProject side. In the example above you would set it to `web`.
 
 ### Starting the Server
 

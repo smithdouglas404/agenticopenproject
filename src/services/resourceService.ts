@@ -1,5 +1,4 @@
 const OPENPROJECT_URL = process.env.OPENPROJECT_URL?.trim() || null;
-const OPENPROJECT_HOST = process.env.OPENPROJECT_HOST?.trim() || null;
 
 if (OPENPROJECT_URL) {
   const openProjectDirectUrl = new URL(OPENPROJECT_URL);
@@ -10,13 +9,9 @@ if (OPENPROJECT_URL) {
   console.log(`using OPENPROJECT_URL: ${OPENPROJECT_URL}`);
 }
 
-if (OPENPROJECT_HOST) {
-  console.log(`using OPENPROJECT_HOST: ${OPENPROJECT_HOST}`);
-}
-
 /**
  * Fetches an OpenProject resource while automatically adjusting request URL and host header
- * based on the values of OPENPROJECT_URL and OPENPROJECT_HOST in the environment.
+ * based on the value of OPENPROJECT_URL in the environment.
  * 
  * @param resourceUrl URL of OpenProject resource to fetch
  * @param oauthToken OAuth Bearer token to authenticate with
@@ -30,25 +25,28 @@ export async function fetchResource(
 ): Promise<Response> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${oauthToken}`,
-    ...(OPENPROJECT_HOST && { "Host": OPENPROJECT_HOST })
+    "Authorization": `Bearer ${oauthToken}`
   };
-  const defaultRequestInit = {
-    method: "GET",
-    headers,
-  };
+  const url = overrideUrl(resourceUrl);
+  const init = {
+    method: 'GET',
+    headers: headers,
+    ...override
+  }
 
-  return fetch(overrideUrl(resourceUrl), Object.assign(defaultRequestInit, override));
+  console.log(`[${new Date().toISOString()}] ${init.method} ${resourceUrl}`);
+
+  return fetch(url, init);
 }
 
 /**
- * Get the effective OpenProject resource URL considering the values of
- * OPENPROJECT_URL and OPENPROJECT_HOST in the environment.
+ * Get the effective OpenProject resource URL considering the value of
+ * OPENPROJECT_URL in the environment.
  * 
  * @param resourceUrl URL of OpenProject resource
  * @returns Either the given resource URL if no override has been configured, or the adjusted URL.
  */
-export function overrideUrl(resourceUrl: string): string {
+function overrideUrl(resourceUrl: string): string {
   return OPENPROJECT_URL ? overrideBaseUrl(resourceUrl, OPENPROJECT_URL) : resourceUrl;
 }
 

@@ -1,15 +1,6 @@
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { fetchResource } from "../../src/services/resourceService";
 
-const oauthToken: string = "xxxxx.yyyyy.zzzzz";
-const fetchParams = {
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${oauthToken}`,
-  },
-  method: "GET"
-};
-
 // we test this in a separate file because the resource service config (process env) is initialized
 // once when the test suite starts, meaning we can't change it between cases in the same file
 describe("fetchResource with overriden OpenProject URL", () => {
@@ -23,12 +14,10 @@ describe("fetchResource with overriden OpenProject URL", () => {
     vi.unstubAllEnvs();
   });
 
-  test("Overrides the base URL protocol and host", () => {
-    using fetch = vi.spyOn(global, "fetch");
-    const resourceUrl = "https://example.com/path/to/resource";
-    
-    fetchResource(resourceUrl, oauthToken);
+  test("Overrides the base URL protocol and host", async () => {
+    const resourceUrl = "https://test.openproject.com/api/v3/documents/42";
+    const response = await fetchResource(resourceUrl, "__valid_oauth_token").then(r => r.json());
 
-    expect(fetch).toHaveBeenCalledWith("http://web/path/to/resource", fetchParams);
+    expect(response).toMatchObject({ __echo: { url: 'http://web/api/v3/documents/42' }});
   });
 });
