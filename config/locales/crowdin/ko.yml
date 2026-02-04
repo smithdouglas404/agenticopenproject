@@ -2421,6 +2421,7 @@ ko:
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 파일 저장소
       placeholder_users: 플레이스홀더 사용자
       portfolio_management: 포트폴리오 관리
+      project_creation_wizard: Project initiation request
       project_list_sharing: 프로젝트 목록 공유
       readonly_work_packages: 읽기 전용 작업 패키지
       scim_api: SCIM 서버 API
@@ -2505,6 +2506,8 @@ ko:
         description: "기존 ID 시스템에서 원활하게 액세스하고 통합할 수 있도록 SAML 또는 OpenID Connect를 사용하여 외부 SSO 공급자를 통해 사용자가 로그인할 수 있게 합니다."
       virus_scanning:
         description: "OpenProject에서 업로드된 파일은 바이러스 검사를 수행한 후에 다른 사용자가 액세스해야 합니다."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: 플레이스홀더 사용자
         description: >
@@ -2801,19 +2804,17 @@ ko:
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         missing: "아직 강조 표시된 기능이 없습니다."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
-            이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 실시간 문서 공동 작업.
-            line_1: 관련 프로젝트를 프로그램 및 포트폴리오로 구성하여 전략적 목표에 집중할 수 있는 기능(Enterprise 추가 기능)입니다.
-            line_2: 초안 모드, 프레젠테이션 모드, 향상된 결과, iCal 구독으로 개선된 미팅 관리가 가능합니다.
-            line_3: 보다 제한적인 권한으로 SharePoint 통합이 업데이트되었습니다(Enterprise 추가 기능).
-            line_4: 새로운 탭, 구성 가능한 위젯, 개선된 레이아웃으로 프로젝트 개요를 새롭게 디자인했습니다.
-            line_5: 동일한 프로젝트에서 작업 중이지 않은 사용자의 개인 정보를 보다 엄격하게 보호하는 옵션입니다.
-            line_6: 향상된 템플릿 선택으로 프로젝트 생성 흐름이 개선되었습니다.
-            line_7: 유형과 상태를 포함한 더욱 스마트한 글로벌 검색으로 여러 자동 완성기의 정확도가 개선되었습니다.
-            line_8: ALT 텍스트와 개선된 차트 색상으로 접근성이 개선되었습니다.
+            line_0: Automated project initiation (Enterprise add-on).
+            line_1: "Meetings: add new or existing work packages as outcomes."
+            line_2: "Meetings: show participant responses in iCal subscriptions."
+            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
+            line_4: "Release to Community: Attribute highlighting."
+            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
+            line_6: Improved performance and user experience, including the Activity tab and Documents module.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -2914,7 +2915,7 @@ ko:
         text_hint: "API 토큰을 사용하면 타사 애플리케이션이 REST API를 통해 이 OpenProject 인스턴스와 통신할 수 있습니다."
         static_token_name: "API token"
         disabled_text: "관리자가 API 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
-        add_button: "API 토큰"
+        add_button: "API token"
       ical:
         blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
         blank_title: "No iCalendar token"
@@ -2942,7 +2943,7 @@ ko:
         removed: "OAuth client token successfully removed"
         unknown_integration: "Unknown"
       token/rss:
-        add_button: "RSS Token"
+        add_button: "RSS token"
         blank_description: "There is no RSS token yet. You can create one using the button below."
         blank_title: "No RSS token"
         title: "RSS"

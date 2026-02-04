@@ -2466,6 +2466,7 @@ it:
       one_drive_sharepoint_file_storage: Archiviazione file OneDrive/SharePoint
       placeholder_users: Utenti segnaposto
       portfolio_management: Gestione del portfolio
+      project_creation_wizard: Project initiation request
       project_list_sharing: Condivisione elenco progetti
       readonly_work_packages: Macro-attività di sola lettura
       scim_api: API server SCIM
@@ -2550,6 +2551,8 @@ it:
         description: "Consenti agli utenti di accedere tramite provider SSO esterni utilizzando SAML o OpenID Connect, per un accesso fluido e un'integrazione con i sistemi di identità esistenti."
       virus_scanning:
         description: "Assicurati che i file caricati in OpenProject vengano scansionati alla ricerca di virus prima di renderli accessibili ad altri utenti."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Utenti segnaposto
         description: >
@@ -2847,19 +2850,17 @@ it:
         learn_about: "Scopri di più su tutte le nuove funzionalità"
         missing: "Non ci sono ancora caratteristiche evidenziate."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
-            Questa versione contiene diverse nuove funzionalità e miglioramenti, come ad esempio:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Collaborazione in tempo reale sui documenti.
-            line_1: Capacità di strutturare i progetti correlati in programmi e portfolio per focalizzarli su obiettivi strategici (componente aggiuntivo Enterprise).
-            line_2: Migliore gestione delle riunioni con modalità bozza, modalità di presentazione, risultati migliorati e iscrizione iCal.
-            line_3: Integrazione SharePoint aggiornata con autorizzazioni più restrittive (componente aggiuntivo Enterprise).
-            line_4: Panoramica del progetto ridisegnata con nuove schede, widget configurabili e un layout migliorato.
-            line_5: Opzione per tutelare in modo più rigoroso la privacy degli utenti che non lavorano nello stesso progetto.
-            line_6: Flusso di creazione dei progetti migliorato con una selezione dei modelli più efficace.
-            line_7: Ricerca globale più intelligente che include tipo e stato, migliorando la precisione in diversi completamenti automatici.
-            line_8: Miglioramenti di accessibilità con testi ALT e colori grafici migliorati.
+            line_0: Automated project initiation (Enterprise add-on).
+            line_1: "Meetings: add new or existing work packages as outcomes."
+            line_2: "Meetings: show participant responses in iCal subscriptions."
+            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
+            line_4: "Release to Community: Attribute highlighting."
+            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
+            line_6: Improved performance and user experience, including the Activity tab and Documents module.
     links:
       upgrade_enterprise_edition: "Aggiorna ad Enterprise edition"
       postgres_migration: "Migrazione dell'installazione su PostgreSQL"
@@ -2960,7 +2961,7 @@ it:
         text_hint: "I token API consentono alle applicazioni di terze parti di comunicare con questa istanza OpenProject tramite le API REST."
         static_token_name: "API token"
         disabled_text: "I token API non sono abilitati dall'amministratore. Contatta il tuo amministratore per utilizzare questa funzione."
-        add_button: "Token API"
+        add_button: "API token"
       ical:
         blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
         blank_title: "No iCalendar token"
@@ -2988,7 +2989,7 @@ it:
         removed: "OAuth client token successfully removed"
         unknown_integration: "Unknown"
       token/rss:
-        add_button: "RSS Token"
+        add_button: "RSS token"
         blank_description: "There is no RSS token yet. You can create one using the button below."
         blank_title: "No RSS token"
         title: "RSS"

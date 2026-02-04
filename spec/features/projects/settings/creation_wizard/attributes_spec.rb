@@ -31,8 +31,7 @@ require "spec_helper"
 
 RSpec.describe "Project creation wizard settings - attributes tab",
                :js,
-               :with_cuprite,
-               with_flag: { project_initiation: true } do
+               :with_cuprite do
   let(:admin) { create(:admin) }
   let(:project) { create(:project, name: "Test Project", project_creation_wizard_enabled: true) }
 

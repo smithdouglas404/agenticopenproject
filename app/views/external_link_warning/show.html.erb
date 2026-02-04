@@ -37,7 +37,10 @@ See COPYRIGHT and LICENSE files for more details.
        tag: :a,
        href: @external_url,
        scheme: :danger,
-       data: { turbo: false }
+       data: {
+         turbo: false,
+         allow_external_link: true
+       }
      ) { I18n.t("external_link_warning.continue_button") } %>
 
   <%= render(Primer::Box.new(color: :muted)) do %>

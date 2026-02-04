@@ -1507,7 +1507,7 @@ de:
         even: "muss gerade sein."
         exclusion: "ist nicht verfügbar."
         feature_disabled: ist nicht verfügbar.
-        feature_disabled_for_project: is disabled for this project.
+        feature_disabled_for_project: ist für dieses Projekt deaktiviert.
         file_too_large: "ist zu groß (nicht mehr als %{count} Bytes erlaubt)."
         filter_does_not_exist: "Filter existiert nicht."
         format: "stimmt nicht mit dem erwarteten Format '%{expected} ' überein."
@@ -2446,7 +2446,7 @@ de:
       baseline_comparison: Grundlinie (Planungsvergleich)
       board_view: Erweiterte agile Boards
       calculated_values: Berechnete Werte
-      capture_external_links: Capture External Links
+      capture_external_links: Externe Links abfangen
       internal_comments: Interne Kommentare
       custom_actions: Benutzerdefinierte Aktionen
       custom_field_hierarchies: Hierarchien
@@ -2461,6 +2461,7 @@ de:
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
       portfolio_management: Portfolioverwaltung
+      project_creation_wizard: Project initiation request
       project_list_sharing: Projektlistenfreigabe
       readonly_work_packages: Schreibgeschützte Arbeitspakete
       scim_api: SCIM-Server-API
@@ -2502,7 +2503,7 @@ de:
       customize_life_cycle:
         description: "Erstellen und organisieren Sie von PM2 abweichende Projektlebenszyklen."
       capture_external_links:
-        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
+        description: "Verhindern Sie Social-Engineering-Angriffe, indem Sie externe Links erfassen und davor warnen, bevor Benutzer sie besuchen."
       work_package_query_relation_columns:
         description: "Möchten Sie Beziehungen oder Unteraufgaben als Spalten in der Arbeitspaketliste sehen können?"
       edit_attribute_groups:
@@ -2545,6 +2546,8 @@ de:
         description: "Ermöglichen Sie es Benutzern, sich über externe SSO-Anbieter mit SAML oder OpenID Connect anzumelden, um einen nahtlosen Zugriff und die Integration mit bestehenden Identitätssystemen zu ermöglichen."
       virus_scanning:
         description: "Stellen Sie sicher, dass hochgeladene Dateien in OpenProject auf Viren gescannt werden, bevor sie für andere Benutzer zugänglich sind."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Platzhalter-Konten
         description: >
@@ -2842,19 +2845,17 @@ de:
         learn_about: "Erfahren Sie mehr über die neuen Funktionen"
         missing: "Es gibt noch keine hervorgehobenen Funktionen."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
             Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
-            line_0: Zusammenarbeit an Dokumenten in Echtzeit.
-            line_1: Strukturierung zusammenhängender Projekte in Programme und Portfolios, um sie auf strategische Ziele auszurichten (Enterprise Add-on).
-            line_2: Bessere Verwaltung von Besprechungen mit Entwurfsmodus, Präsentationsmodus, verbesserten Ergebnissen und iCal-Abonnement.
-            line_3: Aktualisierte SharePoint-Integration mit flexibleren Berechtigungen (Enterprise Add-on).
-            line_4: Neu gestaltete Projektübersicht mit neuen Tabs, konfigurierbaren Widgets und einem verbesserten Layout.
-            line_5: Option zum Trennen der Sichtbarkeit von Benutzern innerhalb der Instanz, die nicht am selben Projekt oder derselben Gruppe arbeiten.
-            line_6: Verbesserter Ablauf der Projekterstellung mit neuer Vorlagenauswahl.
-            line_7: Eine intelligentere Suche, die Typ und Status einschließt, verbessert die Präzision in der globalen Suche und in Auswahlfeldern.
-            line_8: Verbesserungen der Zugänglichkeit mit ALT-Texten und verbesserten Diagrammfarben.
+            line_0: Automatisierte Projektinitiierung (Enterprise Add-on).
+            line_1: "Besprechungen: Fügen Sie neue oder bestehende Arbeitspakete als Ergebnisse hinzu."
+            line_2: "Besprechungen: Zeigen Sie Teilnehmerantworten in iCal-Abonnements an."
+            line_3: "Wiederkehrende Besprechungen: Kopieren Sie Tagesordnungspunkte zur nächsten Besprechung."
+            line_4: "Freigabe für die Community-Edition: Hervorhebung von Attributen."
+            line_5: Warnung vor dem Öffnen externer Links in von Benutzern erstellten Texten (Enterprise Add-on).
+            line_6: Verbesserte Leistung und Benutzerfreundlichkeit, einschließlich des Aktivität-Tabs und des Dokumenten-Moduls.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
@@ -2932,7 +2933,7 @@ de:
       label: "Hinzufügen…"
   my_account:
     access_tokens:
-      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
+      description: "Provider-Tokens werden von OpenProject ausgestellt und ermöglichen anderen Anwendungen den Zugriff darauf. Client-Tokens werden von anderen Anwendungen ausgestellt und ermöglichen OpenProject den Zugriff auf sie."
       no_results:
         title: "Kein Zugangs-Token kann angezeigt werden"
         description: "Alle wurden deaktiviert. Sie können im Administrations-Menü wieder aktiviert werden."
@@ -2955,7 +2956,7 @@ de:
         text_hint: "API-Token erlauben es Drittanbieter-Anwendungen, mit dieser OpenProject-Instanz über REST-APIs zu kommunizieren."
         static_token_name: "API-Token"
         disabled_text: "API-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
-        add_button: "API-Token"
+        add_button: "API token"
       ical:
         blank_description: "Um einen iCalendar-Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
         blank_title: "Kein iCalendar-Token"
@@ -2983,7 +2984,7 @@ de:
         removed: "OAuth-Client-Token erfolgreich entfernt"
         unknown_integration: "Unbekannt"
       token/rss:
-        add_button: "RSS-Token"
+        add_button: "RSS token"
         blank_description: "Es gibt noch kein RSS-Token. Sie können eines erstellen, indem Sie auf die Schaltfläche unten klicken."
         blank_title: "Kein RSS-Token"
         title: "RSS"
@@ -3308,7 +3309,7 @@ de:
   label_journal_diff: "Beschreibungsvergleich"
   label_language: "Sprache"
   label_languages: "Sprachen"
-  label_external_links: "External links"
+  label_external_links: "Externe Links"
   label_locale: "Sprache und Region"
   label_jump_to_a_project: "Zu einem Projekt springen..."
   label_keyword_plural: "Schlüsselwörter"
@@ -4302,9 +4303,9 @@ de:
   setting_allowed_link_protocols: "Erlaubte Link-Protokolle"
   setting_allowed_link_protocols_text_html: >-
     Erlauben Sie es, diese Protokolle als Links in Arbeitspaket-Beschreibungen, langen Textfeldern und Kommentaren darzustellen. Zum Beispiel %{tel_code} oder %{element_code}. Geben Sie ein Protokoll pro Zeile ein. <br/> Protokolle %{http_code}, %{https_code} und %{mailto_code} sind immer erlaubt.
-  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links: "Externe Links abfangen"
   setting_capture_external_links_text: >
-    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+    Wenn diese Funktion aktiviert ist, werden alle externen Links in formatiertem Text auf eine vor dem Link warnende Seite in der Applikation umgeleitet, bevor sie die Anwendung verlassen. Dies hilft, Benutzer vor potenziell bösartigen externen Websites zu schützen.
   setting_after_first_login_redirect_url: "Weiterleitung nach erster Anmeldung"
   setting_after_first_login_redirect_url_text_html: >
     Legen Sie einen Pfad fest, an den Nutzer:innen nach der ersten Anmeldung weitergeleitet werden. Wenn leer, führt er auf die Startseite des Onboarding-Tours. <br/> Beispiel: <code>/meine/seite</code>
@@ -4318,16 +4319,16 @@ de:
     Wenn CORS aktiviert ist, sind dies die Origins, die auf die OpenProject API zugreifen dürfen. <br/> Bitte überprüfen Sie die <a href="%{origin_link}" target="_blank">Dokumentation über den Origin Header</a>, wie die Werte anzugeben sind.
   setting_apiv3_write_readonly_attributes: "Schreibzugriff auf schreibgeschützte Attribute"
   setting_apiv3_write_readonly_attributes_instructions: >
-    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+    Wenn diese Option aktiviert ist, erlaubt die API Administratoren, bei der Erstellung statische schreibgeschützte Attribute wie createdAt und author zu schreiben.
   setting_apiv3_write_readonly_attributes_warning: >
-    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+    Diese Einstellung ist z.B. für den Import von Daten nützlich, ermöglicht es aber auch Administratoren, sich bei der Erstellung von Artikeln als andere Benutzer auszugeben. Alle Erstellungsanfragen werden jedoch mit dem wahren Autor protokolliert.
   setting_apiv3_write_readonly_attributes_additional: >
-    For more information on attributes and supported resources, please see the %{api_documentation_link}.
+    Weitere Informationen zu Attributen und unterstützten Ressourcen finden Sie unter %{api_documentation_link}.
   setting_apiv3_max_page_size: "Maximale API-Seitengröße"
   setting_apiv3_max_page_size_instructions: >
-    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+    Legen Sie die maximale Anzahl von Ressourcen fest, mit der die API antworten wird. API-Anfragen werden nie mehr Ressourcen auf einer einzigen Seite zurückgeben.
   setting_apiv3_max_page_size_warning: >
-    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
+    Bitte ändern Sie diesen Wert nur, wenn Sie sich sicher sind, warum Sie ihn benötigen. Ein hoher Wert führt zu erheblichen Leistungseinbußen, während ein Wert, der niedriger als die Ressourcen pro Seite ist, zu Fehlern in paginierten Ansichten führt.
   setting_apiv3_docs: "Dokumentation"
   setting_apiv3_docs_enabled: "Dokumentationsseite aktivieren"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4512,7 +4513,7 @@ de:
       omniauth_direct_login_hint_html: >
         Wenn diese Option aktiviert ist, werden die Anmeldeanfragen an den konfigurierten SSO-Anbieter weitergeleitet. Das Login-Dropdown und die Anmeldeseite sind dann deaktiviert. <br/> <strong>Hinweis:</strong> Sofern Sie nicht auch die Passwortanmeldung deaktivieren, können sich Benutzer bei aktivierter Option immer noch intern anmelden, indem sie die interne Anmeldeseite <code>%{internal_path}</code> verwenden.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        Wenn diese Option aktiviert ist, kann jeder konfigurierte Identitätsanbieter bestehende Benutzer anhand ihrer E-Mail-Adresse oder Login erzeugen, auch wenn sich der Benutzer noch nie über diesen Anbieter angemeldet hat. Dies kann bei der Migration der OpenProject-Instanz zu einem neuen SSO-Anbieter nützlich sein, wird aber nicht empfohlen, wenn Sie einen Anbieter verwenden, dem nicht alle Benutzer Ihrer Instanz vertrauen.
     attachments:
       whitelist_text_html: >
         Legen Sie eine Liste gültiger Dateierweiterungen und/oder Mime-Typen für hochgeladene Dateien fest. <br/> Dateierweiterungen (z. B. <code>%{ext_example}</code>) oder Mime-Typen (z. ., <code>%{mime_example}</code>). <br/> Lassen Sie diese Liste leer, um das Hochladen beliebiger Dateitypen zu erlauben. Mehrere Werte erlaubt (eine Zeile pro Wert).
@@ -4618,7 +4619,9 @@ de:
           project_mandate: "Projektmandat"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+          **Dieses Arbeitspaket wurde automatisch nach Abschluss des %{wizard_name} Workflows erstellt.**
+          Ein PDF-Artefakt mit allen eingereichten Informationen wurde generiert und zu Referenz- und Prüfzwecken an dieses Arbeitspaket angehängt.
+          Wenn Sie die Einleitungsschritte aktualisieren oder erneut ausführen müssen, können Sie den Assistenten jederzeit über den unten stehenden Link erneut öffnen:
         description: "Wenn ein Benutzer eine Anfrage zur Projektinitiierung einreicht, wird ein neues Arbeitspaket erstellt, an das ein Artefakt der Anfrage als PDF-Datei angehängt wird. Die folgenden Einstellungen definieren den Typ, den Status und den Empfänger für dieses neue Arbeitspaket."
         work_package_type: "Arbeitspaket-Typ"
         work_package_type_caption: "Der Arbeitspaket-Typ, der zum Speichern des Artefakts verwendet wird."
@@ -4877,8 +4880,8 @@ de:
       other: "temporär gesperrt (%{count} fehlgeschlagene Loginversuche)"
     confirm_status_change: "Sie sind dabei den Status von '%{name}' zu ändern. Möchten Sie wirklich fortfahren?"
     deleted: "Gelöschter Nutzer"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "Sie können Ihren eigenen Benutzerstatus nicht ändern."
+    error_admin_change_on_non_admin: "Nur Administratoren können den Status von Administratorbenutzern ändern."
     error_status_change_failed: "Der Nutzerstatus konnte nicht geändert werden aufgrund folgender Fehler: %{errors}"
     invite: Nutzer via E-Mail einladen
     invited: eingeladen
@@ -5283,7 +5286,7 @@ de:
     hashed_token:
       display_value_placeholder: "***"
   external_link_warning:
-    title: "Leaving OpenProject"
-    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
-    continue_message: "Are you sure you want to proceed to the following external link?"
-    continue_button: "Continue to external website"
+    title: "OpenProject verlassen"
+    warning_message: "Sie sind im Begriff, die OpenProject Anwendung zu verlassen und eine externe Website zu besuchen. Bitte beachten Sie, dass die externen Websites nicht unter unserer Kontrolle stehen und möglicherweise andere Datenschutz- und Sicherheitsrichtlinien haben."
+    continue_message: "Sind Sie sicher, dass Sie zu dem folgenden externen Link fortfahren möchten?"
+    continue_button: "Zur externen Webseite fortfahren"

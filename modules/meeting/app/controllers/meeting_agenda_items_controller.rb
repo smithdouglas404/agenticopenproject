@@ -221,14 +221,16 @@ class MeetingAgendaItemsController < ApplicationController
   def move_to_next_meeting_dialog
     respond_with_dialog MeetingAgendaItems::MoveToNextMeetingDialogComponent.new(
       agenda_item: @meeting_agenda_item,
-      datetime: params[:datetime]
+      datetime: params[:datetime],
+      skipped: params[:skipped]
     )
   end
 
   def duplicate_in_next_meeting_dialog
     respond_with_dialog MeetingAgendaItems::DuplicateInNextMeetingDialogComponent.new(
       agenda_item: @meeting_agenda_item,
-      datetime: params[:datetime]
+      datetime: params[:datetime],
+      skipped: params[:skipped]
     )
   end
 
@@ -240,7 +242,7 @@ class MeetingAgendaItemsController < ApplicationController
 
     if update_call.success?
       render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:text_agenda_item_moved_to_next_meeting, date: format_date(next_occurrence.start_time))
+        message: message_for_next_meeting_action(:text_agenda_item_moved_to_next_meeting, next_occurrence)
       )
       remove_item_via_turbo_stream(clear_slate: @meeting.agenda_items.empty?)
       update_header_component_via_turbo_stream
@@ -259,7 +261,7 @@ class MeetingAgendaItemsController < ApplicationController
     if duplicate_call.success?
       close_dialog_via_turbo_stream("#duplicate-in-next-meeting-dialog")
       render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:text_agenda_item_duplicated_in_next_meeting, date: format_date(next_occurrence.start_time))
+        message: message_for_next_meeting_action(:text_agenda_item_duplicated_in_next_meeting, next_occurrence)
       )
       update_header_component_via_turbo_stream
       respond_with_turbo_streams
@@ -376,13 +378,23 @@ class MeetingAgendaItemsController < ApplicationController
 
   def find_existing_occurrence
     next_occurrence = @series.scheduled_meetings.find_by(start_time: @next_meeting_time)
-    return if next_occurrence.nil?
 
-    if next_occurrence.cancelled?
-      respond_with_flash_error(message: I18n.t(:text_agenda_item_move_next_meeting_cancelled))
-    else
-      @next_occurrence = next_occurrence.meeting
+    if next_occurrence&.cancelled?
+      result = @series.first_non_cancelled_occurrence(from_time: @next_meeting_time)
+
+      if result.nil?
+        return respond_with_flash_error(message: I18n.t(:text_agenda_item_no_available_occurrence))
+      end
+
+      @next_meeting_time = result[:occurrence]
+      next_occurrence = @series.scheduled_meetings.find_by(start_time: @next_meeting_time)
     end
+
+    @next_occurrence = next_occurrence&.meeting
+  end
+
+  def message_for_next_meeting_action(base_key, next_occurrence)
+    I18n.t(base_key, date: format_date(next_occurrence.start_time))
   end
 
   def assign_drop_params # rubocop:disable Metrics/AbcSize

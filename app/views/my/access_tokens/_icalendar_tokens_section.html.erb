@@ -31,18 +31,18 @@ See COPYRIGHT and LICENSE files for more details.
 
 <div id="icalendar-token-section" class="mb-4">
   <%= render(Primer::Beta::Subhead.new) do |component|
-    component.with_heading(tag: :h3, size: :medium) do
-      t("my_account.access_tokens.ical.title")
-    end
-    component.with_description do
-      link_translate(
-        "my_account.access_tokens.ical.text_hint_link",
-        links: {
-          docs_url: %i[user_guide access_tokens]
-        }
-      )
-    end
-  end %>
+        component.with_heading(tag: :h3, size: :medium) do
+          t("my_account.access_tokens.ical.title")
+        end
+        component.with_description do
+          link_translate(
+            "my_account.access_tokens.ical.text_hint_link",
+            links: {
+              docs_url: %i[user_guide calendar subscribe]
+            }
+          )
+        end
+      end %>
   <% if Setting.ical_enabled? %>
     <%= render(My::AccessToken::ICal::TableComponent.new(rows: ical_tokens_grouped_by_query.values.flatten)) %>
   <% else %>

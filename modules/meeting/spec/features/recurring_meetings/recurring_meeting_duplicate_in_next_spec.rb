@@ -132,23 +132,92 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
 
     context "with manage_agendas permission, but next occurrence is cancelled" do
       let(:current_user) { user_with_manage_permissions }
+      let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
+      let(:second_occurrence_time) { series.next_occurrence(from_time: first_occurrence_time) }
 
-      let!(:next_meeting) { nil }
+      let!(:target_meeting) do
+        RecurringMeetings::InitNextOccurrenceJob.perform_now(series, second_occurrence_time)
+        series.meetings.not_templated.find_by(start_time: second_occurrence_time)
+      end
 
       let!(:cancelled_occurrence) do
         create(:scheduled_meeting,
                :cancelled,
                recurring_meeting: series,
-               start_time: series.next_occurrence)
+               start_time: first_occurrence_time)
       end
 
-      it "shows an error message" do
+      let(:target_meeting_page) { Pages::Meetings::Show.new(target_meeting) }
+
+      it "skips the cancelled occurrence and duplicates to the next available one" do
+        meeting_page.visit!
         meeting_page.expect_agenda_item(title: "Test agenda item")
 
-        meeting_page.duplicate_item_in_next_meeting(agenda_item)
+        meeting_page.open_menu(agenda_item) do
+          click_on "Duplicate"
+          click_on "Duplicate in next occurrence"
+        end
 
-        expect(page).to have_text "Unable to move to the next meeting since it has been cancelled."
+        expect(page).to have_text("Duplicate in next occurrence?")
+        expect(page).to have_text("Note: Skipping cancelled occurrence")
+
+        page.within_modal "Duplicate in next occurrence?" do
+          click_on "Duplicate"
+        end
+
+        expect_and_dismiss_flash(message: "Agenda item duplicated in the next meeting")
+
+        target_meeting_page.visit!
+        target_meeting_page.expect_agenda_item(title: "Test agenda item")
+      end
+    end
+
+    context "with manage_agendas permission, but multiple next occurrences are cancelled" do
+      let(:current_user) { user_with_manage_permissions }
+      let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
+      let(:second_occurrence_time) { series.next_occurrence(from_time: first_occurrence_time) }
+      let(:third_occurrence_time) { series.next_occurrence(from_time: second_occurrence_time) }
+
+      let!(:target_meeting) do
+        RecurringMeetings::InitNextOccurrenceJob.perform_now(series, third_occurrence_time)
+        series.meetings.not_templated.find_by(start_time: third_occurrence_time)
+      end
+
+      let!(:first_cancelled_occurrence) do
+        create(:scheduled_meeting,
+               :cancelled,
+               recurring_meeting: series,
+               start_time: first_occurrence_time)
+      end
+      let!(:second_cancelled_occurrence) do
+        create(:scheduled_meeting,
+               :cancelled,
+               recurring_meeting: series,
+               start_time: second_occurrence_time)
+      end
+
+      let(:target_meeting_page) { Pages::Meetings::Show.new(target_meeting) }
+
+      it "skips all cancelled occurrences and shows the count in the dialog" do
+        meeting_page.visit!
         meeting_page.expect_agenda_item(title: "Test agenda item")
+
+        meeting_page.open_menu(agenda_item) do
+          click_on "Duplicate"
+          click_on "Duplicate in next occurrence"
+        end
+
+        expect(page).to have_text("Duplicate in next occurrence?")
+        expect(page).to have_text("Note: Skipping 2 cancelled occurrences")
+
+        page.within_modal "Duplicate in next occurrence?" do
+          click_on "Duplicate"
+        end
+
+        expect_and_dismiss_flash(message: "Agenda item duplicated in the next meeting")
+
+        target_meeting_page.visit!
+        target_meeting_page.expect_agenda_item(title: "Test agenda item")
       end
     end
 

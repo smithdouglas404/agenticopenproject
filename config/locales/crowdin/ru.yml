@@ -1270,9 +1270,9 @@ ru:
         port: "Порт"
         tls_certificate_string: "SSL-сертификат сервера LDAP"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: Включено
+        title: Название
+        description: Описание
       member:
         roles: "Роль"
       notification:
@@ -2558,11 +2558,12 @@ ru:
       edit_attribute_groups: Редактирование атрибутов групп
       gantt_pdf_export: Экспорт диаграммы Ганта в PDF
       ldap_groups: Синхронизация пользователей LDAP и групп
-      mcp_server: MCP Server
+      mcp_server: MCP-сервер
       nextcloud_sso: Единый вход для Nextcloud хранения
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
       portfolio_management: Управление портфолио
+      project_creation_wizard: Project initiation request
       project_list_sharing: Совместное использование списка проектов
       readonly_work_packages: Пакеты работ только для чтения
       scim_api: API сервера SCIM
@@ -2635,7 +2636,7 @@ ru:
         title: "Пользовательские действия"
         description: "Пользовательские действия являются ярлыками к набору заранее определенных действий, которые вы можете сделать доступными для определенных пакетов работ на основе статуса, роли, типа или проекта."
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Интегрируйте агентов искусственного интеллекта в Ваш OpenProject с помощью MCP."
       nextcloud_sso:
         title: "Единый вход для Nextcloud хранения"
         description: "Включите бесшовную и безопасную аутентификацию для вашего Nextcloud хранилища с помощью Single Sign-On. Упростите управление доступом и сделайте удобным для пользователя."
@@ -2647,6 +2648,8 @@ ru:
         description: "Разрешить пользователям входить через внешние SSO провайдеры, используя SAML или OpenID Connect для бесшовного доступа и интеграции с существующими идентификационными системами."
       virus_scanning:
         description: "Будьте уверены в том, что загруженные в OpenProject файлы проверены на наличие вирусов, прежде чем они станут доступны другим пользователям."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Пользователи-заполнители
         description: >
@@ -2946,19 +2949,17 @@ ru:
         learn_about: "Узнайте больше о всех новых функциях"
         missing: "Нет выделенных функций."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
-            Релиз содержит различные новые функции и улучшения, такие как:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Совместная работа с документами в режиме реального времени.
-            line_1: Возможность структурировать связанные проекты в программы и портфели, чтобы направить их на достижение стратегических целей.
-            line_2: Улучшенное управление совещаниями с режимом черновика, режимом презентации, улучшенными результатами и подпиской на iCal.
-            line_3: Обновленная интеграция с SharePoint с более строгими разрешениями.
-            line_4: Переработанный обзор проекта с новыми вкладками, настраиваемыми виджетами и улучшенным макетом.
-            line_5: Возможность более строго охранять конфиденциальность пользователей, не работающих в одном проекте.
-            line_6: Улучшенный процесс создания проекта с более удобным выбором шаблона.
-            line_7: Более удобный глобальный поиск, включая тип и статус, улучшение точности нескольких автозаполнений.
-            line_8: Улучшена доступность текстов ALT и улучшены цвета графиков.
+            line_0: Automated project initiation (Enterprise add-on).
+            line_1: "Meetings: add new or existing work packages as outcomes."
+            line_2: "Meetings: show participant responses in iCal subscriptions."
+            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
+            line_4: "Release to Community: Attribute highlighting."
+            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
+            line_6: Improved performance and user experience, including the Activity tab and Documents module.
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -3026,7 +3027,7 @@ ru:
   instructions_after_error: "Вы можете попробовать войти снова, нажав %{signin}. Если ошибка повторится, обратитесь к вашему администратору за помощью."
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "Искусственный интеллект (AI)"
       aggregation: "Агрегация"
       api_and_webhooks: "API и вебхуки"
       mail_notification: "Уведомления по электронной почте"
@@ -3059,7 +3060,7 @@ ru:
         text_hint: "Токены API позволяют приложениям общаться с этим экземпляром OpenProject через REST API."
         static_token_name: "Токен API"
         disabled_text: "Токены API не включены администратором. Пожалуйста, обратитесь к администратору для использования этой функции."
-        add_button: "API токен"
+        add_button: "API token"
       ical:
         blank_description: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
         blank_title: "Нет токена iCalendar"
@@ -3087,7 +3088,7 @@ ru:
         removed: "Токен OAuth успешно удален"
         unknown_integration: "Неизвестная"
       token/rss:
-        add_button: "Токен RSS"
+        add_button: "RSS token"
         blank_description: "Токен RSS пока не создан. Вы можете создать его с помощью кнопки ниже."
         blank_title: "Нет токена RSS"
         title: "RSS"
@@ -3412,7 +3413,7 @@ ru:
   label_journal_diff: "Описание сравнения"
   label_language: "Язык"
   label_languages: "Языки"
-  label_external_links: "External links"
+  label_external_links: "Внешние ссылки"
   label_locale: "Язык и регион"
   label_jump_to_a_project: "Перейти к проекту..."
   label_keyword_plural: "Ключевые слова"
@@ -5395,4 +5396,4 @@ ru:
     title: "Leaving OpenProject"
     warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
     continue_message: "Are you sure you want to proceed to the following external link?"
-    continue_button: "Continue to external website"
+    continue_button: "Перейти на внешний сайт"

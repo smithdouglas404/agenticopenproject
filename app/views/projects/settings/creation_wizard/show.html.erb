@@ -42,5 +42,9 @@ See COPYRIGHT and LICENSE files for more details.
     <%= render partial: "export" %>
   <% end %>
 <% else %>
-  <%= render Projects::Settings::CreationWizard::BlankSlateComponent.new(project: @project) %>
+  <% with_enterprise_banner_guard(:project_creation_wizard,
+                                  variant: :large,
+                                  image: "enterprise/project-creation-wizard.png") do %>
+    <%= render Projects::Settings::CreationWizard::BlankSlateComponent.new(project: @project) %>
+  <% end %>
 <% end %>

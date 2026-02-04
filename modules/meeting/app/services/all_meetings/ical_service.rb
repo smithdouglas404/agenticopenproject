@@ -52,6 +52,9 @@ module AllMeetings
           calendar.add_series_event(recurring_meeting:, cancelled: false)
         end
 
+        # Set PUBLISH method for subscription feeds (informational, no RSVP expected)
+        calendar.publish
+
         ServiceResult.success(result: calendar.to_ical)
       end
     rescue StandardError => e

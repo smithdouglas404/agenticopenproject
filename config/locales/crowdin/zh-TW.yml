@@ -111,21 +111,21 @@ zh-TW:
         link: "webhook"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
-        resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
-        tools_heading: "Tools"
-        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        description: "模型上下文協定允許 AI 代理向其使用者提供此 OpenProject 實體所揭露的工具與資源。"
+        resources_heading: "資源"
+        resources_description: "OpenProject 實作下列工具。每個工具都可以依您的需求啟用、重新命名和描述。如需詳細資訊，請參閱 [MCP 資源文件](docs_url)。"
+        resources_submit: "更新資源"
+        tools_heading: "工具"
+        tools_description: "OpenProject 實作下列工具。每個工具都可以依您的需求啟用、重新命名和描述。如需詳細資訊，請參閱 [MCP 工具說明文件](docs_url)。"
+        tools_submit: "更新工具"
       multi_update:
-        success: "MCP configurations were updated successfully."
+        success: "MCP 組態已成功更新。"
       server_form:
-        description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        description_caption: "MCP 伺服器將如何描述給連線到它的其他應用程式。"
+        title_caption: "顯示給與 MCP 伺服器連線的應用程式的簡短標題。"
       update:
-        failure: "MCP configuration could not be updated."
-        success: "MCP configuration was updated successfully."
+        failure: "無法更新 MCP 設定。"
+        success: "MCP 組態已成功更新。"
     scim_clients:
       authentication_methods:
         sso: "來自身份提供者的 JWT"
@@ -1241,9 +1241,9 @@ zh-TW:
         port: "埠"
         tls_certificate_string: "LDAP伺服器SSL證書"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: 已啟用
+        title: 標題
+        description: 說明
       member:
         roles: "角色"
       notification:
@@ -2412,11 +2412,12 @@ zh-TW:
       edit_attribute_groups: 編輯群組屬性
       gantt_pdf_export: 以PDF匯出甘特圖
       ldap_groups: 同步LDAP使用者與群組
-      mcp_server: MCP Server
+      mcp_server: MCP 伺服器
       nextcloud_sso: Nextcloud 儲存空間的單一登入(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 檔案儲存
       placeholder_users: 佔位符使用者
       portfolio_management: 組合管理
+      project_creation_wizard: 專案啟動請求
       project_list_sharing: 專案清單分享
       readonly_work_packages: 唯讀工作套件
       scim_api: SCIM 伺服器 API
@@ -2489,7 +2490,7 @@ zh-TW:
         title: "自訂動作"
         description: "自訂動作是一系列預先定義動作的單鍵捷徑，您可以根據狀態、角色、類型或專案，在特定工作套件上使用這些動作。"
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "透過 MCP 將 AI 代理與您的 OpenProject 實例整合。"
       nextcloud_sso:
         title: "Nextcloud 儲存空間的單一登入(SSO)"
         description: "使用單一登入為您的 Nextcloud 儲存空間啟用無縫且安全的驗證。簡化存取管理並提升使用者便利性。"
@@ -2501,6 +2502,8 @@ zh-TW:
         description: "啟用使用者透過外部 SSO 提供者（如 SAML 或 OpenID Connect）登入，以便與現有身份系統無縫整合和存取。"
       virus_scanning:
         description: "確保在其他使用者存取 OpenProject 中上傳的檔案前，對其進行病毒掃描。"
+      project_creation_wizard:
+        description: "產生一個逐步引導的精靈（Wizard），協助專案經理填寫專案啟動申請。"
       placeholder_users:
         title: 佔位符使用者
         description: >
@@ -2797,19 +2800,17 @@ zh-TW:
         learn_about: "進一步瞭解所有新功能"
         missing: "目前還沒有突出顯示的功能。"
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
-            該版本包含多種新功能和改進，例如：
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 即時文件協作。
-            line_1: 有能力將相關專案架構為計畫和組合，使其專注於策略目標（企業附加元件）。
-            line_2: 透過草稿模式、簡報模式、增強成果和 iCal 訂閱功能，提供更佳的會議管理。
-            line_3: 更新 SharePoint 整合，提供更多限制性權限 (企業附加元件)。
-            line_4: 重新設計的專案總覽，新增標籤、可設定的小工具，並改善版面設計。
-            line_5: 可選擇更嚴格地保護不在同一專案中工作的使用者的隱私。
-            line_6: 改善專案建立流程，提供更好的範本選擇。
-            line_7: 更聰明的全局搜尋，包括類型和狀態，提高多種自動完成工具的精確度。
-            line_8: 改善 ALT 文字的可讀性，並改善圖表顏色。
+            line_0: Automated project initiation (Enterprise add-on).
+            line_1: "Meetings: add new or existing work packages as outcomes."
+            line_2: "Meetings: show participant responses in iCal subscriptions."
+            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
+            line_4: "Release to Community: Attribute highlighting."
+            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
+            line_6: Improved performance and user experience, including the Activity tab and Documents module.
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -2877,12 +2878,12 @@ zh-TW:
   instructions_after_error: "你可以試著再按一次 %{signin} 來嘗試登入。如果持續發生錯誤，請向您的管理員尋求幫助。"
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "人工智慧 (AI)"
       aggregation: "合併"
       api_and_webhooks: "API 和 Webhook"
       mail_notification: "電子郵件通知"
       mails_and_notifications: "郵件與通知"
-      mcp_configurations: "Model Context Protocol (MCP)"
+      mcp_configurations: "模型上下文通訊協定 (MCP)"
     quick_add:
       label: "新增…"
   my_account:
@@ -2910,7 +2911,7 @@ zh-TW:
         text_hint: "API 令牌(Tokens)允許第三方應用程式透過 REST API 與此 OpenProject 實例進行通訊。"
         static_token_name: "API 令牌(Token)"
         disabled_text: "API 令牌(Tokens)未由管理員啟用。若要使用此功能，請聯絡您的管理員。"
-        add_button: "API 令牌"
+        add_button: "API token"
       ical:
         blank_description: "若要新增 iCalendar 令牌，請從專案的行事曆模組中訂閱新的或現有的行事曆。您必須擁有必要的權限。"
         blank_title: "沒有 iCalendar 令牌"
@@ -2938,7 +2939,7 @@ zh-TW:
         removed: "成功移除 OAuth 用戶端令牌"
         unknown_integration: "未知"
       token/rss:
-        add_button: "RSS 令牌(Token)"
+        add_button: "RSS token"
         blank_description: "目前尚未有 RSS 令牌。您可以使用下面的按鈕建立一個。"
         blank_title: "沒有 RSS 令牌"
         title: "RSS"

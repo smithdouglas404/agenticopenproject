@@ -75,7 +75,7 @@
             add_outcome_action_items(menu) if add_outcome_action?
           end
 
-          if editable? && !presentation_mode?
+          if editable? && !presentation_mode? && has_move_actions?
             with_item_group(menu) do
               menu.with_sub_menu_item(label: I18n.t("label_agenda_item_move")) do |submenu|
                 submenu.with_leading_visual_icon(icon: :"op-arrow-in")
@@ -97,10 +97,12 @@
               end
             end
 
-            with_item_group(menu) do
-              menu.with_sub_menu_item(label: I18n.t("label_agenda_item_duplicate")) do |submenu|
-                submenu.with_leading_visual_icon(icon: :duplicate)
-                with_item_group(submenu) { duplicate_in_next_meeting_action_item(submenu) }
+            if has_next_occurrence?
+              with_item_group(menu) do
+                menu.with_sub_menu_item(label: I18n.t("label_agenda_item_duplicate")) do |submenu|
+                  submenu.with_leading_visual_icon(icon: :duplicate)
+                  with_item_group(submenu) { duplicate_in_next_meeting_action_item(submenu) }
+                end
               end
             end
           end

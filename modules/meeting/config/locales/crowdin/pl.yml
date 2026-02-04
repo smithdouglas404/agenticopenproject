@@ -625,7 +625,9 @@ pl:
   text_agenda_item_duplicate_in_next_meeting: "Czy na pewno chcesz dodać kopię tego punktu planu spotkania do następnego spotkania w dniu %{date} o godzinie %{time}? Wyniki nie będą duplikowane."
   text_agenda_item_duplicated_in_next_meeting: "Pozycję planu spotkania zduplikowano w następnym spotkaniu w dniu %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Ten pakiet roboczy nie został jeszcze zaplanowany w planie nadchodzącego spotkania."
-  text_agenda_item_move_next_meeting_cancelled: "Nie można przenieść na następne spotkanie, ponieważ zostało ono anulowane."
+  text_agenda_item_no_available_occurrence: "All upcoming occurrences have been cancelled."
+  text_agenda_item_dialog_skipping_cancelled_one: "Note: Skipping cancelled occurrence on %{date}."
+  text_agenda_item_dialog_skipping_cancelled_many: "Note: Skipping %{count} cancelled occurrences."
   text_work_package_add_to_meeting_hint: 'Użyj przycisku „Dodaj do spotkania”, aby dodać ten pakiet roboczy do nadchodzącego spotkania.'
   text_work_package_has_no_past_meeting_agenda_items: "Ten pakiet roboczy nie został dodany jako pozycja planu spotkania w poprzednim spotkaniu."
   text_email_updates_muted: "Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest wyciszone. Po wprowadzeniu zmian uczestnicy nie będą otrzymywać zaktualizowanych zaproszeń pocztą elektroniczną."

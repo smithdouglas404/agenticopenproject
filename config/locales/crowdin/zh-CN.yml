@@ -2417,6 +2417,7 @@ zh-CN:
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 文件存储
       placeholder_users: 占位符用户
       portfolio_management: 项目组合管理
+      project_creation_wizard: Project initiation request
       project_list_sharing: 项目列表共享
       readonly_work_packages: 只读工作包
       scim_api: SCIM 服务器 API
@@ -2501,6 +2502,8 @@ zh-CN:
         description: "允许用户使用 SAML 或 OpenID Connect 通过外部 SSO 提供商登录，以实现无缝访问，并与现有身份系统集成。"
       virus_scanning:
         description: "确保在 OpenProject 中上传的文件在被其他用户访问之前进行病毒扫描。"
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: 占位符用户
         description: >
@@ -2797,19 +2800,17 @@ zh-CN:
         learn_about: "详细了解所有新功能"
         missing: "目前还没有高亮显示的功能。"
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
-            此版本包含各种新功能和改进，例如：
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 实时文档协作。
-            line_1: 能够将相关项目构建成项目群与项目组合，使其专注于战略目标（企业版附加组件）。
-            line_2: 更好的会议管理，包括草稿模式、演示模式、增强的结果和 iCal 订阅。
-            line_3: 更新了 SharePoint 集成，具有更严格的权限（企业版附加组件）。
-            line_4: 重新设计了项目概览，具有新的选项卡、可配置的微件以及改进的布局。
-            line_5: 可以选择更严格地保护不在同一项目中工作的用户的隐私。
-            line_6: 改进了项目创建流程，可以更好地选择模板。
-            line_7: 更智能的全局搜索，包括类型和状态，提高了多个自动补全工具的精确度。
-            line_8: 通过替代文本和改进的图表颜色，提高了可访问性。
+            line_0: Automated project initiation (Enterprise add-on).
+            line_1: "Meetings: add new or existing work packages as outcomes."
+            line_2: "Meetings: show participant responses in iCal subscriptions."
+            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
+            line_4: "Release to Community: Attribute highlighting."
+            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
+            line_6: Improved performance and user experience, including the Activity tab and Documents module.
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2910,7 +2911,7 @@ zh-CN:
         text_hint: "API 令牌允许第三方应用程序通过 REST API 与此 OpenProject 实例通信。"
         static_token_name: "API token"
         disabled_text: "管理员未启用 API 令牌。请联系管理员以使用此功能。"
-        add_button: "API 令牌"
+        add_button: "API token"
       ical:
         blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
         blank_title: "No iCalendar token"
@@ -2938,7 +2939,7 @@ zh-CN:
         removed: "OAuth client token successfully removed"
         unknown_integration: "Unknown"
       token/rss:
-        add_button: "RSS Token"
+        add_button: "RSS token"
         blank_description: "There is no RSS token yet. You can create one using the button below."
         blank_title: "No RSS token"
         title: "RSS"

@@ -29,6 +29,8 @@
 #++
 
 class MeetingSeriesMailer < UserMailer
+  include CalendarAttachment
+
   def invited(series, user, actor)
     @actor = actor
     @series = series
@@ -90,16 +92,23 @@ class MeetingSeriesMailer < UserMailer
 
   private
 
-  def with_attached_ics(series, user)
+  def with_attached_ics(series, user, cancelled: false)
     User.execute_as(user) do
       call = ::RecurringMeetings::ICalService
-        .new(user:, series: series)
-        .generate_series
+        .new(user:, series:)
+        .generate_series(cancelled:)
 
       call.on_success do
-        attachments["meeting.ics"] = call.result
+        ics_content = call.result
 
-        yield
+        # The attachment has to be added before the mail is created
+        add_calendar_attachment(ics_content, cancelled:)
+
+        message = yield
+
+        add_calendar_part(message, ics_content, cancelled:)
+
+        message
       end
 
       call.on_failure do
@@ -110,7 +119,5 @@ class MeetingSeriesMailer < UserMailer
 
   def set_headers(series)
     open_project_headers "Project" => series.project.identifier, "Meeting-Id" => series.id
-    headers["Content-Type"] = 'text/calendar; charset=utf-8; method="PUBLISH"; name="meeting.ics"'
-    headers["Content-Transfer-Encoding"] = "8bit"
   end
 end

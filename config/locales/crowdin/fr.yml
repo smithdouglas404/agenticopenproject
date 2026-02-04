@@ -2467,6 +2467,7 @@ fr:
       one_drive_sharepoint_file_storage: Stockage de fichiers OneDrive/SharePoint
       placeholder_users: Utilisateurs fictifs
       portfolio_management: Gestion du portefeuille
+      project_creation_wizard: Project initiation request
       project_list_sharing: Partage de liste de projets
       readonly_work_packages: Lots de travaux en lecture seule
       scim_api: API du serveur SCIM
@@ -2551,6 +2552,8 @@ fr:
         description: "Permettez aux utilisateurs de se connecter via des fournisseurs SSO externes utilisant SAML ou OpenID Connect pour assurer un accès transparent et une intégration fluide avec les systèmes d'identité existants."
       virus_scanning:
         description: "Assurez-vous que les fichiers téléversés dans OpenProject sont analysés pour détecter les virus avant d'être accessibles aux autres utilisateurs."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Utilisateurs fictifs
         description: >
@@ -2848,19 +2851,17 @@ fr:
         learn_about: "En savoir plus sur les nouvelles fonctionnalités"
         missing: "Il n'y a pas encore de fonctionnalités mises en évidence."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
-            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Collaboration en temps réel sur les documents.
-            line_1: Possibilité de structurer des projets connexes en programmes et en portefeuilles afin de les axer sur des objectifs stratégiques (add-on Enterprise).
-            line_2: Meilleure gestion des réunions grâce au mode brouillon, au mode présentation, aux résultats améliorés et à l'abonnement iCal.
-            line_3: Mise à jour de l'intégration de SharePoint avec des permissions plus restrictives (add-on Enterprise).
-            line_4: Refonte de la vue d'ensemble du projet avec de nouveaux onglets, des widgets configurables et une mise en page améliorée.
-            line_5: Possibilité de protéger plus strictement la vie privée des utilisateurs qui ne travaillent pas sur le même projet.
-            line_6: Amélioration du flux de création de projets avec une meilleure sélection des modèles.
-            line_7: Recherche globale plus intelligente incluant le type et le statut afin d'améliorer la précision dans plusieurs outils de saisie automatique.
-            line_8: Amélioration de l'accessibilité des textes ALT et des couleurs des graphiques.
+            line_0: Automated project initiation (Enterprise add-on).
+            line_1: "Meetings: add new or existing work packages as outcomes."
+            line_2: "Meetings: show participant responses in iCal subscriptions."
+            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
+            line_4: "Release to Community: Attribute highlighting."
+            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
+            line_6: Improved performance and user experience, including the Activity tab and Documents module.
     links:
       upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -2961,7 +2962,7 @@ fr:
         text_hint: "Les jetons d'API permettent aux applications tierces de communiquer avec cette instance OpenProject via les API REST."
         static_token_name: "Jeton API"
         disabled_text: "Les jetons d'API ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
-        add_button: "Jeton d'API"
+        add_button: "API token"
       ical:
         blank_description: "Pour ajouter un jeton iCalendar, abonnez-vous à un calendrier nouveau ou existant à partir du module Calendrier d'un projet. Vous devez disposer des autorisations nécessaires."
         blank_title: "Pas de jeton iCalendar"
@@ -2989,7 +2990,7 @@ fr:
         removed: "OAuth client token successfully removed"
         unknown_integration: "Unknown"
       token/rss:
-        add_button: "RSS Token"
+        add_button: "RSS token"
         blank_description: "There is no RSS token yet. You can create one using the button below."
         blank_title: "No RSS token"
         title: "RSS"

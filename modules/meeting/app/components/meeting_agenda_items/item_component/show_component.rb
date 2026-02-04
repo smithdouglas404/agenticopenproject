@@ -231,25 +231,50 @@ module MeetingAgendaItems
     end
 
     def next_meeting_action_item(menu, label:, action:, icon:)
-      return unless editable?
-      return if in_template?
-      return if @series.nil?
+      return unless has_next_occurrence?
 
       from_time = @meeting.start_time.past? ? Time.current : @meeting.start_time
-      next_date = @series.next_occurrence(from_time:)
-      return if next_date.nil?
+      result = @series.first_non_cancelled_occurrence(from_time:)
+      return if result.nil?
+
+      next_date = result[:occurrence]
+      skipped_dates = result[:skipped]
 
       menu.with_item(
         label:,
         tag: :button,
         content_arguments: { data: {
           action: "click->meetings--submit#intercept",
-          href: path_for_next_button(action: action, next_date: next_date),
+          href: path_for_next_button(action:, next_date:, skipped_dates:),
           method: "GET"
         } }
       ) do |item|
         item.with_leading_visual_icon(icon:)
       end
+    end
+
+    def has_next_occurrence?
+      return false unless editable?
+      return false if in_template?
+      return false if @series.nil?
+
+      next_date = @series.next_occurrence(from_time: next_occurrence_from_time)
+      next_date.present?
+    end
+
+    def next_occurrence_from_time
+      @meeting.start_time.past? ? Time.current : @meeting.start_time
+    end
+
+    def has_move_actions?
+      return false unless editable?
+
+      return true unless first? && last?
+      return true if many_sections?
+      return true if !in_template? || in_backlog?
+      return true if has_next_occurrence?
+
+      false
     end
 
     def move_actions(menu)
@@ -396,12 +421,6 @@ module MeetingAgendaItems
       true
     end
 
-    # def visible_sections?
-    #   return true if @meeting.templated?
-    #
-    #   @meeting.sections.many?
-    # end
-
     def many_sections?
       if @meeting_agenda_item.in_backlog? && @current_occurrence.present?
         @current_occurrence.sections.many?
@@ -410,18 +429,22 @@ module MeetingAgendaItems
       end
     end
 
-    def path_for_next_button(action:, next_date:)
+    def path_for_next_button(action:, next_date:, skipped_dates:)
+      skipped_iso_dates = skipped_dates.map(&:iso8601) if skipped_dates.present?
+
       case action
       when :move_to_next
         move_to_next_dialog_project_meeting_agenda_item_path(@meeting.project,
                                                              @meeting,
                                                              @meeting_agenda_item,
-                                                             datetime: next_date.iso8601)
+                                                             datetime: next_date.iso8601,
+                                                             skipped: skipped_iso_dates)
       when :duplicate_in_next
         duplicate_in_next_dialog_project_meeting_agenda_item_path(@meeting.project,
                                                                   @meeting,
                                                                   @meeting_agenda_item,
-                                                                  datetime: next_date.iso8601)
+                                                                  datetime: next_date.iso8601,
+                                                                  skipped: skipped_iso_dates)
       end
     end
   end

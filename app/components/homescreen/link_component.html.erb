@@ -30,6 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%= link_to url,
             class: "homescreen--links--item",
             target: "_blank",
+            data: { allow_external_link: true },
             aria_label: title,
             rel: "noopener" do %>
   <%= render(Primer::Beta::Octicon.new(icon: link[:icon], size: :medium)) %>

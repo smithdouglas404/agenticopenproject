@@ -212,7 +212,10 @@ module Redmine::MenuManager::MenuHelper
     html_options[:title] ||= selected ? t(:description_current_position) + caption : caption
     html_options[:class] = "#{html_options[:class]} #{menu_class}--item-action"
     html_options["data-test-selector"] = "#{menu_class}--item-action"
-    html_options["target"] = "_blank" if item.icon_after.present? && item.icon_after == "link-external"
+    if item.icon_after.present? && item.icon_after == "link-external"
+      html_options["target"] = "_blank"
+      html_options["data-allow-external-link"] = "true"
+    end
 
     link_to link_text, url, html_options
   end
