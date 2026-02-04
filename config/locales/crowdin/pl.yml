@@ -3689,7 +3689,7 @@ pl:
   label_subproject: "Podprojekt"
   label_subproject_new: "Nowy podprojekt"
   label_subproject_plural: "Podprojekty"
-  label_subitems: "Podppzycje"
+  label_subitems: "Podpozycje"
   label_subtask_plural: "Zadania podrzędne"
   label_summary: "Podsumowanie"
   label_system: "System"

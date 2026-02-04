@@ -5,7 +5,7 @@ pl:
       empty: "Ten widżet jest obecnie pusty."
       not_available: "Ten widżet jest niedostępny."
       subitems:
-        title: "Podppzycje"
+        title: "Podpozycje"
         no_results: "Nie ma żadnych widocznych elementów podrzędnych."
         view_all_subitems: "Wyświetl wszystkie podppzycje"
         button_text: "Podelement"
