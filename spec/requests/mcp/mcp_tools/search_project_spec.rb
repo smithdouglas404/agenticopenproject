@@ -51,7 +51,7 @@ RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
       }
     }
   end
-  let(:call_args) { { identifier: "abc" } }
+  let(:call_args) { {} }
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
   let!(:project_a) { create(:project, identifier: "abc", name: "The ABC Project", status_code: :on_track) }
@@ -68,15 +68,25 @@ RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP response with structured content"
 
-    it "finds a project by identifier" do
+    it "finds all projects without filters" do
       subject
-      expect(parsed_results.dig("structuredContent", "items")).to be_present
+      expect(parsed_results.dig("structuredContent", "items").size).to eq(2)
     end
 
-    it "responds with a properly formatted project" do
+    it "responds with properly formatted projects" do
       subject
-      project = parsed_results.dig("structuredContent", "items").first
-      expect(project.to_json).to match_json_schema.from_docs("project_model")
+      parsed_results.dig("structuredContent", "items").each do |project|
+        expect(project.to_json).to match_json_schema.from_docs("project_model")
+      end
+    end
+
+    context "when passing an exact identifier" do
+      let(:call_args) { { identifier: "abc" } }
+
+      it "finds the project" do
+        subject
+        expect(parsed_results.dig("structuredContent", "items")).to be_present
+      end
     end
 
     context "when passing a non-exact identifier" do
