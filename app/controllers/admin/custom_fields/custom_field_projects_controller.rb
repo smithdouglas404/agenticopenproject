@@ -35,7 +35,7 @@ class Admin::CustomFields::CustomFieldProjectsController < ApplicationController
   layout "admin"
 
   before_action :require_admin
-  before_action :find_custom_field, except: %i[index new create]
+  before_action :find_custom_field
 
   before_action :available_custom_fields_projects_query, only: %i[index destroy]
   before_action :initialize_custom_field_project, only: :new
