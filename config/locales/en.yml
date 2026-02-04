@@ -1608,6 +1608,7 @@ en:
         not_available: "is not available due to a system configuration."
         not_deletable: "cannot be deleted."
         not_current_user: "is not the current user."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "is not a valid date."
         not_a_datetime: "is not a valid date time."
