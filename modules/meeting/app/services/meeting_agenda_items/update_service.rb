@@ -31,6 +31,7 @@
 module MeetingAgendaItems
   class UpdateService < ::BaseServices::Update
     include AfterPerformHook
+    include Concerns::CopyAttachments
 
     alias_method :original_after_perform, :after_perform
 
@@ -45,42 +46,9 @@ module MeetingAgendaItems
     def after_perform(call)
       original_after_perform(call)
 
-      if call.success? && @old_meeting_id != call.result.meeting_id
-        copy_attachments_to_new_meeting(call.result, @old_meeting_id)
-      end
+      copy_attachments_from_meeting(call.result, @old_meeting_id) if call.success?
 
       call
-    end
-
-    def copy_attachments_to_new_meeting(agenda_item, old_meeting_id)
-      return if agenda_item.notes.blank?
-
-      old_meeting = Meeting.find(old_meeting_id)
-      old_meeting.attachments.each do |attachment|
-        next unless agenda_item.notes.include?("/attachments/#{attachment.id}/")
-
-        copy_attachment(attachment, agenda_item.meeting, agenda_item)
-      end
-    end
-
-    def copy_attachment(source_attachment, target_meeting, agenda_item)
-      copy = Attachment.new(
-        source_attachment
-          .dup
-          .attributes
-          .except("file")
-          .merge("author_id" => user.id, "container_id" => target_meeting.id)
-      )
-
-      source_attachment.file.copy_to(copy)
-      copy.save!
-
-      updated_notes = agenda_item.notes.gsub(
-        "/api/v3/attachments/#{source_attachment.id}/content",
-        "/api/v3/attachments/#{copy.id}/content"
-      )
-
-      agenda_item.update!(notes: updated_notes)
     end
   end
 end

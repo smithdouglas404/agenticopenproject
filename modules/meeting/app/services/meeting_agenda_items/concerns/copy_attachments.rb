@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,32 +29,41 @@
 #++
 
 module MeetingAgendaItems
-  class CreateService < ::BaseServices::Create
-    include AfterPerformHook
-    include Concerns::CopyAttachments
+  module Concerns
+    module CopyAttachments
+      private
 
-    alias_method :original_after_perform, :after_perform
+      def copy_attachments_from_meeting(agenda_item, source_meeting_id)
+        return if agenda_item.notes.blank?
+        return if agenda_item.meeting_id == source_meeting_id
 
-    def call(params, source_meeting_id: nil)
-      @source_meeting_id = source_meeting_id
-      super(params)
-    end
+        source_meeting = Meeting.find(source_meeting_id)
+        source_meeting.attachments.each do |attachment|
+          next unless agenda_item.notes.include?("/attachments/#{attachment.id}/")
 
-    def after_perform(call)
-      # The reload is required because, the time slot calculations are changing the
-      # `start_time`, `end_time` attributes and they should be available for rendering.
-      call.result.reload
-      original_after_perform(call)
+          copy_attachment(attachment, agenda_item.meeting, agenda_item)
+        end
+      end
 
-      copy_attachments_from_source(call.result) if call.success?
+      def copy_attachment(source_attachment, target_meeting, agenda_item)
+        copy = Attachment.new(
+          source_attachment
+            .dup
+            .attributes
+            .except("file")
+            .merge("author_id" => user.id, "container_id" => target_meeting.id)
+        )
 
-      call
-    end
+        source_attachment.file.copy_to(copy)
+        copy.save!
 
-    private
+        updated_notes = agenda_item.notes.gsub(
+          "/api/v3/attachments/#{source_attachment.id}/content",
+          "/api/v3/attachments/#{copy.id}/content"
+        )
 
-    def copy_attachments_from_source(agenda_item)
-      copy_attachments_from_meeting(agenda_item, @source_meeting_id) if @source_meeting_id.present?
+        agenda_item.update!(notes: updated_notes)
+      end
     end
   end
 end
