@@ -35,8 +35,8 @@ module Agile
   class Sprint < ApplicationRecord
     self.table_name = "sprints"
 
+    belongs_to :project, optional: false
     has_many :work_packages, dependent: :nullify
-    has_many :projects, through: :work_packages
 
     enum :status, {
       "in planning" => "in_planning",
@@ -44,14 +44,16 @@ module Agile
       "completed" => "completed"
     }, default: "in_planning"
 
+    SPRINT_SHARINGS = %w(none descendants system).freeze
+
     validates :name, presence: true
     validates :status, presence: true, inclusion: { in: statuses.keys }
+    validates :sharing, presence: true, inclusion: { in: SPRINT_SHARINGS }
     validates :start_date, presence: true
     validates :end_date, presence: true
 
     validate :validate_end_date_after_start_date
-
-    # TODO: sharing
+    # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide
 
     private
 

@@ -31,8 +31,11 @@
 require "spec_helper"
 
 RSpec.describe Agile::Sprint do
+  let(:project) { create(:project) }
+
   subject(:sprint) do
     described_class.new(name: "Sprint 1",
+                        project:,
                         start_date: Time.zone.today,
                         end_date: Time.zone.today + 14.days)
   end
@@ -43,15 +46,26 @@ RSpec.describe Agile::Sprint do
     it { is_expected.to validate_presence_of(:start_date) }
     it { is_expected.to validate_presence_of(:end_date) }
 
-    it "validates end_date is after start_date" do
+    it "validates status inclusion" do
+      expect(sprint).to allow_value("in planning").for(:status)
+      expect(sprint).to allow_value("active").for(:status)
+      expect(sprint).to allow_value("completed").for(:status)
+    end
+
+    it "raises error for invalid status" do
+      expect { sprint.status = "invalid_status" }.to raise_error(ArgumentError, /'invalid_status' is not a valid status/)
+    end
+
+    it "validates end_date is after or equal to start_date" do
       sprint.end_date = sprint.start_date - 1.day
       expect(sprint).not_to be_valid
-      expect(sprint.errors[:end_date]).to include("must be after the start date")
+      expect(sprint.errors[:end_date]).to include("must be greater than or equal to the start date.")
     end
   end
 
   describe "associations" do
     it { is_expected.to have_many(:work_packages).dependent(:nullify) }
+    it { is_expected.to belong_to(:project).required }
   end
 
   describe "enums" do
@@ -67,8 +81,7 @@ RSpec.describe Agile::Sprint do
   end
 
   describe "work_package association" do
-    let(:project) { create(:project) }
-    let(:sprint) { create(:agile_sprint) }
+    let(:sprint) { create(:agile_sprint, project:) }
     let(:work_package) { create(:work_package, project:, sprint:) }
 
     it "can have work packages associated" do
