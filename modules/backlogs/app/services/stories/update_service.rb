@@ -34,11 +34,16 @@ class Stories::UpdateService
     self.story = story
   end
 
-  def call(attributes: {})
+  def call(attributes: {}, prev: nil)
     create_call = WorkPackages::UpdateService
                   .new(user:,
                        model: story)
                   .call(**attributes.to_h.symbolize_keys)
+
+    if create_call.success?
+      create_call.result.move_after prev
+    end
+
     create_call
   end
 end
