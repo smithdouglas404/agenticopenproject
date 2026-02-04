@@ -52,6 +52,41 @@ RSpec.describe Agile::Sprint do
       expect(sprint).not_to be_valid
       expect(sprint.errors[:end_date]).to include("must be greater than or equal to the start date.")
     end
+
+    context "with active sprint validation" do
+      it "allows one active sprint per project" do
+        sprint.status = "active"
+        expect(sprint).to be_valid
+      end
+
+      it "prevents multiple active sprints in the same project" do
+        create(:agile_sprint, project:, status: "active")
+        sprint.status = "active"
+        expect(sprint).not_to be_valid
+        expect(sprint.errors[:status]).to include("only one active sprint is allowed per project.")
+      end
+
+      it "allows multiple active sprints in different projects" do
+        other_project = create(:project)
+        create(:agile_sprint, project: other_project, status: "active")
+        sprint.status = "active"
+        expect(sprint).to be_valid
+      end
+
+      it "allows updating an existing active sprint" do
+        sprint.status = "active"
+        sprint.save!
+        sprint.name = "Updated Sprint"
+        expect(sprint).to be_valid
+      end
+
+      it "allows multiple non-active sprints in the same project" do
+        create(:agile_sprint, project:, status: "completed")
+        create(:agile_sprint, project:, status: "in planning")
+        sprint.status = "in planning"
+        expect(sprint).to be_valid
+      end
+    end
   end
 
   describe "enums" do

@@ -53,6 +53,7 @@ module Agile
     validates :end_date, presence: true
 
     validate :validate_end_date_after_start_date
+    validate :validate_only_one_active_sprint_per_project
 
     # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide (#71374, #71253)
     # TODO: implement sharing logic once it has been defined (#71374)
@@ -64,6 +65,19 @@ module Agile
 
       if end_date < start_date
         errors.add(:end_date, :greater_than_or_equal_to_start_date)
+      end
+    end
+
+    def validate_only_one_active_sprint_per_project
+      return if !active? || project_id.blank?
+
+      existing_active_sprint = self.class
+                                   .where(project_id:, status: "active")
+                                   .where.not(id:)
+                                   .exists?
+
+      if existing_active_sprint
+        errors.add(:status, :only_one_active_sprint_allowed)
       end
     end
   end
