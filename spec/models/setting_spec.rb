@@ -622,4 +622,101 @@ RSpec.describe Setting do
       it_behaves_like "base modules unchanged"
     end
   end
+
+  describe "settings with persist_on_first_read", :settings_reset do
+    let(:setting_name) { "auto_init_setting" }
+
+    before do
+      Settings::Definition.add(
+        setting_name,
+        default: -> { "generated_value_#{SecureRandom.hex(4)}" },
+        format: :string,
+        persist_on_first_read: true
+      )
+    end
+
+    after do
+      described_class.find_by(name: setting_name)&.destroy
+    end
+
+    context "when no value exists in the database" do
+      it "auto-initializes the value" do
+        value = described_class[setting_name]
+        expect(value).to start_with("generated_value_")
+      end
+
+      it "persists the generated value to the database" do
+        value = described_class[setting_name]
+        expect(described_class.find_by(name: setting_name).value).to eq(value)
+      end
+
+      it "returns the same value on subsequent calls" do
+        first_value = described_class[setting_name]
+        second_value = described_class[setting_name]
+        expect(first_value).to eq(second_value)
+      end
+    end
+
+    context "when a value already exists in the database" do
+      before do
+        described_class.create!(name: setting_name, value: "existing_value")
+        described_class.clear_cache
+      end
+
+      it "returns the existing value" do
+        expect(described_class[setting_name]).to eq("existing_value")
+      end
+    end
+
+    context "when settings table does not exist" do
+      before do
+        allow(described_class).to receive(:settings_table_exists_yet?).and_return(false)
+      end
+
+      it "returns the definition default value" do
+        value = described_class[setting_name]
+        expect(value).to start_with("generated_value_")
+      end
+    end
+  end
+
+  describe ".persist_default_value", :settings_reset do
+    let(:setting_name) { "auto_init_test" }
+
+    before do
+      Settings::Definition.add(
+        setting_name,
+        default: -> { "test_value" },
+        format: :string,
+        persist_on_first_read: true
+      )
+    end
+
+    after do
+      described_class.find_by(name: setting_name)&.destroy
+    end
+
+    it "generates and persists the value" do
+      result = described_class.persist_default_value(setting_name)
+      expect(result).to eq("test_value")
+      expect(described_class.find_by(name: setting_name).value).to eq("test_value")
+    end
+
+    it "clears the cache after initialization" do
+      allow(described_class).to receive(:clear_cache).and_call_original
+      described_class.persist_default_value(setting_name)
+      expect(described_class).to have_received(:clear_cache).at_least(:once)
+    end
+
+    context "when value already exists" do
+      before do
+        described_class.create!(name: setting_name, value: "pre_existing")
+      end
+
+      it "returns the existing value" do
+        result = described_class.persist_default_value(setting_name)
+        expect(result).to eq("pre_existing")
+      end
+    end
+  end
 end

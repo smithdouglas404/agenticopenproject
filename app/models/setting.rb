@@ -286,14 +286,45 @@ class Setting < ApplicationRecord
     raise "There's no setting named #{name}" unless exists? name
 
     definition = Settings::Definition[name]
+    return read_or_create_default_setting(name) if definition.persist_on_first_read?
 
-    value = if definition.writable?
-              cached_settings.fetch(name) { definition.value }
-            else
-              definition.value
-            end
+    value =
+      if definition.writable?
+        cached_settings.fetch(name) { definition.value }
+      else
+        definition.value
+      end
 
     deserialize(name, value)
+  end
+
+  def self.read_or_create_default_setting(name)
+    cached_value = cached_settings[name]
+    return deserialize(name, cached_value) if cached_value.present?
+
+    persist_default_value(name)
+  end
+
+  # Persists the setting's default value to the database on first read.
+  # Uses advisory locking to prevent race conditions when multiple processes
+  # attempt to initialize the same setting concurrently.
+  def self.persist_default_value(name)
+    definition = Settings::Definition[name]
+    return definition.value unless settings_table_exists_yet?
+
+    # Use advisory lock to prevent parallel access to the setting
+    OpenProject::Mutex.with_advisory_lock(Setting, "persist_default_#{name}") do
+      # Once we acquired the lock, check again whether the setting was not created by now.
+      setting = find_or_initialize_by(name:)
+      return setting.value if setting.persisted?
+
+      generated_value = definition.default
+      setting.value = generated_value
+      setting.save!
+
+      clear_cache
+      generated_value
+    end
   end
 
   # Returns the settings from two levels of cache

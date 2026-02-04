@@ -570,10 +570,11 @@ module Settings
       },
       hashed_token_pepper: {
         description: "Pepper used for HMAC-SHA256 hashing of hashed tokens (e.g. API tokens). " \
-                     "Auto-initialized from secret_key_base on first use. " \
+                     "Auto-initialized on first use. " \
                      "Changing this invalidates all existing hashed tokens.",
         format: :string,
-        default: nil
+        default: -> { SecureRandom.hex(32) },
+        persist_on_first_read: true
       },
       host_name: {
         format: :string,
@@ -1298,7 +1299,8 @@ module Settings
     attr_accessor :name,
                   :format,
                   :env_alias,
-                  :string_values
+                  :string_values,
+                  :persist_on_first_read
 
     attr_writer :value,
                 :description,
@@ -1312,7 +1314,8 @@ module Settings
                    writable: true,
                    allowed: nil,
                    env_alias: nil,
-                   string_values: false)
+                   string_values: false,
+                   persist_on_first_read: false)
       self.name = name.to_s
       self.value = derive_default default_by_env.fetch(Rails.env.to_sym, default)
       self.format = format ? format.to_sym : deduce_format(value)
@@ -1321,6 +1324,11 @@ module Settings
       self.env_alias = env_alias
       self.description = description.presence || :"setting_#{name}"
       self.string_values = string_values
+      self.persist_on_first_read = persist_on_first_read
+
+      if persist_on_first_read && !writable
+        raise ArgumentError, "Settings using persist_on_first_read need to be writable"
+      end
     end
 
     def derive_default(default)
@@ -1355,6 +1363,10 @@ module Settings
       else
         !!writable
       end
+    end
+
+    def persist_on_first_read?
+      persist_on_first_read
     end
 
     def unprefixed_env_var_name_allowed?
@@ -1426,6 +1438,7 @@ module Settings
               allowed: nil,
               env_alias: nil,
               string_values: false,
+              persist_on_first_read: false,
               disallow_override: false)
         name = name.to_sym
         return if exists?(name)
@@ -1438,7 +1451,8 @@ module Settings
                          writable:,
                          allowed:,
                          env_alias:,
-                         string_values:)
+                         string_values:,
+                         persist_on_first_read:)
         override_value(definition) unless disallow_override
         all[name] = definition
       end
