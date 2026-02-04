@@ -1,22 +1,3 @@
-<style>
-    @media (min-width: 640px) {
-        #jira-projects-list {
-            column-count: 2;
-            column-gap: 2rem;
-        }
-    }
-
-    @media (min-width: 340px) {
-        #jira-filter-column {
-            min-width: 300px;
-        }
-    }
-
-    #jira-projects-list .FormControl-checkbox-wrap {
-        break-inside: avoid-column;
-    }
-</style>
-
 <%= flex_layout(flex_wrap: :wrap, mb: 3) do |flex|
   flex.with_column(flex: 1, id: "jira-filter-column") do
     render(Primer::Alpha::TextField.new(
@@ -56,7 +37,6 @@
 end %>
 
 <%= settings_primer_form_with(**form_options) do %>
-  <section id="jira-projects-list">
     <%=
       render(
         Primer::Alpha::CheckBoxGroup.new(
@@ -80,5 +60,4 @@ end %>
         end
       end
     %>
-  </section>
 <% end %>
