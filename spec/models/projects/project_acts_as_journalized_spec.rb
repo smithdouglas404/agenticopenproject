@@ -128,23 +128,26 @@ RSpec.describe Project, "acts_as_journalized" do
       project.update(custom_values: [custom_value])
     end
 
-    shared_examples "contains no change for disabled custom field" do
-      before do
-        project.project_custom_field_project_mappings.where(custom_field_id: custom_field.id).delete_all
+    shared_examples "contains the expected change" do
+      it "contains the expected change" do
+        expect(project.last_journal.details).to include(custom_field_key => expected_change)
       end
 
-      it "contains no change for the disabled custom field" do
-        expect(project.last_journal.details).not_to have_key(custom_field_key)
+      context "for disabled custom field" do
+        before do
+          project.project_custom_field_project_mappings.where(custom_field_id: custom_field.id).delete_all
+        end
+
+        it "contains no change for the disabled custom field" do
+          expect(project.last_journal.details).not_to have_key(custom_field_key)
+        end
       end
     end
 
     context "for new custom value" do
-      it "contains the new custom value change" do
-        expect(project.last_journal.details)
-          .to include(custom_field_key => [nil, custom_value.value])
-      end
+      let(:expected_change) { [nil, custom_value.value] }
 
-      it_behaves_like "contains no change for disabled custom field"
+      include_examples "contains the expected change"
     end
 
     context "for updated custom value" do
@@ -153,17 +156,23 @@ RSpec.describe Project, "acts_as_journalized" do
               value: "some modified value for project custom field",
               custom_field:)
       end
+      let(:expected_change) { [custom_value.value, modified_custom_value.value] }
 
       before do
         project.update(custom_values: [modified_custom_value])
       end
 
-      it "contains the change from previous value to updated value" do
-        expect(project.last_journal.details)
-          .to include(custom_field_key => [custom_value.value, modified_custom_value.value])
+      include_examples "contains the expected change"
+    end
+
+    context "when custom value removed" do
+      let(:expected_change) { [custom_value.value, nil] }
+
+      before do
+        project.update(custom_values: [])
       end
 
-      it_behaves_like "contains no change for disabled custom field"
+      include_examples "contains the expected change"
     end
 
     context "when project saved without any changes" do
@@ -178,19 +187,6 @@ RSpec.describe Project, "acts_as_journalized" do
       end
 
       it { expect { project.save! }.not_to change(Journal, :count) }
-    end
-
-    context "when custom value removed" do
-      before do
-        project.update(custom_values: [])
-      end
-
-      it "contains the change from previous value to nil" do
-        expect(project.last_journal.details)
-          .to include(custom_field_key => [custom_value.value, nil])
-      end
-
-      it_behaves_like "contains no change for disabled custom field"
     end
   end
 
