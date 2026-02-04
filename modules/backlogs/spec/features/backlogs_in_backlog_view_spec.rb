@@ -79,7 +79,7 @@ RSpec.describe "Backlogs in backlog view", :js do
            version_settings_attributes: [{ project:, display: VersionSetting::DISPLAY_RIGHT }])
   end
   let!(:other_project) do
-    create(:project)
+    create(:project, member_with_roles: { current_user => role })
   end
   let!(:other_project_sprint) do
     create(:version,
