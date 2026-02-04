@@ -79,6 +79,8 @@ Dir[Rails.root.join("spec/requests/api/v3/support/**/*.rb")].sort.each { |f| req
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema! unless ENV["CI"]
 
+ActiveRecord::Base.logger = ActiveSupport::Logger.new(STDOUT, level: :debug) if ENV["SQL_DEBUG_OUTPUT"]
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [Rails.root.join("spec/fixtures").to_s]
