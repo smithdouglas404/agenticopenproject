@@ -80,14 +80,19 @@ export default class BacklogsSettings extends Controller<HTMLElement> {
   };
 
   private onTaskTypeActivated = (_event:CustomEvent) => {
-    if (!this.hasStoryTypesTarget) return;
+    if (this.isUpdating || !this.hasTaskTypeTarget) return;
 
     const taskAutocomplete = this.autocompleterElementFor(this.taskTypeTarget);
     const storyAutocomplete = this.autocompleterElementFor(this.storyTypesTarget);
 
     if (!taskAutocomplete || !storyAutocomplete) return;
 
-    this.syncAutocompleters(taskAutocomplete, storyAutocomplete);
+    this.isUpdating = true;
+    try {
+      this.syncAutocompleters(taskAutocomplete, storyAutocomplete);
+    } finally {
+      this.isUpdating = false;
+    }
   };
 
   /**

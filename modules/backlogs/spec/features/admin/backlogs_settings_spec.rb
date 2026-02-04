@@ -76,6 +76,11 @@ RSpec.describe "Backlogs Admin Settings", :js do
     expect(page).to have_heading "Backlogs"
 
     wait_for_network_idle
+
+    wait_for_autocompleter_options_to_be_loaded
+    story_autocompleter.expect_blank
+    task_autocompleter.expect_blank
+
     # Select a value in the story autocompleter...
     story_autocompleter.select_option "Feature"
     story_autocompleter.expect_selected "Feature"
