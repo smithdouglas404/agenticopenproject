@@ -66,12 +66,15 @@ class RbStoriesController < RbApplicationController
   def move
     story = Story.find(params[:id])
 
-    # call = Stories::UpdateService
-    #        .new(user: current_user, story:)
-    #        .call(attributes: move_params)
+    call = Stories::UpdateService
+            .new(user: current_user, story:)
+            .call(attributes: {
+                    version_id: move_params[:target_id],
+                    position: move_params[:position]
+                  })
 
-    unless story.update(version_id: move_params[:target_id], **move_params.except(:target_id))
-      render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_unsuccessful_update)) #  TODO: display reason
+    unless call.success?
+      render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_unsuccessful_update)) # TODO: display reason
     end
 
     backlog = Backlog.for(sprint: @sprint, project: @project)
@@ -93,8 +96,12 @@ class RbStoriesController < RbApplicationController
   def reorder
     story = Story.find(params[:id])
 
-    unless story.update(move_to: reorder_param)
-      render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_unsuccessful_update)) #  TODO: display reason
+    call = Stories::UpdateService
+        .new(user: current_user, story:)
+        .call(attributes: { move_to: reorder_param })
+
+    unless call.success?
+      render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_unsuccessful_update)) # TODO: display reason
     end
 
     backlog = Backlog.for(sprint: @sprint, project: @project)

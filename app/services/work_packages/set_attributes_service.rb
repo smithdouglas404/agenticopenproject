@@ -69,7 +69,7 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
 
   def set_static_attributes(attributes)
     assignable_attributes = attributes.select do |key, _|
-      !CustomField.custom_field_attribute?(key) && work_package.respond_to?(key)
+      !CustomField.custom_field_attribute?(key) && work_package.respond_to?("#{key}=")
     end
 
     work_package.attributes = assignable_attributes
