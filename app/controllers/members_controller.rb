@@ -32,7 +32,7 @@ class MembersController < ApplicationController
   include MemberHelper
 
   before_action :find_project_by_project_id
-  before_action :find_member, except: %i[create autocomplete_for_member destroy_by_principal]
+  before_action :find_member, except: %i[index create autocomplete_for_member destroy_by_principal]
   before_action :authorize
 
   def index
@@ -121,7 +121,7 @@ class MembersController < ApplicationController
     @member = @project.members.visible.find(params[:id])
   end
 
-  def authorize_for(controller, action)
+  def authorize_for?(controller, action)
     current_user.allowed_in_project?({ controller:, action: }, @project)
   end
 
@@ -155,8 +155,8 @@ class MembersController < ApplicationController
     {
       project: @project,
       available_roles: roles,
-      authorize_update: authorize_for("members", :update),
-      authorize_delete: authorize_for("members", :destroy),
+      authorize_update: authorize_for?("members", :update),
+      authorize_delete: authorize_for?("members", :destroy),
       authorize_work_package_shares_view: current_user.allowed_in_project?(:view_shared_work_packages, @project),
       authorize_work_package_shares_delete: current_user.allowed_in_project?(:share_work_packages, @project),
       authorize_manage_user: current_user.allowed_globally?(:manage_user),
