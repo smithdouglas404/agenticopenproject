@@ -42,7 +42,7 @@ module Agile
       "in planning" => "in_planning",
       "active" => "active",
       "completed" => "completed"
-    }, default: "in_planning"
+    }, default: "in_planning", validate: true
 
     SPRINT_SHARINGS = %w(none descendants system).freeze
 
@@ -53,7 +53,9 @@ module Agile
     validates :end_date, presence: true
 
     validate :validate_end_date_after_start_date
-    # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide
+
+    # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide (#71374, #71253)
+    # TODO: implement sharing logic once it has been defined (#71374)
 
     private
 

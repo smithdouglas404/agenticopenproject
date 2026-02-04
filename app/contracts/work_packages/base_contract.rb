@@ -136,7 +136,7 @@ module WorkPackages
               unless: -> { model.type&.replacement_pattern_defined_for?(:subject) }
     validates :subject, length: { maximum: 255 }
 
-    # TODO: add validation, check permission
+    # TODO: add validation, check permission (#71253)
     attribute :sprint_id
 
     validates :due_date,
