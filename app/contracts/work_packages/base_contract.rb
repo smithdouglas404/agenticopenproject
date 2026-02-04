@@ -131,7 +131,7 @@ module WorkPackages
 
     attribute :budget
 
-    # TODO: add validation, check permission
+    # TODO: add validation, check permission (#71253)
     attribute :sprint_id
 
     validates :due_date,
