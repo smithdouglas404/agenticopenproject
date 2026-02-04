@@ -2915,7 +2915,7 @@ ko:
         text_hint: "API 토큰을 사용하면 타사 애플리케이션이 REST API를 통해 이 OpenProject 인스턴스와 통신할 수 있습니다."
         static_token_name: "API token"
         disabled_text: "관리자가 API 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
-        add_button: "API 토큰"
+        add_button: "API token"
       ical:
         blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
         blank_title: "No iCalendar token"
@@ -2943,7 +2943,7 @@ ko:
         removed: "OAuth client token successfully removed"
         unknown_integration: "Unknown"
       token/rss:
-        add_button: "RSS Token"
+        add_button: "RSS token"
         blank_description: "There is no RSS token yet. You can create one using the button below."
         blank_title: "No RSS token"
         title: "RSS"

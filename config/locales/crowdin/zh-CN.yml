@@ -2911,7 +2911,7 @@ zh-CN:
         text_hint: "API 令牌允许第三方应用程序通过 REST API 与此 OpenProject 实例通信。"
         static_token_name: "API token"
         disabled_text: "管理员未启用 API 令牌。请联系管理员以使用此功能。"
-        add_button: "API 令牌"
+        add_button: "API token"
       ical:
         blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
         blank_title: "No iCalendar token"
@@ -2939,7 +2939,7 @@ zh-CN:
         removed: "OAuth client token successfully removed"
         unknown_integration: "Unknown"
       token/rss:
-        add_button: "RSS Token"
+        add_button: "RSS token"
         blank_description: "There is no RSS token yet. You can create one using the button below."
         blank_title: "No RSS token"
         title: "RSS"

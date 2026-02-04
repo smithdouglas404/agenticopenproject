@@ -2956,7 +2956,7 @@ de:
         text_hint: "API-Token erlauben es Drittanbieter-Anwendungen, mit dieser OpenProject-Instanz über REST-APIs zu kommunizieren."
         static_token_name: "API-Token"
         disabled_text: "API-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
-        add_button: "API-Token"
+        add_button: "API token"
       ical:
         blank_description: "Um einen iCalendar-Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
         blank_title: "Kein iCalendar-Token"
@@ -2984,7 +2984,7 @@ de:
         removed: "OAuth-Client-Token erfolgreich entfernt"
         unknown_integration: "Unbekannt"
       token/rss:
-        add_button: "RSS-Token"
+        add_button: "RSS token"
         blank_description: "Es gibt noch kein RSS-Token. Sie können eines erstellen, indem Sie auf die Schaltfläche unten klicken."
         blank_title: "Kein RSS-Token"
         title: "RSS"
