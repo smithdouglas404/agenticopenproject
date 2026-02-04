@@ -34,7 +34,7 @@ OpenProject currently requires some bundled extensions, that should be available
 - [btree_gist: GiST operator classes with B-tree behavior](https://www.postgresql.org/docs/current/btree-gist.html)
 - [unaccent: a text search dictionary which removes diacritics](https://www.postgresql.org/docs/current/unaccent.html)
 
-Additionally, OpenProject will try to create a [custom collation](https://www.postgresql.org/docs/current/collation.html) for version sorting that depends on `und-u-kn-true` ICU collation. 
+Additionally, OpenProject will try to create a [custom collation](https://www.postgresql.org/docs/current/collation.html) for version sorting that depends on `und-u-kn-true` ICU collation.
 
 
 ## Scaling requirements
@@ -214,6 +214,7 @@ OpenProject supports the latest versions of the major browsers.
 
 * [Nextcloud 30](https://nextcloud.com/changelog/#latest30)
 * [Nextcloud 31](https://nextcloud.com/changelog/#latest31)
+* [Nextcloud 32](https://nextcloud.com/changelog/#latest32)
 
 > [!TIP]
 >
@@ -228,13 +229,13 @@ OpenProject supports the latest versions of the major browsers.
 
 ##### OpenProject integration
 
-* [OpenProject Integration 2.10.0](https://github.com/nextcloud/integration_openproject/releases/tag/v2.10.0)
+* [OpenProject Integration 2.11.1](https://github.com/nextcloud/integration_openproject/releases/tag/v2.11.1)
 
 ##### Team folders
 
 If you want to use the feature of [automatically managed project folders](../../system-admin-guide/integrations/nextcloud/#4-automatically-managed-project-folders) you need to install the [Team folders](https://apps.nextcloud.com/apps/groupfolders) app in Nextcloud (formerly Group folders).
 
-* [Team folders 19.1.7](https://github.com/nextcloud/groupfolders/releases/tag/v19.1.7)
+* [Team folders 20.1.7](https://github.com/nextcloud/groupfolders/releases/tag/v20.1.7)
 
 ### Keycloak token exchange
 
