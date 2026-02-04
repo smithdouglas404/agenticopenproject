@@ -36,7 +36,7 @@ class Storages::Admin::Storages::ProjectStoragesController < ApplicationControll
   layout "admin"
 
   before_action :require_admin
-  before_action :find_storage
+  before_action :load_storage
   before_action :load_project_storage, only: %i(edit update destroy destroy_confirmation_dialog)
 
   before_action :storage_projects_query, only: :index
@@ -142,11 +142,11 @@ class Storages::Admin::Storages::ProjectStoragesController < ApplicationControll
   private
 
   def load_storage
-    @storage = Storages::Storage.visible.find(params[:storage_id])
+    @storage = ::Storages::Storage.visible.find(params[:storage_id])
   end
 
   def load_project_storage
-    @project_storage = Storages::ProjectStorage.find(params[:id])
+    @project_storage = ::Storages::ProjectStorage.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_error_flash_message_via_turbo_stream(message: t(:notice_file_not_found))
     update_project_list_via_turbo_stream

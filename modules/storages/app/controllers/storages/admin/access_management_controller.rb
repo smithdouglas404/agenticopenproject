@@ -92,7 +92,7 @@ class Storages::Admin::AccessManagementController < ApplicationController
   private
 
   def find_storage
-    @storage = Storages::Storage.find(params[:storage_id])
+    @storage = ::Storages::Storage.visible.find(params[:storage_id])
   end
 
   def call_update_service

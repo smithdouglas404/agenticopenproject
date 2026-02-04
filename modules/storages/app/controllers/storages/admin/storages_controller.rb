@@ -214,7 +214,7 @@ module Storages
       private
 
       def find_storage
-        @storage = Storages::Storage.visible.find(params[:id])
+        @storage = ::Storages::Storage.visible.find(params[:id])
       end
 
       def prepare_storage_for_access_management_form
