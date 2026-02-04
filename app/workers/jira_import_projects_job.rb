@@ -32,9 +32,11 @@ class JiraImportProjectsJob < ApplicationJob
           uses_existing: false
         )
       else
-        raise service_call.message
+        if service_call.errors.find { |error| error.type == :taken }.blank?
+          raise service_call.message
+        end
       end
-      project_role = service_call.result
+      project_role = Role.find_by!(name: "JiraMember")
 
       JiraProject.where(jira_id:, jira_project_id: project_ids).each do |jira_project|
         ### PROJECT

@@ -36,7 +36,9 @@ class JiraImportUsersJob < ApplicationJob
           end
         end
         call.on_failure do |result|
-          raise ActiveRecord::Rollback
+          if call.errors.find { |error| error.type == :taken }.blank?
+            raise call.message
+          end
         end
       end
       groups.each do |name, member_ids|
@@ -59,7 +61,9 @@ class JiraImportUsersJob < ApplicationJob
           end
         end
         call.on_failure do |result|
-          raise ActiveRecord::Rollback
+          if call.errors.find { |error| error.type == :taken }.blank?
+            raise call.message
+          end
         end
       end
     end
