@@ -122,7 +122,7 @@ Create `/etc/openproject/addons/apache2/custom/vhost/hocuspocus.conf` with the f
 ProxyPass        /hocuspocus  ws://127.0.0.1:1234/hocuspocus
 ProxyPassReverse /hocuspocus  ws://127.0.0.1:1234/hocuspocus
 ```
-*For Debian/Ubuntu-based systems, run the following commands:*
+**For Debian/Ubuntu-based systems, run the following commands:**
 
 Enable the `proxy_wstunnel` module:
 
@@ -136,7 +136,7 @@ Restart Apache:
 sudo service apache2 restart
 ```
 
-*For RHEL/CentOS-based systems, run the following command:*
+**For RHEL/CentOS-based systems, run the following command:**
 
 ```shell
 sudo  service httpd restart 
