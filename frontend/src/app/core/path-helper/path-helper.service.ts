@@ -458,4 +458,8 @@ export class PathHelperService {
   public homePath() {
     return `${this.staticBase}/`;
   }
+
+  public externalRedirectPath(url:string) {
+    return `${this.staticBase}/external_redirect?url=${encodeURIComponent(url)}`;
+  }
 }

@@ -12,61 +12,31 @@
       <%= static_link_to(EnterpriseToken.active? ? :enterprise_support : :enterprise_support_as_community) %>
     </li>
     <li>
-      <%= link_to(
-            t("label_openproject_website"),
-            OpenProject::Static::Links.url_for(
-              :website,
-              url_params: {
-                utm_source: "unknown",
-                utm_medium: "op-instance",
-                utm_campaign: "website-home-screen"
-              }
-            ),
-            {
-              aria: { label: t("label_openproject_website") },
-              target: "_blank",
-              title: t("label_openproject_website"),
-              rel: "noopener"
-            }
-          ) %>
+      <%= static_link_to :website,
+                         label: t("label_openproject_website"),
+                         url_params: {
+                           utm_source: "unknown",
+                           utm_medium: "op-instance",
+                           utm_campaign: "website-home-screen"
+                         } %>
     </li>
     <li>
-      <%= link_to(
-            t("homescreen.links.security_alerts"),
-            OpenProject::Static::Links.url_for(
-              :security_alerts,
-              url_params: {
-                utm_source: "unknown",
-                utm_medium: "op-instance",
-                utm_campaign: "security-alerts-home-screen"
-              }
-            ),
-            {
-              aria: { label: t("homescreen.links.security_alerts") },
-              target: "_blank",
-              title: t("homescreen.links.security_alerts"),
-              rel: "noopener"
-            }
-          ) %>
+      <%= static_link_to :security_alerts,
+                         label: t("homescreen.links.security_alerts"),
+                         url_params: {
+                           utm_source: "unknown",
+                           utm_medium: "op-instance",
+                           utm_campaign: "security-alerts-home-screen"
+                         } %>
     </li>
     <li>
-      <%= link_to(
-            t("homescreen.links.newsletter"),
-            OpenProject::Static::Links.url_for(
-              :newsletter,
-              url_params: {
-                utm_source: "unknown",
-                utm_medium: "op-instance",
-                utm_campaign: "newsletter-home-screen"
-              }
-            ),
-            {
-              aria: { label: t("homescreen.links.newsletter") },
-              target: "_blank",
-              title: t("homescreen.links.newsletter"),
-              rel: "noopener"
-            }
-          ) %>
+      <%= static_link_to :newsletter,
+                         label: t("homescreen.links.newsletter"),
+                         url_params: {
+                           utm_source: "unknown",
+                           utm_medium: "op-instance",
+                           utm_campaign: "newsletter-home-screen"
+                         } %>
     </li>
     <li>
       <%= static_link_to :blog %>

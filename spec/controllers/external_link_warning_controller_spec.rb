@@ -34,7 +34,28 @@ RSpec.describe ExternalLinkWarningController do
   render_views
 
   describe "GET #show" do
-    context "with a valid external URL" do
+    context "when capture is disabled" do
+      before do
+        allow(Setting).to receive(:capture_external_links?).and_return(false)
+      end
+
+      it "redirects directly to the external URL" do
+        get :show, params: { url: "https://example.com" }
+
+        expect(response).to redirect_to("https://example.com")
+      end
+
+      it "unescapes the URL parameter before redirecting" do
+        encoded_url = CGI.escape("https://example.com/path?param=value")
+        get :show, params: { url: encoded_url }
+
+        expect(response).to redirect_to("https://example.com/path?param=value")
+      end
+    end
+
+    context "when capture is enabled",
+            with_ee: %i[capture_external_links],
+            with_settings: { capture_external_links: true } do
       it "renders the warning page" do
         get :show, params: { url: "https://example.com" }
 

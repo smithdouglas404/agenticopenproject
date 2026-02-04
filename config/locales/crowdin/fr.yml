@@ -2962,7 +2962,7 @@ fr:
         text_hint: "Les jetons d'API permettent aux applications tierces de communiquer avec cette instance OpenProject via les API REST."
         static_token_name: "Jeton API"
         disabled_text: "Les jetons d'API ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
-        add_button: "Jeton d'API"
+        add_button: "API token"
       ical:
         blank_description: "Pour ajouter un jeton iCalendar, abonnez-vous à un calendrier nouveau ou existant à partir du module Calendrier d'un projet. Vous devez disposer des autorisations nécessaires."
         blank_title: "Pas de jeton iCalendar"
@@ -2990,7 +2990,7 @@ fr:
         removed: "OAuth client token successfully removed"
         unknown_integration: "Unknown"
       token/rss:
-        add_button: "RSS Token"
+        add_button: "RSS token"
         blank_description: "There is no RSS token yet. You can create one using the button below."
         blank_title: "No RSS token"
         title: "RSS"

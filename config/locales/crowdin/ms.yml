@@ -2913,7 +2913,7 @@ ms:
         text_hint: "Token API membenarkan aplikasi pihak ketiga untuk berkomunikasi dengan OpenProject ini, contohnya, melalui REST API."
         static_token_name: "API token"
         disabled_text: "Token API tidak didayakan oleh pentadbir. Sila hubungi pentadbir anda untuk menggunakan fitur ini."
-        add_button: "API Token"
+        add_button: "API token"
       ical:
         blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
         blank_title: "No iCalendar token"
@@ -2941,7 +2941,7 @@ ms:
         removed: "OAuth client token successfully removed"
         unknown_integration: "Unknown"
       token/rss:
-        add_button: "RSS Token"
+        add_button: "RSS token"
         blank_description: "There is no RSS token yet. You can create one using the button below."
         blank_title: "No RSS token"
         title: "RSS"

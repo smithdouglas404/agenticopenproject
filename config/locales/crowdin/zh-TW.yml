@@ -2911,7 +2911,7 @@ zh-TW:
         text_hint: "API 令牌(Tokens)允許第三方應用程式透過 REST API 與此 OpenProject 實例進行通訊。"
         static_token_name: "API 令牌(Token)"
         disabled_text: "API 令牌(Tokens)未由管理員啟用。若要使用此功能，請聯絡您的管理員。"
-        add_button: "API 令牌"
+        add_button: "API token"
       ical:
         blank_description: "若要新增 iCalendar 令牌，請從專案的行事曆模組中訂閱新的或現有的行事曆。您必須擁有必要的權限。"
         blank_title: "沒有 iCalendar 令牌"
@@ -2939,7 +2939,7 @@ zh-TW:
         removed: "成功移除 OAuth 用戶端令牌"
         unknown_integration: "未知"
       token/rss:
-        add_button: "RSS 令牌(Token)"
+        add_button: "RSS token"
         blank_description: "目前尚未有 RSS 令牌。您可以使用下面的按鈕建立一個。"
         blank_title: "沒有 RSS 令牌"
         title: "RSS"

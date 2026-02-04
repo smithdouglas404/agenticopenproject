@@ -238,7 +238,7 @@ To delete another user's account open the [user list](#user-list). Click on the 
 
 ![Sys-admin-delete-user](openproject_system_guide_delete_user.png)
 
-You will then be asked to type in the username in order to delete the user permanently from the system, then confirm this with your password.
+You will then be asked to confirm the deletion of the user permanently from the system. Checking the consent box will activate the **Delete permanently** button.
 
 ![delete user](delete-user-confirmation.png)
 

@@ -64,7 +64,7 @@ RSpec.describe "my access tokens", :js do
         expect(page).to have_no_content("API tokens are not enabled by the administrator.")
 
         within "#api-token-component" do
-          expect(page).to have_test_selector("api-token-add", text: "API Token")
+          expect(page).to have_test_selector("api-token-add", text: "API token")
           find_test_selector("api-token-add").click
         end
 
@@ -86,7 +86,7 @@ RSpec.describe "my access tokens", :js do
 
         # multiple API tokens can be created
         within "#api-token-component" do
-          expect(page).to have_test_selector("api-token-add", text: "API Token")
+          expect(page).to have_test_selector("api-token-add", text: "API token")
         end
 
         # revoke API token
@@ -106,7 +106,7 @@ RSpec.describe "my access tokens", :js do
           expect(page).to have_no_content("Testing Token")
 
           # API token can be created again
-          expect(page).to have_test_selector("api-token-add", text: "API Token")
+          expect(page).to have_test_selector("api-token-add", text: "API token")
         end
       end
     end
@@ -119,19 +119,19 @@ RSpec.describe "my access tokens", :js do
 
         within "#rss-token-component" do
           expect(page).to have_content("RSS tokens are not enabled by the administrator.")
-          expect(page).not_to have_test_selector("rss-token-add", text: "RSS Token")
+          expect(page).not_to have_test_selector("rss-token-add", text: "RSS token")
         end
       end
     end
 
     context "when RSS access is enabled via global settings", with_settings: { feeds_enabled: true } do
-      it "in Access Tokens they can generate and revoke their RSS key" do
+      it "in Access tokens they can generate and revoke their RSS key" do
         visit my_access_tokens_path
 
         expect(page).to have_no_content("RSS tokens are not enabled by the administrator.")
 
         within "#rss-token-component" do
-          expect(page).to have_test_selector("rss-token-add", text: "RSS Token")
+          expect(page).to have_test_selector("rss-token-add", text: "RSS token")
           find_test_selector("rss-token-add").click
         end
 
@@ -142,7 +142,7 @@ RSpec.describe "my access tokens", :js do
 
         # only one RSS token can be created
         within "#rss-token-component" do
-          expect(page).not_to have_test_selector("rss-token-add", text: "RSS Token")
+          expect(page).not_to have_test_selector("rss-token-add", text: "RSS token")
         end
 
         # revoke RSS token
@@ -159,7 +159,7 @@ RSpec.describe "my access tokens", :js do
 
         # RSS token can be created again
         within "#rss-token-component" do
-          expect(page).to have_test_selector("rss-token-add", text: "RSS Token")
+          expect(page).to have_test_selector("rss-token-add", text: "RSS token")
         end
       end
     end
