@@ -568,6 +568,13 @@ module Settings
         format: :string,
         default: nil
       },
+      hashed_token_pepper: {
+        description: "Pepper used for HMAC-SHA256 hashing of hashed tokens (e.g. API tokens). " \
+                     "Auto-initialized from secret_key_base on first use. " \
+                     "Changing this invalidates all existing hashed tokens.",
+        format: :string,
+        default: nil
+      },
       host_name: {
         format: :string,
         default: -> { "#{ENV.fetch('HOST', 'localhost')}:#{ENV.fetch('PORT', 3000)}" },
