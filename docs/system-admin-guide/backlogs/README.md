@@ -61,7 +61,7 @@ For example, if you want to create a template page for all Sprint retros, follow
 
    
 
-4. You can create a new sprint wiki page directly from the sprint drop-down menu in the Backlogs module. The new wiki page will be based on the template, so you can reuse the same structure for every sprint.
+3. You can create a new sprint wiki page directly from the sprint drop-down menu in the Backlogs module. The new wiki page will be based on the template, so you can reuse the same structure for every sprint.
 
 ![New wiki page created based on a backlogs wiki template in OpenProject](openproject_system_admin_guide_backlogs_wiki_template_in_use.png)
 
