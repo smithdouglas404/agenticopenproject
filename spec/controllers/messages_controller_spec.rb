@@ -64,28 +64,30 @@ RSpec.describe MessagesController, with_settings: { journal_aggregation_time_min
     let(:other_forum) { create(:forum, project:) }
     let(:permissions) { %i[edit_messages] }
 
-    before do
-      put :update, params: { project_id: project.id,
-                             forum_id: forum.id,
-                             id: message,
-                             message: { forum_id: other_forum } }
-    end
+    context "when moving it to another forum" do
+      before do
+        put :update, params: { project_id: project.id,
+                               forum_id: forum.id,
+                               id: message,
+                               message: { forum_id: other_forum } }
+      end
 
-    it "allows for changing the board" do
-      expect(message.reload.forum).to eq(other_forum)
+      it "allows for changing the board" do
+        expect(message.reload.forum).to eq(other_forum)
+      end
     end
 
     context "when uploading an attachment" do
       let!(:message) { create(:message, forum: forum) }
-      let!(:attachment) { create(:attachment, container: nil, author: user) }
-      let(:attachment_id) { "attachments_#{attachment.id}" }
-      # Attachment is already uploaded
+      let(:uncontainered) { create(:attachment, container: nil, author: user) }
+      let(:attachment_id) { "attachments_#{uncontainered.id}" }
+
       let(:params) do
         {
           project_id: project.id,
           forum_id: forum.id,
           id: message.id,
-          attachments: { "0" => { "id" => attachment.id } }
+          attachments: { "1" => { id: uncontainered.id } }
         }
       end
 
@@ -101,7 +103,7 @@ RSpec.describe MessagesController, with_settings: { journal_aggregation_time_min
 
           it "stores attachment details in the journal entry" do
             expect(message.journals.last.details).to have_key attachment_id
-            expect(message.journals.last.details[attachment_id].last).to eq(attachment.filename)
+            expect(message.journals.last.details[attachment_id].last).to eq(uncontainered.filename)
           end
         end
       end
