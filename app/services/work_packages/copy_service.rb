@@ -83,7 +83,7 @@ class WorkPackages::CopyService < BaseServices::BaseCallable
 
     attributes = work_package
                    .attributes
-                   .slice(*writable_work_package_attributes(work_package))
+                   .slice(*copyable_work_package_attributes(work_package))
                    .merge("custom_field_values" => work_package.custom_value_attributes)
                    .merge(overwritten_attributes)
 
@@ -96,8 +96,17 @@ class WorkPackages::CopyService < BaseServices::BaseCallable
     attributes
   end
 
-  def writable_work_package_attributes(work_package)
-    instantiate_contract(work_package, user).writable_attributes
+  # Returns attributes that should be copied from the source work package.
+  # This includes writable attributes plus any auto-generated attributes
+  # (which will be regenerated after saving)
+  def copyable_work_package_attributes(work_package)
+    contract = instantiate_contract(work_package, user)
+    writable = contract.writable_attributes
+
+    # Include auto-generated attributes so they get set (to empty) and regenerated after save
+    auto_generated = work_package.type.enabled_patterns.keys.map(&:to_s) || []
+
+    (writable + auto_generated).uniq
   end
 
   def remove_author_watcher(copied)
