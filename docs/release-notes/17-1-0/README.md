@@ -129,7 +129,10 @@ This change prevents browser freezes and significantly improves responsiveness w
 
 ### UX/UI updates with Primer design system
 
-
+OpenProject 17.1 includes some UX/UI updates once again. The following pages have been redesigned with Primer design system:
+- the Access tokens section under Account settings,
+- the Backlogs section under System administration,
+- the password confirmation dialog.
 
 <!--more-->
 
