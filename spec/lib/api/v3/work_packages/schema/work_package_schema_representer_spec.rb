@@ -299,6 +299,10 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
           let(:writable) { false }
           let(:has_default) { true }
         end
+
+        it_behaves_like "defines the placeholder to display" do
+          let(:placeholder) { I18n.t("placeholders.templated_hint", type: wp_type.name) }
+        end
       end
     end
 

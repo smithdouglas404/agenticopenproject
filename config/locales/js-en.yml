@@ -689,7 +689,6 @@ en:
     placeholders:
       default: "-"
       subject: "Enter subject here"
-      subject_auto_generated: "Automatically generated through type %{type}"
       selection: "Please select"
       description: "Description: Click to edit..."
       relation_description: "Click to add description for this relation"

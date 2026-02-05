@@ -4272,6 +4272,7 @@ en:
 
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
 
   portfolio:
     count:

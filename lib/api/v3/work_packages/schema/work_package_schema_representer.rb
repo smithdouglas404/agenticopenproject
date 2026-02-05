@@ -117,6 +117,11 @@ module API
                  max_length: 255,
                  has_default: -> {
                    represented.type&.replacement_pattern_defined_for?(:subject)
+                 },
+                 placeholder: -> {
+                   if represented.type&.replacement_pattern_defined_for?(:subject)
+                     I18n.t("placeholders.templated_hint", type: represented.type.name)
+                   end
                  }
 
           schema :description,

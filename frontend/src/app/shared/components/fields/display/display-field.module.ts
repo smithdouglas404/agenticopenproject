@@ -102,7 +102,12 @@ export class DisplayField<T extends HalResource = HalResource> extends Field {
   }
 
   public get placeholder():string {
-    return '-';
+    // Use the placeholder from the schema if available (set by the backend)
+    if (this.schema.placeholder) {
+      return this.schema.placeholder;
+    } else {
+      return '-';
+    }
   }
 
   public get label() {

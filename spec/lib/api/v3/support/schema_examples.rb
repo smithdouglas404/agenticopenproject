@@ -118,6 +118,14 @@ RSpec.shared_examples_for "indicates length requirements" do
   end
 end
 
+RSpec.shared_examples_for "defines the placeholder to display" do
+  it "shows the placeholder value" do
+    expect(subject)
+      .to be_json_eql(placeholder.to_json)
+            .at_path("#{path}/placeholder")
+  end
+end
+
 RSpec.shared_examples_for "links to allowed values directly" do
   it "has the expected number of links" do
     expect(subject).to have_json_size(hrefs.size).at_path("#{path}/_links/allowedValues")
