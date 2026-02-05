@@ -235,7 +235,7 @@ OpenProject supports the latest versions of the major browsers.
 
 If you want to use the feature of [automatically managed project folders](../../system-admin-guide/integrations/nextcloud/#4-automatically-managed-project-folders) you need to install the [Team folders](https://apps.nextcloud.com/apps/groupfolders) app in Nextcloud (formerly Group folders).
 
-* [Team folders 20.1.7](https://github.com/nextcloud/groupfolders/releases/tag/v20.1.7)
+* [Team folders 19.1.14](https://github.com/nextcloud/groupfolders/releases/tag/v19.1.14)
 
 ### Keycloak token exchange
 
