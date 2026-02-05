@@ -273,7 +273,7 @@ You can always re-activate it by clicking the **Enable** icon.
 
 > [!NOTE]
 > Enabling or disabling email calendar updates does not affect calendar subscriptions. 
-> If you are unsure whether a meeting change will trigger an email or update your calendar subscription, see the [Meetings FAQ](../meetings/faq/#what-is-the-difference-between-calendar-subscriptions-and-email-notifications-in-openproject-meetings).
+> If you are unsure whether a meeting change will trigger an email or update your calendar subscription, see the [Meetings FAQ](../meetings-faq/#what-is-the-difference-between-calendar-subscriptions-and-email-notifications-in-openproject-meetings).
 
 ## Meeting outcomes
 
