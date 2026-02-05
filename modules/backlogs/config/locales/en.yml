@@ -123,6 +123,10 @@ en:
   backlogs_empty_title: "No versions are defined yet"
   backlogs_empty_action_text: "To start using backlogs, please create a version first"
 
+  backlogs_not_configured_title: "Backlogs not configured"
+  backlogs_not_configured_description: "Story and task types need to be set before using this module."
+  backlogs_not_configured_action_text: "Configure Backlogs"
+
   burndown:
     story_points: "Story points"
     story_points_ideal: "Story points (ideal)"
