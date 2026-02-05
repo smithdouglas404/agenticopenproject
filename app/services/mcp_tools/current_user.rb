@@ -29,24 +29,14 @@
 #++
 
 module McpTools
-  class << self
-    def all
-      [
-        McpTools::CurrentUser,
-        McpTools::ListStatuses,
-        McpTools::ListTypes,
-        McpTools::SearchProjects,
-        McpTools::SearchUsers,
-        McpTools::SearchWorkPackages
-      ]
-    end
+  class CurrentUser < ResourceProxyTool
+    default_title "Current user"
+    default_description "Returns the currently authenticated user. Also available as an MCP resource."
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    name "current_user"
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
-    end
+    resource McpResources::CurrentUser
+    resource_schema "user_model"
+    resource_annotations
   end
 end

@@ -28,25 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module McpTools
-  class << self
-    def all
-      [
-        McpTools::CurrentUser,
-        McpTools::ListStatuses,
-        McpTools::ListTypes,
-        McpTools::SearchProjects,
-        McpTools::SearchUsers,
-        McpTools::SearchWorkPackages
-      ]
-    end
+module McpResources
+  class CurrentUser < Base
+    name "current_user"
+    uri "/api/v3/users/me"
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    default_title "Current user"
+    default_description "Representation of the currently authenticated user."
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def read
+      API::V3::Users::UserRepresenter.create(current_user, current_user:)
     end
   end
 end
