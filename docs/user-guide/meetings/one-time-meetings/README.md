@@ -376,7 +376,7 @@ Read more about [subscribing to a calendar](../../calendar/#subscribe-to-a-calen
 Please keep in mind that downloading a meeting as an iCalendar event adds it to your calendar, but it does not keep the meeting synchronized automatically.
 
 > [!TIP]
-> If you want to respond to meeting invitations directly from your calendar and have your participation status synchronized back to OpenProject, you can [subscribe to meetings](../meetings/#subscribe-to-meetings) instead of downloading individual iCal events.
+> If you want to respond to meeting invitations directly from your calendar and have your participation status synchronized back to OpenProject, you can [subscribe to meetings](../#subscribe-to-meetings) instead of downloading individual iCal events.
 
 ## Change meeting status
 You can change the status of a meeting depending on whether you are preparing it, running it, or finalizing it.
