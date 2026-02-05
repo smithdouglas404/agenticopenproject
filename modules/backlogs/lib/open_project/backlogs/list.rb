@@ -148,6 +148,8 @@ module OpenProject::Backlogs::List
     end
 
     def set_default_prev_positions_silently(prev)
+      return if prev.nil?
+
       if prev.is_task?
         prev.version.rebuild_task_positions(prev)
       else
