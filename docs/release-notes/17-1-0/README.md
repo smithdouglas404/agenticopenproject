@@ -93,7 +93,9 @@ Here's an example of highlighting work packages by priority:
 
 ### Warning before opening external links in user-provided content (Enterprise add-on)
 
-OpenProject introduces a warning before opening external links in user-provided content, available as an **Enterprise add-on in the Premium plan**. The warning adds an additional security layer by making users aware that they are about to leave OpenProject.
+[feature: capture_external_links ]
+
+With 17.1 OpenProject introduces an option to add a warning when accessing external links from formatted text, such as project descriptions, comments or wiki pages. The warning adds an additional security layer by making users aware that they are about to leave OpenProject.
 
 When users click on an external link, a confirmation dialog is displayed indicating that the link leads outside of OpenProject. This applies to links added by users, for example in descriptions, comments, or other text fields. In SaaS trial environments, external link handling is enforced to ensure that warnings for user-provided external links cannot be bypassed.
 
