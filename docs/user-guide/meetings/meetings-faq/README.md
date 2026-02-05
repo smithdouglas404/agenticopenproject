@@ -40,7 +40,7 @@ OpenProject stands out [a reliable open source solution for meeting management](
 Calendar subscriptions and email notifications serve different purposes in OpenProject meetings.
 
 **Calendar subscriptions** are used for scheduling meetings in an external calendar (such as Outlook or Google Calendar). They allow you to view meetings in your calendar and respond to meeting invitations (accept, decline, or tentatively accept). Your response is synchronized back to OpenProject and shown as your participation status. 
-Learn more about [subscribing to meetings](../meetings/#subscribe-to-meetings).
+Learn more about [subscribing to meetings](../#subscribe-to-meetings).
 
 **Email notifications** are used to inform meeting participants about changes to a meeting, such as added or removed participants or updated meeting details. Email notifications do not allow you to respond to a meeting invitation. 
 You can manage general email notification behavior in your [personal notification settings](../notifications/notification-settings/).
