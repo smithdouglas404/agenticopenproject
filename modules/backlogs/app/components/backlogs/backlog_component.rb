@@ -66,7 +66,7 @@ module Backlogs
     end
 
     def max_position
-      stories.map(&:position).max
+      stories.filter_map(&:position).max
     end
 
     def drop_target_config
