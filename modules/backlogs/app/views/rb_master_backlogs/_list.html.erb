@@ -1,4 +1,4 @@
-<turbo-frame id="backlogs_container" refresh="morph">
+<turbo-frame id="backlogs_container" refresh="morph" class="op-backlogs-page">
   <% if @owner_backlogs.empty? && @sprint_backlogs.empty? %>
     <%=
       render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
@@ -11,11 +11,11 @@
       end
     %>
   <% else %>
-    <div class="d-flex flex-column flex-md-row gap-4" data-controller="generic-drag-and-drop">
-      <div id="sprint_backlogs_container" class="d-flex flex-column gap-3 flex-1">
+    <div class="op-backlogs-container" data-controller="generic-drag-and-drop">
+      <div id="sprint_backlogs_container" class="op-backlogs-lists">
         <%= render(Backlogs::BacklogComponent.with_collection(@sprint_backlogs, project: @project)) %>
       </div>
-      <div id="owner_backlogs_container" class="d-flex flex-column gap-3 flex-1">
+      <div id="owner_backlogs_container" class="op-backlogs-lists">
         <%= render(Backlogs::BacklogComponent.with_collection(@owner_backlogs, project: @project)) %>
       </div>
     </div>

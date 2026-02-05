@@ -45,7 +45,7 @@ $op-backlogs-header--points-min-width: 5rem
 
 .op-backlogs-collapsible
   display: flex
-  flex-wrap: flex
+  flex-wrap: wrap
   align-items: center
   column-gap: var(--stack-gap-normal)
   row-gap: var(--base-size-4)
@@ -112,3 +112,24 @@ $op-backlogs-header--points-min-width: 5rem
       & > :first-child
         flex: 1 1 auto
         min-width: 33%
+
+.op-backlogs-page
+  display: block
+  container-name: backlogsListsContainer
+  container-type: inline-size
+
+.op-backlogs-container
+  display: flex
+  flex-direction: row
+  gap: var(--stack-gap-normal)
+
+.op-backlogs-lists
+  display: flex
+  flex-direction: column
+  gap: var(--stack-gap-normal)
+  flex: 1 1 100%
+  overflow: hidden
+
+@container backlogsListsContainer (max-width: 543px)
+  .op-backlogs-container
+    flex-direction: column
