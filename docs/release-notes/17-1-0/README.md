@@ -19,7 +19,9 @@ release_date: 2026-02-11
 
 ### Automated project initiation request with a guided wizard (Enterprise add-on)
 
-OpenProject introduces a configurable wizard for project initiation requests. The wizard is available as an **Enterprise add-on in the Premium plan** and can be enabled per project template.
+OpenProject introduces a configurable wizard for project initiation requests. The wizard can be enabled per template project.
+
+[feature: project_creation_wizard ]
 
 #### Configurable project initiation wizard
 
