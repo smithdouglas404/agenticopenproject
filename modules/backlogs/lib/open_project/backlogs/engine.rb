@@ -107,6 +107,29 @@ module OpenProject::Backlogs
                    },
                    permissible_on: :project,
                    require: :member
+
+        # New permissions for Agile::Sprint model (will eventually replace old permissions)
+        permission :view_sprints,
+                   {
+                     rb_burndown_charts: :show,
+                     rb_impediments: %i[index show],
+                     rb_master_backlogs: :index,
+                     rb_queries: :show,
+                     rb_sprints: %i[index show],
+                     rb_stories: %i[index show],
+                     rb_taskboards: :show,
+                     rb_tasks: %i[index show],
+                     rb_wikis: :show
+                   },
+                   permissible_on: :project
+
+        permission :manage_sprints,
+                   {
+                     rb_sprints: %i[edit update],
+                     rb_wikis: %i[edit update]
+                   },
+                   permissible_on: :project,
+                   require: :member
       end
 
       menu :project_menu,
