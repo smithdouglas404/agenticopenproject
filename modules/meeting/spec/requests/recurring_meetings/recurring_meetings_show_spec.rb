@@ -325,13 +325,13 @@ RSpec.describe "Recurring meetings show",
     let!(:ongoing_instance) do
       create :meeting,
              recurring_meeting:,
-             start_time: Time.zone.today + 10.hours - 10.minutes
+             start_time: Time.zone.today + 10.hours
     end
     let!(:ongoing) do
       create :scheduled_meeting,
              recurring_meeting:,
              meeting: ongoing_instance,
-             start_time: Time.zone.today + 10.hours - 10.minutes
+             start_time: Time.zone.today + 10.hours
     end
 
     it "shows the correct number of next occurrences (Regression #61194)" do
