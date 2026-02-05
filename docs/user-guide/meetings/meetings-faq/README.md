@@ -43,4 +43,4 @@ Calendar subscriptions and email notifications serve different purposes in OpenP
 Learn more about [subscribing to meetings](../#subscribe-to-meetings).
 
 **Email notifications** are used to inform meeting participants about changes to a meeting, such as added or removed participants or updated meeting details. Email notifications do not allow you to respond to a meeting invitation. 
-You can manage general email notification behavior in your [personal notification settings](../notifications/notification-settings/).
+You can manage general email notification behavior in your [personal notification settings](../../notifications/notification-settings/).
