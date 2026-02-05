@@ -127,11 +127,11 @@ OpenProject improved the performance of the work package Activity tab when worki
 
 This change prevents browser freezes and significantly improves responsiveness when opening and navigating work packages with extensive activity histories.
 
-### UX/UI updates with Primer design system
+### UX/UI updates with the Primer design system
 
-OpenProject 17.1 includes some UX/UI updates once again. The following pages have been redesigned with Primer design system:
-- the Access tokens section under Account settings,
-- the Backlogs section under System administration,
+OpenProject 17.1 includes further UX/UI improvements. The following areas have been redesigned using the Primer design system:
+- the Access tokens section in account settings,
+- the Backlogs section in system administration,
 - the password confirmation dialog.
 
 <!--more-->
