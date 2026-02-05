@@ -273,58 +273,66 @@ class Setting < ApplicationRecord
     RequestStore.delete :settings_updated_at
   end
 
-  # Returns the Setting instance for the setting named name
-  # The setting can come from either
-  # * The database
-  # * The cached database value
-  # * The setting definition
-  #
-  # In case the definition is overwritten, e.g. via an ENV var,
-  # the definition value will always be used.
+  # Returns the value of the setting named name
+  # The value will be retrieved from that order:
+  # 1. An overwritten definition (e.g., when provided as ENV var)
+  # 2. The cached database value
+  # 3. The setting definition default
   def self.cached_or_default(name)
     name = name.to_s
-    raise "There's no setting named #{name}" unless exists? name
+    raise "There's no setting named #{name}" unless exists?(name)
 
     definition = Settings::Definition[name]
-    return read_or_create_default_setting(name) if definition.persist_on_first_read?
 
-    value =
-      if definition.writable?
-        cached_settings.fetch(name) { definition.value }
-      else
-        definition.value
-      end
+    # Non-writable settings always use definition value (e.g., from ENV vars)
+    return deserialize(name, definition.value) unless definition.writable?
 
-    deserialize(name, value)
+    resolve_writable_value(name, definition)
   end
 
-  def self.read_or_create_default_setting(name)
-    cached_value = cached_settings[name]
-    return deserialize(name, cached_value) if cached_value.present?
-
-    persist_default_value(name)
+  # Resolves the value for a writable setting by checking (in order):
+  # 1. Cache (RequestStore, or Rails.cache populated from DB)
+  # 2. Persisted default value if setting has persist_on_first_read?
+  # 3. Definition default
+  def self.resolve_writable_value(name, definition)
+    settings_cache = cached_settings
+    if settings_cache.key?(name)
+      deserialize(name, settings_cache[name])
+    elsif definition.persist_on_first_read?
+      persist_default_value(name)
+    else
+      deserialize(name, definition.value)
+    end
   end
 
   # Persists the setting's default value to the database on first read.
   # Uses advisory locking to prevent race conditions when multiple processes
   # attempt to initialize the same setting concurrently.
+  #
+  # After persisting, clears the cache so subsequent calls to cached_settings
+  # will include the newly created setting.
   def self.persist_default_value(name)
     definition = Settings::Definition[name]
     return definition.value unless settings_table_exists_yet?
 
-    # Use advisory lock to prevent parallel access to the setting
     OpenProject::Mutex.with_advisory_lock(Setting, "persist_default_#{name}") do
       # Once we acquired the lock, check again whether the setting was not created by now.
-      setting = find_or_initialize_by(name:)
-      return setting.value if setting.persisted?
+      setting = find_by(name:)
+      return setting.value if setting
 
       generated_value = definition.default
-      setting.value = generated_value
-      setting.save!
+      create!(name:, value: formatted_value_for(generated_value, definition))
 
+      # Clear cache so the next setting call populates it with this value
       clear_cache
       generated_value
     end
+  end
+
+  def self.formatted_value_for(value, definition)
+    return value.to_yaml if definition.serialized?
+
+    value.to_s
   end
 
   # Returns the settings from two levels of cache
