@@ -49,3 +49,5 @@ Work packages that were added as outcomes are shown in the **Meetings** tab of t
 The **Meetings** tab will also list all meetings, past and upcoming, to which the current work package has already been linked to.
 
 Each linked meeting will also include any notes associated with that work package agenda item. This can be useful to recall specific discussion points, open questions or decisions taken during a meeting that concerns the current work package.
+
+![Work package in OpenProject showing a Meetings tab, which displays a meeting in which this work package was referenced](openproject_user_guide_work_packages_meetings_tab.png)

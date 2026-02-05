@@ -34,3 +34,13 @@ Yes, the Calendar widget on the [project home page](../../project-home/project-w
 ## What makes OpenProject a great choice for managing meetings?
 
 OpenProject stands out [a reliable open source solution for meeting management](https://www.openproject.org/collaboration-software-features/meeting-management/), especially for teams that value structure and transparency. Its dedicated meeting module allows users to prepare agendas, take detailed minutes, and link tasks directly to meetings — making follow-ups more actionable and clear. Because it’s part of a broader project and task management platform, everything stays connected and organized. With flexible access controls and the option to choose between a secure SaaS or on-premises setup, OpenProject supports both collaboration and data privacy. It’s particularly well-suited for teams looking for an open-source tool that supports efficient, accountable meetings.
+
+### What is the difference between calendar subscriptions and email notifications in OpenProject meetings?
+
+Calendar subscriptions and email notifications serve different purposes in OpenProject meetings.
+
+**Calendar subscriptions** are used for scheduling meetings in an external calendar (such as Outlook or Google Calendar). They allow you to view meetings in your calendar and respond to meeting invitations (accept, decline, or tentatively accept). Your response is synchronized back to OpenProject and shown as your participation status. 
+Learn more about [subscribing to meetings](../meetings/#subscribe-to-meetings).
+
+**Email notifications** are used to inform meeting participants about changes to a meeting, such as added or removed participants or updated meeting details. Email notifications do not allow you to respond to a meeting invitation. 
+You can manage general email notification behavior in your [personal notification settings](../notifications/notification-settings/).

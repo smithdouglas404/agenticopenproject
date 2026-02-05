@@ -239,7 +239,13 @@ The participants list will show everyone invited to the meeting so far. Initiall
 
 ![A form showing invited and attending meeting participants in OpenProject](openproject_userguide_meetings_add_new_participants_form.png)
 
-To remove a participant, click the *x* icon on the far right of their name.
+To remove a participant, click the *x* icon on the far right of their name. 
+
+Once participants are added, their **participation status** is shown in the meeting view.
+
+If participants are subscribed to meetings via an external calendar, they can respond to the meeting invitation directly from their calendar (Accepted, Tentative, or Declined). Their response is synchronized back to OpenProject and visible to meeting organizers and other participants.
+
+![Meeting participants with their status highlighted in an OpenProject meeting](openproject_userguide_meetings_participants_status.png)
 
 Once the meeting has started (status set to *In progress*), you can record attendance by selecting the **Mark as attended** button.
 
@@ -247,7 +253,9 @@ Once the meeting has started (status set to *In progress*), you can record atten
 
 ### Send email to all participants
 
-You can send an email reminder to all the meeting participants. Select the dropdown by clicking on the **More** (three dots) icon in the top right corner and select **Email calendar invite to all participants**. An email reminder with the meeting details (including a link to the meeting) is immediately sent to all invitees and attendees.
+You can send an email reminder to all the meeting participants. Select the dropdown by clicking on the **More** (three dots) icon in the top right corner and select **Send email invite to participants**. An email reminder with the meeting details (including a link to the meeting) is immediately sent to all invitees and attendees.
+
+![Option to send email invite to meeting participants in an OpenProject meeting](openproject_userguide_meetings_send_email_invite.png)
 
 ### Email calendar updates
 
@@ -262,6 +270,10 @@ You will then see a warning message informing you of the consequences. You can e
 You can always re-activate it by clicking the **Enable** icon. 
 
 ![Icon to enable calendar updates for meeting changes in OpenProject one-time meetings](openproject_userguide_meetings_enable_calendar_updates.png)
+
+> [!NOTE]
+> Enabling or disabling email calendar updates does not affect calendar subscriptions. 
+> If you are unsure whether a meeting change will trigger an email or update your calendar subscription, see the [Meetings FAQ](../meetings/faq/#what-is-the-difference-between-calendar-subscriptions-and-email-notifications-in-openproject-meetings).
 
 ## Meeting outcomes
 
@@ -336,7 +348,7 @@ Meeting agenda outcomes are also displayed in the **Meetings** tab of the linked
 
 ## Meeting attachments
 
-You can add attachments in the meetings in the **Attachments** section in the right bottom corner. You can either user the **+Attach files** link to select files from your computer or drag and drop them.
+You can add attachments in the meetings in the **Attachments** section in the bottom right corner. You can either use the **+Attach files** link to select files from your computer or drag and drop them.
 
 Added attachments can be added to the Notes section of agenda packages by dragging and dropping them from the Attachments section.
 
@@ -355,11 +367,16 @@ This will display meeting history details.
 
 ## Download a meeting as an iCalendar event
 
-You can download a meeting as an iCalendar event. Select the dropdown by clicking on the **More** (three dots) menu in the top right corner and select the **Download iCalendar event**.
+You can download a meeting as an iCalendar event. Select the dropdown by clicking on the **More** (three dots) menu in the top right corner and select the **Download iCalendar event**. 
 
 Read more about [subscribing to a calendar](../../calendar/#subscribe-to-a-calendar).
 
 ![An icon to download a meeting as an iCalendar event in OpenProject meetings moduel](openproject_userguide_meetings_download_ical.png)
+
+Please keep in mind that downloading a meeting as an iCalendar event adds it to your calendar, but it does not keep the meeting synchronized automatically.
+
+> [!TIP]
+> If you want to respond to meeting invitations directly from your calendar and have your participation status synchronized back to OpenProject, you can [subscribe to meetings](../meetings/#subscribe-to-meetings) instead of downloading individual iCal events.
 
 ## Change meeting status
 You can change the status of a meeting depending on whether you are preparing it, running it, or finalizing it.
@@ -471,7 +488,7 @@ You can also specify the **Footer text**, which will appear on the bottom of eve
 
 ![A dialogue to specify the PDF export of a meeting in OpenProject](openproject_userguide_meetings_pdf_export_dialogue.png)
 
-Click the **Download** button to generated a PDF. First page of the PDF is the title page. The generated PDF will include all the meeting details and agenda. Meeting participants, agenda outcomes, a list of attachments and backlog items will only be included if selected for the export. 
+Click the **Download** button to generate a PDF. First page of the PDF is the title page. The generated PDF will include all the meeting details and agenda. Meeting participants, agenda outcomes, a list of attachments and backlog items will only be included if selected for the export. 
 
 > [!NOTE]
 > Macros from the editor macros dropdown are not supported in the PDF.
