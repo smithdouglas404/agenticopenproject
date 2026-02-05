@@ -44,7 +44,7 @@ Upon submission of the project initiation request, a PDF artifact is automatical
 The artifact is updated automatically whenever the status of the project initiation request work package changes, ensuring that the documentation always reflects the current state.
 
 >[!NOTE]
-> The project initiation request workflow is particularly well suited for structured frameworks such as PM² or PMflex, while remaining flexible enough to be used independently of any specific methodology. Read this blog article for more information: https://www.openproject.org/blog/project-initiation-workflow-pm2/
+> The project initiation request workflow is particularly well suited for structured frameworks such as PM² or PMflex, while remaining flexible enough to be used independently of any specific methodology. [Read this blog article for more information](https://www.openproject.org/blog/project-initiation-workflow-pm2/).
 
 ### Updates for the Meetings module
 
@@ -63,7 +63,7 @@ Since we already introduced multiple outcomes per agenda item in OpenProject 17.
 
 ![OpenProject meeting showing dropdown options for Outcome button: Write outcome, Existing work package, New workpackage](openproject-17-1-meeting-outcome-work-package-highlighted.png)
 
-#### Show meeting participant responses in iCal subscriptions
+#### Show iCal responses in OpenProject
 
 Meeting participant responses such as accepted, declined, or tentative are now visible directly in the meeting sidebar. These responses are collected from calendar invitations (for example when an ICS event is sent by email or downloaded and shared), making it easier to see the current participation status of all attendees in OpenProject.
 
