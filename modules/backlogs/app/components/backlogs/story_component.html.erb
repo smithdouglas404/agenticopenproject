@@ -48,7 +48,7 @@ See COPYRIGHT and LICENSE files for more details.
   <% end %>
 
   <% grid.with_area(:points) do %>
-    <%= render(Primer::Beta::Truncate.new(color: :subtle, mt: 1)) do %>
+    <%= render(Primer::Beta::Truncate.new(color: :subtle)) do %>
       <%= t(:"backlogs.points", count: story_points) %>
     <% end %>
   <% end %>
