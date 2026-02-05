@@ -74,7 +74,7 @@ uk:
         action: Спробуйте знову
       connection_recovery_notice:
         description: "З’єднання з сервером спільного редагування в реальному часі відновлено."
-      tabs: "Document tabs"
+      tabs: "Вкладки документів"
     index_page:
       name: "Назва"
       type: "Тип"

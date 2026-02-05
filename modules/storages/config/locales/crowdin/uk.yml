@@ -104,20 +104,20 @@ uk:
         create_folder: 'Створення керованої папки проєкту'
         ensure_root_folder_permissions: 'Установіть дозволи для основної папки:'
         hide_inactive_folders: 'Етап «Приховайте неактивні папки»:'
-        remote_folders: 'Read contents of the team folder:'
+        remote_folders: 'Читання вмісту папки групи:'
         remove_user_from_group: 'Вилучення користувача з групи:'
         rename_project_folder: 'Перейменування керованої папки проєкту:'
       one_drive_sync_service:
         create_folder: 'Створення керованої папки проєкту:'
         ensure_root_folder_permissions: 'Установлення дозволів для основної папки:'
         hide_inactive_folders: 'Етап «Приховайте неактивні папки»:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Читання вмісту кореневої папки диска:'
         rename_project_folder: 'Перейменування папки керованого проекту:'
       sharepoint_sync_service:
         create_folder: 'Створення керованої папки проєкту:'
         ensure_root_folder_permissions: 'Установлення дозволів для основної папки:'
         hide_inactive_folders: 'Етап «Приховайте неактивні папки»:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Читання вмісту кореневої папки диска:'
         rename_project_folder: 'Перейменування папки керованого проекту:'
     errors:
       messages:
@@ -140,7 +140,7 @@ uk:
               conflict: Папка «%{folder_name}» уже існує в розташуванні %{parent_location}.
               not_found: "%{parent_location} не знайдено."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
+              not_found: "%{group_folder} не знайдено. Перевірте конфігурацію своєї папки команди Nextcloud."
               permission_not_set: не вдалося встановити дозволи в папці «%{group_folder}».
             hide_inactive_folders:
               permission_not_set: не вдалося встановити дозволи за шляхом %{path}.
@@ -230,7 +230,7 @@ uk:
       storage_delete_result_3: Буде видалено папку проєкту з автоматичним керуванням і всі файли, що містяться в ній
     dependencies:
       nextcloud:
-        group_folders_app: Team Folders
+        group_folders_app: Папки команди
         integration_app: Інтеграція OpenProject
     enabled_in_projects:
       setup_incomplete_description: Це сховище ще не налаштоване. Завершіть налаштування, перш ніж вмикати його в кількох проєктах.
@@ -277,11 +277,11 @@ uk:
           client_folder_creation: Автоматичне створення папки
           client_folder_removal: Автоматичне видалення папки
           drive_contents: Вміст диска
-          files_request: Fetching team folder files
+          files_request: Отримання файлів із папок команди
           header: Папки проєкту з автоматичним керуванням
-          team_folder_app: 'Dependency: Team Folders'
-          team_folder_contents: Team folder content
-          team_folder_presence: Team folder exists
+          team_folder_app: 'Залежність: папки команди'
+          team_folder_contents: Вміст папки команди
+          team_folder_presence: Папка команди існує
           userless_access: Автентифікація запиту на стороні сервера
         authentication:
           existing_token: Маркер користувача
@@ -326,8 +326,8 @@ uk:
         nc_oauth_request_not_found: Кінцеву точку для отримання підключеного зараз користувача не знайдено. Щоб дізнатися більше, перевірте журнали сервера.
         nc_oauth_request_unauthorized: Поточний користувач не має дозволу на доступ до віддаленого файлового сховища. Щоб дізнатися більше, перевірте журнали сервера.
         nc_oauth_token_missing: OpenProject не може перевірити з’єднання на рівні користувача з Nextcloud, оскільки користувач досі не зв’язав свій обліковий запис Nextcloud.
-        nc_team_folder_not_found: The team folder could not be found.
-        nc_unexpected_content: Unexpected content found in the managed team folder.
+        nc_team_folder_not_found: Папку команди не знайдено.
+        nc_unexpected_content: У папці керованої команди знайдено неочікуваний вміст.
         nc_userless_access_denied: Налаштований пароль застосунку недійсний.
         not_configured: Не вдалося перевірити підключення. Спочатку налаштуйте конфігурацію.
         od_client_cant_delete_folder: Клієнту не вдалося видалити папки. Ознайомтеся з документацією щодо конфігурації для свого сховища.

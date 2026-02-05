@@ -114,10 +114,10 @@ zh-CN:
         description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
         resources_heading: "Resources"
         resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
+        resources_submit: "更新资源"
         tools_heading: "Tools"
         tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        tools_submit: "更新工具"
       multi_update:
         success: "MCP configurations were updated successfully."
       server_form:
@@ -2929,24 +2929,24 @@ zh-CN:
         text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
       oauth_client:
         blank_description: "There are no OAuth client tokens yet."
-        blank_title: "No OAuth client tokens"
-        failed: "An error occurred and the token couldn't be removed. Please try again later."
-        integration_type: "Integration type"
-        table_title: "OAuth client tokens"
-        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        blank_title: "无 OAuth 客户端令牌"
+        failed: "出错了，无法移除令牌。请稍后再试。"
+        integration_type: "集成类型"
+        table_title: "OAuth 客户端令牌"
+        text_hint: "OAuth 客户端令牌允许此 OpenProject 实例与文件存储等外部应用程序进行连接。"
         title: "OAuth"
-        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
-        removed: "OAuth client token successfully removed"
-        unknown_integration: "Unknown"
+        remove_token: "是否确实要移除此令牌？您需要再次登录 %{integration}。"
+        removed: "OAuth 客户端令牌已成功移除"
+        unknown_integration: "未知"
       token/rss:
         add_button: "RSS token"
-        blank_description: "There is no RSS token yet. You can create one using the button below."
-        blank_title: "No RSS token"
+        blank_description: "目前还没有 RSS 标记。您可以使用下面的按钮创建一个。"
+        blank_title: "无 RSS 令牌"
         title: "RSS"
-        table_title: "RSS tokens"
-        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
-        static_token_name: "RSS token"
-        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
+        table_title: "RSS 令牌"
+        text_hint: "RSS 令牌允许用户通过外部 RSS 阅读器了解此 OpenProject 实例中的最新变化。"
+        static_token_name: "RSS 令牌"
+        disabled_text: "管理员未启用 RSS 令牌。请联系管理员以使用此功能。"
       storages:
         unknown_storage: "未知存储"
   notifications:
@@ -3264,7 +3264,7 @@ zh-CN:
   label_journal_diff: "描述的对比"
   label_language: "语言"
   label_languages: "语言"
-  label_external_links: "External links"
+  label_external_links: "外部链接"
   label_locale: "语言和地区"
   label_jump_to_a_project: "跳转到一个项目..."
   label_keyword_plural: "关键词"
@@ -4251,7 +4251,7 @@ zh-CN:
   setting_allowed_link_protocols: "允许的链接协议"
   setting_allowed_link_protocols_text_html: >-
     允许这些协议在工作包描述、长文本字段和评论中显示为链接。例如，%{tel_code} 或 %{element_code}。每行输入一个协议。<br/> 协议 %{http_code}、%{https_code} 和 %{mailto_code} 始终允许。
-  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links: "捕获外部链接"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
   setting_after_first_login_redirect_url: "首次登录重定向"

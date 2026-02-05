@@ -111,21 +111,21 @@ pt-PT:
         link: "webhook"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
-        resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
-        tools_heading: "Tools"
-        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        description: "O protocolo de contexto do modelo permite que os agentes de IA forneçam aos seus utilizadores ferramentas e recursos expostos por esta instância do OpenProject."
+        resources_heading: "Recursos"
+        resources_description: "O OpenProject implementa as seguintes ferramentas. Cada uma pode ser ativada, renomeada e descrita como quiser. Para mais informações, consulte a [documentação sobre recursos MCP](docs_url)."
+        resources_submit: "Atualizar recursos"
+        tools_heading: "Ferramentas"
+        tools_description: "O OpenProject implementa as seguintes ferramentas. Cada uma pode ser ativada, renomeada e descrita como quiser. Para mais informações, consulte a [documentação sobre ferramentas MCP](docs_url)."
+        tools_submit: "Atualizar ferramentas"
       multi_update:
-        success: "MCP configurations were updated successfully."
+        success: "As configurações da MCP foram atualizadas com êxito."
       server_form:
-        description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        description_caption: "Como o servidor MCP será descrito a outras aplicações que se ligam a ele."
+        title_caption: "Um título curto apresentado às aplicações que se ligam ao servidor MCP."
       update:
-        failure: "MCP configuration could not be updated."
-        success: "MCP configuration was updated successfully."
+        failure: "Não foi possível atualizar a configuração MCP."
+        success: "A configuração da MCP foi atualizada com êxito."
     scim_clients:
       authentication_methods:
         sso: "JWT do fornecedor de identidade"
@@ -728,11 +728,11 @@ pt-PT:
           create_button: "Criar"
           name_label: "Nome do token"
       created_dialog:
-        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
+        one_time_warning: "Esta é a única vez que verá este token. Não se esqueça de o copiar agora."
         token/api:
           title: "O token da API foi gerado"
         token/rss:
-          title: "The RSS token has been generated"
+          title: "O token RSS foi gerado"
       failed_to_reset_token: "Não foi possível reiniciar o token de acesso: %{error}"
       failed_to_create_token: "Não foi possível criar o token de acesso: %{error}"
       failed_to_revoke_token: "Não foi possível revogar o token de acesso: %{error}"
@@ -1251,9 +1251,9 @@ pt-PT:
         port: "Porta"
         tls_certificate_string: "Certificado SSL do servidor LDAP"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: Ativado
+        title: Título
+        description: Descrição
       member:
         roles: "Papel"
       notification:
@@ -1512,7 +1512,7 @@ pt-PT:
         even: "deve ser par."
         exclusion: "é reservado."
         feature_disabled: não está disponível.
-        feature_disabled_for_project: is disabled for this project.
+        feature_disabled_for_project: está desativado neste projeto.
         file_too_large: "é muito grande (tamanho máximo é %{count} Bytes)."
         filter_does_not_exist: "filtro não existe."
         format: "não corresponde ao formato esperado '%{expected}'."
@@ -1945,8 +1945,8 @@ pt-PT:
         one: Token de acesso
         other: Tokens de acesso
       token/rss:
-        one: "RSS token"
-        other: "RSS tokens"
+        one: "Token RSS"
+        other: "Tokens RSS"
       type:
         one: "Tipo"
         other: "Tipos"
@@ -2451,7 +2451,7 @@ pt-PT:
       baseline_comparison: Comparações de base de referência
       board_view: Quadros avançados
       calculated_values: Valores calculados
-      capture_external_links: Capture External Links
+      capture_external_links: Capturar links externos
       internal_comments: Comentários internos
       custom_actions: Ações personalizadas
       custom_field_hierarchies: Hierarquias
@@ -2461,12 +2461,12 @@ pt-PT:
       edit_attribute_groups: Editar grupos de atributos
       gantt_pdf_export: Exportação de PDF de Gantt
       ldap_groups: Sincronização de utilizadores e grupos LDAP
-      mcp_server: MCP Server
+      mcp_server: Servidor MCP
       nextcloud_sso: Início de sessão único para armazenamento Nextcloud
       one_drive_sharepoint_file_storage: Armazenamento de ficheiros no OneDrive/SharePoint
       placeholder_users: Utilizadores de marcador de posição
       portfolio_management: Gestão de carteiras
-      project_creation_wizard: Project initiation request
+      project_creation_wizard: Pedido de início do projeto
       project_list_sharing: Partilha da lista de projetos
       readonly_work_packages: Pacotes de trabalho só de leitura
       scim_api: API do servidor SCIM
@@ -2508,7 +2508,7 @@ pt-PT:
       customize_life_cycle:
         description: "Crie e organize fases de projeto diferentes das fornecidas pelo planeamento do ciclo de projeto PM2."
       capture_external_links:
-        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
+        description: "Evite ataques de engenharia social ao identificar e alertar para links externos antes de os utilizadores os visitarem."
       work_package_query_relation_columns:
         description: "Precisa de ver as relações ou elementos secundários na lista do pacote de trabalho?"
       edit_attribute_groups:
@@ -2539,7 +2539,7 @@ pt-PT:
         title: "Ações personalizadas"
         description: "As ações personalizadas são atalhos de um clique para um conjunto de ações predefinidas que pode disponibilizar em determinados pacotes de trabalho com base no estado, função, tipo ou projeto."
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Integre agentes de IA com a sua instância do OpenProject através de MCP."
       nextcloud_sso:
         title: "Início de sessão único para armazenamento Nextcloud"
         description: "Permita uma autenticação perfeita e segura para o seu armazenamento Nextcloud com o início de sessão único. Simplifique a gestão do acesso e aumente a conveniência do utilizador."
@@ -2552,7 +2552,7 @@ pt-PT:
       virus_scanning:
         description: "Assegure-se que os ficheiros carregados no OpenProject são verificados quanto à presença de vírus antes de serem acessíveis a outros utilizadores."
       project_creation_wizard:
-        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
+        description: "Crie um assistente passo a passo para ajudar os gestores de projetos a preencher um pedido de iniciação de projeto."
       placeholder_users:
         title: Utilizadores de espaço reservado
         description: >
@@ -2852,15 +2852,15 @@ pt-PT:
         #We need to include the version to invalidate outdated translations in other locales
         "17_1":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            A versão contém várias novas funcionalidades e melhorias, tais como:
           new_features_list:
-            line_0: Automated project initiation (Enterprise add-on).
-            line_1: "Meetings: add new or existing work packages as outcomes."
-            line_2: "Meetings: show participant responses in iCal subscriptions."
-            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
-            line_4: "Release to Community: Attribute highlighting."
-            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
-            line_6: Improved performance and user experience, including the Activity tab and Documents module.
+            line_0: Iniciação automatizada de projetos (complemento Enterprise).
+            line_1: "Reuniões: adicione pacotes de trabalho novos ou existentes como resultados."
+            line_2: "Reuniões: mostrar as respostas dos participantes nas subscrições iCal."
+            line_3: "Reuniões recorrentes: duplicar os pontos da agenda para a próxima ocorrência."
+            line_4: "Disponibilizar para a Comunidade: Destaque dos atributos."
+            line_5: Aviso antes de abrir ligações externas em conteúdos fornecidos pelo utilizador (complemento Enterprise).
+            line_6: Melhoria do desempenho e da experiência do utilizador, incluindo o separador Atividade e o módulo Documentos.
     links:
       upgrade_enterprise_edition: "Aprimorar para a edição Enterprise"
       postgres_migration: "A migrar a sua instalação para PostgreSQL"
@@ -2928,17 +2928,17 @@ pt-PT:
   instructions_after_error: "Pode tentar entrar novamente clicando em %{signin}. Se o erro persistir, peça ajuda ao seu administrador."
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "Inteligência artificial (IA)"
       aggregation: "Agregação"
       api_and_webhooks: "API e webhooks"
       mail_notification: "Notificações por e-mail"
       mails_and_notifications: "E-mails e notificações"
-      mcp_configurations: "Model Context Protocol (MCP)"
+      mcp_configurations: "Protocolo de contexto de modelo (MCP)"
     quick_add:
       label: "Adicionar…"
   my_account:
     access_tokens:
-      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
+      description: "Os tokens de fornecedor são emitidos pelo OpenProject e permitem o acesso de outras aplicações. Os tokens de cliente são emitidos por outras aplicações e permitem que o OpenProject lhes aceda."
       no_results:
         title: "Sem tokens de acesso para exibir"
         description: "Todos foram desativados. Podem ser reativados no menu Administração."
@@ -2950,53 +2950,53 @@ pt-PT:
       simple_revoke_confirmation: "Tem a certeza de que deseja revogar este token?"
       tabs:
         client:
-          title: "Client tokens"
+          title: "Tokens de cliente"
         provider:
-          title: "Provider tokens"
+          title: "Tokens de fornecedor"
       token/api:
-        blank_description: "There is no API token yet. You can create one using the button below."
-        blank_title: "No API token"
+        blank_description: "Ainda não existe um token de API. Pode criar um no botão abaixo."
+        blank_title: "Nenhum token de API"
         title: "API"
-        table_title: "API tokens"
+        table_title: "Tokens de API"
         text_hint: "Os tokens de API permitem que aplicações de terceiros comuniquem com esta instância do OpenProject através de API REST."
-        static_token_name: "API token"
+        static_token_name: "Token de API"
         disabled_text: "Os tokens da API não são ativados pelo administrador. Contacte o seu administrador para utilizar esta funcionalidade."
-        add_button: "API token"
+        add_button: "Token de API"
       ical:
-        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
-        blank_title: "No iCalendar token"
+        blank_description: "Para adicionar um token do iCalendar, subscreva um calendário novo ou já existente a partir do módulo Calendários de um projeto. Tem de ter as permissões necessárias."
+        blank_title: "Nenhum token iCalendar"
         title: "iCalendar"
-        table_title: "iCalendar tokens"
+        table_title: "Tokens iCalendar"
         text_hint_link: "Os tokens iCalendar permitem que os utilizadores [subscrevam os calendários do OpenProject](docs_url) e vejam informações atualizadas sobre pacotes de trabalho de clientes externos."
         disabled_text: "As subscrições do iCalendar não são ativadas pelo administrador. Contacte o seu administrador para utilizar esta funcionalidade."
       oauth_application:
-        active_tokens: "Active tokens"
-        blank_description: "There is no third-party application access configured and active for you."
-        blank_title: "No OAuth application token"
-        last_used_at: "Last used at"
+        active_tokens: "Tokens ativos"
+        blank_description: "Não existe um acesso a aplicações de terceiros configurado e ativo para si."
+        blank_title: "Nenhum token de aplicação OAuth"
+        last_used_at: "Data de última utilização"
         title: "OAuth"
-        table_title: "OAuth application tokens"
-        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+        table_title: "Tokens de aplicação OAuth"
+        text_hint: "Os tokens de aplicação OAuth permitem que aplicações de terceiros se liguem a esta instância do OpenProject."
       oauth_client:
-        blank_description: "There are no OAuth client tokens yet."
-        blank_title: "No OAuth client tokens"
-        failed: "An error occurred and the token couldn't be removed. Please try again later."
-        integration_type: "Integration type"
-        table_title: "OAuth client tokens"
-        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        blank_description: "Ainda não existem tokens de cliente OAuth."
+        blank_title: "Nenhum token de cliente OAuth"
+        failed: "Ocorreu um erro e não foi possível remover o token. Tente novamente mais tarde."
+        integration_type: "Tipo de integração"
+        table_title: "Tokens do cliente OAuth"
+        text_hint: "Os tokens de cliente OAuth permitem que esta instância do OpenProject se ligue a aplicações externas, como armazenamentos de ficheiros."
         title: "OAuth"
-        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
-        removed: "OAuth client token successfully removed"
-        unknown_integration: "Unknown"
+        remove_token: "Tem a certeza de que deseja remover este token? Terá de iniciar sessão novamente em %{integration}."
+        removed: "Token de cliente OAuth removido com sucesso"
+        unknown_integration: "Desconhecido"
       token/rss:
-        add_button: "RSS token"
-        blank_description: "There is no RSS token yet. You can create one using the button below."
-        blank_title: "No RSS token"
+        add_button: "Token RSS"
+        blank_description: "Ainda não existe um token RSS. Pode criar um no botão abaixo."
+        blank_title: "Nenhum token RSS"
         title: "RSS"
-        table_title: "RSS tokens"
-        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
-        static_token_name: "RSS token"
-        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
+        table_title: "Tokens RSS"
+        text_hint: "Os tokens RSS permitem aos utilizadores manterem-se a par das últimas alterações nesta instância do OpenProject através de um leitor RSS externo."
+        static_token_name: "Token RSS"
+        disabled_text: "Os tokens RSS não são ativados pelo administrador. Contacte o seu administrador para utilizar esta funcionalidade."
       storages:
         unknown_storage: "Armazenamento desconhecido"
   notifications:
@@ -3314,7 +3314,7 @@ pt-PT:
   label_journal_diff: "Comparação de descrição"
   label_language: "Idioma"
   label_languages: "Idiomas"
-  label_external_links: "External links"
+  label_external_links: "Links externos"
   label_locale: "Idioma e região"
   label_jump_to_a_project: "Saltar para um projeto..."
   label_keyword_plural: "Palavras-chave"
@@ -4305,9 +4305,9 @@ pt-PT:
   setting_allowed_link_protocols: "Protocolos de ligação permitidos"
   setting_allowed_link_protocols_text_html: >-
     Permitir que estes protocolos sejam apresentados como ligações nas descrições do pacote de trabalho, campos de texto longos e comentários. Por exemplo, %{tel_code} ou %{element_code}. Introduza um protocolo por linha. <br/> Protocolos %{http_code}, %{https_code} e %{mailto_code} são sempre permitidos.
-  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links: "Capturar links externos"
   setting_capture_external_links_text: >
-    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+    Quando ativada, todos os links externos no texto formatado serão redirecionados através de uma página de aviso antes de sair da aplicação. Isto ajuda a proteger os utilizadores de sites externos potencialmente maliciosos.
   setting_after_first_login_redirect_url: "Redirecionamento do primeiro início de sessão"
   setting_after_first_login_redirect_url_text_html: >
     Defina um caminho para redirecionar os utilizadores após o primeiro início de sessão. Se estiver vazio, redireciona para a página inicial do tour de integração. <br/> Exemplo: <code>/my/page</code>
@@ -4321,16 +4321,16 @@ pt-PT:
     Se o CORS estiver habilitado, estas são as origens que têm permissão para aceder ao API OpenProject. <br/>Por favor, verifique a <a href="%{origin_link}" target="_blank">documentação no cabeçalho da Origem </a> sobre como especificar os valores esperados.
   setting_apiv3_write_readonly_attributes: "Acesso de escrita a atributos só de leitura"
   setting_apiv3_write_readonly_attributes_instructions: >
-    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+    Se ativada, a API permitirá que os administradores escrevam atributos estáticos só de leitura durante a criação, tais como createdAt e author.
   setting_apiv3_write_readonly_attributes_warning: >
-    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+    Esta definição tem um caso de utilização para, por exemplo, importar dados, mas permite que os administradores se façam passar por outros utilizadores na criação de elementos. No entanto, todos os pedidos de criação são registados com o verdadeiro autor.
   setting_apiv3_write_readonly_attributes_additional: >
-    For more information on attributes and supported resources, please see the %{api_documentation_link}.
+    Para mais informações sobre atributos e recursos suportados, consulte %{api_documentation_link}.
   setting_apiv3_max_page_size: "Tamanho máximo da página de API"
   setting_apiv3_max_page_size_instructions: >
-    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+    Defina o tamanho máximo da página com que a API responderá. Não será possível executar pedidos de API que devolvam mais valores numa única página.
   setting_apiv3_max_page_size_warning: >
-    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
+    Só altere este valor se tiver a certeza de que é necessário. Definir um valor elevado terá um impacto significativo no desempenho, enquanto um valor inferior ao número de elementos por página provocará erros nas visualizações paginadas.
   setting_apiv3_docs: "Documentação"
   setting_apiv3_docs_enabled: "Ativar página de documentos"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4515,7 +4515,7 @@ pt-PT:
       omniauth_direct_login_hint_html: >
         Se esta opção estiver ativa, os pedidos de início de sessão serão redirecionados para o fornecedor omniauth configurado. O menu pendente de início de sessão e a página de início de sessão serão desativados. <br/> <strong>Nota:</strong> a menos que também desative os inícios de sessão com palavra-passe, com esta opção ativada, os utilizadores ainda podem iniciar sessão internamente ao visitar a página de início de sessão <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        Quando ativada, esta opção permite que qualquer fornecedor de identidade configurado inicie a sessão de utilizadores existentes com base no respetivo nome de utilizador, mesmo que estes nunca tenham iniciado sessão através desse fornecedor anteriormente. Isto pode ser útil ao migrar a instância do OpenProject para um novo fornecedor de SSO, mas não é recomendado quando se utiliza um fornecedor que não seja de confiança para todos os utilizadores da instância.
     attachments:
       whitelist_text_html: >
         Defina uma lista de extensões de ficheiros e/ou de tipos mime para ficheiros carregados. <br/> Insira extensões de ficheiro (por exemplo, <code>%{ext_example}</code>) ou tipos mime (ex., <code>%{mime_example}</code>). <br/> Deixe em branco para permitir que qualquer tipo de ficheiro seja carregado. Vários valores permitidos (uma linha para cada valor).
@@ -4621,7 +4621,7 @@ pt-PT:
           project_mandate: "Mandato do projeto"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+          **Este pacote de trabalho foi criado automaticamente após a conclusão do fluxo de trabalho %{wizard_name}.** Foi gerado e anexado a este pacote de trabalho um artefacto PDF com todas as informações submetidas, para efeitos de referência e auditoria. Se precisar de atualizar ou voltar a executar os passos de iniciação, pode reabrir o assistente em qualquer altura, com a ligação abaixo:
         description: "Quando um utilizador envia um pedido de iniciação de projeto, é criado um novo pacote de trabalho com o artefacto do pedido anexado como ficheiro PDF. As configurações abaixo definem o tipo, o estado e o responsável por este novo pacote de trabalho."
         work_package_type: "Tipo de pacote de trabalho"
         work_package_type_caption: "O tipo de pacote de trabalho que deve ser utilizado para armazenar o artefacto concluído."
@@ -4880,8 +4880,8 @@ pt-PT:
       other: "bloqueada temporariamente (%{count} tentativas de início de sessão falhadas)"
     confirm_status_change: "Está prestes a mudar o estado de '%{name}'. Tem certeza que deseja continuar?"
     deleted: "Eliminar Utilizador"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "Não é possível alterar o seu próprio estado de utilizador."
+    error_admin_change_on_non_admin: "Só os administradores podem alterar o estado dos utilizadores administradores."
     error_status_change_failed: "A alteração do estado do utilizador falhou devido aos seguintes erros: %{errors}"
     invite: Convidar utilizador via email
     invited: convidado
@@ -5287,7 +5287,7 @@ pt-PT:
     hashed_token:
       display_value_placeholder: "***"
   external_link_warning:
-    title: "Leaving OpenProject"
-    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
-    continue_message: "Are you sure you want to proceed to the following external link?"
-    continue_button: "Continue to external website"
+    title: "Sair do OpenProject"
+    warning_message: "Está prestes a sair do OpenProject e a visitar um site externo. Tenha em atenção que os sites externos não estão sob o nosso controlo, e podem ter políticas de privacidade e de segurança diferentes."
+    continue_message: "Tem a certeza de que quer aceder à seguinte ligação externa?"
+    continue_button: "Continuar para o site externo"

@@ -111,21 +111,21 @@ uk:
         link: "вебгука"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
-        resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
-        tools_heading: "Tools"
-        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        description: "Протокол контексту моделі дає змогу агентам ШІ надавати своїм користувачам інструменти й ресурси, доступні в цьому екземплярі OpenProject."
+        resources_heading: "Ресурси"
+        resources_description: "OpenProject реалізує наведені нижче інструменти. Кожен із них можна ввімкнути, перейменувати й описати як завгодно. Щоб дізнатися більше, ознайомтеся з [документацією на ресурсах MCP] (docs_url)."
+        resources_submit: "Оновити ресурси"
+        tools_heading: "Інструменти"
+        tools_description: "OpenProject реалізує наведені нижче інструменти. Кожен із них можна ввімкнути, перейменувати й описати як завгодно. Щоб дізнатися більше, ознайомтеся з [документацією з інструментів MCP] (docs_url)."
+        tools_submit: "Оновити інструменти"
       multi_update:
-        success: "MCP configurations were updated successfully."
+        success: "Конфігурації MCP оновлено."
       server_form:
-        description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        description_caption: "Як MCP-сервер буде описано іншим додаткам, які підключаються до нього."
+        title_caption: "Короткий заголовок, який показується додаткам, що підключаються до сервера MCP."
       update:
-        failure: "MCP configuration could not be updated."
-        success: "MCP configuration was updated successfully."
+        failure: "Конфігурацію MCP не можна оновити."
+        success: "Конфігурацію MCP оновлено."
     scim_clients:
       authentication_methods:
         sso: "JWT від постачальника ідентифікаційних даних"
@@ -741,11 +741,11 @@ uk:
           create_button: "Створити"
           name_label: "Ім’я маркера"
       created_dialog:
-        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
+        one_time_warning: "Ви більше не побачите цей маркер. Обов’язково скопіюйте його зараз."
         token/api:
           title: "Маркер API згенеровано"
         token/rss:
-          title: "The RSS token has been generated"
+          title: "Маркер RSS згенеровано"
       failed_to_reset_token: "Не вдалося відновити маркер доступу: %{error}"
       failed_to_create_token: "Не вдалося створити маркер доступу: %{error}"
       failed_to_revoke_token: "Не вдалося відкликати маркер доступу: %{error}"
@@ -1266,9 +1266,9 @@ uk:
         port: "Порт"
         tls_certificate_string: "Сертифікат SSL сервера LDAP"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: Увімкнено
+        title: Заголовок
+        description: Опис
       member:
         roles: "Роль"
       notification:
@@ -1527,7 +1527,7 @@ uk:
         even: "має бути рівним."
         exclusion: "зарезервовано."
         feature_disabled: недоступна.
-        feature_disabled_for_project: is disabled for this project.
+        feature_disabled_for_project: вимкнено для цього проєкту.
         file_too_large: "занадто великий (максимальний розмір -%{count} байт)"
         filter_does_not_exist: "фільтр не існує."
         format: "не відповідає очікуваному формату «%{expected}»."
@@ -1986,10 +1986,10 @@ uk:
         many: Маркери доступу
         other: Маркери доступу
       token/rss:
-        one: "RSS token"
-        few: "RSS tokens"
-        many: "RSS tokens"
-        other: "RSS tokens"
+        one: "Маркер RSS"
+        few: "Маркери RSS"
+        many: "Маркери RSS"
+        other: "Маркери RSS"
       type:
         one: "Тип"
         few: "Типи"
@@ -2544,7 +2544,7 @@ uk:
       baseline_comparison: Порівняння з вихідним рівнем
       board_view: Покращені Дошки
       calculated_values: Розраховані значення
-      capture_external_links: Capture External Links
+      capture_external_links: Захоплення зовнішніх посилань
       internal_comments: Внутрішні коментарі
       custom_actions: Користувацькі дії
       custom_field_hierarchies: Ієрархії
@@ -2554,12 +2554,12 @@ uk:
       edit_attribute_groups: Редагування груп атрибутів
       gantt_pdf_export: Експорт діаграми Ґантта в PDF
       ldap_groups: Синхронізація користувачів і груп LDAP
-      mcp_server: MCP Server
+      mcp_server: Сервер MCP
       nextcloud_sso: Єдиний вхід для сховища Nextcloud
       one_drive_sharepoint_file_storage: Сховище файлів OneDrive / SharePoint
       placeholder_users: Прототипи користувачів
       portfolio_management: Керування портфелем
-      project_creation_wizard: Project initiation request
+      project_creation_wizard: Запит на ініціювання проєкту
       project_list_sharing: Спільне використання списку проєктів
       readonly_work_packages: Пакети робіт лише для читання
       scim_api: API сервера SCIM
@@ -2601,7 +2601,7 @@ uk:
       customize_life_cycle:
         description: "Створюйте й упорядковуйте етапи й проєкту, відмінні від тих, що передбачено плануванням циклу проєкту PM2."
       capture_external_links:
-        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
+        description: "Запобігайте атакам соціальної інженерії, перехоплюючи зовнішні посилання й попереджаючи про них користувачів до того, як вони перейдуть за ними."
       work_package_query_relation_columns:
         description: "Хочете переглядати зв’язки або дочірні елементи в списку пакетів робіт?"
       edit_attribute_groups:
@@ -2632,7 +2632,7 @@ uk:
         title: "Користувацькі дії"
         description: "Користувацькі дії – це ярлики набору попередньо визначених дій, які ви можете включати в певні пакети робіт залежно від статусу, ролі, типу або проєкту."
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Інтегруйте ШІ-агентів у свій екземпляр OpenProject за допомогою MCP."
       nextcloud_sso:
         title: "Єдиний вхід для сховища Nextcloud"
         description: "Увімкніть швидку й безпечну автентифікацію для свого сховища Nextcloud завдяки технології єдиного входу. Спростіть керування доступом і покращте взаємодію користувачів зі своїм продуктом."
@@ -2645,7 +2645,7 @@ uk:
       virus_scanning:
         description: "Переконайтеся, що вивантажені в OpenProject файли перевіряються на віруси перед тим, як стають доступними для інших користувачів."
       project_creation_wizard:
-        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
+        description: "Створіть покроковий майстер, який допоможе менеджерам проєктів заповнити запит на ініціювання проєкту."
       placeholder_users:
         title: Прототипи користувачів
         description: >
@@ -2947,15 +2947,15 @@ uk:
         #We need to include the version to invalidate outdated translations in other locales
         "17_1":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Цей випуск містить різноманітні нові функції та покращення, такі як:
           new_features_list:
-            line_0: Automated project initiation (Enterprise add-on).
-            line_1: "Meetings: add new or existing work packages as outcomes."
-            line_2: "Meetings: show participant responses in iCal subscriptions."
-            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
-            line_4: "Release to Community: Attribute highlighting."
-            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
-            line_6: Improved performance and user experience, including the Activity tab and Documents module.
+            line_0: Автоматизована ініціація проектів (надбудова Enterprise).
+            line_1: "Наради: додайте нові або наявні робочі пакети як результати."
+            line_2: "Наради: показуйте відповіді учасників у підписках iCal."
+            line_3: "Повторювані наради: копіюйте пункти порядку денного в наступну нараду."
+            line_4: "Випуск Community: виділення атрибутів."
+            line_5: Попередження перед відкриттям зовнішніх посилань у контенті, створеному користувачем (надбудова Enterprise).
+            line_6: Покращено продуктивність і взаємодію з користувачем, зокрема на вкладці «Діяльність» і в модулі «Документи».
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -3023,17 +3023,17 @@ uk:
   instructions_after_error: "Ви можете спробувати ввійти знову, натиснувши %{signin}. Якщо помилка не зникне, зверніться до адміністратора за допомогою."
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "Штучний інтелект (ШІ)"
       aggregation: "Агрегація"
       api_and_webhooks: "API та вебгуки"
       mail_notification: "Email сповіщення"
       mails_and_notifications: "Електронні листи й сповіщення"
-      mcp_configurations: "Model Context Protocol (MCP)"
+      mcp_configurations: "Модель контекстного протоколу (MCP)"
     quick_add:
       label: "Додати…"
   my_account:
     access_tokens:
-      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
+      description: "Маркери постачальника послуг випускаються в OpenProject, що дає змогу іншим програмам отримувати до них доступ. Клієнтські маркери випускаються іншими програмами, що дає змогу OpenProject отримати до них доступ."
       no_results:
         title: "Немає маркерів доступу для відображення"
         description: "Всі вони були відключені. Їх можна повторно ввімкнути в меню адміністрування."
@@ -3045,53 +3045,53 @@ uk:
       simple_revoke_confirmation: "Справі відкликати цей маркер?"
       tabs:
         client:
-          title: "Client tokens"
+          title: "Клієнтські маркери"
         provider:
-          title: "Provider tokens"
+          title: "Маркери постачальника послуг"
       token/api:
-        blank_description: "There is no API token yet. You can create one using the button below."
-        blank_title: "No API token"
+        blank_description: "У вас ще немає маркера API. Ви можете створити його за допомогою кнопки нижче."
+        blank_title: "Немає маркера API"
         title: "API"
-        table_title: "API tokens"
+        table_title: "Маркери API"
         text_hint: "Маркери API дають змогу стороннім додаткам обмінюватися даними із цим екземпляром OpenProject через інтерфейси REST API."
-        static_token_name: "API token"
+        static_token_name: "Маркер API"
         disabled_text: "Маркери API не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
-        add_button: "API token"
+        add_button: "Маркер API"
       ical:
-        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
-        blank_title: "No iCalendar token"
+        blank_description: "Щоб додати маркер iCalendar, підпишіться на новий або наявний календар у модулі календаря проєкту. У вас мають бути необхідні дозволи."
+        blank_title: "Немає маркера iCalendar"
         title: "iCalendar"
-        table_title: "iCalendar tokens"
+        table_title: "Маркери iCalendar"
         text_hint_link: "Маркери iCalendar дають змогу користувачам [підписуватися на календарі OpenProject](docs_url) і переглядати актуальну інформацію про пакети робіт у зовнішніх клієнтах."
         disabled_text: "Підписки на iCalendar не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
       oauth_application:
-        active_tokens: "Active tokens"
-        blank_description: "There is no third-party application access configured and active for you."
-        blank_title: "No OAuth application token"
-        last_used_at: "Last used at"
+        active_tokens: "Активні маркери"
+        blank_description: "Для вас не налаштовано й не активовано доступ до сторонніх додатків."
+        blank_title: "Немає маркера додатка OAuth"
+        last_used_at: "Востаннє використано о"
         title: "OAuth"
-        table_title: "OAuth application tokens"
-        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+        table_title: "Маркери додатків OAuth"
+        text_hint: "Маркери додатків OAuth дають змогу стороннім додаткам обмінюватися даними із цим екземпляром OpenProject."
       oauth_client:
-        blank_description: "There are no OAuth client tokens yet."
-        blank_title: "No OAuth client tokens"
-        failed: "An error occurred and the token couldn't be removed. Please try again later."
-        integration_type: "Integration type"
-        table_title: "OAuth client tokens"
-        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        blank_description: "Клієнтських маркерів OAuth ще не існує."
+        blank_title: "Немає клієнтських маркерів OAuth"
+        failed: "Сталася помилка й не вдалося вилучити маркер. Повторіть спробу пізніше."
+        integration_type: "Тип інтеграції"
+        table_title: "Клієнтські маркери OAuth"
+        text_hint: "Клієнтські маркери OAuth дають змогу цьому екземпляру OpenProject підключатися до зовнішніх додатків, таких як файлові сховища."
         title: "OAuth"
-        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
-        removed: "OAuth client token successfully removed"
-        unknown_integration: "Unknown"
+        remove_token: "Справді вилучити цей маркер? Вам потрібно буде знову ввійти в %{integration}."
+        removed: "Клієнтський маркер OAuth успішно вилучено"
+        unknown_integration: "Невідомо"
       token/rss:
-        add_button: "RSS token"
-        blank_description: "There is no RSS token yet. You can create one using the button below."
-        blank_title: "No RSS token"
+        add_button: "Маркер RSS"
+        blank_description: "У вас ще немає маркера API. Ви можете створити його за допомогою кнопки нижче."
+        blank_title: "Немає маркера API"
         title: "RSS"
-        table_title: "RSS tokens"
-        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
-        static_token_name: "RSS token"
-        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
+        table_title: "Маркери RSS"
+        text_hint: "Маркери RSS дають змогу користувачам зберігати останні зміни в цьому екземплярі OpenProject через зовнішній RSS-агрегатор."
+        static_token_name: "Маркер RSS"
+        disabled_text: "Маркери API не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
       storages:
         unknown_storage: "Невідоме сховище"
   notifications:
@@ -3409,7 +3409,7 @@ uk:
   label_journal_diff: "Опис Порівняння"
   label_language: "Мова"
   label_languages: "Мови"
-  label_external_links: "External links"
+  label_external_links: "Зовнішні посилання"
   label_locale: "Мова й регіон"
   label_jump_to_a_project: "Перейти до проекту..."
   label_keyword_plural: "Ключові слова"
@@ -4405,9 +4405,9 @@ uk:
   setting_allowed_link_protocols: "Дозволені протоколи для посилань"
   setting_allowed_link_protocols_text_html: >-
     Дозвольте відображення цих протоколів у вигляді посилань в описах пакетів робіт, довгих текстових полях і коментарях. Наприклад, %{tel_code} або %{element_code}. Вводьте по одному протоколу в рядок. <br/> Протоколи %{http_code}, %{https_code} і %{mailto_code} завжди дозволені.
-  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links: "Захоплення зовнішніх посилань"
   setting_capture_external_links_text: >
-    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+    Якщо ввімкнено, усі зовнішні посилання у відформатованому тексті переспрямовуватимуть на попереджувальну сторінку перед тим, як вийти з програми. Це допомагає захистити користувачів від потенційно шкідливих зовнішніх вебсайтів.
   setting_after_first_login_redirect_url: "Переспрямування після першого входу"
   setting_after_first_login_redirect_url_text_html: >
     Задайте шлях для переспрямування користувачів після першого входу. Якщо не задано, користувачі переспрямовуються на головну сторінку з ознайомленням. <br/>Наприклад: <code>/my/page</code>
@@ -4421,16 +4421,16 @@ uk:
     Якщо CORS увімкнено, це джерела, які можуть отримувати доступ до OpenProject API. <br/>Щоб дізнатися, як указати очікувані значення, ознайомтеся з <a href="%{origin_link}" target="_blank">Документацією щодо заголовка джерела</a>.
   setting_apiv3_write_readonly_attributes: "Дозвіл для записування атрибутів лише для читання"
   setting_apiv3_write_readonly_attributes_instructions: >
-    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+    Якщо ввімкнено, адміністраторам зможуть за допомогою API записувати статичні атрибути тільки для читання під час створення, такі як createdAt та author.
   setting_apiv3_write_readonly_attributes_warning: >
-    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+    Це налаштування використовується, наприклад, для імпорту даних, але дає змогу адміністраторам створювати елементів від імені інших користувачів. Усі запити на створення реєструються, однак, із зазначенням справжнього автора.
   setting_apiv3_write_readonly_attributes_additional: >
-    For more information on attributes and supported resources, please see the %{api_documentation_link}.
+    Щоб дізнатися більше про атрибути й підтримувані ресурси, відвідайте %{api_documentation_link}.
   setting_apiv3_max_page_size: "Максимальний розмір сторінки API"
   setting_apiv3_max_page_size_instructions: >
-    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+    Установіть максимальний розмір сторінки, яку повертатиме API. Виконувати запити до API, які повертають більше значень на одній сторінці, буде неможливо.
   setting_apiv3_max_page_size_warning: >
-    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
+    Змінюйте це значення, лише якщо впевнені, навіщо це вам потрібно. Встановлення високого значення призведе до суттєвого впливу на продуктивність, тоді як значення, нижче за параметри на сторінки, призведе до помилок у посторінкових поданнях.
   setting_apiv3_docs: "Документація"
   setting_apiv3_docs_enabled: "Увімкнути сторінку документів"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4615,7 +4615,7 @@ uk:
       omniauth_direct_login_hint_html: >
         Якщо цей параметр увімкнено, запити на вхід переспрямовуватимуться налаштованому постачальнику omniauth. Спадний список і сторінку входу буде вимкнено. <br/> <strong>Примітка.</strong> Якщо цей параметр увімкнено й вхід за допомогою пароля дозволено, користувачі зможуть входити зі сторінки входу <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        Якщо ввімкнено, будь-який налаштований постачальник ідентифікаційних даних зможе виконувати вхід в облікові записи наявних користувачів за допомогою їхніх електронних адрес, навіть якщо користувач ніколи раніше не входив через цього постачальника. Це може бути корисно під час перенесення екземпляра OpenProject у сервіс нового постачальника SSO, але не рекомендовано, якщо використовується постачальник, якому не довіряють усі користувачі вашого екземпляра.
     attachments:
       whitelist_text_html: >
         Визначте список дійсних розширень файлів і/або типів MIME для завантажених файлів. <br/>Введіть розширення файлу (напр., <code>%{ext_example}</code>) або типи MIME (напр., <code>%{mime_example}</code>). Не вказуйте нічого, щоб дозволити завантаження будь-яких типів файлів. Ви можете вводити кілька значень (по одному в кожному рядку).
@@ -4721,7 +4721,7 @@ uk:
           project_mandate: "Мандат проєкту"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+          **Цей пакет робіт автоматично створено після завершення робочого процесу «%{wizard_name}».** Артефакт у форматі PDF, що містить усю подану інформацію, було створено й додано в цей пакет робіт для довідки й аудиту. Якщо знадобиться оновити дані або повторити кроки ініціювання, можна будь-коли знову відкрити майстер, скориставшись посиланням, наведеним нижче:
         description: "Коли користувач подає запит на ініціювання проєкту, створюється новий пакет робіт з артефактом запиту, долученим як файл PDF. Наведені нижче налаштування визначають тип, статус і виконавця нового пакета робіт."
         work_package_type: "Тип пакета робіт"
         work_package_type_caption: "Тип пакета робіт, який слід використовувати для зберігання завершеного артефакту."
@@ -4982,8 +4982,8 @@ uk:
       other: "тимчасово заблоковано (%{count} спроби входу в систему)"
     confirm_status_change: "Ви збираєтеся змінити статус %{name} Ви дійсно бажаєте продовжити?"
     deleted: "Видалити користувача"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "Ви не можете змінити власний статус користувача."
+    error_admin_change_on_non_admin: "Тільки адміністратори можуть змінювати статус користувачів-адміністраторів."
     error_status_change_failed: "Не вдалося змінити статус користувача через такі помилки: %{errors}"
     invite: Запросити користувача електронною поштою
     invited: запрошені
@@ -5390,7 +5390,7 @@ uk:
     hashed_token:
       display_value_placeholder: "***"
   external_link_warning:
-    title: "Leaving OpenProject"
-    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
-    continue_message: "Are you sure you want to proceed to the following external link?"
-    continue_button: "Continue to external website"
+    title: "Вихід з OpenProject"
+    warning_message: "Ви збираєтеся перейти з OpenProject на зовнішній вебсайт. Зауважте, що ми не контролюємо зовнішні вебсайти, і вони можуть мати іншу політику конфіденційності й безпеки."
+    continue_message: "Справді перейти за зовнішнім посиланням нижче?"
+    continue_button: "Перейти на зовнішній вебсайт"

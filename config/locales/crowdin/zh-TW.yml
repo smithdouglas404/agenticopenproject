@@ -2802,15 +2802,15 @@ zh-TW:
         #We need to include the version to invalidate outdated translations in other locales
         "17_1":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: Automated project initiation (Enterprise add-on).
-            line_1: "Meetings: add new or existing work packages as outcomes."
-            line_2: "Meetings: show participant responses in iCal subscriptions."
-            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
-            line_4: "Release to Community: Attribute highlighting."
-            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
-            line_6: Improved performance and user experience, including the Activity tab and Documents module.
+            line_0: 自動化專案啟動（企業附加元件）。
+            line_1: "會議：添加新的或現有的工作套件作為成果。"
+            line_2: "會議：在 iCal 訂閱中顯示參與者的回應。"
+            line_3: "重複性會議：將議程項目重複至下次會議。"
+            line_4: "發佈到社群：高亮顯示屬性。"
+            line_5: 在使用者提供的內容中開啟外部連結前警告（企業附加元件）。
+            line_6: 改善效能和使用者體驗，包括「活動」標籤和「文件」模組。
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -2911,7 +2911,7 @@ zh-TW:
         text_hint: "API 令牌(Tokens)允許第三方應用程式透過 REST API 與此 OpenProject 實例進行通訊。"
         static_token_name: "API 令牌(Token)"
         disabled_text: "API 令牌(Tokens)未由管理員啟用。若要使用此功能，請聯絡您的管理員。"
-        add_button: "API token"
+        add_button: "API 令牌(Token)"
       ical:
         blank_description: "若要新增 iCalendar 令牌，請從專案的行事曆模組中訂閱新的或現有的行事曆。您必須擁有必要的權限。"
         blank_title: "沒有 iCalendar 令牌"
@@ -2939,7 +2939,7 @@ zh-TW:
         removed: "成功移除 OAuth 用戶端令牌"
         unknown_integration: "未知"
       token/rss:
-        add_button: "RSS token"
+        add_button: "RSS 令牌(Token)"
         blank_description: "目前尚未有 RSS 令牌。您可以使用下面的按鈕建立一個。"
         blank_title: "沒有 RSS 令牌"
         title: "RSS"

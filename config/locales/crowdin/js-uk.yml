@@ -203,8 +203,8 @@ uk:
         add_table: "Додати таблицю пов'язаних пакетів робіт"
         edit_query: "Редагувати запит"
         new_group: "Нова група"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "Видалити групу"
+        remove_attribute: "Вилучити з групи"
         reset_to_defaults: "Скинути на типові значення"
       working_days:
         calendar:
@@ -426,7 +426,7 @@ uk:
     label_remove_row: "Видалити рядок"
     label_report: "Звіт"
     label_repository_plural: "Репозиторії"
-    label_resize_project_menu: "Resize project menu"
+    label_resize_project_menu: "Змінити розмір меню проекту"
     label_save_as: "Зберегти як"
     label_search_columns: "Пошук стовпця"
     label_select_watcher: "Виберіть спостерігача..."

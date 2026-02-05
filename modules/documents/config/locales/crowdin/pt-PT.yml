@@ -74,7 +74,7 @@ pt-PT:
         action: Tentar novamente
       connection_recovery_notice:
         description: "A ligação ao servidor de colaboração de texto em tempo real foi restaurada."
-      tabs: "Document tabs"
+      tabs: "Separadores de documentos"
     index_page:
       name: "Nome"
       type: "Tipo"

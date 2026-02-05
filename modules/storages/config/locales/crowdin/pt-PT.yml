@@ -104,20 +104,20 @@ pt-PT:
         create_folder: 'Criação de pastas de projeto geridas:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Passo "Ocultar pastas inativas":'
-        remote_folders: 'Read contents of the team folder:'
+        remote_folders: 'Ler conteúdo da pasta de equipa:'
         remove_user_from_group: 'Remover utilizador do grupo:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
       one_drive_sync_service:
         create_folder: 'Criação de pastas de projeto geridas:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Passo "Ocultar pastas inativas":'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Ler conteúdo da pasta raiz da unidade:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
       sharepoint_sync_service:
         create_folder: 'Criação de pastas de projeto geridas:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Passo "Ocultar pastas inativas":'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Ler conteúdo da pasta raiz da unidade:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
     errors:
       messages:
@@ -140,7 +140,7 @@ pt-PT:
               conflict: A pasta %{folder_name} já existe em %{parent_location}.
               not_found: "%{parent_location} não foi encontrado."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
+              not_found: "%{group_folder} não foi encontrado. Verifique a configuração da pasta de equipa do Nextcloud."
               permission_not_set: não foi possível definir permissões em %{group_folder}.
             hide_inactive_folders:
               permission_not_set: não foi possível definir permissões em %{path}.
@@ -230,7 +230,7 @@ pt-PT:
       storage_delete_result_3: A pasta do projeto gerida automaticamente e todos os ficheiros nela contidos serão eliminados
     dependencies:
       nextcloud:
-        group_folders_app: Team Folders
+        group_folders_app: Pastas de equipa
         integration_app: Integração do OpenProject
     enabled_in_projects:
       setup_incomplete_description: Este armazenamento tem uma configuração incompleta. Conclua a configuração antes de o ativar em vários projetos.
@@ -277,11 +277,11 @@ pt-PT:
           client_folder_creation: Criação automática de pasta
           client_folder_removal: Eliminação automática de pasta
           drive_contents: Conteúdo da unidade
-          files_request: Fetching team folder files
+          files_request: A obter ficheiros da pasta de equipa
           header: Pastas do projeto geridas automaticamente
-          team_folder_app: 'Dependency: Team Folders'
-          team_folder_contents: Team folder content
-          team_folder_presence: Team folder exists
+          team_folder_app: 'Dependência: Pastas de equipa'
+          team_folder_contents: Conteúdo da pasta de equipa
+          team_folder_presence: A pasta de equipa existe
           userless_access: Autenticação da solicitação do lado do servidor
         authentication:
           existing_token: Ficha do utilizador
@@ -322,8 +322,8 @@ pt-PT:
         nc_oauth_request_not_found: O terminal para o utilizador com sessão iniciada não foi encontrado. Consulte os registos do servidor para mais informações.
         nc_oauth_request_unauthorized: O utilizador atual não está autorizado a aceder ao armazenamento de ficheiros remoto. Verifique os registos do servidor para mais informações.
         nc_oauth_token_missing: O OpenProject não pode testar a comunicação de nível de utilizador com o Nextcloud uma vez que o utilizador ainda não associou a sua conta Nextcloud.
-        nc_team_folder_not_found: The team folder could not be found.
-        nc_unexpected_content: Unexpected content found in the managed team folder.
+        nc_team_folder_not_found: Não foi possível encontrar a pasta de equipa.
+        nc_unexpected_content: Conteúdo inesperado encontrado na pasta de equipa gerida.
         nc_userless_access_denied: A palavra-passe da aplicação configurada é inválida.
         not_configured: Não foi possível validar a ligação.Termine, primeiro, a configuração.
         od_client_cant_delete_folder: O cliente está a ter problemas a eliminar pastas. Consulte a documentação de configuração para o seu armazenamento.
