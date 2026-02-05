@@ -54,10 +54,11 @@ module Admin::Import::Jira::ImportRuns
     end
 
     def button_links
-      buttons = []
-      buttons.push(remove_button) if model.deletable?
-      buttons.push(edit_button)
-      buttons
+      [edit_button]
+      # buttons = []
+      # buttons.push(remove_button) if model.deletable?
+      # buttons.push(edit_button)
+      # buttons
     end
 
     def edit_button
