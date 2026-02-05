@@ -66,6 +66,13 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
   end
 
   describe "standard items" do
+    it "shows Open details link (split view)" do
+      render_component
+
+      expect(page).to have_text(I18n.t(:"js.button_open_details"))
+      expect(page).to have_octicon(:"op-view-split")
+    end
+
     it "shows Open fullscreen link (full page)" do
       render_component
 
