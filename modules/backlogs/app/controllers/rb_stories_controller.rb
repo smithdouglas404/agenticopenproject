@@ -32,7 +32,7 @@ class RbStoriesController < RbApplicationController
   include OpTurbo::ComponentStream
 
   def move
-    story = Story.find(params[:id])
+    story = Story.visible.find(params[:id])
 
     call = Stories::UpdateService
             .new(user: current_user, story:)
@@ -62,7 +62,7 @@ class RbStoriesController < RbApplicationController
   end
 
   def reorder
-    story = Story.find(params[:id])
+    story = Story.visible.find(params[:id])
 
     call = Stories::UpdateService
         .new(user: current_user, story:)
