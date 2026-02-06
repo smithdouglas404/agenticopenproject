@@ -53,7 +53,7 @@ module Backlogs
     private
 
     def date_range
-      [@sprint.start_date, @sprint.effective_date].compact
+      [@sprint.start_date, @sprint.effective_date]
     end
   end
 end

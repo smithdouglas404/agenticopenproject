@@ -28,9 +28,10 @@
 
 module RbCommonHelper
   def format_date_range(dates)
-    dates
-      .map { |date| tag.time(datetime: date.iso8601) { format_date(date) } }
-      .then { |dates| safe_join(dates, " – ") }
+    return nil if dates.all?(&:nil?)
+
+    from, to = dates.map { |date| tag.time(datetime: date.iso8601) { format_date(date) } if date }
+    safe_join([from, "–", to], " ") # &ndash; and &nbsp;
   end
 
   def assignee_id_or_empty(story)
