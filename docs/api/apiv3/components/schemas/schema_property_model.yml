@@ -23,7 +23,7 @@ properties:
   writable:
     type: boolean
     description: Indicates, if the property is writable when sending a request of this schema.
-  object:
+  options:
     type: object
     description: Additional options for the property.
   location:
