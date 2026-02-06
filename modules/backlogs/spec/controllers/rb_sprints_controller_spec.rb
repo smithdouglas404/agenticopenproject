@@ -36,20 +36,31 @@ RSpec.describe RbSprintsController do
   shared_let(:user) { create(:admin) }
   current_user { user }
 
+  let(:visible_projects_scope) { instance_double(ActiveRecord::Relation) }
+  let(:visible_sprints_scope) { instance_double(ActiveRecord::Relation) }
+
   before do
     allow(Setting)
       .to receive(:plugin_openproject_backlogs)
       .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
 
     allow(Project)
-        .to receive(:find)
-              .with(project.identifier)
-              .and_return(project)
+      .to receive(:visible)
+      .and_return(visible_projects_scope)
+
+    allow(visible_projects_scope)
+      .to receive(:find)
+      .with(project.identifier)
+      .and_return(project)
 
     allow(Sprint)
+      .to receive(:visible)
+      .and_return(visible_sprints_scope)
+
+    allow(visible_sprints_scope)
       .to receive(:find)
-            .with(sprint.id.to_s)
-            .and_return(sprint)
+      .with(sprint.id.to_s)
+      .and_return(sprint)
   end
 
   describe "GET #edit_name" do

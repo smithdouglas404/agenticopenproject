@@ -94,11 +94,11 @@ class RbSprintsController < RbApplicationController
   # :sprint_id
   def load_sprint_and_project
     if params[:id]
-      @sprint = Sprint.find(params[:id])
+      @sprint = Sprint.visible.find(params[:id])
       @project = @sprint.project
     end
     # This overrides sprint's project if we set another project, say a subproject
-    @project = Project.find(params[:project_id]) if params[:project_id]
+    @project = Project.visible.find(params[:project_id]) if params[:project_id]
   end
 
   private
