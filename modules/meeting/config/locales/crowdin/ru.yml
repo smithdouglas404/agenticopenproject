@@ -241,9 +241,9 @@ ru:
         header: "Отменено: совещание '%{title}'"
         header_occurrence: "Отменено: событие совещания '%{title}'"
         header_series: "Отменено: серия совещаний '%{title}'"
-        summary_occurrence: "Событие '%{title}' было отменено %{actor}."
-        summary_series: "Серия совещаний '%{title}' была отменена %{actor}."
-        summary: "'%{title}' было отменено %{actor}."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Запланированная дата/время"
       participant_added:
         header: "Совещание '%{title}' - участник добавлен"
@@ -257,7 +257,7 @@ ru:
         summary_series: "%{actor} удалил %{participant} из серии совещаний '%{title}'"
       ended:
         header_series: "Завершено: Серия совещаний '%{title}'"
-        summary_series: "Серия совещаний '%{title}' была завершена %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "Встреча '%{title}' была обновлена"
         summary: "Совещание '%{title}' было обновлено пользователем %{actor}"
@@ -544,8 +544,8 @@ ru:
   label_agenda_item_move_up: "Вверх"
   label_agenda_item_move_down: "Вниз"
   label_agenda_item_duplicate: "Дубликат"
-  label_agenda_item_duplicate_in_next: "Дублировать при следующем совещании"
-  label_agenda_item_duplicate_in_next_title: "Дублировать при следующем совещании?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Добавить заметки"
   label_agenda_item_add_outcome: "Добавить итог"
   label_agenda_item_work_package_add: "Добавить пакет работ"

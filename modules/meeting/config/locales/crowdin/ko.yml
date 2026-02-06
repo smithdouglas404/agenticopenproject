@@ -226,9 +226,9 @@ ko:
         header: "취소됨: 미팅 '%{title}'"
         header_occurrence: "취소됨: 미팅 항목 '%{title}'"
         header_series: "취소됨: 미팅 시리즈 '%{title}'"
-        summary_occurrence: "'%{title}' 항목을 %{actor} 님이 취소했습니다."
-        summary_series: "'%{title}' 미팅 시리즈를 %{actor} 님이 취소했습니다."
-        summary: "'%{title}'을(를) %{actor} 님이 취소했습니다."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "스케줄링된 날짜/시간"
       participant_added:
         header: "미팅 '%{title}' - 참가자 추가됨"
@@ -242,7 +242,7 @@ ko:
         summary_series: "%{actor} 님이 미팅 시리즈 '%{title}'에서 %{participant} 님을 제거했습니다"
       ended:
         header_series: "종료됨: 미팅 시리즈 '%{title}'"
-        summary_series: "'%{title}' 미팅 시리즈를 %{actor} 님이 종료했습니다."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "'%{title}' 미팅이 업데이트되었습니다"
         summary: "'%{title}' 미팅을 %{actor} 님이 업데이트했습니다"
@@ -523,8 +523,8 @@ ko:
   label_agenda_item_move_up: "위로 이동"
   label_agenda_item_move_down: "아래로 이동"
   label_agenda_item_duplicate: "복제"
-  label_agenda_item_duplicate_in_next: "다음 항목에서 복제"
-  label_agenda_item_duplicate_in_next_title: "다음 항목에서 복제하시겠습니까?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "메모 추가"
   label_agenda_item_add_outcome: "결과 추가"
   label_agenda_item_work_package_add: "작업 패키지 추가"

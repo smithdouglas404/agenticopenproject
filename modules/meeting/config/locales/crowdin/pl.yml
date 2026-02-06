@@ -241,9 +241,9 @@ pl:
         header: "Anulowano: spotkanie „%{title}”"
         header_occurrence: "Anulowano: wystąpienie spotkania „%{title}”"
         header_series: "Anulowano: serię spotkań „%{title}”"
-        summary_occurrence: "Wystąpienie „%{title}” zostało anulowane przez użytkownika %{actor}."
-        summary_series: "Seria spotkań „%{title}” została anulowana przez użytkownika %{actor}."
-        summary: "„%{title}” anulował użytkownik %{actor}."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Zaplanowana data/godzina"
       participant_added:
         header: "Spotkanie „%{title}” — dodano uczestnika"
@@ -257,7 +257,7 @@ pl:
         summary_series: "Użytkownik %{actor} usunął uczestnika %{participant} z serii spotkań „%{title}”"
       ended:
         header_series: "Zakończono: serię spotkań „%{title}”"
-        summary_series: "Seria spotkań „%{title}” została zakończona przez użytkownika %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "Spotkanie „%{title}” zostało zaktualizowane"
         summary: "Spotkanie „%{title}” zostało zaktualizowane przez użytkownika %{actor}"
@@ -544,8 +544,8 @@ pl:
   label_agenda_item_move_up: "Przenieś wyżej"
   label_agenda_item_move_down: "Przenieś niżej"
   label_agenda_item_duplicate: "Duplikuj"
-  label_agenda_item_duplicate_in_next: "Duplikuj w następnym wystąpieniu"
-  label_agenda_item_duplicate_in_next_title: "Zduplikować w następnym wystąpieniu?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Dodawanie notatek"
   label_agenda_item_add_outcome: "Dodaj wynik"
   label_agenda_item_work_package_add: "Dodaj pakiet roboczy"

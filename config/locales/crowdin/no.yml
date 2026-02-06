@@ -2858,7 +2858,7 @@
           new_features_list:
             line_0: Automated project initiation (Enterprise add-on).
             line_1: "Meetings: add new or existing work packages as outcomes."
-            line_2: "Meetings: show participant responses in iCal subscriptions."
+            line_2: "Meetings: show iCal responses in OpenProject."
             line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
             line_4: "Release to Community: Attribute highlighting."
             line_5: Warning before opening external links in user-provided content (Enterprise add-on).
@@ -3061,6 +3061,7 @@
   label_always_visible: "Vises alltid"
   label_announcement: "Kunngjøring"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "API adgangsnøkkel"
   label_api_access_key_created_on: "API adgangsnøkkel ble opprettet for %{value} siden"
   label_api_access_key_type: "API"

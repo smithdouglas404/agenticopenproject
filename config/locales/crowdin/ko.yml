@@ -3013,6 +3013,7 @@ ko:
   label_always_visible: "항상 표시"
   label_announcement: "공지 사항"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "API 액세스 키"
   label_api_access_key_created_on: "API 액세스 키가 %{value} 전에 생성되었습니다."
   label_api_access_key_type: "API"

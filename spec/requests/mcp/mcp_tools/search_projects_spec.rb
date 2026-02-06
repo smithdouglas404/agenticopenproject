@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
+RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -46,7 +46,7 @@ RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
       id: "Test-Request",
       method: "tools/call",
       params: {
-        name: "search_project",
+        name: "search_projects",
         arguments: call_args
       }
     }

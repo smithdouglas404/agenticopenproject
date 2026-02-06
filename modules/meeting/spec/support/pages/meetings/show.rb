@@ -256,12 +256,12 @@ module Pages::Meetings
     def duplicate_item_in_next_meeting(item)
       open_menu(item) do
         click_on "Duplicate"
-        click_on "Duplicate in next occurrence"
+        click_on "Duplicate in next meeting"
       end
-      expect_modal("Duplicate in next occurrence?")
+      expect_modal("Duplicate in next meeting?")
 
       retry_block do
-        page.within_modal "Duplicate in next occurrence?" do
+        page.within_modal "Duplicate in next meeting?" do
           click_on "Duplicate"
         end
       end

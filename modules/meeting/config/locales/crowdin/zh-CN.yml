@@ -226,9 +226,9 @@ zh-CN:
         header: "已取消：会议 '%{title}'"
         header_occurrence: "已取消：会议事件 '%{title}'"
         header_series: "已取消：会议系列 '%{title}'"
-        summary_occurrence: "%{actor} 已取消 '%{title}' 的事件。"
-        summary_series: "%{actor} 已取消会议系列 '%{title}'。"
-        summary: "%{actor} 已取消 '%{title}'。"
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "预定日期/时间"
       participant_added:
         header: "会议 '%{title}' - 已添加参加者"
@@ -242,7 +242,7 @@ zh-CN:
         summary_series: "%{actor} 将 %{participant} 从会议系列 '%{title}' 中移除"
       ended:
         header_series: "结束：会议系列 '%{title}'"
-        summary_series: "会议系列 '%{title}' 已由 %{actor} 结束。"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "会议 '%{title}' 已更新"
         summary: "会议 '%{title}' 已由 %{actor} 更新"
@@ -523,8 +523,8 @@ zh-CN:
   label_agenda_item_move_up: "向上移动"
   label_agenda_item_move_down: "向下移动"
   label_agenda_item_duplicate: "复制"
-  label_agenda_item_duplicate_in_next: "下次发生时复制"
-  label_agenda_item_duplicate_in_next_title: "是否在下次发生时复制？"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "添加备注"
   label_agenda_item_add_outcome: "添加成果"
   label_agenda_item_work_package_add: "添加工作包"

@@ -231,9 +231,9 @@ es:
         header: "Cancelada: Reunión «%{title}»"
         header_occurrence: "Cancelada: Repetición de la reunión «%{title}»"
         header_series: "Cancelada: Serie de reuniones «%{title}»"
-        summary_occurrence: "%{actor} ha cancelado una repetición de «%{title}»."
-        summary_series: "%{actor} ha cancelado la serie de reuniones «%{title}»."
-        summary: "%{actor} ha cancelado «%{title}»."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Fecha/hora programada"
       participant_added:
         header: "Meeting '%{title}' - Participant added"
@@ -247,7 +247,7 @@ es:
         summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
       ended:
         header_series: "Terminada: serie de reuniones «%{title}»"
-        summary_series: "%{actor} ha terminado la serie de reuniones «%{title}»."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "La reunión «%{title}» se ha actualizado"
         summary: "%{actor} ha actualizado la reunión «%{title}»"
@@ -530,8 +530,8 @@ es:
   label_agenda_item_move_up: "Mover hacia arriba"
   label_agenda_item_move_down: "Mover hacia abajo"
   label_agenda_item_duplicate: "Duplicar"
-  label_agenda_item_duplicate_in_next: "Duplicar en la próxima repetición"
-  label_agenda_item_duplicate_in_next_title: "¿Duplicar en la próxima repetición?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Añadir notas"
   label_agenda_item_add_outcome: "Añadir resultado"
   label_agenda_item_work_package_add: "Añadir paquete de trabajo"

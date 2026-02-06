@@ -29,7 +29,7 @@
 #++
 
 module McpTools
-  class SearchProject < Base
+  class SearchProjects < Base
     class << self
       def page_size
         100
@@ -42,7 +42,7 @@ module McpTools
                         "of #{page_size} projects. To get the rest of the results, call the tool again with a" \
                         "page number of 1 or higher."
 
-    name "search_project"
+    name "search_projects"
     annotations read_only: true, idempotent: true, destructive: false
 
     filter :name, filter_class: Queries::Projects::Filters::NameFilter, operator: "~"

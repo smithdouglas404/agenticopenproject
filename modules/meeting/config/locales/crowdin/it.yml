@@ -231,9 +231,9 @@ it:
         header: "Cancellata: riunione \"%{title}\""
         header_occurrence: "Cancellata: occorrenza della riunione \"%{title}\""
         header_series: "Cancellata: serie di riunioni \"%{title}\""
-        summary_occurrence: "Un'occorrenza di \"%{title}\" è stata cancellata da %{actor}."
-        summary_series: "La serie di riunioni \"%{title}\" è stata cancellata da %{actor}."
-        summary: "\"%{title}\" è stata cancellata da %{actor}."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Data/ora programmata"
       participant_added:
         header: "Riunione '%{title}' - Partecipante aggiunto"
@@ -247,7 +247,7 @@ it:
         summary_series: "%{actor} ha rimosso %{participant} dalla serie di riunioni '%{title}'"
       ended:
         header_series: "Terminata: serie di riunioni \"%{title}\""
-        summary_series: "La serie di riunioni '%{title}' è stata conclusa da %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "La riunione \"%{title}\" è stata aggiornata"
         summary: "La riunione \"%{title}\" è stata aggiornata da %{actor}"
@@ -530,8 +530,8 @@ it:
   label_agenda_item_move_up: "Sposta su"
   label_agenda_item_move_down: "Sposta giu"
   label_agenda_item_duplicate: "Duplica"
-  label_agenda_item_duplicate_in_next: "Duplica nella prossima occorrenza"
-  label_agenda_item_duplicate_in_next_title: "Duplicare nella prossima occorrenza?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Aggiungi nota"
   label_agenda_item_add_outcome: "Aggiungi risultato"
   label_agenda_item_work_package_add: "Aggiungi macro-attività"

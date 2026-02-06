@@ -155,13 +155,13 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
 
         meeting_page.open_menu(agenda_item) do
           click_on "Duplicate"
-          click_on "Duplicate in next occurrence"
+          click_on "Duplicate in next meeting"
         end
 
-        expect(page).to have_text("Duplicate in next occurrence?")
+        expect(page).to have_text("Duplicate in next meeting?")
         expect(page).to have_text("Note: Skipping cancelled occurrence")
 
-        page.within_modal "Duplicate in next occurrence?" do
+        page.within_modal "Duplicate in next meeting?" do
           click_on "Duplicate"
         end
 
@@ -204,13 +204,13 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
 
         meeting_page.open_menu(agenda_item) do
           click_on "Duplicate"
-          click_on "Duplicate in next occurrence"
+          click_on "Duplicate in next meeting"
         end
 
-        expect(page).to have_text("Duplicate in next occurrence?")
+        expect(page).to have_text("Duplicate in next meeting?")
         expect(page).to have_text("Note: Skipping 2 cancelled occurrences")
 
-        page.within_modal "Duplicate in next occurrence?" do
+        page.within_modal "Duplicate in next meeting?" do
           click_on "Duplicate"
         end
 
@@ -228,7 +228,7 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
         meeting_page.expect_agenda_item(title: "Test agenda item")
 
         meeting_page.open_menu(agenda_item) do
-          expect(page).to have_no_css(".ActionListItem-label", text: "Duplicate in next occurrence")
+          expect(page).to have_no_css(".ActionListItem-label", text: "Duplicate in next meeting")
         end
       end
     end
@@ -241,7 +241,7 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
       meeting_page.expect_agenda_item(title: "Test agenda item")
       meeting_page.open_menu(agenda_item) do
         expect(page).to have_text("Edit")
-        expect(page).to have_no_text("Duplicate in next occurrence")
+        expect(page).to have_no_text("Duplicate in next meeting")
       end
     end
   end

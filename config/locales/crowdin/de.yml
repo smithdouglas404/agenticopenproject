@@ -2851,7 +2851,7 @@ de:
           new_features_list:
             line_0: Automatisierte Projektinitiierung (Enterprise Add-on).
             line_1: "Besprechungen: Fügen Sie neue oder bestehende Arbeitspakete als Ergebnisse hinzu."
-            line_2: "Besprechungen: Zeigen Sie Teilnehmerantworten in iCal-Abonnements an."
+            line_2: "Meetings: show iCal responses in OpenProject."
             line_3: "Wiederkehrende Besprechungen: Kopieren Sie Tagesordnungspunkte zur nächsten Besprechung."
             line_4: "Freigabe für die Community-Edition: Hervorhebung von Attributen."
             line_5: Warnung vor dem Öffnen externer Links in von Benutzern erstellten Texten (Enterprise Add-on).
@@ -3054,6 +3054,7 @@ de:
   label_always_visible: "Immer angezeigt"
   label_announcement: "Ankündigung"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "API-Zugriffsschlüssel"
   label_api_access_key_created_on: "Der API-Zugriffsschlüssel wurde vor %{value} erstellt"
   label_api_access_key_type: "Schnittstelle (API)"

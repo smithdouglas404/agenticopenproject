@@ -231,9 +231,9 @@ fr:
         header: "Annulée : Réunion « %{title} »"
         header_occurrence: "Annulée : occurrence de la réunion « %{title} »"
         header_series: "Annulée : série de réunions « %{title} »"
-        summary_occurrence: "Une occurrence de « %{title} » a été annulée par %{actor}."
-        summary_series: "La série de réunions « %{title} » a été annulée par %{actor}."
-        summary: "« %{title} » a été annulée par %{actor}."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Date/heure prévue"
       participant_added:
         header: "Réunion « %{title} » - Participant ajouté"
@@ -247,7 +247,7 @@ fr:
         summary_series: "%{actor} a supprimé %{participant} de la série de réunions « %{title} »"
       ended:
         header_series: "Terminé : Série de rencontres '%{title}'"
-        summary_series: "La série de réunions '%{title}' a été clôturée par %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "La réunion « %{title} » a été mise à jour"
         summary: "La réunion « %{title} » a été mise à jour par %{actor}"
@@ -530,8 +530,8 @@ fr:
   label_agenda_item_move_up: "Monter"
   label_agenda_item_move_down: "Descendre"
   label_agenda_item_duplicate: "Duplicata"
-  label_agenda_item_duplicate_in_next: "Duplication dans l'événement suivant"
-  label_agenda_item_duplicate_in_next_title: "Dupliquer dans la prochaine occurrence ?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Ajouter des notes"
   label_agenda_item_add_outcome: "Ajouter un résultat"
   label_agenda_item_work_package_add: "Ajouter lot de travaux"

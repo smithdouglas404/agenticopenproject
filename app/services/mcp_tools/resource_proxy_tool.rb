@@ -29,22 +29,36 @@
 #++
 
 module McpTools
-  class << self
-    def all
-      [
-        McpTools::ListStatuses,
-        McpTools::ListTypes,
-        McpTools::SearchProjects,
-        McpTools::SearchWorkPackages
-      ]
+  # A tool that effectively only serves a result that could've been obtained by fetching a resource
+  # Useful for clients that don't support resources, or ignore them, even if they could support them.
+  class ResourceProxyTool < Base
+    class << self
+      def resource(resource = nil)
+        @resource = resource if resource.present?
+
+        @resource
+      end
+
+      def resource_schema(schema_definition)
+        output_schema(JsonSchemaLoader.new.load(schema_definition))
+      end
+
+      def resource_annotations
+        annotations read_only: true, idempotent: true, destructive: false
+      end
     end
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
+    private
+
+    def call
+      McpResources.read_resource_content(self.class.resource.uri, resources_considered: McpResources.all)
     end
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
+    def format_result(content)
+      MCP::Tool::Response.new(
+        [{ type: "resource", resource: McpResources.format_json_resource(self.class.resource.uri, content) }],
+        structured_content: content
+      )
     end
   end
 end

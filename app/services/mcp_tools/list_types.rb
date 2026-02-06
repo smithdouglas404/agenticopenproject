@@ -29,22 +29,14 @@
 #++
 
 module McpTools
-  class << self
-    def all
-      [
-        McpTools::ListStatuses,
-        McpTools::ListTypes,
-        McpTools::SearchProjects,
-        McpTools::SearchWorkPackages
-      ]
-    end
+  class ListTypes < ResourceProxyTool
+    default_title "List types"
+    default_description "Lists all work package types available on this OpenProject instance. Also available as an MCP resource."
 
-    def enabled
-      McpConfiguration.where(enabled: true).pluck(:identifier).filter_map { |name| tools_by_name[name] }
-    end
+    name "list_types"
 
-    def tools_by_name
-      @tools_by_name ||= all.index_by(&:qualified_name)
-    end
+    resource McpResources::TypeList
+    resource_schema "types_model"
+    resource_annotations
   end
 end
