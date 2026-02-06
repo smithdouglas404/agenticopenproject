@@ -21,19 +21,19 @@
 #++
 id:
   plugin_openproject_documents:
-    name: "OpenProject Documents"
-    description: "An OpenProject plugin to allow creation of documents in projects."
+    name: "Dokumen OpenProject"
+    description: "Plugin OpenProject untuk memungkinkan pembuatan dokumen dalam proyek."
   activerecord:
     errors:
       models:
         document_type:
-          one_or_more_required: "Cannot delete the last document type"
+          one_or_more_required: "Tidak dapat menghapus jenis dokumen terakhir"
     models:
       document: "Dokumen"
-      documents: "Documents"
+      documents: "Dokumen"
     attributes:
       document:
-        content_binary: "Content binary"
+        content_binary: "Konten biner"
         title: "Judul"
   activity:
     filter:
@@ -43,102 +43,103 @@ id:
   enumeration_doc_categories: "Kategori dokumen"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "Semua dokumen"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "Tindakan dokumen"
+        edit_title: "Sunting judul"
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: "Saring nama dokumen"
+        placeholder: "Ketik di sini untuk mencari nama dokumen"
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: "Belum ada dokumen yang tersedia"
+      description: "Tidak ada dokumen dalam tampilan ini. Anda dapat mengklik tombol di bawah ini untuk menambahkan satu."
     document_categories_deprecation_notice:
-      heading: File categories are now called 'Document types'
+      heading: Kategori file sekarang disebut dengan 'Jenis dokumen'
       description: |-
-        Your existing file categories have been converted to document types with the introduction of the new Documents module.
-        All existing documents have also been migrated to these new types.
-      primary_action: Configure document types
-      secondary_action: Learn more about the Documents module
-    document_type_actions: "Document type actions"
+        Kategori file yang ada telah diubah menjadi jenis dokumen dengan adanya modul Dokumen baru.
+        Semua dokumen yang ada juga telah dialihkan ke jenis baru ini.
+      primary_action: Atur jenis dokumen
+      secondary_action: Pelajari lebih lanjut tentang modul Dokumen
+    document_type_actions: "Tindakan jenis dokumen"
     text_collaboration_disabled_notice:
       description: |-
-        Unable to open document because real-time text collaboration is disabled.
-        Please contact your administrator to enable real-time text collaboration if you want to access this document.
+        Tidak dapat membuka dokumen karena kolaborasi teks secara langsung telah dinonaktifkan.
+        Silakan hubungi administrator Anda untuk mengaktifkan kolaborasi teks secara langsung jika Anda ingin mengakses dokumen ini.
     show_edit_view:
       connection_error_notice:
         description: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
-        action: Try again
+          Tidak dapat membuka dokumen karena server kolaborasi teks secara langsung tidak dapat diakses.
+          Silakan hubungi administrator jika masalah masih berlanjut.
+        action: Coba lagi
       connection_recovery_notice:
-        description: "The connection to the real-time text collaboration server has been restored."
+        description: "Koneksi ke server kolaborasi teks secara kangsung telah dipulihkan."
+      tabs: "Tab dokumen"
     index_page:
       name: "Nama"
       type: "Tipe"
-      updated_at: "Last edited"
-      label_legacy: "Legacy"
+      updated_at: "Terakhir disunting"
+      label_legacy: "Histori"
     menu:
-      all: "All documents"
+      all: "Semua dokumen"
       types: "Tipe"
-      collaboration_settings: "Real-time collaboration"
-    last_updated_at: "Last saved %{time}."
-    active_editors: "Active editors"
+      collaboration_settings: "Kolaborasi secara langsung"
+    last_updated_at: "Terakhir disimpan %{time}."
+    active_editors: "Editor yang aktif"
     active_editors_count:
-      other: "%{count} active editors"
+      other: "%{count} editor aktif"
     label_attachment_author: "Lampiran penulis"
-    label_categories: "Categories"
+    label_categories: "Kategori"
     new_category: "Kategori Baru"
-    new_type: "New type"
+    new_type: "Tipe baru"
     delete_dialog:
-      title: "Delete document"
-      heading: "Delete this document?"
-      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
+      title: "Hapus dokumen"
+      heading: "Hapus dokumen ini?"
+      confirmation_message_html: "Tindakan ini akan menghapus dokumen dan semua lampiran file secara permanen. Apakah Anda yakin ingin melakukan ini?"
     delete_document_type_dialog:
-      title: Delete document type
-      heading: Delete this document type?
+      title: Hapus jenis dokumen
+      heading: Hapus jenis dokumen ini?
       confirmation_message: |-
-        The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
-      select_reassign_to_label: Reassign documents to
+        Saat ini, jenis “%{type_name}” sedang tidak digunakan. Menghapus jenis ini tidak akan berdampak pada dokumen yang telah ada.
+      select_reassign_to_label: Pindahkan dokumen ke
       reassign_message:
-        other: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+        other: Saat ini, jenis “%{type_name}” digunakan dalam dokumen %{document_count}. Silakan pilih jenis yang akan dialihkan ke dokumen-dokumen tersebut.
       at_least_one_type_required:
-        title: Cannot delete document type
-        heading: Cannot delete the last document type
-        message: There must always be at least one document type configured. Create another one first if you want to delete this one.
+        title: Tidak dapat menghapus jenis dokumen
+        heading: Tidak dapat menghapus jenis dokumen terakhir
+        message: Setidaknya harus selalu ada satu jenis dokumen yang dikonfigurasi. Buat jenis dokumen lain terlebih dahulu jika Anda ingin menghapus dokumen ini.
     admin:
       collaboration_settings:
         page_header:
           description: |-
-            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
-            It requires a working %{hocuspocus_server_link} to function.
+            Saat diaktifkan, kolaborasi secara langusng memungkinkan beberapa pengguna untuk menyunting dokumen secara bersamaan.
+            Fitur ini memerlukan server %{hocuspocus_server_link} yang berfungsi untuk beroperasi.
         banner:
-          none_writable: These values are configured via environment variables and cannot be edited here.
-          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+          none_writable: Nilai-nilai ini dikonfigurasi melalui variabel lingkungan dan tidak dapat disunting di sini.
+          some_unwritable: Beberapa nilai dikonfigurasi melalui variabel lingkungan dan tidak dapat disunting di sini.
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The address of a working Hocuspocus server."
+          label: "URL server Hocuspocus"
+          caption: "Alamat server Hocuspocus yang sedang beroperasi."
         hocuspocus_server_secret:
-          label: "Client secret"
-          caption: "Paste the secret provided by the Hocuspocus server."
-        hocuspocus_server: Hocuspocus server
+          label: "Klien rahasia"
+          caption: "Salin kode rahasia yang disediakan oleh server Hocuspocus."
+        hocuspocus_server: Server Hocuspocus
       enable_text_collaboration:
-        heading: Real-time collaboration is not enabled
+        heading: Kolaborasi secara langsung tidak diaktifkan
         description: |-
-          Once enabled, multiple users will be able to work together on a document at the same time.
-          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
-          Hocuspocus server.
-        primary_action: Enable real-time collaboration
-        success: Real-time collaboration has been enabled.
+          Setelah diaktifkan, beberapa pengguna dapat bekerja bersama pada sebuah dokumen secara bersamaan.
+          Semua dokumen baru akan didasarkan pada editor baru (BlockNote) dan memerlukan koneksi aktif ke
+          server Hocuspocus.
+        primary_action: Aktifkan kolaborasi secara langsung
+        success: Kolaborasi secara langsung telah diaktifkan.
       disable_text_collaboration_dialog:
-        title: Disable real-time collaboration
-        heading: Disable real-time collaboration?
+        title: Nonaktifkan kolaborasi secara langsung
+        heading: Nonaktifkan kolaborasi secara langsung?
         confirmation_message: |-
-          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
-          real-time collaboration and the BlockNote editor in this instance.
-        confirmation_checkbox_message: I understand that I might permanently lose data
-        success: Real-time collaboration has been disabled.
+          Semua dokumen yang ada akan mungkin tidak dapat diakses. Harap lakukan ini jika Anda yakin ingin menonaktifkan
+          kolaborasi secara langsung dan editor BlockNote dalam situasi ini.
+        confirmation_checkbox_message: Saya mengerti bahwa saya mungkin akan kehilangan data secara permanen
+        success: Kolaborasi secara langsung telah dinonaktifkan.
   label_document_added: "Dokumen ditambahkan"
   label_document_new: "Dokumen baru"
   label_document_plural: "Dokumen"
@@ -146,7 +147,7 @@ id:
   label_document_title: "Judul"
   label_document_description: "Deskripsi"
   label_document_category: "Kategori"
-  label_document_type: "Type"
+  label_document_type: "Jenis"
   permission_manage_documents: "Kelola dokumen"
   permission_view_documents: "Lihat dokumen"
   project_module_documents: "Dokumen"

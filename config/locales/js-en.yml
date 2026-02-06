@@ -433,8 +433,6 @@ en:
     label_me: "me"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Minutes"
-    label_menu_collapse: "collapse"
-    label_menu_expand: "expand"
     label_more_than_ago: "more than days ago"
     label_moderate_comment: "Moderate comment"
     label_next: "Next"
@@ -468,6 +466,7 @@ en:
     label_remove_row: "Remove row"
     label_report: "Report"
     label_repository_plural: "Repositories"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Save as"
     label_search_columns: "Search a column"
     label_select_watcher: "Select a watcher..."
@@ -677,10 +676,6 @@ en:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-
-    password_confirmation:
-      field_description: "You need to enter your account password to confirm this change."
-      title: "Confirm your password to continue"
 
     pagination:
       no_other_page: "You are on the only page."

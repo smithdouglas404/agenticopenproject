@@ -393,8 +393,6 @@ ms:
     label_me: "saya"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Minit Mesyuarat"
-    label_menu_collapse: "sembunyikan"
-    label_menu_expand: "kembangkan"
     label_more_than_ago: "lebih dari beberapa hari yang lalu"
     label_moderate_comment: "Moderate comment"
     label_next: "Seterusnya"
@@ -428,6 +426,7 @@ ms:
     label_remove_row: "Alih keluar baris"
     label_report: "Laporan"
     label_repository_plural: "Repositori"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Simpan sebagai"
     label_search_columns: "Cari kolum"
     label_select_watcher: "Pilih pemerhati..."
@@ -633,9 +632,6 @@ ms:
           add: "Tambah tetapan untuk projek"
           already_selected: "Projek ini telah dipilih"
           remove: "Keluarkan tetapan projek"
-    password_confirmation:
-      field_description: "Anda perlu memasukkan kata laluan akaun anda untuk mengesahkan perubahan ini."
-      title: "Sahkan kata laluan anda untuk teruskan"
     pagination:
       no_other_page: "Anda berada di satu-satunya halaman."
       pages_skipped: "Pages skipped."

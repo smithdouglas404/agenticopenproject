@@ -155,15 +155,12 @@ RSpec.describe "Upload attachment to documents",
 
   shared_examples "can upload an image in BlockNote" do
     it "is possible to upload attachments from the editor" do
-      pending("handling tests with shadow dom")
       expect(page).to have_no_css("img[alt='image.png']")
       editor.open_add_image_dialog
 
       expect do
-        attach_file(image_fixture.path, make_visible: true) do
-          find(:button, text: "Upload image").click
-        end
-        expect(page).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
+        editor.attach_file(image_fixture.path)
+        expect(editor.element).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
       end.to change { document.attachments.count }.by(1)
     end
   end
@@ -172,15 +169,12 @@ RSpec.describe "Upload attachment to documents",
     context "with an incompatible attachment allowlist",
             with_settings: { attachment_whitelist: %w[image/jpg] } do
       it "shows a nice error" do
-        pending("handling tests with shadow dom")
         editor.open_add_image_dialog
         expect do
-          attach_file(image_fixture.path, make_visible: true) do
-            find(:button, text: "Upload image").click
-          end
+          editor.attach_file(image_fixture.path)
           expect(page).to have_content I18n.t("activerecord.errors.models.attachment.attributes.content_type.not_allowlisted",
                                               value: "image/png")
-          expect(page).to have_no_css("img[alt='image.png']")
+          expect(editor.element).to have_no_css("img[alt='image.png']")
         end.not_to change { document.attachments.count }
       end
     end

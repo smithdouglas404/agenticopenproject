@@ -74,6 +74,7 @@ sv:
         action: Försök igen
       connection_recovery_notice:
         description: "Anslutningen till servern för textsamarbete i realtid har återställts."
+      tabs: "Document tabs"
     index_page:
       name: "Namn"
       type: "Typ"

@@ -109,6 +109,23 @@ fr:
       explanation:
         text: "Les actions individuelles d'un utilisateur (par ex. mis à jour un lot de travaux deux fois) sont agrégés en une seule action si leur différence d'âge est inférieure à la période spécifiée. Elles seront affichées en une seule action dans l'application. Cela retardera également les notifications du même temps réduisant donc le nombre d'e-mails envoyés et affectera également le délai %{webhook_link}."
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "Le protocole de contexte de modèle permet aux agents d'intelligence artificielle de fournir à leurs utilisateurs les outils et les ressources exposés par cette instance d'OpenProject."
+        resources_heading: "Ressources"
+        resources_description: "OpenProject implémente les outils suivants. Chacun d'entre eux peut être activé, renommé et décrit comme vous le souhaitez. Pour en savoir plus, veuillez vous référer à la [documentation sur les ressources MCP](docs_url)."
+        resources_submit: "Mettre à jour les ressources"
+        tools_heading: "Outils"
+        tools_description: "OpenProject implémente les outils suivants. Chacun d'entre eux peut être activé, renommé et décrit comme vous le souhaitez. Pour en savoir plus, veuillez vous référer à la [documentation sur les outils MCP](docs_url)."
+        tools_submit: "Mettre à jour les outils"
+      multi_update:
+        success: "Les configurations MCP ont été mises à jour avec succès."
+      server_form:
+        description_caption: "Comment le serveur MCP sera décrit aux autres applications qui s'y connectent."
+        title_caption: "Un titre court affiché aux applications qui se connectent au serveur MCP."
+      update:
+        failure: "La configuration MCP n'a pas pu être mise à jour."
+        success: "La configuration MCP a été mise à jour avec succès."
     scim_clients:
       authentication_methods:
         sso: "JWT du fournisseur d'identité"
@@ -713,9 +730,11 @@ fr:
           create_button: "Créer"
           name_label: "Nom du jeton"
       created_dialog:
+        one_time_warning: "C'est la seule fois que vous verrez ce jeton. Veillez à le copier maintenant."
         token/api:
           title: "Le jeton d'API a été généré"
-          warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
+        token/rss:
+          title: "Le jeton RSS a été généré"
       failed_to_reset_token: "Impossible de réinitialiser le jeton d’accès : %{error}"
       failed_to_create_token: "Impossible de créer le jeton d'accès : %{error}"
       failed_to_revoke_token: "Impossible de révoquer le jeton d'accès : %{error}"
@@ -725,6 +744,9 @@ fr:
       notice_api_token_revoked: "Le jeton d'API a été supprimé. Pour créer un nouveau jeton, veuillez utiliser le bouton dans la section API."
       notice_rss_token_revoked: "Le jeton d'API a été supprimé. Pour créer un nouveau jeton, veuillez utiliser le lien dans la section RSS."
       notice_ical_token_revoked: 'Le jeton iCalendar « %{token_name} » pour le calendrier « %{calendar_name} » du projet « %{project_name} » a été révoqué. L''URL iCalendar liée à ce jeton est maintenant invalide.'
+    password_confirmation_dialog:
+      confirmation_required: "Vous devez saisir le mot de passe de votre compte pour confirmer cette modification."
+      title: "Confirmez votre mot de passe pour continuer"
   news:
     index:
       no_results_title_text: Il n'y a actuellement aucune actualité à publier.
@@ -1229,6 +1251,10 @@ fr:
         onthefly: "Création automatique des utilisateurs"
         port: "Port"
         tls_certificate_string: "Certificat SSL du serveur LDAP"
+      mcp_configuration:
+        enabled: Activé
+        title: Titre
+        description: Description
       member:
         roles: "Rôles"
       notification:
@@ -1487,6 +1513,7 @@ fr:
         even: "doit être pair."
         exclusion: "est réservé."
         feature_disabled: n'est pas disponible.
+        feature_disabled_for_project: est désactivé pour ce projet.
         file_too_large: "est trop volumineux (la taille maximale est de %{count} octets)."
         filter_does_not_exist: "le filtre n'existe pas."
         format: "ne correspond pas au format attendu « %{expected} »."
@@ -1509,7 +1536,8 @@ fr:
         not_a_datetime: "n'est pas une heure valide."
         not_a_number: "n'est pas un nombre."
         not_allowed: "est invalide en raison d’autorisations insuffisantes."
-        not_json: "n'est pas un objet JSON valide."
+        not_json: "ne peut pas être analysé en tant que JSON."
+        not_json_object: "n'est pas un objet JSON."
         not_an_integer: "n'est pas un entier."
         not_an_iso_date: "n’est pas une date valide. Format requis : AAAA-MM-JJ."
         not_same_project: "n'appartient pas au même projet."
@@ -1917,7 +1945,12 @@ fr:
       token/api:
         one: Jeton d'accès
         other: Jetons d’accès
-      type: "Type"
+      token/rss:
+        one: "Jeton RSS"
+        other: "Jetons RSS"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Utilisateur"
       version: "Version"
       workflow: "Flux de travail"
@@ -2134,6 +2167,7 @@ fr:
   button_click_to_reveal: "Cliquez pour révéler"
   button_close: "Fermer"
   button_collapse_all: "Tout replier"
+  button_confirm: "Confirmer"
   button_configure: "Configurer"
   button_continue: "Continuer"
   button_complete: "Compléter"
@@ -2166,6 +2200,7 @@ fr:
   button_print: "Imprimer"
   button_quote: "Citer"
   button_remove: Supprimer
+  button_remove_permanently: "Supprimer définitivement"
   button_remove_reminder: "Supprimer le rappel"
   button_rename: "Renommer"
   button_replace: "Remplacer"
@@ -2417,7 +2452,7 @@ fr:
       baseline_comparison: Comparaisons de référence
       board_view: Tableaux avancés
       calculated_values: Valeurs calculées
-      conditional_highlighting: Mise en surbrillance conditionnelle
+      capture_external_links: Capturer les liens externes
       internal_comments: Commentaires internes
       custom_actions: Actions personnalisées
       custom_field_hierarchies: Hiérarchies
@@ -2427,10 +2462,12 @@ fr:
       edit_attribute_groups: Modifier les groupes d'attributs
       gantt_pdf_export: Exportation PDF de diagramme de Gantt
       ldap_groups: Synchronisation des utilisateurs LDAP et des groupes
+      mcp_server: Serveur MCP
       nextcloud_sso: Authentification unique pour le stockage Nextcloud
       one_drive_sharepoint_file_storage: Stockage de fichiers OneDrive/SharePoint
       placeholder_users: Utilisateurs fictifs
       portfolio_management: Gestion du portefeuille
+      project_creation_wizard: Demande de lancement du projet
       project_list_sharing: Partage de liste de projets
       readonly_work_packages: Lots de travaux en lecture seule
       scim_api: API du serveur SCIM
@@ -2471,8 +2508,8 @@ fr:
         description: "Créez des sujets générés automatiquement à l'aide d'attributs et de textes référencés."
       customize_life_cycle:
         description: "Créez et organisez des phases de projet différentes de celles fournies par la planification du cycle de projet PM2."
-      conditional_highlighting:
-        description: "Vous avez besoin que certains lots de travaux se démarquent de la masse ? Utilisez la mise en évidence conditionnelle dans le tableau des lots de travaux."
+      capture_external_links:
+        description: "Prévenez les attaques d'ingénierie sociale en capturant et en avertissant les utilisateurs des liens externes avant qu'ils ne les consultent."
       work_package_query_relation_columns:
         description: "Vous avez besoin de voir les relations ou les éléments enfants dans la liste des lots de travaux ?"
       edit_attribute_groups:
@@ -2502,6 +2539,8 @@ fr:
       custom_actions:
         title: "Actions personnalisées"
         description: "Les actions personnalisées sont des raccourcis en un clic vers un ensemble d'actions prédéfinies que vous pouvez rendre disponibles sur certains lots de travaux en fonction de l'état, du rôle, du type ou du projet."
+      mcp_server:
+        description: "Intégrez des agents d'intelligence artificielle à votre instance OpenProject grâce à MCP."
       nextcloud_sso:
         title: "Authentification unique pour le stockage Nextcloud"
         description: "Activez l'authentification transparente et sécurisée pour votre stockage Nextcloud avec l'authentification unique. Simplifiez la gestion des accès et augmentez la commodité des utilisateurs."
@@ -2513,6 +2552,8 @@ fr:
         description: "Permettez aux utilisateurs de se connecter via des fournisseurs SSO externes utilisant SAML ou OpenID Connect pour assurer un accès transparent et une intégration fluide avec les systèmes d'identité existants."
       virus_scanning:
         description: "Assurez-vous que les fichiers téléversés dans OpenProject sont analysés pour détecter les virus avant d'être accessibles aux autres utilisateurs."
+      project_creation_wizard:
+        description: "Générez un assistant étape par étape pour aider les responsables de projet à remplir une demande de lancement de projet."
       placeholder_users:
         title: Utilisateurs fictifs
         description: >
@@ -2810,19 +2851,17 @@ fr:
         learn_about: "En savoir plus sur les nouvelles fonctionnalités"
         missing: "Il n'y a pas encore de fonctionnalités mises en évidence."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
-            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que:
           new_features_list:
-            line_0: Collaboration en temps réel sur les documents.
-            line_1: Possibilité de structurer des projets connexes en programmes et en portefeuilles afin de les axer sur des objectifs stratégiques (add-on Enterprise).
-            line_2: Meilleure gestion des réunions grâce au mode brouillon, au mode présentation, aux résultats améliorés et à l'abonnement iCal.
-            line_3: Mise à jour de l'intégration de SharePoint avec des permissions plus restrictives (add-on Enterprise).
-            line_4: Refonte de la vue d'ensemble du projet avec de nouveaux onglets, des widgets configurables et une mise en page améliorée.
-            line_5: Possibilité de protéger plus strictement la vie privée des utilisateurs qui ne travaillent pas sur le même projet.
-            line_6: Amélioration du flux de création de projets avec une meilleure sélection des modèles.
-            line_7: Recherche globale plus intelligente incluant le type et le statut afin d'améliorer la précision dans plusieurs outils de saisie automatique.
-            line_8: Amélioration de l'accessibilité des textes ALT et des couleurs des graphiques.
+            line_0: Lancement automatisé de projets (module complémentaire Enterprise).
+            line_1: "Réunions : ajoutez des work packages nouveaux ou existants en tant que résultats."
+            line_2: "Meetings: show iCal responses in OpenProject."
+            line_3: "Réunions récurrentes : dupliquez les points de l'ordre du jour lors de la prochaine réunion."
+            line_4: "Mise à disposition de la Communauté : Mise en évidence des attributs."
+            line_5: Avertissement avant l'ouverture de liens externes dans le contenu fourni par l'utilisateur (module complémentaire Enterprise).
+            line_6: Amélioration des performances et de l'expérience utilisateur, y compris l'onglet Activité et le module Documents.
     links:
       upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -2890,14 +2929,17 @@ fr:
   instructions_after_error: "Vous pouvez encore essayer de vous authentifier en cliquant sur %{signin}. Si l'erreur persiste, demandez de l'aide à votre administrateur."
   menus:
     admin:
-      mail_notification: "Notifications par e-mail"
-      mails_and_notifications: "E-mails et notifications"
+      ai: "Intelligence artificielle (IA)"
       aggregation: "Agrégation"
       api_and_webhooks: "API et webhooks"
+      mail_notification: "Notifications par e-mail"
+      mails_and_notifications: "E-mails et notifications"
+      mcp_configurations: "Protocole de contexte de modèle (MCP)"
     quick_add:
       label: "Ajouter…"
   my_account:
     access_tokens:
+      description: "Les jetons de fournisseur sont émis par OpenProject, ce qui permet à d'autres applications d'y accéder. Les jetons clients sont émis par d'autres applications, permettant à OpenProject d'y accéder."
       no_results:
         title: "Aucun jeton d'accès à afficher"
         description: "Tous ont été désactivés. Ils peuvent être ré-activés dans le menu d'administration."
@@ -2907,34 +2949,56 @@ fr:
         expiration: "Expiration"
       indefinite_expiration: "Jamais"
       simple_revoke_confirmation: "Voulez-vous vraiment révoquer ce jeton ?"
+      tabs:
+        client:
+          title: "Jetons de client"
+        provider:
+          title: "Jetons du fournisseur"
       token/api:
+        blank_description: "Il n'y a pas encore de jeton API. Vous pouvez en créer un en utilisant le bouton ci-dessous."
+        blank_title: "Pas de jeton API"
         title: "API"
+        table_title: "Jetons d'API"
         text_hint: "Les jetons d'API permettent aux applications tierces de communiquer avec cette instance OpenProject via les API REST."
+        static_token_name: "Jeton API"
         disabled_text: "Les jetons d'API ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
         add_button: "Jeton d'API"
-      api:
-        static_token_name: "Jeton d'API"
       ical:
+        blank_description: "Pour ajouter un jeton iCalendar, abonnez-vous à un calendrier nouveau ou existant à partir du module Calendrier d'un projet. Vous devez disposer des autorisations nécessaires."
+        blank_title: "Pas de jeton iCalendar"
         title: "iCalendar"
+        table_title: "Jetons iCalendar"
         text_hint_link: "Les jetons iCalendar permettent aux utilisateurs de [s'abonner aux calendriers OpenProject](docs_url) et d'afficher des informations à jour sur les lots de travaux provenant de clients externes."
         disabled_text: "Les abonnements iCalendar ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
-        empty_text_hint: "Pour ajouter un jeton iCalendar, abonnez-vous à un nouveau calendrier ou à un calendrier existant depuis le module Calendrier d'un projet. Vous devez avoir les autorisations nécessaires."
-      oauth:
+      oauth_application:
+        active_tokens: "Jetons actifs"
+        blank_description: "Aucun accès à une application tierce n'est configuré et actif pour vous."
+        blank_title: "Pas de jeton d'application OAuth"
+        last_used_at: "Dernière utilisation à"
         title: "OAuth"
-        text_hint: "Les jetons OAuth permettent à des applications tierces de se connecter à cette instance OpenProject."
-        empty_text_hint: "Il n'y a pas d'accès à des applications tierces configuré et actif pour vous. Veuillez contacter votre administrateur pour activer cette fonctionnalité."
-      rss:
-        title: "RSS"
-        text_hint: "Les jetons RSS permettent aux utilisateurs de suivre les derniers changements de cette instance OpenProject via un lecteur RSS externe."
+        table_title: "Jetons d'application OAuth"
+        text_hint: "Les jetons d'application OAuth permettent aux applications tierces de se connecter à cette instance d'OpenProject."
+      oauth_client:
+        blank_description: "Il n'y a pas encore de jetons clients OAuth."
+        blank_title: "Pas de jeton client OAuth"
+        failed: "Une erreur s'est produite et le jeton n'a pas pu être supprimé. Veuillez réessayer plus tard."
+        integration_type: "Type d'intégration"
+        table_title: "Jetons clients OAuth"
+        text_hint: "Les jetons clients OAuth permettent à cette instance d'OpenProject de se connecter à des applications externes, telles que des stockages de fichiers."
+        title: "OAuth"
+        remove_token: "Voulez-vous vraiment supprimer ce jeton ? Vous devrez vous connecter à nouveau sur %{integration}."
+        removed: "Le jeton client OAuth a été supprimé avec succès"
+        unknown_integration: "Inconnu"
+      token/rss:
+        add_button: "Jeton RSS"
+        blank_description: "Il n'y a pas encore de jeton RSS. Vous pouvez en créer un en utilisant le bouton ci-dessous."
+        blank_title: "Pas de jeton RSS"
+        title: "Flux RSS"
+        table_title: "Jeton RSS"
+        text_hint: "Les jetons RSS permettent aux utilisateurs de se tenir au courant des derniers changements dans cette instance d'OpenProject via un lecteur RSS externe."
         static_token_name: "Jeton RSS"
         disabled_text: "Les jetons RSS ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
       storages:
-        title: "Espaces de stockage de fichiers"
-        text_hint: "Les jetons de stockage de fichiers connectent cette instance OpenProject à une solution de stockage de fichiers externe."
-        empty_text_hint: "Il n'y a pas d'accès à l'espace de stockage lié à votre compte."
-        revoke_token: "Voulez-vous vraiment supprimer ce jeton ? Vous devrez vous reconnecter sur %{storage}"
-        removed: "Jeton de stockage de fichiers supprimé avec succès"
-        failed: "Une erreur s'est produite et le jeton n'a pas pu être supprimé. Veuillez réessayer plus tard."
         unknown_storage: "Espace de stockage inconnu"
   notifications:
     reasons:
@@ -2996,6 +3060,7 @@ fr:
   label_always_visible: "Toujours affiché"
   label_announcement: "Annonce ou avis. "
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "Clé d'accès API"
   label_api_access_key_created_on: "Clé d'accès API créé il y a %{value}"
   label_api_access_key_type: "API"
@@ -3251,6 +3316,7 @@ fr:
   label_journal_diff: "Comparaison de description"
   label_language: "Langue"
   label_languages: "Langues"
+  label_external_links: "Liens externes"
   label_locale: "Langue et région"
   label_jump_to_a_project: "Aller à un projet…"
   label_keyword_plural: "Mots clés"
@@ -3428,9 +3494,6 @@ fr:
   label_project_hierarchy: "Hiérarchie du projet"
   label_project_mappings: "Projets"
   label_project_new: "Nouveau projet"
-  label_project_initiation_request: "Demande de lancement d'un nouveau projet"
-  label_project_creation_wizard: "Assistant de création de nouveau projet"
-  label_project_mandate: "Mandat de nouveau projet"
   label_project_plural: "Projets"
   label_project_list_plural: "Listes de projets"
   label_project_life_cycle: "Cycle de vie du projet"
@@ -3894,7 +3957,7 @@ fr:
   notice_not_authorized: "Vous n'êtes pas autorisé à accéder à cette page."
   notice_not_authorized_archived_project: "Le projet auquel vous essayer d'accéder a été archivé."
   notice_requires_enterprise_token: "Le jeton Enterprise est manquant ou n'autorise pas l'accès à cette page."
-  notice_password_confirmation_failed: "Votre mot de passe est incorrect. Impossible de continuer."
+  notice_password_confirmation_failed: "Le mot de passe saisi est incorrect."
   notice_principals_found_multiple: "Il y a %{number} résultats trouvés. Tabulation pour sélectionner le premier résultat."
   notice_principals_found_single: "Il y a un seul résultat. Tabulation pour le sélectionner."
   notice_parent_item_not_found: "L'élément parent est introuvable."
@@ -4247,6 +4310,9 @@ fr:
   setting_allowed_link_protocols: "Protocoles de lien autorisés"
   setting_allowed_link_protocols_text_html: >-
     Permettre que ces protocoles soient affichés sous forme de liens dans les descriptions des lots de travaux, les champs de texte long et les commentaires. Par exemple, %{tel_code} ou %{element_code}. Saisissez un protocole par ligne. <br/>Les protocoles %{http_code}, %{https_code} et %{mailto_code} sont toujours autorisés.
+  setting_capture_external_links: "Saisir les liens externes"
+  setting_capture_external_links_text: >
+    Lorsque cette option est activée, tous les liens externes en texte formaté sont redirigés vers une page d'avertissement avant de quitter l'application. Cela permet de protéger les utilisateurs contre les sites web externes potentiellement malveillants.
   setting_after_first_login_redirect_url: "Redirection de première connexion"
   setting_after_first_login_redirect_url_text_html: >
     Définissez un chemin pour rediriger les utilisateurs après leur première connexion. S’il est vide, les utilisateurs seront redirigés vers la page d'accueil de la visite d'intégration. <br/> Exemple : <code>/my/page</code>
@@ -4259,11 +4325,17 @@ fr:
   setting_apiv3_cors_origins_text_html: >
     Si CORS est activé, ce sont les origines qui sont autorisées à accéder à l'API OpenProject. <br/> Veuillez vérifier la <a href="%{origin_link}" target="_blank">documentation sur l'en-tête Origin</a> sur la façon de spécifier les valeurs attendues.
   setting_apiv3_write_readonly_attributes: "Accès en écriture aux attributs en lecture seule"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Si cette option est activée, l'API permettra aux administrateurs d'écrire des attributs statiques en lecture seule lors de la création, tels que createdAt et author. <br/> <strong>Avertissement :</strong> Ce paramètre est utile, par exemple, pour l'importation de données, mais il permet aux administrateurs de se faire passer pour d'autres utilisateurs lors de la création d'éléments. Toutes les demandes de création sont toutefois enregistrées au nom du véritable auteur. </br> Pour plus d'informations sur les attributs et les ressources prises en charge, veuillez consulter la %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    Si cette option est activée, l'API permettra aux administrateurs d'écrire des attributs statiques en lecture seule lors de la création, tels que createdAt et author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    Ce paramètre est utile, par exemple, pour l'importation de données, mais il permet aux administrateurs de se faire passer pour d'autres utilisateurs lors de la création d'éléments. Toutes les demandes de création sont toutefois enregistrées avec le véritable auteur.
+  setting_apiv3_write_readonly_attributes_additional: >
+    Pour plus d'informations sur les attributs et les ressources prises en charge, veuillez consulter le site %{api_documentation_link}.
   setting_apiv3_max_page_size: "Taille maximale de page d'API"
-  setting_apiv3_max_page_instructions_html: >
-    Définissez la taille maximale de la page avec laquelle l'API répondra. Il ne sera pas possible d'effectuer des requêtes API qui retournent plus de valeurs sur une seule page. <br/> <strong>Avertissement :</strong> veuillez modifier cette valeur uniquement si vous êtes sûr de savoir pourquoi vous en avez besoin. Définir à une valeur élevée entraînera des impacts significatifs sur les performances, alors qu'une valeur inférieure aux options de chaque page provoquera des erreurs dans les vues paginées.
+  setting_apiv3_max_page_size_instructions: >
+    Définissez la taille maximale de la page à laquelle l'API répondra. Il ne sera pas possible d'effectuer des demandes d'API qui renvoient plus de valeurs sur une seule page.
+  setting_apiv3_max_page_size_warning: >
+    Ne modifiez cette valeur que si vous êtes certain d'en avoir besoin. Une valeur élevée aura un impact significatif sur les performances, tandis qu'une valeur inférieure aux options par page provoquera des erreurs dans les vues paginées.
   setting_apiv3_docs: "Documentation"
   setting_apiv3_docs_enabled: "Activer la page docs"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4448,7 +4520,7 @@ fr:
       omniauth_direct_login_hint_html: >
         Si cette option est activée, les demandes de connexion seront redirigées vers le fournisseur omniauth configuré. La liste déroulante de connexion et la page de connexion seront désactivées. <br/> <strong>Remarque :</strong> lorsque cette option est activée, les utilisateurs peuvent toujours se connecter en interne en visitant la page de connexion <code>%{internal_path}</code>, sauf si vous désactivez également les connexions par mot de passe.
       remapping_existing_users_hint: >
-        Si cette option est activée, elle permet à tout fournisseur d'identité configuré de connecter des utilisateurs existants en fonction de leur adresse e-mail, même si l'utilisateur ne s'est jamais connecté auparavant via ce fournisseur. Cela peut être utile lors de la migration de l'instance OpenProject vers un nouveau fournisseur SSO, mais n'est pas recommandé si vous utilisez un fournisseur qui n'est pas approuvé par l'ensemble des utilisateurs de votre instance.
+        Si activé, permet à tout fournisseur d'identité configuré de connecter les utilisateurs existants en se basant sur leur nom d'utilisateur, même si l'utilisateur ne s'est jamais connecté via ce fournisseur auparavant. Ceci peut être utile lors de la migration de l'instance OpenProject vers un nouveau fournisseur SSO, mais n'est pas recommandé lors de l'utilisation d'un fournisseur qui n'est pas reconnu par tous les utilisateurs de votre instance.
     attachments:
       whitelist_text_html: >
         Définissez une liste d'extensions de fichiers et/ou de types MIME valides pour les fichiers téléversés. <br/> Entrez les extensions de fichier (par exemple, <code>%{ext_example}</code>) ou les types mime (par exemple, <code>%{mime_example}</code>). <br/> Laissez vide pour permettre le téléversement de tout type de fichier. Plusieurs valeurs autorisées (une ligne pour chaque valeur).
@@ -4554,7 +4626,7 @@ fr:
           project_mandate: "Mandat du projet"
       submission:
         description_template: >
-          **Ce lot de travaux a été créé automatiquement à l'issue du flux de travail %{wizard_name}.** Un artefact PDF contenant toutes les informations envoyées a été généré et joint à ce lot de travaux à des fins de référence et d'audit. Si vous avez besoin de mettre à jour ou de réexécuter les étapes de lancement, vous pouvez rouvrir l'assistant à tout moment en utilisant le lien ci-dessous :
+          **Ce dossier de travail a été créé automatiquement à l'issue du flux de travail %{wizard_name} .** Un artefact PDF contenant toutes les informations soumises a été généré et joint à ce dossier de travail à des fins de référence et d'audit. Si vous avez besoin de mettre à jour ou de réexécuter les étapes d'initiation, vous pouvez rouvrir l'assistant à tout moment en utilisant le lien ci-dessous :
         description: "Lorsqu'un utilisateur envoie une demande de lancement de projet, un nouveau lot de travail est créé avec l'artefact de la demande en pièce jointe au format PDF. Les paramètres ci-dessous définissent le type, le statut et le destinataire de ce nouveau lot de travaux."
         work_package_type: "Type de lot de travaux"
         work_package_type_caption: "Le type de lot de travaux qui doit être utilisé pour stocker l'artefact terminé."
@@ -4722,6 +4794,7 @@ fr:
     Remarque : si cette option est activée, un badge indiquant l'état de votre installation s'affichera dans le panneau <a href="%{information_panel_path}">%{information_panel_label}</a> administration et sur la page d'accueil. Il n'est affiché que pour les administrateurs. <br/>Le badge vérifiera votre version actuelle d'OpenProject par rapport à la base de données officielle d'OpenProject pour vous avertir de toute mise à jour ou vulnérabilité connue. Pour plus d'informations sur ce que la vérification fournit, quelles données sont nécessaires pour fournir les mises à jour disponibles, et comment désactiver cette vérification, veuillez visiter <a href="%{more_info_url}">la documentation de configuration</a>.
   text_own_membership_delete_confirmation: "Vous êtes sur le point de retirer tout ou partie de vos permissions et ne pourrez peut-être plus modifier le projet par la suite.\nÊtes vous sûr de vouloir continuer?"
   text_permanent_delete_confirmation_checkbox_label: "Je comprends que cette suppression ne peut pas être annulée"
+  text_permanent_remove_confirmation_checkbox_label: "Je comprends que cette suppression ne peut pas être annulée"
   text_plugin_assets_writable: "Répertoire des « plugin assets » est accessible en écriture"
   text_powered_by: "Propulsé par %{link}"
   text_project_identifier_info: "Seulement les lettres en minuscule (a-z), les nombres, les tirets et les underscores sont autorisés, il est obligatoire de commencer avec une lettre en minuscule."
@@ -4812,8 +4885,8 @@ fr:
       other: "verrouillé temporairement (%{count} tentatives de connexion échouées)"
     confirm_status_change: "Vous êtes sur le point de changer le statut de '%{name}'. Voulez-vous vraiment continuer ?"
     deleted: "Utilisateur supprimé"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "Vous ne pouvez pas modifier votre propre statut d'utilisateur."
+    error_admin_change_on_non_admin: "Seuls les administrateurs peuvent modifier le statut des utilisateurs administrateurs."
     error_status_change_failed: "Le changement du statut de l'utilisateur a échoué dû aux erreurs suivantes: %{errors}"
     invite: Inviter l'utilisateur par e-mail
     invited: invité
@@ -5217,3 +5290,8 @@ fr:
   token:
     hashed_token:
       display_value_placeholder: "***"
+  external_link_warning:
+    title: "Quitter OpenProject"
+    warning_message: "Vous êtes sur le point de quitter OpenProject et de visiter un site web externe. Veuillez noter que les sites web externes ne sont pas sous notre contrôle et peuvent avoir des politiques de confidentialité et de sécurité différentes."
+    continue_message: "Êtes-vous sûr de vouloir passer au lien externe suivant ?"
+    continue_button: "Continuer vers le site web externe"

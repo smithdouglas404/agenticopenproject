@@ -96,12 +96,6 @@ pt-PT:
       manual: Pasta existente gerida manualmente
     remove_project:
       deletion_failure_flash: Erro ao remover o projeto do armazenamento. %{error}
-      dialog:
-        automatically_managed_appendix: Além disso, no caso de este armazenamento ter uma pasta de projeto gerida automaticamente, esta e os seus ficheiros serão eliminados para sempre.
-        confirmation_text: Confirme que compreende e pretende remover este armazenamento de ficheiros deste projeto
-        heading_text: Remover projeto de %{storage}
-        text: Esta ação é irreversível e irá remover todas as ligações dos pacotes de trabalho deste projeto aos ficheiros e pastas desse armazenamento.
-        title: Remover projeto do armazenamento
       label: Remover projeto
   services:
     attributes:
@@ -110,20 +104,20 @@ pt-PT:
         create_folder: 'Criação de pastas de projeto geridas:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Passo "Ocultar pastas inativas":'
-        remote_folders: 'Ler conteúdo da pasta de grupo:'
+        remote_folders: 'Ler conteúdo da pasta de equipa:'
         remove_user_from_group: 'Remover utilizador do grupo:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
       one_drive_sync_service:
         create_folder: 'Criação de pastas de projeto geridas:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Passo "Ocultar pastas inativas":'
-        remote_folders: 'Ler conteúdo da pasta de grupo:'
+        remote_folders: 'Ler conteúdo da pasta raiz da unidade:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
       sharepoint_sync_service:
         create_folder: 'Criação de pastas de projeto geridas:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Passo "Ocultar pastas inativas":'
-        remote_folders: 'Ler conteúdo da pasta de grupo:'
+        remote_folders: 'Ler conteúdo da pasta raiz da unidade:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
     errors:
       messages:
@@ -146,7 +140,7 @@ pt-PT:
               conflict: A pasta %{folder_name} já existe em %{parent_location}.
               not_found: "%{parent_location} não foi encontrado."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} não foi encontrado. Verifique a configuração da pasta de grupo do Nextcloud."
+              not_found: "%{group_folder} não foi encontrado. Verifique a configuração da pasta de equipa do Nextcloud."
               permission_not_set: não foi possível definir permissões em %{group_folder}.
             hide_inactive_folders:
               permission_not_set: não foi possível definir permissões em %{path}.
@@ -227,15 +221,16 @@ pt-PT:
     confirm_replace_oauth_application: Esta ação irá repor as credenciais OAuth atuais. Após a confirmação, terá de voltar a introduzir as credenciais no fornecedor de armazenamento e todos os utilizadores remotos terão de autorizar novamente o OpenProject. Tem a certeza de que pretende continuar?
     confirm_replace_oauth_client: Esta ação irá repor as credenciais OAuth atuais. Depois de confirmar, terá de introduzir novas credenciais do fornecedor de armazenamento e todos os utilizadores terão de autorizar novamente em %{provider_type}. Tem a certeza de que pretende continuar?
     delete_warning:
-      project_storage_delete_result_1: Remover todos os links de pacotes de trabalho deste projeto para ficheiros e pastas desse armazenamento.
-      project_storage_delete_result_2: No caso de este armazenamento ter uma pasta de projeto gerida automaticamente, esta e os seus ficheiros serão eliminados para sempre.
-      storage: 'Tem a certeza de que quer apagar %{file_storage}? Isto irá:'
-      storage_delete_result_1: Remover todas as configurações de armazenamento para todos os projetos que utilizam este armazenamento.
-      storage_delete_result_2: Remover todos os links de pacotes de trabalho de todos os projetos para ficheiros e pastas desse armazenamento.
-      storage_delete_result_3: No caso de este armazenamento ter pastas de projeto geridas automaticamente, estas e os seus ficheiros serão eliminados para sempre.
+      project_storage: Tem a certeza de que quer remover %{file_storage} deste projeto?
+      project_storage_delete_result_1: Todas as ligações para ficheiros e pastas correspondentes serão removidas
+      project_storage_delete_result_2: A pasta do projeto gerida automaticamente e todos os ficheiros nela contidos serão eliminados
+      storage: Tem a certeza de que quer eliminar %{file_storage} como armazenamento de ficheiros externo?
+      storage_delete_result_1: O armazenamento será removido de todos os projetos que o utilizam atualmente
+      storage_delete_result_2: Todas as ligações para ficheiros e pastas correspondentes serão removidas
+      storage_delete_result_3: A pasta do projeto gerida automaticamente e todos os ficheiros nela contidos serão eliminados
     dependencies:
       nextcloud:
-        group_folders_app: Pastas de grupo
+        group_folders_app: Pastas de equipa
         integration_app: Integração do OpenProject
     enabled_in_projects:
       setup_incomplete_description: Este armazenamento tem uma configuração incompleta. Conclua a configuração antes de o ativar em vários projetos.
@@ -282,11 +277,11 @@ pt-PT:
           client_folder_creation: Criação automática de pasta
           client_folder_removal: Eliminação automática de pasta
           drive_contents: Conteúdo da unidade
-          files_request: A obter ficheiros da pasta de grupo
-          group_folder_app: 'Dependência: Pastas de Grupo'
-          group_folder_contents: Conteúdo da pasta do grupo
-          group_folder_presence: A pasta de grupo existe
+          files_request: A obter ficheiros da pasta de equipa
           header: Pastas do projeto geridas automaticamente
+          team_folder_app: 'Dependência: Pastas de equipa'
+          team_folder_contents: Conteúdo da pasta de equipa
+          team_folder_presence: A pasta de equipa existe
           userless_access: Autenticação da solicitação do lado do servidor
         authentication:
           existing_token: Ficha do utilizador
@@ -323,12 +318,12 @@ pt-PT:
         client_secret_invalid: O segredo do cliente OAuth 2 configurado é inválido. Verifique a configuração.
         nc_dependency_missing: 'Está em falta uma dependência necessária no armazenamento de ficheiros. Adicione a seguinte dependência: %{dependency}.'
         nc_dependency_version_mismatch: A versão da aplicação %{dependency} não é suportada. Atualize o seu servidor do Nextcloud.
-        nc_group_folder_not_found: Não foi possível encontrar a pasta do grupo.
         nc_host_not_found: Não foi encontrado nenhum servidor do Nextcloud no URL do anfitrião configurado. Verifique a configuração.
         nc_oauth_request_not_found: O terminal para o utilizador com sessão iniciada não foi encontrado. Consulte os registos do servidor para mais informações.
         nc_oauth_request_unauthorized: O utilizador atual não está autorizado a aceder ao armazenamento de ficheiros remoto. Verifique os registos do servidor para mais informações.
         nc_oauth_token_missing: O OpenProject não pode testar a comunicação de nível de utilizador com o Nextcloud uma vez que o utilizador ainda não associou a sua conta Nextcloud.
-        nc_unexpected_content: Conteúdo inesperado encontrado na pasta do grupo gerido.
+        nc_team_folder_not_found: Não foi possível encontrar a pasta de equipa.
+        nc_unexpected_content: Conteúdo inesperado encontrado na pasta de equipa gerida.
         nc_userless_access_denied: A palavra-passe da aplicação configurada é inválida.
         not_configured: Não foi possível validar a ligação.Termine, primeiro, a configuração.
         od_client_cant_delete_folder: O cliente está a ter problemas a eliminar pastas. Consulte a documentação de configuração para o seu armazenamento.
@@ -503,7 +498,7 @@ pt-PT:
         title: Estamos a definir as suas permissões na pasta do projeto.
     page_titles:
       file_storages:
-        delete: Eliminar armazenamento de ficheiros
+        delete: Eliminar armazenamento de ficheiros?
         subtitle: Adicione um armazenamento de ficheiros externo para carregar, ligar e gerir ficheiros em pacotes de trabalho.
       managed_project_folders:
         subtitle: |-
@@ -517,6 +512,8 @@ pt-PT:
       project_storage_members:
         subtitle: Verifique o estado da ligação para o armazenamento %{storage_name_link} de todos os membros do projeto.
         title: Estado da ligação dos membros
+      project_storages:
+        delete: Remover o armazenamento de ficheiros do projeto?
     permission_header_explanation: 'As permissões de ficheiros em armazenamentos externos são aplicadas apenas a pastas e ficheiros dentro de pastas de projetos geridas automaticamente. Tenha em conta que nem todas as permissões de ficheiros são suportadas por todos os fornecedores de armazenamento. Para mais informações, consulte a documentação sobre <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>permissões de armazenamento de ficheiros</a>.'
     provider_types:
       label: Tipo de fornecedor

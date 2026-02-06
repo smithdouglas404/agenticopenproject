@@ -1002,5 +1002,55 @@ RSpec.describe Settings::Definition, :settings_reset do
           .to be false
       end
     end
+
+    context "with persist_on_first_read option" do
+      it "stores the persist_on_first_read flag" do
+        described_class.add "auto_init_setting",
+                            default: -> { "generated_value" },
+                            format: :string,
+                            persist_on_first_read: true
+
+        expect(described_class.all[:auto_init_setting].persist_on_first_read)
+          .to be true
+      end
+    end
+  end
+
+  describe "#persist_on_first_read?" do
+    context "when persist_on_first_read is true" do
+      let(:instance) do
+        described_class.new "bogus",
+                            default: -> { "value" },
+                            format: :string,
+                            persist_on_first_read: true
+      end
+
+      it "returns true" do
+        expect(instance).to be_persist_on_first_read
+      end
+    end
+
+    context "when persist_on_first_read is false" do
+      let(:instance) do
+        described_class.new "bogus",
+                            default: "default_value"
+      end
+
+      it "returns false" do
+        expect(instance).not_to be_persist_on_first_read
+      end
+    end
+
+    context "when persist_on_first_read is true but writable is false" do
+      it "raises an ArgumentError" do
+        expect do
+          described_class.new "bogus",
+                              default: -> { "value" },
+                              format: :string,
+                              writable: false,
+                              persist_on_first_read: true
+        end.to raise_error(ArgumentError, /persist_on_first_read need to be writable/)
+      end
+    end
   end
 end

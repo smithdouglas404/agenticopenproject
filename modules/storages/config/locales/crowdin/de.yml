@@ -96,12 +96,6 @@ de:
       manual: Vorhandener Ordner manuell verwaltet
     remove_project:
       deletion_failure_flash: Das Projekt konnte nicht vom Dateispeicher entfernt werden. %{error}
-      dialog:
-        automatically_managed_appendix: Falls dieser Speicher einen automatisch verwalteten Projektordner enthält, werden dieser und seine Dateien für immer gelöscht.
-        confirmation_text: Bitte bestätigen Sie die Entfernung des Dateispeichers aus diesem Projekt
-        heading_text: Projekt von %{storage} entfernen
-        text: Diese Aktion ist unumkehrbar und entfernt alle Verknüpfungen von Arbeitspaketen dieses Projekts zu Dateien und Ordnern dieses Speichers.
-        title: Projekt von Speicherung abtrennen
       label: Projekt entfernen
   services:
     attributes:
@@ -110,20 +104,20 @@ de:
         create_folder: 'Verwaltete Projekt-Ordnererstellung:'
         ensure_root_folder_permissions: 'Basisordner-Berechtigungen festlegen:'
         hide_inactive_folders: 'Verstecke Inaktive Ordner:'
-        remote_folders: 'Inhalt des Gruppenordners lesen:'
+        remote_folders: 'Read contents of the team folder:'
         remove_user_from_group: 'Benutzer aus Gruppe entfernen:'
         rename_project_folder: 'Verwalteten Projektordner umbenennen:'
       one_drive_sync_service:
         create_folder: 'Verwaltete Projekt-Ordnererstellung:'
         ensure_root_folder_permissions: 'Basisordner-Berechtigungen festlegen:'
         hide_inactive_folders: 'Verstecke Inaktive Ordner:'
-        remote_folders: 'Inhalt des Gruppenordners lesen:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Verwalteten Projektordner umbenennen:'
       sharepoint_sync_service:
         create_folder: 'Verwaltete Projekt-Ordnererstellung:'
         ensure_root_folder_permissions: 'Basisordner-Berechtigungen festlegen:'
         hide_inactive_folders: 'Verstecke Inaktive Ordner:'
-        remote_folders: 'Inhalt des Gruppenordners lesen:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Verwalteten Projektordner umbenennen:'
     errors:
       messages:
@@ -146,7 +140,7 @@ de:
               conflict: Der Ordner %{folder_name} existiert bereits in %{parent_location}.
               not_found: "%{parent_location} wurde nicht gefunden."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} wurde nicht gefunden. Bitte überprüfen Sie Ihr Nextcloud Gruppenordner-Setup."
+              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
               permission_not_set: konnte keine Berechtigungen auf %{group_folder} setzen.
             hide_inactive_folders:
               permission_not_set: konnte keine Berechtigungen auf %{path} setzen.
@@ -227,15 +221,16 @@ de:
     confirm_replace_oauth_application: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie die Anmeldedaten beim Speicheranbieter erneut eingeben und alle Remote-Benutzer müssen sich erneut gegenüber OpenProject autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     confirm_replace_oauth_client: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie neue Anmeldedaten vom Speicheranbieter eingeben und alle Benutzer müssen sich erneut für %{provider_type} autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     delete_warning:
-      project_storage_delete_result_1: Entfernen Sie alle Links von Arbeitspaketen dieses Projekts zu Dateien und Ordnern dieses Speichers.
-      project_storage_delete_result_2: Falls dieser Speicher einen automatisch verwalteten Projektordner hat, werden dieser und seine Dateien unwiderbringlich gelöscht.
-      storage: 'Sind Sie sicher, dass Sie %{file_storage} löschen möchten? Dies wird:'
-      storage_delete_result_1: Alle eingerichteten Projektdateispeicher, die diesen Dateispeicher verwenden, werden gelöscht.
-      storage_delete_result_2: Alle Dateiverknüpfungen aus Arbeitspaketen sämtlicher Projekte zu Dateien und Ordnern auf diesem Dateispeicher werden gelöscht.
-      storage_delete_result_3: Hat dieser Dateispeicher automatisch verwaltete Projektordner, so werden diese und die enthaltenen Dateien permanent gelöscht.
+      project_storage: Sind Sie sicher, dass Sie %{file_storage} löschen möchten?
+      project_storage_delete_result_1: Alle Links zu den entsprechenden Dateien und Ordnern werden entfernt
+      project_storage_delete_result_2: Der automatisch verwaltete Projektordner und alle darin enthaltenen Dateien werden gelöscht
+      storage: Sind Sie sicher, dass Sie %{file_storage} als externen Dateispeicher löschen möchten?
+      storage_delete_result_1: Der Speicher wird aus allen Projekten, die ihn derzeit verwenden, entfernt
+      storage_delete_result_2: Alle Links zu den entsprechenden Dateien und Ordnern werden entfernt
+      storage_delete_result_3: Der automatisch verwaltete Projektordner und alle darin enthaltenen Dateien werden gelöscht
     dependencies:
       nextcloud:
-        group_folders_app: Gruppenordner
+        group_folders_app: Team Folders
         integration_app: OpenProject Integration
     enabled_in_projects:
       setup_incomplete_description: Dieser Speicher ist nicht vollständig eingerichtet. Bitte schließen Sie die Einrichtung ab, bevor Sie ihn in mehreren Projekten aktivieren.
@@ -282,11 +277,11 @@ de:
           client_folder_creation: Automatische Ordnererstellung
           client_folder_removal: Automatische Ordnerlöschung
           drive_contents: Speicherinhalt
-          files_request: Gruppenordnerdateien werden abgerufen
-          group_folder_app: 'Abhängigkeit: Gruppenordner'
-          group_folder_contents: Inhalt des Gruppenordners
-          group_folder_presence: Gruppenordner existiert
+          files_request: Fetching team folder files
           header: Automatisch verwaltete Projektordner
+          team_folder_app: 'Dependency: Team Folders'
+          team_folder_contents: Team folder content
+          team_folder_presence: Team folder exists
           userless_access: Serverseitige Anfrageauthentifizierung
         authentication:
           existing_token: Benutzer Token
@@ -323,12 +318,12 @@ de:
         client_secret_invalid: Das konfigurierte OAuth 2-Client-Geheimnis ist ungültig. Bitte überprüfen Sie die Konfiguration.
         nc_dependency_missing: 'Eine erforderliche Abhängigkeit fehlt auf dem Datei-Speicher. Bitte fügen Sie die folgende Abhängigkeit hinzu: %{dependency}.'
         nc_dependency_version_mismatch: Die %{dependency} App-Version wird nicht unterstützt. Bitte aktualisieren Sie Ihren Nextcloud Server.
-        nc_group_folder_not_found: Der Gruppenordner konnte nicht gefunden werden.
         nc_host_not_found: Kein Nextcloud-Server unter der konfigurierten Host-URL gefunden. Bitte überprüfen Sie die Konfiguration.
         nc_oauth_request_not_found: Der Endpunkt für den Abruf des aktuell verbundenen Benutzers wurde nicht gefunden. Bitte überprüfen Sie die Serverprotokolle für weitere Informationen.
         nc_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Remote-Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Protokolle für weitere Informationen.
         nc_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit Nextcloud nicht testen, da der Benutzer sein Nextcloud Konto noch nicht verknüpft hat.
-        nc_unexpected_content: Unerwarteter Inhalt im verwalteten Gruppenordner gefunden.
+        nc_team_folder_not_found: The team folder could not be found.
+        nc_unexpected_content: Unexpected content found in the managed team folder.
         nc_userless_access_denied: Das konfigurierte App-Passwort ist ungültig.
         not_configured: Die Verbindung konnte nicht validiert werden. Bitte schließen Sie zuerst die Konfiguration ab.
         od_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
@@ -503,7 +498,7 @@ de:
         title: Wir richten Ihre Berechtigungen für den Projektordner ein.
     page_titles:
       file_storages:
-        delete: Dateispeicher löschen
+        delete: Dateispeicher löschen?
         subtitle: Fügen Sie einen externen Dateispeicher hinzu, um Dateien in Arbeitspaketen hochzuladen, zu verlinken und zu verwalten.
       managed_project_folders:
         subtitle: |-
@@ -517,6 +512,8 @@ de:
       project_storage_members:
         subtitle: Überprüfen Sie den Verbindungsstatus für den Speicher- %{storage_name_link} aller Projektmitglieder.
         title: Verbindungsstatus der Mitglieder
+      project_storages:
+        delete: Dateispeicher aus dem Projekt entfernen?
     permission_header_explanation: 'Dateiberechtigungen auf externen Speichern werden nur auf Ordner und Dateien in automatisch verwalteten Projektordnern angewendet. Beachten Sie, dass nicht alle Dateiberechtigungen von allen Speicheranbietern unterstützt werden. Weitere Informationen finden Sie in der Dokumentation zu <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>Dateispeicherberechtigungen</a>.'
     provider_types:
       label: Anbieter-Typ

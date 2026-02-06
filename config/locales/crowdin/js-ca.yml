@@ -393,8 +393,6 @@ ca:
     label_me: "jo"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Acta"
-    label_menu_collapse: "col·lapsar"
-    label_menu_expand: "expandir"
     label_more_than_ago: "més que fa uns dies"
     label_moderate_comment: "Moderate comment"
     label_next: "Següent"
@@ -428,6 +426,7 @@ ca:
     label_remove_row: "Eliminar fila"
     label_report: "Reportar"
     label_repository_plural: "Repositoris"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Desa com a"
     label_search_columns: "Search a column"
     label_select_watcher: "Seleccioneu un observador..."
@@ -634,9 +633,6 @@ ca:
           add: "Afegeix configuracions pel projecte"
           already_selected: "Aquest projecte ja està seleccionat"
           remove: "Elimina les configuracions del projecte"
-    password_confirmation:
-      field_description: "Necessites introduir la contrasenya del teu compte per a confirmar aquest canvi."
-      title: "Confirma la teva contrasenya per continuar"
     pagination:
       no_other_page: "Estàs en la pàgina única."
       pages_skipped: "Pages skipped."

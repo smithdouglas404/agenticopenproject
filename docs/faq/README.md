@@ -276,7 +276,7 @@ Please consult [JIRA migration overview page](../installation-and-operations/jir
 
 ### How can I migrate from Community edition or Enterprise on-premises to Enterprise cloud?
 
-We will need a [backup](../system-admin-guide/backup) of your OpenProject Installation which we will restore to your new Enterprise cloud. Please calculate with a downtime of approximately 60 minutes in regular cases. Please contact us to plan the migration and get more instructions.
+We will need a [backup](../system-admin-guide/backup) of your OpenProject Installation which we will restore to your new Enterprise cloud. Please calculate with a downtime of approximately 60 minutes in regular cases. Please keep in mind that this is a paid service. Contact us to plan the migration and get more instructions.
 
 ### How can I migrate from Enterprise cloud to Enterprise on-premises?
 

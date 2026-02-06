@@ -2,39 +2,33 @@
   @include extended-content--top
   @include extended-content--bottom
 
-  // UNDO "the very ugly hack to make the PageHeader sticky on mobile."
-  @media screen and (max-width: $breakpoint-sm)
-    #content-body div:has(page-header),
-    page-header
-      position: static
+  @media screen and (min-width: $breakpoint-lg)
+    @include extended-content--left
 
-  // Do not offset the breadcrumbs within documents as page header is nested within main layout
-  #wrapper .hidden-navigation .PageHeader-contextBar
-    margin-left: 0
+  @media screen and (min-width: $breakpoint-lg)
+    // Do not offset the breadcrumbs within documents as page header is nested within main layout
+    #wrapper .hidden-navigation .PageHeader-contextBar
+      margin-left: 0
 
 .op-document-view
-  height: 100%
-
   .PageHeader
     margin-bottom: var(--base-size-8) // Compensate for .bn-editor padding-top increase to maintain visual spacing
 
+  &--header
+    padding-top: var(--main-menu-toggler-top-spacing)
+
   &--main,
   &--sidebar
-    padding-top: var(--main-menu-toggler-top-spacing)
     padding-bottom: 10px
 
   &--header,
   &--editor
-    max-width: $blocknote-max-width
-    width: 100%
+    @media screen and (min-width: $breakpoint-lg)
+      max-width: $blocknote-max-width
+      width: 100%
+      margin: 0 auto
+      padding-left: var(--base-size-16, 1rem)
+      padding-right: var(--base-size-16, 1rem)
 
-  &--sidebar
-    @media screen and (min-width: $breakpoint-md)
-      border-left: var(--borderWidth-thin, 1px) solid var(--borderColor-muted, var(--color-border-muted))
-
-  @media screen and (min-width: $breakpoint-sm)
-    overflow: hidden
-    &--main,
-    &--sidebar
-      @include no-visible-scroll-bar
-      overflow: auto
+  .UnderlineNav
+    padding-left: var(--base-size-16, 1rem)

@@ -192,6 +192,54 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
           .to eq "[#{project.name}] Meeting series '#{series.title}' has been updated"
       end
     end
+
+    context "when updating only the location with recipients with different locales" do
+      let(:german_author) do
+        create(:user,
+               language: "de",
+               member_with_permissions: { project => %i(view_meetings edit_meetings) })
+      end
+
+      let(:english_recipient) do
+        create(:user,
+               language: "en",
+               member_with_permissions: { project => %i(view_meetings) })
+      end
+
+      let(:german_recipient) do
+        create(:user,
+               language: "de",
+               member_with_permissions: { project => %i(view_meetings) })
+      end
+
+      let(:instance) { described_class.new(model: series, user: german_author) }
+
+      let(:params) { { location: "New location" } }
+
+      before do
+        series.update!(author: german_author)
+        series.template.participants.delete_all
+        series.template.participants << MeetingParticipant.new(user: english_recipient, invited: true)
+        series.template.participants << MeetingParticipant.new(user: german_recipient, invited: true)
+        series.template.update!(location: "Old location")
+      end
+
+      it "does not send a schedule update when not necessary (Bug #67287)" do
+        expect(service_result).to be_success
+        perform_enqueued_jobs
+
+        expect(ActionMailer::Base.deliveries.count).to eq(2)
+
+        english_mail = ActionMailer::Base.deliveries.find { |m| m.to.include?(english_recipient.mail) }
+        german_mail = ActionMailer::Base.deliveries.find { |m| m.to.include?(german_recipient.mail) }
+
+        expect(english_mail.html_part.body).to include("Every day")
+        expect(english_mail.html_part.body).not_to include("Jeden Tag")
+
+        expect(german_mail.html_part.body).to include("Jeden Tag")
+        expect(german_mail.html_part.body).not_to include("Every day")
+      end
+    end
   end
 
   describe "rescheduling occurrences" do
@@ -308,6 +356,20 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
         expect(service_result.errors.messages[:base]).to include(
           I18n.t("activerecord.errors.models.recurring_meeting.must_cover_existing_meetings", count: 1)
         )
+      end
+    end
+
+    context "when changing end_after to iterations without providing iterations count" do
+      let(:params) do
+        {
+          end_after: "iterations",
+          iterations: nil
+        }
+      end
+
+      it "fails validation without raising an exception" do
+        expect(service_result).not_to be_success
+        expect(service_result.errors.messages[:iterations]).to include("is not a number.")
       end
     end
   end

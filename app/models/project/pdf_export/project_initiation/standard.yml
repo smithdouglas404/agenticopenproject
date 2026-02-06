@@ -57,7 +57,7 @@ cover:
     margin_top: 30
     no_border: true
     color: "008080"
-    size: 32
+    size: 30
   footer:
     margin_bottom: 20
     size: 12

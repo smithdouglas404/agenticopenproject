@@ -7,14 +7,14 @@ id:
     common:
       document_types:
         item_0:
-          name: Note
+          name: Catatan
         item_1:
-          name: Idea
+          name: Ide
         item_2:
           name: Proposal
         item_3:
-          name: Specification
+          name: Spesifikasi
         item_4:
-          name: Report
+          name: Laporan
         item_5:
-          name: Documentation
+          name: Dokumentasi

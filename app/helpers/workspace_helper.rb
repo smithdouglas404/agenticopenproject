@@ -35,15 +35,23 @@ module WorkspaceHelper
     program: :versions
   }.with_indifferent_access.freeze
 
-  def new_workspace_title(workspace, template = nil)
+  def new_workspace_title(workspace)
     return unless Project.workspace_types.key?(workspace.workspace_type)
 
-    if template && OpenProject::FeatureDecisions.project_initiation_active?
-      I18n.t(:"label_#{workspace.project_creation_wizard_artifact_name}")
-    else
-      I18n.t(:"label_#{workspace.workspace_type}_new")
-    end
+    I18n.t(:"label_#{workspace.workspace_type}_new")
   end
 
   def workspace_icon(type) = WORKSPACE_ICON_MAPPING[type]
+
+  # Returns a path to which the user should be redirected when cancelling the creation process of
+  # a workspace item
+  def workspace_creation_cancel_href(workspace, parent = nil)
+    if parent.present?
+      project_overview_path(parent.id)
+    elsif workspace.portfolio?
+      portfolios_path
+    else
+      projects_path
+    end
+  end
 end

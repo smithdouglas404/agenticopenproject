@@ -96,7 +96,7 @@ RSpec.describe "Weighted item lists and calculated values",
         click_on "Save"
 
         # ensure the processing finished
-        expect(find(row_selector(one))).to have_text("2.0")
+        expect(find(row_selector(one))).to have_text("(2)")
 
         expect(project.reload.custom_value_for(calculated_value).value).to eq("4.0")
       end

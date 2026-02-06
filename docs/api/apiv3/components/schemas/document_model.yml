@@ -11,8 +11,9 @@ properties:
     type: string
     description: The title chosen for the document
   description:
-    type: string
-    description: A text describing the document
+    allOf:
+      - $ref: './formattable.yml'
+      - description: A text describing the document
   # content_binary:
   #  type: string
   #  description: The binary content of the document, base64 encoded

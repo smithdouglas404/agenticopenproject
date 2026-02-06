@@ -134,6 +134,10 @@ export class PathHelperService {
     return `${this.staticBase}/my/notifications`;
   }
 
+  public myPasswordConfirmationDialogPath() {
+    return `${this.staticBase}/my/password_confirmation_dialog`;
+  }
+
   public newsPath(newsId:string) {
     return `${this.staticBase}/news/${newsId}`;
   }
@@ -403,6 +407,10 @@ export class PathHelperService {
     return `${this.workPackagesPath(null)}/bulk`;
   }
 
+  public workPackagesBulkReassignmentPath() {
+    return `${this.workPackagesPath(null)}/bulk/reassign`;
+  }
+
   public textFormattingHelp() {
     return `${this.staticBase}/help/text_formatting`;
   }
@@ -449,5 +457,9 @@ export class PathHelperService {
 
   public homePath() {
     return `${this.staticBase}/`;
+  }
+
+  public externalRedirectPath(url:string) {
+    return `${this.staticBase}/external_redirect?url=${encodeURIComponent(url)}`;
   }
 }

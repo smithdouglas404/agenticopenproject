@@ -109,6 +109,23 @@ ko:
       explanation:
         text: "사용자의 개별 작업(예: 작업 패키지를 두 번 업데이트)은 연령 차이가 지정된 기간 미만인 경우 단일 작업으로 집계됩니다. 애플리케이션 내에서 단일 작업으로 표시됩니다. 또한 이는 전송되는 이메일 수를 줄이는 동일한 시간만큼 알림을 지연시키고 %{webhook_link} 지연에도 영향을 미칩니다."
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "모델 컨텍스트 프로토콜을 통해 AI 에이전트는 이 OpenProject 인스턴스에 의해 노출된 도구와 리소스를 사용자에게 제공할 수 있습니다."
+        resources_heading: "리소스"
+        resources_description: "OpenProject는 다음 도구를 구현합니다. 원하는 대로 각 도구를 활성화하고, 이름을 바꾸고, 설명할 수 있습니다. 자세한 내용은 [MCP 리소스의 문서](docs_url)를 참조하세요."
+        resources_submit: "리소스 업데이트"
+        tools_heading: "도구"
+        tools_description: "OpenProject는 다음 도구를 구현합니다. 원하는 대로 각 도구를 활성화하고, 이름을 바꾸고, 설명할 수 있습니다. 자세한 내용은 [MCP 도구의 문서](docs_url)를 참조하세요."
+        tools_submit: "도구 업데이트"
+      multi_update:
+        success: "MCP 구성이 업데이트되었습니다."
+      server_form:
+        description_caption: "MCP 서버에 연결하는 다른 애플리케이션에 대해 MCP 서버가 설명되는 방식입니다."
+        title_caption: "MCP 서버에 연결하는 애플리케이션에 표시되는 짧은 제목입니다."
+      update:
+        failure: "MCP 구성을 업데이트할 수 없습니다."
+        success: "MCP 구성이 업데이트되었습니다."
     scim_clients:
       authentication_methods:
         sso: "ID 공급자의 JWT"
@@ -706,9 +723,11 @@ ko:
           create_button: "만들기"
           name_label: "토큰 이름"
       created_dialog:
+        one_time_warning: "이번에만 이 토큰이 표시됩니다. 지금 이 토큰을 복사해야 합니다."
         token/api:
           title: "API 토큰이 생성되었습니다"
-          warning: "이번에만 이 토큰이 표시됩니다. 지금 이 토큰을 복사해야 합니다."
+        token/rss:
+          title: "RSS 토큰이 생성되었습니다"
       failed_to_reset_token: "액세스 토큰을 재설정하지 못함: %{error}"
       failed_to_create_token: "액세스 토큰을 만들지 못했습니다: %{error}"
       failed_to_revoke_token: "액세스 토큰을 취소하지 못했습니다: %{error}"
@@ -718,6 +737,9 @@ ko:
       notice_api_token_revoked: "API 토큰이 삭제되었습니다. 새 토큰을 만들려면 API 섹션의 버튼을 사용하세요."
       notice_rss_token_revoked: "RSS 토큰이 삭제되었습니다. 새 토큰을 만들려면 RSS 섹션의 링크를 사용하세요."
       notice_ical_token_revoked: '"%{project_name}" 프로젝트의 "%{calendar_name}" 캘린더에 대한 iCalendar 토큰 "%{token_name}"이(가) 취소되었습니다. 이 토큰이 포함된 iCalendar URL이 이제 유효하지 않습니다.'
+    password_confirmation_dialog:
+      confirmation_required: "이 변경 내용을 확인하려면 계정 암호를 입력해야 합니다."
+      title: "계속하려면 암호 확인"
   news:
     index:
       no_results_title_text: 보고할 소식이 없습니다.
@@ -1222,6 +1244,10 @@ ko:
         onthefly: "자동 사용자 생성"
         port: "포트"
         tls_certificate_string: "LDAP 서버 SSL 인증서"
+      mcp_configuration:
+        enabled: 활성화됨
+        title: 제목
+        description: 설명
       member:
         roles: "역할"
       notification:
@@ -1480,6 +1506,7 @@ ko:
         even: "에 짝수를 입력해 주세요"
         exclusion: "예약됨"
         feature_disabled: '- 사용할 수 없습니다.'
+        feature_disabled_for_project: '- 이 프로젝트에서 비활성화되었습니다.'
         file_too_large: "은(는) 너무 큽니다. (최대 %{count} 바이트)"
         filter_does_not_exist: "필터가 존재하지 않습니다."
         format: "- 필요한 형식 '%{expected}'과(와) 일치하지 않습니다."
@@ -1502,7 +1529,8 @@ ko:
         not_a_datetime: "은(는) 유효한 날짜가 아닙니다."
         not_a_number: "은(는) 숫자가 아닙니다."
         not_allowed: "- 사용 권한이 없어 유효하지 않습니다."
-        not_json: "- 유효한 JSON 개체가 아닙니다."
+        not_json: "- JSON으로 구문 분석할 수 없습니다."
+        not_json_object: "- JSON 개체가 아닙니다."
         not_an_integer: "은(는) 정수가 아닙니다."
         not_an_iso_date: "은(는) 유효한 날짜가 아닙니다. 필요한 형식: YYYY-MM-DD."
         not_same_project: "은(는) 동일한 프로젝트에 속하지 않습니다."
@@ -1897,7 +1925,10 @@ ko:
       status: "작업 패키지 상태"
       token/api:
         other: 액세스 토큰
-      type: "타입"
+      token/rss:
+        other: "RSS 토큰"
+      type:
+        other: "유형"
       user: "사용자"
       version: "버전"
       workflow: "워크플로"
@@ -2110,6 +2141,7 @@ ko:
   button_click_to_reveal: "표시하려면 클릭"
   button_close: "닫기"
   button_collapse_all: "모두 축소"
+  button_confirm: "확인"
   button_configure: "구성"
   button_continue: "계속"
   button_complete: "완료"
@@ -2142,6 +2174,7 @@ ko:
   button_print: "인쇄"
   button_quote: "인용"
   button_remove: 제거
+  button_remove_permanently: "영구적으로 제거"
   button_remove_reminder: "미리 알림 제거"
   button_rename: "이름 바꾸기"
   button_replace: "교체하기"
@@ -2373,7 +2406,7 @@ ko:
       baseline_comparison: 기준선 비교
       board_view: 고급 보드
       calculated_values: 계산된 값
-      conditional_highlighting: 조건부 강조 표시
+      capture_external_links: 외부 링크 캡처
       internal_comments: 내부 코멘트
       custom_actions: 사용자 지정 작업
       custom_field_hierarchies: 계층
@@ -2383,10 +2416,12 @@ ko:
       edit_attribute_groups: 특성 그룹 편집
       gantt_pdf_export: Gantt PDF 내보내기
       ldap_groups: LDAP 사용자 및 그룹 동기화
+      mcp_server: MCP 서버
       nextcloud_sso: Nextcloud 저장소용 Single Sign-On
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 파일 저장소
       placeholder_users: 플레이스홀더 사용자
       portfolio_management: 포트폴리오 관리
+      project_creation_wizard: 프로젝트 시작 요청
       project_list_sharing: 프로젝트 목록 공유
       readonly_work_packages: 읽기 전용 작업 패키지
       scim_api: SCIM 서버 API
@@ -2427,8 +2462,8 @@ ko:
         description: "참조된 특성과 텍스트를 사용하여 자동으로 생성되는 제목을 만듭니다."
       customize_life_cycle:
         description: "PM2 프로젝트 사이클 계획에서 제공되는 것과는 다른 프로젝트 단계를 만들고 구성합니다."
-      conditional_highlighting:
-        description: "대다수와 차별화되는 특정 작업 패키지가 필요하신가요? 작업 패키지 테이블에서 조건부 강조 표시를 사용하세요."
+      capture_external_links:
+        description: "사용자가 외부 링크를 방문하기 전에 캡처하고 경고를 표시하여 소셜 엔지니어링 공격을 방지하세요."
       work_package_query_relation_columns:
         description: "작업 패키지 목록에서 관계 또는 자식 요소를 확인해야 하나요?"
       edit_attribute_groups:
@@ -2458,6 +2493,8 @@ ko:
       custom_actions:
         title: "사용자 지정 작업"
         description: "사용자 지정 작업은 상태, 역할, 유형 또는 프로젝트를 기반으로 특정 작업 패키지에서 사용할 수 있도록 미리 정의된 작업 세트에 대한 원클릭 바로 가기입니다."
+      mcp_server:
+        description: "MCP를 통해 AI 에이전트를 OpenProject 인스턴스와 통합합니다."
       nextcloud_sso:
         title: "Nextcloud 저장소용 Single Sign-On"
         description: "Single Sign-On을 사용하여 Nextcloud 저장소에 대한 원활하고 안전한 인증을 활성화합니다. 액세스 관리를 간소화하고 사용자 편의성을 개선합니다."
@@ -2469,6 +2506,8 @@ ko:
         description: "기존 ID 시스템에서 원활하게 액세스하고 통합할 수 있도록 SAML 또는 OpenID Connect를 사용하여 외부 SSO 공급자를 통해 사용자가 로그인할 수 있게 합니다."
       virus_scanning:
         description: "OpenProject에서 업로드된 파일은 바이러스 검사를 수행한 후에 다른 사용자가 액세스해야 합니다."
+      project_creation_wizard:
+        description: "프로젝트 관리자가 프로젝트 시작 요청을 작성하는 데 도움이 되는 단계별 마법사를 생성합니다."
       placeholder_users:
         title: 플레이스홀더 사용자
         description: >
@@ -2765,19 +2804,17 @@ ko:
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         missing: "아직 강조 표시된 기능이 없습니다."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
             이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
           new_features_list:
-            line_0: 실시간 문서 공동 작업.
-            line_1: 관련 프로젝트를 프로그램 및 포트폴리오로 구성하여 전략적 목표에 집중할 수 있는 기능(Enterprise 추가 기능)입니다.
-            line_2: 초안 모드, 프레젠테이션 모드, 향상된 결과, iCal 구독으로 개선된 미팅 관리가 가능합니다.
-            line_3: 보다 제한적인 권한으로 SharePoint 통합이 업데이트되었습니다(Enterprise 추가 기능).
-            line_4: 새로운 탭, 구성 가능한 위젯, 개선된 레이아웃으로 프로젝트 개요를 새롭게 디자인했습니다.
-            line_5: 동일한 프로젝트에서 작업 중이지 않은 사용자의 개인 정보를 보다 엄격하게 보호하는 옵션입니다.
-            line_6: 향상된 템플릿 선택으로 프로젝트 생성 흐름이 개선되었습니다.
-            line_7: 유형과 상태를 포함한 더욱 스마트한 글로벌 검색으로 여러 자동 완성기의 정확도가 개선되었습니다.
-            line_8: ALT 텍스트와 개선된 차트 색상으로 접근성이 개선되었습니다.
+            line_0: 자동화된 프로젝트 시작(Enterprise 추가 기능).
+            line_1: "미팅: 새 작업 패키지 또는 기존 작업 패키지를 결과로 추가합니다."
+            line_2: "Meetings: show iCal responses in OpenProject."
+            line_3: "반복 미팅: 의제 항목을 다음 항목에 복제합니다."
+            line_4: "커뮤니티에 릴리스: 특성이 강조 표시됩니다."
+            line_5: 사용자 제공 콘텐츠에서 외부 링크를 열기 전에 표시되는 경고입니다(Enterprise 추가 기능).
+            line_6: 활동 탭 및 문서 모듈을 비롯한 성능 및 사용자 환경이 개선되었습니다.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -2845,14 +2882,17 @@ ko:
   instructions_after_error: "%{signin}을(를) 클릭하여 다시 로그인해 볼 수 있습니다. 오류가 계속되면 관리자에게 도움을 요청하세요."
   menus:
     admin:
-      mail_notification: "이메일 알림"
-      mails_and_notifications: "이메일 및 알림"
+      ai: "인공 지능(AI)"
       aggregation: "집계"
       api_and_webhooks: "API 및 webhook"
+      mail_notification: "이메일 알림"
+      mails_and_notifications: "이메일 및 알림"
+      mcp_configurations: "모델 컨텍스트 프로토콜(MCP)"
     quick_add:
       label: "추가…"
   my_account:
     access_tokens:
+      description: "공급자 토큰은 OpenProject에서 발급하며, 다른 애플리케이션이 액세스하도록 허용합니다. 클라이언트 토큰은 다른 애플리케이션에서 발급하며, OpenProject가 액세스하도록 허용합니다."
       no_results:
         title: "표시할 수 있는 접근 토큰이 없습니다."
         description: "모두 비활성화 되었습니다. 관리 메뉴에서 가용 상태로 되돌릴 수 있습니다."
@@ -2862,34 +2902,56 @@ ko:
         expiration: "만료"
       indefinite_expiration: "사용 안 함"
       simple_revoke_confirmation: "이 토큰을 취소하시겠습니까?"
+      tabs:
+        client:
+          title: "클라이언트 토큰"
+        provider:
+          title: "공급자 토큰"
       token/api:
+        blank_description: "아직 API 토큰이 없습니다. 아래 버튼을 사용하여 생성할 수 있습니다."
+        blank_title: "API 토큰 없음"
         title: "API"
+        table_title: "API 토큰"
         text_hint: "API 토큰을 사용하면 타사 애플리케이션이 REST API를 통해 이 OpenProject 인스턴스와 통신할 수 있습니다."
+        static_token_name: "API 토큰"
         disabled_text: "관리자가 API 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
         add_button: "API 토큰"
-      api:
-        static_token_name: "API 토큰"
       ical:
+        blank_description: "iCalendar 토큰을 추가하려면 프로젝트의 캘린더 모듈 내에서 새 캘린더 또는 기존 캘린더를 구독하세요. 필요한 권한이 있어야 합니다."
+        blank_title: "iCalendar 토큰 없음"
         title: "iCalendar"
+        table_title: "iCalendar 토큰"
         text_hint_link: "iCalendar 토큰을 사용하여 사용자가 [OpenProject 캘린더를 구독](docs_url)하고 외부 클라이언트의 최신 작업 패키지 정보를 볼 수 있습니다."
         disabled_text: "관리자가 iCalendar 구독을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
-        empty_text_hint: "iCalendar 토큰을 추가하려면 프로젝트의 캘린더 모듈 내에서 새 캘린더 또는 기존 캘린더를 구독하세요. 필요한 권한이 있어야 합니다."
-      oauth:
+      oauth_application:
+        active_tokens: "활성 토큰"
+        blank_description: "타사 애플리케이션 액세스가 구성 및 활성화되어 있지 않습니다."
+        blank_title: "OAuth 애플리케이션 토큰 없음"
+        last_used_at: "마지막 사용"
         title: "OAuth"
-        text_hint: "OAuth 토큰을 사용하면 타사 애플리케이션이 이 OpenProject 인스턴스와 연결할 수 있습니다."
-        empty_text_hint: "사용자를 위해 구성되고 활성화된 타사 애플리케이션 액세스가 없습니다. 이 기능을 활성화하려면 관리자에게 문의하세요."
-      rss:
+        table_title: "OAuth 애플리케이션 토큰"
+        text_hint: "OAuth 애플리케이션 토큰을 통해 타사 애플리케이션이 이 OpenProject 인스턴스와 연결할 수 있습니다."
+      oauth_client:
+        blank_description: "아직 OAuth 클라이언트 토큰이 없습니다."
+        blank_title: "OAuth 클라이언트 토큰 없음"
+        failed: "오류가 발생하여 토큰을 제거할 수 없습니다. 나중에 다시 시도하세요."
+        integration_type: "통합 유형"
+        table_title: "OAuth 클라이언트 토큰"
+        text_hint: "OAuth 클라이언트 토큰을 통해 이 OpenProject 인스턴스가 파일 저장소와 같은 외부 애플리케이션과 연결할 수 있습니다."
+        title: "OAuth"
+        remove_token: "이 토큰을 제거하시겠습니까? %{integration}에서 다시 로그인해야 합니다."
+        removed: "OAuth 클라이언트 토큰이 제거되었습니다"
+        unknown_integration: "알 수 없음"
+      token/rss:
+        add_button: "RSS 토큰"
+        blank_description: "아직 RSS 토큰이 없습니다. 아래 버튼을 사용하여 생성할 수 있습니다."
+        blank_title: "RSS 토큰 없음"
         title: "RSS"
+        table_title: "RSS 토큰"
         text_hint: "RSS 토큰을 사용하면 외부 RSS 리더를 통해 이 OpenProject 인스턴스의 최신 변경 사항을 확인할 수 있습니다."
         static_token_name: "RSS 토큰"
         disabled_text: "관리자가 RSS 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
       storages:
-        title: "파일 저장소"
-        text_hint: "파일 저장소 토큰은 이 OpenProject 인스턴스를 외부 파일 저장소에 연결합니다."
-        empty_text_hint: "사용자 계정에 연결된 저장소 액세스 권한이 없습니다."
-        revoke_token: "이 토큰을 제거하시겠습니까? %{storage}에서 다시 로그인해야 합니다."
-        removed: "파일 저장소 토큰이 제거되었습니다."
-        failed: "오류가 발생하여 토큰을 제거할 수 없습니다. 나중에 다시 시도하세요."
         unknown_storage: "알 수 없는 저장소"
   notifications:
     reasons:
@@ -2951,6 +3013,7 @@ ko:
   label_always_visible: "항상 표시"
   label_announcement: "공지 사항"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "API 액세스 키"
   label_api_access_key_created_on: "API 액세스 키가 %{value} 전에 생성되었습니다."
   label_api_access_key_type: "API"
@@ -3206,6 +3269,7 @@ ko:
   label_journal_diff: "설명 비교"
   label_language: "언어"
   label_languages: "언어"
+  label_external_links: "외부 링크"
   label_locale: "언어 및 지역"
   label_jump_to_a_project: "프로젝트로 이동..."
   label_keyword_plural: "키워드"
@@ -3383,9 +3447,6 @@ ko:
   label_project_hierarchy: "프로젝트 계층 구조"
   label_project_mappings: "프로젝트"
   label_project_new: "새 프로젝트"
-  label_project_initiation_request: "새 프로젝트 시작 요청"
-  label_project_creation_wizard: "새 프로젝트 생성 마법사"
-  label_project_mandate: "새 프로젝트 위임"
   label_project_plural: "프로젝트"
   label_project_list_plural: "프로젝트 목록"
   label_project_life_cycle: "프로젝트 수명 주기"
@@ -3848,7 +3909,7 @@ ko:
   notice_not_authorized: "이 페이지에 액세스할 권한이 없습니다."
   notice_not_authorized_archived_project: "액세스하려는 프로젝트는 이미 보관되어 있습니다."
   notice_requires_enterprise_token: "Enterprise 토큰이 누락되었거나 이 페이지에 대한 액세스를 허용하지 않습니다."
-  notice_password_confirmation_failed: "암호가 올바르지 않습니다. 계속할 수 없습니다."
+  notice_password_confirmation_failed: "입력한 암호가 올바르지 않습니다."
   notice_principals_found_multiple: "%{number} 개의 결과가 발견되었습니다.\n첫번째 결과를 보려면 탭 해주세요."
   notice_principals_found_single: "한 개의 결과가 있습니다.\n보려면 탭 해주세요."
   notice_parent_item_not_found: "부모 항목을 찾을 수 없습니다."
@@ -4197,6 +4258,9 @@ ko:
   setting_allowed_link_protocols: "허용된 링크 프로토콜"
   setting_allowed_link_protocols_text_html: >-
     이러한 프로토콜이 작업 패키지 설명, 긴 텍스트 필드 및 코멘트에서 링크로 렌더링되도록 허용합니다. 예: %{tel_code} 또는 %{element_code}. 라인별로 하나의 프로토콜을 입력합니다. <br/> %{http_code}, %{https_code} 및 %{mailto_code} 프로토콜은 항상 허용됩니다.
+  setting_capture_external_links: "외부 링크 캡처"
+  setting_capture_external_links_text: >
+    활성화된 경우, 서식이 지정된 텍스트의 모든 외부 링크는 애플리케이션을 종료하기 전에 경고 페이지를 통해 리디렉션됩니다. 따라서 잠재적인 악성 외부 웹사이트로부터 사용자를 보호할 수 있습니다.
   setting_after_first_login_redirect_url: "첫 번째 로그인 리디렉션"
   setting_after_first_login_redirect_url_text_html: >
     첫 로그인 후 사용자를 리디렉션할 경로를 설정하세요. 비어 있으면 온보딩 투어의 홈페이지로 리디렉션됩니다. <br/> 예: <code>/my/page</code>
@@ -4209,11 +4273,17 @@ ko:
   setting_apiv3_cors_origins_text_html: >
     CORS가 활성화된 경우, OpenProject API에 액세스하도록 허용된 원본이 있습니다. <br/> <a href="%{origin_link}" target="_blank">원본 헤더의 설명서</a>에서 예상 값 지정 방법을 확인하세요.
   setting_apiv3_write_readonly_attributes: "읽기 전용 특성에 대한 쓰기 액세스"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    활성화하면, API를 통해 관리자가 생성 중에 createdAt 및 author 등의 정적 읽기 전용 특성을 작성할 수 있습니다. <br/> <strong>경고:</strong> 이 설정은 데이터 가져오기 등의 사용 사례가 있지만 관리자가 다른 사용자로 가장하여 항목을 만들 수 있습니다. 그러나 모든 생성 요청은 실제 작성자와 함께 기록되고 있습니다. </br> 특성 및 지원되는 리소스에 대한 자세한 내용은 %{api_documentation_link}에서 참조하세요.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    활성화된 경우, API를 통해 관리자는 생성 중에 createdAt 및 author 등 정적 읽기 전용 특성을 작성할 수 있습니다.
+  setting_apiv3_write_readonly_attributes_warning: >
+    이 설정에는 데이터 가져오기 등의 사용 사례가 있지만 관리자가 다른 사용자로 항목을 만든 것처럼 가장할 수 있습니다. 그러나 모든 생성 요청은 실제 작성자로 기록됩니다.
+  setting_apiv3_write_readonly_attributes_additional: >
+    특성 및 지원되는 리소스에 대한 자세한 내용은 %{api_documentation_link}에서 참조하세요.
   setting_apiv3_max_page_size: "최대 API 페이지 크기"
-  setting_apiv3_max_page_instructions_html: >
-    API가 응답할 최대 페이지 크기를 설정하세요. 단일 페이지에서 더 많은 값을 반환하는 API 요청을 수행할 수 없습니다. <br/> <strong>경고:</strong> 이 값이 필요한 이유가 확실한 경우에만 이 값을 변경하세요. 높은 값으로 설정하면 성능에 상당한 영향을 미치고, 페이지당 옵션보다 낮은 값은 페이지가 매겨진 보기에서 오류를 일으킵니다.
+  setting_apiv3_max_page_size_instructions: >
+    API가 응답할 최대 페이지 크기를 설정합니다. 단일 페이지에 더 많은 값을 반환하는 API 요청은 수행할 수 없습니다.
+  setting_apiv3_max_page_size_warning: >
+    필요한 이유가 확실한 경우에만 이 값을 변경하세요. 높은 값으로 설정하면 성능에 상당한 영향을 미치며, 페이지당 옵션보다 낮은 값은 페이지가 매겨진 보기에서 오류를 일으킵니다.
   setting_apiv3_docs: "설명서"
   setting_apiv3_docs_enabled: "문서 페이지 활성화"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4398,7 +4468,7 @@ ko:
       omniauth_direct_login_hint_html: >
         이 옵션이 활성화된 경우, 로그인 요청은 구성된 omniauth 공급자로 리디렉션됩니다. 로그인 드롭다운 및 로그인 페이지가 비활성화됩니다. <br/> <strong>참고:</strong> 또한 암호 로그인을 비활성화하지 않는 경우에는 이 옵션이 활성화된 상태에서 사용자가 <code>%{internal_path}</code> 로그인 페이지를 방문하여 내부에서 계속 로그인할 수 있습니다.
       remapping_existing_users_hint: >
-        활성화된 경우, 사용자가 이전에 해당 공급자를 통해 로그인한 적이 없더라도, 구성된 모든 ID 공급자가 이메일 주소를 기반으로 기존 사용자에 로그인하도록 허용합니다. 이 옵션은 OpenProject 인스턴스를 새 SSO 공급자로 마이그레이션할 때 유용할 수 있지만 인스턴스의 일부 사용자가 신뢰하지 않는 공급자를 이용할 때는 권장되지 않습니다.
+        활성화된 경우, 사용자가 이전에 해당 공급자를 통해 로그인한 적이 없더라도, 구성된 모든 ID 공급자가 사용자 이름을 기반으로 기존 사용자에 로그인하도록 허용합니다. 이 옵션은 OpenProject 인스턴스를 새 SSO 공급자로 마이그레이션할 때 유용할 수 있지만 인스턴스의 일부 사용자가 신뢰하지 않는 공급자를 이용할 때는 권장되지 않습니다.
     attachments:
       whitelist_text_html: >
         업로드된 파일의 유효한 파일 확장명 및/또는 MIME 형식 목록을 정의합니다. <br/> 파일 확장명(예: <code>%{ext_example}</code>) 또는 MIME 형식(예: <code>%{mime_example}</code>)을 입력합니다. <br/> 모든 파일 형식을 업로드할 수 있도록 허용하려면 비워 둡니다. 여러 값이 허용됩니다(각 값에 대해 한 줄).
@@ -4672,6 +4742,7 @@ ko:
     참고: 활성화하는 경우, <a href="%{information_panel_path}">%{information_panel_label}</a> 관리 패널 및 홈페이지에서 설치 상태가 나오는 배지가 표시됩니다. 배지는 관리자에게만 표시됩니다. <br/> 배지는 공식 OpenProject 릴리스 데이터베이스와 비교하여 현재 OpenProject 버전을 확인하고 업데이트 또는 알려진 취약성에 대해 알려줍니다. 이 검사에서 제공하는 사항, 사용 가능한 업데이트를 제공하기 위해 필요한 데이터 및 이 검사를 비활성화하는 방법에 대한 자세한 내용은 <a href="%{more_info_url}">구성 문서</a>를 참조하십시오.
   text_own_membership_delete_confirmation: "권한의 일부 또는 전부를 삭제하려고 합니다. 이렇게 한 후에는 이 프로젝트를 더 이상 편집하지 못할 수 있습니다.\n계속하시겠습니까?"
   text_permanent_delete_confirmation_checkbox_label: "이 삭제는 되돌릴 수 없음을 이해합니다."
+  text_permanent_remove_confirmation_checkbox_label: "이 제거는 되돌릴 수 없음을 이해합니다"
   text_plugin_assets_writable: "플러그인 자산 디렉터리 쓰기 가능"
   text_powered_by: "%{link} 제공"
   text_project_identifier_info: "소문자(a-z), 숫자, 대시(-) 및 밑줄(_)만 허용됩니다. 소문자로 시작해야 합니다."
@@ -4761,8 +4832,8 @@ ko:
       other: "일시적으로 잠김 (%{count} 로그인 시도 실패)"
     confirm_status_change: "%{name} 상태가 변경됩니다. 계속하시겠습니까?"
     deleted: "사용자 삭제됨"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "자신의 사용자 상태는 변경할 수 없습니다."
+    error_admin_change_on_non_admin: "관리자만 관리자 사용자의 상태를 변경할 수 있습니다."
     error_status_change_failed: "다음 오류 때문에 사용자 상태 변경 실패함: %{errors}"
     invite: 이메일을 통해 사용자 초대
     invited: 초대됨
@@ -5166,3 +5237,8 @@ ko:
   token:
     hashed_token:
       display_value_placeholder: "***"
+  external_link_warning:
+    title: "OpenProject 종료"
+    warning_message: "OpenProject를 종료하고 외부 웹사이트를 방문하려고 합니다. 외부 웹사이트는 당사의 통제를 받지 않으며 개인정보 보호 및 보안 정책이 다를 수 있다는 점에 유의하시기 바랍니다."
+    continue_message: "다음 외부 링크로 계속하시겠습니까?"
+    continue_button: "외부 웹사이트로 계속하기"

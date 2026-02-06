@@ -273,6 +273,55 @@ RSpec.describe MeetingMailer do
       end
     end
 
+    describe "calendar MIME part for email client integration" do
+      def find_calendar_part(message)
+        message.all_parts.find { |p| p.content_type&.include?("text/calendar") && !p.content_disposition&.include?("attachment") }
+      end
+
+      it "includes a text/calendar part with REQUEST method" do
+        calendar_part = find_calendar_part(mail)
+
+        expect(calendar_part).to be_present
+        expect(calendar_part.content_type).to include("text/calendar")
+        expect(calendar_part.content_type).to include("method=REQUEST")
+      end
+
+      it "includes the ICS content in the calendar part" do
+        calendar_part = find_calendar_part(mail)
+
+        expect(calendar_part.body.decoded).to include("BEGIN:VCALENDAR")
+        expect(calendar_part.body.decoded).to include("METHOD:REQUEST")
+        expect(calendar_part.body.decoded).to include("Important meeting")
+      end
+
+      it "also includes the ICS as a downloadable attachment" do
+        attachment = mail.attachments["meeting.ics"]
+
+        expect(attachment).to be_present
+        expect(attachment.content_type).to include("text/calendar")
+        expect(attachment.body.decoded).to include("BEGIN:VCALENDAR")
+      end
+
+      context "when the meeting is cancelled" do
+        let(:mail) { described_class.cancelled(meeting, author, author) }
+
+        it "includes a text/calendar part with CANCEL method" do
+          calendar_part = find_calendar_part(mail)
+
+          expect(calendar_part).to be_present
+          expect(calendar_part.content_type).to include("text/calendar")
+          expect(calendar_part.content_type).to include("method=CANCEL")
+        end
+
+        it "includes the ICS content with CANCEL method" do
+          calendar_part = find_calendar_part(mail)
+
+          expect(calendar_part.body.decoded).to include("BEGIN:VCALENDAR")
+          expect(calendar_part.body.decoded).to include("METHOD:CANCEL")
+        end
+      end
+    end
+
     context "with a recipient with another time zone" do
       let!(:preference) { watcher1.pref.update(time_zone: "Asia/Tokyo") }
       let(:mail) { described_class.icalendar_notification(meeting, watcher1, author) }
@@ -316,6 +365,66 @@ RSpec.describe MeetingMailer do
 
           expect(mail.to).to contain_exactly(watcher1.mail)
         end
+      end
+    end
+  end
+
+  describe "participant_added" do
+    let(:added_participant_name) { "New Participant" }
+    let(:mail) { described_class.participant_added(meeting, watcher1, author, added_participant: added_participant_name) }
+
+    it "renders the headers" do
+      expect(mail.subject).to include(meeting.project.name)
+      expect(mail.subject).to include("Participant added")
+      expect(mail.to).to contain_exactly(watcher1.mail)
+      expect(mail.from).to eq([ApplicationMailer.reply_to_address])
+    end
+
+    it "renders the text body with participant info" do
+      User.execute_as(watcher1) do
+        expect(mail.text_part.body).to include(meeting.project.name)
+        expect(mail.text_part.body).to include(meeting.title)
+        expect(mail.text_part.body).to include(added_participant_name)
+        expect(mail.text_part.body).to include(author.name)
+      end
+    end
+
+    it "renders the html body with participant info" do
+      User.execute_as(watcher1) do
+        expect(mail.html_part.body).to include(meeting.project.name)
+        expect(mail.html_part.body).to include(meeting.title)
+        expect(mail.html_part.body).to include(added_participant_name)
+        expect(mail.html_part.body).to include(author.name)
+      end
+    end
+  end
+
+  describe "participant_removed" do
+    let(:removed_participant_name) { "Removed Participant" }
+    let(:mail) { described_class.participant_removed(meeting, watcher1, author, removed_participant: removed_participant_name) }
+
+    it "renders the headers" do
+      expect(mail.subject).to include(meeting.project.name)
+      expect(mail.subject).to include("Participant removed")
+      expect(mail.to).to contain_exactly(watcher1.mail)
+      expect(mail.from).to eq([ApplicationMailer.reply_to_address])
+    end
+
+    it "renders the text body with participant info" do
+      User.execute_as(watcher1) do
+        expect(mail.text_part.body).to include(meeting.project.name)
+        expect(mail.text_part.body).to include(meeting.title)
+        expect(mail.text_part.body).to include(removed_participant_name)
+        expect(mail.text_part.body).to include(author.name)
+      end
+    end
+
+    it "renders the html body with participant info" do
+      User.execute_as(watcher1) do
+        expect(mail.html_part.body).to include(meeting.project.name)
+        expect(mail.html_part.body).to include(meeting.title)
+        expect(mail.html_part.body).to include(removed_participant_name)
+        expect(mail.html_part.body).to include(author.name)
       end
     end
   end

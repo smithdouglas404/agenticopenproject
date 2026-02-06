@@ -392,8 +392,6 @@ zh-TW:
     label_me: "我"
     label_meeting_agenda: "會議大綱"
     label_meeting_minutes: "會議記錄"
-    label_menu_collapse: "收合"
-    label_menu_expand: "展開"
     label_more_than_ago: "超過幾天"
     label_moderate_comment: "審閱留言"
     label_next: "下一個"
@@ -427,6 +425,7 @@ zh-TW:
     label_remove_row: "移除列"
     label_report: "報表"
     label_repository_plural: "版本庫"
+    label_resize_project_menu: "調整專案功能表大小"
     label_save_as: "另存為"
     label_search_columns: "選取欄位"
     label_select_watcher: "選擇監看者"
@@ -632,9 +631,6 @@ zh-TW:
           add: "新增設定"
           already_selected: "已選取此專案"
           remove: "移除專案設定"
-    password_confirmation:
-      field_description: "您需要輸入您的帳戶密碼，以確認此更改。"
-      title: "確認您的密碼以便繼續"
     pagination:
       no_other_page: "您位於唯一頁面上。"
       pages_skipped: "跳過的頁面。"

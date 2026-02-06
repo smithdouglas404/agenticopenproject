@@ -114,10 +114,13 @@ module MeetingAgendaItems
                      tag: :button,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting,
-                                                           @meeting_agenda_item,
-                                                           presentation_mode: @presentation_mode,
-                                                           current_occurrence: @current_occurrence),
+                       href: edit_project_meeting_agenda_item_path(
+                         @meeting_agenda_item.meeting.project,
+                         @meeting_agenda_item.meeting,
+                         @meeting_agenda_item,
+                         presentation_mode: @presentation_mode,
+                         current_occurrence: @current_occurrence
+                       ),
                        method: "GET"
                      } }) do |item|
         item.with_leading_visual_icon(icon: :pencil)
@@ -129,30 +132,79 @@ module MeetingAgendaItems
                      tag: :button,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
-                                                           display_notes_input: true, current_occurrence: @current_occurrence),
+                       href: edit_project_meeting_agenda_item_path(
+                         @meeting_agenda_item.meeting.project,
+                         @meeting_agenda_item.meeting,
+                         @meeting_agenda_item,
+                         display_notes_input: true,
+                         current_occurrence: @current_occurrence
+                       ),
                        method: "GET"
                      } }) do |item|
         item.with_leading_visual_icon(icon: :note)
       end
     end
 
-    def add_outcome_action_item(menu)
-      menu.with_item(label: t("label_agenda_item_add_outcome"),
-                     tag: :button,
-                     content_arguments: { data: {
-                       action: "click->meetings--submit#intercept",
-                       href: new_meeting_outcome_path(@meeting_agenda_item.meeting,
-                                                      meeting_agenda_item_id: @meeting_agenda_item&.id,
-                                                      current_occurrence: @current_occurrence),
-                       method: "GET"
-                     } }) do |item|
-        item.with_leading_visual_icon(icon: :plus)
+    def add_outcome_action_items(menu)
+      menu.with_sub_menu_item(label: t("label_agenda_item_add_outcome")) do |submenu|
+        submenu.with_leading_visual_icon(icon: :plus)
+
+        with_item_group(submenu) do
+          add_write_outcome_item(submenu)
+          add_existing_work_package_item(submenu)
+          add_new_work_package_item(submenu)
+        end
       end
     end
 
+    def add_write_outcome_item(submenu)
+      submenu.with_item(label: t("label_write_outcome"),
+                        tag: :button,
+                        content_arguments: outcome_action_data(
+                          new_project_meeting_agenda_item_outcome_path(
+                            @meeting_agenda_item.meeting.project,
+                            @meeting_agenda_item.meeting,
+                            @meeting_agenda_item,
+                            kind: :information,
+                            current_occurrence: @current_occurrence
+                          )
+                        ))
+    end
+
+    def add_existing_work_package_item(submenu)
+      submenu.with_item(label: t("label_existing_work_package"),
+                        tag: :button,
+                        content_arguments: outcome_action_data(
+                          new_project_meeting_agenda_item_outcome_path(
+                            @meeting.project,
+                            @meeting,
+                            @meeting_agenda_item,
+                            kind: :work_package,
+                            current_occurrence: @current_occurrence
+                          )
+                        ))
+    end
+
+    def add_new_work_package_item(submenu)
+      return unless User.current.allowed_in_project?(:add_work_packages, @meeting.project)
+
+      submenu.with_item(label: t("label_work_package_new"),
+                        tag: :button,
+                        content_arguments: outcome_action_data(
+                          create_work_package_dialog_project_meeting_agenda_item_outcomes_path(
+                            @meeting.project,
+                            @meeting,
+                            @meeting_agenda_item
+                          )
+                        ))
+    end
+
+    def outcome_action_data(href)
+      { data: { action: "click->meetings--submit#intercept", href:, method: "GET" } }
+    end
+
     def copy_action_item(menu)
-      url = meeting_url(@meeting, anchor: "meeting-agenda-item-#{@meeting_agenda_item.id}")
+      url = project_meeting_url(@meeting.project, @meeting, anchor: "meeting-agenda-item-#{@meeting_agenda_item.id}")
       menu.with_item(label: t("meeting.copy.to_clipboard"),
                      tag: :"clipboard-copy",
                      content_arguments: { value: url }) do |item|
@@ -161,26 +213,68 @@ module MeetingAgendaItems
     end
 
     def move_to_next_meeting_action_item(menu)
-      return unless editable?
-      return if in_template?
-      return if @series.nil?
+      next_meeting_action_item(
+        menu,
+        label: t(:label_agenda_item_move_to_next),
+        action: :move_to_next,
+        icon: "arrow-right"
+      )
+    end
 
-      next_date = @series.next_occurrence(from_time: @meeting.start_time)
-      return if next_date.nil?
+    def duplicate_in_next_meeting_action_item(menu)
+      next_meeting_action_item(
+        menu,
+        label: t(:label_agenda_item_duplicate_in_next),
+        action: :duplicate_in_next,
+        icon: :duplicate
+      )
+    end
+
+    def next_meeting_action_item(menu, label:, action:, icon:)
+      return unless has_next_occurrence?
+
+      from_time = @meeting.start_time.past? ? Time.current : @meeting.start_time
+      result = @series.first_non_cancelled_occurrence(from_time:)
+      return if result.nil?
+
+      next_date = result[:occurrence]
+      skipped_dates = result[:skipped]
 
       menu.with_item(
-        label: t(:label_agenda_item_move_to_next),
+        label:,
         tag: :button,
         content_arguments: { data: {
           action: "click->meetings--submit#intercept",
-          href: move_to_next_dialog_meeting_agenda_item_path(@meeting_agenda_item.meeting,
-                                                             @meeting_agenda_item,
-                                                             datetime: next_date.iso8601),
+          href: path_for_next_button(action:, next_date:, skipped_dates:),
           method: "GET"
         } }
       ) do |item|
-        item.with_leading_visual_icon(icon: "arrow-right")
+        item.with_leading_visual_icon(icon:)
       end
+    end
+
+    def has_next_occurrence?
+      return false unless editable?
+      return false if in_template?
+      return false if @series.nil?
+
+      next_date = @series.next_occurrence(from_time: next_occurrence_from_time)
+      next_date.present?
+    end
+
+    def next_occurrence_from_time
+      @meeting.start_time.past? ? Time.current : @meeting.start_time
+    end
+
+    def has_move_actions?
+      return false unless editable?
+
+      return true unless first? && last?
+      return true if many_sections?
+      return true if !in_template? || in_backlog?
+      return true if has_next_occurrence?
+
+      false
     end
 
     def move_actions(menu)
@@ -199,8 +293,12 @@ module MeetingAgendaItems
       label = @meeting_agenda_item.work_package_id.present? ? wp_agenda_item_delete_label : t(:text_destroy)
       menu.with_item(label:,
                      scheme: :danger,
-                     href: meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
-                                                    current_occurrence: @current_occurrence),
+                     href: project_meeting_agenda_item_path(
+                       @meeting.project,
+                       @meeting,
+                       @meeting_agenda_item,
+                       current_occurrence: @current_occurrence
+                     ),
                      form_arguments: {
                        method: :delete, data: { turbo_confirm: t(:text_are_you_sure), "turbo-stream": true }
                      }) do |item|
@@ -217,8 +315,9 @@ module MeetingAgendaItems
                      tag: :button,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: move_meeting_agenda_item_path(
-                         @meeting_agenda_item.meeting,
+                       href: move_project_meeting_agenda_item_path(
+                         @meeting.project,
+                         @meeting,
                          @meeting_agenda_item,
                          move_to:,
                          current_occurrence: @current_occurrence
@@ -235,8 +334,9 @@ module MeetingAgendaItems
                      tag: :button,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: drop_meeting_agenda_item_path(
-                         @meeting_agenda_item.meeting,
+                       href: drop_project_meeting_agenda_item_path(
+                         @meeting.project,
+                         @meeting,
                          @meeting_agenda_item,
                          type: :to_backlog,
                          current_occurrence: @current_occurrence
@@ -254,8 +354,9 @@ module MeetingAgendaItems
                      tag: :button,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: drop_meeting_agenda_item_path(
-                         @meeting_agenda_item.meeting,
+                       href: drop_project_meeting_agenda_item_path(
+                         @meeting.project,
+                         @meeting,
                          @meeting_agenda_item,
                          type: :to_current,
                          current_occurrence: @current_occurrence
@@ -273,8 +374,9 @@ module MeetingAgendaItems
                      tag: :button,
                      content_arguments: { data: {
                        action: "click->meetings--submit#intercept",
-                       href: move_to_section_dialog_meeting_agenda_item_path(
-                         @meeting_agenda_item.meeting,
+                       href: move_to_section_dialog_project_meeting_agenda_item_path(
+                         @meeting.project,
+                         @meeting,
                          @meeting_agenda_item,
                          current_occurrence: @current_occurrence
                        )
@@ -319,17 +421,30 @@ module MeetingAgendaItems
       true
     end
 
-    # def visible_sections?
-    #   return true if @meeting.templated?
-    #
-    #   @meeting.sections.many?
-    # end
-
     def many_sections?
       if @meeting_agenda_item.in_backlog? && @current_occurrence.present?
         @current_occurrence.sections.many?
       else
         @meeting.sections.many?
+      end
+    end
+
+    def path_for_next_button(action:, next_date:, skipped_dates:)
+      skipped_iso_dates = skipped_dates.map(&:iso8601) if skipped_dates.present?
+
+      case action
+      when :move_to_next
+        move_to_next_dialog_project_meeting_agenda_item_path(@meeting.project,
+                                                             @meeting,
+                                                             @meeting_agenda_item,
+                                                             datetime: next_date.iso8601,
+                                                             skipped: skipped_iso_dates)
+      when :duplicate_in_next
+        duplicate_in_next_dialog_project_meeting_agenda_item_path(@meeting.project,
+                                                                  @meeting,
+                                                                  @meeting_agenda_item,
+                                                                  datetime: next_date.iso8601,
+                                                                  skipped: skipped_iso_dates)
       end
     end
   end

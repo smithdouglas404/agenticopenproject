@@ -392,8 +392,6 @@ hu:
     label_me: "Nekem"
     label_meeting_agenda: "Napirend"
     label_meeting_minutes: "Jegyzőkönyv"
-    label_menu_collapse: "összecsuk"
-    label_menu_expand: "kibont"
     label_more_than_ago: "több, nappal ezelőtt"
     label_moderate_comment: "Moderate comment"
     label_next: " Következő"
@@ -427,6 +425,7 @@ hu:
     label_remove_row: "Sor eltávolítása"
     label_report: "Jelentés"
     label_repository_plural: "Csomagtárolók"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Mentés másként"
     label_search_columns: "Search a column"
     label_select_watcher: "Megfigyelők választása..."
@@ -633,9 +632,6 @@ hu:
           add: "Beállítás hozzáadása a projekthez"
           already_selected: "A projekt már ki lett választva"
           remove: "Projekt beállítások eltávolítása"
-    password_confirmation:
-      field_description: "A változás megerősítéséhez adja meg jelszavát."
-      title: "Adja meg a jelszavát a folytatáshoz"
     pagination:
       no_other_page: "Csak egyetlen oldalon tartózkodik."
       pages_skipped: "Pages skipped."

@@ -364,6 +364,8 @@ paths:
     "$ref": "./paths/project_versions.yml"
   "/api/v3/projects/{id}/favorite":
     "$ref": "./paths/project_favorite.yml"
+  "/api/v3/projects/{id}/configuration":
+    "$ref": "./paths/project_configuration.yml"
   "/api/v3/queries":
     "$ref": "./paths/queries.yml"
   "/api/v3/queries/available_projects":
@@ -717,6 +719,8 @@ components:
       "$ref": "./components/schemas/collection_model.yml"
     ConfigurationModel:
       "$ref": "./components/schemas/configuration_model.yml"
+    ProjectConfigurationModel:
+      "$ref": "./components/schemas/project_configuration_model.yml"
     CustomActionModel:
       "$ref": "./components/schemas/custom_action_model.yml"
     CustomOptionModel:
@@ -879,6 +883,8 @@ components:
       "$ref": "./components/schemas/query_create_form.yml"
     Query_FilterModel:
       "$ref": "./components/schemas/query_filter_model.yml"
+    Query_Filter_Instance_Model:
+      "$ref": "./components/schemas/query_filter_instance_model.yml"
     Query_Filter_Instance_SchemaModel:
       "$ref": "./components/schemas/query_filter_instance_schema_model.yml"
     Query_Filter_Instance_SchemasModel:

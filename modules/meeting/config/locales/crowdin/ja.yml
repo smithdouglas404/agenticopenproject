@@ -226,13 +226,23 @@ ja:
         header: "キャンセルされました：会議「%{title}」"
         header_occurrence: "キャンセル: ミーティング発生'%{title}'"
         header_series: "キャンセル: ミーティングシリーズ '%{title}'"
-        summary_occurrence: "%{title}'の発生は %{actor}によってキャンセルされました。"
-        summary_series: "ミーティングシリーズ '%{title}' は %{actor}によりキャンセルされました。"
-        summary: "'%{title}' は %{actor}によってキャンセルされた。"
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "予定日時"
+      participant_added:
+        header: "Meeting '%{title}' - Participant added"
+        header_series: "Meeting series '%{title}' - Participant added"
+        summary: "%{actor} added %{participant} to the meeting '%{title}'"
+        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
+      participant_removed:
+        header: "Meeting '%{title}' - Participant removed"
+        header_series: "Meeting series '%{title}' - Participant removed"
+        summary: "%{actor} removed %{participant} from the meeting '%{title}'"
+        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
       ended:
         header_series: "Ended: Meeting series '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "ミーティング '%{title}' が更新されました"
         summary: "ミーティング '%{title}' は %{actor} によって更新されました"
@@ -264,8 +274,8 @@ ja:
           テンプレートにない会議情報は失われます。 続行しますか？
         confirm_button: "発生をキャンセル"
     blankslate:
-      title: "表示する会議がありません"
-      desc: "条件を満たす会議はありません。"
+      title: "表示するミーティングがありません"
+      desc: "新しいミーティングを作成したりフィルタ条件を変更することができます"
     label_export_pdf: "PDF形式でエクスポート"
     export:
       your_meeting_export: "ミーティングはエクスポートされています"
@@ -358,11 +368,21 @@ ja:
       next: "次へ"
       no_items: "議題なし"
       no_items_flash: "発表する議題はない。"
+    ical_response:
+      update_failed: "参加ステータスを更新できませんでした。"
+      meeting_not_found: "指定されたUIDのミーティングが見つからない。"
   meeting_section:
     untitled_title: "タイトルなしセクション"
     delete_confirmation: "セクションを削除すると、そのすべての議題項目も削除されます。これを実行してもよろしいですか？"
     placeholder_title: "新しいセクション"
     empty_text: "アイテムをここにドラッグするか、新しいアイテムを作成してください"
+  meeting_participant:
+    participation_status:
+      needs_action: "応答なし"
+      accepted: "受諾"
+      declined: "辞退"
+      tentative: "多分..."
+      unknown: "不明"
   recurring_meeting:
     time_zone_difference_banner:
       title: "タイムゾーンの差"
@@ -502,6 +522,9 @@ ja:
   label_agenda_item_move_to_bottom: "一番下へ移動"
   label_agenda_item_move_up: "上へ"
   label_agenda_item_move_down: "下へ移動"
+  label_agenda_item_duplicate: "重複"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "注記の追加"
   label_agenda_item_add_outcome: "結果を追加"
   label_agenda_item_work_package_add: "ワークパッケージの追加"
@@ -512,6 +535,9 @@ ja:
   label_agenda_outcome_actions: "議題の結果アクション"
   label_agenda_outcome_edit: "結果を編集"
   label_agenda_outcome_delete: "結果を削除"
+  label_added_as_outcome: "Added as outcome"
+  label_write_outcome: "Write outcome"
+  label_existing_work_package: "Existing work package"
   text_outcome_not_editable_anymore: "この結果は編集できません。"
   text_outcome_cannot_be_added: "結果は追加できなくなります。"
   label_backlog_clear: "バックログをクリア"
@@ -575,19 +601,25 @@ ja:
   text_agenda_item_not_editable_anymore: "この議題項目はもう編集できません。"
   text_agenda_item_move_next_meeting: "このアイテムは、 %{date} の %{time} の次のミーティングに移動されます。"
   text_agenda_item_moved_to_next_meeting: "議題アイテムが %{date}の次のミーティングに移動されました"
+  text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
+  text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "このワークパッケージは、まだ今後の会議の議題に予定されていません。"
-  text_agenda_item_move_next_meeting_cancelled: "次回の会議がキャンセルされたため、移動できない。"
+  text_agenda_item_no_available_occurrence: "All upcoming occurrences have been cancelled."
+  text_agenda_item_dialog_skipping_cancelled_one: "Note: Skipping cancelled occurrence on %{date}."
+  text_agenda_item_dialog_skipping_cancelled_many: "Note: Skipping %{count} cancelled occurrences."
   text_work_package_add_to_meeting_hint: '「会議に追加」ボタンを使用して、このワークパッケージを今後の会議に追加してください。'
-  text_work_package_has_no_past_meeting_agenda_items: "このワークパッケージは過去の会議で言及されていませんでした。"
+  text_work_package_has_no_past_meeting_agenda_items: "This work package was not added as an agenda item in a past meeting."
   text_email_updates_muted: "メールカレンダーの更新はミュートされます。変更を行った場合、参加者はメールで更新された招待状を受け取りません。"
   text_email_updates_enabled: "メールカレンダーの更新が有効になっています。変更を行うと、すべての参加者にメールで更新された招待状が送信されます。"
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "You can create one using the button below."
+        blank_title: "No iCalendar meeting token"
         title: "iCalendar for meetings"
+        table_title: "iCalendar meeting tokens"
         text_hint: "iCalendarミーティングトークンを使用すると、ユーザーはすべてのミーティングを購読し、外部クライアントで最新のミーティング情報を表示できます。"
         disabled_text: "iCalendarの会議予約は管理者によって有効化されていません。この機能を使用するには、管理者に連絡してください。"
-        empty_text_hint: 'iCalendarのミーティングトークンを追加するには、<a href="%{path}">ミーティングセクションに</a>行き、そこから登録します。'
         add_button: "カレンダーを購読する"
   my:
     access_token:
@@ -602,7 +634,6 @@ ja:
         token/ical_meeting:
           title: "iCalミーティング購読トークンが生成されました"
           body: "以下のURLをパスワードと同じように扱ってください。アクセス権を持っている人はすべてのミーティングを閲覧できます。"
-          warning: "このトークンが表示される唯一の時間です。今すぐコピーしてください。"
       revocation:
         token/ical_meeting:
           notice_success: "iCalendar ミーティング購読が正常に取り消されました。"

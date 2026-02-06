@@ -203,8 +203,8 @@ pl:
         add_table: "Dodaj tabelę powiązanych pakietów roboczych"
         edit_query: "Edytuj zapytanie"
         new_group: "Nowa Grupa"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "Usuń grupę"
+        remove_attribute: "Usuń z grupy"
         reset_to_defaults: "Resetuj do ustawień domyślnych"
       working_days:
         calendar:
@@ -393,8 +393,6 @@ pl:
     label_me: "ja"
     label_meeting_agenda: "Plan spotkania"
     label_meeting_minutes: "Protokół ze spotkania"
-    label_menu_collapse: "Zwiń"
-    label_menu_expand: "Rozwiń"
     label_more_than_ago: "Więcej niż dni temu"
     label_moderate_comment: "Moderuj komentarz"
     label_next: "Następny"
@@ -428,6 +426,7 @@ pl:
     label_remove_row: "Usuń wiersz"
     label_report: "Raport"
     label_repository_plural: "Repozytoria"
+    label_resize_project_menu: "Zmień rozmiar menu projektu"
     label_save_as: "Zapisz jako"
     label_search_columns: "Wyszukaj kolumnę"
     label_select_watcher: "Wybierz obserwatora..."
@@ -636,9 +635,6 @@ pl:
           add: "Dodaj ustawienie dla projektu"
           already_selected: "Ten projekt jest już wybrany"
           remove: "Usuń ustawienia projektu"
-    password_confirmation:
-      field_description: "Musisz wprowadzić hasło do twojego konta aby potwierdzić te zmiany."
-      title: "Potwierdź hasło aby kontynuować"
     pagination:
       no_other_page: "Jesteś na jedynej stronie."
       pages_skipped: "Pominięte strony."
@@ -1136,8 +1132,8 @@ pl:
     global_search:
       all_projects: "We wszystkich projektach"
       close_search: "Zakończ wyszukiwanie"
-      items_available: "%{count} items available"
-      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
+      items_available: "Dostępne elementy: %{count}"
+      direct_hit_available: "Znaleziono pakiet roboczy o dokładnym identyfikatorze. Aby go otworzyć, naciśnij klawisz Enter."
       current_project_and_all_descendants: "W tym projekcie + pod projekcie"
       current_project: "W tym projekcie"
       recently_viewed: "Ostatnio wyświetlane"

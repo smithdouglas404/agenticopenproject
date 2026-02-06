@@ -109,6 +109,23 @@ de:
       explanation:
         text: "Individuelle Aktionen eines Benutzers (z.B. ein Arbeitspaket zweimal aktualisieren) werden zu einer einzigen Aktion zusammengefasst, wenn ihr Altersunterschied kleiner ist als der angegebene Zeitraum. Sie werden als eine einzige Aktion innerhalb der Anwendung angezeigt. Dadurch werden Benachrichtigungen um die gleiche Zeit verzögert, wodurch die Anzahl der gesendeten E-Mails verringert wird. Dies wirkt sich auch auf die Verzögerung von %{webhook_link} aus."
         link: "Webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "JWT vom Identitätsanbieter"
@@ -710,9 +727,11 @@ de:
           create_button: "Anlegen"
           name_label: "Token-Name"
       created_dialog:
+        one_time_warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
         token/api:
           title: "Der API-Token wurde generiert"
-          warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
+        token/rss:
+          title: "Das RSS-Token wurde generiert"
       failed_to_reset_token: "Zusatztoken konnte nicht zurückgesetzt werden: %{error}"
       failed_to_create_token: "Zugriffstoken konnte nicht erstellt werden: %{error}"
       failed_to_revoke_token: "Zugriffstoken kann nicht widerrufen werden: %{error}"
@@ -722,6 +741,9 @@ de:
       notice_api_token_revoked: "Das API-Token wurde gelöscht. Nutzen Sie bitte den Knopf in der API-Sektion für die Erstellung eines neues Token. "
       notice_rss_token_revoked: "Der RSS-Token wurde gelöscht. Um ein neues Token zu erstellen, benutzen Sie bitte den Link im RSS-Bereich."
       notice_ical_token_revoked: 'iCalendar-Token „%{token_name}“ für Kalender „%{calendar_name}“ des Projekts „%{project_name}“ wurde widerrufen. Die iCal-URL mit diesem Token ist jetzt ungültig.'
+    password_confirmation_dialog:
+      confirmation_required: "Sie müssen Ihr Passwort eingeben, um diese Änderung zu bestätigen."
+      title: "Bestätigen Sie Ihr Passwort um fortzufahren"
   news:
     index:
       no_results_title_text: Es gibt aktuell keine Neuigkeiten.
@@ -1223,6 +1245,10 @@ de:
         onthefly: "Benutzer automatisch erzeugen"
         port: "Port"
         tls_certificate_string: "LDAP-Server SSL-Zertifikat"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "Rollen"
       notification:
@@ -1481,6 +1507,7 @@ de:
         even: "muss gerade sein."
         exclusion: "ist nicht verfügbar."
         feature_disabled: ist nicht verfügbar.
+        feature_disabled_for_project: ist für dieses Projekt deaktiviert.
         file_too_large: "ist zu groß (nicht mehr als %{count} Bytes erlaubt)."
         filter_does_not_exist: "Filter existiert nicht."
         format: "stimmt nicht mit dem erwarteten Format '%{expected} ' überein."
@@ -1503,7 +1530,8 @@ de:
         not_a_datetime: "ist kein gültiges Datum."
         not_a_number: "ist keine Zahl."
         not_allowed: "ist ungültig aufgrund fehlender Berechtigungen."
-        not_json: "ist kein gültiges JSON-Objekt."
+        not_json: "konnte nicht als JSON gelsen werden."
+        not_json_object: "ist kein gültiges JSON-Objekt."
         not_an_integer: "ist keine ganzzahlige Zahl."
         not_an_iso_date: "ist kein gültiges Datum - Erwartetes Format: YYY-MM-DD."
         not_same_project: "gehört nicht zum selben Projekt."
@@ -1911,7 +1939,12 @@ de:
       token/api:
         one: Zugangs-Token
         other: Zugangs-Token
-      type: "Typ"
+      token/rss:
+        one: "RSS-Token"
+        other: "RSS-Token"
+      type:
+        one: "Typ"
+        other: "Typen"
       user: "Benutzer"
       version: "Version"
       workflow: "Workflow"
@@ -2128,6 +2161,7 @@ de:
   button_click_to_reveal: "Klicke, um anzuzeigen"
   button_close: "Schließen"
   button_collapse_all: "Alle zuklappen"
+  button_confirm: "Bestätigen"
   button_configure: "Konfigurieren"
   button_continue: "Fortfahren"
   button_complete: "Fertigstellen"
@@ -2160,6 +2194,7 @@ de:
   button_print: "Drucken"
   button_quote: "Zitieren"
   button_remove: Entfernen
+  button_remove_permanently: "Endgültig löschen"
   button_remove_reminder: "Erinnerung entfernen"
   button_rename: "Umbenennen"
   button_replace: "Ersetzen"
@@ -2411,7 +2446,7 @@ de:
       baseline_comparison: Grundlinie (Planungsvergleich)
       board_view: Erweiterte agile Boards
       calculated_values: Berechnete Werte
-      conditional_highlighting: Bedingte Hervorhebung
+      capture_external_links: Externe Links abfangen
       internal_comments: Interne Kommentare
       custom_actions: Benutzerdefinierte Aktionen
       custom_field_hierarchies: Hierarchien
@@ -2421,10 +2456,12 @@ de:
       edit_attribute_groups: Attributgruppen bearbeiten
       gantt_pdf_export: Gantt PDF Export
       ldap_groups: LDAP-Benutzer- und Gruppensynchronisation
+      mcp_server: MCP Server
       nextcloud_sso: Single Sign-On für Nextcloud-Speicher
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
       portfolio_management: Portfolioverwaltung
+      project_creation_wizard: Project initiation request
       project_list_sharing: Projektlistenfreigabe
       readonly_work_packages: Schreibgeschützte Arbeitspakete
       scim_api: SCIM-Server-API
@@ -2465,8 +2502,8 @@ de:
         description: "Erstellen Sie automatisch generierte Betreffe mit referenzierten Attributen und Text."
       customize_life_cycle:
         description: "Erstellen und organisieren Sie von PM2 abweichende Projektlebenszyklen."
-      conditional_highlighting:
-        description: "Benötigen Sie bestimmte Arbeitspakete, um sich von der Masse abzuheben? Verwenden Sie die bedingte Hervorhebung in der Arbeitspaketstabelle."
+      capture_external_links:
+        description: "Verhindern Sie Social-Engineering-Angriffe, indem Sie externe Links erfassen und davor warnen, bevor Benutzer sie besuchen."
       work_package_query_relation_columns:
         description: "Möchten Sie Beziehungen oder Unteraufgaben als Spalten in der Arbeitspaketliste sehen können?"
       edit_attribute_groups:
@@ -2496,6 +2533,8 @@ de:
       custom_actions:
         title: "Benutzerdefinierte Aktionen"
         description: "Selbstdefinierte Aktionen sind Verknüpfungen zu einer Reihe von vordefinierten Aktionen, die Sie für bestimmte Arbeitspakete je nach Status, Rolle, Typ oder Projekt mit nur einem Klick auf einen Button auslösen."
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Single Sign-On für Nextcloud-Speicher"
         description: "Aktivieren Sie nahtlose und sichere Authentifizierung für Ihren Nextcloud-Speicher mit Single Sign-On. Vereinfachen Sie das Zugriffsmanagement und erhöhen Sie den Benutzerkomfort."
@@ -2507,6 +2546,8 @@ de:
         description: "Ermöglichen Sie es Benutzern, sich über externe SSO-Anbieter mit SAML oder OpenID Connect anzumelden, um einen nahtlosen Zugriff und die Integration mit bestehenden Identitätssystemen zu ermöglichen."
       virus_scanning:
         description: "Stellen Sie sicher, dass hochgeladene Dateien in OpenProject auf Viren gescannt werden, bevor sie für andere Benutzer zugänglich sind."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Platzhalter-Konten
         description: >
@@ -2804,19 +2845,17 @@ de:
         learn_about: "Erfahren Sie mehr über die neuen Funktionen"
         missing: "Es gibt noch keine hervorgehobenen Funktionen."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
             Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
-            line_0: Zusammenarbeit an Dokumenten in Echtzeit.
-            line_1: Strukturierung zusammenhängender Projekte in Programme und Portfolios, um sie auf strategische Ziele auszurichten (Enterprise Add-on).
-            line_2: Bessere Verwaltung von Besprechungen mit Entwurfsmodus, Präsentationsmodus, verbesserten Ergebnissen und iCal-Abonnement.
-            line_3: Aktualisierte SharePoint-Integration mit flexibleren Berechtigungen (Enterprise Add-on).
-            line_4: Neu gestaltete Projektübersicht mit neuen Tabs, konfigurierbaren Widgets und einem verbesserten Layout.
-            line_5: Option zum Trennen der Sichtbarkeit von Benutzern innerhalb der Instanz, die nicht am selben Projekt oder derselben Gruppe arbeiten.
-            line_6: Verbesserter Ablauf der Projekterstellung mit neuer Vorlagenauswahl.
-            line_7: Eine intelligentere Suche, die Typ und Status einschließt, verbessert die Präzision in der globalen Suche und in Auswahlfeldern.
-            line_8: Verbesserungen der Zugänglichkeit mit ALT-Texten und verbesserten Diagrammfarben.
+            line_0: Automatisierte Projektinitiierung (Enterprise Add-on).
+            line_1: "Besprechungen: Fügen Sie neue oder bestehende Arbeitspakete als Ergebnisse hinzu."
+            line_2: "Meetings: show iCal responses in OpenProject."
+            line_3: "Wiederkehrende Besprechungen: Kopieren Sie Tagesordnungspunkte zur nächsten Besprechung."
+            line_4: "Freigabe für die Community-Edition: Hervorhebung von Attributen."
+            line_5: Warnung vor dem Öffnen externer Links in von Benutzern erstellten Texten (Enterprise Add-on).
+            line_6: Verbesserte Leistung und Benutzerfreundlichkeit, einschließlich des Aktivität-Tabs und des Dokumenten-Moduls.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
@@ -2884,14 +2923,17 @@ de:
   instructions_after_error: "Sie können versuchen sich erneut anzumelden indem Sie auf %{signin} klicken. Wenn der Fehler weiterhin auftritt, fragen Sie Ihren Administrator um Hilfe."
   menus:
     admin:
-      mail_notification: "Mailbenachrichtigung"
-      mails_and_notifications: "E-Mails und Benachrichtigungen"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "Zusammenfassungen"
       api_and_webhooks: "API und Webhooks"
+      mail_notification: "Mailbenachrichtigung"
+      mails_and_notifications: "E-Mails und Benachrichtigungen"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Hinzufügen…"
   my_account:
     access_tokens:
+      description: "Provider-Tokens werden von OpenProject ausgestellt und ermöglichen anderen Anwendungen den Zugriff darauf. Client-Tokens werden von anderen Anwendungen ausgestellt und ermöglichen OpenProject den Zugriff auf sie."
       no_results:
         title: "Kein Zugangs-Token kann angezeigt werden"
         description: "Alle wurden deaktiviert. Sie können im Administrations-Menü wieder aktiviert werden."
@@ -2901,34 +2943,56 @@ de:
         expiration: "Läuft aus"
       indefinite_expiration: "Nie"
       simple_revoke_confirmation: "Sind Sie sicher, dass Sie dieses Token widerrufen möchten?"
+      tabs:
+        client:
+          title: "Client-Tokens"
+        provider:
+          title: "Provider-Tokens"
       token/api:
+        blank_description: "Es gibt noch kein API-Token. Sie können eines erstellen, indem Sie auf die Schaltfläche unten klicken."
+        blank_title: "Kein API-Token"
         title: "Schnittstelle (API)"
+        table_title: "API-Token"
         text_hint: "API-Token erlauben es Drittanbieter-Anwendungen, mit dieser OpenProject-Instanz über REST-APIs zu kommunizieren."
-        disabled_text: "API-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
-        add_button: "API-Token"
-      api:
         static_token_name: "API-Token"
+        disabled_text: "API-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
+        add_button: "API token"
       ical:
+        blank_description: "Um einen iCalendar-Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
+        blank_title: "Kein iCalendar-Token"
         title: "iCalendar"
+        table_title: "iCalendar-Token"
         text_hint_link: "iCalendar-Token ermöglichen es Benutzern, [OpenProject-Kalender zu abonnieren](docs_url) und aktuelle Arbeitspaketinformationen in externen Anwendungen anzuzeigen."
         disabled_text: "iCalendar Abonnements sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
-        empty_text_hint: "Um einen iCalendar Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
-      oauth:
+      oauth_application:
+        active_tokens: "Aktive Token"
+        blank_description: "Für Sie ist kein Zugriff auf Anwendungen von Drittanbietern konfiguriert und aktiv."
+        blank_title: "Kein OAuth-Anwendungs-Token"
+        last_used_at: "Zuletzt verwendet am"
         title: "OAuth"
-        text_hint: "OAuth Tokens erlauben es Drittanbieter-Anwendungen, sich mit dieser OpenProject Instanz zu verbinden."
-        empty_text_hint: "Für Sie ist kein Zugriff auf die Anwendung von Drittanbietern konfiguriert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu aktivieren."
-      rss:
+        table_title: "OAuth-Anwendungs-Tokens"
+        text_hint: "OAuth-Tokens erlauben es Drittanbieter-Anwendungen, sich mit dieser OpenProject Instanz zu verbinden."
+      oauth_client:
+        blank_description: "Es gibt noch keine OAuth-Client-Tokens."
+        blank_title: "Keine OAuth-Client-Tokens"
+        failed: "Ein Fehler ist aufgetreten und das Token konnte nicht entfernt werden. Bitte versuchen Sie es später erneut."
+        integration_type: "Integrations-Typ"
+        table_title: "Keine OAuth-Client-Tokens"
+        text_hint: "OAuth-Client-Tokens ermöglichen es dieser OpenProject-Instanz, sich mit externen Anwendungen zu verbinden, z. B. mit Dateispeichern."
+        title: "OAuth"
+        remove_token: "Möchten Sie dieses Token wirklich entfernen? Sie müssen sich erneut bei %{integration} anmelden."
+        removed: "OAuth-Client-Token erfolgreich entfernt"
+        unknown_integration: "Unbekannt"
+      token/rss:
+        add_button: "RSS token"
+        blank_description: "Es gibt noch kein RSS-Token. Sie können eines erstellen, indem Sie auf die Schaltfläche unten klicken."
+        blank_title: "Kein RSS-Token"
         title: "RSS"
+        table_title: "RSS-Token"
         text_hint: "RSS-Token erlauben es Benutzern über einen externen RSS-Reader auf dem Laufenden zu bleiben."
         static_token_name: "RSS-Token"
         disabled_text: "RSS-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
       storages:
-        title: "Dateispeicher"
-        text_hint: "Dateispeicher-Tokens verbinden diese OpenProject Instanz mit einem externen Dateispeicher."
-        empty_text_hint: "Es gibt keinen Dateispeicher, der mit Ihrem Konto verknüpft ist."
-        revoke_token: "Möchten Sie dieses Token wirklich entfernen? Sie müssen sich erneut bei %{storage} anmelden"
-        removed: "Dateispeicher-Token erfolgreich entfernt"
-        failed: "Ein Fehler ist aufgetreten und das Token konnte nicht entfernt werden. Bitte versuchen Sie es später erneut."
         unknown_storage: "Unbekannter Speicher"
   notifications:
     reasons:
@@ -2990,6 +3054,7 @@ de:
   label_always_visible: "Immer angezeigt"
   label_announcement: "Ankündigung"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "API-Zugriffsschlüssel"
   label_api_access_key_created_on: "Der API-Zugriffsschlüssel wurde vor %{value} erstellt"
   label_api_access_key_type: "Schnittstelle (API)"
@@ -3245,6 +3310,7 @@ de:
   label_journal_diff: "Beschreibungsvergleich"
   label_language: "Sprache"
   label_languages: "Sprachen"
+  label_external_links: "Externe Links"
   label_locale: "Sprache und Region"
   label_jump_to_a_project: "Zu einem Projekt springen..."
   label_keyword_plural: "Schlüsselwörter"
@@ -3422,9 +3488,6 @@ de:
   label_project_hierarchy: "Projekthierarchie"
   label_project_mappings: "Projekte"
   label_project_new: "Neues Projekt"
-  label_project_initiation_request: "Neuer Projektinitiierungsantrag"
-  label_project_creation_wizard: "Neuer Projekterstellungs-Assistent"
-  label_project_mandate: "Neues Projektmandat"
   label_project_plural: "Projekte"
   label_project_list_plural: "Projektlisten"
   label_project_life_cycle: "Projekt-Lebenszyklus"
@@ -3888,7 +3951,7 @@ de:
   notice_not_authorized: "Sie sind nicht berechtigt, auf diese Seite zuzugreifen."
   notice_not_authorized_archived_project: "Das Projekt wurde archiviert und ist daher nicht verfügbar."
   notice_requires_enterprise_token: "Kein Enterprise-Token vorhanden oder das vorhandene Token erlaubt keinen Zugriff auf diese Seite."
-  notice_password_confirmation_failed: "Ihr Passwort ist nicht korrekt. Kann nicht fortgesetzt werden."
+  notice_password_confirmation_failed: "Das eingegebene Passwort ist nicht korrekt."
   notice_principals_found_multiple: "Es wurden %{number} Ergebnisse gefunden.\nDrücke Tab um das erste Ergebnis zu fokussieren."
   notice_principals_found_single: "Es wurde ein Ergebnis gefunden.\nDrücke Tab um es zu fokussieren."
   notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."
@@ -4241,6 +4304,9 @@ de:
   setting_allowed_link_protocols: "Erlaubte Link-Protokolle"
   setting_allowed_link_protocols_text_html: >-
     Erlauben Sie es, diese Protokolle als Links in Arbeitspaket-Beschreibungen, langen Textfeldern und Kommentaren darzustellen. Zum Beispiel %{tel_code} oder %{element_code}. Geben Sie ein Protokoll pro Zeile ein. <br/> Protokolle %{http_code}, %{https_code} und %{mailto_code} sind immer erlaubt.
+  setting_capture_external_links: "Externe Links abfangen"
+  setting_capture_external_links_text: >
+    Wenn diese Funktion aktiviert ist, werden alle externen Links in formatiertem Text auf eine vor dem Link warnende Seite in der Applikation umgeleitet, bevor sie die Anwendung verlassen. Dies hilft, Benutzer vor potenziell bösartigen externen Websites zu schützen.
   setting_after_first_login_redirect_url: "Weiterleitung nach erster Anmeldung"
   setting_after_first_login_redirect_url_text_html: >
     Legen Sie einen Pfad fest, an den Nutzer:innen nach der ersten Anmeldung weitergeleitet werden. Wenn leer, führt er auf die Startseite des Onboarding-Tours. <br/> Beispiel: <code>/meine/seite</code>
@@ -4253,11 +4319,17 @@ de:
   setting_apiv3_cors_origins_text_html: >
     Wenn CORS aktiviert ist, sind dies die Origins, die auf die OpenProject API zugreifen dürfen. <br/> Bitte überprüfen Sie die <a href="%{origin_link}" target="_blank">Dokumentation über den Origin Header</a>, wie die Werte anzugeben sind.
   setting_apiv3_write_readonly_attributes: "Schreibzugriff auf schreibgeschützte Attribute"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Diese Option erlaubt API Administratoren, bei der Erstellung statische schreibgeschützte Attribute wie createdAt und author zu schreiben. <br/> <strong>Warnung:</strong> Diese Einstellung ist z.B. für den Import von Daten nützlich, ermöglicht es aber Administratoren, sich bei der Erstellung von Objekten als andere Benutzer auszugeben. Alle Anfragen werden jedoch immer auch mit dem wahren Autor protokolliert. </br> Weitere Informationen zu Attributen und unterstützten Ressourcen finden Sie unter %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    Wenn diese Option aktiviert ist, erlaubt die API Administratoren, bei der Erstellung statische schreibgeschützte Attribute wie createdAt und author zu schreiben.
+  setting_apiv3_write_readonly_attributes_warning: >
+    Diese Einstellung ist z.B. für den Import von Daten nützlich, ermöglicht es aber auch Administratoren, sich bei der Erstellung von Artikeln als andere Benutzer auszugeben. Alle Erstellungsanfragen werden jedoch mit dem wahren Autor protokolliert.
+  setting_apiv3_write_readonly_attributes_additional: >
+    Weitere Informationen zu Attributen und unterstützten Ressourcen finden Sie unter %{api_documentation_link}.
   setting_apiv3_max_page_size: "Maximale API-Seitengröße"
-  setting_apiv3_max_page_instructions_html: >
-    Legen Sie die maximale Seitengröße fest, mit der die API antworten soll. Es wird nicht möglich sein, API-Anfragen durchzuführen, die mehr Werte auf einer einzelnen Seite zurückgeben. <br/> <strong>Warnung:</strong> Bitte ändern Sie diesen Wert nur, wenn Sie sicher sind, warum Sie ihn benötigen. Die Einstellung auf einen hohen Wert führt zu erheblichen Performance-Auswirkungen, während ein Wert niedriger als die Einstellung "Objekte pro Seite" zu Fehlern in paginierten Ansichten führt.
+  setting_apiv3_max_page_size_instructions: >
+    Legen Sie die maximale Anzahl von Ressourcen fest, mit der die API antworten wird. API-Anfragen werden nie mehr Ressourcen auf einer einzigen Seite zurückgeben.
+  setting_apiv3_max_page_size_warning: >
+    Bitte ändern Sie diesen Wert nur, wenn Sie sich sicher sind, warum Sie ihn benötigen. Ein hoher Wert führt zu erheblichen Leistungseinbußen, während ein Wert, der niedriger als die Ressourcen pro Seite ist, zu Fehlern in paginierten Ansichten führt.
   setting_apiv3_docs: "Dokumentation"
   setting_apiv3_docs_enabled: "Dokumentationsseite aktivieren"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4520,7 +4592,7 @@ de:
               description: "Fügen Sie alle Projektattribute in einem Abschnitt in der rechten Seitenleiste der Projektübersicht hinzu."
     project_initiation_request:
       header_description: >
-        OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren und ein PDF als Ergebnis erzeugen zu lassen.
+        OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützt. Sie können die abgefragten Projektattribute wählen und ein Artefakt als Ergebnis erzeugen lassen.
       status:
         submitted: "%{wizard_name} wurde eingereicht"
         submitted_description: "Klicken Sie auf die Schaltfläche unten, um zum Arbeitspaket für den Einreichungsprozess zu gelangen."
@@ -4533,7 +4605,7 @@ de:
         project_mandate: "Projektmandat öffnen"
       blankslate:
         title: "Initiierungsanfrage nicht aktiviert"
-        description: "OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren."
+        description: "OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützt. Sie können die abgefragten Projektattribute wählen und ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren."
       disable_dialog:
         title: "Projektinitiierungsantrag deaktivieren"
         heading: "Diesen Projektinitiationsantrag deaktivieren?"
@@ -4718,6 +4790,7 @@ de:
     Hinweis: Wenn aktiviert, wird dies eine Plakette mit dem Status Ihrer Installation in der <a href="%{information_panel_path}">%{information_panel_label}</a> unter Administration und auf der Startseite anzeigen. Es wird nur Administratoren gezeigt. <br/> Die Plakette überprüft Ihre aktuelle OpenProject-Version gegen die offizielle Release Datenbank, um Sie über Updates oder bekannten Sicherheitslücken zu informieren. Für die Überprüfung der Version werden Daten benötigt, um verfügbare Updates für Ihre Umgebung zurückzugeben. Für mehr Informationen über die Plakette, welche Daten sie benötigt und wie Sie diese Überprüfung deaktivieren können, besuchen Sie bitte <a href="%{more_info_url}">die Konfigurationsdokumentation</a>.
   text_own_membership_delete_confirmation: "Sie sind dabei, einige oder alle Ihre Berechtigungen zu entfernen. Es ist möglich, dass Sie danach das Projekt nicht mehr ansehen oder bearbeiten dürfen.\nSind Sie sicher, dass Sie dies tun möchten?"
   text_permanent_delete_confirmation_checkbox_label: "Ich verstehe, dass diese Löschung nicht rückgängig gemacht werden kann"
+  text_permanent_remove_confirmation_checkbox_label: "Ich verstehe, dass diese Löschung nicht rückgängig gemacht werden kann"
   text_plugin_assets_writable: "Verzeichnis für Plugin-Assets beschreibbar"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Kleinbuchstaben (a-z), Ziffern, Binde- und Unterstriche erlaubt. Muss mit einem Kleinbuchstaben beginnen."
@@ -4808,8 +4881,8 @@ de:
       other: "temporär gesperrt (%{count} fehlgeschlagene Loginversuche)"
     confirm_status_change: "Sie sind dabei den Status von '%{name}' zu ändern. Möchten Sie wirklich fortfahren?"
     deleted: "Gelöschter Nutzer"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "Sie können Ihren eigenen Benutzerstatus nicht ändern."
+    error_admin_change_on_non_admin: "Nur Administratoren können den Status von Administratorbenutzern ändern."
     error_status_change_failed: "Der Nutzerstatus konnte nicht geändert werden aufgrund folgender Fehler: %{errors}"
     invite: Nutzer via E-Mail einladen
     invited: eingeladen
@@ -5213,3 +5286,8 @@ de:
   token:
     hashed_token:
       display_value_placeholder: "***"
+  external_link_warning:
+    title: "OpenProject verlassen"
+    warning_message: "Sie sind im Begriff, die OpenProject Anwendung zu verlassen und eine externe Website zu besuchen. Bitte beachten Sie, dass die externen Websites nicht unter unserer Kontrolle stehen und möglicherweise andere Datenschutz- und Sicherheitsrichtlinien haben."
+    continue_message: "Sind Sie sicher, dass Sie zu dem folgenden externen Link fortfahren möchten?"
+    continue_button: "Zur externen Webseite fortfahren"

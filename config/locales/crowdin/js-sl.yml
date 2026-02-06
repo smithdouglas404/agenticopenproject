@@ -392,8 +392,6 @@ sl:
     label_me: "jaz"
     label_meeting_agenda: "Dnevni red"
     label_meeting_minutes: "Zapisnik"
-    label_menu_collapse: "Zapri"
-    label_menu_expand: "Razširi"
     label_more_than_ago: "pred več kot nekaj dnevi"
     label_moderate_comment: "Moderate comment"
     label_next: "Naprej"
@@ -427,6 +425,7 @@ sl:
     label_remove_row: "Odstrani vrstico"
     label_report: "Poročilo"
     label_repository_plural: "Repozitoriji"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Shrani kot"
     label_search_columns: "Search a column"
     label_select_watcher: "Izberi opazovalca..."
@@ -635,9 +634,6 @@ sl:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Prosimo vnesite svoje uporabniško geslo za potrditev te spremembe. "
-      title: "Potrdite svoje geslo za nadaljevanje"
     pagination:
       no_other_page: "Ste na edini strani. "
       pages_skipped: "Pages skipped."

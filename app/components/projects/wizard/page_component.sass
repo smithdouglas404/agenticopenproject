@@ -32,8 +32,10 @@
   min-height: 0
   grid-template-areas: "sidebar main help"
   grid-template-columns: 300px 1fr 350px
-  gap: var(--base-size-16, 1rem)
   overflow: hidden
+
+  &--main
+    padding: 0 var(--base-size-16, 1rem)
 
   &--sidebar,
   &--help

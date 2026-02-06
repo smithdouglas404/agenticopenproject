@@ -103,21 +103,14 @@ module EnterpriseEdition
     def more_info_button
       return if @feature_key == :teaser
 
-      render(Primer::Beta::Link.new(href: enterprise_link, target: "_blank")) do |link|
-        link.with_trailing_visual_icon(icon: "link-external")
-        link_title
-      end
+      fallback_link = OpenProject::Static::Links.url_for(:enterprise_features, :default)
+      helpers.static_link_to(:enterprise_features, feature_key,
+                             href: fallback_link,
+                             label: link_title)
     end
 
     def link_title
       I18n.t("ee.upsell.#{feature_key}.link_title", default: I18n.t(:label_more_information))
-    end
-
-    def enterprise_link
-      href_value = OpenProject::Static::Links.url_for(:enterprise_features, feature_key)
-      default_value = OpenProject::Static::Links.url_for(:enterprise_features, :default)
-
-      href_value || default_value
     end
   end
 end

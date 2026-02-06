@@ -37,6 +37,7 @@ module OpenProject
             headers(
               "WWW-Authenticate" => OpenProject::Authentication::WWWAuthenticate.response_header(
                 default_auth_scheme: "Bearer",
+                scope:,
                 error:,
                 error_description:
               )

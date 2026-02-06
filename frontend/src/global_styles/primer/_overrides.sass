@@ -48,14 +48,14 @@
   @media screen and (min-width: $breakpoint-sm)
     scroll-behavior: smooth
 
-/* Remove margin-left: 2rem from Breadcrumbs */
+/* Remove margin-left: 2rem from Primer components using lists */
 page-header,
 sub-header,
 .op-work-package-details-tab-component,
 .UnderlineNav,
 .tabnav,
 .Box-header,
-action-menu anchored-position
+action-list
   ol, ul
     margin-left: 0
 
@@ -148,3 +148,7 @@ ul.SegmentedControl,
       white-space: normal
       overflow: visible
       text-overflow: clip
+
+.ActionListContent[aria-disabled="true"]
+  .ActionListItem-label[class^="__hl_"], .ActionListItem-label[class*=" __hl_"]
+    color: var(--control-fgColor-disabled) !important

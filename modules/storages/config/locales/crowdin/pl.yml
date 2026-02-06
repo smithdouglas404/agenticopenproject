@@ -96,12 +96,6 @@ pl:
       manual: Istniejący folder zarządzany ręcznie
     remove_project:
       deletion_failure_flash: Nie można usunąć projektu z magazynu. %{error}
-      dialog:
-        automatically_managed_appendix: Ponadto w przypadku, gdy ten magazyn zawiera automatycznie zarządzany folder projektu, folder ten i jego pliki zostaną bezpowrotnie usunięte.
-        confirmation_text: Potwierdź, że rozumiesz i chcesz usunąć ten magazyn plików z tego projektu.
-        heading_text: Usuń projekt z %{storage}
-        text: To działanie jest nieodwracalne i spowoduje usunięcie wszystkich linków do plików i folderów tego magazynu z pakietów roboczych tego projektu.
-        title: Usuń projekt z magazynu
       label: Usuń projekt
   services:
     attributes:
@@ -110,20 +104,20 @@ pl:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
-        remote_folders: 'Odczytaj zawartość folderu grupy:'
+        remote_folders: 'Odczytaj zawartość folderu zespołu:'
         remove_user_from_group: 'Usuń użytkownika z grupy:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
       one_drive_sync_service:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
-        remote_folders: 'Odczytaj zawartość folderu grupy:'
+        remote_folders: 'Odczytaj zawartość folderu głównego dysku:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
       sharepoint_sync_service:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
-        remote_folders: 'Odczytaj zawartość folderu grupy:'
+        remote_folders: 'Odczytaj zawartość folderu głównego dysku:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
     errors:
       messages:
@@ -146,7 +140,7 @@ pl:
               conflict: Folder %{folder_name} już istnieje w lokalizacji %{parent_location}.
               not_found: "Nie znaleziono lokalizacji %{parent_location}."
             ensure_root_folder_permissions:
-              not_found: "Nie znaleziono folderu %{group_folder}. Sprawdź konfigurację folderu grupy Nextcloud."
+              not_found: "Nie znaleziono folderu %{group_folder}. Sprawdź konfigurację folderu zespołu Nextcloud."
               permission_not_set: nie można ustawić uprawnień do folderu %{group_folder}.
             hide_inactive_folders:
               permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
@@ -227,15 +221,16 @@ pl:
     confirm_replace_oauth_application: Ta czynność zresetuje bieżące dane uwierzytelniające OAuth. Po potwierdzeniu będą Państwo musieli ponownie wprowadzić dane uwierzytelniające u dostawcy pamięci masowej, a wszyscy zdalni użytkownicy będą musieli ponownie autoryzować się w OpenProject. Czy na pewno chcą Państwo kontynuować?
     confirm_replace_oauth_client: Ta czynność spowoduje zresetowanie bieżących poświadczeń OAuth. Po potwierdzeniu będą Państwo musieli wprowadzić nowe dane uwierzytelniające od dostawcy pamięci masowej, a wszyscy użytkownicy będą musieli ponownie autoryzować się na stronie %{provider_type} . Czy na pewno chcą Państwo kontynuować?
     delete_warning:
-      project_storage_delete_result_1: Usuń wszystkie linki z pakietów roboczych tego projektu do plików i folderów tego magazynu.
-      project_storage_delete_result_2: W przypadku, gdy ten magazyn zawiera automatycznie zarządzany folder projektu, folder ten i jego pliki zostaną bezpowrotnie usunięte.
-      storage: 'Czy na pewno chcesz usunąć %{file_storage}? To spowoduje:'
-      storage_delete_result_1: Usunięcie wszystkich konfiguracji magazynu ze wszystkich korzystających z niego projektów.
-      storage_delete_result_2: Usunięcie wszystkich linków z pakietów roboczych wszystkich projektów do plików i folderów z tego magazynu.
-      storage_delete_result_3: W przypadku, gdy ten magazyn zawiera automatycznie zarządzane foldery projektów, foldery te i zawarte w nich pliki zostaną bezpowrotnie usunięte.
+      project_storage: Czy na pewno chcesz usunąć %{file_storage} z tego projektu?
+      project_storage_delete_result_1: Wszystkie linki do odpowiednich plików i folderów zostaną usunięte
+      project_storage_delete_result_2: Automatycznie zarządzany folder projektu i wszystkie znajdujące się w nim pliki zostaną usunięte
+      storage: Czy na pewno chcesz usunąć %{file_storage} jako zewnętrzny magazyn plików?
+      storage_delete_result_1: Magazyn zostanie usunięty ze wszystkich projektów, które obecnie z niego korzystają
+      storage_delete_result_2: Wszystkie linki do odpowiednich plików i folderów zostaną usunięte
+      storage_delete_result_3: Automatycznie zarządzany folder projektu i wszystkie znajdujące się w nim pliki zostaną usunięte
     dependencies:
       nextcloud:
-        group_folders_app: Foldery grupy
+        group_folders_app: Foldery zespołu
         integration_app: Integration OpenProject
     enabled_in_projects:
       setup_incomplete_description: Ten magazyn ma niekompletną konfigurację. Ukończ konfigurację przed włączeniem go w wielu projektach.
@@ -282,11 +277,11 @@ pl:
           client_folder_creation: Automatyczne tworzenie folderów
           client_folder_removal: Automatyczne usuwanie folderów
           drive_contents: Zawartość dysku
-          files_request: Pobieranie plików folderów grup
-          group_folder_app: 'Zależne: foldery grup'
-          group_folder_contents: Zawartość folderu grupy
-          group_folder_presence: Folder grupy istnieje
+          files_request: Pobieranie plików folderu zespołu
           header: Automatycznie zarządzane foldery projektu
+          team_folder_app: 'Zależność: foldery zespołów'
+          team_folder_contents: Zawartość folderu zespołu
+          team_folder_presence: Folder zespołu istnieje
           userless_access: Uwierzytelnianie żądań po stronie serwera
         authentication:
           existing_token: Token użytkownika
@@ -327,12 +322,12 @@ pl:
         client_secret_invalid: Skonfigurowany klucz tajny klienta OAuth 2 jest nieprawidłowy. Sprawdź konfigurację.
         nc_dependency_missing: 'Brakuje wymaganej zależności magazynu plików. Dodaj następującą zależność: %{dependency}.'
         nc_dependency_version_mismatch: Wersja aplikacji %{dependency} jest nieobsługiwana. Zaktualizuj swój serwer Nextcloud.
-        nc_group_folder_not_found: Folder grupy nie został znaleziony.
         nc_host_not_found: Nie znaleziono serwera Nextcloud pod skonfigurowanym adresem URL hosta. Sprawdź konfigurację.
         nc_oauth_request_not_found: Nie znaleziono punktu końcowego, z którego można pobrać informacje o aktualnie połączonym użytkowniku. Aby uzyskać więcej informacji, sprawdź dzienniki serwera.
         nc_oauth_request_unauthorized: Bieżący użytkownik nie ma uprawnień dostępu do zdalnego magazynu plików. Aby uzyskać więcej informacji, sprawdź dzienniki serwera.
         nc_oauth_token_missing: Aplikacja OpenProject nie może przetestować komunikacji z usługą Nextcloud na poziomie użytkownika, ponieważ użytkownik nie powiązał jeszcze swojego konta Nextcloud.
-        nc_unexpected_content: W folderze zarządzanej grupy znaleziono nieoczekiwaną zawartość.
+        nc_team_folder_not_found: Nie można znaleźć folderu zespołu.
+        nc_unexpected_content: W folderze zarządzanego zespołu znaleziono nieoczekiwaną zawartość.
         nc_userless_access_denied: Skonfigurowane hasło aplikacji jest nieprawidłowe.
         not_configured: Nie można zweryfikować połączenia. Najpierw zakończ konfigurację.
         od_client_cant_delete_folder: Klient ma problemy z usunięciem folderów. Sprawdź dokumentację konfiguracji swojej pamięci masowej.
@@ -507,7 +502,7 @@ pl:
         title: Konfigurujemy Twoje uprawnienia do folderu projektu.
     page_titles:
       file_storages:
-        delete: Usuń magazyn plików
+        delete: Usunąć magazyn plików?
         subtitle: Dodaj zewnętrzny magazyn plików w celu przesyłania plików, ich powiązywania i zarządzania nimi w pakietach roboczych.
       managed_project_folders:
         subtitle: |-
@@ -521,6 +516,8 @@ pl:
       project_storage_members:
         subtitle: Sprawdź status połączenia magazynu %{storage_name_link} wszystkich członków projektu.
         title: Status połączenia członków
+      project_storages:
+        delete: Usunąć magazyn plików z projektu?
     permission_header_explanation: 'Uprawnienia do plików w magazynach zewnętrznych są stosowane tylko do folderów i plików w automatycznie zarządzanych folderach projektu. Pamiętaj, że niektóre uprawnienia do plików nie są obsługiwane przez niektóych dostawców magazynu. Aby uzyskać więcej informacji, zapoznaj się z dokumentacją <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>uprawnień do przechowywania plików</a>.'
     provider_types:
       label: Typ dostawcy

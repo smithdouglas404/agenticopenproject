@@ -392,8 +392,6 @@ ru:
     label_me: "я"
     label_meeting_agenda: "Повестка совещания"
     label_meeting_minutes: "Протокол(-ы)"
-    label_menu_collapse: "свернуть"
-    label_menu_expand: "развернуть"
     label_more_than_ago: "более нескольких дней назад"
     label_moderate_comment: "Модерировать комментарий"
     label_next: "Следующий"
@@ -427,6 +425,7 @@ ru:
     label_remove_row: "Удалить строку"
     label_report: "Отчет"
     label_repository_plural: "Репозитории"
+    label_resize_project_menu: "Изменить размер меню проекта"
     label_save_as: "Сохранить как"
     label_search_columns: "Поиск столбца"
     label_select_watcher: "Выберите наблюдателя..."
@@ -635,9 +634,6 @@ ru:
           add: "Добавить настройку для проекта"
           already_selected: "Этот проект уже выбран"
           remove: "Удалить настройки проекта"
-    password_confirmation:
-      field_description: "Чтобы подтвердить изменения, введите пароль учетной записи."
-      title: "Для продолжения введите свой пароль"
     pagination:
       no_other_page: "Вы находитесь на единственной странице."
       pages_skipped: "Страницы пропущены."

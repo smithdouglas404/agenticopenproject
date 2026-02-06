@@ -109,6 +109,23 @@ ja:
       explanation:
         text: "ユーザーの個々のアクション（例えば、ワークパッケージを2回更新する）は、それらの年齢差が指定されたタイムスパン未満である場合、単一のアクションに集約されます。これらはアプリケーション内で1つのアクションとして表示されます。これはまた、送信されるメールの数を減らし、 %{webhook_link} の遅延にも影響します。"
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "IDプロバイダーからのJWT"
@@ -704,9 +721,11 @@ ja:
           create_button: "作成"
           name_label: "トークン名"
       created_dialog:
+        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
         token/api:
           title: "API トークンが生成されました"
-          warning: "このトークンが表示される唯一の時間です。今すぐコピーしてください。"
+        token/rss:
+          title: "The RSS token has been generated"
       failed_to_reset_token: "アクセストークンをリセットできませんでした: %{error}"
       failed_to_create_token: "アクセストークンの作成に失敗しました: %{error}"
       failed_to_revoke_token: "アクセストークンの取り消しに失敗しました: %{error}"
@@ -716,6 +735,9 @@ ja:
       notice_api_token_revoked: "APIトークンが削除されました。新しいトークンを作成するには、APIセクションの作成ボタンを使用してください。"
       notice_rss_token_revoked: "RSSトークンが削除されました。新しいトークンを作成するには、RSSセクションのリンクを使用してください。"
       notice_ical_token_revoked: 'プロジェクト "%{project_name}" のカレンダー "%{calendar_name}" の iCalendar トークン "%{token_name}" が失効しました。このトークンを持つiCalendar URLは無効になりました。'
+    password_confirmation_dialog:
+      confirmation_required: "You need to enter your account password to confirm this change."
+      title: "Confirm your password to continue"
   news:
     index:
       no_results_title_text: 現在、報告するニュースはありません。
@@ -1220,6 +1242,10 @@ ja:
         onthefly: "ユーザーの自動作成"
         port: "ポート番号"
         tls_certificate_string: "LDAP サーバ SSL 証明書"
+      mcp_configuration:
+        enabled: Enabled
+        title: Title
+        description: Description
       member:
         roles: "ロール"
       notification:
@@ -1478,6 +1504,7 @@ ja:
         even: "は偶数にしてください。"
         exclusion: "は予約されています。"
         feature_disabled: は利用できません。
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "は大きすぎます (最大サイズは%{count}バイト)"
         filter_does_not_exist: "フィルターが存在しません。"
         format: "期待されるフォーマットの「%{expected}」と一致しません。"
@@ -1500,7 +1527,8 @@ ja:
         not_a_datetime: "は有効な日時ではありません。"
         not_a_number: "は数値にしてください。"
         not_allowed: "権限がないため無効です。"
-        not_json: "は有効な JSON オブジェクトではありません。"
+        not_json: "is not parseable as JSON."
+        not_json_object: "is not a JSON object."
         not_an_integer: "は整数にしてください。"
         not_an_iso_date: "は有効な日付ではありません。必要な形式: YYYY-MM-dd。"
         not_same_project: "は同じプロジェクトに属していません。"
@@ -1895,7 +1923,10 @@ ja:
       status: "ステータス名"
       token/api:
         other: アクセストークン
-      type: "タイプ"
+      token/rss:
+        other: "RSS tokens"
+      type:
+        other: "Types"
       user: "ユーザ"
       version: "バージョン"
       workflow: "ワークフロー"
@@ -2108,6 +2139,7 @@ ja:
   button_click_to_reveal: "明らかにするためにクリック"
   button_close: "閉じる"
   button_collapse_all: "全てを折りたたむ"
+  button_confirm: "Confirm"
   button_configure: "設定"
   button_continue: "続行"
   button_complete: "Complete"
@@ -2140,6 +2172,7 @@ ja:
   button_print: "印刷"
   button_quote: "引用"
   button_remove: 削除
+  button_remove_permanently: "Remove permanently"
   button_remove_reminder: "リマインダーを削除"
   button_rename: "名称変更"
   button_replace: "置き換え"
@@ -2371,7 +2404,7 @@ ja:
       baseline_comparison: ベースラインの比較
       board_view: 高度なボード
       calculated_values: Calculated values
-      conditional_highlighting: 条件付きハイライト
+      capture_external_links: Capture External Links
       internal_comments: 内部コメント
       custom_actions: カスタムアクション
       custom_field_hierarchies: Hierarchies
@@ -2381,10 +2414,12 @@ ja:
       edit_attribute_groups: 属性グループを編集
       gantt_pdf_export: ガントPDFをエクスポート
       ldap_groups: LDAP ユーザーとグループ同期
+      mcp_server: MCP Server
       nextcloud_sso: Nextcloudストレージのシングルサインオン。
       one_drive_sharepoint_file_storage: OneDrive/SharePointファイルストレージ
       placeholder_users: プレースホルダー ユーザー
       portfolio_management: Portfolio management
+      project_creation_wizard: Project initiation request
       project_list_sharing: プロジェクトリストの共有
       readonly_work_packages: 読み取り専用のワークパッケージ
       scim_api: SCIMサーバーAPI
@@ -2425,8 +2460,8 @@ ja:
         description: "参照された属性とテキストを使用して自動生成された件名を作成します。"
       customize_life_cycle:
         description: "PM2プロジェクトサイクル計画で提供されるものとは異なるプロジェクトフェーズを作成して整理します。"
-      conditional_highlighting:
-        description: "質量から目立つ特定のワークパッケージが必要ですか? ワークパッケージテーブルで条件付きハイライトを使用します。"
+      capture_external_links:
+        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
         description: "ワークパッケージの一覧で関係を表示しますか？"
       edit_attribute_groups:
@@ -2456,6 +2491,8 @@ ja:
       custom_actions:
         title: "カスタムアクション"
         description: "カスタムアクションは、ステータスに基づいて特定のワークパッケージで利用できる、事前に定義されたアクションです。"
+      mcp_server:
+        description: "Integrate AI agents with your OpenProject instance through MCP."
       nextcloud_sso:
         title: "Nextcloudストレージへのシングルサインオン"
         description: "シングルサインオンでNextcloudストレージのシームレスかつセキュアな認証を可能にします。アクセス管理を簡素化し、ユーザーの利便性を向上させます。"
@@ -2467,6 +2504,8 @@ ja:
         description: "SAML または OpenID Connect を使用して外部の SSO プロバイダ経由でログインし、既存の ID システムとのシームレスなアクセスと統合を可能にします。"
       virus_scanning:
         description: "他のユーザーがアクセスできるようになる前に、OpenProjectにアップロードされたファイルがウイルスでスキャンされていることを確認してください。"
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: プレースホルダー ユーザー
         description: >
@@ -2763,19 +2802,17 @@ ja:
         learn_about: "すべての新機能の詳細"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Real-time documents collaboration.
-            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
-            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
-            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
-            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
-            line_5: Option to guard the privacy of users not working in the same project more strictly.
-            line_6: Improved project creation flow with better template selection.
-            line_7: Smarter global search including type and status, improving precision in several autocompleters.
-            line_8: Accessibility improvements with ALT texts and improved chart colors.
+            line_0: Automated project initiation (Enterprise add-on).
+            line_1: "Meetings: add new or existing work packages as outcomes."
+            line_2: "Meetings: show iCal responses in OpenProject."
+            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
+            line_4: "Release to Community: Attribute highlighting."
+            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
+            line_6: Improved performance and user experience, including the Activity tab and Documents module.
     links:
       upgrade_enterprise_edition: "エンタープライズ版にアップグレード"
       postgres_migration: "PostgreSQL にインストールを移行しています"
@@ -2843,14 +2880,17 @@ ja:
   instructions_after_error: "%{signin} をクリックして再びログインを試行できます。エラーが解決しない場合は、管理者にお問い合わせください。"
   menus:
     admin:
-      mail_notification: "電子メールの通知"
-      mails_and_notifications: "電子メールと通知"
+      ai: "Artificial Intelligence (AI)"
       aggregation: "集計"
       api_and_webhooks: "APIとWebhooks"
+      mail_notification: "電子メールの通知"
+      mails_and_notifications: "電子メールと通知"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "追加"
   my_account:
     access_tokens:
+      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
       no_results:
         title: "表示するアクセス トークンはありません"
         description: "すべてが無効になっています。管理メニューで再度有効にすることができます。"
@@ -2860,34 +2900,56 @@ ja:
         expiration: "有効期限"
       indefinite_expiration: "なし"
       simple_revoke_confirmation: "このトークンを取り消してもよろしいですか？"
+      tabs:
+        client:
+          title: "Client tokens"
+        provider:
+          title: "Provider tokens"
       token/api:
+        blank_description: "There is no API token yet. You can create one using the button below."
+        blank_title: "No API token"
         title: "API"
+        table_title: "API tokens"
         text_hint: "API トークンを使用すると、サードパーティのアプリケーションが REST API 経由でこの OpenProject サイトと通信できます。"
+        static_token_name: "API token"
         disabled_text: "API トークンは管理者によって有効化されていません。この機能を使用するには管理者に問い合わせてください。"
-        add_button: "API トークン"
-      api:
-        static_token_name: "APIトークン"
+        add_button: "API token"
       ical:
+        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
+        blank_title: "No iCalendar token"
         title: "iCalendar"
+        table_title: "iCalendar tokens"
         text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar サブスクリプションは管理者によって有効になっていません。この機能を使用するには管理者に問い合わせてください。"
-        empty_text_hint: "iCalendar トークンを追加するには、プロジェクトの Calendar モジュール内から新規または既存のカレンダーを購読します。 必要な権限が必要です。"
-      oauth:
+      oauth_application:
+        active_tokens: "Active tokens"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
+        last_used_at: "Last used at"
         title: "OAuth"
-        text_hint: "OAuth トークンにより、サードパーティ製アプリケーションがこの OpenProject サイトと接続できます。"
-        empty_text_hint: "サードパーティーのアプリケーションへのアクセスが設定されておらず、アクティブになっていません。この機能を有効にするには管理者に問い合わせてください。"
-      rss:
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
+      token/rss:
+        add_button: "RSS token"
+        blank_description: "There is no RSS token yet. You can create one using the button below."
+        blank_title: "No RSS token"
         title: "RSS"
-        text_hint: "RSS トークンにより、ユーザーは外部 RSS リーダーを介してこの OpenProject サイトの最新の変更に追いつくことができます。"
-        static_token_name: "RSS トークン"
-        disabled_text: "RSSトークンは管理者によって有効になっていません。この機能を使用するには管理者に問い合わせてください。"
+        table_title: "RSS tokens"
+        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
+        static_token_name: "RSS token"
+        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "ファイルストレージ"
-        text_hint: "ファイルストレージトークンは、このOpenProjectサイトを外部ファイルストレージと接続します。"
-        empty_text_hint: "アカウントにリンクされたストレージへのアクセス権がありません。"
-        revoke_token: "本当にこのトークンを削除しますか？ %{storage}に再度ログインする必要があります"
-        removed: "ファイルストレージトークンを削除しました"
-        failed: "エラーが発生し、トークンを削除できませんでした。後でもう一度お試しください。"
         unknown_storage: "不明なストレージ"
   notifications:
     reasons:
@@ -2949,6 +3011,7 @@ ja:
   label_always_visible: "常に表示"
   label_announcement: "お知らせ"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "APIアクセスキー"
   label_api_access_key_created_on: "APIアクセスキーが%{value}前に作成されました"
   label_api_access_key_type: "API"
@@ -3204,6 +3267,7 @@ ja:
   label_journal_diff: "説明の比較"
   label_language: "言語"
   label_languages: "言語"
+  label_external_links: "External links"
   label_locale: "言語と地域"
   label_jump_to_a_project: "プロジェクトへ移動..."
   label_keyword_plural: "キーワード"
@@ -3381,9 +3445,6 @@ ja:
   label_project_hierarchy: "プロジェクトの階層構造"
   label_project_mappings: "プロジェクト"
   label_project_new: "新規プロジェクト"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "プロジェクト"
   label_project_list_plural: "プロジェクト一覧"
   label_project_life_cycle: "プロジェクトのライフ サイクル"
@@ -3846,7 +3907,7 @@ ja:
   notice_not_authorized: "このページにアクセスする権限がありません。"
   notice_not_authorized_archived_project: "アクセスしようとしたプロジェクトはアーカイブされています。"
   notice_requires_enterprise_token: "エンタープライズトークンが見つからないか、このページへのアクセスを許可していません。"
-  notice_password_confirmation_failed: "パスワードが正しくありません。続行できません。"
+  notice_password_confirmation_failed: "The entered password is not correct."
   notice_principals_found_multiple: "%{number} の検索結果があります。 \n タブで最初の結果へフォーカスします。"
   notice_principals_found_single: "1 つの結果があります。 \n タブでフォーカスします。"
   notice_parent_item_not_found: "Parent item not found."
@@ -4198,6 +4259,9 @@ ja:
   setting_allowed_link_protocols: "許可されたリンクプロトコル"
   setting_allowed_link_protocols_text_html: >-
     これらのプロトコルを、作業パッケージの説明、長文フィールド、およびコメント内でリンクとして表示できるようにします。例えば、%{tel_code} や %{element_code} などです。1行に1つのプロトコルを入力してください。<br/> %{http_code}、%{https_code}、および %{mailto_code} のプロトコルは常に許可されています。
+  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links_text: >
+    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
   setting_after_first_login_redirect_url: "最初のログインリダイレクト"
   setting_after_first_login_redirect_url_text_html: >
     最初のログイン後にユーザーをリダイレクトするパスを設定します。空の場合は、オンボーディングツアーのホームページにリダイレクトします。 <br/> 例: <code>/my/page</code>
@@ -4210,11 +4274,17 @@ ja:
   setting_apiv3_cors_origins_text_html: >
     CORS が有効になっている場合、これらは OpenProject API へのアクセスが許可されている起源です。 <br/> 期待される値を指定する方法については、 <a href="%{origin_link}" target="_blank">Origin ヘッダー</a> のドキュメントを確認してください。
   setting_apiv3_write_readonly_attributes: "読み取り専用属性への書き込み権限"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    この API を有効にすると、管理者は作成時に createdAt や author などの静的な読み取り専用属性を書き込むことができるようになります。 <br/> <strong>警告</strong>この設定はデータのインポートなどのユースケースを持ちますが、管理者が他のユーザーになりすましてアイテムを作成することを可能にします。しかし、すべての作成リクエストは真の作成者として記録されます。 </br> 属性とサポートされるリソースの詳細については、 %{api_documentation_link}を参照してください。
+  setting_apiv3_write_readonly_attributes_instructions: >
+    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+  setting_apiv3_write_readonly_attributes_additional: >
+    For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "API ページの最大サイズ"
-  setting_apiv3_max_page_instructions_html: >
-    API が応答する最大ページサイズを設定します。 単一ページでより多くの値を返すAPIリクエストを実行することはできません。 <br/> <strong>警告:</strong> 必要な理由がわかった場合にのみ、この値を変更してください。 高い値に設定すると、パフォーマンスへの影響が大きくなります。 に対し、ページ化されたビューでは、ページ化されたビューでエラーが発生します。
+  setting_apiv3_max_page_size_instructions: >
+    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+  setting_apiv3_max_page_size_warning: >
+    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "文章"
   setting_apiv3_docs_enabled: "ドキュメントページを有効にする"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4399,7 +4469,7 @@ ja:
       omniauth_direct_login_hint_html: >
         このオプションが有効な場合、ログイン要求は設定された omniauth プロバイダにリダイレクトされます。ログインドロップダウンとサインインページは無効になります。 <br/> <strong>注意:</strong>パスワードログインも無効にしない限り、このオプションを有効にした場合でも、ユーザは内部的に <code>%{internal_path}</code>ログインページにアクセスしてログインすることができます。
       remapping_existing_users_hint: >
-        有効にすると、設定された ID プロバイダは、ユーザが以前にそのプロバイダを通してサインインしたことがなくても、メールアドレスに基づいて既存のユーザにログインできるようになります。これは、OpenProject サイトを新しい SSO プロバイダに移行するときに便利ですが、サイトのすべてのユーザから信頼されていないプロバイダを使用するときには推奨されません。
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         アップロードされたファイルに有効なファイル拡張子および/または MIME タイプのリストを定義します。 <br/> ファイル拡張子（例． <code>%{ext_example}</code>)またはMIMEタイプ(例、 <code>%{mime_example}</code>). <br/> 任意のファイル タイプをアップロードできるようにするには、空のままにします。複数の値を指定できます (各値に 1 行)。
@@ -4505,7 +4575,7 @@ ja:
           project_mandate: "Project mandate"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
         description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
@@ -4673,6 +4743,7 @@ ja:
     602/5000 注：有効にすると、<a href="%{information_panel_path}">%{information_panel_label}</a>管理パネルとホームページに、インストールステータスのバッジが表示されます。 管理者のみに表示されます。 <br/>バッジは、最新のOpenProjectバージョンを公式のOpenProjectリリースデータベースと照合して、アップデートや既知の脆弱性について警告します。 チェックの内容、利用可能なアップデートを提供するために必要なデータ、およびこのチェックを無効にする方法の詳細については、<a href="%{more_info_url}">設定ドキュメント</a>をご覧ください。
   text_own_membership_delete_confirmation: "一部またはすべての権限を自分自身から剥奪しようとしているため、このプロジェクトを編集できなくなる可能性があります。\n本当に続けますか？"
   text_permanent_delete_confirmation_checkbox_label: "私は、この削除は取り消すことができないことを理解しています。"
+  text_permanent_remove_confirmation_checkbox_label: "I understand that this removal cannot be reversed"
   text_plugin_assets_writable: "プラグインの「assets」ディレクトリが書き込み可能"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "アルファベット小文字(a-z)・数字・ハイフン・アンダースコアが使えます。アルファベット小文字で始まる必要があります。"
@@ -5166,3 +5237,8 @@ ja:
   token:
     hashed_token:
       display_value_placeholder: "***"
+  external_link_warning:
+    title: "Leaving OpenProject"
+    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
+    continue_message: "Are you sure you want to proceed to the following external link?"
+    continue_button: "Continue to external website"

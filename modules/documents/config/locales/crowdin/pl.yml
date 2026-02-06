@@ -74,6 +74,7 @@ pl:
         action: Spróbuj ponownie
       connection_recovery_notice:
         description: "Połączenie z serwerem współpracy tekstowej w czasie rzeczywistym zostało przywrócone."
+      tabs: "Karty dokumentów"
     index_page:
       name: "Nazwa"
       type: "Typ"

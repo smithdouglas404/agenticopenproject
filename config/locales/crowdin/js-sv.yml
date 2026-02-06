@@ -392,8 +392,6 @@ sv:
     label_me: "mig"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Protokoll"
-    label_menu_collapse: "fäll ihop"
-    label_menu_expand: "expandera"
     label_more_than_ago: "mer än dagar sedan"
     label_moderate_comment: "Moderera kommentar"
     label_next: "Nästa"
@@ -427,6 +425,7 @@ sv:
     label_remove_row: "Ta bort rad"
     label_report: "Rapport"
     label_repository_plural: "Versionsarkiv"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Spara som"
     label_search_columns: "Sök i en kolumn"
     label_select_watcher: "Välj en bevakare..."
@@ -633,9 +632,6 @@ sv:
           add: "Lägg till inställning för projekt"
           already_selected: "Detta projekt är redan valt"
           remove: "Ta bort projektinställningar"
-    password_confirmation:
-      field_description: "Du behöver ange ditt lösenord för att bekräfta ändringen."
-      title: "Bekräfta ditt lösenord för att fortsätta"
     pagination:
       no_other_page: "Du befinner dig på den enda sidan."
       pages_skipped: "Sidor överhoppade."

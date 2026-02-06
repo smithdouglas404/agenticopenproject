@@ -98,9 +98,9 @@ RSpec.describe "Show/Edit Document View",
 
     aggregate_failures "can edit document content" do
       editor = FormFields::Primerized::BlockNoteEditorInput.new
-      editor.fill_in_with_content("This is the new **content**.")
+      editor.fill_in("This is the new **content**.")
 
-      expect(editor.text).to include("This is the new **content**.")
+      expect(editor.element).to have_content("This is the new content.") # bold is applied
     end
   end
 

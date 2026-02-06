@@ -91,10 +91,9 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
              global_permissions:)
     end
 
-    it "shows the new project initiation request heading when the feature is enabled",
-       with_flag: { project_initiation_active: true } do
+    it "does not show a special heading when the project initiation feature is enabled" do
       visit new_project_path(template_id: template.id)
-      expect(page).to have_heading "New project creation wizard"
+      expect(page).to have_heading "New project"
     end
 
     it "can instantiate the project with the copy permission" do

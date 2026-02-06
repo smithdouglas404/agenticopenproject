@@ -26,10 +26,12 @@
           ) do |tree_view|
             current_values = Array(@project.custom_value_for(@project_custom_field)).map(&:value)
             checked_fn = lambda { |item| current_values.include?(item.id.to_s) }
+            item_formatter = standard_tree_view_item_formatter
+            label_fn = lambda { |item| item_formatter.format(item:) }
 
             item_options = {
               expanded_fn: ->(*) { true },
-              label_fn: ->(item) { item.to_s },
+              label_fn:,
               checked_fn:,
               select_variant: @project_custom_field.multi_value? ? :multiple : :single
             }

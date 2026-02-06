@@ -100,8 +100,10 @@ module MeetingAgendaItems
           id: @meeting_agenda_item.id,
           "draggable-id": @meeting_agenda_item.id,
           "draggable-type": "agenda-item",
-          "drop-url": drop_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
-                                                    current_occurrence: @current_occurrence)
+          "drop-url": drop_project_meeting_agenda_item_path(@meeting_agenda_item.meeting.project,
+                                                            @meeting_agenda_item.meeting,
+                                                            @meeting_agenda_item,
+                                                            current_occurrence: @current_occurrence)
         }
       }
     end

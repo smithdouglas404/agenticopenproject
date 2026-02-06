@@ -96,12 +96,6 @@ zh-CN:
       manual: 手动管理现有文件夹
     remove_project:
       deletion_failure_flash: 无法从存储中删除此项目。 %{error}
-      dialog:
-        automatically_managed_appendix: 而且，在这种情况下，这个存储有一个自动托管的项目文件夹，它和它的文件将被永久删除。
-        confirmation_text: 请确认您已理解并要从此项目中删除此文件存储
-        heading_text: 从 %{storage} 中删除项目
-        text: 此操作不可逆，将从此项目的工作包中删除所有链接到该存储的文件和文件夹。
-        title: 从存储中删除项目
       label: 删除项目
   services:
     attributes:
@@ -110,20 +104,20 @@ zh-CN:
         create_folder: '托管项目文件夹创建：'
         ensure_root_folder_permissions: '设置基础文件夹权限：'
         hide_inactive_folders: '隐藏非活动文件夹步骤：'
-        remote_folders: '读取组文件夹的内容：'
+        remote_folders: '读取团队文件夹的内容：'
         remove_user_from_group: '从组中移除用户'
         rename_project_folder: '重命名托管项目文件夹：'
       one_drive_sync_service:
         create_folder: '托管项目文件夹创建：'
         ensure_root_folder_permissions: '设置基础文件夹权限：'
         hide_inactive_folders: '隐藏非活动文件夹步骤：'
-        remote_folders: '读取组文件夹的内容：'
+        remote_folders: '读取驱动器根文件夹的内容：'
         rename_project_folder: '重命名托管项目文件夹：'
       sharepoint_sync_service:
         create_folder: '托管项目文件夹创建：'
         ensure_root_folder_permissions: '设置基础文件夹权限：'
         hide_inactive_folders: '隐藏非活动文件夹步骤：'
-        remote_folders: '读取组文件夹的内容：'
+        remote_folders: '读取驱动器根文件夹的内容：'
         rename_project_folder: '重命名托管项目文件夹：'
     errors:
       messages:
@@ -146,7 +140,7 @@ zh-CN:
               conflict: 文件夹 %{folder_name} 已经存在于 %{parent_location} 上。
               not_found: "未找到 %{parent_location} 。"
             ensure_root_folder_permissions:
-              not_found: "未找到 %{group_folder} 。请检查您的 Nextcloud 组文件夹设置。"
+              not_found: "未找到 %{group_folder}。请检查您的 Nextcloud 团队文件夹设置。"
               permission_not_set: 无法设置 %{group_folder} 上的权限。
             hide_inactive_folders:
               permission_not_set: 无法设置 %{path} 上的权限。
@@ -227,15 +221,16 @@ zh-CN:
     confirm_replace_oauth_application: 此操作将重置当前的 OAuth 凭据。确认后，您必须在存储提供商处重新输入凭据，并且所有远程用户都必须再次针对 OpenProject 进行授权。您确定要继续吗？
     confirm_replace_oauth_client: 此操作将重置当前的 OAuth 凭据。确认后，您必须输入存储提供商的新凭据，并且所有用户都必须再次针对 %{provider_type} 进行授权。您确定要继续吗？
     delete_warning:
-      project_storage_delete_result_1: 从此项目的工作包中移除该存储区的文件和文件夹的所有链接。
-      project_storage_delete_result_2: 如果这个存储库具有自动托管的项目文件夹，那么该文件夹及其文件将被永久删除。
-      storage: '确定要删除 %{file_storage} 吗？此操作将：'
-      storage_delete_result_1: 删除所有使用此存储的项目的所有存储设置。
-      storage_delete_result_2: 从所有项目的工作包中删除所有链接到该存储的文件和文件夹。
-      storage_delete_result_3: 如果此存储具有自动托管的项目文件夹，这些文件夹及其包含的文件将被永久删除。
+      project_storage: 确定要从此项目中移除 %{file_storage} 吗？
+      project_storage_delete_result_1: 相应文件和文件夹的所有链接都将被移除
+      project_storage_delete_result_2: 自动管理的项目文件夹及其中的所有文件都将被删除
+      storage: 确定要删除作为外部文件存储空间的 %{file_storage} 吗？
+      storage_delete_result_1: 该存储空间将从所有当前使用该存储空间的项目中移除
+      storage_delete_result_2: 相应文件和文件夹的所有链接都将被移除
+      storage_delete_result_3: 自动管理的项目文件夹及其中的所有文件都将被删除
     dependencies:
       nextcloud:
-        group_folders_app: 组文件夹
+        group_folders_app: 团队文件夹
         integration_app: 集成 OpenProject
     enabled_in_projects:
       setup_incomplete_description: 这个存储设置不完整。请在多个项目中启用它之前完成设置。
@@ -282,11 +277,11 @@ zh-CN:
           client_folder_creation: 自动创建文件夹
           client_folder_removal: 自动删除文件夹
           drive_contents: 驱动器内容
-          files_request: 正在获取组文件夹文件
-          group_folder_app: '依赖：组文件夹'
-          group_folder_contents: 群组文件夹内容
-          group_folder_presence: 组文件夹已存在
+          files_request: 正在获取团队文件夹文件
           header: 自动托管的项目文件夹
+          team_folder_app: '依赖项：团队文件夹'
+          team_folder_contents: 团队文件夹内容
+          team_folder_presence: 团队文件夹已存在
           userless_access: 服务器端请求身份验证
         authentication:
           existing_token: 用户 token
@@ -321,12 +316,12 @@ zh-CN:
         client_secret_invalid: 已配置的 OAuth 2 客户端 ID 无效。请检查配置。
         nc_dependency_missing: '文件存储缺少一个必需的依赖项。请添加以下依赖项： %{dependency}.'
         nc_dependency_version_mismatch: '%{dependency} 应用版本不受支持。请更新您的 Nextcloud 服务器。'
-        nc_group_folder_not_found: 无法找到组文件夹。
         nc_host_not_found: 在配置的主机 URL 中找不到 Nextcloud 服务器。请检查配置。
         nc_oauth_request_not_found: 未找到获取当前连接用户的端点。请检查服务器日志以获取更多信息。
         nc_oauth_request_unauthorized: 当前用户无权访问远程文件存储。请检查服务器日志以获取更多信息。
         nc_oauth_token_missing: OpenProject 无法测试用户与 Nextcloud 之间的通信，因为用户尚未链接他们的 Nextcloud 帐户。
-        nc_unexpected_content: 在管理组文件夹中发现意外内容。
+        nc_team_folder_not_found: 无法找到团队文件夹。
+        nc_unexpected_content: 在受管理的团队文件夹中找到非预期内容。
         nc_userless_access_denied: 已配置的应用密码无效。
         not_configured: 无法验证连接。请先完成配置。
         od_client_cant_delete_folder: 客户端在删除文件夹时遇到问题。请检查您的存储的设置文档。
@@ -501,7 +496,7 @@ zh-CN:
         title: 我们正在设置您对项目文件夹的权限。
     page_titles:
       file_storages:
-        delete: 删除文件存储
+        delete: 是否删除文件存储空间？
         subtitle: 添加外部文件存储以便在工作包中上传、链接和管理文件。
       managed_project_folders:
         subtitle: |-
@@ -515,6 +510,8 @@ zh-CN:
       project_storage_members:
         subtitle: 检查所有项目成员的存储区 %{storage_name_link} 的连接状态。
         title: 成员连接状态
+      project_storages:
+        delete: 是否从项目中移除文件存储空间？
     permission_header_explanation: '外部存储器上的文件权限仅适用于自动管理的项目文件夹内的文件夹和文件。请注意，并非所有存储提供商都支持所有文件权限。更多信息请查看<a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>文件存储权限</a>文档。'
     provider_types:
       label: 提供商类型

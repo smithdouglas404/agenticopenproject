@@ -74,6 +74,7 @@ hu:
         action: Próbálja újra
       connection_recovery_notice:
         description: "A kapcsolat a valós idejű szöveges együttműködési kiszolgálóval helyreállt."
+      tabs: "Document tabs"
     index_page:
       name: "Név"
       type: "Típus"

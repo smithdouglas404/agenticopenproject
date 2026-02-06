@@ -393,8 +393,6 @@ cs:
     label_me: "já"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Zápis"
-    label_menu_collapse: "sbalit"
-    label_menu_expand: "rozbalit"
     label_more_than_ago: "před více jak (dny)"
     label_moderate_comment: "Moderate comment"
     label_next: "Další"
@@ -428,6 +426,7 @@ cs:
     label_remove_row: "Odstranit řádek"
     label_report: "Hlášení"
     label_repository_plural: "Repozitáře"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Uložit jako"
     label_search_columns: "Vyhledávání ve sloupci"
     label_select_watcher: "Zvolte sledujícího..."
@@ -636,9 +635,6 @@ cs:
           add: "Přidat nastavení pro projekt"
           already_selected: "Tento projekt je již vybrán"
           remove: "Odstranit nastavení projektu"
-    password_confirmation:
-      field_description: "Pro potvrzení této změny je třeba zadat heslo k účtu."
-      title: "Pro pokračování potvrďte vaše heslo"
     pagination:
       no_other_page: "Jste na jediné stránce."
       pages_skipped: "Pages skipped."

@@ -14,7 +14,7 @@ keywords: work packages table configuration, work package table, columns, filter
 | [Filter work packages](#filter-work-packages)                | How to filter in the work package table.                     |
 | [Sort the work package table](#sort-the-work-package-table)  | How to sort within the work package table.                   |
 | [Display settings](#flat-list-hierarchy-mode-and-group-by)   | Get to know the flat list, the hierarchy mode, the group by and the sum feature. |
-| [Attribute highlighting (Enterprise add-on)](#attribute-highlighting-enterprise-add-on) | How to highlight certain attributes in the work package table. |
+| [Attribute highlighting](#attribute-highlighting)            | How to highlight certain attributes in the work package table. |
 | [Save work package views](#save-work-package-views)          | How to save a new work package view and how to change existing ones. |
 
 You can configure the work package table view in OpenProject to display the information you need in the table.
@@ -233,9 +233,7 @@ If you group the work package table, sums will be shown for each group.
 
 ![Example of sums for Work, Remaining work and % Complete shown in a work package table in OpenProject](openproject_user_guide_wp_table_display_sums.png)
 
-## Attribute highlighting (Enterprise add-on)
-
-[feature: conditional_highlighting ]
+## Attribute highlighting
 
 You can highlight attributes in the work package table to emphasize the importance of certain attributes and have important topics at a glance. To activate attribute highlighting open the work package configuration table and select the **Highlighting** tab.
 

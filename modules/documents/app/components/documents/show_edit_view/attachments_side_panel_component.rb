@@ -35,6 +35,7 @@ module Documents
       include AngularHelper
       include AttachmentsHelper
       include DocumentsHelper
+      include OpPrimer::ComponentHelpers
 
       options :readonly
 

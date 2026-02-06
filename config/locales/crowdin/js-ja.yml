@@ -394,8 +394,6 @@ ja:
     label_me: "自分"
     label_meeting_agenda: "アジェンダ"
     label_meeting_minutes: "議事録"
-    label_menu_collapse: "折りたたむ"
-    label_menu_expand: "展開する"
     label_more_than_ago: "今日より○日前以前"
     label_moderate_comment: "コメントをモデレートする"
     label_next: "次へ"
@@ -429,6 +427,7 @@ ja:
     label_remove_row: "行を削除"
     label_report: "レポート"
     label_repository_plural: "リポジトリ"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "名前をつけて保存"
     label_search_columns: "列を検索"
     label_select_watcher: "ウォッチャーを選択..."
@@ -634,9 +633,6 @@ ja:
           add: "プロジェクトの設定を追加する"
           already_selected: "このプロジェクトは既に選択されています"
           remove: "プロジェクトの設定を削除する"
-    password_confirmation:
-      field_description: "この変更を確認するには、アカウントのパスワードを入力する必要があります。"
-      title: "続行するにはパスワードを確認してください"
     pagination:
       no_other_page: "このページだけです。"
       pages_skipped: "ページがスキップされました。"

@@ -96,12 +96,6 @@ ms:
       manual: Folder yang tersedia dikendalikan secara manual
     remove_project:
       deletion_failure_flash: Gagal mengalih keluar projek daripada storan. %{error}
-      dialog:
-        automatically_managed_appendix: Dalam kes ini juga, storan ini mempunyai folder projek yang diuruskan secara automatik, dan fail yang termasuk akan dipadam selamanya.
-        confirmation_text: Sila sahkan bahawa anda faham dan ingin memadam storan fail ini daripada projek ini
-        heading_text: Alih keluar projek daripada %{storage}
-        text: Aksi ini tidak dapat dipulihkan dan akan padamkan semua pautan daripada pakej kerja projek ini ke fail dan folder storan itu.
-        title: Remove project from storage
       label: Keluarkan projek
   services:
     attributes:
@@ -110,20 +104,20 @@ ms:
         create_folder: 'Penciptaan Folder Projek Terurus:'
         ensure_root_folder_permissions: 'Tetapkan Kebenaran Folder Pangkalan:'
         hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
-        remote_folders: 'Baca kandungan folder kumpulan:'
+        remote_folders: 'Read contents of the team folder:'
         remove_user_from_group: 'Keluarkan Pengguna daripada Kumpulan:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
       one_drive_sync_service:
         create_folder: 'Penciptaan Folder Projek Terurus:'
         ensure_root_folder_permissions: 'Tetapkan Kebenaran Folder Pangkalan:'
         hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
-        remote_folders: 'Baca kandungan folder kumpulan:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
       sharepoint_sync_service:
         create_folder: 'Penciptaan Folder Projek Terurus:'
         ensure_root_folder_permissions: 'Tetapkan Kebenaran Folder Pangkalan:'
         hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
-        remote_folders: 'Baca kandungan folder kumpulan:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
     errors:
       messages:
@@ -146,7 +140,7 @@ ms:
               conflict: The folder %{folder_name} already exists on %{parent_location}.
               not_found: "%{parent_location} tidak ditemui."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} tidak ditemui. Sila semak persediaan Folder Kumpulan Nextcloud anda."
+              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
               permission_not_set: tidak dapat menetapkan kebenaran pada %{group_folder}.
             hide_inactive_folders:
               permission_not_set: tidak dapat menetapkan kebenaran pada %{path}.
@@ -227,15 +221,16 @@ ms:
     confirm_replace_oauth_application: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan OpenProject sekali lagi. Adakah anda pasti anda mahu teruskan?
     confirm_replace_oauth_client: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan %{provider_type} sekali lagi. Adakah anda pasti anda mahu teruskan?
     delete_warning:
-      project_storage_delete_result_1: Padam semua pautan dari pakej kerja projek ini ke fail dan folder storan tersebut.
-      project_storage_delete_result_2: Sekiranya storan ini mempunyai folder projek yang dikendalikan secara automatik, folder ini serta failnya akan dipadamkan selamanya.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
-      storage_delete_result_1: Padam semua penyediaan storan untuk semua projek yang menggunakan storan ini.
-      storage_delete_result_2: Padam semua pautan daripada pakej kerja semua projek ke fail dan folder storan tersebut.
-      storage_delete_result_3: Sekiranya storan ini mempunyai folder projek yang dikendalikan secara automatik, folder tersebut serta fail yang terkandung akan dipadamkan selamanya.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
-        group_folders_app: Group Folders
+        group_folders_app: Team Folders
         integration_app: Integrasi OpenProject
     enabled_in_projects:
       setup_incomplete_description: Storan ini mempunyai persediaan yang tidak lengkap. Sila lengkapkan persediaan sebelum mendayakannya dalam berbilang projek.
@@ -282,11 +277,11 @@ ms:
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
           drive_contents: Drive content
-          files_request: Fetching group folder files
-          group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder content
-          group_folder_presence: Group folder exists
+          files_request: Fetching team folder files
           header: Folder projek yang dikendalikan secara automatik
+          team_folder_app: 'Dependency: Team Folders'
+          team_folder_contents: Team folder content
+          team_folder_presence: Team folder exists
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -321,12 +316,12 @@ ms:
         client_secret_invalid: Rahsia pelanggan OAuth 2 yang dikonfigurasikan adalah tidak sah. Sila semak konfigurasi.
         nc_dependency_missing: 'Kebergantungan yang diperlukan tiada pada storan fail. Sila tambahkan kebergantungan berikut: %{dependency}.'
         nc_dependency_version_mismatch: The %{dependency} app version is not supported. Please update your Nextcloud server.
-        nc_group_folder_not_found: Folder kumpulan tidak ditemui.
         nc_host_not_found: Tiada pelayan Nextcloud ditemui pada url hos yang dikonfigurasikan. Sila semak konfigurasi.
         nc_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
         nc_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         nc_oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as the user did not yet link their Nextcloud account.
-        nc_unexpected_content: Kandungan yang tidak dijangka ditemui dalam folder kumpulan terurus.
+        nc_team_folder_not_found: The team folder could not be found.
+        nc_unexpected_content: Unexpected content found in the managed team folder.
         nc_userless_access_denied: Kata laluan apl yang dikonfigurasikan adalah tidak sah.
         not_configured: Sambungan tidak dapat disahkan. Sila selesaikan konfigurasi dahulu.
         od_client_cant_delete_folder: The client is having trouble deleting folders. Please check the setup documentation for your storage.
@@ -501,7 +496,7 @@ ms:
         title: Kami sedang menyediakan kebenaran anda di folder projek.
     page_titles:
       file_storages:
-        delete: Padamkan storan fail
+        delete: Delete file storage?
         subtitle: Tambah storan fail luaran untuk memuat naik, pautkan dan uruskan fail di pakej kerja.
       managed_project_folders:
         subtitle: |-
@@ -516,6 +511,8 @@ ms:
       project_storage_members:
         subtitle: Semak status sambungan untuk storan %{storage_name_link} bagi semua ahli projek.
         title: Status sambungan ahli
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'Kebenaran fail di storan luaran hanya digunakan pada folder dan fail dalam folder projek yang dikendalikan secara automatik. Perhatikan bahawa bukan semua kebenaran fail disokong oleh semua penyedia storan. Sila semak dokumentasi di <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>kebenaran storan fail</a>untuk maklumat lanjut.'
     provider_types:
       label: Jenis penyedia

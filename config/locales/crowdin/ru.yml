@@ -109,6 +109,23 @@ ru:
       explanation:
         text: "Личные действия пользователя (например, обновление пакета работ дважды) агрегируются в одно действие, если их разница во времени не больше указанной. Они будут отображаться как одно действие внутри приложения. Это также задерживает уведомление на такое же количество времени, уменьшая количество отправляемых писем и также повлияет на %{webhook_link} задержки."
         link: "вебхук"
+    mcp_configurations:
+      index:
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        resources_heading: "Resources"
+        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Update resources"
+        tools_heading: "Tools"
+        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
+        tools_submit: "Update tools"
+      multi_update:
+        success: "MCP configurations were updated successfully."
+      server_form:
+        description_caption: "How the MCP server will be described to other applications who connect to it."
+        title_caption: "A short title shown to applicatons that connect to the MCP server."
+      update:
+        failure: "MCP configuration could not be updated."
+        success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
         sso: "JWT от поставщика идентификации"
@@ -726,9 +743,11 @@ ru:
           create_button: "Создать"
           name_label: "Название токена"
       created_dialog:
+        one_time_warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
         token/api:
           title: "Токен доступа к API сгенерирован"
-          warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
+        token/rss:
+          title: "Токен RSS сгенерирован"
       failed_to_reset_token: "Не удалось сбросить маркер доступа: %{error}"
       failed_to_create_token: "Не удалось создать токен доступа: %{error}"
       failed_to_revoke_token: "Не удалось отозвать токен доступа: %{error}"
@@ -738,6 +757,9 @@ ru:
       notice_api_token_revoked: "API токен был удален. Чтобы создать новый токен, пожалуйста, используйте кнопку в разделе API."
       notice_rss_token_revoked: "Ключ RSS был удален. Чтобы создать новый токен, пожалуйста, используйте ссылку в разделе RSS."
       notice_ical_token_revoked: 'токен iCalendar "%{token_name}" для календаря "%{calendar_name}" проекта "%{project_name}" был отозван. URL-адрес iCalendar с этим токеном недействителен.'
+    password_confirmation_dialog:
+      confirmation_required: "Чтобы подтвердить изменения, введите пароль учетной записи."
+      title: "Подтвердите свой пароль, чтобы продолжить"
   news:
     index:
       no_results_title_text: На данный момент новостей для отчета нет.
@@ -1247,6 +1269,10 @@ ru:
         onthefly: "Автоматическое создание пользователя"
         port: "Порт"
         tls_certificate_string: "SSL-сертификат сервера LDAP"
+      mcp_configuration:
+        enabled: Включено
+        title: Название
+        description: Описание
       member:
         roles: "Роль"
       notification:
@@ -1505,6 +1531,7 @@ ru:
         even: "должно быть чётным."
         exclusion: "зарезервировано."
         feature_disabled: недоступно.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "слишком большой (максимальный размер составляет %{count} байт)."
         filter_does_not_exist: "фильтр не существует."
         format: "не соответствует ожидаемому формату '%{expected}'."
@@ -1527,7 +1554,8 @@ ru:
         not_a_datetime: "дата и время не являются допустимыми."
         not_a_number: "не является числом."
         not_allowed: "неверно, ввиду отсутствия прав."
-        not_json: "не является допустимым объектом JSON."
+        not_json: "не может быть разобран как JSON."
+        not_json_object: "не является объектом JSON."
         not_an_integer: "не является целым числом."
         not_an_iso_date: "недопустимая дата. Требуемый формат: гггг-мм-дд."
         not_same_project: "не принадлежит тому же проекту."
@@ -1575,7 +1603,7 @@ ru:
             one: "%{name} используется для расчета атрибута проекта %{links}."
             few: "%{name} is used in project attribute calculations: %{links}."
             many: "%{name} is used in project attribute calculations: %{links}."
-            other: "%{name} используется для расчета атрибутов проекта: %{links}."
+            other: "%{name} используются для расчета атрибута проекта %{links}."
           attributes:
             formula:
               blank: "Формула не может быть пустой."
@@ -1961,7 +1989,16 @@ ru:
         few: Маркеры доступа
         many: Маркеры доступа
         other: Маркеры доступа
-      type: "Тип"
+      token/rss:
+        one: "Токен RSS"
+        few: "RSS tokens"
+        many: "RSS tokens"
+        other: "Токены RSS"
+      type:
+        one: "Тип"
+        few: "Типа"
+        many: "Типов"
+        other: "Типов"
       user: "Пользователь"
       version: "Этапы"
       workflow: "Рабочий поток"
@@ -2186,6 +2223,7 @@ ru:
   button_click_to_reveal: "Нажмите, чтобы раскрыть"
   button_close: "Закрыть"
   button_collapse_all: "Свернуть все"
+  button_confirm: "Подтвердить"
   button_configure: "Настройка"
   button_continue: "Продолжить"
   button_complete: "Готово"
@@ -2218,6 +2256,7 @@ ru:
   button_print: "Печать"
   button_quote: "Цитата"
   button_remove: Удалить
+  button_remove_permanently: "Удалить навсегда"
   button_remove_reminder: "Удалить напоминание"
   button_rename: "Переименовать"
   button_replace: "Заменить"
@@ -2509,7 +2548,7 @@ ru:
       baseline_comparison: Сравнение базовых уровней
       board_view: Расширенные доски
       calculated_values: Рассчитываемые значения
-      conditional_highlighting: Условное выделение
+      capture_external_links: Capture External Links
       internal_comments: Служебный комментарий
       custom_actions: Пользовательские действия
       custom_field_hierarchies: Иерархии
@@ -2519,10 +2558,12 @@ ru:
       edit_attribute_groups: Редактирование атрибутов групп
       gantt_pdf_export: Экспорт диаграммы Ганта в PDF
       ldap_groups: Синхронизация пользователей LDAP и групп
+      mcp_server: MCP-сервер
       nextcloud_sso: Единый вход для Nextcloud хранения
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
       portfolio_management: Управление портфолио
+      project_creation_wizard: Project initiation request
       project_list_sharing: Совместное использование списка проектов
       readonly_work_packages: Пакеты работ только для чтения
       scim_api: API сервера SCIM
@@ -2563,8 +2604,8 @@ ru:
         description: "Создать автоматически генерируемые темы, используя атрибуты и текст."
       customize_life_cycle:
         description: "Создание и организация этапов и стадий проекта, отличных от тех, что предусмотрены планированием цикла проекта PM2."
-      conditional_highlighting:
-        description: "Нужно ли выделять определённые пакеты работ из общего списка? Используйте условное выделение в таблице пакетов работ."
+      capture_external_links:
+        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
       work_package_query_relation_columns:
         description: "Нужно видеть отношения или дочерние элементы в списке пакетов работ?"
       edit_attribute_groups:
@@ -2594,6 +2635,8 @@ ru:
       custom_actions:
         title: "Пользовательские действия"
         description: "Пользовательские действия являются ярлыками к набору заранее определенных действий, которые вы можете сделать доступными для определенных пакетов работ на основе статуса, роли, типа или проекта."
+      mcp_server:
+        description: "Интегрируйте агентов искусственного интеллекта в Ваш OpenProject с помощью MCP."
       nextcloud_sso:
         title: "Единый вход для Nextcloud хранения"
         description: "Включите бесшовную и безопасную аутентификацию для вашего Nextcloud хранилища с помощью Single Sign-On. Упростите управление доступом и сделайте удобным для пользователя."
@@ -2605,6 +2648,8 @@ ru:
         description: "Разрешить пользователям входить через внешние SSO провайдеры, используя SAML или OpenID Connect для бесшовного доступа и интеграции с существующими идентификационными системами."
       virus_scanning:
         description: "Будьте уверены в том, что загруженные в OpenProject файлы проверены на наличие вирусов, прежде чем они станут доступны другим пользователям."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Пользователи-заполнители
         description: >
@@ -2904,19 +2949,17 @@ ru:
         learn_about: "Узнайте больше о всех новых функциях"
         missing: "Нет выделенных функций."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
-            Релиз содержит различные новые функции и улучшения, такие как:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Совместная работа с документами в режиме реального времени.
-            line_1: Возможность структурировать связанные проекты в программы и портфели, чтобы направить их на достижение стратегических целей.
-            line_2: Улучшенное управление совещаниями с режимом черновика, режимом презентации, улучшенными результатами и подпиской на iCal.
-            line_3: Обновленная интеграция с SharePoint с более строгими разрешениями.
-            line_4: Переработанный обзор проекта с новыми вкладками, настраиваемыми виджетами и улучшенным макетом.
-            line_5: Возможность более строго охранять конфиденциальность пользователей, не работающих в одном проекте.
-            line_6: Улучшенный процесс создания проекта с более удобным выбором шаблона.
-            line_7: Более удобный глобальный поиск, включая тип и статус, улучшение точности нескольких автозаполнений.
-            line_8: Улучшена доступность текстов ALT и улучшены цвета графиков.
+            line_0: Automated project initiation (Enterprise add-on).
+            line_1: "Meetings: add new or existing work packages as outcomes."
+            line_2: "Meetings: show iCal responses in OpenProject."
+            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
+            line_4: "Release to Community: Attribute highlighting."
+            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
+            line_6: Improved performance and user experience, including the Activity tab and Documents module.
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -2984,14 +3027,17 @@ ru:
   instructions_after_error: "Вы можете попробовать войти снова, нажав %{signin}. Если ошибка повторится, обратитесь к вашему администратору за помощью."
   menus:
     admin:
-      mail_notification: "Уведомления по электронной почте"
-      mails_and_notifications: "Письма и уведомления"
+      ai: "Искусственный интеллект (AI)"
       aggregation: "Агрегация"
       api_and_webhooks: "API и вебхуки"
+      mail_notification: "Уведомления по электронной почте"
+      mails_and_notifications: "Письма и уведомления"
+      mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
       label: "Добавить…"
   my_account:
     access_tokens:
+      description: "Провайдерские токены выпускаются OpenProject, позволяя другим приложениям получать к ним доступ. Клиентские токены выпускаются другими приложениями, позволяя OpenProject получить к ним доступ."
       no_results:
         title: "Нет маркеров доступа для отображения"
         description: "Все они были отключены. Они могут быть включены вновь в меню Администрирование."
@@ -3001,34 +3047,56 @@ ru:
         expiration: "Срок действия"
       indefinite_expiration: "Никогда"
       simple_revoke_confirmation: "Вы уверены, что хотите отменить этот токен?"
+      tabs:
+        client:
+          title: "Клиентские токены"
+        provider:
+          title: "Провайдерские токены"
       token/api:
+        blank_description: "Токен API еще не создан. Вы можете создать его с помощью кнопки ниже."
+        blank_title: "Нет токена API"
         title: "API"
+        table_title: "Токены API"
         text_hint: "Токены API позволяют приложениям общаться с этим экземпляром OpenProject через REST API."
+        static_token_name: "Токен API"
         disabled_text: "Токены API не включены администратором. Пожалуйста, обратитесь к администратору для использования этой функции."
-        add_button: "API токен"
-      api:
-        static_token_name: "API-токен"
+        add_button: "API token"
       ical:
+        blank_description: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
+        blank_title: "Нет токена iCalendar"
         title: "iCalendar"
+        table_title: "Токены iCalendar"
         text_hint_link: "Токены iCalendar позволяют пользователям [подписываться на календари OpenProject](docs_url) и просматривать актуальную информацию о пакетах работ во внешних клиентах."
         disabled_text: "Подписки на iCalendar не включены администратором. Обратитесь к администратору для использования этой функции."
-        empty_text_hint: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
-      oauth:
+      oauth_application:
+        active_tokens: "Активные токены"
+        blank_description: "Для Вас не будет настроен и активен доступ к сторонним приложениям."
+        blank_title: "Нет токена приложения OAuth"
+        last_used_at: "Последний раз использовался в"
         title: "OAuth"
-        text_hint: "Токены OAuth позволяют сторонним приложениям подключаться к этому экземпляру OpenProject."
-        empty_text_hint: "Для вас не настроен и не активирован доступ к сторонним приложениям. Пожалуйста, свяжитесь с вашим администратором, чтобы активировать эту функцию."
-      rss:
+        table_title: "Токены приложения OAuth"
+        text_hint: "Токены приложений OAuth позволяют сторонним приложениям подключаться к данному экземпляру OpenProject."
+      oauth_client:
+        blank_description: "Клиентских токенов OAuth пока не существует."
+        blank_title: "Нет клиентских токенов OAuth"
+        failed: "Произошла ошибка, и токен не удалось удалить.  Пожалуйста, повторите попытку позже."
+        integration_type: "Тип интеграции"
+        table_title: "Клиентские токены OAuth"
+        text_hint: "Клиентские токены OAuth позволяют данному экземпляру OpenProject соединяться с внешними приложениями, например, с файловыми хранилищами."
+        title: "OAuth"
+        remove_token: "Вы действительно хотите удалить этот токен? Вам нужно будет снова войти в систему %{integration}."
+        removed: "Токен OAuth успешно удален"
+        unknown_integration: "Неизвестная"
+      token/rss:
+        add_button: "RSS token"
+        blank_description: "Токен RSS пока не создан. Вы можете создать его с помощью кнопки ниже."
+        blank_title: "Нет токена RSS"
         title: "RSS"
+        table_title: "Токены RSS"
         text_hint: "Токены RSS позволяют пользователям следить за последними изменениями в этом экземпляре OpenProject через внешний RSS-трекер."
         static_token_name: "Токен RSS"
         disabled_text: "Токены RSS не включены администратором. Пожалуйста, обратитесь к администратору, чтобы использовать эту функцию."
       storages:
-        title: "Файловые хранилища"
-        text_hint: "Токены хранения файлов подключают этот экземпляр OpenProject к внешнему хранилищу файлов."
-        empty_text_hint: "Нет доступа к хранилищу, связанному с вашей учетной записью."
-        revoke_token: "Вы действительно хотите удалить этот токен?  Вам нужно будет снова войти в систему на %{storage}"
-        removed: "Токен хранилища файлов успешно удален"
-        failed: "Произошла ошибка, и токен не удалось удалить.  Пожалуйста, повторите попытку позже."
         unknown_storage: "Неизвестное хранилище"
   notifications:
     reasons:
@@ -3090,6 +3158,7 @@ ru:
   label_always_visible: "Всегда отображается"
   label_announcement: "Объявление"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "Ключ доступа к API"
   label_api_access_key_created_on: "Ключ доступа к API, созданный %{value} назад"
   label_api_access_key_type: "API"
@@ -3345,6 +3414,7 @@ ru:
   label_journal_diff: "Описание сравнения"
   label_language: "Язык"
   label_languages: "Языки"
+  label_external_links: "Внешние ссылки"
   label_locale: "Язык и регион"
   label_jump_to_a_project: "Перейти к проекту..."
   label_keyword_plural: "Ключевые слова"
@@ -3522,9 +3592,6 @@ ru:
   label_project_hierarchy: "Иерархия проектов"
   label_project_mappings: "Проекты"
   label_project_new: "Новый проект"
-  label_project_initiation_request: "Запрос на инициирование нового проекта"
-  label_project_creation_wizard: "Мастер создания нового проекта"
-  label_project_mandate: "Новый мандат проекта"
   label_project_plural: "Проекты"
   label_project_list_plural: "Списки проектов"
   label_project_life_cycle: "Жизненный цикл проекта"
@@ -3989,7 +4056,7 @@ ru:
   notice_not_authorized: "Вы не авторизованы для доступа к этой странице."
   notice_not_authorized_archived_project: "Проект, к которому Вы пытаетесь получить доступ, заархивирован."
   notice_requires_enterprise_token: "Токен Enterprise отсутствует или не разрешает доступ к этой странице."
-  notice_password_confirmation_failed: "Пароль не правильный. Продолжить нельзя."
+  notice_password_confirmation_failed: "Введенный пароль неверен."
   notice_principals_found_multiple: "Найдено %{number} результатов. Нажмите <TAB> для перехода к первому."
   notice_principals_found_single: "Найден один результат. Нажмите <TAB> для перехода к нему."
   notice_parent_item_not_found: "Родительский элемент не найден."
@@ -4342,6 +4409,9 @@ ru:
   setting_allowed_link_protocols: "Разрешить ссылки на протоколы"
   setting_allowed_link_protocols_text_html: >-
     Разрешить отображать эти протоколы как ссылки в описаниях пакетов работ, длинных текстовых полях и комментариях. Например, %{tel_code} или %{element_code}. Введите по одному протоколу в строке. <br/>Протоколы %{http_code}, %{https_code} и %{mailto_code} всегда разрешены.
+  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links_text: >
+    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
   setting_after_first_login_redirect_url: "Перенаправление первого входа"
   setting_after_first_login_redirect_url_text_html: >
     Задайте путь для перенаправления пользователей после их первого входа в систему. Если не задано, то пользователь будет перенаправлен на домашнюю страницу обзорного тура. <br/> Например: <code>/my/page</code>
@@ -4354,11 +4424,17 @@ ru:
   setting_apiv3_cors_origins_text_html: >
     Если CORS включен, то это источники, которым разрешен доступ к OpenProject API. <br/> Пожалуйста, проверьте <a href="%{origin_link}" target="_blank">документацию по происхождению</a> о том, как указывать ожидаемые значения.
   setting_apiv3_write_readonly_attributes: "Доступ на запись к атрибутам, доступным только для чтения"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    Если этот параметр включен, API позволит администраторам записывать во время создания статические атрибуты, доступные только для чтения, такие как «Создано в» и «Автор». <br/> <strong>Внимание!</strong> Этот параметр можно использовать, например, для импорта данных, но он позволяет администраторам выдавать себя при создании элементов за других пользователей. Однако все запросы на создание регистрируются с указанием истинного автора. </br> Для получения дополнительной информации об атрибутах и ​​поддерживаемых ресурсах см. %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_instructions: >
+    Если эта опция включена, API позволит администраторам записывать статические атрибуты, доступные только для чтения, во время создания, такие как createdAt и author.
+  setting_apiv3_write_readonly_attributes_warning: >
+    Эта настройка используется, например, для импорта данных, но позволяет администраторам выдавать себя за других пользователей при создании элементов. Однако все запросы на создание регистрируются с указанием истинного автора.
+  setting_apiv3_write_readonly_attributes_additional: >
+    Более подробную информацию об атрибутах и поддерживаемых ресурсах см. на сайте %{api_documentation_link}.
   setting_apiv3_max_page_size: "Максимальный размер страницы API"
-  setting_apiv3_max_page_instructions_html: >
-    Установите максимальный размер страницы, который будет отвечать API. Невозможно выполнить API-запросы, возвращающие много значений на одной странице. <br/> <strong>Предупреждение:</strong> Пожалуйста, измените это значение, только если вы уверены, зачем вам это нужно. Установка большого значения приведет к значительному снижению производительности, в то время как значение ниже, чем для параметров страницы, вызовет ошибки в представлениях с разбивкой на страницы.
+  setting_apiv3_max_page_size_instructions: >
+    Установите максимальный размер страницы, на которую будет отвечать API. Запросы API, возвращающие больше значений на одной странице, выполнить будет невозможно.
+  setting_apiv3_max_page_size_warning: >
+    Пожалуйста, изменяйте это значение только в том случае, если Вы уверены, зачем оно Вам нужно. Установка большого значения приведет к значительному снижению производительности, в то время как значение, меньшее, чем опции для каждой страницы, приведет к ошибкам при постраничном просмотре.
   setting_apiv3_docs: "Документация"
   setting_apiv3_docs_enabled: "Включить страницу с документами"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4543,7 +4619,7 @@ ru:
       omniauth_direct_login_hint_html: >
         Если эта опция включена, запросы на вход в систему будут перенаправлены на настроенный провайдер omniauth. Выпадающий список входа и страница входа будут отключены. <br/> <strong>Примечание:</strong> Если вы также не отключите вход по паролю, то пользователи все еще могут войти внутри системы, посетив страницу входа <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        Если эта опция включена, она позволяет любому сконфигурированному провайдеру идентификации регистрировать существующих пользователей на основе их адреса электронной почты, даже если пользователь никогда раньше не регистрировался через этого провайдера. Это может быть полезно при переносе OpenProject на нового провайдера SSO, но не рекомендуется при использовании провайдера, которому не доверяют все пользователи OpenProject.
+        Если эта опция включена, она позволяет любому сконфигурированному провайдеру идентификации регистрировать существующих пользователей на основе их имени пользователя, даже если пользователь никогда раньше не входил в систему через этого провайдера. Это может быть полезно при переносе экземпляра OpenProject на нового провайдера SSO, но не рекомендуется при использовании провайдера, которому не доверяют все пользователи Вашего экземпляра.
     attachments:
       whitelist_text_html: >
         Определите список допустимых расширений файлов и/или mime типов для загруженных файлов. <br/> Введите расширения файлов (например, <code>%{ext_example}</code>) или mime типы (e. ., <code>%{mime_example}</code>). <br/> Оставьте пустым, чтобы разрешить загрузку любого типа файла. Допустимы несколько значений (одна строка для каждого значения).
@@ -4649,7 +4725,7 @@ ru:
           project_mandate: "Мандат проекта"
       submission:
         description_template: >
-          **Этот пакет работ был автоматически создан по завершении рабочего процесса %{wizard_name}.** Артефакт в формате PDF, содержащий всю представленную информацию, был создан и прикреплен к этому рабочему пакету для справки и целей аудита. Если Вам необходимо обновить или повторно выполнить шаги инициации, Вы можете в любой момент снова открыть мастер, воспользовавшись приведенной ниже ссылкой:
+          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
         description: "Когда пользователь подает запрос на инициирование проекта, будет создан новый пакет работ с запросом, прикрепленным в виде PDF-файла. Настройки, приведенные ниже, определяют тип, статус и назначение этого нового рабочего пакета."
         work_package_type: "Тип пакета работ"
         work_package_type_caption: "Тип пакета работ, который должен использоваться для хранения завершенного артефакта."
@@ -4817,6 +4893,7 @@ ru:
     Примечание: Если этот параметр включен, значок с вашим статусом установки будет отображен в панели администрирования <a href="%{information_panel_path}">%{information_panel_label}</a> и на домашней странице. Он отображается только администраторам. <br/> Знак будет проверять текущую версию OpenProject в официальной базе данных релизов OpenProject для оповещения вас о каких-либо обновлениях или известных уязвимостях. Для дополнительной информации, необходимой для проверки доступных обновлений, и о том как отключить эту проверку, пожалуйста, посетите <a href="%{more_info_url}">конфигурации документации</a>.
   text_own_membership_delete_confirmation: "Вы собираетесь удалить все или некоторые разрешения, доступные Вам. Вы не сможете редактировать проект после этого действия. Вы уверены?"
   text_permanent_delete_confirmation_checkbox_label: "Я понимаю, что это удаление невозможно отменить"
+  text_permanent_remove_confirmation_checkbox_label: "Я понимаю, что это удаление не может быть отменено"
   text_plugin_assets_writable: "Папка активов дополнения(plugin) доступна для записи"
   text_powered_by: "С использованием %{link}"
   text_project_identifier_info: "Разрешены только строчные буквы (a-z), цифры, тире и знаки подчеркивания, начинать с буквы нижнего регистра."
@@ -4909,8 +4986,8 @@ ru:
       other: "временно заблокирован (%{count} неудачные попытки авторизации)"
     confirm_status_change: "Вы собираетесь изменить статус '%{name}'. Хотите продолжить?"
     deleted: "Удалённый пользователь"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "Вы не можете изменить свой собственный статус пользователя."
+    error_admin_change_on_non_admin: "Только администраторы могут изменять статус администраторов."
     error_status_change_failed: "Изменение статуса пользователя не удалось из-за следующей ошибки: %{errors}"
     invite: Пригласить пользователя по электронной почте
     invited: приглашен
@@ -5316,3 +5393,8 @@ ru:
   token:
     hashed_token:
       display_value_placeholder: "***"
+  external_link_warning:
+    title: "Leaving OpenProject"
+    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
+    continue_message: "Are you sure you want to proceed to the following external link?"
+    continue_button: "Перейти на внешний сайт"

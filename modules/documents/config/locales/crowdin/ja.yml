@@ -74,6 +74,7 @@ ja:
         action: Try again
       connection_recovery_notice:
         description: "The connection to the real-time text collaboration server has been restored."
+      tabs: "Document tabs"
     index_page:
       name: "名称"
       type: "タイプ"

@@ -392,8 +392,6 @@ el:
     label_me: "εγώ"
     label_meeting_agenda: "Ατζέντα"
     label_meeting_minutes: "Πρακτικά"
-    label_menu_collapse: "σύμπτυξη"
-    label_menu_expand: "επέκταση"
     label_more_than_ago: "σε περισσότερο από ημέρες πριν"
     label_moderate_comment: "Moderate comment"
     label_next: "Επόμενο"
@@ -427,6 +425,7 @@ el:
     label_remove_row: "Κατάργηση γραμμής"
     label_report: "Αναφορά"
     label_repository_plural: "Αποθετήρια"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Αποθήκευση ως"
     label_search_columns: "Search a column"
     label_select_watcher: "Επιλέξτε έναν παρατηρητή..."
@@ -633,9 +632,6 @@ el:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Πρέπει να εισάγετε τον κωδικό πρόσβασης του λογαριασμού σας για να επιβεβαιώσετε αυτή την αλλαγή."
-      title: "Επιβεβαιώστε τον κωδικό πρόσβασης σας για να συνεχίσετε"
     pagination:
       no_other_page: "Βρίσκεστε στη μοναδική σελίδα."
       pages_skipped: "Pages skipped."

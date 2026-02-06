@@ -43,6 +43,7 @@
 
       component.with_secondary_action(
         label: I18n.t("documents.document_categories_deprecation_notice.secondary_action"),
-        href: OpenProject::Static::Links.url_for(:documents_docs)
+        href: OpenProject::Static::Links.url_for(:documents_docs),
+        data: { allow_external_link: true }
       ).with_content(I18n.t("documents.document_categories_deprecation_notice.secondary_action"))
     end %>

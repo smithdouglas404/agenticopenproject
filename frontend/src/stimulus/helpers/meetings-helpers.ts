@@ -41,8 +41,20 @@ export function appendCollapsedState(
 }
 
 export function hasUnsavedChanges():boolean {
-  const textInputs = Array.from(document.querySelectorAll('input[type="text"], input[type="number"]'));
-  const allTextSaved = textInputs.every((input) => (input as HTMLInputElement).value.trim().length === 0);
+  let hasTextChanges = false;
 
-  return !allTextSaved || window.OpenProject.pageWasEdited;
+  document.querySelectorAll('input[type="text"], input[type="number"]').forEach((input) => {
+    const currentValue = (input as HTMLInputElement).value;
+    const initialValue = (input as HTMLInputElement).dataset.initialValue;
+
+    if (initialValue === undefined) {
+      if (currentValue.trim().length > 0) {
+        hasTextChanges = true;
+      }
+    } else if (currentValue !== initialValue) {
+      hasTextChanges = true;
+    }
+  });
+
+  return hasTextChanges || window.OpenProject.pageWasEdited;
 }

@@ -245,7 +245,7 @@ RSpec.describe ProjectsController do
         end
 
         context "when there is a required custom field" do
-          shared_let(:custom_field) { create(:string_project_custom_field, is_required: true) }
+          shared_let(:custom_field) { create(:string_project_custom_field, is_required: true, is_for_all: true) }
 
           context "when the name is missing" do
             let(:project_params) { { name: "" } }
@@ -359,7 +359,7 @@ RSpec.describe ProjectsController do
       end
 
       context "when submitted from step 3" do
-        shared_let(:custom_field) { create(:string_project_custom_field, is_required: true) }
+        shared_let(:custom_field) { create(:string_project_custom_field, is_required: true, is_for_all: true) }
 
         it "does not clear custom field errors", :aggregate_failures do
           post :create,

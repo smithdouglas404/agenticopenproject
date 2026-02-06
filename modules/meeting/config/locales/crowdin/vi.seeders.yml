@@ -9,21 +9,21 @@ vi:
         demo-project:
           meeting_series:
             item_0:
-              title: Mỗi tuần
+              title: hàng tuần
           meeting_agenda_items:
             item_0:
-              title: Tin tốt
+              title: tin tốt
             item_1:
               title: Cập nhật từ nhóm phát triển
             item_2:
               title: Cập nhật từ nhóm sản phẩm
             item_3:
-              title: Cập nhật từ nhóm marketing
+              title: Cập nhật từ nhóm tiếp thị
             item_5:
-              title: Cập nhật từ nhóm bán hàng
+              title: Cập nhật từ đội ngũ bán hàng
             item_6:
-              title: Xem xét các mục tiêu hàng quý
+              title: Đánh giá mục tiêu hàng quý
             item_7:
               title: Phản hồi về giá trị cốt lõi
             item_8:
-              title: Các chủ đề chung
+              title: Chủ đề chung

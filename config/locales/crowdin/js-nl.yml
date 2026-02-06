@@ -393,8 +393,6 @@ nl:
     label_me: "ik"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Notulen"
-    label_menu_collapse: "samenvouwen"
-    label_menu_expand: "uitbreiden"
     label_more_than_ago: "meer dan dagen geleden"
     label_moderate_comment: "Moderate comment"
     label_next: "Volgende"
@@ -428,6 +426,7 @@ nl:
     label_remove_row: "Rij verwijderen"
     label_report: "Rapport"
     label_repository_plural: "Repositories"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Opslaan als"
     label_search_columns: "Search a column"
     label_select_watcher: "Kies een toezichter..."
@@ -634,9 +633,6 @@ nl:
           add: "Instelling voor project toevoegen"
           already_selected: "Dit project is al geselecteerd"
           remove: "Projectinstellingen verwijderen"
-    password_confirmation:
-      field_description: "U moet uw wachtwoord invoeren om deze wijziging te bevestigen."
-      title: "Voer uw wachtwoord in om door te gaan"
     pagination:
       no_other_page: "U bent op de enige pagina."
       pages_skipped: "Pages skipped."

@@ -32,7 +32,7 @@ require "spec_helper"
 require "pdf/inspector"
 require_relative "../../projects/exporter/exportable_project_context"
 
-RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initiation: true } do
+RSpec.describe Project::PDFExport::ProjectInitiation do
   include PDFExportSpecUtils
   include ProjectHelper
   include Redmine::I18n

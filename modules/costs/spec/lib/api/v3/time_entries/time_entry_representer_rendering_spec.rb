@@ -58,7 +58,7 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "rendering" do
     described_class.create(time_entry, current_user:, embed_links:)
   end
 
-  subject { representer.to_json }
+  subject(:generated) { representer.to_json }
 
   before do
     mock_permissions_for(current_user) do |mock|
@@ -68,6 +68,10 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "rendering" do
     allow(time_entry)
       .to receive(:available_custom_fields)
       .and_return([])
+  end
+
+  it "fulfills the documented schema" do
+    expect(generated).to match_json_schema.from_docs("time_entry_model")
   end
 
   include_context "eager loaded work package representer"

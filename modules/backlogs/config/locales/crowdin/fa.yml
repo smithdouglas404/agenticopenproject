@@ -40,6 +40,8 @@ fa:
               task_version_must_be_the_same_as_story_version: "باید از  همان نگارش داستان زادآوران باشد."
         sprint:
           cannot_end_before_it_starts: "Sprint cannot end before it starts."
+  attributes:
+    task_type: "Task type"
   backlogs:
     add_new_story: "New Story"
     any: "any"
@@ -100,7 +102,10 @@ fa:
   backlogs_empty_title: "نسحه‌ای برای استفاده در پس‌افت‌ها تعریف نشده است"
   backlogs_empty_action_text: "برای شروع کار با پس‌افت‌ها، یک نسخه‌ی جدید ایجاد کنید و به یکی از ستون‌های پس‌افت اختصاص دهید."
   button_edit_wiki: "تدوین صفحه‌ی دانشنامه"
-  error_backlogs_task_cannot_be_story: "تنظیمات بی‌اعتبارند. نوع وظیفه‌ی منتخب نمی‌تواند یک نوع داستان نیز باشد"
+  errors:
+    attributes:
+      task_type:
+        cannot_be_story_type: "can not also be a story type"
   error_intro_plural: "خطاهای ذیل پیدا شدند:"
   error_intro_singular: "خطای ذیل پیدا شد:"
   error_outro: "لطفاً خطاهای بالا را قبل از تایید مجدد اصلاح کنید"
@@ -124,6 +129,10 @@ fa:
   label_points_burn_up: "بالا"
   label_product_backlog: "پس‌افت محصول"
   label_select_all: "انتخاب همه موارد"
+  label_select_type: "Select a type"
+  label_select_types: "Select types"
+  label_selected_type: "Selected type"
+  label_selected_types: "Selected types"
   label_sprint_backlog: "پس‌افت تاخت"
   label_sprint_cards: "صدور کارت"
   label_sprint_impediments: " موانع تاخت"
@@ -160,3 +169,7 @@ fa:
   version_settings_display_option_left: "چپ"
   version_settings_display_option_none: "هیچ کدام"
   version_settings_display_option_right: "راست"
+  setting_plugin_openproject_backlogs_story_types_caption: |
+    Types treated as backlog stories (e.g., Feature, User story). Must differ from task type.
+  setting_plugin_openproject_backlogs_task_type_caption: |
+    Type used for story tasks. Must differ from story types.

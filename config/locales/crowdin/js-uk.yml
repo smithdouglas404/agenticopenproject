@@ -203,8 +203,8 @@ uk:
         add_table: "Додати таблицю пов'язаних пакетів робіт"
         edit_query: "Редагувати запит"
         new_group: "Нова група"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "Видалити групу"
+        remove_attribute: "Вилучити з групи"
         reset_to_defaults: "Скинути на типові значення"
       working_days:
         calendar:
@@ -393,8 +393,6 @@ uk:
     label_me: "мені"
     label_meeting_agenda: "Порядок денний"
     label_meeting_minutes: "Хвилини"
-    label_menu_collapse: "згорнути"
-    label_menu_expand: "розгорнути"
     label_more_than_ago: "більш ніж днів(я) назад"
     label_moderate_comment: "Модерувати коментар"
     label_next: "Далі"
@@ -428,6 +426,7 @@ uk:
     label_remove_row: "Видалити рядок"
     label_report: "Звіт"
     label_repository_plural: "Репозиторії"
+    label_resize_project_menu: "Змінити розмір меню проекту"
     label_save_as: "Зберегти як"
     label_search_columns: "Пошук стовпця"
     label_select_watcher: "Виберіть спостерігача..."
@@ -636,9 +635,6 @@ uk:
           add: "Додати налаштування для проєкту"
           already_selected: "Цей проєкт уже вибрано"
           remove: "Вилучити налаштування проєкту"
-    password_confirmation:
-      field_description: "Вам необхідно ввести пароль облікового запису, щоб підтвердити цю зміну."
-      title: "Підтвердіть ваш пароль щоб продовжити"
     pagination:
       no_other_page: "Ви знаходитесь на єдиній сторінці."
       pages_skipped: "Сторінки пропущено."

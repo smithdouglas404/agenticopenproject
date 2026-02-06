@@ -308,4 +308,124 @@ RSpec.describe Meetings::PDF::Default::Exporter do
       end
     end
   end
+
+  context "with a meeting with work package outcomes" do
+    let(:meeting) do
+      create(:meeting, author: user, project:, title: "Meeting with WP outcomes", location: "Somewhere", state: :closed)
+    end
+    let(:type_task) { create(:type_task) }
+    let(:status) { create(:status, is_default: true, name: "In Progress") }
+    let(:outcome_work_package) { create(:work_package, project:, status:, subject: "Outcome WP", type: type_task) }
+    let(:meeting_section) { create(:meeting_section, meeting:, title: "Section with outcomes") }
+    let(:meeting_agenda_item) do
+      create(:meeting_agenda_item, meeting_section:, duration_in_minutes: 15, title: "Agenda Item", presenter: user,
+                                   notes: "Agenda item notes")
+    end
+
+    before do
+      User.current = user
+      meeting_agenda_item
+    end
+
+    context "with a visible work package outcome" do
+      let(:wp_outcome) do
+        create(:meeting_outcome, meeting_agenda_item:, kind: :work_package, work_package: outcome_work_package, notes: nil)
+      end
+      let(:options) do
+        { participants: "0", outcomes: "1" }
+      end
+
+      before do
+        wp_outcome
+      end
+
+      it "renders the work package outcome with type, id, subject and status" do
+        expected_document = [
+          *expected_cover_page,
+          *meeting_head,
+
+          "Section with outcomes", "  ", "15 mins",
+          "Agenda Item", "  ", "15 mins", "  ", "Export User",
+          "Agenda item notes",
+          "✓   Outcome",
+          "Task", "##{outcome_work_package.id}", "Outcome WP", " (In Progress)",
+
+          "1", # Page number
+          export_time_formatted,
+          project.name
+        ].join(" ")
+
+        expect(subject).to eq expected_document
+      end
+    end
+
+    context "with a hidden work package outcome" do
+      let!(:secret_project) { create(:project, members: [other_user]) }
+      let(:secret_work_package) { create(:work_package, project: secret_project) }
+      let(:wp_outcome) do
+        create(:meeting_outcome, meeting_agenda_item:, kind: :work_package, work_package: secret_work_package, notes: nil)
+      end
+      let(:options) do
+        { participants: "0", outcomes: "1" }
+      end
+
+      before do
+        secret_work_package
+        wp_outcome
+      end
+
+      it "renders the undisclosed work package message" do
+        expected_document = [
+          *expected_cover_page,
+          *meeting_head,
+
+          "Section with outcomes", "  ", "15 mins",
+          "Agenda Item", "  ", "15 mins", "  ", "Export User",
+          "Agenda item notes",
+          "✓   Outcome",
+          "Work package ##{secret_work_package.id} not visible",
+
+          "1", # Page number
+          export_time_formatted,
+          project.name
+        ].join(" ")
+
+        expect(subject).to eq expected_document
+      end
+    end
+
+    context "with a deleted work package outcome" do
+      let!(:deleted_wp) { create(:work_package, project:) }
+      let(:wp_outcome) do
+        create(:meeting_outcome, meeting_agenda_item:, kind: :work_package, work_package: deleted_wp, notes: nil)
+      end
+      let(:options) do
+        { participants: "0", outcomes: "1" }
+      end
+
+      before do
+        wp_outcome
+        deleted_wp.destroy!
+      end
+
+      it "renders the deleted work package message" do
+        expected_document = [
+          *expected_cover_page,
+          *meeting_head,
+
+          "Section with outcomes", "  ", "15 mins",
+          "Agenda Item", "  ", "15 mins", "  ", "Export User",
+          "Agenda item notes",
+          "✓   Outcome",
+          "Deleted work package reference",
+
+          "1", # Page number
+          export_time_formatted,
+          project.name
+        ].join(" ")
+
+        expect(subject).to eq expected_document
+      end
+    end
+  end
 end
