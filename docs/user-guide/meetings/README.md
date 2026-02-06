@@ -108,7 +108,7 @@ Once subscribed, meeting dates and updates are synchronized automatically. If yo
 > [!NOTE]
 > If you respond to a meeting invitation in your calendar before the meeting is fully created or visible in OpenProject, your response will still be applied once the meeting becomes available, as long as the calendar subscription remains active.
 
-If you are only interested in a specific meeting, you can [download that specific meeting as an iCal event](one-time-meetings/#download-a-meeting-as-an-icalendar-event/) instead. 
+If you are only interested in a specific meeting, you can [download that specific meeting as an iCal event](./one-time-meetings/#download-a-meeting-as-an-icalendar-event) instead. 
 
 > [!TIP]
 > If you are interested in how the Meetings module is used by the OpenProject team, please take a look at [this blog article](https://www.openproject.org/blog/meeting-management-example/) and this [use case](../../use-cases/meeting-management/).
