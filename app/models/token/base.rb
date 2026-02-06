@@ -64,22 +64,37 @@ module Token
     # Delete previous token of this type upon save
     before_save :delete_previous_token
 
-    ##
-    # Find a token from the token value
-    def self.find_by_plaintext_value(input)
-      find_by(value: input)
-    end
+    class << self
+      ##
+      #  A DSL method allowing to define a prefix for all generated tokens, making it possible to recognize
+      # the purpose of a token by looking at the token value.
+      #
+      #     class MyToken < HashedToken
+      #       prefix :my
+      #     end
+      def prefix(value = nil)
+        @prefix = value.to_s if value
 
-    ##
-    # Find tokens for the given user
-    def self.for_user(user)
-      where(user:)
-    end
+        @prefix
+      end
 
-    ##
-    # Generate a random hex token value
-    def self.generate_token_value
-      SecureRandom.hex(32)
+      ##
+      # Find a token from the token value
+      def find_by_plaintext_value(input)
+        find_by(value: input)
+      end
+
+      ##
+      # Find tokens for the given user
+      def for_user(user)
+        where(user:)
+      end
+
+      ##
+      # Generate a random hex token value
+      def generate_token_value
+        [prefix, SecureRandom.hex(32)].compact.join("-")
+      end
     end
 
     ##

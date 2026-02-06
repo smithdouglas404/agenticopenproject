@@ -182,7 +182,11 @@ See COPYRIGHT and LICENSE files for more details.
       <% end %>
     <% end %>
   </div>
-  <div id="ajax-indicator" style="display:none;"><span><%= t(:label_loading) %></span></div>
+  <%= render Primer::Beta::Spinner.new(
+        size: :large,
+        hidden: true,
+        wrapper_arguments: { id: "global-loading-indicator", position: :absolute }
+      ) %>
 </div>
 <%# Properly decides main menu expanded state and width before its drawn. Fixes flickering side menu
         where menu is first expanded, then being collapsed in angular. %>

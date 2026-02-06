@@ -174,4 +174,10 @@ RSpec.shared_examples_for "MCP unauthenticated response" do
     subject
     expect(last_response.headers["WWW-Authenticate"]).to be_present
   end
+
+  it "indicates resource_metadata in the WWW-Authenticate header" do
+    subject
+    keys = last_response.headers["WWW-Authenticate"].split.select { |s| s.include?("=") }.map { |s| s.split("=").first }
+    expect(keys).to include("resource_metadata")
+  end
 end

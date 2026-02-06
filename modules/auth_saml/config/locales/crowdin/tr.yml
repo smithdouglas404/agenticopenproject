@@ -29,7 +29,7 @@ tr:
           invalid_certificate: "%{additional_message}, Geçerli bir PEM formatlı sertifika değildir."
           invalid_private_key: "%{additional_message}, Geçerli bir PEM formatında özel anahtar değildir"
           certificate_expired: "Süresi dolmuştur ve artık kullanılamaz."
-          unmatched_private_key: "verilen sertifikaya ait değil"
+          unmatched_private_key: "sertifikaya ait değil"
   saml:
     menu_title: SAML sağlayıcıları
     delete_title: SAML sağlayıcısını sil
@@ -49,30 +49,30 @@ tr:
       label_metadata_endpoint: OpenProject Metaveri bitiş noktası
       label_openproject_information: OpenProject Bilgileri
       label_configuration_details: "Kimlik sağlayıcı uç noktaları ve sertifikaları"
-      label_configuration_encryption: "Signatures and Encryption"
-      label_add_new: New SAML identity provider
+      label_configuration_encryption: "İmzalar ve Şifreleme"
+      label_add_new: Yeni SAML kimlik sağlayıcısı
       label_edit: SAML kimlik sağlayıcısını düzenle %{name}
       label_uid: Dahili kullanıcı kimliği
       label_mapping: İlişkilendirme
       label_requested_attribute_for: "%{attribute} için nitelik talebi"
-      no_results_table: No SAML identity providers have been defined yet.
+      no_results_table: Henüz hiçbir SAML kimlik sağlayıcısı tanımlanmamış.
       notice_created: A new SAML identity provider was successfully created.
       plural: SAML kimlik sağlayıcıları
       singular: SAML kimlik sağlayıcısı
       requested_attributes: Talep edilen nitelikler
       attribute_mapping: Öznitelik eşlemesi
       attribute_mapping_text: >
-        The following fields control which attributes provided by the SAML identity provider are used to provide user attributes in OpenProject
+        Aşağıdaki alanlar SAML kimlik sağlayıcısı tarafından sağlanan hangi özniteliklerin OpenProject'te kullanıcı öznitelikleri sağlamak için kullanılacağını kontrol eder
       metadata:
-        dialog: "This is the URL where the OpenProject SAML metadata is available. Optionally use it to configure your identity provider:"
+        dialog: "Bu, OpenProject SAML meta verilerinin mevcut olduğu URL'dir. İsteğe bağlı olarak kimlik sağlayıcınızı yapılandırmak için kullanın:"
       upsell:
-        title: "Single Sign-On (SSO) with SAML"
+        title: "SAML ile Çoklu Oturum Açma (SSO)"
         description: OpenProject'i bir SAML kimlik sağlayıcısına bağlama
       request_attributes:
         title: 'Talep edilen nitelikler'
         legend: >
           These attributes are added to the SAML XML metadata to signify to the identify provider which attributes OpenProject requires. You may still need to explicitly configure your identity provider to send these attributes. Please refer to your IdP's documentation.
-        name: 'Requested attribute key'
+        name: 'İstenen öznitelik anahtarı'
         format: 'Öznitelik biçimi'
       section_headers:
         configuration: "Birincil yapılandırma"

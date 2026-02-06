@@ -113,7 +113,7 @@ module McpTools
 
       def read_annotations
         # Initialize default annotations, if none are present
-        annotations(read_only: false) if @annotations.nil?
+        annotations(read_only: false, destructive: true, idempotent: false) if @annotations.nil?
 
         @annotations
       end
@@ -130,13 +130,14 @@ module McpTools
           input_schema:,
           output_schema:,
           annotations: read_annotations
-        ) do |opts|
-          implementation.new(tool_context: self).handle_request(**opts)
+        ) do |server_context: {}, **opts|
+          implementation.new(server_context:, tool_context: self).handle_request(**opts)
         end
       end
     end
 
-    def initialize(tool_context:)
+    def initialize(server_context:, tool_context:)
+      @server_context = server_context
       @tool_context = tool_context
     end
 
@@ -150,7 +151,7 @@ module McpTools
         validate_root_output_schema!(@tool_context.output_schema)
       end
 
-      MCP::Tool::Response.new([{ type: "text", text: result.to_json }], structured_content: result)
+      format_result(result)
     end
 
     private
@@ -158,6 +159,14 @@ module McpTools
     # Intended to be implemented by subclasses. It should return a structured result (e.g. a Hash or Array).
     def call(**)
       raise NotImplemented, "#{self.class} needs to implement #call method"
+    end
+
+    def format_result(result)
+      MCP::Tool::Response.new([{ type: "text", text: result.to_json }], structured_content: result)
+    end
+
+    def current_user
+      @server_context[:current_user]
     end
 
     def validate_root_output_schema!(output_schema)

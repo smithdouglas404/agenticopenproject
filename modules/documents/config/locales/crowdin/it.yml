@@ -74,7 +74,7 @@ it:
         action: Riprova
       connection_recovery_notice:
         description: "La connessione al server della collaborazione in tempo reale sul testo è stata ripristinata."
-      tabs: "Document tabs"
+      tabs: "Schede dei documenti"
     index_page:
       name: "Nome"
       type: "Tipo"

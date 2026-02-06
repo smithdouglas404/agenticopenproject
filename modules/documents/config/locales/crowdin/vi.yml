@@ -21,133 +21,133 @@
 #++
 vi:
   plugin_openproject_documents:
-    name: "Tài liệu OpenProject"
-    description: "Một plugin OpenProject cho phép tạo tài liệu trong các dự án."
+    name: "Tài liệu dự án mở"
+    description: "Một plugin OpenProject để cho phép tạo tài liệu trong các dự án."
   activerecord:
     errors:
       models:
         document_type:
-          one_or_more_required: "Cannot delete the last document type"
+          one_or_more_required: "Không thể xóa loại tài liệu cuối cùng"
     models:
-      document: "Tài liệu"
-      documents: "Documents"
+      document: "tài liệu"
+      documents: "tài liệu"
     attributes:
       document:
-        content_binary: "Content binary"
-        title: "Tiêu đề"
+        content_binary: "Nội dung nhị phân"
+        title: "tiêu đề"
   activity:
     filter:
-      document: "Tài liệu"
+      document: "tài liệu"
   default_doc_category_tech: "Tài liệu kỹ thuật"
   default_doc_category_user: "Tài liệu người dùng"
   enumeration_doc_categories: "Danh mục tài liệu"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "Tất cả tài liệu"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "Hành động tài liệu"
+        edit_title: "Chỉnh sửa tiêu đề"
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: "Bộ lọc tên tài liệu"
+        placeholder: "Nhập vào đây để tìm kiếm tên tài liệu"
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: "Chưa có tài liệu nào"
+      description: "Không có tài liệu nào trong chế độ xem này. Bạn có thể nhấp vào nút bên dưới để thêm một."
     document_categories_deprecation_notice:
-      heading: File categories are now called 'Document types'
+      heading: Các danh mục tệp hiện được gọi là 'Loại tài liệu'
       description: |-
-        Your existing file categories have been converted to document types with the introduction of the new Documents module.
-        All existing documents have also been migrated to these new types.
-      primary_action: Configure document types
-      secondary_action: Learn more about the Documents module
-    document_type_actions: "Document type actions"
+        Các danh mục tệp hiện có của bạn đã được chuyển đổi thành loại tài liệu với việc giới thiệu mô-đun Tài liệu mới.
+        Tất cả các tài liệu hiện có cũng đã được di chuyển sang các loại mới này.
+      primary_action: Định cấu hình các loại tài liệu
+      secondary_action: Tìm hiểu thêm về mô-đun Tài liệu
+    document_type_actions: "Hành động loại tài liệu"
     text_collaboration_disabled_notice:
       description: |-
-        Unable to open document because real-time text collaboration is disabled.
-        Please contact your administrator to enable real-time text collaboration if you want to access this document.
+        Không thể mở tài liệu vì cộng tác văn bản theo thời gian thực bị tắt.
+        Vui lòng liên hệ với quản trị viên của bạn để cho phép cộng tác văn bản theo thời gian thực nếu bạn muốn truy cập tài liệu này.
     show_edit_view:
       connection_error_notice:
         description: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
-        action: Try again
+          Không thể mở tài liệu vì không thể truy cập được máy chủ cộng tác văn bản theo thời gian thực.
+          Vui lòng liên hệ với quản trị viên nếu sự cố vẫn tiếp diễn.
+        action: Thử lại
       connection_recovery_notice:
-        description: "The connection to the real-time text collaboration server has been restored."
-      tabs: "Document tabs"
+        description: "Kết nối tới máy chủ cộng tác văn bản thời gian thực đã được khôi phục."
+      tabs: "Tab tài liệu"
     index_page:
-      name: "Tên"
-      type: "Kiểu"
-      updated_at: "Last edited"
-      label_legacy: "Legacy"
+      name: "tên"
+      type: "loại"
+      updated_at: "Chỉnh sửa lần cuối"
+      label_legacy: "Di sản"
     menu:
-      all: "All documents"
-      types: "Các loại"
-      collaboration_settings: "Real-time collaboration"
-    last_updated_at: "Last saved %{time}."
-    active_editors: "Active editors"
+      all: "Tất cả tài liệu"
+      types: "các loại"
+      collaboration_settings: "Hợp tác thời gian thực"
+    last_updated_at: "Đã lưu lần cuối %{time}."
+    active_editors: "Người chỉnh sửa đang hoạt động"
     active_editors_count:
-      other: "%{count} active editors"
-    label_attachment_author: "Tác giả tài liệu đính kèm"
-    label_categories: "Categories"
+      other: "%{count} biên tập viên đang hoạt động"
+    label_attachment_author: "Tác giả đính kèm"
+    label_categories: "danh mục"
     new_category: "Danh mục mới"
-    new_type: "New type"
+    new_type: "Loại mới"
     delete_dialog:
-      title: "Delete document"
-      heading: "Delete this document?"
-      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
+      title: "Xóa tài liệu"
+      heading: "Xóa tài liệu này?"
+      confirmation_message_html: "Thao tác này sẽ xóa vĩnh viễn tài liệu này và tất cả tệp đính kèm. Bạn có chắc chắn muốn làm điều này?"
     delete_document_type_dialog:
-      title: Delete document type
-      heading: Delete this document type?
+      title: Xóa loại tài liệu
+      heading: Xóa loại tài liệu này?
       confirmation_message: |-
-        The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
-      select_reassign_to_label: Reassign documents to
+        Loại "%{type_name}" hiện không được sử dụng. Việc xóa loại này sẽ không có hiệu lực đối với các tài liệu hiện có.
+      select_reassign_to_label: Phân công lại tài liệu cho
       reassign_message:
-        other: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+        other: Loại "%{type_name}" hiện đang được sử dụng trong tài liệu %{document_count}. Vui lòng chọn loại để gán lại chúng.
       at_least_one_type_required:
-        title: Cannot delete document type
-        heading: Cannot delete the last document type
-        message: There must always be at least one document type configured. Create another one first if you want to delete this one.
+        title: Không thể xóa loại tài liệu
+        heading: Không thể xóa loại tài liệu cuối cùng
+        message: Phải luôn có ít nhất một loại tài liệu được định cấu hình. Tạo một cái khác trước nếu bạn muốn xóa cái này.
     admin:
       collaboration_settings:
         page_header:
           description: |-
-            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
-            It requires a working %{hocuspocus_server_link} to function.
+            Khi được bật, cộng tác theo thời gian thực cho phép nhiều người dùng chỉnh sửa tài liệu cùng một lúc.
+            Nó yêu cầu %{hocuspocus_server_link} hoạt động.
         banner:
-          none_writable: These values are configured via environment variables and cannot be edited here.
-          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+          none_writable: Các giá trị này được định cấu hình thông qua các biến môi trường và không thể chỉnh sửa ở đây.
+          some_unwritable: Một số giá trị được định cấu hình thông qua biến môi trường và không thể chỉnh sửa ở đây.
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The address of a working Hocuspocus server."
+          label: "URL máy chủ Hocuspocus"
+          caption: "Địa chỉ của máy chủ Hocuspocus đang hoạt động."
         hocuspocus_server_secret:
-          label: "Client secret"
-          caption: "Paste the secret provided by the Hocuspocus server."
-        hocuspocus_server: Hocuspocus server
+          label: "Bí mật của khách hàng"
+          caption: "Dán bí mật được cung cấp bởi máy chủ Hocuspocus."
+        hocuspocus_server: máy chủ hocuspocus
       enable_text_collaboration:
-        heading: Real-time collaboration is not enabled
+        heading: Cộng tác thời gian thực chưa được bật
         description: |-
-          Once enabled, multiple users will be able to work together on a document at the same time.
-          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
-          Hocuspocus server.
-        primary_action: Enable real-time collaboration
-        success: Real-time collaboration has been enabled.
+          Sau khi được bật, nhiều người dùng sẽ có thể làm việc cùng nhau trên một tài liệu cùng một lúc.
+          Tất cả các tài liệu mới sẽ dựa trên trình chỉnh sửa mới (BlockNote) và sẽ yêu cầu kết nối hoạt động với
+          Máy chủ hocuspocus.
+        primary_action: Cho phép cộng tác theo thời gian thực
+        success: Cộng tác thời gian thực đã được kích hoạt.
       disable_text_collaboration_dialog:
-        title: Disable real-time collaboration
-        heading: Disable real-time collaboration?
+        title: Vô hiệu hóa cộng tác thời gian thực
+        heading: Vô hiệu hóa cộng tác thời gian thực?
         confirmation_message: |-
-          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
-          real-time collaboration and the BlockNote editor in this instance.
-        confirmation_checkbox_message: I understand that I might permanently lose data
-        success: Real-time collaboration has been disabled.
-  label_document_added: "Tài liệu đã được thêm"
+          Tất cả các tài liệu hiện có có thể không thể truy cập được. Vui lòng chỉ thực hiện việc này nếu bạn chắc chắn muốn tắt
+          cộng tác thời gian thực và trình soạn thảo BlockNote trong trường hợp này.
+        confirmation_checkbox_message: Tôi hiểu rằng tôi có thể mất dữ liệu vĩnh viễn
+        success: Cộng tác thời gian thực đã bị vô hiệu hóa.
+  label_document_added: "Đã thêm tài liệu"
   label_document_new: "Tài liệu mới"
-  label_document_plural: "Tài liệu"
-  label_documents: "Tài liệu"
-  label_document_title: "Tiêu đề"
-  label_document_description: "Mô tả"
-  label_document_category: "Thể loại"
-  label_document_type: "Type"
+  label_document_plural: "tài liệu"
+  label_documents: "tài liệu"
+  label_document_title: "tiêu đề"
+  label_document_description: "mô tả"
+  label_document_category: "thể loại"
+  label_document_type: "loại"
   permission_manage_documents: "Quản lý tài liệu"
   permission_view_documents: "Xem tài liệu"
-  project_module_documents: "Tài liệu"
+  project_module_documents: "tài liệu"

@@ -273,6 +273,55 @@ RSpec.describe MeetingMailer do
       end
     end
 
+    describe "calendar MIME part for email client integration" do
+      def find_calendar_part(message)
+        message.all_parts.find { |p| p.content_type&.include?("text/calendar") && !p.content_disposition&.include?("attachment") }
+      end
+
+      it "includes a text/calendar part with REQUEST method" do
+        calendar_part = find_calendar_part(mail)
+
+        expect(calendar_part).to be_present
+        expect(calendar_part.content_type).to include("text/calendar")
+        expect(calendar_part.content_type).to include("method=REQUEST")
+      end
+
+      it "includes the ICS content in the calendar part" do
+        calendar_part = find_calendar_part(mail)
+
+        expect(calendar_part.body.decoded).to include("BEGIN:VCALENDAR")
+        expect(calendar_part.body.decoded).to include("METHOD:REQUEST")
+        expect(calendar_part.body.decoded).to include("Important meeting")
+      end
+
+      it "also includes the ICS as a downloadable attachment" do
+        attachment = mail.attachments["meeting.ics"]
+
+        expect(attachment).to be_present
+        expect(attachment.content_type).to include("text/calendar")
+        expect(attachment.body.decoded).to include("BEGIN:VCALENDAR")
+      end
+
+      context "when the meeting is cancelled" do
+        let(:mail) { described_class.cancelled(meeting, author, author) }
+
+        it "includes a text/calendar part with CANCEL method" do
+          calendar_part = find_calendar_part(mail)
+
+          expect(calendar_part).to be_present
+          expect(calendar_part.content_type).to include("text/calendar")
+          expect(calendar_part.content_type).to include("method=CANCEL")
+        end
+
+        it "includes the ICS content with CANCEL method" do
+          calendar_part = find_calendar_part(mail)
+
+          expect(calendar_part.body.decoded).to include("BEGIN:VCALENDAR")
+          expect(calendar_part.body.decoded).to include("METHOD:CANCEL")
+        end
+      end
+    end
+
     context "with a recipient with another time zone" do
       let!(:preference) { watcher1.pref.update(time_zone: "Asia/Tokyo") }
       let(:mail) { described_class.icalendar_notification(meeting, watcher1, author) }

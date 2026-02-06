@@ -104,20 +104,20 @@ pl:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
-        remote_folders: 'Read contents of the team folder:'
+        remote_folders: 'Odczytaj zawartość folderu zespołu:'
         remove_user_from_group: 'Usuń użytkownika z grupy:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
       one_drive_sync_service:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Odczytaj zawartość folderu głównego dysku:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
       sharepoint_sync_service:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Odczytaj zawartość folderu głównego dysku:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
     errors:
       messages:
@@ -140,7 +140,7 @@ pl:
               conflict: Folder %{folder_name} już istnieje w lokalizacji %{parent_location}.
               not_found: "Nie znaleziono lokalizacji %{parent_location}."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
+              not_found: "Nie znaleziono folderu %{group_folder}. Sprawdź konfigurację folderu zespołu Nextcloud."
               permission_not_set: nie można ustawić uprawnień do folderu %{group_folder}.
             hide_inactive_folders:
               permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
@@ -230,7 +230,7 @@ pl:
       storage_delete_result_3: Automatycznie zarządzany folder projektu i wszystkie znajdujące się w nim pliki zostaną usunięte
     dependencies:
       nextcloud:
-        group_folders_app: Team Folders
+        group_folders_app: Foldery zespołu
         integration_app: Integration OpenProject
     enabled_in_projects:
       setup_incomplete_description: Ten magazyn ma niekompletną konfigurację. Ukończ konfigurację przed włączeniem go w wielu projektach.
@@ -277,11 +277,11 @@ pl:
           client_folder_creation: Automatyczne tworzenie folderów
           client_folder_removal: Automatyczne usuwanie folderów
           drive_contents: Zawartość dysku
-          files_request: Fetching team folder files
+          files_request: Pobieranie plików folderu zespołu
           header: Automatycznie zarządzane foldery projektu
-          team_folder_app: 'Dependency: Team Folders'
-          team_folder_contents: Team folder content
-          team_folder_presence: Team folder exists
+          team_folder_app: 'Zależność: foldery zespołów'
+          team_folder_contents: Zawartość folderu zespołu
+          team_folder_presence: Folder zespołu istnieje
           userless_access: Uwierzytelnianie żądań po stronie serwera
         authentication:
           existing_token: Token użytkownika
@@ -326,8 +326,8 @@ pl:
         nc_oauth_request_not_found: Nie znaleziono punktu końcowego, z którego można pobrać informacje o aktualnie połączonym użytkowniku. Aby uzyskać więcej informacji, sprawdź dzienniki serwera.
         nc_oauth_request_unauthorized: Bieżący użytkownik nie ma uprawnień dostępu do zdalnego magazynu plików. Aby uzyskać więcej informacji, sprawdź dzienniki serwera.
         nc_oauth_token_missing: Aplikacja OpenProject nie może przetestować komunikacji z usługą Nextcloud na poziomie użytkownika, ponieważ użytkownik nie powiązał jeszcze swojego konta Nextcloud.
-        nc_team_folder_not_found: The team folder could not be found.
-        nc_unexpected_content: Unexpected content found in the managed team folder.
+        nc_team_folder_not_found: Nie można znaleźć folderu zespołu.
+        nc_unexpected_content: W folderze zarządzanego zespołu znaleziono nieoczekiwaną zawartość.
         nc_userless_access_denied: Skonfigurowane hasło aplikacji jest nieprawidłowe.
         not_configured: Nie można zweryfikować połączenia. Najpierw zakończ konfigurację.
         od_client_cant_delete_folder: Klient ma problemy z usunięciem folderów. Sprawdź dokumentację konfiguracji swojej pamięci masowej.

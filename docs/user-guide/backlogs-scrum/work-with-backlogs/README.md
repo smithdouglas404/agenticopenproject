@@ -128,4 +128,7 @@ Here, you have all the tools for creating wiki pages at your disposal, with the 
 ![Sprint wiki opened in OpenProject](openproject_user_guide_backlogs_wiki_opened.png)
 
 > [!NOTE]
-> You can configure the sprint wiki template in the Administration -> Backlogs. If you create a wiki page with the respective name, e.g. "sprintwiki", all sprint wikis will use this wiki page as a template.
+> This wiki page can be linked to multiple versions. 
+
+> [!TIP]
+> If instead of linking a specific (central) wiki page, you want to create a new pre-structured wiki page per version (for example per Sprint), you can configure the [sprint wiki template](../../../system-admin-guide/backlogs/#sprint-wiki) in the Administration -> Backlogs. 

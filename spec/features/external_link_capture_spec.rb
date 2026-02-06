@@ -71,8 +71,8 @@ RSpec.describe "External link capture", :js, :selenium do
     it "allows enabling external link capture and shows a confirmation screen" do
       visit admin_settings_external_links_path
 
-      scroll_to_element find_by_id("settings_capture_external_links")
-      find_by_id("settings_capture_external_links").set(true)
+      scroll_to_element find_by_id("capture_external_links")
+      find_by_id("capture_external_links").set(true)
 
       click_on "Save"
       expect(page).to have_text I18n.t(:notice_successful_update)
@@ -106,7 +106,7 @@ RSpec.describe "External link capture", :js, :selenium do
     it "does not allow enabling external link capture in administration" do
       visit admin_settings_external_links_path
 
-      expect(page).to have_field("settings_capture_external_links", disabled: true)
+      expect(page).to have_field("capture_external_links", disabled: true)
 
       RequestStore.clear!
       expect(Setting.capture_external_links?).to be(false)

@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
+RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -46,12 +46,12 @@ RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
       id: "Test-Request",
       method: "tools/call",
       params: {
-        name: "search_project",
+        name: "search_projects",
         arguments: call_args
       }
     }
   end
-  let(:call_args) { { identifier: "abc" } }
+  let(:call_args) { {} }
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
   let!(:project_a) { create(:project, identifier: "abc", name: "The ABC Project", status_code: :on_track) }
@@ -68,15 +68,25 @@ RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP response with structured content"
 
-    it "finds a project by identifier" do
+    it "finds all projects without filters" do
       subject
-      expect(parsed_results.dig("structuredContent", "items")).to be_present
+      expect(parsed_results.dig("structuredContent", "items").size).to eq(2)
     end
 
-    it "responds with a properly formatted project" do
+    it "responds with properly formatted projects" do
       subject
-      project = parsed_results.dig("structuredContent", "items").first
-      expect(project.to_json).to match_json_schema.from_docs("project_model")
+      parsed_results.dig("structuredContent", "items").each do |project|
+        expect(project.to_json).to match_json_schema.from_docs("project_model")
+      end
+    end
+
+    context "when passing an exact identifier" do
+      let(:call_args) { { identifier: "abc" } }
+
+      it "finds the project" do
+        subject
+        expect(parsed_results.dig("structuredContent", "items")).to be_present
+      end
     end
 
     context "when passing a non-exact identifier" do
@@ -94,6 +104,38 @@ RSpec.describe McpTools::SearchProject, with_flag: { mcp_server: true } do
       it "finds the project" do
         subject
         expect(parsed_results.dig("structuredContent", "items")).to be_present
+      end
+    end
+
+    describe "pagination" do
+      let(:page_size) { 10 }
+      let(:overspilling_projects) { 5 }
+      let(:project_count) { page_size + overspilling_projects }
+      let(:call_args) { { name: "Death Star" } }
+
+      before do
+        allow(described_class).to receive(:page_size).and_return(page_size)
+
+        project_count.times do |idx|
+          create(:project,
+                 identifier: "p#{idx}",
+                 name: "Death Star construction phase #{idx}",
+                 status_code: :on_track)
+        end
+      end
+
+      it "returns only results up to the page size" do
+        subject
+        expect(parsed_results.dig("structuredContent", "items").count).to eq(page_size)
+      end
+
+      context "if another page is requested" do
+        let(:call_args) { { name: "Death Star", page: 1 } }
+
+        it "returns the requested page" do
+          subject
+          expect(parsed_results.dig("structuredContent", "items").count).to eq(overspilling_projects)
+        end
       end
     end
 

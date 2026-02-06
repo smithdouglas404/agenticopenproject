@@ -231,9 +231,9 @@ sv:
         header: "Inställt: Möte '%{title}'"
         header_occurrence: "Inställt: Mötesförekomst '%{title}'"
         header_series: "Inställt: Mötesserie '%{title}'"
-        summary_occurrence: "En förekomst av '%{title}' har avbrutits av %{actor}."
-        summary_series: "Mötesserien '%{title}' har avbrutits av %{actor}."
-        summary: "'%{title}' har avbrutits av %{actor}."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Schemalagd datum/tid"
       participant_added:
         header: "Meeting '%{title}' - Participant added"
@@ -247,7 +247,7 @@ sv:
         summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
       ended:
         header_series: "Ended: Meeting series '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "Mötet '%{title}' har uppdaterats"
         summary: "Möte '%{title}' har uppdaterats av %{actor}"
@@ -530,8 +530,8 @@ sv:
   label_agenda_item_move_up: "Flytta upp"
   label_agenda_item_move_down: "Flytta ned"
   label_agenda_item_duplicate: "Duplicate"
-  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Lägg till anteckningar"
   label_agenda_item_add_outcome: "Lägg till resultat"
   label_agenda_item_work_package_add: "Lägg till arbetspaket"

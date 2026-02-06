@@ -111,21 +111,21 @@ zh-CN:
         link: "Webhook"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
-        resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
-        tools_heading: "Tools"
-        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        description: "Model Context Protocol 允许 AI 智能体向其用户提供此 OpenProject 实例所公开的工具和资源。"
+        resources_heading: "资源"
+        resources_description: "OpenProject 实现了以下工具。每种工具都可以根据需要启用、重命名和描述。有关详情，请参阅[关于 MCP 资源的文档](docs_url)。"
+        resources_submit: "更新资源"
+        tools_heading: "工具"
+        tools_description: "OpenProject 实现了以下工具。每种工具都可以根据需要启用、重命名和描述。有关详情，请参阅[关于 MCP 工具的文档](docs_url)。"
+        tools_submit: "更新工具"
       multi_update:
-        success: "MCP configurations were updated successfully."
+        success: "MCP 配置已成功更新。"
       server_form:
-        description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        description_caption: "如何向连接到 MCP 服务器的其他应用程序描述该 MCP 服务器。"
+        title_caption: "展示给连接到 MCP 服务器的应用程序的简短标题。"
       update:
-        failure: "MCP configuration could not be updated."
-        success: "MCP configuration was updated successfully."
+        failure: "MCP 配置无法更新。"
+        success: "MCP 配置已成功更新。"
     scim_clients:
       authentication_methods:
         sso: "来自身份提供商的 JWT"
@@ -720,11 +720,11 @@ zh-CN:
           create_button: "创建"
           name_label: "令牌名称"
       created_dialog:
-        one_time_warning: "This is the only time you will see this token. Make sure to copy it now."
+        one_time_warning: "这将是您看到此令牌的唯一机会。请务必立即复制。"
         token/api:
           title: "API 令牌已生成"
         token/rss:
-          title: "The RSS token has been generated"
+          title: "RSS 令牌已生成"
       failed_to_reset_token: "无法重置访问令牌: %{error}"
       failed_to_create_token: "创建访问令牌失败： %{error}"
       failed_to_revoke_token: "撤销访问令牌失败： %{error}"
@@ -1241,9 +1241,9 @@ zh-CN:
         port: "端口"
         tls_certificate_string: "LDAP 服务器 SSL 证书"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: 已启用
+        title: 标题
+        description: 描述
       member:
         roles: "角色"
       notification:
@@ -1502,7 +1502,7 @@ zh-CN:
         even: "必须是偶数。"
         exclusion: "是保留关键字。"
         feature_disabled: 不可用。
-        feature_disabled_for_project: is disabled for this project.
+        feature_disabled_for_project: 已对此项目禁用。
         file_too_large: "太大 (最大大小为 %{count} 字节)。"
         filter_does_not_exist: "筛选器不存在。"
         format: "与预期的格式“%{expected}”不匹配。"
@@ -1922,7 +1922,7 @@ zh-CN:
       token/api:
         other: 访问令牌
       token/rss:
-        other: "RSS tokens"
+        other: "RSS 令牌"
       type:
         other: "类型"
       user: "用户"
@@ -2402,7 +2402,7 @@ zh-CN:
       baseline_comparison: 基线比较
       board_view: 高级面板
       calculated_values: 计算值
-      capture_external_links: Capture External Links
+      capture_external_links: 捕获外部链接
       internal_comments: 内部评论
       custom_actions: 自定义操作
       custom_field_hierarchies: 层级
@@ -2412,12 +2412,12 @@ zh-CN:
       edit_attribute_groups: 编辑属性组
       gantt_pdf_export: 甘特图 PDF 导出
       ldap_groups: LDAP 用户和群组同步
-      mcp_server: MCP Server
+      mcp_server: MCP 服务器
       nextcloud_sso: Nextcloud存储的单点登录(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 文件存储
       placeholder_users: 占位符用户
       portfolio_management: 项目组合管理
-      project_creation_wizard: Project initiation request
+      project_creation_wizard: 项目启动请求
       project_list_sharing: 项目列表共享
       readonly_work_packages: 只读工作包
       scim_api: SCIM 服务器 API
@@ -2437,7 +2437,7 @@ zh-CN:
       plan_text_html: "从 %{plan_name} 开始可用。"
       unlimited: "无限制"
       already_have_token: >
-        已经有令牌？使用下方按钮添加以升级到预订的 Enterprise 方案。
+        已经有令牌？使用下方按钮添加以升级到预订的企业版方案。
       hide_banner: "隐藏此广告"
       homescreen_description: >
         企业计划通过额外的[企业附加组件](enterprise_url) 和专业支持扩展了OpenProject社区版，是在关键任务环境中运行OpenProject的组织的理想选择。
@@ -2459,7 +2459,7 @@ zh-CN:
       customize_life_cycle:
         description: "创建和组织与PM2项目周期规划不同的项目阶段。"
       capture_external_links:
-        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
+        description: "在用户访问外部链接前捕获链接并发出警告，以防范社会工程攻击。"
       work_package_query_relation_columns:
         description: "需要在工作包列表中看到关系或子项吗？"
       edit_attribute_groups:
@@ -2490,7 +2490,7 @@ zh-CN:
         title: "自定义操作"
         description: "自定义操作是一键快捷方式，指向一组预定义的操作，您可以根据状态、角色、类型或项目在某些工作包上使用这些操作。"
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "通过 MCP 将 AI 智能体与 OpenProject 实例集成。"
       nextcloud_sso:
         title: "Nextcloud存储的单点登录(SSO)"
         description: "使用单点登录为您的 Nextcloud 存储启用无缝且安全的身份验证。简化访问管理并提升用户便利性。"
@@ -2503,7 +2503,7 @@ zh-CN:
       virus_scanning:
         description: "确保在 OpenProject 中上传的文件在被其他用户访问之前进行病毒扫描。"
       project_creation_wizard:
-        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
+        description: "生成分步向导，帮助项目经理填写项目启动请求。"
       placeholder_users:
         title: 占位符用户
         description: >
@@ -2574,7 +2574,7 @@ zh-CN:
   error_color_could_not_be_saved: "无法保存颜色"
   error_cookie_missing: "OpenProject cookie 丢失。请确保已启用 cookie，因为如果不启用，此应用程序将无法正常运行。"
   error_custom_option_not_found: "选项不存在。"
-  error_enterprise_plan_needed: "您需要 %{plan} Enterprise 方案才能执行此操作。"
+  error_enterprise_plan_needed: "您需要 %{plan}企业版方案才能执行此操作。"
   error_enterprise_activation_user_limit: "无法激活您的帐户 (已达到用户限制)。请与管理员联系以获取访问权限。"
   error_enterprise_token_invalid_domain: "企业版未激活。您的企业版令牌的域名（%{actual}）与系统的主机名（%{expected}）不匹配。"
   error_failed_to_delete_entry: "无法删除此条目。"
@@ -2802,15 +2802,15 @@ zh-CN:
         #We need to include the version to invalidate outdated translations in other locales
         "17_1":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            此版本包含多项新功能和改进，例如：
           new_features_list:
-            line_0: Automated project initiation (Enterprise add-on).
-            line_1: "Meetings: add new or existing work packages as outcomes."
-            line_2: "Meetings: show participant responses in iCal subscriptions."
-            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
-            line_4: "Release to Community: Attribute highlighting."
-            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
-            line_6: Improved performance and user experience, including the Activity tab and Documents module.
+            line_0: 自动化项目启动（企业版附加组件）。
+            line_1: "会议：添加新工作包或现有工作包作为成果。"
+            line_2: "会议：在 iCal 订阅中显示参加者的回复。"
+            line_3: "定期会议：将议程条目复制到下一事件。"
+            line_4: "发布到社区：特性高亮显示。"
+            line_5: 在打开用户提供内容中的外部链接前发出警告（企业版附加组件）。
+            line_6: 提升了性能和用户体验，包括“活动”选项卡和“文档”模块。
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2878,7 +2878,7 @@ zh-CN:
   instructions_after_error: "你可以尝试点击 %{signin} 重新登录。如果错误仍然存在，请向您的管理员寻求帮助。"
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "人工智能 (AI)"
       aggregation: "聚合"
       api_and_webhooks: "API 和 Webhook"
       mail_notification: "电子邮件通知"
@@ -2888,7 +2888,7 @@ zh-CN:
       label: "添加…"
   my_account:
     access_tokens:
-      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
+      description: "提供商令牌由 OpenProject 签发，允许其他应用程序访问。客户端令牌由其他应用程序签发，允许 OpenProject 对其进行访问。"
       no_results:
         title: "没有要显示的访问令牌"
         description: "他们都已被禁用。他们可以在管理菜单重新启用。"
@@ -2900,53 +2900,53 @@ zh-CN:
       simple_revoke_confirmation: "确定要撤销此令牌吗？"
       tabs:
         client:
-          title: "Client tokens"
+          title: "客户端令牌"
         provider:
-          title: "Provider tokens"
+          title: "提供商令牌"
       token/api:
-        blank_description: "There is no API token yet. You can create one using the button below."
-        blank_title: "No API token"
+        blank_description: "目前还没有 API 令牌。您可以使用下方按钮创建一个。"
+        blank_title: "没有 API 令牌"
         title: "API"
-        table_title: "API tokens"
+        table_title: "API 令牌"
         text_hint: "API 令牌允许第三方应用程序通过 REST API 与此 OpenProject 实例通信。"
-        static_token_name: "API token"
+        static_token_name: "API 令牌"
         disabled_text: "管理员未启用 API 令牌。请联系管理员以使用此功能。"
-        add_button: "API token"
+        add_button: "API 令牌"
       ical:
-        blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
-        blank_title: "No iCalendar token"
+        blank_description: "要添加 iCalendar 令牌，请从项目的“日历”模块中订阅新日历或现有日历。您必须拥有必要的权限。"
+        blank_title: "没有 iCalendar 令牌"
         title: "iCalendar"
-        table_title: "iCalendar tokens"
+        table_title: "iCalendar 令牌"
         text_hint_link: "iCalendar 令牌允许用户[订阅OpenProject日历](docs_url)，并查看来自外部客户端的最新工作包信息。"
         disabled_text: "管理员未启用 iCalendar 订阅。请联系管理员以使用此功能。"
       oauth_application:
-        active_tokens: "Active tokens"
-        blank_description: "There is no third-party application access configured and active for you."
-        blank_title: "No OAuth application token"
-        last_used_at: "Last used at"
+        active_tokens: "有效令牌"
+        blank_description: "没有为您配置和激活第三方应用程序访问权限。"
+        blank_title: "没有 OAuth 应用程序令牌"
+        last_used_at: "最近使用时间"
         title: "OAuth"
-        table_title: "OAuth application tokens"
-        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+        table_title: "OAuth 应用程序令牌"
+        text_hint: "OAuth 应用程序令牌允许第三方应用程序与此 OpenProject 实例关联。"
       oauth_client:
-        blank_description: "There are no OAuth client tokens yet."
-        blank_title: "No OAuth client tokens"
-        failed: "An error occurred and the token couldn't be removed. Please try again later."
-        integration_type: "Integration type"
-        table_title: "OAuth client tokens"
-        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        blank_description: "目前还没有 OAuth 客户端令牌。"
+        blank_title: "没有 OAuth 客户端令牌"
+        failed: "出错了，无法移除令牌。请稍后再试。"
+        integration_type: "集成类型"
+        table_title: "OAuth 客户端令牌"
+        text_hint: "OAuth 客户端令牌允许此 OpenProject 实例与文件存储等外部应用程序关联。"
         title: "OAuth"
-        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
-        removed: "OAuth client token successfully removed"
-        unknown_integration: "Unknown"
+        remove_token: "是否确实要移除此令牌？您需要再次登录 %{integration}。"
+        removed: "OAuth 客户端令牌已成功移除"
+        unknown_integration: "未知"
       token/rss:
-        add_button: "RSS token"
-        blank_description: "There is no RSS token yet. You can create one using the button below."
-        blank_title: "No RSS token"
+        add_button: "RSS 令牌"
+        blank_description: "目前还没有 RSS 令牌。您可以使用下方按钮创建一个。"
+        blank_title: "没有 RSS 令牌"
         title: "RSS"
-        table_title: "RSS tokens"
-        text_hint: "RSS tokens allow users to keep up with the latest changes in this OpenProject instance via an external RSS reader."
-        static_token_name: "RSS token"
-        disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
+        table_title: "RSS 令牌"
+        text_hint: "RSS 令牌允许用户通过外部 RSS 阅读器了解此 OpenProject 实例中的最新变化。"
+        static_token_name: "RSS 令牌"
+        disabled_text: "管理员未启用 RSS 令牌。请联系管理员以使用此功能。"
       storages:
         unknown_storage: "未知存储"
   notifications:
@@ -3009,6 +3009,7 @@ zh-CN:
   label_always_visible: "总是显示"
   label_announcement: "公告"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "API 访问键"
   label_api_access_key_created_on: "API 访问密钥创建于 %{value} 前"
   label_api_access_key_type: "API"
@@ -3264,7 +3265,7 @@ zh-CN:
   label_journal_diff: "描述的对比"
   label_language: "语言"
   label_languages: "语言"
-  label_external_links: "External links"
+  label_external_links: "外部链接"
   label_locale: "语言和地区"
   label_jump_to_a_project: "跳转到一个项目..."
   label_keyword_plural: "关键词"
@@ -4251,9 +4252,9 @@ zh-CN:
   setting_allowed_link_protocols: "允许的链接协议"
   setting_allowed_link_protocols_text_html: >-
     允许这些协议在工作包描述、长文本字段和评论中显示为链接。例如，%{tel_code} 或 %{element_code}。每行输入一个协议。<br/> 协议 %{http_code}、%{https_code} 和 %{mailto_code} 始终允许。
-  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links: "捕获外部链接"
   setting_capture_external_links_text: >
-    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+    启用后，格式化文本中的所有外部链接在离开应用程序前都会重定向至警告页面。这有助于保护用户免受潜在恶意外部网站的危害。
   setting_after_first_login_redirect_url: "首次登录重定向"
   setting_after_first_login_redirect_url_text_html: >
     设置用户首次登录后的重定向路径。如果该路径为空，则重定向到主页以进行导览介绍。 <br/> 示例： <code>/my/page</code>
@@ -4267,16 +4268,16 @@ zh-CN:
     如果启用了 CORS ，这些是允许访问 OpenProject API 的源。<br/>请查看<a href="%{origin_link}" target="_blank">有关“源”标题的文档</a>，了解如何指定预期值。
   setting_apiv3_write_readonly_attributes: "对只读属性的写访问权限"
   setting_apiv3_write_readonly_attributes_instructions: >
-    If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
+    启用后，API 将允许管理员在创建过程中写入静态只读属性，如 createdAt 和 author。
   setting_apiv3_write_readonly_attributes_warning: >
-    This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
+    此设置可用于数据导入等用例，但允许管理员以其他用户身份模拟项目创建。不过，所有创建请求都会记录真实作者信息。
   setting_apiv3_write_readonly_attributes_additional: >
-    For more information on attributes and supported resources, please see the %{api_documentation_link}.
+    有关特性和受支持资源的详细信息，请参阅%{api_documentation_link}。
   setting_apiv3_max_page_size: "最大 API 页面大小"
   setting_apiv3_max_page_size_instructions: >
-    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+    设置 API 将响应的最大页面大小。将无法执行在单个页面上返回更多值的 API 请求。
   setting_apiv3_max_page_size_warning: >
-    Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
+    请仅在确定有必要的情况下更改该值。如果设置的值过高，会严重影响性能，而如果设置的值低于每页选项，则会导致分页视图出错。
   setting_apiv3_docs: "文档"
   setting_apiv3_docs_enabled: "启用文档页面"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4461,7 +4462,7 @@ zh-CN:
       omniauth_direct_login_hint_html: >
         如果激活该选项，登录请求将重定向到已配置的 omniauth 提供商。登录下拉菜单和登录页面将被禁用。 <br/> <strong>注意：</strong>除非同时禁用密码登录，否则启用此选项后，用户仍可通过访问 <code>%{internal_path}</code>登录页面。
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        如果启用，则允许任何已配置的身份提供商基于用户名登录现有用户，即使用户此前从未通过该提供商登录过。在将 OpenProject 实例迁移到新的 SSO 提供商时，此功能会有一定的帮助，但如果使用的提供商并未受到您的实例所有用户的信任，则不建议启用。
     attachments:
       whitelist_text_html: >
         为上传的文件定义有效文件扩展名和/或 MIME 类型列表。<br/>输入文件扩展名（例如 <code>%{ext_example}</code>）或 MIME 类型（例如 <code>%{mime_example}</code>）。<br/>留空以允许上传任何文件类型。允许输入多个值（每个值一行）。
@@ -4567,7 +4568,7 @@ zh-CN:
           project_mandate: "项目授权"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+          **此工作包是在 %{wizard_name} 工作流完成后自动创建的**。 包含所有已提交信息的 PDF 工件已生成并附加到此工作包，以供参考和审核。 如果需要更新或重新运行启动步骤，您可以随时使用下方链接重新打开向导：
         description: "当用户提交项目启动请求时，将创建一个新的工作包，并以 PDF 文件形式附上请求工件。以下设置定义了新工作包的类型、状态和受理人。"
         work_package_type: "工作包类型"
         work_package_type_caption: "应当用于存储已完成工件的工作包类型。"
@@ -4825,8 +4826,8 @@ zh-CN:
       other: "暂时锁定（%{count} 次尝试登录失败）"
     confirm_status_change: "您即将更改 \"%{name}\" 的状态。确实要继续吗？"
     deleted: "已删除的用户"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "您不能更改自己的用户状态。"
+    error_admin_change_on_non_admin: "只有管理员可以更改管理员用户的状态。"
     error_status_change_failed: "用户状态更改失败，因为以下错误: %{errors}"
     invite: 通过电子邮件邀请用户
     invited: 已邀请
@@ -5230,7 +5231,7 @@ zh-CN:
     hashed_token:
       display_value_placeholder: "***"
   external_link_warning:
-    title: "Leaving OpenProject"
-    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
-    continue_message: "Are you sure you want to proceed to the following external link?"
-    continue_button: "Continue to external website"
+    title: "离开 OpenProject"
+    warning_message: "您即将离开 OpenProject 并访问外部网站。请注意，外部网站不受我们的管控，可能采用不同的隐私和安全政策。"
+    continue_message: "确定要继续访问以下外部链接吗？"
+    continue_button: "继续访问外部网站"

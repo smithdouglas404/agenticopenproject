@@ -231,9 +231,9 @@ tr:
         header: "İptal edildi: Toplantı '%{title}'"
         header_occurrence: "İptal edildi: Toplantı '%{title}'"
         header_series: "İptal edildi: Toplantı serisi '%{title}'"
-        summary_occurrence: "'%{title}' %{actor} tarafından iptal edilmiştir."
-        summary_series: "'%{title}' toplantı serisi %{actor} tarafından iptal edilmiştir."
-        summary: "'%{title}' %{actor} tarafından iptal edilmiştir."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Planlanan tarih/saat"
       participant_added:
         header: "Meeting '%{title}' - Participant added"
@@ -247,7 +247,7 @@ tr:
         summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
       ended:
         header_series: "Ended: Meeting series '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "'%{title}' toplantısı güncellendi"
         summary: "'%{title}' toplantısı %{actor} tarafından güncellendi"
@@ -530,8 +530,8 @@ tr:
   label_agenda_item_move_up: "Yukarı taşı"
   label_agenda_item_move_down: "Aşağı taşı"
   label_agenda_item_duplicate: "Duplicate"
-  label_agenda_item_duplicate_in_next: "Duplicate in next occurrence"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next occurrence?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Not ekle"
   label_agenda_item_add_outcome: "Sonuç ekle"
   label_agenda_item_work_package_add: "İş paketi ekle"

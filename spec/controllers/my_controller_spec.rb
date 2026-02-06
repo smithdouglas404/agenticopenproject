@@ -332,7 +332,7 @@ RSpec.describe MyController do
 
       render_views
       it "renders auto hide popups checkbox" do
-        expect(response.body).to have_css("form #pref_auto_hide_popups")
+        expect(response.body).to have_css("form #auto_hide_popups")
       end
     end
 
