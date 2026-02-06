@@ -109,7 +109,7 @@ You will be guided through creating an iCal subscription token:
 3. Add this URL to your external calendar to subscribe to your OpenProject meetings.
 
 If you are only interested in a specific meeting, you can [download that specific meeting as an iCal event]
-(/one-time-meetings/#download-a-meeting-as-an-icalendar-event/) instead.
+(/one-time-meetings/#download-a-meeting-as-an-icalendar-event) instead.
 
 > [!TIP]
 > If you are interested in how the Meetings module is used by the OpenProject team, please take a look at [this blog article](https://www.openproject.org/blog/meeting-management-example/). 

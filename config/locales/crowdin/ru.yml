@@ -1575,7 +1575,7 @@ ru:
             one: "%{name} используется для расчета атрибута проекта %{links}."
             few: "%{name} is used in project attribute calculations: %{links}."
             many: "%{name} is used in project attribute calculations: %{links}."
-            other: "%{name} используется для расчета атрибутов проекта: %{links}."
+            other: "%{name} используются для расчета атрибута проекта %{links}."
           attributes:
             formula:
               blank: "Формула не может быть пустой."
@@ -4909,8 +4909,8 @@ ru:
       other: "временно заблокирован (%{count} неудачные попытки авторизации)"
     confirm_status_change: "Вы собираетесь изменить статус '%{name}'. Хотите продолжить?"
     deleted: "Удалённый пользователь"
-    error_status_change_self: "You cannot change your own user status."
-    error_admin_change_on_non_admin: "Only administrators can change the status of administrator users."
+    error_status_change_self: "Вы не можете изменить свой собственный статус пользователя."
+    error_admin_change_on_non_admin: "Только администраторы могут изменять статус администраторов."
     error_status_change_failed: "Изменение статуса пользователя не удалось из-за следующей ошибки: %{errors}"
     invite: Пригласить пользователя по электронной почте
     invited: приглашен

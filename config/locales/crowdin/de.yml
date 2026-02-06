@@ -4520,7 +4520,7 @@ de:
               description: "Fügen Sie alle Projektattribute in einem Abschnitt in der rechten Seitenleiste der Projektübersicht hinzu."
     project_initiation_request:
       header_description: >
-        OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren und ein PDF als Ergebnis erzeugen zu lassen.
+        OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützt. Sie können die abgefragten Projektattribute wählen und ein Artefakt als Ergebnis erzeugen lassen.
       status:
         submitted: "%{wizard_name} wurde eingereicht"
         submitted_description: "Klicken Sie auf die Schaltfläche unten, um zum Arbeitspaket für den Einreichungsprozess zu gelangen."
@@ -4533,7 +4533,7 @@ de:
         project_mandate: "Projektmandat öffnen"
       blankslate:
         title: "Initiierungsanfrage nicht aktiviert"
-        description: "OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützen kann. Sie können auswählen, welche Projektattribute enthalten sein sollen ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren."
+        description: "OpenProject kann einen Schritt-für-Schritt-Assistenten erstellen, der beim Ausfüllen eines Projektinitiierungsantrags unterstützt. Sie können die abgefragten Projektattribute wählen und ein Artefakt als Ergebnis erzeugen lassen. Aktivieren Sie ihn hier, um den Assistenten zu konfigurieren."
       disable_dialog:
         title: "Projektinitiierungsantrag deaktivieren"
         heading: "Diesen Projektinitiationsantrag deaktivieren?"

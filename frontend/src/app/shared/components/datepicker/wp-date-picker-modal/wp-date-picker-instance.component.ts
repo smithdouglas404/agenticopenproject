@@ -150,7 +150,11 @@ export class OpWpDatePickerInstanceComponent extends UntilDestroyedMixin impleme
   }
 
   private computeMinimalSchedulingDate() {
-    this.minimalSchedulingDate = this.startDateValue && this.timezoneService.utcDateToLocalDate(this.startDateValue);
+    if (this.dateMode === 'single') {
+      this.minimalSchedulingDate = null;
+    } else {
+      this.minimalSchedulingDate = this.startDateValue && this.timezoneService.utcDateToLocalDate(this.startDateValue);
+    }
   }
 
   private findDateToJumpTo(dates:Date[]):Date|null {

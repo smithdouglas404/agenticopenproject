@@ -55,21 +55,21 @@ id:
         start_date: "Mulai pada"
         start_time: "Waktu mulai"
         start_time_hour: "Waktu mulai"
-        end_after: "Meeting series ends"
+        end_after: "Seri pertemuan berakhir"
         end_date: "Tanggal finish"
         iterations: "Kejadian"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
-        participation_status: "Participation status"
+        invited: "Terundang"
+        attended: "Telah hadir"
+        participation_status: "Status partisipasi"
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} is not a valid participant."
+          invalid_user: "%{name} bukan peserta yang sah."
         recurring_meeting:
           must_cover_existing_meetings:
-            one: "There is one open meeting in the series that is not covered by the new schedule. Adjust the schedule to include all existing meetings."
-            other: "There are %{count} open meetings in the series that are not covered by the new schedule. Adjust the schedule to include all existing meetings."
+            one: "Terdapat satu pertemuan terbuka dalam rangkaian pertemuan yang tidak tercakup dalam jadwal baru. Sesuaikan jadwal untuk mencakup semua pertemuan yang sudah ada."
+            other: "Terdapat %{count} pertemuan terbuka dalam rangkaian pertemuan yang tidak tercakup dalam jadwal baru. Sesuaikan jadwal untuk mencakup semua pertemuan yang sudah ada."
             format: "%{message}"
       messages:
         invalid_time_format: "bukanlah waktu yang valid. Format seharusnya; JJ:MM"
@@ -80,7 +80,7 @@ id:
       meeting_agenda: "Agenda"
       meeting_section: "Bagian"
       token/ical_meeting:
-        other: "iCal Meeting subscription"
+        other: "Langganan iCal Meeting"
   activity:
     filter:
       meeting: "Rapat"
@@ -113,7 +113,7 @@ id:
   label_meeting_new_dynamic: "Rapat satu waktu baru"
   label_meeting_new_recurring: "Rapat berulang baru"
   label_meeting_create: "Buat rapat"
-  label_meeting_duplicate: "Duplicate meeting"
+  label_meeting_duplicate: "Pertemuan duplikat"
   label_meeting_edit: "Edit Rapat"
   label_meeting_agenda: "Agenda"
   label_meeting_minutes: "Laporan"
@@ -125,91 +125,91 @@ id:
   label_meeting_date_time: "Tanggal/Waktu"
   label_meeting_date_and_time: "Tanggal dan waktu"
   label_meeting_diff: "Perbedaan"
-  label_meeting_send_updates: "Send email calendar invite and updates"
-  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
+  label_meeting_send_updates: "Kirim undangan kalender melalui email dan pembaruan"
+  label_meeting_send_updates_caption: "Kirim undangan email kepada semua peserta rapat ini"
   label_recurring_meeting: "Rapat berulang"
   label_recurring_meeting_part_of: "Bagian dari jajaran rapat"
   label_recurring_meeting_new: "Rapat berulang baru"
-  label_recurring_meeting_plural: "Recurring meetings"
+  label_recurring_meeting_plural: "Rapat berulang"
   label_template: "Templat"
   label_recurring_meeting_view: "Lihat jajaran rapat"
   label_recurring_meeting_create: "Buka"
-  label_recurring_meeting_duplicate: "Duplicate as a one-time meeting"
-  label_recurring_meeting_cancel: "Cancel this occurrence"
-  label_recurring_meeting_delete: "Delete occurrence"
-  label_recurring_meeting_restore: "Restore this occurrence"
-  label_recurring_meeting_schedule: "Schedule"
-  label_recurring_meeting_next_occurrence: "Next occurrence"
-  label_recurring_meeting_no_end_date: "There are more scheduled meetings (%{schedule})."
+  label_recurring_meeting_duplicate: "Duplikat sebagai pertemuan sekali saja"
+  label_recurring_meeting_cancel: "Batalkan acara ini"
+  label_recurring_meeting_delete: "Hapus acara"
+  label_recurring_meeting_restore: "Kembalikan acara ini"
+  label_recurring_meeting_schedule: "Jadwal"
+  label_recurring_meeting_next_occurrence: "Acara berikutnya"
+  label_recurring_meeting_no_end_date: "Ada lebih banyak rapat yang dijadwalkan (%{schedule})."
   label_recurring_meeting_more:
     other: "There are %{count} more scheduled meetings (%{schedule})."
   label_recurring_meeting_more_past:
     other: "There are %{count} more past meetings."
   label_recurring_meeting_show_more: "Tampilkan lebih"
-  label_recurring_meeting_series_create: "Create meeting series"
-  label_recurring_meeting_series_edit: "Edit meeting series"
-  label_recurring_meeting_series_delete: "Delete meeting series"
-  label_recurring_meeting_series_end: "End meeting series"
-  label_recurring_meeting_series_end_now: "End series now"
+  label_recurring_meeting_series_create: "Buat seri rapat"
+  label_recurring_meeting_series_edit: "Sunting seri rapat"
+  label_recurring_meeting_series_delete: "Hapus seri rapat"
+  label_recurring_meeting_series_end: "Akhiri seri rapat"
+  label_recurring_meeting_series_end_now: "Akhiri seri sekarang"
   label_meeting_more:
-    other: "There are %{count} more meetings."
-  label_my_meetings: "My meetings"
-  label_all_meetings: "All meetings"
+    other: "Terdapat %{count} rapat lagi."
+  label_my_meetings: "Rapat saya"
+  label_all_meetings: "Seluruh rapat"
   label_upcoming_meetings: "Rapat mendatang"
   label_past_meetings: "Rapat sebelumnya"
   label_upcoming_meetings_short: "Mendatang"
   label_past_meetings_short: "Lalu"
   label_involvement: "Keterlibatan"
   label_invitations: "Undangan"
-  label_invited_user: "Invited user"
+  label_invited_user: "Pengguna yang terundang"
   label_past_invitations: "Undangan sebelumnya"
-  label_attended: "Attended"
-  label_attended_user: "Attended user"
-  label_created_by_me: "Created by me"
+  label_attended: "Telah hadir"
+  label_attended_user: "Pengguna yang hadir"
+  label_created_by_me: "Dibuat oleh saya"
   label_notify: "Kirim untuk ulasan"
   label_icalendar: "Kirim iCalendar"
   label_icalendar_download: "Unduh acara iCalendar"
   label_view_meeting_series: "Lihat jajaran rapat"
-  label_meeting_series: "Meeting series"
+  label_meeting_series: "Seri rapat"
   label_version: "Versi"
   label_time_zone: "Zona waktu"
   label_start_date: "Tanggal mulai"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Langganan ke kalender"
   meeting:
     participants:
       label:
         participants: "Partisipan"
-        attended: "Attended"
-        mark_as_attended: "Mark as attended"
-        mark_all_as_attended: "Mark all as attended"
-        remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
+        attended: "Telah hadir"
+        mark_as_attended: "Tandai telah hadir"
+        mark_all_as_attended: "Tandai semua telah hadir"
+        remove_participant: "Hapus peserta"
+        manage_participants: "Kelola peserta"
+        no_participants: "Tidak ada peserta"
         show_all: "Tampilkan semua"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
-        manage_participants: "Search for and add project members as participants to this meeting."
-        search_for_members: "Search for project members"
+        template: "Para peserta ini akan diundang secara otomatis ke semua pertemuan mendatang yang akan dibuat."
+        manage_participants: "Cari dan tambahkan anggota proyek sebagai peserta dalam pertemuan ini."
+        search_for_members: "Cari anggota proyek"
       blankslate:
-        heading: "No participants"
-        description: "There are no participants yet."
+        heading: "Tidak ada peserta"
+        description: "Belum ada peserta."
     attachments:
-      template: "These attached files will be included in all future meetings in the series."
+      template: "Berkas-berkas yang terlampir ini akan disertakan dalam semua pertemuan mendatang dalam rangkaian ini."
       text: "File terlampir tersedia untuk semua peserta rapat. Anda juga dapat menyeret dan meletakkannya ke dalam catatan item agenda."
     copy:
       title: "Salinan rapat: %{title}"
       attachments: "Salinan lampiran"
       attachments_text: "Salin semua file terlampir ke rapat baru"
       agenda: "Salin agenda"
-      agenda_items: "Copy agenda items"
+      agenda_items: "Salin item agenda"
       agenda_text: "Salin agenda rapat lama"
-      participants: "Copy list of participants"
-      to_clipboard: "Copy link to clipboard"
+      participants: "Salin daftar peserta"
+      to_clipboard: "Salin tautan ke papan klip"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
-        Send an email invitation immediately to the participants selected above. You can also do this manually at any time later.
-      send_invitation_emails_structured: "Send an email invitation immediately to all participants. You can also do this manually at any time later."
+        Kirim undangan melalui email segera kepada peserta yang telah dipilih di atas. Anda juga dapat melakukannya secara manual kapan saja nanti.
+      send_invitation_emails_structured: "Kirim undangan melalui email segera kepada semua peserta. Anda juga dapat melakukannya secara manual kapan saja nanti."
       open_meeting_link: "Rapat terbuka"
       open_my_meetings_link: "Go to My meetings"
       series:
@@ -347,75 +347,75 @@ id:
           enabled: >
             Email calendar updates are enabled for the meeting series. All participants will receive updated calendar invites informing them of your changes to this template or to individual occurrences.
           disabled: >
-            Email calendar updates are disabled for the meeting series. Participants will not receive an email informing them of your changes to this template or to individual occurrences.
+            Pembaruan kalender melalui email dinonaktifkan untuk seri pertemuan ini. Peserta tidak akan menerima email yang memberitahukan mereka tentang perubahan yang Anda lakukan pada templat ini atau pada kejadian individu.
     presentation_mode:
-      title: "Presentation Mode"
-      button_present: "Present"
-      exit: "Exit presentation"
-      current_item: "Current item"
-      total_items: "%{current} of %{total}"
-      previous: "Previous"
-      next: "Next"
-      no_items: "No agenda items"
-      no_items_flash: "There are no agenda items to present."
+      title: "Mode Presentasi"
+      button_present: "Presentasikan"
+      exit: "Keluar dari presentasi"
+      current_item: "Item saat ini"
+      total_items: "%{current} dari %{total}"
+      previous: "Sebelumnya"
+      next: "Selanjutnya"
+      no_items: "Tidak ada agenda"
+      no_items_flash: "Tidak ada agenda yang akan dibahas."
   meeting_section:
     untitled_title: "Untitled section"
     delete_confirmation: "Deleting the section will also delete all of its agenda items. Are you sure you want to do this?"
     placeholder_title: "New section"
-    empty_text: "Drag items here or create a new one"
+    empty_text: "Seret item ke sini atau buat yang baru"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Time zone difference"
       description: >
         The dates below are referencing the time zone of the meeting series (%{actual_zone}), not your local time zone (%{user_zone}).
     ended_blankslate:
-      title: "Meeting series ended"
-      message: "This meeting series has come to an end. There are no upcoming meetings. "
-      action: "You can still view past occurrences or edit the meeting series to extend it."
+      title: "Seri rapat berakhir"
+      message: "Seri rapat ini telah berakhir. Tidak ada rapat yang akan datang. "
+      action: "Anda masih dapat melihat acara sebelumnya atau mengedit seri rapat untuk memperpanjangnya."
     occurrence:
-      infoline: "This meeting is part of a recurring meeting series."
-      error_no_next: "There is no next occurrence for this meeting."
-      first_already_exists: "The first occurrence of this meeting series is already instantiated."
+      infoline: "Rapat ini merupakan bagian dari rangkaian rapat yang berkala."
+      error_no_next: "Tidak ada jadwal acara berikutnya untuk rapat ini."
+      first_already_exists: "Rapat pertama dalam rangkaian rapat ini telah dilaksanakan."
       first_created: >
-        The first meeting has been successfuly created from template. All future meetings will be created automatically at the time of the previous occurrence.
+        Rapat pertama telah berhasil dibuat dari templat. Semua rapat berikutnya akan dibuat secara otomatis pada waktu terjadinya acara sebelumnya.
     template:
       button_finalize: "Open first meeting"
-      blank_title: "Your meeting series template is empty"
+      blank_title: "Template seri rapat Anda kosong"
       description: >
-        This template will be used whenever new meetings in the series get created. You can add agenda items, participants, and attachments to this template.
-      label_view_template: "View template"
-      label_edit_template: "Edit template"
+        Templat ini akan digunakan setiap kali rapat baru dalam seri ini dibuat. Anda dapat menambahkan poin agenda, peserta, dan lampiran ke templat ini.
+      label_view_template: "Lihat templat"
+      label_edit_template: "Sunting templat"
       banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+        Saat ini, Anda sedang menyunting templat untuk serangkaian rapat: %{link}. Setiap rapat baru dalam serangkaian ini akan menggunakan templat ini. Perubahan yang dilakukan tidak akan memengaruhi rapat yang sudah ada atau yang telah dibuat sebelumnya.
       draft_banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
+        Saat ini, Anda sedang menyunting templat untuk serangkaian rapat: %{link}. Setiap rapat baru dalam serangkaian ini akan menggunakan templat ini. Perubahan tidak akan memengaruhi rapat yang sudah ada atau yang telah dibuat sebelumnya. Undangan email tidak akan dikirim dalam mode draf saat ini hingga Anda membuka rapat pertama.
     frequency:
       x_daily:
-        other: "Every %{count} days"
+        other: "Setiap %{count} hari"
       x_weekly:
-        other: "Every %{count} weeks"
-      every_weekday: "Every %{day_of_the_week}"
-      working_days: "Every working day"
+        other: "Setiap %{count} mingu"
+      every_weekday: "Setiap %{day_of_the_week}"
+      working_days: "Setiap hari kerja"
     end_after:
-      never: "never"
-      specific_date: "after a specific date"
-      iterations: "after a number of occurrences"
-    starts: "Starts"
+      never: "tidak pernah"
+      specific_date: "setelah tanggal tertentu"
+      iterations: "setelah beberapa acara"
+    starts: "Mulai"
     in_words:
-      daily_interval: "Every %{interval} days"
-      working_days: "Every working day"
-      weekly: "Every week on %{weekday}"
-      weekly_interval: "Every %{interval} weeks on %{weekday}"
-      frequency: "%{base} at %{time}"
-      full: "%{base} at %{time}, ends on %{end_date}"
-      full_past: "%{base} at %{time}, ended on %{end_date}"
-      never_ending: "%{base} at %{time}"
+      daily_interval: "Setiap %{interval} hari"
+      working_days: "Setiap hari kerja"
+      weekly: "Setiap minggu pada hari %{weekday}"
+      weekly_interval: "Setiap %{interval} minggu pada hari %{weekday}"
+      frequency: "%{base} pada %{time}"
+      full: "%{base} pada %{time}, berakhir pada %{end_date}"
+      full_past: "%{base} pada %{time}, berakhir pada %{end_date}"
+      never_ending: "%{base} pada %{time}"
     open:
-      title: "Agenda opened"
+      title: "Agenda dibuka"
       subtitle: >
-        Open meetings have agendas that can be edited and show up in individual users’ ‘My meetings’ section. Changes to the meeting series template do not affect already-open meeting occurrences.
+        Rapat terbuka memiliki agenda yang dapat diedit dan muncul di bagian ‘Rapat Saya’ masing-masing pengguna. Perubahan pada templat seri rapat tidak memengaruhi rapat yang sudah dibuka.
       blankslate:
-        title: "No open meetings at the moment"
+        title: "Tidak ada rapat terbuka untuk saat ini"
         desc: "You can manually open a planned meeting by clicking on the 'Open' button below"
     planned:
       title: "Terencana"
