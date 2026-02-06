@@ -135,6 +135,8 @@ module API
           else
             inject_property_value(custom_field, config)
           end
+
+          inject_comment_value(custom_field, config)
         end
 
         private
@@ -282,6 +284,17 @@ module API
                             getter: calculated_value_error_getter(custom_field),
                             cache_if: config[:cache_if]
           end
+        end
+
+        def inject_comment_value(custom_field, config)
+          return unless custom_field.has_comment?
+
+          @class.property custom_field.comment_attribute_name.to_sym,
+                          if: ->(*) { available_custom_fields.include?(custom_field) },
+                          getter: ->(*) { custom_comment_for(custom_field)&.text },
+                          setter: ->(fragment:, **) { self.custom_comments = { custom_field.id => fragment } },
+                          cache_if: config[:cache_if],
+                          render_nil: true
         end
 
         def property_value_getter_for(custom_field)
