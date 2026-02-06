@@ -64,35 +64,41 @@ export default class BacklogsSettings extends Controller<HTMLElement> {
   }
 
   private onStoryTypesActivated = (_event:CustomEvent) => {
-    if (this.isUpdating || !this.hasStoryTypesTarget) return;
+    if (this.isUpdating || !this.hasStoryTypesTarget || !this.hasTaskTypeTarget) return;
 
-    const taskAutocomplete = this.autocompleterElementFor(this.taskTypeTarget);
-    const storyAutocomplete = this.autocompleterElementFor(this.storyTypesTarget);
+    // Use requestAnimationFrame to ensure DOM is updated before syncing
+    requestAnimationFrame(() => {
+      const taskAutocomplete = this.autocompleterElementFor(this.taskTypeTarget);
+      const storyAutocomplete = this.autocompleterElementFor(this.storyTypesTarget);
 
-    if (!taskAutocomplete || !storyAutocomplete) return;
+      if (!taskAutocomplete || !storyAutocomplete) return;
 
-    this.isUpdating = true;
-    try {
-      this.syncAutocompleters(storyAutocomplete, taskAutocomplete);
-    } finally {
-      this.isUpdating = false;
-    }
+      this.isUpdating = true;
+      try {
+        this.syncAutocompleters(storyAutocomplete, taskAutocomplete);
+      } finally {
+        this.isUpdating = false;
+      }
+    });
   };
 
   private onTaskTypeActivated = (_event:CustomEvent) => {
-    if (this.isUpdating || !this.hasTaskTypeTarget) return;
+    if (this.isUpdating || !this.hasStoryTypesTarget || !this.hasTaskTypeTarget) return;
 
-    const taskAutocomplete = this.autocompleterElementFor(this.taskTypeTarget);
-    const storyAutocomplete = this.autocompleterElementFor(this.storyTypesTarget);
+    // Use requestAnimationFrame to ensure DOM is updated before syncing
+    requestAnimationFrame(() => {
+      const taskAutocomplete = this.autocompleterElementFor(this.taskTypeTarget);
+      const storyAutocomplete = this.autocompleterElementFor(this.storyTypesTarget);
 
-    if (!taskAutocomplete || !storyAutocomplete) return;
+      if (!taskAutocomplete || !storyAutocomplete) return;
 
-    this.isUpdating = true;
-    try {
-      this.syncAutocompleters(taskAutocomplete, storyAutocomplete);
-    } finally {
-      this.isUpdating = false;
-    }
+      this.isUpdating = true;
+      try {
+        this.syncAutocompleters(taskAutocomplete, storyAutocomplete);
+      } finally {
+        this.isUpdating = false;
+      }
+    });
   };
 
   /**
@@ -108,25 +114,24 @@ export default class BacklogsSettings extends Controller<HTMLElement> {
         .filter((id) => id != null)
     );
 
-    const updatedItems = target.items?.map((targetItem:NgOption) => {
-      const itemId = targetItem.id;
+    // Directly mutate the items array to ensure ng-select updates properly
+    let hasChanges = false;
+    target.itemsList.items.forEach((targetItem:NgOption) => {
+      const itemId = targetItem.value?.id;
 
-      if (!itemId) return targetItem;
+      if (!itemId) return;
 
       const shouldBeDisabled = sourceSelectedIds.has(itemId);
       if (targetItem.disabled !== shouldBeDisabled) {
-        return {
-          ...targetItem,
-          disabled: shouldBeDisabled
-        };
+        targetItem.disabled = shouldBeDisabled;
+        hasChanges = true;
       }
-
-      return targetItem;
     });
 
-    if (!updatedItems) return;
-
-    target.itemsList.setItems(updatedItems);
+    // Force ng-select to re-render if we made changes
+    if (hasChanges) {
+      target.detectChanges();
+    }
   }
 
   private autocompleterElementFor(el:HTMLElement):NgSelectComponent|null {
