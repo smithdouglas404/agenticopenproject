@@ -276,10 +276,12 @@ module API
                           cache_if: config[:cache_if],
                           render_nil: true
 
-          @class.property :"#{custom_field.attribute_name}_errors",
-                          getter: calculated_value_error_getter(custom_field),
-                          cache_if: config[:cache_if],
-                          render_nil: false
+          if custom_field.calculated_value?
+            @class.property :"#{custom_field.attribute_name}_errors",
+                            if: ->(*) { available_custom_fields.include?(custom_field) },
+                            getter: calculated_value_error_getter(custom_field),
+                            cache_if: config[:cache_if]
+          end
         end
 
         def property_value_getter_for(custom_field)
@@ -309,9 +311,6 @@ module API
 
         def calculated_value_error_getter(custom_field)
           ->(*) {
-            next unless custom_field.calculated_value?
-            next unless available_custom_fields.include?(custom_field)
-
             errors = calculated_value_errors.where(custom_field:)
             errors.map do |err|
               { code: err.error_code,
