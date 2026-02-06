@@ -288,8 +288,11 @@ class CustomField < ApplicationRecord
     "custom_field_#{id}"
   end
 
-  def comment_attribute_name
-    "custom_comment_#{id}" if has_comment?
+  def comment_attribute_name(format = nil)
+    return unless has_comment?
+    return "customComment#{id}" if format == :camel_case
+
+    "custom_comment_#{id}"
   end
 
   def attribute_getter

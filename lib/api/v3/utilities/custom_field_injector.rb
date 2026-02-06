@@ -126,6 +126,8 @@ module API
           else
             inject_basic_schema(custom_field)
           end
+
+          inject_comment_schema(custom_field)
         end
 
         def inject_value(custom_field, config)
@@ -204,6 +206,15 @@ module API
                         regular_expression: cf_regexp(custom_field),
                         options: cf_options(custom_field),
                         formula: cf_formula(custom_field)
+        end
+
+        def inject_comment_schema(custom_field)
+          return unless custom_field.has_comment?
+
+          @class.schema custom_field.comment_attribute_name(:camel_case).to_sym,
+                        type: "String",
+                        name_source: ->(*) { I18n.t(:label_custom_comment, name: custom_field.name) },
+                        required: false
         end
 
         def inject_link_value(custom_field, config)
