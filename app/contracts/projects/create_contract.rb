@@ -70,7 +70,7 @@ module Projects
       user.allowed_in_any_project?(:edit_project_attributes)
     end
 
-    def without_custom_fields(changes) = changes.grep_v(/^custom_field_/)
+    def without_custom_fields(changes) = changes.grep_v(/^custom_(?:field|comment)_/)
 
     def validate_user_allowed_to_manage
       if model.project?
