@@ -17,6 +17,10 @@ release_date: 2026-02-11
 <!-- END CVE SECTION -->
 ## Important feature changes
 
+Take a look at our release video showing the most important features introduced in OpenProject 17.1.0:
+
+![Release video of OpenProject 17.1](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_1_release.mp4)
+
 ### Automated project initiation request with a guided wizard (Enterprise add-on)
 
 OpenProject introduces a configurable wizard for project initiation requests. The wizard can be enabled per template project.
