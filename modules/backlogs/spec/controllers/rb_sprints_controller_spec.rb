@@ -73,6 +73,9 @@ RSpec.describe RbSprintsController do
       expect(response).to be_successful
       expect(response).to have_http_status :ok
       expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:sprint)).to eq(sprint)
+      expect(assigns(:backlog)).to be_a(Backlog)
     end
   end
 
@@ -86,6 +89,9 @@ RSpec.describe RbSprintsController do
       expect(response).to be_successful
       expect(response).to have_http_status :ok
       expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:sprint)).to eq(sprint)
+      expect(assigns(:backlog)).to be_a(Backlog)
     end
   end
 
@@ -113,6 +119,9 @@ RSpec.describe RbSprintsController do
         expect(response).to have_http_status :ok
         expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:backlog)).to be_a(Backlog)
       end
     end
 
@@ -131,6 +140,9 @@ RSpec.describe RbSprintsController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:backlog)).to be_a(Backlog)
       end
     end
   end

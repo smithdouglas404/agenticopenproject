@@ -65,6 +65,35 @@ RSpec.describe RbStoriesController do
       expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
       expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_sprint.id}"
       expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:sprint)).to eq(sprint)
+    end
+
+    context "when service call fails" do
+      let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
+
+      before do
+        update_service = instance_double(Stories::UpdateService, call: service_result)
+
+        allow(Stories::UpdateService)
+          .to receive(:new)
+          .and_return(update_service)
+      end
+
+      it "renders an error flash", :aggregate_failures do
+        put :move, params: {
+                     project_id: project.id,
+                     sprint_id: sprint.id,
+                     id: story.id,
+                     target_id: other_sprint.id,
+                     position: 1
+                   },
+                   format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+      end
     end
   end
 
@@ -76,6 +105,29 @@ RSpec.describe RbStoriesController do
       expect(response).to be_successful
       expect(response).to have_http_status :ok
       expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:sprint)).to eq(sprint)
+    end
+
+    context "when service call fails" do
+      let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
+
+      before do
+        update_service = instance_double(Stories::UpdateService, call: service_result)
+
+        allow(Stories::UpdateService)
+          .to receive(:new)
+          .and_return(update_service)
+      end
+
+      it "renders an error flash", :aggregate_failures do
+        post :reorder, params: { project_id: project.id, sprint_id: sprint.id, id: story.id, direction: "highest" },
+                       format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+      end
     end
   end
 end

@@ -48,22 +48,31 @@ RSpec.describe RbMasterBacklogsController do
   end
 
   describe "GET #index" do
-    it "is successful" do
+    it "is successful", :aggregate_failures do
       get :index, params: { project_id: project.id }
 
       expect(response).to be_successful
-    end
-
-    it "assigns @owner_backlogs and @sprint_backlogs" do
-      get :index, params: { project_id: project.id }
-
+      expect(assigns(:project)).to eq(project)
       expect(assigns(:owner_backlogs)).to be_an(Array)
       expect(assigns(:sprint_backlogs)).to be_an(Array)
+    end
+
+    context "with a Turbo Frame request" do
+      before { request.headers["Turbo-Frame"] = "backlogs_container" }
+
+      it "renders the list partial", :aggregate_failures do
+        get :index, params: { project_id: project.id }
+
+        expect(response).to be_successful
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:owner_backlogs)).to be_an(Array)
+        expect(assigns(:sprint_backlogs)).to be_an(Array)
+      end
     end
   end
 
   describe "GET #details" do
-    it "is successful" do
+    it "is successful", :aggregate_failures do
       get :details, params: {
         project_id: project.id,
         tab: :overview,
@@ -72,18 +81,27 @@ RSpec.describe RbMasterBacklogsController do
       }
 
       expect(response).to be_successful
-    end
-
-    it "assigns @owner_backlogs and @sprint_backlogs" do
-      get :details, params: {
-        project_id: project.id,
-        tab: :overview,
-        work_package_id: story.id,
-        work_package_split_view: true
-      }
-
+      expect(assigns(:project)).to eq(project)
       expect(assigns(:owner_backlogs)).to be_an(Array)
       expect(assigns(:sprint_backlogs)).to be_an(Array)
+    end
+
+    context "with a Turbo Frame request" do
+      before { request.headers["Turbo-Frame"] = "content-bodyRight" }
+
+      it "renders the split view without loading backlogs", :aggregate_failures do
+        get :details, params: {
+          project_id: project.id,
+          tab: :overview,
+          work_package_id: story.id,
+          work_package_split_view: true
+        }
+
+        expect(response).to be_successful
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:owner_backlogs)).to be_nil
+        expect(assigns(:sprint_backlogs)).to be_nil
+      end
     end
   end
 end
