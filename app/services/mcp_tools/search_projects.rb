@@ -65,7 +65,7 @@ module McpTools
     )
 
     def call(page: nil, **filters)
-      filtered = apply_filters(Project.visible, filters)
+      filtered = apply_filters(Project.project.visible, filters)
       projects = apply_pagination(filtered, page)
 
       {
