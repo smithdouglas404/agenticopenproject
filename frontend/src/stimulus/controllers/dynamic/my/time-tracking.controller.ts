@@ -1,5 +1,5 @@
 import { ActionEvent, Controller } from '@hotwired/stimulus';
-import { Calendar, EventApi } from '@fullcalendar/core';
+import { Calendar, EventApi, EventContentArg } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -12,6 +12,8 @@ import allLocales from '@fullcalendar/core/locales-all';
 import { renderStreamMessage } from '@hotwired/turbo';
 import { opStopwatchStopIconData, toDOMString } from '@openproject/octicons-angular';
 import { useMeta } from 'stimulus-use';
+import { html, render, TemplateResult } from 'lit-html';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 export default class MyTimeTrackingController extends Controller {
   private turboRequests:TurboRequestsService;
@@ -124,38 +126,12 @@ export default class MyTimeTrackingController extends Controller {
         return classes;
       },
       eventContent: (info) => {
-        let timeDetails = '';
-        let stopTimerButton = '';
-        let duration = info.event.extendedProps.hours as number;
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('fc-event-main-frame');
 
-        if (info.isResizing && info.event.start && info.event.end) {
-          duration = this.calculateHours(info.event);
-        }
+        render(this.createEventContent(info), wrapper);
 
-        if (!info.event.allDay) {
-          const time = `${toMoment(info.event.start!, this.calendar).format('LT')} - ${toMoment(info.event.end!, this.calendar).format('LT')}`;
-          timeDetails = `<div class="fc-event-times" title="${time}">${time}</div>`;
-        }
-
-        if (info.event.extendedProps.ongoing) {
-          stopTimerButton = toDOMString(opStopwatchStopIconData, 'small', { 'aria-hidden': 'true', class: 'octicon stop-timer-button' });
-        }
-
-        return {
-          html: `
-           <div class="fc-event-main-frame">
-             <div class="fc-event-time">${stopTimerButton} ${this.displayDuration(duration)}</div>
-             <div class="fc-event-title-container">
-                <div class="fc-event-title fc-event-wp" title="${info.event.extendedProps.workPackageSubject}">
-                  <a class="Link--primary Link" href="${this.pathHelper.workPackageShortPath(info.event.extendedProps.workPackageId as string)}">
-                    ${info.event.extendedProps.workPackageSubject}
-                  </a>
-               </div>
-               <div class="fc-event-project" title="${info.event.extendedProps.projectName}">${info.event.extendedProps.projectName}</div>
-               ${timeDetails}
-             </div>
-           </div>`,
-        };
+        return { domNodes: [wrapper] };
       },
       select: (info) => {
         let dialogParams = 'onlyMe=true';
@@ -259,6 +235,46 @@ export default class MyTimeTrackingController extends Controller {
     });
 
     this.calendar.render();
+  }
+
+  createEventContent(info:EventContentArg) {
+    let timeDetails:string|TemplateResult = '';
+    let stopTimerButton = '';
+    let duration = info.event.extendedProps.hours as number;
+
+    if (info.isResizing && info.event.start && info.event.end) {
+      duration = this.calculateHours(info.event);
+    }
+
+    if (!info.event.allDay) {
+      const time = `${toMoment(info.event.start!, this.calendar).format('LT')} - ${toMoment(info.event.end!, this.calendar).format('LT')}`;
+      timeDetails = html`<div class="fc-event-times" title="${time}">${time}</div>`;
+    }
+
+    if (info.event.extendedProps.ongoing) {
+      stopTimerButton = toDOMString(opStopwatchStopIconData, 'small', {
+        'aria-hidden': 'true',
+        class: 'octicon stop-timer-button',
+      });
+    }
+
+    return html`
+      <div class="fc-event-time">
+        ${unsafeHTML(stopTimerButton)}
+        ${this.displayDuration(duration)}
+      </div>
+      <div class="fc-event-title-container">
+        <div class="fc-event-title fc-event-wp" title="${info.event.extendedProps.workPackageSubject}">
+          <a class="Link--primary Link"
+             href="${this.pathHelper.workPackageShortPath(info.event.extendedProps.workPackageId as string)}">
+            ${info.event.extendedProps.workPackageSubject}
+          </a>
+        </div>
+        <div class="fc-event-project" title="${info.event.extendedProps.projectName}">
+          ${info.event.extendedProps.projectName}
+        </div>
+        ${timeDetails}
+      </div>`;
   }
 
   addTotalFooter() {
@@ -368,7 +384,7 @@ export default class MyTimeTrackingController extends Controller {
     return tr;
   }
 
-  updateTimeEntry(timeEntryId:string, spentOn:string, startTime:string | null, hours:number, revertFunction:() => void) {
+  updateTimeEntry(timeEntryId:string, spentOn:string, startTime:string|null, hours:number, revertFunction:() => void) {
     fetch(this.pathHelper.timeEntryUpdate(timeEntryId), {
       method: 'PATCH',
       headers: {
@@ -470,7 +486,10 @@ export default class MyTimeTrackingController extends Controller {
     interface AdditionalDialogCloseData {
       spent_on?:string;
     }
-    const { detail: { dialog, additional, submitted } } = event as { detail:{ dialog:HTMLDialogElement; additional:AdditionalDialogCloseData|undefined; submitted:boolean } };
+
+    const { detail: { dialog, additional, submitted } } = event as {
+      detail:{ dialog:HTMLDialogElement; additional:AdditionalDialogCloseData|undefined; submitted:boolean }
+    };
     if (dialog.id !== 'time-entry-dialog' || !submitted) { return; }
 
     // we simply refresh the calendar page

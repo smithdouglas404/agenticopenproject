@@ -148,6 +148,7 @@
     "jquery.cookie": "^1.4.1",
     "jquery.flot": "^0.8.3",
     "json5": "^2.2.2",
+    "lit-html": "^3.3.2",
     "lodash": "^4.17.21",
     "mark.js": "^8.11.0",
     "mdx-embed": "^1.1.2",
