@@ -41,7 +41,7 @@ ja:
         sprint:
           cannot_end_before_it_starts: "スプリントは開始する前に終了できません。"
   attributes:
-    task_type: "Task type"
+    task_type: "タスクのタイプ"
   backlogs:
     add_new_story: "新しいストーリー"
     any: "全て"
@@ -58,7 +58,7 @@ ja:
     impediment: "障害事項"
     label_versions_default_fold_state: "バージョンを折り畳んで表示"
     caption_versions_default_fold_state: "バックログを表示する場合、デフォルトではバージョンは展開されません。各バージョンは手動で展開する必要があります。"
-    work_package_is_closed: "作業パッケージが終了するには"
+    work_package_is_closed: "ワークパッケージが終了するには"
     label_is_done_status: "ステータス%{status_name}は完了として扱う"
     no_burndown_data: "バーンダウンデータがありません。スプリントの開始日と終了日を設定する必要があります。"
     points: "ポイント"
@@ -67,8 +67,8 @@ ja:
     properties: "プロパティ"
     rebuild: "再構築"
     rebuild_positions: "位置情報を再構築"
-    remaining_hours: "残りの作業"
-    remaining_hours_ideal: "残りの作業（計画）"
+    remaining_hours: "残時間"
+    remaining_hours_ideal: "残時間（計画）"
     show_burndown_chart: "バーンダウングラフ"
     story: "ストーリー"
     story_points: "ストーリーポイント"
@@ -129,10 +129,10 @@ ja:
   label_points_burn_up: "アップ"
   label_product_backlog: "プロダクトバックログ"
   label_select_all: "全てを選択"
-  label_select_type: "Select a type"
-  label_select_types: "Select types"
-  label_selected_type: "Selected type"
-  label_selected_types: "Selected types"
+  label_select_type: "タイプを選択"
+  label_select_types: "タイプを選択"
+  label_selected_type: "タイプを選択"
+  label_selected_types: "タイプを選択"
   label_sprint_backlog: "スプリントバックログ"
   label_sprint_cards: "カードをエクスポート"
   label_sprint_impediments: "スプリント障害事項"
@@ -160,7 +160,7 @@ ja:
   rb_label_copy_tasks_none: "なし"
   rb_label_copy_tasks_open: "開く"
   rb_label_link_to_original: "元のストーリーへのリンクを含める"
-  remaining_hours: "残りの作業"
+  remaining_hours: "残時間"
   required_burn_rate_hours: "必要なバーンレート(時間)"
   required_burn_rate_points: "必要なバーンレート(ポイント)"
   todo_work_package_description: "%{summary}: %{url}\n%{description}"
@@ -172,4 +172,4 @@ ja:
   setting_plugin_openproject_backlogs_story_types_caption: |
     Types treated as backlog stories (e.g., Feature, User story). Must differ from task type.
   setting_plugin_openproject_backlogs_task_type_caption: |
-    Type used for story tasks. Must differ from story types.
+    ストーリータスクに使用されるタイプ。ストーリータイプと異なる必要があります。

@@ -609,6 +609,7 @@ ru:
         is_for_all_blank_slate:
           heading: Для всех проектов
           description: Этот атрибут проекта включен во всех проектах, поскольку опция "Для всех проектов" отмечена. Его нельзя отключить для отдельных проектов.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: На данный момент доступных типов нет.
         form:
@@ -636,6 +637,7 @@ ru:
         label_request_submission: "Подача заявки"
         project_attributes_description: >
           Выберите, какие атрибуты проекта должны быть включены в запрос на инициацию проекта. В этот список входят только [атрибуты проекта](project_attributes_url), включенные для этого проекта.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Редактировать статус
     wizard:

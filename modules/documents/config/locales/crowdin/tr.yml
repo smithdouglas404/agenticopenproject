@@ -61,7 +61,7 @@ tr:
         All existing documents have also been migrated to these new types.
       primary_action: Configure document types
       secondary_action: Learn more about the Documents module
-    document_type_actions: "Document type actions"
+    document_type_actions: "Belge türü eylemleri"
     text_collaboration_disabled_notice:
       description: |-
         Unable to open document because real-time text collaboration is disabled.
@@ -88,7 +88,7 @@ tr:
     active_editors: "Active editors"
     active_editors_count:
       one: "1 active editor"
-      other: "%{count} active editors"
+      other: "%{count} aktif editör"
     label_attachment_author: "Ek yazar"
     label_categories: "Kategoriler"
     new_category: "Yeni kategori"
@@ -149,7 +149,7 @@ tr:
   label_document_title: "Başlık"
   label_document_description: "Açıklama"
   label_document_category: "Kategori"
-  label_document_type: "Type"
+  label_document_type: "Tür"
   permission_manage_documents: "Belgeleri yönetme"
   permission_view_documents: "Belgeleri görüntüleme"
   project_module_documents: "Belgeler"

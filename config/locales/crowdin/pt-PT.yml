@@ -606,6 +606,7 @@ pt-PT:
         is_for_all_blank_slate:
           heading: Para todos os projetos
           description: Este atributo do projeto é ativado em todos os projetos, uma vez que a opção "Para todos os projetos" está assinalada. Não pode ser desativado para projetos individuais.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: Atualmente, não existem tipos disponíveis.
         form:
@@ -633,6 +634,7 @@ pt-PT:
         label_request_submission: "Pedido de envio"
         project_attributes_description: >
           Selecione os atributos do projeto que devem ser incluídos na solicitação de início do projeto. Esta lista inclui apenas [atributos do projeto](project_attributes_url) ativados para este projeto.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Editar estado
     wizard:

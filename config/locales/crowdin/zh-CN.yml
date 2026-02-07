@@ -604,6 +604,7 @@ zh-CN:
         is_for_all_blank_slate:
           heading: 适用于所有项目
           description: 由于选中了“适用于所有项目”选项，所有项目都启用了此项目特性。无法为个别项目停用该特性。
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: 目前有可用的类型。
         form:
@@ -631,6 +632,7 @@ zh-CN:
         label_request_submission: "请求提交"
         project_attributes_description: >
           选择哪些项目特性应包含在项目启动请求中。此列表仅包含为此项目启用的[项目特性](project_attributes_url)。
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: 编辑状态
     wizard:
