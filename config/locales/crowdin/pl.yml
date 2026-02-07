@@ -2953,7 +2953,7 @@ pl:
           new_features_list:
             line_0: Zautomatyzowane inicjowanie projektów (dodatek wersji Enterprise).
             line_1: "Spotkania: dodawaj nowe lub istniejące pakiety robocze jako wyniki."
-            line_2: "Spotkania: pokaż odpowiedzi uczestników w subskrypcjach iCal."
+            line_2: "Meetings: show iCal responses in OpenProject."
             line_3: "Spotkania cykliczne: duplikuj punkty planu spotkania w następnym wystąpieniu."
             line_4: "Udostępnianie społeczności: wyróżnianie atrybutów."
             line_5: Ostrzeżenie przed otwarciem linków zewnętrznych w treści dostarczonej przez użytkownika (dodatek wersji Enterprise).

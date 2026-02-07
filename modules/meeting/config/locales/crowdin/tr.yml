@@ -24,7 +24,7 @@ tr:
   plugin_openproject_meeting:
     name: "OpenProject Toplantı"
     description: >-
-      Bu modül OpenProject'e proje toplantılarını destekleyen fonksiyonlar ekler. Toplantılar, aynı projeden toplantıya katılacak davetliler seçilerek planlanabilir. Bir gündem oluşturulabilir ve davetlilere gönderilebilir. Toplantıdan sonra katılımcılar seçilebilir ve gündeme göre tutanaklar oluşturulabilir. Son olarak, tutanaklar tüm katılımcılara ve davetlilere gönderilebilir.
+      Bu modül, OpenProject’te proje toplantılarının yönetilmesini sağlar. Aynı projedeki kullanıcılar toplantıya davet edilerek planlama yapılabilir, gündem hazırlanıp paylaşılabilir, toplantı sonrası tutanak oluşturulabilir ve tüm katılımcılara gönderilebilir.
   activerecord:
     attributes:
       meeting:

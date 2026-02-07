@@ -2856,7 +2856,7 @@ it:
           new_features_list:
             line_0: Avvio automatico del progetto (componente aggiuntivo Enterprise).
             line_1: "Riunioni: aggiungi macro-attività nuove o esistenti come risultati."
-            line_2: "Riunioni: mostra le risposte dei partecipanti nelle sottoscrizioni iCal."
+            line_2: "Meetings: show iCal responses in OpenProject."
             line_3: "Riunioni ricorrenti: duplica i punti dell'ordine del giorno della prossima ricorrenza."
             line_4: "Rilascio alla community: evidenziazione degli attributi."
             line_5: Avviso prima dell'apertura di link esterni nei contenuti forniti dall'utente (componente aggiuntivo Enterprise).

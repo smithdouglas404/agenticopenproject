@@ -2806,7 +2806,7 @@ zh-CN:
           new_features_list:
             line_0: 自动化项目启动（企业版附加组件）。
             line_1: "会议：添加新工作包或现有工作包作为成果。"
-            line_2: "会议：在 iCal 订阅中显示参加者的回复。"
+            line_2: "Meetings: show iCal responses in OpenProject."
             line_3: "定期会议：将议程条目复制到下一事件。"
             line_4: "发布到社区：特性高亮显示。"
             line_5: 在打开用户提供内容中的外部链接前发出警告（企业版附加组件）。

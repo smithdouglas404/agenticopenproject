@@ -2810,7 +2810,7 @@ ko:
           new_features_list:
             line_0: 자동화된 프로젝트 시작(Enterprise 추가 기능).
             line_1: "미팅: 새 작업 패키지 또는 기존 작업 패키지를 결과로 추가합니다."
-            line_2: "미팅: iCal 구독에서 참가자 응답을 표시합니다."
+            line_2: "Meetings: show iCal responses in OpenProject."
             line_3: "반복 미팅: 의제 항목을 다음 항목에 복제합니다."
             line_4: "커뮤니티에 릴리스: 특성이 강조 표시됩니다."
             line_5: 사용자 제공 콘텐츠에서 외부 링크를 열기 전에 표시되는 경고입니다(Enterprise 추가 기능).

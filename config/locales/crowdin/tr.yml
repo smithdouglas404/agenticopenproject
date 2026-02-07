@@ -87,7 +87,7 @@ tr:
         token_placeholder: "Enterprise sürümü destek anahtarınızı buraya yapıştırın"
       add_token: "Bir Enterprise sürümü destek belirteci yükleyin"
       replace_token: "Geçerli destek anahtarını değiştirin"
-      order: "Enterprise on-premises edition sipariş edin"
+      order: "Kurumsal on-premises sürümü sipariş edin"
       paste: "Enterprise sürümü destek belirtecinizi yapıştırın"
       required_for_feature: "Bu eklenti, yalnızca etkin bir Enterprise sürümü destek belirteci ile kullanılabilir."
       enterprise_link: "Daha fazla bilgi için burayı tıklatın."
@@ -572,7 +572,7 @@ tr:
         members:
           excluded_roles_label: "Roles to exclude when template is applied"
           excluded_roles_caption: >
-            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
+            Bu şablondan yeni bir proje oluştururken, yukarıda seçilen roller atlanacaktır. Bu, proje rollerine göre hangi üyelerin hariç tutulacağını seçmenize olanak tanır. Kullanıcılar daha sonra şablona görüntüleme amacıyla erişebilir, ancak şablondan oluşturulan yeni projelere erişim izni alamazlar.
       actions:
         label_enable_all: "Tümünü etkinleştir"
         label_disable_all: "Tümünü devre dışı bırak"
@@ -1436,7 +1436,7 @@ tr:
         force_dark_theme_contrast_caption: "Otomatik renk modu seçildiğinde Koyu modun yüksek kontrastlı versiyonunu kullanır."
         theme: "Renk modu"
         time_zone: "Zaman dilimi"
-        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Bazı modlar, erişilebilirlik ve okunabilirlik için özel tema renklerinin üzerine yazacaktır. Tam özel tema desteği için lütfen Aydınlık modunu seçin."
         daily_reminders: "Günlük hatırlatmalar"
         workdays: "İş Günleri"
       users/invitation/form_model:
@@ -2464,7 +2464,7 @@ tr:
       edit_attribute_groups: Özellik Grubunu Düzenleme
       gantt_pdf_export: Gantt PDF Dışa Aktarma
       ldap_groups: LDAP kullanıcıları ve grup senkronizasyonu
-      mcp_server: MCP Server
+      mcp_server:
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint Dosya Depolama
       placeholder_users: Yer Tutucu Kullanıcılar
@@ -2555,7 +2555,7 @@ tr:
       virus_scanning:
         description: "OpenProject'te yüklenen dosyaların diğer kullanıcılar tarafından erişilmeden önce virüslere karşı tarandığından emin olun."
       project_creation_wizard:
-        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
+        description: "Proje yöneticilerinin proje başlatma talebini doldurmasına yardımcı olacak adım adım bir sihirbaz oluşturun."
       placeholder_users:
         title: Yer tutucu kullanıcı
         description: >
@@ -4153,7 +4153,7 @@ tr:
       heading: "Bu projeyi kalıcı olarak silmek istiyor musunuz?"
       confirmation_message_for_subprojects_html:
         zero: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+          Proje ile ilgili tüm verileri kalıcı olarak silmek üzeresiniz <strong>%{name}</strong>.
         one: >
           You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
         other: >
