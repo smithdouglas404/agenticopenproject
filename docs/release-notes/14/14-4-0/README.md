@@ -10,7 +10,7 @@ release_date: 2024-08-14
 
 Release date: 2024-08-14
 
-We released [OpenProject 14.4.0](https://community.openproject.org/versions/2063). The release contains several bug fixes and we recommend updating to the newest version. 
+We released [OpenProject 14.4.0](https://community.openproject.org/versions/2063). The release contains several bug fixes and we recommend updating to the newest version.
 
 In these Release Notes, we will give an overview of important technical updates as well as important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
@@ -22,7 +22,7 @@ OpenProject 14.4 introduces a new feature that allows OpenID clients, such as Ne
 
 With this feature, the OpenProject API will validate access tokens issued by the OpenID provider (Keycloak) by checking the token's signature and authenticating the user using the sub claim value. This integration ensures secure and efficient API authentication for OpenID clients.
 
-For more details, take a look at our [API documentation](../../../api/introduction/#oidc-provider-generated-jwt-as-a-bearer-token).
+For more details, take a look at our [API documentation](../../../api/introduction/#oauth-20-using-an-external-authorization-server).
 
 ### Improve error messages and logs of automatically managed project folders synchronization services/jobs
 
@@ -38,7 +38,7 @@ For more details, see this [work package](https://community.openproject.org/wp/5
 
 ### Personal settings: Dark mode
 
-Dark mode for OpenProject is finally here! In the '[My account](../../../user-guide/account-settings/#look-and-feel)' section under 'Interface', there is an **option labeled 'Mode' where users can now select 'Dark (Beta).'** – as an alternative to the light mode. When the dark mode is selected, the change applies only to that user, not to the entire instance. 
+Dark mode for OpenProject is finally here! In the '[My account](../../../user-guide/account-settings/#look-and-feel)' section under 'Interface', there is an **option labeled 'Mode' where users can now select 'Dark (Beta).'** – as an alternative to the light mode. When the dark mode is selected, the change applies only to that user, not to the entire instance.
 
 ![News setting for dark mode in OpenProject, displayed in dark mode](openproject-14-4-dark-mode.png)
 
@@ -222,12 +222,12 @@ Clicking on the "Details" link will take the user to the diff view, which is als
 
 ## Contributions
 
-A very special thank you goes to the City of Cologne again for sponsoring features on project attributes and project lists. 
+A very special thank you goes to the City of Cologne again for sponsoring features on project attributes and project lists.
 
 Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
 Special thanks for reporting and finding bugs go to Johan Bouduin, Sven Kunze and Marcel Carvalho.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to highlight the three following users: 
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to highlight the three following users:
 
 - [Jeff Li](https://crowdin.com/profile/jeff_li) for translations to Chinese Simplified,
 - [Adam Siemienski](https://crowdin.com/profile/siemienas) for translations to Polish,

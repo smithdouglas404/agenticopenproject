@@ -34,6 +34,7 @@ strategies = [
   [:basic_auth_failure, namespace::BasicAuthFailure,  "Basic"],
   [:global_basic_auth,  namespace::GlobalBasicAuth,   "Basic"],
   [:user_basic_auth,    namespace::UserBasicAuth,     "Basic"],
+  [:user_api_token,     namespace::UserAPIToken,      "Bearer"],
   [:oauth,              namespace::DoorkeeperOAuth,   "Bearer"],
   [:anonymous_fallback, namespace::AnonymousFallback, "Basic"],
   [:jwt_oidc,           namespace::JwtOidc,           "Bearer"],
@@ -48,6 +49,7 @@ OpenProject::Authentication.update_strategies(OpenProject::Authentication::Scope
   %i[global_basic_auth
      user_basic_auth
      basic_auth_failure
+     user_api_token
      oauth
      jwt_oidc
      session
@@ -59,7 +61,7 @@ OpenProject::Authentication.update_strategies(OpenProject::Authentication::Scope
 end
 
 OpenProject::Authentication.update_strategies(OpenProject::Authentication::Scope::MCP_SCOPE, { store: false }) do |_|
-  %i[oauth jwt_oidc user_basic_auth basic_auth_failure]
+  %i[user_api_token oauth jwt_oidc user_basic_auth basic_auth_failure]
 end
 
 Rails.application.configure do |app|

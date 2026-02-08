@@ -30,6 +30,8 @@
 
 module Token
   class Backup < HashedToken
+    prefix :opbk
+
     def ready?
       return false if created_at.nil?
 

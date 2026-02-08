@@ -13,17 +13,17 @@ services:
     networks:
       external:
         aliases:
-          - traefik.${OPENPROJECT_DOCKER_DEV_TLD}
-          - openproject.${OPENPROJECT_DOCKER_DEV_TLD}
-          - openproject-assets.${OPENPROJECT_DOCKER_DEV_TLD}
-          - nextcloud.${OPENPROJECT_DOCKER_DEV_TLD}
-          - gitlab.${OPENPROJECT_DOCKER_DEV_TLD}
-          - keycloak.${OPENPROJECT_DOCKER_DEV_TLD}
-          - hocuspocus.${OPENPROJECT_DOCKER_DEV_TLD}
-          - minio.${OPENPROJECT_DOCKER_DEV_TLD}
-          - minioadmin.${OPENPROJECT_DOCKER_DEV_TLD}
+          - traefik.${OPENPROJECT_DOCKER_DEV_TLD:-local}
+          - openproject.${OPENPROJECT_DOCKER_DEV_TLD:-local}
+          - openproject-assets.${OPENPROJECT_DOCKER_DEV_TLD:-local}
+          - nextcloud.${OPENPROJECT_DOCKER_DEV_TLD:-local}
+          - gitlab.${OPENPROJECT_DOCKER_DEV_TLD:-local}
+          - keycloak.${OPENPROJECT_DOCKER_DEV_TLD:-local}
+          - hocuspocus.${OPENPROJECT_DOCKER_DEV_TLD:-local}
+          - minio.${OPENPROJECT_DOCKER_DEV_TLD:-local}
+          - minioadmin.${OPENPROJECT_DOCKER_DEV_TLD:-local}
     labels:
-      - "traefik.http.routers.traefik.rule=Host(`traefik.${OPENPROJECT_DOCKER_DEV_TLD}`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${OPENPROJECT_DOCKER_DEV_TLD:-local}`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.entrypoints=websecure"
 

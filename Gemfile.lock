@@ -203,7 +203,7 @@ PATH
   remote: modules/two_factor_authentication
   specs:
     openproject-two_factor_authentication (1.0.0)
-      aws-sdk-sns (>= 1.101, < 1.112)
+      aws-sdk-sns (>= 1.101, < 1.113)
       messagebird-rest (>= 1.4.2, < 5.1.0)
       rotp (~> 6.1)
       webauthn (~> 3.0)
@@ -339,8 +339,8 @@ GEM
     awesome_nested_set (3.9.0)
       activerecord (>= 4.0.0, < 8.2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1202.0)
-    aws-sdk-core (3.241.3)
+    aws-partitions (1.1210.0)
+    aws-sdk-core (3.241.4)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -348,15 +348,15 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.120.0)
-      aws-sdk-core (~> 3, >= 3.241.3)
+    aws-sdk-kms (1.121.0)
+      aws-sdk-core (~> 3, >= 3.241.4)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.211.0)
-      aws-sdk-core (~> 3, >= 3.241.3)
+    aws-sdk-s3 (1.213.0)
+      aws-sdk-core (~> 3, >= 3.241.4)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
-    aws-sdk-sns (1.111.0)
-      aws-sdk-core (~> 3, >= 3.241.3)
+    aws-sdk-sns (1.112.0)
+      aws-sdk-core (~> 3, >= 3.241.4)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
       aws-eventstream (~> 1, >= 1.0.2)
@@ -879,7 +879,7 @@ GEM
       actionview
       openproject-octicons (= 19.32.0)
       railties
-    openproject-primer_view_components (0.80.2)
+    openproject-primer_view_components (0.81.1)
       actionview (>= 7.2.0)
       activesupport (>= 7.2.0)
       openproject-octicons (>= 19.30.1)
@@ -1548,7 +1548,7 @@ DEPENDENCIES
   auto_strip_attributes (~> 2.5)
   awesome_nested_set (~> 3.9.0)
   aws-sdk-core (~> 3.241)
-  aws-sdk-s3 (~> 1.211)
+  aws-sdk-s3 (~> 1.213)
   axe-core-rspec
   bcrypt (~> 3.1.6)
   bootsnap (~> 1.20.0)
@@ -1652,7 +1652,7 @@ DEPENDENCIES
   openproject-octicons (~> 19.32.0)
   openproject-octicons_helper (~> 19.32.0)
   openproject-openid_connect!
-  openproject-primer_view_components (~> 0.80.2)
+  openproject-primer_view_components (~> 0.81.1)
   openproject-recaptcha!
   openproject-reporting!
   openproject-storages!
@@ -1788,11 +1788,11 @@ CHECKSUMS
   auto_strip_attributes (2.6.0) sha256=a7e2e0cf744de2bcd947fd68014220702bcc88c81274c1cd9ce6f7316aae39b0
   awesome_nested_set (3.9.0) sha256=3ce99e816550f97f4de118e621630070aacf24928b920fe4a68846578a8daaed
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
-  aws-partitions (1.1202.0) sha256=c8aa0f134a23464c61cfd00edfb4b6d968b01847a8b591d4dcc0c63a4897c301
-  aws-sdk-core (3.241.3) sha256=c7c445ecf1c601c860fd537458b2eb8df0c5df01e63c371849e6594e6b1d4f47
-  aws-sdk-kms (1.120.0) sha256=a206ac6f62efbe971f802e8399d2702496a5c5bc800abcf94ead87bdddfdfd80
-  aws-sdk-s3 (1.211.0) sha256=2ae5feb09ff4862462824f267b76601ed16922a15de56cf51e4fa99bc5b3f519
-  aws-sdk-sns (1.111.0) sha256=195edbd6953d4caa2748bd4861e0fe8df54d90aadf07a0ac268987b946c7e5be
+  aws-partitions (1.1210.0) sha256=04143b868f8b3fc481f68552df6a430f1083a56e2afec5a6bc5c89532ab423fe
+  aws-sdk-core (3.241.4) sha256=a42ccba8c24ea9800e7b6c40aa201c967458f7c460044a6eebf64fbf1226e4fd
+  aws-sdk-kms (1.121.0) sha256=d563c1cfb4b5754efbc671216c8eca875338748adad0f42518c28dfa0a2d01e0
+  aws-sdk-s3 (1.213.0) sha256=af596ccf544582406db610e95cc9099276eaf03142f57a2f30f76940e598e50d
+  aws-sdk-sns (1.112.0) sha256=aff1b1b5bbcb4229599221c558a41790c1cd1a1fed47ac3d27d27512ad24b254
   aws-sigv4 (1.12.1) sha256=6973ff95cb0fd0dc58ba26e90e9510a2219525d07620c8babeb70ef831826c00
   axe-core-api (4.11.0) sha256=3d9c94e3c8f8f9b8f154a3ce036b3dec2dabf7bb7de5e51d663b18bd8a0d691b
   axe-core-rspec (4.11.0) sha256=3c3e3ef3863d9f5243e056b7da328932c0b6682dda299bb4bd74d760641486d7
@@ -2028,7 +2028,7 @@ CHECKSUMS
   openproject-octicons (19.32.0) sha256=e9c908e7c4310d57e1dece8fc506339862f18b67b3b67d549e8f56a7b763d48b
   openproject-octicons_helper (19.32.0) sha256=687a8b173c6436634397477c1f05b0a575e52745a5cc1aef03351272e73e3832
   openproject-openid_connect (1.0.0)
-  openproject-primer_view_components (0.80.2) sha256=d36d9fd48857f3dbcdd0e7a408ef9ce01211a9b09e6186ad2413b300f2e50a8e
+  openproject-primer_view_components (0.81.1) sha256=ebda313d71f4c7e82b9a31e0d54b1e2b5ac3776816161fb61517ced1d945587d
   openproject-recaptcha (1.0.0)
   openproject-reporting (1.0.0)
   openproject-storages (1.0.0)

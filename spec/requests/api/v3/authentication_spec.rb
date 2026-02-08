@@ -225,6 +225,74 @@ RSpec.describe "API V3 Authentication" do
     end
   end
 
+  describe "API Key as Bearer token" do
+    let(:token) { create(:api_token, user:) }
+    let(:bearer_token) { token.plain_value }
+    let(:expected_message) { "You did not provide the correct credentials." }
+
+    before do
+      user
+
+      header "Authorization", "Bearer #{bearer_token}"
+
+      get resource
+    end
+
+    context "with a valid access token" do
+      it "authenticates successfully" do
+        expect(last_response).to have_http_status :ok
+      end
+    end
+
+    context "with an invalid access token" do
+      let(:bearer_token) { "opapi-1337" }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
+
+      it "returns unauthorized" do
+        expect(last_response).to have_http_status :unauthorized
+        expect(last_response.header["WWW-Authenticate"]).to eq(expected_www_auth_header)
+        expect(JSON.parse(last_response.body)).to eq(error_response_body)
+      end
+    end
+
+    context "when the token's user can't be found" do
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
+
+      around do |ex|
+        # create the token before deleting the user; right now it especially works, because a foreign key constraint prevents
+        # tokens without users
+        token
+        user.destroy!
+        ex.run
+      end
+
+      it "returns unauthorized" do
+        expect(last_response).to have_http_status :unauthorized
+        expect(last_response.header["WWW-Authenticate"]).to eq(expected_www_auth_header)
+        expect(JSON.parse(last_response.body)).to eq(error_response_body)
+      end
+    end
+
+    context "when the token's user is locked" do
+      let(:user) { create(:user, :locked) }
+      let(:expected_www_auth_header) do
+        "Bearer realm=\"OpenProject API\", #{resource_metadata}, scope=\"api_v3\", error=\"invalid_token\", " \
+          "error_description=\"#{expected_error_description}\""
+      end
+      let(:expected_error_description) { "The user account is locked" }
+
+      it "returns unauthorized" do
+        expect(last_response).to have_http_status :unauthorized
+        expect(last_response.header["WWW-Authenticate"]).to eq(expected_www_auth_header)
+        expect(JSON.parse(last_response.body)).to eq(error_response_body)
+      end
+    end
+  end
+
   describe "basic auth" do
     let(:expected_message) { "You need to be authenticated to access this resource." }
 

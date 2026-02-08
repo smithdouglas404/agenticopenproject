@@ -200,7 +200,7 @@ gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.241"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.211"
+gem "aws-sdk-s3", "~> 1.213"
 
 gem "openproject-token", "~> 8.6.0"
 
@@ -428,4 +428,4 @@ end
 
 gem "openproject-octicons", "~>19.32.0"
 gem "openproject-octicons_helper", "~>19.32.0"
-gem "openproject-primer_view_components", "~>0.80.2"
+gem "openproject-primer_view_components", "~>0.81.1"
