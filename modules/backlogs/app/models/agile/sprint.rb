@@ -39,9 +39,9 @@ module Agile
     has_many :work_packages, dependent: :nullify
 
     enum :status, {
-      "in planning" => "in_planning",
-      "active" => "active",
-      "completed" => "completed"
+      in_planning: "in_planning",
+      active: "active",
+      completed: "completed"
     }, default: "in_planning", validate: true
 
     SPRINT_SHARINGS = %w(none descendants system).freeze
