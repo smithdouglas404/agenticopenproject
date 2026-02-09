@@ -179,5 +179,12 @@ RSpec.describe "Stories in backlog", :js,
       .edit_story_in_details_view(sprint_story2, subject: "Updated story", story_points: 3)
 
     backlogs_page.expect_velocity(sprint, 8)
+
+    # Assigning the story to the backlog will move it to the backlog
+    backlogs_page
+      .edit_story_in_details_view(sprint_story1, version: backlog)
+
+    backlogs_page.expect_story_not_in_sprint(sprint_story1, sprint)
+    backlogs_page.expect_story_in_sprint(sprint_story1, backlog)
   end
 end
