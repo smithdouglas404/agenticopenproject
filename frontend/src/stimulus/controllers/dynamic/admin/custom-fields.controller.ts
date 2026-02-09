@@ -30,6 +30,7 @@
 
 import { Controller } from '@hotwired/stimulus';
 import dragula from 'dragula';
+import { toggleEnabled } from 'core-app/shared/helpers/dom-helpers';
 
 export default class CustomFieldsController extends Controller {
   static targets = [
@@ -238,12 +239,10 @@ export default class CustomFieldsController extends Controller {
 
   private setActive(elements:HTMLElement[], active:boolean) {
     elements.forEach((element) => {
-      element.hidden = !active;
+      toggleEnabled(element, active, true);
       element
         .querySelectorAll<HTMLInputElement>('input, textarea')
-        .forEach((input) => {
-          input.disabled = !active;
-        });
+        .forEach((input) => toggleEnabled(input, active));
     });
   }
 
