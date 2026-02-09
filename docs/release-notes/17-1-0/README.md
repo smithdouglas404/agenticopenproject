@@ -100,7 +100,7 @@ Here's an example of highlighting work packages by priority:
 
 ![A work package table in OpenProject, highlighted by Priority](openproject-attribute-highlighting-priority.png)
 
-### Enable a warning before opening external links in user-provided content (Enterprise add-on)
+### Capture external links (Enterprise add-on)
 
 [feature: capture_external_links ]
 
