@@ -39,6 +39,8 @@ class CreateSprints < ActiveRecord::Migration[8.0]
       t.references :project, null: false, foreign_key: true
 
       t.timestamps
+
+      t.check_constraint "end_date >= start_date", name: "sprint_end_date_after_start_date"
     end
   end
 end
