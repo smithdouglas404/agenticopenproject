@@ -50,23 +50,16 @@ module Agile
     validates :project, presence: true
     validates :sharing, presence: true, inclusion: { in: SPRINT_SHARINGS }
     validates :start_date, presence: true
-    validates :end_date, presence: true
+    validates :end_date,
+              presence: true,
+              comparison: { greater_than_or_equal_to: :start_date }
 
-    validate :validate_end_date_after_start_date
     validate :validate_only_one_active_sprint_per_project
 
     # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide (#71374, #71253)
     # TODO: implement sharing logic once it has been defined (#71374)
 
     private
-
-    def validate_end_date_after_start_date
-      return if end_date.blank? || start_date.blank?
-
-      if end_date < start_date
-        errors.add(:end_date, :greater_than_or_equal_to_start_date)
-      end
-    end
 
     # TODO: consider moving this validation to the database level to ensure data integrity.
     # Doing this in Rails can lead to race conditions. Revisit this topic once the sharing
