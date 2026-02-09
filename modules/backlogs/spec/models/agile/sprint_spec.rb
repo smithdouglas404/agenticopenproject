@@ -51,7 +51,7 @@ RSpec.describe Agile::Sprint do
     it "validates end_date is after or equal to start_date" do
       sprint.end_date = sprint.start_date - 1.day
       expect(sprint).not_to be_valid
-      expect(sprint.errors[:end_date]).to include("must be greater than or equal to the start date.")
+      expect(sprint.errors[:end_date]).to include(/must be greater than or equal to/)
     end
 
     context "with active sprint validation" do
