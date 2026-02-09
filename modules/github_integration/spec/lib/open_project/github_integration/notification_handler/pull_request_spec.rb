@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -81,7 +83,7 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
   let(:pr_body) { "Mentioning OP##{work_package.id}" }
   let(:pr_merged) { false }
   let(:pr_draft) { false }
-  let(:github_pull_request) { GithubPullRequest.find_by_github_identifiers id: 123 }
+  let(:github_pull_request) { GithubPullRequest.find_by_github_identifiers(id: 123, url: "https://git.example.com/project/repo") }
 
   before do
     allow(handler_instance).to receive(:comment_on_referenced_work_packages).and_return(nil)

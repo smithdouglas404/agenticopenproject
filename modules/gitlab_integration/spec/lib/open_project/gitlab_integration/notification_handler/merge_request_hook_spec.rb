@@ -37,7 +37,7 @@ RSpec.describe OpenProject::GitlabIntegration::NotificationHandler::MergeRequest
 
   let(:handler_instance) { described_class.new }
   let(:upsert_service) { OpenProject::GitlabIntegration::Services::UpsertMergeRequest.new }
-  let(:gitlab_merge_request) { GitlabMergeRequest.find_by_gitlab_identifiers(id: 4) }
+  let(:gitlab_merge_request) { GitlabMergeRequest.find_by_gitlab_identifiers(id: 4, url: "https://git.example.com/project/repo") }
 
   let(:mr_description) { "Mentioning OP##{work_package.id}" }
   let(:gitlab_action) { "open" }
