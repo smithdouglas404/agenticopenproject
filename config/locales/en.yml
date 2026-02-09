@@ -681,7 +681,7 @@ en:
           label_file_link_export: "Upload file to external file storage and add file link to work package"
           pdf_file_storage: "PDF file storage"
           unavailable: "unavailable"
-        configuration_incomplete_warning: "The project initiation request configuration is not complete. The following fields need to be configured:"
+        configuration_incomplete_warning: "The configuration is incomplete! The project initiation request will not function correctly unless the following fields are set:"
         label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request.
