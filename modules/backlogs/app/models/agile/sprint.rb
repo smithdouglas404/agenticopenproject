@@ -35,7 +35,7 @@ module Agile
   class Sprint < ApplicationRecord
     self.table_name = "sprints"
 
-    belongs_to :project, optional: false
+    belongs_to :project
     has_many :work_packages, dependent: :nullify
 
     enum :status, {
