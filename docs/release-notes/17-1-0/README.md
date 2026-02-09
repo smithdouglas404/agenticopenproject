@@ -23,6 +23,8 @@ Take a look at our release video showing the most important features introduced 
 
 ### Automated project initiation request with a guided wizard (Enterprise add-on)
 
+[feature: project_creation_wizard ]
+
 OpenProject introduces a configurable wizard for project initiation requests. The wizard can be enabled per template project.
 
 [feature: project_creation_wizard ]
@@ -125,6 +127,13 @@ This information is displayed in:
 
 ![OpenProject administration for custom fields, example of "Bending factor" for different materials, each one displayed with a specific value in brackets, e.g. "Aluminium (0.4)".](openproject-17-1-custom-fields-values.jpg)
 
+### UX/UI updates with the Primer design system
+
+OpenProject 17.1 includes further UX/UI improvements. The following areas have been redesigned using the Primer design system:
+- the Access tokens section in account settings,
+- the Backlogs section in system administration,
+- the password confirmation dialog.
+
 ## Important technical changes
 
 ### Improved performance in work package Activity tab
@@ -132,13 +141,6 @@ This information is displayed in:
 OpenProject improved the performance of the work package Activity tab when working with a large number of comments and activities. Previously, work packages with a very high number of comments could cause the browser to become slow or unresponsive when opening the Activity tab. With this release, activities are now loaded progressively instead of all at once. An initial subset of activities is loaded first, and additional entries are fetched as needed, with a loading indicator shown while more items are being loaded.
 
 This change prevents browser freezes and significantly improves responsiveness when opening and navigating work packages with extensive activity histories.
-
-### UX/UI updates with the Primer design system
-
-OpenProject 17.1 includes further UX/UI improvements. The following areas have been redesigned using the Primer design system:
-- the Access tokens section in account settings,
-- the Backlogs section in system administration,
-- the password confirmation dialog.
 
 <!--more-->
 
