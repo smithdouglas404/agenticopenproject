@@ -100,15 +100,8 @@ RSpec.describe Agile::Sprint do
     end
 
     it "allows sharing settings" do
-      %w[none descendants system].each do |sharing|
-        sprint.sharing = sharing
-        expect(sprint).to be_valid
-      end
-
-      %w[invalid_value another].each do |invalid_sharing|
-        sprint.sharing = invalid_sharing
-        expect(sprint).not_to be_valid
-      end
+      expect(sprint).to allow_values(*%w[none descendants system]).for(:sharing)
+      expect(sprint).not_to allow_value(*%w[invalid_value hierarchy tree]).for(:sharing)
     end
 
     it "sharing defaults to none" do
