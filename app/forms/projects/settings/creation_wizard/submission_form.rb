@@ -60,7 +60,7 @@ module Projects
             input_width: :large
           ) do |list|
             # Statuses of the selected WP type
-            type_id = model.project_creation_wizard_work_package_type_id || model.types.first&.id
+            type_id = model.project_creation_wizard_work_package_type_id
 
             if type_id.present?
               type = Type.find_by(id: type_id)

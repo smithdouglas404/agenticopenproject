@@ -52,5 +52,21 @@ module Projects::CreationWizard
     def project_creation_wizard_artifact_name
       super.presence || DEFAULT_ARTIFACT_NAME_OPTION
     end
+
+    def project_creation_wizard_work_package_type_id
+      super.presence || project_creation_wizard_default_work_package_type&.id
+    end
+
+    def project_creation_wizard_status_when_submitted_id
+      super.presence || project_creation_wizard_default_status_when_submitted&.id
+    end
+
+    def project_creation_wizard_default_work_package_type
+      types.first
+    end
+
+    def project_creation_wizard_default_status_when_submitted
+      project_creation_wizard_default_work_package_type&.statuses&.first
+    end
   end
 end
