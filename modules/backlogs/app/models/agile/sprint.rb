@@ -47,7 +47,7 @@ module Agile
     SPRINT_SHARINGS = %w(none descendants system).freeze
 
     validates :name, presence: true
-    validates :status, presence: true, inclusion: { in: statuses.keys }
+    validates :project, presence: true
     validates :sharing, presence: true, inclusion: { in: SPRINT_SHARINGS }
     validates :start_date, presence: true
     validates :end_date, presence: true

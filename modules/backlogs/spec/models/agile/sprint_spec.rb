@@ -42,9 +42,9 @@ RSpec.describe Agile::Sprint do
 
   describe "validations" do
     it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_presence_of(:status) }
     it { is_expected.to validate_presence_of(:start_date) }
     it { is_expected.to validate_presence_of(:end_date) }
+    it { is_expected.to validate_presence_of(:project) }
     it { is_expected.to validate_inclusion_of(:status).in_array(described_class.statuses.keys) }
 
     it "validates end_date is after or equal to start_date" do
@@ -103,7 +103,7 @@ RSpec.describe Agile::Sprint do
 
   describe "associations" do
     it { is_expected.to have_many(:work_packages).dependent(:nullify) }
-    it { is_expected.to belong_to(:project).required }
+    it { is_expected.to belong_to(:project) }
   end
 
   describe "work_package association" do
