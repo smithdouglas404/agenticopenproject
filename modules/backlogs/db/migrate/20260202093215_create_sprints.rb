@@ -36,7 +36,7 @@ class CreateSprints < ActiveRecord::Migration[8.0]
       t.date :start_date, null: false
       t.date :end_date, null: false
       t.string :sharing, null: false, default: "none"
-      t.references :project
+      t.references :project, null: false, foreign_key: true
 
       t.timestamps
     end
