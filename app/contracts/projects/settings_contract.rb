@@ -104,7 +104,8 @@ module Projects
     end
 
     def updating_submission_settings?
-      has_changed_setting?("project_creation_wizard_assignee_custom_field_id") ||
+      options[:validate_all] ||
+        has_changed_setting?("project_creation_wizard_assignee_custom_field_id") ||
         has_changed_setting?("project_creation_wizard_work_package_type_id") ||
         has_changed_setting?("project_creation_wizard_status_when_submitted_id") ||
         has_changed_setting?("project_creation_wizard_send_confirmation_email") ||

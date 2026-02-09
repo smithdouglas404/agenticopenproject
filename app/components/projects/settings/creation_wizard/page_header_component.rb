@@ -31,11 +31,30 @@
 class Projects::Settings::CreationWizard::PageHeaderComponent < ApplicationComponent
   include OpPrimer::ComponentHelpers
 
-  def initialize(project:)
+  def initialize(project:, validation_result: nil)
     super
 
     @project = project
+    @validation_result = validation_result
   end
 
-  attr_reader :project
+  attr_reader :project, :validation_result
+
+  def configuration_incomplete?
+    @project.project_creation_wizard_enabled && validation_result&.failure?
+  end
+
+  def missing_field_names
+    validation_result.errors.attribute_names
+                     .reject { |attr| attr == :base }
+                     .map { |attr| Project.human_attribute_name(attr) }
+  end
+
+  def configuration_warning_message
+    heading = content_tag(:strong, I18n.t("projects.settings.creation_wizard.configuration_incomplete_warning"))
+    items = safe_join(missing_field_names.map { |name| content_tag(:li, name) })
+    list = content_tag(:ul, items, class: "pl-4 mb-0 mt-1")
+
+    safe_join([heading, list])
+  end
 end

@@ -35,7 +35,15 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   before_action :check_enterprise_plan, only: :toggle
 
-  def show; end
+  def show
+    # Check whether the creation wizard is configured correctly.
+    @validation_result = Projects::SetAttributesService.new(
+      model: @project,
+      user: current_user,
+      contract_class: Projects::SettingsContract,
+      contract_options: { validate_all: true }
+    ).call
+  end
 
   def disable_dialog
     respond_with_dialog Projects::Settings::CreationWizard::DisableDialogComponent.new(

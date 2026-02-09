@@ -27,7 +27,10 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render Projects::Settings::CreationWizard::PageHeaderComponent.new(project: @project) %>
+<%= render Projects::Settings::CreationWizard::PageHeaderComponent.new(
+      project: @project,
+      validation_result: @validation_result
+    ) %>
 
 <% if @project.project_creation_wizard_enabled %>
   <% tab = params[:tab] || "name" %>
@@ -42,9 +45,11 @@ See COPYRIGHT and LICENSE files for more details.
     <%= render partial: "export" %>
   <% end %>
 <% else %>
-  <% with_enterprise_banner_guard(:project_creation_wizard,
-                                  variant: :large,
-                                  image: "enterprise/project-creation-wizard.png") do %>
+  <% with_enterprise_banner_guard(
+       :project_creation_wizard,
+       variant: :large,
+       image: "enterprise/project-creation-wizard.png"
+     ) do %>
     <%= render Projects::Settings::CreationWizard::BlankSlateComponent.new(project: @project) %>
   <% end %>
 <% end %>
