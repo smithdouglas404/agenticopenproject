@@ -390,7 +390,7 @@ The project identifier is defined as the unique name used to identify and refere
 
 A project initiation request (PIR) is a formal request to start a project, used in frameworks such as [PM²](#pm--pm2) and [PMflex](#pmflex) to collect key information before a project is initiated. In OpenProject, an automated PIR wizard is available as an [Enterprise add-on](#enterprise-add-on) to standardize project initiation and reduce manual effort. The term is also referred to as *project creation wizard* or *project mandate*.
 
-- [Read more about project initiation requests in PM²](../../project-management-guide/5-initiating-phase/#52-project-initiation-request).
+- [Read more about project initiation requests in PM²](../project-management-guide/5-initiating-phase/#52-project-initiation-request).
 - Read more about OpenProject’s Enterprise add-on for automated project initiation requests.
 
 ### Project life cycle
