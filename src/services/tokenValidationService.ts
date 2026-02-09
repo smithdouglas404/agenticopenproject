@@ -1,4 +1,5 @@
 import { decryptToken } from "./decryptTokenService";
+import { fetchResource } from "./resourceService";
 import type { ApiResponseDocument } from "../types";
 
 export interface TokenValidationResult {
@@ -31,13 +32,7 @@ export async function decryptAndValidateToken(
     throw new Error('Unauthorized: Token resource URL does not match document.');
   }
 
-  const response = await fetch(resourceUrl, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${oauth_token}`,
-    },
-  });
+  const response = await fetchResource(resourceUrl, oauth_token);
 
   if (!response.ok) {
     const detail = response.statusText ? `: ${response.statusText}` : ".";

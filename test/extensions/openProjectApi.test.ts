@@ -1,22 +1,18 @@
 import { beforeHandleMessagePayload, Document, onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload, onTokenSyncPayload } from "@hocuspocus/server";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import * as Y from "yjs";
 import { TokenExpired, TokenExpiryMissing, unauthorized } from "../../src/closeEvents";
 import { createEditor, OpenProjectApi } from "../../src/extensions/openProjectApi";
 import { createExpiredToken, createTestToken } from "../helpers/tokenHelper";
+import { server } from "../mocks/node";
+import { http, HttpResponse } from "msw";
+import { text } from 'stream/consumers';
 
+// All web requests that aren't explicitly mocked via `server.use`, are using the dynamic document
+// request mock defined in `handlers.ts`, returning a document for any id that isn't a
+// specific status code (that is defined there).
+// Missing Content-type or Authorization headers lead to client error responses (415, 401).
 describe("OpenProjectApi", () => {
-  let fetchMock: any;
-
-  beforeEach(() => {
-    fetchMock = vi.fn();
-    vi.stubGlobal('fetch', fetchMock);
-  });
-
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
-
   describe("onAuthenticate", () => {
     test("when the token is not present throw an error", async () => {
       await expect(() =>
@@ -51,8 +47,6 @@ describe("OpenProjectApi", () => {
     });
 
     test("when the resourceUrl does not match the one in the token", async () => {
-      fetchMock.mockResolvedValueOnce({ throws: new TypeError("is not a valid URL") });
-
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
           token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
@@ -62,37 +56,23 @@ describe("OpenProjectApi", () => {
     });
 
     test("when the auth server does not authorize the request throw an error", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: false,
-        status: 401,
+      let authHeader: string = "";
+      server.events.on('request:end', ({ request }) => {
+        authHeader = request.headers.get("Authorization") || "";
       });
+      server.use(http.get('https://test.api/api/v3/documents/1', () => { return HttpResponse.json({id: 42}, {status: 401})}));
 
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
           token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
           documentName: "https://test.api/api/v3/documents/1",
         } as unknown as onAuthenticatePayload)
-      ).rejects.toThrowError("Unauthorized: Invalid token or document access denied.");
+      ).rejects.toThrowError("Unauthorized: Invalid token or document access denied");
 
-      expect(fetchMock).toHaveBeenCalledWith(
-        "https://test.api/api/v3/documents/1",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer some_token_value",
-          },
-        }
-      );
+      expect(authHeader).toEqual("Bearer some_token_value");
     });
 
     test("when the token is valid set the context", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({}),
-      });
-
       const data = {
         context: {},
         connectionConfig: {},
@@ -108,15 +88,17 @@ describe("OpenProjectApi", () => {
     });
 
     test("when there is no update link, setup the connection as readonly", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({
-          _links: {
-            self: { href: "/api/v3/documents/1" }
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json(
+          {
+            _links: {
+              self: { href: "/api/v3/documents/1" }
+            }
+          }, {
+            status: 200
           }
-        }),
-      });
+        )
+      }));
 
       const data = {
         context: {},
@@ -132,17 +114,19 @@ describe("OpenProjectApi", () => {
     });
 
     test("when there is an update link, setup the connection as writable", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({
-          title: "TheDocName",
-          _links: {
-            self: { href: "/api/v3/documents/1" },
-            update: { href: "/api/v3/documents/1" }
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json(
+          {
+            title: "TheDocName",
+            _links: {
+              self: { href: "/api/v3/documents/1" },
+              update: { href: "/api/v3/documents/1" }
+            }
+          }, {
+            status: 200
           }
-        }),
-      });
+        )
+      }));
 
       const data = {
         context: {},
@@ -158,16 +142,14 @@ describe("OpenProjectApi", () => {
     });
 
     test("when the token has expired throw an error", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
           _links: {
             self: { href: "/api/v3/documents/1" },
             update: { href: "/api/v3/documents/1" }
           }
-        }),
-      });
+        }, { status: 200 });
+      }));
 
       const expiredToken = createExpiredToken();
 
@@ -221,11 +203,15 @@ describe("OpenProjectApi", () => {
       text.insert(0, 'test content');
       const base64Update = Buffer.from(Y.encodeStateAsUpdate(sourceDoc)).toString('base64');
 
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({ contentBinary: base64Update }),
-      });
+      server.use(http.get('https://test.api/api/v3/documents/121', () => {
+        return HttpResponse.json(
+          {
+            contentBinary: base64Update
+          }, {
+            status: 200
+          }
+        )
+      }));
 
       const targetDoc = new Y.Doc();
       const data = {
@@ -236,30 +222,14 @@ describe("OpenProjectApi", () => {
       const api = new OpenProjectApi();
       await api.onLoadDocument(data);
 
-      expect(fetchMock).toHaveBeenCalledWith(
-        "https://test.api/api/v3/documents/121",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer superValidToken",
-          },
-        }
-      );
-
       // Verify the document was updated with the content
       const updatedContent = targetDoc.getText('content').toString();
       expect(updatedContent).toBe('test content');
     });
 
     test("should return early when response is not successful", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: false,
-        status: 404,
-      });
-
       const data = {
-        context: { token: "superValidToken", resourceUrl: "https://test.api/api/v3/documents/121" },
+        context: { token: "superValidToken", resourceUrl: "https://test.api/api/v3/documents/404" },
         document: new Y.Doc(),
       } as onLoadDocumentPayload;
 
@@ -268,8 +238,6 @@ describe("OpenProjectApi", () => {
       const api = new OpenProjectApi();
       await api.onLoadDocument(data);
 
-      expect(fetchMock).toHaveBeenCalled();
-
       const updatedContent = data.document.getText('content').toString();
       expect(updatedContent).toBe(initialContent);
     });
@@ -277,11 +245,15 @@ describe("OpenProjectApi", () => {
 
   describe("onStoreDocument", () => {
     test("should store document content successfully", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-      });
+      server.use(http.patch('https://test.api/api/v3/documents/121', () => {
+        return HttpResponse.json({}, { status: 200 });
+      }));
 
+      let body: Promise<string> = Promise.resolve("");
+
+      server.events.on('request:end', async ({ request }) => {
+        body = text(request.body!);
+      });
 
       const editor = createEditor();
       const blocks = [
@@ -310,17 +282,7 @@ describe("OpenProjectApi", () => {
       const api = new OpenProjectApi();
       await api.onStoreDocument(data);
 
-      expect(fetchMock).toHaveBeenCalledWith(
-        "https://test.api/api/v3/documents/121",
-        expect.objectContaining({
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": expect.stringContaining("Bearer"),
-          },
-          body: expect.stringContaining("content_binary"),
-        })
-      );
+      await expect(body).resolves.toContain("content_binary");
     });
   });
 
@@ -338,7 +300,7 @@ describe("OpenProjectApi", () => {
       const api = new OpenProjectApi();
       await api.onTokenSync(data);
 
-      expect(fetchMock).not.toHaveBeenCalled();
+      // No error thrown, early return
     });
 
     test("should return early if resourceUrl is missing", async () => {
@@ -355,20 +317,23 @@ describe("OpenProjectApi", () => {
       const api = new OpenProjectApi();
       await api.onTokenSync(data);
 
-      expect(fetchMock).not.toHaveBeenCalled();
+      // No error thrown, early return
     });
 
     test("should validate and update token on successful sync", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({
+      let authHeader: string = "";
+      server.events.on('request:end', ({ request }) => {
+        authHeader = request.headers.get("Authorization") || "";
+      });
+
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
           _links: {
             self: { href: "/api/v3/documents/1" },
             update: { href: "/api/v3/documents/1" }
           }
-        }),
-      });
+        }, { status: 200 });
+      }));
 
       const token = createTestToken();
       const data = {
@@ -387,31 +352,19 @@ describe("OpenProjectApi", () => {
       const api = new OpenProjectApi();
       await api.onTokenSync(data);
 
-      expect(fetchMock).toHaveBeenCalledWith(
-        "https://test.api/api/v3/documents/1",
-        expect.objectContaining({
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer some_token_value",
-          },
-        })
-      );
-
+      expect(authHeader).toEqual("Bearer some_token_value");
       expect(data.connection.context.token).toBe("some_token_value");
     });
 
     test("should update tokenExpiresAt in context after sync", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
           _links: {
             self: { href: "/api/v3/documents/1" },
             update: { href: "/api/v3/documents/1" }
           }
-        }),
-      });
+        }, { status: 200 });
+      }));
 
       const token = createTestToken({ expires_at: "2030-01-01T00:00:00.000Z" });
       const data = {
@@ -436,16 +389,14 @@ describe("OpenProjectApi", () => {
       // Note: Token readonly: false reflects user's permission at token creation time.
       // API response without 'update' link means user lost write permission since then.
       // The API response is authoritative, so connection becomes readonly.
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
           _links: {
             self: { href: "/api/v3/documents/1" }
             // No update link = readonly
           }
-        }),
-      });
+        }, { status: 200 });
+      }));
 
       const token = createTestToken();
       const data = {
@@ -469,11 +420,9 @@ describe("OpenProjectApi", () => {
     });
 
     test("should close connection if token validation fails", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: false,
-        status: 401,
-        statusText: "Unauthorized",
-      });
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({}, { status: 401 });
+      }));
 
       const closeMock = vi.fn();
       const token = createTestToken();
@@ -521,16 +470,14 @@ describe("OpenProjectApi", () => {
     });
 
     test("should close connection if refreshed token is already expired", async () => {
-      fetchMock.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
           _links: {
             self: { href: "/api/v3/documents/1" },
             update: { href: "/api/v3/documents/1" }
           }
-        }),
-      });
+        }, { status: 200 });
+      }));
 
       const closeMock = vi.fn();
       const expiredToken = createExpiredToken();

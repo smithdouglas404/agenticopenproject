@@ -34,7 +34,31 @@ docker run -d \
   openproject/hocuspocus:latest
 ```
 
-## Usage
+## Configuration & Usage
+
+### Configuration
+
+#### `OPENPROJECT_URL` (default `undefined`)
+
+This is the base URL hocuspocus will use to connect to OpenProject.
+It is undefined by default, in which case the URL is derived from the edited resources (e.g. documents) in OpenProject.
+
+This can fail in some cases where hocuspocus cannot reach the host under the given URL,
+for instance when using the docker compose setup with `localhost` for the OpenProject host.
+In this case hocuspocus would try to connect to itself.
+
+To fix that you can configure `OPENPROJECT_URL` to 'rebase' the resource URLs to the given value.
+
+For instance, in the case of docker compose:
+
+```bash
+OPENPROJECT_URL=http://web
+```
+
+Where `web` is the DNS name for the OpenProject container in the docker compose setup.
+
+> When overriding the base URL like this, you may also need to set `OPENPROJECT_ADDITIONAL__HOST__NAMES`
+> on the OpenProject side. In the example above you would set it to `web`.
 
 ### Starting the Server
 

@@ -6,6 +6,8 @@ import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
 import * as Y from "yjs";
 import { TokenExpired, TokenExpiryMissing, unauthorized } from "../closeEvents";
 import { decryptAndValidateToken } from "../services/tokenValidationService";
+import type { ApiResponseDocument } from "../types";
+import { fetchResource } from "../services/resourceService";
 
 export const editorSchema = BlockNoteSchema.create().extend({
   blockSpecs: {
@@ -78,16 +80,10 @@ export class OpenProjectApi implements Extension {
 
     printLog(`[onLoadDocument] GET ${resourceUrl}`);
 
-    const response = await fetch(resourceUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${data.context.token}`,
-      },
-    });
+    const response = await fetchResource(resourceUrl, data.context.token);
 
-    if (!response.ok) {
-      console.warn(`Error fetching document: ${response.statusText}`);
+    if (response.status != 200) {
+      console.warn(`Error fetching document (${response.status}: ${response.statusText})`);
       return;
     }
 
@@ -128,20 +124,16 @@ export class OpenProjectApi implements Extension {
     // @ts-expect-error BlockNote types are complicated
     const markdownData = await editor.blocksToMarkdownLossy(editorData);
 
-    const response = await fetch(resourceUrl, {
+    const response = await fetchResource(resourceUrl, data.context.token, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${data.context.token}`,
-      },
       body: JSON.stringify({
         content_binary: base64Data,
         description: markdownData,
       }),
     });
 
-    if (!response.ok) {
-      console.warn(`Error storing document: ${response.statusText}`);
+    if (response.status != 200) {
+      console.warn(`Error storing document (${response.status}: ${response.statusText})`);
       return;
     }
 
