@@ -109,20 +109,14 @@ class Journals::CreateService
       return "1 = 1" unless journable.is_a?(Project)
 
       <<~SQL # rubocop:disable Rails/SquishedSQLHeredocs
-        (
-          EXISTS (
-            SELECT 1
-            FROM custom_fields
-            WHERE custom_fields.id = custom_values.custom_field_id
-            AND custom_fields.is_for_all = TRUE
-          )
-        OR
-          EXISTS (
-            SELECT 1
-            FROM project_custom_field_project_mappings
-            WHERE project_custom_field_project_mappings.custom_field_id = custom_values.custom_field_id
+        EXISTS (
+          SELECT 1
+          FROM custom_fields
+          LEFT JOIN project_custom_field_project_mappings
+            ON project_custom_field_project_mappings.custom_field_id = custom_fields.id
             AND project_custom_field_project_mappings.project_id = :journable_id
-          )
+          WHERE custom_fields.id = custom_values.custom_field_id
+          AND (custom_fields.is_for_all = TRUE OR project_custom_field_project_mappings.project_id IS NOT NULL)
         )
       SQL
     end
