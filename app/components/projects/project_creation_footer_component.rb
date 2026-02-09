@@ -32,12 +32,13 @@ module Projects
   class ProjectCreationFooterComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    def initialize(form_identifier:, project:, template:, current_step:, cancel_href:)
+    def initialize(form_identifier:, project:, template:, current_step:, cancel_href:, submit_disabled: false)
       @form_identifier = form_identifier
       @project = project
       @template = template
       @current_step = current_step
       @cancel_href = cancel_href
+      @submit_disabled = submit_disabled
 
       super
     end
@@ -53,7 +54,7 @@ module Projects
       end
     end
 
-    attr_reader :form_identifier, :project, :template, :current_step, :cancel_href
+    attr_reader :form_identifier, :project, :template, :current_step, :cancel_href, :submit_disabled
 
     private
 
@@ -72,7 +73,8 @@ module Projects
       {
         form: form_identifier,
         name: "finish",
-        value: "true"
+        value: "true",
+        disabled: submit_disabled
       }
     end
 

@@ -35,6 +35,19 @@ See COPYRIGHT and LICENSE files for more details.
       html: { id: "project-create-form" }
     ) do |f|
       flex_layout do |container|
+        if template_configuration_missing
+          container.with_row(mb: 3, **step_2_display) do
+            render(
+              Primer::Alpha::Banner.new(
+                scheme: :warning,
+                icon: :alert,
+                dismiss_scheme: :none,
+                test_selector: "op-project-misconfigured-warning"
+              )
+            ) { template_configuration_error }
+          end
+        end
+
         container.with_row(mb: 3, **step_2_display) do
           render(
             Primer::Forms::FormList.new(

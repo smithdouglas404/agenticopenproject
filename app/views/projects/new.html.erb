@@ -68,7 +68,8 @@ See COPYRIGHT and LICENSE files for more details.
           render Projects::NewComponent.new(
             project: @new_project,
             template: @template,
-            step: 2
+            step: 2,
+            template_configuration_missing: @template_configuration_missing
           )
         %>
       <% when 3 %>
@@ -89,7 +90,8 @@ See COPYRIGHT and LICENSE files for more details.
           project: @new_project,
           template: @template,
           current_step: params.fetch(:step, 1).to_i,
-          cancel_href:
+          cancel_href:,
+          submit_disabled: @template_configuration_missing
         )
       end
     %>

@@ -34,7 +34,7 @@ module Projects
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
 
-    options :project, :template, :step
+    options :project, :template, :step, :template_configuration_missing
 
     def step_2_display
       { display: :none } unless step == 2
@@ -42,6 +42,17 @@ module Projects
 
     def step_3_display
       { display: :none } unless step == 3
+    end
+
+    def template_configuration_error
+      if User.current.allowed_in_project?(:edit_project, template)
+        I18n.t(
+          "projects.copy.pir_configuration.warning_html",
+          settings_url: helpers.project_settings_creation_wizard_path(template)
+        ).html_safe
+      else
+        I18n.t("projects.copy.pir_configuration.contact_admin")
+      end
     end
 
     def workspaces_path

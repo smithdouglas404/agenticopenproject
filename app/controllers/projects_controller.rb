@@ -42,6 +42,7 @@ class ProjectsController < ApplicationController
   before_action :require_admin, only: %i[destroy destroy_info]
   before_action :find_optional_parent, only: :new
   before_action :find_optional_template, only: %i[new create]
+  before_action :block_creation_if_template_misconfigured, only: :create
 
   no_authorization_required! :index
 
@@ -192,10 +193,7 @@ class ProjectsController < ApplicationController
 
   def new_from_template
     params[:step] = 2
-    @new_project = Projects::CopyService
-      .new(user: current_user, source: @template, contract_options: { validate_model: false })
-      .call(target_project_params: params.permit(:parent_id).to_h, attributes_only: true)
-      .result
+    @new_project = build_project_from_template(params.permit(:parent_id).to_h)
 
     render layout: layout_for_new
   end
@@ -240,9 +238,9 @@ class ProjectsController < ApplicationController
       redirect_to job_status_path(job.job_id)
     else
       @new_project = service_call.result
-      params[:step] = 2
-      flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
-      render action: :new, status: :unprocessable_entity, layout: "no_menu"
+      render_template_error(
+        I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
+      )
     end
   end
 
@@ -252,6 +250,26 @@ class ProjectsController < ApplicationController
     step_2_is_valid = !attributes_with_error.intersect?(second_step_attributes)
 
     params[:step] = step_2_is_valid ? 3 : 2
+  end
+
+  def block_creation_if_template_misconfigured
+    return unless @template_configuration_missing
+
+    @new_project = build_project_from_template(permitted_params.new_project.to_h)
+    render_template_error(I18n.t("projects.copy.pir_configuration.creation_blocked"))
+  end
+
+  def build_project_from_template(target_params = {})
+    Projects::CopyService
+      .new(user: current_user, source: @template, contract_options: { validate_model: false })
+      .call(target_project_params: target_params, attributes_only: true)
+      .result
+  end
+
+  def render_template_error(message)
+    params[:step] = 2
+    flash.now[:error] = message
+    render action: :new, status: :unprocessable_entity, layout: "no_menu"
   end
 
   def clear_custom_field_errors!(project)
@@ -277,6 +295,19 @@ class ProjectsController < ApplicationController
       .workspace_type(params[:workspace_type])
       .visible(current_user)
       .find_by(id: template_id)
+
+    check_template_configuration(@template) if @template&.project_creation_wizard_enabled?
+  end
+
+  def check_template_configuration(template)
+    result = Projects::SetAttributesService.new(
+      model: template,
+      user: current_user,
+      contract_class: Projects::SettingsContract,
+      contract_options: { validate_all: true }
+    ).call
+
+    @template_configuration_missing = result.failure?
   end
 
   # Parent projects MAY define templates for subitems to be used
