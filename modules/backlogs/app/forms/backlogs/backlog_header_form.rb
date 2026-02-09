@@ -48,16 +48,14 @@ module Backlogs
           label: attribute_name(:start_date),
           placeholder: attribute_name(:start_date),
           visually_hide_label: true,
-          leading_visual: { icon: :calendar },
-          datepicker_options: {}
+          leading_visual: { icon: :calendar }
         )
         dates.single_date_picker(
           name: :effective_date,
           label: attribute_name(:effective_date),
           placeholder: attribute_name(:effective_date),
           visually_hide_label: true,
-          leading_visual: { icon: :calendar },
-          datepicker_options: {}
+          leading_visual: { icon: :calendar }
         )
       end
 
