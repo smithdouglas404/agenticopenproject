@@ -46,6 +46,7 @@ RSpec.describe Agile::Sprint do
     it { is_expected.to validate_presence_of(:end_date) }
     it { is_expected.to validate_presence_of(:project) }
     it { is_expected.to validate_inclusion_of(:status).in_array(described_class.statuses.keys) }
+    it { is_expected.to validate_inclusion_of(:sharing).in_array(described_class::SPRINT_SHARINGS) }
 
     it "validates end_date is after or equal to start_date" do
       sprint.end_date = sprint.start_date - 1.day
@@ -82,8 +83,8 @@ RSpec.describe Agile::Sprint do
 
       it "allows multiple non-active sprints in the same project" do
         create(:agile_sprint, project:, status: "completed")
-        create(:agile_sprint, project:, status: "in planning")
-        sprint.status = "in planning"
+        create(:agile_sprint, project:, status: "in_planning")
+        sprint.status = "in_planning"
         expect(sprint).to be_valid
       end
     end
@@ -91,13 +92,27 @@ RSpec.describe Agile::Sprint do
 
   describe "enums" do
     it "has status enum with correct values" do
-      expect(described_class.statuses.keys).to contain_exactly("in planning", "active", "completed")
+      expect(described_class.statuses.keys).to contain_exactly("in_planning", "active", "completed")
     end
-  end
 
-  describe "default status" do
-    it "defaults to in_planning" do
-      expect(sprint.status).to eq("in planning")
+    it "status defaults to in_planning" do
+      expect(sprint.status).to eq("in_planning")
+    end
+
+    it "allows sharing settings" do
+      %w[none descendants system].each do |sharing|
+        sprint.sharing = sharing
+        expect(sprint).to be_valid
+      end
+
+      %w[invalid_value another].each do |invalid_sharing|
+        sprint.sharing = invalid_sharing
+        expect(sprint).not_to be_valid
+      end
+    end
+
+    it "sharing defaults to none" do
+      expect(sprint.sharing).to eq("none")
     end
   end
 
