@@ -23,36 +23,37 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module MeetingParticipants
-  class CreateContract < ::ModelContract
-    attribute :meeting
-    attribute :user_id
-    attribute :invited
-    attribute :attended
 
-    validate :user_can_see_meetings_in_project
-    validate :user_allowed_to_edit
+require "spec_helper"
 
-    private
+RSpec.describe API::Errors::InternalError do
+  subject { described_class.new(sensitive_message, exception:) }
 
-    def user_allowed_to_edit
-      return if model.meeting.nil?
+  let(:sensitive_message) { "This message might contain sensitive information" }
+  let(:exception) { nil }
+  let(:generic_message) { I18n.t("api_v3.errors.code_500") }
 
-      unless user.allowed_in_project?(:edit_meetings, model.meeting.project)
-        errors.add(:base, :error_unauthorized)
-      end
+  context "when the exception is known to be problematic" do
+    let(:exception) { ActiveRecord::StatementInvalid.new }
+
+    it "hides the sensitive message" do
+      expect(subject.message).to eq(generic_message)
+    end
+  end
+
+  context "when the exception is something else" do
+    let(:exception) { StandardError.new }
+
+    it "includes the sensitive message" do
+      expect(subject.message).to include(sensitive_message)
     end
 
-    def user_can_see_meetings_in_project
-      return if model.user.nil? || model.meeting.nil?
-
-      unless model.user.allowed_in_project?(:view_meetings, model.meeting.project)
-        errors.add(:user, :user_invalid)
-      end
+    it "Starts with the generic message" do
+      expect(subject.message).to start_with(generic_message)
     end
   end
 end

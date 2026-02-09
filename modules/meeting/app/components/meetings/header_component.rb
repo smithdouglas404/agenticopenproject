@@ -79,6 +79,10 @@ module Meetings
         User.current.allowed_in_project?(:edit_meetings, @meeting.project)
     end
 
+    def delete_series_enabled?
+      @meeting.draft? && @meeting.template? && User.current.allowed_in_project?(:delete_meetings, @project)
+    end
+
     def action_button_params
       {
         tag: :button,

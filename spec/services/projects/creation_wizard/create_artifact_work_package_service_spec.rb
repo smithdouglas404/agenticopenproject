@@ -144,6 +144,25 @@ RSpec.describe Projects::CreationWizard::CreateArtifactWorkPackageService do
       expect(artifact_work_package.last_journal.notes).not_to be_empty
       expect(artifact_work_package.last_journal.notes).to include(project.project_creation_wizard_work_package_comment)
       expect(artifact_work_package.last_journal.notes).to include(/<mention[^>]+>@#{assignee_user.name}<\/mention>/)
+      expect(artifact_work_package.last_journal.notes).to include(/data-type="user"/)
+    end
+
+    context "when assignee is a group" do
+      let(:group) { create(:group, firstname: "test group") }
+
+      it "mentions the group" do
+        project.members << create(:member, principal: group, project: p, roles: [role])
+        project.send("#{user_custom_field.attribute_name}=", group.id)
+
+        result = instance.call
+        project = result.result
+
+        artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+        expect(artifact_work_package.last_journal.notes).not_to be_empty
+        expect(artifact_work_package.last_journal.notes).to include(project.project_creation_wizard_work_package_comment)
+        expect(artifact_work_package.last_journal.notes).to include(/<mention[^>]+>@#{group.name}<\/mention>/)
+        expect(artifact_work_package.last_journal.notes).to include(/data-type="group"/)
+      end
     end
 
     it "adds a relative link to the project creation wizard in the description and journal comment" do
