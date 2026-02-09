@@ -657,7 +657,11 @@ module Settings
       },
       installation_uuid: {
         format: :string,
-        default: nil
+        default: -> { SecureRandom.uuid },
+        persist_on_first_read: true,
+        default_by_env: {
+          test: "test_uuid"
+        }
       },
       internal_password_confirmation: {
         description: "Require password confirmations for certain administrative actions",
