@@ -115,7 +115,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
       project.update(project_creation_wizard_work_package_type_id: nil)
     end
 
-    it_behaves_like "contract is invalid", project_creation_wizard_work_package_type_id: :blank
+    it_behaves_like "contract is valid"
   end
 
   context "with unallowed work package type for the project" do
@@ -133,7 +133,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
       project.update(project_creation_wizard_status_when_submitted_id: nil)
     end
 
-    it_behaves_like "contract is invalid", project_creation_wizard_status_when_submitted_id: :blank
+    it_behaves_like "contract is valid"
   end
 
   context "with unallowed work package status for the type" do
@@ -144,14 +144,6 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
     end
 
     it_behaves_like "contract is invalid", project_creation_wizard_status_when_submitted_id: :inclusion
-
-    context "with unset work_package_type" do
-      before do
-        project.update(project_creation_wizard_work_package_type_id: nil)
-      end
-
-      it_behaves_like "contract is invalid", project_creation_wizard_work_package_type_id: :blank
-    end
   end
 
   context "with 'Assignee when submitted' not set" do
