@@ -73,6 +73,31 @@ RSpec.describe ExternalLinkWarningController do
       end
     end
 
+    context "when capture is enabled and login is required",
+            with_ee: %i[capture_external_links],
+            with_settings: { capture_external_links: true,
+                             capture_external_links_require_login: true } do
+      context "when logged in" do
+        current_user { create(:user) }
+
+        it "renders the warning page when logged in" do
+          get :show, params: { url: "https://example.com" }
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include("Leaving OpenProject")
+          expect(response.body).to include("https://example.com")
+        end
+      end
+
+      context "when not logged in" do
+        it "redirects to login" do
+          get :show, params: { url: "https://example.com" }
+          back_url = external_redirect_url(url: "https://example.com")
+          expect(response).to redirect_to(signin_path(back_url:))
+        end
+      end
+    end
+
     context "with an invalid URL" do
       it "redirects to home when URL is blank" do
         get :show, params: { url: "" }

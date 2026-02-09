@@ -4501,6 +4501,9 @@ en:
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page
     before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour.

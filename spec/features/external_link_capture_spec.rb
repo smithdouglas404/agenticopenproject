@@ -34,7 +34,7 @@ RSpec.describe "External link capture", :js, :selenium do
   shared_let(:admin) { create(:admin) }
 
   let(:project) { create(:project, enabled_module_names: %w[wiki]) }
-  let(:external_url) { "https://www.openprojet.org/" }
+  let(:external_url) { "https://www.openproject.org/" }
   let!(:wiki_page) do
     create(:wiki_page,
            wiki: project.wiki,
@@ -43,9 +43,7 @@ RSpec.describe "External link capture", :js, :selenium do
            text: %(A link to <a href="#{external_url}">OpenProject</a>.))
   end
 
-  before do
-    login_as(admin)
-  end
+  current_user { admin }
 
   shared_examples "opens external link directly in a new window" do
     it "keeps the default external link behaviour" do
@@ -98,6 +96,36 @@ RSpec.describe "External link capture", :js, :selenium do
         new_window&.close
       rescue StandardError
         # Ignore errors from already-closed windows/tabs
+      end
+    end
+
+    context "when not logged in, but required",
+            with_settings: { capture_external_links: true,
+                             capture_external_links_require_login: true } do
+      current_user { User.anonymous }
+
+      it "redirects to login page if not logged in" do
+        visit external_redirect_path(url: external_url)
+        expect(page.current_url).to include("/login")
+        expect(page).to have_no_text I18n.t("external_link_warning.title")
+        expect(page).to have_no_text I18n.t("external_link_warning.warning_message")
+        expect(page).to have_no_text I18n.t("external_link_warning.continue_message")
+
+        expect(page).to have_no_link(I18n.t("external_link_warning.continue_button"), href: external_url)
+      end
+    end
+
+    context "when not logged in and not required",
+            with_settings: { capture_external_links: true,
+                             capture_external_links_require_login: false } do
+      it "shows the external link warning" do
+        visit external_redirect_path(url: external_url)
+        expect(page.current_url).to include("/external_redirect")
+        expect(page).to have_text I18n.t("external_link_warning.title")
+        expect(page).to have_text I18n.t("external_link_warning.warning_message")
+        expect(page).to have_text I18n.t("external_link_warning.continue_message")
+
+        expect(page).to have_link(I18n.t("external_link_warning.continue_button"), href: external_url)
       end
     end
   end
