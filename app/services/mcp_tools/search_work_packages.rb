@@ -30,15 +30,16 @@
 
 module McpTools
   class SearchWorkPackages < Base
-    # TODO: The mcp gem does not support pagination, so we only limit the number of results for now
-    MAX_SIZE = 100
-
     default_title "Search work packages"
     default_description "Search work packages matching all of the passed input parameters. " \
-                        "Parameters not passed are ignored. Results are limited to a maximum of #{MAX_SIZE} work packages."
+                        "Parameters not passed are ignored. Results are limited to a maximum " \
+                        "of #{page_size} work packages. To get the rest of the results, call the tool again with a" \
+                        "page number of 2 or higher."
+
 
     name "search_work_packages"
     annotations read_only: true, idempotent: true, destructive: false
+    enable_pagination
 
     # We can't use subclasses of WorkPackageFilter as filter_class, because they overwrite apply_to badly and rely on using
     # an instantiated Query to be used.
@@ -54,7 +55,7 @@ module McpTools
     input_schema(
       properties: {
         assigned_to_id: {
-          type: ["number", "null"],
+          type: %w[number null],
           description: "The ID of the user or group that is assigned to this work package. " \
                        "Pass null to search for work packages without an assignee."
         },
@@ -68,7 +69,7 @@ module McpTools
         },
         type_id: { type: "number", description: "The ID of the work package's type." },
         version_id: {
-          type: ["number", "null"],
+          type: %w[number null],
           description: "The ID of the work package's version. Pass null to search for work packages without a version."
         }
       }
@@ -85,8 +86,9 @@ module McpTools
       }
     )
 
-    def call(**query)
-      work_packages = apply_filters(WorkPackage.visible.limit(MAX_SIZE), query)
+    def call(page: nil, **filters)
+      filtered = apply_filters(WorkPackage.visible, filters)
+      work_packages = apply_pagination(filtered, page)
 
       {
         items: work_packages.map { |wp| API::V3::WorkPackages::WorkPackageRepresenter.create(wp, current_user:) }

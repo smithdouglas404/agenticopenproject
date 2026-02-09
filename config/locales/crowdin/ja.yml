@@ -321,7 +321,7 @@ ja:
         delete_dialog:
           title: "カスタムフィールド項目の削除"
           heading: "カスタムフィールド項目を削除しますか？"
-          description: "このアクションはアイテムとそのすべてのサブアイテムを不可逆的に削除します。割り当てられた値は完全に削除されます。 この項目が必要な場合、項目を削除すると既存の作業パッケージが無効になる可能性があります。"
+          description: "このアクションはアイテムとそのすべてのサブアイテムを不可逆的に削除します。割り当てられた値は完全に削除されます。 この項目が必要な場合、項目を削除すると既存のワークパッケージが無効になる可能性があります。"
         placeholder:
           label: "アイテムラベル"
           short: "ショートネーム"
@@ -605,6 +605,7 @@ ja:
         is_for_all_blank_slate:
           heading: For all projects
           description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: 現在、有効な種類はありません。
         form:
@@ -632,6 +633,7 @@ ja:
         label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Edit status
     wizard:
@@ -976,7 +978,7 @@ ja:
           manually_scheduled: "手動でスケジュールされました。日付はリレーションの影響を受けません。"
       blankslate:
         title: "前任者なし"
-        description: "自動スケジューリングを有効にするには、この作業パッケージには少なくとも1つの前任者が必要です。 その後、最も近い前任者の後に自動的に開始するようにスケジュールされます。"
+        description: "自動スケジューリングを有効にするには、このワークパッケージには少なくとも1つの前任者が必要です。 その後、最も近い前任者の後に自動的に開始するようにスケジュールされます。"
       ignore_non_working_days:
         title: "営業日のみ"
       mode:
@@ -1007,7 +1009,7 @@ ja:
       copy_failed: "ワークパッケージをコピーできませんでした。"
       move_failed: "ワークパッケージを移動できませんでした。"
       could_not_be_saved: "次のワークパッケージを保存できませんでした:"
-      none_could_be_saved: "%{total} 作業パッケージのどれも更新できませんでした。"
+      none_could_be_saved: "%{total} ワークパッケージのどれも更新できませんでした。"
       x_out_of_y_could_be_saved: "%{failing} の %{total} ワークパッケージのうち、 %{success} を更新できませんでした。"
       selected_because_descendants: "%{selected} のワークパッケージが選択されたが、合計 %{total} のワークパッケージが影響を受け、その中には子孫も含まれる。"
       descendant: "選択された子孫"
@@ -1245,7 +1247,7 @@ ja:
       mcp_configuration:
         enabled: Enabled
         title: Title
-        description: Description
+        description: 説明
       member:
         roles: "ロール"
       notification:
@@ -1270,7 +1272,7 @@ ja:
           false: "非公開"
         queries: "クエリ"
         status_code: "Status"
-        status_explanation: "Status description"
+        status_explanation: "ステータスの詳細"
         status_codes:
           not_started: "未着手"
           on_track: "順調"
@@ -1359,7 +1361,7 @@ ja:
         is_closed: "作業が完了"
         is_readonly: "読み取り専用のワークパッケージ"
         excluded_from_totals: "階層内の合計の計算から除外"
-        default_done_ratio: "完成(%)"
+        default_done_ratio: "進捗度(%)"
       token/named:
         token_name: "トークン名"
       token/ical:
@@ -1441,14 +1443,14 @@ ja:
         redirect_existing_links: "既存のリンクをリダイレクトする"
         text: "ページの内容"
       work_package:
-        ancestor: "と子・孫関係" #used for filtering of work packages that are descendants of a given work package
+        ancestor: "子・孫関係" #used for filtering of work packages that are descendants of a given work package
         begin_insertion: "挿入の始まり"
         begin_deletion: "削除の始まり"
         children: "サブ要素"
         derived_done_ratio: "完了率"
-        derived_remaining_hours: "残りの作業"
-        derived_remaining_time: "残りの作業"
-        done_ratio: "完成(%)"
+        derived_remaining_hours: "残時間"
+        derived_remaining_time: "残時間"
+        done_ratio: "進捗度(%)"
         duration: "期間"
         end_insertion: "挿入の終わり"
         end_deletion: "削除の終わり"
@@ -1463,10 +1465,10 @@ ja:
         parent_issue: "親項目"
         parent_work_package: "親項目"
         priority: "優先度"
-        progress: "完成(%)"
+        progress: "進捗度(%)"
         readonly: "読み取り専用"
-        remaining_hours: "残りの作業"
-        remaining_time: "残りの作業"
+        remaining_hours: "残時間"
+        remaining_time: "残時間"
         shared_with_users: "共有先"
         schedule_manually: "手動スケジュール"
         spent_hours: "作業時間の記録"
@@ -1785,10 +1787,10 @@ ja:
             assigned_to:
               format: "%{message}"
             done_ratio:
-              does_not_match_work_and_remaining_work: "仕事と残りの仕事が一致しません"
+              does_not_match_work_and_remaining_work: "予定時間と残時間が一致しません"
               cannot_be_set_when_work_is_zero: "作業時間が 0 の場合は設定できません"
-              must_be_set_when_remaining_work_is_set: "Remaining workが設定されている場合は必要。"
-              must_be_set_when_work_and_remaining_work_are_set: "作業と残りの作業が設定されている場合に必要です。"
+              must_be_set_when_remaining_work_is_set: "残時間が設定されている場合は必要。"
+              must_be_set_when_work_and_remaining_work_are_set: "作業と残時間が設定されている場合に必要です。"
               inclusion: "は0から100の間でなければなりません。"
             due_date:
               not_start_date: "は開始日になっていません。これはマイルストーンの場倍、必要である。"
@@ -1821,16 +1823,16 @@ ja:
               does_not_exist: "指定されたカテゴリは存在しません。"
             estimated_hours:
               not_a_number: "は有効な日付ではありません。"
-              cant_be_inferior_to_remaining_work: "残りの作業よりも低くすることはできません。"
-              must_be_set_when_remaining_work_and_percent_complete_are_set: "残りの作業と % 完了が設定されている場合に必要です。"
+              cant_be_inferior_to_remaining_work: "残時間よりも低くすることはできません。"
+              must_be_set_when_remaining_work_and_percent_complete_are_set: "残時間と % 完了が設定されている場合に必要です。"
             remaining_hours:
               not_a_number: "は有効な日時ではありません。"
-              cant_exceed_work: "仕事より高くすることはできません。"
+              cant_exceed_work: "予定時間より高くすることはできません。"
               must_be_set_when_work_is_set: "作業が設定されている場合に必要です。"
               must_be_set_when_work_and_percent_complete_are_set: "「作業」と「完了率」が設定されている場合に必要です。"
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
-                「Work」が空で「% Complete」が100%の場合、必ず空でなければなりません。
+                「予定時間」が空で「% Complete」が100%の場合、必ず空でなければなりません。
           readonly_status: "ワークパッケージは読み取り専用の状態になっているため、その属性は変更できません。"
         type:
           attributes:
@@ -2022,8 +2024,8 @@ ja:
     display_sums: "合計を表示"
     domain: "ドメイン"
     due_date: "終了日"
-    estimated_hours: "仕事"
-    estimated_time: "仕事"
+    estimated_hours: "予定時間"
+    estimated_time: "予定時間"
     email: "電子メールアドレス"
     entity_type: "エンティティ"
     expires_at: "有効期限"
@@ -2069,7 +2071,7 @@ ja:
     state: "状態"
     subject: "タイトル"
     slug: "スラグ"
-    summary: "サマリ"
+    summary: "サマリー(概要)"
     template: "Template"
     time_zone: "タイムゾーン"
     text: "テキスト（本文）"
@@ -2247,7 +2249,7 @@ ja:
   create_project:
     attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "テンプレートを使用"
-    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
+    template_heading: "テンプレートを選択するか、ゼロからプロジェクトを作成。"
     copy_options:
       dependencies_label: "テンプレートからコピー"
     blank_template:
@@ -2626,8 +2628,8 @@ ja:
     time_entry: "時系列ログが編集されました。"
     wiki_page: "Wiki ページが編集されました。"
     work_package_closed: "作業が完了"
-    work_package_edit: "仕事項目が編集されました。"
-    work_package_note: "仕事項目の注記が追加されました。"
+    work_package_edit: "ワークパッケージが編集されました"
+    work_package_note: "ワークパッケージに注記が追加されました"
     title:
       project: "プロジェクト: %{name}"
       subproject: "子プロジェクト: %{name}"
@@ -2663,7 +2665,7 @@ ja:
               caption: "リスト内のすべてのワークパッケージの詳細レポートにワークパッケージをエクスポートします。"
             gantt:
               label: "ガントチャート"
-              caption: "ガントチャート表示で作業パッケージ一覧をエクスポートします。"
+              caption: "ガントチャート表示でワークパッケージ一覧をエクスポートします。"
         include_images:
           label: "画像を含める"
           caption: "PDFエクスポートのサイズを小さくするために画像を除外します。"
@@ -2869,9 +2871,9 @@ ja:
         totals_removed_from_childless_work_packages: >-
           <a href="%{href}" target="_blank">バージョンアップデート</a>を伴う親でないワークパッケージに対して作業と進捗の合計が自動的に削除されます。 これはメンテナンス作業であり、無視することができます。
       total_percent_complete_mode_changed_to_work_weighted_average: >-
-        「Work」が含まれていない子作業パッケージは無視されます。
+        「予定時間」が含まれていない子ワークパッケージは無視されます。
       total_percent_complete_mode_changed_to_simple_average: >-
-        子作業パッケージの作業値が無視されています。
+        子ワークパッケージの作業値が無視されています。
   links:
     configuration_guide: "設定ガイド"
     get_in_touch: "ご質問がありますか？ご連絡ください。"
@@ -3431,7 +3433,7 @@ ja:
   label_privacy_policy: "データのプライバシーとセキュリティポリシー"
   label_product_version: "製品バージョ​​ン"
   label_profile: "プロファイル"
-  label_percent_complete: "完成(%)"
+  label_percent_complete: "進捗度(%)"
   label_progress_tracking: "進行状況の追跡"
   label_project: "プロジェクト"
   label_project_activity: "プロジェクトのアクティビティ"
@@ -3479,7 +3481,7 @@ ja:
   label_relation_edit: "リレーションを編集"
   label_relation_new: "新しい関係"
   label_release_notes: "リリースノート"
-  label_remaining_work: "残りの作業"
+  label_remaining_work: "残時間"
   label_remove_column: "列を削除"
   label_remove_columns: "選択した列を削除"
   label_renamed: "名称変更"
@@ -3547,7 +3549,7 @@ ja:
   label_subproject_plural: "子プロジェクト"
   label_subitems: "Subitems"
   label_subtask_plural: "子タスク"
-  label_summary: "サマリ"
+  label_summary: "サマリー(概要)"
   label_system: "システム"
   label_system_storage: "ストレージ情報"
   label_table_of_contents: "目次"
@@ -3634,7 +3636,7 @@ ja:
   label_wiki_show_new_page_link: "下位のメニューで「子ページを新規作成」の項目を表示"
   label_wiki_show_submenu_item: "上位のメニュー項目"
   label_wiki_start: "開始ページ"
-  label_work: "仕事"
+  label_work: "予定時間"
   label_work_package: "ワーク パッケージ"
   label_work_package_attachments: "ワークパッケージの添付ファイル"
   label_work_package_category_new: "新規カテゴリ"
@@ -3653,7 +3655,7 @@ ja:
   label_workflow: "ワークフロー"
   label_workflow_copy: "ワークフローをコピー"
   label_workflow_plural: "ワークフロー"
-  label_workflow_summary: "サマリ"
+  label_workflow_summary: "サマリー(概要)"
   label_working_days_and_hours: "稼働日・時間"
   label_x_closed_work_packages_abbr:
     one: "1件完了"
@@ -3750,7 +3752,7 @@ ja:
       note: "注意: “%{note}”"
     sharing:
       work_packages:
-        allowed_actions: "この作業パッケージは %{allowed_actions} 可能です。プロジェクトのロールと権限によって変更できます。"
+        allowed_actions: "このワークパッケージは %{allowed_actions} 可能です。プロジェクトのロールと権限によって変更できます。"
         create_account: "このワークパッケージにアクセスするには、 %{instance} のアカウントを作成して有効化する必要があります。"
         open_work_package: "ワークパッケージを開く"
         subject: "ワークパッケージ%{id} があなたと共有されました"
@@ -4020,7 +4022,7 @@ ja:
   permission_log_own_time: "作業時間の記録"
   permission_log_time: "他のユーザーの作業時間"
   permission_manage_forums: "フォーラムの管理"
-  permission_manage_categories: "仕事項目のカテゴリの管理"
+  permission_manage_categories: "ワークパッケージのカテゴリの管理"
   permission_manage_dashboards: "ダッシュボードの管理"
   permission_manage_work_package_relations: "ワークパッケージの関係の管理"
   permission_manage_members: "メンバーの管理"
@@ -4258,7 +4260,7 @@ ja:
   search_input_placeholder: "検索…"
   setting_allowed_link_protocols: "許可されたリンクプロトコル"
   setting_allowed_link_protocols_text_html: >-
-    これらのプロトコルを、作業パッケージの説明、長文フィールド、およびコメント内でリンクとして表示できるようにします。例えば、%{tel_code} や %{element_code} などです。1行に1つのプロトコルを入力してください。<br/> %{http_code}、%{https_code}、および %{mailto_code} のプロトコルは常に許可されています。
+    これらのプロトコルを、ワークパッケージの説明、長文フィールド、およびコメント内でリンクとして表示できるようにします。例えば、%{tel_code} や %{element_code} などです。1行に1つのプロトコルを入力してください。<br/> %{http_code}、%{https_code}、および %{mailto_code} のプロトコルは常に許可されています。
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
@@ -4364,12 +4366,12 @@ ja:
   setting_work_package_done_ratio: "進行状況計算モード"
   setting_work_package_done_ratio_field: "ワークベース"
   setting_work_package_done_ratio_field_caption_html: >-
-    <i>Complete %</i>は自由に設定できる。オプションで<i>Workに</i>値を入力すると、自動的に<i>Remaining workが</i>導き出される。
+    <i>Complete %</i>は自由に設定できる。オプションで<i>予定時間に</i>値を入力すると、自動的に<i>残時間が</i>導き出される。
   setting_work_package_done_ratio_status: "ステータスベース"
   setting_work_package_done_ratio_status_caption_html: >-
     各ステータスには、 <i>% Complete</i> の値があります。ステータスを変更すると、 <i>% Complete</i> が変わります。
   setting_work_package_done_ratio_explanation_html: >
-    <b>ワーク・ベース・</b>モードでは、完了(%)は自由に設定することができます。 オプションで「作業」に値を入力すると、自動的に「残りの作業」が導き出されます。 <b>ステータス・ベース・</b>モードでは、各ステータスに 完了(%) の値が関連付けられます。 ステータスを変更すると、完了(%) も変更される。
+    <b>ワーク・ベース・</b>モードでは、完了(%)は自由に設定することができます。 オプションで「作業」に値を入力すると、自動的に「残時間」が導き出されます。 <b>ステータス・ベース・</b>モードでは、各ステータスに 完了(%) の値が関連付けられます。 ステータスを変更すると、完了(%) も変更される。
   setting_work_package_properties: "項目名"
   setting_work_package_startdate_is_adddate: "今日の日付を新しいワークパッケージの開始日とする"
   setting_work_packages_projects_export_limit: "ワークパッケージ/プロジェクトのエクスポート制限"
@@ -4393,10 +4395,10 @@ ja:
   setting_password_min_length: "最短長"
   setting_password_min_adhered_rules: "最小限の必要な文字の種類"
   setting_per_page_options: "オプションページごとの項目数"
-  setting_percent_complete_on_status_closed: "% ステータスが閉じられたときに完了します"
+  setting_percent_complete_on_status_closed: "ワークパッケージが終了したときの処理"
   setting_percent_complete_on_status_closed_no_change: "変更なし"
   setting_percent_complete_on_status_closed_no_change_caption_html: >-
-    作業パッケージが閉じられても、<i>完了</i>率の値は変わりません。
+    ワークパッケージが閉じられても、<i>完了</i>率の値は変わりません。
   setting_percent_complete_on_status_closed_set_100p: "自動的に100%に設定"
   setting_percent_complete_on_status_closed_set_100p_caption: >-
     終了したワークパッケージは完了したとみなされます。
@@ -4441,12 +4443,12 @@ ja:
   setting_sys_api_description: "リポジトリ管理Webサービスは、リポジトリへのアクセスの統合およびユーザー認証を提供します。"
   setting_time_format: "時間"
   setting_total_percent_complete_mode: "完了率階層合計の計算"
-  setting_total_percent_complete_mode_work_weighted_average: "仕事によるウェイト"
+  setting_total_percent_complete_mode_work_weighted_average: "予定時間によるウェイト"
   setting_total_percent_complete_mode_work_weighted_average_caption_html: >-
-    <i>総完了</i>率は、階層内の各作業パッケージの<i>作業に対して</i>重み付けされる。<i>作業の</i>ないワークパッケージは無視される。
+    <i>総完了</i>率は、階層内の各ワークパッケージの<i>作業に対して</i>重み付けされる。<i>作業の</i>ないワークパッケージは無視される。
   setting_total_percent_complete_mode_simple_average: "単純平均"
   setting_total_percent_complete_mode_simple_average_caption_html: >-
-    <i>作業は</i>無視され、<i>合計完了率は</i>階層内の作業パッケージの<i>完了(%)の</i>単純平均値となります。
+    <i>作業は</i>無視され、<i>合計完了率は</i>階層内のワークパッケージの<i>完了(%)の</i>単純平均値となります。
   setting_accessibility_mode_for_anonymous: "匿名ユーザ向けにアクセシビリティモードを有効"
   setting_user_format: "ユーザー名の形式"
   setting_user_default_timezone: "ユーザーのデフォルトのタイム ゾーン"
@@ -4474,7 +4476,7 @@ ja:
       whitelist_text_html: >
         アップロードされたファイルに有効なファイル拡張子および/または MIME タイプのリストを定義します。 <br/> ファイル拡張子（例． <code>%{ext_example}</code>)またはMIMEタイプ(例、 <code>%{mime_example}</code>). <br/> 任意のファイル タイプをアップロードできるようにするには、空のままにします。複数の値を指定できます (各値に 1 行)。
       show_work_package_attachments: >
-        このオプションを無効にすると、新規プロジェクトの作業パッケージのファイルタブにある添付ファイルリストが非表示になります。ワークパッケージの説明に添付されたファイルは、内部添付ファイルストレージにアップロードされます。
+        このオプションを無効にすると、新規プロジェクトのワークパッケージのファイルタブにある添付ファイルリストが非表示になります。ワークパッケージの説明に添付されたファイルは、内部添付ファイルストレージにアップロードされます。
     antivirus:
       title: "ウイルススキャン"
       clamav_ping_failed: "ClamAVデーモンへの接続に失敗しました。設定を再確認して、もう一度試してください。"
@@ -4646,7 +4648,7 @@ ja:
   text_are_you_sure: "よろしいですか？"
   open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "続行してもよろしいですか？"
-  text_are_you_sure_with_children: "仕事項目と子項目を削除してもよろしいですか？"
+  text_are_you_sure_with_children: "ワークパッケージと子項目を削除してもよろしいですか？"
   text_are_you_sure_with_project_custom_fields: "この属性を削除すると、すべてのプロジェクトの値も削除されます。よろしいですか？"
   text_are_you_sure_with_project_life_cycle_step: "このフェーズを削除すると、すべてのプロジェクトでの使用も削除されます。よろしいですか？"
   text_assign_to_project: "プロジェクト自体に割り当てする"
@@ -4694,7 +4696,7 @@ ja:
   text_default_administrator_account_changed: "管理者アカウントでデフォルト設定が変更済み"
   text_default_encoding: "既定値: UTF-8"
   text_destroy: "削除"
-  text_destroy_with_associated: "削除される仕事項目と追加の対象物が関連付けています。それらの対象物は次の種類です："
+  text_destroy_with_associated: "削除されるワークパッケージと追加の対象物が関連付けています。それらの対象物は次の種類です："
   text_destroy_what_to_do: "どれかを選択して下さい。"
   text_diff_truncated: "... 差分の行数が表示可能な上限を超えました。超過分は表示しません。"
   text_email_delivery_not_configured: "メール配信が設定されておらず、通知が無効になっています。\nSMTPサーバーを有効にしてください。"
@@ -4896,23 +4898,23 @@ ja:
       label_note: "注："
       modal:
         work_based_help_text: "各フィールドは、可能な限り他の2つのフィールドから自動的に計算される。"
-        status_based_help_text: "完了率は作業パッケージのステータスによって設定される。"
-        migration_warning_text: "作業ベースの進捗計算モードでは、「完了率」を手動で設定することはできず、「作業」に関連付けられます。既存の値は保持されていますが、編集することはできません。まずWorkを入力してください。"
+        status_based_help_text: "完了率はワークパッケージのステータスによって設定される。"
+        migration_warning_text: "作業ベースの進捗計算モードでは、「完了率」を手動で設定することはできず、「作業」に関連付けられます。既存の値は保持されていますが、編集することはできません。まず予定時間を入力してください。"
       derivation_hints:
         done_ratio:
           cleared_because_remaining_work_is_empty: "残務がないためクリア。"
-          cleared_because_work_is_0h: "Work が 0h のためクリアされる。"
-          derived: "仕事」と「残り仕事」から派生したもの。"
+          cleared_because_work_is_0h: "予定時間 が 0h のためクリアされる。"
+          derived: "「予定時間」と「残時間」から派生したもの。"
         estimated_hours:
-          cleared_because_remaining_work_is_empty: "残りの作業が空のため消去されました。"
-          derived: "残りの作業と % 完了から派生しました。"
-          same_as_remaining_work: "残りの作業と同じ値に設定します。"
+          cleared_because_remaining_work_is_empty: "残時間が空のため消去されました。"
+          derived: "残時間と % 完了から派生しました。"
+          same_as_remaining_work: "残時間と同じ値に設定します。"
         remaining_hours:
           cleared_because_work_is_empty: "ワークが空のためクリア。"
           cleared_because_percent_complete_is_empty: "完了(%) が空のため、クリアされました。"
           decreased_by_delta_like_work: "%{delta}によって減少しました。作業の減少に一致します。"
           derived: "作品と完成度から派生したもの。"
-          increased_by_delta_like_work: "%{delta}、仕事の増加に合わせて増加した。"
+          increased_by_delta_like_work: "%{delta}、予定時間の増加に合わせて増加した。"
           same_as_work: "ワークと同じ値に設定する。"
     permissions:
       comment: "コメント"

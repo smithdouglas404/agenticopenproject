@@ -21,6 +21,7 @@ Recurring meetings are helpful to schedule and organize meetings that happen reg
 | [Edit recurring meetings template](#edit-recurring-meetings-template) | How to edit a template for recurring meeting series.         |
 | [Edit recurring meeting series](#edit-recurring-meeting-series) | How to edit  recurring meeting series in OpenProject.        |
 | [Edit a recurring meeting occurrence](#edit-a-recurring-meeting-occurrence) | How to edit a single meeting within recurring meeting series. |
+| [Meeting backlogs for recurring meetings](#meeting-backlogs-for-recurring-meetings) | How to edit backlogs for recurring meetings in OpenProject.  |
 
 ## Create and edit recurring meetings
 
@@ -136,6 +137,30 @@ Within the same menu you also have the following options:
 In addition to all the options available when clicking on the three-dot **More** (⋯) menu for an agenda item in when [editing one-time meetings](../one-time-meetings), you will see one additional option to move the agenda item to the next meeting occurrence in the series.
 
 ![Move an agenda item to next meeting in OpenProject recurring meetings](openproject_userguide_meetings_recurring_move_agenda_item.png)
+
+Clicking this option will display a confirmation dialog. 
+
+![A confirmation dialogue for moving an agenda item into the the next meeting occurrence in OpenProject](openproject_userguide_meetings_recurring_move_agenda_item_confirmation.png)
+
+Confirming will move the agenda item and outcomes (if any exist) into the next immediate meeting occurrence. 
+
+### Duplicate an agenda item to next meeting
+
+If you don’t want to move an agenda item to the next meeting (and remove it from the current one), but instead keep it in the current meeting protocol and still discuss it again next time, you can duplicate it to the next occurrence.
+
+This can be useful, for example, if an item was discussed but needs a follow-up in the next meeting, while the current meeting minutes should remain complete.
+
+To do duplicate an agenda item into the next meeting, open the three-dot **More (⋯)** menu of an agenda item and select Duplicate → Duplicate in next occurrence. 
+
+![Duplicate an agenda item to next meeting in OpenProject recurring meetings](openproject_userguide_meetings_recurring_duplicate_agenda_item.png)
+
+
+
+Clicking this option will display a confirmation dialog.
+
+![A confirmation dialogue for duplicating an agenda item into the the next meeting occurrence in OpenProject](openproject_userguide_meetings_recurring_duplicate_agenda_item_confirmation.png)
+
+Confirming will create a copy of the agenda item in the next immediate meeting occurrence. Outcomes will not be duplicated. The original agenda item will remain in the current meeting, keeping the protocol intact.
 
 ## Meeting backlogs for recurring meetings
 

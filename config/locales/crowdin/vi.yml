@@ -607,6 +607,7 @@ vi:
         is_for_all_blank_slate:
           heading: Đối với tất cả các dự án
           description: Thuộc tính dự án này được bật trong tất cả các dự án vì tùy chọn "Dành cho tất cả dự án" được chọn. Nó không thể bị vô hiệu hóa đối với các dự án riêng lẻ.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: Không có phân loại.
         form:
@@ -634,6 +635,7 @@ vi:
         label_request_submission: "Yêu cầu gửi"
         project_attributes_description: >
           Chọn thuộc tính dự án nào sẽ được đưa vào yêu cầu khởi tạo dự án. Danh sách này chỉ bao gồm [project attributes](project_attributes_url) được bật cho dự án này.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Chỉnh sửa trạng thái
     wizard:
@@ -2808,7 +2810,7 @@ vi:
           new_features_list:
             line_0: Khởi tạo dự án tự động (Phần mở rộng doanh nghiệp).
             line_1: "Họp: Thêm các gói công việc mới hoặc hiện có làm kết quả."
-            line_2: "Meetings: show iCal responses in OpenProject."
+            line_2: "Họp: Hiển thị phản hồi iCal trong OpenProject."
             line_3: "Cuộc họp định kỳ: Sao chép các mục trong chương trình nghị sự sang lần họp tiếp theo."
             line_4: "Phát hành cho cộng đồng: Tính năng làm nổi bật thuộc tính."
             line_5: Cảnh báo trước khi mở các liên kết bên ngoài trong nội dung do người dùng cung cấp (Phần mở rộng doanh nghiệp).
@@ -3011,7 +3013,7 @@ vi:
   label_always_visible: "Luôn luôn hiển thị"
   label_announcement: "Thông báo"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "%{app_title} các mô-đun"
   label_api_access_key: "Khoá truy cập API"
   label_api_access_key_created_on: "Khoá truy cập API đựơc tạo cách đây %{value}"
   label_api_access_key_type: "API"

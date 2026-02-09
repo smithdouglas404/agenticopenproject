@@ -606,6 +606,7 @@ zh-TW:
         is_for_all_blank_slate:
           heading: 對所有的專案
           description: 由於已勾選「適用於所有專案」選項，因此所有專案都啟用此專案屬性。個別專案無法停用。
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: 目前沒有可用的類型
         form:
@@ -633,6 +634,7 @@ zh-TW:
         label_request_submission: "要求提交"
         project_attributes_description: >
           選擇哪些專案屬性應包含在專案啟動請求中。此清單僅包含此專案啟用的 [專案屬性](project_attributes_url)。
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: 編輯狀態
     wizard:
@@ -2806,7 +2808,7 @@ zh-TW:
           new_features_list:
             line_0: 自動化專案啟動（企業附加元件）。
             line_1: "會議：添加新的或現有的工作套件作為成果。"
-            line_2: "Meetings: show iCal responses in OpenProject."
+            line_2: "會議：在 OpenProject 中顯示 iCal 回應。"
             line_3: "重複性會議：將議程項目重複至下次會議。"
             line_4: "發佈到社群：高亮顯示屬性。"
             line_5: 在使用者提供的內容中開啟外部連結前警告（企業附加元件）。
@@ -3009,7 +3011,7 @@ zh-TW:
   label_always_visible: "總是顯示"
   label_announcement: "公告"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "%{app_title} 模組"
   label_api_access_key: "API金鑰"
   label_api_access_key_created_on: "API金鑰在 %{value} 以前被建立"
   label_api_access_key_type: "API"

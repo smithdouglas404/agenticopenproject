@@ -269,6 +269,39 @@ RSpec.describe McpTools::SearchWorkPackages, with_flag: { mcp_server: true } do
 
       it_behaves_like "MCP error response"
     end
+
+    describe "pagination" do
+      let(:page_size) { 10 }
+      let(:overspilling_work_packages) { 5 }
+      let(:work_packages_count) { page_size + overspilling_work_packages }
+      let(:call_args) { { subject: "Stormtrooper" } }
+
+      before do
+        allow(described_class).to receive(:page_size).and_return(page_size)
+
+        work_packages_count.times do |idx|
+          create(:work_package,
+                 project:,
+                 type:,
+                 status:,
+                 subject: "Send Stormtrooper squad No. #{idx} to Jedi temple on Coruscant")
+        end
+      end
+
+      it "returns only results up to the page size" do
+        subject
+        expect(parsed_results.dig("structuredContent", "items").count).to eq(page_size)
+      end
+
+      context "if another page is requested" do
+        let(:call_args) { { subject: "Stormtrooper", page: 2 } }
+
+        it "returns the requested page" do
+          subject
+          expect(parsed_results.dig("structuredContent", "items").count).to eq(overspilling_work_packages)
+        end
+      end
+    end
   end
 
   context "when the mcp_server enterprise feature is disabled" do

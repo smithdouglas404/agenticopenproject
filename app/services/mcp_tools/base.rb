@@ -35,6 +35,10 @@ module McpTools
         "tools/#{name}"
       end
 
+      def page_size
+        100
+      end
+
       def default_title(title = nil)
         @default_title = title if title.present?
 
@@ -53,8 +57,29 @@ module McpTools
         @name
       end
 
+      def pagination_enabled?
+        @pagination_enabled || false
+      end
+
+      def enable_pagination
+        @pagination_enabled = true
+      end
+
       def input_schema(schema = nil)
-        @input_schema = schema if schema.present?
+        if schema.present?
+          if pagination_enabled?
+            page = {
+              type: "number",
+              default: 1,
+              description: "Page number for pagination. If no page is defined, the first result set is returned. " \
+                           "To get the rest of the results, use a page number of 2 or higher."
+            }
+
+            @input_schema = schema.deep_merge({ properties: { page: } })
+          else
+            @input_schema = schema
+          end
+        end
 
         @input_schema
       end
@@ -189,6 +214,15 @@ module McpTools
 
     def filter_proc_for(name)
       self.class.filters[name] || raise(ArgumentError, "Don't know how to handle filter argument called #{name}")
+    end
+
+    def apply_pagination(scope, page)
+      return scope unless self.class.pagination_enabled?
+
+      page_number = page || 1
+      page_size = self.class.page_size
+
+      scope.offset((page_number - 1) * page_size).limit(page_size)
     end
   end
 end

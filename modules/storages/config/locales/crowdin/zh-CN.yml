@@ -140,13 +140,13 @@ zh-CN:
               conflict: 文件夹 %{folder_name} 已经存在于 %{parent_location} 上。
               not_found: "未找到 %{parent_location} 。"
             ensure_root_folder_permissions:
-              not_found: "未找到 %{group_folder}。请检查您的 Nextcloud 团队文件夹设置。"
+              not_found: "找不到“%{group_folder}”。请检查您的 Nextcloud 团队文件夹设置。"
               permission_not_set: 无法设置 %{group_folder} 上的权限。
             hide_inactive_folders:
               permission_not_set: 无法设置 %{path} 上的权限。
             remote_folders:
               not_allowed: '%{username} 无法访问 %{group_folder} 。请检查 Nextcloud 上的文件夹权限。'
-              not_found: "未找到 %{group_folder} 。请检查您的 Nextcloud 设置。"
+              not_found: "找不到“%{group_folder}” 。请检查您的 Nextcloud 设置。"
             remove_user_from_group:
               conflict: '由于以下原因，无法从 %{group} 组中删除用户 %{user} ： %{reason}'
               failed_to_remove: '由于以下原因，无法从 %{group} 组中删除用户 %{user} ： %{reason}'
@@ -279,7 +279,7 @@ zh-CN:
           drive_contents: 驱动器内容
           files_request: 正在获取团队文件夹文件
           header: 自动托管的项目文件夹
-          team_folder_app: '依赖项：团队文件夹'
+          team_folder_app: '依赖关系：团队文件夹'
           team_folder_contents: 团队文件夹内容
           team_folder_presence: 团队文件夹已存在
           userless_access: 服务器端请求身份验证
@@ -320,7 +320,7 @@ zh-CN:
         nc_oauth_request_not_found: 未找到获取当前连接用户的端点。请检查服务器日志以获取更多信息。
         nc_oauth_request_unauthorized: 当前用户无权访问远程文件存储。请检查服务器日志以获取更多信息。
         nc_oauth_token_missing: OpenProject 无法测试用户与 Nextcloud 之间的通信，因为用户尚未链接他们的 Nextcloud 帐户。
-        nc_team_folder_not_found: 无法找到团队文件夹。
+        nc_team_folder_not_found: 找不到该团队文件夹。
         nc_unexpected_content: 在受管理的团队文件夹中找到非预期内容。
         nc_userless_access_denied: 已配置的应用密码无效。
         not_configured: 无法验证连接。请先完成配置。

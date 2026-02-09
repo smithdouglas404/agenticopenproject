@@ -55,7 +55,7 @@ module MeetingAgendaItems
       return if model.presenter.nil?
       return if model.presenter.allowed_in_project?(:view_meetings, model.meeting.project)
 
-      errors.add(:presenter, :invalid_user)
+      errors.add(:presenter, :user_invalid)
     end
   end
 end

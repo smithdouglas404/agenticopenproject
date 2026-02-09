@@ -218,8 +218,8 @@ tr:
         removed_title: "Aşağıdaki günleri çalışılmayan günler listesinden çıkaracaksınız:"
         change_description: "Haftanın hangi günlerinin iş günü veya iş günü olmayan günler olarak kabul edileceğinin değiştirilmesi, bu sistemdeki tüm projelerdeki tüm iş paketlerinin ve yaşam döngülerinin başlangıç ve bitiş günlerini etkileyebilir."
         warning: >
-          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
-          Are you sure you want to continue?
+          Değişikliklerin yürürlüğe girmesi biraz zaman alabilir. İlgili tüm iş paketleri ve proje yaşam döngüleri güncellendiğinde size bildirilecektir.
+          Devam etmek istediğinizden emin misiniz?
       work_packages_settings:
         warning_progress_calculation_mode_change_from_status_to_field_html: >-
           Changing progress calculation mode from status-based to work-based will make the <i>% Complete</i> field freely editable. If you optionally enter values for <i>Work</i> or <i>Remaining work</i>, they will also be linked to <i>% Complete</i>. Changing <i>Remaining work</i> can then update <i>% Complete</i>.
@@ -558,7 +558,7 @@ tr:
       date_alerts:
         milestone_date: "Kilometre taşı tarihi"
         overdue: "Süresi geçmiş"
-        overdue_since: "for %{difference_in_days}."
+        overdue_since: "%{difference_in_days} içinde."
         property_today: "bugün."
         property_is: "%{difference_in_days} içinde."
         property_was: "%{difference_in_days} önce idi."
@@ -764,7 +764,7 @@ tr:
       update_relation: "İlişki türünü değiştirmek için tıklayın"
       show_relations: "İlişkileri göster"
       add_predecessor: "Ekle (Öncül)"
-      add_successor: "Ekle (Ardıl)"
+      add_successor: "Ardıl görev ekle"
       remove: "İlişkiyi kaldır"
       save: "İlişkiyi kaydet"
       abort: "İptal"

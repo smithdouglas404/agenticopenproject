@@ -306,7 +306,7 @@ class MeetingAgendaItemsController < ApplicationController
 
     ::MeetingAgendaItems::CreateService
       .new(user: current_user)
-      .call(attributes)
+      .call(attributes, source_meeting_id: @meeting_agenda_item.meeting_id)
   end
 
   def init_next_meeting_occurrence

@@ -607,6 +607,7 @@ ko:
         is_for_all_blank_slate:
           heading: 모든 프로젝트용
           description: '"모든 프로젝트용" 옵션이 선택되었으므로 모든 프로젝트에서 이 프로젝트 특성이 활성화되었습니다. 개별 프로젝트에 대해 비활성화할 수 없습니다.'
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: 사용 가능한 타입이 없습니다.
         form:
@@ -634,6 +635,7 @@ ko:
         label_request_submission: "요청 제출"
         project_attributes_description: >
           프로젝트 시작 요청에 포함해야 하는 프로젝트 특성을 선택합니다. 이 목록에는 해당 프로젝트에 대해 활성화된 [프로젝트 특성](project_attributes_url)만 포함됩니다.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: 상태 편집
     wizard:

@@ -128,7 +128,7 @@ RSpec.describe "MeetingParticipants requests",
         post project_meeting_participants_path(project, meeting), params: params, as: :turbo_stream
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include "User #{user_without_meeting_permissions.name} is not a valid participant."
+        expect(response.body).to include "User is not a valid participant."
 
         meeting.participants.reload
         expect(meeting.participants.count).to eq(1)
@@ -156,7 +156,7 @@ RSpec.describe "MeetingParticipants requests",
       it "adds appropriate errors" do
         post project_meeting_participants_path(project, meeting), params: params, as: :turbo_stream
 
-        expect(response.body).to include "User #{user_not_in_project.name} is not a valid participant."
+        expect(response.body).to include "User is not a valid participant."
 
         meeting.participants.reload
         expect(meeting.participants.count).to eq(0)

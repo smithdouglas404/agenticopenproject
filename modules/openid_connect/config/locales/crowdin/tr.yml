@@ -131,7 +131,7 @@ tr:
       label_configuration_details: Metaveri
       label_client_details: İstemci detayları
       label_attribute_mapping: Nitelik ilişkilendirme
-      notice_created: A new OpenID provider was successfully created.
+      notice_created: Yeni bir OpenID sağlayıcısı başarıyla oluşturuldu.
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Henüz bir sağlayıcı tanımlanmadı.
       plural: OpenID sağlayıcıları

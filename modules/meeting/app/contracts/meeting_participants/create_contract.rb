@@ -51,7 +51,7 @@ module MeetingParticipants
       return if model.user.nil? || model.meeting.nil?
 
       unless model.user.allowed_in_project?(:view_meetings, model.meeting.project)
-        errors.add(:user, :invalid_user, name: model.name)
+        errors.add(:user, :user_invalid)
       end
     end
   end

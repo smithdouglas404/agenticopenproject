@@ -130,7 +130,7 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
       end
 
       context "if another page is requested" do
-        let(:call_args) { { name: "Death Star", page: 1 } }
+        let(:call_args) { { name: "Death Star", page: 2 } }
 
         it "returns the requested page" do
           subject

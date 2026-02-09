@@ -71,11 +71,10 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
   end
 
   def toggle_project_custom_field
-    mapping = ProjectCustomFieldProjectMapping.find_by(
-      project_id: permitted_params.project_custom_field_project_mapping[:project_id],
-      custom_field_id: permitted_params.project_custom_field_project_mapping[:custom_field_id]
-    )
-    if mapping&.update(creation_wizard: !mapping.creation_wizard)
+    cf = ProjectCustomField.find(permitted_params.project_custom_field_project_mapping[:custom_field_id])
+    mapping = cf.project_custom_field_project_mappings.find_by(project: @project)
+
+    if custom_field_toggleable?(cf) && toggle_mapping(mapping)
       render json: {}, status: :ok
     else
       render json: {}, status: :unprocessable_entity
@@ -104,18 +103,40 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   def update_section_mappings(value)
     section_id = permitted_params.project_custom_field_project_mapping[:custom_field_section_id]
-    project_id = permitted_params.project_custom_field_project_mapping[:project_id]
 
-    custom_field_ids = ProjectCustomField
-                         .where(custom_field_section_id: section_id)
-                         .where(is_required: false)
-                         .pluck(:id)
+    cf_ids_to_toggle, force_enabled_cf_ids = ProjectCustomField.toggleable_ids_in_creation_wizard_settings(@project, section_id)
 
     ProjectCustomFieldProjectMapping
-      .where(project_id:, custom_field_id: custom_field_ids)
+      .where(project_id: @project.id, custom_field_id: cf_ids_to_toggle)
       .update_all(creation_wizard: value)
 
+    enable_creation_wizard!(force_enabled_cf_ids)
+
     redirect_to project_settings_creation_wizard_path(@project, tab: "attributes"), status: :see_other
+  end
+
+  def enable_creation_wizard!(custom_field_ids)
+    ProjectCustomFieldProjectMapping
+      .where(project_id: @project.id, custom_field_id: custom_field_ids)
+      .update_all(creation_wizard: true)
+  end
+
+  def custom_field_toggleable?(custom_field)
+    toggleable_ids = ProjectCustomField
+                       .toggleable_ids_in_creation_wizard_settings(@project, custom_field.custom_field_section_id)
+                       .first
+
+    toggleable_ids.include?(custom_field.id)
+  end
+
+  def toggle_mapping(mapping)
+    mapping&.update(creation_wizard: !mapping.creation_wizard)
+  end
+
+  def check_feature_flag
+    unless OpenProject::FeatureDecisions.project_initiation_active?
+      render_404
+    end
   end
 
   def update_settings_for_tab(tab, settings_params)
