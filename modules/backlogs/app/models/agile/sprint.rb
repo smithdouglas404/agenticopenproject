@@ -68,6 +68,9 @@ module Agile
       end
     end
 
+    # TODO: consider moving this validation to the database level to ensure data integrity.
+    # Doing this in Rails can lead to race conditions. Revisit this topic once the sharing
+    # logic has been fully specified.
     def validate_only_one_active_sprint_per_project
       return if !active? || project_id.blank?
 
