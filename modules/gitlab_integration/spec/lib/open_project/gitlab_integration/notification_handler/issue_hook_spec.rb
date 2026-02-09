@@ -37,7 +37,7 @@ RSpec.describe OpenProject::GitlabIntegration::NotificationHandler::IssueHook do
 
   let(:handler_instance) { described_class.new }
   let(:upsert_service) { OpenProject::GitlabIntegration::Services::UpsertIssue.new }
-  let(:gitlab_issue) { GitlabIssue.find_by_gitlab_identifiers(id: 5) }
+  let(:gitlab_issue) { GitlabIssue.find_by_gitlab_identifiers(id: 5, url: "https://git.example.com/project/repo") }
 
   let(:mr_description) { "Mentioning OP##{work_package.id}" }
   let(:gitlab_action) { "open" }
