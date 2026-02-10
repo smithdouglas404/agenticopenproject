@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 
 require "spec_helper"
-require "contracts/work_packages/shared_base_contract"
+require "contracts/work_packages/shared_contract_examples"
 
 RSpec.describe WorkPackages::UpdateContract do
   include_context "work package contract"

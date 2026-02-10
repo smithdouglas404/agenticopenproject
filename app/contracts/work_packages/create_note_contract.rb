@@ -32,6 +32,8 @@ module WorkPackages
   class CreateNoteContract < ::ModelContract
     def self.model = WorkPackage
 
+    def validate_model? = false
+
     attribute :journal_notes do
       errors.add(:journal_notes, :error_unauthorized) unless adding_notes_allowed?
       errors.add(:journal_notes, :blank) if model.journal_notes.blank?

@@ -35,7 +35,10 @@ RSpec.shared_examples "work package contract" do
 
   include_context "ModelContract shared context"
   shared_let(:persisted_type) { create(:type) }
-  shared_let(:persisted_project) { create(:project, types: [persisted_type]) }
+  shared_let(:persisted_type_with_pattern) do
+    create(:type, patterns: { subject: { blueprint: "{{type}} {{project_name}}", enabled: true } })
+  end
+  shared_let(:persisted_project) { create(:project, types: [persisted_type, persisted_type_with_pattern]) }
   shared_let(:persisted_other_project) { create(:project, types: [persisted_type]) }
   shared_let(:persisted_project_version) { create(:version, project: persisted_project) }
   shared_let(:persisted_other_project_version) { create(:version) }
@@ -79,6 +82,70 @@ RSpec.shared_examples "work package contract" do
   describe "validations" do
     context "when all attributes are valid" do
       it_behaves_like "contract is valid"
+    end
+
+    describe "subject" do
+      context "when the type is set" do
+        before do
+          work_package.subject = "Allowed to change subject"
+        end
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when subject is blank and type does not auto-generate subject" do
+        before do
+          work_package.subject = ""
+        end
+
+        it_behaves_like "contract is invalid", subject: :blank
+      end
+
+      context "when the subject is changed and the type has an enabled replacement pattern for subject" do
+        before do
+          work_package.type = persisted_type_with_pattern
+          work_package.subject = "Trying to change subject"
+        end
+
+        it_behaves_like "contract is invalid", subject: :error_readonly
+      end
+
+      context "when subject is blank and type auto-generates subject" do
+        let(:type_with_pattern) do
+          create(:type, patterns: { subject: { blueprint: "{{type}} {{project_name}}", enabled: true } })
+        end
+
+        before do
+          # The type auto generates the subject.
+          # Therefore, it is ok that when creating the work package, the subject is empty.
+          # It will be set by the services before saving.
+          # Setting subject is not allowed when auto generating (read-only), which is why the spec works around that.
+          work_package.extend(OpenProject::ChangedBySystem)
+
+          work_package.change_by_system do
+            work_package.subject = ""
+          end
+
+          work_package.type = persisted_type_with_pattern
+        end
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when the type has a disabled replacement pattern for subject" do
+        let(:type_with_disabled_pattern) do
+          create(:type, patterns: { subject: { blueprint: "{{type}} {{project_name}}", enabled: false } }) do |type|
+            work_package.project.types << type
+          end
+        end
+
+        before do
+          work_package.type = type_with_disabled_pattern
+          work_package.subject = "Allowed to change subject"
+        end
+
+        it_behaves_like "contract is valid"
+      end
     end
 
     describe "assigned_to_id" do

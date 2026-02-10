@@ -37,6 +37,7 @@ export interface IFieldSchema {
   hasDefault:boolean;
   name:string;
   options?:any;
+  placeholder?:string;
 }
 
 export class Field extends UntilDestroyedMixin {

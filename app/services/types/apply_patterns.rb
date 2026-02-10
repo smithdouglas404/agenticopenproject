@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,31 +26,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module WorkPackage::Validations
-  extend ActiveSupport::Concern
+module Types
+  module ApplyPatterns
+    extend ActiveSupport::Concern
 
-  included do
-    validates :priority, :project, :type, :author, :status, presence: true
-    validates :done_ratio, inclusion: { in: 0..100 }, numericality: true, allow_nil: true
-    validates :estimated_hours, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
-    validates :remaining_hours, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
-    validates :derived_remaining_hours, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
+    included do
+      private
 
-    validates :due_date, date: { allow_blank: true }
-    validates :start_date, date: { allow_blank: true }
+      def apply_patterns(model, save: true)
+        model.type&.enabled_patterns&.each do |key, pattern|
+          model.public_send(:"#{key}=", pattern.resolve(model))
+        end
 
-    scope :eager_load_for_validation, -> {
-      includes({ project: %i(enabled_modules work_package_custom_fields versions) },
-               { parent: :type },
-               :custom_values,
-               { type: :custom_fields },
-               :priority,
-               :status,
-               :author,
-               :category,
-               :version)
-    }
+        model.save!(validate: false) if save && model.changed?
+      end
+    end
   end
 end

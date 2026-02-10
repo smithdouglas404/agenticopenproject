@@ -28,29 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackage::Validations
-  extend ActiveSupport::Concern
-
-  included do
-    validates :priority, :project, :type, :author, :status, presence: true
-    validates :done_ratio, inclusion: { in: 0..100 }, numericality: true, allow_nil: true
-    validates :estimated_hours, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
-    validates :remaining_hours, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
-    validates :derived_remaining_hours, numericality: { allow_nil: true, greater_than_or_equal_to: 0 }
-
-    validates :due_date, date: { allow_blank: true }
-    validates :start_date, date: { allow_blank: true }
-
-    scope :eager_load_for_validation, -> {
-      includes({ project: %i(enabled_modules work_package_custom_fields versions) },
-               { parent: :type },
-               :custom_values,
-               { type: :custom_fields },
-               :priority,
-               :status,
-               :author,
-               :category,
-               :version)
-    }
+class RemoveDefaultFromWorkPackagesSubject < ActiveRecord::Migration[8.0]
+  def change
+    change_column_default :work_packages, :subject, from: "", to: nil
   end
 end
