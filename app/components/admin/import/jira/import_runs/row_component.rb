@@ -42,7 +42,7 @@ module Admin::Import::Jira::ImportRuns
     end
 
     def status
-      render(Admin::Import::Jira::ImportRuns::StatusBadgeComponent.new(model.status))
+      render(Admin::Import::Jira::ImportRuns::StatusBadgeComponent.new(model.current_state))
     end
 
     def last_changed

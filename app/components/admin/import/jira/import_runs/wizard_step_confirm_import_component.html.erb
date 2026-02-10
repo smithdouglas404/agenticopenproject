@@ -32,17 +32,17 @@ See COPYRIGHT and LICENSE files for more details.
     concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
       I18n.t(:"admin.jira.run.wizard.sections.confirm_import.title")
     })
-    if model.status_before?(JiraImport::PROJECTS_META_DONE)
+    if model.status_before?(JiraImportStateMachine::PROJECTS_META_DONE)
       concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
         I18n.t(:"admin.jira.run.wizard.sections.confirm_import.caption")
       })
-    elsif model.status_equal_or_after?(JiraImport::IMPORTED)
+    elsif model.status_equal_or_after?(JiraImportStateMachine::IMPORTED)
       concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
         I18n.t(:"admin.jira.run.wizard.sections.confirm_import.caption_done")
       })
     end
   end
-  if model.status?(JiraImport::PROJECTS_META_DONE, JiraImport::IMPORT_ERROR)
+  if model.in_state?(JiraImportStateMachine::PROJECTS_META_DONE, JiraImportStateMachine::IMPORT_ERROR)
     box.with_row(mb: 3) do
       render(Primer::Beta::Text.new) {
         I18n.t(:"admin.jira.run.wizard.sections.confirm_import.description")
@@ -54,7 +54,7 @@ See COPYRIGHT and LICENSE files for more details.
         list: import_selection
       ))
     end
-    if model.status?(JiraImport::PROJECTS_META_DONE)
+    if model.in_state?(JiraImportStateMachine::PROJECTS_META_DONE)
       box.with_row do
         render(Primer::Beta::Button.new(
           scheme: :primary,
@@ -66,12 +66,12 @@ See COPYRIGHT and LICENSE files for more details.
           I18n.t(:"admin.jira.run.wizard.sections.confirm_import.button_start")
         }
       end
-    elsif model.status?(JiraImport::IMPORT_ERROR)
+    elsif model.in_state?(JiraImportStateMachine::IMPORT_ERROR)
       box.with_row do
         render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'import'))
       end
     end
-  elsif model.status?(JiraImport::IMPORTING)
+  elsif model.in_state?(JiraImportStateMachine::IMPORTING)
     box.with_row(mt: 3, mb: 3) do
       render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
         I18n.t(:"admin.jira.run.wizard.sections.confirm_import.label_progress")

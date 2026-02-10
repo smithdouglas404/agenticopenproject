@@ -164,6 +164,7 @@ en:
         label_ago: "%{amount} ago"
       run:
         title: "Import run"
+        history: "History"
         remove_error: "A Jira import cannot be removed while it is running"
         blank:
           title: "No import runs set up yet"

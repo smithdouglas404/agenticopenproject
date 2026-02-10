@@ -42,19 +42,60 @@ See COPYRIGHT and LICENSE files for more details.
         { href: admin_import_path, text: t(:"admin.import.title") },
         { href: admin_import_jira_index_path, text: I18n.t(:"admin.jira.title") },
         { href: admin_import_jira_path(@jira), text: @jira.name || @jira.url },
-        "#{I18n.t(:"admin.jira.run.title")} #{@jira_import.id.to_s}"
+        { href: admin_import_jira_run_path(id: @jira_import.id), text: "Run: #{@jira_import.id}" },
+        I18n.t(:"admin.jira.run.history"),
       ]
     )
   end
 %>
 <%=
-  render Primer::BaseComponent.new(
-    tag: :div,
-    data: {
-      controller: "admin--jira-import",
-      "admin--jira-import-url-value": continue_admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id)
-    }
-  ) do
-    render(Admin::Import::Jira::ImportRuns::WizardComponent.new(@jira_import))
+  table = Class.new(OpPrimer::BorderBoxTableComponent) do
+    columns :from_state, :to_state, :metadata
+
+    def self.name
+      "HistoryTable"
+    end
+
+    def mobile_title
+      "History Table"
+    end
+
+    def row_class
+      @row_class ||= Class.new(OpPrimer::BorderBoxRowComponent) do
+        def self.name
+          "HistoryRow"
+        end
+
+        def button_links
+          []
+        end
+
+        def from_state
+          model.from_state
+        end
+
+        def to_state
+          model.to_state
+        end
+
+        def metadata
+          model.metadata
+        end
+      end
+    end
+
+    def has_actions?
+      false
+    end
+
+    def headers
+      [
+        [:from_state, { caption: "From state" }],
+        [:to_state, { caption: "To state" }],
+        [:metadata, { caption: "Metadata" }]
+      ]
+    end
   end
+
+  render(table.new(rows: @history))
 %>

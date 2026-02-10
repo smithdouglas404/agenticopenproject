@@ -41,15 +41,17 @@ class JiraProjectsMetaDataJob < ApplicationJob
   def perform(jira_import_id)
     jira_import = JiraImport.find(jira_import_id)
     get_meta(jira_import)
+  rescue StandardError => e
+    jira_import.transition_to!(:projects_meta_error, error: e.message)
+    jira_import.update!(job_id: nil, error: e.message)
   end
 
   def get_meta(jira_import)
     jira = jira_import.jira
     client = JiraClient.new(url: jira.url, personal_access_token: jira.personal_access_token)
     selected = collect_metadata(client, jira_import.project_ids)
-    jira_import.update!(status: JiraImport::PROJECTS_META_DONE, job_id: nil, selected:, error: nil)
-  rescue StandardError => e
-    jira_import.update!(status: JiraImport::PROJECTS_META_ERROR, job_id: nil, error: e.message)
+    jira_import.transition_to!(:projects_meta_done, selected:)
+    jira_import.update!(job_id: nil, selected:, error: nil)
   end
 
   def collect_metadata(client, project_ids)

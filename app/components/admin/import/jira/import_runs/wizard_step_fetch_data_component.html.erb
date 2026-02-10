@@ -34,13 +34,13 @@ See COPYRIGHT and LICENSE files for more details.
         concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
           I18n.t(:"admin.jira.run.wizard.sections.fetch_data.title")
         })
-        if model.status_equal_or_after?(JiraImport::INSTANCE_META_DONE)
+        if model.status_equal_or_after?(JiraImportStateMachine::INSTANCE_META_DONE)
           concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
             I18n.t(:"admin.jira.run.wizard.sections.fetch_data.caption_done")
           })
         end
       end
-      if model.status?(JiraImport::INSTANCE_META_DONE, JiraImport::CONFIGURING)
+      if model.in_state?(:instance_meta_done, :configuring)
         row.with_column do
           render(
             Primer::Beta::IconButton.new(
@@ -56,7 +56,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
   end
-  if model.status?(JiraImport::INITIAL)
+  if model.in_state?(JiraImportStateMachine::INITIAL)
     box.with_row(mb: 3) do
       render(Primer::Beta::Text.new) {
         I18n.t(:"admin.jira.run.wizard.sections.fetch_data.description")
@@ -73,11 +73,11 @@ See COPYRIGHT and LICENSE files for more details.
         I18n.t(:"admin.jira.run.wizard.sections.fetch_data.button_fetch")
       end
     end
-  elsif model.status?(JiraImport::INSTANCE_META_ERROR)
+  elsif model.in_state?(:instance_meta_error)
     box.with_row(mt: 3) do
       render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'fetch'))
     end
-  elsif model.status?(JiraImport::INSTANCE_META_FETCHING)
+  elsif model.in_state?(:instance_meta_fetching)
     box.with_row(mt: 3) do
       render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
         I18n.t(:"admin.jira.run.wizard.sections.fetch_data.label_progress")

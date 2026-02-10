@@ -41,13 +41,18 @@ module Admin::Import::Jira::ImportRuns
 
     def status_color_scheme(status)
       case status
-      when JiraImport::IMPORT_ERROR, JiraImport::REVERT_ERROR,
-        JiraImport::INSTANCE_META_ERROR, JiraImport::PROJECTS_META_ERROR
+      when JiraImportStateMachine::IMPORT_ERROR,
+           JiraImportStateMachine::REVERT_ERROR,
+           JiraImportStateMachine::INSTANCE_META_ERROR,
+           JiraImportStateMachine::PROJECTS_META_ERROR
         :danger
-      when JiraImport::COMPLETED, JiraImport::REVERTED
+      when JiraImportStateMachine::COMPLETED,
+           JiraImportStateMachine::REVERTED
         :success
-      when JiraImport::INSTANCE_META_FETCHING, JiraImport::PROJECTS_META_FETCHING,
-        JiraImport::IMPORTING, JiraImport::REVERTING
+      when JiraImportStateMachine::INSTANCE_META_FETCHING,
+           JiraImportStateMachine::PROJECTS_META_FETCHING,
+           JiraImportStateMachine::IMPORTING,
+           JiraImportStateMachine::REVERTING
         :accent
       else
         :attention

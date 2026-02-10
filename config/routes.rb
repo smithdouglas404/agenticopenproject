@@ -742,6 +742,7 @@ Rails.application.routes.draw do
             delete :remove
 
             get :revert_modal
+            get :history
           end
 
           resource :select_projects,

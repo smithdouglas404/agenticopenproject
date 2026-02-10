@@ -1405,6 +1405,7 @@ GEM
       sprockets (>= 3.0.0)
     ssrf_filter (1.0.8)
     stackprof (0.2.27)
+    statesman (13.1.0)
     store_attribute (2.0.1)
       activerecord (>= 6.1)
     stringex (2.8.6)
@@ -1727,6 +1728,7 @@ DEPENDENCIES
   sprockets (~> 3.7.2)
   sprockets-rails (~> 3.5.1)
   stackprof
+  statesman (~> 13.1.0)
   store_attribute (~> 2.0)
   stringex (~> 2.8.5)
   structured_warnings (~> 0.5.0)
@@ -2226,6 +2228,7 @@ CHECKSUMS
   sprockets-rails (3.5.2) sha256=a9e88e6ce9f8c912d349aa5401509165ec42326baf9e942a85de4b76dbc4119e
   ssrf_filter (1.0.8) sha256=03f49f54837e407d43ee93ec733a8a94dc1bcf8185647ac61606e63aaedaa0db
   stackprof (0.2.27) sha256=aff6d28656c852e74cf632cc2046f849033dc1dedffe7cb8c030d61b5745e80c
+  statesman (13.1.0) sha256=3ecb78466dfd2682e433f335a7722aa0e5b8c6853d72d83e460151b8af17a84e
   store_attribute (2.0.1) sha256=643655e4800655b58379e8b01bd524f5586093a9d88698483ac8762cda25b5ab
   stringex (2.8.6) sha256=c7b382d2b2a47a1e1646f256df201c48d487d6296fbb289d76802f67f5e929c4
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1

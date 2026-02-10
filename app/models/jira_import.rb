@@ -32,72 +32,31 @@ class JiraImport < ApplicationRecord
   belongs_to :jira
   belongs_to :author, class_name: "User"
 
-  INITIAL = "initial"
-  INSTANCE_META_FETCHING = "instance-meta-fetching"
-  INSTANCE_META_ERROR = "instance-meta-error"
-  INSTANCE_META_DONE = "instance-meta-done"
-  CONFIGURING = "configuring"
-  PROJECTS_META_FETCHING = "projects-meta-fetching"
-  PROJECTS_META_ERROR = "projects-meta-error"
-  PROJECTS_META_DONE = "projects-meta-done"
-  IMPORTING = "importing"
-  IMPORT_ERROR = "import-error"
-  IMPORTED = "imported"
-  COMPLETED = "completed"
-  REVERTING = "reverting"
-  REVERT_ERROR = "revert-error"
-  REVERTED = "reverted"
+  has_many :transitions, class_name: "JiraImportTransition", autosave: false
 
-  STATUSES = [
-    INITIAL,
-    INSTANCE_META_FETCHING,
-    INSTANCE_META_ERROR,
-    INSTANCE_META_DONE,
-    CONFIGURING,
-    PROJECTS_META_FETCHING,
-    PROJECTS_META_ERROR,
-    PROJECTS_META_DONE,
-    IMPORTING,
-    IMPORT_ERROR,
-    IMPORTED,
-    COMPLETED,
-    REVERTING,
-    REVERT_ERROR,
-    REVERTED
-  ].freeze
-
-  def status_equal_or_after?(check_status)
-    STATUSES.index(status) >= STATUSES.index(check_status)
+  def state_machine
+    @state_machine ||= JiraImportStateMachine.new(
+      self,
+      transition_class: JiraImportTransition,
+      association_name: :transitions
+    )
   end
 
-  def status_equal_or_before?(check_status)
-    STATUSES.index(status) <= STATUSES.index(check_status)
-  end
-
-  def status_before?(check_status)
-    STATUSES.index(status) < STATUSES.index(check_status)
-  end
-
-  def status_after?(check_status)
-    STATUSES.index(status) > STATUSES.index(check_status)
-  end
-
-  def status?(*check_statuses)
-    check_statuses.include?(status)
-  end
-
-  def deletable?
-    !status_running? && !status?(IMPORTED, IMPORT_ERROR, REVERT_ERROR)
-  end
-
-  def status_running?
-    [
-      INSTANCE_META_FETCHING,
-      PROJECTS_META_FETCHING,
-      IMPORTING,
-      REVERTING
-    ].include?(status)
-  end
+  delegate :can_transition_to?,
+           :current_state,
+           :history,
+           :last_transition,
+           :last_transition_to,
+           :transition_to!,
+           :transition_to,
+           :in_state?,
+           :status_running?,
+           :status_equal_or_after?,
+           :status_equal_or_before?,
+           :status_after?,
+           :status_before?,
+           :deletable?,
+           to: :state_machine
 
   def project_ids
     (projects || []).pluck("id")

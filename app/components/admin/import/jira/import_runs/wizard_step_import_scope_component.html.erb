@@ -32,17 +32,17 @@ See COPYRIGHT and LICENSE files for more details.
     concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
       I18n.t(:"admin.jira.run.wizard.sections.import_scope.title")
     })
-    if model.status_before?(JiraImport::INSTANCE_META_DONE)
+    if model.status_before?(JiraImportStateMachine::INSTANCE_META_DONE)
       concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.caption")
       })
-    elsif model.status_equal_or_after?(JiraImport::PROJECTS_META_DONE)
+    elsif model.status_equal_or_after?(JiraImportStateMachine::PROJECTS_META_DONE)
       concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.caption_done")
       })
     end
   end
-  if model.status?(JiraImport::INSTANCE_META_DONE)
+  if model.in_state?(JiraImportStateMachine::INSTANCE_META_DONE)
     box.with_row(mb: 3, mt: 3) do
       render(Primer::Alpha::Banner.new(scheme: :warning, icon: :alert)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.label_info")
@@ -82,7 +82,7 @@ See COPYRIGHT and LICENSE files for more details.
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.button_continue")
       }
     end
-  elsif model.status?(JiraImport::CONFIGURING, JiraImport::PROJECTS_META_ERROR)
+  elsif model.in_state?(JiraImportStateMachine::CONFIGURING, JiraImportStateMachine::PROJECTS_META_ERROR)
     box.with_row(mb: 3, mt: 3) do
       render(Primer::Beta::Text.new) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.label_import")
@@ -99,7 +99,7 @@ See COPYRIGHT and LICENSE files for more details.
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.button_select")
       end
     end
-    if model.status?(JiraImport::CONFIGURING)
+    if model.in_state?(JiraImportStateMachine::CONFIGURING)
       box.with_row do
         render(Primer::Beta::Button.new(
           scheme: :primary,
@@ -112,12 +112,12 @@ See COPYRIGHT and LICENSE files for more details.
           I18n.t(:"admin.jira.run.wizard.sections.import_scope.button_continue")
         }
       end
-    elsif model.status?(JiraImport::PROJECTS_META_ERROR)
+    elsif model.in_state?(JiraImportStateMachine::PROJECTS_META_ERROR)
       box.with_row do
         render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'stats'))
       end
     end
-  elsif model.status?(JiraImport::PROJECTS_META_FETCHING)
+  elsif model.in_state?(JiraImportStateMachine::PROJECTS_META_FETCHING)
     box.with_row(mt: 3) do
       render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.label_progress")

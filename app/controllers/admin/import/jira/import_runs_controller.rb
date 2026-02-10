@@ -48,13 +48,13 @@ module Admin::Import::Jira
     menu_item :jira_import
 
     before_action :require_admin
-    before_action :find_jira_and_jira_import, only: %i[show continue remove revert_modal]
+    before_action :find_jira_and_jira_import, only: %i[show continue remove revert_modal history]
 
     def show; end
 
     def new
       jira = Jira.find(params[:jira_id])
-      jira_import = JiraImport.create!(author_id: current_user.id, jira_id: jira.id, status: JiraImport::INITIAL)
+      jira_import = JiraImport.create!(author_id: current_user.id, jira_id: jira.id)
       redirect_to(admin_import_jira_run_path(jira_id: jira.id, id: jira_import.id))
     end
 
@@ -76,6 +76,10 @@ module Admin::Import::Jira
       redirect_to admin_import_jira_path(@jira), status: :see_other
     end
 
+    def history
+      @history = @jira_import.history
+    end
+
     private
 
     def change_step(step)
@@ -90,7 +94,7 @@ module Admin::Import::Jira
     def handle_error(error)
       respond_to do |format|
         format.turbo_stream do
-          render_error_flash_message_via_turbo_stream(message: error.message)
+          render_error_flash_message_via_turbo_stream(message: "#{error.message}\n#{error.backtrace}")
           respond_with_turbo_streams
         end
         format.html do
@@ -101,49 +105,31 @@ module Admin::Import::Jira
     end
 
     def init
-      return unless @jira_import.status_equal_or_before?(JiraImport::CONFIGURING)
-
-      @jira_import.update!(status: JiraImport::INITIAL)
+      @jira_import.transition_to!(:initial)
     end
 
     def fetch_instance_meta
-      return unless @jira_import.status_equal_or_before?(JiraImport::CONFIGURING)
-
-      job = JiraInstanceMetaDataJob.perform_later(@jira_import.id)
-      @jira_import.update!(status: JiraImport::INSTANCE_META_FETCHING, job_id: job.job_id)
+      @jira_import.transition_to!(:instance_meta_fetching, job_id: "JOOOOOOOO")
     end
 
     def fetch_projects_meta
-      return unless @jira_import.status?(JiraImport::CONFIGURING, JiraImport::PROJECTS_META_ERROR)
-
-      job = JiraProjectsMetaDataJob.perform_later(@jira_import.id)
-      @jira_import.update!(status: JiraImport::PROJECTS_META_FETCHING, job_id: job.job_id)
+      @jira_import.transition_to!(:projects_meta_fetching)
     end
 
     def import
-      return unless @jira_import.status?(JiraImport::IMPORT_ERROR, JiraImport::PROJECTS_META_DONE)
-
-      job = JiraFetchAndImportProjectsJob.perform_later(@jira_import.id)
-      @jira_import.update!(status: JiraImport::IMPORTING, job_id: job.job_id)
+      @jira_import.transition_to!(:importing)
     end
 
     def configure
-      return unless @jira_import.status?(JiraImport::INSTANCE_META_DONE)
-
-      @jira_import.update!(status: JiraImport::CONFIGURING)
+      @jira_import.transition_to!(:configuring)
     end
 
     def revert
-      return unless @jira_import.status?(JiraImport::REVERT_ERROR, JiraImport::IMPORTED)
-
-      job = JiraRevertJiraImportJob.perform_later(@jira_import.id)
-      @jira_import.update!(status: JiraImport::REVERTING, job_id: job.job_id)
+      @jira_import.transition_to!(:reverting)
     end
 
     def finalize
-      return unless @jira_import.status?(JiraImport::IMPORTED)
-
-      @jira_import.update!(status: JiraImport::COMPLETED)
+      @jira_import.transition_to!(:completed)
     end
 
     def find_jira_and_jira_import

@@ -65,9 +65,9 @@ class JiraRevertJiraImportJob < ApplicationJob
 
       OpenProjectJiraReference.where(jira_import_id: jira_import.id).delete_all
 
-      jira_import.update!(status: JiraImport::REVERTED, job_id: nil)
+      jira_import.transition_to!(:reverted)
     end
   rescue StandardError => e
-    jira_import.update!(status: JiraImport::REVERT_ERROR, job_id: nil, error: e.message)
+    jira_import.transition_to!(:revert_error, job_id: nil, error: e.message)
   end
 end
