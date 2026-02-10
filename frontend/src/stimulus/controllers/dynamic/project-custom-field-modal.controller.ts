@@ -31,14 +31,14 @@
 
 import { Controller } from '@hotwired/stimulus';
 
-export default class ProjectCustomFieldEditController extends Controller {
+export default class ProjectCustomFieldModalController extends Controller {
   static values = {
     url: { type: String },
   };
 
   declare urlValue:string;
 
-  openEditDialog(event:Event) {
+  open(event:Event) {
     const target = event.target as HTMLElement;
 
     // Check if the event is on an interactive element that should be ignored

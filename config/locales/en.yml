@@ -3368,7 +3368,6 @@ en:
   label_duplicate: "duplicate"
   label_duplicates: "duplicates"
   label_edit: "Edit"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Toggle multiselect"
   label_enabled_project_custom_fields: "Enabled custom fields"

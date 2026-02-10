@@ -169,7 +169,7 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
           expect(page)
             .to have_no_text(
               development_project.custom_values_for_custom_field(
-                id: custom_field.id,
+                custom_field,
                 all: true
               ).first.value
             )

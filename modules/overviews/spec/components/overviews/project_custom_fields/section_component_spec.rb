@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Overviews::ProjectCustomFields::ShowComponent, type: :component do
+RSpec.describe Overviews::ProjectCustomFields::SectionComponent, type: :component do
   include Rails.application.routes.url_helpers
 
   def render_component(...)

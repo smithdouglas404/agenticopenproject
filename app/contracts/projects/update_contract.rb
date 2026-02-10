@@ -31,14 +31,14 @@
 module Projects
   class UpdateContract < BaseContract
     def writable_attributes
-      if allow_project_attributes_only
+      if allow_project_attributes_only?
         with_available_custom_fields_only(super)
-      elsif allow_edit_attributes_only
+      elsif allow_edit_attributes_only?
         without_custom_fields(super)
-      elsif allow_all_attributes
+      elsif allow_all_attributes?
         # When all attributes are updated (API-only case), allow writing to all available custom
         # fields (including disabled ones) to maintain backward compatibility with the API.
-        with_all_available_custom_fields_only(super)
+        with_all_available_custom_fields(super)
       else
         []
       end
@@ -46,28 +46,31 @@ module Projects
 
     private
 
-    def project_attributes_only = options[:project_attributes_only].present?
+    def project_attributes_only? = options[:project_attributes_only].present?
 
-    def edit_project = user.allowed_in_project?(:edit_project, model)
+    def allow_edit_project? = user.allowed_in_project?(:edit_project, model)
 
-    def edit_project_attributes = user.allowed_in_project?(:edit_project_attributes, model)
+    def allow_edit_project_attributes? = user.allowed_in_project?(:edit_project_attributes, model)
 
-    def allow_edit_attributes_only = edit_project && !project_attributes_only && !edit_project_attributes
-
-    def allow_project_attributes_only
-      edit_project_attributes && (project_attributes_only || !edit_project)
+    def allow_edit_attributes_only?
+      allow_edit_project? && !project_attributes_only? && !allow_edit_project_attributes?
     end
 
-    def allow_all_attributes
-      (edit_project && edit_project_attributes && !project_attributes_only) ||
-      (changed_by_user == ["active"]) # Allow archiving, permission checked in manage_permission
+    def allow_project_attributes_only?
+      allow_edit_project_attributes? && (project_attributes_only? || !allow_edit_project?)
+    end
+
+    def allow_all_attributes?
+      return true if allow_edit_project? && allow_edit_project_attributes? && !project_attributes_only?
+
+      changed_by_user == ["active"] # Allow archiving, permission checked in manage_permission
     end
 
     def without_custom_fields(changes) = changes.grep_v(/^custom_field_/)
 
     def with_available_custom_fields_only(changes) = changes & available_custom_fields.map(&:attribute_name)
 
-    def with_all_available_custom_fields_only(changes)
+    def with_all_available_custom_fields(changes)
       allowed_attributes = changes.grep_v(/^custom_field_/)
       allowed_attributes += changes & all_available_custom_fields.map(&:attribute_name)
       allowed_attributes
@@ -76,7 +79,7 @@ module Projects
     def manage_permission
       if changed_by_user == ["active"]
         :archive_project
-      elsif project_attributes_only
+      elsif project_attributes_only?
         :edit_project_attributes
       else
         # if "active" is changed, :archive_project permission will also be

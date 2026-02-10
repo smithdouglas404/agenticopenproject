@@ -30,7 +30,7 @@
 
 module Overviews
   module ProjectCustomFields
-    class ShowComponent < ApplicationComponent
+    class SectionComponent < ApplicationComponent
       include ApplicationHelper
       include OpPrimer::ComponentHelpers
       include OpTurbo::Streamable

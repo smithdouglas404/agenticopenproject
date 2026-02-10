@@ -96,11 +96,11 @@ module WorkPackage::Journalized
     register_journal_formatted_fields "done_ratio", "derived_done_ratio", formatter_key: :percentage
     register_journal_formatted_fields "description", formatter_key: :diff
     register_journal_formatted_fields "schedule_manually", formatter_key: :schedule_manually
-    register_journal_formatted_fields /attachments_?\d+/, formatter_key: :attachment
-    register_journal_formatted_fields /custom_fields_\d+/, formatter_key: :custom_field
+    register_journal_formatted_fields /\Aattachments_?\d+\z/, formatter_key: :attachment
+    register_journal_formatted_fields /\Acustom_fields_\d+\z/, formatter_key: :custom_field
     register_journal_formatted_fields "ignore_non_working_days", formatter_key: :ignore_non_working_days
     register_journal_formatted_fields "cause", formatter_key: :cause
-    register_journal_formatted_fields /file_links_?\d+/, formatter_key: :file_link
+    register_journal_formatted_fields /\Afile_links_?\d+\z/, formatter_key: :file_link
     register_journal_formatted_fields "project_phase_definition_id", formatter_key: :project_phase_definition
 
     # Joined
