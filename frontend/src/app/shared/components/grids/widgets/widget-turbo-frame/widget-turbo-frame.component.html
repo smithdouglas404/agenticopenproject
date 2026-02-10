@@ -1,0 +1,10 @@
+<turbo-frame [id]="id()" [src]="src()" loading="lazy">
+  <div class="op-widget-box--body">
+    <error-blankslate
+      [name]="name()"
+      [message]="text.not_available"
+      (action)="errorAction"
+      actionText="foobar"
+    />
+  </div>
+</turbo-frame>

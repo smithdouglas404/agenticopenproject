@@ -26,32 +26,28 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Directive, inject } from '@angular/core';
-import { AbstractWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-widget.component';
-import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+/* eslint-disable @angular-eslint/component-selector */
 
-@Directive()
-export abstract class AbstractTurboWidgetComponent extends AbstractWidgetComponent {
-  protected readonly currentProject = inject(CurrentProjectService);
-  protected readonly pathHelper = inject(PathHelperService);
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, input, output } from '@angular/core';
+import { I18nService } from 'core-app/core/i18n/i18n.service';
+import { IconModule } from 'core-app/shared/components/icon/icon.module';
+import { ErrorBlankSlateComponent } from '../error-blankslate/error-blankslate.component';
 
-  abstract readonly frameId:string;
-  abstract readonly name:string;
+@Component({
+  selector: 'widget-turbo-frame',
+  templateUrl: './widget-turbo-frame.component.html',
+  styleUrls: ['./widget-turbo-frame.component.sass'],
+  imports: [ErrorBlankSlateComponent, IconModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class WidgetTurboFrameComponent {
+  readonly i18n = inject(I18nService);
 
-  protected get src():string {
-    if (this.currentProject.identifier) {
-      return this.pathHelper.projectWidgetPath(this.currentProject.identifier, this.name);
-    } else {
-      return this.pathHelper.widgetPath(this.name);
-    }
-  }
+  readonly id = input<string>();
+  readonly src = input<string>();
+  readonly name = input<string>();
+  readonly errorAction = output<void>();
 
-  public override get isEditable():boolean {
-    return false;
-  }
-
-  removeWidget() {
-    alert("REMOVING WIDGET");
-  }
+  readonly text = { not_available: this.i18n.t('js.grid.widgets.not_available') };
 }
