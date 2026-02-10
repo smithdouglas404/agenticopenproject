@@ -112,10 +112,11 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
 
   context "with unset work package type" do
     before do
-      project.update(project_creation_wizard_work_package_type_id: nil)
+      project.update!(project_creation_wizard_work_package_type_id: nil)
+      project.project_creation_wizard_default_work_package_type.destroy!
     end
 
-    it_behaves_like "contract is valid"
+    it_behaves_like "contract is invalid", project_creation_wizard_work_package_type_id: :blank
   end
 
   context "with unallowed work package type for the project" do
@@ -130,10 +131,11 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
 
   context "with unset work package status" do
     before do
-      project.update(project_creation_wizard_status_when_submitted_id: nil)
+      project.update!(project_creation_wizard_status_when_submitted_id: nil)
+      project.project_creation_wizard_default_status_when_submitted.destroy!
     end
 
-    it_behaves_like "contract is valid"
+    it_behaves_like "contract is invalid", project_creation_wizard_status_when_submitted_id: :blank
   end
 
   context "with unallowed work package status for the type" do
@@ -144,6 +146,15 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
     end
 
     it_behaves_like "contract is invalid", project_creation_wizard_status_when_submitted_id: :inclusion
+
+    context "with unset work_package_type" do
+      before do
+        project.update!(project_creation_wizard_work_package_type_id: nil)
+        project.project_creation_wizard_default_work_package_type.destroy!
+      end
+
+      it_behaves_like "contract is invalid", project_creation_wizard_work_package_type_id: :blank
+    end
   end
 
   context "with 'Assignee when submitted' not set" do
@@ -157,7 +168,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
   context "with project attribute pointed by 'Assignee when submitted' not set" do
     before do
       project.send(user_custom_field.attribute_setter, nil)
-      project.save
+      project.save!
     end
 
     it "has invalid contract with :blank error for the assignee custom field" do
