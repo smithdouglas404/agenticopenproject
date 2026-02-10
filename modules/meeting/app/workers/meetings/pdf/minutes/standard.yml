@@ -101,7 +101,6 @@ notes:
     unordered_list_point:
       sign: ">"
       spacing: 10
-      padding_bottom: 6
     ordered_list:
       spacing: 1
       padding_bottom: 6
@@ -291,9 +290,9 @@ outcome:
       spacing: 1
       padding_left: 10
       padding_right: 10
+      padding_bottom: 6
     unordered_list_point:
       spacing: 4
-      padding_bottom: 6
     ordered_list:
       spacing: 1
       padding_left: 10
