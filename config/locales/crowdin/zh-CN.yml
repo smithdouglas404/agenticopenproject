@@ -113,7 +113,7 @@ zh-CN:
       index:
         description: "Model Context Protocol 允许 AI 智能体向其用户提供此 OpenProject 实例所公开的工具和资源。"
         resources_heading: "资源"
-        resources_description: "OpenProject 实现了以下工具。每种工具都可以根据需要启用、重命名和描述。有关详情，请参阅[关于 MCP 资源的文档](docs_url)。"
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "更新资源"
         tools_heading: "工具"
         tools_description: "OpenProject 实现了以下工具。每种工具都可以根据需要启用、重命名和描述。有关详情，请参阅[关于 MCP 工具的文档](docs_url)。"
@@ -122,7 +122,7 @@ zh-CN:
         success: "MCP 配置已成功更新。"
       server_form:
         description_caption: "如何向连接到 MCP 服务器的其他应用程序描述该 MCP 服务器。"
-        title_caption: "展示给连接到 MCP 服务器的应用程序的简短标题。"
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "MCP 配置无法更新。"
         success: "MCP 配置已成功更新。"
@@ -604,6 +604,7 @@ zh-CN:
         is_for_all_blank_slate:
           heading: 适用于所有项目
           description: 由于选中了“适用于所有项目”选项，所有项目都启用了此项目特性。无法为个别项目停用该特性。
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: 目前有可用的类型。
         form:
@@ -631,6 +632,7 @@ zh-CN:
         label_request_submission: "请求提交"
         project_attributes_description: >
           选择哪些项目特性应包含在项目启动请求中。此列表仅包含为此项目启用的[项目特性](project_attributes_url)。
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: 编辑状态
     wizard:

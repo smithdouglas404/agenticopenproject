@@ -87,7 +87,7 @@ tr:
         token_placeholder: "Enterprise sürümü destek anahtarınızı buraya yapıştırın"
       add_token: "Bir Enterprise sürümü destek belirteci yükleyin"
       replace_token: "Geçerli destek anahtarını değiştirin"
-      order: "Enterprise on-premises edition sipariş edin"
+      order: "Kurumsal on-premises sürümü sipariş edin"
       paste: "Enterprise sürümü destek belirtecinizi yapıştırın"
       required_for_feature: "Bu eklenti, yalnızca etkin bir Enterprise sürümü destek belirteci ile kullanılabilir."
       enterprise_link: "Daha fazla bilgi için burayı tıklatın."
@@ -111,21 +111,21 @@ tr:
         link: "webhook"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
-        resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
-        tools_heading: "Tools"
-        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        description: "MCP (Model Bağlam Protokolü), AI ajanlarının bu OpenProject sisteminde sunulan araç ve kaynakları kullanıcılara erişilebilir kılmasını sağlar."
+        resources_heading: "Kaynaklar"
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Kaynakları güncelle"
+        tools_heading: "Araçlar"
+        tools_description: "OpenProject aşağıdaki araçları destekler. Her biri etkinleştirilebilir, adı ve açıklaması değiştirilebilir. Daha fazla bilgi için   [documentation on MCP tools](docs_url)."
+        tools_submit: "Araçları güncelle"
       multi_update:
-        success: "MCP configurations were updated successfully."
+        success: "MCP yapılandırmaları başarıyla güncellendi."
       server_form:
-        description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        description_caption: "MCP sunucusunun, ona bağlanan diğer uygulamalara nasıl tanımlanacağı."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
-        failure: "MCP configuration could not be updated."
-        success: "MCP configuration was updated successfully."
+        failure: "MCP yapılandırması güncellenemedi."
+        success: "MCP yapılandırması başarıyla güncellendi."
     scim_clients:
       authentication_methods:
         sso: "Kimlik sağlayıcıdan JWT"
@@ -208,7 +208,7 @@ tr:
       error_cannot_act_self: "Kendi yüklediğiniz dosyalar üzerinde işlem yapamazsınız."
   attribute_help_texts:
     caption: "This short version will be displayed as caption of the attribute."
-    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
+    note_public: "Bu alana eklediğiniz herhangi bir metin ve resim, oturum açmış tüm kullanıcılar  tarafından görülebilir!"
     text_overview: "Bu görünümde, öznitelikleri görünüm için özel yardım metinler oluşturabilirsiniz. Tanımladığınızda, bu metinler, aidiyet öznitelik yanındaki Yardım simgesini tıklayarak gösterilebilir."
     show_preview: "Metni önizle"
     add_new: "Yardım metni ekle"
@@ -369,7 +369,7 @@ tr:
     instructions:
       is_required:
         all: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+        project: "Alan etkin olduğu durumda, zorunlu alanlar yalnızca proje oluşturulurken doldurulmak zorundadır(‘Tüm projeler için’ ayarı yapılmışsa veya alanın etkin olduğu bir proje/şablondan kopyalama yapılıyorsa). Mevcut projeler güncellenirken bu alanlar için değer girilmesi gerekmez."
       is_for_all:
         all: "Mark the custom field as available in all existing and new projects."
         project: "Mark the attribute as available in all existing and new projects."
@@ -403,8 +403,8 @@ tr:
   concatenation:
     single: "ya da"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Devam etmek için düğme artık aktif."
+    confirmation_live_message_unchecked: "Devam etmek için düğme artık aktif değil. Devam etmek için işratlemeniz gerekli."
   op_dry_validation:
     or: "ya da"
     errors:
@@ -539,7 +539,7 @@ tr:
         text: "Bu eylem, listenin içerdiği hiçbir projeyi silmeyecektir. Bu proje listesini silmek istediğinizden emin misiniz?"
     settings:
       header_details: Temel bilgiler
-      header_status: Status
+      header_status: Durum
       header_relations: Proje ilişkileri
       button_update_details: Detayları güncelle
       button_update_status_description: Durum açıklamasını güncelle
@@ -566,13 +566,13 @@ tr:
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
-        menu_title: "Template"
-        title: "Template settings"
-        enable_failed: "Failed to enable template mode."
+        menu_title: "Şablon"
+        title: "Şablon ayarları"
+        enable_failed: "Şablon modu etkinleştirilemedi."
         members:
-          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_label: "Şablon uygulandığında hariç tutulacak roller"
           excluded_roles_caption: >
-            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
+            Bu şablondan yeni bir proje oluştururken, yukarıda seçilen roller atlanacaktır. Bu, proje rollerine göre hangi üyelerin hariç tutulacağını seçmenize olanak tanır. Kullanıcılar daha sonra şablona görüntüleme amacıyla erişebilir, ancak şablondan oluşturulan yeni projelere erişim izni alamazlar.
       actions:
         label_enable_all: "Tümünü etkinleştir"
         label_disable_all: "Tümünü devre dışı bırak"
@@ -609,6 +609,7 @@ tr:
         is_for_all_blank_slate:
           heading: For all projects
           description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+        enabled_via_assignee_when_submitted_html: Proje başlatma talepleri için gönderildiğinde  <a href=%{pir_submission_url} target="_blank"> atanmış olarak </a>ayarlandığından bu proje niteliği devre dışı bırakılamaz.
       types:
         no_results_title_text: Şu anda hiçbir tip mevcut değil.
         form:
@@ -636,8 +637,9 @@ tr:
         label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
+        enabled_because_required_html: İlgili proje özniteliği, zorunlu olarak tanımlanmış olması nedeniyle bu proje oluşturma isteğinde pasifleştirilemez. Söz konusu ayar, sistem yöneticisi tarafından <a href=%{admin_settings_url} target="_blank">yönetim ayarları</a> bölümünden değiştirilebilir.
     status:
-      button_edit: Edit status
+      button_edit: Durumu düzenle
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
@@ -780,7 +782,7 @@ tr:
       title: "Oturum yönetimi"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Şuanki oturumunuzu silemezsiniz."
-      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
+      deletion_warning: "Bu oturumu iptal etmek istediğinizden emin misiniz? Bu cihazda oturumunuz kapatılacaktır."
     groups:
       member_in_these_groups: "Bu kullanıcı şu anda aşağıdaki grupların bir üyesidir:"
       no_results_title_text: Bu kullanıcı şu anda hiçbir gruba üye değil.
@@ -834,7 +836,7 @@ tr:
         required: "Lütfen bir rol seçin."
       message:
         label: "Davet Mesajı"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
+        description: "Kullanıcıya, buradan kişisel bir mesaj ekleyebileceğiniz bir e-posta göndereceğiz. Davet için bir açıklama yararlı olabilir veya belki de başlamalarına yardımcı olacak projeyle ilgili bir parça bilgi olabilir."
       summary:
         next_button: "Davet gönder"
       success_message:
@@ -860,7 +862,7 @@ tr:
         Tablodaki iş paketlerini vurgulamak için kullanılabilir.
     admin:
       default:
-        caption: Making this priority default will override the previous default priority.
+        caption: Bu önceliği varsayılan yapmak önceki varsayılan önceliği geçersiz kılacaktır.
   reactions:
     action_title: "Tepki"
     add_reaction: "Tepki ekle"
@@ -1254,9 +1256,9 @@ tr:
         port: "Port"
         tls_certificate_string: "LDAP sunucusu SSL sertifikası"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: Etkin
+        title: Başlık
+        description: Açıklama
       member:
         roles: "Yetkiler"
       notification:
@@ -1280,8 +1282,8 @@ tr:
           true: "genel"
           false: "özel"
         queries: "Sorgular"
-        status_code: "Status"
-        status_explanation: "Status description"
+        status_code: "Durum"
+        status_explanation: "Durum açıklaması"
         status_codes:
           not_started: "Başlatılmadı"
           on_track: "Takipte"
@@ -1436,7 +1438,7 @@ tr:
         force_dark_theme_contrast_caption: "Otomatik renk modu seçildiğinde Koyu modun yüksek kontrastlı versiyonunu kullanır."
         theme: "Renk modu"
         time_zone: "Zaman dilimi"
-        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Bazı modlar, erişilebilirlik ve okunabilirlik için özel tema renklerinin üzerine yazacaktır. Tam özel tema desteği için lütfen Aydınlık modunu seçin."
         daily_reminders: "Günlük hatırlatmalar"
         workdays: "İş Günleri"
       users/invitation/form_model:
@@ -1572,7 +1574,7 @@ tr:
           attributes:
             content_type:
               blank: "Dosyanın içerik türü boş olamaz."
-              not_allowlisted: "The file was rejected by an automatic filter. '%{value}' is not allowed for upload."
+              not_allowlisted: "Dosya otomatik bir filtre tarafından reddedildi. '%{value}' dosyasının yüklenmesine izin verilmiyor."
               format: "%{message}"
         capability:
           context:
@@ -1582,7 +1584,7 @@ tr:
               minimum: "'=' işleci ile ilke, bağlam veya kimlik için en az bir filtre içermesi gerekir."
         custom_field:
           at_least_one_custom_option: "En az bir seçeneğin uygun olması gerekir."
-          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
+          previous_custom_field_recalculation_unprocessed: "Bu özel alana ait önceki değişiklikler henüz yeniden hesaplanmadı. Lütfen birkaç dakika sonra tekrar deneyin."
           referenced_in_other_fields_html:
             one: "%{name} is used in project attribute calculation %{links}."
             other: "%{name} is used in project attribute calculations: %{links}."
@@ -1817,7 +1819,7 @@ tr:
               cannot_be_in_another_project: "başka bir projede olamaz."
               not_a_valid_parent: "geçersizdir."
             schedule_manually:
-              cannot_be_automatically_scheduled: "cannot be set to false (automatically scheduled) as it has no predecessors or children."
+              cannot_be_automatically_scheduled: "öncülü veya alt öğesi olmadığı için false (otomatik zamanlama) olarak ayarlanamaz."
             start_date:
               violates_relationships: "yalnızca %{soonest_start} veya daha sonra iş paketi üst bağımlılık ilişkilerini ihlal etmediğinde ayarlanabilir."
               cannot_be_null: "başlangıç tarihi ve süresi bilindiğinden sıfır değerine ayarlanamaz."
@@ -1902,11 +1904,11 @@ tr:
     models:
       attachment: "Dosya"
       attribute_help_text:
-        one: "Attribute help text"
-        other: "Attribute help texts"
+        one: "Öznitelik yardım metni"
+        other: "Öznitelik yardım metnileri"
       auth_provider:
-        one: "Authentication provider"
-        other: "Authentication providers"
+        one: "Kimlik doğrulama sağlayıcısı"
+        other: "Kimlik doğrulama sağlayıcıları"
       category: "Kategori"
       color: "Renk"
       comment: "Yorum"
@@ -1914,15 +1916,15 @@ tr:
       custom_field: "Özel alan"
       "doorkeeper/application": "OAuth uygulaması"
       enterprise_token:
-        one: "Enterprise token"
-        other: "Enterprise tokens"
+        one: "Kurumsal anahtar"
+        other: "Kurumsal anahtarlar"
       forum: "Forum"
       global_role: "Global rol"
       group: "Grup"
       issue_priority:
         one: "Öncelik"
         other: "Öncelik"
-      meeting_participant: "Meeting participant"
+      meeting_participant: "Toplantı katılımcısı"
       member: "Üye"
       news: "Haberler"
       notification:
@@ -1941,18 +1943,18 @@ tr:
         one: "Rol"
         other: "Yetkiler"
       scim_client:
-        one: "SCIM client"
+        one: "SCIM istemcisi"
         other: "SCIM istemcileri"
       status: "İş paketi durumu"
       token/api:
         one: Erişim simgesi
         other: Erişim belirteçleri
       token/rss:
-        one: "RSS token"
-        other: "RSS tokens"
+        one: "RSS Anahtarı"
+        other: "RSS Anahtarları"
       type:
-        one: "Type"
-        other: "Types"
+        one: "Tip"
+        other: "Tipler"
       user: "Kullanıcı"
       version: "Sürüm"
       workflow: "İş akışı"
@@ -1968,10 +1970,10 @@ tr:
       other: "Ek olarak, aşağıdaki alanlarla ilgili bir sorun vardı:"
     field_erroneous_label: "Bu alan geçersiz:% {full_errors}\nLütfen geçerli bir değer girin. %{full_errors}."
     messages:
-      must_be_template: "must be template"
-      unsupported_storage_type: "is not a supported storage type."
+      must_be_template: "şablon olmalı"
+      unsupported_storage_type: "desteklenen bir depolama türü değildir."
       storage_error: "There was an error with the storage connection."
-      invalid_input: "The input is invalid."
+      invalid_input: "Giriş geçersiz."
   activity:
     item:
       created_by_on: "%{user} tarafından %{datetime} tarihinde oluşturuldu"
@@ -2011,12 +2013,12 @@ tr:
     project_phase:
       activated: "etkinleştirildi"
       added_date: "%{date} tarihine ayarlandı"
-      changed_date: "changed from %{from} to %{to}"
+      changed_date: "%{from} adresinden %{to}olarak değiştirildi"
       deactivated: "devre dışı bırakmak"
-      deleted_project_phase: "Deleted project phase"
+      deleted_project_phase: "Silinen proje aşaması"
       phase_and_both_gates: "%{phase_message}. %{start_gate_message}, ve %{finish_gate_message}"
       phase_and_one_gate: "%{phase_message}. %{gate_message}"
-      removed_date: "date deleted %{date}"
+      removed_date: "%{date} tarihinde silindi"
   #common attributes of all models
   attributes:
     active: "Aktif"
@@ -2056,7 +2058,7 @@ tr:
     estimated_time: "Çalışma"
     email: "E-posta"
     entity_type: "Varlık"
-    expires_at: "Expires on"
+    expires_at: "Süre bitişi"
     firstname: "İsim"
     filter: "Filtre"
     group: "Grup"
@@ -2185,7 +2187,7 @@ tr:
   button_download: "İndir"
   button_disable: "Disable"
   button_duplicate: "Çoğalt"
-  button_duplicate_and_follow: "Duplicate and follow"
+  button_duplicate_and_follow: "Çoğaltın ve takip edin"
   button_edit: "Düzenle"
   button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
@@ -2411,7 +2413,7 @@ tr:
     units:
       minute_abbreviated:
         one: "dakika"
-        other: "mins"
+        other: "dakika"
       hour:
         one: "saat"
         other: "saat"
@@ -2464,15 +2466,15 @@ tr:
       edit_attribute_groups: Özellik Grubunu Düzenleme
       gantt_pdf_export: Gantt PDF Dışa Aktarma
       ldap_groups: LDAP kullanıcıları ve grup senkronizasyonu
-      mcp_server: MCP Server
+      mcp_server:
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint Dosya Depolama
       placeholder_users: Yer Tutucu Kullanıcılar
       portfolio_management: Portfolio management
-      project_creation_wizard: Project initiation request
+      project_creation_wizard: Proje başlatma talebi
       project_list_sharing: Proje Listesi Paylaşımı
       readonly_work_packages: Salt Okunur İş Paketleri
-      scim_api: SCIM server API
+      scim_api: SCIM sunucu API'si
       sso_auth_providers: Tek Oturum Açma
       team_planner_view: Takım Planlayıcı Görünümü
       virus_scanning: Antivirüs Taraması
@@ -2531,7 +2533,7 @@ tr:
       work_package_sharing:
         description: "İş paketlerini proje üyesi olmayan kullanıcılarla paylaşın."
       project_list_sharing:
-        description: "Share project lists with individual users."
+        description: "Proje listelerini belirli kullanıcılarla paylaşın."
       calculated_values:
         description: "Calculated values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
@@ -2542,20 +2544,20 @@ tr:
         title: "Özel eylemler"
         description: "Özel eylemler, duruma, role, türe veya projeye göre belirli iş paketlerinde kullanıma sunabileceğiniz bir dizi önceden tanımlanmış eylemin tek tıkla kısayollarıdır."
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Yapay zeka aracılarını MCP aracılığıyla OpenProject örneğinizle entegre edin."
       nextcloud_sso:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
       scim_api:
         title: "SCIM istemcileri"
-        description: "Automate user management in OpenProject by seamlessly integrating external identity services like Microsoft Entra or Keycloak through our SCIM Server API. Available starting with the Enterprise corporate plan."
+        description: "SCIM Server API aracılığıyla Microsoft Entra veya Keycloak gibi harici kimlik servisleriyle sorunsuz entegrasyon sağlayarak OpenProject’te kullanıcı yönetimini otomatikleştirin. Sadece Kurumsal plan başlatılırsa."
       sso_auth_providers:
         title: "Tek Oturum Açma (SSO)"
         description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
       virus_scanning:
         description: "OpenProject'te yüklenen dosyaların diğer kullanıcılar tarafından erişilmeden önce virüslere karşı tarandığından emin olun."
       project_creation_wizard:
-        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
+        description: "Proje yöneticilerinin proje başlatma talebini doldurmasına yardımcı olacak adım adım bir sihirbaz oluşturun."
       placeholder_users:
         title: Yer tutucu kullanıcı
         description: >
@@ -2602,7 +2604,7 @@ tr:
       enabled: "Devre dışı bırak"
   enumeration_activities: "Zaman izleme faaliyetleri"
   enumeration_work_package_priorities: "İş paketi öncelikleri"
-  enumeration_reported_project_statuses: "Reported status"
+  enumeration_reported_project_statuses: "Bildirilen durum"
   enumeration_caption_order_changed: "Sıralama başarıyla değiştirildi."
   enumeration_could_not_be_moved: "Numaralandırma taşınamadı."
   enterprise_trials:
@@ -2859,7 +2861,7 @@ tr:
           new_features_list:
             line_0: Automated project initiation (Enterprise add-on).
             line_1: "Meetings: add new or existing work packages as outcomes."
-            line_2: "Meetings: show iCal responses in OpenProject."
+            line_2: "Toplantılar: OpenProject'te iCal yanıtlarını gösterin."
             line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
             line_4: "Release to Community: Attribute highlighting."
             line_5: Warning before opening external links in user-provided content (Enterprise add-on).
@@ -2931,12 +2933,12 @@ tr:
   instructions_after_error: "%{signin} düğmesini tıklayarak tekrar oturum açmayı deneyebilirsiniz. Hata devam ederse, yöneticinizden yardım isteyin."
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "Yapay Zeka (AI)"
       aggregation: "Birleştirme"
       api_and_webhooks: "API ve web kancaları"
       mail_notification: "E-posta bildirimleri"
       mails_and_notifications: "E-postalar ve bildirimler"
-      mcp_configurations: "Model Context Protocol (MCP)"
+      mcp_configurations: "Model Bağlam Protokolü (MCP)"
     quick_add:
       label: "Ekle…"
   my_account:
@@ -2964,7 +2966,7 @@ tr:
         text_hint: "API belirteçleri, üçüncü taraf uygulamaların REST API'leri aracılığıyla bu OpenProject kurulumunuzla iletişim kurmasına olanak tanır."
         static_token_name: "API token"
         disabled_text: "API belirteçleri yönetici tarafından etkinleştirilmemiştir. Bu özelliği kullanmak için lütfen yöneticinize başvurun."
-        add_button: "API token"
+        add_button: "API anahtarı"
       ical:
         blank_description: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
         blank_title: "No iCalendar token"
@@ -2992,7 +2994,7 @@ tr:
         removed: "OAuth client token successfully removed"
         unknown_integration: "Unknown"
       token/rss:
-        add_button: "RSS token"
+        add_button: "RSS anahtarı"
         blank_description: "There is no RSS token yet. You can create one using the button below."
         blank_title: "No RSS token"
         title: "RSS"
@@ -3062,7 +3064,7 @@ tr:
   label_always_visible: "Her zaman görüntüle"
   label_announcement: "Duyuru"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "%{app_title} modüller"
   label_api_access_key: "API erişim anahtarı"
   label_api_access_key_created_on: "API erişim anahtarı %{value} önce oluşturuldu"
   label_api_access_key_type: "API"
@@ -4034,7 +4036,7 @@ tr:
   permission_commit_access: "Depoya okuma / yazma erişimi (tamamlama)"
   permission_copy_projects: "Proje kopyalamak"
   permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
-  permission_copy_work_packages: "Duplicate work packages"
+  permission_copy_work_packages: "İş paketlerini çoğalt"
   permission_create_backup: "Yedek oluşturma"
   permission_delete_work_package_watchers: "Takipçi sil"
   permission_delete_work_packages: "İş paketi silmek"
@@ -4153,11 +4155,11 @@ tr:
       heading: "Bu projeyi kalıcı olarak silmek istiyor musunuz?"
       confirmation_message_for_subprojects_html:
         zero: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+          Proje ile ilgili tüm verileri kalıcı olarak silmek üzeresiniz <strong>%{name}</strong>.
         one: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+          Proje ile ilgili tüm verileri kalıcı olarak silmek üzeresiniz <strong>%{name}</strong> ve bu alt proje:
         other: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
+          Proje ile ilgili tüm verileri kalıcı olarak silmek üzeresiniz <strong>%{name}</strong> ve bu alt projeler:
     filters:
       project_phase: "Proje aşaması: %{phase}"
       project_phase_any: "Proje aşaması: Herhangi bir"
@@ -4341,7 +4343,7 @@ tr:
   setting_apiv3_docs_enabled_instructions_html: >
     Dokümanlar sayfası etkinleştirildiyse, <a href="%{link}" target="_blank">%{link}</a> altında APIv3 belgelerinin etkileşimli bir görünümünü elde edebilirsiniz.
   setting_apiv3_docs_enabled_instructions_warning: >
-    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
+    Uyarı: API dokümantasyonunu canlı ortamda etkinleştirmek güvenlik riskleri ve olası veri kaybına neden olabilir. Bu ayarı sadece geliştirme ortamlarında kullanmanızı öneririz.
   setting_attachment_whitelist: "Ek yükleme beyaz listesi"
   setting_email_delivery_method: "E-posta teslim yöntemi"
   setting_emails_salutation: "E-postalarda kullanıcıya şu şekilde hitap edin"
@@ -4634,7 +4636,7 @@ tr:
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
-        assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
+        assignee_caption_html: "Bu proje niteliğine atanan kullanıcı veya grup, yeni iş paketinin de atananı olacaktır. Bu liste yalnızca <i>User</i> türündeki aktif proje niteliklerini içerir."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
         work_package_comment: "Work package comment"

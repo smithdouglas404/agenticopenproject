@@ -63,6 +63,13 @@ RSpec.describe "Project creation wizard settings - attributes tab",
            project_custom_field_section: section2)
   end
 
+  let!(:required_int_custom_field) do
+    create(:integer_project_custom_field,
+           name: "Important number",
+           is_required: true,
+           project_custom_field_section: section2)
+  end
+
   let!(:text_mapping) do
     create(:project_custom_field_project_mapping,
            project:,
@@ -88,6 +95,13 @@ RSpec.describe "Project creation wizard settings - attributes tab",
     create(:project_custom_field_project_mapping,
            project:,
            project_custom_field: int_custom_field,
+           creation_wizard: true)
+  end
+
+  let!(:required_int_mapping) do
+    create(:project_custom_field_project_mapping,
+           project:,
+           project_custom_field: required_int_custom_field,
            creation_wizard: true)
   end
 
@@ -131,6 +145,10 @@ RSpec.describe "Project creation wizard settings - attributes tab",
       end
 
       within_custom_field_container(int_custom_field) do
+        expect_checked_state
+      end
+
+      within_custom_field_container(required_int_custom_field) do
         expect_checked_state
       end
     end
@@ -195,6 +213,82 @@ RSpec.describe "Project creation wizard settings - attributes tab",
     expect(list_mapping.creation_wizard).to be false
   end
 
+  it "cannot toggle a required field off" do
+    within_custom_field_section_container(section2) do
+      within_custom_field_container(required_int_custom_field) do
+        expect_checked_state
+        expect_disabled_state
+      end
+    end
+
+    required_int_mapping.reload
+    expect(required_int_mapping.creation_wizard).to be true
+  end
+
+  context "with a user custom field" do
+    let!(:user_custom_field) do
+      create(:user_project_custom_field,
+             name: "User field",
+             project_custom_field_section: section2)
+    end
+
+    let!(:user_custom_field_mapping) do
+      create(:project_custom_field_project_mapping,
+             project:,
+             project_custom_field: user_custom_field,
+             # Note that this field is disabled in the creation wizard
+             creation_wizard: false)
+    end
+
+    before do
+      visit project_settings_creation_wizard_path(project, tab: "attributes")
+    end
+
+    it "can be toggled" do
+      within_custom_field_section_container(section2) do
+        within_custom_field_container(user_custom_field) do
+          expect_unchecked_state
+          expect_enabled_state
+        end
+      end
+    end
+
+    context "when it is configured as PIR assignee" do
+      before do
+        project.project_creation_wizard_assignee_custom_field_id = user_custom_field.id
+        project.save!
+
+        visit project_settings_creation_wizard_path(project, tab: "attributes")
+      end
+
+      it "is enabled and cannot be toggled off" do
+        within_custom_field_section_container(section2) do
+          within_custom_field_container(user_custom_field) do
+            expect_checked_state
+            expect_disabled_state
+          end
+        end
+      end
+
+      it "is excluded from 'disable all' action" do
+        within_custom_field_section_container(section2) do
+          within_custom_field_container(user_custom_field) do
+            expect_checked_state
+          end
+
+          click_link "Disable all"
+
+          within_custom_field_container(user_custom_field) do
+            expect_checked_state
+          end
+        end
+
+        user_custom_field_mapping.reload
+        expect(user_custom_field_mapping.creation_wizard).to be true
+      end
+    end
+  end
+
   it "defaults to true for newly mapped fields" do
     new_field = create(:string_project_custom_field,
                        name: "New Field",
@@ -249,6 +343,23 @@ RSpec.describe "Project creation wizard settings - attributes tab",
     expect(list_mapping.creation_wizard).to be false
   end
 
+  it "excludes required fields from 'disable all' action" do
+    within_custom_field_section_container(section2) do
+      within_custom_field_container(required_int_custom_field) do
+        expect_checked_state
+      end
+
+      click_link "Disable all"
+
+      within_custom_field_container(required_int_custom_field) do
+        expect_checked_state
+      end
+    end
+
+    required_int_mapping.reload
+    expect(required_int_mapping.creation_wizard).to be true
+  end
+
   context "when a field is not mapped to the project" do
     let!(:unmapped_field) do
       create(:string_project_custom_field,
@@ -285,11 +396,19 @@ RSpec.describe "Project creation wizard settings - attributes tab",
   end
 
   def expect_checked_state
-    expect(page).to have_css("button.ToggleSwitch-track[aria-pressed='true']", wait: 10)
+    expect(page).to have_css(".ToggleSwitch-track[aria-pressed='true']", wait: 10)
   end
 
   def expect_unchecked_state
-    expect(page).to have_css("button.ToggleSwitch-track[aria-pressed='false']", wait: 10)
+    expect(page).to have_css(".ToggleSwitch-track[aria-pressed='false']", wait: 10)
+  end
+
+  def expect_disabled_state
+    expect(page).to have_css(".ToggleSwitch-track[disabled='disabled']")
+  end
+
+  def expect_enabled_state
+    expect(page).to have_no_css(".ToggleSwitch-track[disabled='disabled']")
   end
 
   def toggle_switch(custom_field)

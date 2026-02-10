@@ -113,7 +113,7 @@ cs:
       index:
         description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
         resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Update resources"
         tools_heading: "Tools"
         tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
@@ -122,7 +122,7 @@ cs:
         success: "MCP configurations were updated successfully."
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -610,6 +610,7 @@ cs:
         is_for_all_blank_slate:
           heading: For all projects
           description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: V současné době nejsou k dispozici žádné typy.
         form:
@@ -637,6 +638,7 @@ cs:
         label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Edit status
     wizard:

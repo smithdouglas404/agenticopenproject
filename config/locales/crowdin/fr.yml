@@ -113,7 +113,7 @@ fr:
       index:
         description: "Le protocole de contexte de modèle permet aux agents d'intelligence artificielle de fournir à leurs utilisateurs les outils et les ressources exposés par cette instance d'OpenProject."
         resources_heading: "Ressources"
-        resources_description: "OpenProject implémente les outils suivants. Chacun d'entre eux peut être activé, renommé et décrit comme vous le souhaitez. Pour en savoir plus, veuillez vous référer à la [documentation sur les ressources MCP](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Mettre à jour les ressources"
         tools_heading: "Outils"
         tools_description: "OpenProject implémente les outils suivants. Chacun d'entre eux peut être activé, renommé et décrit comme vous le souhaitez. Pour en savoir plus, veuillez vous référer à la [documentation sur les outils MCP](docs_url)."
@@ -122,7 +122,7 @@ fr:
         success: "Les configurations MCP ont été mises à jour avec succès."
       server_form:
         description_caption: "Comment le serveur MCP sera décrit aux autres applications qui s'y connectent."
-        title_caption: "Un titre court affiché aux applications qui se connectent au serveur MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "La configuration MCP n'a pas pu être mise à jour."
         success: "La configuration MCP a été mise à jour avec succès."
@@ -608,6 +608,7 @@ fr:
         is_for_all_blank_slate:
           heading: Pour tous les projets
           description: Cet attribut de projet est activé dans tous les projets, car l'option « Pour tous les projets » est cochée. Il ne peut pas être désactivé pour les projets individuels.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: Il n'y a actuellement aucun type disponible.
         form:
@@ -635,6 +636,7 @@ fr:
         label_request_submission: "Demande d'envoi"
         project_attributes_description: >
           Sélectionnez les attributs du projet à inclure dans la demande de lancement du projet. Cette liste ne comprend que les [attributs du projet](project_attributes_url) activés pour ce projet.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Modifier le statut
     wizard:

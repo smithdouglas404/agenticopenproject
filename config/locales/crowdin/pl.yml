@@ -113,7 +113,7 @@ pl:
       index:
         description: "Protokół kontekstu modelu umożliwia agentom AI dostarczanie użytkownikom narzędzi i zasobów udostępnianych przez to wystąpienie OpenProject."
         resources_heading: "Zasoby"
-        resources_description: "OpenProject implementuje następujące narzędzia. Każde z nich może zostać włączone, przemianowane i opisane zgodnie z Twoim życzeniem. Aby uzyskać więcej informacji, zapoznaj się z [dokumentacją zasobów MCP](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Zaktualizuj zasoby"
         tools_heading: "Narzędzia"
         tools_description: "OpenProject implementuje następujące narzędzia. Każde z nich może zostać włączone, przemianowane i opisane zgodnie z Twoim życzeniem. Aby uzyskać więcej informacji, zapoznaj się z [dokumentacją narzędzi MCP](docs_url)."
@@ -122,7 +122,7 @@ pl:
         success: "Konfiguracje MCP zostały zaktualizowane."
       server_form:
         description_caption: "Sposób, w jaki serwer MCP będzie opisywany innym aplikacjom, które się z nim łączą."
-        title_caption: "Krótki tytuł wyświetlany aplikacjom łączącym się z serwerem MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "Nie można zaktualizować konfiguracji MCP."
         success: "Konfiguracja MCP została zaktualizowana."
@@ -607,6 +607,7 @@ pl:
         is_for_all_blank_slate:
           heading: Dla wszystkich projektów
           description: Ten atrybut projektu jest włączony we wszystkich projektach, ponieważ jest zaznaczona opcja „Dla wszystkich projektów”. Nie można go wyłączyć dla poszczególnych projektów.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: Nie ma dostępnych typów.
         form:
@@ -634,6 +635,7 @@ pl:
         label_request_submission: "Przesłanie żądania"
         project_attributes_description: >
           Wybierz atrybuty projektu, które powinny zostać uwzględnione w żądaniu zainicjowania projektu. Ta lista zawiera tylko [atrybuty projektu](project_attributes_url) włączone dla tego projektu.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Edytuj status
     wizard:

@@ -238,8 +238,8 @@ class RecurringMeeting < ApplicationRecord
       .intersect?(%w[frequency start_date start_time start_time_hour iterations interval end_after end_date location])
   end
 
-  def scheduled_occurrences(limit:)
-    schedule.next_occurrences(limit, Time.current)
+  def scheduled_occurrences(limit:, from_time: Time.current)
+    schedule.next_occurrences(limit, from_time)
   end
 
   def first_occurrence
@@ -315,9 +315,10 @@ class RecurringMeeting < ApplicationRecord
   end
 
   def upcoming_cancelled_meetings
+    # Include ongoing cancelled meetings by setting a start time in the past
     scheduled_meetings
-      .upcoming
       .cancelled
+      .where(start_time: (Time.current - template.duration.hours)..)
       .order(start_time: :asc)
   end
 

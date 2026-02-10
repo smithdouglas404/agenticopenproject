@@ -111,21 +111,21 @@ de:
         link: "Webhook"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
-        resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
+        description: "Das Model Context Protocol ermöglicht es KI-Agenten, ihren Nutzern Tools und Ressourcen bereitzustellen, die diese OpenProject-Instanz zur Verfügung stellt."
+        resources_heading: "Ressourcen"
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Ressourcen aktualisieren"
         tools_heading: "Tools"
-        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        tools_description: "OpenProject stellt die folgenden Tools bereit. Jedes Tool kann nach Wunsch aktiviert, umbenannt und beschrieben werden. Weitere Informationen finden sich in der [Dokumentation zu MCP-Ressourcen](docs_url)."
+        tools_submit: "Tools aktualisieren"
       multi_update:
-        success: "MCP configurations were updated successfully."
+        success: "MCP-Konfigurationen wurden erfolgreich aktualisiert."
       server_form:
-        description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        description_caption: "Wie der MCP-Server gegenüber anderen Anwendungen beschrieben wird, die sich damit verbinden."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
-        failure: "MCP configuration could not be updated."
-        success: "MCP configuration was updated successfully."
+        failure: "Die MCP-Konfiguration konnte nicht aktualisiert werden."
+        success: "Die MCP-Konfiguration wurde erfolgreich aktualisiert."
     scim_clients:
       authentication_methods:
         sso: "JWT vom Identitätsanbieter"
@@ -605,6 +605,7 @@ de:
         is_for_all_blank_slate:
           heading: Für alle Projekte
           description: Dieses Projekt-Attribut ist in allen Projekten aktiviert, da die Option "Für alle Projekte" aktiviert ist. Es kann nicht für einzelne Projekte deaktiviert werden.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: Derzeit stehen keine Typen zur Verfügung.
         form:
@@ -632,6 +633,7 @@ de:
         label_request_submission: "Einreichung des Antrags"
         project_attributes_description: >
           Wählen Sie aus, welche Attribute in den Projektinitiierungsantrag aufgenommen werden sollen. Diese Liste zeigt nur [Projektattribute](project_attributes_url), die für dieses Projekt aktiviert sind.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Status bearbeiten
     wizard:

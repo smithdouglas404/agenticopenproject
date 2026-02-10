@@ -113,7 +113,7 @@ ko:
       index:
         description: "모델 컨텍스트 프로토콜을 통해 AI 에이전트는 이 OpenProject 인스턴스에 의해 노출된 도구와 리소스를 사용자에게 제공할 수 있습니다."
         resources_heading: "리소스"
-        resources_description: "OpenProject는 다음 도구를 구현합니다. 원하는 대로 각 도구를 활성화하고, 이름을 바꾸고, 설명할 수 있습니다. 자세한 내용은 [MCP 리소스의 문서](docs_url)를 참조하세요."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "리소스 업데이트"
         tools_heading: "도구"
         tools_description: "OpenProject는 다음 도구를 구현합니다. 원하는 대로 각 도구를 활성화하고, 이름을 바꾸고, 설명할 수 있습니다. 자세한 내용은 [MCP 도구의 문서](docs_url)를 참조하세요."
@@ -122,7 +122,7 @@ ko:
         success: "MCP 구성이 업데이트되었습니다."
       server_form:
         description_caption: "MCP 서버에 연결하는 다른 애플리케이션에 대해 MCP 서버가 설명되는 방식입니다."
-        title_caption: "MCP 서버에 연결하는 애플리케이션에 표시되는 짧은 제목입니다."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "MCP 구성을 업데이트할 수 없습니다."
         success: "MCP 구성이 업데이트되었습니다."
@@ -607,6 +607,7 @@ ko:
         is_for_all_blank_slate:
           heading: 모든 프로젝트용
           description: '"모든 프로젝트용" 옵션이 선택되었으므로 모든 프로젝트에서 이 프로젝트 특성이 활성화되었습니다. 개별 프로젝트에 대해 비활성화할 수 없습니다.'
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: 사용 가능한 타입이 없습니다.
         form:
@@ -634,6 +635,7 @@ ko:
         label_request_submission: "요청 제출"
         project_attributes_description: >
           프로젝트 시작 요청에 포함해야 하는 프로젝트 특성을 선택합니다. 이 목록에는 해당 프로젝트에 대해 활성화된 [프로젝트 특성](project_attributes_url)만 포함됩니다.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: 상태 편집
     wizard:

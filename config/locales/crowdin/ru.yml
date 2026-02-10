@@ -113,7 +113,7 @@ ru:
       index:
         description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
         resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Update resources"
         tools_heading: "Tools"
         tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
@@ -122,7 +122,7 @@ ru:
         success: "MCP configurations were updated successfully."
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -609,6 +609,7 @@ ru:
         is_for_all_blank_slate:
           heading: Для всех проектов
           description: Этот атрибут проекта включен во всех проектах, поскольку опция "Для всех проектов" отмечена. Его нельзя отключить для отдельных проектов.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: На данный момент доступных типов нет.
         form:
@@ -636,6 +637,7 @@ ru:
         label_request_submission: "Подача заявки"
         project_attributes_description: >
           Выберите, какие атрибуты проекта должны быть включены в запрос на инициацию проекта. В этот список входят только [атрибуты проекта](project_attributes_url), включенные для этого проекта.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Редактировать статус
     wizard:
@@ -1531,7 +1533,7 @@ ru:
         even: "должно быть чётным."
         exclusion: "зарезервировано."
         feature_disabled: недоступно.
-        feature_disabled_for_project: is disabled for this project.
+        feature_disabled_for_project: отключен для этого проекта.
         file_too_large: "слишком большой (максимальный размер составляет %{count} байт)."
         filter_does_not_exist: "фильтр не существует."
         format: "не соответствует ожидаемому формату '%{expected}'."
@@ -2548,7 +2550,7 @@ ru:
       baseline_comparison: Сравнение базовых уровней
       board_view: Расширенные доски
       calculated_values: Рассчитываемые значения
-      capture_external_links: Capture External Links
+      capture_external_links: Перехват внешних ссылок
       internal_comments: Служебный комментарий
       custom_actions: Пользовательские действия
       custom_field_hierarchies: Иерархии
@@ -2605,7 +2607,7 @@ ru:
       customize_life_cycle:
         description: "Создание и организация этапов и стадий проекта, отличных от тех, что предусмотрены планированием цикла проекта PM2."
       capture_external_links:
-        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
+        description: "Предотвращать атаки социальной инженерии путем перехвата внешних ссылок до того, как пользователи их посетят."
       work_package_query_relation_columns:
         description: "Нужно видеть отношения или дочерние элементы в списке пакетов работ?"
       edit_attribute_groups:
@@ -2951,15 +2953,15 @@ ru:
         #We need to include the version to invalidate outdated translations in other locales
         "17_1":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Релиз содержит различные новые функции и улучшения, такие как:
           new_features_list:
             line_0: Automated project initiation (Enterprise add-on).
-            line_1: "Meetings: add new or existing work packages as outcomes."
+            line_1: "Совещания: добавление новых или существующих пакетов работ в качестве итогов совещания."
             line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
-            line_4: "Release to Community: Attribute highlighting."
-            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
-            line_6: Improved performance and user experience, including the Activity tab and Documents module.
+            line_3: "Повторяющиеся совещания: продублируйте пункты повестки дня на следующее совещание."
+            line_4: "Выпуск для сообщества: Выделение атрибутов."
+            line_5: Предупреждение перед открытием внешних ссылок в содержании, предоставленном пользователем (Enterprise add-on).
+            line_6: Улучшена производительность и пользовательский опыт, включая вкладку "Деятельность" и модуль "Документы".
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -3060,7 +3062,7 @@ ru:
         text_hint: "Токены API позволяют приложениям общаться с этим экземпляром OpenProject через REST API."
         static_token_name: "Токен API"
         disabled_text: "Токены API не включены администратором. Пожалуйста, обратитесь к администратору для использования этой функции."
-        add_button: "API token"
+        add_button: "API-токен"
       ical:
         blank_description: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
         blank_title: "Нет токена iCalendar"
@@ -3088,7 +3090,7 @@ ru:
         removed: "Токен OAuth успешно удален"
         unknown_integration: "Неизвестная"
       token/rss:
-        add_button: "RSS token"
+        add_button: "Токен RSS"
         blank_description: "Токен RSS пока не создан. Вы можете создать его с помощью кнопки ниже."
         blank_title: "Нет токена RSS"
         title: "RSS"
@@ -4409,9 +4411,9 @@ ru:
   setting_allowed_link_protocols: "Разрешить ссылки на протоколы"
   setting_allowed_link_protocols_text_html: >-
     Разрешить отображать эти протоколы как ссылки в описаниях пакетов работ, длинных текстовых полях и комментариях. Например, %{tel_code} или %{element_code}. Введите по одному протоколу в строке. <br/>Протоколы %{http_code}, %{https_code} и %{mailto_code} всегда разрешены.
-  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links: "Перехват внешних ссылок"
   setting_capture_external_links_text: >
-    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+    Если эта функция включена, все внешние ссылки в форматированном тексте будут перенаправляться через страницу предупреждения, прежде чем покинуть приложение. Это помогает защитить пользователей от потенциально вредоносных внешних сайтов.
   setting_after_first_login_redirect_url: "Перенаправление первого входа"
   setting_after_first_login_redirect_url_text_html: >
     Задайте путь для перенаправления пользователей после их первого входа в систему. Если не задано, то пользователь будет перенаправлен на домашнюю страницу обзорного тура. <br/> Например: <code>/my/page</code>
@@ -5394,7 +5396,7 @@ ru:
     hashed_token:
       display_value_placeholder: "***"
   external_link_warning:
-    title: "Leaving OpenProject"
-    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
-    continue_message: "Are you sure you want to proceed to the following external link?"
+    title: "Выход из OpenProject"
+    warning_message: "Вы собираетесь покинуть OpenProject и посетить внешний сайт. Пожалуйста, имейте в виду, что внешние сайты не находятся под нашим контролем и могут иметь другую политику конфиденциальности и безопасности."
+    continue_message: "Вы уверены, что хотите перейти по следующей внешней ссылке?"
     continue_button: "Перейти на внешний сайт"

@@ -65,7 +65,9 @@ id:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} bukan peserta yang sah."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Terdapat satu pertemuan terbuka dalam rangkaian pertemuan yang tidak tercakup dalam jadwal baru. Sesuaikan jadwal untuk mencakup semua pertemuan yang sudah ada."

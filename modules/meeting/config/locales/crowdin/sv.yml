@@ -66,7 +66,9 @@ sv:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} är inte en giltig deltagare."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Det finns ett öppet möte i serien som inte omfattas av det nya schemat. Justera schemat för att inkludera alla befintliga möten."

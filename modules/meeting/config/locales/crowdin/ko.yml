@@ -65,7 +65,9 @@ ko:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} 님은 유효한 참가자가 아닙니다."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "이 시리즈에는 새로운 스케줄에 포함되지 않은 오픈 미팅이 하나 있습니다. 모든 기존 미팅을 포함하도록 스케줄을 조정하세요."

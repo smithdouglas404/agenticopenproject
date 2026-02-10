@@ -32,6 +32,7 @@ module McpResources
   class << self
     def all
       [
+        CurrentUser,
         Project,
         Status,
         StatusList,
