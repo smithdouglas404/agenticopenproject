@@ -104,7 +104,7 @@ export class GridAreaService {
 
   public async rebuildAndPersist():Promise<GridResource> {
     const resource = await this.persist();
-    this.buildAreas(false);
+    this.buildAreas(true);
     return resource;
   }
 
@@ -261,7 +261,21 @@ export class GridAreaService {
   }
 
   private buildGridWidgetAreas() {
-    return this.widgetResources.map((widget) => new GridWidgetArea(widget));
+    const rowMajorIndex = (w:GridWidgetResource) =>
+      (w.startRow - 1) * this.numColumns + w.startColumn;
+
+    return [...this.widgetResources]
+      .sort((a, b) => {
+        const ai = rowMajorIndex(a);
+        const bi = rowMajorIndex(b);
+
+        if (ai !== bi) return ai - bi;
+
+        const aKey = (a.id ?? `${a.identifier}:${a.startRow}:${a.startColumn}:${a.endRow}:${a.endColumn}`).toString();
+        const bKey = (b.id ?? `${b.identifier}:${b.startRow}:${b.startColumn}:${b.endRow}:${b.endColumn}`).toString();
+        return aKey.localeCompare(bKey);
+      })
+      .map((widget) => new GridWidgetArea(widget));
   }
 
   // persist all changes to the areas caused by dragging/resizing
