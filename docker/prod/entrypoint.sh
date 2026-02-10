@@ -97,7 +97,8 @@ if [ "$(id -u)" = '0' ]; then
 
 			HP_HOST=${OPENPROJECT_HOST__NAME:="localhost"}
 			export OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL="${HP_PROTOCOL}://${HP_HOST}/hocuspocus"
-			export OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET="$(tr -dc 'A-Za-z0-9!?%=' < /dev/urandom | head -c 32)"
+			# Use a YAML-safe secret charset because environment values are parsed via YAML.
+			export OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET="$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32)"
 		fi
 
 		exec "$@"
