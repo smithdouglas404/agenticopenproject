@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: Project initiation request
+  title: Project initiation request settings
   priority: 850
 description: Configure the project initiation request workflow for a project in OpenProject.
 keywords: project initiation request, project creation wizard, project settings, project attributes, work packages, PDF export
