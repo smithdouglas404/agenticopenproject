@@ -63,7 +63,11 @@ module Admin::Import::Jira::ImportRuns
                  color: item[:checked] ? :success : :danger
                )
              ))
-      concat(render(Primer::Beta::Text.new(ml: 1)) { item[:label] })
+      if item[:url].present?
+        concat(render(Primer::Beta::Link.new(href: item[:url], ml: 1)) { item[:label] })
+      else
+        concat(render(Primer::Beta::Text.new(ml: 1)) { item[:label] })
+      end
     end
   end
 end

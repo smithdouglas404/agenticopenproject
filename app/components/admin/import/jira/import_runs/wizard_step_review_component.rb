@@ -35,35 +35,45 @@ module Admin::Import::Jira::ImportRuns
 
     def imported_data
       [
-        projects_label(imported_projects_count),
-        work_packages_label(imported_issues_count),
-        statuses_label(imported_statuses_count),
-        types_label(imported_types_count)
-      ].map { |label| { label:, checked: true } }
+        { label: projects_label(imported_projects.count), checked: true, url: imported_projects_url },
+        { label: work_packages_label(imported_work_packages.count), checked: true, url: imported_work_packages_url },
+        { label: statuses_label(imported_statuses.count), checked: true },
+        { label: types_label(imported_types.count), checked: true }
+      ]
     end
 
-    def imported_projects_count
-      OpenProjectJiraReference
+    def imported_projects
+      @imported_projects ||= OpenProjectJiraReference
         .where(jira_import: model, op_entity_class: "Project", uses_existing: false)
-        .count
     end
 
-    def imported_issues_count
-      OpenProjectJiraReference
+    def imported_projects_url
+      return nil if imported_projects.none?
+
+      ids = imported_projects.pluck(:op_entity_id).map(&:to_s)
+      helpers.projects_path(filters: [{ id: { operator: "=", values: ids } }].to_json)
+    end
+
+    def imported_work_packages
+      @imported_work_packages ||= OpenProjectJiraReference
         .where(jira_import: model, op_entity_class: "WorkPackage", uses_existing: false)
-        .count
     end
 
-    def imported_statuses_count
-      OpenProjectJiraReference
+    def imported_work_packages_url
+      return nil if imported_work_packages.none?
+
+      project_ids = imported_projects.pluck(:op_entity_id).map(&:to_s)
+      helpers.work_packages_path(query_props: { f: [{ n: "project", o: "=", v: project_ids }] }.to_json)
+    end
+
+    def imported_statuses
+      @imported_statuses ||= OpenProjectJiraReference
         .where(jira_import: model, op_entity_class: "Status", uses_existing: false)
-        .count
     end
 
-    def imported_types_count
-      OpenProjectJiraReference
+    def imported_types
+      @imported_types ||= OpenProjectJiraReference
         .where(jira_import: model, op_entity_class: "Type", uses_existing: false)
-        .count
     end
   end
 end

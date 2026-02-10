@@ -37,12 +37,9 @@ See COPYRIGHT and LICENSE files for more details.
     case model.current_state
     when JiraImportStateMachine::REVERTING
       box.with_row(mt: 3) do
-        render(Primer::Box.new(border: true, border_color: :accent, border_radius: 2, bg: :accent, p: 3)) do
-          concat render(Primer::Beta::Spinner.new(size: :small))
-          concat render(Primer::Beta::Text.new(ml: 2)) {
-            I18n.t(:"admin.jira.run.wizard.sections.import_result.label_revert_progress")
-          }
-        end
+        render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
+          I18n.t(:"admin.jira.run.wizard.sections.import_result.label_revert_progress")
+        ))
       end
     when JiraImportStateMachine::REVERTED
       box.with_row(mt: 3) do
