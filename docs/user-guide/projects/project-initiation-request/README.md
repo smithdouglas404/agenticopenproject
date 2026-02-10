@@ -20,7 +20,7 @@ As a result, project managers and teams can get started faster, while organizati
 
 Before using the project initiation request, you need at least one project that is configured as a basis for the project initiation process.
 
-First, configure a project for use in the project initiation process. See how to do this under [project settings](/project-initiation-request-settings/).
+First, configure a project for use in the project initiation process. See how to do this under [project settings](project-initiation-request-settings/).
 
 When preparing a project for this purpose, consider configuring the following elements in advance:
 - Project members, which will be copied to newly created projects 
