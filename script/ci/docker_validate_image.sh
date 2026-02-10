@@ -270,7 +270,27 @@ command -v -- gosu >/dev/null 2>&1
 gosu nobody true
 [ -d /opt/hocuspocus ]
 [ -x /usr/lib/postgresql/17/bin/psql ]
+command -v -- node >/dev/null 2>&1
+command -v -- npm >/dev/null 2>&1
+
+secret="$(tr "\0" "\n" < /proc/1/environ | sed -n "s/^OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET=//p" | head -n 1)"
+[ -n "$secret" ]
+case "$secret" in
+  (*[!A-Za-z0-9]*)
+    echo "Expected auto-generated hocuspocus secret to use YAML-safe alphanumeric characters only."
+    exit 1
+    ;;
+esac
+ps -ef | grep -F "/opt/hocuspocus" | grep -v grep >/dev/null 2>&1 || {
+  echo "Expected bundled hocuspocus process to be running."
+  exit 1
+}
 '
+
+  if docker logs "${VALIDATION_CONTAINER_NAME}" 2>&1 | grep -q "gave up: hocuspocus entered FATAL state"; then
+    docker logs "${VALIDATION_CONTAINER_NAME}" --tail 200 || true
+    die "Bundled hocuspocus failed to start in all-in-one image."
+  fi
 }
 
 case "${TARGET}" in
