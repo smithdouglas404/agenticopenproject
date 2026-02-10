@@ -265,6 +265,11 @@ RSpec.describe "Project creation wizard",
     expect(project.typed_custom_value_for(list_custom_field)).to eq("Internal")
     expect(project.typed_custom_value_for(int_custom_field)).to eq(5)
     expect(project.typed_custom_value_for(user_custom_field)).to eq(user_assignee)
+
+    perform_enqueued_jobs
+
+    work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+    expect(work_package.attachments.count).to eq(1)
   end
 
   it "shows completion checkmarks for sections with filled fields" do

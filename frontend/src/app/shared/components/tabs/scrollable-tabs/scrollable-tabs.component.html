@@ -75,20 +75,24 @@
         </li>
       }
     </ul>
-    <div
-      #scrollLeftBtn [hidden]="hideLeftButton"
+    <button
+      #scrollLeftBtn
+      type="button"
       class="op-scrollable-tabs--button op-scrollable-tabs--button_left"
+      [hidden]="hideLeftButton"
       (click)="scrollLeft()"
       >
       <span class="icon-arrow-left2"></span>
-    </div>
-    <div
-      #scrollRightBtn [hidden]="hideRightButton"
+    </button>
+    <button
+      #scrollRightBtn
+      type="button"
       class="op-scrollable-tabs--button op-scrollable-tabs--button_right"
+      [hidden]="hideRightButton"
       (click)="scrollRight()"
       >
       <span class="icon-arrow-right2"></span>
-    </div>
+    </button>
   </div>
   <ul class="op-scrollable-tabs--actions">
     <ng-content select="[slot=actions]" />
