@@ -162,6 +162,8 @@ RSpec.describe "Moving a work package through Rails view", :js do
         it "does not moves the work package when the required field is missing" do
           select "Risk", from: "Type"
           expect(page).to have_field(required_cf.name)
+          project_autocompleter = find_test_selector("new_project_id")
+          expect_current_autocompleter_value(project_autocompleter, "Target")
 
           # Clicking move and follow might be broken due to the location.href
           # in the refresh-on-form-changes component
