@@ -40,7 +40,7 @@ export async function fetchResource(
     ...override
   }
 
-  console.log(`[${new Date().toISOString()}] ${init.method} ${resourceUrl}`);
+  console.log(`[${new Date().toISOString()}] ${init.method} ${url}`);
 
   return fetch(url, init);
 }
