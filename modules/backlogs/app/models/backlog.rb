@@ -27,11 +27,18 @@
 #++
 
 class Backlog
+  extend ActiveModel::Naming
+
   attr_accessor :sprint, :stories
 
-  def self.owner_backlogs(project, options = {})
-    options.reverse_merge!(limit: nil)
+  delegate :id, to: :sprint, prefix: true
 
+  def self.for(sprint:, project:)
+    owner_backlog = sprint.settings(project)&.display == VersionSetting::DISPLAY_RIGHT
+    new(sprint:, stories: sprint.stories(project), owner_backlog:)
+  end
+
+  def self.owner_backlogs(project)
     backlogs = Sprint.apply_to(project).with_status_open.displayed_right(project).order(:name)
 
     stories_by_sprints = Story.backlogs(project.id, backlogs.map(&:id))
@@ -47,11 +54,10 @@ class Backlog
     sprints.map { |sprint| new(stories: stories_by_sprints[sprint.id], sprint:) }
   end
 
-  def initialize(options = {})
-    options = options.with_indifferent_access
-    @sprint = options["sprint"]
-    @stories = options["stories"]
-    @owner_backlog = options["owner_backlog"]
+  def initialize(sprint:, stories:, owner_backlog: false)
+    @sprint = sprint
+    @stories = stories
+    @owner_backlog = owner_backlog
   end
 
   def updated_at
@@ -64,5 +70,9 @@ class Backlog
 
   def sprint_backlog?
     !owner_backlog?
+  end
+
+  def to_key
+    [sprint_id]
   end
 end

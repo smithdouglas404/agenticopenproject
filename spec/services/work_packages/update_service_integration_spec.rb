@@ -1758,6 +1758,20 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
         subject: "##{work_package.id} by #{user.name} - #{default_status.name}"
       )
     end
+
+    context "when no attribute is changed" do
+      let(:attributes) { {} }
+
+      before do
+        work_package.subject = autosubject_type.enabled_patterns[:subject].resolve(work_package)
+        work_package.save!
+      end
+
+      it "does not lead to a new journal entry" do
+        expect { subject }
+          .not_to change { work_package.journals.count }
+      end
+    end
   end
 
   describe "replacing the attachments" do

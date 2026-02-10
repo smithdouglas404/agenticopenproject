@@ -54,27 +54,23 @@ module OpenProject::Backlogs
              settings:) do
       Rails.application.reloader.to_prepare do
         OpenProject::AccessControl.permission(:add_work_packages).tap do |add|
-          add.controller_actions << "rb_stories/create"
           add.controller_actions << "rb_tasks/create"
           add.controller_actions << "rb_impediments/create"
         end
 
         OpenProject::AccessControl.permission(:edit_work_packages).tap do |edit|
-          edit.controller_actions << "rb_stories/update"
+          edit.controller_actions << "rb_stories/move"
+          edit.controller_actions << "rb_stories/reorder"
           edit.controller_actions << "rb_tasks/update"
           edit.controller_actions << "rb_impediments/update"
-        end
-
-        OpenProject::AccessControl.permission(:change_work_package_status).tap do |edit|
-          edit.controller_actions << "rb_stories/update"
         end
       end
 
       project_module :backlogs, dependencies: :work_package_tracking do
         # Master backlog permissions
         permission :view_master_backlog,
-                   { rb_master_backlogs: :index,
-                     rb_sprints: %i[index show],
+                   { rb_master_backlogs: %i[index details],
+                     rb_sprints: %i[index show show_name],
                      rb_wikis: :show,
                      rb_stories: %i[index show],
                      rb_queries: :show,
@@ -102,7 +98,7 @@ module OpenProject::Backlogs
         # :show_sprints and :list_sprints are implicit in :view_master_backlog permission
         permission :update_sprints,
                    {
-                     rb_sprints: %i[edit update],
+                     rb_sprints: %i[edit_name update],
                      rb_wikis: %i[edit update]
                    },
                    permissible_on: :project,

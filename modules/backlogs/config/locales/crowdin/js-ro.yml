@@ -24,3 +24,6 @@ ro:
     work_packages:
       properties:
         storyPoints: "Puncte cerință"
+    burndown:
+      day: "Day"
+      points: "Points"

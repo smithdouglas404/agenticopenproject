@@ -66,7 +66,9 @@ de:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} ist kein gültiger Teilnehmer."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Es gibt eine offene Besprechung in der Terminserie, die nicht durch den neuen Zeitplan abgedeckt ist. Passen Sie den Zeitplan an, um alle bestehenden Meetings einzuschließen."

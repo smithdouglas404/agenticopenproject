@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -33,10 +35,6 @@ class RbApplicationController < ApplicationController
   before_action :load_sprint_and_project,
                 :check_if_plugin_is_configured,
                 :authorize
-
-  # Use special backlogs layout to initialize stimulus side-loading legacy backlogs scripts
-  # and CSS from frontend
-  layout "backlogs"
 
   private
 

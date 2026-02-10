@@ -27,19 +27,35 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<h2>
-  <%= "#{@sprint.name}: #{@sprint.start_date.present? ? I18n.l(@sprint.start_date) : ''} - #{@sprint.effective_date.present? ? I18n.l(@sprint.effective_date) : ''}" %>
-</h2>
+<% html_title @sprint.name %>
+
+<%= content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<% end -%>
+
+<%=
+  render(Backlogs::SprintPageHeaderComponent.new(sprint: @sprint, project: @project)) do |header|
+    header.with_action_button(
+      tag: :a,
+      href: backlogs_project_sprint_taskboard_path(@project, @sprint),
+      mobile_icon: :"op-view-cards",
+      mobile_label: t(:label_task_board),
+      aria: { label: t(:label_task_board) }
+    ) do |button|
+      button.with_leading_visual_icon(icon: :"op-view-cards")
+      t(:label_task_board)
+    end
+  end
+%>
 
 <% if @burndown %>
-  <%= render partial: "burndown", locals: { div: "burndown_", burndown: @burndown } %>
-
-  <div class="burndown_chart autoscroll" id="burndown_<%= @burndown.sprint_id %>" style="width:900px;height:450px;"><div class="loading"><%= t("backlogs.generating_chart") %></div></div>
-
-  <fieldset class="burndown_control form--fieldset">
-      <legend class="form--fieldset-legend"><%= t("backlogs.chart_options") %></legend>
-      <%= burndown_series_checkboxes(@burndown) %>
-  </fieldset>
+  <%= render partial: "burndown", locals: { burndown: @burndown } %>
 <% else %>
-  <%= t("backlogs.no_burndown_data") %>
+  <%=
+    render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
+      blankslate.with_visual_icon(icon: :graph)
+      blankslate.with_heading(tag: :h2).with_content(t(".blankslate_title"))
+      blankslate.with_description_content(t(".blankslate_description"))
+    end
+  %>
 <% end %>

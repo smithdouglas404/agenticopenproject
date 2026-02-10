@@ -113,7 +113,7 @@ ja:
       index:
         description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
         resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Update resources"
         tools_heading: "Tools"
         tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
@@ -122,7 +122,7 @@ ja:
         success: "MCP configurations were updated successfully."
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -3921,6 +3921,7 @@ ja:
   notice_successful_delete: "正常に削除しました。"
   notice_successful_cancel: "キャンセルしました。"
   notice_successful_update: "正常に更新しました。"
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "作成に失敗しました"
   notice_unsuccessful_create_with_reason: "作成失敗： %{reason}"
   notice_unsuccessful_update: "更新に失敗しました。"
@@ -4265,6 +4266,9 @@ ja:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "最初のログインリダイレクト"
   setting_after_first_login_redirect_url_text_html: >
     最初のログイン後にユーザーをリダイレクトするパスを設定します。空の場合は、オンボーディングツアーのホームページにリダイレクトします。 <br/> 例: <code>/my/page</code>

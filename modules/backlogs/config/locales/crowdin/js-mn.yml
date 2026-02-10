@@ -24,3 +24,6 @@ mn:
     work_packages:
       properties:
         storyPoints: "Гүйцэтгэлийн оноо"
+    burndown:
+      day: "Day"
+      points: "Points"

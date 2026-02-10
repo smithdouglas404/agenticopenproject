@@ -113,7 +113,7 @@ fr:
       index:
         description: "Le protocole de contexte de modèle permet aux agents d'intelligence artificielle de fournir à leurs utilisateurs les outils et les ressources exposés par cette instance d'OpenProject."
         resources_heading: "Ressources"
-        resources_description: "OpenProject implémente les outils suivants. Chacun d'entre eux peut être activé, renommé et décrit comme vous le souhaitez. Pour en savoir plus, veuillez vous référer à la [documentation sur les ressources MCP](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Mettre à jour les ressources"
         tools_heading: "Outils"
         tools_description: "OpenProject implémente les outils suivants. Chacun d'entre eux peut être activé, renommé et décrit comme vous le souhaitez. Pour en savoir plus, veuillez vous référer à la [documentation sur les outils MCP](docs_url)."
@@ -122,7 +122,7 @@ fr:
         success: "Les configurations MCP ont été mises à jour avec succès."
       server_form:
         description_caption: "Comment le serveur MCP sera décrit aux autres applications qui s'y connectent."
-        title_caption: "Un titre court affiché aux applications qui se connectent au serveur MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "La configuration MCP n'a pas pu être mise à jour."
         success: "La configuration MCP a été mise à jour avec succès."
@@ -3970,6 +3970,7 @@ fr:
   notice_successful_delete: "Suppression réussie."
   notice_successful_cancel: "Annulation réussie."
   notice_successful_update: "Mise à jour réussie."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Échec de la création."
   notice_unsuccessful_create_with_reason: "Échec de la création : %{reason}"
   notice_unsuccessful_update: "Mise à jour échouée."
@@ -4315,6 +4316,9 @@ fr:
   setting_capture_external_links: "Saisir les liens externes"
   setting_capture_external_links_text: >
     Lorsque cette option est activée, tous les liens externes en texte formaté sont redirigés vers une page d'avertissement avant de quitter l'application. Cela permet de protéger les utilisateurs contre les sites web externes potentiellement malveillants.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Redirection de première connexion"
   setting_after_first_login_redirect_url_text_html: >
     Définissez un chemin pour rediriger les utilisateurs après leur première connexion. S’il est vide, les utilisateurs seront redirigés vers la page d'accueil de la visite d'intégration. <br/> Exemple : <code>/my/page</code>

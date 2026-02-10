@@ -182,7 +182,7 @@ RSpec.describe DocumentsController do
     end
   end
 
-  describe "define_token_payload",
+  describe "setup_collaboration_context",
            with_config: {
              collaborative_editing_hocuspocus_url: "wss://hocuspocus.local",
              collaborative_editing_hocuspocus_secret: "secret1234"

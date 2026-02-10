@@ -65,7 +65,9 @@ ja:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name}は有効な参加者ではありません。"
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "新しいスケジュールではカバーされていない一連の会議があります。すべての会議を含むようにスケジュールを調整してください。"

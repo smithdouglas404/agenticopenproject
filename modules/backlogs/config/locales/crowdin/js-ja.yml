@@ -24,3 +24,6 @@ ja:
     work_packages:
       properties:
         storyPoints: "ストーリーポイント"
+    burndown:
+      day: "Day"
+      points: "Points"

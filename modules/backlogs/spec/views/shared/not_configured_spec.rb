@@ -29,6 +29,8 @@
 require "spec_helper"
 
 RSpec.describe "shared/not_configured" do
+  before { assign(:project, create(:project)) }
+
   it "renders without errors" do
     render
   end

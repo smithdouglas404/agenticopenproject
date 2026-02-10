@@ -24,3 +24,6 @@ uk:
     work_packages:
       properties:
         storyPoints: "Сторі-поінти"
+    burndown:
+      day: "Day"
+      points: "Points"

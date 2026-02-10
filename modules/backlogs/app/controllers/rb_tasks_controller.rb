@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -31,12 +33,12 @@ class RbTasksController < RbApplicationController
   # attributes. This is necessary for now as we still directly use `attributes=`
   # in non-controller code.
   PERMITTED_PARAMS = ["id", "subject", "assigned_to_id", "remaining_hours", "parent_id",
-                      "estimated_hours", "status_id", "sprint_id"]
+                      "estimated_hours", "status_id", "sprint_id"].freeze
 
   def create
     call = ::Tasks::CreateService
            .new(user: current_user)
-           .call(attributes: task_params.merge(project: @project), prev: params[:prev])
+           .call(attributes: task_params.merge(project: @project), prev_id: params[:prev])
 
     respond_with_task call
   end
@@ -46,7 +48,7 @@ class RbTasksController < RbApplicationController
 
     call = ::Tasks::UpdateService
            .new(user: current_user, task:)
-           .call(attributes: task_params, prev: params[:prev])
+           .call(attributes: task_params, prev_id: params[:prev])
 
     respond_with_task call
   end

@@ -24,3 +24,6 @@ eo:
     work_packages:
       properties:
         storyPoints: "Historiaj poentoj"
+    burndown:
+      day: "Day"
+      points: "Points"

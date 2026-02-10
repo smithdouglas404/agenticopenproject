@@ -113,7 +113,7 @@ it:
       index:
         description: "Il protocollo di contesto del modello consente agli agenti di intelligenza artificiale di fornire ai propri utenti strumenti e risorse esposti da questa istanza di OpenProject."
         resources_heading: "Risorse"
-        resources_description: "OpenProject implementa i seguenti strumenti. Ognuno di essi può essere abilitato, rinominato e descritto a piacere. Per ulteriori informazioni, consultare la [documentazione sulle risorse MCP](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Aggiorna risorse"
         tools_heading: "Strumenti"
         tools_description: "OpenProject implementa i seguenti strumenti. Ognuno di essi può essere abilitato, rinominato e descritto a piacere. Per ulteriori informazioni, consultare la [documentazione sugli strumenti MCP](docs_url)."
@@ -122,7 +122,7 @@ it:
         success: "Configurazioni MCP aggiornate con successo."
       server_form:
         description_caption: "Come verrà descritto il server MCP alle altre applicazioni che vi si collegheranno."
-        title_caption: "Un breve titolo mostrato alle applicazioni che si connettono al server MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "La configurazione MCP non può essere aggiornata."
         success: "La configurazione MCP è stata aggiornata correttamente."
@@ -3969,6 +3969,7 @@ it:
   notice_successful_delete: "Cancellato con successo."
   notice_successful_cancel: "Cancellato con successo."
   notice_successful_update: "Aggiornato con successo."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creazione fallita."
   notice_unsuccessful_create_with_reason: "Creazione non riuscita: %{reason}"
   notice_unsuccessful_update: "Aggiornamento non riuscito."
@@ -4314,6 +4315,9 @@ it:
   setting_capture_external_links: "Intercetta link esterni"
   setting_capture_external_links_text: >
     Se l'opzione è abilitata, tutti i link esterni in testo formattato verranno reindirizzati a una pagina di avviso prima di uscire dall'applicazione. Questo aiuta a proteggere gli utenti da siti web esterni potenzialmente dannosi.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Reindirizzamento di primo accesso"
   setting_after_first_login_redirect_url_text_html: >
     Imposta un percorso per reindirizzare gli utenti dopo il loro primo accesso. Se vuoto, reindirizza alla home page per il tour di onboarding. <br/> Esempio: <code>/my/page</code>

@@ -66,7 +66,8 @@ module API
                    formula: nil,
                    show_if: true,
                    description: nil,
-                   deprecated: nil)
+                   deprecated: nil,
+                   placeholder: nil)
           getter = ->(*) do
             schema_property_getter(type,
                                    name_source,
@@ -81,7 +82,8 @@ module API
                                    formula,
                                    location,
                                    description,
-                                   deprecated)
+                                   deprecated,
+                                   placeholder)
           end
 
           schema_property(property,
@@ -304,7 +306,8 @@ module API
                                  formula,
                                  location,
                                  description,
-                                 deprecated)
+                                 deprecated,
+                                 placeholder)
         name = call_or_translate(name_source)
         schema = ::API::Decorators::PropertySchemaRepresenter
                  .new(type: call_or_use(type),
@@ -315,7 +318,8 @@ module API
                       has_default: call_or_use(has_default),
                       writable: call_or_use(writable),
                       attribute_group: call_or_use(attribute_group),
-                      deprecated:)
+                      deprecated:,
+                      placeholder: call_or_use(placeholder))
         schema.min_length = min_length
         schema.max_length = max_length
         schema.regular_expression = regular_expression

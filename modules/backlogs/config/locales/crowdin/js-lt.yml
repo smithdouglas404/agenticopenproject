@@ -24,3 +24,6 @@ lt:
     work_packages:
       properties:
         storyPoints: "Istorijos taškai"
+    burndown:
+      day: "Day"
+      points: "Points"

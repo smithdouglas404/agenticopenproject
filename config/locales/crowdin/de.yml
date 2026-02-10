@@ -111,21 +111,21 @@ de:
         link: "Webhook"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
-        resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
+        description: "Das Model Context Protocol ermöglicht es KI-Agenten, ihren Nutzern Tools und Ressourcen bereitzustellen, die diese OpenProject-Instanz zur Verfügung stellt."
+        resources_heading: "Ressourcen"
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "Ressourcen aktualisieren"
         tools_heading: "Tools"
-        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        tools_description: "OpenProject stellt die folgenden Tools bereit. Jedes Tool kann nach Wunsch aktiviert, umbenannt und beschrieben werden. Weitere Informationen finden sich in der [Dokumentation zu MCP-Ressourcen](docs_url)."
+        tools_submit: "Tools aktualisieren"
       multi_update:
-        success: "MCP configurations were updated successfully."
+        success: "MCP-Konfigurationen wurden erfolgreich aktualisiert."
       server_form:
-        description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        description_caption: "Wie der MCP-Server gegenüber anderen Anwendungen beschrieben wird, die sich damit verbinden."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
-        failure: "MCP configuration could not be updated."
-        success: "MCP configuration was updated successfully."
+        failure: "Die MCP-Konfiguration konnte nicht aktualisiert werden."
+        success: "Die MCP-Konfiguration wurde erfolgreich aktualisiert."
     scim_clients:
       authentication_methods:
         sso: "JWT vom Identitätsanbieter"
@@ -3964,6 +3964,7 @@ de:
   notice_successful_delete: "Erfolgreich gelöscht."
   notice_successful_cancel: "Erfolgreiche Absage."
   notice_successful_update: "Erfolgreich aktualisiert."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Erstellung fehlgeschlagen."
   notice_unsuccessful_create_with_reason: "Erstellung fehlgeschlagen: %{reason}"
   notice_unsuccessful_update: "Aktualisierung fehlgeschlagen."
@@ -4309,6 +4310,9 @@ de:
   setting_capture_external_links: "Externe Links abfangen"
   setting_capture_external_links_text: >
     Wenn diese Funktion aktiviert ist, werden alle externen Links in formatiertem Text auf eine vor dem Link warnende Seite in der Applikation umgeleitet, bevor sie die Anwendung verlassen. Dies hilft, Benutzer vor potenziell bösartigen externen Websites zu schützen.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Weiterleitung nach erster Anmeldung"
   setting_after_first_login_redirect_url_text_html: >
     Legen Sie einen Pfad fest, an den Nutzer:innen nach der ersten Anmeldung weitergeleitet werden. Wenn leer, führt er auf die Startseite des Onboarding-Tours. <br/> Beispiel: <code>/meine/seite</code>

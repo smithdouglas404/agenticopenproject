@@ -68,7 +68,9 @@ uk:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} не є дійсним учасником."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Одна відкрита нарада в серії не входить у новий розклад. Налаштуйте розклад так, щоб він охоплював усі наявні наради."

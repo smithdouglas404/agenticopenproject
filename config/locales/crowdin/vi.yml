@@ -113,7 +113,7 @@ vi:
       index:
         description: "Giao thức bối cảnh mô hình cho phép các tác nhân AI cung cấp cho người dùng của mình các công cụ và tài nguyên được cung cấp bởi phiên bản OpenProject này."
         resources_heading: "Tài nguyên"
-        resources_description: "OpenProject cung cấp các công cụ sau đây. Mỗi công cụ có thể được kích hoạt, đổi tên và mô tả theo ý muốn của bạn. Để biết thêm thông tin, vui lòng tham khảo [tài liệu về tài nguyên MCP](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Cập nhật tài nguyên"
         tools_heading: "Công cụ"
         tools_description: "OpenProject cung cấp các công cụ sau đây. Mỗi công cụ có thể được kích hoạt, đổi tên và mô tả theo ý muốn của bạn. Để biết thêm thông tin, vui lòng tham khảo [tài liệu về các công cụ MCP](docs_url)."
@@ -122,7 +122,7 @@ vi:
         success: "Cấu hình MCP đã được cập nhật thành công."
       server_form:
         description_caption: "Cách máy chủ MCP sẽ được mô tả cho các ứng dụng khác kết nối với nó."
-        title_caption: "Một tiêu đề ngắn được hiển thị cho các ứng dụng kết nối với máy chủ MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "Không thể cập nhật cấu hình MCP."
         success: "Cấu hình MCP đã được cập nhật thành công."
@@ -3920,6 +3920,7 @@ vi:
   notice_successful_delete: "Xóa thành công."
   notice_successful_cancel: "Hủy thành công."
   notice_successful_update: "Cập nhật thành công."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Tạo không thành công."
   notice_unsuccessful_create_with_reason: "Tạo không thành công: %{reason}"
   notice_unsuccessful_update: "Cập nhật không thành công."
@@ -4264,6 +4265,9 @@ vi:
   setting_capture_external_links: "Chụp các liên kết bên ngoài"
   setting_capture_external_links_text: >
     Khi tính năng này được kích hoạt, tất cả các liên kết ngoài trong văn bản định dạng sẽ được chuyển hướng qua một trang cảnh báo trước khi rời khỏi ứng dụng. Điều này giúp bảo vệ người dùng khỏi các trang web bên ngoài có thể chứa mã độc hại.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Chuyển hướng đăng nhập lần đầu"
   setting_after_first_login_redirect_url_text_html: >
     Đặt đường dẫn để chuyển hướng người dùng sau lần đăng nhập đầu tiên của họ. Nếu trống, hãy chuyển hướng đến trang chủ để xem chuyến tham quan giới thiệu. <br/> Ví dụ: <code>/my/page</code>

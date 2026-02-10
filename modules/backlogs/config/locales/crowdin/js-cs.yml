@@ -24,3 +24,6 @@ cs:
     work_packages:
       properties:
         storyPoints: "Body příběhu"
+    burndown:
+      day: "Day"
+      points: "Points"

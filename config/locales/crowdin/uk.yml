@@ -113,7 +113,7 @@ uk:
       index:
         description: "Протокол контексту моделі дає змогу агентам ШІ надавати своїм користувачам інструменти й ресурси, доступні в цьому екземплярі OpenProject."
         resources_heading: "Ресурси"
-        resources_description: "OpenProject реалізує наведені нижче інструменти. Кожен із них можна ввімкнути, перейменувати й описати як завгодно. Щоб дізнатися більше, ознайомтеся з [документацією щодо ресурсів MCP] (docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Оновити ресурси"
         tools_heading: "Інструменти"
         tools_description: "OpenProject реалізує наведені нижче інструменти. Кожен із них можна ввімкнути, перейменувати й описати як завгодно. Щоб дізнатися більше, ознайомтеся з [документацією щодо інструментів MCP] (docs_url)."
@@ -122,7 +122,7 @@ uk:
         success: "Конфігурації MCP оновлено."
       server_form:
         description_caption: "Опис сервера MCP для інших додатків, які підключаються до нього."
-        title_caption: "Короткий заголовок, який відображається для додатків, що підключаються до сервера MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "Не вдалось оновити конфігурацію MCP."
         success: "Конфігурацію MCP оновлено."
@@ -4065,6 +4065,7 @@ uk:
   notice_successful_delete: "Видалення успішно завершене."
   notice_successful_cancel: "Успішно видалено."
   notice_successful_update: "Успішно оновлено."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Не вдалося створити."
   notice_unsuccessful_create_with_reason: "Не вдалося створити: %{reason}"
   notice_unsuccessful_update: "Не вдалось оновити."
@@ -4411,6 +4412,9 @@ uk:
   setting_capture_external_links: "Захоплення зовнішніх посилань"
   setting_capture_external_links_text: >
     Якщо ввімкнено, усі зовнішні посилання у відформатованому тексті переспрямовуватимуть на попереджувальну сторінку перед переходом із додатка. Це допомагає захистити користувачів від потенційно шкідливих зовнішніх вебсайтів.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Переспрямування після першого входу"
   setting_after_first_login_redirect_url_text_html: >
     Задайте шлях для переспрямування користувачів після першого входу. Якщо не задано, користувачі переспрямовуються на головну сторінку з ознайомленням. <br/>Наприклад: <code>/my/page</code>

@@ -68,7 +68,9 @@ pl:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} nie jest prawidłowym uczestnikiem."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "W serii znajduje się jedno otwarte spotkanie, które nie jest uwzględnione w nowym harmonogramie. Dostosuj harmonogram tak, aby obejmował wszystkie istniejące spotkania."

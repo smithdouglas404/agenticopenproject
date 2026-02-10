@@ -113,7 +113,7 @@ pl:
       index:
         description: "Protokół kontekstu modelu umożliwia agentom AI dostarczanie użytkownikom narzędzi i zasobów udostępnianych przez to wystąpienie OpenProject."
         resources_heading: "Zasoby"
-        resources_description: "OpenProject implementuje następujące narzędzia. Każde z nich może zostać włączone, przemianowane i opisane zgodnie z Twoim życzeniem. Aby uzyskać więcej informacji, zapoznaj się z [dokumentacją zasobów MCP](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Zaktualizuj zasoby"
         tools_heading: "Narzędzia"
         tools_description: "OpenProject implementuje następujące narzędzia. Każde z nich może zostać włączone, przemianowane i opisane zgodnie z Twoim życzeniem. Aby uzyskać więcej informacji, zapoznaj się z [dokumentacją narzędzi MCP](docs_url)."
@@ -122,7 +122,7 @@ pl:
         success: "Konfiguracje MCP zostały zaktualizowane."
       server_form:
         description_caption: "Sposób, w jaki serwer MCP będzie opisywany innym aplikacjom, które się z nim łączą."
-        title_caption: "Krótki tytuł wyświetlany aplikacjom łączącym się z serwerem MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "Nie można zaktualizować konfiguracji MCP."
         success: "Konfiguracja MCP została zaktualizowana."
@@ -4067,6 +4067,7 @@ pl:
   notice_successful_delete: "Usuwanie zakończone sukcesem."
   notice_successful_cancel: "Anulowanie powiodło się."
   notice_successful_update: "Aktualizacja zakończona sukcesem."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Utworzenie nie powiodło się."
   notice_unsuccessful_create_with_reason: "Utworzenie nie powiodło się: %{reason}"
   notice_unsuccessful_update: "Aktualizacja nie powiodła się."
@@ -4412,6 +4413,9 @@ pl:
   setting_capture_external_links: "Przechwyć linki zewnętrzne"
   setting_capture_external_links_text: >
     Po włączeniu tej funkcji wszystkie linki zewnętrzne w tekście formatowanym będą przekierowywać na stronę z ostrzeżeniem przed opuszczeniem aplikacji. Pomaga to chronić użytkowników przed potencjalnie złośliwymi zewnętrznymi witrynami internetowymi.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Przekierowanie pierwszego logowania"
   setting_after_first_login_redirect_url_text_html: >
     Ustaw ścieżkę przekierowania użytkowników po ich pierwszym zalogowaniu. Jeśli jest pusta, przekierowuje do strony głównej wycieczki wdrożeniowej. <br/> Przykład: <code>/my/page</code>

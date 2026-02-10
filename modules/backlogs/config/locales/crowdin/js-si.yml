@@ -24,3 +24,6 @@ si:
     work_packages:
       properties:
         storyPoints: "කතන්දර කරුණු"
+    burndown:
+      day: "Day"
+      points: "Points"

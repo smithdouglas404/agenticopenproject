@@ -34,24 +34,32 @@ require "rack/test"
 RSpec.describe API::V3::EmojiReactions::EmojiReactionsByActivityCommentAPI do
   include API::V3::Utilities::PathHelper
 
-  let(:project) { create(:project, enabled_internal_comments: true) }
-  let(:work_package) { create(:work_package, project:) }
+  shared_let(:admin) { create(:admin) }
+  shared_let(:project) { create(:project, enabled_internal_comments: true) }
+  shared_let(:work_package) do
+    create(:work_package,
+           project:,
+           journals: {
+             1.day.ago => {},
+             1.hour.ago => { user: admin, notes: "Comment" }
+           })
+  end
   let(:current_user) do
     create(:user, member_with_roles: { project => role })
   end
-  let(:admin) { create(:admin) }
   let(:role) { create(:project_role, permissions:) }
   let(:permissions) do
     %i(view_work_packages add_work_package_comments view_internal_comments)
   end
-  let(:activity) { create(:work_package_journal, journable: work_package, user: admin, version: 2, notes: "Comment") }
-  let!(:emoji_reaction) { create(:emoji_reaction, reactable: activity, user: current_user) }
+  let(:activity) { work_package.journals.last }
 
   before do
     allow(User).to receive(:current).and_return(current_user)
   end
 
   describe "GET /api/v3/activities/:id/emoji_reactions" do
+    let!(:emoji_reaction) { create(:emoji_reaction, reactable: activity, user: current_user) }
+
     shared_examples "an emoji reactions request" do
       before do
         get api_v3_paths.emoji_reactions_by_activity_comment(activity.id)
@@ -108,10 +116,9 @@ RSpec.describe API::V3::EmojiReactions::EmojiReactionsByActivityCommentAPI do
       end
 
       context "and user does not have permission to view internal comments" do
+        let(:permissions) { %i(view_work_packages add_work_package_comments) }
+
         before do
-          role.role_permissions
-            .find_by(permission: "view_internal_comments")
-            .destroy
           get api_v3_paths.emoji_reactions_by_activity_comment(internal_comment.id)
         end
 
@@ -131,13 +138,8 @@ RSpec.describe API::V3::EmojiReactions::EmojiReactionsByActivityCommentAPI do
       patch path, { reaction: }.to_json, headers
     end
 
-    def destroy_all_reactions
-      EmojiReaction.destroy_all
-    end
-
     shared_examples "a successful reaction" do
       before do
-        destroy_all_reactions
         make_request
       end
 
@@ -174,6 +176,7 @@ RSpec.describe API::V3::EmojiReactions::EmojiReactionsByActivityCommentAPI do
       end
 
       context "when removing an existing reaction" do
+        let!(:emoji_reaction) { create(:emoji_reaction, reactable: activity, user: current_user) }
         let(:reaction) { emoji_reaction.reaction }
 
         before { make_request }
@@ -216,7 +219,7 @@ RSpec.describe API::V3::EmojiReactions::EmojiReactionsByActivityCommentAPI do
       end
     end
 
-    context "when user does not have permission to add work package notes" do
+    context "when user does not have permission to add work package comments" do
       let(:permissions) { %i(view_work_packages) }
 
       it "fails with HTTP Forbidden" do

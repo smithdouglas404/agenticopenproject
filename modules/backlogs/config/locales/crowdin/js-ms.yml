@@ -24,3 +24,6 @@ ms:
     work_packages:
       properties:
         storyPoints: "Titik Cerita"
+    burndown:
+      day: "Day"
+      points: "Points"

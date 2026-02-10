@@ -53,28 +53,28 @@ module OpenProject::Backlogs::List
   end
 
   module InstanceMethods
-    def move_after(prev_id)
+    def move_after(position: nil, prev_id: nil)
+      if acts_as_list_list.none?(:position)
+        # If no items have a position, create an order on position
+        # silently. This can happen when sorting inside a version for the first
+        # time after backlogs was activated and there have already been items
+        # inside the version at the time of backlogs activation
+        set_default_prev_positions_silently(acts_as_list_list.last)
+      end
+
       # Remove so the potential 'prev' has a correct position
       remove_from_list
       reload
+      id_or_position = position ? { position: position - 1 } : { id: prev_id }
 
-      prev = self.class.find_by(id: prev_id.to_i)
+      prev = acts_as_list_list.find_by(**id_or_position)
 
-      # If it should be the first story, move it to the 1st position
       if prev.blank?
+        # If it should be the first story, move it to the 1st position
         insert_at
         move_to_top
-
-      # If its predecessor has no position, create an order on position
-      # silently. This can happen when sorting inside a version for the first
-      # time after backlogs was activated and there have already been items
-      # inside the version at the time of backlogs activation
-      elsif !prev.in_list?
-        prev_pos = set_default_prev_positions_silently(prev)
-        insert_at(prev_pos += 1)
-
-      # There's a valid predecessor
       else
+        # There's a valid predecessor
         insert_at(prev.position + 1)
       end
     end
@@ -148,6 +148,8 @@ module OpenProject::Backlogs::List
     end
 
     def set_default_prev_positions_silently(prev)
+      return if prev.nil?
+
       if prev.is_task?
         prev.version.rebuild_task_positions(prev)
       else

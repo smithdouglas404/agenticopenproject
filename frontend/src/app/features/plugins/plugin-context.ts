@@ -31,6 +31,7 @@ import { HttpClient } from '@angular/common/http';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { HalEventsService } from '../hal/services/hal-events.service';
 /**
  * Plugin context bridge for plugins outside the CLI compiler context
  * in order to access services and parts of the core application
@@ -48,6 +49,7 @@ export class OpenProjectPluginContext {
     confirmDialog: this.injector.get<ConfirmDialogService>(ConfirmDialogService),
     externalQueryConfiguration: this.injector.get<ExternalQueryConfigurationService>(ExternalQueryConfigurationService),
     externalRelationQueryConfiguration: this.injector.get<ExternalRelationQueryConfigurationService>(ExternalRelationQueryConfigurationService),
+    halEvents: this.injector.get<HalEventsService>(HalEventsService),
     halResource: this.injector.get<HalResourceService>(HalResourceService),
     hooks: this.injector.get<HookService>(HookService),
     i18n: this.injector.get<I18nService>(I18nService),

@@ -29,11 +29,13 @@
 class Story < WorkPackage
   extend OpenProject::Backlogs::Mixins::PreventIssueSti
 
-  def self.backlogs(project_id, sprint_ids, options = {})
+  def self.backlogs(project_id, sprint_ids, options = {}) # rubocop:disable Metrics/AbcSize
     options.reverse_merge!(order: Story::ORDER,
                            conditions: Story.condition(project_id, sprint_ids))
 
-    candidates = Story.where(options[:conditions]).order(Arel.sql(options[:order]))
+    candidates = Story.where(options[:conditions])
+                      .includes(:status, :type)
+                      .order(Arel.sql(options[:order]))
 
     stories_by_version = Hash.new do |hash, sprint_id|
       hash[sprint_id] = []

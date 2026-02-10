@@ -31,8 +31,8 @@ See COPYRIGHT and LICENSE files for more details.
   render Primer::OpenProject::PageHeader.new do |header|
     header.with_title { t("backlogs.definition_of_done") }
     header.with_breadcrumbs(
-      [{ href: project_overview_path(@project.id), text: @project.name },
-       { href: project_settings_general_path(@project.id), text: I18n.t(:label_project_settings) },
+      [{ href: project_overview_path(@project), text: @project.name },
+       { href: project_settings_general_path(@project), text: I18n.t(:label_project_settings) },
        t("backlogs.definition_of_done")]
     )
   end

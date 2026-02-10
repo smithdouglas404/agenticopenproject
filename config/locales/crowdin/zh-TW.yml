@@ -113,7 +113,7 @@ zh-TW:
       index:
         description: "模型上下文協定允許 AI 代理向其使用者提供此 OpenProject 實體所揭露的工具與資源。"
         resources_heading: "資源"
-        resources_description: "OpenProject 實作下列工具。每個工具都可以依您的需求啟用、重新命名和描述。如需詳細資訊，請參閱 [MCP 資源文件](docs_url)。"
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "更新資源"
         tools_heading: "工具"
         tools_description: "OpenProject 實作下列工具。每個工具都可以依您的需求啟用、重新命名和描述。如需詳細資訊，請參閱 [MCP 工具說明文件](docs_url)。"
@@ -122,7 +122,7 @@ zh-TW:
         success: "MCP 組態已成功更新。"
       server_form:
         description_caption: "MCP 伺服器將如何描述給連線到它的其他應用程式。"
-        title_caption: "顯示給與 MCP 伺服器連線的應用程式的簡短標題。"
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "無法更新 MCP 設定。"
         success: "MCP 組態已成功更新。"
@@ -606,7 +606,7 @@ zh-TW:
         is_for_all_blank_slate:
           heading: 對所有的專案
           description: 由於已勾選「適用於所有專案」選項，因此所有專案都啟用此專案屬性。個別專案無法停用。
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: 此專案屬性無法停用，因為它已被設定為專案啟動請求提交時的 <a href=%{pir_submission_url} target="_blank">指派人</a>。
       types:
         no_results_title_text: 目前沒有可用的類型
         form:
@@ -634,7 +634,7 @@ zh-TW:
         label_request_submission: "要求提交"
         project_attributes_description: >
           選擇哪些專案屬性應包含在專案啟動請求中。此清單僅包含此專案啟用的 [專案屬性](project_attributes_url)。
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: 由於此專案屬性被定義為必填項目，因此無法在此專案啟動請求中停用。此設定可由系統管理員於 <a href=%{admin_settings_url} target="_blank">管理設定</a> 中進行變更。
     status:
       button_edit: 編輯狀態
     wizard:
@@ -3917,6 +3917,7 @@ zh-TW:
   notice_successful_delete: "刪除成功"
   notice_successful_cancel: "取消成功"
   notice_successful_update: "更新成功"
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "建立失敗。"
   notice_unsuccessful_create_with_reason: "建立失敗：%{reason}"
   notice_unsuccessful_update: "更新失敗。"
@@ -4260,6 +4261,9 @@ zh-TW:
   setting_capture_external_links: "擷取外部連結"
   setting_capture_external_links_text: >
     啟用後，格式化文字中的所有外部連結都會在離開應用程式前透過警告頁重定向。這有助於保護使用者遠離潛在的惡意外部網站。
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "首次登入重新導向"
   setting_after_first_login_redirect_url_text_html: >
     設定使用者首次登入後的重新導向路徑。如果為空，則會重定向到上線導覽的首頁。 <br/> 範例：<code>/my/page</code>

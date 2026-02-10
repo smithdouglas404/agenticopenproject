@@ -24,3 +24,6 @@ ar:
     work_packages:
       properties:
         storyPoints: "نقاط القصة"
+    burndown:
+      day: "Day"
+      points: "Points"

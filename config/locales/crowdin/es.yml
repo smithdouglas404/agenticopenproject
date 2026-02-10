@@ -113,7 +113,7 @@ es:
       index:
         description: "El protocolo de contexto de modelo (MCP, por sus siglas en inglés) permite a los agentes de IA proporcionar a sus usuarios herramientas y recursos expuestos por esta instancia de OpenProject."
         resources_heading: "Recursos"
-        resources_description: "OpenProject implementa las siguientes herramientas. Cada una de ellas puede habilitarse, renombrarse y describirse como usted desee. Para más información, consulte la [documentación sobre recursos del MCP](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Actualizar recursos"
         tools_heading: "Herramientas"
         tools_description: "OpenProject implementa las siguientes herramientas. Cada una de ellas puede habilitarse, renombrarse y describirse como usted desee. Para más información, consulte la [documentación sobre herramientas del MCP](docs_url)."
@@ -122,7 +122,7 @@ es:
         success: "Las configuraciones del MCP se actualizaron correctamente."
       server_form:
         description_caption: "Cómo se describirá el servidor del MCP a otras aplicaciones que se conecten a él."
-        title_caption: "Un título corto que se muestra a las aplicaciones que se conectan al servidor del MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "No se ha podido actualizar la configuración del MCP."
         success: "La configuración del MCP se ha actualizado correctamente."
@@ -3969,6 +3969,7 @@ es:
   notice_successful_delete: "Eliminado con éxito."
   notice_successful_cancel: "Cancelación exitosa."
   notice_successful_update: "Actualización correcta."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Error en la creación."
   notice_unsuccessful_create_with_reason: "Error en la creación: %{reason}"
   notice_unsuccessful_update: "Error al actualizar."
@@ -4313,6 +4314,9 @@ es:
   setting_capture_external_links: "Detección de enlaces externos"
   setting_capture_external_links_text: >
     Cuando esta función está habilitada, todos los enlaces externos en texto formateado redirigirán a una página de advertencia antes de salir de la aplicación. Esto ayuda a proteger a los usuarios de sitios web externos potencialmente maliciosos.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Primera redirección de inicio de sesión"
   setting_after_first_login_redirect_url_text_html: >
     Establezca una ruta para redirigir a los usuarios tras su primer inicio de sesión. Si está vacía, redirige a la página de inicio del recorrido de incorporación. <br/> Ejemplo: <code>/my/page</code>
