@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -91,53 +93,45 @@ RSpec.describe GithubPullRequest do
 
     context "when the github_id attribute matches" do
       it "finds by github_id" do
-        expect(described_class.find_by_github_identifiers(id: pull_request.github_id))
+        expect(described_class.find_by_github_identifiers(id: pull_request.github_id, url: github_url))
           .to eql pull_request
       end
     end
 
     context "when the github_html_url attribute matches" do
       it "finds by github_html_url" do
-        expect(described_class.find_by_github_identifiers(url: pull_request.github_html_url))
+        expect(described_class.find_by_github_identifiers(id: pull_request.github_id, url: pull_request.github_html_url))
           .to eql pull_request
       end
     end
 
     context "when the provided github_id does not match" do
-      it "is nil" do
-        expect(described_class.find_by_github_identifiers(id: pull_request.github_id + 1))
+      it "returns nothing" do
+        expect(described_class.find_by_github_identifiers(id: pull_request.github_id + 1, url: github_url))
           .to be_nil
       end
     end
 
     context "when the provided github_html_url does not match" do
-      it "is nil" do
-        expect(described_class.find_by_github_identifiers(url: "#{pull_request.github_html_url}zzzz"))
+      it "returns nothing" do
+        expect(described_class.find_by_github_identifiers(id: pull_request.github_id, url: "#{pull_request.github_html_url}zzzz"))
           .to be_nil
       end
     end
 
     context "when neither match" do
-      it "is nil" do
+      it "returns nothing" do
         expect(described_class.find_by_github_identifiers(id: pull_request.github_id + 1,
                                                           url: "#{pull_request.github_html_url}zzzz"))
           .to be_nil
       end
     end
 
-    context "when the provided github_html_url does not match but the github_id does" do
-      it "is nil" do
-        expect(described_class.find_by_github_identifiers(id: pull_request.github_id,
-                                                          url: "#{pull_request.github_html_url}zzzz"))
-          .to eql pull_request
-      end
-    end
-
     context "when the provided github_html_url does match but the github_id does not" do
-      it "is nil" do
+      it "returns nothing" do
         expect(described_class.find_by_github_identifiers(id: pull_request.github_id + 1,
                                                           url: pull_request.github_html_url))
-          .to eql pull_request
+          .to be_nil
       end
     end
 

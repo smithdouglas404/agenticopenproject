@@ -42,11 +42,11 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
       "action" => action,
       "open_project_user_id" => github_system_user.id,
       "pull_request" => {
-        "id" => 123,
+        "id" => github_id,
         "number" => 1,
         "body" => pr_body,
         "title" => "A PR title",
-        "html_url" => "http://pr.url",
+        "html_url" => github_html_url,
         "updated_at" => Time.current.iso8601,
         "state" => "open",
         "draft" => pr_draft,
@@ -83,7 +83,8 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
   let(:pr_body) { "Mentioning OP##{work_package.id}" }
   let(:pr_merged) { false }
   let(:pr_draft) { false }
-  let(:github_pull_request) { GithubPullRequest.find_by_github_identifiers(id: 123, url: "https://git.example.com/project/repo") }
+  let(:github_id) { rand(1..100) }
+  let(:github_html_url) { "https://github.com/test_user/repo" }
 
   before do
     allow(handler_instance).to receive(:comment_on_referenced_work_packages).and_return(nil)
@@ -132,8 +133,8 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
   context "with a closed action" do
     let(:action) { "closed" }
     let(:comment) do
-      %(<macro class="github_pull_request" data-pull-request-id="#{github_pull_request.id}"
-        data-pull-request-state="&quot;closed&quot;"></macro>).squish
+      %(<macro class="github_pull_request" data-pull-request-id="#{GithubPullRequest.last.id}"
+      data-pull-request-state="&quot;closed&quot;"></macro>).squish
     end
 
     it_behaves_like "adding a comment"
@@ -144,15 +145,15 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
     let(:action) { "closed" }
     let(:pr_merged) { true }
     let(:comment) do
-      %(<macro class="github_pull_request" data-pull-request-id="#{github_pull_request.id}"
-        data-pull-request-state="&quot;merged&quot;"></macro>).squish
+      %(<macro class="github_pull_request" data-pull-request-id="#{GithubPullRequest.last.id}"
+      data-pull-request-state="&quot;merged&quot;"></macro>).squish
     end
 
     it_behaves_like "adding a comment"
     it_behaves_like "calls the pull request upsert service"
 
     context "when the work package is already known to the GithubPullRequest" do
-      let!(:github_pull_request) { create(:github_pull_request, github_id: 123, work_packages: [work_package]) }
+      let!(:github_pull_request) { create(:github_pull_request, github_id:, github_html_url:, work_packages: [work_package]) }
 
       it_behaves_like "adding a comment"
 
@@ -172,8 +173,9 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
 
   context "with an edited action" do
     let(:action) { "edited" }
+    let(:github_pull_request) { create(:github_pull_request, github_id:, github_html_url:) }
     let(:comment) do
-      %(<macro class="github_pull_request" data-pull-request-id="#{github_pull_request.id}"
+      %(<macro class="github_pull_request" data-pull-request-id="#{GithubPullRequest.last.id}"
         data-pull-request-state="&quot;referenced&quot;"></macro>).squish
     end
 
@@ -181,7 +183,7 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
     it_behaves_like "calls the pull request upsert service"
 
     context "when a GithubPullRequest exists that is not linked to the mentioned work package yet" do
-      let!(:github_pull_request) { create(:github_pull_request, github_id: 123) }
+      let!(:github_pull_request) { create(:github_pull_request, github_id:, github_html_url:) }
 
       it_behaves_like "adding a comment"
 
@@ -192,7 +194,7 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
     end
 
     context "when the work package is already known to the GithubPullRequest" do
-      let!(:github_pull_request) { create(:github_pull_request, github_id: 123, work_packages: [work_package]) }
+      let!(:github_pull_request) { create(:github_pull_request, github_id:, github_html_url:, work_packages: [work_package]) }
 
       it_behaves_like "not adding a comment"
 
@@ -203,10 +205,11 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
     end
 
     context "when the a work package is already known to the GithubPullRequest but another work package is new" do
-      let!(:github_pull_request) { create(:github_pull_request, github_id: 123, work_packages: [work_package]) }
+      let!(:github_pull_request) { create(:github_pull_request, github_id:, github_html_url:, work_packages: [work_package]) }
       let!(:other_work_package) { create(:work_package) }
       let(:pr_body) { "Mentioning OP##{work_package.id} and OP##{other_work_package.id}" }
 
+      # NOTE: strange behavior, needs to clarification. it received two work_packages instead one.
       it "adds a comment only for the other_work_package" do
         process
         expect(handler_instance).to have_received(:comment_on_referenced_work_packages).with(
@@ -233,8 +236,9 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
 
   context "with an opened action" do
     let(:action) { "opened" }
+    let(:github_pull_request) { create(:github_pull_request, github_id:, github_html_url:) }
     let(:comment) do
-      %(<macro class="github_pull_request" data-pull-request-id="#{github_pull_request.id}"
+      %(<macro class="github_pull_request" data-pull-request-id="#{GithubPullRequest.last.id}"
         data-pull-request-state="&quot;opened&quot;"></macro>).squish
     end
 
@@ -245,8 +249,9 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
   context "with an opened action when the PR is a draft" do
     let(:action) { "opened" }
     let(:pr_draft) { true }
+    let(:github_pull_request) { create(:github_pull_request, github_id:, github_html_url:) }
     let(:comment) do
-      %(<macro class="github_pull_request" data-pull-request-id="#{github_pull_request.id}"
+      %(<macro class="github_pull_request" data-pull-request-id="#{GithubPullRequest.last.id}"
         data-pull-request-state="&quot;opened&quot;"></macro>).squish
     end
 
@@ -256,8 +261,9 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
 
   context "with a ready_for_review action" do
     let(:action) { "ready_for_review" }
+    let(:github_pull_request) { create(:github_pull_request, github_id:, github_html_url:) }
     let(:comment) do
-      %(<macro class="github_pull_request" data-pull-request-id="#{github_pull_request.id}"
+      %(<macro class="github_pull_request" data-pull-request-id="#{GithubPullRequest.last.id}"
         data-pull-request-state="&quot;ready_for_review&quot;"></macro>).squish
     end
 
@@ -267,8 +273,9 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
 
   context "with a reopened action" do
     let(:action) { "reopened" }
+    let(:github_pull_request) { create(:github_pull_request, github_id:, github_html_url:) }
     let(:comment) do
-      %(<macro class="github_pull_request" data-pull-request-id="#{github_pull_request.id}"
+      %(<macro class="github_pull_request" data-pull-request-id="#{GithubPullRequest.last.id}"
         data-pull-request-state="&quot;opened&quot;"></macro>).squish
     end
 
