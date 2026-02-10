@@ -1,4 +1,5 @@
 const OPENPROJECT_URL = process.env.OPENPROJECT_URL?.trim() || null;
+const OPENPROJECT_HTTPS = process.env.OPENPROJECT_HTTPS?.trim() === 'true';
 
 if (OPENPROJECT_URL) {
   const openProjectDirectUrl = new URL(OPENPROJECT_URL);
@@ -7,6 +8,10 @@ if (OPENPROJECT_URL) {
   }
 
   console.log(`using OPENPROJECT_URL: ${OPENPROJECT_URL}`);
+}
+
+if (OPENPROJECT_HTTPS) {
+  console.log(`using OPENPROJECT_HTTPS: ${OPENPROJECT_HTTPS}`);
 }
 
 /**
@@ -25,7 +30,8 @@ export async function fetchResource(
 ): Promise<Response> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${oauthToken}`
+    "Authorization": `Bearer ${oauthToken}`,
+    ...(OPENPROJECT_URL && OPENPROJECT_HTTPS && { "X-Forwarded-Proto": "https" })
   };
   const url = overrideUrl(resourceUrl);
   const init = {

@@ -57,8 +57,22 @@ OPENPROJECT_URL=http://web
 
 Where `web` is the DNS name for the OpenProject container in the docker compose setup.
 
-> When overriding the base URL like this, you may also need to set `OPENPROJECT_ADDITIONAL__HOST__NAMES`
+> When overriding the base URL like this, you also need to set `OPENPROJECT_ADDITIONAL__HOST__NAMES`
 > on the OpenProject side. In the example above you would set it to `web`.
+
+> When using `http` as the protocol as shown in the example, you also MUST set the `OPENPROJECT_HTTPS`
+> option (see below) to `true`.
+
+#### `OPENPROJECT_HTTPS` (default `undefined`)
+
+This option only applies when using `OPENPROJECT_URL`.
+It is a direct reflection of the HTTPS setting in OpenProject.
+If this is true, hocuspocus will add the `X-Forwarded-Proto` header to its requests to prevent running into
+https redirects.
+
+```bash
+OPENPROJECT_HTTPS=true
+```
 
 ### Starting the Server
 

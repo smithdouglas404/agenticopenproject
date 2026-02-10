@@ -20,7 +20,8 @@ export const handlers = [
       id: request.params.id,
       title: 'Some existing document',
       __echo: {
-        url: request.request.url
+        url: request.request.url,
+        xForwardedProtoHeader: request.request.headers.get("X-Forwarded-Proto")
       }
     });
   }),
