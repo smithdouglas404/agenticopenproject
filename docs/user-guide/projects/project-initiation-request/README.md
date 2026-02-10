@@ -1,26 +1,26 @@
 ---
 sidebar_navigation:
-  title: Project creation wizard
+  title: Project initiation request
   priority: 850
-description: Create new projects using a guided project creation wizard in OpenProject.
+description: Create new projects using a guided project initiation process in OpenProject.
 keywords: project creation wizard, project initiation, project setup, new project, project template, PIR, pmflex, pm2
 
 ---
 
-# Project creation wizard (Enterprise add-on)
+# Project initiation request (Enterprise add-on)
 [feature: project_creation_wizard ]
 
-In **OpenProject**, you can create new projects using a guided project creation wizard. This is especially helpful in larger organizations, when managing many projects, or when working with complex structures and governance requirements.
+In **OpenProject**, you can create new projects using a guided pre-defined process. It is referred to as *project initiation request*, *project creation wizard* or *project mandate*. This is especially helpful in larger organizations, when managing many projects, or when working with complex structures and governance requirements.
 
-Instead of manually configuring each project from scratch, the wizard guides you through a defined sequence of steps to collect essential information and apply a consistent project setup. This reduces setup effort, avoids configuration errors, and helps ensure that new projects follow agreed standards.
+Instead of manually configuring each project from scratch, the wizard guides you through a defined sequence of steps to collect essential information and apply a consistent project setup. For example a department responsible for the project or key roles relevant to the project (team lead, product owner, etc.). This reduces setup effort, avoids configuration errors, and helps ensure that new projects follow agreed standards.
 
 As a result, project managers and teams can get started faster, while organizations maintain clarity and consistency across their OpenProject environment.
 
 ## Before you start
 
-Before using the project creation wizard, you need at least one project that is configured as a basis for project initiation process.
+Before using the project initiation request, you need at least one project that is configured as a basis for the project initiation process.
 
-First, configure a project for use in the project initiation process. See how to do this under [project settings](../project-settings/project-initiation-request/).
+First, configure a project for use in the project initiation process. See how to do this under [project settings](/project-initiation-request-settings/).
 
 When preparing a project for this purpose, consider configuring the following elements in advance:
 - Project members, which will be copied to newly created projects 
@@ -29,13 +29,15 @@ When preparing a project for this purpose, consider configuring the following el
 - Project attributes and default values 
 - Any other settings that reflect your organization’s project management approach
 
-Once configured, mark the project as a **template**. Only projects marked as templates are available during project creation. See [how to set a project as a template](../project-templates/).
+Once configured, we **strongly** recommend marking the project as a **template**, because only projects set as templates are available during project creation process. See [how to set a project as a template](../project-templates/).
 
 You can repeat this process to make multiple project creation wizards available.
 
 ## Step 1: Create a new project
 
-To start the project creation process, click **Create new project**. See [how to create a new project](../../../getting-started/projects/#create-a-new-project).
+To start the project creation process, click **+ Project** button. Read more on creating a new project [here](../../../getting-started/projects/#create-a-new-project).
+
+![Button to create a new project in OpenProject](openproject_user_guide_project_creation_wizard_new_project.png) 
 
 Select a relevant project template from the list of available templates and click **Continue**.
 
@@ -51,15 +53,15 @@ This action triggers the project creation wizard.
 
 ![Applying project initiation wizard template to a newly created project in OpenProject](openproject_user_guide_project_creation_wizard_applying_temlate.png)
 
-## Step 2: Fill out the project creation wizard
+## Step 2: Fill out the project initiation request
 
 You will be taken to the first screen of the project creation wizard.
 
 The screen is divided into several areas:
 
 1. **Content section** on the left, showing all wizard steps 
-2. **Main section** in the center, where project attributes are entered 
-3. **Help section** on the right, displaying help text if defined for an attribute 
+2. **Main section** in the center, where project attributes are filled out
+3. **Help section** on the right, displaying help text (if defined for an attribute) 
 4. **Progress indicator**, showing your current position in the process 
 5. **Cancel** and **Continue** buttons at the bottom 
 6. **Close icon**, allowing you to exit the wizard and return later 
@@ -91,7 +93,7 @@ A new work package is created automatically. It contains:
 - A generated PDF artifact with all submitted information attached for reference and audit purposes 
 - A link to reopen the project creation wizard if updates are needed 
 
-The responsible person defined during initiation is assigned to the work package and mentioned in a comment indicating that the request is awaiting review.
+The responsible person defined during initiation is assigned to the work package and mentioned in a comment indicating that the request is awaiting review. In this example this person was earlier defined during the project initiation request, in the project attribute field called *PIR controller*. 
 
 ![Confirmation message after submitting a project creation wizard in OpenProject](openproject_user_guide_project_creation_wizard_success_message.png)
 

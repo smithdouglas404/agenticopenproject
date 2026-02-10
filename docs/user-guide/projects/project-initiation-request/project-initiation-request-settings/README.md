@@ -6,7 +6,7 @@ description: Configure the project initiation request workflow for a project in 
 keywords: project initiation request, project creation wizard, project settings, project attributes, work packages, PDF export
 ---
 
-# Project initiation request (Enterprise add-on)
+# Project initiation request settings (Enterprise add-on)
 
 [feature: project_creation_wizard ]
 
@@ -19,8 +19,7 @@ These settings help establish a consistent project creation process and ensure t
 To access these settings, navigate to **Project settings → Project initiation request**.
 
 > [!TIP]
->
-> A project configured for the project initiation wizard also has to be marked as a template to be included into the project creation flow. 
+> A project configured for the project initiation wizard does not technically need to be marked as a template. However, marking it as a template is **very strongly recommended**, as this includes the project in the project creation flow. Otherwise, the initiation request can only be used when copying that project.
 
 ## Enable project initiation request
 
@@ -78,6 +77,12 @@ Choose the status that the work package will automatically transition to once th
 
 **Assignee when submitted**
 Select a project attribute of type **User**. The user assigned to this attribute during initiation will become the assignee of the newly created work package.
+
+> [!TIP]
+> A project attribute of type User can have a specific role assignment configured for it: 
+>
+> - If a role assignment is configured, any user of the application can be selected. This user will become member of the newly created project and the specified role will be assigned to them.
+> - If no role assignment is configured, only members of the template project can be selected.
 
 **Work package comment**
 Define the comment that is added to the work package when the request is submitted. The selected assignee will automatically be @mentioned in this comment. 
