@@ -7,14 +7,14 @@ tr:
     common:
       document_types:
         item_0:
-          name: Note
+          name: Notlar
         item_1:
-          name: Idea
+          name: Fikir
         item_2:
-          name: Proposal
+          name: Öneri
         item_3:
-          name: Specification
+          name: Özellik
         item_4:
-          name: Report
+          name: Rapor
         item_5:
           name: Belgeleme

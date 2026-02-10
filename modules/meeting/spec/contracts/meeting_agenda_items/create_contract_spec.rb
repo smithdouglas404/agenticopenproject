@@ -84,7 +84,11 @@ RSpec.describe MeetingAgendaItems::CreateContract do
       context "when presenter cannot view meetings in the project" do
         let(:presenter) { create(:user) }
 
-        it_behaves_like "contract is invalid", presenter: :invalid_user
+        it_behaves_like "contract is invalid", presenter: :user_invalid do
+          it "does not include the presenter's name in the error message" do
+            expect(contract.errors[:presenter]).not_to include(presenter.name)
+          end
+        end
       end
     end
   end

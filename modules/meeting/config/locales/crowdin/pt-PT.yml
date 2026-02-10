@@ -66,7 +66,9 @@ pt-PT:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} não é um participante válido."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Há uma reunião aberta na série que não é abrangida pelo novo calendário. Ajuste o calendário para incluir todas as reuniões existentes."

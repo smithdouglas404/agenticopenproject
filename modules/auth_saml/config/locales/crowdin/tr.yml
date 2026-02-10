@@ -6,7 +6,7 @@ tr:
         identifier: Tanımlayıcı
         secret: Gizli
         scope: Kapsam
-        assertion_consumer_service_url: ACS (Assertion tüketici hizmeti) URL'si
+        assertion_consumer_service_url: ACS (Kimlik Doğrulama hizmeti) URL'si
         limit_self_registration: Kendi kendine kaydı sınırlayın
         sp_entity_id: Hizmet kuruluşu kimliği
         metadata_url: Kimlik sağlayıcı meta veri URL'si
@@ -71,7 +71,7 @@ tr:
       request_attributes:
         title: 'Talep edilen nitelikler'
         legend: >
-          These attributes are added to the SAML XML metadata to signify to the identify provider which attributes OpenProject requires. You may still need to explicitly configure your identity provider to send these attributes. Please refer to your IdP's documentation.
+          Bu öznitelikler (attributes), OpenProject’in ihtiyaç duyduğu özniteliklerin kimlik sağlayıcı (Identity Provider – IdP) tarafından anlaşılabilmesi amacıyla SAML XML meta verisine eklenmektedir. Bununla birlikte, ilgili özniteliklerin IdP tarafından gönderilebilmesi için kimlik sağlayıcı üzerinde ayrıca açık bir yapılandırma yapılması gerekebilir. Ayrıntılı yapılandırma adımları için lütfen IdP dokümantasyonunu inceleyiniz.
         name: 'İstenen öznitelik anahtarı'
         format: 'Öznitelik biçimi'
       section_headers:
@@ -79,78 +79,78 @@ tr:
         attributes: "Özellikler"
       section_texts:
         display_name: "SAML sağlayıcısının görünen adını değiştir."
-        metadata: "Pre-fill configuration using a metadata URL or by pasting metadata XML"
-        metadata_form: "If your identity provider has a metadata endpoint or XML download, add it below to pre-fill the configuration."
+        metadata: "Bir meta veri URL’si kullanarak ya da meta veri XML’ini manuel olarak yapıştırarak yapılandırmayı otomatik olarak önceden doldurun."
+        metadata_form: "Kimlik sağlayıcınız bir meta veri uç noktası veya meta veri XML indirme seçeneği sunuyorsa, yapılandırmanın önceden doldurulabilmesi için ilgili bilgiyi aşağıya girin."
         metadata_form_banner: "Metaverileri düzenlemek diğer bölümlerde var olan değerlerin üstüne yazılmasına neden olabilir. "
-        configuration: "Configure the endpoint URLs for the identity provider, certificates, and further SAML options."
-        configuration_metadata: "This information has been pre-filled using the supplied metadata. In most cases, they do not require editing."
-        encryption: "Configure assertion signatures and encryption for SAML requests and responses."
-        encryption_form: "You may optionally want to encrypt the assertion response, or have requests from OpenProject signed."
+        configuration: "Kimlik sağlayıcının uç nokta URL’lerini, sertifika ayarlarını ve diğer SAML yapılandırma seçeneklerini tanımlayın."
+        configuration_metadata: "Bu bilgiler, girilen meta verilerden otomatik olarak alınarak doldurulmuştur ve genellikle manuel düzenleme gerektirmez."
+        encryption: "SAML istekleri ve yanıtlarında kullanılan assertion imzalama ve şifreleme yapılandırmalarını tanımlayın."
+        encryption_form: "Gereksinimlerinize bağlı olarak doğrulama yanıtlarının şifrelenmesini etkinleştirebilir ya da OpenProject kaynaklı isteklerin dijital olarak imzalanmasını yapılandırabilirsiniz."
         mapping: "SAML yanıtı ile OpenProject'teki kullanıcı öznitelikleri arasındaki eşlemeyi elle ayarlayın."
-        requested_attributes: "Define the set of attributes to be requested in the SAML request sent to your identity provider."
-      seeded_from_env: "This provider was seeded from the environment configuration. It cannot be edited."
+        requested_attributes: "Kimlik sağlayıcınıza gönderilen SAML isteğinde talep edilecek öznitelik kümesini tanımlayın."
+      seeded_from_env: "Bu kimlik sağlayıcı, ortam yapılandırması üzerinden ön tanımlı olarak oluşturulmuştur ve değiştirilemez."
     settings:
-      metadata_none: "I don't have metadata"
+      metadata_none: "Meta verilerim yok"
       metadata_url: "Metaveri URL'si"
-      metadata_xml: "Metadata XML"
+      metadata_xml: "Metaveri XML"
     instructions:
       documentation_link: >
-        Please refer to our [documentation on configuring SAML providers](docs_url) for more information on these configuration options.
+        Bu yapılandırma seçenekleri hakkında daha fazla bilgi için lütfen [SAML sağlayıcılarını yapılandırma belgeleri] (docs_url) bakın.
       display_name: >
         Sağlayıcının adı. Bu, oturum açma düğmesi olarak ve sağlayıcılar listesinde görüntülenecektir.
       metadata_none: >
-        Your identity provider does not have a metadata endpoint or XML download option. You can configure it manually.
+
       metadata_url: >
-        Your identity provider provides a metadata URL.
+        Kimlik sağlayıcınız bir meta veri URL'si sağlar.
       metadata_xml: >
-        Your identity provider provides a metadata XML download.
+        Kimlik sağlayıcınız bir meta veri XML indirmesi sağlar.
       limit_self_registration: >
         Etkinleştirilirse, kullanıcılar bu sağlayıcıyı kullanarak yalnızca kendi kendine kayıt ayarı buna izin veriyorsa kaydolabilir.
       sp_entity_id: >
-        The entity ID of the service provider (SP). Sometimes also referred to as Audience. This is the unique client identifier of the OpenProject instance.
+        Hizmet sağlayıcının (SP) varlık kimliği. Bazen İzleyici olarak da adlandırılır. Bu, OpenProject örneğinin benzersiz istemci tanımlayıcısıdır.
       idp_sso_service_url: >
-        The URL of the identity provider login endpoint.
+        Kimlik sağlayıcı oturum açma uç noktasının URL'si.
       idp_slo_service_url: >
-        The URL of the identity provider logout endpoint.
+        Kimlik sağlayıcı oturum kapatma uç noktasının URL'si.
       idp_cert: >
-        Enter the X509 PEM-formatted public certificate of the identity provider. You can enter multiple certificates by separating them with a newline.
+        Kimlik sağlayıcının X.509 PEM biçimindeki genel anahtar sertifikasını giriniz. Birden fazla sertifika, satır sonu kullanılarak ayrı ayrı tanımlanabilir.
       name_identifier_format: >
-        Set the name identifier format to be used for the SAML assertion.
+        SAML doğrulaması içerisinde kullanılacak  formatını tanımlayın.
       sp_metadata_endpoint: >
-        This is the URL where the OpenProject SAML metadata is available. Optionally use it to configure your identity provider.
+        Bu, OpenProject SAML meta verilerinin mevcut olduğu URL'dir. İsteğe bağlı olarak kimlik sağlayıcınızı yapılandırmak için kullanın.
       mapping: >
-        Configure the mapping between the SAML response and user attributes in OpenProject. You can configure multiple attribute names to look for. OpenProject will choose the first available attribute from the SAML response.
+        SAML yanıtı ile OpenProject’teki kullanıcı öznitelikleri arasındaki eşlemeyi yapılandırın. Birden fazla öznitelik adını arama kriteri olarak tanımlayabilirsiniz. OpenProject, SAML yanıtında bulunan ilk geçerli özniteliği kullanacaktır.
       mapping_login: >
-        SAML attributes from the response used for the login.
+        Oturum açma işlemi için kullanılan SAML yanıtı öznitelikleri.
       mapping_mail: >
-        SAML attributes from the response used for the email of the user.
+        Kullanıcının e-posta adresi için kullanılan SAML yanıtı öznitelikleri.
       mapping_firstname: >
-        SAML attributes from the response used for the given name.
+        Kullanıcının ad bilgisinin alınmasında kullanılan SAML yanıtındaki öznitelikler.
       mapping_lastname: >
-        SAML attributes from the response used for the last name.
+        Kullanıcının soyad bilgisinin alınmasında kullanılan SAML yanıtındaki öznitelikler.
       mapping_uid: >
-        SAML attribute to use for the internal user ID. Leave empty to use the name_id attribute instead
+        Dahili kullanıcı kimliği için kullanılacak SAML özniteliği. Bunun yerine name_id özniteliğini kullanmak için boş bırakın
       request_uid: >
-        SAML attribute to request for the internal user ID. By default, the name_id will be used for this field.
+        Dahili kullanıcı kimliği için talep edilecek SAML özniteliği. Varsayılan olarak bu alan için name_id kullanılacaktır.
       requested_attributes: >
-        These attributes are added to the SAML request XML to communicate to the identity provider which attributes OpenProject requires.
+
       requested_format: >
-        The format of the requested attribute. This is used to specify the format of the attribute in the SAML request. Please see [documentation on configuring requested attributes](docs_url) for more information.
+        İstenen özniteliğin biçimi. Bu, SAML isteğindeki özniteliğin biçimini belirtmek için kullanılır. Daha fazla bilgi için lütfen [istenen öznitelikleri yapılandırma belgelerine](docs_url) bakın.
       authn_requests_signed: >
-        If checked, OpenProject will sign the SAML AuthnRequest. You will have to provide a signing certificate and private key using the fields below.
+        İşaretlenirse, OpenProject SAML AuthnRequest'i imzalayacaktır. Aşağıdaki alanları kullanarak bir imzalama sertifikası ve özel anahtar sağlamanız gerekecektir.
       want_assertions_signed: >
-        If checked, OpenProject will required signed responses from the identity provider using its own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
+        İşaretlenirse, OpenProject kendi sertifika anahtar çiftini kullanarak kimlik sağlayıcıdan imzalı yanıtlar isteyecektir. OpenProject imzayı temel yapılandırma bölümündeki sertifikaya göre doğrulayacaktır.
       want_assertions_encrypted: >
-        If enabled, require the identity provider to encrypt the assertion response using the certificate pair that you provide.
+        Etkinleştirilirse, kimlik sağlayıcısının sağladığınız sertifika çiftini kullanarak onay yanıtını şifrelemesini gerektirir.
       certificate: >
         OpenProject tarafından SAML isteklerini imzalamak için kullanılacak X509 PEM biçimli sertifikayı girin.
       private_key: >
-        Enter the X509 PEM-formatted private key for the above certificate. This needs to be an RSA private key.
+        Yukarıdaki sertifika için X509 PEM biçimli özel anahtarı girin. Bunun bir RSA özel anahtarı olması gerekir.
       signature_method: >
-        Select the signature algorithm to use for the SAML request signature performed by OpenProject (Default: %{default_option}).
+        OpenProject tarafından gerçekleştirilen SAML istek imzası için kullanılacak imza algoritmasını seçin (Varsayılan: %{default_option}).
       digest_method: >
-        Select the digest algorithm to use for the SAML request signature performed by OpenProject (Default: %{default_option}).
+        OpenProject tarafından gerçekleştirilen SAML istek imzası için kullanılacak özet algoritmasını seçin (Varsayılan: %{default_option}).
       icon: >
-        Optionally provide a public URL to an icon graphic that will be displayed next to the provider name.
+        İsteğe bağlı olarak, sağlayıcı adının yanında görüntülenecek bir simge grafiği için genel bir URL sağlayın.
       metadata_for_idp: >
-        This information might be requested by your SAML identity provider.
+        Bu bilgiler SAML kimlik sağlayıcınız tarafından talep edilebilir.

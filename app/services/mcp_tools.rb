@@ -32,9 +32,11 @@ module McpTools
   class << self
     def all
       [
+        McpTools::CurrentUser,
         McpTools::ListStatuses,
         McpTools::ListTypes,
         McpTools::SearchProjects,
+        McpTools::SearchUsers,
         McpTools::SearchWorkPackages
       ]
     end

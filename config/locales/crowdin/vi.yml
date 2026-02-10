@@ -113,7 +113,7 @@ vi:
       index:
         description: "Giao thức bối cảnh mô hình cho phép các tác nhân AI cung cấp cho người dùng của mình các công cụ và tài nguyên được cung cấp bởi phiên bản OpenProject này."
         resources_heading: "Tài nguyên"
-        resources_description: "OpenProject cung cấp các công cụ sau đây. Mỗi công cụ có thể được kích hoạt, đổi tên và mô tả theo ý muốn của bạn. Để biết thêm thông tin, vui lòng tham khảo [tài liệu về tài nguyên MCP](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Cập nhật tài nguyên"
         tools_heading: "Công cụ"
         tools_description: "OpenProject cung cấp các công cụ sau đây. Mỗi công cụ có thể được kích hoạt, đổi tên và mô tả theo ý muốn của bạn. Để biết thêm thông tin, vui lòng tham khảo [tài liệu về các công cụ MCP](docs_url)."
@@ -122,7 +122,7 @@ vi:
         success: "Cấu hình MCP đã được cập nhật thành công."
       server_form:
         description_caption: "Cách máy chủ MCP sẽ được mô tả cho các ứng dụng khác kết nối với nó."
-        title_caption: "Một tiêu đề ngắn được hiển thị cho các ứng dụng kết nối với máy chủ MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "Không thể cập nhật cấu hình MCP."
         success: "Cấu hình MCP đã được cập nhật thành công."

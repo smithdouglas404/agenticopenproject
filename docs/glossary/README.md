@@ -63,10 +63,10 @@ In OpenProject, authentication is an important element to guarantee a data prote
 
 **More information on authentication in OpenProject**
 
-- [See answers to frequently asked questions (FAQ) for authentication](../system-admin-guide/authentication/authentication-faq/)
-- [See our blog post on multi-factor authentication to improve data security](https://www.openproject.org/blog/multi-factor-authentication-for-data-security/)
-- [Read more about Two-factor authentication (2FA) in OpenProject](../system-admin-guide/authentication/two-factor-authentication/)
-- [Read more about LDAP Authentication in OpenProject](../system-admin-guide/authentication/ldap-connections/)
+- [See answers to frequently asked questions (FAQ) for authentication](../system-admin-guide/authentication/authentication-faq/).
+- [See our blog post on multi-factor authentication to improve data security](https://www.openproject.org/blog/multi-factor-authentication-for-data-security/).
+- [Read more about Two-factor authentication (2FA) in OpenProject](../system-admin-guide/authentication/two-factor-authentication/).
+- [Read more about LDAP Authentication in OpenProject](../system-admin-guide/authentication/ldap-connections/).
 
 ## B
 
@@ -111,10 +111,10 @@ OpenProject can be installed either [on-premises](#on-premises) (available for b
 
 **More information on cloud hosting for OpenProject**
 
-- [Read a blog article on OpenProject's cloud project management software](https://www.openproject.org/blog/cloud-project-management-software/)
-- [See OpenProject's prices and plans](https://www.openproject.org/pricing)
-- [Read a blog article on why to choose an open source cloud software](https://www.openproject.org/blog/open-source-cloud-software/)
-- [See the FAQ for OpenProject Enterprise cloud](../enterprise-guide/enterprise-cloud-guide/enterprise-cloud-faq/)
+- [Read a blog article on OpenProject's cloud project management software](https://www.openproject.org/blog/cloud-project-management-software/).
+- [See OpenProject's prices and plans](https://www.openproject.org/pricing).
+- [Read a blog article on why to choose an open source cloud software](https://www.openproject.org/blog/open-source-cloud-software/).
+- [See the FAQ for OpenProject Enterprise cloud](../enterprise-guide/enterprise-cloud-guide/enterprise-cloud-faq/).
 
 ### Community edition
 
@@ -133,9 +133,9 @@ A custom action in OpenProject is defined as customizable buttons which trigger 
 
 **More information on custom actions in OpenProject**
 
-- [Watch a short video how custom actions work](../system-admin-guide/manage-work-packages/custom-actions/#automated-workflows-with-custom-actions-enterprise-add-on)
-- [Read this guide on how to create custom actions](../system-admin-guide/manage-work-packages/custom-actions/#create-custom-actions)
-- [Read this blog article on how to create an intelligent workflow with custom action - explained with an example](https://www.openproject.org/blog/customize-workflows/)
+- [Watch a short video how custom actions work](../system-admin-guide/manage-work-packages/custom-actions/#automated-workflows-with-custom-actions-enterprise-add-on).
+- [Read this guide on how to create custom actions](../system-admin-guide/manage-work-packages/custom-actions/#create-custom-actions).
+- [Read this blog article on how to create an intelligent workflow with custom action - explained with an example](https://www.openproject.org/blog/customize-workflows/).
 
 ### Custom field
 
@@ -309,10 +309,10 @@ OpenProject on-premises is a self-hosted version of OpenProject. As opposed to t
 
 **More information on OpenProject on-premises**
 
-- [See our pricing side about your options for OpenProject](https://www.openproject.org/pricing/)
-- [Read a blog article comparing on-premises and cloud](https://www.openproject.org/blog/why-self-hosting-software/)
-- [Read how to activate the Enterprise on-premises edition](../enterprise-guide/enterprise-on-premises-guide/activate-enterprise-on-premises/)
-- [Read how to start a trial for Enterprise on-premises](../enterprise-guide/enterprise-on-premises-guide/enterprise-on-premises-trial/)
+- [See our pricing side about your options for OpenProject](https://www.openproject.org/pricing/).
+- [Read a blog article comparing on-premises and cloud](https://www.openproject.org/blog/why-self-hosting-software/).
+- [Read how to activate the Enterprise on-premises edition](../enterprise-guide/enterprise-on-premises-guide/activate-enterprise-on-premises/).
+- [Read how to start a trial for Enterprise on-premises](../enterprise-guide/enterprise-on-premises-guide/enterprise-on-premises-trial/).
 
 ### OpenID Connect (OIDC)
 
@@ -385,6 +385,13 @@ Open the project home by navigating to "Project home" in the project menu on the
 ### Project identifier
 
 The project identifier is defined as the unique name used to identify and reference projects in the application as well as in the address bar of your browser. Project identifiers can be changed in the [project settings](#project-settings).
+
+### Project initiation request
+
+A project initiation request (PIR) is a formal request to start a project, used in frameworks such as [PM²](#pm--pm2) and [PMflex](#pmflex) to collect key information before a project is initiated. In OpenProject, an automated PIR wizard is available as an [Enterprise add-on](#enterprise-add-on) to standardize project initiation and reduce manual effort. The term is also referred to as *project creation wizard* or *project mandate*.
+
+- [Read more about project initiation requests in PM²](../project-management-guide/5-initiating-phase/#52-project-initiation-request).
+- Read more about OpenProject’s Enterprise add-on for automated project initiation requests.
 
 ### Project life cycle
 
@@ -545,8 +552,8 @@ In OpenProject, a [work package](../user-guide/work-packages/#overview) is defin
 
 **More information on work packages in OpenProject**
 
-- [Read our user guide on work packages](../user-guide/work-packages/)
-- [Read a blog article on how to work with work packages](https://www.openproject.org/blog/how-to-work-with-work-packages/)
+- [Read our user guide on work packages](../user-guide/work-packages/).
+- [Read a blog article on how to work with work packages](https://www.openproject.org/blog/how-to-work-with-work-packages/).
 
 ### Work package category
 

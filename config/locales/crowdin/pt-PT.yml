@@ -113,7 +113,7 @@ pt-PT:
       index:
         description: "O protocolo de contexto do modelo permite que os agentes de IA forneçam aos seus utilizadores ferramentas e recursos expostos por esta instância do OpenProject."
         resources_heading: "Recursos"
-        resources_description: "O OpenProject implementa as seguintes ferramentas. Cada uma pode ser ativada, renomeada e descrita como quiser. Para mais informações, consulte a [documentação sobre recursos MCP](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Atualizar recursos"
         tools_heading: "Ferramentas"
         tools_description: "O OpenProject implementa as seguintes ferramentas. Cada uma pode ser ativada, renomeada e descrita como quiser. Para mais informações, consulte a [documentação sobre ferramentas MCP](docs_url)."
@@ -122,7 +122,7 @@ pt-PT:
         success: "As configurações da MCP foram atualizadas com êxito."
       server_form:
         description_caption: "Como o servidor MCP será descrito a outras aplicações que se ligam a ele."
-        title_caption: "Um título curto apresentado às aplicações que se ligam ao servidor MCP."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "Não foi possível atualizar a configuração MCP."
         success: "A configuração da MCP foi atualizada com êxito."

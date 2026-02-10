@@ -123,7 +123,7 @@ tr:
       2fa_from_webauthn: Lütfen WebAuthn cihazını <strong>%{device_name}</strong> sağlayın. USB tabanlı ise cihazınız taktığınızdan ve dokunduğunuzdan emin olun. Ardından oturum açma düğmesine tıklayın.
       webauthn:
         title: "WebAuthn"
-        description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.
+        description: Bir FIDO2 cihazı (YubiKey gibi) ya da mobil cihazınızın güvenli donanım alanını (secure enclave) kaydedin.
         further_steps: Bir isim seçtikten sonra Devam düğmesine tıklayabilirsiniz. Tarayıcınız sizden WebAuthn cihazınızı göstermenizi isteyecektir. Bunu yaptığınızda, cihazın kaydını tamamlamış olursunuz.
       totp:
         title: "Uygulama tabanlı kimlik doğrulayıcı"

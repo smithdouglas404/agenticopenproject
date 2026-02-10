@@ -65,7 +65,9 @@ zh-TW:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} 不是有效的參與者。"
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "該系列中有一個公開會議未包含在新的時間表中。調整時間表以包含所有現有會議。"

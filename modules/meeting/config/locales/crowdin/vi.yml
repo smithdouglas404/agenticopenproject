@@ -65,7 +65,9 @@ vi:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} không phải là người tham gia hợp lệ."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Có một cuộc họp mở trong chuỗi không có trong lịch trình mới. Điều chỉnh lịch trình để bao gồm tất cả các cuộc họp hiện có."
