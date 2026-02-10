@@ -27,7 +27,7 @@ Take a look at our release video showing the most important features introduced 
 
 OpenProject introduces a configurable wizard for project initiation requests. The wizard can be enabled per template project.
 
-[feature: project_creation_wizard ]
+[See our documentation to learn how to use the automated project initiation request with OpenProject](../../user-guide/projects/project-initiation-request/).
 
 #### Configurable project initiation wizard
 
