@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+set -x
 
 usage() {
   cat <<'USAGE'
@@ -248,10 +249,10 @@ validate_all_in_one() {
     docker_run_args+=(--platform "${PLATFORM}")
   fi
 
-  docker run "${docker_run_args[@]}" "${IMAGE}" >/dev/null
+  docker run "${docker_run_args[@]}" "${IMAGE}"
 
   while true; do
-    if curl --silent --fail "${api_url}" >/dev/null 2>&1; then
+    if curl --silent --fail "${api_url}"; then
       break
     fi
 
