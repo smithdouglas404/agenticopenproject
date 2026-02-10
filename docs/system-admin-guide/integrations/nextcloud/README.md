@@ -373,9 +373,9 @@ If that also not work please check the [instructions for setting up pretty URLs 
 #### Files are not encrypted when using Nextcloud server-side encryption
 
 > [!NOTE]
-> If your Nextcloud server uses server-side encryption, the GroupFolder encryption needs to be manually enabled.
-> This is relevant for automatically managed project folders, as the GroupFolder app is used in these cases.
-To enable encryption for GroupFolders, run the following command on your Nextcloud server:
+> If your Nextcloud server uses server-side encryption, the TeamFolder encryption needs to be manually enabled.
+> This is relevant for automatically managed project folders, as the TeamFolder app is used in these cases.
+To enable encryption for TeamFolders, run the following command on your Nextcloud server:
 
 ```shell
 occ config:app:set groupfolders enable_encryption --value="true"
