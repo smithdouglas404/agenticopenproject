@@ -1272,8 +1272,12 @@ en:
   activerecord:
     attributes:
       agile/sprint:
-        sharing: "Sharing"
+        duration: "Duration"
+
         finish_date: "End date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       announcements:
         show_until: "Display until"
       attachment:
@@ -2065,6 +2069,7 @@ en:
       scim_client:
         one: "SCIM client"
         other: "SCIM clients"
+      sprint: Sprint
       status: "Work package status"
       token/api:
         one: Access token
@@ -3759,6 +3764,7 @@ en:
   label_sort_lower: "Move down"
   label_sort_lowest: "Move to bottom"
   label_spent_time: "Spent time"
+  label_sprint_new: "New sprint"
   label_start_to_end: "start to end"
   label_start_to_start: "start to start"
   label_statistics: "Statistics"

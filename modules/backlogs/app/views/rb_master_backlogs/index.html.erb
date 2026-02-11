@@ -45,16 +45,27 @@ See COPYRIGHT and LICENSE files for more details.
   %>
 
   <%= render(Primer::OpenProject::SubHeader.new) do |subheader|
-        subheader.with_action_button(
-          scheme: :primary,
-          leading_icon: :plus,
-          label: I18n.t(:label_version_new),
-          tag: :a,
-          href: url_for({ controller: "/versions", action: "new", project_id: @project })
-        ) do
-          t("activerecord.models.version")
-        end
-      end %>
+    subheader.with_action_button(
+      scheme: :primary,
+      leading_icon: :plus,
+      label: I18n.t(:label_version_new),
+      tag: :a,
+      href: url_for({ controller: "/versions", action: "new", project_id: @project })
+    ) do
+      t("activerecord.models.version")
+    end
+
+    subheader.with_action_button(
+      scheme: :primary,
+      leading_icon: :plus,
+      label: I18n.t(:label_sprint_new),
+      tag: :a,
+      href: new_dialog_project_sprints_path(@project),
+      data: { controller: "async-dialog" }
+    ) do
+      t("activerecord.models.sprint")
+    end
+  end %>
 <% end %>
 
 <% content_for :content_body do %>

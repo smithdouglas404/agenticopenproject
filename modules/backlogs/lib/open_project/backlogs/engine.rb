@@ -103,6 +103,13 @@ module OpenProject::Backlogs
                    },
                    permissible_on: :project,
                    require: :member
+
+        permission :create_sprints,
+                   {
+                     rb_sprints: %i[new_dialog]
+                   },
+                   permissible_on: :project,
+                   require: :member
       end
 
       menu :project_menu,
