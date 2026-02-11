@@ -285,11 +285,20 @@ ps -ef | grep -F "/opt/hocuspocus" | grep -v grep >/dev/null 2>&1 || {
   echo "Expected bundled hocuspocus process to be running."
   exit 1
 }
+ps -ef | grep -F "/usr/bin/memcached" | grep -v grep >/dev/null 2>&1 || {
+  echo "Expected memcached process to be running."
+  exit 1
+}
 '
 
   if docker logs "${VALIDATION_CONTAINER_NAME}" 2>&1 | grep -q "gave up: hocuspocus entered FATAL state"; then
     docker logs "${VALIDATION_CONTAINER_NAME}" --tail 200 || true
     die "Bundled hocuspocus failed to start in all-in-one image."
+  fi
+
+  if docker logs "${VALIDATION_CONTAINER_NAME}" 2>&1 | grep -q "gave up: memcached entered FATAL state"; then
+    docker logs "${VALIDATION_CONTAINER_NAME}" --tail 200 || true
+    die "Bundled memcached failed to start in all-in-one image."
   fi
 }
 
