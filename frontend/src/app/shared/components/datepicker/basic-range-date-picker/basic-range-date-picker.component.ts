@@ -111,6 +111,8 @@ export class OpBasicRangeDatePickerComponent implements OnInit, ControlValueAcce
 
   @Input() disabled = false;
 
+  @Input() placeholder = '';
+
   @Input() minimalDate:Date|null = null;
 
   @Input() inputClassNames = '';

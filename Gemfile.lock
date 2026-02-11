@@ -556,7 +556,7 @@ GEM
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
-    faraday (2.14.0)
+    faraday (2.14.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -724,7 +724,7 @@ GEM
       reline (>= 0.4.2)
     iso8601 (0.13.0)
     jmespath (1.6.2)
-    json (2.18.0)
+    json (2.18.1)
     json-jwt (1.17.0)
       activesupport (>= 4.2)
       aes_key_wrap
@@ -879,12 +879,12 @@ GEM
       actionview
       openproject-octicons (= 19.32.0)
       railties
-    openproject-primer_view_components (0.80.1)
+    openproject-primer_view_components (0.81.1)
       actionview (>= 7.2.0)
       activesupport (>= 7.2.0)
       openproject-octicons (>= 19.30.1)
       view_component (>= 3.1, < 5.0)
-    openproject-token (8.5.0)
+    openproject-token (8.6.0)
       activemodel
     openssl (4.0.0)
     openssl-signature_algorithm (1.3.0)
@@ -1652,12 +1652,12 @@ DEPENDENCIES
   openproject-octicons (~> 19.32.0)
   openproject-octicons_helper (~> 19.32.0)
   openproject-openid_connect!
-  openproject-primer_view_components (~> 0.80.1)
+  openproject-primer_view_components (~> 0.81.1)
   openproject-recaptcha!
   openproject-reporting!
   openproject-storages!
   openproject-team_planner!
-  openproject-token (~> 8.5.0)
+  openproject-token (~> 8.6.0)
   openproject-two_factor_authentication!
   openproject-webhooks!
   openproject-xls_export!
@@ -1881,7 +1881,7 @@ CHECKSUMS
   excon (1.3.2) sha256=a089babe98638e58042a7d542b2bbd183304527e33d612b6dde22fa491a544a5
   factory_bot (6.5.6) sha256=12beb373214dccc086a7a63763d6718c49769d5606f0501e0a4442676917e077
   factory_bot_rails (6.5.1) sha256=d3cc4851eae4dea8a665ec4a4516895045e710554d2b5ac9e68b94d351bc6d68
-  faraday (2.14.0) sha256=8699cfe5d97e55268f2596f9a9d5a43736808a943714e3d9a53e6110593941cd
+  faraday (2.14.1) sha256=a43cceedc1e39d188f4d2cdd360a8aaa6a11da0c407052e426ba8d3fb42ef61c
   faraday-follow_redirects (0.5.0) sha256=5cde93c894b30943a5d2b93c2fe9284216a6b756f7af406a1e55f211d97d10ad
   faraday-net_http (3.4.2) sha256=f147758260d3526939bf57ecf911682f94926a3666502e24c69992765875906c
   fastimage (2.4.0) sha256=5fce375e27d3bdbb46c18dbca6ba9af29d3304801ae1eb995771c4796c5ac7e8
@@ -1948,7 +1948,7 @@ CHECKSUMS
   irb (1.16.0) sha256=2abe56c9ac947cdcb2f150572904ba798c1e93c890c256f8429981a7675b0806
   iso8601 (0.13.0) sha256=298c2b15b7be5fa95a1372813d36a2257656cd8e906dfbc1f5cb409851425aa2
   jmespath (1.6.2) sha256=238d774a58723d6c090494c8879b5e9918c19485f7e840f2c1c7532cf84ebcb1
-  json (2.18.0) sha256=b10506aee4183f5cf49e0efc48073d7b75843ce3782c68dbeb763351c08fd505
+  json (2.18.1) sha256=fe112755501b8d0466b5ada6cf50c8c3f41e897fa128ac5d263ec09eedc9f986
   json-jwt (1.17.0) sha256=6ff99026b4c54281a9431179f76ceb81faa14772d710ef6169785199caadc4cc
   json-schema (4.3.1) sha256=d5e68dc32b94408d0b06ad04f9382ccbb6fe5a44910e066f8547f56c471a7825
   json_rpc_handler (0.1.1) sha256=ea248c8cb4d5490dde320db316ac5e3caf8137a20b5ff9035a4bfc1d19438d90
@@ -2028,12 +2028,12 @@ CHECKSUMS
   openproject-octicons (19.32.0) sha256=e9c908e7c4310d57e1dece8fc506339862f18b67b3b67d549e8f56a7b763d48b
   openproject-octicons_helper (19.32.0) sha256=687a8b173c6436634397477c1f05b0a575e52745a5cc1aef03351272e73e3832
   openproject-openid_connect (1.0.0)
-  openproject-primer_view_components (0.80.1) sha256=327cdb1c91d8ea90a948b45d30b86f4d5e446d667350707e943c0abac840a3c5
+  openproject-primer_view_components (0.81.1) sha256=ebda313d71f4c7e82b9a31e0d54b1e2b5ac3776816161fb61517ced1d945587d
   openproject-recaptcha (1.0.0)
   openproject-reporting (1.0.0)
   openproject-storages (1.0.0)
   openproject-team_planner (1.0.0)
-  openproject-token (8.5.0) sha256=c32481bf8c4a55c44a8ed826e3772c0585e6c5fec1cc0dd28f737de24904631c
+  openproject-token (8.6.0) sha256=f5865070bd0586f618f476d22544cfa680916e3ff23aea8199a46e31b8a2970e
   openproject-two_factor_authentication (1.0.0)
   openproject-webhooks (1.0.0)
   openproject-xls_export (1.0.0)

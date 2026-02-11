@@ -83,7 +83,7 @@ module Projects
     end
 
     def custom_field_column(column) # rubocop:disable Metrics/AbcSize
-      return nil unless user_can_view_project?
+      return nil unless user_can_view_project_attributes?
 
       cf = column.custom_field
       custom_value = project.formatted_custom_value_for(cf)
@@ -93,7 +93,7 @@ module Projects
           "dialog-#{project.id}-cf-#{cf.id}",
           cf.name,
           custom_value,
-          formatted: true
+          format: false # already formatted
         )
       elsif custom_value.is_a?(Array)
         safe_join(Array(custom_value).compact_blank, ", ")
@@ -196,7 +196,7 @@ module Projects
     end
 
     def project_status
-      return nil unless user_can_view_project?
+      return nil unless user_can_view_project_attributes?
 
       content = "".html_safe
 
@@ -212,7 +212,7 @@ module Projects
     end
 
     def status_explanation
-      return nil unless user_can_view_project?
+      return nil unless user_can_view_project_attributes?
 
       if project.status_explanation.present? && project.status_explanation
         render OpenProject::Common::AttributeComponent.new("dialog-#{project.id}-status-explanation",
@@ -222,7 +222,7 @@ module Projects
     end
 
     def description
-      return nil unless user_can_view_project?
+      return nil unless user_can_view_project_attributes?
 
       if project.description.present?
         render OpenProject::Common::AttributeComponent.new("dialog-#{project.id}-description",
@@ -436,7 +436,7 @@ module Projects
       end
     end
 
-    def user_can_view_project?
+    def user_can_view_project_attributes?
       User.current.allowed_in_project?(:view_project_attributes, project)
     end
 

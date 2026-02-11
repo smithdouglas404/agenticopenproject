@@ -68,7 +68,9 @@ uk:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} не є дійсним учасником."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Одна відкрита нарада в серії не входить у новий розклад. Налаштуйте розклад так, щоб він охоплював усі наявні наради."
@@ -241,23 +243,23 @@ uk:
         header: "Скасовано: нарада «%{title}»"
         header_occurrence: "Скасовано: нарада серії «%{title}»"
         header_series: "Скасовано: серія нарад «%{title}»"
-        summary_occurrence: "Нараду серії %{title} скасував(-ла) %{actor}."
-        summary_series: "Серію нарад «%{title}» скасував(-ла) %{actor}."
-        summary: "«%{title}» скасував(-ла) %{actor}."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Заплановані дата/час"
       participant_added:
-        header: "Meeting '%{title}' - Participant added"
-        header_series: "Meeting series '%{title}' - Participant added"
-        summary: "%{actor} added %{participant} to the meeting '%{title}'"
-        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
+        header: "Нарада «%{title}» — додано учасника"
+        header_series: "Серія нарад «%{title}» — додано учасника"
+        summary: "Виконавець %{actor} додав учасника %{participant} до наради «%{title}»"
+        summary_series: "Виконавець %{actor} додав учасника %{participant} до серії нарад «%{title}»"
       participant_removed:
-        header: "Meeting '%{title}' - Participant removed"
-        header_series: "Meeting series '%{title}' - Participant removed"
-        summary: "%{actor} removed %{participant} from the meeting '%{title}'"
-        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
+        header: "Нарада «%{title}» — вилучено учасника"
+        header_series: "Серія нарад «%{title}» — вилучено учасника"
+        summary: "Виконавець %{actor} вилучив учасника %{participant} із наради «%{title}»"
+        summary_series: "Виконавець %{actor} вилучив учасника %{participant} із серії нарад «%{title}»"
       ended:
         header_series: "Завершено: серія нарад «%{title}»"
-        summary_series: "Серію нарад «%{title}» завершив(-ла) %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "Нараду «%{title}» оновлено"
         summary: "Нараду «%{title}» оновив(-ла) %{actor}"
@@ -544,8 +546,8 @@ uk:
   label_agenda_item_move_up: "Перемістити вгору"
   label_agenda_item_move_down: "Перемістити вниз"
   label_agenda_item_duplicate: "Дублювати"
-  label_agenda_item_duplicate_in_next: "Дублювати в наступній нараді серії"
-  label_agenda_item_duplicate_in_next_title: "Дублювати в наступній нараді серії?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Додати примітки"
   label_agenda_item_add_outcome: "Додати результат"
   label_agenda_item_work_package_add: "Додати пакет робіт"
@@ -556,9 +558,9 @@ uk:
   label_agenda_outcome_actions: "Дії з результатами порядку денного"
   label_agenda_outcome_edit: "Редагувати результат"
   label_agenda_outcome_delete: "Вилучити результат"
-  label_added_as_outcome: "Added as outcome"
-  label_write_outcome: "Write outcome"
-  label_existing_work_package: "Existing work package"
+  label_added_as_outcome: "Додано як результат"
+  label_write_outcome: "Записати результат"
+  label_existing_work_package: "Наявний пакет робіт"
   text_outcome_not_editable_anymore: "Цей результат більше не можна редагувати."
   text_outcome_cannot_be_added: "Результат більше не можна додати."
   label_backlog_clear: "Очистити чергу завдань"
@@ -625,7 +627,9 @@ uk:
   text_agenda_item_duplicate_in_next_meeting: "Справді додати копію цього пункту порядку денного в наступну нараду, що відбудеться %{date} о %{time}? Результати не дублюватимуться."
   text_agenda_item_duplicated_in_next_meeting: "Пункт порядку денного продубльовано в нову нараду, що відбудеться %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Цей пакет робіт ще не заплановано в порядку денному майбутньої наради."
-  text_agenda_item_move_next_meeting_cancelled: "Не вдається перейти до наступної наради, оскільки її скасовано."
+  text_agenda_item_no_available_occurrence: "Усі наступні наради скасовано."
+  text_agenda_item_dialog_skipping_cancelled_one: "Примітка. Пропуск скасованої наради %{date}."
+  text_agenda_item_dialog_skipping_cancelled_many: "Примітка. Пропуск скасованих нарад (%{count})."
   text_work_package_add_to_meeting_hint: 'Натисніть кнопку «Додати до наради», щоб додати цей пакет робіт до майбутньої наради.'
   text_work_package_has_no_past_meeting_agenda_items: "Цей пакет робіт не було додано як пункт порядку денного в минулу нараду."
   text_email_updates_muted: "Надсилання електронною поштою оновлень із календаря тимчасово вимкнено. Учасники не отримають листи з оновленими запрошеннями після того, як ви внесете зміни."
@@ -633,10 +637,10 @@ uk:
   my_account:
     access_tokens:
       token/ical_meeting:
-        blank_description: "You can create one using the button below."
-        blank_title: "No iCalendar meeting token"
+        blank_description: "Щоб створити нараду, натисніть кнопку нижче."
+        blank_title: "Немає маркера наради для iCalendar"
         title: "iCalendar для нарад"
-        table_title: "iCalendar meeting tokens"
+        table_title: "Маркери нарад для iCalendar"
         text_hint: "Маркери iCalendar для нарад дають змогу користувачам підписуватися на всі свої наради й переглядати актуальну інформацію про них у зовнішніх клієнтах."
         disabled_text: "Підписки на наради iCalendar не активував адміністратор. Зв’яжіться з ним, щоб використовувати цю функцію."
         add_button: "Підписатися на календар"

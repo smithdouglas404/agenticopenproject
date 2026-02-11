@@ -128,6 +128,12 @@ RSpec.describe "Recurring meetings creation",
       show_page.visit!
       expect(page).to have_current_path(project_meeting_path(project, meeting.template))
 
+      # Series can still be deleted without opening the first meeting
+      page.find_test_selector("op-meetings-header-action-trigger").click
+      page.within(".Overlay") do
+        expect(page).to have_css(".ActionListItem-label", text: "Delete meeting series")
+      end
+
       expect(page).to have_css("#meetings-side-panel-state-component")
 
       template_page.open_first_meeting

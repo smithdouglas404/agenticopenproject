@@ -65,13 +65,13 @@ module Overviews
           tag: :div,
           classes: "project-custom-field-clickable",
           data: {
-            controller: "project-custom-field-edit async-dialog",
-            "project-custom-field-edit-url-value": edit_project_custom_field_path(project_id: @project.id,
+            controller: "project-custom-field-modal async-dialog",
+            "project-custom-field-modal-url-value": edit_project_custom_field_path(project_id: @project.id,
                                                                                   id: @project_custom_field.id),
-            action: "click->project-custom-field-edit#openEditDialog " \
-                    "keydown.enter->project-custom-field-edit#openEditDialog " \
-                    "keydown.space->project-custom-field-edit#openEditDialog " \
-                    "project-custom-field-edit:open-dialog->async-dialog#handleOpenDialog"
+            action: "click->project-custom-field-modal#open " \
+                    "keydown.enter->project-custom-field-modal#open " \
+                    "keydown.space->project-custom-field-modal#open " \
+                    "project-custom-field-modal:open-dialog->async-dialog#handleOpenDialog"
           },
           aria: {
             label: [
@@ -81,7 +81,7 @@ module Overviews
           },
           role: "button",
           tabindex: 0,
-          test_selector: "project-custom-field-edit-button-#{@project_custom_field.id}"
+          test_selector: "project-custom-field-modal-button-#{@project_custom_field.id}"
         )
       end
 

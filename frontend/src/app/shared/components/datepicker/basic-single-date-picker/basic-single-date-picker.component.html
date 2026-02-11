@@ -14,6 +14,7 @@
     [attr.name]="name"
     [required]="required"
     [disabled]="disabled"
+    [placeholder]="placeholder"
     (input)="changeValueFromInput($event.target.value)"
     (focus)="showDatePicker()"
     (click)="sentCalendarToTopLayer()"
@@ -34,6 +35,7 @@
     [attr.name]="name"
     [required]="required"
     [disabled]="disabled"
+    [placeholder]="placeholder"
     [ngModel]="value"
     (ngModelChange)="changeValueFromInput($event)"
     />

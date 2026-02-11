@@ -73,7 +73,7 @@ de:
         action: Noch einmal versuchen
       connection_recovery_notice:
         description: "Die Verbindung zum Server für Echtzeit-Kollaboration wurde wiederhergestellt."
-      tabs: "Document tabs"
+      tabs: "Dokument-Tabs"
     index_page:
       name: "Name"
       type: "Art"

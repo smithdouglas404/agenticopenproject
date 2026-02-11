@@ -1,0 +1,197 @@
+This document describes the architecture, usage, and extension points of the Inplace Edit system.
+The goal is to provide a reusable, attribute-driven inline editing mechanism without touching existing update controllers.
+
+---
+
+## High-Level Architecture
+
+The InplaceEdit system consists of:
+
+- **A generic wrapper component**
+  (`InplaceEditFieldComponent`)
+- **Edit field components**
+  (e.g. `TextInputComponent`, `RichTextAreaComponent`)
+- **Optional display field components**
+- **A central registry**
+- **A generic controller**
+- **TurboStreams + Stimulus** for lazy loading
+
+## Usage
+
+```ruby
+OpenProject::Common::InplaceEditFieldComponent.new(
+  model: @project,
+  attribute: :description
+)
+```
+
+### Central Components:
+
+#### InplaceEditFieldComponent
+The `InplaceEditFieldComponent` is the **single entry point used in views**.
+It is initialized with a model and an attribute and decides which concrete field component to render. It also decides whether the component is currently in display mode or edit mode.
+
+Only model and attribute are required. All additional keyword arguments are treated as system arguments and forwarded unchanged through Turbo roundtrips. Editability is determined via a contract and exposed through the `writable?` check.
+
+The component resolves the edit field via the `FieldRegistry` and optionally a display field via the edit field’s `display_class`.
+
+**Simplified HTML of the `InplaceEditFieldComponent`:**
+```html
+&lt;%= component_wrapper(tag: :div, class: "op-inplace-edit") do
+  if display_field_component.present? && !enforce_edit_mode
+    render display_field_component
+  else
+    primer_form_with(
+      model:,
+      url: inplace_edit_field_update_path(model:, id:, attribute:),
+    ) do |form|
+      render_inline_form(form) do |f|
+        f.hidden name: "system_arguments_json", value: system_arguments.to_json
+         render edit_field_component(f)
+      end
+    end
+  end
+end %>
+```
+
+**tl;dr**: This component is responsible for:
+
+- selecting the correct edit field
+- if needed: rendering the appropriate display field
+- checking whether the attribute is writable
+
+#### FieldRegistry
+
+The `FieldRegistry` maps attribute names to edit field components. The mapping is attribute-based and not model-specific. If no mapping exists for an attribute, a default text input component is used.
+
+Thus, the same attribute always renders the same component across different models.
+
+**Example registration:**
+```ruby
+OpenProject::InplaceEdit::FieldRegistry.register(
+  :description,
+  OpenProject::Common::InplaceEditFields::RichTextAreaComponent
+)
+```
+
+#### EditFieldComponents
+
+`EditFieldComponents` are responsible for rendering the actual form field. They receive a form builder, the model, the attribute, and the forwarded system arguments.
+
+They may render only the field itself or also include submit and reset buttons. Richer fields such as CkEditors typically render their own action buttons, while simpler fields can rely on outer form handling.
+
+Edit field components define a `display_class`. This class is used to render the read-only display state.
+
+**Simplified example of an `EditFieldComponent`:**
+```ruby
+module OpenProject
+  module Common
+    module InplaceEditFields
+      class RichTextAreaComponent < ViewComponent::Base
+        def self.display_class
+          DisplayFields::RichTextAreaComponent
+        end
+
+        def initialize(form:, attribute:, model:, **system_arguments)
+          super()
+          @form = form
+          @attribute = attribute
+          @model = model
+          @system_arguments = system_arguments
+        end
+
+        def call
+          form.rich_text_area(name: attribute, **@system_arguments)
+
+          form.group(layout: :horizontal) do |button_group|
+            button_group.submit(name: :reset,
+                                type: :submit,
+                                label: I18n.t(:button_cancel),
+                                formaction: inplace_edit_field_reset_path(model:, id:, attribute:),
+                                formmethod: :get)
+            button_group.submit(name: :submit,
+                                label: I18n.t(:button_save),
+                                scheme: :primary)
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+#### DisplayFieldComponents
+
+`DisplayFieldComponents` render the attribute value in read-only mode. They handle formatting and attach the Stimulus controller that triggers the switch to edit mode.
+
+They expose the edit URL via data attributes and typically make the rendered value clickable when the attribute is writable.
+
+Display fields are mandatory. There is one default `DisplayFieldComponent` which can be inherited from if needed. E.g the RichTextArea does add some more elements to the HTML:
+```ruby
+module OpenProject
+  module Common
+    module InplaceEditFields
+      module DisplayFields
+        class RichTextAreaComponent < DisplayFieldComponent
+          attr_reader :model, :attribute, :writable
+
+          def call
+            render(Primer::BaseComponent.new(tag: :div, **display_field_arguments)) do
+              render(Primer::BaseComponent.new(tag: :div,
+                                               classes: "op-uc-container op-uc-container_reduced-headings -multiline")) do
+                render_display_value
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end
+```
+
+### Update behaviour
+
+#### InplaceEditFieldsController
+
+The `InplaceEditFieldsController` is a generic controller shared by all `InplaceEditComponent`s. It dynamically resolves the model but only allows models that are registered in the `UpdateRegistry`.
+
+* The edit action replaces the display component with the edit component via Turbo Stream.
+* The update action delegates persistence to a registered handler and then replaces the component.
+* The reset action switches back to display mode without saving.
+
+The controller itself contains no model-specific logic.
+
+#### UpdateRegistry
+
+The `UpdateRegistry` maps models to update handlers and contracts. The handler performs the update, while the contract is responsible for authorization and validation.
+
+**Example update handler:**
+```ruby
+module OpenProject
+  module InplaceEdit
+    module Handlers
+      class ProjectUpdate
+        def self.call(model:, params:, user:)
+          call = ::Projects::UpdateService
+                   .new(model:, user:)
+                   .call(params)
+
+          call.success?
+        end
+      end
+    end
+  end
+end
+```
+
+## Adding new fields
+
+To add a new editable attribute, create an `EditFieldComponent` and register it in the `FieldRegistry`. Optionally provide a display component.
+
+No changes to the core component or controller should be required.
+
+## Supporting new models
+To support a new model, implement an update handler and a contract and register both in the `UpdateRegistry`.
+
+No changes to the core component or controller should be required.

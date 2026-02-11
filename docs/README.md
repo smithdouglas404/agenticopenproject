@@ -14,7 +14,7 @@ keywords: help, documentation
 
 Get started with installing and upgrading OpenProject using [our Installation Guide starting point](./installation-and-operations/).
 
-The guides [packaged](./installation-and-operations/installation/packaged) and [Docker-based](./installation-and-operations/installation/docker) installations are provided.
+The guides for [packaged](./installation-and-operations/installation/packaged) and [Docker-based](./installation-and-operations/installation/docker) installations are provided.
 
 ## Upgrading
 
@@ -24,7 +24,7 @@ The guides for [upgrading](./installation-and-operations/operation/upgrading) ar
 
 ## Operation
 
-* [Backing up you installation](./installation-and-operations/operation/backing-up)
+* [Backing up your installation](./installation-and-operations/operation/backing-up)
 * [Alter configuration of OpenProject](./installation-and-operations/configuration)
 * [Manual repository integration for Git and Subversion](./installation-and-operations/configuration/repositories)
 * [Configure incoming mails](./installation-and-operations/configuration/incoming-emails)

@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require "contracts/work_packages/shared_base_contract"
+require "contracts/work_packages/shared_contract_examples"
 
 RSpec.describe WorkPackages::CreateContract do
   include_context "work package contract"

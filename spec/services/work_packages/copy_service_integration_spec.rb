@@ -49,7 +49,7 @@ RSpec.describe WorkPackages::CopyService, "integration", type: :model do
   end
 
   shared_let(:project_phase_definition) { create(:project_phase_definition) }
-  shared_let(:work_package) do
+  shared_let(:work_package, reload: true) do
     create(:work_package, author: user, project:, type:, project_phase_definition:)
   end
 
@@ -385,6 +385,27 @@ RSpec.describe WorkPackages::CopyService, "integration", type: :model do
           expect(copy.attachments.length)
             .to eq 0
         end
+      end
+    end
+
+    context "with a type auto-generating subjects" do
+      let(:type_with_pattern) do
+        create(:type, patterns: { subject: { blueprint: "{{type}} {{id}} {{project_name}}", enabled: true } }) do |type|
+          project.types << type
+        end
+      end
+
+      before do
+        work_package.update!(type: type_with_pattern)
+      end
+
+      it "is success" do
+        expect(service_result)
+          .to be_success
+      end
+
+      it "sets the auto generated subject" do
+        expect(copy.subject).to eq("#{type_with_pattern.name} #{copy.id} #{project.name}")
       end
     end
   end

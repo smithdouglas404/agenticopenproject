@@ -16,10 +16,10 @@ tr:
         news:
           title: 'Haberler'
         project_description:
-          title: 'Description'
+          title: 'Açıklama'
           no_results: "Henüz bir açıklama yazılmadı. Biri 'Proje ayarları' içinde sağlanabilir."
         project_status:
-          title: 'Status'
+          title: 'Durum'
           not_started: 'Başlatılmadı'
           on_track: 'Takipte'
           off_track: 'Hedeften uzaklaşmış'
@@ -28,9 +28,9 @@ tr:
           finished: 'Tamamlandı'
           discontinued: 'Durduruldu'
         project_status_beta:
-          title: 'Status (BETA)'
+          title: 'Durum (BETA)'
         subprojects:
-          title: 'Subitems'
+          title: 'Alt öğeler'
         project_favorites:
           title: 'Favori projeler'
           no_results: 'Şu anda favori projeniz yok. Favorilerinize bir proje eklemek için proje gösterge panelindeki yıldız simgesine tıklayın.'
@@ -52,7 +52,7 @@ tr:
           title: 'İş paketleri tablosu'
         work_packages_graph:
           title: 'İş paketleri grafiği'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "%{chartType} %{description}olan iş paketlerini gösteren grafik."
         work_packages_calendar:
           title: 'Takvim'
         work_packages_overview:

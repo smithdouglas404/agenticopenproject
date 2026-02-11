@@ -358,5 +358,19 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
         )
       end
     end
+
+    context "when changing end_after to iterations without providing iterations count" do
+      let(:params) do
+        {
+          end_after: "iterations",
+          iterations: nil
+        }
+      end
+
+      it "fails validation without raising an exception" do
+        expect(service_result).not_to be_success
+        expect(service_result.errors.messages[:iterations]).to include("is not a number.")
+      end
+    end
   end
 end

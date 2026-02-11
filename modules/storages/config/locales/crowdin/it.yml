@@ -104,20 +104,20 @@ it:
         create_folder: 'Creazione di cartelle di progetto gestite:'
         ensure_root_folder_permissions: 'Imposta le autorizzazioni della cartella base:'
         hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
-        remote_folders: 'Read contents of the team folder:'
+        remote_folders: 'Leggi i contenuti della cartella di team:'
         remove_user_from_group: 'Rimuovi Utenti dal Gruppo:'
         rename_project_folder: 'Rinomina la cartella del progetto gestita:'
       one_drive_sync_service:
         create_folder: 'Creazione della cartella di progetto gestita:'
         ensure_root_folder_permissions: 'Imposta le autorizzazioni della cartella base:'
         hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Leggi il contenuto della cartella radice dell''unità:'
         rename_project_folder: 'Rinomina la cartella di progetto gestita:'
       sharepoint_sync_service:
         create_folder: 'Creazione della cartella di progetto gestita:'
         ensure_root_folder_permissions: 'Imposta le autorizzazioni della cartella base:'
         hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Leggi il contenuto della cartella radice dell''unità:'
         rename_project_folder: 'Rinomina la cartella di progetto gestita:'
     errors:
       messages:
@@ -140,7 +140,7 @@ it:
               conflict: La cartella %{folder_name} esiste già su %{parent_location}.
               not_found: "Impossibile trovare %{parent_location}."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
+              not_found: "Impossibile trovare %{group_folder}. Verifica le impostazioni della cartella di team Nextcloud."
               permission_not_set: impossibile impostare i permessi su %{group_folder}.
             hide_inactive_folders:
               permission_not_set: impossibile impostare i permessi su %{path}.
@@ -230,7 +230,7 @@ it:
       storage_delete_result_3: La cartella di progetto gestita automaticamente e tutti i file in essa contenuti verranno eliminati
     dependencies:
       nextcloud:
-        group_folders_app: Team Folders
+        group_folders_app: Cartelle di team
         integration_app: Integration OpenProject
     enabled_in_projects:
       setup_incomplete_description: Questo archivio ha una configurazione incompleta. Completa la configurazione prima di abilitarlo in più progetti.
@@ -277,11 +277,11 @@ it:
           client_folder_creation: Creazione automatica delle cartelle
           client_folder_removal: Eliminazione automatica delle cartelle
           drive_contents: Contenuto dell'unità
-          files_request: Fetching team folder files
+          files_request: Recupero dei file delle cartelle di team
           header: Cartelle di progetto gestite automaticamente
-          team_folder_app: 'Dependency: Team Folders'
-          team_folder_contents: Team folder content
-          team_folder_presence: Team folder exists
+          team_folder_app: 'Dipendenza: Cartelle di team'
+          team_folder_contents: Contenuto della cartella di team
+          team_folder_presence: La cartella di team esiste
           userless_access: Autenticazione richiesta lato server
         authentication:
           existing_token: Token utente
@@ -322,8 +322,8 @@ it:
         nc_oauth_request_not_found: L'endpoint per recuperare l'utente attualmente connesso non è stato trovato. Per ulteriori informazioni, consulta i log del server.
         nc_oauth_request_unauthorized: L'utente attuale non è autorizzato ad accedere all'archivio file remoto. Per ulteriori informazioni, consulta i log del server.
         nc_oauth_token_missing: OpenProject non può testare la comunicazione a livello utente con Nextcloud poiché l'utente non ha ancora collegato il proprio account Nextcloud.
-        nc_team_folder_not_found: The team folder could not be found.
-        nc_unexpected_content: Unexpected content found in the managed team folder.
+        nc_team_folder_not_found: Impossibile trovare la cartella di team.
+        nc_unexpected_content: Contenuto inatteso trovato nella cartella di team gestita.
         nc_userless_access_denied: La password dell'app configurata non è valida.
         not_configured: Non è stato possibile verificare la connessione. Prima è necessario completare la configurazione.
         od_client_cant_delete_folder: Il cliente riscontra problemi con l'eliminazione delle cartelle. Consulta la documentazione di configurazione del tuo archivio.

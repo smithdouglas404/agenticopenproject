@@ -127,7 +127,7 @@ module Projects::CreationWizard
 
     def journal_notes
       <<~COMMENT
-        #{mention_tag(assignee_user)}
+        #{assignee_mention_tag}
 
         #{project.project_creation_wizard_work_package_comment}
 
@@ -155,11 +155,7 @@ module Projects::CreationWizard
     end
 
     def assigned_to_id
-      project.custom_value_for(assignee_custom_field).value
-    end
-
-    def assignee_user
-      User.find(assigned_to_id)
+      project.custom_value_for(assignee_custom_field).value if assignee_custom_field
     end
 
     def assignee_custom_field
@@ -185,15 +181,19 @@ module Projects::CreationWizard
       )
     end
 
-    def mention_tag(user)
+    def assignee_mention_tag
+      return if assigned_to_id.nil?
+
+      principal = Principal.find(assigned_to_id)
+
       ApplicationController.helpers.content_tag(
         "mention",
-        "@#{user.name}",
+        "@#{principal.name}",
         class: "mention",
         data: {
-          id: user.id,
-          type: "user",
-          text: "@#{user.name}"
+          id: principal.id,
+          type: principal.class.model_name.singular,
+          text: "@#{principal.name}"
         }
       )
     end

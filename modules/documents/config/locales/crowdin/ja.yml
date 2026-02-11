@@ -27,13 +27,13 @@ ja:
     errors:
       models:
         document_type:
-          one_or_more_required: "Cannot delete the last document type"
+          one_or_more_required: "最後のドキュメントタイプを削除することはできません"
     models:
       document: "ドキュメント"
-      documents: "Documents"
+      documents: "ドキュメント"
     attributes:
       document:
-        content_binary: "Content binary"
+        content_binary: "コンテンツのバイナリ"
         title: "タイトル"
   activity:
     filter:
@@ -43,38 +43,38 @@ ja:
   enumeration_doc_categories: "ドキュメントのカテゴリ"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "すべてのドキュメント"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "ドキュメントのアクション"
+        edit_title: "タイトルを編集"
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: "ドキュメント名フィルター"
+        placeholder: "ここに入力してドキュメントを検索"
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: "ドキュメントがありません"
+      description: "このビューにはドキュメントがありません。下のボタンをクリックして追加することができます。"
     document_categories_deprecation_notice:
-      heading: File categories are now called 'Document types'
+      heading: ファイルカテゴリーは「ドキュメントタイプ」に変更されました。
       description: |-
-        Your existing file categories have been converted to document types with the introduction of the new Documents module.
-        All existing documents have also been migrated to these new types.
-      primary_action: Configure document types
-      secondary_action: Learn more about the Documents module
-    document_type_actions: "Document type actions"
+        新しいDocumentsモジュールの導入に伴い、既存のファイルカテゴリーがドキュメントタイプに変換されました。
+        すべての既存のドキュメントもこれらの新しいタイプに移行されました。
+      primary_action: ドキュメントタイプを設定
+      secondary_action: ドキュメントモジュールの詳細
+    document_type_actions: "ドキュメントタイプのアクション"
     text_collaboration_disabled_notice:
       description: |-
-        Unable to open document because real-time text collaboration is disabled.
-        Please contact your administrator to enable real-time text collaboration if you want to access this document.
+        リアルタイムテキストコラボレーションが無効になっているため、ドキュメントを開くことができません。
+        この文書にアクセスしたい場合は、管理者に連絡してリアルタイムテキスト連携を有効にしてください。
     show_edit_view:
       connection_error_notice:
         description: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
-        action: Try again
+          リアルタイムテキストコラボレーションサーバーにアクセスできないため、ドキュメントを開くことができません。
+          問題が解決しない場合は、管理者にお問い合わせください。
+        action: もう一度試してください
       connection_recovery_notice:
-        description: "The connection to the real-time text collaboration server has been restored."
-      tabs: "Document tabs"
+        description: "リアルタイムテキストコラボレーションサーバーへの接続が回復しました。"
+      tabs: "ドキュメントタブ"
     index_page:
       name: "名称"
       type: "タイプ"

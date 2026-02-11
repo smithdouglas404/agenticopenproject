@@ -24,3 +24,6 @@ lv:
     work_packages:
       properties:
         storyPoints: "Novērtējums"
+    burndown:
+      day: "Day"
+      points: "Points"

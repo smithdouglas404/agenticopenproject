@@ -35,6 +35,10 @@ module McpTools
         "tools/#{name}"
       end
 
+      def page_size
+        100
+      end
+
       def default_title(title = nil)
         @default_title = title if title.present?
 
@@ -53,8 +57,29 @@ module McpTools
         @name
       end
 
+      def pagination_enabled?
+        @pagination_enabled || false
+      end
+
+      def enable_pagination
+        @pagination_enabled = true
+      end
+
       def input_schema(schema = nil)
-        @input_schema = schema if schema.present?
+        if schema.present?
+          if pagination_enabled?
+            page = {
+              type: "number",
+              default: 1,
+              description: "Page number for pagination. If no page is defined, the first result set is returned. " \
+                           "To get the rest of the results, use a page number of 2 or higher."
+            }
+
+            @input_schema = schema.deep_merge({ properties: { page: } })
+          else
+            @input_schema = schema
+          end
+        end
 
         @input_schema
       end
@@ -113,7 +138,7 @@ module McpTools
 
       def read_annotations
         # Initialize default annotations, if none are present
-        annotations(read_only: false) if @annotations.nil?
+        annotations(read_only: false, destructive: true, idempotent: false) if @annotations.nil?
 
         @annotations
       end
@@ -130,13 +155,14 @@ module McpTools
           input_schema:,
           output_schema:,
           annotations: read_annotations
-        ) do |opts|
-          implementation.new(tool_context: self).handle_request(**opts)
+        ) do |server_context: {}, **opts|
+          implementation.new(server_context:, tool_context: self).handle_request(**opts)
         end
       end
     end
 
-    def initialize(tool_context:)
+    def initialize(server_context:, tool_context:)
+      @server_context = server_context
       @tool_context = tool_context
     end
 
@@ -150,7 +176,7 @@ module McpTools
         validate_root_output_schema!(@tool_context.output_schema)
       end
 
-      MCP::Tool::Response.new([{ type: "text", text: result.to_json }], structured_content: result)
+      format_result(result)
     end
 
     private
@@ -158,6 +184,14 @@ module McpTools
     # Intended to be implemented by subclasses. It should return a structured result (e.g. a Hash or Array).
     def call(**)
       raise NotImplemented, "#{self.class} needs to implement #call method"
+    end
+
+    def format_result(result)
+      MCP::Tool::Response.new([{ type: "text", text: result.to_json }], structured_content: result)
+    end
+
+    def current_user
+      @server_context[:current_user]
     end
 
     def validate_root_output_schema!(output_schema)
@@ -180,6 +214,15 @@ module McpTools
 
     def filter_proc_for(name)
       self.class.filters[name] || raise(ArgumentError, "Don't know how to handle filter argument called #{name}")
+    end
+
+    def apply_pagination(scope, page)
+      return scope unless self.class.pagination_enabled?
+
+      page_number = page || 1
+      page_size = self.class.page_size
+
+      scope.offset((page_number - 1) * page_size).limit(page_size)
     end
   end
 end

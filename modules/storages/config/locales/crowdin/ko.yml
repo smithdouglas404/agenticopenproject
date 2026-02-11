@@ -104,20 +104,20 @@ ko:
         create_folder: '관리되는 프로젝트 폴더 생성:'
         ensure_root_folder_permissions: '기본 폴더 권한 설정:'
         hide_inactive_folders: '비활성 폴더 숨기기 단계:'
-        remote_folders: 'Read contents of the team folder:'
+        remote_folders: '팀 폴더의 콘텐츠 읽기:'
         remove_user_from_group: '그룹에서 사용자 제거:'
         rename_project_folder: '관리되는 프로젝트 폴더의 이름 바꾸기:'
       one_drive_sync_service:
         create_folder: '관리되는 프로젝트 폴더 생성:'
         ensure_root_folder_permissions: '기본 폴더 권한 설정:'
         hide_inactive_folders: '비활성 폴더 숨기기 단계:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: '드라이브 루트 폴더의 콘텐츠 읽기:'
         rename_project_folder: '관리되는 프로젝트 폴더의 이름 바꾸기:'
       sharepoint_sync_service:
         create_folder: '관리되는 프로젝트 폴더 생성:'
         ensure_root_folder_permissions: '기본 폴더 권한 설정:'
         hide_inactive_folders: '비활성 폴더 숨기기 단계:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: '드라이브 루트 폴더의 콘텐츠 읽기:'
         rename_project_folder: '관리되는 프로젝트 폴더의 이름 바꾸기:'
     errors:
       messages:
@@ -140,7 +140,7 @@ ko:
               conflict: '%{folder_name} 폴더가 이미 %{parent_location}에 있습니다.'
               not_found: "%{parent_location}을(를) 찾을 수 없습니다."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
+              not_found: "%{group_folder}을(를) 찾을 수 없습니다. Nextcloud Team Folder 설정을 확인하세요."
               permission_not_set: '- %{group_folder}에 대한 권한을 설정할 수 없습니다.'
             hide_inactive_folders:
               permission_not_set: '- %{path}에 대한 권한을 설정할 수 없습니다.'
@@ -230,7 +230,7 @@ ko:
       storage_delete_result_3: 자동으로 관리되는 프로젝트 폴더 및 이 폴더 내 모든 파일이 삭제됩니다
     dependencies:
       nextcloud:
-        group_folders_app: Team Folders
+        group_folders_app: 팀 폴더
         integration_app: Integration OpenProject
     enabled_in_projects:
       setup_incomplete_description: 이 저장소의 설정이 완료되지 않았습니다. 여러 프로젝트에서 활성화하기 전에 설정을 완료하세요.
@@ -277,11 +277,11 @@ ko:
           client_folder_creation: 자동 폴더 생성
           client_folder_removal: 자동 폴더 삭제
           drive_contents: 드라이브 콘텐츠
-          files_request: Fetching team folder files
+          files_request: 팀 폴더 파일 가져오기
           header: 자동으로 관리되는 프로젝트 폴더
-          team_folder_app: 'Dependency: Team Folders'
-          team_folder_contents: Team folder content
-          team_folder_presence: Team folder exists
+          team_folder_app: '종속성: 팀 폴더'
+          team_folder_contents: 팀 폴더 콘텐츠
+          team_folder_presence: 팀 폴더가 존재합니다
           userless_access: 서버 측 요청 인증
         authentication:
           existing_token: 사용자 토큰
@@ -320,8 +320,8 @@ ko:
         nc_oauth_request_not_found: 현재 연결된 사용자를 가져올 엔드포인트를 찾을 수 없습니다. 자세한 내용은 서버 로그를 확인하세요.
         nc_oauth_request_unauthorized: 현재 사용자는 원격 파일 저장소에 액세스할 수 있는 권한이 없습니다. 자세한 내용은 서버 로그를 확인하세요.
         nc_oauth_token_missing: 사용자가 아직 Nextcloud 계정을 링크하지 않았기 때문에 OpenProject가 Nextcloud와의 사용자 수준 통신을 테스트할 수 없습니다.
-        nc_team_folder_not_found: The team folder could not be found.
-        nc_unexpected_content: Unexpected content found in the managed team folder.
+        nc_team_folder_not_found: 팀 폴더를 찾을 수 없습니다.
+        nc_unexpected_content: 관리되는 팀 폴더에서 예기치 않은 콘텐츠가 발견되었습니다.
         nc_userless_access_denied: 구성된 앱 암호가 잘못되었습니다.
         not_configured: 연결에 대한 유효성 검사를 할 수 없습니다. 먼저 구성을 완료하세요.
         od_client_cant_delete_folder: 클라이언트에서 폴더를 삭제하는 중에 문제가 발생했습니다. 저장소에 대한 설정 설명서를 확인하세요.

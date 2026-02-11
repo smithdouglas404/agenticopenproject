@@ -146,6 +146,10 @@ export default defineConfig([
       ...angular.configs.templateAccessibility,
     ],
     rules: {
+      '@angular-eslint/template/click-events-have-key-events': [
+        'error',
+        { 'ignoreWithDirectives': ['uiSref'] }
+      ],
       '@angular-eslint/template/elements-content': [
         'error',
         { 'allowList': ['textContent'] }

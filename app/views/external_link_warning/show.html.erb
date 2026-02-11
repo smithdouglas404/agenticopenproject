@@ -37,12 +37,17 @@ See COPYRIGHT and LICENSE files for more details.
        tag: :a,
        href: @external_url,
        scheme: :danger,
-       data: { turbo: false }
+       data: {
+         turbo: false,
+         allow_external_link: true
+       }
      ) { I18n.t("external_link_warning.continue_button") } %>
 
   <%= render(Primer::Box.new(color: :muted)) do %>
     <%= render(Primer::Beta::Text.new) { t("external_link_warning.warning_message") } %>
     <%= render(Primer::Beta::Text.new(tag: :p, mb: 0, mt: 2)) { t("external_link_warning.continue_message") } %>
-    <%= render(Primer::Beta::Text.new(tag: :p, font_weight: :bold)) { h(@external_url) } %>
+    <%= render(Primer::Beta::Text.new(tag: :p,
+                                      classes: "-break-word",
+                                      font_weight: :bold)) { h(@external_url) } %>
   <% end %>
 <% end %>

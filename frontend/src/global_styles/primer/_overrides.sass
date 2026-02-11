@@ -152,3 +152,17 @@ ul.SegmentedControl,
 .ActionListContent[aria-disabled="true"]
   .ActionListItem-label[class^="__hl_"], .ActionListItem-label[class*=" __hl_"]
     color: var(--control-fgColor-disabled) !important
+
+.Box-row--focus-gray
+  &:focus-visible
+    background-color: var(--bgColor-muted)
+
+.Box-row--focus-blue
+  &:focus-visible
+    background-color: var(--bgColor-accent-muted)
+
+.Box-row--clickable
+  cursor: pointer
+
+.Box-row:is(.Box-row--draggable)
+  padding-left: 0

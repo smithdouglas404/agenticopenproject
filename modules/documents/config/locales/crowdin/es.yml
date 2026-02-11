@@ -72,7 +72,7 @@ es:
         action: Intentar otra vez
       connection_recovery_notice:
         description: "La conexión en tiempo real ha sido restaurada."
-      tabs: "Document tabs"
+      tabs: "Pestañas del documento"
     index_page:
       name: "Nombre"
       type: "Tipo"

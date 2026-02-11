@@ -31,6 +31,7 @@
 class WorkPackages::CreateService < BaseServices::BaseCallable
   include ::WorkPackages::Shared::UpdateAncestors
   include ::Shared::ServiceContext
+  include Types::ApplyPatterns
 
   attr_reader :user, :contract_class, :contract_options
 
@@ -56,12 +57,12 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
     result = set_attributes(attributes, work_package)
 
     if result.success?
-      # Set attributes service passed, meaning the contract is fullfilled.
+      # Set attributes service passed, meaning the contract is fulfilled.
       # Avoid running validations again as we might be in a project copy scenario.
       work_package.attachments = work_package.attachments_replacements if work_package.attachments_replacements
       work_package.save(validate: false)
 
-      update_subject_if_automatically_generated(work_package)
+      apply_patterns(work_package)
 
       # update ancestors before rescheduling, as the parent might switch to automatic mode
       multi_update_ancestors(result.all_results).each do |ancestor_result|
@@ -74,15 +75,6 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
     end
 
     result
-  end
-
-  def update_subject_if_automatically_generated(work_package)
-    if work_package.type&.replacement_pattern_defined_for?(:subject)
-      Journal::NotificationConfiguration.with(false) do
-        work_package.subject = work_package.type.enabled_patterns[:subject].resolve(work_package)
-        work_package.save(validate: false)
-      end
-    end
   end
 
   def set_attributes(attributes, work_package)

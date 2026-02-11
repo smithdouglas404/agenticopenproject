@@ -1,45 +1,45 @@
 vi:
   js:
     grid:
-      add_widget: 'Thêm widget'
-      remove: 'Xóa widget'
-      configure: 'Cấu hình widget'
+      add_widget: 'Thêm tiện ích'
+      remove: 'Xóa tiện ích'
+      configure: 'Định cấu hình tiện ích'
       widgets:
-        missing_permission: "Bạn không có quyền cần thiết để xem widget này."
+        missing_permission: "Bạn không có quyền cần thiết để xem tiện ích này."
         custom_text:
           title: 'Văn bản tùy chỉnh'
         documents:
           title: 'Tài liệu'
           no_results: 'Chưa có tài liệu.'
         members:
-          title: 'Thành viên'
+          title: 'thành viên'
         news:
-          title: 'Tin tức'
+          title: 'tin tức'
         project_description:
-          title: 'Description'
-          no_results: "Chưa có mô tả nào được viết. Có thể cung cấp trong 'Cài đặt dự án'."
+          title: 'mô tả'
+          no_results: "Chưa có mô tả nào được viết. Một cái có thể được cung cấp trong 'Cài đặt dự án'."
         project_status:
-          title: 'Status'
+          title: 'trạng thái'
           not_started: 'Chưa bắt đầu'
-          on_track: 'Đang theo dõi'
-          off_track: 'Ra ngoài quỹ đạo'
+          on_track: 'Đang đi đúng hướng'
+          off_track: 'Lạc lối'
           at_risk: 'Có nguy cơ'
           not_set: 'Không được thiết lập'
-          finished: 'Hoàn thành'
-          discontinued: 'Ngừng'
+          finished: 'Đã hoàn thành'
+          discontinued: 'Đã ngừng sản xuất'
         project_status_beta:
-          title: 'Status (BETA)'
+          title: 'Trạng thái (BETA)'
         subprojects:
-          title: 'Subitems'
+          title: 'mục phụ'
         project_favorites:
-          title: 'Dự án yêu thích'
-          no_results: 'Hiện tại bạn không có dự án yêu thích nào. Nhấp vào biểu tượng sao trên bảng điều khiển dự án để thêm một dự án vào danh sách yêu thích của bạn.'
+          title: 'dự án yêu thích'
+          no_results: 'Hiện tại bạn chưa có dự án yêu thích nào. Nhấp vào biểu tượng ngôi sao trong bảng điều khiển dự án để thêm một biểu tượng vào mục yêu thích của bạn.'
         time_entries_current_user:
           title: 'Thời gian hiện tại (My spent time)'
-          displayed_days: 'Số ngày được hiển thị trong widget:'
+          displayed_days: 'Ngày hiển thị trong widget:'
         time_entries_list:
-          title: 'Thời gian làm việc (trong 7 ngày gần nhất)'
-          no_results: 'Không có ghi nhận thời gian làm việc trong 7 ngày gần nhất.'
+          title: 'Thời gian đã sử dụng (7 ngày qua)'
+          no_results: 'Không có mục thời gian trong 7 ngày qua.'
         work_packages_accountable:
           title: "Gói công việc mà tôi có trách nhiệm"
         work_packages_assigned:
@@ -51,10 +51,10 @@ vi:
         work_packages_table:
           title: 'Bảng gói công việc'
         work_packages_graph:
-          title: 'Đồ thị gói công việc'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          title: 'Biểu đồ gói công việc'
+          summary: "Biểu đồ %{chartType} hiển thị các gói công việc %{description}."
         work_packages_calendar:
-          title: 'Lịch'
+          title: 'lịch'
         work_packages_overview:
           title: 'Tổng quan về gói công việc'
-          placeholder: 'Nhấp để chỉnh sửa ...'
+          placeholder: 'Bấm vào để chỉnh sửa...'

@@ -27,8 +27,9 @@
 #++
 
 require "spec_helper"
+require_relative "../../support/pages/backlogs"
 
-RSpec.describe "Backlogs", :js, :selenium, driver: :firefox_de do # using FF due to regression #64158
+RSpec.describe "Backlogs", :js do
   let(:story_type) do
     create(:type_feature)
   end
@@ -88,6 +89,8 @@ RSpec.describe "Backlogs", :js, :selenium, driver: :firefox_de do # using FF due
     create(:default_priority)
   end
 
+  let(:backlogs_page) { Pages::Backlogs.new(project) }
+
   before do
     login_as(user)
 
@@ -100,32 +103,36 @@ RSpec.describe "Backlogs", :js, :selenium, driver: :firefox_de do # using FF due
   end
 
   it "allows creating a new story" do
-    visit backlogs_project_backlogs_path(project)
+    backlogs_page.visit!
 
-    within("#backlog_#{backlog_version.id}", wait: 10) do
-      menu = find(".backlog-menu")
-      menu.click
-      click_link "New Story"
+    backlogs_page.click_in_backlog_menu(backlog_version, "New story")
+
+    within_dialog "New work package" do
       fill_in "Subject", with: "The new story"
-      fill_in "Story Points", with: "5"
+      # TODO: removed in OP #57688, to be reimplemented
+      # fill_in "Story Points", with: "5"
 
-      # inactive types should not be selectable
-      # but the user can choose from the active types
-      expect(page)
-        .to have_no_css("option", text: inactive_story_type.name)
+      # inactive types should not be selectable but the user can choose from the
+      # active types
+      # TODO: removed in OP #57688, to be reimplemented
+      # expect(page).to have_no_css("option", text: inactive_story_type.name)
 
-      select story_type2.name, from: "Type"
+      select_combo_box_option story_type2.name, from: "Type"
 
       # saving the new story
-      find(:css, "input[name=subject]").native.send_key :return
+      click_on "Create"
+    end
 
-      # velocity should be summed up immediately
-      expect(page)
-        .to have_css(".velocity", text: "12")
+    expect_and_dismiss_flash type: :success, message: "New work package created"
 
-      # this will ensure that the page refresh is through before we check the order
-      menu.click
-      click_link "New Story"
+    # velocity should be summed up immediately
+    # TODO: removed in OP #57688, to be reimplemented
+    # xpect(page).to have_css(".velocity", text: "12")
+
+    # this will ensure that the page refresh is through before we check the order
+    backlogs_page.click_in_backlog_menu(backlog_version, "New story")
+
+    within_dialog "New work package" do
       fill_in "Subject", with: "Another story"
     end
 
@@ -135,15 +142,15 @@ RSpec.describe "Backlogs", :js, :selenium, driver: :firefox_de do # using FF due
     expect(page)
       .to have_no_content "Another story"
 
-    expect(page)
-      .to have_css ".story:nth-of-type(1)", text: "The new story"
-    expect(page)
-      .to have_css ".story:nth-of-type(2)", text: existing_story1.subject
-    expect(page)
-      .to have_css ".story:nth-of-type(3)", text: existing_story2.subject
+    new_story = WorkPackage.find_by(subject: "The new story")
 
-    # created with the selected type
-    expect(page)
-      .to have_css ".story:nth-of-type(1) .type_id", text: story_type2.name
+    # stories are ordered by position (ASC), with NULL positions at the end ordered by ID
+    # existing stories have positions 1 and 2, new story has no position so appears at end
+    backlogs_page.expect_stories_in_order(backlog_version, existing_story1, existing_story2, new_story)
+
+    # created with the selected type (HighlightedTypeComponent renders type name in uppercase)
+    within("#story_#{new_story.id}") do
+      expect(page).to have_text(story_type2.name.upcase)
+    end
   end
 end

@@ -39,12 +39,12 @@ ja:
         unit_plural: "単位名"
         default: "デフォルトのコストタイプ"
       work_package:
-        costs_by_type: "使用済単価"
+        costs_by_type: "消費した予算"
         labor_costs: "作業員コスト"
         material_costs: "単価"
         overall_costs: "集計コスト"
         spent_costs: "使用済コスト"
-        spent_units: "使用済単価"
+        spent_units: "消費した予算"
       rate:
         rate: "原価率"
       user:

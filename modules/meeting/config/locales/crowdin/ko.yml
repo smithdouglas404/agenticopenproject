@@ -65,7 +65,9 @@ ko:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} 님은 유효한 참가자가 아닙니다."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "이 시리즈에는 새로운 스케줄에 포함되지 않은 오픈 미팅이 하나 있습니다. 모든 기존 미팅을 포함하도록 스케줄을 조정하세요."
@@ -226,23 +228,23 @@ ko:
         header: "취소됨: 미팅 '%{title}'"
         header_occurrence: "취소됨: 미팅 항목 '%{title}'"
         header_series: "취소됨: 미팅 시리즈 '%{title}'"
-        summary_occurrence: "'%{title}' 항목을 %{actor} 님이 취소했습니다."
-        summary_series: "'%{title}' 미팅 시리즈를 %{actor} 님이 취소했습니다."
-        summary: "'%{title}'을(를) %{actor} 님이 취소했습니다."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "스케줄링된 날짜/시간"
       participant_added:
-        header: "Meeting '%{title}' - Participant added"
-        header_series: "Meeting series '%{title}' - Participant added"
-        summary: "%{actor} added %{participant} to the meeting '%{title}'"
-        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
+        header: "미팅 '%{title}' - 참가자 추가됨"
+        header_series: "미팅 시리즈 '%{title}' - 참가자 추가됨"
+        summary: "%{actor} 님이 미팅 '%{title}'에 %{participant} 님을 추가했습니다"
+        summary_series: "%{actor} 님이 미팅 시리즈 '%{title}'에 %{participant} 님을 추가했습니다"
       participant_removed:
-        header: "Meeting '%{title}' - Participant removed"
-        header_series: "Meeting series '%{title}' - Participant removed"
-        summary: "%{actor} removed %{participant} from the meeting '%{title}'"
-        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
+        header: "미팅 '%{title}' - 참가자 제거됨"
+        header_series: "미팅 시리즈 '%{title}' - 참가자 제거됨"
+        summary: "%{actor} 님이 미팅 '%{title}'에서 %{participant} 님을 제거했습니다"
+        summary_series: "%{actor} 님이 미팅 시리즈 '%{title}'에서 %{participant} 님을 제거했습니다"
       ended:
         header_series: "종료됨: 미팅 시리즈 '%{title}'"
-        summary_series: "'%{title}' 미팅 시리즈를 %{actor} 님이 종료했습니다."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "'%{title}' 미팅이 업데이트되었습니다"
         summary: "'%{title}' 미팅을 %{actor} 님이 업데이트했습니다"
@@ -523,8 +525,8 @@ ko:
   label_agenda_item_move_up: "위로 이동"
   label_agenda_item_move_down: "아래로 이동"
   label_agenda_item_duplicate: "복제"
-  label_agenda_item_duplicate_in_next: "다음 항목에서 복제"
-  label_agenda_item_duplicate_in_next_title: "다음 항목에서 복제하시겠습니까?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "메모 추가"
   label_agenda_item_add_outcome: "결과 추가"
   label_agenda_item_work_package_add: "작업 패키지 추가"
@@ -535,9 +537,9 @@ ko:
   label_agenda_outcome_actions: "의제 결과 작업"
   label_agenda_outcome_edit: "결과 편집"
   label_agenda_outcome_delete: "결과 제거"
-  label_added_as_outcome: "Added as outcome"
-  label_write_outcome: "Write outcome"
-  label_existing_work_package: "Existing work package"
+  label_added_as_outcome: "결과로 추가됨"
+  label_write_outcome: "결과 작성"
+  label_existing_work_package: "기존 작업 패키지"
   text_outcome_not_editable_anymore: "이 결과는 더 이상 편집할 수 없습니다."
   text_outcome_cannot_be_added: "더 이상 결과를 추가할 수 없습니다."
   label_backlog_clear: "백로그 지우기"
@@ -604,7 +606,9 @@ ko:
   text_agenda_item_duplicate_in_next_meeting: "%{date}, %{time}의 다음 미팅에 이 의제의 사본을 추가하시겠습니까? 결과는 복제되지 않습니다."
   text_agenda_item_duplicated_in_next_meeting: "의제 항목이 %{date}의 다음 미팅에서 복제되었습니다"
   text_work_package_has_no_upcoming_meeting_agenda_items: "이 작업 패키지는 향후 미팅 의제에서 아직 예약되지 않았습니다."
-  text_agenda_item_move_next_meeting_cancelled: "취소되었으므로 다음 미팅으로 이동할 수 없습니다."
+  text_agenda_item_no_available_occurrence: "모든 향후 항목이 취소되었습니다."
+  text_agenda_item_dialog_skipping_cancelled_one: "참고: %{date}에 취소된 항목을 건너뜁니다."
+  text_agenda_item_dialog_skipping_cancelled_many: "참고: 취소된 항목 %{count}개를 건너뜁니다."
   text_work_package_add_to_meeting_hint: '이 작업 패키지를 향후 미팅에 추가하려면 "미팅에 추가" 버튼을 사용하세요.'
   text_work_package_has_no_past_meeting_agenda_items: "이 작업 패키지는 지난 미팅에서 의제 항목으로 추가되지 않았습니다."
   text_email_updates_muted: "이메일 캘린더 업데이트가 음소거되었습니다. 변경해도 이메일을 통해 업데이트된 초대장이 참가자에게 전송되지 않습니다."
@@ -612,10 +616,10 @@ ko:
   my_account:
     access_tokens:
       token/ical_meeting:
-        blank_description: "You can create one using the button below."
-        blank_title: "No iCalendar meeting token"
+        blank_description: "아래 버튼을 사용하여 만들 수 있습니다."
+        blank_title: "iCalendar 미팅 토큰 없음"
         title: "미팅용 iCalendar"
-        table_title: "iCalendar meeting tokens"
+        table_title: "iCalendar 미팅 토큰"
         text_hint: "iCalendar 미팅 토큰을 통해 사용자는 모든 미팅을 구독하고 외부 클라이언트에서 최신 미팅 정보를 볼 수 있습니다."
         disabled_text: "관리자가 iCalendar 미팅 구독을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
         add_button: "캘린더 구독"

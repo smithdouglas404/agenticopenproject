@@ -47,7 +47,7 @@ zh-CN:
         item_0:
           name: 项目查询查看器
         item_1:
-          name: 项目查询查看器
+          name: 项目查询编辑器
       work_package_roles:
         item_0:
           name: 工作包编辑者

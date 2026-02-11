@@ -24,3 +24,6 @@ nl:
     work_packages:
       properties:
         storyPoints: "Verhaal punten"
+    burndown:
+      day: "Day"
+      points: "Points"

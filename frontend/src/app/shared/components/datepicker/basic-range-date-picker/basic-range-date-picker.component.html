@@ -13,6 +13,7 @@
     [attr.name]="name"
     [required]="required"
     [disabled]="disabled"
+    [placeholder]="placeholder"
     [ngModel]="stringValue"
     (ngModelChange)="changeValueFromInputDebounced($event)"
     (focus)="showDatePicker()"
@@ -29,6 +30,7 @@
     name="{{ name }}-start"
     [required]="required"
     [disabled]="disabled"
+    [placeholder]="placeholder"
     [ngModel]="value[0] || ''"
     (ngModelChange)="changeValueFromInputDebounced([$event, value[1] || ''])"
     />
@@ -42,6 +44,7 @@
     name="{{ name }}-end"
     [required]="required"
     [disabled]="disabled"
+    [placeholder]="placeholder"
     [ngModel]="value[1] || ''"
     (ngModelChange)="changeValueFromInputDebounced([value[0] || '', $event])"
     />

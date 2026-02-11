@@ -36,6 +36,10 @@ module Admin
           name: :capture_external_links,
           caption: I18n.t(:setting_capture_external_links_text)
         )
+        sf.check_box(
+          name: :capture_external_links_require_login,
+          caption: I18n.t(:setting_capture_external_links_require_login_text)
+        )
       end
     end
   end

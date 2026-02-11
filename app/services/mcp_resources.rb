@@ -32,6 +32,7 @@ module McpResources
   class << self
     def all
       [
+        CurrentUser,
         Project,
         Status,
         StatusList,
@@ -60,17 +61,21 @@ module McpResources
     end
 
     def read_resource(uri)
-      resource_class = enabled.find { |r| r.uri == uri || r.uri_template&.match?(uri) }
-      content = resource_class&.read(uri)
+      content = read_resource_content(uri)
       return [] if content.nil?
 
       [
-        {
-          uri: uri,
-          mimeType: "application/json",
-          text: content.to_json
-        }
+        format_json_resource(uri, content)
       ]
+    end
+
+    def read_resource_content(uri, resources_considered: enabled)
+      resource_class = resources_considered.find { |r| r.uri == uri || r.uri_template&.match?(uri) }
+      resource_class&.read(uri)
+    end
+
+    def format_json_resource(uri, content)
+      { uri:, mimeType: "application/json", text: content.to_json }
     end
   end
 end

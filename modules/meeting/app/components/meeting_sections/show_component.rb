@@ -91,7 +91,7 @@ module MeetingSections
 
     def drag_and_drop_target_config
       {
-        "is-drag-and-drop-target": true,
+        meetings__drag_and_drop_target: "container",
         "target-container-accessor": ".Box > ul", # the accessor of the container that contains the drag and drop items
         "target-id": @meeting_section.id, # the id of the target
         "target-allowed-drag-type": "agenda-item" # the type of dragged items which are allowed to be dropped in this target

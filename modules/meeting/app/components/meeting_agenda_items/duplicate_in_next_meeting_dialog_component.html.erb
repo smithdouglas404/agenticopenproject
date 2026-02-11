@@ -32,7 +32,7 @@ See COPYRIGHT and LICENSE files for more details.
     dialog.with_show_button { title }
     dialog.with_feedback_message(icon_arguments: { icon: :none }) do |message|
       message.with_heading(tag: :h2).with_content(title)
-      message.with_description_content(confirmation_message)
+      message.with_description_content(simple_format(confirmation_message))
     end
     dialog.with_footer do
       concat(

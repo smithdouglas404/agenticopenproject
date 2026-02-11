@@ -30,6 +30,8 @@
 
 module Token
   class ICal < HashedToken
+    prefix :opical
+
     # restrict the usage of one ical token to one query (calendar)
     has_one :ical_token_query_assignment, required: true, dependent: :destroy, foreign_key: :ical_token_id,
                                           class_name: "ICalTokenQueryAssignment", inverse_of: :ical_token

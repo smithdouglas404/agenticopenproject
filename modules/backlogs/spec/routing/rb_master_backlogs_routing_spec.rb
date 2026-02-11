@@ -35,5 +35,16 @@ RSpec.describe RbMasterBacklogsController do
                                                                action: "index",
                                                                project_id: "project_42")
     }
+
+    it {
+      expect(get("/projects/project_42/backlogs/details/33")).to route_to(
+        controller: "rb_master_backlogs",
+        action: "details",
+        project_id: "project_42",
+        work_package_id: "33",
+        tab: :overview,
+        work_package_split_view: true
+      )
+    }
   end
 end

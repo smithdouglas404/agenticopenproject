@@ -24,3 +24,6 @@ zh-TW:
     work_packages:
       properties:
         storyPoints: "故事點數"
+    burndown:
+      day: "Day"
+      points: "Points"

@@ -34,7 +34,28 @@ RSpec.describe ExternalLinkWarningController do
   render_views
 
   describe "GET #show" do
-    context "with a valid external URL" do
+    context "when capture is disabled" do
+      before do
+        allow(Setting).to receive(:capture_external_links?).and_return(false)
+      end
+
+      it "redirects directly to the external URL" do
+        get :show, params: { url: "https://example.com" }
+
+        expect(response).to redirect_to("https://example.com")
+      end
+
+      it "unescapes the URL parameter before redirecting" do
+        encoded_url = CGI.escape("https://example.com/path?param=value")
+        get :show, params: { url: encoded_url }
+
+        expect(response).to redirect_to("https://example.com/path?param=value")
+      end
+    end
+
+    context "when capture is enabled",
+            with_ee: %i[capture_external_links],
+            with_settings: { capture_external_links: true } do
       it "renders the warning page" do
         get :show, params: { url: "https://example.com" }
 
@@ -49,6 +70,31 @@ RSpec.describe ExternalLinkWarningController do
 
         expect(response).to have_http_status(:success)
         expect(response.body).to include("https://example.com/path?param=value")
+      end
+    end
+
+    context "when capture is enabled and login is required",
+            with_ee: %i[capture_external_links],
+            with_settings: { capture_external_links: true,
+                             capture_external_links_require_login: true } do
+      context "when logged in" do
+        current_user { create(:user) }
+
+        it "renders the warning page when logged in" do
+          get :show, params: { url: "https://example.com" }
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include("Leaving OpenProject")
+          expect(response.body).to include("https://example.com")
+        end
+      end
+
+      context "when not logged in" do
+        it "redirects to login" do
+          get :show, params: { url: "https://example.com" }
+          back_url = external_redirect_url(url: "https://example.com")
+          expect(response).to redirect_to(signin_path(back_url:))
+        end
       end
     end
 

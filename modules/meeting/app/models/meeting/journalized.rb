@@ -49,10 +49,10 @@ module Meeting::Journalized
     register_journal_formatted_fields "state", formatter_key: :meeting_state
 
     register_journal_formatted_fields "duration", formatter_key: :agenda_item_duration
-    register_journal_formatted_fields /agenda_items_\d+_notes/, formatter_key: :agenda_item_diff
-    register_journal_formatted_fields /agenda_items_\d+_title/, formatter_key: :agenda_item_title
-    register_journal_formatted_fields /agenda_items_\d+_duration_in_minutes/, formatter_key: :agenda_item_duration
+    register_journal_formatted_fields /\Aagenda_items_\d+_notes\z/, formatter_key: :agenda_item_diff
+    register_journal_formatted_fields /\Aagenda_items_\d+_title\z/, formatter_key: :agenda_item_title
+    register_journal_formatted_fields /\Aagenda_items_\d+_duration_in_minutes\z/, formatter_key: :agenda_item_duration
     register_journal_formatted_fields "position", formatter_key: :agenda_item_position
-    register_journal_formatted_fields /agenda_items_\d+_work_package_id/, formatter_key: :meeting_work_package_id
+    register_journal_formatted_fields /\Aagenda_items_\d+_work_package_id\z/, formatter_key: :meeting_work_package_id
   end
 end

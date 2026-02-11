@@ -426,7 +426,7 @@ fr:
     label_remove_row: "Supprimer la ligne"
     label_report: "Rapport"
     label_repository_plural: "Dépôts"
-    label_resize_project_menu: "Resize project menu"
+    label_resize_project_menu: "Redimensionner le menu du projet"
     label_save_as: "Enregistrer sous"
     label_search_columns: "Rechercher une colonne"
     label_select_watcher: "Sélectionner un observateur…"

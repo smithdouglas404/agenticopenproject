@@ -69,9 +69,9 @@ module Projects
     end
 
     def validate_assignee_custom_field
-      if project_assignee_custom_field_not_configured?
-        add_error :project_creation_wizard_assignee_custom_field_id, :blank
-      elsif not_allowed_to_read_assignee_custom_field_value?
+      return if project_assignee_custom_field_not_configured?
+
+      if not_allowed_to_read_assignee_custom_field_value?
         add_error assignee_custom_field.attribute_name, :unauthorized
       elsif missing_assignee_custom_field_value?
         add_error assignee_custom_field.attribute_name, :blank

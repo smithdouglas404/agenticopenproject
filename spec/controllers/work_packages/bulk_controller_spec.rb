@@ -653,11 +653,11 @@ RSpec.describe WorkPackages::BulkController, with_settings: { journal_aggregatio
                                 .and_return false
       end
 
-      it "does not delete the work packages and renders the destroy template" do
+      it "does not delete the work packages and redirects to the reassign action" do
         send_destroy_request
         expect(WorkPackage.find_by(id: work_package1.id)).to be_present
         expect(WorkPackage.find_by(id: work_package2.id)).to be_present
-        expect(response).to render_template("destroy")
+        expect(response).to redirect_to(reassign_work_packages_bulk_path(ids: [work_package1.id, work_package2.id]))
       end
     end
 

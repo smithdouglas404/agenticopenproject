@@ -203,8 +203,8 @@ pt-PT:
         add_table: "Adicionar tabela de pacotes de trabalho relacionados"
         edit_query: "Editar consulta"
         new_group: "Novo Grupo"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "Eliminar grupo"
+        remove_attribute: "Remover do grupo"
         reset_to_defaults: "Repor predefinições"
       working_days:
         calendar:
@@ -426,7 +426,7 @@ pt-PT:
     label_remove_row: "Remover linha"
     label_report: "Relatório"
     label_repository_plural: "Repositórios"
-    label_resize_project_menu: "Resize project menu"
+    label_resize_project_menu: "Redimensionar menu do projeto"
     label_save_as: "Guardar como"
     label_search_columns: "Pesquisar uma coluna"
     label_select_watcher: "Selecione um \"observador\"..."

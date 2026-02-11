@@ -93,7 +93,7 @@ module Pages
           # Once we create the project custom field inline editing, this can be reverted to a normal
           # capybara click method call.
           page.execute_script(
-            "document.querySelector('[data-test-selector=\"project-custom-field-edit-button-#{custom_field.id}\"]').click()"
+            "document.querySelector('[data-test-selector=\"project-custom-field-modal-button-#{custom_field.id}\"]').click()"
           )
         end
 

@@ -47,14 +47,6 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
 
     set_custom_attributes(attributes)
     set_custom_values_to_validate(attributes, validate_custom_fields)
-
-    mark_templated_subject
-  end
-
-  def mark_templated_subject
-    if work_package.type&.replacement_pattern_defined_for?(:subject)
-      work_package.subject = I18n.t("work_packages.templated_subject_hint", type: work_package.type.name)
-    end
   end
 
   def set_custom_values_to_validate(attributes, validate_custom_fields = nil)
@@ -69,7 +61,7 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
 
   def set_static_attributes(attributes)
     assignable_attributes = attributes.select do |key, _|
-      !CustomField.custom_field_attribute?(key) && work_package.respond_to?(key)
+      !CustomField.custom_field_attribute?(key) && work_package.respond_to?("#{key}=")
     end
 
     work_package.attributes = assignable_attributes

@@ -58,7 +58,7 @@ module Documents
         application.access_tokens.create(
           resource_owner_id: @user.id,
           scopes: "api_v3",
-          expires_in: 24.hours.to_i
+          expires_in: 5.minutes.to_i
         )
       end
     end

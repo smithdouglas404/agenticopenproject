@@ -493,7 +493,7 @@ To apply the configuration after changes, you need to run the `db:seed` rake tas
 
 ## Troubleshooting
 
-Q: After clicking on a provider badge, I am redirected to a signup form that says a user already exists with that login.
+**Q: After clicking on a provider badge, I am redirected to a signup form that says a user already exists with that login.**
 
 A: This can happen if you previously created user accounts in OpenProject with the same email than what is stored in the OpenID provider. In this case, if you want to allow existing users to be automatically remapped to the OpenID provider, you should do the following:
 
@@ -505,8 +505,6 @@ sudo openproject run console
 # docker-compose run --rm web bundle exec rails console
 ```
 
-
-
 Once in the console you can then enter the following to enable the setting and leave the console.
 
 ```shell
@@ -514,8 +512,15 @@ Setting.oauth_allow_remapping_of_existing_users = true
 exit
 ```
 
-
-
 Then, existing users should be able to log in using their Azure identity. Note that this works only if the user is using password-based authentication, and is not linked to any other authentication source (e.g. LDAP) or OpenID provider.
 
 Note that this setting is set to true by default for new installations already.
+
+**Q: How can I automatically log users out of OpenProject after I delete them from the SSO provider?**
+
+A: OpenProject does not currently revalidate user sessions after the initial login of a user. So even if the SSO provider session expires
+or the user is removed from the SSO provider, this will not immediately have an effect in OpenProject. [A feature  was requested](https://community.openproject.org/wp/65072) to improve this flow.
+
+Workarounds that are available:
+* Ensure that the SSO provider performs a backchannel logout for all sessions of the user upon account suspension
+* Synchronize the user account via a provisioning integration, such as SCIM, to ensure that account suspensions are synchronized quickly

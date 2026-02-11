@@ -27,33 +27,50 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
+<% content_for :additional_js_dom_ready do %>
+  <%= render(partial: "shared/server_variables", formats: [:js]) %>
+<% end %>
+
+<% content_controller "backlogs--taskboard-legacy" %>
+
 <% html_title @sprint.name %>
+
 <%=
-  render Primer::OpenProject::PageHeader.new do |header|
-    header.with_title { @sprint.name }
-    header.with_breadcrumbs(
-      [{ href: project_overview_path(@project.id), text: @project.name },
-       { href: backlogs_project_backlogs_path(@project), text: t(:label_backlogs) },
-       @sprint.name]
-    )
+  render(Backlogs::SprintPageHeaderComponent.new(sprint: @sprint, project: @project)) do |header|
+    header.with_action_button(
+      tag: :a,
+      href: backlogs_project_sprint_burndown_chart_path(@project, @sprint),
+      mobile_icon: :graph,
+      mobile_label: t(:"backlogs.show_burndown_chart"),
+      aria: { label: t(:"backlogs.show_burndown_chart") },
+      disabled: !@sprint.has_burndown?
+    ) do |button|
+      button.with_leading_visual_icon(icon: :graph)
+      t(:"backlogs.show_burndown_chart")
+    end
   end
 %>
-<%# we decided to keep current toolbar design for taskboard %>
-<div class="toolbar-container">
-  <div class="toolbar toolbar_empty-title">
-  <li class="toolbar-item toolbar-input-group" id="col_width">
-    <div>
-      <label for="col_width_input"><%= t("backlogs.column_width") %></label>
-    </div>
-    <input type="text" id="col_width_input">
-  </li>
-  <% if @sprint.has_burndown? %>
-    <li class="toolbar-item">
-      <%= show_burndown_link(@project, @sprint) %>
-    </li>
+
+<%= render(Primer::OpenProject::SubHeader.new) do |component| %>
+  <% component.with_filter_component(id: "col_width") do %>
+    <%=
+      render(
+        Primer::Alpha::TextField.new(
+          name: :col_width_input,
+          type: :number,
+          label: t(:"backlogs.column_width"),
+          placeholder: t(:"backlogs.column_width"),
+          visually_hide_label: true,
+          leading_visual: { icon: :"zoom-in" },
+          step: 1,
+          input_width: :xsmall,
+          autocomplete: "off"
+        )
+      )
+    %>
   <% end %>
-  </div>
-</div>
+<% end %>
+
 <div id='rb'>
   <div id="taskboard">
     <table id="board_header" cellspacing="0">

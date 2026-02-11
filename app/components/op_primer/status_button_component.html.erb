@@ -11,7 +11,7 @@
 
       @items.each do |option|
         menu.with_item(**option.item_arguments) do |item|
-          item.with_leading_visual_icon(icon: option.icon) if option.icon
+          item.with_leading_visual_icon(icon: option.icon, classes: highlight_class_name(option, :inline)) if option.icon
           item.with_description.with_content(option.description) if option.description
 
           classes = option.colored? ? highlight_class_name(option, :inline) : ""

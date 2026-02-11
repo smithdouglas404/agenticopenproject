@@ -117,7 +117,7 @@ RSpec.describe "rb_burndown_charts/show" do
       render
 
       expect(view).to render_template(partial: "_burndown", count: 0)
-      expect(rendered).to include(I18n.t("backlogs.no_burndown_data"))
+      expect(rendered).to include(I18n.t("rb_burndown_charts.show.blankslate_title"))
     end
   end
 end

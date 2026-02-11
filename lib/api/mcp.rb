@@ -57,7 +57,7 @@ module API
         tools: McpTools.enabled.map(&:tool),
         resources: McpResources.enabled_resources.map(&:resource),
         resource_templates: McpResources.enabled_resource_templates.map(&:resource_template),
-        server_context: { user_id: User.current.id }
+        server_context: { current_user: User.current }
       )
 
       server.resources_read_handler { |params| McpResources.read_resource(params[:uri]) }

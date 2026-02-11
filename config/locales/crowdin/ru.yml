@@ -113,7 +113,7 @@ ru:
       index:
         description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
         resources_heading: "Resources"
-        resources_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Update resources"
         tools_heading: "Tools"
         tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
@@ -122,7 +122,7 @@ ru:
         success: "MCP configurations were updated successfully."
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applicatons that connect to the MCP server."
+        title_caption: "A short title shown to applications that connect to the MCP server."
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -609,6 +609,7 @@ ru:
         is_for_all_blank_slate:
           heading: Для всех проектов
           description: Этот атрибут проекта включен во всех проектах, поскольку опция "Для всех проектов" отмечена. Его нельзя отключить для отдельных проектов.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: На данный момент доступных типов нет.
         form:
@@ -623,6 +624,9 @@ ru:
       work_package_priorities:
         new_label: "Новый приоритет"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "Созданный артефакт будет сохранен в виде PDF-вложения к пакету работ."
           description_file_link_export: "Пакет работ будет содержать ссылку на файл PDF, хранящийся во внешнем файловом хранилище. Требуется рабочее файловое хранилище с автоматически управляемыми папками для данного проекта. На данный момент поддерживаются только файловые хранилища Nextcloud."
@@ -636,6 +640,7 @@ ru:
         label_request_submission: "Подача заявки"
         project_attributes_description: >
           Выберите, какие атрибуты проекта должны быть включены в запрос на инициацию проекта. В этот список входят только [атрибуты проекта](project_attributes_url), включенные для этого проекта.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Редактировать статус
     wizard:
@@ -1050,7 +1055,6 @@ ru:
         title: "Отсутствует рабочий процесс для совместного использования пакета работ"
         message: "Рабочий процесс не настроен для роли 'Редактора пакетов работ'. Без рабочего процесса, общий с пользователем не может изменить статус рабочего пакета. Рабочие процессы могут быть скопированы. Выберите исходный тип (например, «Задача») и исходную роль (например, «Участник»). Затем выберите нужные типы. Чтобы начать, можно выбрать все типы в качестве целей. Наконец, выберите роль 'Редактор пакетов работ' в качестве цели и нажмите 'Копировать'. После создания таким образом по умолчанию, тонкая настройка рабочих процессов как вы делаете для каждой другой роли."
         link_message: "Настройка рабочих процессов в администрации."
-    templated_subject_hint: Автоматически сгенерировано по типу %{type}
     summary:
       reports:
         category:
@@ -1270,9 +1274,9 @@ ru:
         port: "Порт"
         tls_certificate_string: "SSL-сертификат сервера LDAP"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: Включено
+        title: Название
+        description: Описание
       member:
         roles: "Роль"
       notification:
@@ -1531,7 +1535,7 @@ ru:
         even: "должно быть чётным."
         exclusion: "зарезервировано."
         feature_disabled: недоступно.
-        feature_disabled_for_project: is disabled for this project.
+        feature_disabled_for_project: отключен для этого проекта.
         file_too_large: "слишком большой (максимальный размер составляет %{count} байт)."
         filter_does_not_exist: "фильтр не существует."
         format: "не соответствует ожидаемому формату '%{expected}'."
@@ -2548,7 +2552,7 @@ ru:
       baseline_comparison: Сравнение базовых уровней
       board_view: Расширенные доски
       calculated_values: Рассчитываемые значения
-      capture_external_links: Capture External Links
+      capture_external_links: Перехват внешних ссылок
       internal_comments: Служебный комментарий
       custom_actions: Пользовательские действия
       custom_field_hierarchies: Иерархии
@@ -2558,11 +2562,12 @@ ru:
       edit_attribute_groups: Редактирование атрибутов групп
       gantt_pdf_export: Экспорт диаграммы Ганта в PDF
       ldap_groups: Синхронизация пользователей LDAP и групп
-      mcp_server: MCP Server
+      mcp_server: MCP-сервер
       nextcloud_sso: Единый вход для Nextcloud хранения
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
       portfolio_management: Управление портфолио
+      project_creation_wizard: Project initiation request
       project_list_sharing: Совместное использование списка проектов
       readonly_work_packages: Пакеты работ только для чтения
       scim_api: API сервера SCIM
@@ -2604,7 +2609,7 @@ ru:
       customize_life_cycle:
         description: "Создание и организация этапов и стадий проекта, отличных от тех, что предусмотрены планированием цикла проекта PM2."
       capture_external_links:
-        description: "Prevent social engineering attacks by capturing and warning about external links before users visit them."
+        description: "Предотвращать атаки социальной инженерии путем перехвата внешних ссылок до того, как пользователи их посетят."
       work_package_query_relation_columns:
         description: "Нужно видеть отношения или дочерние элементы в списке пакетов работ?"
       edit_attribute_groups:
@@ -2635,7 +2640,7 @@ ru:
         title: "Пользовательские действия"
         description: "Пользовательские действия являются ярлыками к набору заранее определенных действий, которые вы можете сделать доступными для определенных пакетов работ на основе статуса, роли, типа или проекта."
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Интегрируйте агентов искусственного интеллекта в Ваш OpenProject с помощью MCP."
       nextcloud_sso:
         title: "Единый вход для Nextcloud хранения"
         description: "Включите бесшовную и безопасную аутентификацию для вашего Nextcloud хранилища с помощью Single Sign-On. Упростите управление доступом и сделайте удобным для пользователя."
@@ -2647,6 +2652,8 @@ ru:
         description: "Разрешить пользователям входить через внешние SSO провайдеры, используя SAML или OpenID Connect для бесшовного доступа и интеграции с существующими идентификационными системами."
       virus_scanning:
         description: "Будьте уверены в том, что загруженные в OpenProject файлы проверены на наличие вирусов, прежде чем они станут доступны другим пользователям."
+      project_creation_wizard:
+        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
       placeholder_users:
         title: Пользователи-заполнители
         description: >
@@ -2946,19 +2953,17 @@ ru:
         learn_about: "Узнайте больше о всех новых функциях"
         missing: "Нет выделенных функций."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
             Релиз содержит различные новые функции и улучшения, такие как:
           new_features_list:
-            line_0: Совместная работа с документами в режиме реального времени.
-            line_1: Возможность структурировать связанные проекты в программы и портфели, чтобы направить их на достижение стратегических целей.
-            line_2: Улучшенное управление совещаниями с режимом черновика, режимом презентации, улучшенными результатами и подпиской на iCal.
-            line_3: Обновленная интеграция с SharePoint с более строгими разрешениями.
-            line_4: Переработанный обзор проекта с новыми вкладками, настраиваемыми виджетами и улучшенным макетом.
-            line_5: Возможность более строго охранять конфиденциальность пользователей, не работающих в одном проекте.
-            line_6: Улучшенный процесс создания проекта с более удобным выбором шаблона.
-            line_7: Более удобный глобальный поиск, включая тип и статус, улучшение точности нескольких автозаполнений.
-            line_8: Улучшена доступность текстов ALT и улучшены цвета графиков.
+            line_0: Automated project initiation (Enterprise add-on).
+            line_1: "Совещания: добавление новых или существующих пакетов работ в качестве итогов совещания."
+            line_2: "Meetings: show iCal responses in OpenProject."
+            line_3: "Повторяющиеся совещания: продублируйте пункты повестки дня на следующее совещание."
+            line_4: "Выпуск для сообщества: Выделение атрибутов."
+            line_5: Предупреждение перед открытием внешних ссылок в содержании, предоставленном пользователем (Enterprise add-on).
+            line_6: Улучшена производительность и пользовательский опыт, включая вкладку "Деятельность" и модуль "Документы".
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -3026,7 +3031,7 @@ ru:
   instructions_after_error: "Вы можете попробовать войти снова, нажав %{signin}. Если ошибка повторится, обратитесь к вашему администратору за помощью."
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "Искусственный интеллект (AI)"
       aggregation: "Агрегация"
       api_and_webhooks: "API и вебхуки"
       mail_notification: "Уведомления по электронной почте"
@@ -3059,7 +3064,7 @@ ru:
         text_hint: "Токены API позволяют приложениям общаться с этим экземпляром OpenProject через REST API."
         static_token_name: "Токен API"
         disabled_text: "Токены API не включены администратором. Пожалуйста, обратитесь к администратору для использования этой функции."
-        add_button: "API токен"
+        add_button: "API-токен"
       ical:
         blank_description: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
         blank_title: "Нет токена iCalendar"
@@ -3157,6 +3162,7 @@ ru:
   label_always_visible: "Всегда отображается"
   label_announcement: "Объявление"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} modules"
   label_api_access_key: "Ключ доступа к API"
   label_api_access_key_created_on: "Ключ доступа к API, созданный %{value} назад"
   label_api_access_key_type: "API"
@@ -3309,7 +3315,6 @@ ru:
   label_duplicate: "дублировать"
   label_duplicates: "Дублирует"
   label_edit: "Правка"
-  label_edit_attribute: "Изменить атрибут"
   label_edit_x: "Правка: %{x}"
   label_enable_multi_select: "Разрешен множественный выбор"
   label_enabled_project_custom_fields: "Доступные настраиваемые поля"
@@ -3412,7 +3417,7 @@ ru:
   label_journal_diff: "Описание сравнения"
   label_language: "Язык"
   label_languages: "Языки"
-  label_external_links: "External links"
+  label_external_links: "Внешние ссылки"
   label_locale: "Язык и регион"
   label_jump_to_a_project: "Перейти к проекту..."
   label_keyword_plural: "Ключевые слова"
@@ -4065,6 +4070,7 @@ ru:
   notice_successful_delete: "Удаление выполнено."
   notice_successful_cancel: "Отмена прошла успешно."
   notice_successful_update: "Обновление выполнено."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Создание не удалось."
   notice_unsuccessful_create_with_reason: "Создание не удалось: %{reason}"
   notice_unsuccessful_update: "Ошибка обновления."
@@ -4228,6 +4234,7 @@ ru:
   permission_edit_project_query: "Редактирование запроса проекта"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 портфолио"
@@ -4407,9 +4414,12 @@ ru:
   setting_allowed_link_protocols: "Разрешить ссылки на протоколы"
   setting_allowed_link_protocols_text_html: >-
     Разрешить отображать эти протоколы как ссылки в описаниях пакетов работ, длинных текстовых полях и комментариях. Например, %{tel_code} или %{element_code}. Введите по одному протоколу в строке. <br/>Протоколы %{http_code}, %{https_code} и %{mailto_code} всегда разрешены.
-  setting_capture_external_links: "Capture external links"
+  setting_capture_external_links: "Перехват внешних ссылок"
   setting_capture_external_links_text: >
-    When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+    Если эта функция включена, все внешние ссылки в форматированном тексте будут перенаправляться через страницу предупреждения, прежде чем покинуть приложение. Это помогает защитить пользователей от потенциально вредоносных внешних сайтов.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Перенаправление первого входа"
   setting_after_first_login_redirect_url_text_html: >
     Задайте путь для перенаправления пользователей после их первого входа в систему. Если не задано, то пользователь будет перенаправлен на домашнюю страницу обзорного тура. <br/> Например: <code>/my/page</code>
@@ -5392,7 +5402,7 @@ ru:
     hashed_token:
       display_value_placeholder: "***"
   external_link_warning:
-    title: "Leaving OpenProject"
-    warning_message: "You are about to leave OpenProject and visit an external website. Please be aware that external websites are not under our control and may have different privacy and security policies."
-    continue_message: "Are you sure you want to proceed to the following external link?"
-    continue_button: "Continue to external website"
+    title: "Выход из OpenProject"
+    warning_message: "Вы собираетесь покинуть OpenProject и посетить внешний сайт. Пожалуйста, имейте в виду, что внешние сайты не находятся под нашим контролем и могут иметь другую политику конфиденциальности и безопасности."
+    continue_message: "Вы уверены, что хотите перейти по следующей внешней ссылке?"
+    continue_button: "Перейти на внешний сайт"

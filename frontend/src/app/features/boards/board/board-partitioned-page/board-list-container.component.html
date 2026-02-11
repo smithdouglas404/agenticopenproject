@@ -41,7 +41,11 @@
       }
       @if (board.editable) {
         <div class="boards-list--add-item -no-text-select"
-          (click)="addList(board)">
+          role="button"
+          tabindex="0"
+          (click)="addList(board)"
+          (keydown.enter)="addList(board)"
+          (keydown.space)="addList(board)">
           <div class="boards-list--add-item-text">
             <op-icon icon-classes="icon-add icon-context" />
             <span [textContent]="text.addList"></span>

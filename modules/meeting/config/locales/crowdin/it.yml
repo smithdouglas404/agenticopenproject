@@ -66,7 +66,9 @@ it:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} non è un partecipante valido."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "C'è una riunione aperta nella serie che non è coperta dal nuovo programma. Adatta il programma per includere tutte le riunioni esistenti."
@@ -231,23 +233,23 @@ it:
         header: "Cancellata: riunione \"%{title}\""
         header_occurrence: "Cancellata: occorrenza della riunione \"%{title}\""
         header_series: "Cancellata: serie di riunioni \"%{title}\""
-        summary_occurrence: "Un'occorrenza di \"%{title}\" è stata cancellata da %{actor}."
-        summary_series: "La serie di riunioni \"%{title}\" è stata cancellata da %{actor}."
-        summary: "\"%{title}\" è stata cancellata da %{actor}."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Data/ora programmata"
       participant_added:
-        header: "Meeting '%{title}' - Participant added"
-        header_series: "Meeting series '%{title}' - Participant added"
-        summary: "%{actor} added %{participant} to the meeting '%{title}'"
-        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
+        header: "Riunione '%{title}' - Partecipante aggiunto"
+        header_series: "Serie di riunioni '%{title}' - Partecipante aggiunto"
+        summary: "%{actor} ha aggiunto %{participant} alla riunione '%{title}'"
+        summary_series: "%{actor} ha aggiunto %{participant} alla serie di riunioni '%{title}'"
       participant_removed:
-        header: "Meeting '%{title}' - Participant removed"
-        header_series: "Meeting series '%{title}' - Participant removed"
-        summary: "%{actor} removed %{participant} from the meeting '%{title}'"
-        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
+        header: "Riunione '%{title}' - Partecipante rimosso"
+        header_series: "Serie di riunioni '%{title}' - Partecipante rimosso"
+        summary: "%{actor} ha rimosso %{participant} dalla riunione '%{title}'"
+        summary_series: "%{actor} ha rimosso %{participant} dalla serie di riunioni '%{title}'"
       ended:
         header_series: "Terminata: serie di riunioni \"%{title}\""
-        summary_series: "La serie di riunioni '%{title}' è stata conclusa da %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "La riunione \"%{title}\" è stata aggiornata"
         summary: "La riunione \"%{title}\" è stata aggiornata da %{actor}"
@@ -530,8 +532,8 @@ it:
   label_agenda_item_move_up: "Sposta su"
   label_agenda_item_move_down: "Sposta giu"
   label_agenda_item_duplicate: "Duplica"
-  label_agenda_item_duplicate_in_next: "Duplica nella prossima occorrenza"
-  label_agenda_item_duplicate_in_next_title: "Duplicare nella prossima occorrenza?"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Aggiungi nota"
   label_agenda_item_add_outcome: "Aggiungi risultato"
   label_agenda_item_work_package_add: "Aggiungi macro-attività"
@@ -542,9 +544,9 @@ it:
   label_agenda_outcome_actions: "Azioni di risultato dell'ordine del giorno"
   label_agenda_outcome_edit: "Modifica risultato"
   label_agenda_outcome_delete: "Rimuovi risultato"
-  label_added_as_outcome: "Added as outcome"
-  label_write_outcome: "Write outcome"
-  label_existing_work_package: "Existing work package"
+  label_added_as_outcome: "Aggiunto come risultato"
+  label_write_outcome: "Scrivi risultato"
+  label_existing_work_package: "Macro-attività esistente"
   text_outcome_not_editable_anymore: "Questo risultato non è più modificabile."
   text_outcome_cannot_be_added: "Non è più possibile aggiungere un risultato."
   label_backlog_clear: "Ripulisci il backlog"
@@ -611,7 +613,9 @@ it:
   text_agenda_item_duplicate_in_next_meeting: "Vuoi davvero aggiungere una copia di questo punto all'ordine del giorno della prossima riunione, il giorno %{date} alle ore %{time}? I risultati non verranno duplicati."
   text_agenda_item_duplicated_in_next_meeting: "Punto all'ordine del giorno duplicato nella prossima riunione, il giorno %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Questa macro-attività non è ancora programmata in un prossimo ordine del giorno di riunione."
-  text_agenda_item_move_next_meeting_cancelled: "Impossibile passare alla riunione successiva perché è stata annullata."
+  text_agenda_item_no_available_occurrence: "Tutte le prossime occorrenze sono state annullate."
+  text_agenda_item_dialog_skipping_cancelled_one: "Nota: verrà saltata l'occorrenza annullata il giorno %{date}."
+  text_agenda_item_dialog_skipping_cancelled_many: "Nota: vengono saltate %{count} occorrenze annullate."
   text_work_package_add_to_meeting_hint: 'Utilizzare il pulsante "Aggiungi alla riunione" per aggiungere questa macro-attività a una riunione imminente.'
   text_work_package_has_no_past_meeting_agenda_items: "Questa macro-attività non è stata aggiunta come punto all'ordine del giorno in una riunione precedente."
   text_email_updates_muted: "Gli aggiornamenti del calendario via email sono disattivati. I partecipanti non riceveranno inviti aggiornati via email quando apporti modifiche."
@@ -619,10 +623,10 @@ it:
   my_account:
     access_tokens:
       token/ical_meeting:
-        blank_description: "You can create one using the button below."
-        blank_title: "No iCalendar meeting token"
+        blank_description: "Puoi crearne uno utilizzando il pulsante qui sotto."
+        blank_title: "Nessun token di riunione iCalendar"
         title: "iCalendar per le riunioni"
-        table_title: "iCalendar meeting tokens"
+        table_title: "Token di riunione iCalendar"
         text_hint: "I token iCalendar delle riunioni consentono agli utenti di iscriversi a tutte le proprie riunioni e di visualizzare le informazioni aggiornate in client esterni."
         disabled_text: "Le iscrizioni alle riunioni iCalendar non sono abilitate dall'amministratore. Contatta il tuo amministratore per utilizzare questa funzione."
         add_button: "Iscriviti al calendario"

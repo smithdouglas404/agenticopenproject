@@ -293,11 +293,20 @@ class RecurringMeetingsController < ApplicationController
 
     # Planned meetings consist of scheduled occurrences and cancelled meetings
     # Open meetings are removed from the scheduled occurrences as they are displayed separately
-    planned = @recurring_meeting
-      .scheduled_occurrences(limit: count + opened.count)
+
+    # Include ongoing scheduled occurrences by setting a start time in the past
+    from_time = Time.current - @recurring_meeting.template.duration.hours
+
+    # Get +1 scheduled_occurrences in case there is an ongoing cancelled occurrence
+    scheduled_times = @recurring_meeting
+      .scheduled_occurrences(limit: count + 1, from_time:)
       .reject { |start_time| opened.include?(start_time) }
+
+    has_ongoing = scheduled_times.any? { |start_time| start_time < Time.current }
+
+    planned = scheduled_times
       .map { |start_time| cancelled[start_time] || scheduled_meeting(start_time) }
-      .first([count, 0].max)
+      .first([(count + (has_ongoing ? 1 : 0)), 0].max)
 
     [opened.values.sort_by(&:start_time), planned]
   end

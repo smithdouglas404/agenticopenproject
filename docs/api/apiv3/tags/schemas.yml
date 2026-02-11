@@ -55,6 +55,7 @@ description: |-
   | location          | If present, contains a reference to the location of the property in the JSON       | String       | null    |
   | description       | If present, contains a formattable, human readable description                     | Formattable  | null    |
   | deprecated        | If present, the client should consider the existence of the property deprecated    | Boolean      | false   |
+  | placeholder       | If present, contains the text to display as a placeholder, so if no value is set   | String       | null    |
 
   All of the above properties that do not have a default value *must* be present in the schema.
   For properties that have a default value, the client can assume the default value, if the property is missing.
@@ -116,6 +117,7 @@ description: |-
           "hasDefault": false,
           "writable": true,
           "location": "_links",
+          "placeholder": "Lorem ipsum placeholder",
           "description": {
               "format": "markdown",
               "raw": "A description for field Lorem ipsum. This may contain [links](https://example.com).",

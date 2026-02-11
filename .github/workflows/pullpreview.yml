@@ -44,8 +44,9 @@ jobs:
     - name: Prepare docker-compose files
       run: |
         cp ./docker/pullpreview/docker-compose.yml ./docker-compose.pullpreview.yml
+        cp ./docker/pullpreview/Caddyfile ./Caddyfile
         cp ./docker/prod/Dockerfile ./Dockerfile
-    - uses: pullpreview/action@v5
+    - uses: pullpreview/action@v6
       with:
         # allows to ssh to the instance using our GitHub ssh key
         # command like: ssh ec2-user@pr-19375-trial-ip-3-127-219-135.my.preview.run
@@ -54,7 +55,8 @@ jobs:
         instance_type: xlarge
         ports: 80,443,8080
         default_port: 443
-        ttl: 10d
+        ttl: 8d
+        dns: my.opf.run
       env:
         AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
         AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"

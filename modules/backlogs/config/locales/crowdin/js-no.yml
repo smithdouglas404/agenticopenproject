@@ -24,3 +24,6 @@
     work_packages:
       properties:
         storyPoints: "Historiepoeng"
+    burndown:
+      day: "Day"
+      points: "Points"

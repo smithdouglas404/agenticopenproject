@@ -40,14 +40,11 @@ export class DynamicIconDirective {
   readonly icon = input.required<string>();
   readonly size = input<SVGSize>('medium');
 
-  private loaded = false;
-
   constructor() {
     effect(() => {
       const name = this.icon();
-      if (!name || this.loaded) return;
+      if (!name) return;
 
-      this.loaded = true;
       this.renderIcon(name);
     });
   }

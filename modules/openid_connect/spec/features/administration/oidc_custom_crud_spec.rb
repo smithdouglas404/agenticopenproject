@@ -79,7 +79,7 @@ RSpec.describe "OIDC administration CRUD",
       click_link_or_button "Continue"
 
       # Groups
-      enabled_checkbox = page.find_by_id("openid_connect_provider_sync_groups")
+      enabled_checkbox = page.find_by_id("sync_groups")
       expect(enabled_checkbox).not_to be_checked
       expect(page).to have_no_field " Groups claim"
       expect(page).to have_no_field "Patterns (regular expressions)"
@@ -93,7 +93,7 @@ RSpec.describe "OIDC administration CRUD",
       click_link_or_button "Continue"
 
       # Claims
-      fill_in "Claims", with: '{"foo": "bar"}'
+      fill_in "Claims", with: '{"id_token": { "bar": null }}'
       fill_in "ACR values", with: "foo bar"
 
       click_link_or_button "Finish setup"

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,5 +31,24 @@
 module MeetingAgendaItems
   class UpdateService < ::BaseServices::Update
     include AfterPerformHook
+    include Concerns::CopyAttachments
+
+    alias_method :original_after_perform, :after_perform
+
+    private
+
+    def before_perform(params)
+      @old_meeting_id = model.meeting_id if model.persisted?
+
+      super
+    end
+
+    def after_perform(call)
+      original_after_perform(call)
+
+      copy_attachments_from_meeting(call.result, @old_meeting_id) if call.success?
+
+      call
+    end
   end
 end
