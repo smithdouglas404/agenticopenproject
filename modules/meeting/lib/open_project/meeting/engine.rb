@@ -47,7 +47,8 @@ module OpenProject::Meeting
                                   presentation generate_pdf_dialog history],
                      "meetings/menus": %i[show],
                      work_package_meetings_tab: %i[index count],
-                     recurring_meetings: %i[index show new create download_ics]
+                     recurring_meetings: %i[index show new create download_ics],
+                     meeting_templates: %i[index]
                    },
                    permissible_on: :project
         permission :create_meetings,
@@ -55,7 +56,8 @@ module OpenProject::Meeting
                      meetings: %i[new create copy new_dialog fetch_timezone],
                      recurring_meetings: %i[new create copy init template_completed],
                      "recurring_meetings/schedule": %i[update_text],
-                     "meetings/menus": %i[show]
+                     "meetings/menus": %i[show],
+                     meeting_templates: %i[new create new_dialog]
                    },
                    dependencies: :view_meetings,
                    permissible_on: :project,
