@@ -1,0 +1,162 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+require "rails_helper"
+
+RSpec.describe InplaceEditFieldsController do
+  let(:user) { create(:user) }
+  let(:model) { create(:project) }
+  let(:attribute) { :name }
+  let(:model_param) { "project" }
+
+  before do
+    allow(controller).to receive(:current_user).and_return(user)
+
+    allow(OpenProject::InplaceEdit::UpdateRegistry)
+      .to receive_messages(registered?: true, fetch_handler: handler)
+
+    allow(Project)
+      .to receive(:visible)
+            .and_return(Project.all)
+  end
+
+  describe "GET #edit" do
+    let(:handler) { double }
+
+    it "returns a turbo stream response" do
+      get :edit, params: {
+        model: model_param,
+        id: model.id,
+        attribute:
+      }, format: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+    end
+  end
+
+  describe "PATCH #update" do
+    let(:handler) { double(call: success) }
+
+    context "when update is successful" do
+      let(:success) { true }
+
+      it "returns ok and renders success flash" do
+        patch :update, params: {
+          model: model_param,
+          id: model.id,
+          attribute:,
+          project: {
+            name: "New project"
+          }
+        }, format: :turbo_stream
+
+        expect(response).to have_http_status(:ok)
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      end
+    end
+
+    context "when update fails" do
+      let(:success) { false }
+
+      it "returns unprocessable_entity and stays in edit mode" do
+        patch :update, params: {
+          model: model_param,
+          id: model.id,
+          attribute:,
+          project: {
+            name: ""
+          }
+        }, format: :turbo_stream
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      end
+    end
+
+    context "when no update handler is registered" do
+      let(:handler) { nil }
+
+      it "returns 404" do
+        patch :update, params: {
+          model: model_param,
+          id: model.id,
+          attribute:,
+          project: { name: "Foo" }
+        }, format: :turbo_stream
+
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
+  describe "POST #reset" do
+    let(:handler) { double }
+
+    it "renders the component in view mode" do
+      post :reset, params: {
+        model: model_param,
+        id: model.id,
+        attribute:
+      }, format: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+    end
+  end
+
+  describe "model resolution errors" do
+    let(:handler) { double }
+
+    it "returns 404 for unsupported model" do
+      allow(OpenProject::InplaceEdit::UpdateRegistry)
+        .to receive(:registered?)
+              .and_return(false)
+
+      get :edit, params: {
+        model: "invalid_model",
+        id: 123,
+        attribute:
+      }, format: :turbo_stream
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "returns 404 for missing record" do
+      get :edit, params: {
+        model: model_param,
+        id: -1,
+        attribute:
+      }, format: :turbo_stream
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+end

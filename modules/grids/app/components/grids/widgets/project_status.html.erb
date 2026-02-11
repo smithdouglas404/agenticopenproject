@@ -36,7 +36,16 @@ See COPYRIGHT and LICENSE files for more details.
         end
 
         flex.with_row do
-          format_text(project, :status_explanation)
+          render OpenProject::Common::InplaceEditFieldComponent.new(
+            model: project,
+            attribute: :status_explanation,
+            visually_hide_label: true,
+            rich_text_options: {
+              showAttachments: false,
+              editorType: "constrained",
+              macros: false
+            }
+          )
         end
 
         if project.project_creation_wizard_enabled
