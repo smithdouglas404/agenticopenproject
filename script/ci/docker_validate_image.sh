@@ -323,6 +323,7 @@ validate_all_in_one_plugin_inheritance() {
   cat > "${plugin_validation_dir}/Gemfile.plugins" <<'RUBY'
 group :opf_plugins do
   gem "openproject-slack", git: "https://github.com/opf/openproject-slack.git", branch: "dev"
+  gem "openproject-proto_plugin", git: "https://github.com/opf/openproject-proto_plugin.git", branch: "dev"
 end
 RUBY
 
@@ -333,7 +334,7 @@ FROM ${BASE_IMAGE}
 COPY Gemfile.plugins /app/
 
 RUN bundle config unset deployment && bundle install && bundle config set deployment 'true'
-RUN ./docker/prod/setup/precompile-assets.sh
+RUN rm -f /app/config/frontend_assets.manifest.json /app/db/schema_cache.yml && ./docker/prod/setup/precompile-assets.sh
 DOCKER
 
   docker build \
@@ -344,6 +345,9 @@ DOCKER
   docker run --rm --entrypoint sh "${plugin_validation_image}" -lc '
 set -eu
 bundle info openproject-slack >/dev/null 2>&1
+bundle info openproject-proto_plugin >/dev/null 2>&1
+grep -q "linked/openproject-proto_plugin/main" /app/frontend/src/app/features/plugins/linked-plugins.module.ts
+grep -R -q "proto_plugin_name" /app/public/assets/frontend
 '
 }
 
