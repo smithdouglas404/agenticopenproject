@@ -1026,7 +1026,6 @@ ja:
         title: "ワークパッケージの共有のためのワークフローがありません"
         message: "「ワークパッケージエディタ」ロールに対してワークフローが設定されていません。ワークフローがなければ、ユーザーと共有されたワークパッケージのステータスは変更できません。 ワークフローをコピーすることができます。ソースタイプ(例:「タスク」)とソースロール(例:「メンバー」)を選択します。 次に、ターゲットタイプを選択します。最初に、すべてのタイプをターゲットとして選択できます。 最後に、「ワークパッケージの編集」ロールをターゲットとして選択し、「コピー」を押します。 このようにしてデフォルトを作成した後、他のすべてのロールに対して行うようにワークフローを微調整します。"
         link_message: "管理画面でワークフローを構成します。"
-    templated_subject_hint: '%{type}タイプで自動生成されます'
     summary:
       reports:
         category:
@@ -3167,7 +3166,6 @@ ja:
   label_duplicate: "重複"
   label_duplicates: "次と重複"
   label_edit: "編集"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "編集: %{x}"
   label_enable_multi_select: "複数選択の切り替え"
   label_enabled_project_custom_fields: "有効なカスタム フィールド"
@@ -4082,6 +4080,7 @@ ja:
   permission_edit_project_query: "プロジェクトのクエリを編集"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"

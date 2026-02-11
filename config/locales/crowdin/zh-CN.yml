@@ -1023,7 +1023,6 @@ zh-CN:
         title: "工作包共享缺少工作流"
         message: "没有为\"工作包编辑者\"角色配置工作流。没有工作流，共享用户就无法更改工作包的状态。工作流可以复制。选择一个源类型（例如\"任务\"）和源角色（例如\"成员\"）。然后选择目标类型。一开始，您可以将所有类型都选择为目标类型。最后，选择\"工作包编辑者\"角色作为目标，然后点击\"复制\"。在创建默认设置之后，像对其他角色一样进行微调，对工作流进行详细调整。"
         link_message: "在管理中配置工作流。"
-    templated_subject_hint: 通过类型 %{type}自动生成
     summary:
       reports:
         category:
@@ -3164,7 +3163,6 @@ zh-CN:
   label_duplicate: "重复"
   label_duplicates: "复制"
   label_edit: "编辑"
-  label_edit_attribute: "编辑属性"
   label_edit_x: "编辑：%{x}"
   label_enable_multi_select: "切换多选"
   label_enabled_project_custom_fields: "启用自定义字段"
@@ -4076,6 +4074,7 @@ zh-CN:
   permission_edit_project_query: "编辑项目查询"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 个项目组合"

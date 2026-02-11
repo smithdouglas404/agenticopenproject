@@ -1035,7 +1035,6 @@
         title: "Arbeidsflyt mangler for deling av arbeidspakker"
         message: "Ingen arbeidsflyt er konfigurert for rollen 'Arbeidspakke redaktør'. Uten en arbeidsflyt kan ikke brukeren endre status på arbeidspakken. Arbeidsflyt kan kopieres. Velg en kildetype (f.eks. 'oppgave') og en kilderolle (f.eks. 'medlem'). Velg så måltyper. Til å begynne med, kan du velge alle typene som mål. Til slutt velger du \"Redigeringsprogrammet for arbeidspakke\" som mål og press \"Copy\". Etter å ha opprettet standardinnstillingene, kan du finjustere arbeidsflytene som du gjør for hver annen rolle."
         link_message: "Konfigurer arbeidsmetodene i administrasjonen."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -3216,7 +3215,6 @@
   label_duplicate: "duplikat"
   label_duplicates: "duplikater"
   label_edit: "Rediger"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Rediger: %{x}"
   label_enable_multi_select: "Veksle multivalg"
   label_enabled_project_custom_fields: "Aktiverte egendefinerte felt"
@@ -4133,6 +4131,7 @@
   permission_edit_project_query: "Rediger prosjektspørring"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"

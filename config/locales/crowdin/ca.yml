@@ -1033,7 +1033,6 @@ ca:
         title: "Falta un flux de treball per compartir paquets de treball"
         message: "No s'ha configurat cap flux de treball per a la funció \"Editor de paquets de treball\". Sense un flux de treball, el que es comparteix amb l'usuari no pot alterar l'estat del paquet de treball. Els fluxos de treball es poden copiar. Seleccioneu un tipus d'origen (p. ex., \"Tasca\") i una funció d'origen (p. ex., \"Membre\"). A continuació, seleccioneu els tipus d'objectius. Per començar, podeu seleccionar tots els tipus com a objectius. Finalment, seleccioneu la funció \"Editor de paquets de treball\" com a objectiu i premeu \"Copia\". Després d'haver creat els valors predeterminats, ajusteu els fluxos de treball com ho feu per a qualsevol altra funció."
         link_message: "Configura els fluxos de treball a l'administració."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -3214,7 +3213,6 @@ ca:
   label_duplicate: "duplicats"
   label_duplicates: "duplicats"
   label_edit: "Editar"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edita: %{x}"
   label_enable_multi_select: "Activa/desactiva selecció múltiple"
   label_enabled_project_custom_fields: "Habilita camps personalitzats"
@@ -4127,6 +4125,7 @@ ca:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"

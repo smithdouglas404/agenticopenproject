@@ -1033,7 +1033,6 @@ pt-PT:
         title: "Falta um fluxo de trabalho para a partilha de pacotes de trabalho"
         message: "Nenhum fluxo de trabalho está configurado para a função \"Editor do pacote de trabalho\". Sem um fluxo de trabalho, o utilizador não pode alterar o estado do pacote de trabalho. Os fluxos de trabalho podem ser copiados. Selecione um tipo de fonte (por exemplo, \"Tarefa\") e uma função da fonte (por exemplo, \"Membro\"). Em seguida, selecione os tipos de destino. Para começar, pode selecionar todos os tipos como alvos. Por fim, selecione a função \"Editor do pacote de trabalho\" como destino e prima \"Copiar\". Depois de ter criado as predefinições, ajuste os fluxos de trabalho como faz para todas as outras funções."
         link_message: "Configure os fluxos de trabalho na administração."
-    templated_subject_hint: Gerado automaticamente através do tipo %{type}
     summary:
       reports:
         category:
@@ -3214,7 +3213,6 @@ pt-PT:
   label_duplicate: "duplicado"
   label_duplicates: "duplicados"
   label_edit: "Editar"
-  label_edit_attribute: "Editar atributo"
   label_edit_x: "Editar: %{x}"
   label_enable_multi_select: "Alternar para selecção múltipla"
   label_enabled_project_custom_fields: "Campos personalizados activados"
@@ -4130,6 +4128,7 @@ pt-PT:
   permission_edit_project_query: "Editar consulta de projeto"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 carteiras"

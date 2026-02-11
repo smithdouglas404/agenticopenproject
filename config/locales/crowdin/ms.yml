@@ -1025,7 +1025,6 @@ ms:
         title: "Aliran kerja hilang untuk perkongsian pakej kerja"
         message: "Tiada aliran kerja yang dikonfigurasi untuk peranan 'Pengedit Pakej Kerja'. Tanpa aliran kerja, perkongsian dengan pengguna tidak boleh mengubah status pakej kerja tersebut. Aliran kerja boleh disalin. Pilih jenis sumber (cth. 'Tugasan') dan peranan sumber (cth. 'Ahli'). Kemudian pilih jenis sasaran. Sebagai permulaan, anda boleh pilih semua jenis sebagai sasaran. Akhirnya, pilih peranan 'Pengedit Pakej Kerja' sebagai sasaran dan tekan 'Salin'. Setelah mencipta default ini, selaraskan semula aliran kerja sebagaimana yang anda lakukan untuk setiap peranan yang lain."
         link_message: "Konfigurasi aliran kerja dalam pentadbiran."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -3166,7 +3165,6 @@ ms:
   label_duplicate: "duplikasi"
   label_duplicates: "pendua"
   label_edit: "Edit"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Tukar pilihan berganda"
   label_enabled_project_custom_fields: "Ruang tersuai yang diaktifkan"
@@ -4080,6 +4078,7 @@ ms:
   permission_edit_project_query: "Edit pertanyaan projek"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"

@@ -1054,7 +1054,6 @@ cs:
         title: "Pro sdílení pracovního balíčku chybí pracovní postup"
         message: "Pro roli 'Pracovní balíček' není nastaven žádný pracovní postup. Bez pracovního postupu nemůže sdílení s uživatelem změnit stav pracovního balíčku. Pracovní toky mohou být zkopírovány. Vyberte typ zdroje (např. 'Úkol') a zdrojovou roli (např. 'Člen'). Pak vyberte cílové typy. Na začátku můžete vybrat všechny typy jako cíle. Nakonec vyberte roli 'Editor pracovních balíčků' jako cíl a stiskněte 'Kopírovat'. Poté, co jste tak vytvořili výchozí nastavení, vyladit pracovní postupy, jak to děláte pro každou jinou roli."
         link_message: "Konfigurace pracovních postupů v administraci."
-    templated_subject_hint: Automaticky generováno pomocí typu %{type}
     summary:
       reports:
         category:
@@ -3315,7 +3314,6 @@ cs:
   label_duplicate: "duplikovat"
   label_duplicates: "duplikovaů"
   label_edit: "Upravit"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Přepnout multiselect"
   label_enabled_project_custom_fields: "Povoleno volitelné pole"
@@ -4235,6 +4233,7 @@ cs:
   permission_edit_project_query: "Upravit dotaz projektu"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"

@@ -1036,7 +1036,6 @@ sv:
         title: "Arbetsflöde saknas för delning av arbetspaket"
         message: "Inget arbetsflöde är konfigurerat för 'Work package editor'-rollen. Utan ett arbetsflöde kan den delade användaren inte ändra arbetspaketets status. Arbetsflöden kan kopieras. Välj en källtyp (t.ex. 'Task') och källroll (t.ex. 'Medlem'). Välj sedan måltyper. Till att börja med kan du välja alla typer som mål. Slutligen väljer du rollen \"Arbetspaket editor\" som mål och trycker på \"Kopiera\". Efter att ha skapat standardinställningarna, finjustera arbetsflödena som du gör för varje annan roll."
         link_message: "Konfigurera arbetsflödena i administrationen."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -3217,7 +3216,6 @@ sv:
   label_duplicate: "dublett"
   label_duplicates: "dubblett av"
   label_edit: "Redigera"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Redigera: %{x}"
   label_enable_multi_select: "Växla multival"
   label_enabled_project_custom_fields: "Aktiverade anpassade fält"
@@ -4134,6 +4132,7 @@ sv:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"

@@ -1025,7 +1025,6 @@ vi:
         title: "Thiếu luồng công việc để chia sẻ gói công việc"
         message: "Không có quy trình làm việc nào được định cấu hình cho vai trò 'Trình chỉnh sửa gói công việc'. Nếu không có quy trình làm việc, nội dung được chia sẻ với người dùng không thể thay đổi trạng thái của gói công việc. Quy trình làm việc có thể được sao chép. Chọn loại nguồn (ví dụ: 'Nhiệm vụ') và vai trò nguồn (ví dụ: 'Thành viên'). Sau đó chọn loại mục tiêu. Để bắt đầu, bạn có thể chọn tất cả các loại làm mục tiêu. Cuối cùng, chọn vai trò 'Trình chỉnh sửa gói công việc' làm mục tiêu và nhấn 'Sao chép'. Sau khi đã tạo các giá trị mặc định, hãy tinh chỉnh quy trình làm việc như bạn thực hiện với mọi vai trò khác."
         link_message: "Cấu hình các quy trình công việc trong quản trị."
-    templated_subject_hint: Được tạo tự động thông qua loại %{type}
     summary:
       reports:
         category:
@@ -3166,7 +3165,6 @@ vi:
   label_duplicate: "Nhân đôi"
   label_duplicates: "Nhân đôi"
   label_edit: "Chỉnh sửa"
-  label_edit_attribute: "Chỉnh sửa thuộc tính"
   label_edit_x: "Chỉnh sửa: %{x}"
   label_enable_multi_select: "Bật/tắt đa lựa chọn"
   label_enabled_project_custom_fields: "Các trường tùy chỉnh đã bật"
@@ -4081,6 +4079,7 @@ vi:
   permission_edit_project_query: "Chỉnh sửa truy vấn dự án"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 danh mục đầu tư"

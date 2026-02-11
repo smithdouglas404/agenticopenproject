@@ -1023,7 +1023,6 @@ id:
         title: "Alur kerja yang hilang untuk berbagi paket kerja"
         message: "Tidak ada alur kerja yang dikonfigurasikan untuk peran 'Editor paket kerja'. Tanpa alur kerja, pengguna yang dibagikan tidak dapat mengubah status paket kerja. Alur kerja dapat disalin. Pilih jenis sumber (misalnya 'Tugas') dan peran sumber (misalnya 'Anggota'). Kemudian pilih jenis target. Sebagai permulaan, Anda dapat memilih semua jenis sebagai target. Terakhir, pilih peran 'Editor paket kerja' sebagai target dan tekan 'Salin'. Setelah membuat default, sesuaikan alur kerja seperti yang Anda lakukan untuk setiap peran lainnya."
         link_message: "Mengonfigurasi alur kerja dalam administrasi."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -3164,7 +3163,6 @@ id:
   label_duplicate: "duplicate"
   label_duplicates: "duplikat"
   label_edit: "Edit"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Beralih ke multiselect"
   label_enabled_project_custom_fields: "Enabled custom fields"
@@ -4078,6 +4076,7 @@ id:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "Hapus nilai"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"

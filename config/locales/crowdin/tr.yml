@@ -1036,7 +1036,6 @@ tr:
         title: "İş paketi paylaşımı için iş akışı eksik"
         message: "'İş paketi düzenleyicisi' rolü için hiçbir iş akışı yapılandırılmamıştır. Bir iş akışı olmadan, paylaşılan kullanıcı iş paketinin durumunu değiştiremez. İş akışları kopyalanabilir. Bir kaynak türü (örn. 'Görev') ve kaynak rolü (örn. 'Üye') seçin. Ardından hedef türleri seçin. Başlangıç olarak, tüm türleri hedef olarak seçebilirsiniz. Son olarak, hedef olarak 'İş paketi düzenleyicisi' rolünü seçin ve 'Kopyala' düğmesine basın. Varsayılanları bu şekilde oluşturduktan sonra, diğer tüm roller için yaptığınız gibi iş akışlarında ince ayar yapın."
         link_message: "İş akışlarını yönetim alanından yapılandırın."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -3217,7 +3216,6 @@ tr:
   label_duplicate: "kopya"
   label_duplicates: "kopyalayan"
   label_edit: "Düzenle"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Düzenle: %{x}"
   label_enable_multi_select: "Çoklu seçimi etkinleştir"
   label_enabled_project_custom_fields: "Etkin özel alanlar"
@@ -4132,6 +4130,7 @@ tr:
   permission_edit_project_query: "Proje sorgusunu düzenleme"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"

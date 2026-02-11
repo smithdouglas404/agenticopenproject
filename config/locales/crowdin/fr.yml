@@ -1034,7 +1034,6 @@ fr:
         title: "Flux de travail manquant pour le partage de lots de travaux"
         message: "Aucun flux de travail n'est configuré pour le rôle 'Éditeur de lots de travaux'. Sans flux de travail, le partage avec l'utilisateur ne permet pas de modifier l'état du lot de travaux. Les flux de travail peuvent être copiés. Sélectionnez un type de source (par exemple 'Tâche') et un rôle de source (par exemple 'Membre'). Sélectionnez ensuite les types cibles. Pour commencer, vous pouvez sélectionner tous les types comme cibles. Enfin, sélectionnez le rôle 'Éditeur de lot de travaux' comme cible et cliquez sur 'Copier'. Après avoir ainsi créé les valeurs par défaut, affinez les flux de travail comme vous le faites pour tous les autres rôles."
         link_message: "Configurez les flux de travail dans l'administration."
-    templated_subject_hint: Généré automatiquement par le type %{type}
     summary:
       reports:
         category:
@@ -3215,7 +3214,6 @@ fr:
   label_duplicate: "dupliquer"
   label_duplicates: "Doublons"
   label_edit: "Éditer"
-  label_edit_attribute: "Modifier l'attribut"
   label_edit_x: "Modifier : %{x}"
   label_enable_multi_select: "Basculer multisélection"
   label_enabled_project_custom_fields: "Champs personnalisés activés"
@@ -4132,6 +4130,7 @@ fr:
   permission_edit_project_query: "Modifier la requête du projet"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portefeuille"

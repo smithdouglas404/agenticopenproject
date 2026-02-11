@@ -113,7 +113,7 @@ de:
       index:
         description: "Das Model Context Protocol ermöglicht es KI-Agenten, ihren Nutzern Tools und Ressourcen bereitzustellen, die diese OpenProject-Instanz zur Verfügung stellt."
         resources_heading: "Ressourcen"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject stellt die folgenden Ressourcen bereit. Jede Ressource kann nach Wunsch aktiviert, umbenannt und beschrieben werden. Weitere Informationen finden sich in der [Dokumentation zu MCP-Ressourcen](docs_url)."
         resources_submit: "Ressourcen aktualisieren"
         tools_heading: "Tools"
         tools_description: "OpenProject stellt die folgenden Tools bereit. Jedes Tool kann nach Wunsch aktiviert, umbenannt und beschrieben werden. Weitere Informationen finden sich in der [Dokumentation zu MCP-Ressourcen](docs_url)."
@@ -122,7 +122,7 @@ de:
         success: "MCP-Konfigurationen wurden erfolgreich aktualisiert."
       server_form:
         description_caption: "Wie der MCP-Server gegenüber anderen Anwendungen beschrieben wird, die sich damit verbinden."
-        title_caption: "A short title shown to applications that connect to the MCP server."
+        title_caption: "Ein kurzer Titel, der Anwendungen angezeigt wird, die sich mit dem MCP-Server verbinden."
       update:
         failure: "Die MCP-Konfiguration konnte nicht aktualisiert werden."
         success: "Die MCP-Konfiguration wurde erfolgreich aktualisiert."
@@ -605,7 +605,7 @@ de:
         is_for_all_blank_slate:
           heading: Für alle Projekte
           description: Dieses Projekt-Attribut ist in allen Projekten aktiviert, da die Option "Für alle Projekte" aktiviert ist. Es kann nicht für einzelne Projekte deaktiviert werden.
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: Dieses Projektattribut kann nicht deaktiviert werden, da es bei Projektinitiierungsanträgen als <a href=%{pir_submission_url} target="_blank">Zuweisung bei Einreichung</a> verwendet wird.
       types:
         no_results_title_text: Derzeit stehen keine Typen zur Verfügung.
         form:
@@ -633,7 +633,7 @@ de:
         label_request_submission: "Einreichung des Antrags"
         project_attributes_description: >
           Wählen Sie aus, welche Attribute in den Projektinitiierungsantrag aufgenommen werden sollen. Diese Liste zeigt nur [Projektattribute](project_attributes_url), die für dieses Projekt aktiviert sind.
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: Dieses Projektattribut kann für diesen Projektinitiierungsantrag nicht deaktiviert werden, da es als erforderlich definiert ist. Dies kann in den <a href=%{admin_settings_url} target="_blank">Administrationseinstellungen</a> vom Administrator der Instanz geändert werden.
     status:
       button_edit: Status bearbeiten
     wizard:
@@ -1029,7 +1029,6 @@ de:
         title: "Der Workflow für das Teilen von Arbeitspaketen fehlt"
         message: "Es ist kein Workflow für die Rolle ‚Work package editor‘ konfiguriert. Nur mit einem solchen Workflow können Benutzer, mit denen ein Arbeitspaket geteilt wurde, den Status des Arbeitspakets ändern. Workflows lassen sich einfach kopieren. Wählen Sie dazu einen Quell-Typ (z. B. ‚Task‘) und eine Quell-Rolle (z. B. 'Member') aus. Wählen Sie dann die Ziel-Typen aus. Als ersten Schritt können Sie alle Typen als Ziel-Typen auswählen. Danach wählen Sie die Ziel-Rolle ‚Work package editor‘ aus und drücken Sie auf den Knopf ‚Kopieren‘. Nachdem Sie hiermit eine Grundlage geschaffen haben, können Sie danach diese Workflows weiter anpassen, ganz genau wie Sie es für jede andere Rolle bereits getan haben."
         link_message: "Konfigurieren Sie die Workflows in der Administration."
-    templated_subject_hint: Automatisch durch den Typ %{type} erzeugt
     summary:
       reports:
         category:
@@ -1248,9 +1247,9 @@ de:
         port: "Port"
         tls_certificate_string: "LDAP-Server SSL-Zertifikat"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: Aktiviert
+        title: Titel
+        description: Beschreibung
       member:
         roles: "Rollen"
       notification:
@@ -2458,12 +2457,12 @@ de:
       edit_attribute_groups: Attributgruppen bearbeiten
       gantt_pdf_export: Gantt PDF Export
       ldap_groups: LDAP-Benutzer- und Gruppensynchronisation
-      mcp_server: MCP Server
+      mcp_server: MCP-Server
       nextcloud_sso: Single Sign-On für Nextcloud-Speicher
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
       portfolio_management: Portfolioverwaltung
-      project_creation_wizard: Project initiation request
+      project_creation_wizard: Projektinitiierungsantrag
       project_list_sharing: Projektlistenfreigabe
       readonly_work_packages: Schreibgeschützte Arbeitspakete
       scim_api: SCIM-Server-API
@@ -2536,7 +2535,7 @@ de:
         title: "Benutzerdefinierte Aktionen"
         description: "Selbstdefinierte Aktionen sind Verknüpfungen zu einer Reihe von vordefinierten Aktionen, die Sie für bestimmte Arbeitspakete je nach Status, Rolle, Typ oder Projekt mit nur einem Klick auf einen Button auslösen."
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Integrieren Sie KI-Agenten mit Ihrer OpenProject-Instanz über MCP."
       nextcloud_sso:
         title: "Single Sign-On für Nextcloud-Speicher"
         description: "Aktivieren Sie nahtlose und sichere Authentifizierung für Ihren Nextcloud-Speicher mit Single Sign-On. Vereinfachen Sie das Zugriffsmanagement und erhöhen Sie den Benutzerkomfort."
@@ -2549,7 +2548,7 @@ de:
       virus_scanning:
         description: "Stellen Sie sicher, dass hochgeladene Dateien in OpenProject auf Viren gescannt werden, bevor sie für andere Benutzer zugänglich sind."
       project_creation_wizard:
-        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
+        description: "Generieren Sie einen Schritt-für-Schritt-Assistenten, um Projektmanagern dabei zu helfen, einen Projektinitiierungsantrag auszufüllen."
       placeholder_users:
         title: Platzhalter-Konten
         description: >
@@ -2853,7 +2852,7 @@ de:
           new_features_list:
             line_0: Automatisierte Projektinitiierung (Enterprise Add-on).
             line_1: "Besprechungen: Fügen Sie neue oder bestehende Arbeitspakete als Ergebnisse hinzu."
-            line_2: "Meetings: show iCal responses in OpenProject."
+            line_2: "Besprechungen: iCal-Antworten in OpenProject anzeigen."
             line_3: "Wiederkehrende Besprechungen: Kopieren Sie Tagesordnungspunkte zur nächsten Besprechung."
             line_4: "Freigabe für die Community-Edition: Hervorhebung von Attributen."
             line_5: Warnung vor dem Öffnen externer Links in von Benutzern erstellten Texten (Enterprise Add-on).
@@ -2925,7 +2924,7 @@ de:
   instructions_after_error: "Sie können versuchen sich erneut anzumelden indem Sie auf %{signin} klicken. Wenn der Fehler weiterhin auftritt, fragen Sie Ihren Administrator um Hilfe."
   menus:
     admin:
-      ai: "Artificial Intelligence (AI)"
+      ai: "Künstliche Intelligenz (AI)"
       aggregation: "Zusammenfassungen"
       api_and_webhooks: "API und Webhooks"
       mail_notification: "Mailbenachrichtigung"
@@ -2958,7 +2957,7 @@ de:
         text_hint: "API-Token erlauben es Drittanbieter-Anwendungen, mit dieser OpenProject-Instanz über REST-APIs zu kommunizieren."
         static_token_name: "API-Token"
         disabled_text: "API-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
-        add_button: "API token"
+        add_button: "API-Token"
       ical:
         blank_description: "Um einen iCalendar-Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
         blank_title: "Kein iCalendar-Token"
@@ -2986,7 +2985,7 @@ de:
         removed: "OAuth-Client-Token erfolgreich entfernt"
         unknown_integration: "Unbekannt"
       token/rss:
-        add_button: "RSS token"
+        add_button: "RSS-Token"
         blank_description: "Es gibt noch kein RSS-Token. Sie können eines erstellen, indem Sie auf die Schaltfläche unten klicken."
         blank_title: "Kein RSS-Token"
         title: "RSS"
@@ -3056,7 +3055,7 @@ de:
   label_always_visible: "Immer angezeigt"
   label_announcement: "Ankündigung"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "%{app_title} Module"
   label_api_access_key: "API-Zugriffsschlüssel"
   label_api_access_key_created_on: "Der API-Zugriffsschlüssel wurde vor %{value} erstellt"
   label_api_access_key_type: "Schnittstelle (API)"
@@ -3209,7 +3208,6 @@ de:
   label_duplicate: "Duplikat"
   label_duplicates: "Duplikat von"
   label_edit: "Bearbeiten"
-  label_edit_attribute: "Attribut bearbeiten"
   label_edit_x: "Bearbeiten: %{x}"
   label_enable_multi_select: "Mehrfachauswahl umschalten"
   label_enabled_project_custom_fields: "Aktivierte benutzerdefinierte Felder"
@@ -3964,7 +3962,7 @@ de:
   notice_successful_delete: "Erfolgreich gelöscht."
   notice_successful_cancel: "Erfolgreiche Absage."
   notice_successful_update: "Erfolgreich aktualisiert."
-  notice_successful_move: "Successful move from %{from} to %{to}."
+  notice_successful_move: "Erfolgreich von %{from} nach %{to} verschoben."
   notice_unsuccessful_create: "Erstellung fehlgeschlagen."
   notice_unsuccessful_create_with_reason: "Erstellung fehlgeschlagen: %{reason}"
   notice_unsuccessful_update: "Aktualisierung fehlgeschlagen."
@@ -4126,6 +4124,7 @@ de:
   permission_edit_project_query: "Projektabfrage bearbeiten"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "Keine Portfolios"
@@ -4310,9 +4309,9 @@ de:
   setting_capture_external_links: "Externe Links abfangen"
   setting_capture_external_links_text: >
     Wenn diese Funktion aktiviert ist, werden alle externen Links in formatiertem Text auf eine vor dem Link warnende Seite in der Applikation umgeleitet, bevor sie die Anwendung verlassen. Dies hilft, Benutzer vor potenziell bösartigen externen Websites zu schützen.
-  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login: "Benutzer müssen angemeldet sein"
   setting_capture_external_links_require_login_text: >
-    When enabled, users wanting to click on external links need to be logged in before being able to continue.
+    Wenn aktiviert, müssen Benutzer angemeldet sein, um externe Links anklicken und fortfahren zu können.
   setting_after_first_login_redirect_url: "Weiterleitung nach erster Anmeldung"
   setting_after_first_login_redirect_url_text_html: >
     Legen Sie einen Pfad fest, an den Nutzer:innen nach der ersten Anmeldung weitergeleitet werden. Wenn leer, führt er auf die Startseite des Onboarding-Tours. <br/> Beispiel: <code>/meine/seite</code>

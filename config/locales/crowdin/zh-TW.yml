@@ -1024,7 +1024,6 @@ zh-TW:
         title: "共用工作套件缺少工作流"
         message: "「工作套件編輯者」角色尚未設定工作流程。沒有工作流程時，共享給該角色的使用者無法變更工作套件的狀態。您可以複製其他工作流程：選擇來源類型（例如「任務」）和來源角色（例如「成員」）。接著選擇目標類型。初期建議選擇所有類型作為目標。最後，選擇「工作套件編輯者」角色作為目標，並按下「複製」。建立預設後，您可以像調整其他角色的工作流程一樣，進行細部調整。"
         link_message: "在管理中配置工作流。"
-    templated_subject_hint: 透過類型 %{type}自動產生
     summary:
       reports:
         category:
@@ -3164,7 +3163,6 @@ zh-TW:
   label_duplicate: "重複"
   label_duplicates: "重複"
   label_edit: "編輯"
-  label_edit_attribute: "編輯屬性"
   label_edit_x: "編輯：%{x}"
   label_enable_multi_select: "取用複選"
   label_enabled_project_custom_fields: "開啟客製欄位"
@@ -4077,6 +4075,7 @@ zh-TW:
   permission_edit_project_query: "編輯專案查詢"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 個組合"

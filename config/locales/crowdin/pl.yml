@@ -1051,7 +1051,6 @@ pl:
         title: "Brak przepływu pracy udostępniania pakietu roboczego"
         message: "Dla roli „Edytor pakietów roboczych” nie skonfigurowano przepływu pracy. Bez przepływu pracy użytkownik, któremu ją  udostępniono nie może zmienić statusu pakietu roboczego. Przepływy pracy można kopiować. Wybierz typ źródłowy (np. „Zadanie”) i rolę źródłową (np. „Członek”). Następnie wybierz typy docelowe. Na początek możesz wybrać wszystkie typy jako docelowe. Na koniec wybierz rolę  „Edytor pakietów roboczych”  jako cel i naciśnij przycisk „Kopiuj”. Po utworzeniu ustawień domyślnych dostosuj przepływy pracy tak, jak w przypadku każdej innej roli."
         link_message: "Skonfiguruj przepływy pracy w administracji."
-    templated_subject_hint: Automatycznie wygenerowany przez typ %{type}
     summary:
       reports:
         category:
@@ -3311,7 +3310,6 @@ pl:
   label_duplicate: "duplikat"
   label_duplicates: "Duplikaty"
   label_edit: "Edytuj"
-  label_edit_attribute: "Edytuj atrybut"
   label_edit_x: "Edytuj: %{x}"
   label_enable_multi_select: "Włącz wybór wielokrotny"
   label_enabled_project_custom_fields: "Aktywne pola niestandardowe"
@@ -4231,6 +4229,7 @@ pl:
   permission_edit_project_query: "Edytuj zapytanie dotyczące projektu"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfoliów"

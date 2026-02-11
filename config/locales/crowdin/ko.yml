@@ -1027,7 +1027,6 @@ ko:
         title: "작업 패키지 공유에 대한 워크플로 누락"
         message: "'작업 패키지 편집자' 역할에 대해 구성된 워크플로가 없습니다. 워크플로가 없으면 사용자와 공유된 워크플로는 작업 패키지의 상태를 변경할 수 없습니다. 워크플로를 복사할 수는 있습니다. 소스 유형(예: '작업')과 소스 역할(예: '멤버')을 선택하세요. 그런 다음 대상 유형을 선택하세요. 시작하기 위해 모든 유형을 대상으로 선택할 수 있습니다. 마지막으로 '작업 패키지 편집자' 역할을 대상으로 선택하고 '복사'를 누르세요. 기본값을 생성한 후 다른 모든 역할에 대해 수행하는 것처럼 워크플로를 미세 조정하세요."
         link_message: "관리에서 워크플로를 구성하세요."
-    templated_subject_hint: '%{type} 유형을 통해 자동으로 생성됨'
     summary:
       reports:
         category:
@@ -3168,7 +3167,6 @@ ko:
   label_duplicate: "중복"
   label_duplicates: "복제"
   label_edit: "편집"
-  label_edit_attribute: "특성 편집"
   label_edit_x: "편집: %{x}"
   label_enable_multi_select: "다중 선택 토글"
   label_enabled_project_custom_fields: "사용자 정의 필드 사용"
@@ -4082,6 +4080,7 @@ ko:
   permission_edit_project_query: "프로젝트 쿼리 편집"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0개 포트폴리오"
