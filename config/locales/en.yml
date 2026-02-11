@@ -148,7 +148,7 @@ en:
         error: "An unexpected error occurred while testing the connection"
         connection_error: "Connection error: %{message}"
         parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
-        api_error: "Jira API returned error status %{status}. Please check your API token and permissions."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
         token_error: "Invalid API token. Please check your credentials in the configuration."
         missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
         invalid_url: "Please provide a valid URL"

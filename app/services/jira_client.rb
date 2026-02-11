@@ -50,10 +50,10 @@ class JiraClient
 
     @httpx = OpenProject
                .httpx
-               .plugin(:basic_auth)
-               .with(headers: { "accept" => "application/json" })
+               .plugin(:auth)
                .bearer_auth(personal_access_token)
-    @url = url
+               .with(headers: { "accept" => "application/json" })
+    @url = url.chomp("/")
   end
 
   def mypermissions
@@ -194,20 +194,20 @@ class JiraClient
 
   def download_attachment(content_url)
     case (response = @httpx.get(content_url))
-    in {status: 200..299}
+    in { status: 200..299 }
       response.body
-    in {status: 300..399}
-      case (redirect_response =  @httpx.get(response.headers["location"]))
-      in {status: 200..299}
+    in { status: 300..399 }
+      case (redirect_response = @httpx.get(response.headers["location"]))
+      in { status: 200..299 }
         redirect_response.body
-      in {status: 300..}
+      in { status: 300.. }
         raise "BAD RESPONSE: #{redirect_response.status}, #{redirect_response.body}"
-      in {error: error}
+      in { error: error }
         raise error
       end
-    in {status: 400..}
+    in { status: 400.. }
       raise "BAD RESPONSE: #{response}"
-    in {error: error}
+    in { error: error }
       raise error
     end
   end
