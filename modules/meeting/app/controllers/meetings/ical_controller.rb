@@ -34,8 +34,9 @@ module Meetings
 
     EMPTY_ICS = "BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR"
 
-    def index
-      token = Token::ICalMeeting.find_by_plaintext_value!(params[:token]) # rubocop:disable Rails/DynamicFindBy
+    def index # rubocop:disable Metrics/AbcSize
+      token = Token::ICalMeeting.find_by_plaintext_value(params[:token])
+      raise ActiveRecord::RecordNotFound if token.nil?
 
       user = token.user
 

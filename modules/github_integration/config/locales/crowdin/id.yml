@@ -43,8 +43,8 @@ id:
   notice_deploy_target_created: Sebaran target telah dibuat
   notice_deploy_target_destroyed: Sebaran target telah dihapus
   plugin_openproject_github_integration:
-    name: "OpenProject GitHub Integration"
-    description: "Integrates OpenProject and GitHub for a better workflow"
+    name: "Integrasi OpenProject dengan GitHub"
+    description: "Mengintegrasikan OpenProject dan GitHub untuk alur kerja yang lebih baik"
   project_module_github: "GitHub"
   permission_show_github_content: "Tampilkan konten GitHub"
   permission_introspection: Baca versi inti OpenProject yang sedang berjalan dan bangun SHA
@@ -52,4 +52,4 @@ id:
     Sampai saat ini, kami hanya mendukung OpenProject saja.
   text_deploy_target_api_key_info: >
     Kunci API OpenProject [API key](docs_url) yang dimiliki oleh pengguna yang memiliki izin introspeksi global.
-  text_pull_request_deployed_to: "%{pr_link} deployed to %{deploy_target_link}"
+  text_pull_request_deployed_to: "%{pr_link} disebarkan ke %{deploy_target_link}"

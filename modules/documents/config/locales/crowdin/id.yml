@@ -21,8 +21,8 @@
 #++
 id:
   plugin_openproject_documents:
-    name: "OpenProject Documents"
-    description: "An OpenProject plugin to allow creation of documents in projects."
+    name: "Dokumen OpenProject"
+    description: "Plugin OpenProject untuk memungkinkan pembuatan dokumen dalam proyek."
   activerecord:
     errors:
       models:
@@ -74,6 +74,7 @@ id:
         action: Coba lagi
       connection_recovery_notice:
         description: "Koneksi ke server kolaborasi teks secara kangsung telah dipulihkan."
+      tabs: "Tab dokumen"
     index_page:
       name: "Nama"
       type: "Tipe"
@@ -83,10 +84,10 @@ id:
       all: "Semua dokumen"
       types: "Tipe"
       collaboration_settings: "Kolaborasi secara langsung"
-    last_updated_at: "Last saved %{time}."
+    last_updated_at: "Terakhir disimpan %{time}."
     active_editors: "Editor yang aktif"
     active_editors_count:
-      other: "%{count} active editors"
+      other: "%{count} editor aktif"
     label_attachment_author: "Lampiran penulis"
     label_categories: "Kategori"
     new_category: "Kategori Baru"
@@ -132,13 +133,13 @@ id:
         primary_action: Aktifkan kolaborasi secara langsung
         success: Kolaborasi secara langsung telah diaktifkan.
       disable_text_collaboration_dialog:
-        title: Disable real-time collaboration
-        heading: Disable real-time collaboration?
+        title: Nonaktifkan kolaborasi secara langsung
+        heading: Nonaktifkan kolaborasi secara langsung?
         confirmation_message: |-
-          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
-          real-time collaboration and the BlockNote editor in this instance.
-        confirmation_checkbox_message: I understand that I might permanently lose data
-        success: Real-time collaboration has been disabled.
+          Semua dokumen yang ada akan mungkin tidak dapat diakses. Harap lakukan ini jika Anda yakin ingin menonaktifkan
+          kolaborasi secara langsung dan editor BlockNote dalam situasi ini.
+        confirmation_checkbox_message: Saya mengerti bahwa saya mungkin akan kehilangan data secara permanen
+        success: Kolaborasi secara langsung telah dinonaktifkan.
   label_document_added: "Dokumen ditambahkan"
   label_document_new: "Dokumen baru"
   label_document_plural: "Dokumen"
@@ -146,7 +147,7 @@ id:
   label_document_title: "Judul"
   label_document_description: "Deskripsi"
   label_document_category: "Kategori"
-  label_document_type: "Type"
+  label_document_type: "Jenis"
   permission_manage_documents: "Kelola dokumen"
   permission_view_documents: "Lihat dokumen"
   project_module_documents: "Dokumen"

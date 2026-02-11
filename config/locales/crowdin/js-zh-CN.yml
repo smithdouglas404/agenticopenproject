@@ -203,8 +203,8 @@ zh-CN:
         add_table: "添加相关工作包表"
         edit_query: "编辑查询"
         new_group: "新建组"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "删除群组"
+        remove_attribute: "从群组中移除"
         reset_to_defaults: "重置为默认值"
       working_days:
         calendar:
@@ -426,7 +426,7 @@ zh-CN:
     label_remove_row: "移除行"
     label_report: "报告"
     label_repository_plural: "存储库"
-    label_resize_project_menu: "Resize project menu"
+    label_resize_project_menu: "调整项目菜单大小"
     label_save_as: "另存为"
     label_search_columns: "搜索列"
     label_select_watcher: "选择一个关注者..."
@@ -632,9 +632,6 @@ zh-CN:
           add: "为项目添加设置"
           already_selected: "此项目已经选定"
           remove: "移除项目设置"
-    password_confirmation:
-      field_description: "输入密码以确认更改"
-      title: "输入密码以继续"
     pagination:
       no_other_page: "您位于唯一页面上。"
       pages_skipped: "跳过的页面。"

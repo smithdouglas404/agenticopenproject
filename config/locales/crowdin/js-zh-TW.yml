@@ -631,9 +631,6 @@ zh-TW:
           add: "新增設定"
           already_selected: "已選取此專案"
           remove: "移除專案設定"
-    password_confirmation:
-      field_description: "您需要輸入您的帳戶密碼，以確認此更改。"
-      title: "確認您的密碼以便繼續"
     pagination:
       no_other_page: "您位於唯一頁面上。"
       pages_skipped: "跳過的頁面。"

@@ -2,7 +2,7 @@ tr:
   label_job_status_plural: "İş durumu"
   plugin_openproject_job_status:
     name: "OpenProject İş durumu"
-    description: "Arka plan işlerinin durumu ve listelenmesi."
+    description: "Arka plan işlerinin durumu listeleniyor."
   job_status_dialog:
     download_starts: 'İndirme işlemi otomatik olarak başlayacaktır.'
     link_to_download: 'Veya indirmek için %{link}.'

@@ -55,6 +55,9 @@ module RecurringMeetings
     end
 
     def all_instantiated_meetings_covered
+      # Don't run coverage call when model itself is invalid
+      # as that might lead to unexpected errors
+      return if model.errors.any?
       return if model.end_after_never?
       return unless model.reschedule_required?
 

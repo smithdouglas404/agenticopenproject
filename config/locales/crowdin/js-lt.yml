@@ -635,9 +635,6 @@ lt:
           add: "Pridėti nustatymą projektui"
           already_selected: "Šis projektas jau pažymėtas"
           remove: "Išimti projekto nustatymus"
-    password_confirmation:
-      field_description: "Norėdami patvirtinti šį pakeitimą turite įvesti savo paskyros slaptažodį."
-      title: "Norėdami tęsti, patvirtinkite savo slaptažodį"
     pagination:
       no_other_page: "Jūs esate vieninteliame puslapyje."
       pages_skipped: "Pages skipped."

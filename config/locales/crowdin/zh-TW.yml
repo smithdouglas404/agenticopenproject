@@ -109,6 +109,23 @@ zh-TW:
       explanation:
         text: "使用者的個別操作（例如：在短時間內更新同一工作套件兩次）若時間差距小於指定時長，系統會將這些操作合併為單一動作，並於應用程式中以單一動作顯示。\n此機制同時會延遲通知發送相同的時間，以減少電子郵件數量，並且會影響 %{webhook_link} 的延遲時間。"
         link: "webhook"
+    mcp_configurations:
+      index:
+        description: "模型上下文協定允許 AI 代理向其使用者提供此 OpenProject 實體所揭露的工具與資源。"
+        resources_heading: "資源"
+        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_submit: "更新資源"
+        tools_heading: "工具"
+        tools_description: "OpenProject 實作下列工具。每個工具都可以依您的需求啟用、重新命名和描述。如需詳細資訊，請參閱 [MCP 工具說明文件](docs_url)。"
+        tools_submit: "更新工具"
+      multi_update:
+        success: "MCP 組態已成功更新。"
+      server_form:
+        description_caption: "MCP 伺服器將如何描述給連線到它的其他應用程式。"
+        title_caption: "A short title shown to applications that connect to the MCP server."
+      update:
+        failure: "無法更新 MCP 設定。"
+        success: "MCP 組態已成功更新。"
     scim_clients:
       authentication_methods:
         sso: "來自身份提供者的 JWT"
@@ -589,6 +606,7 @@ zh-TW:
         is_for_all_blank_slate:
           heading: 對所有的專案
           description: 由於已勾選「適用於所有專案」選項，因此所有專案都啟用此專案屬性。個別專案無法停用。
+        enabled_via_assignee_when_submitted_html: 此專案屬性無法停用，因為它已被設定為專案啟動請求提交時的 <a href=%{pir_submission_url} target="_blank">指派人</a>。
       types:
         no_results_title_text: 目前沒有可用的類型
         form:
@@ -603,6 +621,9 @@ zh-TW:
       work_package_priorities:
         new_label: "新優先權"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "產生的產物將會以 PDF 附件的形式，儲存到該產物的工作套件中。"
           description_file_link_export: "該成品工作套件將會包含一個檔案連結，指向儲存在外部檔案儲存空間中的 PDF 檔案。這要求有一個具備檔案儲存功能的空間，並且其中有為此專案自動化管理的專案資料夾。目前僅支援 Nextcloud 檔案儲存空間。"
@@ -616,6 +637,7 @@ zh-TW:
         label_request_submission: "要求提交"
         project_attributes_description: >
           選擇哪些專案屬性應包含在專案啟動請求中。此清單僅包含此專案啟用的 [專案屬性](project_attributes_url)。
+        enabled_because_required_html: 由於此專案屬性被定義為必填項目，因此無法在此專案啟動請求中停用。此設定可由系統管理員於 <a href=%{admin_settings_url} target="_blank">管理設定</a> 中進行變更。
     status:
       button_edit: 編輯狀態
     wizard:
@@ -705,9 +727,11 @@ zh-TW:
           create_button: "建立"
           name_label: "令牌名稱"
       created_dialog:
+        one_time_warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
         token/api:
           title: "API 令牌(Token)已生成。"
-          warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
+        token/rss:
+          title: "已產生 RSS 令牌"
       failed_to_reset_token: "無法重置訪問令牌(Token): %{error}"
       failed_to_create_token: "無法建立訪問令牌(Token): %{error}"
       failed_to_revoke_token: "無法撤銷訪問令牌(Token): %{error}"
@@ -717,6 +741,9 @@ zh-TW:
       notice_api_token_revoked: "API 令牌(Token)已被刪除。請使用 API 區段中的按鈕產生新的。"
       notice_rss_token_revoked: "RSS 令牌(Token)已被刪除。 請使用 在RSS 選項裡提供的連結建立新的。"
       notice_ical_token_revoked: '專案「%{project_name}」日曆「%{calendar_name}」的 iCalendar 令牌(Token)「%{token_name}」已被撤銷。 帶有此令牌的 iCalendar URL 無效。'
+    password_confirmation_dialog:
+      confirmation_required: "您需要輸入帳戶密碼來確認這項變更。"
+      title: "確認您的密碼以便繼續"
   news:
     index:
       no_results_title_text: 目前沒有新消息報告
@@ -1218,6 +1245,10 @@ zh-TW:
         onthefly: "自動新增用戶"
         port: "埠"
         tls_certificate_string: "LDAP伺服器SSL證書"
+      mcp_configuration:
+        enabled: 已啟用
+        title: 標題
+        description: 說明
       member:
         roles: "角色"
       notification:
@@ -1476,6 +1507,7 @@ zh-TW:
         even: "必須是偶數"
         exclusion: "已保留"
         feature_disabled: 不可用。
+        feature_disabled_for_project: 對於此專案已停用。
         file_too_large: "太大 (最大為 %{count} Bytes)."
         filter_does_not_exist: "過濾條件不存在"
         format: "與預期的格式“%{expected}”不符"
@@ -1498,7 +1530,8 @@ zh-TW:
         not_a_datetime: "不是有效的日期時間。"
         not_a_number: "不是數字"
         not_allowed: "是無效的因為缺少權限"
-        not_json: "不是有效的 JSON 物件。"
+        not_json: "無法解析為 JSON。"
+        not_json_object: "不是 JSON 物件。"
         not_an_integer: "不是整數"
         not_an_iso_date: "不是有效日期。所需格式：YYYY-MM-DD。"
         not_same_project: "不屬於相同的專案"
@@ -1893,7 +1926,10 @@ zh-TW:
       status: "工作套件狀態"
       token/api:
         other: 存取令牌(Token)
-      type: "類型"
+      token/rss:
+        other: "RSS 令牌(Token)"
+      type:
+        other: "類型"
       user: "使用者"
       version: "版本"
       workflow: "工作流程"
@@ -2106,6 +2142,7 @@ zh-TW:
   button_click_to_reveal: "點擊顯示"
   button_close: "關閉"
   button_collapse_all: "全部收合"
+  button_confirm: "確認"
   button_configure: "設定"
   button_continue: "繼續"
   button_complete: "完成"
@@ -2138,6 +2175,7 @@ zh-TW:
   button_print: "列印"
   button_quote: "引言"
   button_remove: 刪除
+  button_remove_permanently: "永久移除"
   button_remove_reminder: "移除提醒"
   button_rename: "重新命名"
   button_replace: "取代"
@@ -2369,7 +2407,7 @@ zh-TW:
       baseline_comparison: 比較差異
       board_view: 進階看板
       calculated_values: 計算值
-      conditional_highlighting: 條件強調
+      capture_external_links: 擷取外部連結
       internal_comments: 內部備註
       custom_actions: 自訂動作
       custom_field_hierarchies: 階層
@@ -2379,10 +2417,12 @@ zh-TW:
       edit_attribute_groups: 編輯群組屬性
       gantt_pdf_export: 以PDF匯出甘特圖
       ldap_groups: 同步LDAP使用者與群組
+      mcp_server: MCP 伺服器
       nextcloud_sso: Nextcloud 儲存空間的單一登入(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 檔案儲存
       placeholder_users: 佔位符使用者
       portfolio_management: 組合管理
+      project_creation_wizard: 專案啟動請求
       project_list_sharing: 專案清單分享
       readonly_work_packages: 唯讀工作套件
       scim_api: SCIM 伺服器 API
@@ -2423,8 +2463,8 @@ zh-TW:
         description: "使用參考的屬性和文字建立自動產生的主題。"
       customize_life_cycle:
         description: "建立並組織不同於 PM2 專案週期規劃所提供的專案階段。"
-      conditional_highlighting:
-        description: "想讓特定工作套件從眾多套件中脫穎而出？在工作套件列表中使用條件式醒目標示功能。"
+      capture_external_links:
+        description: "透過在使用者造訪外部連結前擷取外部連結並發出警告，防止社交工程攻擊。"
       work_package_query_relation_columns:
         description: "需要在工作套件清單中查看關聯或子套件嗎？"
       edit_attribute_groups:
@@ -2454,6 +2494,8 @@ zh-TW:
       custom_actions:
         title: "自訂動作"
         description: "自訂動作是一系列預先定義動作的單鍵捷徑，您可以根據狀態、角色、類型或專案，在特定工作套件上使用這些動作。"
+      mcp_server:
+        description: "透過 MCP 將 AI 代理與您的 OpenProject 實例整合。"
       nextcloud_sso:
         title: "Nextcloud 儲存空間的單一登入(SSO)"
         description: "使用單一登入為您的 Nextcloud 儲存空間啟用無縫且安全的驗證。簡化存取管理並提升使用者便利性。"
@@ -2465,6 +2507,8 @@ zh-TW:
         description: "啟用使用者透過外部 SSO 提供者（如 SAML 或 OpenID Connect）登入，以便與現有身份系統無縫整合和存取。"
       virus_scanning:
         description: "確保在其他使用者存取 OpenProject 中上傳的檔案前，對其進行病毒掃描。"
+      project_creation_wizard:
+        description: "產生一個逐步引導的精靈（Wizard），協助專案經理填寫專案啟動申請。"
       placeholder_users:
         title: 佔位符使用者
         description: >
@@ -2761,19 +2805,17 @@ zh-TW:
         learn_about: "進一步瞭解所有新功能"
         missing: "目前還沒有突出顯示的功能。"
         #We need to include the version to invalidate outdated translations in other locales
-        "17_0":
+        "17_1":
           new_features_title: >
             該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: 即時文件協作。
-            line_1: 有能力將相關專案架構為計畫和組合，使其專注於策略目標（企業附加元件）。
-            line_2: 透過草稿模式、簡報模式、增強成果和 iCal 訂閱功能，提供更佳的會議管理。
-            line_3: 更新 SharePoint 整合，提供更多限制性權限 (企業附加元件)。
-            line_4: 重新設計的專案總覽，新增標籤、可設定的小工具，並改善版面設計。
-            line_5: 可選擇更嚴格地保護不在同一專案中工作的使用者的隱私。
-            line_6: 改善專案建立流程，提供更好的範本選擇。
-            line_7: 更聰明的全局搜尋，包括類型和狀態，提高多種自動完成工具的精確度。
-            line_8: 改善 ALT 文字的可讀性，並改善圖表顏色。
+            line_0: 自動化專案啟動（企業附加元件）。
+            line_1: "會議：添加新的或現有的工作套件作為成果。"
+            line_2: "會議：在 OpenProject 中顯示 iCal 回應。"
+            line_3: "重複性會議：將議程項目重複至下次會議。"
+            line_4: "發佈到社群：高亮顯示屬性。"
+            line_5: 在使用者提供的內容中開啟外部連結前警告（企業附加元件）。
+            line_6: 改善效能和使用者體驗，包括「活動」標籤和「文件」模組。
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -2841,14 +2883,17 @@ zh-TW:
   instructions_after_error: "你可以試著再按一次 %{signin} 來嘗試登入。如果持續發生錯誤，請向您的管理員尋求幫助。"
   menus:
     admin:
-      mail_notification: "電子郵件通知"
-      mails_and_notifications: "郵件與通知"
+      ai: "人工智慧 (AI)"
       aggregation: "合併"
       api_and_webhooks: "API 和 Webhook"
+      mail_notification: "電子郵件通知"
+      mails_and_notifications: "郵件與通知"
+      mcp_configurations: "模型上下文通訊協定 (MCP)"
     quick_add:
       label: "新增…"
   my_account:
     access_tokens:
+      description: "提供者令牌由 OpenProject 發行，允許其他應用程式存取。用戶端識別碼由其他應用程式發行，允許 OpenProject 存取它們。"
       no_results:
         title: "沒有可顯示的存取令牌(Token)"
         description: "他們全都被停用了。他們可以在管理功能表重新啟用"
@@ -2858,34 +2903,56 @@ zh-TW:
         expiration: "過期"
       indefinite_expiration: "無"
       simple_revoke_confirmation: "你確定要撤銷此令牌(Token)？"
+      tabs:
+        client:
+          title: "用戶端令牌"
+        provider:
+          title: "服務提供者令牌"
       token/api:
+        blank_description: "目前還沒有 API 令牌。您可以使用下面的按鈕建立一個。"
+        blank_title: "無 API 令牌"
         title: "API"
+        table_title: "API 令牌(Token)"
         text_hint: "API 令牌(Tokens)允許第三方應用程式透過 REST API 與此 OpenProject 實例進行通訊。"
-        disabled_text: "API 令牌(Tokens)未由管理員啟用。若要使用此功能，請聯絡您的管理員。"
-        add_button: "API 令牌"
-      api:
         static_token_name: "API 令牌(Token)"
+        disabled_text: "API 令牌(Tokens)未由管理員啟用。若要使用此功能，請聯絡您的管理員。"
+        add_button: "API 令牌(Token)"
       ical:
+        blank_description: "若要新增 iCalendar 令牌，請從專案的行事曆模組中訂閱新的或現有的行事曆。您必須擁有必要的權限。"
+        blank_title: "沒有 iCalendar 令牌"
         title: "iCalendar "
+        table_title: "iCalendar 令牌"
         text_hint_link: "iCalendar 權杖可讓使用者[訂閱 OpenProject 行事曆](docs_url)，並在外部用戶端中檢視最新的工作套件資訊。"
         disabled_text: "管理員未啟用 iCalendar 訂閱。 請聯絡您的管理員以使用此功能。"
-        empty_text_hint: "新增 iCalendar 令牌(Token)，可訂閱各專案裡面的日曆( 需擁有相關權限)。"
-      oauth:
+      oauth_application:
+        active_tokens: "有效令牌"
+        blank_description: "沒有為您設定和啟用第三方應用程式存取。"
+        blank_title: "沒有 OAuth 應用程式令牌"
+        last_used_at: "最後使用於"
         title: "OAuth"
-        text_hint: "OAuth 令牌(Token)允許第三方應用程式與此 OpenProject 連線。"
-        empty_text_hint: "沒有為您設定和啟動第三方應用程式存取權限。請聯絡您的管理員以啟動此功能"
-      rss:
-        title: "RSS訂閱"
-        text_hint: "RSS 令牌(Token)可讓使用者透過外部 RSS 閱讀器了解本專案管理系統中最新異動。"
+        table_title: "OAuth 應用程式令牌"
+        text_hint: "OAuth 應用程式令牌允許第三方應用程式與此 OpenProject 範例連線。"
+      oauth_client:
+        blank_description: "目前還沒有 OAuth 用戶端令牌。"
+        blank_title: "沒有 OAuth 用戶端令牌"
+        failed: "發生錯誤，令牌無法移除。請稍後再試。"
+        integration_type: "整合類型"
+        table_title: "OAuth 用戶端令牌"
+        text_hint: "OAuth 客戶端令牌允許此 OpenProject 實例與外部應用程式連線，例如檔案儲存。"
+        title: "OAuth"
+        remove_token: "您真的要移除此令牌？您需要重新登入 %{integration}。"
+        removed: "成功移除 OAuth 用戶端令牌"
+        unknown_integration: "未知"
+      token/rss:
+        add_button: "RSS 令牌(Token)"
+        blank_description: "目前尚未有 RSS 令牌。您可以使用下面的按鈕建立一個。"
+        blank_title: "沒有 RSS 令牌"
+        title: "RSS"
+        table_title: "RSS 令牌(Token)"
+        text_hint: "RSS 令牌允許使用者透過外部 RSS 閱讀器，瞭解此 OpenProject 實例的最新變更。"
         static_token_name: "RSS 令牌(Token)"
-        disabled_text: "尚未啟用 RSS令牌(Token)功能。 請聯絡您的管理員。"
+        disabled_text: "RSS 令牌並非由管理員啟用。請聯絡您的管理員以使用此功能。"
       storages:
-        title: "檔案儲存"
-        text_hint: "檔案儲存區令牌(Token)，可將本專案管理系統與外部檔案儲存系統連接。"
-        empty_text_hint: "沒有與您帳戶連動的儲存裝置存取權限。"
-        revoke_token: "是否確實要移除此令牌(Token)？您需要再次登錄 %{storage}"
-        removed: "文件存儲區令牌(Token)已成功移除"
-        failed: "出錯了，無法移除令牌(Token)。請稍後再試。"
         unknown_storage: "不明的儲存區"
   notifications:
     reasons:
@@ -2947,6 +3014,7 @@ zh-TW:
   label_always_visible: "總是顯示"
   label_announcement: "公告"
   label_angular: "AngularJS"
+  label_app_modules: "%{app_title} 模組"
   label_api_access_key: "API金鑰"
   label_api_access_key_created_on: "API金鑰在 %{value} 以前被建立"
   label_api_access_key_type: "API"
@@ -3202,6 +3270,7 @@ zh-TW:
   label_journal_diff: "內容對比"
   label_language: "語言"
   label_languages: "語言"
+  label_external_links: "外部連結"
   label_locale: "語言和地區"
   label_jump_to_a_project: "前往一個專案..."
   label_keyword_plural: "關鍵字"
@@ -3379,9 +3448,6 @@ zh-TW:
   label_project_hierarchy: "專案結構"
   label_project_mappings: "專案"
   label_project_new: "新增專案"
-  label_project_initiation_request: "新專案啟動請求"
-  label_project_creation_wizard: "新專案建立精靈"
-  label_project_mandate: "新的專案任務"
   label_project_plural: "專案"
   label_project_list_plural: "專案列表"
   label_project_life_cycle: "專案生命週期"
@@ -3843,7 +3909,7 @@ zh-TW:
   notice_not_authorized: "你沒有存取此頁面的權限"
   notice_not_authorized_archived_project: "你欲存取的專案已被封存"
   notice_requires_enterprise_token: "企業識別碼遺失或不允許存取此頁面。"
-  notice_password_confirmation_failed: "您的密碼不正確。無法繼續。"
+  notice_password_confirmation_failed: "輸入的密碼不正確。"
   notice_principals_found_multiple: "找到 %{number} 條結果。\n Tab鍵以轉到第一條結果。"
   notice_principals_found_single: "有一個結果。 \n Tab鍵轉到該結果。"
   notice_parent_item_not_found: "未找到父項目。"
@@ -4194,6 +4260,9 @@ zh-TW:
   setting_allowed_link_protocols: "允許連結"
   setting_allowed_link_protocols_text_html: >-
     允許在工作套件描述、長文字欄位與留言中，將這些協定顯示為連結。例如：%{tel_code} 或 %{element_code}。每行輸入一個協定。<br/>協定 %{http_code}、%{https_code} 與 %{mailto_code} 一律允許使用。
+  setting_capture_external_links: "擷取外部連結"
+  setting_capture_external_links_text: >
+    啟用後，格式化文字中的所有外部連結都會在離開應用程式前透過警告頁重定向。這有助於保護使用者遠離潛在的惡意外部網站。
   setting_after_first_login_redirect_url: "首次登入重新導向"
   setting_after_first_login_redirect_url_text_html: >
     設定使用者首次登入後的重新導向路徑。如果為空，則會重定向到上線導覽的首頁。 <br/> 範例：<code>/my/page</code>
@@ -4206,11 +4275,17 @@ zh-TW:
   setting_apiv3_cors_origins_text_html: >
     如果啓用了 CORS ，這些是允許訪問 OpenProject API 的源。<br/>請查看<a href="%{origin_link}" target="_blank">有關“源”標題的文檔</a>，瞭解如何指定預期值。
   setting_apiv3_write_readonly_attributes: "對唯讀屬性的寫入存取權限"
-  setting_apiv3_write_readonly_attributes_instructions_html: >
-    若啟用，API 將允許管理員在建立時寫入靜態唯讀屬性，例如 createdAt 與 author。<br/> <strong>警告：</strong> 此設定適用於例如匯入資料的情境，但同時也允許管理員在建立項目時冒充其他使用者。不過，所有建立請求都會記錄實際作者。</br>如需屬性與支援資源的更多資訊，請參閱 %{api_documentation_link}。
+  setting_apiv3_write_readonly_attributes_instructions: >
+    如果啟用，API 將允許管理員在建立時寫入靜態唯讀屬性，例如 createdAt 和 author。
+  setting_apiv3_write_readonly_attributes_warning: >
+    此設定可用於匯入資料，但允許管理員冒充其他使用者建立項目。所有建立請求都會以真正的作者記錄。
+  setting_apiv3_write_readonly_attributes_additional: >
+    有關屬性和支援資源的詳細資訊，請參閱 %{api_documentation_link}。
   setting_apiv3_max_page_size: "API 每頁最大值"
-  setting_apiv3_max_page_instructions_html: >
-    設定 API 回應的最大值。 無法執行單一頁面上傳回更多值的 API 請求。 <br/> <strong>警告：</strong>如果您很確定，才變更該值。 設定為高值將導致效能不彰，數值過低也將造成檢視錯誤。
+  setting_apiv3_max_page_size_instructions: >
+    設定 API 回應的最大頁面大小。將無法執行在單一頁面上回傳更多值的 API 請求。
+  setting_apiv3_max_page_size_warning: >
+    請僅在確定為何需要時變更此值。設定為較高的值會導致顯著的效能影響，而低於每頁選項的值則會在分頁檢視中導致錯誤。
   setting_apiv3_docs: "說明文件"
   setting_apiv3_docs_enabled: "啟用文件頁面"
   setting_apiv3_docs_enabled_instructions_html: >
@@ -4395,7 +4470,7 @@ zh-TW:
       omniauth_direct_login_hint_html: >
         如果此選項處於活動狀態，登入請求將重新導向至已設定的omniauth 提供者。登入下拉選單和登入頁面將被停用。 <br/> <strong>注意：</strong>除非您也停用密碼登錄，否則啟用此選項後，使用者仍可透過造訪 <code>%{internal_path}</code> 登入頁面進行內部登入。
       remapping_existing_users_hint: >
-        若啟用，將允許任何已設定的身份提供者根據使用者的電子郵件登入，即使該使用者之前從未透過該提供者登入過。這在將 OpenProject 實例遷移到新的 SSO 提供者時非常有用，但若使用的提供者並非所有使用者都信任，則不建議啟用此功能。
+        如果啟用，允許任何已設定的身分提供者根據使用者名稱登入現有使用者，即使使用者之前從未透過該提供者登入。這在將 OpenProject 實例遷移至新的 SSO 提供者時可能很有用，但在使用並非所有實例使用者都信任的提供者時，則不建議使用。
     attachments:
       whitelist_text_html: >
         為上傳的文件定義有效文件副檔名和/或 MIME 類型的列表。 <br/> 輸入文件副檔名（例如 <code>%{ext_example}</code>）或 MIME 類型（例如 <code>%{mime_example}</code>）。 <br/> 留空以允許上傳任何文件類型。允許多個值（每個值一行）。
@@ -4501,7 +4576,7 @@ zh-TW:
           project_mandate: "項目任務"
       submission:
         description_template: >
-          **此工作套件是在 %{wizard_name} 工作流程完成後自動建立的。** 一個包含所有提交資訊的 PDF 成品已經生成，並附加到此工作套件中，以供參考和稽核之用。 如果您需要更新或重新執行啟動步驟，您可以隨時使用下方的連結重新開啟該精靈：
+          此工作套件是在完成 %{wizard_name} 工作流程後自動建立的。 系統已產生一份包含所有已提交資訊的 PDF 成品，並已附加至此工作套件，供日後查閱與稽核使用。 若您需要更新內容或重新執行啟動步驟，可隨時透過下方連結重新開啟精靈：
         description: "當使用者提交專案啟動請求時，將會建立一個新的工作套件，並將請求成品以 PDF 檔案的形式附加到其中。下方的設定將定義這個新工作套件的類型、狀態和指派對象。"
         work_package_type: "工作套件類型"
         work_package_type_caption: "應用於儲存已完成成品之工作套件的類型。"
@@ -4669,6 +4744,7 @@ zh-TW:
     注：如果啓用，這會在 <a href="%{information_panel_path}">%{information_panel_label}</a> 管理面板中和首頁上顯示一個包含您的安裝狀態的徽章。徽章僅向管理員顯示。<br/>徽章將根據官方的 OpenProject 版本數據庫檢查您當前的 OpenProject 版本，提醒您是否存在任何更新或已知漏洞。如需詳細瞭解檢查可以提供哪些信息，需要哪些數據來提供可用更新，以及如何禁用此檢查，請訪問<a href="%{more_info_url}">配置文檔</a>。
   text_own_membership_delete_confirmation: "您將要刪除部分或全部權限, 之後可能無法再編輯此專案。\n是否要繼續？"
   text_permanent_delete_confirmation_checkbox_label: "我了解此刪除無法逆轉"
+  text_permanent_remove_confirmation_checkbox_label: "我了解此移除無法逆轉"
   text_plugin_assets_writable: "Plugin 資產目錄可寫"
   text_powered_by: "由 %{link} 提供"
   text_project_identifier_info: "僅允許小寫字母(a-z)、數字、破折號(-) 及底線(_)，且必須以小寫字母開頭。"
@@ -5163,3 +5239,8 @@ zh-TW:
   token:
     hashed_token:
       display_value_placeholder: "***"
+  external_link_warning:
+    title: "離開 OpenProject"
+    warning_message: "您即將離開 OpenProject 並訪問外部網站。請注意，外部網站不受我們控制，可能有不同的隱私和安全政策。"
+    continue_message: "您確定要前往下列外部連結嗎？"
+    continue_button: "繼續到外部網站"

@@ -45,6 +45,7 @@ module Redmine::MenuManager::TopMenu::HelpMenu
                                             pl: 1,
                                             test_selector: "header-help-button",
                                             aria: { label: I18n.t(:label_help) },
+                                            data: { allow_external_link: true },
                                             **item.html_options))
       else
         render_help_dropdown
@@ -112,7 +113,8 @@ module Redmine::MenuManager::TopMenu::HelpMenu
                            label: t(:label_videos),
                            content_arguments: {
                              target: "_blank",
-                             rel: "noopener"
+                             rel: "noopener",
+                             data: { allow_external_link: true }
                            },
                            test_selector: "op-menu--item-action")
       menu_group.with_item(**link_options_for(:shortcuts))
@@ -175,7 +177,8 @@ module Redmine::MenuManager::TopMenu::HelpMenu
       label: label,
       content_arguments: {
         target: "_blank",
-        rel: "noopener"
+        rel: "noopener",
+        data: { allow_external_link: true }
       }
     }
   end

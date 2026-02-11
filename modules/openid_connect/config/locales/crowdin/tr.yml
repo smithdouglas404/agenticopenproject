@@ -14,7 +14,7 @@ tr:
         display_name: Ekran adı
         client_id: İstemci ID
         client_secret: İstemci gizliliği
-        groups_claim: Groups claim
+        groups_claim: Grupları al
         group_regexes: Kalıplar (düzenli ifadeler)
         secret: Gizli Anahtar
         scope: Kapsam
@@ -43,6 +43,10 @@ tr:
               response_is_not_successful: " %{status} ile yanıt verir."
               response_is_not_json: " JSON gövdesini cevap olarak vermez."
               response_misses_required_attributes: " gerekli öznitelikleri döndürmez. Eksik öznitelikler: %{missing_attributes}."
+          invalid_claims_essential: "%{attribute}adresinde bir boolean tanımlamaz."
+          invalid_claims_location: "desteklenmeyen konumları içerir: %{invalid}. Desteklenen konumlar şunlardır: %{supported}."
+          invalid_claims_values: "%{attribute}adresinde bir dizi tanımlamaz."
+          non_object_attribute: "%{attribute}adresinde bir JSON nesnesi tanımlamaz."
   provider:
     delete_warning:
       input_delete_confirmation: Silme işlemini onaylamak için sağlayıcı %{name} ismini girin.
@@ -63,21 +67,21 @@ tr:
         title: Çıkarılan grup adları
         placeholder_none: Şu anda kalıpla eşleşen grup yok.
       match_preview_dialog_component:
-        description: This allows you to test your regular expression pattern against sample data to verify that the group names you want extracted are indeed extracted properly. You can modify your pattern here but the test string and matches themselves will not be saved with the configuration.
-        group_names_label: Test group names
-        group_names_description: Enter one group name per line as it would appear in the OIDC claim, to see how your regular expression patterns affect them.
-        show_button: Test pattern
-        title: Test regular expressions
+        description: Bu, çıkarılmasını istediğiniz grup adlarının gerçekten düzgün bir şekilde çıkarıldığını doğrulamak için düzenli ifade deseninizi örnek verilerle test etmenize olanak tanır. Deseninizi burada değiştirebilirsiniz ancak test dizesi ve eşleşmeler yapılandırmayla birlikte kaydedilmeyecektir.
+        group_names_label: Test grubu adları
+        group_names_description: Düzenli ifade kalıplarınızın bunları nasıl etkilediğini görmek için her satıra OIDC talebinde göründüğü gibi bir grup adı girin.
+        show_button: Test deseni
+        title: Düzenli ifadeleri test et
     instructions:
       endpoint_url: OpenID Connect sağlayıcısı tarafından size verilen uç nokta URL'si
-      group_regexes: One regular expression pattern per line. Please read [the documentation](docs_url) for more information on how to do this.
-      group_regexes_detail: Optionally define patterns using regular expressions to match group names from the groups claim. For example, entering a pattern like <code>^Level1/Level2/([\w/]+)$</code> will extract the group “Groupname/SubGroup” from a response including “Level1/Level2/GroupName/SubGroup”. If no pattern matches, the group is ignored. Leave empty to synchronize all groups using their full group name.
-      group_regexes_testing: "Click on 'Test pattern' to test your regular expression pattern against sample OIDC userinfo."
-      group_sync: Automatically extract and synchronise group membership information from the identity provider.
-      groups_claim: Specify the name of the claim that's expected to indicate the group names that the user is a member of.
+      group_regexes: Satır başına bir düzenli ifade kalıbı. Bunun nasıl yapılacağı hakkında daha fazla bilgi için lütfen [belgeleri](docs_url) okuyun.
+      group_regexes_detail: İsteğe bağlı olarak, gruplar talebinden grup adlarını eşleştirmek için düzenli ifadeler kullanarak kalıplar tanımlayın. Örneğin, <code>^Level1/Level2/([\w/]+)$</code> gibi bir kalıp girilmesi, "Level1/Level2/GroupName/SubGroup" içeren bir yanıttan "Groupname/SubGroup" grubunu çıkaracaktır. Hiçbir kalıp eşleşmezse, grup yok sayılır. Tüm grupları tam grup adlarını kullanarak senkronize etmek için boş bırakın.
+      group_regexes_testing: "Düzenli ifade kalıbınızı örnek OIDC kullanıcı bilgilerine karşı test etmek için 'Kalıbı test et' seçeneğine tıklayın."
+      group_sync: Grup üyeliği bilgilerini kimlik sağlayıcısından otomatik olarak alın ve senkronize edin.
+      groups_claim: Kullanıcının üyesi olduğu grup adlarını belirtmesi beklenen talebin adını belirtin.
       metadata_none: Bu bilgiye sahip değilim
       metadata_url: Bir keşif uç noktası URL'im var
-      oidc_information: These values are needed to configure the OpenID Connect provider.
+      oidc_information: Bu değerler OpenID Connect sağlayıcısını yapılandırmak için gereklidir.
       client_id: OpenID Connect sağlayıcısı tarafından size verilen istemci URL'si
       client_secret: OpenID Connect sağlayıcısı tarafından size verilen gizlilik URL'si
       limit_self_registration: Etkinleştirilirse, kullanıcılar yalnızca sağlayıcı tarafındaki yapılandırma izin veriyorsa bu sağlayıcıyı kullanarak kaydolabilir.
@@ -92,20 +96,20 @@ tr:
       mapping_login: >
         Oturum açma özniteliği için kullanılmak üzere userinfo yanıtında özel bir eşleme sağlayın.
       mapping_email: >
-        Provide a custom mapping in the userinfo response to be used for the email attribute.
+        E-posta özniteliği için kullanılmak üzere userinfo yanıtında özel bir eşleme sağlayın.
       mapping_first_name: >
-        Provide a custom mapping in the userinfo response to be used for the first name.
+        İlk ad için kullanılmak üzere userinfo yanıtında özel bir eşleme sağlayın.
       mapping_last_name: >
-        Provide a custom mapping in the userinfo response to be used for the last name.
+        Soyadı için kullanılmak üzere userinfo yanıtında özel bir eşleme sağlayın.
       mapping_admin: >
-        Provide a custom mapping in the userinfo response to be used for the admin status. It expects a boolean attribute to be returned.
+        Yönetici durumu için kullanılmak üzere userinfo yanıtında özel bir eşleme sağlayın. Bir boolean özniteliğinin döndürülmesini bekler.
     settings:
       metadata_none: Bu bilgiye sahip değilim
       metadata_url: Bir keşif uç noktası URL'im var
       endpoint_url: Uç nokta adresi
     providers:
       label_providers: "Sağlayıcılar"
-      seeded_from_env: "This provider was seeded from the environment configuration. It cannot be edited."
+      seeded_from_env: "Bu sağlayıcı ön tanımlı olarak eklenmiştir. Düzenlenemez."
       google:
         name: Google
       microsoft_entra:
@@ -113,39 +117,39 @@ tr:
       custom:
         name: Özel
       upsell:
-        title: "Single Sign-On (SSO) with OpenID connect"
-        description: Connect OpenProject to an OpenID connect identity provider
+        title: "OpenID connect ile Çoklu Oturum Açma (SSO)"
+        description: OpenProject'i bir SAML kimlik sağlayıcısına bağlama
       label_add_new: Yeni bir OpenID sağlayıcı ekle
       label_edit: OpenID sağlayıcıyı düzenle %{name}
-      label_empty_title: No OpenID providers configured yet.
-      label_empty_description: Add a provider to see them here.
-      label_group_mapping: Group mapping
-      label_metadata: OpenID Connect Discovery Endpoint
+      label_empty_title: Henüz yapılandırılmış OpenID sağlayıcısı yok.
+      label_empty_description: Onları burada görmek için bir sağlayıcı ekleyin.
+      label_group_mapping: Grup eşleme
+      label_metadata: OpenID Connect Keşif Uç Noktası
       label_automatic_configuration: Otomatik yapılandırma
       label_optional_configuration: İsteğe bağlı yapılandırma
       label_advanced_configuration: Gelişmiş yapılandırma
       label_configuration_details: Metaveri
       label_client_details: İstemci detayları
       label_attribute_mapping: Nitelik ilişkilendirme
-      notice_created: A new OpenID provider was successfully created.
-      client_details_description: Configuration details of OpenProject as an OIDC client
+      notice_created: Yeni bir OpenID sağlayıcısı başarıyla oluşturuldu.
+      client_details_description: OpenProject'in bir OIDC istemcisi olarak yapılandırma ayrıntıları
       no_results_table: Henüz bir sağlayıcı tanımlanmadı.
       plural: OpenID sağlayıcıları
       singular: OpenID sağlayıcı
       section_texts:
-        group_mapping: Map group names provided by the identity provider to groups in OpenProject.
-        metadata: Pre-fill configuration using an OpenID Connect discovery endpoint URL
-        metadata_form_banner: Editing the discovery endpoint may override existing pre-filled metadata values.
-        metadata_form_title: OpenID Connect Discovery endpoint
-        metadata_form_description: If your identity provider has a discovery endpoint URL. Use it below to pre-fill configuration.
-        configuration_metadata: The information has been pre-filled using the supplied discovery endpoint. In most cases, they do not require editing.
-        configuration: Configuration details of the OpenID Connect provider
+        group_mapping: Kimlik sağlayıcı tarafından sağlanan grup adlarını OpenProject'teki gruplarla eşleştirin.
+        metadata: OpenID Connect keşif uç noktası URL'si kullanarak yapılandırmayı önceden doldurma
+        metadata_form_banner: Keşif uç noktasının düzenlenmesi, önceden doldurulmuş mevcut meta veri değerlerini geçersiz kılabilir.
+        metadata_form_title: OpenID Connect Keşif uç noktası
+        metadata_form_description: Kimlik sağlayıcınızın bir keşif uç noktası URL'si varsa. Yapılandırmayı önceden doldurmak için aşağıda kullanın.
+        configuration_metadata: Bu bilgiler, girilen meta verilerden otomatik olarak alınarak doldurulmuştur ve genellikle manuel düzenleme gerektirmez.
+        configuration: OpenID Connect sağlayıcısının yapılandırma ayrıntıları
         display_name: Görünen isim kullanıcılara görünür.
-        attribute_mapping: Configure the mapping of attributes between OpenProject and the OpenID Connect provider.
-        claims: Request additional claims for the ID token or userinfo response.
+        attribute_mapping: OpenProject ve OpenID Connect sağlayıcısı arasındaki özniteliklerin eşlemesini yapılandırın.
+        claims: ID token veya userinfo yanıtı için ek talepler isteyin.
       side_panel:
         information_component:
-          backchannel_logout_url: Backchannel logout URL
+          backchannel_logout_url: Arka kanal oturum kapatma URL'si
     setting_instructions:
       limit_self_registration: >
         Etkinleştirilirse, kullanıcılar bu sağlayıcıyı kullanarak yalnızca kendi kendine kayıt ayarı buna izin veriyorsa kaydolabilir.

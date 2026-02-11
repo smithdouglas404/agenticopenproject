@@ -216,10 +216,10 @@ id:
         change_button: "Save and reschedule"
         change_title: "Ubah hari kerja"
         removed_title: "You will remove the following days from the non-working days list:"
-        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
+        change_description: "Perubahan hari dalam seminggu yang dianggap sebagai hari kerja atau hari libur dapat memengaruhi tanggal mulai dan selesai dari semua paket kerja dan siklus hidup dalam semua proyek pada kasus ini."
         warning: >
-          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
-          Are you sure you want to continue?
+          Perubahan tersebut mungkin memerlukan waktu untuk berlaku. Anda akan diberitahu ketika semua paket kerja yang relevan dan siklus hidup proyek telah diperbarui.
+          Apakah Anda yakin ingin melanjutkan?
       work_packages_settings:
         warning_progress_calculation_mode_change_from_status_to_field_html: >-
           Changing progress calculation mode from status-based to work-based will make the <i>% Complete</i> field freely editable. If you optionally enter values for <i>Work</i> or <i>Remaining work</i>, they will also be linked to <i>% Complete</i>. Changing <i>Remaining work</i> can then update <i>% Complete</i>.
@@ -558,11 +558,11 @@ id:
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "Overdue"
-        overdue_since: "for %{difference_in_days}."
-        property_today: "is today."
-        property_is: "is in %{difference_in_days}."
-        property_was: "was %{difference_in_days} ago."
-        property_is_deleted: "is deleted."
+        overdue_since: "untuk %{difference_in_days}."
+        property_today: "hari ini."
+        property_is: "dalam %{difference_in_days}."
+        property_was: "%{difference_in_days} hari yang lalu."
+        property_is_deleted: "telah dihapus."
       center:
         label_actor_and: "dan"
         and_more_users:
@@ -632,14 +632,11 @@ id:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Anda harus mengisi kata sandi akun untuk mengkonfirmasi perubahan."
-      title: "Konfirmasi kata sandi anda untuk melanjutkan"
     pagination:
       no_other_page: "You are on the only page."
       pages_skipped: "Pages skipped."
-      page_navigation: "Pagination navigation"
-      per_page_navigation: 'Items per page selection'
+      page_navigation: "Navigasi halaman"
+      per_page_navigation: 'Pilihan jumlah item per halaman'
       pages:
         page_number: Page %{number}
         show_per_page: Show %{number} per page
@@ -766,7 +763,7 @@ id:
       update_relation: "Klik untuk mengganti jenis hubungan"
       show_relations: "Show relations"
       add_predecessor: "Tambahkan pendahulu"
-      add_successor: "Add successor"
+      add_successor: "Tambahkan penerus"
       remove: "Remove relation"
       save: "Save relation"
       abort: "Abort"
@@ -824,7 +821,7 @@ id:
       bulk_actions:
         edit: "Edit massal"
         delete: "Penghapusan massal"
-        duplicate: "Bulk duplicate"
+        duplicate: "Duplikat massal"
         move: "Bulk change of project"
       button_clear: "Clear"
       comment_added: "The comment was successfully added."
@@ -870,7 +867,7 @@ id:
         header_with_parent: "New %{type} (Child of %{parent_type} #%{id})"
         button: "Buat baru"
       duplicate:
-        title: "Duplicate work package"
+        title: "Duplikat paket kerja"
       hierarchy:
         show: "Menampilkan modus hiraki"
         hide: "Sembunyikan modus hirarki"
@@ -981,7 +978,7 @@ id:
         is_switched_from_manual_to_automatic: "The dates of this work package may need to be recalculated after switching from manual to automatic scheduling due to relationships with other work packages."
       sharing:
         title: "Share work package"
-        show_all_users: "Show all users with whom the work package has been shared with"
+        show_all_users: "Tampilkan semua pengguna yang telah dibagikan paket kerja ini"
       table:
         configure_button: "Configure work package table"
         summary: "Table with rows of work package and columns of work package attributes."
@@ -1156,7 +1153,7 @@ id:
       selected_filter:
         all: "Semua proyek"
         selected: "Only selected"
-      search_placeholder: "Search projects..."
+      search_placeholder: "Cari proyek..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
@@ -1213,7 +1210,7 @@ id:
         close: "Close modal"
     open_project_storage_modal:
       waiting_title:
-        timeout: "Timeout"
+        timeout: "Waktu habis"
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."

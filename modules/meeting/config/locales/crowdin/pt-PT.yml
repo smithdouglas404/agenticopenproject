@@ -66,7 +66,9 @@ pt-PT:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} não é um participante válido."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Há uma reunião aberta na série que não é abrangida pelo novo calendário. Ajuste o calendário para incluir todas as reuniões existentes."
@@ -231,13 +233,23 @@ pt-PT:
         header: "Cancelada: Reunião \"%{title}\""
         header_occurrence: "Cancelada: ocorrência de reunião \"%{title}\""
         header_series: "Cancelada: série de reuniões \"%{title}\""
-        summary_occurrence: "Uma ocorrência de \"%{title}\" foi cancelada por %{actor}."
-        summary_series: "A série de reuniões \"%{title}\" foi cancelada por %{actor}."
-        summary: "\"%{title}\" foi cancelada por %{actor}."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Data/hora programada"
+      participant_added:
+        header: "Reunião '%{title}' - Participante adicionado"
+        header_series: "Série de reuniões '%{title}' - Participante adicionado"
+        summary: "%{actor} adicionou %{participant} à reunião '%{title}'"
+        summary_series: "%{actor} adicionou %{participant} à série de reuniões '%{title}'"
+      participant_removed:
+        header: "Reunião '%{title}' - Participante removido"
+        header_series: "Série de reuniões '%{title}' - Participante removido"
+        summary: "%{actor} removeu %{participant} da reunião '%{title}'"
+        summary_series: "%{actor} removeu %{participant} da série de reuniões '%{title}'"
       ended:
         header_series: "Terminada: Série de reuniões \"%{title}\""
-        summary_series: "A série de reuniões \"%{title}\" foi terminada por %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "A reunião '%{title}' foi atualizada"
         summary: "A reunião '%{title}' foi atualizada por %{actor}"
@@ -269,8 +281,8 @@ pt-PT:
           Qualquer informação da reunião que não esteja no modelo será perdida. Pretende continuar?
         confirm_button: "Cancelar ocorrência"
     blankslate:
-      title: "Não há reuniões a apresentar"
-      desc: "Não existem reuniões que cumpram os critérios do filtro ativo."
+      title: "Não há reuniões para apresentar"
+      desc: "Pode criar uma nova reunião ou alterar os critérios de filtragem"
     label_export_pdf: "Exportar PDF"
     export:
       your_meeting_export: "A reunião está a ser exportada"
@@ -363,11 +375,21 @@ pt-PT:
       next: "Seguinte"
       no_items: "Sem elementos na agenda"
       no_items_flash: "Não há elementos na agenda para apresentar."
+    ical_response:
+      update_failed: "Não foi possível atualizar o estado de participação."
+      meeting_not_found: "Reunião não encontrada com o UID fornecido."
   meeting_section:
     untitled_title: "Secção sem título"
     delete_confirmation: "A eliminação da secção também irá eliminar os seus pontos da ordem de trabalhos. Tem a certeza de que pretende fazê-lo?"
     placeholder_title: "Nova secção"
     empty_text: "Arraste itens para aqui ou crie um novo"
+  meeting_participant:
+    participation_status:
+      needs_action: "Nenhuma resposta"
+      accepted: "Aceite"
+      declined: "Recusado"
+      tentative: "Talvez"
+      unknown: "Desconhecido"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Diferença de fuso horário"
@@ -509,6 +531,9 @@ pt-PT:
   label_agenda_item_move_to_bottom: "Mover para o último"
   label_agenda_item_move_up: "Subir"
   label_agenda_item_move_down: "Descer"
+  label_agenda_item_duplicate: "Duplicar"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Adicionar notas"
   label_agenda_item_add_outcome: "Adicionar resultado"
   label_agenda_item_work_package_add: "Adicionar pacote de trabalho"
@@ -519,6 +544,9 @@ pt-PT:
   label_agenda_outcome_actions: "Ações dos resultados da agenda"
   label_agenda_outcome_edit: "Editar resultado"
   label_agenda_outcome_delete: "Remover resultado"
+  label_added_as_outcome: "Adicionado como resultado"
+  label_write_outcome: "Escrever o resultado"
+  label_existing_work_package: "Pacote de trabalho existente"
   text_outcome_not_editable_anymore: "Este resultado já não pode ser editado."
   text_outcome_cannot_be_added: "Já não é possível adicionar um resultado."
   label_backlog_clear: "Limpar backlog"
@@ -582,19 +610,25 @@ pt-PT:
   text_agenda_item_not_editable_anymore: "Este item da agenda não pode ser mais editado."
   text_agenda_item_move_next_meeting: "Este ponto será transferido para a próxima reunião em %{date} em %{time}."
   text_agenda_item_moved_to_next_meeting: "Ponto da ordem de trabalhos transferido para a reunião seguinte, a %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Tem a certeza de que quer acrescentar uma cópia deste ponto da ordem de trabalhos à próxima reunião, em %{date} em %{time}? Os resultados não serão duplicados."
+  text_agenda_item_duplicated_in_next_meeting: "Ponto da ordem de trabalhos duplicado na próxima reunião, em %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Este pacote de trabalho ainda não está agendado em uma reunião futura."
-  text_agenda_item_move_next_meeting_cancelled: "Não é possível mover para a próxima reunião uma vez que foi cancelada."
+  text_agenda_item_no_available_occurrence: "Todas as ocorrências futuras foram canceladas."
+  text_agenda_item_dialog_skipping_cancelled_one: "Nota: A ignorar a ocorrência cancelada em %{date}."
+  text_agenda_item_dialog_skipping_cancelled_many: "Nota: A ignorar %{count} ocorrências canceladas."
   text_work_package_add_to_meeting_hint: 'Use o botão "Adicionar à reunião" para adicionar este pacote de trabalho a uma reunião futura.'
-  text_work_package_has_no_past_meeting_agenda_items: "Este pacote de trabalho não foi mencionado numa reunião anterior."
+  text_work_package_has_no_past_meeting_agenda_items: "Este pacote de trabalho não foi acrescentado como ponto da ordem de trabalhos numa reunião anterior."
   text_email_updates_muted: "As atualizações do calendário por e-mail estão silenciadas. Os participantes não receberão convites atualizados por e-mail quando fizer alterações."
   text_email_updates_enabled: "As atualizações do calendário por e-mail estão ativadas. Todos os participantes receberão convites atualizados por e-mail quando fizer alterações."
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "Pode criar uma com o botão abaixo."
+        blank_title: "Nenhum token de reunião iCalendar"
         title: "iCalendar para reuniões"
+        table_title: "Tokens de reunião iCalendar"
         text_hint: "Os tokens do iCalendar permitem aos utilizadores subscrever os calendários do OpenProject, e ver informações atualizadas sobre pacotes de trabalho de clientes externos."
         disabled_text: "As subscrições de reuniões do iCalendar não estão ativadas pelo administrador. Contacte o seu administrador para utilizar esta funcionalidade."
-        empty_text_hint: 'Para adicionar um token de reunião do iCalendar, aceda à <a href="%{path}">secção de reuniões</a> e subscreva a partir daí.'
         add_button: "Subscrever o calendário"
   my:
     access_token:
@@ -609,7 +643,6 @@ pt-PT:
         token/ical_meeting:
           title: "Foi gerado um token de subscrição de reunião iCal"
           body: "Trate o seguinte URL como se fosse uma palavra-passe. Qualquer pessoa que tenha acesso a ele pode ver todas as suas reuniões."
-          warning: "Esta é a única vez que verá este token. Não se esqueça de o copiar agora."
       revocation:
         token/ical_meeting:
           notice_success: "A subscrição da reunião iCalendar foi revogada com êxito."

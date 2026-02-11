@@ -87,7 +87,7 @@ services:
     networks:
       - network
     environment:
-      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "openproject-assets.local"
+      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "openproject-assets.${OPENPROJECT_DOCKER_DEV_TLD}"
     ports:
       - "${FE_PORT:-4200}:4200"
 
@@ -166,7 +166,7 @@ services:
       SELENIUM_GRID_URL: http://selenium-hub:4444/wd/hub
       CHROME_WS_URL: ws://cuprite-chrome:3000/chrome
       CAPYBARA_SERVER_PORT: 3000
-      CAPYBARA_DYNAMIC_BIND_IP: 1
+      CAPYBARA_BIND_ADDRESS: "0.0.0.0"
       CAPYBARA_APP_HOSTNAME: backend-test
       OPENPROJECT_EMAIL__DELIVERY__METHOD: test
       OPENPROJECT_CLI_PROXY: http://frontend-test:4200

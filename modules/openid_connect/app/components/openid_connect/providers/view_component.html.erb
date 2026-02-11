@@ -240,7 +240,7 @@
                   provider,
                   form_class: OpenIDConnect::Providers::AttributeMappingForm,
                   edit_state:,
-                  next_edit_state: OpenProject::FeatureDecisions.oidc_group_sync_active? ? :group_mapping : :claims,
+                  next_edit_state: :group_mapping,
                   new_mode:,
                   heading: nil
                 )
@@ -260,30 +260,28 @@
             end
           end
 
-          if OpenProject::FeatureDecisions.oidc_group_sync_active?
-            component.with_row(scheme: :default) do
-              if edit_state == :group_mapping
-                render(
-                  OpenIDConnect::Providers::Sections::FormComponent.new(
-                    provider,
-                    form_class: OpenIDConnect::Providers::GroupMappingForm,
-                    edit_state:,
-                    next_edit_state: :claims,
-                    new_mode:,
-                    heading: nil
-                  )
+          component.with_row(scheme: :default) do
+            if edit_state == :group_mapping
+              render(
+                OpenIDConnect::Providers::Sections::FormComponent.new(
+                  provider,
+                  form_class: OpenIDConnect::Providers::GroupMappingForm,
+                  edit_state:,
+                  next_edit_state: :claims,
+                  new_mode:,
+                  heading: nil
                 )
-              else
-                render(
-                  OpenIDConnect::Providers::Sections::ShowComponent.new(
-                    provider,
-                    target_state: :group_mapping,
-                    view_mode:,
-                    heading: t("openid_connect.providers.label_group_mapping"),
-                    description: t("openid_connect.providers.section_texts.group_mapping")
-                  )
+              )
+            else
+              render(
+                OpenIDConnect::Providers::Sections::ShowComponent.new(
+                  provider,
+                  target_state: :group_mapping,
+                  view_mode:,
+                  heading: t("openid_connect.providers.label_group_mapping"),
+                  description: t("openid_connect.providers.section_texts.group_mapping")
                 )
-              end
+              )
             end
           end
 

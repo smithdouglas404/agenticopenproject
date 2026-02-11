@@ -251,7 +251,8 @@ RSpec.describe "custom field inplace editor", :js do
       field.update "http://example.com"
 
       field.expect_state_text "http://example.com"
-      expect(field.display_element).to have_css('a[href="http://example.com"]')
+      href = external_redirect_path(url: "http://example.com/")
+      expect(field.display_element).to have_link("http://example.com", href:)
 
       field.update "bogus", expect_failure: true
 
@@ -261,7 +262,8 @@ RSpec.describe "custom field inplace editor", :js do
       field.save!
 
       field.expect_state_text "http://community.openproject.org"
-      expect(field.display_element).to have_css('a[href="http://community.openproject.org"]')
+      href = external_redirect_path(url: "http://community.openproject.org/")
+      expect(field.display_element).to have_link("http://community.openproject.org", href:)
     end
   end
 end

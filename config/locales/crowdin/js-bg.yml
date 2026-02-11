@@ -633,9 +633,6 @@ bg:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "You need to enter your account password to confirm this change."
-      title: "Confirm your password to continue"
     pagination:
       no_other_page: "You are on the only page."
       pages_skipped: "Pages skipped."

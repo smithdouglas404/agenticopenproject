@@ -74,8 +74,15 @@ See COPYRIGHT and LICENSE files for more details.
                   </span>
                   <%=
                     check_all_links "workflow_form_#{name}" do |links|
-                      links.with_check_all_button.with_tooltip(text: t(".matrix_check_all_label"))
-                      links.with_uncheck_all_button.with_tooltip(text: t(".matrix_uncheck_all_label"))
+                      links.with_check_all_button do |button|
+                        button.with_tooltip(text: t(".matrix_check_all_label"))
+                        t(:button_check_all)
+                      end
+
+                      links.with_uncheck_all_button do |button|
+                        button.with_tooltip(text: t(".matrix_uncheck_all_label"))
+                        t(:button_uncheck_all)
+                      end
                     end
                   %>
                 <% end %>

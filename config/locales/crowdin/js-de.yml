@@ -425,7 +425,7 @@ de:
     label_remove_row: "Zeile entfernen"
     label_report: "Auswertung"
     label_repository_plural: "Projektarchive"
-    label_resize_project_menu: "Resize project menu"
+    label_resize_project_menu: "Größe des Projektmenüs ändern"
     label_save_as: "Speichern unter"
     label_search_columns: "Spalte suchen"
     label_select_watcher: "Beobachter auswählen ..."
@@ -632,9 +632,6 @@ de:
           add: "Einstellung für Projekt hinzufügen"
           already_selected: "Dieses Projekt ist bereits ausgewählt"
           remove: "Projektspezifische Einstellungen entfernen"
-    password_confirmation:
-      field_description: "Sie müssen Ihr Kennwort eingeben, um diese Änderungen zu speichern."
-      title: "Geben Sie Ihr Kennwort ein, um fortzufahren"
     pagination:
       no_other_page: "Sie befinden sich auf der einzigen Seite."
       pages_skipped: "Seiten übersprungen."

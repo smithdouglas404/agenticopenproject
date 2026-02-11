@@ -32,7 +32,7 @@ module WorkPackages
   class WorkflowJob < ApplicationJob
     def perform(journal, changes)
       work_package = journal.journable
-      process_artifact_changes(work_package, changes)
+      process_artifact_changes(work_package, changes) unless journal.initial?
     end
 
     private

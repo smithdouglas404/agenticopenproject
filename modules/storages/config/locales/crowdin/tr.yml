@@ -96,12 +96,6 @@ tr:
       manual: Mevcut klasör elle yönetilir
     remove_project:
       deletion_failure_flash: Proje depodan kaldırılamadı. %{error}
-      dialog:
-        automatically_managed_appendix: Also, in this case this storage has an automatically managed project folder, this and its files will be deleted forever.
-        confirmation_text: Lütfen, bu dosya depolama alanını anladığınızı ve bu projeden kaldırmak istediğinizi onaylayın
-        heading_text: Projeyi %{storage} deposundan kaldır
-        text: Bu eylem geri döndürülemez ve bu projenin iş paketlerinden bu deponun dosya ve klasörlerine olan tüm bağlantıları kaldıracaktır.
-        title: Projeyi depodan kaldırın
       label: Projeyi kaldır
   services:
     attributes:
@@ -110,20 +104,20 @@ tr:
         create_folder: 'Yönetilen Proje Klasörü Oluşturma:'
         ensure_root_folder_permissions: 'Temel Klasör İzinlerini Ayarlayın:'
         hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
+        remote_folders: 'Read contents of the team folder:'
         remove_user_from_group: 'Kullanıcıyı Gruptan Kaldır:'
         rename_project_folder: 'Yönetilen proje klasörü isimlendirmesi:'
       one_drive_sync_service:
         create_folder: 'Yönetilen Proje Klasörü Oluşturma:'
         ensure_root_folder_permissions: 'Temel Klasör İzinlerini Ayarlayın:'
         hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Yönetilen proje klasörü isimlendirmesi:'
       sharepoint_sync_service:
         create_folder: 'Yönetilen Proje Klasörü Oluşturma:'
         ensure_root_folder_permissions: 'Temel Klasör İzinlerini Ayarlayın:'
         hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Yönetilen proje klasörü isimlendirmesi:'
     errors:
       messages:
@@ -146,7 +140,7 @@ tr:
               conflict: The folder %{folder_name} already exists on %{parent_location}.
               not_found: "%{parent_location} bulunamadı."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} bulunamadı. Lütfen Nextcloud Grup Klasörü kurulumunuzu kontrol edin."
+              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
               permission_not_set: '%{group_folder} üzerinde izinler ayarlanamadı.'
             hide_inactive_folders:
               permission_not_set: '%{path} üzerinde izinler ayarlanamadı.'
@@ -166,7 +160,7 @@ tr:
           group_does_not_exist: "%{group} mevcut değil. Nextcloud yapılandırmanızı kontrol edin."
           insufficient_privileges: OpenProject does not have enough privileges to add %{user} to %{group}. Check you group settings in Nextcloud.
           not_allowed: Nextcloud isteği engeller.
-          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
+          not_found: OpenProject Nextcloud Depolama Sağlayıcısında dosyayı bulamadı. Lütfen silinip silinmediğini kontrol edin.
           unauthorized: OpenProject Nextcloud ile senkronize edilemedi. Lütfen depolama alanınızı ve Nextcloud yapılandırmanızı kontrol edin.
           user_does_not_exist: "%{user} does not exist in Nextcloud."
         one_drive_sync_service:
@@ -227,15 +221,16 @@ tr:
     confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials at the storage provider and all remote users will have to authorize against OpenProject again. Are you sure you want to proceed?
     confirm_replace_oauth_client: This action will reset the current OAuth credentials. After confirming you will have to enter new credentials from the storage provider and all users will have to authorize against %{provider_type} again. Are you sure you want to proceed?
     delete_warning:
-      project_storage_delete_result_1: Remove all links from work packages of this project to files and folders of that storage.
-      project_storage_delete_result_2: In case this storage has an automatically managed project folder, this and its files will be deleted forever.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
-      storage_delete_result_1: Remove all storage setups for all projects using this storage.
-      storage_delete_result_2: Remove all links from work packages of all projects to files and folders of that storage.
-      storage_delete_result_3: In case this storage has automatically managed project folders, those and their contained files will be deleted forever.
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
-        group_folders_app: Grup Klasörleri
+        group_folders_app: Team Folders
         integration_app: OpenProject Bütünleşmesi
     enabled_in_projects:
       setup_incomplete_description: This storage has an incomplete setup. Please, complete the setup before enabling it in multiple projects.
@@ -243,23 +238,23 @@ tr:
     error_invalid_provider_type: Lütfen geçerli bir depolama sağlayıcısı seçin.
     file_storage_view:
       access_management:
-        automatic_management: Enable automatically-managed access and folders
-        automatic_management_description: Each project will be able to decide, when a storage is added to it, whether they want the automatically-managed or the manual approach to folder and access management.
-        description: OpenProject can automatically create and manage project folders when a file storage is added to a project. This can result in a more organized folder structure and straightforward access management that guarantees access to all relevant users.
-        manual_management: Only allow manually-managed access and folders
-        manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+        automatic_management: Otomatik yönetilen giriş ve klasörleri aç.
+        automatic_management_description: Her proje, kendisine bir depolama alanı eklendiğinde, klasör ve erişim yönetimi için otomatik olarak yönetilen yaklaşımı mı yoksa manuel yaklaşımı mı kullanacağına karar verebilecektir.
+        description: OpenProject, bir projeye dosya depolama alanı eklendiğinde proje klasörlerini otomatik olarak oluşturup yönetebilir. Bu sayede daha düzenli bir klasör yapısı elde edilir ve ilgili tüm kullanıcılar için erişimin garanti altına alındığı, daha sade bir erişim yönetimi sağlanır.
+        manual_management: Yalnızca manuel olarak yönetilen erişim ve klasörlere izin verin
+        manual_management_description: Bu depolama alanını kullanan projelere otomatik olarak yönetilen yaklaşım seçeneği sunulmaz. Klasörler ve erişim izinleri manuel olarak yönetilmelidir.
         setup_incomplete: Select the type of management of user access and folder creation.
-        subtitle: Folder and access management
+        subtitle: Klasör ve erişim yönetimi
       access_management_section: Erişim ve proje klasörleri
       automatically_managed_folders: Otomatik olarak yönetilen klasörler
       general_information: Genel bilgi
       oauth_configuration: OAuth yapılandırması
       one_drive:
         access_management:
-          automatic_management: Enable automatically-managed access and folders
-          automatic_management_description: Each project using this file storage will necessarily have to use the automatically-managed approach to folder and access management. They cannot do it manually.
-          manual_management: Only allow manually-managed access and folders
-          manual_management_description: Projects using this storage will not be offered the option of the automatically-managed approach. Folders and access must be managed manually.
+          automatic_management: Otomatik olarak yönetilen erişimi ve klasörleri etkinleştirin
+          automatic_management_description: Bu dosya depolama alanını kullanan her proje, klasör ve erişim yönetimi için zorunlu olarak otomatik olarak yönetilen yaklaşımı kullanmak zorundadır. Manuel yönetim mümkün değildir.
+          manual_management: Yalnızca manuel olarak yönetilen erişim ve klasörlere izin verin
+          manual_management_description: Bu depolama alanını kullanan projelere otomatik olarak yönetilen yaklaşım seçeneği sunulmaz. Klasörler ve erişim izinleri manuel olarak yönetilmelidir.
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Proje klasörleri
@@ -282,11 +277,11 @@ tr:
           client_folder_creation: Otomatik klasör oluşturma
           client_folder_removal: Otomatik klasör silme
           drive_contents: Drive content
-          files_request: Grup klasörü dosyalarını getirme
-          group_folder_app: 'Bağımlılık: Grup Klasörleri'
-          group_folder_contents: Group folder content
-          group_folder_presence: Grup klasörü mevcut
+          files_request: Fetching team folder files
           header: Otomatik olarak yönetilen proje klasörleri
+          team_folder_app: 'Dependency: Team Folders'
+          team_folder_contents: Team folder content
+          team_folder_presence: Team folder exists
           userless_access: Server-side request authentication
         authentication:
           existing_token: Kullanıcı anahtarı
@@ -314,7 +309,7 @@ tr:
         failures:
           one: "%{count} kontrol başarısız"
           other: "%{count} kontrol başarısız"
-        success: All checks passed
+        success: Tüm kontroller geçti
         warnings:
           one: "%{count} kontrol bir uyarı döndürdü"
           other: "%{count} kontrol bir uyarı döndürdü"
@@ -323,12 +318,12 @@ tr:
         client_secret_invalid: Yapılandırılan OAuth 2 istemci sırrı geçersiz. Lütfen yapılandırmayı kontrol edin.
         nc_dependency_missing: 'Dosya depolama alanında gerekli bir bağımlılık eksik. Lütfen aşağıdaki bağımlılığı ekleyin: %{dependency}.'
         nc_dependency_version_mismatch: '%{dependency} uygulama sürümü desteklenmiyor. Lütfen Nextcloud sunucunuzu güncelleyin.'
-        nc_group_folder_not_found: The group folder could not be found.
         nc_host_not_found: No Nextcloud server found at the configured host url. Please check the configuration.
         nc_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
         nc_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         nc_oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as the user did not yet link their Nextcloud account.
-        nc_unexpected_content: Unexpected content found in the managed group folder.
+        nc_team_folder_not_found: The team folder could not be found.
+        nc_unexpected_content: Unexpected content found in the managed team folder.
         nc_userless_access_denied: The configured app password is invalid.
         not_configured: The connection could not be validated. Please finish configuration first.
         od_client_cant_delete_folder: The client is having trouble deleting folders. Please check the setup documentation for your storage.
@@ -339,16 +334,16 @@ tr:
         od_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         od_oauth_token_missing: OpenProject cannot test the user level communication with OneDrive as the user did not yet link their Microsoft account.
         od_tenant_id_wrong: The configured directory (tenant) id is invalid. Please check the configuration.
-        od_test_folder_exists: The folder %{folder_name} needed for testing already exists. Please delete it and try again.
+        od_test_folder_exists: Test amacıyla gereken %{folder_name} klasörü zaten var. Lütfen bu klasörü silin ve yeniden deneyin.
         od_unexpected_content: Sürücüde beklenmeyen içerik bulundu.
         offline_access_scope_missing: It is recommended to configure the OpenID Connect provider to request the offline_access scope. The integration may still work anyways, but make sure that refresh tokens do not expire.
         oidc_cant_refresh_token: There was an error while trying to check your access to the storage. Please check the server logs for further information.
         oidc_non_oidc_user: The current user, while provisioned, wasn't provisioned by an OpenID Connect (OIDC) Identity Provider. Please re-run the check with an OIDC provisioned user.
         oidc_non_provisioned_user: The current user isn't provided by an OpenID Connect Identity Provider. Please re-run the check with a provided user.
         oidc_provider_cant_exchange: The OpenID Connect provider does not seem to support token exchange, but token exchange was configured for the storage.
-        oidc_token_acquisition_failed: Your OpenID Connect setup doesn't provide the necessary audience, nor does it provide token exchange capabilities. Please check out our documentation for more information.
-        oidc_token_exchange_failed: There seems to be a problem with the Token Exchange setup on your OpenID Connect Provider. Please check its configuration and try again.
-        oidc_token_refresh_failed: There was an error while trying to check your access to the storage. Please check the server logs for further information.
+        oidc_token_acquisition_failed: OpenID Connect yapılandırmanız gerekli audience değerini ve token değişimi desteğini sağlamıyor. Ayrıntılar için dokümantasyona göz atın.
+        oidc_token_exchange_failed: OpenID Connect sağlayıcınızdaki Token Exchange yapılandırmasında bir sorun var gibi görünüyor. Lütfen yapılandırmayı kontrol edip tekrar deneyin.
+        oidc_token_refresh_failed: Depolama alanına erişiminiz kontrol edilirken bir hata oluştu. Daha fazla bilgi için lütfen sunucu günlüklerini kontrol edin.
         sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
         sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
         sp_client_secret_missing: The configured OAuth 2 client secret is missing for SharePoint. Please check the configuration.
@@ -468,7 +463,7 @@ tr:
     member_connection_status:
       connected: Bağlandı
       connected_no_permissions: Kullanıcı rolü depolama yetkisine sahip değil
-      not_connectable: Not connectable. The storage requires login through an SSO provider, but the user is not logging in through SSO.
+      not_connectable: Bağlanılamıyor. Depolama alanı SSO ile oturum açılmasını gerektiriyor; kullanıcı SSO üzerinden giriş yapmamış.
       not_connected: Bağlanmadı. Kullanıcı depolamaya %{link} adresini takip ederek bağlanmalı.
       not_connected_sso: Henüz bağlanmadı, SSO dosyalara baktıktan sonra bunları otomatik olarak bağlamalıdır.
     members_no_results: Gösterilecek üye yok.
@@ -503,7 +498,7 @@ tr:
         title: Proje klasörü üzerindeki izinlerinizi ayarlıyoruz.
     page_titles:
       file_storages:
-        delete: Dosya depolama alanını sil
+        delete: Delete file storage?
         subtitle: İş paketlerindeki dosyaları yüklemek, bağlamak ve yönetmek için harici bir dosya depolama alanı ekleyin.
       managed_project_folders:
         subtitle: |-
@@ -518,6 +513,8 @@ tr:
       project_storage_members:
         subtitle: Check the connection status for the storage %{storage_name_link} of all project members.
         title: Üyü bağlantı durumu
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: 'Harici depolardaki dosya izinleri yalnızca otomatik olarak yönetilen proje klasörlerindeki klasörlere ve dosyalara uygulanır. Tüm dosya izinlerinin tüm depolama sağlayıcıları tarafından desteklenmediğini unutmayın. Daha fazla bilgi için lütfen <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>dosya depolama izinleriyle</a> ilgili belgeleri kontrol edin.'
     provider_types:
       label: Sağlayıcı türü
@@ -547,7 +544,7 @@ tr:
         label: Use access token obtained during user log in
       manual:
         helptext: OpenProject will exchange a token with the identity provider for the given audience.
-        label: Manually specify audience for which to exchange access token (Recommended)
+        label: Access token değişimi için audience değerini manuel olarak belirleyin (Önerilir)
     storage_list_blank_slate:
       description: Onları burada görmek için bir depolama ekleyin.
       heading: Henüz hiç depolamanız yok.

@@ -24,7 +24,7 @@ tr:
   plugin_openproject_meeting:
     name: "OpenProject Toplantı"
     description: >-
-      Bu modül OpenProject'e proje toplantılarını destekleyen fonksiyonlar ekler. Toplantılar, aynı projeden toplantıya katılacak davetliler seçilerek planlanabilir. Bir gündem oluşturulabilir ve davetlilere gönderilebilir. Toplantıdan sonra katılımcılar seçilebilir ve gündeme göre tutanaklar oluşturulabilir. Son olarak, tutanaklar tüm katılımcılara ve davetlilere gönderilebilir.
+      Bu modül, OpenProject’te proje toplantılarının yönetilmesini sağlar. Aynı projedeki kullanıcılar toplantıya davet edilerek planlama yapılabilir, gündem hazırlanıp paylaşılabilir, toplantı sonrası tutanak oluşturulabilir ve tüm katılımcılara gönderilebilir.
   activerecord:
     attributes:
       meeting:
@@ -62,11 +62,13 @@ tr:
       meeting_participant:
         invited: "Davet edilen"
         attended: "Katıldığım"
-        participation_status: "Participation status"
+        participation_status: "Katılımcı durumu"
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} geçerli bir katılımcı değildir."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Seride yeni zamanlamaya uymayan ve açık bir toplantı bulunmakta. Mevcut toplantıları kapsaması için zamanlayın."
@@ -115,7 +117,7 @@ tr:
   label_meeting_new_dynamic: "Tek seferlik yeni toplantı"
   label_meeting_new_recurring: "Yeni yinelenen toplantı"
   label_meeting_create: "Toplantı oluştur"
-  label_meeting_duplicate: "Duplicate meeting"
+  label_meeting_duplicate: "Toplantıyı çoğalt"
   label_meeting_edit: "Toplantıyı Düzenle"
   label_meeting_agenda: "Gündem"
   label_meeting_minutes: "Dakika"
@@ -127,8 +129,8 @@ tr:
   label_meeting_date_time: "Tarih/Saat"
   label_meeting_date_and_time: "Tarih ve zaman"
   label_meeting_diff: "Fark"
-  label_meeting_send_updates: "Send email calendar invite and updates"
-  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
+  label_meeting_send_updates: "E-posta takvim daveti ve güncellemeleri gönderin"
+  label_meeting_send_updates_caption: "Bu toplantının tüm katılımcılarına e-posta davetiyeleri gönderin"
   label_recurring_meeting: "Yinelenen toplantı"
   label_recurring_meeting_part_of: "Toplantı serisinin bir parçası"
   label_recurring_meeting_new: "Yeni yinelenen toplantı"
@@ -136,7 +138,7 @@ tr:
   label_template: "Şablon"
   label_recurring_meeting_view: "Toplantı serisini görüntüle"
   label_recurring_meeting_create: "Açık"
-  label_recurring_meeting_duplicate: "Duplicate as a one-time meeting"
+  label_recurring_meeting_duplicate: "Tek seferlik toplantı olarak çoğaltın"
   label_recurring_meeting_cancel: "Bu etklinliği iptal et"
   label_recurring_meeting_delete: "İptal et"
   label_recurring_meeting_restore: "Bu toplantıyı geri al"
@@ -219,7 +221,7 @@ tr:
       open_my_meetings_link: "Toplantılarıma git"
       series:
         title: "[%{project_name}] Toplantı serisi '%{title}'"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} sizi yeni bir toplantı serisine davet etti '%{title}'"
       series_updated:
         title: "[%{project_name}] Toplantı serisi '%{title}' güncellendi"
         summary: "'%{title}' toplantı serisi %{actor} tarafından güncellendi"
@@ -231,19 +233,29 @@ tr:
         header: "İptal edildi: Toplantı '%{title}'"
         header_occurrence: "İptal edildi: Toplantı '%{title}'"
         header_series: "İptal edildi: Toplantı serisi '%{title}'"
-        summary_occurrence: "'%{title}' %{actor} tarafından iptal edilmiştir."
-        summary_series: "'%{title}' toplantı serisi %{actor} tarafından iptal edilmiştir."
-        summary: "'%{title}' %{actor} tarafından iptal edilmiştir."
+        summary_occurrence: "Bir '%{title}' oluşumu %{actor}tarafından iptal edildi veya katılımcı olarak çıkarıldınız"
+        summary_series: "Toplantı serisi '%{title}' %{actor}tarafından iptal edildi veya katılımcı olarak çıkarıldınız"
+        summary: "'%{title}' %{actor}tarafından iptal edildi veya katılımcı olarak çıkarıldınız"
         date_time: "Planlanan tarih/saat"
+      participant_added:
+        header: "Toplantı '%{title}' - Katılımcı eklendi"
+        header_series: "Toplantı serisi '%{title}' - Katılımcı eklendi"
+        summary: "%{actor} toplantıya %{participant} eklendi '%{title}'"
+        summary_series: "%{actor} '%{title}' toplantı serisine %{participant} eklendi"
+      participant_removed:
+        header: "Toplantı '%{title}' - Katılımcı kaldırıldı"
+        header_series: "Toplantı serisi '%{title}' - Katılımcı kaldırıldı"
+        summary: "%{actor} %{participant} adresini toplantıdan kaldırdı '%{title}'"
+        summary_series: "%{actor} %{participant} adresini '%{title}' toplantı serisinden kaldırdı"
       ended:
-        header_series: "Ended: Meeting series '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
+        header_series: "Sona erdi: Toplantı serisi '%{title}'"
+        summary_series: "'%{title}' toplantısı serisi %{actor} tarafından sonlandırıldı."
       updated:
         header: "'%{title}' toplantısı güncellendi"
         summary: "'%{title}' toplantısı %{actor} tarafından güncellendi"
         body: "'%{title}' toplantısı %{actor} tarafından güncellendi."
-        old_title: "Old title"
-        new_title: "New title"
+        old_title: "Eski başlık"
+        new_title: "Yeni başlık"
         old_date_time: "Eski tarih/saat"
         new_date_time: "Yeni tarih/saat"
         old_location: "Eski konum"
@@ -270,7 +282,7 @@ tr:
         confirm_button: "Bu toplantıyı iptal et"
     blankslate:
       title: "Gösterilecek toplantı yok"
-      desc: "Aktif filtre kriterlerini karşılayan herhangi bir toplantı bulunmamaktadır."
+      desc: "Yeni bir toplantı oluşturabilir veya filtre kriterlerini değiştirebilirsiniz"
     label_export_pdf: "PDF olarak dışa aktar"
     export:
       your_meeting_export: "Toplantı dışa aktarılıyor"
@@ -290,13 +302,13 @@ tr:
           caption: Varsayılan şablon çoğu toplantı için uygundur ve mevcut durumu temsil eder.
         minutes:
           label: Notlar
-          caption: The minutes template is suitable for closed and archived meetings.
+          caption: Tutanak şablonu kapalı ve arşivlenmiş toplantılar için uygundur.
       first_page_header_left:
         label: İlk sayfa başlığı sol
         caption: Bu metin ilk sayfada başlığın solunda görünecektir.
       author:
         label: Sahibi
-        caption: The author of the minutes will be displayed in the subtitle.
+        caption: Tutanağın yazarı alt başlıkta görüntülenecektir.
       include_participants:
         label: Katılımcı listesini içer
         caption: Toplantı gündeminin üstünde katılımcıların listesi gösterilecektir.
@@ -326,7 +338,7 @@ tr:
           disable: "E-posta takvim güncellemeleri devre dışı bırakılsın mı?"
         message:
           enable: >
-            All participants will receive updated calendar invites via email every time there is a change to the meeting date, time, location or participants. Once enabled, an email will be sent out immediately to all participants.
+            Toplantı tarihi, saati, konumu veya katılımcılarında herhangi bir değişiklik olduğunda, tüm katılımcılara e-posta yoluyla güncellenmiş takvim davetleri gönderilir. Bu özellik etkinleştirildiğinde, tüm katılımcılara anında bir e-posta gönderilir.
           disable: >
             Toplantı tarihi, saati, yeri veya katılımcılarında değişiklik olduğunda katılımcılar artık e-posta yoluyla güncellenmiş takvim davetleri almayacaktır. Bu toplantı için zaten bir davetleri varsa, artık doğru olmayabilir.
         confirm_label:
@@ -335,44 +347,54 @@ tr:
       banner:
         participants:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            Katılımcı eklediğinizde veya çıkardığınızda tüm katılımcılar e-posta yoluyla güncellenmiş takvim davetiyeleri alacaktır.
           disabled: >
-            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
+            E-posta takvim güncellemeleri devre dışı bırakılmıştır. Katılımcılar, katılımcı eklediğinizde veya çıkardığınızda onları bilgilendiren bir e-posta almayacaktır.
         onetime:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            Katılımcı eklediğinizde veya çıkardığınızda tüm katılımcılar e-posta yoluyla güncellenmiş takvim davetiyeleri alacaktır.
           disabled: >
-            Participants will not receive an email informing them of changes to meeting date, time or participants.
+            Katılımcılara toplantı tarihi, saati veya katılımcılarla ilgili değişiklikleri bildiren bir e-posta gönderilmeyecektir.
         occurrence:
           enabled: >
-            Email calendar updates are enabled for the meeting series. All participants will receive updated calendar invites informing them of your changes to this occurrence.
+
           disabled: >
-            Email calendar updates are disabled for the meeting series. Participants will not receive an email informing them of your changes to this occurrence.
+            Toplantı serisi için e-posta takvimi güncellemeleri devre dışı bırakılmıştır. Katılımcılar, bu olayda yaptığınız değişiklikleri bildiren bir e-posta almayacaktır.
         template:
           enabled: >
-            Email calendar updates are enabled for the meeting series. All participants will receive updated calendar invites informing them of your changes to this template or to individual occurrences.
+            Toplantı serisi için e-posta takvimi güncellemeleri etkinleştirilmiştir. Tüm katılımcılar, bu şablonda veya münferit olaylarda yaptığınız değişiklikleri bildiren güncellenmiş takvim davetiyeleri alacaktır.
           disabled: >
-            Email calendar updates are disabled for the meeting series. Participants will not receive an email informing them of your changes to this template or to individual occurrences.
+            Toplantı serisi için e-posta takvimi güncellemeleri devre dışı bırakılmıştır. Katılımcılar, bu şablonda veya münferit olaylarda yaptığınız değişiklikleri bildiren bir e-posta almayacaktır.
     presentation_mode:
-      title: "Presentation Mode"
-      button_present: "Present"
-      exit: "Exit presentation"
-      current_item: "Current item"
-      total_items: "%{current} of %{total}"
-      previous: "Previous"
-      next: "Next"
-      no_items: "No agenda items"
-      no_items_flash: "There are no agenda items to present."
+      title: "Sunum modu"
+      button_present: "Sunumu başlat"
+      exit: "Sunumdan çık"
+      current_item: "Geçerli öğe"
+      total_items: "%{current} / %{total}"
+      previous: "Önceki"
+      next: "Sonraki"
+      no_items: "Gündem maddesi yok"
+      no_items_flash: "Sunulacak herhangi bir gündem maddesi bulunmamaktadır."
+    ical_response:
+      update_failed: "Katılım durumu güncellenemedi."
+      meeting_not_found: "Verilen UID için toplantı bulunamadı."
   meeting_section:
     untitled_title: "İsimsiz bölüm"
     delete_confirmation: "Bölümün silinmesi tüm gündem maddelerini de silecektir. Bunu yapmak istediğinizden emin misiniz?"
     placeholder_title: "Yeni bölüm"
     empty_text: "Maddeleri buraya sürükleyin ya da yeni bir tane oluşturun"
+  meeting_participant:
+    participation_status:
+      needs_action: "Yanıt yok"
+      accepted: "Kabul edildi"
+      declined: "Reddedildi"
+      tentative: "Belki"
+      unknown: "Bilinmeyen"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Saat dilimi farkı"
       description: >
-        The dates below are referencing the time zone of the meeting series (%{actual_zone}), not your local time zone (%{user_zone}).
+        Aşağıda gösterilen tarihler, sizin yerel saat diliminize (%{user_zone}) göre değil, toplantı serisinin saat dilimine (%{actual_zone}) göre hesaplanmıştır.
     ended_blankslate:
       title: "Toplantı serisi sona erdi"
       message: "Bu toplantı serisi sona ermiştir. Gelecek toplantı yoktur. "
@@ -391,9 +413,9 @@ tr:
       label_view_template: "Şablonu görüntüle"
       label_edit_template: "Şablonu düzenle"
       banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+        Şu anda bir toplantı serisinin şablonunu düzenliyorsunuz: %{link}. Serideki bir toplantının her yeni oluşumu bu şablonu kullanacaktır. Değişiklikler geçmiş veya önceden oluşturulmuş toplantıları etkilemeyecektir.
       draft_banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
+        Şu anda bir toplantı serisinin şablonunu düzenliyorsunuz: %{link}. Serideki bir toplantının her yeni oluşumu bu şablonu kullanacaktır. Değişiklikler geçmiş veya önceden oluşturulmuş toplantıları etkilemeyecektir. Siz ilk toplantıyı açana kadar bu geçerli taslak modunda hiçbir e-posta daveti gönderilmeyecektir.
     frequency:
       x_daily:
         one: "Her gün"
@@ -504,21 +526,27 @@ tr:
   label_agenda_item_move_to_next: "Sonraki toplantıya taşı"
   label_agenda_item_move_to_backlog: "Birikmiş iş listesine taşı"
   label_agenda_item_move_to_current_meeting: "Şuanki toplantıya taşı"
-  label_agenda_item_move_to_section: "Move to section"
+  label_agenda_item_move_to_section: "Bölüme taşı"
   label_agenda_item_move_to_top: "En üste taşı"
   label_agenda_item_move_to_bottom: "En aşağı taşı"
   label_agenda_item_move_up: "Yukarı taşı"
   label_agenda_item_move_down: "Aşağı taşı"
+  label_agenda_item_duplicate: "Çoğalt"
+  label_agenda_item_duplicate_in_next: "Bir sonraki toplantıda tekrarlayın"
+  label_agenda_item_duplicate_in_next_title: "Bir sonraki toplantıda tekrarlansın mı?"
   label_agenda_item_add_notes: "Not ekle"
   label_agenda_item_add_outcome: "Sonuç ekle"
   label_agenda_item_work_package_add: "İş paketi ekle"
   label_agenda_item_work_package: "Gündem maddesinin iş parçası"
   label_section_rename: "Seçimi yeniden adlandır"
   label_agenda_outcome: "Sonuçlar"
-  label_agenda_new_outcome: "New outcome"
+  label_agenda_new_outcome: "Yeni sonuç"
   label_agenda_outcome_actions: "Gündem sonuçları eylemleri"
   label_agenda_outcome_edit: "Sonuç düzenle"
   label_agenda_outcome_delete: "Sonuç kaldır"
+  label_added_as_outcome: "Sonuç olarak eklendi"
+  label_write_outcome: "Sonuç yazın"
+  label_existing_work_package: "Mevcut iş paketi"
   text_outcome_not_editable_anymore: "Bu sonuç artık düzenlenemez."
   text_outcome_cannot_be_added: "Artık gündem maddesi sonucu eklenemez."
   label_backlog_clear: "Birikmiş işleri temizle"
@@ -544,7 +572,7 @@ tr:
   label_meeting_series_details: "Toplantı serisi detayları"
   label_meeting_details_edit: "Toplantı detaylarını düzenle"
   label_meeting_state: "Toplantı durumu"
-  label_meeting_state_draft: "Draft"
+  label_meeting_state_draft: "Taslak"
   label_meeting_state_open: "Açık"
   label_meeting_state_closed: "Kapalı"
   label_meeting_state_agenda_created: "Gündem oluşturuldu"
@@ -555,26 +583,26 @@ tr:
   label_meeting_reopen_action: "Toplantıyı tekrar aç"
   label_meeting_close_action: "Toplantıyı kapat"
   label_meeting_in_progress_action: "Toplantıya başla"
-  label_meeting_open_action: "Open meeting"
-  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
-  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
+  label_meeting_open_action: "Toplantıyı açın"
+  text_meeting_draft_description: "Gündeminizi taslak modunda hazırlayın. Toplantı ayrıntılarını değiştirseniz veya katılımcı ekleyip çıkarsanız bile bu toplantı herhangi bir takvim güncellemesi veya davet göndermeyecektir."
+  text_meeting_open_description: "Bu toplantı açık. Gündem maddesi ekleyip kaldırabilirsiniz ve istediğiniz gibi düzenleyebilirsiniz. Gündem hazır olduğunda sonuçları belgelemek için devam etmekte olarak işaretleyin."
   text_meeting_closed_description: "Toplantı kapatılmış. Artık gündem maddesi ekleyip çıkartamazsınız."
-  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
+  text_meeting_in_progress_description: "Gündemi değiştirebilir, her madde için sonuçları belgeleyebilir ve katılımcıların katılımını takip edebilirsiniz. Toplantı tamamlandığında, kilitlemek için kapalı olarak işaretleyebilirsiniz."
   text_meeting_open_dropdown_description: "Mevcut sonuçlar kalacak ama kullanıcılar yeni sonuçlar ekleyemeyecekler."
   text_meeting_in_progress_dropdown_description: "Toplantı sırasında alınan kararları ya da bilgi gereksinimleri sonuçlarını belgeleyin."
   text_meeting_closed_dropdown_description: "Bu toplantı kapalı. Gündem maddelerini ya da sonuçları artık düzenleyemezsiniz."
-  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
-  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
-  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
-  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
-  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
+  text_meeting_draft_banner: "Şu anda taslak modundasınız. Toplantı ayrıntılarını değiştirseniz veya katılımcı ekleyip çıkarsanız bile bu toplantı herhangi bir takvim güncellemesi veya davet göndermeyecektir."
+  text_exit_draft_mode_dialog_title: "Bu toplantıyı açıp davetiye gönderelim mi?"
+  text_exit_draft_mode_dialog_subtitle: "Bir toplantı planladıktan sonra taslak moduna geri dönemezsiniz."
+  text_exit_draft_mode_dialog_template_title: "Bu toplantı serisinin ilkini açar mısınız?"
+  text_exit_draft_mode_dialog_template_subtitle: "Bundan sonra taslak moduna geri dönemezsiniz."
   text_meeting_not_editable_anymore: "Bu toplantıyı artık düzenleyemezsiniz."
   text_meeting_not_present_anymore: "Toplantı silinmiş. Başka bir toplantı seçin lütfen."
   label_add_work_package_to_meeting_dialog_title: "Toplantı seç"
   label_add_work_package_to_meeting_section_label: "Bölüm"
   label_add_work_package_to_meeting_dialog_button: "Toplantıya ekle"
   label_meeting_selection_caption: "Bu iş paketini sadece yaklaşan veya devam eden bir toplantıya eklemek mümkündür."
-  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  label_section_selection_caption: "Gündemin belirli bir bölümünü seçin veya biriktirme listesine ekleyin."
   placeholder_section_select_meeting_first: "Önce toplantı seçimi gereklidir"
   text_add_work_package_to_meeting_form: "İş paketi, seçilen toplantıya veya birikime gündem maddesi olarak eklenecektir."
   text_add_work_package_to_meeting_description: "Bir iş paketi tartışılmak üzere bir veya birden fazla toplantıya eklenebilir. Bununla ilgili tüm notlar da burada görülebilir."
@@ -582,35 +610,40 @@ tr:
   text_agenda_item_not_editable_anymore: "Bu takvim maddesi artık düzenlenemez."
   text_agenda_item_move_next_meeting: "Bu madde %{date} tarihindeki %{time} saatli bir sonraki toplantıya taşınacaktır."
   text_agenda_item_moved_to_next_meeting: "Gündem maddesi %{date} tarihli sonraki toplantıya taşındı"
+  text_agenda_item_duplicate_in_next_meeting: "%{time}Bu gündem maddesinin bir kopyasını %{date} adresindeki bir sonraki toplantıya eklemek istediğinizden emin misiniz? Sonuçlar çoğaltılmayacaktır."
+  text_agenda_item_duplicated_in_next_meeting: "Gündem maddesi bir sonraki toplantıda tekrarlandı, %{date}adresinde"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Bu iş paketi henüz yaklaşan bir toplantı gündemine alınmamıştır."
-  text_agenda_item_move_next_meeting_cancelled: "Toplantı iptal edildiği için sonraki toplantıya taşınamadı."
+  text_agenda_item_no_available_occurrence: "Yaklaşan tüm etkinlikler iptal edilmiştir."
+  text_agenda_item_dialog_skipping_cancelled_one: "Not: %{date} tarihindeki iptal edilmiş olayları atla."
+  text_agenda_item_dialog_skipping_cancelled_many: "Not: İptal edilen %{count} olayları atla."
   text_work_package_add_to_meeting_hint: 'Bu iş paketini yaklaşan bir toplantıya eklemek için "Toplantıya ekle" düğmesini kullanın.'
-  text_work_package_has_no_past_meeting_agenda_items: "Bu iş paketinden daha önceki bir toplantıda bahsedilmemişti."
-  text_email_updates_muted: "Email calendar updates are muted. Participants will not receive updated invites via email when you make changes."
-  text_email_updates_enabled: "Email calendar updates are enabled. All participants will receive updated invites via email when you make changes."
+  text_work_package_has_no_past_meeting_agenda_items: "Bu çalışma paketi geçmiş bir toplantıda gündem maddesi olarak eklenmemiştir."
+  text_email_updates_muted: "E-posta takvim güncellemeleri kapatılmıştır. Değişiklik yaptığınızda katılımcılar e-posta yoluyla güncellenmiş davetler almayacaktır."
+  text_email_updates_enabled: "E-posta takvim güncellemeleri etkinleştirildi. Değişiklik yaptığınızda tüm katılımcılar e-posta yoluyla güncellenmiş davetiyeler alacaktır."
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "Aşağıdaki düğmeyi kullanarak bir tane oluşturabilirsiniz."
+        blank_title: "iCalendar toplantı belirteci yok"
         title: "Toplantılar için iCalendar"
-        text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
-        disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
-        empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
+        table_title: "iCalendar toplantı belirteçleri"
+        text_hint: "iCalendar toplantı belirteçleri, kullanıcıların tüm toplantılarına abone olmalarını ve harici istemcilerde güncel toplantı bilgilerini görüntülemelerini sağlar."
+        disabled_text: "iCalendar toplantı abonelikleri yönetici tarafından etkinleştirilmemiştir. Bu özelliği kullanmak için lütfen yöneticinize başvurun."
         add_button: "Takvime abone ol"
   my:
     access_token:
       dialog:
         token/ical_meeting:
-          dialog_title: "New iCal subscription token for meetings"
-          dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
+          dialog_title: "Toplantılar için yeni iCal abonelik belirteci"
+          dialog_body: "Bu belirteç, tüm toplantılarınızı harici bir takvim uygulamasında görüntülemenizi sağlayan bir iCal abonelik URL'si oluşturacaktır."
           create_button: "Abonelik oluştur"
           name_label: "Anahtar adı"
           name_caption: '"Telefonum" veya "İş bilgisayarım" gibi kullanacağınız yerin adını verebilirsiniz.'
       created_dialog:
         token/ical_meeting:
           title: "Bir iCal toplantı abonelik anahtarı oluşturuldu"
-          body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "Bu anahtarı sadece bir kez göreceksiniz. Şimdi kopyaladığınızdan emin olun."
+          body: "Aşağıdaki URL'ye bir parola gibi davranın. Buna erişimi olan herkes tüm toplantılarınızı görüntüleyebilir."
       revocation:
         token/ical_meeting:
-          notice_success: "The iCalendar meeting subscription has been revoked successfully."
-          notice_failure: "Failed to revoke iCalendar meeting subscription: %{error}"
+          notice_success: "iCalendar toplantı aboneliği başarıyla iptal edildi."
+          notice_failure: "iCalendar toplantı aboneliği iptal edilemedi: %{error}"

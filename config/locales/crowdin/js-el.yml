@@ -632,9 +632,6 @@ el:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Πρέπει να εισάγετε τον κωδικό πρόσβασης του λογαριασμού σας για να επιβεβαιώσετε αυτή την αλλαγή."
-      title: "Επιβεβαιώστε τον κωδικό πρόσβασης σας για να συνεχίσετε"
     pagination:
       no_other_page: "Βρίσκεστε στη μοναδική σελίδα."
       pages_skipped: "Pages skipped."

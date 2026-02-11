@@ -2,5 +2,4 @@ pt-PT:
   overviews:
     label_home: "%{workspace_type} casa"
     label_dashboard: "Painel de controlo"
-    label_overview: 'Síntese'
-  permission_manage_overview: 'Gerir página de visão geral'
+    label_overview: "Síntese"

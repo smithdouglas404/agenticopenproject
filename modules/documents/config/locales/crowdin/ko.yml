@@ -74,6 +74,7 @@ ko:
         action: 다시 시도
       connection_recovery_notice:
         description: "실시간 텍스트 공동 작업 서버에 대한 연결이 복원되었습니다."
+      tabs: "문서 탭"
     index_page:
       name: "이름"
       type: "타입"

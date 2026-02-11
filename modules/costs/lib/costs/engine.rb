@@ -79,12 +79,12 @@ module Costs
                    permissible_on: :project
 
         permission :edit_own_hourly_rate,
-                   { hourly_rates: %i[set_rate edit update] },
+                   { hourly_rates: %i[edit update] },
                    permissible_on: :project,
                    require: :member
 
         permission :edit_hourly_rates,
-                   { hourly_rates: %i[set_rate edit update] },
+                   { hourly_rates: %i[edit update] },
                    permissible_on: :project,
                    require: :member
         permission :view_cost_rates, # cost item values

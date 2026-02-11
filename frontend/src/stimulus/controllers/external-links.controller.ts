@@ -26,6 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { attributeTokenList } from 'core-app/shared/helpers/dom-helpers';
 import { ApplicationController } from 'stimulus-use';
 import { useMutation } from 'stimulus-use';
 
@@ -62,6 +63,7 @@ const shouldProcessLink = (link:HTMLAnchorElement) => {
  * Part B) for external links (pointing to a different domain than the current page):
  *   - Sets `target="_blank"` to open in a new tab.
  *   - Sets `rel="noopener noreferrer"` for security and performance.
+ *   - Rewrites the href to go through `/external_redirect` for link capture functionality.
  *   - and by virtue of setting `target="_blank"`, should be processed as in Part A.
  *
  * This ensures accessibility, security, and consistent behavior for all links, including
@@ -117,23 +119,19 @@ export default class ExternalLinksController extends ApplicationController {
 
 function updateBlankLink(link:HTMLAnchorElement) {
   // Ensure accessibility description
-  const describedBy = link.getAttribute('aria-describedby');
-  if (!describedBy) {
-    link.setAttribute('aria-describedby', BLANK_LINK_DESCRIPTION_ID);
-  } else if (!describedBy.split(/\s+/).includes(BLANK_LINK_DESCRIPTION_ID)) {
-    link.setAttribute('aria-describedby', `${describedBy} ${BLANK_LINK_DESCRIPTION_ID}`);
-  }
+  attributeTokenList(link, 'aria-describedby').add(BLANK_LINK_DESCRIPTION_ID);
 }
 
 function updateExternalLink(link:HTMLAnchorElement) {
   // Ensure external link behavior
   link.target = '_blank';
+  attributeTokenList(link, 'rel').add('noopener', 'noreferrer');
 
-  // Merge rel attributes safely
-  const relValues = new Set([
-    ...(link.getAttribute('rel')?.split(/\s+/) ?? []),
-    'noopener',
-    'noreferrer',
-  ]);
-  link.setAttribute('rel', Array.from(relValues).join(' '));
+  // Capture external links through redirect page
+  // The backend controller will redirect directly if the feature is disabled
+  if (!link.dataset.allowExternalLink) {
+    const originalHref = link.href;
+    const basePath = window.appBasePath ?? '';
+    link.href = `${basePath}/external_redirect?url=${encodeURIComponent(originalHref)}`;
+  }
 }

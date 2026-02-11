@@ -203,8 +203,8 @@ it:
         add_table: "Aggiungi la tabella dei pacchetti di lavoro correlati"
         edit_query: "Modifica query"
         new_group: "Nuovo gruppo"
-        delete_group: "Delete group"
-        remove_attribute: "Remove from group"
+        delete_group: "Elimina gruppo"
+        remove_attribute: "Rimuovi dal gruppo"
         reset_to_defaults: "Ripristino predefinite"
       working_days:
         calendar:
@@ -426,7 +426,7 @@ it:
     label_remove_row: "Rimuovi riga"
     label_report: "Segnalano"
     label_repository_plural: "Archivi"
-    label_resize_project_menu: "Resize project menu"
+    label_resize_project_menu: "Ridimensiona il menu del progetto"
     label_save_as: "Salva come"
     label_search_columns: "Cerca una colonna"
     label_select_watcher: "Seleziona un osservatore..."
@@ -633,9 +633,6 @@ it:
           add: "Aggiungi impostazione per il progetto"
           already_selected: "Questo progetto è già selezionato"
           remove: "Rimuovi impostazioni progetto"
-    password_confirmation:
-      field_description: "È necessario inserire la password dell'account per confermare la modifica."
-      title: "Confermare la password per continuare"
     pagination:
       no_other_page: "Sei nella pagina unica."
       pages_skipped: "Pagine saltate."

@@ -68,7 +68,9 @@ pl:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} nie jest prawidłowym uczestnikiem."
+          user_invalid: "is not a valid participant."
+        meeting_agenda_item:
+          user_invalid: "is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "W serii znajduje się jedno otwarte spotkanie, które nie jest uwzględnione w nowym harmonogramie. Dostosuj harmonogram tak, aby obejmował wszystkie istniejące spotkania."
@@ -241,13 +243,23 @@ pl:
         header: "Anulowano: spotkanie „%{title}”"
         header_occurrence: "Anulowano: wystąpienie spotkania „%{title}”"
         header_series: "Anulowano: serię spotkań „%{title}”"
-        summary_occurrence: "Wystąpienie „%{title}” zostało anulowane przez użytkownika %{actor}."
-        summary_series: "Seria spotkań „%{title}” została anulowana przez użytkownika %{actor}."
-        summary: "„%{title}” anulował użytkownik %{actor}."
+        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
         date_time: "Zaplanowana data/godzina"
+      participant_added:
+        header: "Spotkanie „%{title}” — dodano uczestnika"
+        header_series: "Seria spotkań „%{title}” — dodano uczestnika"
+        summary: "Użytkownik %{actor} dodał uczestnika %{participant} do spotkania „%{title}”"
+        summary_series: "Użytkownik %{actor} dodał uczestnika %{participant} do serii spotkań „%{title}”"
+      participant_removed:
+        header: "Spotkanie „%{title}” — usunięto uczestnika"
+        header_series: "Seria spotkań „%{title}” — usunięto uczestnika"
+        summary: "Użytkownik %{actor} usunął uczestnika %{participant} ze spotkania „%{title}”"
+        summary_series: "Użytkownik %{actor} usunął uczestnika %{participant} z serii spotkań „%{title}”"
       ended:
         header_series: "Zakończono: serię spotkań „%{title}”"
-        summary_series: "Seria spotkań „%{title}” została zakończona przez użytkownika %{actor}."
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
       updated:
         header: "Spotkanie „%{title}” zostało zaktualizowane"
         summary: "Spotkanie „%{title}” zostało zaktualizowane przez użytkownika %{actor}"
@@ -279,8 +291,8 @@ pl:
           Wszelkie informacje o spotkaniu, które nie znajdują się w szablonie, zostaną utracone. Czy chcesz kontynuować?
         confirm_button: "Anuluj wystąpienie"
     blankslate:
-      title: "Brak spotkań do wyświetlenia"
-      desc: "Nie ma spotkań spełniających kryteria aktywnego filtru."
+      title: "Nie ma żadnych spotkań do wyświetlenia"
+      desc: "Możesz utworzyć nowe spotkanie lub zmienić kryteria filtrowania"
     label_export_pdf: "Wyeksportuj PDF"
     export:
       your_meeting_export: "Spotkanie jest eksportowane"
@@ -373,11 +385,21 @@ pl:
       next: "Następny"
       no_items: "Brak pozycji planu spotkania"
       no_items_flash: "Nie ma żadnych pozycji planu spotkania do zaprezentowania."
+    ical_response:
+      update_failed: "Nie można zaktualizować statusu uczestnictwa."
+      meeting_not_found: "Nie znaleziono spotkania dla podanego identyfikatora UID."
   meeting_section:
     untitled_title: "Sekcja bez nazwy"
     delete_confirmation: "Usunięcie sekcji spowoduje również usunięcie wszystkich jej elementów punktów planu spotkania. Czy na pewno chcesz to zrobić?"
     placeholder_title: "Nowa sekcja"
     empty_text: "Przeciągnij elementy tutaj lub utwórz nowe"
+  meeting_participant:
+    participation_status:
+      needs_action: "Brak odpowiedzi"
+      accepted: "Zaakceptowano"
+      declined: "Odrzucono"
+      tentative: "Być może"
+      unknown: "Nieznany"
   recurring_meeting:
     time_zone_difference_banner:
       title: "Różnica strefy czasowej"
@@ -523,6 +545,9 @@ pl:
   label_agenda_item_move_to_bottom: "Przenieś na sam dół"
   label_agenda_item_move_up: "Przenieś wyżej"
   label_agenda_item_move_down: "Przenieś niżej"
+  label_agenda_item_duplicate: "Duplikuj"
+  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
+  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
   label_agenda_item_add_notes: "Dodawanie notatek"
   label_agenda_item_add_outcome: "Dodaj wynik"
   label_agenda_item_work_package_add: "Dodaj pakiet roboczy"
@@ -533,6 +558,9 @@ pl:
   label_agenda_outcome_actions: "Działania wyniku planu spotkania"
   label_agenda_outcome_edit: "Edytuj wynik"
   label_agenda_outcome_delete: "Usuń wynik"
+  label_added_as_outcome: "Dodano jako wynik"
+  label_write_outcome: "Zapisz wynik"
+  label_existing_work_package: "Istniejący pakiet roboczy"
   text_outcome_not_editable_anymore: "Tego wyniku nie można już edytować."
   text_outcome_cannot_be_added: "Nie można już dodać wyniku."
   label_backlog_clear: "Wyczyść backlog"
@@ -596,19 +624,25 @@ pl:
   text_agenda_item_not_editable_anymore: "Tego punktu planu spotkania nie można już edytować."
   text_agenda_item_move_next_meeting: "Punkt ten zostanie przeniesiony na następne spotkanie w dniu %{date} o %{time}."
   text_agenda_item_moved_to_next_meeting: "Punkt planu spotkania przeniesiono na następne spotkanie w dniu %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Czy na pewno chcesz dodać kopię tego punktu planu spotkania do następnego spotkania w dniu %{date} o godzinie %{time}? Wyniki nie będą duplikowane."
+  text_agenda_item_duplicated_in_next_meeting: "Pozycję planu spotkania zduplikowano w następnym spotkaniu w dniu %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Ten pakiet roboczy nie został jeszcze zaplanowany w planie nadchodzącego spotkania."
-  text_agenda_item_move_next_meeting_cancelled: "Nie można przenieść na następne spotkanie, ponieważ zostało ono anulowane."
+  text_agenda_item_no_available_occurrence: "Wszystkie nadchodzące wystąpienia zostały anulowane."
+  text_agenda_item_dialog_skipping_cancelled_one: "Uwaga: pomijanie anulowanego wystąpienia w dniu %{date}."
+  text_agenda_item_dialog_skipping_cancelled_many: "Uwaga: pomijanie %{count} anulowanych wystąpień."
   text_work_package_add_to_meeting_hint: 'Użyj przycisku „Dodaj do spotkania”, aby dodać ten pakiet roboczy do nadchodzącego spotkania.'
-  text_work_package_has_no_past_meeting_agenda_items: "Ten pakiet roboczy nie został wspomniany na poprzednim spotkaniu."
+  text_work_package_has_no_past_meeting_agenda_items: "Ten pakiet roboczy nie został dodany jako pozycja planu spotkania w poprzednim spotkaniu."
   text_email_updates_muted: "Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest wyciszone. Po wprowadzeniu zmian uczestnicy nie będą otrzymywać zaktualizowanych zaproszeń pocztą elektroniczną."
   text_email_updates_enabled: "Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest włączone. Po wprowadzeniu zmian wszyscy uczestnicy będą otrzymywać zaktualizowane zaproszenia pocztą elektroniczną."
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "Możesz go utworzyć za pomocą poniższego przycisku."
+        blank_title: "Brak tokenu spotkania iCalendar"
         title: "iCalendar dla spotkań"
+        table_title: "Tokeny spotkań iCalendar"
         text_hint: "Tokeny spotkań aplikacji iCalendar umożliwiają użytkownikom subskrybowanie wszystkich ich spotkań i wyświetlanie aktualnych informacji o spotkaniach w klientach zewnętrznych."
         disabled_text: "Subskrypcje spotkań w iCalendar nie zostały włączone przez administratora. Aby użyć tej funkcji, skontaktuj się z administratorem."
-        empty_text_hint: 'Aby dodać token spotkania iCalendar, przejdź do <a href="%{path}">sekcji spotkań</a> i tam dokonaj subskrypcji.'
         add_button: "Subskrybuj kalendarz"
   my:
     access_token:
@@ -623,7 +657,6 @@ pl:
         token/ical_meeting:
           title: "Wygenerowano token subskrypcji spotkania iCal"
           body: "Poniższy adres URL traktuj jak hasło. Każdy, kto ma do niego dostęp, może wyświetlić wszystkie Twoje spotkania."
-          warning: "Jest to jedyny raz, gdy zobaczysz ten token. Koniecznie skopiuj go teraz."
       revocation:
         token/ical_meeting:
           notice_success: "Subskrypcja spotkania iCalendar została unieważniona."

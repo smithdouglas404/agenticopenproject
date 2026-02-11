@@ -97,7 +97,15 @@ def register_better_cuprite(language, name: :"better_cuprite_#{language}")
       "disable-backgrounding-occluded-windows": nil,
       # This disables non-foreground tabs from getting a lower process priority.
       # Useful for parallel test runs.
-      "disable-renderer-backgrounding": nil
+      "disable-renderer-backgrounding": nil,
+      # Software GPU to avoid the dreaded "[ERROR] [Canvas '__0']: Failed to get a
+      # WebGL context" error for tests using xeokit. The automatic fallback to SwiftShader
+      # was disabled in January 2026, so that we now have to enable the fallback manually in
+      # the test environment.
+      # See https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/swiftshader.md
+      "use-gl": "angle",
+      "use-angle": "swiftshader-webgl",
+      "enable-unsafe-swiftshader": true
     }
 
     if ENV["OPENPROJECT_TESTING_AUTO_DEVTOOLS"].present?

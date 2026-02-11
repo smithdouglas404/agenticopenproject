@@ -633,9 +633,6 @@ si:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "මෙම වෙනස තහවුරු කිරීම සඳහා ඔබගේ ගිණුමේ මුරපදය ඇතුළත් කළ යුතුය."
-      title: "දිගටම කරගෙන යාමට ඔබගේ මුරපදය තහවුරු කරන්න"
     pagination:
       no_other_page: "ඔබ සිටින්නේ එකම පිටුවේ ය."
       pages_skipped: "Pages skipped."

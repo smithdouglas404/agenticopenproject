@@ -633,9 +633,6 @@ ro:
           add: "Adaugă o setare pentru proiect"
           already_selected: "Acest proiect este deja selectat"
           remove: "Elimină setările proiectului"
-    password_confirmation:
-      field_description: "Trebuie să introduci parola contului tău pentru a confirma această schimbare."
-      title: "Te rog să confirmi parola pentru a continua"
     pagination:
       no_other_page: "Ești pe singura pagină."
       pages_skipped: "Pagini sărite."

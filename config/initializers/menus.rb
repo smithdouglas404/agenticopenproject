@@ -476,6 +476,19 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_calendars_and_dates,
             icon: "calendar"
 
+  menu.push :ai,
+            { controller: "/admin/mcp_configurations", action: :index },
+            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            caption: I18n.t("menus.admin.ai"),
+            icon: :"sparkle-fill"
+
+  menu.push :mcp_configurations,
+            { controller: "/admin/mcp_configurations", action: :index },
+            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            caption: I18n.t("menus.admin.mcp_configurations"),
+            enterprise_feature: "mcp_server",
+            parent: :ai
+
   menu.push :working_days_and_hours,
             { controller: "/admin/settings/working_days_and_hours_settings", action: :show },
             if: ->(_) { User.current.admin? },
@@ -510,6 +523,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             { controller: "/admin/settings/languages_settings", action: :show },
             if: ->(_) { User.current.admin? },
             caption: :label_languages,
+            parent: :settings
+
+  menu.push :settings_external_links,
+            { controller: "/admin/settings/external_links_settings", action: :show },
+            if: ->(_) { User.current.admin? },
+            caption: :label_external_links,
             parent: :settings
 
   menu.push :settings_repositories,
@@ -588,7 +607,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
 
   menu.push :scim_clients,
             { controller: "/admin/scim_clients", action: "index" },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.scim_api_active? },
+            if: ->(_) { User.current.admin? },
             parent: :authentication,
             caption: ScimClient.model_name.human(count: 2),
             enterprise_feature: "scim_api"
@@ -723,8 +742,7 @@ Redmine::MenuManager.map :project_menu do |menu|
     },
     project_custom_fields: { caption: :label_project_attributes_plural },
     creation_wizard: {
-      caption: :"settings.project_initiation_request.name.options.project_initiation_request",
-      if: ->(_) { OpenProject::FeatureDecisions.project_initiation_active? }
+      caption: :"settings.project_initiation_request.name.options.project_initiation_request"
     },
     modules: { caption: :label_module_plural },
     template: { caption: :"projects.settings.template.menu_title" },

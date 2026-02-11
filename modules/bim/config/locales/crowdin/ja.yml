@@ -140,4 +140,4 @@ ja:
   permission_manage_ifc_models: "IFCモデルのインポートと管理"
   extraction:
     available:
-      ifc_convert: "IFC変換パイプランは利用可能です"
+      ifc_convert: "IFC変換パイプラインは利用可能です"

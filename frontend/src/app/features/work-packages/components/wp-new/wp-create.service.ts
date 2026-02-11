@@ -154,6 +154,11 @@ export class WorkPackageCreateService extends UntilDestroyedMixin {
       .then((form:FormResource) => {
         const changeset = this.fromCreateForm(form);
 
+        // Override scheduleManually to true when copying a single work package.
+        // Has a copy cannot have children nor predecessors, it must be manually
+        // scheduled despite the scheduling mode of the source work package.
+        changeset.setValue('scheduleManually', true);
+
         return changeset;
       });
   }

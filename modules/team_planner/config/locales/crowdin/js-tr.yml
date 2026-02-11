@@ -18,7 +18,7 @@ tr:
       work_week: 'Çalışma haftası'
       today: 'Bugün'
       drag_here_to_remove: 'Atanan kişiyi ve başlangıç ve bitiş tarihlerini kaldırmak için buraya sürükleyin.'
-      cannot_drag_here: 'Cannot move the work package due to permissions or editing restrictions.'
+      cannot_drag_here: 'İzinler veya düzenleme kısıtlamaları nedeniyle iş paketi taşınamıyor.'
       cannot_drag_to_non_working_day: 'Bu iş paketi, çalışma dışı bir günde başlayamaz veya bitemez.'
       quick_add:
         empty_state: 'İş paketlerini bulmak için arama alanını kullanın ve bunları birine atamak için planlayıcıya sürükleyin ve başlangıç ve bitiş tarihlerini tanımlayın.'

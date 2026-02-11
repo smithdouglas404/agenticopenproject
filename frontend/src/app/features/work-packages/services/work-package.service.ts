@@ -75,7 +75,7 @@ export class WorkPackageService {
         })
         .catch(() => {
           const urlParams = this.UrlParamsHelper.buildQueryString(params);
-          window.location.href = `${this.PathHelper.workPackagesBulkDeletePath()}?${urlParams}`;
+          window.location.href = `${this.PathHelper.workPackagesBulkReassignmentPath()}?${urlParams}`;
         });
     }
 

@@ -633,9 +633,6 @@
           add: "Legg til innstilling for prosjekt"
           already_selected: "Dette prosjektet er allerede valgt"
           remove: "Fjern prosjektinnstillinger"
-    password_confirmation:
-      field_description: "Du må skrive inn ditt passord for å bekrefte denne endringen."
-      title: "Bekreft ditt passord for å fortsette"
     pagination:
       no_other_page: "Du er på den eneste siden."
       pages_skipped: "Pages skipped."

@@ -144,6 +144,44 @@ RSpec.describe Projects::CreationWizard::CreateArtifactWorkPackageService do
       expect(artifact_work_package.last_journal.notes).not_to be_empty
       expect(artifact_work_package.last_journal.notes).to include(project.project_creation_wizard_work_package_comment)
       expect(artifact_work_package.last_journal.notes).to include(/<mention[^>]+>@#{assignee_user.name}<\/mention>/)
+      expect(artifact_work_package.last_journal.notes).to include(/data-type="user"/)
+    end
+
+    context "when 'Assignee when submitted' is not configured" do
+      before do
+        project.update(project_creation_wizard_assignee_custom_field_id: nil)
+      end
+
+      it "creates the artifact work package without an assignee and without a mention in the comment" do
+        result = instance.call
+
+        expect(result.errors.full_messages).to be_empty
+        project = result.result
+
+        artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+        expect(artifact_work_package.assigned_to).to be_nil
+        expect(artifact_work_package.last_journal.notes).not_to include("<mention")
+        expected_path = Rails.application.routes.url_helpers.project_creation_wizard_path(project)
+        expect(artifact_work_package.last_journal.notes).to include(expected_path)
+      end
+    end
+
+    context "when assignee is a group" do
+      let(:group) { create(:group, firstname: "test group") }
+
+      it "mentions the group" do
+        project.members << create(:member, principal: group, project: p, roles: [role])
+        project.send("#{user_custom_field.attribute_name}=", group.id)
+
+        result = instance.call
+        project = result.result
+
+        artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+        expect(artifact_work_package.last_journal.notes).not_to be_empty
+        expect(artifact_work_package.last_journal.notes).to include(project.project_creation_wizard_work_package_comment)
+        expect(artifact_work_package.last_journal.notes).to include(/<mention[^>]+>@#{group.name}<\/mention>/)
+        expect(artifact_work_package.last_journal.notes).to include(/data-type="group"/)
+      end
     end
 
     it "adds a relative link to the project creation wizard in the description and journal comment" do
@@ -226,11 +264,11 @@ RSpec.describe Projects::CreationWizard::CreateArtifactWorkPackageService do
         date = Date.current.iso8601
         expect(Storages::UploadFileService)
           .to have_received(:call)
-                .with(container: artifact_work_package,
-                      project_storage:,
-                      file_path: "Project mandate",
-                      filename: /#{project.identifier}_Project_mandate_#{artifact_work_package.status.name}_#{date}_\d+-\d+.pdf/,
-                      file_data: instance_of(StringIO))
+          .with(container: artifact_work_package,
+                project_storage:,
+                file_path: "Project mandate",
+                filename: /#{project.identifier}_Project_mandate_#{artifact_work_package.status.name}_#{date}_\d+-\d+.pdf/,
+                file_data: instance_of(StringIO))
       end
 
       context "with another default language", with_settings: { default_language: :de } do

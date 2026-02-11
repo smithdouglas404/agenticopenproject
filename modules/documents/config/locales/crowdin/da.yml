@@ -74,6 +74,7 @@ da:
         action: Forsøg igen
       connection_recovery_notice:
         description: "Forbindelsen til realtids-tekstsamarbejdsserveren er blevet genoprettet."
+      tabs: "Document tabs"
     index_page:
       name: "Navn"
       type: "Type"

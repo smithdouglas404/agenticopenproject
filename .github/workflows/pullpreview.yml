@@ -37,7 +37,6 @@ jobs:
         echo "OPENPROJECT_ENTERPRISE__CHARGEBEE__SITE=openproject-enterprise-test" >> .env.pullpreview
         echo "OPENPROJECT_ENTERPRISE__TRIAL__CREATION__HOST=https://start.openproject-edge.com" >> .env.pullpreview
         echo "OPENPROJECT_FEATURE_BLOCK_NOTE_EDITOR=true" >> .env.pullpreview
-        echo "OPENPROJECT_FEATURE_WP_ACTIVITY_TAB_LAZY_PAGINATION_ACTIVE=true" >> .env.pullpreview
     - name: Boot as BIM edition
       if: contains(github.ref, 'bim/') || contains(github.head_ref, 'bim/')
       run: |

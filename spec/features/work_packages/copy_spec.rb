@@ -102,7 +102,7 @@ RSpec.describe "Work package copy", :js, :selenium do
     to_copy_work_package_page.expect_current_path
     to_copy_work_package_page.expect_fully_loaded
 
-    to_copy_work_package_page.update_attributes Description: "Copied WP Description"
+    to_copy_work_package_page.fill_in_attributes Description: "Copied WP Description"
     to_copy_work_package_page.save!
 
     expect(page).to have_css(".op-toast--content",
@@ -141,15 +141,33 @@ RSpec.describe "Work package copy", :js, :selenium do
       wp_page.visit!
       wp_page.ensure_page_loaded
 
-      # Go to add cost entry page
-      find("#action-show-more-dropdown-menu .button").click
-      find(".menu-item", text: "Duplicate", exact_text: true).click
+      wp_page.select_from_context_menu("Duplicate")
 
       to_copy_work_package_page = Pages::FullWorkPackageCreate.new(original_work_package:)
       to_copy_work_package_page.update_attributes Description: "Copied WP Description"
       to_copy_work_package_page.save!
 
-      to_copy_work_package_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_create")
+      wp_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_create")
+    end
+  end
+
+  describe "when source work package is an automatically scheduled parent" do
+    before do
+      create(:work_package, project:, parent: original_work_package, subject: "Child")
+      original_work_package.update!(schedule_manually: false)
+    end
+
+    it "still allows copying through menu (Bug #69309)" do
+      wp_page = Pages::FullWorkPackage.new(original_work_package, project)
+      wp_page.visit!
+      wp_page.ensure_page_loaded
+
+      wp_page.select_from_context_menu("Duplicate")
+
+      to_copy_work_package_page = Pages::FullWorkPackageCreate.new(original_work_package:)
+      to_copy_work_package_page.save!
+
+      wp_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_create")
     end
   end
 end

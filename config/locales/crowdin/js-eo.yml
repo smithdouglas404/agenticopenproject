@@ -633,9 +633,6 @@ eo:
           add: "Add setting for project"
           already_selected: "This project is already selected"
           remove: "Remove project settings"
-    password_confirmation:
-      field_description: "Vi devas enirigi vian kontan pasvorton por konfirmi tiun ĉi ŝanaĝon."
-      title: "Konfirmu vian pasvorton por daŭrigi"
     pagination:
       no_other_page: "You are on the only page."
       pages_skipped: "Pages skipped."

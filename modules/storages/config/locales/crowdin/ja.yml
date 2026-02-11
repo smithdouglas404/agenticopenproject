@@ -96,12 +96,6 @@ ja:
       manual: 既存のフォルダを手動で管理
     remove_project:
       deletion_failure_flash: ストレージからのプロジェクトの削除に失敗しました。 %{error}
-      dialog:
-        automatically_managed_appendix: また、この場合、このストレージには自動的に管理されるプロジェクトフォルダがあり、このフォルダとそのファイルは永久に削除される。
-        confirmation_text: このプロジェクトからこのファイルストレージを削除したいことを確認してください
-        heading_text: '%{storage}からプロジェクトを削除する'
-        text: このアクションは不可逆的で、このプロジェクトのワークパッケージから、そのストレージのファイルやフォルダへのリンクをすべて削除します。
-        title: ストレージからプロジェクトを削除
       label: プロジェクトを削除
   services:
     attributes:
@@ -110,20 +104,20 @@ ja:
         create_folder: 'プロジェクトフォルダの作成を管理：'
         ensure_root_folder_permissions: 'ベースフォルダの権限を設定：'
         hide_inactive_folders: '非アクティブフォルダを隠す：'
-        remote_folders: 'グループフォルダの内容を読む：'
+        remote_folders: 'Read contents of the team folder:'
         remove_user_from_group: 'グループからユーザーを削除します：'
         rename_project_folder: '管理プロジェクトフォルダの名前を変更します：'
       one_drive_sync_service:
         create_folder: 'プロジェクトフォルダの作成を管理：'
         ensure_root_folder_permissions: 'ベースフォルダの権限を設定：'
         hide_inactive_folders: '非アクティブフォルダを隠す ステップ：'
-        remote_folders: 'グループフォルダの内容を読む：'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: '管理プロジェクトフォルダの名前を変更します：'
       sharepoint_sync_service:
         create_folder: 'プロジェクトフォルダの作成を管理：'
         ensure_root_folder_permissions: 'ベースフォルダの権限を設定：'
         hide_inactive_folders: '非アクティブフォルダを隠す ステップ：'
-        remote_folders: 'グループフォルダの内容を読む：'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: '管理プロジェクトフォルダの名前を変更します：'
     errors:
       messages:
@@ -146,7 +140,7 @@ ja:
               conflict: フォルダ %{folder_name} は %{parent_location}上に既に存在します。
               not_found: "%{parent_location} は見つからなかった。"
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} が見つかりませんでした。Nextcloudグループフォルダの設定を確認してください。"
+              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
               permission_not_set: '%{group_folder}にパーミッションを設定できなかった。'
             hide_inactive_folders:
               permission_not_set: '%{path}にパーミッションを設定できなかった。'
@@ -227,15 +221,16 @@ ja:
     confirm_replace_oauth_application: この操作で、現在の OAuth 認証情報がリセットされます。確認後、ストレージプロバイダで認証情報を再入力する必要があり、すべてのリモートユーザは OpenProject に対して再度認証する必要があります。本当に進めますか？
     confirm_replace_oauth_client: この操作により、現在のOAuth認証情報がリセットされます。確認後、ストレージプロバイダから新しい認証情報を入力する必要があり、すべてのユーザーは %{provider_type} に対して再度認証する必要があります。本当に進めますか？
     delete_warning:
-      project_storage_delete_result_1: このプロジェクトのワークパッケージから、そのストレージのファイルやフォルダへのリンクをすべて削除する。
-      project_storage_delete_result_2: このストレージに自動的に管理されるプロジェクトフォルダーがある場合、このフォルダーとそのファイルは永久に削除されます。
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
-      storage_delete_result_1: このストレージを使用しているすべてのプロジェクトのすべてのストレージ設定を削除します。
-      storage_delete_result_2: すべてのプロジェクトのワークパッケージから、そのストレージのファイルやフォルダへのリンクをすべて削除する。
-      storage_delete_result_3: このストレージに自動的に管理されるプロジェクトフォルダーがある場合、それらと含まれるファイルは永久に削除されます。
+      project_storage: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_delete_result_1: All links to corresponding files and folders will be removed
+      project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
+      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_delete_result_1: The storage will be removed from all projects currently using it
+      storage_delete_result_2: All links to corresponding files and folders will be removed
+      storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
-        group_folders_app: グループフォルダ
+        group_folders_app: Team Folders
         integration_app: 統合 OpenProject
     enabled_in_projects:
       setup_incomplete_description: このストレージはセットアップが不完全です。複数のプロジェクトで有効にする前に、セットアップを完了してください。
@@ -282,11 +277,11 @@ ja:
           client_folder_creation: 自動フォルダ作成
           client_folder_removal: フォルダの自動削除
           drive_contents: Drive content
-          files_request: グループフォルダファイルの取得
-          group_folder_app: '依存関係グループフォルダ'
-          group_folder_contents: Group folder content
-          group_folder_presence: グループフォルダが存在する
+          files_request: Fetching team folder files
           header: 自動的に管理されるプロジェクトフォルダ
+          team_folder_app: 'Dependency: Team Folders'
+          team_folder_contents: Team folder content
+          team_folder_presence: Team folder exists
           userless_access: サーバー側のリクエスト認証
         authentication:
           existing_token: ユーザー・トークン
@@ -321,12 +316,12 @@ ja:
         client_secret_invalid: 設定されたOAuth 2クライアントシークレットが無効です。設定を確認してください。
         nc_dependency_missing: 'ファイルストレージに必要な依存関係がありません。次の依存関係を追加してください： %{dependency}。'
         nc_dependency_version_mismatch: '%{dependency} アプリのバージョンがサポートされていません。Nextcloudサーバーをアップデートしてください。'
-        nc_group_folder_not_found: グループフォルダが見つかりません。
         nc_host_not_found: 設定されたホストURLにNextcloudサーバーが見つかりません。設定を確認してください。
         nc_oauth_request_not_found: 現在接続しているユーザーを取得するエンドポイントが見つかりませんでした。詳細については、サーバーのログを確認してください。
         nc_oauth_request_unauthorized: 現在のユーザーにはリモートファイルストレージにアクセスする権限がありません。サーバーのログを確認してください。
         nc_oauth_token_missing: OpenProjectでは、ユーザーがNextcloudアカウントをリンクしていないため、ユーザーレベルのNextcloudとの通信をテストできません。
-        nc_unexpected_content: 管理グループフォルダに予期しないコンテンツが見つかりました。
+        nc_team_folder_not_found: The team folder could not be found.
+        nc_unexpected_content: Unexpected content found in the managed team folder.
         nc_userless_access_denied: 設定されているアプリのパスワードが無効です。
         not_configured: 接続を検証できませんでした。先に設定を完了してください。
         od_client_cant_delete_folder: クライアントがフォルダの削除に失敗しています。お使いのストレージのセットアップドキュメントを確認してください。
@@ -501,7 +496,7 @@ ja:
         title: プロジェクトフォルダに権限を設定しています。
     page_titles:
       file_storages:
-        delete: ファイルストレージを削除
+        delete: Delete file storage?
         subtitle: ワークパッケージ内のファイルをアップロード、リンク、管理するために、外部ファイルストレージを追加します。
       managed_project_folders:
         subtitle: |-
@@ -516,6 +511,8 @@ ja:
       project_storage_members:
         subtitle: 全プロジェクトメンバーのストレージ %{storage_name_link} の接続状態を確認する。
         title: 会員の接続状況
+      project_storages:
+        delete: Remove file storage from project?
     permission_header_explanation: '外部ストレージのファイル権限は、自動的に管理されたプロジェクトフォルダ内のフォルダとファイルにのみ適用されます。 すべてのファイル権限がすべてのストレージプロバイダでサポートされているわけではないことに注意してください。 詳細については、 <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>ファイルストレージパーミッション</a> のドキュメントを確認してください。'
     provider_types:
       label: プロバイダー・タイプ
@@ -536,7 +533,7 @@ ja:
         name: シェアポイント
         name_placeholder: 例：シェアポイント
     show_attachments_toggle:
-      description: このオプションを無効にすると、作業パッケージのファイルタブの添付ファイルリストが非表示になります。ワークパッケージの説明に添付されたファイルは、内部添付ファイルストレージにアップロードされます。
+      description: このオプションを無効にすると、ワークパッケージのファイルタブの添付ファイルリストが非表示になります。ワークパッケージの説明に添付されたファイルは、内部添付ファイルストレージにアップロードされます。
       label: ワークパッケージのファイルタブに添付ファイルを表示
     storage_audience:
       documentation_intro: 以下のオプションと ID プロバイダの設定の詳細については、当社のドキュメントをお読みください。

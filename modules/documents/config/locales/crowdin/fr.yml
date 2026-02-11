@@ -74,6 +74,7 @@ fr:
         action: Réessayer
       connection_recovery_notice:
         description: "La connexion au serveur de collaboration textuelle en temps réel a été rétablie."
+      tabs: "Onglets du document"
     index_page:
       name: "Nom"
       type: "Type"

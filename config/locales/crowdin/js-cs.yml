@@ -635,9 +635,6 @@ cs:
           add: "Přidat nastavení pro projekt"
           already_selected: "Tento projekt je již vybrán"
           remove: "Odstranit nastavení projektu"
-    password_confirmation:
-      field_description: "Pro potvrzení této změny je třeba zadat heslo k účtu."
-      title: "Pro pokračování potvrďte vaše heslo"
     pagination:
       no_other_page: "Jste na jediné stránce."
       pages_skipped: "Pages skipped."

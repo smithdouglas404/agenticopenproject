@@ -61,6 +61,28 @@ RSpec.describe MeetingAgendaItems::UpdateContract do
 
       it_behaves_like "contract is invalid", item_type: :error_readonly
     end
+
+    context "with presenter" do
+      before do
+        item.presenter = presenter
+      end
+
+      context "when presenter can view meetings in the project" do
+        let(:presenter) { create(:user, member_with_permissions: { project => [:view_meetings] }) }
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when presenter cannot view meetings in the project" do
+        let(:presenter) { create(:user) }
+
+        it_behaves_like "contract is invalid", presenter: :user_invalid do
+          it "does not include the presenter's name in the error message" do
+            expect(contract.errors[:presenter]).not_to include(presenter.name)
+          end
+        end
+      end
+    end
   end
 
   context "without permission" do

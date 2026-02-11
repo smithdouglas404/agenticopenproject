@@ -58,7 +58,7 @@ import { fromEvent, Subscription } from 'rxjs';
 import { AttachmentCollectionResource } from 'core-app/features/hal/resources/attachment-collection-resource';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { navigator } from '@hotwired/turbo';
-import { uniqueId } from 'lodash';
+import { attributeTokenList, ensureId } from 'core-app/shared/helpers/dom-helpers';
 
 @Component({
   templateUrl: './ckeditor-augmented-textarea.html',
@@ -226,6 +226,34 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
     });
   }
 
+  private constrainGroupedDropdownToEditorWidth(_editor:ICKEditorInstance) {
+    const host = this.elementRef.nativeElement;
+
+    const editorWidth = () => {
+      const editorEl = host.querySelector<HTMLElement>('.ck-editor') ?? host;
+      return Math.floor(editorEl.getBoundingClientRect().width);
+    };
+
+    const apply = () => {
+      const width = editorWidth();
+
+      const panels = Array.from(
+        document.querySelectorAll<HTMLElement>(
+          '.ck.ck-dropdown__panel'
+        )
+      );
+
+      for (const panel of panels) {
+        panel.style.maxWidth = `${width - 8}px`;
+
+      }
+    };
+
+    fromEvent(host, 'click')
+      .pipe(this.untilDestroyed())
+      .subscribe(() => setTimeout(apply));
+  }
+
   public setup(editor:ICKEditorInstance) {
     this.setupMarkingReadonlyWhenTextareaIsDisabled(editor);
 
@@ -242,6 +270,7 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
     editor.ui.focusTracker.on('change:isFocused', (_evt:unknown, _name:string, _isFocused:boolean) => {
       this.setLabel();
     });
+    this.constrainGroupedDropdownToEditorWidth(editor);
 
     return editor;
   }
@@ -331,16 +360,8 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
 
     const ckContent = this.element.querySelector<HTMLElement>('.ck-content')!;
 
-    let labelId;
-    if (label.hasAttribute('id')) {
-      labelId = label.getAttribute('id')!;
-    } else {
-      labelId = uniqueId('label-');
-      label.setAttribute('id', labelId);
-    }
-
     ckContent.removeAttribute('aria-label');
-    ckContent.setAttribute('aria-labelledby', labelId);
+    attributeTokenList(ckContent, 'aria-labelledby').add(ensureId(label, 'label'));
 
     if (!this.labelClickSubscription) {
       this.labelClickSubscription = fromEvent(label, 'click')

@@ -71,8 +71,7 @@
                 "silenceDeprecations": [
                   "color-functions",
                   "global-builtin",
-                  "import",
-                  "mixed-decls"
+                  "import"
                 ]
               }
             },
@@ -81,6 +80,11 @@
                 "input": "node_modules/jquery/dist/jquery.min.js",
                 "inject": false,
                 "bundleName": "jquery"
+              },
+              {
+                "input": "node_modules/openapi-explorer/dist/browser/openapi-explorer.min.js",
+                "inject": false,
+                "bundleName": "openapi-explorer"
               }
             ]
           },

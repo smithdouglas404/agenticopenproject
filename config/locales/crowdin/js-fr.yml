@@ -426,7 +426,7 @@ fr:
     label_remove_row: "Supprimer la ligne"
     label_report: "Rapport"
     label_repository_plural: "Dépôts"
-    label_resize_project_menu: "Resize project menu"
+    label_resize_project_menu: "Redimensionner le menu du projet"
     label_save_as: "Enregistrer sous"
     label_search_columns: "Rechercher une colonne"
     label_select_watcher: "Sélectionner un observateur…"
@@ -633,9 +633,6 @@ fr:
           add: "Ajouter un paramètre pour le projet"
           already_selected: "Ce projet est déjà sélectionné"
           remove: "Suppression des paramètres de projet"
-    password_confirmation:
-      field_description: "Vous devez saisir le mot de passe de votre compte pour confirmer ce changement."
-      title: "Confirmez votre mot de passe pour continuer"
     pagination:
       no_other_page: "Vous êtes sur la seule page."
       pages_skipped: "Pages ignorées."

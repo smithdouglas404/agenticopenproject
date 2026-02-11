@@ -79,7 +79,7 @@ RSpec.describe "DELETE /recurring_meetings/:id",
       expect(ActionMailer::Base.deliveries.size).to eq(1)
       mail = ActionMailer::Base.deliveries.first
       expect(mail.body.parts.first.parts.first.body.to_s)
-        .to include "Meeting series '#{title}' has been cancelled by #{user.name}."
+        .to include "Meeting series '#{title}' has been cancelled by #{user.name}, or you have been removed as a participant"
     end
 
     context "when deleting an occurrence" do
@@ -94,7 +94,7 @@ RSpec.describe "DELETE /recurring_meetings/:id",
         expect(ActionMailer::Base.deliveries.size).to eq(1)
         mail = ActionMailer::Base.deliveries.first
         expect(mail.body.parts.first.parts.first.body.to_s)
-          .to include "An occurrence of '#{title}' has been cancelled by #{user.name}."
+          .to include "An occurrence of '#{title}' has been cancelled by #{user.name}, or you have been removed as a participant"
       end
     end
   end

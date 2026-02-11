@@ -7,14 +7,14 @@ vi:
     common:
       document_types:
         item_0:
-          name: Note
+          name: Lưu ý
         item_1:
-          name: Idea
+          name: Ý tưởng
         item_2:
-          name: Proposal
+          name: Đề xuất
         item_3:
-          name: Specification
+          name: Đặc điểm kỹ thuật
         item_4:
-          name: Report
+          name: Báo cáo
         item_5:
-          name: Documentation
+          name: tài liệu
