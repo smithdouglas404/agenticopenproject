@@ -48,7 +48,7 @@ module Costs
       end
 
       def chart_labels
-        months
+        months.map { |month| month.to_date.iso8601 }
       end
 
       def chart_datasets
@@ -66,7 +66,7 @@ module Costs
       def labor_dataset
         {
           label: t(:caption_labor),
-          data: months.map { |month| spent_labor_by_month.fetch(month, 0.0) }
+          data: months.map { |month| spent_labor_by_month.fetch(month, 0).to_f }
         }
       end
 
@@ -74,7 +74,7 @@ module Costs
         cost_type_names.map do |cost_type_name|
           {
             label: cost_type_name,
-            data: months.map { |month| spent_material_by_month_and_type.fetch([month, cost_type_name], 0.0) }
+            data: months.map { |month| spent_material_by_month_and_type.fetch([month, cost_type_name], 0).to_f }
           }
         end
       end
