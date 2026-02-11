@@ -50,7 +50,7 @@ module Agile
     validates :project, presence: true
     validates :sharing, presence: true, inclusion: { in: SPRINT_SHARINGS }
     validates :start_date, presence: true
-    validates :end_date,
+    validates :finish_date,
               presence: true,
               comparison: { greater_than_or_equal_to: :start_date }
 
