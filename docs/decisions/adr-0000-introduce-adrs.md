@@ -29,21 +29,26 @@ How can we make architectural decisions transparent, durable, and discoverable a
 - Do not formally document architectural decisions
 - Document decisions in the wiki or as OpenProject work packages of a specific type
 - Document decisions in commit messages and pull requests
-- Use Architecture Decision Records (ADRs) within the documentation folder
+- Use Architecture Decision Records (ADRs) within the docs folder
 
 ## Decision Outcome
 
-Chosen option: **"Use Architecture Decision Records (ADRs) within the documentation folder"**, because it provides a lightweight, structured, version-controlled method for documenting architectural decisions while keeping documentation close to the codebase and easy to maintain.
+Chosen option: **"Use Architecture Decision Records (ADRs) within the docs folder"**, because it provides a lightweight,
+structured, version-controlled method for documenting architectural decisions while keeping documentation close to the
+codebase and easy to maintain. Also having a discussion in a pull request on a markdown file allows collaboration and
+preserves the discussion history.
 
-### Consequences
+Not having a formal process is what we have been doing before and while it mostly works, there are pieces of the codebase
+where different solutions are implemented for the same problem, and it is not clear why.
 
-- Good, because decisions and their rationale are preserved long-term
-- Good, because new team members can quickly understand system architecture
-- Good, because future changes can evaluate past trade-offs
-- Good, because discussions become more focused and evidence-based
-- Good, because ADR change proposals can make use of pull request tooling
-- Bad, because writing ADRs adds an overhead to decision making
-- Bad, because teams must learn and consistently follow a new process
+Documenting decisions in the wiki or issue tracker is easy but often becomes outdated and disconnected from the codebase.
+While using OpenProject work packages comes with some benefits (like tracking time on the ADR), they still live very
+disconnected from the codebase and the discussion history on a pull request on a markdown file is superior to having the
+discussion on an OpenProject work package.
+
+Documenting decisions in commit messages and pull requests keeps information close to the code but can lead to
+fragmented and hard-to-discover documentation. It is also hard to get a complete picture of the architectural decisions
+when they are scattered across multiple commits and pull requests, and PR systems are not designed for long-term documentation.
 
 ### Confirmation
 
