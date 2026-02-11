@@ -320,28 +320,9 @@ validate_all_in_one_plugin_inheritance() {
   }
   trap cleanup_plugin_inheritance_validation RETURN
 
-  mkdir -p "${plugin_validation_dir}/openproject-plugin-verification/lib"
-
   cat > "${plugin_validation_dir}/Gemfile.plugins" <<'RUBY'
 group :opf_plugins do
-  gem "openproject-plugin-verification", path: "/app/vendor/plugins/openproject-plugin-verification"
-end
-RUBY
-
-  cat > "${plugin_validation_dir}/openproject-plugin-verification/openproject-plugin-verification.gemspec" <<'RUBY'
-Gem::Specification.new do |spec|
-  spec.name = "openproject-plugin-verification"
-  spec.version = "0.0.1"
-  spec.summary = "All-in-one image plugin inheritance validation helper"
-  spec.authors = ["OpenProject"]
-  spec.files = Dir["lib/**/*.rb"]
-  spec.require_paths = ["lib"]
-end
-RUBY
-
-  cat > "${plugin_validation_dir}/openproject-plugin-verification/lib/openproject-plugin-verification.rb" <<'RUBY'
-module OpenprojectPluginVerification
-  VERSION = "0.0.1"
+  gem "openproject-slack", git: "https://github.com/opf/openproject-slack.git", branch: "dev"
 end
 RUBY
 
@@ -349,7 +330,6 @@ RUBY
 ARG BASE_IMAGE=openproject/openproject:17
 FROM ${BASE_IMAGE}
 
-COPY openproject-plugin-verification /app/vendor/plugins/openproject-plugin-verification
 COPY Gemfile.plugins /app/
 
 RUN bundle config unset deployment && bundle install && bundle config set deployment 'true'
@@ -363,8 +343,7 @@ DOCKER
 
   docker run --rm --entrypoint sh "${plugin_validation_image}" -lc '
 set -eu
-bundle info openproject-plugin-verification >/dev/null 2>&1
-bundle exec ruby -e "spec = Gem::Specification.find_by_name(\"openproject-plugin-verification\"); abort(\"openproject-plugin-verification gem missing\") unless spec.version.to_s == \"0.0.1\""
+bundle info openproject-slack >/dev/null 2>&1
 '
 }
 
