@@ -334,7 +334,7 @@ FROM ${BASE_IMAGE}
 COPY Gemfile.plugins /app/
 
 RUN bundle config unset deployment && bundle install && bundle config set deployment 'true'
-RUN rm -f /app/config/frontend_assets.manifest.json /app/db/schema_cache.yml && ./docker/prod/setup/precompile-assets.sh
+RUN FORCE_ASSET_RECOMPILE=1 ./docker/prod/setup/precompile-assets.sh
 DOCKER
 
   docker build \
