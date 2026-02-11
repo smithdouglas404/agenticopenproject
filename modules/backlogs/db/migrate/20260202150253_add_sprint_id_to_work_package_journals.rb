@@ -30,6 +30,6 @@
 
 class AddSprintIdToWorkPackageJournals < ActiveRecord::Migration[8.0]
   def change
-    add_column :work_package_journals, :sprint_id, :integer, default: nil, null: true
+    add_reference :work_package_journals, :sprint, foreign_key: { on_delete: :nullify }
   end
 end
