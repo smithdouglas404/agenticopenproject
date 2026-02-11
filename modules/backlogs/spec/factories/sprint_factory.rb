@@ -40,6 +40,6 @@ FactoryBot.define do
     sequence(:name) { |n| "Sprint #{n}" }
     status { "in_planning" }
     start_date { Time.zone.today }
-    end_date { Time.zone.today + 14.days }
+    finish_date { Time.zone.today + 14.days }
   end
 end

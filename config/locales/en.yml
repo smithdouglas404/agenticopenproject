@@ -1260,7 +1260,7 @@ en:
     attributes:
       agile/sprint:
         sharing: "Sharing"
-        end_date: "End date"
+        finish_date: "End date"
       announcements:
         show_until: "Display until"
       attachment:

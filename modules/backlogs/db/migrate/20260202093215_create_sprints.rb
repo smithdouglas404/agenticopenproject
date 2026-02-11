@@ -34,13 +34,13 @@ class CreateSprints < ActiveRecord::Migration[8.0]
       t.string :name, null: false
       t.string :status, null: false, default: "in_planning"
       t.date :start_date, null: false
-      t.date :end_date, null: false
+      t.date :finish_date, null: false
       t.string :sharing, null: false, default: "none"
       t.references :project, null: false, foreign_key: true
 
       t.timestamps
 
-      t.check_constraint "end_date >= start_date", name: "sprint_end_date_after_start_date"
+      t.check_constraint "finish_date >= start_date", name: "sprint_finish_date_after_start_date"
     end
   end
 end
