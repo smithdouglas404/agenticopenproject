@@ -76,7 +76,7 @@ Compliance will be confirmed by:
 - Good, because easy to write and familiar to teams
 - Good, because searchable
 - Neutral, because can hold discussion history
-- Bad, because documentation becomes outdated
+- Bad, because documentation away from code becomes outdated more easily
 - Bad, because it is disconnected from the codebase
 
 ### Document decisions in commit messages and pull requests
