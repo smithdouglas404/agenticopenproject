@@ -207,6 +207,8 @@ class MeetingsController < ApplicationController
   end
 
   def destroy # rubocop:disable Metrics/AbcSize
+    authorization_check(contract_class: Meetings::DeleteContract, model: @meeting, action: :delete)
+
     recurring = @meeting.recurring_meeting
 
     # rubocop:disable Rails/ActionControllerFlashBeforeRender
