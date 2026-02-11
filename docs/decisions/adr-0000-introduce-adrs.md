@@ -33,7 +33,7 @@ How can we make architectural decisions transparent, durable, and discoverable a
 
 ## Decision Outcome
 
-Chosen option: **"Use Architecture Decision Records (ADRs) within the documentation folder)"**, because it provides a lightweight, structured, version-controlled method for documenting architectural decisions while keeping documentation close to the codebase and easy to maintain.
+Chosen option: **"Use Architecture Decision Records (ADRs) within the documentation folder"**, because it provides a lightweight, structured, version-controlled method for documenting architectural decisions while keeping documentation close to the codebase and easy to maintain.
 
 ### Consequences
 
