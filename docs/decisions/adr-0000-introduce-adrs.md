@@ -118,4 +118,5 @@ ADRs will:
   - the system architecture significantly changes
   - assumptions are no longer valid
   - the decision causes operational or development friction
-    This ADR establishes ADRs as the authoritative record of architectural decisions in this project.
+
+This ADR establishes ADRs as the authoritative record of architectural decisions in this project.
