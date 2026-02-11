@@ -20,7 +20,7 @@ ja:
       action: "アクションボード (%{attribute})"
     board_type_attributes:
       assignee: 担当者
-      status: ステータス
+      status: Kanban
       version: バージョン
       subproject: 子プロジェクト
       subtasks: 親子

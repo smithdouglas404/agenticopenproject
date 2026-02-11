@@ -6,6 +6,7 @@ vi:
       configure: 'Định cấu hình tiện ích'
       widgets:
         missing_permission: "Bạn không có quyền cần thiết để xem tiện ích này."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Văn bản tùy chỉnh'
         documents:
@@ -27,8 +28,6 @@ vi:
           not_set: 'Không được thiết lập'
           finished: 'Đã hoàn thành'
           discontinued: 'Đã ngừng sản xuất'
-        project_status_beta:
-          title: 'Trạng thái (BETA)'
         subprojects:
           title: 'mục phụ'
         project_favorites:

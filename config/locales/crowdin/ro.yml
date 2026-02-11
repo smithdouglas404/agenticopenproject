@@ -123,6 +123,16 @@ ro:
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -639,14 +649,14 @@ ro:
           unavailable: "unavailable"
         label_request_submission: "Request submission"
         project_attributes_description: >
-          Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
+          Selectează ce atribute ale proiectului ar trebui incluse în solicitarea de inițiere a proiectului. Această listă include doar [atributele proiectului](project_attributes_url) activate pentru acest proiect.
         enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Edit status
     wizard:
       sidebar_content_title: "Content"
       sections: "Sections"
-      title: "Project initiation request"
+      title: "Cerere de inițiere a proiectului"
       no_help_text: "This attribute has no help text defined."
       success: "Project attributes saved and artifact work package created successfully."
       progress_label: "%{current} of %{total}"
@@ -1172,6 +1182,9 @@ ro:
         dependencies: "Dependenţe"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Afişare până la"
       attachment:
@@ -1287,7 +1300,7 @@ ro:
         identifier: "Identificator"
         latest_activity_at: "Ultima activitate la"
         parent: "Subproiect în"
-        project_creation_wizard_enabled: "Project initiation request"
+        project_creation_wizard_enabled: "Cerere de inițiere a proiectului"
         public_value:
           title: "Vizibilitate"
           true: "public"
@@ -1546,6 +1559,7 @@ ro:
         not_available: "nu este disponibil din cauza unei configurații a sistemului."
         not_deletable: "%s nu poate fi șters."
         not_current_user: "nu este utilizatorul curent."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "nu a fost găsit."
         not_a_date: "Acest câmp trebuie să conțină o dată validă."
         not_a_datetime: "nu este o dată-ora validă."
@@ -1653,6 +1667,8 @@ ro:
               not_unique: "is already in use. Please select another name."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Trebuie specificat cel puţin un canal pentru trimiterea notificărilor."
           attributes:
@@ -1682,7 +1698,7 @@ ro:
           attributes:
             base:
               archive_permission_missing_on_subprojects: "Nu ai permisiunile necesare pentru a arhiva toate sub-proiectele. Te rog să contactezi un administrator."
-              project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
+              project_initiation_request_disabled: "Solicitarea de inițiere a proiectului este dezactivată. Aceasta trebuie să fie activată pentru a crea pachetul de lucru artefact."
             types:
               in_use_by_work_packages: "încă în uz în pachetele de lucru: %{types}"
             enabled_modules:
@@ -2126,6 +2142,7 @@ ro:
     role: "Rol"
     roles: "Roluri"
     search: "Caută"
+    sprint: "Sprint"
     start_date: "Dată început"
     status: "Stare"
     state: "State"
@@ -2478,7 +2495,7 @@ ro:
   description_choose_project: "Proiecte"
   description_compare_from: "Comparați de la"
   description_compare_to: "compară cu"
-  description_current_position: "Sunteți aici: "
+  description_current_position: "Ești aici: "
   description_date_from: "Introdu dată început"
   description_date_to: "Introduceţi data de sfârşit"
   description_enter_number: "Introduceţi numărul"
@@ -2521,7 +2538,7 @@ ro:
       one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
       placeholder_users: Placeholder Users
       portfolio_management: Portfolio management
-      project_creation_wizard: Project initiation request
+      project_creation_wizard: Cerere de inițiere a proiectului
       project_list_sharing: Project List Sharing
       readonly_work_packages: Readonly Work Packages
       scim_api: SCIM server API
@@ -4417,6 +4434,9 @@ ro:
   setting_smtp_password: "Parola SMTP"
   setting_smtp_domain: "Domeniul SMTP HELO"
   setting_activity_days_default: "Zile afișate în lista de activități a proiectului"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtitlu aplicație"
   setting_app_title: "Titlu aplicație"
   setting_attachment_max_size: "Dimensiune maximă atașament"
@@ -4526,7 +4546,6 @@ ro:
   setting_repository_checkout_text: "Text instrucțiuni de descărcare"
   setting_repository_log_display_limit: "Numărul maxim de revizii afisate în istoricul de fișiere"
   setting_repository_truncate_at: "Număr maxim de fișiere este afișat în exploratorul de repozitoriu"
-  setting_rest_api_enabled: "Activare serviciu web REST"
   setting_self_registration: "Înregistrare individuală"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4658,46 +4677,46 @@ ro:
               description: "Add all the project attributes in a section inside the right side panel in the project overview."
     project_initiation_request:
       header_description: >
-        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
+        OpenProject poate genera un asistent pas cu pas pentru a ajuta managerii de proiect să completeze o cerere de inițiere a proiectului. Poți alege ce atribute ale proiectului ar trebui sa fie incluse si sa creezi un artefact PDF ca rezultat.
       status:
-        submitted: "%{wizard_name} has been submitted"
-        submitted_description: "Click the button below to go to the work package for the submission process."
-        submitted_button: "Open submission request"
-        not_completed: "%{wizard_name} not yet completed"
-        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+        submitted: "%{wizard_name} a fost trimis"
+        submitted_description: "Fă clic pe butonul de mai jos pentru a merge la pachetul de lucru pentru procesul de trimitere."
+        submitted_button: "Deschide solicitarea de depunere"
+        not_completed: "%{wizard_name} nu a fost încă finalizat"
+        not_completed_description: "Furnizează informațiile necesare completând atributele și pornește proiectul."
       wizard_status_button:
-        project_initiation_request: "Open project initiation request"
-        project_creation_wizard: "Open project creation wizard"
-        project_mandate: "Open project mandate"
+        project_initiation_request: "Deschide cererea de inițiere a proiectului"
+        project_creation_wizard: "Deschide expertul de creare a proiectului"
+        project_mandate: "Mandatul proiectului deschis"
       blankslate:
-        title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        title: "Cererea de inițiere nu este activată"
+        description: "OpenProject poate genera un asistent pas cu pas pentru a ajuta managerii de proiect să completeze o cerere de inițiere a proiectului. Puteți alege ce atribute ale proiectului ar trebui să fie incluse și ce să faceți cu documentul de ieșire. Activați-l aici pentru a începe configurarea expertului."
       disable_dialog:
-        title: "Disable project initiation request"
+        title: "Dezactivează solicitarea de inițiere a proiectului"
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
       name:
-        artifact_name: "Artifact name"
+        artifact_name: "Nume artefact"
         artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
         options:
-          project_initiation_request: "Project initiation request"
-          project_creation_wizard: "Project creation wizard"
-          project_mandate: "Project mandate"
+          project_initiation_request: "Cerere de inițiere a proiectului"
+          project_creation_wizard: "Asistent pentru crearea de proiecte"
+          project_mandate: "Mandat proiect"
       submission:
         description_template: >
           **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
         description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artifact."
-        status_when_submitted: "Status when submitted"
+        status_when_submitted: "Statusul când este trimis"
         status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
         send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
         assignee: "Assignee when submitted"
         assignee_caption_html: "The user or group assigned to this project attribute will also become the assignee of the new work package. This list includes active project attributes of type <i>User</i> only."
-        confirmation_email_text: "Confirmation email text"
+        confirmation_email_text: "Textul e-mailului de confirmare"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
-        work_package_comment: "Work package comment"
+        work_package_comment: "Comentariu pachet de lucru"
         work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
         work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:
@@ -4959,10 +4978,10 @@ ro:
     reset_failed_logins: "Resetare autentificări eşuate"
     status_user_and_brute_force: "%{user} şi %{brute_force}"
     status_change: "Schimbare stare"
-    text_change_disabled_for_provider_login: "Numele este setat de furnizorul de logare și, prin urmare, nu poate fi modificat."
-    text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Deblochează"
     unlock_and_reset_failed_logins: "Deblocare şi resetare autentificări eşuate"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "închis"
   version_status_locked: "blocat"
   version_status_open: "deschis"

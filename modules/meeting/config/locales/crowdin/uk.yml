@@ -61,6 +61,8 @@ uk:
         end_after: "Серія нарад завершується"
         end_date: "Дата завершення"
         iterations: "Повторення"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Запрошені"
         attended: "Відвідано"
@@ -71,6 +73,8 @@ uk:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Одна відкрита нарада в серії не входить у новий розклад. Налаштуйте розклад так, щоб він охоплював усі наявні наради."

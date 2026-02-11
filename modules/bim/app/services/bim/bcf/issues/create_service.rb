@@ -57,7 +57,7 @@ module Bim::Bcf
       end
 
       def use_work_package(links:, params:)
-        work_package = WorkPackage.find_by(id: work_package_id_from_links(links))
+        work_package = WorkPackage.visible(user).find_by(id: work_package_id_from_links(links))
         return work_package_not_found_result if work_package.nil?
 
         ::WorkPackages::UpdateService
@@ -89,7 +89,7 @@ module Bim::Bcf
 
       def work_package_not_found_result
         ServiceResult.failure(errors: Bim::Bcf::Issue.new.errors).tap do |r|
-          r.errors.add :work_package, :does_not_exist
+          r.errors.add :base, :error_not_found
         end
       end
 

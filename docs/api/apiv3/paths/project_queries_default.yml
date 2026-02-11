@@ -15,7 +15,7 @@ get:
     This endpoint is deprecated and replaced by [`/api/v3/workspaces/{id}/queries/default`](https://www.openproject.org/docs/api/endpoints/queries/#view-default-query-for-workspace)
   parameters:
   - description: Id of the project the default query is requested for
-    example: '1'
+    example: 1
     in: path
     name: id
     required: true
@@ -34,7 +34,7 @@ get:
       type: string
   - name: offset
     description: Page number inside the queries' result collection of work packages.
-    example: '25'
+    example: 25
     in: query
     required: false
     schema:
@@ -43,7 +43,7 @@ get:
   - name: pageSize
     description: Number of elements to display per page for the queries' result collection
       of work packages.
-    example: '25'
+    example: 25
     in: query
     required: false
     schema:

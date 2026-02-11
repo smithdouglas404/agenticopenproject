@@ -6,6 +6,7 @@ tr:
       configure: 'Bileşeni yapılandır'
       widgets:
         missing_permission: "Bu bileşeni görüntülemek için gerekli izinlere sahip değilsiniz."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Özel metin'
         documents:
@@ -27,8 +28,6 @@ tr:
           not_set: 'Ayarlanmadı'
           finished: 'Tamamlandı'
           discontinued: 'Durduruldu'
-        project_status_beta:
-          title: 'Durum (BETA)'
         subprojects:
           title: 'Alt öğeler'
         project_favorites:

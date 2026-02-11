@@ -59,6 +59,8 @@ de:
         end_after: "Ende der Terminserie"
         end_date: "Enddatum"
         iterations: "Ereignisse"
+      recurring_meeting_interim_response:
+        start_time: "Startzeit"
       meeting_participant:
         invited: "Eingeladen"
         attended: "Teilgenommen"
@@ -69,6 +71,8 @@ de:
           user_invalid: "ist kein gültiger Teilnehmer."
         meeting_agenda_item:
           user_invalid: "ist kein gültiger Teilnehmer."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Es gibt eine offene Besprechung in der Terminserie, die nicht durch den neuen Zeitplan abgedeckt ist. Passen Sie den Zeitplan an, um alle bestehenden Meetings einzuschließen."
@@ -130,7 +134,7 @@ de:
   label_meeting_date_and_time: "Datum und Zeit"
   label_meeting_diff: "Differenz"
   label_meeting_send_updates: "E-Mail-Kalender-Aktualisierungen senden"
-  label_meeting_send_updates_caption: "Versenden Sie E-Mail-Einladungen an alle Teilnehmer dieser Besprechung"
+  label_meeting_send_updates_caption: "Versenden Sie E-Mail-Einladungen an alle Teilnehmenden dieser Besprechung"
   label_recurring_meeting: "Wiederkehrende Besprechung"
   label_recurring_meeting_part_of: "Teil einer Terminserie"
   label_recurring_meeting_new: "Neue Terminserie"
@@ -260,7 +264,7 @@ de:
         new_date_time: "Neue(s) Datum/Zeit"
         old_location: "Alter Ort"
         new_location: "Neuer Ort"
-    label_mail_all_participants: "E-Mail an alle Teilnehmer senden"
+    label_mail_all_participants: "E-Mail Einladung an alle Teilnehmenden versenden"
     types:
       one_time: "Einmalig"
       recurring: "Terminserie"

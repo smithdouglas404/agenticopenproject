@@ -58,6 +58,8 @@ vi:
         end_after: "Chuỗi cuộc họp kết thúc"
         end_date: "Ngày kết thúc"
         iterations: "lần xuất hiện"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Đã mời"
         attended: "đã tham dự"
@@ -68,6 +70,8 @@ vi:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Có một cuộc họp mở trong chuỗi không có trong lịch trình mới. Điều chỉnh lịch trình để bao gồm tất cả các cuộc họp hiện có."

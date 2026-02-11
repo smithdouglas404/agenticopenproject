@@ -6,6 +6,7 @@ ru:
       configure: 'Настроить виджет'
       widgets:
         missing_permission: "У вас нет необходимых прав для просмотра этого виджета."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Пользовательский текст'
         documents:
@@ -27,8 +28,6 @@ ru:
           not_set: 'Не задано'
           finished: 'Завершен'
           discontinued: 'Прекращен'
-        project_status_beta:
-          title: 'Статус (BETA)'
         subprojects:
           title: 'Подпроекты'
         project_favorites:

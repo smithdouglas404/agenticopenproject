@@ -35,12 +35,12 @@ module OpenProject
         ##
         # Allows users to authenticate using their API key as a Bearer token.
         # Note that in order for a user to be able to generate one
-        # `Setting.rest_api_enabled` has to be `1`.
+        # `Setting.api_tokens_enabled` has to be `1`.
         class UserAPIToken < ::Warden::Strategies::Base
           include FailWithHeader
 
           def valid?
-            return false unless Setting.rest_api_enabled?
+            return false unless Setting.api_tokens_enabled?
 
             @access_token = ::Doorkeeper::OAuth::Token.from_bearer_authorization(
               ::Doorkeeper::Grape::AuthorizationDecorator.new(request)

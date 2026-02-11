@@ -16,7 +16,7 @@ module ::Avatars
     end
 
     def find_user
-      @user = User.find(params[:id])
+      @user = User.visible.find(params[:id])
     end
   end
 end

@@ -117,6 +117,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   };
 
   public text = {
+    linkProject: (name:string) => this.I18n.t('js.project.click_to_switch_to_project', { projectname: name }),
     attachments: {
       label: this.I18n.t('js.label_attachments'),
     },
@@ -300,12 +301,9 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
     return !this.isNewResource && this.projectContext && !this.projectContext.matches;
   }
 
-  public get switchToProjectText():string {
+  public get switchToProjectPath():string {
     const id = idFromLink(this.workPackage.project.href);
-    const projectPath = this.PathHelper.projectPath(id);
-    const projectName = this.workPackage.project.name as string;
-    const project = `<a href="${projectPath}" target="_self" class="project-context--switch-link">${projectName}</a>`;
-    return this.I18n.t('js.project.click_to_switch_to_project', { projectname: project });
+    return this.PathHelper.projectPath(id);
   }
 
   showTwoColumnLayout():boolean {

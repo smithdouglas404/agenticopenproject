@@ -6,6 +6,7 @@ hu:
       configure: 'Widget konfigurálása'
       widgets:
         missing_permission: "Nincs meg a szükséges jogosultsága a widget megtekintéséhez."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Egyéni szöveg'
         documents:
@@ -27,8 +28,6 @@ hu:
           not_set: 'Nincs beállítva'
           finished: 'Befejezett'
           discontinued: 'Megszakított'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

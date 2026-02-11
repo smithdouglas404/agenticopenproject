@@ -6,6 +6,7 @@ id:
       configure: 'Konfigurasi Widget'
       widgets:
         missing_permission: "Anda tidak memiliki izin yang diperlukan untuk melihat widget ini."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Teks bebas'
         documents:
@@ -27,8 +28,6 @@ id:
           not_set: 'Belum diatur'
           finished: 'Selesai'
           discontinued: 'Dihentikan'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitem'
         project_favorites:

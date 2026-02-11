@@ -123,6 +123,16 @@ de:
       server_form:
         description_caption: "Wie der MCP-Server gegenüber anderen Anwendungen beschrieben wird, die sich damit verbinden."
         title_caption: "Ein kurzer Titel, der Anwendungen angezeigt wird, die sich mit dem MCP-Server verbinden."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "Die MCP-Konfiguration konnte nicht aktualisiert werden."
         success: "Die MCP-Konfiguration wurde erfolgreich aktualisiert."
@@ -1155,6 +1165,9 @@ de:
         dependencies: "Abhängigkeiten"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "Enddatum"
       announcements:
         show_until: "Anzeigen bis"
       attachment:
@@ -1529,6 +1542,7 @@ de:
         not_available: "ist aufgrund einer Systemkonfiguration nicht verfügbar."
         not_deletable: "kann nicht entfernt werden."
         not_current_user: "ist nicht der aktuelle Benutzer."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "nicht gefunden."
         not_a_date: "ist kein gültiges Datum."
         not_a_datetime: "ist kein gültiges Datum."
@@ -1635,6 +1649,8 @@ de:
               not_unique: "ist bereits in Gebrauch. Bitte wählen Sie einen anderen Namen aus."
         meeting:
           error_conflict: "Das Speichern ist nicht möglich, da die Besprechung in der Zwischenzeit von einem anderen Benutzer aktualisiert wurde. Bitte laden Sie die Seite neu."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Mindestens ein Kanal zum Senden von Benachrichtigungen muss angegeben werden."
           attributes:
@@ -2090,6 +2106,7 @@ de:
     role: "Rollen"
     roles: "Rollen"
     search: "Suche"
+    sprint: "Sprint"
     start_date: "Anfangstermin"
     status: "Status"
     state: "Status"
@@ -4359,6 +4376,9 @@ de:
   setting_smtp_password: "SMTP Passwort"
   setting_smtp_domain: "SMTP HELO-Domain"
   setting_activity_days_default: "Anzahl Tage pro Seite der Projekt-Aktivität"
+  setting_api_tokens_enabled: "API-Tokens aktivieren"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Applikations-Untertitel"
   setting_app_title: "Applikations-Titel"
   setting_attachment_max_size: "Max. Dateigröße"
@@ -4468,7 +4488,6 @@ de:
   setting_repository_checkout_text: "Hilfetext für Checkout-Anweisung"
   setting_repository_log_display_limit: "Maximale Anzahl anzuzeigender Revisionen in der Historie einer Datei"
   setting_repository_truncate_at: "Maximale Anzahl Dateien im Projektarchiv-Browser angezeigt"
-  setting_rest_api_enabled: "REST-Schnittstelle aktivieren"
   setting_self_registration: "Selbstregistrierung"
   setting_self_registration_caption: >
     Wählen Sie die Option zur Selbstregistrierung für die Benutzer. Bitte beachten Sie: Einige Optionen ermöglichen Benutzern, ihre eigenen Konten auf dieser Instanz zu aktivieren.
@@ -4902,10 +4921,10 @@ de:
     reset_failed_logins: "Fehlgeschlagene Logins zurücksetzen"
     status_user_and_brute_force: "%{user} und %{brute_force}"
     status_change: "Status geändert"
-    text_change_disabled_for_provider_login: "Der Name wird von Ihrem Login-Provider gesetzt und kann daher nicht geändert werden."
-    text_change_disabled_for_ldap_login: "Der Name und die E-Mail-Adresse werden über LDAP festgelegt und können daher nicht geändert werden."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Entsperren"
     unlock_and_reset_failed_logins: "Entsperren und fehlgeschlagene Logins zurücksetzen"
+    error_cannot_delete_user: "Benutzer kann nicht gelöscht werden"
   version_status_closed: "geschlossen"
   version_status_locked: "gesperrt"
   version_status_open: "offen"

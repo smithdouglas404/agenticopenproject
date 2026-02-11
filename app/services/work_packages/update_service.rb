@@ -137,7 +137,7 @@ class WorkPackages::UpdateService < BaseServices::Update
 
     # if parent changed, the former parent needs to be rescheduled too.
     if parent_just_changed?(work_package)
-      former_parent = WorkPackage.find_by(id: work_package.parent_id_before_last_save)
+      former_parent = WorkPackage.visible(user).find_by(id: work_package.parent_id_before_last_save)
       work_packages_to_reschedule << former_parent if former_parent
     end
 
@@ -160,11 +160,11 @@ class WorkPackages::UpdateService < BaseServices::Update
     service_calls
       .group_by { |sc| sc.result.id }
       .map do |(_, same_work_package_calls)|
-      same_work_package_calls.pop.tap do |master|
-        same_work_package_calls.each do |sc|
-          master.result.attributes = sc.result.changes.transform_values(&:last)
+        same_work_package_calls.pop.tap do |master|
+          same_work_package_calls.each do |sc|
+            master.result.attributes = sc.result.changes.transform_values(&:last)
+          end
         end
-      end
     end
   end
 end

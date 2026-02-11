@@ -26,7 +26,7 @@ tr:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprint duration"
+        duration: "Sprint süresi"
       work_package:
         position: "Konum"
         story_points: "Hikaye Puanları"
@@ -46,7 +46,7 @@ tr:
     task_type: "Görev türü"
   backlogs:
     any: "herhangi bir"
-    column_width: "Column width"
+    column_width: "Sütun genişliği"
     definition_of_done: "Bitti Tanımı"
     impediment: "Engel"
     label_versions_default_fold_state: "Katlanmış sürümleri göster"
@@ -54,8 +54,8 @@ tr:
     work_package_is_closed: "İş paketi, ne zaman"
     label_is_done_status: "Durum %{status_name} tamamlandı anlamına geliyor"
     points_label:
-      one: "point"
-      other: "points"
+      one: "nokta"
+      other: "noktalar"
     positions_could_not_be_rebuilt: "Pozisyonlar yeniden oluşturulamadı."
     positions_rebuilt_successfully: "Pozisyonlar başarıyla yeniden oluşturuldu."
     rebuild: "Yeniden inşa et"
@@ -64,8 +64,8 @@ tr:
     show_burndown_chart: "Açılış tablosu"
     story: "Hikaye"
     story_points:
-      one: "%{count} story point"
-      other: "%{count} story points"
+      one: "%{count} hikaye noktası"
+      other: "%{count} hikaye noktaları"
     task: "Görev"
     task_color: "Görev rengi"
     unassigned: "Atanmamış"
@@ -73,28 +73,28 @@ tr:
       header_backlogs: "Birikmiş İşler Modülü"
       button_update_backlogs: "Birikmiş işler modülünü güncelle"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} boş"
+      blankslate_description: "Henüz planlanan öğe yok. Eklemek için öğeleri buraya sürükleyin."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "Daralt/Genişlet %{name}"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "Kuyrukta hikaye yok"
+        one: "%{count} kuyruktaki hikaye"
+        other: "%{count} kuyruktaki hikayeler"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "Kuyruk eylemleri"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        edit_sprint: "Sprint düzenle"
+        new_story: "Yeni hikaye"
+        stories_tasks: "Hikayeler/Görevler"
+        task_board: "Görev tahtası"
+        burndown_chart: "Burndown grafiği"
         wiki: "Wiki"
-        properties: "Properties"
+        properties: "Özellikler"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "Taşı %{name}"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "Hikaye eylemleri"
   backlogs_points_burn_direction: "Puanların azalması / artması"
   backlogs_product_backlog: "Ürün iş listesi"
   backlogs_story: "Hikaye"
@@ -102,14 +102,14 @@ tr:
   backlogs_task: "Görev"
   backlogs_task_type: "Görev türü"
   backlogs_wiki_template: "Koşu wiki sayfası için şablonu"
-  backlogs_empty_title: "No versions are defined yet"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
-  backlogs_not_configured_action_text: "Configure Backlogs"
+  backlogs_empty_title: "Versiyon daha tanımlanmamış"
+  backlogs_empty_action_text: "Kuyruğu kullanmak için önce sürüm oluştur"
+  backlogs_not_configured_title: "Kuyruk yapılandırılmamış"
+  backlogs_not_configured_description: "Bu modülü kullanmadan önce hikaye ve görev türlerinin ayarlanması gerekir."
+  backlogs_not_configured_action_text: "Kuyruk Yapılandırma"
   burndown:
-    story_points: "Story points"
-    story_points_ideal: "Story points (ideal)"
+    story_points: "Hikaye noktaları"
+    story_points_ideal: "Hikaye noktaları (ideal)"
   errors:
     attributes:
       task_type:
@@ -120,10 +120,6 @@ tr:
   label_column_in_backlog: "Sütununda birikim var"
   label_points_burn_down: "Aşağı"
   label_points_burn_up: "Yukarı"
-  label_select_type: "Bir tür seçin"
-  label_select_types: "Türleri seçin"
-  label_selected_type: "Seçili tür"
-  label_selected_types: "Seçilen türler"
   label_sprint_impediments: "Sprint Engelleri"
   label_task_board: "Görev panosu"
   permission_view_master_backlog: "Ana bekleme günlüğünü görüntüleme"
@@ -133,8 +129,8 @@ tr:
   project_module_backlogs: "İş listesi"
   rb_burndown_charts:
     show:
-      blankslate_title: "No burndown data available"
-      blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
+      blankslate_title: "Burndown verisi yok"
+      blankslate_description: "Bir burndown grafiği oluşturmak için sprint için başlangıç ve bitiş tarihi belirleyin."
   remaining_hours: "kalan çalışma"
   version_settings_display_label: "Sütununda birikim var"
   version_settings_display_option_left: "sol"

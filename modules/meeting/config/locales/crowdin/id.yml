@@ -58,6 +58,8 @@ id:
         end_after: "Seri pertemuan berakhir"
         end_date: "Tanggal finish"
         iterations: "Kejadian"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Terundang"
         attended: "Telah hadir"
@@ -68,6 +70,8 @@ id:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Terdapat satu pertemuan terbuka dalam rangkaian pertemuan yang tidak tercakup dalam jadwal baru. Sesuaikan jadwal untuk mencakup semua pertemuan yang sudah ada."

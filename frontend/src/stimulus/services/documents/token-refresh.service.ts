@@ -120,7 +120,6 @@ export class TokenRefreshService {
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-Token': getMetaContent('csrf-token'),
-        'X-Authentication-Scheme': 'Session',
       },
       credentials: 'same-origin',
     });

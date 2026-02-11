@@ -20,7 +20,7 @@ hu:
       action: "Akció tábla (%{attribute})"
     board_type_attributes:
       assignee: Megbízott
-      status: Állapot
+      status: Kanban
       version: Verzió
       subproject: Alprojekt
       subtasks: Szülő-gyerek

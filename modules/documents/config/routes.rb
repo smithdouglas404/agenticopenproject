@@ -35,6 +35,8 @@ Rails.application.routes.draw do
         get :menu, to: "documents/menus#show"
         get :search
       end
+
+      resource :refresh_token, only: [:create], controller: "documents/refresh_tokens", defaults: { format: :json }
     end
   end
 
@@ -50,8 +52,6 @@ Rails.application.routes.draw do
       get :render_connection_error, defaults: { format: :turbo_stream }
       get :render_connection_recovery, defaults: { format: :turbo_stream }
     end
-
-    resource :refresh_token, only: [:create], controller: "documents/refresh_tokens", defaults: { format: :json }
   end
 
   scope module: :documents do

@@ -59,6 +59,8 @@ sv:
         end_after: "Mötesserien slutar"
         end_date: "Slutdatum"
         iterations: "Förekomster"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Inbjuden"
         attended: "Deltog"
@@ -69,6 +71,8 @@ sv:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Det finns ett öppet möte i serien som inte omfattas av det nya schemat. Justera schemat för att inkludera alla befintliga möten."

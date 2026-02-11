@@ -20,7 +20,7 @@ ru:
       action: "Доска действий (%{attribute})"
     board_type_attributes:
       assignee: Исполнитель
-      status: Статус
+      status: Kanban
       version: Версия 
       subproject: Подпроект
       subtasks: Родитель-Потомок

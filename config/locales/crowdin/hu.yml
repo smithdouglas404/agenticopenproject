@@ -123,6 +123,16 @@ hu:
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -1162,6 +1172,9 @@ hu:
         dependencies: "Szükséges összetevők"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Megjelenít eddig"
       attachment:
@@ -1536,6 +1549,7 @@ hu:
         not_available: "nem érhető el a rendszer konfigurációja miatt.\n"
         not_deletable: "nem törölhető"
         not_current_user: "nem az aktuális felhasználó"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "nem érvényes dátum."
         not_a_datetime: "ez nem érvényes dátum."
@@ -1642,6 +1656,8 @@ hu:
               not_unique: "is already in use. Please select another name."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Legalább egy csatornát meg kell adni az értesítések küldésére.\n"
           attributes:
@@ -2097,6 +2113,7 @@ hu:
     role: "Szerepkör"
     roles: "Szerepkörök"
     search: "Keresés"
+    sprint: "Sprint"
     start_date: "Indulási dátum"
     status: "Állapot"
     state: "State"
@@ -4365,6 +4382,9 @@ hu:
   setting_smtp_password: "SMTP-jelszó"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Ennyi nap megjelenítése a projekttevékenységekben"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Alkalmazás felirat"
   setting_app_title: "Alkalmazás címe"
   setting_attachment_max_size: "Melléklet max. méret"
@@ -4474,7 +4494,6 @@ hu:
   setting_repository_checkout_text: "Checkout útmutató szöveg"
   setting_repository_log_display_limit: "A felülvizsgálatok maximális száma  megjelenitve a naplófájlban"
   setting_repository_truncate_at: "Megjelenített fájlok maximális száma a tároló böngészőben"
-  setting_rest_api_enabled: "Engedélyezi a REST-alapú webszolgáltatást"
   setting_self_registration: "Önregisztráció"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4906,10 +4925,10 @@ hu:
     reset_failed_logins: "A sikertelen bejelentkezés alaphelyzetbe állitása"
     status_user_and_brute_force: "%{user} és %{brute_force}"
     status_change: "Állapot változás"
-    text_change_disabled_for_provider_login: "A nevet a bejelentkezési szolgáltató állítja be, és így nem módosítható.\n"
-    text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "A zárolás feloldása"
     unlock_and_reset_failed_logins: "Zárolás felodása és alaphelyzetbe állitása sikertelen bejelentkezéskor"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "lezárt"
   version_status_locked: "zárolt"
   version_status_open: "nyitott"

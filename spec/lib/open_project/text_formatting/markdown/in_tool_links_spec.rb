@@ -246,7 +246,8 @@ RSpec.describe OpenProject::TextFormatting,
         subject { format_text("message##{message1.id}") }
 
         it {
-          expect(subject).to be_html_eql("<p class='op-uc-p'>#{link_to(message1.subject, topic_path(message1),
+          expect(subject).to be_html_eql("<p class='op-uc-p'>#{link_to(message1.subject,
+                                                                       project_forum_topic_path(project, forum, message1),
                                                                        class: 'message op-uc-link',
                                                                        target: '_top')}</p>")
         }
@@ -257,7 +258,7 @@ RSpec.describe OpenProject::TextFormatting,
 
         it {
           link = link_to(message2.subject,
-                         topic_path(message1, anchor: "message-#{message2.id}", r: message2.id),
+                         project_forum_topic_path(project, forum, message1, anchor: "message-#{message2.id}", r: message2.id),
                          class: "message op-uc-link",
                          target: "_top")
           expect(subject).to be_html_eql("<p class='op-uc-p'>#{link}</p>")

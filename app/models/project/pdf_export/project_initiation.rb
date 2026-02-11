@@ -188,12 +188,12 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
            .where(id: enabled_in_wizard_ids)
            .group_by(&:project_custom_field_section)
            .map do |section, custom_fields|
-      {
-        caption: section.name,
-        fields: custom_fields.map do |custom_field|
-          { key: "cf_#{custom_field.id}", caption: custom_field.name, custom_field: }
-        end
-      }
+             {
+               caption: section.name,
+               fields: custom_fields.map do |custom_field|
+                 { key: "cf_#{custom_field.id}", caption: custom_field.name, custom_field: }
+               end
+             }
     end
   end
 
@@ -284,7 +284,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   def project_initiation_work_package_status
     return nil if project.project_creation_wizard_artifact_work_package_id.blank?
 
-    work_package = WorkPackage.find_by(id: project.project_creation_wizard_artifact_work_package_id)
+    work_package = WorkPackage.visible.find_by(id: project.project_creation_wizard_artifact_work_package_id)
     work_package&.status
   end
 

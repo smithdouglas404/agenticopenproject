@@ -20,7 +20,7 @@
       action: "Handlingstavle (%{attribute})"
     board_type_attributes:
       assignee: Utførende
-      status: Status
+      status: Kanban
       version: Versjon
       subproject: Underprosjekt
       subtasks: Foreldre-barn

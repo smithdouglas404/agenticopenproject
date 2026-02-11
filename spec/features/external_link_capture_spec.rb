@@ -80,7 +80,7 @@ RSpec.describe "External link capture", :js, :selenium do
 
       visit project_wiki_path(project, wiki_page)
 
-      link = page.find('a[href^="/external_redirect?url="]')
+      link = page.find('a[href*="/external_redirect?url="]')
       new_window = window_opened_by { link.click }
 
       within_window new_window do

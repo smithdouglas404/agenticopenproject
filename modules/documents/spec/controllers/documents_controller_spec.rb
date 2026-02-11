@@ -35,8 +35,7 @@ RSpec.describe DocumentsController do
 
   let(:admin) { create(:admin) }
   let(:project) { create(:project, name: "Test Project") }
-  let(:user) { create(:user) }
-  let(:role) { create(:project_role, permissions: [:view_documents]) }
+  let(:user) { create(:user, member_with_permissions: { project => [:view_documents] }) }
 
   let(:document_type) do
     create(:document_type, name: "Default Type")
@@ -129,15 +128,12 @@ RSpec.describe DocumentsController do
       let(:uncontainered) { create(:attachment, container: nil, author: admin) }
 
       before do
-        notify_project = project
-        create(:member, project: notify_project, user:, roles: [role])
-
         post :create,
              params: {
-               project_id: notify_project.identifier,
+               project_id: project.identifier,
                document: attributes_for(:document,
                                         title: "New Document",
-                                        project_id: notify_project.id,
+                                        project_id: project.id,
                                         type_id: document_type.id,
                                         kind: "classic"),
                attachments: { "1" => { id: uncontainered.id } }
@@ -191,15 +187,10 @@ RSpec.describe DocumentsController do
              collaborative_editing_hocuspocus_url: "wss://hocuspocus.local",
              collaborative_editing_hocuspocus_secret: "secret1234"
            } do
-    let(:manage_role) { create(:project_role, permissions: %i[view_documents manage_documents]) }
-    let(:view_only_role) { create(:project_role, permissions: [:view_documents]) }
-    let(:user_with_manage) { create(:user) }
-    let(:user_without_manage) { create(:user) }
+    let(:user_with_manage) { create(:user, member_with_permissions: { project => %i[view_documents manage_documents] }) }
+    let(:user_without_manage) { create(:user, member_with_permissions: { project => [:view_documents] }) }
 
     before do
-      create(:member, project:, user: user_with_manage, roles: [manage_role])
-      create(:member, project:, user: user_without_manage, roles: [view_only_role])
-
       document.update(kind: :collaborative)
     end
 
@@ -218,6 +209,31 @@ RSpec.describe DocumentsController do
       it "generates a token payload for show action" do
         get :show, params: { id: document.id }
         expect(assigns(:token_payload)).to be_present
+      end
+    end
+  end
+
+  describe "#render_avatars" do
+    let(:user) { create(:user, member_with_permissions: { project => [:view_documents] }) }
+    let!(:non_member) { create(:user) }
+
+    current_user { user }
+
+    it "only renders avatars of users that are visible" do
+      get :render_avatars, params: { project_id: project.id, id: document.id, user_ids: [user.id, non_member.id] },
+                           format: :turbo_stream
+
+      expect(assigns(:users)).to contain_exactly(user)
+    end
+
+    context "with an admin user, that can see all users" do
+      current_user { create(:admin) }
+
+      it "renders avatars of all users" do
+        get :render_avatars, params: { project_id: project.id, id: document.id, user_ids: [user.id, non_member.id] },
+                             format: :turbo_stream
+
+        expect(assigns(:users)).to include(user, non_member)
       end
     end
   end

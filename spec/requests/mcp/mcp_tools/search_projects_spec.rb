@@ -33,7 +33,6 @@ require "spec_helper"
 RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
-    header "X-Authentication-Scheme", "Bearer"
     header "Content-Type", "application/json"
     post "/mcp", request_body.to_json
   end
@@ -56,6 +55,7 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
 
   let!(:project_a) { create(:project, identifier: "abc", name: "The ABC Project", status_code: :on_track) }
   let!(:project_b) { create(:project, identifier: "def", name: "The DEF Project", status_code: :off_track) }
+  let!(:portfolio) { create(:portfolio, identifier: "ghi", name: "The unrelated Portfolio", status_code: :on_track) }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
   let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
@@ -66,7 +66,7 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
   end
 
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
-    it_behaves_like "MCP response with structured content"
+    it_behaves_like "MCP text tool"
 
     it "finds all projects without filters" do
       subject
@@ -188,12 +188,6 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
         subject
         expect(parsed_results.dig("structuredContent", "items")).to be_empty
       end
-    end
-
-    context "when the tool is disabled via configuration" do
-      let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
-
-      it_behaves_like "MCP error response"
     end
   end
 

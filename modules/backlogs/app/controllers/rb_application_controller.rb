@@ -32,21 +32,22 @@
 class RbApplicationController < ApplicationController
   helper :rb_common
 
-  before_action :load_sprint_and_project, :check_if_plugin_is_configured, :authorize
+  before_action :load_sprint_and_project,
+                :check_if_plugin_is_configured,
+                :authorize
 
   private
 
   # Loads the project to be used by the authorize filter to determine if
   # User.current has permission to invoke the method in question.
   def load_sprint_and_project
+    @project = Project.visible.find(params[:project_id])
+
     # because of strong params, we want to pluck this variable out right now,
     # otherwise it causes issues where we are doing `attributes=`.
     if (@sprint_id = params.delete(:sprint_id))
-      @sprint = Sprint.find(@sprint_id)
-      @project = @sprint.project
+      @sprint = Sprint.visible.where(project: @project).find(@sprint_id)
     end
-    # This overrides sprint's project if we set another project, say a subproject
-    @project = Project.find(params[:project_id]) if params[:project_id]
   end
 
   def check_if_plugin_is_configured

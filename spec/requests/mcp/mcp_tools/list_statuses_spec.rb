@@ -33,13 +33,13 @@ require "spec_helper"
 RSpec.describe McpTools::ListStatuses, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
-    header "X-Authentication-Scheme", "Bearer"
     header "Content-Type", "application/json"
     post "/mcp", request_body.to_json
   end
 
   let(:access_token) { create(:oauth_access_token, scopes: "mcp", resource_owner: user) }
   let(:user) { create(:user) }
+  let(:permissions) { %i[view_work_packages] }
   let(:request_body) do
     {
       jsonrpc: "2.0",
@@ -61,12 +61,13 @@ RSpec.describe McpTools::ListStatuses, with_flag: { mcp_server: true } do
   let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
 
   before do
+    create(:member, user:, roles: [create(:project_role, permissions: permissions)])
     server_config.save!
     tool_config.save!
   end
 
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
-    it_behaves_like "MCP response with structured content"
+    it_behaves_like "MCP embedded resource tool"
 
     it "finds all statuses" do
       subject
@@ -78,10 +79,13 @@ RSpec.describe McpTools::ListStatuses, with_flag: { mcp_server: true } do
       expect(parsed_results.fetch("structuredContent").to_json).to match_json_schema.from_docs("status_collection_model")
     end
 
-    context "when the tool is disabled via configuration" do
-      let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
+    context "when lacking permission to see statuses" do
+      let(:permissions) { [] }
 
-      it_behaves_like "MCP error response"
+      it "finds no statuses" do
+        subject
+        expect(parsed_results.dig("structuredContent", "count")).to eq(0)
+      end
     end
   end
 

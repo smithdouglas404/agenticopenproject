@@ -48,7 +48,7 @@ RSpec.describe "Status action board",
   let(:board_index) { Pages::BoardIndex.new(project) }
 
   let(:permissions) do
-    %i[show_board_views manage_board_views add_work_packages
+    %i[show_board_views manage_board_views add_work_packages save_queries
        edit_work_packages move_work_packages view_work_packages manage_public_queries]
   end
 
@@ -99,7 +99,7 @@ RSpec.describe "Status action board",
       board_index.visit!
 
       # Create new board
-      board_page = board_index.create_board action: "Status"
+      board_page = board_index.create_board action: "Kanban"
 
       # expect lists of default status
       board_page.expect_list "Open"
@@ -116,7 +116,7 @@ RSpec.describe "Status action board",
       board_index.visit!
 
       # Create new board
-      board_page = board_index.create_board action: "Status"
+      board_page = board_index.create_board action: "Kanban"
 
       board_page.add_list option: "Whatever"
       board_page.expect_list "Whatever"
@@ -158,7 +158,7 @@ RSpec.describe "Status action board",
 
       # Create new board
       board_page = board_index.create_board title: "My Status Board",
-                                            action: "Status"
+                                            action: "Kanban"
 
       # expect lists of default status
       board_page.expect_list "Open"
@@ -312,7 +312,7 @@ RSpec.describe "Status action board",
       board_index.visit!
 
       # Create new board
-      board_page = board_index.create_board action: "Status"
+      board_page = board_index.create_board action: "Kanban"
 
       # expect lists of default status
       board_page.expect_list "Open"
@@ -320,7 +320,7 @@ RSpec.describe "Status action board",
 
       board_index.visit!
       # Create another status board
-      second_board_page = board_index.create_board action: "Status", via_toolbar: false
+      second_board_page = board_index.create_board action: "Kanban", via_toolbar: false
 
       # Expect only one list with the default status
       second_board_page.expect_list "Open"

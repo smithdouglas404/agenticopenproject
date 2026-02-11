@@ -20,7 +20,7 @@ th:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: ผู้ได้รับมอบหมาย
-      status: สถานะ
+      status: Kanban
       version: เวอร์ชัน
       subproject: โครงการย่อย
       subtasks: Parent-child

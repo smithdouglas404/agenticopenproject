@@ -74,7 +74,7 @@ export default class ExternalLinksController extends ApplicationController {
     useMutation(this, { attributes: true, childList: true, subtree: true, attributeFilter: ['target', 'href'] });
 
     // Initial pass: handle existing external links (accessibility)
-    document.querySelectorAll<HTMLAnchorElement>(LINK_QUERY).forEach((link)=>{
+    this.element.querySelectorAll<HTMLAnchorElement>(LINK_QUERY).forEach((link)=>{
       if (!shouldProcessLink(link)) return;
 
       if (isLinkBlank(link)) updateBlankLink(link);

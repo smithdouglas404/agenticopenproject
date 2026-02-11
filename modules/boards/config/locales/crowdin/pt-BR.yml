@@ -20,7 +20,7 @@ pt-BR:
       action: "Quadro de ações (%{attribute})"
     board_type_attributes:
       assignee: Atribuição
-      status: Status
+      status: Kanban
       version: Versão
       subproject: Subprojeto
       subtasks: Primário-secundário

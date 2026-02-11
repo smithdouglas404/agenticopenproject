@@ -6,6 +6,7 @@ pl:
       configure: 'Konfiguruj widżet'
       widgets:
         missing_permission: "Nie masz uprawnień niezbędnych do wyświetlenia tego widżetu."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Tekst niestandardowy/użytkownika'
         documents:
@@ -27,8 +28,6 @@ pl:
           not_set: 'Nie ustawione'
           finished: 'Zakończone'
           discontinued: 'Przerwane'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Podppzycje'
         project_favorites:

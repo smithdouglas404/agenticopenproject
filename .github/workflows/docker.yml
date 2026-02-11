@@ -12,6 +12,11 @@ on:
         description: "The main docker tag to use (e.g., 'dev' or '16.3.0')"
         required: true
         type: string
+      use_test_registry:
+        description: "Use openproject/openproject-test registry instead (for testing)"
+        required: false
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
       branch:
@@ -32,11 +37,16 @@ on:
 permissions:
   contents: read # to fetch code (actions/checkout)
 
-env:
-  REGISTRY_IMAGE: openproject/openproject
-
 jobs:
+  build-hocuspocus:
+    uses: ./.github/workflows/hocuspocus-docker.yml
+    with:
+      use_test_registry: ${{ inputs.use_test_registry }}
+      branch: ${{ inputs.branch }}
+      tag: ${{ inputs.tag }}
+    secrets: inherit
   setup:
+    needs: [build-hocuspocus]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -55,7 +65,7 @@ jobs:
           if [ "${{ inputs.use_test_registry }}" = "true" ]; then
             echo "registry_image=openproject/openproject-test" >> "$GITHUB_OUTPUT"
           else
-            echo "registry_image=${{ env.REGISTRY_IMAGE }}" >> "$GITHUB_OUTPUT"
+            echo "registry_image=${{ vars.REGISTRY_IMAGE }}" >> "$GITHUB_OUTPUT"
           fi
       - name: Verify outputs
         run: |
@@ -116,7 +126,7 @@ jobs:
       docker_tags: ${{ steps.extract_version.outputs.docker_tags }}
       registry_image: ${{ steps.extract_version.outputs.registry_image }}
   build:
-    if: github.repository == 'opf/openproject'
+    if: github.repository_owner == 'opf'
     needs:
       - setup
     runs-on:
@@ -344,7 +354,7 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ needs.setup.outputs.registry_image }}:${{ steps.meta.outputs.version }}
-  notify:
+  notify-failure:
     needs: [setup, build, merge]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     uses: ./.github/workflows/email-notification.yml

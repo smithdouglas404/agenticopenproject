@@ -33,13 +33,13 @@ require "spec_helper"
 RSpec.describe McpResources::StatusList, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
-    header "X-Authentication-Scheme", "Bearer"
     header "Content-Type", "application/json"
     post "/mcp", request_body.to_json
   end
 
   let(:access_token) { create(:oauth_access_token, scopes: "mcp", resource_owner: user) }
-  let(:user) { create(:admin) } # using an admin, to ensure visibility of everything
+  let(:user) { create(:user) }
+  let(:permissions) { %i[view_work_packages] }
   let(:request_body) do
     {
       jsonrpc: "2.0",
@@ -59,6 +59,7 @@ RSpec.describe McpResources::StatusList, with_flag: { mcp_server: true } do
   let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
 
   before do
+    create(:member, user:, roles: [create(:project_role, permissions: permissions)])
     server_config.save!
     resource_config.save!
   end
@@ -77,6 +78,19 @@ RSpec.describe McpResources::StatusList, with_flag: { mcp_server: true } do
       let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
 
       it_behaves_like "MCP empty resource response"
+    end
+
+    context "when lacking permission to see statuses" do
+      let(:permissions) { [] }
+
+      it_behaves_like "MCP text resource response"
+
+      it "responds with an empty list" do
+        subject
+        text_content = parsed_results.fetch("contents").first
+        types_collection = JSON.parse(text_content.fetch("text"))
+        expect(types_collection.dig("_embedded", "elements")).to be_empty
+      end
     end
   end
 

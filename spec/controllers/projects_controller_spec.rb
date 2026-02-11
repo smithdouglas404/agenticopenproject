@@ -478,7 +478,8 @@ RSpec.describe ProjectsController do
     let(:service_result) { ServiceResult.new(success:) }
 
     before do
-      allow(Project).to receive(:find).and_return(project)
+      allow(Project).to receive(:find).with(project.id.to_s).and_return(project)
+
       deletion_service = instance_double(Projects::ScheduleDeletionService,
                                          call: service_result)
 
@@ -550,9 +551,9 @@ RSpec.describe ProjectsController do
     context "as a non-admin without copy_projects permissions" do
       let(:user) { build_stubbed(:user) }
 
-      it "returns 403 Not Authorized" do
+      it "returns 404 Not Found" do
         expect(response).not_to be_successful
-        expect(response).to have_http_status :forbidden
+        expect(response).to have_http_status :not_found
       end
     end
   end

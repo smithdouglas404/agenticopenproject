@@ -25,5 +25,5 @@ de:
       properties:
         storyPoints: "Story Punkte"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "Tag"
+      points: "Punkte"

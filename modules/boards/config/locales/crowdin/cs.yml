@@ -20,7 +20,7 @@ cs:
       action: "Akční tabule (%{attribute})"
     board_type_attributes:
       assignee: Řešitel
-      status: Stav
+      status: Kanban
       version: Verze
       subproject: Podprojekt
       subtasks: rodič-potomek

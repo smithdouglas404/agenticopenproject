@@ -198,6 +198,11 @@ Rails/I18nLocaleAssignment:
   Exclude:
     - "spec/**/*.rb"
 
+Rails/I18nLocaleTexts:
+  Enabled: true
+  Exclude:
+    - "spec/**/*.rb"
+
 # We have config.active_record.belongs_to_required_by_default = false ,
 # which means, we do have to declare presence validators on belongs_to relations.
 Rails/RedundantPresenceValidationOnBelongsTo:

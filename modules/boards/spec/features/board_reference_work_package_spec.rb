@@ -53,6 +53,7 @@ RSpec.describe "Board reference work package spec",
       view_work_packages
       edit_work_packages
       manage_public_queries
+      save_queries
       assign_versions
     ]
   end
