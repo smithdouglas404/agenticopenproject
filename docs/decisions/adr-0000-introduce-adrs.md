@@ -41,6 +41,7 @@ Chosen option: **"Use Architecture Decision Records (ADRs) within the documentat
 - Good, because new team members can quickly understand system architecture
 - Good, because future changes can evaluate past trade-offs
 - Good, because discussions become more focused and evidence-based
+- Good, because ADR change proposals can make use of pull request tooling
 - Bad, because writing ADRs adds an overhead to decision making
 - Bad, because teams must learn and consistently follow a new process
 
