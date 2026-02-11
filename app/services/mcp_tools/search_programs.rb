@@ -29,14 +29,14 @@
 #++
 
 module McpTools
-  class SearchProjects < Base
-    default_title "Search projects"
-    default_description "Search projects matching all of the passed input parameters. " \
+  class SearchPrograms < Base
+    default_title "Search programs"
+    default_description "Search programs matching all of the passed input parameters. " \
                         "Parameters not passed are ignored. Results are limited to a maximum " \
-                        "of #{page_size} projects. To get the rest of the results, call the tool again with a" \
+                        "of #{page_size} programs. To get the rest of the results, call the tool again with a" \
                         "page number of 2 or higher."
 
-    name "search_projects"
+    name "search_programs"
     annotations read_only: true, idempotent: true, destructive: false
     enable_pagination
 
@@ -47,9 +47,9 @@ module McpTools
     input_schema(
       type: :object,
       properties: {
-        name: { type: "string", description: "Name of the project. Accepts partial project names, not case-sensitive." },
-        identifier: { type: "string", description: "Project identifier. Case-sensitive, matching exactly." },
-        status_code: { type: "string", enum: Project.status_codes.keys, description: "The project status." }
+        name: { type: "string", description: "Name of the program. Accepts partial names, not case-sensitive." },
+        identifier: { type: "string", description: "Program identifier. Case-sensitive, matching exactly." },
+        status_code: { type: "string", enum: Project.status_codes.keys, description: "The program status." }
       }
     )
 
@@ -59,17 +59,17 @@ module McpTools
       properties: {
         items: {
           type: :array,
-          items: JsonSchemaLoader.new.load("project_model")
+          items: JsonSchemaLoader.new.load("program_model")
         }
       }
     )
 
     def call(page: nil, **filters)
-      filtered = apply_filters(Project.project.visible, filters)
-      projects = apply_pagination(filtered, page)
+      filtered = apply_filters(Project.program.visible, filters)
+      programs = apply_pagination(filtered, page)
 
       {
-        items: projects.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user:) }
+        items: programs.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user:) }
       }
     end
   end
