@@ -300,6 +300,72 @@ ps -ef | grep -F "/usr/bin/memcached" | grep -v grep >/dev/null 2>&1 || {
     docker logs "${VALIDATION_CONTAINER_NAME}" --tail 200 || true
     die "Bundled memcached failed to start in all-in-one image."
   fi
+
+  validate_all_in_one_plugin_inheritance
+}
+
+validate_all_in_one_plugin_inheritance() {
+  local plugin_validation_dir plugin_validation_image
+  plugin_validation_dir="$(mktemp -d)"
+  plugin_validation_image="openproject-validate-plugin-${RANDOM}-${RANDOM}"
+
+  cleanup_plugin_inheritance_validation() {
+    trap - RETURN
+    if [[ -n "${plugin_validation_image:-}" ]]; then
+      docker rmi -f "${plugin_validation_image}" >/dev/null 2>&1 || true
+    fi
+    if [[ -n "${plugin_validation_dir:-}" ]]; then
+      rm -rf "${plugin_validation_dir}"
+    fi
+  }
+  trap cleanup_plugin_inheritance_validation RETURN
+
+  mkdir -p "${plugin_validation_dir}/openproject-plugin-verification/lib"
+
+  cat > "${plugin_validation_dir}/Gemfile.plugins" <<'RUBY'
+group :opf_plugins do
+  gem "openproject-plugin-verification", path: "/app/vendor/plugins/openproject-plugin-verification"
+end
+RUBY
+
+  cat > "${plugin_validation_dir}/openproject-plugin-verification/openproject-plugin-verification.gemspec" <<'RUBY'
+Gem::Specification.new do |spec|
+  spec.name = "openproject-plugin-verification"
+  spec.version = "0.0.1"
+  spec.summary = "All-in-one image plugin inheritance validation helper"
+  spec.authors = ["OpenProject"]
+  spec.files = Dir["lib/**/*.rb"]
+  spec.require_paths = ["lib"]
+end
+RUBY
+
+  cat > "${plugin_validation_dir}/openproject-plugin-verification/lib/openproject-plugin-verification.rb" <<'RUBY'
+module OpenprojectPluginVerification
+  VERSION = "0.0.1"
+end
+RUBY
+
+  cat > "${plugin_validation_dir}/Dockerfile" <<'DOCKER'
+ARG BASE_IMAGE=openproject/openproject:17
+FROM ${BASE_IMAGE}
+
+COPY openproject-plugin-verification /app/vendor/plugins/openproject-plugin-verification
+COPY Gemfile.plugins /app/
+
+RUN bundle config unset deployment && bundle install && bundle config set deployment 'true'
+RUN ./docker/prod/setup/precompile-assets.sh
+DOCKER
+
+  docker build \
+    --build-arg BASE_IMAGE="${IMAGE}" \
+    --tag "${plugin_validation_image}" \
+    "${plugin_validation_dir}"
+
+  docker run --rm --entrypoint sh "${plugin_validation_image}" -lc '
+set -eu
+bundle info openproject-plugin-verification >/dev/null 2>&1
+bundle exec ruby -e "spec = Gem::Specification.find_by_name(\"openproject-plugin-verification\"); abort(\"openproject-plugin-verification gem missing\") unless spec.version.to_s == \"0.0.1\""
+'
 }
 
 case "${TARGET}" in
