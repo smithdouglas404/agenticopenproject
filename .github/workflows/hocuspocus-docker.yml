@@ -7,13 +7,12 @@ on:
       - release/*
     paths:
       - 'blocknote/hocuspocus/**'
-    tags:
-      - hocuspocus-v*
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      tag:
-        description: "The tag to release. Note that this happens by default on the tag push. Only run this action when something went wrong!"
-        required: false
+      tags:
+        description: "Newline-separated full Docker image tags (e.g., openproject/hocuspocus:17.1.0)"
+        required: true
+        type: string
 
 defaults:
   run:
@@ -23,59 +22,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Resolve checkout ref
-        id: ref
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          INPUT_TAG: ${{ inputs.tag }}
-          GITHUB_REF: ${{ github.ref }}
-        run: |
-          if [[ "$EVENT_NAME" == 'workflow_dispatch' && -n "$INPUT_TAG" ]]; then
-            # Allow "hocuspocus-v16.3.0", "v16.3.0", "16.3.0" or "refs/tags/hocuspocus-v16.3.0" as input
-            RAW_TAG="${INPUT_TAG#refs/tags/}"
-            echo "ref=refs/tags/$RAW_TAG" >> "$GITHUB_OUTPUT"
-          else
-            echo "ref=$GITHUB_REF" >> "$GITHUB_OUTPUT"
-          fi
-        working-directory: .
-
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ steps.ref.outputs.ref }}
-
-      - name: Compute tags and branch
-        id: compute
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          INPUT_TAG: ${{ inputs.tag }}
-          REF: ${{ steps.ref.outputs.ref }}
+      - name: Include Git SHA in package.json version
         run: |
           SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
 
-          if [[ "$REF" == refs/tags/* ]]; then
-            REF_TYPE="tag"
-            TAG_REF="${REF#refs/tags/}"
-            # Normalize tag e.g. hocuspocus-v16.3.0 => 16.3.0
-            TAG_REF="${TAG_REF#hocuspocus-v}"
-            TAG_REF="${TAG_REF#v}"
-            BRANCH_REF=""
-          elif [[ "$REF" == refs/heads/* ]]; then
-            REF_TYPE="branch"
-            BRANCH_REF="${REF#refs/heads/}"
-            TAG_REF="${BRANCH_REF}-${SHORT_SHA}"
-          else
-            echo "No tag or branch provided (ref=$REF)" >&2
-            exit 1
-          fi
-
-          echo "ref_type=$REF_TYPE" | tee -a "$GITHUB_OUTPUT"
-          echo "branch=$BRANCH_REF" | tee -a "$GITHUB_OUTPUT"
-          echo "tag=$TAG_REF" | tee -a "$GITHUB_OUTPUT"
-
-          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
-
-          # also include SHA in version string
+          # also include Git SHA in version string
           sed -ri "s/\"version\": \"(.*)\"/\"version\": \"\1-$SHORT_SHA\"/g" package.json
 
       - name: Login to Docker Hub
@@ -90,72 +41,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push (BRANCH)
-        if: steps.compute.outputs.ref_type == 'branch'
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: ./blocknote/hocuspocus
           push: true
           platforms: linux/amd64,linux/arm64/v8
-          tags: |
-            openproject/hocuspocus:${{ github.ref_name }}-latest
-            openproject/hocuspocus:${{ steps.compute.outputs.tag }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build and push (TAG)
-        if: steps.compute.outputs.ref_type == 'tag'
-        uses: docker/build-push-action@v6
-        with:
-          context: ./blocknote/hocuspocus
-          push: true
-          platforms: linux/amd64,linux/arm64/v8
-          tags: |
-            openproject/hocuspocus:latest
-            openproject/hocuspocus:${{ steps.compute.outputs.tag }}
+          tags: ${{ inputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Summarize build
         run: |
-
-      - name: Generate GHA token
-        id: generate-gha-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ vars.DEPLOY_APP_ID }}
-          private-key: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
-          owner: opf
-          repositories: saas-deploy
-
-      - name: Set inputs JSON
-        id: build-inputs
-        env:
-          HOCUSPOCUS_TAG: ${{ steps.compute.outputs.tag }}
-          THIS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          inputs_json=$(jq -cn \
-            --arg tag "$HOCUSPOCUS_TAG" \
-            --arg url "$THIS_RUN_URL" \
-            '{hocuspocus_image_tag: $tag, triggered_by_url: $url}')
-          echo "inputs_json=$inputs_json" >> $GITHUB_OUTPUT
-
-      - name: Deploy EDGE
-        if: github.ref == 'refs/heads/dev'
-        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
-        with:
-          workflow: edge-deploy-shards.yml
-          repo: opf/saas-deploy
-          ref: master
-          inputs: ${{ steps.build-inputs.outputs.inputs_json }}
-          token: "${{ steps.generate-gha-token.outputs.token }}"
-
-      - name: Deploy STAGE
-        if: startsWith(github.ref, 'refs/heads/release/')
-        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
-        with:
-          workflow: stage-deploy-shards.yml
-          repo: opf/saas-deploy
-          ref: master
-          inputs: ${{ steps.build-inputs.outputs.inputs_json }}
-          token: "${{ steps.generate-gha-token.outputs.token }}"
+          echo "Built and pushed the following tags:" > $GITHUB_STEP_SUMMARY
+          echo "${{ inputs.tags }}" > $GITHUB_STEP_SUMMARY

@@ -51,9 +51,8 @@ jobs:
 
   build-hocuspocus:
     needs: compute-inputs
-    uses: opf/hocuspocus/.github/workflows/docker-build.yml@dev
+    uses: ./.github/workflows/hocuspocus-docker.yml
     with:
-      ref: refs/tags/${{ needs.compute-inputs.outputs.tag }}
       tags: |
         openproject/hocuspocus:latest
         openproject/hocuspocus:${{ needs.compute-inputs.outputs.version }}
