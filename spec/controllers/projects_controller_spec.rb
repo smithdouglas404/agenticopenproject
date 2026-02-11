@@ -440,6 +440,47 @@ RSpec.describe ProjectsController do
         end
       end
     end
+
+    describe "block_creation_if_template_misconfigured" do
+      context "when template has wizard enabled and is misconfigured" do
+        let(:workspace_type) { "project" }
+        let(:template) { create(:template_project, project_creation_wizard_enabled: true, workspace_type:) }
+
+        before do
+          set_attrs_service = instance_double(
+            Projects::SetAttributesService,
+            call: ServiceResult.failure(result: template)
+          )
+
+          allow(Projects::SetAttributesService)
+            .to receive(:new)
+                  .with(model: template, user: admin,
+                        contract_class: Projects::SettingsContract,
+                        contract_options: { validate_all: true })
+                  .and_return(set_attrs_service)
+
+          new_project = Project.new(name: "New Project")
+          copy_service = instance_double(
+            Projects::CopyService,
+            call: ServiceResult.success(result: new_project)
+          )
+
+          allow(Projects::CopyService)
+            .to receive(:new)
+                  .with(user: admin, source: template, contract_options: { validate_model: false })
+                  .and_return(copy_service)
+
+          post :create, params: { template_id: template.id, workspace_type:, project: { name: "New Project" } }
+        end
+
+        it "blocks creation and renders new with an error", :aggregate_failures do
+          expect(response).to have_http_status :unprocessable_entity
+          expect(response).to render_template "new"
+          expect(flash[:error]).to eq I18n.t("projects.copy.pir_configuration.creation_blocked")
+          expect(controller.params[:step].to_i).to eq 2
+        end
+      end
+    end
   end
 
   describe "#index" do
