@@ -37,21 +37,21 @@ RSpec.describe Agile::Sprint do
     described_class.new(name: "Sprint 1",
                         project:,
                         start_date: Time.zone.today,
-                        end_date: Time.zone.today + 14.days)
+                        finish_date: Time.zone.today + 14.days)
   end
 
   describe "validations" do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:start_date) }
-    it { is_expected.to validate_presence_of(:end_date) }
+    it { is_expected.to validate_presence_of(:finish_date) }
     it { is_expected.to validate_presence_of(:project) }
     it { is_expected.to validate_inclusion_of(:status).in_array(described_class.statuses.keys) }
     it { is_expected.to validate_inclusion_of(:sharing).in_array(described_class::SPRINT_SHARINGS) }
 
-    it "validates end_date is after or equal to start_date" do
-      sprint.end_date = sprint.start_date - 1.day
+    it "validates finish_date is after or equal to start_date" do
+      sprint.finish_date = sprint.start_date - 1.day
       expect(sprint).not_to be_valid
-      expect(sprint.errors[:end_date]).to include(/must be greater than or equal to/)
+      expect(sprint.errors[:finish_date]).to include(/must be greater than or equal to/)
     end
 
     context "with active sprint validation" do
