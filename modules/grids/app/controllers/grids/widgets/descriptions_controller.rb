@@ -28,22 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  scope module: "grids" do
-    # project-scoped widget routes
-    scope "projects/:project_id", as: "project", constraints: { project_id: Constraints::ProjectIdentifier::REGEX } do
-      namespace :widgets do
-        resource :members, only: %i[show]
-        resource :news, only: %i[show]
-        resource :project_status, only: %i[show update]
-        resource :subitems, only: %i[show]
-        resource :description, only: %i[show]
-      end
-    end
-
-    # global widget routes
-    namespace :widgets do
-      resource :news, only: %i[show]
-    end
+class Grids::Widgets::DescriptionsController < Grids::WidgetController
+  def show
+    render_widget Grids::Widgets::Description.new(@project, current_user:)
   end
 end

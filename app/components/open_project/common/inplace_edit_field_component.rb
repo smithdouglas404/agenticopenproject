@@ -41,6 +41,7 @@ module OpenProject
         @attribute = attribute
         @enforce_edit_mode = enforce_edit_mode
         @system_arguments = system_arguments
+        @system_arguments[:id] = system_arguments[:id] || SecureRandom.uuid
       end
 
       def field_class
@@ -71,7 +72,8 @@ module OpenProject
       end
 
       def wrapper_key
-        "op-inplace-edit-field-component--#{@model.class.name.parameterize(separator: '_')}-#{model.id}--#{attribute.name}"
+        model_class = @model.class.name.parameterize(separator: "_")
+        "op-inplace-edit-field--#{model_class}-#{model.id}--#{attribute.name}--#{@system_arguments[:id]}"
       end
 
       def wrapper_test_selector

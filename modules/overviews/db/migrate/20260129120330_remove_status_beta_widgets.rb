@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,24 +26,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-Rails.application.routes.draw do
-  scope module: "grids" do
-    # project-scoped widget routes
-    scope "projects/:project_id", as: "project", constraints: { project_id: Constraints::ProjectIdentifier::REGEX } do
-      namespace :widgets do
-        resource :members, only: %i[show]
-        resource :news, only: %i[show]
-        resource :project_status, only: %i[show update]
-        resource :subitems, only: %i[show]
-        resource :description, only: %i[show]
-      end
-    end
+class RemoveStatusBetaWidgets < ActiveRecord::Migration[8.0]
+  def up
+    remove_status_beta_widgets
+  end
 
-    # global widget routes
-    namespace :widgets do
-      resource :news, only: %i[show]
-    end
+  def down
+    raise ActiveRecord::IrreversibleMigration
+  end
+
+  private
+
+  def remove_status_beta_widgets
+    execute <<-SQL.squish
+      DELETE FROM grid_widgets
+      WHERE identifier = 'project_status_beta'
+    SQL
   end
 end

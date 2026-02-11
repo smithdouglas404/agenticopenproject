@@ -28,22 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  scope module: "grids" do
-    # project-scoped widget routes
-    scope "projects/:project_id", as: "project", constraints: { project_id: Constraints::ProjectIdentifier::REGEX } do
-      namespace :widgets do
-        resource :members, only: %i[show]
-        resource :news, only: %i[show]
-        resource :project_status, only: %i[show update]
-        resource :subitems, only: %i[show]
-        resource :description, only: %i[show]
-      end
-    end
+require "rails_helper"
 
-    # global widget routes
-    namespace :widgets do
-      resource :news, only: %i[show]
+RSpec.describe Grids::Widgets::DescriptionsController do
+  shared_let(:project) { create(:project) }
+  shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_project] }) }
+  current_user { user }
+
+  describe "GET #show" do
+    context "with project" do
+      let(:widget_instance) { instance_double(Grids::Widgets::Description, render_in: "content") }
+
+      before do
+        allow(Grids::Widgets::Description)
+          .to receive(:new)
+          .and_return(widget_instance)
+
+        get :show, params: { project_id: project }
+      end
+
+      it "renders widget", :aggregate_failures do
+        expect(response).to be_successful
+        expect(response.body).to eq "content"
+      end
     end
   end
 end

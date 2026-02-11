@@ -62,80 +62,58 @@ RSpec.describe "Project description widget", :js, with_flag: { new_project_overv
     Pages::Projects::Show.new(portfolio)
   end
 
+
+  shared_examples_for "adds a project description widget, and edits it correctly" do
+    before do
+      login_as user
+
+      tested_page.visit!
+    end
+
+    it do
+      expect(page).to have_current_path(path)
+
+      # Edit the project description
+      # Find the editable description field
+      description_field = Turbo::TextEditorField.new(page,
+                                                     "description",
+                                                     selector:)
+      # Activate the field for editing
+      description_field.activate!
+
+      # Set a new description
+      new_description = "This is a **test** project description with markdown formatting."
+      description_field.set_value(new_description)
+
+      # Save the changes
+      description_field.save!
+
+      tested_page.expect_and_dismiss_flash message: I18n.t("js.notice_successful_update")
+
+      tested_page.visit!
+      wait_for_network_idle
+      expect(page).to have_content("This is a test project description with markdown formatting.")
+
+      portfolio.reload
+      expect(portfolio.description).to include("This is a **test** project description")
+    end
+  end
+
+
   context "as a user with permission" do
     context "on the dashboard" do
-      before do
-        login_as user
-
-        dashboard_page.visit!
-      end
-
-      it "adds a project description widget, and edits it correctly" do
-        expect(page).to have_current_path(dashboard_project_overview_path(portfolio))
-
-        # Find the project description widget area
-        description_widget_area = Components::Grids::GridArea.new("[data-test-selector*='grid-widget-project_description']")
-        description_widget_area.expect_to_exist
-
-        # Edit the project description within the widget
-        within description_widget_area.area do
-          # Find the editable description field
-          description_field = TextEditorField.new(page, "description",
-                                                  selector: "op-editable-attribute-field[fieldname='description']")
-
-          # Activate the field for editing
-          description_field.activate!
-
-          # Set a new description
-          new_description = "This is a **test** project description with markdown formatting."
-          description_field.set_value(new_description)
-
-          # Save the changes
-          description_field.save!
-        end
-
-        dashboard_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
-
-        dashboard_page.visit!
-        expect(page).to have_content("This is a test project description with markdown formatting.")
-
-        portfolio.reload
-        expect(portfolio.description).to include("This is a **test** project description")
+      it_behaves_like "adds a project description widget, and edits it correctly" do
+        let(:tested_page) { dashboard_page }
+        let(:path) { dashboard_project_overview_path(portfolio) }
+        let(:selector) { test_selector("grid-widget-project_description") }
       end
     end
 
     context "on the overview" do
-      before do
-        login_as user
-
-        overview_page.visit!
-      end
-
-      it "opens the overview, and edits a project description correctly" do
-        expect(page).to have_current_path(project_overview_path(portfolio))
-
-        # Find the editable description field
-        description_field = Turbo::TextEditorField.new(page,
-                                                       "description",
-                                                       selector: test_selector("op-overview-widget--project-description"))
-
-        # Activate the field for editing
-        description_field.activate!
-
-        # Set a new description
-        new_description = "This is a **test** project description with markdown formatting."
-        description_field.set_value(new_description)
-
-        # Save the changes
-        description_field.save!
-
-        overview_page.expect_and_dismiss_flash message: I18n.t("js.notice_successful_update")
-
-        overview_page.visit!
-        expect(page).to have_content("This is a test project description with markdown formatting.")
-
-        portfolio.reload
-        expect(portfolio.description).to include("This is a **test** project description")
+      it_behaves_like "adds a project description widget, and edits it correctly" do
+        let(:tested_page) { overview_page }
+        let(:path) { project_overview_path(portfolio) }
+        let(:selector) { test_selector("op-overview-widget--project-description") }
       end
     end
   end

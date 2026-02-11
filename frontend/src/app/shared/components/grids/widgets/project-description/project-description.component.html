@@ -10,12 +10,4 @@
     [resource]="resource" />
 </widget-header>
 
-<div class="op-widget-box--body -allow-inner-overflow">
-  @if ((project$ | async); as project) {
-    <edit-form
-      [resource]="project">
-      <op-editable-attribute-field [resource]="project"
-        fieldName="description" />
-    </edit-form>
-  }
-</div>
+<turbo-frame [id]="frameId" [src]="src" loading="lazy" />

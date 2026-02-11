@@ -85,6 +85,24 @@ RSpec.describe Grids::WidgetController do
     end
   end
 
+  describe "description routing" do
+    describe "GET #show" do
+      it do
+        expect(get("/projects/my-project/widgets/description"))
+          .to route_to(controller: "grids/widgets/descriptions", action: "show", project_id: "my-project")
+      end
+    end
+  end
+
+  describe "description named routing" do
+    describe "GET #show" do
+      it do
+        expect(get(project_widgets_description_path("my-project")))
+          .to route_to(controller: "grids/widgets/descriptions", action: "show", project_id: "my-project")
+      end
+    end
+  end
+
   describe "news routing" do
     describe "GET #show" do
       context "for root" do
