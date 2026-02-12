@@ -34,7 +34,7 @@ import {
   input,
 } from '@angular/core';
 import { ChartConfiguration, ChartData } from 'chart.js';
-import { chartFont, chartLegend, renderChartTooltip } from 'core-app/shared/components/budget-graphs/chart.config';
+import { chartFont, chartLegend, createPieTooltipRenderer } from 'core-app/shared/components/budget-graphs/chart.config';
 import PrimerColorsPlugin from 'core-app/shared/components/work-package-graphs/plugin.primer-colors';
 import { NoResultsComponent } from 'core-app/shared/components/blankslate/no-results.component';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
@@ -59,14 +59,7 @@ export class BudgetByCostTypeComponent {
       ...chartLegend,
       tooltip: {
         enabled: false,
-        external: renderChartTooltip,
-        callbacks: {
-          label: (context) => {
-            const label = context.label ?? '';
-            const value = context.parsed;
-            return `${label}: ${this.formatCurrency(value)}`;
-          },
-        },
+        external: createPieTooltipRenderer(this.formatCurrency.bind(this)),
       },
     },
   }));

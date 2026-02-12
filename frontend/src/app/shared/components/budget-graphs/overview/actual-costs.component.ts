@@ -36,7 +36,7 @@ import {
 import { ChartConfiguration, ChartData } from 'chart.js';
 import 'chartjs-adapter-luxon';
 import { NoResultsComponent } from 'core-app/shared/components/blankslate/no-results.component';
-import { chartFont, chartLegend, renderChartTooltip } from 'core-app/shared/components/budget-graphs/chart.config';
+import { chartFont, chartLegend, createBarTooltipRenderer } from 'core-app/shared/components/budget-graphs/chart.config';
 import PrimerColorsPlugin from 'core-app/shared/components/work-package-graphs/plugin.primer-colors';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
@@ -76,23 +76,7 @@ export class ActualCostsComponent {
       ...chartLegend,
       tooltip: {
         enabled: false,
-        external: renderChartTooltip,
-        callbacks: {
-          title: (context) => {
-            const timestamp = context[0].parsed.x;
-            if (timestamp === null) return '';
-            const date = new Date(timestamp);
-            return date.toLocaleDateString(undefined, {
-              month: 'short',
-              year: 'numeric',
-            });
-          },
-          label: (context) => {
-            const label = context.dataset.label ?? '';
-            const value = context.raw as number;
-            return `${label}: ${this.formatCurrency(value)}`;
-          },
-        },
+        external: createBarTooltipRenderer(this.formatCurrency.bind(this)),
       },
     },
   }));
