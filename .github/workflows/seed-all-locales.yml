@@ -57,13 +57,14 @@ jobs:
   seed:
     needs: prepare
     if: github.repository == 'opf/openproject'
-    name: Seed ${{ matrix.locale }}
+    name: Seed in ${{ matrix.locale }} for ${{ matrix.edition }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         locale: ${{ fromJson(needs.prepare.outputs.locales) }}
+        edition: [standard, bim]
     services:
       postgres:
         image: postgres:16
@@ -101,7 +102,8 @@ jobs:
             url: <%= ENV["DATABASE_URL"] %>
           EOF
 
-      - name: Seed locale ${{ matrix.locale }}
+      - name: Seed in locale ${{ matrix.locale }} for edition ${{ matrix.edition }}
         env:
           SILENCE_SQL_LOGS: 1
+          OPENPROJECT_EDITION: ${{ matrix.edition }}
         run: ruby script/i18n/test_seed_all_locales ${{ matrix.locale }}
