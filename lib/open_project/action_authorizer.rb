@@ -31,17 +31,24 @@
 module OpenProject
   class ActionAuthorizer
     class << self
-      def register(name, scope:, contract:, method:)
-        registry[scope.to_s.to_sym][name] = [contract, method]
+      def register(action, on:, contract:, method:)
+        registry[on.to_s.to_sym][action] = [contract, method]
       end
 
-      def allowed?(name, user:, scope: nil)
-        entry = find_check(name, scope.class) || find_check(name, nil)
+      # TODO: check if on is really optional.
+      def allowed?(action, user:, on: nil, scope: nil)
+        on = determine_on(on, scope)
+        raise ArgumentError, "Either on or scope needs to be provided." unless on
 
-        unless entry
-          scope_desc = scope.nil? ? "nil" : scope.class.name
-          raise ArgumentError, "No authorization check registered for '#{name}' with scope #{scope_desc}"
+        entry = find_check(action, on)
+
+        # TODO: Check for whether eager loading is active
+        if entry.nil? && Rails.env.local?
+          eager_load_contracts_for(on)
+          entry = find_check(action, on)
         end
+
+        raise ArgumentError, "No authorization check registered for ':#{action}' on the model #{on}." unless entry
 
         contract, method = entry
         contract.to_s.constantize.public_send(method, user:, scope:)
@@ -49,6 +56,7 @@ module OpenProject
 
       def reset!
         @registry = {}
+        @loaded_namespaces = Set.new
       end
 
       private
@@ -57,12 +65,30 @@ module OpenProject
         @registry ||= Hash.new { |h, k| h[k] = {} }
       end
 
-      def find_check(name, scope)
-        return registry[:''][name] if scope.nil?
+      def loaded_namespaces
+        @loaded_namespaces ||= Set.new
+      end
 
-        check = registry[scope.to_s.to_sym][name]
+      def determine_on(on, scope)
+        if on.is_a?(Class)
+          on.to_s.to_sym
+        elsif scope.is_a?(ActiveRecord::Base)
+          scope.class.to_s.to_sym
+        end
+      end
 
-        check || find_check(name, scope.superclass)
+      def find_check(action, on)
+        registry[on][action]
+      end
+
+      def eager_load_contracts_for(on)
+        namespace = on.to_s.pluralize.safe_constantize
+
+        return if namespace.nil? || loaded_namespaces.include?(namespace)
+
+        loaded_namespaces << namespace
+        # TODO: check if contracts can be identified so that only those are loaded and not all of e.g Meetings
+        Rails.autoloaders.each { |loader| loader.eager_load_namespace(namespace) }
       end
     end
   end

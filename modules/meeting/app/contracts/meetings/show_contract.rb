@@ -43,5 +43,8 @@ module Meetings
         end
       end
     end
+
+    OpenProject::ActionAuthorizer.register(:show, on: :Meeting, contract: self, method: :show_allowed?)
+    OpenProject::ActionAuthorizer.register(:index, on: :Meeting, contract: self, method: :index_allowed?)
   end
 end

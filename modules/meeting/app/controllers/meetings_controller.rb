@@ -56,7 +56,7 @@ class MeetingsController < ApplicationController
   menu_item :new_meeting, only: %i[new create]
 
   def index
-    return unless authorization_check(action: :index_meetings, scope: @project)
+    return unless authorization_check(action: :index, scope: @project, model: Meeting)
 
     load_meetings
 
@@ -95,7 +95,7 @@ class MeetingsController < ApplicationController
   end
 
   def new
-    return unless authorization_check(action: :new_meeting, scope: @project)
+    return unless authorization_check(action: :new, scope: @project, model: Meeting)
 
     respond_to do |format|
       format.html do
@@ -120,8 +120,9 @@ class MeetingsController < ApplicationController
   end
 
   def create # rubocop:disable Metrics/AbcSize
-    return unless authorization_check(action: :create_meeting,
-                                      scope: @project || Project.find_by(id: @converted_params["project_id"]))
+    return unless authorization_check(action: :create,
+                                      scope: @project || Project.find_by(id: @converted_params["project_id"]),
+                                      model: Meeting)
 
     call =
       if @copy_from
@@ -172,7 +173,7 @@ class MeetingsController < ApplicationController
   end
 
   def new_dialog
-    return unless authorization_check(action: :new_meeting, scope: @project)
+    return unless authorization_check(action: :new, scope: @project, model: Meeting)
 
     respond_with_dialog Meetings::Index::DialogComponent.new(
       meeting: @meeting,
@@ -352,7 +353,7 @@ class MeetingsController < ApplicationController
   end
 
   def fetch_timezone
-    return unless authorization_check(action: :create_meeting, scope: @project)
+    return unless authorization_check(action: :create, scope: @project, model: Meeting)
 
     return unless timezone_params.keys.count == 2
 

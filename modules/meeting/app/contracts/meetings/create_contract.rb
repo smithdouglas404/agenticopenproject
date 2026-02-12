@@ -56,6 +56,10 @@ module Meetings
       end
     end
 
+    OpenProject::ActionAuthorizer.register(:new, on: :Meeting, contract: self, method: :new_allowed?)
+    OpenProject::ActionAuthorizer.register(:create, on: :Meeting, contract: self, method: :create_allowed?)
+    OpenProject::ActionAuthorizer.register(:copy, on: :Meeting, contract: self, method: :copy_allowed?)
+
     private
 
     def user_allowed_to_add

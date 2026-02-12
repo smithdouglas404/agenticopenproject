@@ -47,6 +47,9 @@ module Meetings
       end
     end
 
+    OpenProject::ActionAuthorizer.register(:update, on: :Meeting, contract: self, method: :update_allowed?)
+    OpenProject::ActionAuthorizer.register(:edit, on: :Meeting, contract: self, method: :update_allowed?)
+
     def user_allowed_to_edit
       errors.add(:base, :error_unauthorized) unless self.class.update_allowed?(user:, scope: model)
     end
