@@ -477,4 +477,108 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
       end
     end
   end
+
+  context "with custom comment columns" do
+    shared_let(:commentable) do
+      create(
+        :string_project_custom_field,
+        :has_comment,
+        name: "Commentable",
+        projects: [project, development_project]
+      )
+    end
+    shared_let(:admin_commentable) do
+      create(
+        :string_project_custom_field,
+        :admin_only,
+        :has_comment,
+        name: "Admin commentable",
+        projects: [project, development_project]
+      )
+    end
+
+    def comment_column_name(custom_field) = I18n.t(:label_custom_comment, name: custom_field.name)
+
+    before do
+      create(:custom_comment, text: "short text" * 20, customized: project, custom_field: commentable)
+      create(:custom_comment, text: "short text a", customized: project, custom_field: admin_commentable)
+      create(:custom_comment, text: "short text b", customized: development_project, custom_field: commentable)
+
+      login_as(user)
+      projects_page.visit!
+    end
+
+    context "for admin" do
+      let(:user) { admin }
+
+      it "doesn't allow custom comment column for fields that do not allow comments" do
+        projects_page.expect_no_config_columns(comment_column_name(custom_field))
+      end
+
+      it "displays custom comment columns", :aggregate_failures do
+        projects_page.set_columns("Name", comment_column_name(commentable), comment_column_name(admin_commentable))
+
+        projects_page.within_row(project) do
+          expect(page).to have_css(".name", text: project.name)
+
+          expect(page).to have_css(".cfc_#{commentable.id}", text: "short text" * 20)
+          expect(page).to have_css(".cfc_#{commentable.id} button.ellipsis-expander")
+
+          expect(page).to have_css(".cfc_#{admin_commentable.id}", text: "short text a")
+          expect(page).to have_no_css(".cfc_#{admin_commentable.id} button.ellipsis-expander")
+        end
+
+        projects_page.within_row(development_project) do
+          expect(page).to have_css(".name", text: development_project.name)
+
+          expect(page).to have_css(".cfc_#{commentable.id}", text: "short text b")
+          expect(page).to have_no_css(".cfc_#{commentable.id} button.ellipsis-expander")
+
+          expect(page).to have_css(".cfc_#{admin_commentable.id}", text: "")
+          expect(page).to have_no_css(".cfc_#{admin_commentable.id} button.ellipsis-expander")
+        end
+      end
+    end
+
+    context "for non admin user with view permissions" do
+      let(:user) do
+        create(:user, member_with_permissions: { project => %i(view_project_attributes),
+                                                 development_project => %i(view_project_attributes) })
+      end
+
+      it "doesn't allow custom comment column for fields that do not allow comments or that are admin only" do
+        projects_page.expect_no_config_columns(comment_column_name(custom_field), comment_column_name(admin_commentable))
+      end
+
+      it "displays custom comment columns", :aggregate_failures do
+        projects_page.set_columns("Name", comment_column_name(commentable))
+
+        projects_page.within_row(project) do
+          expect(page).to have_css(".name", text: project.name)
+
+          expect(page).to have_css(".cfc_#{commentable.id}", text: "short text" * 20)
+          expect(page).to have_css(".cfc_#{commentable.id} button.ellipsis-expander")
+        end
+
+        projects_page.within_row(development_project) do
+          expect(page).to have_css(".name", text: development_project.name)
+
+          expect(page).to have_css(".cfc_#{commentable.id}", text: "short text b")
+          expect(page).to have_no_css(".cfc_#{commentable.id} button.ellipsis-expander")
+        end
+      end
+    end
+
+    context "for non admin user without permissions" do
+      let(:user) { create(:user) }
+
+      it "doesn't allow custom comment column for fields that do not allow comments or that are admin only" do
+        projects_page.expect_no_config_columns(
+          comment_column_name(custom_field),
+          comment_column_name(admin_commentable),
+          comment_column_name(commentable)
+        )
+      end
+    end
+  end
 end

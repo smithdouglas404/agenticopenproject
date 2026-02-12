@@ -63,6 +63,10 @@ FactoryBot.define do
       admin_only { true }
     end
 
+    trait :has_comment do
+      has_comment { true }
+    end
+
     trait :multi_value do
       multi_value { true }
     end
