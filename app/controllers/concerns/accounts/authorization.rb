@@ -112,11 +112,10 @@ module Accounts::Authorization
     is_authorized
   end
 
-  def authorization_check(action:, scope: nil, model: nil) # rubocop:disable Naming/PredicateMethod
-    return true if OpenProject::ActionAuthorizer.allowed?(action, on: model, user: current_user, scope:)
+  def authorization_check(action:, on: nil, scope: nil)
+    return true if OpenProject::ActionAuthorizer.allowed?(action, on:, user: current_user, scope:)
 
-    render_403
-    false
+    render_403 and false
   end
 
   def require_admin
