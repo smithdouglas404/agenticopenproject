@@ -1,6 +1,6 @@
 <%= component_wrapper do
   flex_layout(align_items: :center, mt: 2, flex_wrap: :wrap) do |flex|
-    flex.with_column do
+    flex.with_column(flex: 1) do
       render(
         Primer::Alpha::TextField.new(
           name: :filter,

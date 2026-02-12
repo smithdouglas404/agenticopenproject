@@ -37,9 +37,8 @@ module Admin::Import::Jira::ImportRuns
       [
         { label: projects_label(imported_projects.count), checked: true, url: imported_projects_url },
         { label: work_packages_label(imported_work_packages.count), checked: true, url: imported_work_packages_url },
-        { label: statuses_label(imported_statuses.count), checked: true },
-        { label: types_label(imported_types.count), checked: true }
-      ]
+        imported_users.none? ? nil : { label: users_label(imported_users.count), checked: true, url: imported_users_url }
+      ].compact
     end
 
     def imported_projects
@@ -66,14 +65,15 @@ module Admin::Import::Jira::ImportRuns
       helpers.work_packages_path(query_props: { f: [{ n: "project", o: "=", v: project_ids }] }.to_json)
     end
 
-    def imported_statuses
-      @imported_statuses ||= OpenProjectJiraReference
-        .where(jira_import: model, op_entity_class: "Status", uses_existing: false)
+    def imported_users
+      @imported_users ||= OpenProjectJiraReference
+        .where(jira_import: model, op_entity_class: "User", uses_existing: false)
     end
 
-    def imported_types
-      @imported_types ||= OpenProjectJiraReference
-        .where(jira_import: model, op_entity_class: "Type", uses_existing: false)
+    def imported_users_url
+      return nil if imported_users.none?
+
+      helpers.users_path
     end
   end
 end

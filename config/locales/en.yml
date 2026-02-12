@@ -207,6 +207,9 @@ en:
             statuses:
               one: "1 status"
               other: "%{count} statuses"
+            users:
+              one: "1 user"
+              other: "%{count} users"
           groups:
             fetch:
               title: "Get base data"
@@ -261,8 +264,8 @@ en:
               label_results: "Imported"
               label_revert: "Revert import"
               button_revert: "Revert import"
-              button_done: "Finalize import"
-              preview_description: "The imported data is currently in preview mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              button_done: "Lock import"
+              preview_description: "The imported data is currently in preview mode. Click \"Lock import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
               label_revert_progress: "Reverting import..."
               label_reverted: "Import reverted."
           select_dialog:

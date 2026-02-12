@@ -48,4 +48,8 @@ module Admin::Import::Jira::ImportRunsHelper
   def types_label(count)
     I18n.t(:"admin.jira.run.wizard.parts.types", count: count || 0)
   end
+
+  def users_label(count)
+    I18n.t(:"admin.jira.run.wizard.parts.users", count: count || 0)
+  end
 end
