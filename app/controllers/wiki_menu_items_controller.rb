@@ -37,7 +37,7 @@ class WikiMenuItemsController < ApplicationController
     next controller.wiki_menu_item.menu_identifier if controller.wiki_menu_item.try(:persisted?)
 
     project = controller.instance_variable_get(:@project)
-    if (page = WikiPage.find_by(wiki_id: project.wiki.id, slug: controller.params[:id]))
+    if (page = project.wiki.find_page(controller.params[:id]))
       default_menu_item(controller, page)
     end
   end
@@ -45,7 +45,8 @@ class WikiMenuItemsController < ApplicationController
   current_menu_item :select_main_menu_item do |controller|
     next controller.wiki_menu_item.menu_identifier if controller.wiki_menu_item.try(:persisted?)
 
-    if (page = WikiPage.find_by(id: controller.params[:id]))
+    project = controller.instance_variable_get(:@project)
+    if (page = project.wiki.find_page(id: controller.params[:id]))
       default_menu_item(controller, page)
     end
   end
@@ -114,7 +115,7 @@ class WikiMenuItemsController < ApplicationController
   end
 
   def select_main_menu_item
-    @page = WikiPage.find params[:id]
+    @page = @project.wiki.pages.find params[:id]
     @possible_wiki_pages = @project
                            .wiki
                            .pages
@@ -127,9 +128,9 @@ class WikiMenuItemsController < ApplicationController
   end
 
   def replace_main_menu_item
-    current_page = WikiPage.find params[:id]
+    current_page = @project.wiki.find_page(params[:id])
 
-    if (current_menu_item = current_page.menu_item) && (page = WikiPage.find_by(id: params[:wiki_page][:id])) && current_menu_item != page.menu_item
+    if (current_menu_item = current_page.menu_item) && (page = @project.wiki.find_page(params[:wiki_page][:id])) && current_menu_item != page.menu_item
       create_main_menu_item_for_wiki_page(page, current_menu_item.options)
       current_menu_item.destroy
     end
