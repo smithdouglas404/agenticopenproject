@@ -31,38 +31,11 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class TextInputComponent < ViewComponent::Base
-        attr_reader :form, :attribute, :model
-
-        def self.display_class
-          DisplayFields::DisplayFieldComponent
-        end
-
+      class FloatInputComponent < InplaceEditFields::TextInputComponent
         def initialize(form:, attribute:, model:, **system_arguments)
-          super()
-          @form = form
-          @attribute = attribute
-          @model = model
-          @system_arguments = system_arguments
-        end
-
-        def call
-          form.text_field name: attribute,
-                          data: { controller: "inplace-edit",
-                                  inplace_edit_url_value: reset_url,
-                                  action: "keydown.esc->inplace-edit#request" },
-                          **@system_arguments
-        end
-
-        private
-
-        def reset_url
-          inplace_edit_field_reset_path(
-            model: model.class.name,
-            id: model.id,
-            attribute:,
-            system_arguments_json: @system_arguments.to_json
-          )
+          system_arguments[:type] = :number
+          system_arguments[:step] = "any"
+          super
         end
       end
     end

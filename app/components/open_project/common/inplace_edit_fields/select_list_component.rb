@@ -31,11 +31,11 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class TextInputComponent < ViewComponent::Base
+      class SelectListComponent < ViewComponent::Base
         attr_reader :form, :attribute, :model
 
         def self.display_class
-          DisplayFields::DisplayFieldComponent
+          DisplayFields::SelectListComponent
         end
 
         def initialize(form:, attribute:, model:, **system_arguments)
@@ -44,25 +44,31 @@ module OpenProject
           @attribute = attribute
           @model = model
           @system_arguments = system_arguments
+          @system_arguments[:classes] = class_names(
+            @system_arguments[:classes],
+            "op-inplace-edit-field--select-list"
+          )
+          @system_arguments[:label] ||= model.class.human_attribute_name(attribute)
+
+          @system_arguments[:autocomplete_options] ||= {}
+          @system_arguments[:autocomplete_options][:model] = model
+          @system_arguments[:autocomplete_options][:focusDirectly] = true
         end
 
         def call
-          form.text_field name: attribute,
-                          data: { controller: "inplace-edit",
-                                  inplace_edit_url_value: reset_url,
-                                  action: "keydown.esc->inplace-edit#request" },
-                          **@system_arguments
-        end
+          form.autocompleter(name: attribute, **@system_arguments)
 
-        private
-
-        def reset_url
-          inplace_edit_field_reset_path(
-            model: model.class.name,
-            id: model.id,
-            attribute:,
-            system_arguments_json: @system_arguments.to_json
-          )
+          form.group(layout: :horizontal, justify_content: :flex_end) do |button_group|
+            button_group.submit(name: :reset,
+                                type: :submit,
+                                label: I18n.t(:button_cancel),
+                                scheme: :default,
+                                formaction: inplace_edit_field_reset_path(model: model.class.name, id: model.id, attribute:),
+                                formmethod: :get)
+            button_group.submit(name: :submit,
+                                label: I18n.t(:button_save),
+                                scheme: :primary)
+          end
         end
       end
     end

@@ -33,14 +33,26 @@ module OpenProject
     module InplaceEditFields
       module DisplayFields
         class RichTextAreaComponent < DisplayFieldComponent
+          include OpenProject::TextFormatting
+
           attr_reader :model, :attribute, :writable
 
-          def call
+          def input_specific_call
             render(Primer::BaseComponent.new(tag: :div, **display_field_arguments)) do
               render(Primer::BaseComponent.new(tag: :div,
                                                classes: "op-uc-container op-uc-container_reduced-headings -multiline")) do
                 render_display_value
               end
+            end
+          end
+
+          def render_display_value
+            value = model.public_send(attribute)
+
+            if value.present?
+              format_text(value)
+            else
+              t("placeholders.default")
             end
           end
         end

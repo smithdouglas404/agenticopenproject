@@ -42,6 +42,8 @@ module OpenProject
         @enforce_edit_mode = enforce_edit_mode
         @system_arguments = system_arguments
         @system_arguments[:id] = system_arguments[:id] || SecureRandom.uuid
+        @system_arguments[:required] ||= required?
+        @system_arguments[:label] ||= field_label
       end
 
       def field_class
@@ -92,6 +94,37 @@ module OpenProject
           else
             false
           end
+      end
+
+      def field_label
+        # Check if this is a custom field attribute
+        if attribute.to_s.start_with?("custom_field_") && custom_field
+          return custom_field.name
+        end
+
+        label = model.class.human_attribute_name(attribute)
+        label = label.titleize if attribute.to_s.include?("_")
+        label
+      end
+
+      def required?
+        return @required if instance_variable_defined?(:@required)
+
+        @required = if @system_arguments.key?(:required)
+                      @system_arguments[:required]
+                    elsif attribute.to_s.start_with?("custom_field_")
+                      # For custom fields, check the is_required attribute
+                      custom_field&.is_required || false
+                    else
+                      # For regular model attributes, check ActiveRecord validations
+                      model.class.validators_on(attribute).any?(ActiveRecord::Validations::PresenceValidator)
+                    end
+      end
+
+      def custom_field
+        return @custom_field if defined?(@custom_field)
+
+        @custom_field = CustomField.find_by(id: attribute.to_s.sub("custom_field_", "").to_i)
       end
     end
   end

@@ -1,0 +1,31 @@
+<%=
+  flex_layout(
+    align_items: :flex_start,
+    justify_content: :space_between
+  ) do |flex|
+    flex.with_row(mb: 1) do
+      render OpenProject::Common::AttributeLabelComponent.new(
+        attribute:,
+        model:,
+        required: @system_arguments[:required],
+        hidden: @system_arguments[:visually_hide_label]
+      ) do
+        render(Primer::Beta::Text.new(font_weight: :bold)) { @system_arguments[:label] }
+      end
+    end
+
+    flex.with_row(w: :full) do
+      input_specific_call
+    end
+
+    flex.with_row(w: :full) do
+      render OpenProject::Common::AttributeHelpTextCaptionComponent.new(
+        help_text: helpers.help_text_for(
+          model,
+          attribute,
+          current_user: helpers.current_user
+        )
+      )
+    end
+  end
+%>

@@ -31,7 +31,7 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class TextInputComponent < ViewComponent::Base
+      class BooleanInputComponent < ViewComponent::Base
         attr_reader :form, :attribute, :model
 
         def self.display_class
@@ -44,20 +44,24 @@ module OpenProject
           @attribute = attribute
           @model = model
           @system_arguments = system_arguments
+          @system_arguments[:classes] = class_names(
+            @system_arguments[:classes],
+            "op-inplace-edit-field--boolean"
+          )
+          @system_arguments[:label] ||= model.class.human_attribute_name(attribute)
         end
 
         def call
-          form.text_field name: attribute,
-                          data: { controller: "inplace-edit",
-                                  inplace_edit_url_value: reset_url,
-                                  action: "keydown.esc->inplace-edit#request" },
-                          **@system_arguments
+          form.check_box name: attribute,
+                         data: { controller: "inplace-edit",
+                                 action: "click->inplace-edit#submitForm" },
+                         **@system_arguments
         end
 
         private
 
-        def reset_url
-          inplace_edit_field_reset_path(
+        def submit_url
+          inplace_edit_field_submit_path(
             model: model.class.name,
             id: model.id,
             attribute:,

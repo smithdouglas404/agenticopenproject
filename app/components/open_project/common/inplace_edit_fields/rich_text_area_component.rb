@@ -48,7 +48,6 @@ module OpenProject
             @system_arguments[:classes],
             "op-inplace-edit-field--text-area"
           )
-          @system_arguments[:label] ||= model.class.human_attribute_name(attribute)
 
           @system_arguments[:rich_text_options] ||= {}
           @system_arguments[:rich_text_options][:primerized] = true

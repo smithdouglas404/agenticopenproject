@@ -46,6 +46,11 @@ module Overviews
 
       private
 
+      def show_inplace_edit_field?
+        @project_custom_field.field_format != "text" ||
+          @project_custom_field.project_custom_field_section&.shown_in_overview_main_area?
+      end
+
       def allowed_to_edit?
         User.current.allowed_in_project?(:edit_project_attributes, @project)
       end

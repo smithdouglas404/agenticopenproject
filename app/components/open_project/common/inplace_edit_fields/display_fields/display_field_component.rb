@@ -33,7 +33,7 @@ module OpenProject
     module InplaceEditFields
       module DisplayFields
         class DisplayFieldComponent < ViewComponent::Base
-          include OpenProject::TextFormatting
+          include OpPrimer::ComponentHelpers
 
           attr_reader :model, :attribute, :writable
 
@@ -48,25 +48,27 @@ module OpenProject
           def render_display_value
             value = model.public_send(attribute)
 
-            if value.present?
-              format_text(value)
+            if value.is_a?(TrueClass) || value.is_a?(FalseClass)
+              boolean_display_value(value)
+            elsif value.present?
+              value.to_s
             else
-              "–"
+              t("placeholders.default")
             end
           end
 
           def display_field_arguments
             @display_field_arguments ||= {
-              classes: "op-inplace-edit--display-field #{'op-inplace-edit--display-field_editable' if writable}",
+              classes: "op-inplace-edit--display-field #{'op-inplace-edit--display-field_editable' if writable?}",
               data: {
                 controller: "inplace-edit",
                 inplace_edit_url_value: edit_url,
-                action: writable ? "click->inplace-edit#request" : ""
+                action: writable? ? "click->inplace-edit#request" : ""
               }
             }
           end
 
-          def call
+          def input_specific_call
             render(Primer::BaseComponent.new(tag: :div, **display_field_arguments)) do
               render_display_value
             end
@@ -81,6 +83,14 @@ module OpenProject
               attribute:,
               system_arguments_json: @system_arguments.to_json
             )
+          end
+
+          def boolean_display_value(value)
+            I18n.t("general_text_#{value ? 'yes' : 'no'}")
+          end
+
+          def writable?
+            writable && (@system_arguments[:readonly].nil? || @system_arguments[:readonly] == false)
           end
         end
       end

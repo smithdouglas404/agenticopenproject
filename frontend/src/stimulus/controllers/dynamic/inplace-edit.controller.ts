@@ -52,4 +52,11 @@ export default class extends Controller {
       throw new Error(response.statusText);
     }
   }
+
+  submitForm() {
+    const form = this.element.closest('form');
+    if (form) {
+      form.requestSubmit();
+    }
+  }
 }
