@@ -36,12 +36,41 @@ module Meetings
     validate :user_allowed_to_add
     validate :recurring_meeting_visible
 
+    class << self
+      def allowed?(user:, model:, action:)
+        case action
+        when :create
+          create_allowed?(user:, project: model)
+        when :copy
+          create_allowed?(user:, project: model.project)
+        when :new
+          new_allowed?(user:, project: model)
+        else
+          raise ArgumentError, "Unknown action #{action}"
+        end
+      end
+
+      def create_allowed?(user:, project:)
+        return false if project.nil?
+
+        user.allowed_in_project?(:create_meetings, project)
+      end
+
+      def new_allowed?(user:, project:)
+        if project.nil?
+          user.allowed_in_any_project?(:create_meetings)
+        else
+          user.allowed_in_project?(:create_meetings, project)
+        end
+      end
+    end
+
     private
 
     def user_allowed_to_add
       return if model.project.nil?
 
-      unless user.allowed_in_project?(:create_meetings, model.project)
+      unless self.class.create_allowed?(user: user, project: model.project)
         errors.add :base, :error_unauthorized
       end
     end

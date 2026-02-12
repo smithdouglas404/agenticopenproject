@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,58 +26,33 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class DeleteContract < ModelContract
-  class << self
-    def delete_permission(permission = nil)
-      if permission
-        @delete_permission = permission
+module Meetings
+  class ShowContract < ::BaseContract
+    class << self
+      def allowed?(user:, model:, action:)
+        case action
+        when :show
+          show_allowed?(user:, model:)
+        when :index
+          index_allowed?(user:, model:)
+        else
+          raise ArgumentError, "Unknown action #{action}"
+        end
       end
 
-      @delete_permission
-    end
+      def show_allowed?(user:, model:)
+        user.allowed_in_project?(:view_meetings, model.project)
+      end
 
-    def allowed?(user:, model:, action:)
-      case action
-      when :delete
-        delete_allowed?(user:, model:)
-      else
-        raise ArgumentError, "Unknown action #{action}"
+      def index_allowed?(user:, model:)
+        if model.present?
+          user.allowed_in_project?(:view_meetings, model)
+        else
+          user.allowed_globally?(:view_meetings)
+        end
       end
     end
-
-    def delete_allowed?(user:, model:)
-      permission = delete_permission
-
-      case permission
-      when :admin
-        user.admin? && user.active?
-      when Proc
-        permission.call(user:, model:)
-      when Symbol
-        model.project && user.allowed_in_project?(permission, model.project)
-      else
-        raise ArgumentError, "#{self.class} used without delete_permission. Set a  Proc, or project-based permission symbol"
-      end
-    end
-  end
-
-  validate :user_allowed
-
-  def user_allowed
-    unless authorized?
-      errors.add :base, :error_unauthorized
-    end
-  end
-
-  protected
-
-  def validate_model?
-    false
-  end
-
-  def authorized?
-    self.class.delete_allowed?(user:, model:)
   end
 end

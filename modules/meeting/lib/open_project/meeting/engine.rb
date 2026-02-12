@@ -49,7 +49,7 @@ module OpenProject::Meeting
                      work_package_meetings_tab: %i[index count],
                      recurring_meetings: %i[index show new create download_ics]
                    },
-                   permissible_on: :project
+                   permissible_on: %i[project global]
         permission :create_meetings,
                    {
                      meetings: %i[new create copy new_dialog fetch_timezone],

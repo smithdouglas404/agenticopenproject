@@ -113,7 +113,10 @@ module Accounts::Authorization
   end
 
   def authorization_check(contract_class:, action:, model:)
-    render_403 unless contract_class.allowed?(model:, action:, user: current_user)
+    return true if contract_class.allowed?(model:, action:, user: current_user)
+
+    render_403
+    false
   end
 
   def require_admin
