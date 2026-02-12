@@ -38,16 +38,19 @@ module MeetingTemplates
     end
 
     def render_create_button?
-      # TODO
-      return false unless @project
-
-      User.current.allowed_in_project?(:create_meetings, @project)
+      if @project
+        User.current.allowed_in_project?(:create_meetings, @project)
+      else
+        User.current.allowed_in_any_project?(:create_meetings)
+      end
     end
 
     def create_path
-      return nil unless @project
-
-      new_dialog_template_project_meetings_path(@project)
+      if @project
+        new_dialog_template_project_meetings_path(@project)
+      else
+        new_dialog_template_meetings_path
+      end
     end
 
     def id

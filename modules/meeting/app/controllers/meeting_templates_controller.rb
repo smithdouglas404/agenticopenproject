@@ -30,7 +30,6 @@
 
 class MeetingTemplatesController < ApplicationController
   before_action :load_and_authorize_in_optional_project
-  before_action :require_project, except: %i[index]
 
   include Layout
   include OpTurbo::ComponentStream
@@ -73,12 +72,12 @@ class MeetingTemplatesController < ApplicationController
 
     if call.success?
       flash[:notice] = I18n.t(:notice_meeting_template_created)
-      redirect_to project_meeting_path(@project, @template), status: :see_other
+      redirect_to controller: "/meetings", action: "show", id: @template, status: :see_other
     else
       update_via_turbo_stream(
         component: Meetings::Index::FormComponent.new(
           meeting: @template,
-          project: @project,
+          project: @template.project,
           template: true
         ),
         status: :bad_request
@@ -114,12 +113,13 @@ class MeetingTemplatesController < ApplicationController
   end
 
   def template_params
-    params
-      .expect(meeting: [:title])
-      .merge(
-        template: true,
-        recurring_meeting_id: nil,
-        project_id: @project.id
-      )
+    permitted = params.expect(meeting: %i[title project_id])
+
+    permitted.merge(
+      template: true,
+      recurring_meeting_id: nil
+    ).tap do |p|
+      p[:project_id] = @project.id if @project.present?
+    end
   end
 end
