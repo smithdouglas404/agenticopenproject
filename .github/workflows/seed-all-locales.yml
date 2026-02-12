@@ -63,7 +63,7 @@ jobs:
         locale: ${{ fromJson(needs.prepare.outputs.locales) }}
     services:
       postgres:
-        image: postgres:17
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
