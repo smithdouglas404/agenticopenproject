@@ -46,7 +46,7 @@ by OpenProject already, namely:
 * Tokens issued from a compliant OpenID Connect provider
 
 In case OpenProject is used as the authentication provider, the configuration for the client has to be prepared by the administrator.
-Go to _Administration -> Authentication -> OAuth applications_ and create an application with the `mcp` scope, entering
+Go to *Administration -> Authentication -> OAuth applications* and create an application with the `mcp` scope, entering
 the "Redirect URI" according to the instructions of your MCP client. Make sure that the application is marked as confidential.
 
 ## Customization
