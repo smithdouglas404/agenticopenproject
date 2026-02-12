@@ -350,14 +350,10 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
 
       context "for users without view_project_phases permission" do
         specify "project phase columns cannot be configured to show up" do
-          element_selector = "#columns-select_autocompleter ng-select.op-draggable-autocomplete--input"
-          results_selector = "#columns-select_autocompleter ng-dropdown-panel .ng-dropdown-panel-items"
           projects_page.expect_no_config_columns(project_phase_with_gates.name,
                                                  project_phase.name,
                                                  inactive_project_phase_with_gates.name,
-                                                 inactive_project_phase.name,
-                                                 element_selector:,
-                                                 results_selector:)
+                                                 inactive_project_phase.name)
         end
       end
 
