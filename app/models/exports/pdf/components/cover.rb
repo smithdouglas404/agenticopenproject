@@ -185,11 +185,17 @@ module Exports::PDF::Components::Cover
     [image_obj, image_info, image_opts, height]
   end
 
-  def custom_cover_image
+  def custom_cover_image_file
     return unless CustomStyle.current.present? &&
-      CustomStyle.current.export_cover.present? && CustomStyle.current.export_cover.local_file.present?
+                  CustomStyle.current.export_cover.present? && CustomStyle.current.export_cover.local_file.present?
 
-    image_file = CustomStyle.current.export_cover.local_file.path
+    CustomStyle.current.export_cover.local_file.path
+  end
+
+  def custom_cover_image
+    image_file = custom_cover_image_file
+    return unless image_file
+
     content_type = OpenProject::ContentTypeDetector.new(image_file).detect
     return unless pdf_embeddable?(content_type)
 
