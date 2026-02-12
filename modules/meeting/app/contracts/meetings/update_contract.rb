@@ -30,6 +30,7 @@
 
 module Meetings
   class UpdateContract < BaseContract
+    include OpenProject::ActionAuthorizer::Registrable
     include Redmine::I18n
 
     validate :user_allowed_to_edit
@@ -47,8 +48,8 @@ module Meetings
       end
     end
 
-    OpenProject::ActionAuthorizer.register(:update, on: :Meeting, contract: self, method: :update_allowed?)
-    OpenProject::ActionAuthorizer.register(:edit, on: :Meeting, contract: self, method: :update_allowed?)
+    register_action_authorization :update, method: :update_allowed?
+    register_action_authorization :edit, method: :update_allowed?
 
     def user_allowed_to_edit
       errors.add(:base, :error_unauthorized) unless self.class.update_allowed?(user:, scope: model)

@@ -30,6 +30,18 @@
 
 module OpenProject
   class ActionAuthorizer
+    module Registrable
+      extend ActiveSupport::Concern
+
+      class_methods do
+        def register_action_authorization(action, method:)
+          on = module_parent.name.singularize.to_sym
+
+          OpenProject::ActionAuthorizer.register(action, on:, contract: self, method:)
+        end
+      end
+    end
+
     class << self
       def register(action, on:, contract:, method:)
         registry[on.to_s.to_sym][action] = [contract, method]

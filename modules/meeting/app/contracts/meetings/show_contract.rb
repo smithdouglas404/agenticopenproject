@@ -30,6 +30,8 @@
 
 module Meetings
   class ShowContract < ::BaseContract
+    include OpenProject::ActionAuthorizer::Registrable
+
     class << self
       def show_allowed?(user:, scope:)
         user.allowed_in_project?(:view_meetings, scope.project)
@@ -44,7 +46,7 @@ module Meetings
       end
     end
 
-    OpenProject::ActionAuthorizer.register(:show, on: :Meeting, contract: self, method: :show_allowed?)
-    OpenProject::ActionAuthorizer.register(:index, on: :Meeting, contract: self, method: :index_allowed?)
+    register_action_authorization :show, method: :show_allowed?
+    register_action_authorization :index, method: :index_allowed?
   end
 end

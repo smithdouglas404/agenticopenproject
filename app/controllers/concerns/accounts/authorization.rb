@@ -113,7 +113,6 @@ module Accounts::Authorization
   end
 
   def authorization_check(action:, scope: nil, model: nil) # rubocop:disable Naming/PredicateMethod
-    # TODO: throw argument error if both scope and model are nil
     return true if OpenProject::ActionAuthorizer.allowed?(action, on: model, user: current_user, scope:)
 
     render_403

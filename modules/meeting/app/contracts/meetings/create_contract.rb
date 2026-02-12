@@ -30,6 +30,8 @@
 
 module Meetings
   class CreateContract < BaseContract
+    include OpenProject::ActionAuthorizer::Registrable
+
     attribute :recurring_meeting_id
     attribute :uid
 
@@ -56,9 +58,9 @@ module Meetings
       end
     end
 
-    OpenProject::ActionAuthorizer.register(:new, on: :Meeting, contract: self, method: :new_allowed?)
-    OpenProject::ActionAuthorizer.register(:create, on: :Meeting, contract: self, method: :create_allowed?)
-    OpenProject::ActionAuthorizer.register(:copy, on: :Meeting, contract: self, method: :copy_allowed?)
+    register_action_authorization :new, method: :new_allowed?
+    register_action_authorization :create, method: :create_allowed?
+    register_action_authorization :copy, method: :copy_allowed?
 
     private
 

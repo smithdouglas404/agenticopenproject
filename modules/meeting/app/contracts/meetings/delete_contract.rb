@@ -29,8 +29,10 @@
 
 module Meetings
   class DeleteContract < ::DeleteContract
+    include OpenProject::ActionAuthorizer::Registrable
+
     delete_permission :delete_meetings
 
-    OpenProject::ActionAuthorizer.register(:delete, on: :Meeting, contract: self, method: :delete_allowed?)
+    register_action_authorization :delete, method: :delete_allowed?
   end
 end
