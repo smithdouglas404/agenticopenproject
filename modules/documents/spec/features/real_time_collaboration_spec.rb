@@ -41,20 +41,7 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
   let(:project) { create(:project) }
   let(:document) { create(:document, :collaborative, project:) }
 
-  before do
-    # These tests require a running Hocuspocus server. You can either run one
-    # locally or use the docker test setup.
-    host = ENV["OPENPROJECT_TESTING_WITH_DOCKER"] == "true" ? "hocuspocus-test" : "127.0.0.1"
-    port = 1234
-    Setting.collaborative_editing_hocuspocus_url = "ws://#{host}:#{port}"
-    Setting.collaborative_editing_hocuspocus_secret = "secret12345"
-
-    begin
-      TCPSocket.new(host, port).close
-    rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, SocketError => e
-      raise("Hocuspocus server not reachable at #{host}:#{port} - #{e.message}")
-    end
-  end
+  include_context "with hocuspocus"
 
   context "with write permission" do
     before do
