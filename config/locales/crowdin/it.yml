@@ -1160,6 +1160,9 @@ it:
         dependencies: "Dipendenze"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Visualizza fino a"
       attachment:
@@ -1534,6 +1537,7 @@ it:
         not_available: "non è disponibile a causa di una configurazione di sistema."
         not_deletable: "non può essere eliminato."
         not_current_user: "non è l'utente attuale."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "non trovato."
         not_a_date: "non è una data valida."
         not_a_datetime: "non è un'orario valido."
@@ -2095,6 +2099,7 @@ it:
     role: "Ruolo"
     roles: "Ruoli"
     search: "Cerca"
+    sprint: "Sprint"
     start_date: "Data di inizio"
     status: "Stato"
     state: "Stato"

@@ -1152,6 +1152,9 @@ vi:
         dependencies: "phụ thuộc"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Hiển thị cho đến khi"
       attachment:
@@ -1526,6 +1529,7 @@ vi:
         not_available: "không khả dụng do cấu hình hệ thống."
         not_deletable: "không thể xóa được."
         not_current_user: "không phải là người dùng hiện tại."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "không tìm thấy."
         not_a_date: "không phải là ngày hợp lệ"
         not_a_datetime: "không phải là thời gian hợp lệ"
@@ -2068,6 +2072,7 @@ vi:
     role: "Vai trò"
     roles: "Vai trò"
     search: "tìm kiếm"
+    sprint: "Sprint"
     start_date: "Ngày bắt đầu"
     status: "Trạng thái"
     state: "tiểu bang"

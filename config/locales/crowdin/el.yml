@@ -1159,6 +1159,9 @@ el:
         dependencies: "Εξαρτήσεις"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Εμφάνιση μέχρι"
       attachment:
@@ -1533,6 +1536,7 @@ el:
         not_available: "is not available due to a system configuration."
         not_deletable: "δεν μπορεί να διαγραφεί."
         not_current_user: "δεν είναι ο τρέχων χρήστης."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "δεν είναι έγκυρη ημερομηνία."
         not_a_datetime: "δεν είναι έγκυρη ημερομηνία και ώρα."
@@ -2094,6 +2098,7 @@ el:
     role: "Ρόλος"
     roles: "Ρόλοι"
     search: "Αναζήτηση"
+    sprint: "Sprint"
     start_date: "Ημερομηνία έναρξης"
     status: "Κατάσταση"
     state: "State"

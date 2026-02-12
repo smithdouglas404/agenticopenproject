@@ -1160,6 +1160,9 @@ ca:
         dependencies: "Dependències"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Mostrar fins"
       attachment:
@@ -1534,6 +1537,7 @@ ca:
         not_available: "no és disponible degut a la configuració del sistema."
         not_deletable: "no es pot eliminar."
         not_current_user: "no és l'usuari actual."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "no és una data vàlida."
         not_a_datetime: "no és una data-i-hora vàlida."
@@ -2095,6 +2099,7 @@ ca:
     role: "Rol"
     roles: "Rols"
     search: "Cercar"
+    sprint: "Sprint"
     start_date: "Data d'inici"
     status: "Estat"
     state: "State"

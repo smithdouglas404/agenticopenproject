@@ -1154,6 +1154,9 @@ ko:
         dependencies: "종속성"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "표시 기한"
       attachment:
@@ -1528,6 +1531,7 @@ ko:
         not_available: "- 시스템 구성으로 인해 사용 가능하지 않습니다."
         not_deletable: "- 삭제할 수 없습니다."
         not_current_user: "은(는) 현재 유효한 사용자가 아닙니다."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "- 찾을 수 없습니다."
         not_a_date: "은(는) 유효한 날짜가 아닙니다."
         not_a_datetime: "은(는) 유효한 날짜가 아닙니다."
@@ -2070,6 +2074,7 @@ ko:
     role: "역할"
     roles: "역할"
     search: "검색"
+    sprint: "Sprint"
     start_date: "시작 날짜"
     status: "상태"
     state: "상태"

@@ -1175,6 +1175,9 @@ uk:
         dependencies: "Залежності"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Показувати до"
       attachment:
@@ -1549,6 +1552,7 @@ uk:
         not_available: "– недоступно через налаштування системи."
         not_deletable: "не можна видалити."
         not_current_user: "не поточний користувач."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "не знайдено."
         not_a_date: "не є дійсною датою."
         not_a_datetime: "не є дійсним датою."
@@ -2148,6 +2152,7 @@ uk:
     role: "роль"
     roles: "Роль"
     search: "Пошук"
+    sprint: "Sprint"
     start_date: "Початок"
     status: "Статус"
     state: "Стан"

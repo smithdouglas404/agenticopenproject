@@ -1172,6 +1172,9 @@ ro:
         dependencies: "Dependenţe"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Afişare până la"
       attachment:
@@ -1546,6 +1549,7 @@ ro:
         not_available: "nu este disponibil din cauza unei configurații a sistemului."
         not_deletable: "%s nu poate fi șters."
         not_current_user: "nu este utilizatorul curent."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "nu a fost găsit."
         not_a_date: "Acest câmp trebuie să conțină o dată validă."
         not_a_datetime: "nu este o dată-ora validă."
@@ -2126,6 +2130,7 @@ ro:
     role: "Rol"
     roles: "Roluri"
     search: "Caută"
+    sprint: "Sprint"
     start_date: "Dată început"
     status: "Stare"
     state: "State"

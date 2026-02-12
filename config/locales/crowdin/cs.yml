@@ -1181,6 +1181,9 @@ cs:
         dependencies: "Závislosti"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Zobrazit do"
       attachment:
@@ -1555,6 +1558,7 @@ cs:
         not_available: "není k dispozici kvůli konfiguraci systému."
         not_deletable: "nelze odstranit"
         not_current_user: "není aktuální uživatel."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "nenalezeno."
         not_a_date: "není platné datum."
         not_a_datetime: "není platný čas."
@@ -2154,6 +2158,7 @@ cs:
     role: "Role"
     roles: "Role"
     search: "Vyhledávání"
+    sprint: "Sprint"
     start_date: "Datum zahájení"
     status: "Stav"
     state: "Stav"

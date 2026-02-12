@@ -1179,6 +1179,9 @@ ru:
         dependencies: "Связи"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Отобразить до"
       attachment:
@@ -1553,6 +1556,7 @@ ru:
         not_available: "недоступно из-за конфигурации системы."
         not_deletable: "не может быть удален."
         not_current_user: "не является текущим пользователем."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "не найдено."
         not_a_date: "не является допустимой датой."
         not_a_datetime: "дата и время не являются допустимыми."
@@ -2152,6 +2156,7 @@ ru:
     role: "Роль"
     roles: "Роли"
     search: "Поиск"
+    sprint: "Sprint"
     start_date: "Дата начала"
     status: "Статус"
     state: "Область"

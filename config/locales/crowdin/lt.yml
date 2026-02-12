@@ -1178,6 +1178,9 @@ lt:
         dependencies: "Priklausomybės"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Rodyti iki"
       attachment:
@@ -1552,6 +1555,7 @@ lt:
         not_available: "yra nepasiekiamas dėl sistemos konfigūracijos"
         not_deletable: "negali būti pašalintas."
         not_current_user: "nėra dabartinis naudotojas"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "nėra tinkama data."
         not_a_datetime: "nėra tinkama data ir laikas."
@@ -2151,6 +2155,7 @@ lt:
     role: "Vaidmuo"
     roles: "Vaidmenys"
     search: "Paieška"
+    sprint: "Sprint"
     start_date: "Pradžios data"
     status: "Būsena"
     state: "State"

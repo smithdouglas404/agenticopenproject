@@ -27,8 +27,6 @@ pl:
           not_set: 'Nie ustawione'
           finished: 'Zakończone'
           discontinued: 'Przerwane'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Podppzycje'
         project_favorites:

@@ -1150,6 +1150,9 @@ zh-CN:
         dependencies: "依赖项"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "显示截止日期"
       attachment:
@@ -1524,6 +1527,7 @@ zh-CN:
         not_available: "因系统配置而不可用。"
         not_deletable: "无法删除。"
         not_current_user: "不是当前用户。"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "未找到"
         not_a_date: "不是有效的日期。"
         not_a_datetime: "不是有效的日期时间。"
@@ -2066,6 +2070,7 @@ zh-CN:
     role: "角色"
     roles: "角色"
     search: "搜索"
+    sprint: "Sprint"
     start_date: "开始日期"
     status: "状态"
     state: "地区"

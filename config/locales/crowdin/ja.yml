@@ -1153,6 +1153,9 @@ ja:
         dependencies: "依存関係"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "までを表示"
       attachment:
@@ -1527,6 +1530,7 @@ ja:
         not_available: "はシステム構成のため使用できません。"
         not_deletable: "削除できません。"
         not_current_user: "現在のユーザーではありません。"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "見つかりません。"
         not_a_date: "は有効な日付ではありません。"
         not_a_datetime: "は有効な日時ではありません。"
@@ -2069,6 +2073,7 @@ ja:
     role: "ロール"
     roles: "ロール"
     search: "検索"
+    sprint: "Sprint"
     start_date: "開始日"
     status: "ステータス"
     state: "状態"

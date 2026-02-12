@@ -27,8 +27,6 @@
           not_set: 'Ikke angitt'
           finished: 'Fullført'
           discontinued: 'Utløpt'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

@@ -1181,6 +1181,9 @@ sk:
         dependencies: "Závislosti"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Zobrazovať, až kým"
       attachment:
@@ -1555,6 +1558,7 @@ sk:
         not_available: "is not available due to a system configuration."
         not_deletable: "cannot be deleted."
         not_current_user: "is not the current user."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "nie je platný dátum."
         not_a_datetime: "nie je platný dátum a čas."
@@ -2154,6 +2158,7 @@ sk:
     role: "Rola"
     roles: "Roly"
     search: "Vyhľadávanie"
+    sprint: "Sprint"
     start_date: "Dátum začiatku"
     status: "Stav"
     state: "State"

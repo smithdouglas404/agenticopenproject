@@ -1161,6 +1161,9 @@ da:
         dependencies: "Aflæggere"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Display until"
       attachment:
@@ -1535,6 +1538,7 @@ da:
         not_available: "is not available due to a system configuration."
         not_deletable: "Kan ikke slettes"
         not_current_user: "er ikke den aktuelle bruger."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "is not a valid date."
         not_a_datetime: "is not a valid date time."
@@ -2096,6 +2100,7 @@ da:
     role: "Rolle"
     roles: "Rollee"
     search: "Søg"
+    sprint: "Sprint"
     start_date: "Start dato"
     status: "Status"
     state: "State"
