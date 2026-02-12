@@ -438,21 +438,19 @@ module Redmine
         end
 
         def for_custom_field_accessor(method_symbol)
-          match = /\Acustom_field_(?<id>\d+)=?\z/.match(method_symbol.to_s)
-          if match
-            custom_field = all_available_custom_fields.find { |cf| cf.id.to_s == match[:id] }
-            if custom_field
-              yield custom_field
-            end
-          end
+          return unless /\Acustom_(?<attribute>field|comment)_(?<id>\d+)=?\z/ =~ method_symbol.to_s
+          return unless (custom_field = all_available_custom_fields.find { |cf| cf.id.to_s == id })
+          return if attribute == "comment" && !custom_field.has_comment?
+
+          yield custom_field
         end
 
         def add_custom_field_accessors(custom_field)
-          define_custom_field_getter(custom_field)
-          define_custom_field_setter(custom_field)
+          define_custom_field_getters(custom_field)
+          define_custom_field_setters(custom_field)
         end
 
-        def define_custom_field_getter(custom_field)
+        def define_custom_field_getters(custom_field)
           define_singleton_method custom_field.attribute_getter do
             custom_values = Array(custom_value_for(custom_field)).map do |custom_value|
               custom_value&.typed_value
@@ -464,14 +462,26 @@ module Redmine
               custom_values.first
             end
           end
+
+          if custom_field.has_comment?
+            define_singleton_method custom_field.comment_attribute_getter do
+              custom_comment_for(custom_field)&.text
+            end
+          end
         end
 
-        def define_custom_field_setter(custom_field)
+        def define_custom_field_setters(custom_field)
           define_singleton_method custom_field.attribute_setter do |value|
             # N.B. we do no strict type checking here, it would be possible to assign a user
             # to an integer custom field...
             value = value.id if value.respond_to?(:id)
             self.custom_field_values = { custom_field.id => Array(value) }
+          end
+
+          if custom_field.has_comment?
+            define_singleton_method custom_field.comment_attribute_setter do |text|
+              self.custom_comments = { custom_field.id => text }
+            end
           end
         end
 

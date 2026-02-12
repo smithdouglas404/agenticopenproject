@@ -295,13 +295,13 @@ class CustomField < ApplicationRecord
     "custom_comment_#{id}"
   end
 
-  def attribute_getter
-    attribute_name.to_sym
-  end
+  def attribute_getter = attribute_name.to_sym
 
-  def attribute_setter
-    :"#{attribute_name}="
-  end
+  def comment_attribute_getter = comment_attribute_name.to_sym
+
+  def attribute_setter = :"#{attribute_name}="
+
+  def comment_attribute_setter = :"#{comment_attribute_name}="
 
   def column_name
     "cf_#{id}"
