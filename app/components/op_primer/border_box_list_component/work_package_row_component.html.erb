@@ -1,3 +1,4 @@
+
 <%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
@@ -27,33 +28,39 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%= component_wrapper(tag: :section) do %>
-  <%= render(OpPrimer::BorderBoxListComponent.new) do |list| %>
-  <% list.with_header() do |header| %>
-    <% 
-      header.with_action_menu() do |menu|
-        menu.with_item(tag: :a, label: "foo", href: "eu")
-      end
-    %>
-  <% end %> 
-  <% backlog.stories.each do |story| %>
-    <% list.with_work_package(work_package: story) do |wp_row| %>
-      <% wp_row.with_action_menu() do |menu| 
-
-
-          menu.with_item(
-            tag: :a,
-            label: t(:"js.button_open_details"),
-            href: "suebar",
-            content_arguments: { turbo_frame: "content-bodyRight", turbo_action: "advance" }
-          ) do |item|
-            item.with_leading_visual_icon(icon: :"op-view-split")
-          end
-
-        
-      end %>
-    suebar
+<%= render(OpPrimer::ListComponent::Item.new(**@system_arguments)) do %>
+  <%= grid_layout("op-backlogs-story", tag: :article) do |grid| %>
+    <% grid.with_area(:drag_handle, classes: "hide-when-print") do %>
+      <%=
+        render(
+          Primer::OpenProject::DragHandle.new(
+            role: "button",
+            classes: "op-backlogs-story--drag_handle_button",
+            tabindex: 0,
+            aria: {
+              label: t(".label_drag_story", name: work_package.subject)
+            }
+          )
+        )
+      %>
     <% end %>
+
+    <% grid.with_area(:info_line) do %>
+      <%= render(WorkPackages::InfoLineComponent.new(work_package:)) %>
+    <% end %>
+
+    <% grid.with_area(:points) do %>
+
+    <% end %>
+
+    <% grid.with_area(:menu) do %>
+      <%= action %>
+    <% end %>
+
+    <% grid.with_area(:subject) do %>
+      <%= render(Primer::Beta::Text.new(font_weight: :semibold)) do %>
+        <%= work_package.subject %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

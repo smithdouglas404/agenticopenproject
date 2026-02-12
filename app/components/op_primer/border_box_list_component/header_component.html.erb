@@ -1,0 +1,36 @@
+<%= render(Primer::Beta::BorderBox::Header.new) do %>
+  <%= grid_layout("op-backlogs-header", tag: :div) do |grid| %>
+      <% grid.with_area(:collapsible) do %>
+        <%=
+          render(
+            Backlogs::CollapsibleComponent.new(
+              collapsible_id: "sue", # "#{dom_id(backlog)}-list",
+              toggle_label: "foo", # t(".label_toggle_backlog", name: sprint.name),
+              collapsed:
+            )
+          ) do |collapsible|
+            collapsible.with_title { "suebar" }
+            # collapsible.with_count(
+            #   scheme: :default,
+            #   count: story_count,
+            #   round: true,
+            #   aria: {
+            #     #label: t(".label_story_count", count: story_count),
+            #     live: "polite"
+            #   }
+            # )
+            collapsible.with_description(role: "group") do
+            end
+          end
+        %>
+    <% end %>
+
+    <% grid.with_area(:points) do %>
+
+      <% end %>
+
+      <% grid.with_area(:menu) do %>
+        <%= action %>
+      <% end %>
+  <% end %>
+<% end %>

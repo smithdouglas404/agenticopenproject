@@ -27,33 +27,13 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%= component_wrapper(tag: :section) do %>
-  <%= render(OpPrimer::BorderBoxListComponent.new) do |list| %>
-  <% list.with_header() do |header| %>
-    <% 
-      header.with_action_menu() do |menu|
-        menu.with_item(tag: :a, label: "foo", href: "eu")
-      end
-    %>
-  <% end %> 
-  <% backlog.stories.each do |story| %>
-    <% list.with_work_package(work_package: story) do |wp_row| %>
-      <% wp_row.with_action_menu() do |menu| 
-
-
-          menu.with_item(
-            tag: :a,
-            label: t(:"js.button_open_details"),
-            href: "suebar",
-            content_arguments: { turbo_frame: "content-bodyRight", turbo_action: "advance" }
-          ) do |item|
-            item.with_leading_visual_icon(icon: :"op-view-split")
-          end
-
-        
-      end %>
-    suebar
-    <% end %>
-    <% end %>
-  <% end %>
-<% end %>
+<%=
+  render(@menu) do |menu|
+    menu.with_show_button(
+      scheme: :invisible,
+      icon: :"kebab-horizontal",
+      "aria-label": t(".label_actions"),
+      tooltip_direction: :se
+    )
+  end
+%>
