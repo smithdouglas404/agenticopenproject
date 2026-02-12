@@ -56,7 +56,7 @@ class MeetingsController < ApplicationController
   menu_item :new_meeting, only: %i[new create]
 
   def index
-    return unless authorization_check(contract_class: Meetings::ShowContract, model: @project, action: :index)
+    return unless authorization_check(action: :index_meetings, scope: @project)
 
     load_meetings
 
@@ -69,7 +69,7 @@ class MeetingsController < ApplicationController
   end
 
   def show
-    return unless authorization_check(contract_class: Meetings::ShowContract, model: @meeting, action: :show)
+    return unless authorization_check(action: :show, scope: @meeting)
 
     respond_to do |format|
       format.pdf { export_pdf }
@@ -85,7 +85,7 @@ class MeetingsController < ApplicationController
   end
 
   def check_for_updates
-    return unless authorization_check(contract_class: Meetings::ShowContract, model: @meeting, action: :show)
+    return unless authorization_check(action: :show, scope: @meeting)
 
     if params[:reference] == @meeting.changed_hash
       head :no_content
@@ -95,7 +95,7 @@ class MeetingsController < ApplicationController
   end
 
   def new
-    return unless authorization_check(contract_class: Meetings::CreateContract, model: @project, action: :new)
+    return unless authorization_check(action: :new_meeting, scope: @project)
 
     respond_to do |format|
       format.html do
@@ -105,7 +105,7 @@ class MeetingsController < ApplicationController
   end
 
   def edit
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :update)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     respond_to do |format|
       format.turbo_stream do
@@ -120,9 +120,8 @@ class MeetingsController < ApplicationController
   end
 
   def create # rubocop:disable Metrics/AbcSize
-    return unless authorization_check(contract_class: Meetings::CreateContract,
-                                      model: @project || Project.find_by(id: @converted_params["project_id"]),
-                                      action: :create)
+    return unless authorization_check(action: :create_meeting,
+                                      scope: @project || Project.find_by(id: @converted_params["project_id"]))
 
     call =
       if @copy_from
@@ -173,7 +172,7 @@ class MeetingsController < ApplicationController
   end
 
   def new_dialog
-    return unless authorization_check(contract_class: Meetings::CreateContract, model: @project, action: :new)
+    return unless authorization_check(action: :new_meeting, scope: @project)
 
     respond_with_dialog Meetings::Index::DialogComponent.new(
       meeting: @meeting,
@@ -186,7 +185,7 @@ class MeetingsController < ApplicationController
   end
 
   def copy
-    return unless authorization_check(contract_class: Meetings::CreateContract, model: @meeting, action: :copy)
+    return unless authorization_check(action: :copy, scope: @meeting)
 
     copy_from = @meeting
     call = ::Meetings::CopyService
@@ -210,7 +209,7 @@ class MeetingsController < ApplicationController
   end
 
   def delete_dialog
-    return unless authorization_check(contract_class: Meetings::DeleteContract, model: @meeting, action: :delete)
+    return unless authorization_check(action: :delete, scope: @meeting)
 
     respond_with_dialog Meetings::DeleteDialogComponent.new(
       meeting: @meeting,
@@ -219,7 +218,7 @@ class MeetingsController < ApplicationController
   end
 
   def update
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :update)
+    return unless authorization_check(action: :update, scope: @meeting)
 
     call = ::Meetings::UpdateService
       .new(user: current_user, model: @meeting)
@@ -235,7 +234,7 @@ class MeetingsController < ApplicationController
   end
 
   def destroy # rubocop:disable Metrics/AbcSize
-    return unless authorization_check(contract_class: Meetings::DeleteContract, model: @meeting, action: :delete)
+    return unless authorization_check(action: :delete, scope: @meeting)
 
     recurring = @meeting.recurring_meeting
 
@@ -255,7 +254,7 @@ class MeetingsController < ApplicationController
   end
 
   def history
-    return unless authorization_check(contract_class: Meetings::ShowContract, model: @meeting, action: :show)
+    return unless authorization_check(action: :show, scope: @meeting)
 
     @events = get_events
   rescue ActiveRecord::RecordNotFound => e
@@ -264,7 +263,7 @@ class MeetingsController < ApplicationController
   end
 
   def cancel_edit
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :update)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     update_header_component_via_turbo_stream(state: :show)
 
@@ -272,11 +271,11 @@ class MeetingsController < ApplicationController
   end
 
   def details_dialog
-    nil unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :update)
+    authorization_check(action: :edit, scope: @meeting)
   end
 
   def update_title
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :update)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     @meeting.update(title: meeting_params[:title])
 
@@ -290,7 +289,7 @@ class MeetingsController < ApplicationController
   end
 
   def update_details
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :update)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     call = ::Meetings::UpdateService
       .new(user: current_user, model: @meeting)
@@ -311,7 +310,7 @@ class MeetingsController < ApplicationController
   end
 
   def change_state
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :update)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     case params[:state]
     when "open"
@@ -333,7 +332,7 @@ class MeetingsController < ApplicationController
   end
 
   def download_ics
-    return unless authorization_check(contract_class: Meetings::ShowContract, model: @meeting, action: :show)
+    return unless authorization_check(action: :show, scope: @meeting)
 
     ::Meetings::ICalService
       .new(user: current_user, meeting: @meeting)
@@ -345,7 +344,7 @@ class MeetingsController < ApplicationController
   end
 
   def notify
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :edit)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     handle_notification(type: :notify)
 
@@ -353,7 +352,7 @@ class MeetingsController < ApplicationController
   end
 
   def fetch_timezone
-    return unless authorization_check(contract_class: Meetings::CreateContract, model: @project, action: :create)
+    return unless authorization_check(action: :create_meeting, scope: @project)
 
     return unless timezone_params.keys.count == 2
 
@@ -370,7 +369,7 @@ class MeetingsController < ApplicationController
   end
 
   def generate_pdf_dialog
-    return unless authorization_check(contract_class: Meetings::ShowContract, model: @meeting, action: :show)
+    return unless authorization_check(action: :show, scope: @meeting)
 
     respond_with_dialog Meetings::Exports::ModalDialogComponent.new(
       meeting: @meeting,
@@ -379,13 +378,13 @@ class MeetingsController < ApplicationController
   end
 
   def toggle_notifications_dialog
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :edit)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     respond_with_dialog Meetings::SidePanel::ToggleNotificationsDialogComponent.new(@meeting)
   end
 
   def toggle_notifications
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :edit)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     @meeting.toggle!(:notify)
 
@@ -407,13 +406,13 @@ class MeetingsController < ApplicationController
   end
 
   def exit_draft_mode_dialog
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :edit)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     respond_with_dialog Meetings::ExitDraftModeDialogComponent.new(meeting: @meeting)
   end
 
   def exit_draft_mode
-    return unless authorization_check(contract_class: Meetings::UpdateContract, model: @meeting, action: :edit)
+    return unless authorization_check(action: :edit, scope: @meeting)
 
     call = ::Meetings::UpdateService
              .new(user: current_user, model: @meeting)

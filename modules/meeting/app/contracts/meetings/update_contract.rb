@@ -42,22 +42,13 @@ module Meetings
     end
 
     class << self
-      def allowed?(user:, model:, action:)
-        case action
-        when :update
-          update_allowed?(user:, model:)
-        else
-          raise ArgumentError, "Unknown action #{action}"
-        end
-      end
-
-      def update_allowed?(user:, model:)
-        user.allowed_in_project?(:edit_meetings, model.project)
+      def update_allowed?(user:, scope:)
+        user.allowed_in_project?(:edit_meetings, scope.project)
       end
     end
 
     def user_allowed_to_edit
-      errors.add(:base, :error_unauthorized) unless self.class.update_allowed?(user:, model:)
+      errors.add(:base, :error_unauthorized) unless self.class.update_allowed?(user:, scope: model)
     end
 
     def valid_rescheduling_date # rubocop:disable Metrics/AbcSize

@@ -112,8 +112,8 @@ module Accounts::Authorization
     is_authorized
   end
 
-  def authorization_check(contract_class:, action:, model:)
-    return true if contract_class.allowed?(model:, action:, user: current_user)
+  def authorization_check(action:, scope: nil) # rubocop:disable Naming/PredicateMethod
+    return true if OpenProject::ActionAuthorizer.allowed?(action, user: current_user, scope:)
 
     render_403
     false

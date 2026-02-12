@@ -192,6 +192,42 @@ module OpenProject::Meeting
       ::Exports::Register.register do
         single(::Meeting, Meetings::Exporter)
       end
+
+      OpenProject::ActionAuthorizer.register(:new_meeting,
+                                             scope: nil,
+                                             contract: :"Meetings::CreateContract",
+                                             method: :new_allowed?)
+      OpenProject::ActionAuthorizer.register(:create_meeting,
+                                             scope: :Project,
+                                             contract: :"Meetings::CreateContract",
+                                             method: :create_allowed?)
+      OpenProject::ActionAuthorizer.register(:copy,
+                                             scope: :Meeting,
+                                             contract: :"Meetings::CreateContract",
+                                             method: :copy_allowed?)
+
+      OpenProject::ActionAuthorizer.register(:update,
+                                             scope: :Meeting,
+                                             contract: :"Meetings::UpdateContract",
+                                             method: :update_allowed?)
+      OpenProject::ActionAuthorizer.register(:edit,
+                                             scope: :Meeting,
+                                             contract: :"Meetings::UpdateContract",
+                                             method: :update_allowed?)
+
+      OpenProject::ActionAuthorizer.register(:show,
+                                             scope: :Meeting,
+                                             contract: :"Meetings::ShowContract",
+                                             method: :show_allowed?)
+      OpenProject::ActionAuthorizer.register(:index_meetings,
+                                             scope: nil,
+                                             contract: :"Meetings::ShowContract",
+                                             method: :index_allowed?)
+
+      OpenProject::ActionAuthorizer.register(:delete,
+                                             scope: :Meeting,
+                                             contract: :"Meetings::DeleteContract",
+                                             method: :delete_allowed?)
     end
 
     add_api_path :meetings do

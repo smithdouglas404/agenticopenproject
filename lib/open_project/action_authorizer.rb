@@ -28,47 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class DeleteContract < ModelContract
-  class << self
-    def delete_permission(permission = nil)
-      if permission
-        @delete_permission = permission
+module OpenProject
+  class ActionAuthorizer
+    class << self
+      def register(name, scope:, contract:, method:)
+        registry[scope.to_s.to_sym][name] = [contract, method]
       end
 
-      @delete_permission
-    end
+      def allowed?(name, user:, scope: nil)
+        entry = find_check(name, scope.class) || find_check(name, nil)
 
-    def delete_allowed?(user:, scope:)
-      permission = delete_permission
+        unless entry
+          scope_desc = scope.nil? ? "nil" : scope.class.name
+          raise ArgumentError, "No authorization check registered for '#{name}' with scope #{scope_desc}"
+        end
 
-      case permission
-      when :admin
-        user.admin? && user.active?
-      when Proc
-        permission.call(user:, model: scope)
-      when Symbol
-        scope.project && user.allowed_in_project?(permission, scope.project)
-      else
-        raise ArgumentError, "#{self.class} used without delete_permission. Set a  Proc, or project-based permission symbol"
+        contract, method = entry
+        contract.to_s.constantize.public_send(method, user:, scope:)
+      end
+
+      def reset!
+        @registry = {}
+      end
+
+      private
+
+      def registry
+        @registry ||= Hash.new { |h, k| h[k] = {} }
+      end
+
+      def find_check(name, scope)
+        return registry[:''][name] if scope.nil?
+
+        check = registry[scope.to_s.to_sym][name]
+
+        check || find_check(name, scope.superclass)
       end
     end
-  end
-
-  validate :user_allowed
-
-  def user_allowed
-    unless authorized?
-      errors.add :base, :error_unauthorized
-    end
-  end
-
-  protected
-
-  def validate_model?
-    false
-  end
-
-  def authorized?
-    self.class.delete_allowed?(user:, scope: model)
   end
 end

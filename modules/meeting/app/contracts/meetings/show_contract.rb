@@ -31,24 +31,13 @@
 module Meetings
   class ShowContract < ::BaseContract
     class << self
-      def allowed?(user:, model:, action:)
-        case action
-        when :show
-          show_allowed?(user:, model:)
-        when :index
-          index_allowed?(user:, model:)
-        else
-          raise ArgumentError, "Unknown action #{action}"
-        end
+      def show_allowed?(user:, scope:)
+        user.allowed_in_project?(:view_meetings, scope.project)
       end
 
-      def show_allowed?(user:, model:)
-        user.allowed_in_project?(:view_meetings, model.project)
-      end
-
-      def index_allowed?(user:, model:)
-        if model.present?
-          user.allowed_in_project?(:view_meetings, model)
+      def index_allowed?(user:, scope:)
+        if scope.present?
+          user.allowed_in_project?(:view_meetings, scope)
         else
           user.allowed_globally?(:view_meetings)
         end
