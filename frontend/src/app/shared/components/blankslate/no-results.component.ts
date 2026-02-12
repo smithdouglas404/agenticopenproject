@@ -26,12 +26,29 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { circleSlashIconData, graphIconData, starIconData, SVGData, xIconData } from '@openproject/octicons-angular';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { I18nService } from 'core-app/core/i18n/i18n.service';
+import {
+  BlankslateComponent,
+  BlankslateDescriptionComponent,
+  BlankslateHeadingComponent,
+  BlankslateIconComponent,
+} from './blankslate.component';
 
-export const ICON_MAP:Record<string, SVGData> = {
-  x: xIconData,
-  star: starIconData,
-  'circle-slash': circleSlashIconData,
-  graph: graphIconData
-  // TODO add more icons
-};
+@Component({
+  selector: 'op-no-results',
+  templateUrl: './no-results.component.html',
+  imports: [
+    BlankslateComponent,
+    BlankslateIconComponent,
+    BlankslateHeadingComponent,
+    BlankslateDescriptionComponent,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class NoResultsComponent {
+  private readonly i18n = inject(I18nService);
+
+  readonly name = input(this.i18n.t('js.label_no_data'));
+  readonly message = input<string>();
+}

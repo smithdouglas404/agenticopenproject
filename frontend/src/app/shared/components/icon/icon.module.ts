@@ -98,6 +98,7 @@ import {
   ChevronDownIconComponent,
   VersionsIconComponent,
   BriefcaseIconComponent,
+  CircleSlashIconComponent
 } from '@openproject/octicons-angular';
 
 @NgModule({
@@ -203,6 +204,7 @@ import {
     TriangleDownIconComponent,
     VersionsIconComponent,
     BriefcaseIconComponent,
+    CircleSlashIconComponent,
   ],
   declarations: [
     OpIconComponent,
@@ -309,6 +311,7 @@ import {
     TriangleDownIconComponent,
     VersionsIconComponent,
     BriefcaseIconComponent,
+    CircleSlashIconComponent,
   ],
 })
 
