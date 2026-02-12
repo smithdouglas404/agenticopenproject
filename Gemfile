@@ -163,7 +163,7 @@ gem "matrix", "~> 0.4.3"
 
 gem "mcp", "~> 0.4.0"
 
-gem "meta-tags", "~> 2.22.2"
+gem "meta-tags", "~> 2.22.3"
 
 gem "paper_trail", "~> 17.0.0"
 

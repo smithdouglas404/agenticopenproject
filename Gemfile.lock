@@ -806,8 +806,8 @@ GEM
       json_rpc_handler (~> 0.1)
     messagebird-rest (5.0.0)
       jwt (< 4)
-    meta-tags (2.22.2)
-      actionpack (>= 6.0.0, < 8.2)
+    meta-tags (2.22.3)
+      actionpack (>= 6.0.0)
     method_source (1.1.0)
     mime-types (3.7.0)
       logger
@@ -1626,7 +1626,7 @@ DEPENDENCIES
   matrix (~> 0.4.3)
   mcp (~> 0.4.0)
   md_to_pdf!
-  meta-tags (~> 2.22.2)
+  meta-tags (~> 2.22.3)
   mini_magick (~> 5.3.0)
   multi_json (~> 1.19.0)
   my_page!
@@ -1979,7 +1979,7 @@ CHECKSUMS
   mcp (0.4.0) sha256=4d1dd2b99fbd81a5fdc808d258c38a4f57dd69751ee1e5f62b3ab40e31625a36
   md_to_pdf (0.2.5)
   messagebird-rest (5.0.0) sha256=da4cc1efba3d5e4aa021fad07426c2cb6b326ce5670da5104bb8f6056a39d59c
-  meta-tags (2.22.2) sha256=7fe78af4a92be12091f473cb84a21f6bddbd37f24c4413172df76cd14fff9e83
+  meta-tags (2.22.3) sha256=41ead5437140869717cbdd659cc6f1caa3e498b3e74b03ed63503b5b38ed504f
   method_source (1.1.0) sha256=181301c9c45b731b4769bc81e8860e72f9161ad7d66dd99103c9ab84f560f5c5
   mime-types (3.7.0) sha256=dcebf61c246f08e15a4de34e386ebe8233791e868564a470c3fe77c00eed5e56
   mime-types-data (3.2025.0924) sha256=f276bca15e59f35767cbcf2bc10e023e9200b30bd6a572c1daf7f4cc24994728
