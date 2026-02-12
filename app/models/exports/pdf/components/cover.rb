@@ -194,6 +194,9 @@ module Exports::PDF::Components::Cover
     return unless pdf_embeddable?(content_type)
 
     image_file
+  rescue StandardError => e
+    Rails.logger.error "Failed to access custom PDF cover file: #{e}"
+    nil # Fallback to default cover
   end
 
   def write_background_image
