@@ -36,7 +36,7 @@ module McpTools
       end
 
       def page_size
-        100
+        40
       end
 
       def default_title(title = nil)
