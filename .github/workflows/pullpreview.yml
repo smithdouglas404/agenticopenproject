@@ -46,18 +46,19 @@ jobs:
         cp ./docker/pullpreview/docker-compose.yml ./docker-compose.pullpreview.yml
         cp ./docker/pullpreview/Caddyfile ./Caddyfile
         cp ./docker/prod/Dockerfile ./Dockerfile
-    - uses: pullpreview/action@v6
+    - uses: pullpreview/action@hetzner
       with:
         # allows to ssh to the instance using our GitHub ssh key
         # command like: ssh ec2-user@pr-19375-trial-ip-3-127-219-135.my.preview.run
         admins: crohr,HDinger,machisuji,oliverguenther,ulferts,wielinde,cbliard
         compose_files: docker-compose.pullpreview.yml
-        instance_type: xlarge
+        provider: hetzner
+        region: nbg1
+        instance_type: cpx31
         ports: 80,443,8080
         default_port: 443
         ttl: 8d
         dns: my.opf.run
       env:
-        AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-        AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-        AWS_REGION: eu-central-1
+        HCLOUD_TOKEN: "${{ secrets.HCLOUD_TOKEN }}"
+        HETZNER_CA_KEY: "${{ secrets.HETZNER_CA_KEY }}"
