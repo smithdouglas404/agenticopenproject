@@ -18,6 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
       - name: Include Git SHA in package.json version
         run: |
           SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
