@@ -2,90 +2,62 @@
 name: OpenProject – Full Stack Energy Profile
 author: OpenProject GmbH
 description: >
-  Measures the energy consumption of a production-like OpenProject stack
-  (web server, background worker, PostgreSQL) under a simulated user session.
-  Use with the Green Metrics Tool: https://www.green-coding.io/products/green-metrics-tool/
+  Measures the energy consumption of a production-like OpenProject
+  all-in-one container (web, worker, PostgreSQL, memcached) under a
+  simulated user session. Build the image first, then run with GMT:
+    docker build -f docker/prod/Dockerfile --target all-in-one -t openproject-aio:local .
+    python3 runner.py --uri .
 
 services:
-  db:
-    image: postgres:17
-    environment:
-      POSTGRES_USER: openproject
-      POSTGRES_PASSWORD: openproject
-      POSTGRES_DB: openproject
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U openproject"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
-  worker:
-    image: openproject/openproject:dev-slim
-    command: ["./docker/prod/worker"]
-    environment:
-      DATABASE_URL: postgresql://openproject:openproject@db:5432/openproject
-      RAILS_ENV: production
-      SECRET_KEY_BASE: green-metrics-static-key-do-not-use-in-production
-      OPENPROJECT_HTTPS: "false"
-      OPENPROJECT_RAILS__CACHE__STORE: file_store
-    depends_on:
-      db:
-        condition: service_healthy
-
-  web:
-    image: openproject/openproject:dev-slim
-    command: ["./docker/prod/web"]
+  openproject:
+    image: openproject-aio:local
+    build:
+      context: .
+      dockerfile: docker/prod/Dockerfile
+      target: all-in-one
     ports:
-      - "8080:8080"
+      - "8080:80"
     environment:
-      DATABASE_URL: postgresql://openproject:openproject@db:5432/openproject
-      RAILS_ENV: production
       SECRET_KEY_BASE: green-metrics-static-key-do-not-use-in-production
       OPENPROJECT_HTTPS: "false"
-      OPENPROJECT_RAILS__CACHE__STORE: file_store
-    depends_on:
-      db:
-        condition: service_healthy
-      worker:
-        condition: service_started
 
 flow:
   - name: Wait for application health
-    container: web
+    container: openproject
     commands:
       - type: console
         command: >
           timeout 300 bash -c
-          'until curl -sf http://localhost:8080/health > /dev/null 2>&1; do sleep 5; done'
-        note: Wait for OpenProject to become healthy before running flow
+          'until curl -sf http://localhost/health_checks/all > /dev/null 2>&1; do sleep 5; done'
+        note: Wait for all services (PostgreSQL, Rails, memcached) to become healthy
 
   - name: Load homepage
-    container: web
+    container: openproject
     commands:
       - type: console
-        command: curl -sf http://localhost:8080/
+        command: curl -sf http://localhost/
         note: Simulate a user loading the landing page
 
   - name: API v3 root
-    container: web
+    container: openproject
     commands:
       - type: console
-        command: curl -sf http://localhost:8080/api/v3
+        command: curl -sf http://localhost/api/v3
         note: Fetch API root endpoint to exercise JSON serialization
 
   - name: List projects
-    container: web
+    container: openproject
     commands:
       - type: console
-        command: curl -sf http://localhost:8080/api/v3/projects
+        command: curl -sf http://localhost/api/v3/projects
         note: List all projects via the API
 
   - name: Create a work package
-    container: web
+    container: openproject
     commands:
       - type: console
         command: >
-          curl -sf -X POST http://localhost:8080/api/v3/work_packages
+          curl -sf -X POST http://localhost/api/v3/work_packages
           -H "Content-Type: application/json"
           -d '{"subject":"Green Metrics smoke test","_links":{"type":{"href":"/api/v3/types/1"},"project":{"href":"/api/v3/projects/demo-project"}}}'
         note: Create a work package to exercise a write path through the full stack
