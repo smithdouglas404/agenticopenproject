@@ -57,6 +57,7 @@ jobs:
             -e SECRET_KEY_BASE=green-metrics-ci-static-key-do-not-use-in-production \
             -e OPENPROJECT_HTTPS=false \
             -e OPENPROJECT_HOST__NAME=localhost:8080 \
+            -e OPENPROJECT_LOGIN__REQUIRED=false \
             openproject-aio:local
 
       - name: Wait for health
