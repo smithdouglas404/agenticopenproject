@@ -54,7 +54,7 @@ jobs:
         compose_files: docker-compose.pullpreview.yml
         provider: hetzner
         region: nbg1
-        instance_type: cpx31
+        instance_type: cx53
         ports: 80,443,8080
         default_port: 443
         ttl: 8d
