@@ -80,13 +80,6 @@ RSpec.describe Capabilities::Scopes::Default do
     create(:admin)
   end
 
-  shared_examples_for "is empty" do
-    it "is empty for the scoped to user" do
-      expect(scope)
-        .to be_empty
-    end
-  end
-
   describe ".default" do
     before do
       members
@@ -155,14 +148,6 @@ RSpec.describe Capabilities::Scopes::Default do
           ]
         end
       end
-
-      context "with the user being locked" do
-        before do
-          user.locked!
-        end
-
-        include_examples "is empty"
-      end
     end
 
     context "with a member with a project permission" do
@@ -175,14 +160,6 @@ RSpec.describe Capabilities::Scopes::Default do
            ["memberships/destroy", user.id, project.id],
            ["memberships/update", user.id, project.id]]
         end
-      end
-
-      context "with the user being locked" do
-        before do
-          user.locked!
-        end
-
-        include_examples "is empty"
       end
     end
 
@@ -205,14 +182,6 @@ RSpec.describe Capabilities::Scopes::Default do
               ["memberships/read", user.id, project.id]
             ]
           end
-        end
-
-        context "with the user being locked" do
-          before do
-            user.locked!
-          end
-
-          include_examples "is empty"
         end
       end
     end
@@ -402,26 +371,6 @@ RSpec.describe Capabilities::Scopes::Default do
           end
         end
       end
-
-      context "with admin user being locked" do
-        before do
-          user.locked!
-        end
-
-        include_examples "is empty"
-      end
-    end
-
-    context "without the current user being member in a project" do
-      let(:member_permissions) { %i[manage_members] }
-      let(:global_permissions) { %i[manage_user] }
-      let(:members) { [member, global_member] }
-
-      before do
-        current_user.update(admin: false)
-      end
-
-      include_examples "is empty"
     end
 
     context "with the current user being member in a project" do

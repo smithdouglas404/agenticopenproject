@@ -34,3 +34,10 @@ RSpec.shared_examples_for "consists of contract actions" do |with: "the expected
       .to match_array(expected)
   end
 end
+
+RSpec.shared_examples_for "is empty" do
+  it "is empty for the scoped to user" do
+    expect(scope)
+      .to be_empty
+  end
+end

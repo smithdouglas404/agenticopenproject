@@ -34,12 +34,14 @@ module Capabilities::Scopes
 
     class_methods do
       def visible(user = User.current)
-        if user.admin?
-          all
-        else
-          where(context_id: nil)
-            .or(where(context_id: Project.visible(user).select(:id)))
-        end
+        scope = if user.admin?
+                  all
+                else
+                  where(context_id: nil)
+                    .or(where(context_id: Project.visible(user).select(:id)))
+                end
+
+        scope.where(principal_id: Principal.visible(user).not_builtin.not_locked)
       end
     end
   end
