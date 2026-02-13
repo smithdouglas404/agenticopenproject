@@ -1,0 +1,185 @@
+name: Green Metrics – Eco CI Energy Estimation
+
+on:
+  schedule:
+    - cron: "0 2 * * 0" # Every Sunday at 02:00 UTC
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "Dockerfile*"
+      - "docker/**"
+      - "docker-compose*.yml"
+      - ".github/workflows/green-metrics.yml"
+      - "usage_scenario.yml"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: green-metrics-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  OPENPROJECT_IMAGE: openproject/openproject:dev-slim
+  POSTGRES_IMAGE: postgres:17
+
+jobs:
+  energy-measurement:
+    name: Measure energy consumption
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Eco CI: initialize ──────────────────────────────────────
+      - name: Initialize Eco CI
+        uses: green-coding-solutions/eco-ci-energy-estimation@v5
+        with:
+          task: start-measurement
+        continue-on-error: true
+
+      # ── Segment 1: Pull images ──────────────────────────────────
+      - name: Pull Docker images
+        run: |
+          docker pull $OPENPROJECT_IMAGE
+          docker pull $POSTGRES_IMAGE
+
+      - name: Record – image pull
+        uses: green-coding-solutions/eco-ci-energy-estimation@v5
+        with:
+          task: get-measurement
+          label: "image-pull"
+        continue-on-error: true
+
+      # ── Segment 2: Start stack & seed ───────────────────────────
+      - name: Write compose file
+        run: |
+          cat > /tmp/compose.yml << 'COMPOSE'
+          services:
+            db:
+              image: postgres:17
+              environment:
+                POSTGRES_USER: openproject
+                POSTGRES_PASSWORD: openproject
+                POSTGRES_DB: openproject
+              healthcheck:
+                test: ["CMD-SHELL", "pg_isready -U openproject"]
+                interval: 5s
+                timeout: 3s
+                retries: 10
+
+            worker:
+              image: openproject/openproject:dev-slim
+              command: ["./docker/prod/worker"]
+              environment:
+                DATABASE_URL: postgresql://openproject:openproject@db:5432/openproject
+                RAILS_ENV: production
+                SECRET_KEY_BASE: green-metrics-ci-static-key-do-not-use-in-production
+                OPENPROJECT_HTTPS: "false"
+                OPENPROJECT_RAILS__CACHE__STORE: file_store
+              depends_on:
+                db:
+                  condition: service_healthy
+
+            web:
+              image: openproject/openproject:dev-slim
+              command: ["./docker/prod/web"]
+              ports:
+                - "8080:8080"
+              environment:
+                DATABASE_URL: postgresql://openproject:openproject@db:5432/openproject
+                RAILS_ENV: production
+                SECRET_KEY_BASE: green-metrics-ci-static-key-do-not-use-in-production
+                OPENPROJECT_HTTPS: "false"
+                OPENPROJECT_RAILS__CACHE__STORE: file_store
+              depends_on:
+                db:
+                  condition: service_healthy
+                worker:
+                  condition: service_started
+          COMPOSE
+
+      - name: Start stack and seed database
+        run: |
+          docker compose -f /tmp/compose.yml up -d
+
+          echo "Waiting for worker to seed the database…"
+          docker compose -f /tmp/compose.yml exec -T worker bash -c \
+            'timeout 300 bash -c "until RAILS_ENV=production bundle exec rake db:seed 2>/dev/null; do sleep 5; done"' || true
+
+      - name: Wait for web container health
+        run: |
+          echo "Waiting for OpenProject to become healthy…"
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:8080/health > /dev/null 2>&1; then
+              echo "Health check passed on attempt $i"
+              break
+            fi
+            echo "Attempt $i/60 – not ready yet…"
+            sleep 5
+          done
+
+          # Final check
+          curl -sf http://localhost:8080/health || {
+            echo "::error::OpenProject did not become healthy within timeout"
+            docker compose -f /tmp/compose.yml logs
+            exit 1
+          }
+
+      - name: Record – stack startup & seed
+        uses: green-coding-solutions/eco-ci-energy-estimation@v5
+        with:
+          task: get-measurement
+          label: "stack-startup-seed"
+        continue-on-error: true
+
+      # ── Segment 3: Smoke tests ──────────────────────────────────
+      - name: Smoke test – homepage
+        run: |
+          curl -sf -o /dev/null -w "HTTP %{http_code} – %{time_total}s\n" http://localhost:8080/
+
+      - name: Smoke test – API v3 root
+        run: |
+          curl -sf -o /dev/null -w "HTTP %{http_code} – %{time_total}s\n" http://localhost:8080/api/v3
+
+      - name: Smoke test – API v3 projects
+        run: |
+          curl -sf -o /dev/null -w "HTTP %{http_code} – %{time_total}s\n" http://localhost:8080/api/v3/projects
+
+      - name: Record – smoke tests
+        uses: green-coding-solutions/eco-ci-energy-estimation@v5
+        with:
+          task: get-measurement
+          label: "smoke-tests"
+        continue-on-error: true
+
+      # ── Segment 4: Teardown ─────────────────────────────────────
+      - name: Tear down stack
+        run: |
+          docker compose -f /tmp/compose.yml down -v --remove-orphans
+
+      - name: Record – teardown
+        uses: green-coding-solutions/eco-ci-energy-estimation@v5
+        with:
+          task: get-measurement
+          label: "teardown"
+        continue-on-error: true
+
+      # ── Eco CI: finalize & publish ──────────────────────────────
+      - name: Publish Eco CI results
+        uses: green-coding-solutions/eco-ci-energy-estimation@v5
+        with:
+          task: display-results
+          send-data: true
+        continue-on-error: true
+
+      - name: Post energy results as PR comment
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          filePath: eco-ci-output.txt
+          comment-tag: eco-ci-energy
+        continue-on-error: true
