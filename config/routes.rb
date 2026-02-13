@@ -385,7 +385,9 @@ Rails.application.routes.draw do
     # this could probably be rewritten with a resource as: 'roadmap'
     get "/roadmap" => "versions#index"
 
-    resources :news, only: %i[index new create]
+    resources :news do
+      resources :comments, controller: "news/comments", only: %i[create destroy]
+    end
 
     # Match everything to be the ID of the wiki page except the part that
     # is reserved for the format. This assumes that we have only two formats:
@@ -456,6 +458,13 @@ Rails.application.routes.draw do
     end
 
     resources :forums do
+      resources :topics, controller: "messages", except: [:index] do
+        member do
+          get :quote
+          post :reply, as: "reply_to"
+        end
+      end
+
       member do
         get :confirm_destroy
         get :move
@@ -465,16 +474,13 @@ Rails.application.routes.draw do
 
     resources :categories, except: %i[index show], shallow: true
 
-    resources :members, only: %i[index create update], shallow: true do
+    resources :members, only: %i[index create update] do
       collection do
         delete "by_principal/:principal_id", action: :destroy_by_principal
 
         get :autocomplete_for_member
+        get :menu, to: "members/menus#show"
       end
-    end
-
-    namespace :members do
-      resource :menu, only: %[show]
     end
 
     resource :repository, controller: "repositories", except: [:new] do
@@ -905,18 +911,7 @@ Rails.application.routes.draw do
   # The show page of groups is public and thus moved out of the admin scope
   resources :groups, only: %i[show], as: :show_group
 
-  resources :forums, only: [] do
-    resources :topics, controller: "messages", except: [:index], shallow: true do
-      member do
-        get :quote
-        post :reply, as: "reply_to"
-      end
-    end
-  end
-
-  resources :news, only: %i[index destroy update edit show] do
-    resources :comments, controller: "news/comments", only: %i[create destroy], shallow: true
-  end
+  resources :news, only: %i[index show]
 
   # redirect for backwards compatibility
   scope "attachments",
@@ -1061,6 +1056,13 @@ Rails.application.routes.draw do
     put    "Groups/:id", to: "groups#replace"
     patch  "Groups/:id", to: "groups#update"
     delete "Groups/:id", to: "groups#destroy"
+  end
+
+  scope "inplace_edit_fields/:model/:id/:attribute", as: "inplace_edit_field" do
+    post :update, controller: "inplace_edit_fields", action: :update
+    patch :update, controller: "inplace_edit_fields", action: :update
+    get :reset, controller: "inplace_edit_fields", action: :reset
+    get :edit, controller: "inplace_edit_fields", action: :edit
   end
 
   if OpenProject::Configuration.lookbook_enabled?

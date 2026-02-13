@@ -49,9 +49,6 @@ OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   description: "Allows the use of calculated values as a project attribute.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :beta_widgets,
-                                  description: "Enables BETA versions of widgets."
-
 OpenProject::FeatureDecisions.add :mcp_server,
                                   description: "Enables the experimental MCP API."
 

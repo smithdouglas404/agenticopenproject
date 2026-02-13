@@ -87,7 +87,7 @@ services:
     networks:
       - network
     environment:
-      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "openproject-assets.${OPENPROJECT_DOCKER_DEV_TLD}"
+      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "openproject-assets.${OPENPROJECT_DOCKER_DEV_TLD:-local}"
     ports:
       - "${FE_PORT:-4200}:4200"
 

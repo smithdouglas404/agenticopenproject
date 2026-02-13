@@ -91,7 +91,6 @@ export default class RequirePasswordConfirmationController extends ApplicationCo
       method: 'GET',
       headers: {
         Accept: 'text/vnd.turbo-stream.html',
-        'X-Authentication-Scheme': 'Session',
       },
     }).then((response) => {
       const contentType = response.headers.get('Content-Type') ?? '';

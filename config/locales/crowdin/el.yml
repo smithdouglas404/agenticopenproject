@@ -1035,7 +1035,6 @@ el:
         title: "Workflow missing for work package sharing"
         message: "No workflow is configured for the 'Work package editor' role. Without a workflow, the shared with user cannot alter the status of the work package. Workflows can be copied. Select a source type (e.g. 'Task') and source role (e.g. 'Member'). Then select the target types. To start with, you could select all the types as targets. Finally, select the 'Work package editor' role as the target and press 'Copy'. After having thus created the defaults, fine tune the workflows as you do for every other role."
         link_message: "Configure the workflows in the administration."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1160,6 +1159,9 @@ el:
         dependencies: "Εξαρτήσεις"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Εμφάνιση μέχρι"
       attachment:
@@ -1534,6 +1536,7 @@ el:
         not_available: "is not available due to a system configuration."
         not_deletable: "δεν μπορεί να διαγραφεί."
         not_current_user: "δεν είναι ο τρέχων χρήστης."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "δεν είναι έγκυρη ημερομηνία."
         not_a_datetime: "δεν είναι έγκυρη ημερομηνία και ώρα."
@@ -2095,6 +2098,7 @@ el:
     role: "Ρόλος"
     roles: "Ρόλοι"
     search: "Αναζήτηση"
+    sprint: "Sprint"
     start_date: "Ημερομηνία έναρξης"
     status: "Κατάσταση"
     state: "State"
@@ -3216,7 +3220,6 @@ el:
   label_duplicate: "αντιγραφή"
   label_duplicates: "αντίγραφα"
   label_edit: "Επεξεργασία"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Επεξεργασία: %{x}"
   label_enable_multi_select: "Ενεργοποίηση πολλαπλής επιλογής"
   label_enabled_project_custom_fields: "Ενεργοποίηση προσαρμοσμένων πεδίων"
@@ -3970,6 +3973,7 @@ el:
   notice_successful_delete: "Επιτυχής διαγραφή."
   notice_successful_cancel: "Successful cancellation."
   notice_successful_update: "Επιτυχής ενημέρωση."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4131,6 +4135,7 @@ el:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4315,6 +4320,9 @@ el:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>

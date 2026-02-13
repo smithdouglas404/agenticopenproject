@@ -24,3 +24,6 @@ sr:
     work_packages:
       properties:
         storyPoints: "Poeni Priče"
+    burndown:
+      day: "Day"
+      points: "Points"

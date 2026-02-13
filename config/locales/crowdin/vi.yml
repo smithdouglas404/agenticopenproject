@@ -1028,7 +1028,6 @@ vi:
         title: "Thiếu luồng công việc để chia sẻ gói công việc"
         message: "Không có quy trình làm việc nào được định cấu hình cho vai trò 'Trình chỉnh sửa gói công việc'. Nếu không có quy trình làm việc, nội dung được chia sẻ với người dùng không thể thay đổi trạng thái của gói công việc. Quy trình làm việc có thể được sao chép. Chọn loại nguồn (ví dụ: 'Nhiệm vụ') và vai trò nguồn (ví dụ: 'Thành viên'). Sau đó chọn loại mục tiêu. Để bắt đầu, bạn có thể chọn tất cả các loại làm mục tiêu. Cuối cùng, chọn vai trò 'Trình chỉnh sửa gói công việc' làm mục tiêu và nhấn 'Sao chép'. Sau khi đã tạo các giá trị mặc định, hãy tinh chỉnh quy trình làm việc như bạn thực hiện với mọi vai trò khác."
         link_message: "Cấu hình các quy trình công việc trong quản trị."
-    templated_subject_hint: Được tạo tự động thông qua loại %{type}
     summary:
       reports:
         category:
@@ -1153,6 +1152,9 @@ vi:
         dependencies: "phụ thuộc"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Hiển thị cho đến khi"
       attachment:
@@ -1527,6 +1529,7 @@ vi:
         not_available: "không khả dụng do cấu hình hệ thống."
         not_deletable: "không thể xóa được."
         not_current_user: "không phải là người dùng hiện tại."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "không tìm thấy."
         not_a_date: "không phải là ngày hợp lệ"
         not_a_datetime: "không phải là thời gian hợp lệ"
@@ -2007,7 +2010,7 @@ vi:
     body: "cơ thể"
     blocks_ids: "ID của các work package bị chặn"
     category: "thể loại"
-    comment: "bình luận"
+    comment: "Nhận xét"
     comments: "bình luận"
     content: "Nội dung"
     color: "màu sắc"
@@ -2069,6 +2072,7 @@ vi:
     role: "Vai trò"
     roles: "Vai trò"
     search: "tìm kiếm"
+    sprint: "Sprint"
     start_date: "Ngày bắt đầu"
     status: "Trạng thái"
     state: "tiểu bang"
@@ -3169,7 +3173,6 @@ vi:
   label_duplicate: "Nhân đôi"
   label_duplicates: "Nhân đôi"
   label_edit: "Chỉnh sửa"
-  label_edit_attribute: "Chỉnh sửa thuộc tính"
   label_edit_x: "Chỉnh sửa: %{x}"
   label_enable_multi_select: "Bật/tắt đa lựa chọn"
   label_enabled_project_custom_fields: "Các trường tùy chỉnh đã bật"
@@ -3587,7 +3590,7 @@ vi:
   label_used_by: "Được dùng bởi"
   label_used_by_types: "Được sử dụng bởi các loại"
   label_used_in_projects: "Được sử dụng trong các dự án"
-  label_user: "người dùng"
+  label_user: "Người dùng"
   label_user_and_permission: "Người dùng và quyền"
   label_user_named: "Người dùng %{name}"
   label_user_activity: "%{value} hoạt động"
@@ -3923,6 +3926,7 @@ vi:
   notice_successful_delete: "Xóa thành công."
   notice_successful_cancel: "Hủy thành công."
   notice_successful_update: "Cập nhật thành công."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Tạo không thành công."
   notice_unsuccessful_create_with_reason: "Tạo không thành công: %{reason}"
   notice_unsuccessful_update: "Cập nhật không thành công."
@@ -4083,6 +4087,7 @@ vi:
   permission_edit_project_query: "Chỉnh sửa truy vấn dự án"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 danh mục đầu tư"
@@ -4267,6 +4272,9 @@ vi:
   setting_capture_external_links: "Chụp các liên kết bên ngoài"
   setting_capture_external_links_text: >
     Khi tính năng này được kích hoạt, tất cả các liên kết ngoài trong văn bản định dạng sẽ được chuyển hướng qua một trang cảnh báo trước khi rời khỏi ứng dụng. Điều này giúp bảo vệ người dùng khỏi các trang web bên ngoài có thể chứa mã độc hại.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Chuyển hướng đăng nhập lần đầu"
   setting_after_first_login_redirect_url_text_html: >
     Đặt đường dẫn để chuyển hướng người dùng sau lần đăng nhập đầu tiên của họ. Nếu trống, hãy chuyển hướng đến trang chủ để xem chuyến tham quan giới thiệu. <br/> Ví dụ: <code>/my/page</code>

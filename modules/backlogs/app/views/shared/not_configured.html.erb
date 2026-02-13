@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,13 +25,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 
-<div id="not_configured">
-  <%= t(
-        :label_backlogs_unconfigured,
-        administration: t(:label_administration),
-        plugins: t(:label_plugins),
-        configure: t(:button_configure)
-      ) %>
-</div>
+<% html_title t(:label_backlogs) %>
+
+<% content_for :content_header do %>
+  <%=
+    render Primer::OpenProject::PageHeader.new do |header|
+      header.with_title { t(:label_backlogs) }
+      header.with_breadcrumbs(
+        [{ href: project_overview_path(@project), text: @project.name },
+         t(:label_backlogs)]
+      )
+    end
+  %>
+<% end %>
+
+<% content_for :content_body do %>
+  <%=
+    render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
+      blankslate.with_visual_icon(icon: :"op-backlogs")
+      blankslate.with_heading(tag: :h2).with_content(t(:backlogs_not_configured_title))
+      blankslate.with_description_content(t(:backlogs_not_configured_description))
+      blankslate.with_secondary_action(href: admin_backlogs_settings_path, scheme: :default) do
+        t(:backlogs_not_configured_action_text)
+      end
+    end
+  %>
+<% end %>

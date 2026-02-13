@@ -27,8 +27,6 @@ uk:
           not_set: 'Не встановлено'
           finished: 'Завершено'
           discontinued: 'Припинено'
-        project_status_beta:
-          title: 'Статус (BETA)'
         subprojects:
           title: 'Піделементи'
         project_favorites:

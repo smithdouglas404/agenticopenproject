@@ -27,8 +27,6 @@ ca:
           not_set: 'No configurat'
           finished: 'Finalitzat'
           discontinued: 'Discontinuat'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

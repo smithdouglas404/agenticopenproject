@@ -1036,7 +1036,6 @@ ca:
         title: "Falta un flux de treball per compartir paquets de treball"
         message: "No s'ha configurat cap flux de treball per a la funció \"Editor de paquets de treball\". Sense un flux de treball, el que es comparteix amb l'usuari no pot alterar l'estat del paquet de treball. Els fluxos de treball es poden copiar. Seleccioneu un tipus d'origen (p. ex., \"Tasca\") i una funció d'origen (p. ex., \"Membre\"). A continuació, seleccioneu els tipus d'objectius. Per començar, podeu seleccionar tots els tipus com a objectius. Finalment, seleccioneu la funció \"Editor de paquets de treball\" com a objectiu i premeu \"Copia\". Després d'haver creat els valors predeterminats, ajusteu els fluxos de treball com ho feu per a qualsevol altra funció."
         link_message: "Configura els fluxos de treball a l'administració."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1161,6 +1160,9 @@ ca:
         dependencies: "Dependències"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Mostrar fins"
       attachment:
@@ -1535,6 +1537,7 @@ ca:
         not_available: "no és disponible degut a la configuració del sistema."
         not_deletable: "no es pot eliminar."
         not_current_user: "no és l'usuari actual."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "no és una data vàlida."
         not_a_datetime: "no és una data-i-hora vàlida."
@@ -2096,6 +2099,7 @@ ca:
     role: "Rol"
     roles: "Rols"
     search: "Cercar"
+    sprint: "Sprint"
     start_date: "Data d'inici"
     status: "Estat"
     state: "State"
@@ -3217,7 +3221,6 @@ ca:
   label_duplicate: "duplicats"
   label_duplicates: "duplicats"
   label_edit: "Editar"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edita: %{x}"
   label_enable_multi_select: "Activa/desactiva selecció múltiple"
   label_enabled_project_custom_fields: "Habilita camps personalitzats"
@@ -3969,6 +3972,7 @@ ca:
   notice_successful_delete: "Esborrat correctament."
   notice_successful_cancel: "Successful cancellation."
   notice_successful_update: "S'ha modificat correctament."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4129,6 +4133,7 @@ ca:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4311,6 +4316,9 @@ ca:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>

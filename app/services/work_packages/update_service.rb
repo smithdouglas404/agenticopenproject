@@ -31,6 +31,7 @@
 class WorkPackages::UpdateService < BaseServices::Update
   include ::WorkPackages::Shared::UpdateAncestors
   include Attachments::ReplaceAttachments
+  include Types::ApplyPatterns
 
   attr_accessor :cause_of_rescheduling
 
@@ -41,18 +42,12 @@ class WorkPackages::UpdateService < BaseServices::Update
 
   private
 
-  def set_templated_attributes
+  def after_perform(service_call)
     # TODO: code smell here: saving the automatically generated subject depends
     # on running the UpdateAncestorsService right after. The subject gets saved
     # only thanks to this. If the UpdateAncestorsService is not run, the subject
     # is not saved. That's an odd coupling.
-    model.type.enabled_patterns.each do |key, pattern|
-      model.public_send(:"#{key}=", pattern.resolve(model))
-    end
-  end
-
-  def after_perform(service_call)
-    set_templated_attributes
+    apply_patterns(service_call.result, save: false)
     update_related_work_packages(service_call)
     cleanup(service_call.result)
 
@@ -142,7 +137,7 @@ class WorkPackages::UpdateService < BaseServices::Update
 
     # if parent changed, the former parent needs to be rescheduled too.
     if parent_just_changed?(work_package)
-      former_parent = WorkPackage.find_by(id: work_package.parent_id_before_last_save)
+      former_parent = WorkPackage.visible(user).find_by(id: work_package.parent_id_before_last_save)
       work_packages_to_reschedule << former_parent if former_parent
     end
 
@@ -165,11 +160,11 @@ class WorkPackages::UpdateService < BaseServices::Update
     service_calls
       .group_by { |sc| sc.result.id }
       .map do |(_, same_work_package_calls)|
-      same_work_package_calls.pop.tap do |master|
-        same_work_package_calls.each do |sc|
-          master.result.attributes = sc.result.changes.transform_values(&:last)
+        same_work_package_calls.pop.tap do |master|
+          same_work_package_calls.each do |sc|
+            master.result.attributes = sc.result.changes.transform_values(&:last)
+          end
         end
-      end
     end
   end
 end

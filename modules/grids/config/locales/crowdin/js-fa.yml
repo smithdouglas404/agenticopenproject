@@ -27,8 +27,6 @@ fa:
           not_set: 'تنظیم نشده'
           finished: 'پایان یافته'
           discontinued: 'Discontinued'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

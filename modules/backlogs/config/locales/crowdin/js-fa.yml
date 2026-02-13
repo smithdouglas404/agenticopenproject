@@ -24,3 +24,6 @@ fa:
     work_packages:
       properties:
         storyPoints: "وزن دهی کار"
+    burndown:
+      day: "Day"
+      points: "Points"

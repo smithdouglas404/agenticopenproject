@@ -34,7 +34,8 @@ class ProjectsController < ApplicationController
   menu_item :overview
   menu_item :roadmap, only: :roadmap
 
-  before_action :find_project, except: %i[index new create]
+  before_action :find_project, except: %i[index new create destroy destroy_info]
+  before_action :find_project_including_archived, only: %i[destroy destroy_info]
   before_action :load_query_or_deny_access, only: %i[index]
   before_action :authorize,
                 only: %i[copy_form copy deactivate_work_package_attachments export_project_initiation_pdf]
@@ -180,6 +181,12 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def find_project_including_archived
+    # The actions that use this method are only accessible to admins, so we can show them archived projects as well and
+    # can skip the visible scope here.
+    @project = Project.find(params[:id])
+  end
 
   def from_template? = @template.present?
 

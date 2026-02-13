@@ -71,9 +71,6 @@ import { WidgetMembersComponent } from 'core-app/shared/components/grids/widgets
 import {
   WidgetProjectStatusComponent,
 } from 'core-app/shared/components/grids/widgets/project-status/project-status.component';
-import {
-  WidgetProjectStatusBetaComponent,
-} from 'core-app/shared/components/grids/widgets/project-status-beta/project-status-beta.component';
 import { OpenprojectTimeEntriesModule } from 'core-app/shared/components/time_entries/openproject-time-entries.module';
 import {
   WidgetTimeEntriesCurrentUserMenuComponent,
@@ -127,7 +124,6 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
     WidgetWpGraphComponent,
     WidgetProjectDescriptionComponent,
     WidgetProjectStatusComponent,
-    WidgetProjectStatusBetaComponent,
     WidgetSubprojectsComponent,
     WidgetProjectFavoritesComponent,
     WidgetTimeEntriesCurrentUserComponent,

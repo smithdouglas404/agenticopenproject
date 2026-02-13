@@ -220,7 +220,6 @@ OPENPROJECT_ENFORCE__TRACKING__START__AND__END__TIMES (default=false) Require st
 OPENPROJECT_ENTERPRISE__CHARGEBEE__SITE (default="openproject-enterprise") Site name for EE trial service
 OPENPROJECT_ENTERPRISE__PLAN (default="enterprise-on-premises---basic---euro---1-year") Default EE selected plan
 OPENPROJECT_ENTERPRISE__TRIAL__CREATION__HOST (default="https://start.openproject.com") Host for EE trial service
-OPENPROJECT_FEATURE__BETA__WIDGETS__ACTIVE (default=false) Enables BETA versions of widgets.
 OPENPROJECT_FEATURE__BLOCK__NOTE__EDITOR__ACTIVE (default=false) Enables the block note editor for rich text fields where available.
 OPENPROJECT_FEATURE__BUILT__IN__OAUTH__APPLICATIONS__ACTIVE (default=false) Allows the display and use of built-in OAuth applications.
 OPENPROJECT_FEATURE__CALCULATED__VALUE__PROJECT__ATTRIBUTE__ACTIVE (default=true) Allows the use of calculated values as a project attribute.

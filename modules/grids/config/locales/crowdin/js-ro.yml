@@ -27,8 +27,6 @@ ro:
           not_set: 'Nesetat'
           finished: 'Finalizat'
           discontinued: 'Anulat'
-        project_status_beta:
-          title: 'Stare (BETA)'
         subprojects:
           title: 'Subelemente'
         project_favorites:

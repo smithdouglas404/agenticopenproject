@@ -47,4 +47,18 @@ RSpec.describe Token::Base do
     expect(described_class.exists?(subject.id)).to be false
     expect(described_class.exists?(t2.id)).to be true
   end
+
+  context "when defining a prefix" do
+    subject { subclass.new(user:) }
+
+    let(:subclass) { Class.new(described_class) { prefix :test } }
+
+    it "has a plaintext value starting with the prefix" do
+      expect(subject.value).to start_with("test-")
+    end
+
+    it "has the regular token value after the prefix" do
+      expect(subject.value.delete_prefix("test-").length).to eq(64)
+    end
+  end
 end
