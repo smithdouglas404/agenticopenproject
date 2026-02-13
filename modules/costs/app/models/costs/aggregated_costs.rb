@@ -39,9 +39,15 @@ module Costs
     end
 
     def months
-      labor_months = spent_labor_by_month.keys
-      material_months = spent_material_by_month_and_type.keys.map(&:first)
-      (labor_months | material_months).sort.freeze
+      return data_months unless @date_range
+
+      start_month = @date_range.first.beginning_of_month
+      end_month   = @date_range.last.beginning_of_month
+
+      (start_month..end_month)
+        .step(1.month)
+        .to_a
+        .freeze
     end
 
     def cost_type_names
@@ -58,6 +64,7 @@ module Costs
 
     def spent_material_by_month_and_type
       cost_entries_by_month_and_type.effective_costs_sum
+        .transform_keys { |(month, name)| [month.to_date, name] }
     end
 
     def spent_labor
@@ -65,7 +72,7 @@ module Costs
     end
 
     def spent_labor_by_month
-      time_entries_by_month.effective_costs_sum
+      time_entries_by_month.effective_costs_sum.transform_keys(&:to_date)
     end
 
     def has_spending?
@@ -106,6 +113,12 @@ module Costs
 
     def time_entries_by_month
       time_entries.group("date_trunc('month', time_entries.spent_on)")
+    end
+
+    def data_months
+      labor_months    = spent_labor_by_month.keys
+      material_months = spent_material_by_month_and_type.keys.map(&:first)
+      (labor_months | material_months).sort.freeze
     end
 
     def budgeted_work_packages

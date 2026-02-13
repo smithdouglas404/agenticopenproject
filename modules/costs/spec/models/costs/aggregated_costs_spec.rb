@@ -372,9 +372,10 @@ RSpec.describe Costs::AggregatedCosts do
         expect(result.count).to eq(3)
       end
 
-      it "returns keys as [month, cost_type_name] pairs" do
+      it "returns keys as [Date, cost_type_name] pairs" do
         result = aggregated.spent_material_by_month_and_type
         expect(result.keys).to all(be_an(Array).and(have_attributes(size: 2)))
+        expect(result.keys.map(&:first)).to all(be_a(Date))
       end
 
       it "calculates sums for each group" do
@@ -424,6 +425,11 @@ RSpec.describe Costs::AggregatedCosts do
         expect(result.count).to eq(2)
       end
 
+      it "returns a Date-keyed hash" do
+        result = aggregated.spent_labor_by_month
+        expect(result.keys).to all(be_a(Date))
+      end
+
       it "calculates sums for each month" do
         result = aggregated.spent_labor_by_month
         total = result.sum { |_key, value| value }
@@ -460,12 +466,9 @@ RSpec.describe Costs::AggregatedCosts do
         create(:hourly_rate, user:, project:, rate: 50.0, valid_from: Date.new(2025, 1, 1))
       end
 
-      it "returns the sorted union of labor and material months" do
+      it "returns the sorted union of labor and material months as Date objects" do
         expect(aggregated.months).to eq(
-          [
-            Time.zone.parse("2025-01-01"),
-            Time.zone.parse("2025-03-01")
-          ]
+          [Date.new(2025, 1, 1), Date.new(2025, 3, 1)]
         )
       end
     end
@@ -473,6 +476,19 @@ RSpec.describe Costs::AggregatedCosts do
     context "with no entries" do
       it "returns an empty array" do
         expect(aggregated.months).to eq([])
+      end
+    end
+
+    context "with a date_range" do
+      subject(:aggregated) do
+        described_class.new(project:, current_user: user,
+                            date_range: Date.new(2025, 1, 1)..Date.new(2025, 3, 31))
+      end
+
+      it "returns every month in the range as Date objects, regardless of data" do
+        expect(aggregated.months).to eq(
+          [Date.new(2025, 1, 1), Date.new(2025, 2, 1), Date.new(2025, 3, 1)]
+        )
       end
     end
   end
