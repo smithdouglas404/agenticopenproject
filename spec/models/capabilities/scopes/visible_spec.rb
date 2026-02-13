@@ -29,6 +29,7 @@
 #++
 
 require "spec_helper"
+require_relative "shared_examples"
 
 RSpec.describe Capabilities::Scopes::Visible do
   # Use admin as current_user so that the default scope generates all capabilities
@@ -75,19 +76,19 @@ RSpec.describe Capabilities::Scopes::Visible do
     context "with an admin user" do
       let(:user) { create(:admin) }
 
-      it "returns all capabilities" do
-        actions = scope.pluck(:action, :context_id)
-
-        expect(actions).to contain_exactly(
-          ["memberships/create", project.id],
-          ["memberships/update", project.id],
-          ["memberships/destroy", project.id],
-          ["memberships/create", other_project.id],
-          ["memberships/update", other_project.id],
-          ["memberships/destroy", other_project.id],
-          ["users/read", nil],
-          ["users/update", nil]
-        )
+      include_examples "consists of contract actions", with: "all capabilities (project and global)" do
+        let(:expected) do
+          [
+            ["memberships/create", other_user.id, project.id],
+            ["memberships/update", other_user.id, project.id],
+            ["memberships/destroy", other_user.id, project.id],
+            ["memberships/create", other_user.id, other_project.id],
+            ["memberships/update", other_user.id, other_project.id],
+            ["memberships/destroy", other_user.id, other_project.id],
+            ["users/read", other_user.id, nil],
+            ["users/update", other_user.id, nil]
+          ]
+        end
       end
     end
 
@@ -100,19 +101,19 @@ RSpec.describe Capabilities::Scopes::Visible do
                })
       end
 
-      it "returns capabilities for both projects and global" do
-        actions = scope.pluck(:action, :context_id)
-
-        expect(actions).to contain_exactly(
-          ["memberships/create", project.id],
-          ["memberships/update", project.id],
-          ["memberships/destroy", project.id],
-          ["memberships/create", other_project.id],
-          ["memberships/update", other_project.id],
-          ["memberships/destroy", other_project.id],
-          ["users/read", nil],
-          ["users/update", nil]
-        )
+      include_examples "consists of contract actions", with: "all capabilities (project and global)" do
+        let(:expected) do
+          [
+            ["memberships/create", other_user.id, project.id],
+            ["memberships/update", other_user.id, project.id],
+            ["memberships/destroy", other_user.id, project.id],
+            ["memberships/create", other_user.id, other_project.id],
+            ["memberships/update", other_user.id, other_project.id],
+            ["memberships/destroy", other_user.id, other_project.id],
+            ["users/read", other_user.id, nil],
+            ["users/update", other_user.id, nil]
+          ]
+        end
       end
     end
 
@@ -122,29 +123,29 @@ RSpec.describe Capabilities::Scopes::Visible do
                member_with_permissions: { project => %i[manage_members] })
       end
 
-      it "returns capabilities only for the visible project and global" do
-        actions = scope.pluck(:action, :context_id)
-
-        expect(actions).to contain_exactly(
-          ["memberships/create", project.id],
-          ["memberships/update", project.id],
-          ["memberships/destroy", project.id],
-          ["users/read", nil],
-          ["users/update", nil]
-        )
+      include_examples "consists of contract actions", with: "only capabilities of that one project and global" do
+        let(:expected) do
+          [
+            ["memberships/create", other_user.id, project.id],
+            ["memberships/update", other_user.id, project.id],
+            ["memberships/destroy", other_user.id, project.id],
+            ["users/read", other_user.id, nil],
+            ["users/update", other_user.id, nil]
+          ]
+        end
       end
     end
 
     context "with a user having no project access" do
       let(:user) { create(:user) }
 
-      it "returns only global capabilities" do
-        actions = scope.pluck(:action, :context_id)
-
-        expect(actions).to contain_exactly(
-          ["users/read", nil],
-          ["users/update", nil]
-        )
+      include_examples "consists of contract actions", with: "only global capabilities" do
+        let(:expected) do
+          [
+            ["users/read", other_user.id, nil],
+            ["users/update", other_user.id, nil]
+          ]
+        end
       end
     end
   end

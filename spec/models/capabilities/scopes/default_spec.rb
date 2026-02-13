@@ -29,6 +29,7 @@
 #++
 
 require "spec_helper"
+require_relative "shared_examples"
 
 RSpec.describe Capabilities::Scopes::Default do
   # we focus on the non current user capabilities to make the tests easier to understand
@@ -77,13 +78,6 @@ RSpec.describe Capabilities::Scopes::Default do
 
   shared_current_user do
     create(:admin)
-  end
-
-  shared_examples_for "consists of contract actions" do |with: "the expected actions"|
-    it "includes #{with} for the scoped to user" do
-      expect(scope.pluck(:action, :principal_id, :context_id))
-        .to match_array(expected)
-    end
   end
 
   shared_examples_for "is empty" do
