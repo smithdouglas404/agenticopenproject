@@ -60,6 +60,7 @@ module OpenProject
           def display_field_arguments
             @display_field_arguments ||= {
               classes: "op-inplace-edit--display-field #{'op-inplace-edit--display-field_editable' if writable?}",
+              id: @system_arguments[:id],
               data: {
                 controller: "inplace-edit",
                 inplace_edit_url_value: edit_url,
@@ -72,6 +73,10 @@ module OpenProject
             render(Primer::BaseComponent.new(tag: :div, **display_field_arguments)) do
               render_display_value
             end
+          end
+
+          def render_tooltip
+            nil
           end
 
           private

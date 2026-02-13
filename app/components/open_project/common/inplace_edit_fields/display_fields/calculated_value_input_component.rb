@@ -31,15 +31,25 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class CalculatedValueInputComponent < InplaceEditFields::TextInputComponent
-        def self.display_class
-          DisplayFields::CalculatedValueInputComponent
-        end
+      module DisplayFields
+        class CalculatedValueInputComponent < DisplayFieldComponent
+          include OpPrimer::ComponentHelpers
 
-        def initialize(form:, attribute:, model:, **system_arguments)
-          system_arguments ||= {}
-          system_arguments[:readonly] = true
-          super
+          attr_reader :model, :attribute
+
+          def initialize(model:, attribute:, **system_arguments)
+            @system_arguments = system_arguments
+            super(model:, attribute:, writable: false, **system_arguments)
+          end
+
+          def render_tooltip
+            render Primer::Alpha::Tooltip.new(
+              for_id: @system_arguments[:id],
+              type: :description,
+              text: I18n.t("custom_fields.calculated_field_not_editable"),
+              direction: :s
+            )
+          end
         end
       end
     end
