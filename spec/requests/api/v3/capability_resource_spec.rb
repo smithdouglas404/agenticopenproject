@@ -274,6 +274,14 @@ RSpec.describe "API v3 capabilities resource", content_type: :json do
 
     context "when filtering by project context" do
       let(:other_project) { create(:project) }
+      let(:empty_role) { create(:project_role, permissions: []) }
+      # Necessary so that the current user is allowed to see the project
+      let(:current_user_other_member) do
+        create(:member,
+               principal: current_user,
+               roles: [empty_role],
+               project: other_project)
+      end
       let(:other_user_other_member) do
         create(:member,
                principal: other_user,
@@ -289,6 +297,7 @@ RSpec.describe "API v3 capabilities resource", content_type: :json do
       end
 
       let(:setup) do
+        current_user_other_member
         other_user_global_member
         other_user_member
         other_user_other_member
@@ -296,7 +305,7 @@ RSpec.describe "API v3 capabilities resource", content_type: :json do
 
       it "contains only the filtered capabilities in the response" do
         expect(subject.body)
-          .to be_json_eql("4")
+          .to be_json_eql("5")
           .at_path("total")
 
         expect(subject.body)
@@ -375,6 +384,43 @@ RSpec.describe "API v3 capabilities resource", content_type: :json do
         expect(subject.body)
           .to be_json_eql("0")
           .at_path("total")
+
+        expect(subject.body)
+          .to be_json_eql([].to_json)
+                .at_path("_embedded/elements")
+      end
+    end
+
+    context "with permissions in one project but not in the other and filtering for that invisible project" do
+      let(:other_project) { create(:project) }
+      let(:other_user_other_member) do
+        create(:member,
+               principal: other_user,
+               roles: [role],
+               project: other_project)
+      end
+
+      let(:setup) do
+        other_project
+        other_user_member
+        other_user_other_member
+      end
+
+      let(:filters) do
+        [
+          {
+            "context" => {
+              "operator" => "=",
+              "values" => ["p#{other_project.id}"]
+            }
+          }
+        ]
+      end
+
+      it "is empty and includes an empty element set", :aggregate_failures do
+        expect(subject.body)
+          .to be_json_eql("0")
+                .at_path("total")
 
         expect(subject.body)
           .to be_json_eql([].to_json)
