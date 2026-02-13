@@ -38,7 +38,8 @@ RSpec.describe Costs::Widgets::ActualCosts, type: :component do
   let(:project) { create(:project_with_types) }
   let(:current_user) do
     create(:user,
-           member_with_permissions: { project => %i[view_cost_entries
+           member_with_permissions: { project => %i[view_budgets
+                                                    view_cost_entries
                                                     view_cost_rates
                                                     view_time_entries
                                                     view_hourly_rates] })

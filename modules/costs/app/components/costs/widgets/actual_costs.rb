@@ -31,7 +31,7 @@
 module Costs
   module Widgets
     class ActualCosts < Costs::WidgetComponent
-      REQUIRED_PERMISSIONS = %i[view_cost_entries view_cost_rates view_time_entries view_hourly_rates].freeze
+      REQUIRED_PERMISSIONS = %i[view_budgets view_cost_entries view_cost_rates view_time_entries view_hourly_rates].freeze
 
       delegate :has_spending?, :months, :cost_type_names,
                :spent_labor_by_month, :spent_material_by_month_and_type,
@@ -41,6 +41,10 @@ module Costs
         super
 
         @aggregated_costs = Costs::AggregatedCosts.new(project:, current_user:, date_range: Date.current.all_year)
+      end
+
+      def render?
+        super && project.module_enabled?(:budgets)
       end
 
       def title
