@@ -222,9 +222,15 @@ RSpec.describe Projects::CreateContract do
         # It will not affect the availability of all the custom fields on project creation, because
         # the `:add_project` permission will ensure that all the custom fields are accessible.
 
-        shared_examples "can read project attributes" do
-          it "can read project attributes" do
+        shared_examples "can access custom field" do
+          it "can access custom field" do
             expect(contract.available_custom_fields).to include(custom_field)
+          end
+        end
+
+        shared_examples "can not access custom field" do
+          it "can not access custom field" do
+            expect(contract.available_custom_fields).not_to include(custom_field)
           end
         end
 
@@ -248,25 +254,19 @@ RSpec.describe Projects::CreateContract do
         context "without view_project_attributes permission" do
           let(:project_permissions) { [] }
 
-          shared_examples "cannot read project attributes" do
-            it "cannot read project attributes" do
-              expect(contract.available_custom_fields).not_to include(custom_field)
-            end
-          end
-
-          it_behaves_like "cannot read project attributes"
+          include_examples "can not access custom field"
 
           context "with a public project" do
             let(:other_project_public) { true }
 
-            it_behaves_like "cannot read project attributes"
+            include_examples "can not access custom field"
           end
         end
 
         context "with view_project_attributes permission" do
           let(:project_permissions) { %i(view_project_attributes) }
 
-          it_behaves_like "can read project attributes"
+          include_examples "can access custom field"
 
           it_behaves_like "can not write" do
             let(:attribute) { custom_field.attribute_name }
@@ -276,7 +276,7 @@ RSpec.describe Projects::CreateContract do
         context "with edit_project_attributes permission" do
           let(:project_permissions) { %i(view_project_attributes edit_project_attributes) }
 
-          it_behaves_like "can read project attributes"
+          include_examples "can access custom field"
 
           it_behaves_like "can write" do
             let(:attribute) { custom_field.attribute_name }
@@ -290,7 +290,7 @@ RSpec.describe Projects::CreateContract do
         context "with add_project permission" do
           let(:global_permissions) { %i(add_project) }
 
-          it_behaves_like "can read project attributes"
+          include_examples "can access custom field"
 
           it_behaves_like "can write" do
             let(:attribute) { custom_field.attribute_name }
