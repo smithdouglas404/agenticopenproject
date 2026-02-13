@@ -51,6 +51,7 @@ export default class extends Controller {
   declare readonly refreshUrlValue:string;
 
   private tokenRefreshService:TokenRefreshService | null = null;
+  private ownedProvider:HocuspocusProvider | null = null;
   private currentToken = '';
   private canUseCachedToken = true;
 
@@ -83,6 +84,7 @@ export default class extends Controller {
     });
 
     LiveCollaborationManager.initializeYjsProvider(provider, ydoc);
+    this.ownedProvider = provider;
 
     if (this.refreshUrlValue && this.tokenExpiresInSecondsValue) {
       // Destroy any existing service to prevent duplicate timers if connect() is called multiple times
@@ -102,6 +104,12 @@ export default class extends Controller {
   disconnect():void {
     this.tokenRefreshService?.destroy();
     this.tokenRefreshService = null;
-    LiveCollaborationManager.destroy();
+
+    // Only destroy if we still own the active provider. During Turbo navigation,
+    // a new controller may have already replaced it — see destroyIfOwner().
+    if (this.ownedProvider) {
+      LiveCollaborationManager.destroyIfOwner(this.ownedProvider);
+      this.ownedProvider = null;
+    }
   }
 }
