@@ -438,9 +438,8 @@ module Redmine
         end
 
         def for_custom_field_accessor(method_symbol)
-          return unless /\Acustom_(?<attribute>field|comment)_(?<id>\d+)=?\z/ =~ method_symbol.to_s
+          return unless /\Acustom_(?:field|comment)_(?<id>\d+)=?\z/ =~ method_symbol.to_s
           return unless (custom_field = all_available_custom_fields.find { |cf| cf.id.to_s == id })
-          return if attribute == "comment" && !custom_field.has_comment?
 
           yield custom_field
         end
@@ -463,10 +462,8 @@ module Redmine
             end
           end
 
-          if custom_field.has_comment?
-            define_singleton_method custom_field.comment_attribute_getter do
-              custom_comment_for(custom_field)&.text
-            end
+          define_singleton_method custom_field.comment_attribute_getter do
+            custom_comment_for(custom_field)&.text
           end
         end
 
@@ -478,10 +475,8 @@ module Redmine
             self.custom_field_values = { custom_field.id => Array(value) }
           end
 
-          if custom_field.has_comment?
-            define_singleton_method custom_field.comment_attribute_setter do |text|
-              self.custom_comments = { custom_field.id => text }
-            end
+          define_singleton_method custom_field.comment_attribute_setter do |text|
+            self.custom_comments = { custom_field.id => text }
           end
         end
 
