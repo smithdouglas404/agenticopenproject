@@ -168,12 +168,8 @@ module Accounts::CurrentUser
           redirect_to main_app.signin_path(back_url: login_back_url)
         end
 
-        auth_header = OpenProject::Authentication::WWWAuthenticate.response_header
-
         format.any(:xml, :js, :json, :turbo_stream) do
-          head :unauthorized,
-               "X-Reason" => "login needed",
-               "WWW-Authenticate" => auth_header
+          head :unauthorized, "WWW-Authenticate" => OpenProject::Authentication::WWWAuthenticate.response_header
         end
 
         format.all { head :not_acceptable }
