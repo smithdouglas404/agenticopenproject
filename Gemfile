@@ -371,7 +371,7 @@ group :development, :test do
   gem "erblint-github", require: false
 
   # Brakeman scanner
-  gem "brakeman", "~> 7.1.1"
+  gem "brakeman", "~> 8.0.0"
 
   # i18n-tasks helps find and manage missing and unused translations.
   gem "i18n-tasks", "~> 1.1.0", require: false
