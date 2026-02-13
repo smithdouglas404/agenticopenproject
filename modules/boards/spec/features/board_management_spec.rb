@@ -59,6 +59,7 @@ RSpec.describe "Board management spec", :js, :selenium, with_ee: %i[board_view] 
         view_work_packages
         edit_work_packages
         manage_public_queries
+        save_queries
       ]
     end
     let(:board_view) { create(:board_grid_with_query, project:) }
