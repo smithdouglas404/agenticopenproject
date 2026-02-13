@@ -165,8 +165,8 @@ RSpec.describe Settings::Definition, :settings_reset do
 
       it "overriding boolean configuration from ENV will cast the value",
          with_env: { "OPENPROJECT_REST__API__ENABLED" => "0" } do
-        reset(:rest_api_enabled)
-        expect(all[:rest_api_enabled].value).to be false
+        reset(:api_tokens_enabled)
+        expect(all[:api_tokens_enabled].value).to be false
       end
 
       it "overriding symbol configuration having allowed values from ENV will cast the value before validation check",

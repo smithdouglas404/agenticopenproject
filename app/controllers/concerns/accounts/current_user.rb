@@ -101,7 +101,7 @@ module Accounts::CurrentUser
   end
 
   def current_api_key_user
-    return unless Setting.rest_api_enabled? && api_request?
+    return unless Setting.api_tokens_enabled? && api_request?
 
     key = api_key_from_request
 

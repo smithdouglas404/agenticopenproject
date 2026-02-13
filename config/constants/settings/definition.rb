@@ -126,6 +126,13 @@ module Settings
         default: :quarantine,
         allowed: %i[quarantine delete]
       },
+      api_tokens_enabled: {
+        default: true,
+        description: "Decide whether users can create personal API tokens in their account settings",
+        # Keeping old name only for backwards-compatibility, can be removed in OpenProject 18.0
+        env_alias: "OPENPROJECT_REST__API__ENABLED",
+        format: :boolean
+      },
       auth_source_sso: {
         description: "Configuration for Header-based Single Sign-On",
         format: :hash,
@@ -968,9 +975,6 @@ module Settings
       },
       repository_truncate_at: {
         default: 500
-      },
-      rest_api_enabled: {
-        default: true
       },
       scm: {
         format: :hash,
