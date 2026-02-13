@@ -39,7 +39,7 @@ module API
         include API::V3::Workspaces::LinkedResource
         include API::Decorators::DateProperty
 
-        associated_project
+        associated_project undisclosed: false
 
         link :results do
           path = if represented.project

@@ -34,10 +34,11 @@ module API
       module WorkspaceRepresenterFactory
         module_function
 
-        def create_link_lambda(name, property_name: name)
+        def create_link_lambda(name, property_name: name, undisclosed: true)
           ->(*) {
             project_link(represented.public_send(name),
                          name: property_name,
+                         undisclosed:,
                          getter: :id)
           }
         end

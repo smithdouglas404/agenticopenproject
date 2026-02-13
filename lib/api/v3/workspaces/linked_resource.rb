@@ -35,12 +35,9 @@ module API
         extend ActiveSupport::Concern
         include API::Decorators::LinkedResource
 
-        def project_link(project, name:, getter: "#{name}_id")
+        def project_link(project, name:, undisclosed:, getter: "#{name}_id")
           if project_invisible?(project)
-            {
-              href: API::V3::URN_UNDISCLOSED,
-              title: I18n.t(:"api_v3.undisclosed.#{name}")
-            }
+            undisclosed_projekt_link(name, undisclosed)
           elsif !project
             {
               href: nil
@@ -55,6 +52,17 @@ module API
           end
         end
 
+        def undisclosed_projekt_link(name, undisclosed)
+          if undisclosed
+            {
+              href: API::V3::URN_UNDISCLOSED,
+              title: I18n.t(:"api_v3.undisclosed.#{name}")
+            }
+          else
+            { href: nil }
+          end
+        end
+
         def project_invisible?(project)
           # Explicitly check for admin as an archived project
           # will lead to the admin losing permissions in the project.
@@ -64,15 +72,17 @@ module API
         class_methods do
           def associated_project(name = :project,
                                  as: name,
+                                 undisclosed: true,
                                  skip_render: ->(*) { project_invisible?(represented.public_send(name)) })
             options = {
               as:,
               representer: ::API::V3::Projects::ProjectRepresenter,
               skip_render:,
+              undisclosed:,
               link: ::API::V3::Workspaces::WorkspaceRepresenterFactory
-                     .create_link_lambda(name),
+                .create_link_lambda(name, undisclosed:),
               setter: ::API::V3::Workspaces::WorkspaceRepresenterFactory
-                      .create_setter_lambda(name)
+                .create_setter_lambda(name)
             }
 
             if include?(API::Caching::CachedRepresenter)
