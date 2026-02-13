@@ -512,5 +512,27 @@ RSpec.describe "API v3 capabilities resource", content_type: :json do
           .to be 404
       end
     end
+
+    context "with permissions in one project but querying for the project where permissions are lacking" do
+      let(:path) { api_v3_paths.capability("memberships/create/w#{other_project.id}-#{other_user.id}") }
+      let(:other_project) { create(:project) }
+      let(:other_user_other_member) do
+        create(:member,
+               principal: other_user,
+               roles: [role],
+               project: other_project)
+      end
+
+      let(:setup) do
+        other_project
+        other_user_member
+        other_user_other_member
+      end
+
+      it "returns 404 NOT FOUND" do
+        expect(subject.status)
+          .to be 404
+      end
+    end
   end
 end
