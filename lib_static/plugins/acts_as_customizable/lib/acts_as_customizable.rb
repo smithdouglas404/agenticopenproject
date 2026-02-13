@@ -331,9 +331,9 @@ module Redmine
         def custom_comment_changes(into: {})
           custom_comments.each_with_object(into) do |comment, changes|
             next unless comment.changed_for_autosave?
-            next unless (attribute_name = comment.custom_field.comment_attribute_name)
+            next unless comment.custom_field.has_comment?
 
-            changes[attribute_name] = comment.text_change
+            changes[comment.custom_field.comment_attribute_name] = comment.text_change
           end
         end
 

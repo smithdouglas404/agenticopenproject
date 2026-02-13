@@ -278,7 +278,11 @@ class CustomField < ApplicationRecord
   end
 
   def all_attribute_names
-    [attribute_name, comment_attribute_name].compact
+    if has_comment?
+      [attribute_name, comment_attribute_name]
+    else
+      [attribute_name]
+    end
   end
 
   def attribute_name(format = nil)
@@ -289,7 +293,6 @@ class CustomField < ApplicationRecord
   end
 
   def comment_attribute_name(format = nil)
-    return unless has_comment?
     return "customComment#{id}" if format == :camel_case
 
     "custom_comment_#{id}"
