@@ -77,63 +77,63 @@ function applyTooltipPosition<TType extends 'bar' | 'pie'>(
   tooltipEl.style.pointerEvents = 'none';
 }
 
+function renderColorDot(color:string) {
+  return html`<span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: ${color}; vertical-align: baseline; margin-right: 4px"></span>`;
+}
+
+function renderTooltipItem(
+  color:string,
+  label:string,
+  formattedValue:string,
+  dateStr?:string,
+):ReturnType<typeof html> {
+  const header = dateStr
+    ? html`<div><strong style="margin-right: 8px">${dateStr}</strong>${renderColorDot(color)}<strong>${label}</strong></div>`
+    : html`<div>${renderColorDot(color)}<strong>${label}</strong></div>`;
+  return html`
+    <li class="mb-1">
+      ${header}
+      <div class="f4" style="font-variant-numeric: tabular-nums">${formattedValue}</div>
+    </li>`;
+}
+
+function renderTooltipPopover(tooltipId:string, items:ReturnType<typeof html>[]):ReturnType<typeof html> {
+  return html`
+    <div class="Popover" id="${tooltipId}">
+      <div class="Box Popover-message Popover-message--left-top ml-2 mx-auto p-2 text-left text-small">
+        <ul class="list-style-none ml-0">
+          ${items}
+        </ul>
+      </div>
+    </div>`;
+}
+
 export function createBarTooltipRenderer(formatCurrency:FormatCurrency) {
   return function(context:TooltipContext<'bar'>) {
     const { tooltip } = context;
-    const popoverHtml = html`
-      <div class="Popover" id="chartjs-tooltip-bar">
-        <div class="Box Popover-message Popover-message--left-top ml-2 mx-auto p-2 text-left text-small">
-          <ul class="list-style-none ml-0">
-            ${tooltip.dataPoints.map((dp, i) => {
-              const timestamp = dp.parsed.x;
-              const dateStr = timestamp != null
-                ? new Date(timestamp).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })
-                : '';
-              const label = dp.dataset.label ?? '';
-              const value = dp.parsed.y ?? 0;
-              const color = tooltip.labelColors[i]?.backgroundColor as string;
-              return html`
-                <li class="mb-1">
-                  <div class="d-flex flex-items-center gap-2">
-                    <strong class="text-nowrap">${dateStr}</strong>
-                    <span class="flex-shrink-0" style="width: 10px; height: 10px; border-radius: 50%; background: ${color}; display: inline-block"></span>
-                    <strong>${label}</strong>
-                  </div>
-                  <div class="f4" style="font-variant-numeric: tabular-nums">${formatCurrency(value)}</div>
-                </li>`;
-            })}
-          </ul>
-        </div>
-      </div>`;
-
-    applyTooltipPosition(context, popoverHtml, 'chartjs-tooltip-bar');
+    const items = tooltip.dataPoints.map((dp, i) => {
+      const timestamp = dp.parsed.x;
+      const dateStr = timestamp != null
+        ? new Date(timestamp).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })
+        : undefined;
+      const label = dp.dataset.label ?? '';
+      const value = dp.parsed.y ?? 0;
+      const color = tooltip.labelColors[i]?.backgroundColor as string;
+      return renderTooltipItem(color, label, formatCurrency(value), dateStr);
+    });
+    applyTooltipPosition(context, renderTooltipPopover('chartjs-tooltip-bar', items), 'chartjs-tooltip-bar');
   };
 }
 
 export function createPieTooltipRenderer(formatCurrency:FormatCurrency) {
   return function(context:TooltipContext<'pie'>) {
     const { tooltip } = context;
-    const popoverHtml = html`
-      <div class="Popover" id="chartjs-tooltip-pie">
-        <div class="Box Popover-message Popover-message--left-top ml-2 mx-auto p-2 text-left text-small">
-          <ul class="list-style-none ml-0">
-            ${tooltip.dataPoints.map((dp, i) => {
-              const color = tooltip.labelColors[i]?.backgroundColor as string;
-              const label = dp.label ?? '';
-              const value = dp.parsed;
-              return html`
-                <li class="mb-1">
-                  <div class="d-flex flex-items-center gap-2 text-nowrap">
-                    <span class="flex-shrink-0" style="width: 10px; height: 10px; border-radius: 50%; background: ${color}; display: inline-block"></span>
-                    <strong>${label}</strong>
-                  </div>
-                  <div class="f4" style="font-variant-numeric: tabular-nums">${formatCurrency(value)}</div>
-                </li>`;
-            })}
-          </ul>
-        </div>
-      </div>`;
-
-    applyTooltipPosition(context, popoverHtml, 'chartjs-tooltip-pie');
+    const items = tooltip.dataPoints.map((dp, i) => {
+      const color = tooltip.labelColors[i]?.backgroundColor as string;
+      const label = dp.label ?? '';
+      const value = dp.parsed;
+      return renderTooltipItem(color, label, formatCurrency(value));
+    });
+    applyTooltipPosition(context, renderTooltipPopover('chartjs-tooltip-pie', items), 'chartjs-tooltip-pie');
   };
 }
