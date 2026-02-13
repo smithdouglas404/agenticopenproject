@@ -111,7 +111,7 @@ jobs:
           OPENPROJECT_EDITION: ${{ matrix.edition }}
         run: ruby script/i18n/test_seed_all_locales ${{ matrix.locale }}
 
-  notify:
+  notify-failure:
     needs: [prepare, seed]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     uses: ./.github/workflows/email-notification.yml
