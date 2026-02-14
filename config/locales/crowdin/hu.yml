@@ -4370,6 +4370,9 @@ hu:
   setting_smtp_password: "SMTP-jelszó"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Ennyi nap megjelenítése a projekttevékenységekben"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Alkalmazás felirat"
   setting_app_title: "Alkalmazás címe"
   setting_attachment_max_size: "Melléklet max. méret"
@@ -4479,7 +4482,6 @@ hu:
   setting_repository_checkout_text: "Checkout útmutató szöveg"
   setting_repository_log_display_limit: "A felülvizsgálatok maximális száma  megjelenitve a naplófájlban"
   setting_repository_truncate_at: "Megjelenített fájlok maximális száma a tároló böngészőben"
-  setting_rest_api_enabled: "Engedélyezi a REST-alapú webszolgáltatást"
   setting_self_registration: "Önregisztráció"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.

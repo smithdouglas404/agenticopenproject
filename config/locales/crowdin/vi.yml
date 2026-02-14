@@ -4319,6 +4319,9 @@ vi:
   setting_smtp_password: "Mật khẩu SMTP"
   setting_smtp_domain: "Tên miền SMTP HELO"
   setting_activity_days_default: "Ngày hiển thị trên hoạt động dự án"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "phụ đề ứng dụng"
   setting_app_title: "Tiêu đề ứng dụng"
   setting_attachment_max_size: "Tệp đính kèm tối đa. kích cỡ"
@@ -4428,7 +4431,6 @@ vi:
   setting_repository_checkout_text: "Văn bản hướng dẫn thanh toán"
   setting_repository_log_display_limit: "Số lượng bản sửa đổi tối đa được hiển thị trên nhật ký tệp"
   setting_repository_truncate_at: "Số lượng tệp tối đa được hiển thị trong trình duyệt kho lưu trữ"
-  setting_rest_api_enabled: "Kích hoạt dịch vụ web REST"
   setting_self_registration: "Tự đăng ký"
   setting_self_registration_caption: >
     Lựa chọn cơ chế tự đăng ký cho người dùng. Hãy cẩn thận với cài đặt bạn chọn vì một số tùy chọn cho phép người dùng kích hoạt tài khoản của chính họ trong trường hợp này.

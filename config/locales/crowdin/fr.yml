@@ -3214,7 +3214,7 @@ fr:
   label_disabled_uppercase: "Désactivé"
   label_display: "Affichage"
   label_display_per_page: "Par page: %{value}"
-  label_display_used_statuses_only: "Afficher uniquement les status utilisés par ce type"
+  label_display_used_statuses_only: "Afficher uniquement les statuts utilisés par ce type"
   label_download: "%{count} Téléchargement"
   label_download_plural: "%{count} Téléchargements"
   label_downloads_abbr: "Téléchargement"
@@ -4370,6 +4370,9 @@ fr:
   setting_smtp_password: "Mot de passe SMTP"
   setting_smtp_domain: "Domaine SMTP HELO"
   setting_activity_days_default: "Nombre des jours affichés dans l'activité du projet"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Sous-titre de l'Application"
   setting_app_title: "Titre de l'Application"
   setting_attachment_max_size: "Taille maximale de la pièce jointe"
@@ -4479,7 +4482,6 @@ fr:
   setting_repository_checkout_text: "Texte d'instruction de « checkout »"
   setting_repository_log_display_limit: "Nombre maximal des révisions affichées sur « file log »"
   setting_repository_truncate_at: "Le nombre maiximum de fichiers exposes au navigateur"
-  setting_rest_api_enabled: "Autoriser service web REST"
   setting_self_registration: "Auto-enregistrement"
   setting_self_registration_caption: >
     Choisissez le mécanisme d'auto-inscription pour les utilisateurs. Faites attention au paramètre que vous choisissez, car certaines options permettent aux utilisateurs d'activer leurs propres comptes pour cette instance.

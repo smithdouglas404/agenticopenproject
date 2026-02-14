@@ -4370,6 +4370,9 @@ tr:
   setting_smtp_password: "SMTP parolası"
   setting_smtp_domain: "SMTP HELO alan adı"
   setting_activity_days_default: "Proje faaliyetin de gösterilen gün sayısı istinaden"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Uygulama alt başlığı"
   setting_app_title: "Uygulama başlığı"
   setting_attachment_max_size: "En büyük ek boyutu"
@@ -4479,7 +4482,6 @@ tr:
   setting_repository_checkout_text: "Ödeme talimat metni"
   setting_repository_log_display_limit: "Dosya günlüğünde görüntülenen revizyonların maksimum sayısı"
   setting_repository_truncate_at: "Depo tarayıcıda görüntülenen dosya sayısı üst sınırı"
-  setting_rest_api_enabled: "REST web hizmetini etkinleştir"
   setting_self_registration: "Kendi kendine kayıt"
   setting_self_registration_caption: >
     Kullanıcılar için kendi kendine kayıt mekanizmasını seçin. Bazı seçenekler kullanıcıların bu sistemde kendi hesaplarını etkinleştirmelerine izin verdiğinden, seçtiğiniz ayara dikkat edin.

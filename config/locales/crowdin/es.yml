@@ -4368,6 +4368,9 @@ es:
   setting_smtp_password: "Contraseña SMTP"
   setting_smtp_domain: "Dominio SMTP HELO"
   setting_activity_days_default: "Días mostrados en actividad de proyecto"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtítulo de aplicación"
   setting_app_title: "Título de aplicación"
   setting_attachment_max_size: "Tamaño máximo de adjunto"
@@ -4477,7 +4480,6 @@ es:
   setting_repository_checkout_text: "Texto del checkout de la instrucción"
   setting_repository_log_display_limit: "Numero máximo de revisiones mostradas en el archivo de registro"
   setting_repository_truncate_at: "El número máximo de archivos mostrados en el navegador del repositorio"
-  setting_rest_api_enabled: "Activar servicio web REST"
   setting_self_registration: "Auto-registro"
   setting_self_registration_caption: >
     Elija el mecanismo de autorregistro para los usuarios. Tenga cuidado con el ajuste que elija, ya que algunas opciones permiten a los usuarios activar sus propias cuentas a esta instancia.

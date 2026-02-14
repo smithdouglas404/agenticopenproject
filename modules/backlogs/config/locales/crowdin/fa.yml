@@ -26,7 +26,7 @@ fa:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprint duration"
+        duration: "مدت زمان اسپرینت"
       work_package:
         position: "Position"
         story_points: "Story Points"
@@ -43,10 +43,10 @@ fa:
         sprint:
           cannot_end_before_it_starts: "Sprint cannot end before it starts."
   attributes:
-    task_type: "Task type"
+    task_type: "نوع وظیفه"
   backlogs:
     any: "any"
-    column_width: "Column width"
+    column_width: "عرض ستون"
     definition_of_done: "Definition of Done"
     impediment: "Impediment"
     label_versions_default_fold_state: "Show versions folded"
@@ -54,8 +54,8 @@ fa:
     work_package_is_closed: "Work package is done, when"
     label_is_done_status: "Status %{status_name} means done"
     points_label:
-      one: "point"
-      other: "points"
+      one: "امتیاز"
+      other: "امیتاز ها"
     positions_could_not_be_rebuilt: "Positions could not be rebuilt."
     positions_rebuilt_successfully: "Positions rebuilt successfully."
     rebuild: "Rebuild"
@@ -64,8 +64,8 @@ fa:
     show_burndown_chart: "Burndown Chart"
     story: "Story"
     story_points:
-      one: "%{count} story point"
-      other: "%{count} story points"
+      one: "%{count} امتیاز داستان"
+      other: "%{count} امتیاز های داستان"
     task: "Task"
     task_color: "Task color"
     unassigned: "Unassigned"
@@ -73,28 +73,28 @@ fa:
       header_backlogs: "ماژول backlogها"
       button_update_backlogs: "به روز رسانی ماژول backlog ها"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} خالی است"
+      blankslate_description: "هنوز موردی برنامه ریزی نشده است. موارد را برای اضافه کردن به اینجا بکشید."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "جمع کردن/باز کردن %{name}"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "هیچ داستانی در لیست انتظار نیست"
+        one: "%{count} داستان در لیست کار های عقب افتاده"
+        other: "%{count} داستان های در لیست کارهای عقب افتاده"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "اقدامات عقب افتاده"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
-        wiki: "Wiki"
-        properties: "Properties"
+        edit_sprint: "ویرایش اسپرینت"
+        new_story: "داستان جدید"
+        stories_tasks: "داستان ها/وظایف"
+        task_board: "تابلوی وظایف"
+        burndown_chart: "نمودار خلاصه"
+        wiki: "ویکی"
+        properties: "ویژگی ها"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "انتقال %{name}"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "اقدامات داستانی"
   backlogs_points_burn_direction: "Points burn up/down"
   backlogs_product_backlog: "Product backlog"
   backlogs_story: "Story"
@@ -102,10 +102,10 @@ fa:
   backlogs_task: "وظیفه"
   backlogs_task_type: "نوع وظیفه"
   backlogs_wiki_template: "الگو برای صفحه دانشنامه تاخت"
-  backlogs_empty_title: "No versions are defined yet"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
+  backlogs_empty_title: "هنوز هیچ نسخه ای تعریف نشده است"
+  backlogs_empty_action_text: "برای شروع استفاده از بک لاگها، لطفاً ابتدا یک نسخه ایجاد کنید"
+  backlogs_not_configured_title: "بک لاگ ها پیکربندی نشده اند"
+  backlogs_not_configured_description: "قبل از استفاده از این ماژول باید نوع داستان و وظیفه تنظیم شود."
   backlogs_not_configured_action_text: "Configure Backlogs"
   burndown:
     story_points: "Story points"

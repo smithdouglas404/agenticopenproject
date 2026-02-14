@@ -4422,6 +4422,9 @@ ro:
   setting_smtp_password: "Parola SMTP"
   setting_smtp_domain: "Domeniul SMTP HELO"
   setting_activity_days_default: "Zile afișate în lista de activități a proiectului"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtitlu aplicație"
   setting_app_title: "Titlu aplicație"
   setting_attachment_max_size: "Dimensiune maximă atașament"
@@ -4531,7 +4534,6 @@ ro:
   setting_repository_checkout_text: "Text instrucțiuni de descărcare"
   setting_repository_log_display_limit: "Numărul maxim de revizii afisate în istoricul de fișiere"
   setting_repository_truncate_at: "Număr maxim de fișiere este afișat în exploratorul de repozitoriu"
-  setting_rest_api_enabled: "Activare serviciu web REST"
   setting_self_registration: "Înregistrare individuală"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.

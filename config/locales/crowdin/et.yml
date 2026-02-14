@@ -4372,6 +4372,9 @@ et:
   setting_smtp_password: "SMTP parool"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Projektide ajalugu näidatakse"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Rakenduse alamnimetus"
   setting_app_title: "Rakenduse nimetus"
   setting_attachment_max_size: "Manuste suurim lubatud suurus"
@@ -4481,7 +4484,6 @@ et:
   setting_repository_checkout_text: "Checkout instruction text"
   setting_repository_log_display_limit: "Enim ajaloos näidatavaid sissekandeid"
   setting_repository_truncate_at: "Maximum number of files displayed in the repository browser"
-  setting_rest_api_enabled: "Luba REST API kasutamine"
   setting_self_registration: "Omaloodud konto aktiveerimine"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.

@@ -4315,6 +4315,9 @@ zh-TW:
   setting_smtp_password: "SMTP 密碼"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "專案活動顯示的天數"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "應用程式副標題"
   setting_app_title: "應用程式標題"
   setting_attachment_max_size: "附件最大容量"
@@ -4424,7 +4427,6 @@ zh-TW:
   setting_repository_checkout_text: "Checkout 指令說明文字"
   setting_repository_log_display_limit: "在文件變更紀錄頁面上显示的最大修訂版本數量"
   setting_repository_truncate_at: "儲存庫瀏覽器中顯示的最大檔案數量"
-  setting_rest_api_enabled: "啟用 REST 網路服務"
   setting_self_registration: "自助註冊"
   setting_self_registration_caption: >
     請選擇使用者的自助註冊方式。請注意，某些設定會允許使用者自行啟用帳號並存取此系統。

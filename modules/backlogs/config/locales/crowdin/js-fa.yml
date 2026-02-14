@@ -25,5 +25,5 @@ fa:
       properties:
         storyPoints: "وزن دهی کار"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "روز"
+      points: "امتیاز ها"
