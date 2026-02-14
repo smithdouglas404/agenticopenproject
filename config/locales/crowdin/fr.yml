@@ -3210,7 +3210,7 @@ fr:
   label_disabled_uppercase: "Désactivé"
   label_display: "Affichage"
   label_display_per_page: "Par page: %{value}"
-  label_display_used_statuses_only: "Afficher uniquement les status utilisés par ce type"
+  label_display_used_statuses_only: "Afficher uniquement les statuts utilisés par ce type"
   label_download: "%{count} Téléchargement"
   label_download_plural: "%{count} Téléchargements"
   label_downloads_abbr: "Téléchargement"

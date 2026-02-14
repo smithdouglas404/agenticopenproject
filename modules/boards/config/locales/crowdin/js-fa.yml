@@ -13,8 +13,8 @@ fa:
       lists:
         delete: 'حذف لیست'
       version:
-        is_locked: 'Version is locked. No items can be added to this version.'
-        is_closed: 'Version is closed. No items can be added to this version.'
+        is_locked: 'نسخه قفل شده است. هیچ آیتمی را نمیتوان به این نسخه اضافه کرد.'
+        is_closed: 'نسخه بسته شده است. هیچ آیتمی را نمیتوان به این نسخه اضافه کرد.'
         close_version: 'بستن نسخه'
         open_version: 'بازکردن نسخه'
         lock_version: 'قفل نگارش'
@@ -26,11 +26,11 @@ fa:
       new_board: 'تابلوی جدید'
       add_list: 'افزودن لیست به تابلو'
       add_card: 'افزودن کارت'
-      error_attribute_not_writable: "Cannot move the work package, %{attribute} is not writable."
-      error_loading_the_list: "Error loading the list: %{error_message}"
+      error_attribute_not_writable: "نمی توان بسته کاری را جابجا کرد،%{attribute} قابل نوشتن نیست."
+      error_loading_the_list: "خطا در بارگیری لیست%{error_message}"
       error_permission_missing: "مجوز ایجاد سؤالات عمومی از بین رفته است"
-      error_cannot_move_into_self: "You can not move a work package into its own column."
-      text_hidden_list_warning: "Not all lists are displayed because you lack the permission. Contact your admin for more information."
+      error_cannot_move_into_self: "شما نمیتوانید یک بسته کاری را به ستون خودش منتقل کنید."
+      text_hidden_list_warning: "به دلیل نداشتن مجوز همه لیست ها نمایش داده نمی شوند برای اطلاعات بیشتر با مدیر خود تماس بگیرید."
       click_to_remove_list: "برای حذف این لیست کلیک کنید"
       board_type:
         text: 'نوع تابلو'
@@ -41,7 +41,7 @@ fa:
         action: 'تابلوی فعالیت'
         action_by_attribute: 'تابلوی فعالیت (%{attribute})'
         action_text: >
-          A board with filtered lists on %{attribute} attribute. Moving work packages to other lists will update their attribute.
+          تابلویی با لیست های فیلتر شده در ویژگی%{attribute} انتقال بسته های کاری به لیست های دیگر ویژگی آنها را به روزرسانی میکند.
         action_text_subprojects: >
           تابلویی با ستون های خودکار برای پروژه های فرعی. کشیدن بسته های کاری به لیست های دیگر، پروژه(فرعی) را بر این اساس به روز می کند.
         action_text_subtasks: >
@@ -69,19 +69,19 @@ fa:
       add_list_modal:
         labels:
           assignee: برای افزودن به لیست مسئول انجام کاربر انتخاب کنید
-          status: Select status to add as a new list
-          version: Select version to add as a new list
-          subproject: Select subproject to add as a new list
+          status: وضعیت را برای افزودن به عنوان یک لیست جدید انتخاب کنید
+          version: نسخه را برای افزودن به عنوان یک لیست جدید انتخاب کنید
+          subproject: زیر پروژه را برای افزودن به عنوان یک ليست جدید انتخاب کنید
           subtasks: انتخاب بسته کاری جهت افزودن به لیست جدید
         warning:
           status: |
             در حال حاضر هیچ وضعیت در دسترسی موجود نیست.<br>
             یا هیچ موردی وجود ندارد و یا همه به تابلو اضافه شده اند.
-          assignee: There isn't any member matched with your filter value.  <br>
-          no_member: This project currently does not have any members that can be added.  <br>
-          add_members: <a href="%{link}">Add a new member to this project</a> to select users again.
+          assignee: هیچ عضوی با مقدار فیلتر شما مطابقت ندارد<br>
+          no_member: این پروژه در حال حاضر هیچ عضوی برای اضافه کردن ندارد<br>
+          add_members: <a href="%{link}">برای انتخاب مجدد کاربران</a>یک عضو جدید به این پروژه اضافه کنید.
       configuration_modal:
-        title: 'Configure this board'
+        title: 'پیکربندی این برد'
         display_settings:
           card_mode: "نمایش به صورت کارت"
           table_mode: "نمایش به عنوان جدول"
