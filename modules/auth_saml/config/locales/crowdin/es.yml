@@ -1,4 +1,4 @@
-es:
+es-AR:
   activerecord:
     attributes:
       saml/provider:

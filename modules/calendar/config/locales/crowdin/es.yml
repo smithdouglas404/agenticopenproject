@@ -1,5 +1,5 @@
 #English strings go here
-es:
+es-AR:
   plugin_openproject_calendar:
     name: "Calendario de OpenProject"
     description: "Proporciona vistas de calendario."

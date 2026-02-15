@@ -1,4 +1,4 @@
-es:
+es-AR:
   plugin_openproject_xls_export:
     name: "Exportar XLS de OpenProject"
     description: "Exportar listas de incidencias como hojas de cálculo de Excel (.xls)."

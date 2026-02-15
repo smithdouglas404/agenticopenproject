@@ -1,4 +1,4 @@
-es:
+es-AR:
   grids:
     label_widget_in_grid: "Widget contenido en la cuadrícula %{grid_name}"
     widgets:
