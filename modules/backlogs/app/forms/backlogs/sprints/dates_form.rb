@@ -33,16 +33,20 @@ module Backlogs
     class DatesForm < ApplicationForm
       form do |f|
         f.group(layout: :horizontal) do |dates|
-          dates.single_date_picker(
+          dates.text_field(
             name: :start_date,
+            type: :date,
             label: attribute_name(:start_date),
             placeholder: attribute_name(:start_date),
+            required: true,
             input_width: :small
           )
-          dates.single_date_picker(
+          dates.text_field(
             name: :finish_date,
+            type: :date,
             label: attribute_name(:finish_date),
             placeholder: attribute_name(:finish_date),
+            required: true,
             input_width: :small
           )
           dates.text_field(
