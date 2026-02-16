@@ -44,9 +44,7 @@ export default class extends GenericDragAndDropController {
   override async drop(el:Element, target:Element, source:Element|null, sibling:Element|null) {
     if (hasUnsavedChanges()) {
       if (!window.confirm(I18n.t('js.text_are_you_sure_to_cancel'))) {
-        if (this.drake) {
-          this.drake.cancel(true);
-        }
+        this.cancel();
         return;
       }
     }

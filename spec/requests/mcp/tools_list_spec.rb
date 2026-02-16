@@ -33,7 +33,6 @@ require "spec_helper"
 RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
-    header "X-Authentication-Scheme", "Bearer"
     header "Content-Type", "application/json"
     post "/mcp", request_body.to_json
   end
@@ -50,7 +49,7 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
-  let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProject.qualified_name) }
+  let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProjects.qualified_name) }
 
   before do
     server_config.save!
@@ -60,23 +59,34 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP result response"
 
-    it "includes the search_project tool" do
+    it "includes the search_projects tool" do
       subject
 
-      tool = parsed_results.fetch("tools").find { |t| t.fetch("name") == "search_project" }
+      tool = parsed_results.fetch("tools").find { |t| t.fetch("name") == "search_projects" }
       expect(tool).not_to be_nil
       expect(tool.fetch("title")).to eq(tool_config.title)
       expect(tool.fetch("description")).to eq(tool_config.description)
     end
 
-    context "when not passing a Bearer token" do
+    context "when not passing a token" do
       subject do
-        header "X-Authentication-Scheme", "Bearer"
         header "Content-Type", "application/json"
         post "/mcp", request_body.to_json
       end
 
       it_behaves_like "MCP unauthenticated response"
+    end
+
+    context "when passing an API key via Basic auth" do
+      subject do
+        header "Authorization", "Basic #{Base64.encode64("apikey:#{apikey.plain_value}")}"
+        header "Content-Type", "application/json"
+        post "/mcp", request_body.to_json
+      end
+
+      let(:apikey) { create(:api_token) }
+
+      it_behaves_like "MCP result response"
     end
 
     context "when passing a Bearer token with a wrong scope" do
@@ -91,6 +101,19 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
       it "responds in a 404" do
         subject
         expect(last_response).to have_http_status(404)
+      end
+    end
+
+    context "when the search_projects tool is disabled" do
+      let(:tool_config) { create(:mcp_configuration, identifier: McpTools::SearchProjects.qualified_name, enabled: false) }
+
+      it_behaves_like "MCP result response"
+
+      it "does not include the search_projects tool" do
+        subject
+
+        tool = parsed_results.fetch("tools").find { |t| t.fetch("name") == "search_projects" }
+        expect(tool).to be_nil
       end
     end
   end

@@ -38,13 +38,116 @@ module WorkPackageTypes
     subject(:contract) { described_class.new(model, user, options: {}) }
 
     context "without enterprise features enabled" do
-      it "the contract is invalid" do
-        expect(contract.validate).to be_falsey
+      context "when reordering fields between existing default groups" do
+        it "is valid" do
+          model.attribute_groups = [
+            [:people, %w[responsible assignee]],
+            [:details, %w[priority category]]
+          ]
+
+          expect(contract).to be_valid
+        end
       end
 
-      it "adds and error to the contract" do
-        contract.validate
-        expect(contract.errors.details).to eq(base: [{ action: "Edit Attribute Groups", error: :error_enterprise_only }])
+      context "when activating fields" do
+        it "is valid" do
+          model.attribute_groups = [
+            [:people, %w[assignee responsible]],
+            [:details, %w[priority category percentage_done estimated_time]]
+          ]
+
+          expect(contract).to be_valid
+        end
+      end
+
+      context "when deactivating fields" do
+        before do
+          model.update_column(:attribute_groups, [
+                                [:people, %w[assignee responsible]],
+                                [:details, %w[priority category percentage_done]]
+                              ])
+        end
+
+        it "is valid" do
+          model.attribute_groups = [
+            [:people, %w[assignee responsible]],
+            [:details, %w[priority category]]
+          ]
+
+          expect(contract).to be_valid
+        end
+      end
+
+      context "when adding a new custom attribute group" do
+        it "is invalid with an enterprise-only error" do
+          model.attribute_groups = [
+            [:people, %w[assignee responsible]],
+            ["My Custom Group", %w[priority]]
+          ]
+
+          expect(contract).not_to be_valid
+          expect(contract.errors.details).to eq(base: [{ action: "Edit Attribute Groups", error: :error_enterprise_only }])
+        end
+      end
+
+      context "when adding a query group" do
+        let(:query) { create(:query, user:) }
+
+        it "is invalid" do
+          model.attribute_groups = [
+            [:people, %w[assignee]],
+            ["Related", [query]]
+          ]
+
+          expect(contract).not_to be_valid
+          expect(contract.errors.details[:base]).to include(action: "Edit Attribute Groups", error: :error_enterprise_only)
+        end
+      end
+
+      context "when preserving existing custom groups without changes" do
+        before do
+          model.update_column(:attribute_groups, [["Existing Custom", %w[assignee responsible]]])
+        end
+
+        it "is valid when not making structural changes" do
+          model.attribute_groups = [["Existing Custom", %w[responsible assignee priority]]]
+
+          expect(contract).to be_valid
+        end
+
+        it "is invalid when adding a new custom group" do
+          model.attribute_groups = [
+            ["Existing Custom", %w[assignee]],
+            ["Another Custom", %w[responsible]]
+          ]
+
+          expect(contract).not_to be_valid
+        end
+      end
+
+      context "when renaming a default group" do
+        it "is invalid" do
+          model.attribute_groups = [
+            ["My Custom People", %w[assignee responsible]],
+            [:details, %w[priority]]
+          ]
+
+          expect(contract).not_to be_valid
+          expect(contract.errors.details[:base]).to include(action: "Edit Attribute Groups", error: :error_enterprise_only)
+        end
+      end
+
+      context "when renaming an existing custom group" do
+        before do
+          model.update_column(:attribute_groups, [["Original Name", %w[assignee responsible]]])
+        end
+
+        it "is invalid" do
+          model.attribute_groups = [["Renamed Group", %w[assignee responsible]]]
+
+          expect(contract).not_to be_valid
+          expect(contract.errors.details[:base]).to include(action: "Edit Attribute Groups", error: :error_enterprise_only)
+        end
       end
     end
 
@@ -53,11 +156,7 @@ module WorkPackageTypes
         let(:user) { create(:user) }
 
         it "the contract is invalid" do
-          expect(contract.validate).to be_falsey
-        end
-
-        it "adds and error to the contract" do
-          contract.validate
+          expect(contract).not_to be_valid
           expect(contract.errors.details).to eq(base: [{ error: :error_unauthorized }])
         end
       end
@@ -69,7 +168,7 @@ module WorkPackageTypes
           it "is valid" do
             model.attribute_groups = [valid_group]
 
-            expect(contract.validate).to be_truthy
+            expect(contract).to be_valid
           end
         end
 
@@ -79,7 +178,7 @@ module WorkPackageTypes
           it "is invalid and adds :group_without_name error" do
             model.attribute_groups = [invalid_group]
 
-            expect(contract.validate).to be_falsey
+            expect(contract).not_to be_valid
             expect(contract.errors.details[:attribute_groups]).to include(error: :group_without_name)
           end
         end
@@ -90,7 +189,7 @@ module WorkPackageTypes
           it "is invalid and adds :duplicate_group error" do
             model.attribute_groups = [duplicate_group, duplicate_group]
 
-            expect(contract.validate).to be_falsey
+            expect(contract).not_to be_valid
             expect(contract.errors.details[:attribute_groups]).to include(error: :duplicate_group, group: "foo")
           end
         end
@@ -101,7 +200,7 @@ module WorkPackageTypes
           it "is invalid and adds an error for the unknown attribute" do
             model.attribute_groups = [invalid_group]
 
-            expect(contract.validate).to be_falsey
+            expect(contract).not_to be_valid
             expect(contract.errors.details[:attribute_groups]).to include(
               error: "Invalid work package attribute used: unknown_attribute"
             )
@@ -115,7 +214,7 @@ module WorkPackageTypes
           it "is invalid and adds an error for the query group" do
             model.attribute_groups = [invalid_query_group]
 
-            expect(contract.validate).to be_falsey
+            expect(contract).not_to be_valid
             expect(contract.errors.details[:attribute_groups])
               .to include(hash_including(error: :query_invalid, group: "query_group"))
           end

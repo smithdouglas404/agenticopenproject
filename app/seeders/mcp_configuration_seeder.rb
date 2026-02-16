@@ -31,11 +31,11 @@ class McpConfigurationSeeder < Seeder
   def seed_data!
     seed_server_config if server_missing?
 
-    seed_tool_configs
+    seed_resource_and_tool_configs
   end
 
   def applicable?
-    server_missing? || tools_missing?
+    server_missing? || tools_missing? || resources_missing?
   end
 
   def not_applicable_message
@@ -46,15 +46,15 @@ class McpConfigurationSeeder < Seeder
 
   def seed_server_config
     McpConfiguration.create!(
-      identifier: API::Mcp::CONFIGURATION_IDENTIFIER,
+      identifier: McpConfiguration::SERVER_CONFIGURATION_IDENTIFIER,
       title: Setting.app_title,
       description: "Performs project management tasks on the given installation of OpenProject.",
       enabled: true
     )
   end
 
-  def seed_tool_configs
-    McpTools.all.each do |thing| # rubocop:disable Rails/FindEach
+  def seed_resource_and_tool_configs
+    (McpTools.all + McpResources.all).each do |thing|
       next if McpConfiguration.find_by(identifier: thing.qualified_name)
 
       McpConfiguration.create!(
@@ -67,10 +67,14 @@ class McpConfigurationSeeder < Seeder
   end
 
   def server_missing?
-    McpConfiguration.where(identifier: API::Mcp::CONFIGURATION_IDENTIFIER).empty?
+    McpConfiguration.where(identifier: McpConfiguration::SERVER_CONFIGURATION_IDENTIFIER).empty?
   end
 
   def tools_missing?
     (McpTools.all.map(&:qualified_name) - McpConfiguration.pluck(:identifier)).any?
+  end
+
+  def resources_missing?
+    (McpResources.all.map(&:qualified_name) - McpConfiguration.pluck(:identifier)).any?
   end
 end

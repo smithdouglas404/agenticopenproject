@@ -40,7 +40,6 @@ RSpec.describe WorkPackages::CreateNoteContract do
     # we need to clear the changes information because otherwise the
     # contract will complain about all the changes to read_only attributes
     wp.send(:clear_changes_information)
-    allow(wp).to receive(:valid?).and_return true
 
     wp
   end
@@ -86,6 +85,8 @@ RSpec.describe WorkPackages::CreateNoteContract do
       before do
         # Setting the journal_notes to not trigger a :blank error
         work_package.journal_notes = "blubs"
+        # Enable internal comments on project
+        allow(project).to receive(:enabled_internal_comments).and_return(true)
       end
 
       context "and journal_internal is true" do
@@ -102,6 +103,14 @@ RSpec.describe WorkPackages::CreateNoteContract do
             expect(contract.errors.full_messages)
               .to eq(["Internal Journal requires at least the Professional enterprise plan."])
           end
+        end
+
+        context "and the project setting does not allow internal comments" do
+          before do
+            allow(project).to receive(:enabled_internal_comments).and_return(false)
+          end
+
+          it_behaves_like "contract is invalid", journal_internal: :feature_disabled_for_project
         end
       end
 
@@ -140,6 +149,19 @@ RSpec.describe WorkPackages::CreateNoteContract do
       end
 
       it_behaves_like "contract is invalid", subject: :error_readonly
+    end
+
+    describe "with the work package already being invalid" do
+      before do
+        work_package.done_ratio = -100
+
+        # Otherwise, the contract would complain about changing a read-only attribute
+        work_package.send(:clear_changes_information)
+
+        work_package.journal_notes = "abc"
+      end
+
+      it_behaves_like "contract is valid"
     end
   end
 end

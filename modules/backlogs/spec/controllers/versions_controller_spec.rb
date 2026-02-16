@@ -28,7 +28,7 @@
 
 require "spec_helper"
 
-RSpec.describe VersionsController do
+RSpec.describe VersionsController, "Backlog patches" do
   let(:version) do
     create(:version,
            sharing: "system")

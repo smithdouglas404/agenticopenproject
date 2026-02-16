@@ -21,7 +21,7 @@
 #++
 vi:
   js:
-    label_meetings: 'Các cuộc họp'
+    label_meetings: 'các cuộc họp'
     work_packages:
       tabs:
-        meetings: 'Cuộc họp'
+        meetings: 'các cuộc họp'

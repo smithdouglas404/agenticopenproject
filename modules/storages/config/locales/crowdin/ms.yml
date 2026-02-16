@@ -104,20 +104,20 @@ ms:
         create_folder: 'Penciptaan Folder Projek Terurus:'
         ensure_root_folder_permissions: 'Tetapkan Kebenaran Folder Pangkalan:'
         hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
-        remote_folders: 'Baca kandungan folder kumpulan:'
+        remote_folders: 'Read contents of the team folder:'
         remove_user_from_group: 'Keluarkan Pengguna daripada Kumpulan:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
       one_drive_sync_service:
         create_folder: 'Penciptaan Folder Projek Terurus:'
         ensure_root_folder_permissions: 'Tetapkan Kebenaran Folder Pangkalan:'
         hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
-        remote_folders: 'Baca kandungan folder kumpulan:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
       sharepoint_sync_service:
         create_folder: 'Penciptaan Folder Projek Terurus:'
         ensure_root_folder_permissions: 'Tetapkan Kebenaran Folder Pangkalan:'
         hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
-        remote_folders: 'Baca kandungan folder kumpulan:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
     errors:
       messages:
@@ -140,7 +140,7 @@ ms:
               conflict: The folder %{folder_name} already exists on %{parent_location}.
               not_found: "%{parent_location} tidak ditemui."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} tidak ditemui. Sila semak persediaan Folder Kumpulan Nextcloud anda."
+              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
               permission_not_set: tidak dapat menetapkan kebenaran pada %{group_folder}.
             hide_inactive_folders:
               permission_not_set: tidak dapat menetapkan kebenaran pada %{path}.
@@ -230,7 +230,7 @@ ms:
       storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
-        group_folders_app: Group Folders
+        group_folders_app: Team Folders
         integration_app: Integrasi OpenProject
     enabled_in_projects:
       setup_incomplete_description: Storan ini mempunyai persediaan yang tidak lengkap. Sila lengkapkan persediaan sebelum mendayakannya dalam berbilang projek.
@@ -277,11 +277,11 @@ ms:
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
           drive_contents: Drive content
-          files_request: Fetching group folder files
-          group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder content
-          group_folder_presence: Group folder exists
+          files_request: Fetching team folder files
           header: Folder projek yang dikendalikan secara automatik
+          team_folder_app: 'Dependency: Team Folders'
+          team_folder_contents: Team folder content
+          team_folder_presence: Team folder exists
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -316,12 +316,12 @@ ms:
         client_secret_invalid: Rahsia pelanggan OAuth 2 yang dikonfigurasikan adalah tidak sah. Sila semak konfigurasi.
         nc_dependency_missing: 'Kebergantungan yang diperlukan tiada pada storan fail. Sila tambahkan kebergantungan berikut: %{dependency}.'
         nc_dependency_version_mismatch: The %{dependency} app version is not supported. Please update your Nextcloud server.
-        nc_group_folder_not_found: Folder kumpulan tidak ditemui.
         nc_host_not_found: Tiada pelayan Nextcloud ditemui pada url hos yang dikonfigurasikan. Sila semak konfigurasi.
         nc_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
         nc_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         nc_oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as the user did not yet link their Nextcloud account.
-        nc_unexpected_content: Kandungan yang tidak dijangka ditemui dalam folder kumpulan terurus.
+        nc_team_folder_not_found: The team folder could not be found.
+        nc_unexpected_content: Unexpected content found in the managed team folder.
         nc_userless_access_denied: Kata laluan apl yang dikonfigurasikan adalah tidak sah.
         not_configured: Sambungan tidak dapat disahkan. Sila selesaikan konfigurasi dahulu.
         od_client_cant_delete_folder: The client is having trouble deleting folders. Please check the setup documentation for your storage.

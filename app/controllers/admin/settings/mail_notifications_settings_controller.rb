@@ -45,6 +45,7 @@ module Admin::Settings
     private
 
     def validate_mail_from
+      return unless settings_params.key?(:mail_from)
       return if EmailValidator.valid?(settings_params[:mail_from])
 
       flash[:error] = "#{I18n.t(:setting_mail_from)} #{I18n.t('activerecord.errors.messages.email')}"

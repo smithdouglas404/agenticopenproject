@@ -325,13 +325,13 @@ RSpec.describe "Recurring meetings show",
     let!(:ongoing_instance) do
       create :meeting,
              recurring_meeting:,
-             start_time: Time.zone.today + 10.hours - 10.minutes
+             start_time: Time.zone.today + 10.hours
     end
     let!(:ongoing) do
       create :scheduled_meeting,
              recurring_meeting:,
              meeting: ongoing_instance,
-             start_time: Time.zone.today + 10.hours - 10.minutes
+             start_time: Time.zone.today + 10.hours
     end
 
     it "shows the correct number of next occurrences (Regression #61194)" do
@@ -342,6 +342,41 @@ RSpec.describe "Recurring meetings show",
 
       (1..4).each do |date|
         expect(page).to have_text format_time(Time.zone.today + date.days + 10.hours)
+      end
+    end
+  end
+
+  context "with a cancelled ongoing meeting" do
+    let(:recurring_meeting) do
+      create :recurring_meeting,
+             project:,
+             author: user,
+             start_time: Time.zone.today + 10.hours,
+             frequency: "daily",
+             end_after: "iterations",
+             iterations: 5
+    end
+
+    let!(:cancelled_ongoing) do
+      create :scheduled_meeting,
+             recurring_meeting:,
+             start_time: Time.zone.today + 10.hours,
+             cancelled: true
+    end
+
+    it "shows the cancelled ongoing meeting in the planned section (Bug #70609)" do
+      travel_to(Time.zone.today + 10.hours + 1.minute) do
+        get project_recurring_meeting_path(project, recurring_meeting)
+      end
+
+      cancelled_meeting_time = format_time(cancelled_ongoing.start_time)
+
+      planned = page.find("[data-test-selector='planned-table']")
+      expect(planned).to have_text cancelled_meeting_time
+      expect(planned).to have_row("Cancelled")
+
+      (1..4).each do |date|
+        expect(planned).to have_text format_time(Time.zone.today + date.days + 10.hours)
       end
     end
   end

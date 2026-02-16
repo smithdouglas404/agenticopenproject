@@ -154,6 +154,42 @@ RSpec.describe ProjectCustomFieldProjectMappings::BulkUpdateService do
     end
   end
 
+  describe "project creation wizard fields" do
+    shared_let(:visible_user_project_custom_field) do
+      create(:user_project_custom_field,
+             name: "User field",
+             admin_only: false,
+             project_custom_field_section:)
+    end
+
+    before do
+      project.project_creation_wizard_enabled = true
+      project.save!
+    end
+
+    shared_let(:user) { create(:admin) }
+
+    it "disables fields not configured for project creation wizard" do
+      project.project_custom_fields << visible_user_project_custom_field
+      expect(project.project_custom_fields).to contain_exactly(visible_user_project_custom_field)
+
+      expect(instance.call(action: :disable)).to be_success
+
+      expect(project.reload.project_custom_fields).to be_empty
+    end
+
+    it "does not disable fields configured for project creation wizard" do
+      project.project_custom_fields << visible_user_project_custom_field
+      expect(project.project_custom_fields).to contain_exactly(visible_user_project_custom_field)
+
+      project.project_creation_wizard_assignee_custom_field_id = visible_user_project_custom_field.id
+
+      expect(instance.call(action: :disable)).to be_success
+
+      expect(project.reload.project_custom_fields).to contain_exactly(visible_user_project_custom_field)
+    end
+  end
+
   describe "calculated values",
            with_ee: %i[calculated_values],
            with_flag: { calculated_value_project_attribute: true } do

@@ -675,12 +675,11 @@ RSpec.describe API::V3::WorkPackages::WorkPackagePayloadRepresenter do
     describe "parent" do
       let(:parent) { build_stubbed(:work_package) }
       let(:new_parent) do
-        wp = build_stubbed(:work_package)
-        allow(WorkPackage)
-          .to receive(:find_by)
-          .with(id: wp.id.to_s)
-          .and_return(wp)
-        wp
+        build_stubbed(:work_package).tap do |wp|
+          visible_relation = instance_double(ActiveRecord::Relation)
+          allow(WorkPackage).to receive(:visible).and_return(visible_relation)
+          allow(visible_relation).to receive(:find_by).with(id: wp.id.to_s).and_return(wp)
+        end
       end
       let(:path) { api_v3_paths.work_package(new_parent.id) }
       let(:links) do

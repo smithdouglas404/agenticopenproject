@@ -55,7 +55,12 @@ class BlockNoteElement extends HTMLElement {
     this.errorContainer.id = 'documents-show-edit-view-connection-error-notice-component';
     this.errorContainer.dataset.controller = 'flash';
     this.errorContainer.dataset.flashAutohideValue = 'true';
+
     this.mount = document.createElement('div');
+    const browserSpecificClasses = this.getAttribute('browser-specific-classes')?.split(' ') ?? [];
+    if (browserSpecificClasses.length > 0) {
+      this.mount.classList.add(...browserSpecificClasses);
+    }
 
     shadowRoot.appendChild(this.errorContainer);
     shadowRoot.appendChild(this.mount);

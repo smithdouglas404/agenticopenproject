@@ -27,8 +27,6 @@ ka:
           not_set: 'არ არის დაყენებული'
           finished: 'დასრულებულია'
           discontinued: 'დასრულდა'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

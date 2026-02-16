@@ -501,8 +501,7 @@ module API
                      }
                    else
                      {
-                       href: nil,
-                       title: nil
+                       href: nil
                      }
                    end
                  },
@@ -535,8 +534,7 @@ module API
             }
           else
             {
-              href: nil,
-              title: nil
+              href: nil
             }
           end
         end
@@ -598,7 +596,7 @@ module API
                                               expected_version: "3",
                                               expected_namespace: "work_packages"
 
-                                  WorkPackage.find_by(id:) ||
+                                  WorkPackage.visible.find_by(id:) ||
                                     ::WorkPackage::InexistentWorkPackage.new(id:)
                                 end
 

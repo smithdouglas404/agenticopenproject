@@ -23,4 +23,4 @@ vi:
   js:
     two_factor_authentication:
       errors:
-        aborted: "Quá trình xác thực đã bị hủy. Vui lòng thử lại."
+        aborted: "Việc xác thực đã bị hủy. Vui lòng thử lại."

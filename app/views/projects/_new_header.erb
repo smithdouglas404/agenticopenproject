@@ -31,6 +31,16 @@ See COPYRIGHT and LICENSE files for more details.
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title { title }
 
+    header.with_action_icon_button(
+      tag: :a,
+      size: :small,
+      icon: :x,
+      mobile_icon: :x,
+      label: I18n.t(:button_close),
+      href: workspace_creation_cancel_href(@new_project, @parent),
+      test_selector: "new_project_form_close_icon"
+    )
+
     if @parent
       header.with_breadcrumbs(
         [

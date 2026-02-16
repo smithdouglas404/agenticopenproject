@@ -29,103 +29,116 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { type SelectPanelElement, type SelectPanelItem } from '@openproject/primer-view-components/app/components/primer/alpha/select_panel_element';
-import { type ItemActivatedEvent } from '@openproject/primer-view-components/app/components/primer/shared_events';
+import {
+  NgOption,
+  NgSelectComponent,
+} from '@ng-select/ng-select';
 
 /**
  * Stimulus Controller adding behavior to Admin > Backlogs page.
+ * Ensures that story types and task types are mutually exclusive.
  */
 export default class BacklogsSettings extends Controller<HTMLElement> {
   static targets = ['storyTypes', 'taskType'];
 
-  declare readonly storyTypesTarget:SelectPanelElement;
-  declare readonly taskTypeTarget:SelectPanelElement;
+  declare readonly storyTypesTarget:HTMLElement;
+  declare readonly taskTypeTarget:HTMLElement;
   declare readonly hasStoryTypesTarget:boolean;
   declare readonly hasTaskTypeTarget:boolean;
 
-  private originalLabel?:string;
+  private isUpdating = false;
 
-  storyTypesTargetConnected(target:SelectPanelElement) {
-    target.addEventListener('itemActivated', this.onStoryTypesActivated);
-
-    // this can be removed once implemented upstream: https://github.com/primer/view_components/pull/3825
-    this.setDynamicLabel(this.storyTypesTarget);
+  storyTypesTargetConnected(target:HTMLElement) {
+    target.addEventListener('change', this.onStoryTypesChanged);
   }
 
-  storyTypesTargetDisconnected(target:SelectPanelElement) {
-    target.removeEventListener('itemActivated', this.onStoryTypesActivated);
+  storyTypesTargetDisconnected(target:HTMLElement) {
+    target.removeEventListener('change', this.onStoryTypesChanged);
   }
 
-  taskTypeTargetConnected(target:SelectPanelElement) {
-    target.addEventListener('itemActivated', this.onTaskTypeActivated);
+  taskTypeTargetConnected(target:HTMLElement) {
+    target.addEventListener('change', this.onTaskTypeChanged);
   }
 
-  taskTypeTargetDisconnected(target:SelectPanelElement) {
-    target.removeEventListener('itemActivated', this.onTaskTypeActivated);
+  taskTypeTargetDisconnected(target:HTMLElement) {
+    target.removeEventListener('change', this.onTaskTypeChanged);
   }
 
-  private onStoryTypesActivated = (_event:CustomEvent<ItemActivatedEvent>) => {
-    if (!this.hasTaskTypeTarget) return;
-    this.syncSelectPanels(this.storyTypesTarget, this.taskTypeTarget);
+  private onStoryTypesChanged = () => {
+    if (this.isUpdating || !this.hasTaskTypeTarget) return;
 
-    // this can be removed once implemented upstream: https://github.com/primer/view_components/pull/3825
-    this.setDynamicLabel(this.storyTypesTarget);
+    this.syncDisabledOptions(this.storyTypesTarget, this.taskTypeTarget);
   };
 
-  private onTaskTypeActivated = (_event:CustomEvent<ItemActivatedEvent>) => {
-    if (!this.hasStoryTypesTarget) return;
-    this.syncSelectPanels(this.taskTypeTarget, this.storyTypesTarget);
+  private onTaskTypeChanged = () => {
+    if (this.isUpdating || !this.hasStoryTypesTarget) return;
+
+    this.syncDisabledOptions(this.taskTypeTarget, this.storyTypesTarget);
   };
 
   /**
-   * Syncs two select panels - ensuring selections are mutually exclusive.
+   * Syncs disabled options between two autocompleters.
+   * Selected values in the source autocompleter will be disabled in the target.
    *
-   * @param source source select panel
-   * @param target target select panel
+   * @param sourceTarget The autocompleter whose selections should disable options in the target
+   * @param targetTarget The autocompleter whose options should be disabled
    */
-  private syncSelectPanels(source:SelectPanelElement, target:SelectPanelElement) {
-    const sourceSelectedValues = new Set(
-      source.selectedItems
-        .map((item) => item.value)
-        .filter((value):value is string => value != null && value !== '')
-    );
+  private syncDisabledOptions(sourceTarget:HTMLElement, targetTarget:HTMLElement) {
+    this.isUpdating = true;
+    try {
+      const sourceNgSelect = this.getNgSelectComponent(sourceTarget);
+      const targetNgSelect = this.getNgSelectComponent(targetTarget);
 
-    target.items.forEach((targetItem:SelectPanelItem) => {
-      const itemContent = targetItem.querySelector<HTMLElement>('.ActionListContent');
-      const itemValue   = itemContent?.dataset.value;
-      if (!itemValue) return;
-
-      if (sourceSelectedValues.has(itemValue)) {
-        target.disableItem(targetItem);
-        target.uncheckItem(targetItem);
-      } else {
-        target.enableItem(targetItem);
+      if (!sourceNgSelect || !targetNgSelect) {
+        return;
       }
-    });
+
+      this.syncAutocompleters(sourceNgSelect, targetNgSelect);
+    } finally {
+      this.isUpdating = false;
+    }
   }
 
-  // this can be removed once implemented upstream: https://github.com/primer/view_components/pull/3825
-  private setDynamicLabel(panel:SelectPanelElement) {
-    const invokerLabel = panel.invokerLabel!;
-    this.originalLabel ??= invokerLabel.textContent ?? '';
-    const selectedLabels = Array.from(panel.querySelectorAll(`[${panel.ariaSelectionType}=true] .ActionListItem-label`))
-        .map((label) => label.textContent?.trim() ?? '')
-        .join(', ');
+  /**
+   * Gets the NgSelectComponent instance from an op-autocompleter element.
+   */
+  private getNgSelectComponent(target:HTMLElement):NgSelectComponent|null {
+    // Access the ng-select instance stored by op-autocompleter component
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
+    return (target as any).ngSelectComponentInstance ?? null;
+  }
 
-    if (selectedLabels) {
-      const prefixSpan = document.createElement('span');
-      prefixSpan.classList.add('color-fg-muted');
-      const contentSpan = document.createElement('span');
-      prefixSpan.textContent = `${panel.dynamicLabelPrefix} `;
-      contentSpan.textContent = selectedLabels;
-      invokerLabel.replaceChildren(prefixSpan, contentSpan);
+  /**
+   * Syncs two ng-select autocompleters - ensuring selections are mutually exclusive.
+   *
+   * @param source source autocompleter
+   * @param target target autocompleter
+   */
+  private syncAutocompleters(source:NgSelectComponent, target:NgSelectComponent) {
+    const sourceSelectedIds = new Set(
+      source.selectedItems
+        .map((item) => item.value.id)
+        .filter((id) => id != null)
+    );
 
-      if (panel.dynamicAriaLabelPrefix) {
-        panel.invokerElement?.setAttribute('aria-label', `${panel.dynamicAriaLabelPrefix} ${selectedLabels}`);
+    // Directly mutate the items array to ensure ng-select updates properly
+    let hasChanges = false;
+    target.itemsList.items.forEach((targetItem:NgOption) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const itemId = targetItem.value?.id;
+
+      if (!itemId) return;
+
+      const shouldBeDisabled = sourceSelectedIds.has(itemId);
+      if (targetItem.disabled !== shouldBeDisabled) {
+        targetItem.disabled = shouldBeDisabled;
+        hasChanges = true;
       }
-    } else {
-      invokerLabel.textContent = this.originalLabel;
+    });
+
+    // Force ng-select to re-render if we made changes
+    if (hasChanges) {
+      target.detectChanges();
     }
   }
 }
-

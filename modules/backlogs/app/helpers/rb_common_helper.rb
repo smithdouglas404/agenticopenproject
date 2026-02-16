@@ -27,6 +27,13 @@
 #++
 
 module RbCommonHelper
+  def format_date_range(dates)
+    return nil if dates.all?(&:nil?)
+
+    from, to = dates.map { |date| tag.time(datetime: date.iso8601) { format_date(date) } if date }
+    safe_join([from, "–", to], " ") # &ndash; and &nbsp;
+  end
+
   def assignee_id_or_empty(story)
     story.assigned_to_id.to_s
   end
@@ -55,14 +62,6 @@ module RbCommonHelper
     else
       ""
     end
-  end
-
-  # Return true if the difference between two colors
-  # matches the W3C recommendations for readability
-  # See http://www.wat-c.org/tools/CCA/1.1/
-  def colors_diff_ok?(color_1, color_2)
-    cont, bright = find_color_diff color_1, color_2
-    (cont > 500) && (bright > 125) # Acceptable diff according to w3c
   end
 
   def color_contrast(color)
@@ -95,16 +94,11 @@ module RbCommonHelper
 
   def background_color_hex(task)
     background_color = get_backlogs_preference(task.assigned_to, :task_color)
-    background_color_hex = background_color.sub("#", "0x").hex
+    background_color.sub("#", "0x").hex
   end
 
   def id_or_empty(item)
     item.id.to_s
-  end
-
-  def shortened_id(record)
-    id = record.id.to_s
-    (id.length > 8 ? "#{id[0..1]}...#{id[-4..-1]}" : id)
   end
 
   def work_package_link_or_empty(work_package)
@@ -120,51 +114,12 @@ module RbCommonHelper
     link_to(title, path, options.merge(id: html_id, target: "_blank"))
   end
 
-  def sprint_link_or_empty(item)
-    item_id = item.id.to_s
-    text = (item_id.length > 8 ? "#{item_id[0..1]}...#{item_id[-4..-1]}" : item_id)
-    if item.new_record?
-      ""
-    else
-      link_to(text, backlogs_project_sprint_path(id: item.id, project_id: item.project.identifier), class: "prevent_edit")
-    end
-  end
-
   def mark_if_closed(story)
     !story.new_record? && work_package_status_for_id(story.status_id).is_closed? ? "closed" : ""
   end
 
-  def story_points_or_empty(story)
-    story.story_points.to_s
-  end
-
-  def status_id_or_default(story)
-    story.new_record? ? new_record_status.id : story.status_id
-  end
-
-  def status_label_or_default(story)
-    story.new_record? ? new_record_status.name : h(work_package_status_for_id(story.status_id).name)
-  end
-
-  def sprint_html_id_or_empty(sprint)
-    sprint.id.nil? ? "" : "sprint_#{sprint.id}"
-  end
-
   def story_html_id_or_empty(story)
     story.id.nil? ? "" : "story_#{story.id}"
-  end
-
-  def type_id_or_empty(story)
-    story.type_id.to_s
-  end
-
-  def type_name_or_empty(story)
-    return "" if story.type_id.nil?
-
-    type = backlogs_types_by_id[story.type_id]
-    return "" if type.nil?
-
-    h(type.name)
   end
 
   def date_string_with_milliseconds(d, add = 0)
@@ -177,48 +132,7 @@ module RbCommonHelper
     item.remaining_hours.blank? || item.remaining_hours == 0 ? "" : item.remaining_hours
   end
 
-  def available_story_types
-    @available_story_types ||= begin
-      types = story_types & @project.types if @project
-
-      types
-    end
-  end
-
-  def available_statuses_by_type
-    @available_statuses_by_type ||= begin
-      available_statuses_by_type = Hash.new do |type_hash, type|
-        type_hash[type] = Hash.new do |status_hash, status|
-          status_hash[status] = [status]
-        end
-      end
-
-      all_workflows.each do |w|
-        type_status = available_statuses_by_type[story_types_by_id[w.type_id]][w.old_status]
-
-        type_status << w.new_status unless type_status.include?(w.new_status)
-      end
-
-      available_statuses_by_type
-    end
-  end
-
-  def show_burndown_link(project, sprint)
-    link_to(I18n.t("backlogs.show_burndown_chart"),
-            backlogs_project_sprint_burndown_chart_path(project.identifier, sprint),
-            class: "show_burndown_chart button",
-            target: :_blank, rel: :noopener)
-  end
-
   private
-
-  def new_record_status
-    @new_record_status ||= all_work_package_status.first
-  end
-
-  def default_work_package_status
-    @default_work_package_status ||= all_work_package_status.detect(&:is_default)
-  end
 
   def work_package_status_for_id(id)
     @all_work_package_status_by_id ||= all_work_package_status.inject({}) do |mem, status|
@@ -227,18 +141,6 @@ module RbCommonHelper
     end
 
     @all_work_package_status_by_id[id]
-  end
-
-  # Returns all distinct virtual workflows for the roles the current user has in the project and the story types.
-  # Virtual workflow because not every instance of a workflow in the database will be returned but a representation
-  # distinct by type_id, old_status_id and new_status_id. This helps in case a lot of workflows are configured.
-  def all_workflows
-    Workflow
-      .includes(%i[new_status old_status])
-      .where(role_id: User.current.roles_for_project(@project).map(&:id),
-             type_id: story_types.map(&:id))
-      .group(:type_id, :old_status_id, :new_status_id)
-      .reselect(:type_id, :old_status_id, :new_status_id)
   end
 
   def all_work_package_status
@@ -254,13 +156,6 @@ module RbCommonHelper
     end
   end
 
-  def backlogs_types_by_id
-    @backlogs_types_by_id ||= backlogs_types.inject({}) do |mem, type|
-      mem[type.id] = type
-      mem
-    end
-  end
-
   def story_types
     @story_types ||= begin
       backlogs_type_ids = Setting.plugin_openproject_backlogs["story_types"].map(&:to_i)
@@ -269,20 +164,7 @@ module RbCommonHelper
     end
   end
 
-  def story_types_by_id
-    @story_types_by_id ||= story_types.inject({}) do |mem, type|
-      mem[type.id] = type
-      mem
-    end
-  end
-
   def get_backlogs_preference(assignee, attr)
     assignee.is_a?(User) ? assignee.backlogs_preference(attr) : "#24B3E7"
-  end
-
-  def template_story
-    Story.new.tap do |s|
-      s.type = available_story_types.first
-    end
   end
 end

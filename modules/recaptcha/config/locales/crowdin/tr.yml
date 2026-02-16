@@ -2,7 +2,7 @@
 tr:
   plugin_openproject_recaptcha:
     name: "OpenProject ReCaptcha"
-    description: "Bu modül giriş sırasında recaptcha kontrolleri sağlar."
+    description: "Bu modül giriş sırasında recaptcha kontrolleri yapılmasını sağlar."
   recaptcha:
     label_recaptcha: "reCAPTCHA"
     button_please_wait: 'Lütfen bekleyin ...'

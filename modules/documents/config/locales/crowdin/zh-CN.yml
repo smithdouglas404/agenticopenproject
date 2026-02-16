@@ -53,7 +53,7 @@ zh-CN:
         placeholder: "在此输入搜索文档名称"
     documents_list_blank_slate:
       heading: "还没有文档"
-      description: "此视图中没有文档。您可以点击下面的按钮添加一个文档。"
+      description: "此视图中没有文档。您可以点击下方按钮添加一个文档。"
     document_categories_deprecation_notice:
       heading: 文件类别现在称为“文档类型”
       description: |-
@@ -74,6 +74,7 @@ zh-CN:
         action: 重试
       connection_recovery_notice:
         description: "与实时文本协作服务器的连接已恢复。"
+      tabs: "“文档”选项卡"
     index_page:
       name: "名称"
       type: "类型"

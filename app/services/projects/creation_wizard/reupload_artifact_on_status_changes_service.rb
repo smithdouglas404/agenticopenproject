@@ -46,7 +46,6 @@ module Projects::CreationWizard
     end
 
     def call!(changes:)
-      return unless OpenProject::FeatureDecisions.project_initiation_active?
       return if changes["status_id"].blank?
       return unless update_is_artifact_work_package?
 

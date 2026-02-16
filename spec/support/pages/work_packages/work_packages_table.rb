@@ -369,7 +369,7 @@ module Pages
     end
 
     def progress_popover(work_package)
-      Components::WorkPackages::ProgressPopover.new(container: work_package_container(work_package))
+      Components::WorkPackages::ProgressPopover.new(container: -> { work_package_container(work_package) })
     end
 
     def expect_no_column_add_option(column_name)

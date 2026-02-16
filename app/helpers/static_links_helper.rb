@@ -31,14 +31,25 @@
 module StaticLinksHelper
   ##
   # Create a static link to the given key entry
-  def static_link_to(*path, label: nil)
-    href = OpenProject::Static::Links.url_for(*path)
+  # *path - the path segments to look up the link for static links
+  # href: - optional override for the href if no static link is found or given
+  # label: - optional override for the label if no static link label is found or given
+  def static_link_to(*path, href: nil, label: nil, url_params: {}, **system_arguments)
+    link = OpenProject::Static::Links.url_for(*path, url_params:) || href
+    raise ArgumentError, "No href found for static link #{path.inspect}" if link.nil?
+
     label_text = label || OpenProject::Static::Links.label_for(*path)
 
-    link_to label_text,
-            href,
-            class: "openproject--static-link",
-            target: "_blank", rel: "noopener"
+    render(
+      Primer::Beta::Link.new(href: link,
+                             data: { allow_external_link: true },
+                             **system_arguments,
+                             rel: "noopener",
+                             target: "_blank")
+    ) do |link|
+      link.with_trailing_visual_icon(icon: "link-external")
+      label_text
+    end
   end
 
   ##

@@ -139,6 +139,9 @@ export default class HoverCardTriggerController extends ApplicationController {
       return;
     }
 
+    // There is already a hover timer running, do not start a new one.
+    if (this.hoverTimeout !== null) { return; }
+
     // Hovering over a new target. Close the old one (if any).
     this.close(true);
 

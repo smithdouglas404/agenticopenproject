@@ -2,5 +2,4 @@ es:
   overviews:
     label_home: "Inicio %{workspace_type}"
     label_dashboard: "Panel de control"
-    label_overview: 'Resumen'
-  permission_manage_overview: 'Administrar la página de resumen'
+    label_overview: "Resumen"

@@ -49,9 +49,6 @@ OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   description: "Allows the use of calculated values as a project attribute.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :beta_widgets,
-                                  description: "Enables BETA versions of widgets."
-
 OpenProject::FeatureDecisions.add :mcp_server,
                                   description: "Enables the experimental MCP API."
 
@@ -67,8 +64,3 @@ OpenProject::FeatureDecisions.add :new_project_overview,
                                   description: "Enables the new project overview experience.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :wp_activity_tab_lazy_pagination,
-                                  description: "Enables lazy pagination for the activity tab."
-
-OpenProject::FeatureDecisions.add :project_initiation,
-                                  description: "Activate the project creation and initiation wizard"

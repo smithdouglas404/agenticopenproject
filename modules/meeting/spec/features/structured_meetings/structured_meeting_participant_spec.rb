@@ -56,6 +56,11 @@ RSpec.describe "Meetings participants",
     create(:user,
            lastname: "Third")
   end
+  shared_let(:member_without_meeting_permission) do
+    create(:user,
+           lastname: "Fourth",
+           member_with_permissions: { project => %i[view_work_packages] })
+  end
 
   shared_let(:meeting) do
     create(:meeting,
@@ -105,7 +110,8 @@ RSpec.describe "Meetings participants",
     wait_for_network_idle
 
     perform_enqueued_jobs
-    expect(ActionMailer::Base.deliveries.size).to eq 1
+    expect(ActionMailer::Base.deliveries.size).to eq 2
+    ActionMailer::Base.deliveries.clear
 
     show_page.in_participant_form do
       show_page.remove_participant(other_user)
@@ -115,5 +121,12 @@ RSpec.describe "Meetings participants",
 
     perform_enqueued_jobs
     expect(ActionMailer::Base.deliveries.size).to eq 2
+  end
+
+  it "does not show members without view_meetings permission in the autocompleter (Bug #70467)" do
+    show_page.open_participant_form
+    show_page.in_participant_form do
+      show_page.expect_no_participant(member_without_meeting_permission)
+    end
   end
 end

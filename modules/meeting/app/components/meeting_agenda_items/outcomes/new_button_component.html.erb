@@ -13,9 +13,10 @@
           data: {
             "turbo-stream": true,
             action: "click->meetings--submit#intercept",
-            href: new_meeting_outcome_path(
+            href: new_project_meeting_agenda_item_outcome_path(
+              @meeting.project,
               @meeting,
-              meeting_agenda_item_id: @meeting_agenda_item.id,
+              @meeting_agenda_item,
               kind: :information
             ),
             method: "GET"
@@ -29,9 +30,10 @@
           data: {
             "turbo-stream": true,
             action: "click->meetings--submit#intercept",
-            href: new_meeting_outcome_path(
+            href: new_project_meeting_agenda_item_outcome_path(
+              @meeting.project,
               @meeting,
-              meeting_agenda_item_id: @meeting_agenda_item.id,
+              @meeting_agenda_item,
               kind: :work_package
             ),
             method: "GET"
@@ -46,9 +48,10 @@
             data: {
               "turbo-stream": true,
               action: "click->meetings--submit#intercept",
-              href: create_work_package_dialog_meeting_outcomes_path(
+              href: create_work_package_dialog_project_meeting_agenda_item_outcomes_path(
+                @meeting.project,
                 @meeting,
-                meeting_agenda_item_id: @meeting_agenda_item.id
+                @meeting_agenda_item
               ),
               method: "GET"
             }

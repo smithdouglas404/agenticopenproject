@@ -229,7 +229,7 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         work_package.project.save!
       end
 
-      context "when user can see internal comments" do
+      context "when user can see internal comments", with_ee: [:internal_comments] do
         it "includes internal journals" do
           _pagy, records = paginator.call
 

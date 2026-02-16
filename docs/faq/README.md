@@ -165,7 +165,9 @@ You can then select "Settings" from the side menu on the left side and [change t
 
 ### Is there an OpenProject app?
 
-There is no native iOS or Android app for OpenProject, but OpenProject is responsive - so it displays well on smaller screens.
+OpenProject is responsive - so it displays well on smaller screens.
+
+In addition, there is an iOS and an Android app for OpenProject. [Read more](../mobile-app-guide).
 
 ### Is it possible to connect MS Project and OpenProject or to migrate from MS Project to OpenProject?
 
@@ -245,6 +247,8 @@ Furthermore, we are planning a direct integration into Solibri. Then you don't n
 
 ### Does clicking on a BCF-issue zoom you to the appropriate location in the model?
 
+
+
 Yes, the so-called camera position is stored in the BCF-issues, so that exactly the same camera position is assumed when you click on the BCF-issue. These are called viewpoints. If you have several models, e.g. architecture and technical building equipment, these must be activated (made visible) before you click on the BCF-issue. In the same way, BCF-elements of the model can be hidden or selected via the viewpoint.
 
 In our [introductory video](https://www.youtube.com/watch?v=ThA4_17yedg) to the OpenProject BIM edition the basics are shown very well. In particular, the integration of BCF management into the rest of the project management of a construction project is the strength of OpenProject.
@@ -276,7 +280,7 @@ Please consult [JIRA migration overview page](../installation-and-operations/jir
 
 ### How can I migrate from Community edition or Enterprise on-premises to Enterprise cloud?
 
-We will need a [backup](../system-admin-guide/backup) of your OpenProject Installation which we will restore to your new Enterprise cloud. Please calculate with a downtime of approximately 60 minutes in regular cases. Please contact us to plan the migration and get more instructions.
+We will need a [backup](../system-admin-guide/backup) of your OpenProject Installation which we will restore to your new Enterprise cloud. Please calculate with a downtime of approximately 60 minutes in regular cases. Please keep in mind that this is a paid service. Contact us to plan the migration and get more instructions.
 
 ### How can I migrate from Enterprise cloud to Enterprise on-premises?
 

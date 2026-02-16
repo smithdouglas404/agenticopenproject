@@ -104,20 +104,20 @@ pt-BR:
         create_folder: 'Criação de pastas gerenciadas para projetos:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Etapa "Ocultar pastas inativas":'
-        remote_folders: 'Ler conteúdo da pasta de grupo:'
+        remote_folders: 'Ler conteúdo da pasta da equipe:'
         remove_user_from_group: 'Remover usuário do grupo:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
       one_drive_sync_service:
         create_folder: 'Criação de pastas gerenciadas para projetos:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Etapa "Ocultar pastas inativas":'
-        remote_folders: 'Ler conteúdo da pasta de grupo:'
+        remote_folders: 'Ler conteúdo da pasta raiz no drive:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
       sharepoint_sync_service:
         create_folder: 'Criação de pastas gerenciadas para projetos:'
         ensure_root_folder_permissions: 'Definir permissões da pasta base:'
         hide_inactive_folders: 'Etapa "Ocultar pastas inativas":'
-        remote_folders: 'Ler conteúdo da pasta de grupo:'
+        remote_folders: 'Ler conteúdo da pasta raiz no drive:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
     errors:
       messages:
@@ -140,7 +140,7 @@ pt-BR:
               conflict: A pasta %{folder_name} já existe em %{parent_location}.
               not_found: "%{parent_location} não foi encontrado."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} não foi encontrado. Verifique a configuração da sua Pasta de grupo Nextcloud."
+              not_found: "%{group_folder} não foi encontrado. Verifique a configuração da sua Pasta da equipe Nextcloud."
               permission_not_set: não foi possível definir permissões em %{group_folder}.
             hide_inactive_folders:
               permission_not_set: não foi possível definir permissões em %{path}.
@@ -230,7 +230,7 @@ pt-BR:
       storage_delete_result_3: A pasta do projeto gerenciada automaticamente e todos os arquivos contidos nela serão excluídos
     dependencies:
       nextcloud:
-        group_folders_app: Agrupar pastas
+        group_folders_app: Pastas da equipe
         integration_app: Integração OpenProject
     enabled_in_projects:
       setup_incomplete_description: Este armazenamento tem uma configuração incompleta. Conclua a configuração antes de habilitá-la em vários projetos.
@@ -277,11 +277,11 @@ pt-BR:
           client_folder_creation: Criação automática de pasta
           client_folder_removal: Exclusão automática de pasta
           drive_contents: Conteúdo da unidade
-          files_request: Buscando arquivos da pasta do grupo
-          group_folder_app: 'Dependência: Pastas de grupo'
-          group_folder_contents: Conteúdo da pasta do grupo
-          group_folder_presence: A pasta do grupo existe
+          files_request: Buscando arquivos da pasta da equipe
           header: Pastas de projeto gerenciadas automaticamente
+          team_folder_app: 'Dependência: Pastas da equipe'
+          team_folder_contents: Conteúdo da pasta da equipe
+          team_folder_presence: A pasta da equipe existe
           userless_access: Autenticação de solicitações no servidor
         authentication:
           existing_token: Token do usuário
@@ -318,12 +318,12 @@ pt-BR:
         client_secret_invalid: O segredo do cliente OAuth 2 configurado é inválido. Verifique a configuração.
         nc_dependency_missing: 'Uma dependência necessária está faltando no armazenamento de arquivos. Adicione a seguinte dependência: %{dependency}.'
         nc_dependency_version_mismatch: A versão do aplicativo %{dependency} não é compatível. Atualize seu servidor Nextcloud.
-        nc_group_folder_not_found: A pasta do grupo não pôde ser localizada.
         nc_host_not_found: Nenhum servidor Nextcloud encontrado na URL de host configurada. Verifique a configuração.
         nc_oauth_request_not_found: O endpoint para recuperar o usuário conectado não foi encontrado. Verifique os logs do servidor para mais detalhes.
         nc_oauth_request_unauthorized: O usuário atual não está autorizado a acessar o armazenamento remoto de arquivos. Verifique os logs do servidor para mais informações.
         nc_oauth_token_missing: O OpenProject não pode testar a comunicação do usuário com o Nextcloud, pois a conta do Nextcloud ainda não foi vinculada.
-        nc_unexpected_content: Conteúdo inesperado encontrado na pasta do grupo gerenciado.
+        nc_team_folder_not_found: A pasta da equipe não pôde ser localizada.
+        nc_unexpected_content: Conteúdo inesperado encontrado na pasta da equipe gerenciado.
         nc_userless_access_denied: A senha configurada do aplicativo não é válida.
         not_configured: A conexão não pôde ser validada. Conclua a configuração primeiro.
         od_client_cant_delete_folder: O cliente está com dificuldades para excluir pastas. Verifique a documentação de configuração do seu armazenamento.

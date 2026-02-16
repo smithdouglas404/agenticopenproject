@@ -3,7 +3,7 @@ vi:
   js:
     calendar:
       create_new: 'Tạo lịch mới'
-      title: 'Lịch'
-      too_many: 'Tổng cộng có %{count} công việc, nhưng chỉ %{max} có thể được hiển thị.'
+      title: 'lịch'
+      too_many: 'Tổng cộng có %{count} gói công việc nhưng chỉ có thể hiển thị %{max}.'
       unsaved_title: 'Lịch không tên'
-      label_calendar_plural: 'Các lịch'
+      label_calendar_plural: 'lịch'

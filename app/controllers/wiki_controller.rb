@@ -370,7 +370,7 @@ class WikiController < ApplicationController
   end
 
   def find_wiki
-    @project = Project.find(params[:project_id])
+    @project = Project.visible.find(params[:project_id])
     @wiki = @project.wiki
     render_404 unless @wiki
   end

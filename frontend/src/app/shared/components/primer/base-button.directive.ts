@@ -28,7 +28,7 @@
 
 /* eslint-disable @angular-eslint/directive-selector */
 
-import { Directive } from '@angular/core';
+import { Directive, ElementRef, Renderer2, inject, effect } from '@angular/core';
 import { AbstractBaseButtonDirective } from './abstract-base-button.directive';
 
 @Directive({
@@ -41,9 +41,19 @@ import { AbstractBaseButtonDirective } from './abstract-base-button.directive';
   host: {
     '[class.btn-block]': 'block()',
     '[class.Button--inactive]': 'inactive()',
-    '[disabled]': 'disabled()',
     '[attr.type]': 'type()',
   }
 })
 export class PrimerBaseButtonDirective extends AbstractBaseButtonDirective {
+  private el = inject<ElementRef<HTMLElement>>(ElementRef);
+  private renderer = inject(Renderer2);
+
+  constructor() {
+    super();
+    effect(() => {
+      if (this.el.nativeElement.tagName === 'BUTTON') {
+        this.renderer.setProperty(this.el.nativeElement, 'disabled', this.disabled());
+      }
+    });
+  }
 }

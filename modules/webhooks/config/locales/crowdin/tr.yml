@@ -28,9 +28,9 @@ tr:
       label_add_new: Yeni web kancası ekle
       label_edit: Web kancasını düzenle
       label_x_events:
-        one: "1 event"
-        other: "%{count} events"
-        zero: "No events"
+        one: "1 olay"
+        other: "%{count} olay"
+        zero: "Olay yok"
       events:
         created: "Oluşturuldu"
         updated: "Güncellenmiş"

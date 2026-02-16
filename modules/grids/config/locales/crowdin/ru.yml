@@ -5,10 +5,10 @@ ru:
       empty: "В настоящее время этот виджет пуст."
       not_available: "Этот виджет недоступен."
       subitems:
-        title: "Подпункты"
+        title: "Подпроекты"
         no_results: "Нет видимых потомков."
-        view_all_subitems: "Отобразить все подпункты"
-        button_text: "Подпункт"
+        view_all_subitems: "Отобразить все подпроекты"
+        button_text: "Подпроект"
       members:
         title: "Участники"
         no_results: "Нет видимых участников."

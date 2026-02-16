@@ -83,12 +83,34 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
 
       visit document_path(document)
       expect(page).to have_test_selector("blocknote-document-description")
-      editor.fill_in("/openproject")
-      send_keys(:enter)
 
+      editor.open_add_work_package_dialog
       editor.element.fill_in("Link existing work package", with: "test")
       expect(editor.element).to have_content("AAA test") # wait for dropdown to open
       expect(editor.element.text).to match(/AAA test.*CCC test.*BBB test/m)
+    end
+
+    it "is possible to add link work package blocks" do
+      status = create(:status, name: "Open")
+      type = create(:type, name: "Life Goals")
+      work_package = create(:work_package,
+                            project: document.project,
+                            subject: "pet a tiger",
+                            status:,
+                            type:)
+
+      visit document_path(document)
+      expect(page).to have_test_selector("blocknote-document-description")
+
+      editor.open_add_work_package_dialog
+      editor.element.fill_in("Link existing work package", with: "tiger")
+      editor.element.all("div", text: "pet a tiger").last.click
+
+      expect(editor.element).to have_no_content("Link existing work package") # search dialog is closed
+      expect(editor.element.text).to match(/LIFE GOALS\s#\d+\sOpen\spet a tiger/)
+
+      # Capybara's have_link seems not to work in a shadow dom, so it's tested via the property
+      expect(editor.element.find_link(text: "pet a tiger").native.property("href")).to end_with("/wp/#{work_package.id}")
     end
   end
 end

@@ -55,7 +55,7 @@
               Primer::Beta::IconButton.new(
                 scheme: :invisible,
                 tag: :a,
-                href: meeting_participant_path(@meeting, @participant),
+                href: project_meeting_participant_path(@meeting.project, @meeting, @participant),
                 icon: :x,
                 aria: { label: I18n.t("meeting.participants.label.remove_participant") },
                 data: {

@@ -27,8 +27,6 @@ sv:
           not_set: 'Ej inställd'
           finished: 'Avslutad'
           discontinued: 'Utgången'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Underpunkter'
         project_favorites:

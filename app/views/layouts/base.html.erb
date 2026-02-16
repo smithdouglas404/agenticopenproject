@@ -146,14 +146,30 @@ See COPYRIGHT and LICENSE files for more details.
         <h1 class="sr-only accessibility-helper"><%= t(:label_content) %></h1>
         <% if content_for?(:content_header) %>
           <div id="content-header">
-            <%= render(OpenProject::Common::MainMenuToggleComponent.new(expanded: false)) %>
+            <%=
+              render(
+                OpenProject::Common::MainMenuToggleComponent.new(
+                  expanded: false,
+                  aria: { controls: "main-menu" }
+                )
+              )
+            %>
 
             <%= content_for :content_header %>
           </div>
         <% end %>
 
         <div id="content-body">
-          <%= render(OpenProject::Common::MainMenuToggleComponent.new(expanded: false)) unless content_for?(:content_header) %>
+          <% unless content_for?(:content_header) %>
+            <%=
+              render(
+                OpenProject::Common::MainMenuToggleComponent.new(
+                  expanded: false,
+                  aria: { controls: "main-menu" }
+                )
+              )
+            %>
+          <% end %>
 
           <%= content_for :content_body %>
           <% unless local_assigns[:no_layout_yield] %>
@@ -166,7 +182,11 @@ See COPYRIGHT and LICENSE files for more details.
       <% end %>
     <% end %>
   </div>
-  <div id="ajax-indicator" style="display:none;"><span><%= t(:label_loading) %></span></div>
+  <%= render Primer::Beta::Spinner.new(
+        size: :large,
+        hidden: true,
+        wrapper_arguments: { id: "global-loading-indicator", position: :absolute }
+      ) %>
 </div>
 <%# Properly decides main menu expanded state and width before its drawn. Fixes flickering side menu
         where menu is first expanded, then being collapsed in angular. %>

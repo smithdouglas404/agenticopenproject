@@ -32,6 +32,10 @@
 import { Controller } from '@hotwired/stimulus';
 import { renderStreamMessage } from '@hotwired/turbo';
 import { debounce } from 'lodash';
+import {
+  hideElement,
+  showElement,
+} from 'core-app/shared/helpers/dom-helpers';
 
 interface PrimerTextFieldElement extends HTMLElement {
   inputElement:HTMLInputElement;
@@ -398,8 +402,8 @@ export default class FiltersFormController extends Controller {
     // Remove the page parameter when changing filters, so that pagination resets
     params.delete('page');
     params.set('filters', newFilters);
-    const ajaxIndicator = document.querySelector<HTMLElement>('#ajax-indicator')!;
-    ajaxIndicator.style.display = '';
+    const loadingIndicator = document.querySelector<HTMLElement>('#global-loading-indicator')!;
+    showElement(loadingIndicator);
 
     const pathName = this.urlPathNameValue || window.location.pathname;
     const url = `${pathName}?${params.toString()}`;
@@ -413,11 +417,11 @@ export default class FiltersFormController extends Controller {
         .then((response:Response) => response.text())
         .then((html:string) => {
           renderStreamMessage(html);
-          ajaxIndicator.style.display = 'none';
+          hideElement(loadingIndicator);
         })
         .catch((error:Error) => {
           console.error('Error:', error);
-          ajaxIndicator.style.display = 'none';
+          hideElement(loadingIndicator);
         });
     } else {
       window.location.href = url;

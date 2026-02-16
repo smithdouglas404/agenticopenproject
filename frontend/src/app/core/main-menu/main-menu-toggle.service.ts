@@ -28,7 +28,6 @@
 
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { DeviceService } from 'core-app/core/browser/device.service';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
@@ -36,8 +35,6 @@ import { queryVisible } from 'core-app/shared/helpers/dom-helpers';
 
 @Injectable({ providedIn: 'root' })
 export class MainMenuToggleService {
-  public toggleTitle:string;
-
   private elementWidth:number;
 
   private elementMinWidth = 11;
@@ -63,7 +60,6 @@ export class MainMenuToggleService {
   private wasCollapsedByUser = false;
 
   constructor(
-    protected I18n:I18nService,
     public injector:Injector,
     readonly deviceService:DeviceService,
   ) {

@@ -70,7 +70,8 @@ RSpec.describe MeetingParticipants::CreateContract do
 
       it "is invalid" do
         expect(subject).to be false
-        expect(contract.errors[:user]).to include("#{user_without_meeting_permissions.name} is not a valid participant.")
+        expect(contract.errors[:user]).to include("is not a valid participant.")
+        expect(contract.errors[:base]).not_to include(user_without_meeting_permissions.name)
       end
     end
 
@@ -79,7 +80,8 @@ RSpec.describe MeetingParticipants::CreateContract do
 
       it "is invalid" do
         expect(subject).to be false
-        expect(contract.errors[:user]).to include("#{user_not_in_project.name} is not a valid participant.")
+        expect(contract.errors[:user]).to include("is not a valid participant.")
+        expect(contract.errors[:base]).not_to include(user_not_in_project.name)
       end
     end
   end

@@ -3,7 +3,11 @@
     primer_form_with(
       scope: :work_package,
       model: work_package,
-      url: create_work_package_meeting_outcomes_path(meeting, meeting_agenda_item_id: meeting_agenda_item.id),
+      url: create_work_package_project_meeting_agenda_item_outcomes_path(
+        meeting.project,
+        meeting,
+        meeting_agenda_item
+      ),
       method: :post,
       html: {
         id: "create-work-package-outcome-form"

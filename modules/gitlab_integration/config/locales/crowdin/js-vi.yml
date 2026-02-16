@@ -26,28 +26,28 @@ vi:
       work_packages:
         tab_name: "GitLab"
       tab_header_issue:
-        title: "Các vấn đề"
+        title: "vấn đề"
       tab_header_mr:
-        title: "Yêu cầu kéo"
+        title: "Hợp nhất các yêu cầu"
         create_mr:
           label: Tạo MR
-          description: Tạo một Yêu cầu Kéo
+          description: Tạo yêu cầu hợp nhất
         copy_menu:
           label: Mã git
-          description: Sao chép mã git vào clipboard
+          description: Sao chép đoạn git vào clipboard
         git_actions:
-          branch_name: Tên nhánh
-          commit_message: Tin nhắn commit
-          cmd: Tạo nhánh với commit trống
+          branch_name: Tên chi nhánh
+          commit_message: Thông báo cam kết
+          cmd: Tạo nhánh với cam kết trống
           title: Mã nhanh cho Git
-          copy_success: '✅ Đã sao chép!'
-          copy_error: '❌ Sao chép thất bại!'
+          copy_success: '✅ Sao chép!'
+          copy_error: '❌ Sao chép không thành công!'
       tab_issue:
-        empty: 'Chưa có vấn đề nào được liên kết. Liên kết một vấn đề hiện có bằng cách sử dụng mã <code>OP#%{wp_id}</code> (hoặc <code>PP#%{wp_id}</code> cho liên kết riêng) trong tiêu đề/mô tả vấn đề hoặc tạo một vấn đề mới.'
+        empty: 'Chưa có vấn đề nào được liên kết. Liên kết một vấn đề hiện có bằng cách sử dụng mã <code>OP#%{wp_id}</code> (hoặc <code>PP#%{wp_id}_</code> đối với các liên kết riêng tư) trong tiêu đề/mô tả vấn đề hoặc tạo một vấn đề mới.'
       tab_mrs:
-        empty: 'Chưa có yêu cầu kéo nào được liên kết. Liên kết một MR hiện có bằng cách sử dụng mã <code>OP#%{wp_id}</code> (hoặc <code>PP#%{wp_id}</code> cho liên kết riêng) trong tiêu đề/mô tả MR hoặc tạo một MR mới.'
-      gitlab_pipelines: Pipelines
-      updated_on: Được cập nhật vào lúc
+        empty: 'Chưa có yêu cầu hợp nhất nào được liên kết. Liên kết MR hiện có bằng cách sử dụng mã <code>OP#%{wp_id}</code> (hoặc <code>PP#%{wp_id}_</code> cho các liên kết riêng tư) trong tiêu đề/mô tả MR hoặc tạo MR mới.'
+      gitlab_pipelines: Đường ống
+      updated_on: Đã cập nhật vào
     work_packages:
       tabs:
         gitlab: "GitLab"

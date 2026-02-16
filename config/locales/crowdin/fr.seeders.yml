@@ -492,14 +492,14 @@ fr:
 
           Fonctionnalités principales et cas d'utilisation :
 
-          * [Gestion de portefeuille de projets] (https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
-          * [Planification et organisation de projets](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
-          * [Gestion des tâches et suivi des problèmes](https://www.openproject.org/collaboration-software-features/task-management/)
-          * [Tableaux agiles (Scrum et Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
-          * [Gestion des exigences et planification des versions](https://www.openproject.org/collaboration-software-features/product-development/)
-          * [Suivi du temps et des coûts, budgets](https://www.openproject.org/collaboration-software-features/time-tracking/)
-          * [Collaboration d'équipe et documentation](https://www.openproject.org/collaboration-software-features/team-collaboration/)
+          * [Gestion de portefeuille de projets](https://www.openproject.org/fr/fonctionnalites-collaboration-logiciel/gestion-portefeuille-projets/)
+          * [Planification et organisation de projets](https://www.openproject.org/fr/fonctionnalites-collaboration-logiciel/planification-ordonnancement-projet/)
+          * [Gestion des tâches et suivi des problèmes](https://www.openproject.org/fr/fonctionnalites-collaboration-logiciel/gestion-des-taches/)
+          * [Tableaux agiles (Scrum et Kanban)](https://www.openproject.org/fr/fonctionnalites-collaboration-logiciel/gestion-projet-agile/)
+          * [Gestion des exigences et planification des versions](https://www.openproject.org/fr/fonctionnalites-collaboration-logiciel/developpement-de-produits/)
+          * [Suivi du temps et des coûts, budgets](https://www.openproject.org/fr/fonctionnalites-collaboration-logiciel/suivi-du-temps/)
+          * [Collaboration d'équipe et documentation](https://www.openproject.org/fr/fonctionnalites-collaboration-logiciel/collaboration-equipe/)
 
           Bienvenue dans l'avenir de la gestion de projet.
 
-          Pour les administrateurs : Vous pouvez modifier ce texte de bienvenue [ici] ({{opSetting:base_url}}/admin/settings/general).
+          Pour les administrateurs : vous pouvez modifier ce texte de bienvenue [ici]({{opSetting:base_url}}/admin/settings/general).

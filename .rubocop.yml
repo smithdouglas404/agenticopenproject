@@ -176,6 +176,7 @@ Rails/DynamicFindBy:
   Whitelist:
     - find_by_login
     - find_by_mail
+    - find_by_plaintext_value
 
 # Allow reorder to prevent find each cop triggering
 Rails/FindEach:
@@ -193,6 +194,11 @@ Rails/HttpPositionalArguments:
 # Disable I18n.locale = in specs, where it is reset
 # by us explicitly
 Rails/I18nLocaleAssignment:
+  Enabled: true
+  Exclude:
+    - "spec/**/*.rb"
+
+Rails/I18nLocaleTexts:
   Enabled: true
   Exclude:
     - "spec/**/*.rb"

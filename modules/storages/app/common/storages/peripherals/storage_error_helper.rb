@@ -48,7 +48,7 @@ module Storages::Peripherals
       elsif base_errors.include? :forbidden
         fail API::Errors::OutboundRequestForbidden.new(message)
       elsif base_errors.include? :error
-        fail API::Errors::InternalError.new(message)
+        fail API::Errors::SafeInternalError.new(message)
       else
         base_errors
       end
@@ -75,7 +75,7 @@ module Storages::Peripherals
       when :missing_ee_token_for_one_drive
         raise API::Errors::EnterpriseTokenMissing.new
       else
-        raise API::Errors::InternalError.new(error.code)
+        raise API::Errors::SafeInternalError.new(error.code)
       end
     end
   end

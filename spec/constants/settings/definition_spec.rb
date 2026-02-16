@@ -165,8 +165,8 @@ RSpec.describe Settings::Definition, :settings_reset do
 
       it "overriding boolean configuration from ENV will cast the value",
          with_env: { "OPENPROJECT_REST__API__ENABLED" => "0" } do
-        reset(:rest_api_enabled)
-        expect(all[:rest_api_enabled].value).to be false
+        reset(:api_tokens_enabled)
+        expect(all[:api_tokens_enabled].value).to be false
       end
 
       it "overriding symbol configuration having allowed values from ENV will cast the value before validation check",
@@ -1000,6 +1000,56 @@ RSpec.describe Settings::Definition, :settings_reset do
 
         expect(described_class.all[:bogus_setting].value)
           .to be false
+      end
+    end
+
+    context "with persist_on_first_read option" do
+      it "stores the persist_on_first_read flag" do
+        described_class.add "auto_init_setting",
+                            default: -> { "generated_value" },
+                            format: :string,
+                            persist_on_first_read: true
+
+        expect(described_class.all[:auto_init_setting].persist_on_first_read)
+          .to be true
+      end
+    end
+  end
+
+  describe "#persist_on_first_read?" do
+    context "when persist_on_first_read is true" do
+      let(:instance) do
+        described_class.new "bogus",
+                            default: -> { "value" },
+                            format: :string,
+                            persist_on_first_read: true
+      end
+
+      it "returns true" do
+        expect(instance).to be_persist_on_first_read
+      end
+    end
+
+    context "when persist_on_first_read is false" do
+      let(:instance) do
+        described_class.new "bogus",
+                            default: "default_value"
+      end
+
+      it "returns false" do
+        expect(instance).not_to be_persist_on_first_read
+      end
+    end
+
+    context "when persist_on_first_read is true but writable is false" do
+      it "raises an ArgumentError" do
+        expect do
+          described_class.new "bogus",
+                              default: -> { "value" },
+                              format: :string,
+                              writable: false,
+                              persist_on_first_read: true
+        end.to raise_error(ArgumentError, /persist_on_first_read need to be writable/)
       end
     end
   end

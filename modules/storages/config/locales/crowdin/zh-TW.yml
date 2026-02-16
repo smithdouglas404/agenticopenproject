@@ -104,20 +104,20 @@ zh-TW:
         create_folder: '託管的專案資料夾建立：'
         ensure_root_folder_permissions: '設定基本資料夾權限：'
         hide_inactive_folders: '隱藏不活動的資料夾步驟：'
-        remote_folders: '讀取群組資料夾的內容：'
+        remote_folders: '閱讀團隊資料夾的內容：'
         remove_user_from_group: '從群組移除使用者：'
         rename_project_folder: '重新命名託管的專案資料夾：'
       one_drive_sync_service:
         create_folder: '託管的專案資料夾建立：'
         ensure_root_folder_permissions: '設定基本資料夾權限：'
         hide_inactive_folders: '隱藏不活動的資料夾步驟：'
-        remote_folders: '讀取群組資料夾的內容：'
+        remote_folders: '讀取磁碟機根資料夾的內容：'
         rename_project_folder: '重新命名託管的專案資料夾：'
       sharepoint_sync_service:
         create_folder: '管理專案資料夾建立：'
         ensure_root_folder_permissions: '設定基本資料夾權限：'
         hide_inactive_folders: '隱藏不活動的資料夾步驟：'
-        remote_folders: '讀取群組資料夾的內容：'
+        remote_folders: '讀取磁碟機根資料夾的內容：'
         rename_project_folder: '重新命名管理的專案資料夾：'
     errors:
       messages:
@@ -140,7 +140,7 @@ zh-TW:
               conflict: 資料夾 %{folder_name} 已存在於 %{parent_location}上。
               not_found: "%{parent_location} 沒有找到。"
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} 未找到。請檢查您的 Nextcloud 群組資料夾設定。"
+              not_found: "%{group_folder} 未找到。請檢查您的 Nextcloud Team Folder 設定。"
               permission_not_set: 無法在 %{group_folder} 上設定權限。
             hide_inactive_folders:
               permission_not_set: 無法在 %{path} 上設定權限。
@@ -230,7 +230,7 @@ zh-TW:
       storage_delete_result_3: 自動管理的專案資料夾及其中的所有檔案都會刪除
     dependencies:
       nextcloud:
-        group_folders_app: 群組資料夾
+        group_folders_app: 團隊資料夾
         integration_app: 整合 OpenProject
     enabled_in_projects:
       setup_incomplete_description: 此儲存的設定不完整。請先完成設定，再於多個專案中啟用。
@@ -277,11 +277,11 @@ zh-TW:
           client_folder_creation: 自動新增資料夾
           client_folder_removal: 自動刪除資料夾
           drive_contents: 磁碟內容
-          files_request: 正在擷取群組資料夾檔案
-          group_folder_app: '依賴：群組資料夾'
-          group_folder_contents: 群組資料夾內容
-          group_folder_presence: 群組目錄已存在
+          files_request: 擷取團隊資料夾檔案
           header: 自動管理的專案資料夾
+          team_folder_app: '依賴性：團隊文件夾'
+          team_folder_contents: 團隊資料夾內容
+          team_folder_presence: 團隊資料夾存在
           userless_access: 服務器端要求認證
         authentication:
           existing_token: 用戶令牌(Token)
@@ -316,12 +316,12 @@ zh-TW:
         client_secret_invalid: 設定的 OAuth 2 用戶端密鑰無效。請檢查設定。
         nc_dependency_missing: '檔案儲存中缺少所需的相依性。請新增下列相依性： %{dependency}。'
         nc_dependency_version_mismatch: '%{dependency} 應用程式版本不受支援。請更新您的 Nextcloud 伺服器。'
-        nc_group_folder_not_found: 無法找到群組資料夾。
         nc_host_not_found: 在設定的主機網址未找到 Nextcloud 伺服器。請檢查設定。
         nc_oauth_request_not_found: 無法找到取得目前連線使用者的端點。請檢查伺服器日誌以取得更多資訊。
         nc_oauth_request_unauthorized: 當前使用者未獲授權存取遠端檔案儲存空間。請檢查伺服器日誌以取得進一步資訊。
         nc_oauth_token_missing: OpenProject 無法測試與 Nextcloud 的用戶級連線，因為沒有當前用戶的令牌(Token)。
-        nc_unexpected_content: 在管理的群組資料夾中發現非預期內容。
+        nc_team_folder_not_found: 找不到團隊資料夾。
+        nc_unexpected_content: 在管理的團隊資料夾中發現意外內容。
         nc_userless_access_denied: 設定的應用程式密碼無效。
         not_configured: 連線無法驗證。請先完成設定。
         od_client_cant_delete_folder: 用戶刪除資料夾失敗，請檢查儲存空間的文件設定。

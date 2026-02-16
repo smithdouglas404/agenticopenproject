@@ -73,7 +73,7 @@ module ::Webhooks
         private
 
         def render_warning(text)
-          render OpPrimer::InlineMessageComponent.new(scheme: :warning).with_content(text)
+          render Primer::OpenProject::InlineMessage.new(scheme: :warning).with_content(text)
         end
 
         def render_events_list(items)

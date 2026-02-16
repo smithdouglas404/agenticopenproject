@@ -2282,32 +2282,27 @@ RSpec.describe WorkPackages::SetAttributesService,
     end
   end
 
-  context "when the type defines a pattern for an attribute" do
+  context "when the type defines a pattern for subject" do
     let(:type) { build_stubbed(:type, patterns: { subject: { blueprint: "{{type}} {{project_name}}", enabled: true } }) }
-    let(:work_package) { WorkPackage.new(type:) }
+    let(:work_package) { WorkPackage.new(type:, project:) }
+    let(:resolved_subject) { "#{type.name} #{project.name}" }
+    let(:pattern_resolver) do
+      instance_double(WorkPackageTypes::PatternResolver, resolve: resolved_subject).tap do |resolver|
+        allow(WorkPackageTypes::PatternResolver).to receive(:new).and_return(resolver)
+      end
+    end
 
-    it "assigns a placeholder value to the field" do
+    # Testing this because the behaviour used to be different.
+    it "does not set the resolved subject from the pattern" do
       instance.call({})
 
-      expect(work_package.subject).to eq(I18n.t("work_packages.templated_subject_hint", type: type.name))
+      expect(work_package.subject).to be_blank
     end
 
-    it "overrides even a passed subject" do
-      instance.call(subject: "I will be overwritten")
+    it "keeps an overridden subject" do
+      instance.call(subject: "My custom subject")
 
-      expect(work_package.subject).to eq(I18n.t("work_packages.templated_subject_hint", type: type.name))
-    end
-
-    context "when the pattern is disabled" do
-      let(:type) do
-        build_stubbed(:type, patterns: { subject: { blueprint: "{{type}} {{project_name}}", enabled: false } })
-      end
-
-      it "does not overwrite the attribute" do
-        instance.call(subject: "I will be kept")
-
-        expect(work_package.subject).to eq("I will be kept")
-      end
+      expect(work_package.subject).to eq("My custom subject")
     end
   end
 end

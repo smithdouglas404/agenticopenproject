@@ -28,8 +28,6 @@ Please check what docker image you are using for the steps needed to switch to B
 - **openproject/openproject:VERSION-slim**: You need to replace your imag with `openproject/openproject:VERSION-slim-bim`, which is prebuilt with the BIM Edition enabled and the pipeline installed
 - **openproject/openproject:VERSION**: You are using the [all-in-one container](../installation/docker#all-in-one-container), which includes BIM support. You only need to set the environment variable `OPENPROJECT_EDITION=bim` to the docker container and restart your container.  Please note that we recommend against using this all-in-one variant in production systems.
 
-
-
 ### Packaged installation
 
 #### Backup and upgrade
@@ -102,7 +100,7 @@ Go to _-> Administration -> Design_ and from the _Themes_ drop down menu choose 
 
 ### OpenProject BIM edition with Docker Compose
 
-In order to use BIM edition inside a [docker-compose OpenProject installation](../installation/docker/), in the `docker-compose.override.yml` file in `x-op-app` > `environment` add one line
+For docker-compose, please see the [same section on image selection above](#docker-based-installation) to modify the image you In order to then use the BIM edition inside a [docker-compose OpenProject installation](../installation/docker/), in the `docker-compose.override.yml` file in `x-op-app` > `environment` add one line
 
 ```yaml
     OPENPROJECT_EDITION: "bim"

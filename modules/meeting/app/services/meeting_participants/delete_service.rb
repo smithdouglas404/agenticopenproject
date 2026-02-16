@@ -33,9 +33,22 @@ module MeetingParticipants
     protected
 
     def after_validate(call)
-      send_cancellation_notification(model) if should_send_notification?
+      send_notifications if should_send_notification?
 
       call
+    end
+
+    def send_notifications
+      remaining_participants = fetch_remaining_participants
+
+      send_cancellation_notification(model)
+      notify_remaining_participants(model.meeting, remaining_participants, model.user)
+    end
+
+    def fetch_remaining_participants
+      model.meeting.participants.invited
+           .where.not(id: model.id)
+           .includes(:user).to_a
     end
 
     def send_cancellation_notification(participant)
@@ -45,6 +58,24 @@ module MeetingParticipants
         MeetingMailer.cancelled_series(meeting.recurring_meeting, participant.user, user).deliver_later
       else
         MeetingMailer.cancelled(meeting, participant.user, user).deliver_later
+      end
+    end
+
+    def notify_remaining_participants(meeting, remaining_participants, removed_user)
+      removed_participant_name = removed_user.name
+
+      remaining_participants.each do |participant|
+        send_participant_removed_notification(meeting, participant.user, removed_participant_name)
+      end
+    end
+
+    def send_participant_removed_notification(meeting, recipient, removed_participant_name)
+      if meeting.template?
+        MeetingSeriesMailer.participant_removed(meeting.recurring_meeting, recipient, user,
+                                                removed_participant: removed_participant_name).deliver_later
+      else
+        MeetingMailer.participant_removed(meeting, recipient, user,
+                                          removed_participant: removed_participant_name).deliver_later
       end
     end
 

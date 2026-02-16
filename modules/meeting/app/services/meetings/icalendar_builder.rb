@@ -34,6 +34,8 @@ module Meetings
   class IcalendarBuilder
     attr_reader :builder_internal_timezone, :calendar, :all_times, :calendar_generated_for_user
 
+    delegate :publish, to: :calendar
+
     def initialize(timezone:, user: User.current)
       @calendar_generated_for_user = user
       @builder_internal_timezone = timezone

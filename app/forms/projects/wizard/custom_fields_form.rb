@@ -33,6 +33,11 @@ module Projects
       include ::CustomFields::CustomFieldRendering
 
       form do |custom_fields_form|
+        # This placeholder is relevant in cases where no custom fields are rendered at all or all
+        # custom fields rendered are disabled. Without it, the form might be completely empty and
+        # the controller would complain about a missing parameter namespace expected by the ActionController::Parameters.
+        custom_fields_form.hidden(name: "_placeholder", value: "")
+
         render_custom_fields(form: custom_fields_form)
       end
 

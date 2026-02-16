@@ -40,18 +40,18 @@ RSpec.describe "WorkPackages-Settings-InternalComments", :js do
     internal_comments_settings_page.visit!
     expect(page).to have_css("#internal-comments-form")
 
-    expect(page).to have_field(:project_enabled_internal_comments, checked: false)
+    expect(page).to have_field(:enabled_internal_comments, checked: false)
 
     check("Enable internal comments")
     click_link_or_button "Save"
 
     expect_and_dismiss_flash(message: "Successful update.")
-    expect(page).to have_field(:project_enabled_internal_comments, checked: true)
+    expect(page).to have_field(:enabled_internal_comments, checked: true)
 
     uncheck("Enable internal comments")
     click_link_or_button "Save"
 
     expect_and_dismiss_flash(message: "Successful update.")
-    expect(page).to have_field(:project_enabled_internal_comments, checked: false)
+    expect(page).to have_field(:enabled_internal_comments, checked: false)
   end
 end

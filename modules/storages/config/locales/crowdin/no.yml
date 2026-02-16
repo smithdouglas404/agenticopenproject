@@ -104,20 +104,20 @@
         create_folder: 'Forvaltet prosjektmappeoppretting:'
         ensure_root_folder_permissions: 'Angi standard mappetillatelser:'
         hide_inactive_folders: 'Skjul inaktive mapper:'
-        remote_folders: 'Les innholdet i gruppemappen:'
+        remote_folders: 'Read contents of the team folder:'
         remove_user_from_group: 'Fjern bruker fra gruppen:'
         rename_project_folder: 'Endre navn på administrert prosjektmappe:'
       one_drive_sync_service:
         create_folder: 'Forvaltet prosjektmappeoppretting:'
         ensure_root_folder_permissions: 'Angi standard mappetillatelser:'
         hide_inactive_folders: 'Skjul inaktive mapper:'
-        remote_folders: 'Les innholdet i gruppemappen:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Endre navn på administrert prosjektmappe:'
       sharepoint_sync_service:
         create_folder: 'Forvaltet prosjektmappeoppretting:'
         ensure_root_folder_permissions: 'Angi standard mappetillatelser:'
         hide_inactive_folders: 'Skjul inaktive mapper:'
-        remote_folders: 'Les innholdet i gruppemappen:'
+        remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Endre navn på administrert prosjektmappe:'
     errors:
       messages:
@@ -140,7 +140,7 @@
               conflict: The folder %{folder_name} already exists on %{parent_location}.
               not_found: "%{parent_location} ble ikke funnet."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} ble ikke funnet. Sjekk din Nextcloud gruppe mappeoppsett."
+              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
               permission_not_set: kunne ikke sette tillatelser på %{group_folder}.
             hide_inactive_folders:
               permission_not_set: kunne ikke sette tillatelser på %{path}.
@@ -230,7 +230,7 @@
       storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
     dependencies:
       nextcloud:
-        group_folders_app: Group Folders
+        group_folders_app: Team Folders
         integration_app: Integration OpenProject
     enabled_in_projects:
       setup_incomplete_description: This storage has an incomplete setup. Please, complete the setup before enabling it in multiple projects.
@@ -277,11 +277,11 @@
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
           drive_contents: Drive content
-          files_request: Fetching group folder files
-          group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder content
-          group_folder_presence: Group folder exists
+          files_request: Fetching team folder files
           header: Automatisk administrerte prosjektmapper
+          team_folder_app: 'Dependency: Team Folders'
+          team_folder_contents: Team folder content
+          team_folder_presence: Team folder exists
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -318,12 +318,12 @@
         client_secret_invalid: The configured OAuth 2 client secret is invalid. Please check the configuration.
         nc_dependency_missing: 'A required dependency is missing on the file storage. Please add the following dependency: %{dependency}.'
         nc_dependency_version_mismatch: The %{dependency} app version is not supported. Please update your Nextcloud server.
-        nc_group_folder_not_found: The group folder could not be found.
         nc_host_not_found: No Nextcloud server found at the configured host url. Please check the configuration.
         nc_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
         nc_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         nc_oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as the user did not yet link their Nextcloud account.
-        nc_unexpected_content: Unexpected content found in the managed group folder.
+        nc_team_folder_not_found: The team folder could not be found.
+        nc_unexpected_content: Unexpected content found in the managed team folder.
         nc_userless_access_denied: The configured app password is invalid.
         not_configured: The connection could not be validated. Please finish configuration first.
         od_client_cant_delete_folder: The client is having trouble deleting folders. Please check the setup documentation for your storage.

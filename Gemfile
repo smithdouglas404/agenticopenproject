@@ -41,7 +41,7 @@ gem "activemodel-serializers-xml", "~> 1.0.1"
 gem "activerecord-import", "~> 2.2.0"
 gem "activerecord-session_store", "~> 2.2.0"
 gem "ox"
-gem "rails", "~> 8.0.4"
+gem "rails", "~> 8.1.2"
 gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
@@ -163,7 +163,7 @@ gem "matrix", "~> 0.4.3"
 
 gem "mcp", "~> 0.4.0"
 
-gem "meta-tags", "~> 2.22.2"
+gem "meta-tags", "~> 2.22.3"
 
 gem "paper_trail", "~> 17.0.0"
 
@@ -200,9 +200,9 @@ gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.241"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.211"
+gem "aws-sdk-s3", "~> 1.213"
 
-gem "openproject-token", "~> 8.4.0"
+gem "openproject-token", "~> 8.6.0"
 
 gem "plaintext", "~> 0.3.7"
 
@@ -428,4 +428,4 @@ end
 
 gem "openproject-octicons", "~>19.32.0"
 gem "openproject-octicons_helper", "~>19.32.0"
-gem "openproject-primer_view_components", "~>0.79.1"
+gem "openproject-primer_view_components", "~>0.81.1"

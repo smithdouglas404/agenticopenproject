@@ -32,7 +32,15 @@ module McpTools
   class << self
     def all
       [
-        McpTools::SearchProject
+        McpTools::CurrentUser,
+        McpTools::ListStatuses,
+        McpTools::ListTypes,
+        McpTools::SearchPortfolios,
+        McpTools::SearchPrograms,
+        McpTools::SearchProjects,
+        McpTools::SearchUsers,
+        McpTools::SearchVersions,
+        McpTools::SearchWorkPackages
       ]
     end
 
@@ -41,7 +49,7 @@ module McpTools
     end
 
     def tools_by_name
-      all.index_by(&:qualified_name)
+      @tools_by_name ||= all.index_by(&:qualified_name)
     end
   end
 end

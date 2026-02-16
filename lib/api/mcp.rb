@@ -30,8 +30,6 @@
 
 module API
   class Mcp < ::API::RootAPI
-    CONFIGURATION_IDENTIFIER = "mcp_server"
-
     include ::API::AppsignalAPI
 
     default_format :json
@@ -41,7 +39,7 @@ module API
 
     helpers do
       def server_config
-        @server_config ||= McpConfiguration.find_or_initialize_by(identifier: CONFIGURATION_IDENTIFIER)
+        @server_config ||= McpConfiguration.server_config
       end
     end
 
@@ -57,13 +55,19 @@ module API
         # description: server_config.description, # not yet supported by mcp gem
         version: "1.0.0",
         tools: McpTools.enabled.map(&:tool),
-        server_context: { user_id: User.current.id }
+        resources: McpResources.enabled_resources.map(&:resource),
+        resource_templates: McpResources.enabled_resource_templates.map(&:resource_template),
+        server_context: { current_user: User.current }
       )
+
+      server.resources_read_handler { |params| McpResources.read_resource(params[:uri]) }
 
       status 200
 
+      response = server.handle_json(request.body.read)
+
       # HACK: Grape is JSON-serializing whatever we return here, but handle_json already returns serialized JSON
-      JSON.parse server.handle_json(request.body.read)
+      response && JSON.parse(response)
     end
   end
 end

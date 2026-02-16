@@ -56,7 +56,7 @@ id:
       label_mapping: Pemetaan
       label_requested_attribute_for: "Atribut yang diminta untuk: %{attribute}"
       no_results_table: Belum ada penyedia identitas SAML yang didefinisikan.
-      notice_created: A new SAML identity provider was successfully created.
+      notice_created: Penyedia identitas SAML baru telah berhasil dibuat.
       plural: Penyedia identitas SAML
       singular: Penyedia identitas SAML
       requested_attributes: Atribut yang diminta
@@ -111,7 +111,7 @@ id:
       idp_sso_service_url: >
         URL titik akhir login penyedia identitas.
       idp_slo_service_url: >
-        The URL of the identity provider logout endpoint.
+        URL titik akhir logout penyedia identitas.
       idp_cert: >
         Masukkan sertifikat publik X509 berformat PEM dari penyedia identitas. Anda dapat memasukkan beberapa sertifikat dengan memisahkannya menggunakan baris baru.
       name_identifier_format: >

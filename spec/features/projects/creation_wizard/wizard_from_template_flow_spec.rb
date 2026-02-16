@@ -190,12 +190,11 @@ RSpec.describe "Project creation wizard from a template",
     # Verify we're redirected to the artifact work package
     project.reload
     expect(project.project_creation_wizard_artifact_work_package_id).to be_present
-    expect(page).to have_current_path(
-      "/projects/#{project.identifier}/work_packages/#{project.project_creation_wizard_artifact_work_package_id}/activity"
-    )
+    artifact_wp = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+    artifact_page = Pages::FullWorkPackage.new(artifact_wp)
+    artifact_page.expect_current_path
 
     # Verify the work package was created correctly
-    artifact_wp = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
     expect(artifact_wp).to be_present
     expect(artifact_wp.type).to eq(type)
     expect(artifact_wp.status).to eq(status_new)
@@ -209,5 +208,12 @@ RSpec.describe "Project creation wizard from a template",
     assignee_member = project.members.find_by(user_id: user_assignee.id)
     expect(assignee_member).to be_present
     expect(assignee_member.roles).to include(assignee_role)
+
+    expect(Attachment.count)
+      .to be 1
+    artifact = artifact_wp.attachments.first
+    pdf_timestamp = artifact_wp.updated_at.strftime("%Y-%m-%d_%H-%M")
+    expect(artifact.filename)
+      .to eq("#{project.identifier}_Project_creation_wizard_#{status_new.name}_#{pdf_timestamp}.pdf")
   end
 end

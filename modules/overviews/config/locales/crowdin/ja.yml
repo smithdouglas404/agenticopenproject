@@ -1,6 +1,5 @@
 ja:
   overviews:
-    label_home: "%{workspace_type} home"
+    label_home: "%{workspace_type}の ホーム"
     label_dashboard: "ダッシュボード"
-    label_overview: '概要'
-  permission_manage_overview: '概要ページの管理'
+    label_overview: "概要"

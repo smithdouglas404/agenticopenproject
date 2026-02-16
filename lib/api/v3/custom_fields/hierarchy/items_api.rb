@@ -78,7 +78,7 @@ module API
                              ->(value) { value },
                              ->(error) do
                                msg = "#{I18n.t('api_v3.errors.code_500')} #{error}"
-                               raise ::API::Errors::InternalError.new(msg)
+                               raise ::API::Errors::SafeInternalError.new(msg)
                              end
                            )
 
@@ -89,7 +89,7 @@ module API
               items = query.results.where(custom_field: @custom_field)
               if items.count != 1
                 msg = "corrupt data found, invalid number of hierarchy roots for custom field"
-                raise ::API::Errors::InternalError.new(msg)
+                raise ::API::Errors::SafeInternalError.new(msg)
               end
 
               items.first

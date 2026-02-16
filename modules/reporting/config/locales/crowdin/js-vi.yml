@@ -22,5 +22,5 @@
 vi:
   js:
     reporting_engine:
-      label_remove: "Xoá"
+      label_remove: "xóa"
       label_response_error: "Đã xảy ra lỗi khi xử lý truy vấn."

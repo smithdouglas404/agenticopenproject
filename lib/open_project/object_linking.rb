@@ -99,16 +99,23 @@ module OpenProject
     end
 
     # Generates a link to a message
-    def link_to_message(message, options = {}, html_options = nil)
-      link_to(
-        h(truncate(message.subject, length: 60)),
-        topic_path_or_url(options.delete(:no_root) ? message : message.root,
-                          {
-                            r: message.parent_id && message.id,
-                            anchor: (message.parent_id ? "message-#{message.id}" : nil)
-                          }.merge(options)),
-        html_options
-      )
+    def link_to_message(message, options = {}, html_options = nil) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+      only_path = options.delete(:only_path)
+      link = if only_path
+               project_forum_topic_path(message.forum.project, message.forum, options.delete(:no_root) ? message : message.root,
+                                        {
+                                          r: message.parent_id && message.id,
+                                          anchor: (message.parent_id ? "message-#{message.id}" : nil)
+                                        }.merge(options))
+             else
+               project_forum_topic_url(message.forum.project, message.forum, options.delete(:no_root) ? message : message.root,
+                                       {
+                                         r: message.parent_id && message.id,
+                                         anchor: (message.parent_id ? "message-#{message.id}" : nil)
+                                       }.merge(options))
+             end
+
+      link_to(h(truncate(message.subject, length: 60)), link, html_options)
     end
 
     # Generates a link to a project if active
@@ -125,7 +132,7 @@ module OpenProject
         link_to(project_name, project_path_or_url(project, options), html_options)
       else
         project_name
-      end.html_safe
+      end
     end
 
     # Like #link_to_user, but will render a Primer link instead of a regular link.

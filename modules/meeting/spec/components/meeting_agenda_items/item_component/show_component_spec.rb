@@ -89,4 +89,60 @@ RSpec.describe MeetingAgendaItems::ItemComponent::ShowComponent, type: :componen
       end
     end
   end
+
+  describe "duplicate action visibility (Bugs #70242, #70287)" do
+    let(:series) do
+      create(:recurring_meeting,
+             project:,
+             start_time: 1.week.from_now,
+             frequency: "weekly",
+             end_after: "specific_date",
+             end_date: 2.weeks.from_now.to_date,
+             author: user)
+    end
+    let(:meeting_section) { create(:meeting_section, meeting:) }
+    let(:meeting_agenda_item) { create(:meeting_agenda_item, meeting:, meeting_section:, title: "Test item") }
+
+    subject(:rendered_component) do
+      render_inline(described_class.new(meeting_agenda_item:))
+    end
+
+    context "when viewing a template" do
+      let(:meeting) { series.template }
+
+      it "does not show the duplicate submenu" do
+        expect(rendered_component).to have_no_text(I18n.t("label_agenda_item_duplicate"))
+      end
+    end
+
+    context "when viewing the last occurrence of a series" do
+      let(:meeting) do
+        create(:meeting,
+               project:,
+               recurring_meeting: series,
+               start_time: 2.weeks.from_now,
+               author: user)
+      end
+
+      it "does not show the duplicate submenu" do
+        expect(series.next_occurrence(from_time: meeting.start_time)).to be_nil
+        expect(rendered_component).to have_no_text(I18n.t("label_agenda_item_duplicate"))
+      end
+    end
+
+    context "when viewing an occurrence with future occurrences" do
+      let(:meeting) do
+        create(:meeting,
+               project:,
+               recurring_meeting: series,
+               start_time: 1.week.from_now,
+               author: user)
+      end
+
+      it "shows the duplicate submenu" do
+        expect(series.next_occurrence(from_time: meeting.start_time)).to be_present
+        expect(rendered_component).to have_text(I18n.t("label_agenda_item_duplicate"))
+      end
+    end
+  end
 end

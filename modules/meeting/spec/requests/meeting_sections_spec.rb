@@ -47,10 +47,10 @@ RSpec.describe "Meeting sections requests",
       let(:other_meeting) { create(:meeting, project: other_project) }
       let(:other_section) { create(:meeting_section, meeting: other_meeting) }
 
-      it "returns 404" do
-        get edit_meeting_section_path(other_meeting, other_section)
+      it "returns 403" do
+        get edit_project_meeting_section_path(other_meeting.project, other_meeting, other_section)
 
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
@@ -60,10 +60,10 @@ RSpec.describe "Meeting sections requests",
       let(:other_project) { create(:project, enabled_module_names: %i[meetings]) }
       let(:other_meeting) { create(:meeting, project: other_project) }
 
-      it "returns 404" do
-        post meeting_sections_path(other_meeting)
+      it "returns 403" do
+        post project_meeting_sections_path(other_meeting.project, other_meeting)
 
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
@@ -74,11 +74,11 @@ RSpec.describe "Meeting sections requests",
       let(:other_meeting) { create(:meeting, project: other_project) }
       let(:other_section) { create(:meeting_section, meeting: other_meeting) }
 
-      it "returns 404" do
-        put meeting_section_path(other_meeting, other_section),
+      it "returns 403" do
+        put project_meeting_section_path(other_meeting.project, other_meeting, other_section),
             params: { meeting_section: { title: "New title" } }
 
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
@@ -89,10 +89,10 @@ RSpec.describe "Meeting sections requests",
       let(:other_meeting) { create(:meeting, project: other_project) }
       let(:other_section) { create(:meeting_section, meeting: other_meeting) }
 
-      it "returns 404" do
-        delete meeting_section_path(other_meeting, other_section)
+      it "returns 403" do
+        delete project_meeting_section_path(other_meeting.project, other_meeting, other_section)
 
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

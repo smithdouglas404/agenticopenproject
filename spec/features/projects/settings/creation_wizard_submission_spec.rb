@@ -30,8 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Project creation wizard submission settings", :js,
-               with_flag: { project_initiation_active: true } do
+RSpec.describe "Project creation wizard submission settings", :js do
   include Components::Autocompleter::NgSelectAutocompleteHelpers
 
   shared_let(:admin) { create(:admin) }
@@ -116,15 +115,6 @@ RSpec.describe "Project creation wizard submission settings", :js,
 
       uncheck "Send confirmation email to the user who submitted the project initiation request"
       expect(page).to have_css(".ck-content", visible: :visible, count: 1)
-    end
-
-    it "validates required fields" do
-      submission_page.visit!
-
-      click_button "Save"
-
-      expect(page).to have_text("Assignee when submitted can't be blank.")
-      expect(page).to have_current_path(project_settings_creation_wizard_path(project, tab: "submission"))
     end
 
     it "only shows single-select user custom fields in assignee dropdown" do

@@ -30,29 +30,53 @@
 
 require "spec_helper"
 
-RSpec.describe "Project creation wizard name settings", :js,
-               with_flag: { project_initiation_active: true } do
+RSpec.describe "Project creation wizard name settings", :js do
   shared_let(:admin) { create(:admin) }
 
-  let!(:project) { create(:project, project_creation_wizard_enabled: true) }
-  let(:name_page) { Pages::Projects::Settings::CreationWizard.new(project, tab: "name") }
+  let(:project_creation_wizard_enabled) { true }
+  let!(:project) { create(:project, project_creation_wizard_enabled:) }
+  let(:settings_page) { Pages::Projects::Settings::CreationWizard.new(project, tab: "name") }
 
   current_user { admin }
 
-  describe "configuring name settings" do
-    it "allows admin to configure artifact name" do
-      name_page.visit!
+  context "with feature available", with_ee: %i[project_creation_wizard] do
+    describe "configuring name settings" do
+      it "allows admin to configure artifact name" do
+        settings_page.visit!
 
-      expect(page).to have_select("Artifact name")
-      expect(page).to have_text("Choose the name for this artifact that your project management framework recommends.")
+        expect(page).to have_select("Artifact name")
+        expect(page).to have_text("Choose the name for this artifact that your project management framework recommends.")
 
-      select "Project initiation request", from: "Artifact name"
-      click_button "Save"
+        select "Project initiation request", from: "Artifact name"
+        click_button "Save"
 
-      expect_and_dismiss_flash(message: "Successful update.")
+        expect_and_dismiss_flash(message: "Successful update.")
 
-      project.reload
-      expect(project.project_creation_wizard_artifact_name).to eq("project_initiation_request")
+        project.reload
+        expect(project.project_creation_wizard_artifact_name).to eq("project_initiation_request")
+      end
+    end
+
+    context "with feature not active" do
+      let(:project_creation_wizard_enabled) { false }
+
+      it "allows to turn on" do
+        settings_page.visit!
+
+        expect(page).to have_text("Initiation request not enabled")
+        expect(page).not_to have_enterprise_banner(:premium)
+      end
+    end
+  end
+
+  context "with feature not available" do
+    let(:settings_page) { Pages::Projects::Settings::CreationWizard.new(project) }
+    let(:project_creation_wizard_enabled) { false }
+
+    it "allows does not allow to turn on" do
+      settings_page.visit!
+      expect(page).to have_enterprise_banner(:premium)
+      expect(page).to have_no_text("Initiation request not enabled")
     end
   end
 end

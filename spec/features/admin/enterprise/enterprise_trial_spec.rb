@@ -177,8 +177,8 @@ RSpec.describe "Enterprise trial management",
     fill_in "Email", with: mail
 
     retry_block do
-      check "enterprise_trial_general_consent", allow_label_click: true
-      expect(page).to have_checked_field("enterprise_trial_general_consent")
+      check "general_consent", allow_label_click: true
+      expect(page).to have_checked_field("general_consent")
     end
   end
 

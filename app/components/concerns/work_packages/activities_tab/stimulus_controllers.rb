@@ -43,11 +43,11 @@ module WorkPackages
       def quote_comments_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--quote-comment#{suffix}"
 
       def index_component_dom_selector
-        "##{WorkPackages::ActivitiesTab::IndexComponent.index_content_wrapper_key}"
+        "##{WorkPackages::ActivitiesTab::LazyIndexComponent.index_content_wrapper_key}"
       end
 
       def add_comment_component_dom_selector
-        "##{WorkPackages::ActivitiesTab::IndexComponent.add_comment_wrapper_key}"
+        "##{WorkPackages::ActivitiesTab::LazyIndexComponent.add_comment_wrapper_key}"
       end
 
       def stimulus_controller_namespace = "work-packages--activities-tab"

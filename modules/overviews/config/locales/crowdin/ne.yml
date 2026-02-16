@@ -2,5 +2,4 @@ ne:
   overviews:
     label_home: "%{workspace_type} home"
     label_dashboard: "Dashboard"
-    label_overview: 'Overview'
-  permission_manage_overview: 'Manage overview page'
+    label_overview: "Overview"

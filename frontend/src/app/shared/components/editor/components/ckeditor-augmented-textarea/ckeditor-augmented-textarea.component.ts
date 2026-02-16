@@ -216,17 +216,42 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
         (evt.submitter as HTMLInputElement).disabled = false;
       }
 
-      if (this.turboMode) {
-        // If the form has a stimulus action defined, we ONLY want to submit it via stimulus
-        if (!this.formElement.dataset.action) {
-          navigator.submitForm(this.formElement, evt?.submitter || undefined);
-        }
+      if (this.turboMode && !this.formElement.dataset.action) {
+        navigator.submitForm(this.formElement, evt?.submitter ?? undefined);
       } else {
         this.formElement.requestSubmit(evt?.submitter);
       }
 
       CkeditorAugmentedTextareaComponent.inFlight.delete(this.formElement);
     });
+  }
+
+  private constrainGroupedDropdownToEditorWidth(_editor:ICKEditorInstance) {
+    const host = this.elementRef.nativeElement;
+
+    const editorWidth = () => {
+      const editorEl = host.querySelector<HTMLElement>('.ck-editor') ?? host;
+      return Math.floor(editorEl.getBoundingClientRect().width);
+    };
+
+    const apply = () => {
+      const width = editorWidth();
+
+      const panels = Array.from(
+        document.querySelectorAll<HTMLElement>(
+          '.ck.ck-dropdown__panel'
+        )
+      );
+
+      for (const panel of panels) {
+        panel.style.maxWidth = `${width - 8}px`;
+
+      }
+    };
+
+    fromEvent(host, 'click')
+      .pipe(this.untilDestroyed())
+      .subscribe(() => setTimeout(apply));
   }
 
   public setup(editor:ICKEditorInstance) {
@@ -245,6 +270,7 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
     editor.ui.focusTracker.on('change:isFocused', (_evt:unknown, _name:string, _isFocused:boolean) => {
       this.setLabel();
     });
+    this.constrainGroupedDropdownToEditorWidth(editor);
 
     return editor;
   }

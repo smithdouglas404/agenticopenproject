@@ -32,7 +32,7 @@ require "spec_helper"
 require "pdf/inspector"
 require_relative "../../projects/exporter/exportable_project_context"
 
-RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initiation: true } do
+RSpec.describe Project::PDFExport::ProjectInitiation do
   include PDFExportSpecUtils
   include ProjectHelper
   include Redmine::I18n
@@ -40,12 +40,14 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
   include_context "with a project with an arrangement of custom fields"
 
   let(:exporter) { described_class.new(project) }
-  let(:current_user) { create(:user, member_with_permissions: { project => %i[view_projects view_project_attributes] }) }
+  let(:current_user) do
+    create(:user, member_with_permissions: { project => %i[view_projects view_project_attributes view_work_packages] })
+  end
   let(:export_time) { DateTime.new(2025, 11, 13, 13, 37) }
   let(:export_time_formatted) { format_time(export_time) }
   let(:wizard_status) { create(:status, name: "Submitted") }
   let(:status) { create(:status, name: "Approved") }
-  let(:work_package) { create(:work_package, status:) }
+  let(:work_package) { create(:work_package, project: project, status:) }
   let(:custom_artefact_name_key) { "project_mandate" }
   let(:section_a) { create(:project_custom_field_section, name: "Section A") }
   let(:section_b) { create(:project_custom_field_section, name: "Section B") }
@@ -86,7 +88,6 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
       title_datetime = exporter.send(:title_datetime)
       expect(exporter.title).to eq("#{project.identifier}_#{exporter.sane_filename(custom_artefact_name)}_#{title_datetime}.pdf")
     end
-
 
     it "exports a PDF containing project initiation using the custom defined name" do
       expected_document = [
@@ -166,7 +167,12 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
   end
 
   context "with a work package status" do
-    let(:project) { create(:project, project_creation_wizard_artifact_work_package_id: work_package.id) }
+    let(:project) { create(:project) }
+
+    before do
+      # WorkPackage has to be created within the project so we cannot set it in the `create` call
+      project.update!(project_creation_wizard_artifact_work_package_id: work_package.id)
+    end
 
     it "uses a fixed pattern for the filename" do
       title_datetime = exporter.send(:title_datetime)

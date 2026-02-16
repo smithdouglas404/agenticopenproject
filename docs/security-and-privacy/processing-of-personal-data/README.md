@@ -487,7 +487,7 @@ subgraph openproject[OpenProject]
     end
 
   subgraph nextcloud[Nextcloud]
-   groupfolder[Group folder app]
+   groupfolder[Team folders app]
    appopenprojectintegration[OpenProject integration app]
    nextcloudapi[API]
  end

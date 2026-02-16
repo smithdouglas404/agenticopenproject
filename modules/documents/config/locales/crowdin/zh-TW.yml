@@ -74,6 +74,7 @@ zh-TW:
         action: 再試一次
       connection_recovery_notice:
         description: "與即時文字協作伺服器的連線已恢復。"
+      tabs: "文件標籤"
     index_page:
       name: "名稱"
       type: "類型"

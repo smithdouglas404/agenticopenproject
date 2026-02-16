@@ -35,33 +35,22 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   include WorkPackages::ActivitiesTab::StimulusControllers
 
   before_action :find_work_package
-  before_action :find_project
   before_action :find_journal, only: %i[emoji_actions item_actions edit cancel_edit update toggle_reaction]
   before_action :set_filter
   before_action :authorize
-  before_action :initialize_pagination, only: %i[page_streams]
+  before_action :initialize_pagination, only: %i[index page_streams]
 
   def index
-    index_component =
-      if OpenProject::FeatureDecisions.wp_activity_tab_lazy_pagination_active?
-        initialize_pagination
-        WorkPackages::ActivitiesTab::LazyIndexComponent.new(
-          work_package: @work_package,
-          journals: @paginated_journals,
-          paginator: @paginator,
-          filter: @filter,
-          last_server_timestamp: get_current_server_timestamp
-        )
-      else
-        WorkPackages::ActivitiesTab::IndexComponent.new(
-          work_package: @work_package,
-          filter: @filter,
-          last_server_timestamp: get_current_server_timestamp,
-          deferred: ActiveRecord::Type::Boolean.new.cast(params[:deferred])
-        )
-      end
-
-    render(index_component, layout: false)
+    render(
+      WorkPackages::ActivitiesTab::LazyIndexComponent.new(
+        work_package: @work_package,
+        journals: @paginated_journals,
+        paginator: @paginator,
+        filter: @filter,
+        last_server_timestamp: get_current_server_timestamp
+      ),
+      layout: false
+    )
   end
 
   def page_streams
@@ -211,41 +200,31 @@ class WorkPackages::ActivitiesTabController < ApplicationController
 
   private
 
+  def find_work_package
+    @work_package = WorkPackage.visible.find(params[:work_package_id])
+    @project = @work_package.project
+  rescue ActiveRecord::RecordNotFound
+    respond_with_error(I18n.t("label_not_found"))
+  end
+
   def initialize_pagination
     @paginator, @paginated_journals = WorkPackages::ActivitiesTab::Paginator
       .paginate(@work_package, params.merge(filter: @filter, limit: 20))
   end
 
   def respond_with_error(error_message)
-    respond_to do |format|
-      # turbo_frame requests (tab is initially rendered and an error occured) are handled below
+    @turbo_status = :not_found
+    render_error_flash_message_via_turbo_stream(message: error_message)
+
+    respond_to_with_turbo_streams do |format|
       format.html do
         render(
-          WorkPackages::ActivitiesTab::ErrorFrameComponent.new(
-            error_message:
-          ),
+          WorkPackages::ActivitiesTab::ErrorFrameComponent.new(error_message: error_message),
           layout: false,
           status: :not_found
         )
       end
-      # turbo_stream requests (tab is already rendered and an error occured in subsequent requests) are handled below
-      format.turbo_stream do
-        @turbo_status = :not_found
-        render_error_flash_message_via_turbo_stream(message: error_message)
-      end
     end
-  end
-
-  def find_work_package
-    @work_package = WorkPackage.find(params[:work_package_id])
-  rescue ActiveRecord::RecordNotFound
-    respond_with_error(I18n.t("label_not_found"))
-  end
-
-  def find_project
-    @project = @work_package.project
-  rescue ActiveRecord::RecordNotFound
-    respond_with_error(I18n.t("label_not_found"))
   end
 
   def find_journal
@@ -323,37 +302,28 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def replace_whole_tab
-    component =
-      if OpenProject::FeatureDecisions.wp_activity_tab_lazy_pagination_active?
-        initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
-        WorkPackages::ActivitiesTab::LazyIndexComponent.new(
-          work_package: @work_package,
-          journals: @paginated_journals,
-          paginator: @paginator,
-          filter: @filter,
-          last_server_timestamp: get_current_server_timestamp
-        )
-      else
-        WorkPackages::ActivitiesTab::IndexComponent.new(
-          work_package: @work_package,
-          filter: @filter,
-          last_server_timestamp: get_current_server_timestamp
-        )
-      end
-    replace_via_turbo_stream(component:)
+    initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
+    replace_via_turbo_stream(
+      component: WorkPackages::ActivitiesTab::LazyIndexComponent.new(
+        work_package: @work_package,
+        journals: @paginated_journals,
+        paginator: @paginator,
+        filter: @filter,
+        last_server_timestamp: get_current_server_timestamp
+      )
+    )
   end
 
   def update_index_component
-    component =
-      if OpenProject::FeatureDecisions.wp_activity_tab_lazy_pagination_active?
-        initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
-        WorkPackages::ActivitiesTab::Journals::LazyIndexComponent
-        .new(work_package: @work_package, journals: @paginated_journals, paginator: @paginator, filter: @filter)
-      else
-        WorkPackages::ActivitiesTab::Journals::IndexComponent
-          .new(work_package: @work_package, filter: @filter)
-      end
-    update_via_turbo_stream(component:)
+    initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
+    update_via_turbo_stream(
+      component: WorkPackages::ActivitiesTab::Journals::LazyIndexComponent.new(
+        work_package: @work_package,
+        journals: @paginated_journals,
+        paginator: @paginator,
+        filter: @filter
+      )
+    )
   end
 
   def create_journal_service_call
@@ -421,56 +391,27 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def rerender_journals_with_updated_notification(journals, last_update_timestamp, grouped_emoji_reactions, editing_journals)
-    # Case: the user marked the journal as read somewhere else and expects the bubble to disappear
-    #
-    # below code stopped working with the introduction of the sequence_version query
-    # I believe it is due to the fact that the notification join does not work well with the sequence_version query
-    # see below comments from my debugging session
-    # journals
-    #   .joins(:notifications)
-    #   .where("notifications.updated_at > ?", last_update_timestamp)
-    #   .find_each do |journal|
-    #   # DEBUGGING:
-    #   # the journal id is actually 85 but below data is logged:
-    #   # # journal id 14 (?!)
-    #   # # journal sequence_version 22 (correct!)
-    #   # the update stream has a wrong target then!
-    #   # target="work-packages-activities-tab-journals-item-component-14"
-    #   # instead of
-    #   # target="work-packages-activities-tab-journals-item-component-85"
-    #   update_item_show_component(journal:, grouped_emoji_reactions: grouped_emoji_reactions.fetch(journal.id, {}))
-    # end
-    #
-    # alternative approach in order to bypass the notification join issue in relation with the sequence_version query
     Notification
       .where(journal_id: journals.pluck(:id))
       .where(recipient_id: User.current.id)
       .where("notifications.updated_at > ?", last_update_timestamp)
       .find_each do |notification|
-      next if editing_journals.include?(notification.journal_id)
+        next if editing_journals.include?(notification.journal_id)
 
-      update_item_show_component(
-        journal: journals.find(notification.journal_id), # take the journal from the journals querried with sequence_version!
-        grouped_emoji_reactions: grouped_emoji_reactions.fetch(notification.journal_id, {})
-      )
-    end
+        update_item_show_component(
+          journal: journals.find(notification.journal_id), # take the journal from the journals querried with sequence_version!
+          grouped_emoji_reactions: grouped_emoji_reactions.fetch(notification.journal_id, {})
+        )
+      end
   end
 
   def insert_latest_journals_via_turbo_stream(journals, last_update_timestamp, emoji_reactions)
-    target_component =
-      if OpenProject::FeatureDecisions.wp_activity_tab_lazy_pagination_active?
-        WorkPackages::ActivitiesTab::Journals::LazyIndexComponent.new(
-          work_package: @work_package,
-          journals: Journal.none, # we do not need to pass any journals here since we just want the component key
-          paginator: nil,
-          filter: @filter
-        )
-      else
-        WorkPackages::ActivitiesTab::Journals::IndexComponent.new(
-          work_package: @work_package,
-          filter: @filter
-        )
-      end
+    target_component = WorkPackages::ActivitiesTab::Journals::LazyIndexComponent.new(
+      work_package: @work_package,
+      journals: Journal.none, # we do not need to pass any journals here since we just want the component key
+      paginator: nil,
+      filter: @filter
+    )
 
     journals.where("created_at > ?", last_update_timestamp).find_each do |journal|
       insert_via_turbo_stream(

@@ -157,6 +157,14 @@ class UsersController < ApplicationController
   def change_status # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     if @user.id == current_user.id
       # user is not allowed to change own status
+      flash[:error] = I18n.t("user.error_status_change_self")
+      redirect_back_or_default({ action: "edit", id: @user })
+      return
+    end
+
+    if @user.admin? && !current_user.admin?
+      # non-admin users are not allowed to change admin status
+      flash[:error] = I18n.t("user.error_admin_change_on_non_admin")
       redirect_back_or_default({ action: "edit", id: @user })
       return
     end
@@ -167,23 +175,28 @@ class UsersController < ApplicationController
       return redirect_back_or_default({ action: "edit", id: @user })
     end
 
+    activated_account = false
+
     if params[:unlock]
       @user.failed_login_count = 0
       @user.activate
+      activated_account = true
     elsif params[:lock]
       @user.lock
     elsif params[:activate]
       @user.activate
+      activated_account = true
     end
-    # Was the account activated? (do it before User#save clears the change)
-    was_activated = (@user.status_change == %w[registered active])
 
-    if params[:activate] && @user.missing_authentication_method?
+    # Was the account activated? (do it before User#save clears the change)
+    should_deliver_activation_mail = (@user.status_change == %w[registered active])
+
+    if activated_account && @user.missing_authentication_method?
       flash[:error] = I18n.t("user.error_status_change_failed",
                              errors: I18n.t(:notice_user_missing_authentication_method))
     elsif @user.save
       flash[:notice] = I18n.t(:notice_successful_update)
-      if was_activated
+      if should_deliver_activation_mail
         UserMailer.account_activated(@user).deliver_later
       end
     else

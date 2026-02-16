@@ -109,6 +109,10 @@ $left-side-min-width: 300px
   &:has(#content-bodyRight > *)
     grid-template-columns: minmax($left-side-min-width, 1fr) minmax(550px, var(--split-screen-width))
 
+    #content-body,
+    #content-header
+      padding-right: 1rem
+
   &.content--split
     overflow: hidden
 

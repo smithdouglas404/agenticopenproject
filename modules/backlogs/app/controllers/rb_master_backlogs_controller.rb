@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,12 +29,35 @@
 #++
 
 class RbMasterBacklogsController < RbApplicationController
+  include WorkPackages::WithSplitView
+
   menu_item :backlogs
 
+  before_action :load_backlogs, only: :index
+
   def index
+    if turbo_frame_request?
+      render partial: "list", layout: false
+    else
+      render :index
+    end
+  end
+
+  def details
+    if turbo_frame_request?
+      render "work_packages/split_view", layout: false
+    else
+      load_backlogs
+      render :index
+    end
+  end
+
+  def split_view_base_route = backlogs_project_backlogs_path(request.query_parameters)
+
+  private
+
+  def load_backlogs
     @owner_backlogs = Backlog.owner_backlogs(@project)
     @sprint_backlogs = Backlog.sprint_backlogs(@project)
-
-    @last_update = (@sprint_backlogs + @owner_backlogs).filter_map(&:updated_at).max
   end
 end

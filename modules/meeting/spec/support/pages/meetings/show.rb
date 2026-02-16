@@ -256,12 +256,12 @@ module Pages::Meetings
     def duplicate_item_in_next_meeting(item)
       open_menu(item) do
         click_on "Duplicate"
-        click_on "Duplicate in next occurrence"
+        click_on "Duplicate in next meeting"
       end
-      expect_modal("Duplicate in next occurrence?")
+      expect_modal("Duplicate in next meeting?")
 
       retry_block do
-        page.within_modal "Duplicate in next occurrence?" do
+        page.within_modal "Duplicate in next meeting?" do
           click_on "Duplicate"
         end
       end
@@ -575,6 +575,12 @@ module Pages::Meetings
       click_on "Add"
     end
 
+    def expect_no_participant(participant)
+      autocomplete = page.find('[data-test-selector="participants-dialog-autocomplete"]')
+      search_autocomplete(autocomplete, query: participant.lastname, results_selector: "body")
+      expect_no_ng_option(autocomplete, participant.name, results_selector: "body")
+    end
+
     def remove_participant(participant)
       expect(page).to have_text(participant.name)
       click_link_or_button("remove_button_#{participant.id}")
@@ -701,7 +707,7 @@ module Pages::Meetings
           add_section_link = find_link("Section")
           url = add_section_link[:href]
 
-          expect(URI.parse(url).path).to eq(meeting_sections_path(meeting))
+          expect(URI.parse(url).path).to eq(project_meeting_sections_path(meeting.project, meeting))
         end
       end
     end

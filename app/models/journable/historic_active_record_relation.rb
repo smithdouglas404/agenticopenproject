@@ -101,7 +101,7 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
   #
   # SELECT * from work_packages
 
-  def build_arel(connection, aliases = nil)
+  def build_arel(aliases = nil)
     substitute_join_tables_in_where_clause(self)
 
     # Based on the previous modifications, build the algebra object and prepend
@@ -198,7 +198,12 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
 
     predicate.gsub! "AND #{custom_values}.custom_field_id =",
                     "AND #{customizable_journals}.custom_field_id ="
-    predicate.gsub! "WHERE #{custom_values}.value", "WHERE #{customizable_journals}.value"
+    # Replace all occurrences of `custom_values.value` within the WHERE clause.
+    # This handles operators like "is empty" which generate multiple references:
+    # e.g. `WHERE custom_values.value IS NULL OR custom_values.value = ''`
+    predicate.gsub!(/WHERE.*#{Regexp.escape(custom_values)}\.value.*/) do |match|
+      match.gsub!("#{custom_values}.value", "#{customizable_journals}.value")
+    end
   end
 
   # Add a timestamp condition: Select the work package journals that are the

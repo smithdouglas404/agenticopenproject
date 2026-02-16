@@ -22,32 +22,32 @@
 #++
 vi:
   attributes:
-    commit: "Commit"
-    gitlab: "GitLab identifier"
-    gitlab_avatar_url: "Avatar URL"
-    gitlab_email: "GitLab Email"
-    gitlab_html_url: "GitLab HTML URL"
-    gitlab_merge_request: "Merge Request"
-    gitlab_name: "GitLab name"
-    gitlab_updated_at: "Updated at"
-    gitlab_user_avatar_url: "GitLab avatar URL"
-    gitlab_username: "GitLab username"
+    commit: "cam kết"
+    gitlab: "Mã định danh GitLab"
+    gitlab_avatar_url: "URL hình đại diện"
+    gitlab_email: "Email của GitLab"
+    gitlab_html_url: "URL HTML của GitLab"
+    gitlab_merge_request: "Yêu cầu hợp nhất"
+    gitlab_name: "Tên GitLab"
+    gitlab_updated_at: "Cập nhật lúc"
+    gitlab_user_avatar_url: "URL hình đại diện GitLab"
+    gitlab_username: "tên người dùng GitLab"
   activerecord:
     attributes:
       gitlab_pipeline:
-        ci_details: "CI Details"
+        ci_details: "Chi tiết CI"
       gitlab_merge_request:
-        labels: "Labels"
+        labels: "Nhãn"
     errors:
       models:
         gitlab_issue:
           attributes:
             labels:
-              invalid_schema: "phải là một mảng các hash với các khóa: màu, tiêu đề"
+              invalid_schema: "phải là một mảng băm có khóa: màu sắc, tiêu đề"
         gitlab_merge_request:
           attributes:
             labels:
-              invalid_schema: "phải là một mảng các hash với các khóa: màu, tiêu đề"
+              invalid_schema: "phải là một mảng băm có khóa: màu sắc, tiêu đề"
   project_module_gitlab: "GitLab"
   permission_show_gitlab_content: "Hiển thị nội dung GitLab"
   gitlab_integration:

@@ -32,6 +32,8 @@ module WorkPackages
   class CreateNoteContract < ::ModelContract
     def self.model = WorkPackage
 
+    def validate_model? = false
+
     attribute :journal_notes do
       errors.add(:journal_notes, :error_unauthorized) unless adding_notes_allowed?
       errors.add(:journal_notes, :blank) if model.journal_notes.blank?
@@ -43,6 +45,10 @@ module WorkPackages
       unless EnterpriseToken.allows_to?(:internal_comments)
         plan_name = I18n.t("ee.upsell.plan_name", plan: OpenProject::Token.lowest_plan_for(:internal_comments)&.capitalize)
         errors.add(:journal_internal, :enterprise_plan_required, plan_name:)
+      end
+
+      unless model.project.enabled_internal_comments
+        errors.add(:journal_internal, :feature_disabled_for_project)
       end
 
       unless allowed_in_project?(:add_internal_comments)

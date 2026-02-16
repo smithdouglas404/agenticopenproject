@@ -120,14 +120,22 @@ module Redmine
       result = translation.scan(link_regex).inject(translation) do |t, matches|
         link, text, key = matches
         link_reference = links[key.to_sym]
-        href = case link_reference
-               when Array
-                 OpenProject::Static::Links.url_for(*link_reference)
-               else
-                 String(link_reference)
-               end
+        href =
+          case link_reference
+          when Array
+            OpenProject::Static::Links.url_for(*link_reference)
+          else
+            String(link_reference)
+          end
         target = external ? "_blank" : nil
-        link_tag = render(Primer::Beta::Link.new(href:, target:, underline:)) do |l|
+        link_tag = render(
+          Primer::Beta::Link.new(
+            href:,
+            target:,
+            underline:,
+            data: { allow_external_link: true }
+          )
+        ) do |l|
           l.with_trailing_visual_icon(icon: :"link-external") if external
           text
         end
@@ -251,7 +259,7 @@ module Redmine
     def translate_language(lang_code)
       # rename in-context translation language name for the language select box
       if lang_code.to_sym == Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE &&
-        ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
+         ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
         [Redmine::I18n::IN_CONTEXT_TRANSLATION_NAME, lang_code.to_s]
       else
         [::I18n.t("cldr.language_name", locale: lang_code), lang_code.to_s]

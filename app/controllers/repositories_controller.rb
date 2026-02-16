@@ -233,7 +233,7 @@ class RepositoriesController < ApplicationController
       end
 
       filename = "changeset_r#{@rev}"
-      filename << "_r#{@rev_to}" if @rev_to
+      filename += "_r#{@rev_to}" if @rev_to
       send_data @diff.join,
                 filename: "#{filename}.diff",
                 type: "text/x-patch",

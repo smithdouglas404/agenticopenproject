@@ -407,6 +407,10 @@ export class PathHelperService {
     return `${this.workPackagesPath(null)}/bulk`;
   }
 
+  public workPackagesBulkReassignmentPath() {
+    return `${this.workPackagesPath(null)}/bulk/reassign`;
+  }
+
   public textFormattingHelp() {
     return `${this.staticBase}/help/text_formatting`;
   }
@@ -453,5 +457,9 @@ export class PathHelperService {
 
   public homePath() {
     return `${this.staticBase}/`;
+  }
+
+  public externalRedirectPath(url:string) {
+    return `${this.staticBase}/external_redirect?url=${encodeURIComponent(url)}`;
   }
 }
