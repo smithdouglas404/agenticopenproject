@@ -53,7 +53,7 @@ RSpec.describe "Subproject action board",
   let(:board_index) { Pages::BoardIndex.new(project) }
 
   let(:permissions) do
-    %i[show_board_views manage_board_views add_work_packages
+    %i[show_board_views manage_board_views add_work_packages save_queries
        edit_work_packages view_work_packages manage_public_queries move_work_packages]
   end
 
@@ -70,7 +70,7 @@ RSpec.describe "Subproject action board",
 
   context "without the move_work_packages permission" do
     let(:permissions) do
-      %i[show_board_views manage_board_views add_work_packages
+      %i[show_board_views manage_board_views add_work_packages save_queries
          edit_work_packages view_work_packages manage_public_queries]
     end
 
