@@ -5,8 +5,11 @@ require Rails.root.join("db/migrate/migration_utils/permission_adder")
 
 class MigrateBacklogsPermissions < ActiveRecord::Migration[8.1]
   def up
-    ::Migration::MigrationUtils::PermissionRenamer.rename("view_master_backlog", "view_sprints")
+    ::Migration::MigrationUtils::PermissionRenamer.rename(:view_master_backlog, :view_sprints)
 
+    # TODO: This could also use the PermissionRenamer.rename, but since that method is using an
+    # SQL update query, we can potentially end up having duplicate permissions defined,
+    # if a user has both view_master_backlog and view_taskboards.
     ::Migration::MigrationUtils::PermissionAdder.add(:view_taskboards, :view_sprints)
     RolePermission.delete_by(permission: "view_taskboards")
 
@@ -19,8 +22,6 @@ class MigrateBacklogsPermissions < ActiveRecord::Migration[8.1]
     ::Migration::MigrationUtils::PermissionAdder.add(:assign_versions, :manage_sprint_items)
     ::Migration::MigrationUtils::PermissionAdder.add(:add_work_packages, :manage_sprint_items)
     ::Migration::MigrationUtils::PermissionAdder.add(:edit_work_packages, :manage_sprint_items)
-
-    RolePermission.delete_by(permission: %w(assign_versions))
   end
 
   def down

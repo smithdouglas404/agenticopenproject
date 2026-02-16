@@ -32,6 +32,14 @@ module Migration
   module MigrationUtils
     class PermissionRenamer
       class << self
+        # TODO: Rewrite this method to consider already existing permissions, in order to avoid
+        # duplicates. It can be rewritten to use the PermissionAdder, which already avoids adding
+        # duplicates:
+        #   def rename(from, to, force: false)
+        #     ::Migration::MigrationUtils::PermissionAdder.add(from, to, force:)
+        #     RolePermission.delete_by(permission: from)
+        #   end
+
         def rename(from, to)
           ActiveRecord::Base.connection.execute <<-SQL.squish
           UPDATE #{role_permissions_table}

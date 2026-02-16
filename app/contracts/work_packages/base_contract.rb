@@ -46,8 +46,9 @@ module WorkPackages
     attribute :type_id
     attribute :priority_id
     attribute :category_id
+    # TODO: manage_sprint_items can be removed once the sprint_id is in place.
     attribute :version_id,
-              permission: :assign_versions do
+              permission: %i(assign_versions manage_sprint_items) do
       validate_version_is_assignable
     end
 

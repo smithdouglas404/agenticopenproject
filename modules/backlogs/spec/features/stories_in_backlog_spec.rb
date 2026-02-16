@@ -57,8 +57,7 @@ RSpec.describe "Stories in backlog", :js, :settings_reset do
                            add_work_packages
                            view_work_packages
                            edit_work_packages
-                           manage_subtasks
-                           assign_versions))
+                           manage_subtasks))
   end
   let!(:current_user) do
     create(:user,

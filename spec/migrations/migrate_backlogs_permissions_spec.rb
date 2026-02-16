@@ -44,21 +44,21 @@ RSpec.describe MigrateBacklogsPermissions, type: :model do
   end
   let(:member_role_permissions) do
     %i[view_master_backlog view_taskboards add_work_packages
-       edit_work_packages assign_versions].to_set
+       edit_work_packages assign_versions]
   end
   let(:migrated_member_role_permissions) do
-    %i[add_work_packages edit_work_packages view_sprints manage_sprint_items].to_set
+    %i[add_work_packages edit_work_packages assign_versions view_sprints manage_sprint_items]
   end
   let!(:member_role) do
     create(:project_role, permissions: member_role_permissions, add_public_permissions: false)
   end
   let(:manager_role_permissions) do
     %i[view_master_backlog view_taskboards manage_versions select_done_statuses
-       update_sprints assign_versions add_work_packages edit_work_packages].to_set
+       update_sprints assign_versions add_work_packages edit_work_packages]
   end
   let(:migrated_manager_role_permissions) do
-    %i[manage_versions add_work_packages edit_work_packages
-       view_sprints create_sprints manage_sprint_items].to_set
+    %i[manage_versions add_work_packages edit_work_packages assign_versions
+       view_sprints create_sprints manage_sprint_items]
   end
   let!(:manager_role) do
     create(:project_role, permissions: manager_role_permissions, add_public_permissions: false)
@@ -71,30 +71,30 @@ RSpec.describe MigrateBacklogsPermissions, type: :model do
 
     it "migrates manager_role permissions correctly" do
       expect { migrate }
-        .to change { manager_role.reload.permissions.to_set }
-        .from(manager_role_permissions)
-        .to(migrated_manager_role_permissions)
+        .to change { manager_role.reload.permissions }
+        .from(match_array(manager_role_permissions))
+        .to(match_array(migrated_manager_role_permissions))
     end
 
     it "migrates backlog_viewer_role permissions correctly" do
       expect { migrate }
         .to change { backlog_viewer_role.reload.permissions }
-        .from(%i[view_master_backlog])
-        .to(%i[view_sprints])
+        .from(match_array(%i[view_master_backlog]))
+        .to(match_array(%i[view_sprints]))
     end
 
     it "migrates taskboard_viewer_role permissions correctly" do
       expect { migrate }
         .to change { taskboard_viewer_role.reload.permissions }
-        .from(%i[view_taskboards])
-        .to(%i[view_sprints])
+        .from(match_array(%i[view_taskboards]))
+        .to(match_array(%i[view_sprints]))
     end
 
     it "migrates member_role permissions correctly" do
       expect { migrate }
-        .to change { member_role.reload.permissions.to_set }
-        .from(member_role_permissions)
-        .to(migrated_member_role_permissions)
+        .to change { member_role.reload.permissions }
+        .from(match_array(member_role_permissions))
+        .to(match_array(migrated_member_role_permissions))
     end
 
     it "does not duplicate view_sprints when role had both view_master_backlog and view_taskboards" do
@@ -120,23 +120,23 @@ RSpec.describe MigrateBacklogsPermissions, type: :model do
 
     it "reverts backlog_viewer_role permissions" do
       expect { rollback }
-        .to change { backlog_viewer_role.reload.permissions.to_set }
-        .from(%i[view_sprints].to_set)
-        .to(%i[view_taskboards view_master_backlog].to_set)
+        .to change { backlog_viewer_role.reload.permissions }
+        .from(match_array(%i[view_sprints]))
+        .to(match_array(%i[view_taskboards view_master_backlog]))
     end
 
     it "reverts manager_role permissions" do
       expect { rollback }
-        .to change { manager_role.reload.permissions.to_set }
-        .from(migrated_manager_role_permissions)
-        .to(manager_role_permissions)
+        .to change { manager_role.reload.permissions }
+        .from(match_array(migrated_manager_role_permissions))
+        .to(match_array(manager_role_permissions))
     end
 
     it "reverts member_role permissions" do
       expect { rollback }
-        .to change { member_role.reload.permissions.to_set }
-        .from(migrated_member_role_permissions)
-        .to(member_role_permissions)
+        .to change { member_role.reload.permissions }
+        .from(match_array(migrated_member_role_permissions))
+        .to(match_array(member_role_permissions))
     end
   end
 end

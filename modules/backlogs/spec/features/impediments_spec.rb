@@ -59,7 +59,7 @@ RSpec.describe "Impediments on taskboard", :js,
                            view_work_packages
                            edit_work_packages
                            manage_subtasks
-                           assign_versions
+                           manage_sprint_items
                            work_package_assigned))
   end
   let!(:current_user) do

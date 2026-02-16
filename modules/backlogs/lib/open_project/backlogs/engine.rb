@@ -90,7 +90,8 @@ module OpenProject::Backlogs
                    {},
                    permissible_on: :project,
                    require: :member,
-                   dependencies: :view_sprints
+                   dependencies: :view_sprints,
+                   visible: -> { OpenProject::FeatureDecisions.scrum_projects_active? }
 
         permission :manage_sprint_items,
                    { rb_stories: %i[move reorder] },
@@ -102,7 +103,8 @@ module OpenProject::Backlogs
                    {},
                    permissible_on: :project,
                    require: :member,
-                   dependencies: %i[create_sprints]
+                   dependencies: %i[create_sprints],
+                   visible: -> { OpenProject::FeatureDecisions.scrum_projects_active? }
       end
 
       menu :project_menu,
