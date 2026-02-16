@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,25 +27,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  module Sprints
-    class DetailsForm < ApplicationForm
-      form do |f|
-        f.text_field(
-          label: attribute_name(:name),
-          name: :name,
-          required: true,
-          input_width: :large
-        )
-
-        # f.text_area(
-        #   label: attribute_name(:goal),
-        #   name: :goal,
-        #   required: false,
-        #   input_width: :large,
-        #   rows: 3
-        # )
-      end
+module Sprints
+  class BaseContract < ::ModelContract
+    def self.model
+      Agile::Sprint
     end
+
+    attribute :name
+    attribute :project_id
+    attribute :start_date
+    attribute :finish_date
   end
 end

@@ -28,24 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  module Sprints
-    class DetailsForm < ApplicationForm
-      form do |f|
-        f.text_field(
-          label: attribute_name(:name),
-          name: :name,
-          required: true,
-          input_width: :large
-        )
+module Sprints
+  class CreateContract < BaseContract
+    validate :user_allowed_to_create
 
-        # f.text_area(
-        #   label: attribute_name(:goal),
-        #   name: :goal,
-        #   required: false,
-        #   input_width: :large,
-        #   rows: 3
-        # )
+    private
+
+    def user_allowed_to_create
+      return if model.project.nil?
+
+      unless user.allowed_in_project?(:create_sprints, model.project)
+        errors.add :base, :error_unauthorized
       end
     end
   end

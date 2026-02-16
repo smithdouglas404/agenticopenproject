@@ -31,7 +31,7 @@
 class RbSprintsController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  skip_before_action :load_sprint_and_project, only: %i[new_dialog]
+  skip_before_action :load_sprint_and_project, only: %i[new_dialog create]
 
   def new_dialog
     @project = Project.visible.find(params[:project_id])
@@ -40,6 +40,31 @@ class RbSprintsController < RbApplicationController
     @sprint = Agile::Sprint.new(project: @project)
 
     respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint)
+  end
+
+  def create
+    # @project = Project.visible.find(params[:project_id])
+    # @sprint = Agile::Sprint.new(project: @project)
+    # puts "FOOO =============================="
+    # pp permitted
+    # pp @sprint
+    # pp @sprint.valid?
+    # pp @sprint.errors
+
+    # TODO: check sprint permissions
+    call = Sprints::CreateService
+             .new(user: current_user)
+             .call(attributes: agile_sprint_params.merge(project_id: params[:project_id]))
+
+    sprint = call.result
+
+    if call.success?
+      flash[:notice] = I18n.t(:notice_successful_create)
+    else
+      update_new_sprint_form_component_via_turbo_stream(sprint:, base_errors: call.errors[:base])
+    end
+
+    respond_with_turbo_streams
   end
 
   def edit_name
@@ -88,6 +113,16 @@ class RbSprintsController < RbApplicationController
     )
   end
 
+  def update_new_sprint_form_component_via_turbo_stream(sprint:, base_errors: nil)
+    update_via_turbo_stream(
+      component: Backlogs::NewSprintFormComponent.new(
+        sprint:,
+        base_errors:
+      ),
+      status: :bad_request
+    )
+  end
+
   # Overrides load_sprint_and_project to load the sprint from :id instead of :sprint_id
   def load_sprint_and_project
     @sprint = Sprint.visible.find(params[:id])
@@ -98,5 +133,9 @@ class RbSprintsController < RbApplicationController
 
   def sprint_params
     params.expect(sprint: %i[name start_date effective_date])
+  end
+
+  def agile_sprint_params
+    params.expect(sprint: %i[name start_date finish_date])
   end
 end

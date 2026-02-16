@@ -32,9 +32,9 @@ See COPYRIGHT and LICENSE files for more details.
     primer_form_with(
       id: Backlogs::NewSprintFormComponent::FORM_ID,
       model: @sprint,
+      scope: :sprint,
       method: :post,
-      # url: project_work_package_meeting_agenda_items_path(@work_package.project, @work_package),
-      url: "",
+      url: project_sprints_path(@sprint.project_id),
       data: data_attributes
     ) do |f|
       flex_layout(mb: 3) do |flex|

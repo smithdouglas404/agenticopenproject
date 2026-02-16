@@ -28,25 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  module Sprints
-    class DetailsForm < ApplicationForm
-      form do |f|
-        f.text_field(
-          label: attribute_name(:name),
-          name: :name,
-          required: true,
-          input_width: :large
-        )
+module Sprints
+  class SetAttributesService < ::BaseServices::SetAttributes
+    def set_default_attributes(_params)
+      model.change_by_system do
+        model.name ||= determine_sequence_name_from_previous_sprint
 
-        # f.text_area(
-        #   label: attribute_name(:goal),
-        #   name: :goal,
-        #   required: false,
-        #   input_width: :large,
-        #   rows: 3
-        # )
+        model.status ||= "in_planning"
+        model.sharing ||= "none"
       end
+    end
+
+    private
+
+    def determine_sequence_name_from_previous_sprint
+      # TODO: create name if applicable
+      # TODO 2: is this the right spot? It should be generated earlier so that it's prepopulated in the form.
+      "Sprint name"
     end
   end
 end
