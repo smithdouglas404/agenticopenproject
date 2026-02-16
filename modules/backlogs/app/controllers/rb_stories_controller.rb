@@ -85,7 +85,10 @@ class RbStoriesController < RbApplicationController
 
   def replace_backlog_component_via_turbo_stream(sprint:)
     @backlog = Backlog.for(sprint:, project: @project)
-    replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog: @backlog, project: @project))
+    replace_via_turbo_stream(
+      component: Backlogs::BacklogComponent.new(backlog: @backlog, project: @project),
+      method: :morph
+    )
   end
 
   def load_story

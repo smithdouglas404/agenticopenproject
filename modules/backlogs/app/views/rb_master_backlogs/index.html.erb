@@ -30,7 +30,6 @@ See COPYRIGHT and LICENSE files for more details.
 <% html_title t(:label_backlogs) %>
 
 <% content_controller "backlogs",
-                      "backlogs-list-url-value": backlogs_project_backlogs_path(@project),
                       "backlogs-backlogs--story-outlet": "li[data-story]" %>
 
 <% content_for :content_header do %>
@@ -58,7 +57,7 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <% content_for :content_body do %>
-  <%= render partial: "list" %>
+  <%= turbo_frame_tag :backlogs_container, refresh: :morph, src: backlogs_project_backlogs_path(@project) %>
 <% end %>
 
 <% content_for :content_body_right do %>
