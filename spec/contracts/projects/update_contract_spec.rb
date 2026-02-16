@@ -46,7 +46,7 @@ RSpec.describe Projects::UpdateContract do
                     public: project_public,
                     status_code: project_status_code,
                     status_explanation: project_status_explanation,
-                    workspace_type: project_workspace_type).tap do |p|
+                    workspace_type: project_workspace_type) do |project|
         # Use real AR relations for the custom field associations with actual IDs
         available_custom_fields = ProjectCustomField.where(id: [
                                                              custom_field,
@@ -63,19 +63,24 @@ RSpec.describe Projects::UpdateContract do
                                                                  commentable_not_enabled_custom_field
                                                                ])
 
-        allow(p).to receive_messages(available_custom_fields:, all_available_custom_fields:)
-
-        next unless project_changed
+        allow(project).to receive_messages(available_custom_fields:, all_available_custom_fields:)
 
         # in order to actually have something changed
-        p.name = project_name
-        p.parent = project_parent
-        p.identifier = project_identifier
-        p.templated = project_templated
+        if project_changed
+          project.name = project_name
+          project.parent = project_parent
+          project.identifier = project_identifier
+          project.templated = project_templated
+        end
+
+        if custom_field_value_changed
+          project.custom_field_values = { custom_field.id => "1" }
+        end
       end
     end
     let(:project_permissions) { %i(edit_project) }
     let(:project_changed) { true }
+    let(:custom_field_value_changed) { false }
     let(:options) { {} }
 
     subject(:contract) { described_class.new(project, current_user, options:) }
@@ -83,7 +88,7 @@ RSpec.describe Projects::UpdateContract do
     context "if the identifier is nil" do
       let(:project_identifier) { nil }
 
-      include_examples "contract is invalid", identifier: %i(blank)
+      include_examples "contract is invalid", identifier: %i[blank]
     end
 
     context "if workspace_type is changed" do
@@ -103,36 +108,30 @@ RSpec.describe Projects::UpdateContract do
     end
 
     describe "permissions" do
+      name_parent_identifier_readonly = %i[name parent_id identifier].index_with { %i[error_readonly] }
+
       context "with edit_project_attributes" do
         let(:project_permissions) { %i(edit_project_attributes) }
 
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
+          let(:custom_field_value_changed) { true }
 
-          before do
-            project.custom_field_values = { custom_field.id => "1" }
-          end
-
-          context "and only project_custom_fields are changed" do
+          context "and only custom values are changed" do
             let(:project_changed) { false }
 
             include_examples "contract is valid"
           end
 
           context "and other project attributes are changed too" do
-            let(:project_changed) { true }
-
-            include_examples "contract is invalid",
-                             name: %i(error_readonly),
-                             parent_id: %i(error_readonly),
-                             identifier: %i(error_readonly)
+            include_examples "contract is invalid", name_parent_identifier_readonly
           end
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "contract is invalid", name: %i(error_readonly)
+          include_examples "contract is invalid", name_parent_identifier_readonly
         end
       end
 
@@ -147,17 +146,11 @@ RSpec.describe Projects::UpdateContract do
           let(:options) { { project_attributes_only: false } }
 
           context "and only project attributes are changed" do
-            let(:project_changed) { true }
-
             include_examples "contract is valid"
           end
 
-          context "and project_custom_fields are changed too" do
-            let(:project_changed) { true }
-
-            before do
-              project.custom_field_values = { custom_field.id => "1" }
-            end
+          context "and custom values are changed too" do
+            let(:custom_field_value_changed) { true }
 
             it "is invalid" do
               expect_contract_invalid("custom_field_#{custom_field.id}": %i(error_readonly))
@@ -173,35 +166,20 @@ RSpec.describe Projects::UpdateContract do
           let(:options) { { project_attributes_only: true } }
 
           context "and only project attributes are changed" do
-            let(:project_changed) { true }
-
-            include_examples "contract is invalid",
-                             name: %i(error_readonly),
-                             parent_id: %i(error_readonly),
-                             identifier: %i(error_readonly)
+            include_examples "contract is invalid", name_parent_identifier_readonly
           end
 
-          context "and only project_custom_fields are changed" do
+          context "and only custom values are changed" do
             let(:project_changed) { false }
-
-            before do
-              project.custom_field_values = { custom_field.id => "1" }
-            end
+            let(:custom_field_value_changed) { true }
 
             include_examples "contract is valid"
           end
 
-          context "when both project attributes and project custom_fields are changed" do
-            let(:project_changed) { true }
+          context "when both project attributes and custom values are changed" do
+            let(:custom_field_value_changed) { true }
 
-            before do
-              project.custom_field_values = { custom_field.id => "1" }
-            end
-
-            include_examples "contract is invalid",
-                             name: %i(error_readonly),
-                             parent_id: %i(error_readonly),
-                             identifier: %i(error_readonly)
+            include_examples "contract is invalid", name_parent_identifier_readonly
           end
         end
 
@@ -209,17 +187,11 @@ RSpec.describe Projects::UpdateContract do
           let(:options) { { project_attributes_only: false } }
 
           context "and only project attributes are changed" do
-            let(:project_changed) { true }
-
             include_examples "contract is valid"
           end
 
-          context "and project_custom_fields are changed too" do
-            let(:project_changed) { true }
-
-            before do
-              project.custom_field_values = { custom_field.id => "1" }
-            end
+          context "and custom values are changed too" do
+            let(:custom_field_value_changed) { true }
 
             include_examples "contract is valid"
           end
