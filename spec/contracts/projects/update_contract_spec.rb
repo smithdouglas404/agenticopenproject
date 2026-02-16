@@ -69,7 +69,7 @@ RSpec.describe Projects::UpdateContract do
     context "if the identifier is nil" do
       let(:project_identifier) { nil }
 
-      it_behaves_like "contract is invalid", identifier: %i(blank)
+      include_examples "contract is invalid", identifier: %i(blank)
     end
 
     context "if workspace_type is changed" do
@@ -77,7 +77,7 @@ RSpec.describe Projects::UpdateContract do
         project.workspace_type = "portfolio"
       end
 
-      it_behaves_like "contract is invalid", workspace_type: :error_readonly
+      include_examples "contract is invalid", workspace_type: :error_readonly
     end
 
     context "if template is changed" do
@@ -85,7 +85,7 @@ RSpec.describe Projects::UpdateContract do
         project.template_id = 1
       end
 
-      it_behaves_like "contract is invalid", template_id: :error_readonly
+      include_examples "contract is invalid", template_id: :error_readonly
     end
 
     describe "permissions" do
@@ -102,13 +102,13 @@ RSpec.describe Projects::UpdateContract do
           context "and only project_custom_fields are changed" do
             let(:project_changed) { false }
 
-            it_behaves_like "contract is valid"
+            include_examples "contract is valid"
           end
 
           context "and other project attributes are changed too" do
             let(:project_changed) { true }
 
-            it_behaves_like "contract is invalid",
+            include_examples "contract is invalid",
                             name: %i(error_readonly),
                             parent_id: %i(error_readonly),
                             identifier: %i(error_readonly)
@@ -118,7 +118,7 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          it_behaves_like "contract is invalid", name: %i(error_readonly)
+          include_examples "contract is invalid", name: %i(error_readonly)
         end
       end
 
@@ -126,7 +126,7 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          it_behaves_like "contract user is unauthorized"
+          include_examples "contract user is unauthorized"
         end
 
         context "when project_attributes_only flag is false" do
@@ -135,7 +135,7 @@ RSpec.describe Projects::UpdateContract do
           context "and only project attributes are changed" do
             let(:project_changed) { true }
 
-            it_behaves_like "contract is valid"
+            include_examples "contract is valid"
           end
 
           context "and project_custom_fields are changed too" do
@@ -161,7 +161,7 @@ RSpec.describe Projects::UpdateContract do
           context "and only project attributes are changed" do
             let(:project_changed) { true }
 
-            it_behaves_like "contract is invalid",
+            include_examples "contract is invalid",
                             name: %i(error_readonly),
                             parent_id: %i(error_readonly),
                             identifier: %i(error_readonly)
@@ -174,7 +174,7 @@ RSpec.describe Projects::UpdateContract do
               project.custom_field_values = { custom_field.id => "1" }
             end
 
-            it_behaves_like "contract is valid"
+            include_examples "contract is valid"
           end
 
           context "when both project attributes and project custom_fields are changed" do
@@ -184,7 +184,7 @@ RSpec.describe Projects::UpdateContract do
               project.custom_field_values = { custom_field.id => "1" }
             end
 
-            it_behaves_like "contract is invalid",
+            include_examples "contract is invalid",
                             name: %i(error_readonly),
                             parent_id: %i(error_readonly),
                             identifier: %i(error_readonly)
@@ -197,7 +197,7 @@ RSpec.describe Projects::UpdateContract do
           context "and only project attributes are changed" do
             let(:project_changed) { true }
 
-            it_behaves_like "contract is valid"
+            include_examples "contract is valid"
           end
 
           context "and project_custom_fields are changed too" do
@@ -207,7 +207,7 @@ RSpec.describe Projects::UpdateContract do
               project.custom_field_values = { custom_field.id => "1" }
             end
 
-            it_behaves_like "contract is valid"
+            include_examples "contract is valid"
           end
         end
       end
@@ -216,7 +216,7 @@ RSpec.describe Projects::UpdateContract do
         let(:project_permissions) { [] }
         let(:options) { { project_attributes_only: true } }
 
-        it_behaves_like "contract user is unauthorized"
+        include_examples "contract user is unauthorized"
       end
     end
 
@@ -251,15 +251,15 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          it_behaves_like "can write", :custom_field
-          it_behaves_like "can not write", :name
+          include_examples "can write", :custom_field
+          include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          it_behaves_like "can write", :custom_field
-          it_behaves_like "can not write", :name
+          include_examples "can write", :custom_field
+          include_examples "can not write", :name
         end
       end
 
@@ -267,15 +267,15 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          it_behaves_like "can not write", :custom_field
-          it_behaves_like "can not write", :name
+          include_examples "can not write", :custom_field
+          include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          it_behaves_like "can not write", :custom_field
-          it_behaves_like "can write", :name
+          include_examples "can not write", :custom_field
+          include_examples "can write", :name
         end
       end
 
@@ -285,15 +285,15 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          it_behaves_like "can write", :custom_field
-          it_behaves_like "can not write", :name
+          include_examples "can write", :custom_field
+          include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          it_behaves_like "can write", :custom_field
-          it_behaves_like "can write", :name
+          include_examples "can write", :custom_field
+          include_examples "can write", :name
         end
       end
 
@@ -303,15 +303,15 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          it_behaves_like "can not write", :custom_field
-          it_behaves_like "can not write", :name
+          include_examples "can not write", :custom_field
+          include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          it_behaves_like "can not write", :custom_field
-          it_behaves_like "can not write", :name
+          include_examples "can not write", :custom_field
+          include_examples "can not write", :name
         end
       end
 
@@ -320,19 +320,19 @@ RSpec.describe Projects::UpdateContract do
           context "when user is admin" do
             let(:current_user) { build_stubbed(:admin) }
 
-            it_behaves_like "can write", :admin_only_custom_field
+            include_examples "can write", :admin_only_custom_field
           end
 
           context "when user is not admin" do
             let(:current_user) { build_stubbed(:user) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            it_behaves_like "can not write", :admin_only_custom_field
+            include_examples "can not write", :admin_only_custom_field
 
             context "with all permissions" do
               let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-              it_behaves_like "can not write", :admin_only_custom_field
+              include_examples "can not write", :admin_only_custom_field
             end
           end
         end
@@ -340,13 +340,13 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only is true" do
           let(:options) { { project_attributes_only: true } }
 
-          it_behaves_like "admin-only custom field behavior"
+          include_examples "admin-only custom field behavior"
         end
 
         context "when project_attributes_only is false" do
           let(:options) { { project_attributes_only: false } }
 
-          it_behaves_like "admin-only custom field behavior"
+          include_examples "admin-only custom field behavior"
         end
       end
 
@@ -358,19 +358,19 @@ RSpec.describe Projects::UpdateContract do
             let(:current_user) { build_stubbed(:admin) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            it_behaves_like "can not write", :not_enabled_custom_field
+            include_examples "can not write", :not_enabled_custom_field
           end
 
           context "when user is not admin" do
             let(:current_user) { build_stubbed(:user) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            it_behaves_like "can not write", :not_enabled_custom_field
+            include_examples "can not write", :not_enabled_custom_field
 
             context "with all permissions" do
               let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-              it_behaves_like "can not write", :not_enabled_custom_field
+              include_examples "can not write", :not_enabled_custom_field
             end
           end
         end
@@ -382,19 +382,19 @@ RSpec.describe Projects::UpdateContract do
             let(:current_user) { build_stubbed(:admin) }
             let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-            it_behaves_like "can write", :not_enabled_custom_field
+            include_examples "can write", :not_enabled_custom_field
           end
 
           context "when user is not admin" do
             let(:current_user) { build_stubbed(:user) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            it_behaves_like "can not write", :not_enabled_custom_field
+            include_examples "can not write", :not_enabled_custom_field
 
             context "with all permissions" do
               let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-              it_behaves_like "can write", :not_enabled_custom_field
+              include_examples "can write", :not_enabled_custom_field
             end
           end
         end
