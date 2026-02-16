@@ -36,7 +36,7 @@ The Documents index page lets you:
 2. Filter by document type
 
 > [!TIP]
-> If no document types exist yet, default document types are seeded.
+> If no document types were specified by you yet, default document types are seeded. They include: *Note, Idea, Proposal, Specification, Report and Documentation*.
 
 3. Quick-filter the list of documents based on the document title
 
