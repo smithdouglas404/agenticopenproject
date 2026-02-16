@@ -35,6 +35,9 @@ The Documents index page lets you:
 
 2. Filter by document type
 
+> [!TIP]
+> If no document types exist yet, default document types are seeded.
+
 3. Quick-filter the list of documents based on the document title
 
 4. Add a new document
