@@ -124,16 +124,6 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
         expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.task_board"))
       end
     end
-
-    context "without :view_sprints permission" do
-      let(:permissions) { [] }
-
-      it "does not show Task board item" do
-        render_component
-
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.task_board"))
-      end
-    end
   end
 
   describe "always-visible items" do

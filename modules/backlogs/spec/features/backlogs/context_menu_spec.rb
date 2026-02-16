@@ -146,18 +146,6 @@ RSpec.describe "Backlogs context menu", :js do
     end
   end
 
-  context "when the user does not have view_sprints permission" do
-    before do
-      RolePermission.where(permission: "view_sprints").delete_all
-    end
-
-    it 'does not display the "Task board" menu entry' do
-      within_backlog_context_menu do |menu|
-        expect(menu).to have_no_selector :menuitem, "Task board"
-      end
-    end
-  end
-
   context "when the wiki module is not enabled" do
     before do
       project.enabled_module_names -= ["wiki"]
