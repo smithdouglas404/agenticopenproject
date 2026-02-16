@@ -56,7 +56,7 @@ RSpec.describe "Backlogs", :js do
            member_with_permissions: { project => %i(add_work_packages
                                                     view_sprints
                                                     view_work_packages
-                                                    assign_versions) })
+                                                    manage_sprint_items) })
   end
   let(:project) { create(:project) }
 

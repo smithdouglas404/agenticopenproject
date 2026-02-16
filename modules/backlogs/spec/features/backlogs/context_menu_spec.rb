@@ -39,7 +39,8 @@ RSpec.describe "Backlogs context menu", :js do
     create(:user,
            member_with_permissions: { project => %i[add_work_packages
                                                     view_sprints
-                                                    view_work_packages] })
+                                                    view_work_packages
+                                                    manage_sprint_items] })
   end
   shared_let(:sprint) do
     create(:version,
@@ -133,9 +134,9 @@ RSpec.describe "Backlogs context menu", :js do
     end
   end
 
-  context "when the user does not have add_work_packages permission" do
+  context "when the user does not have manage_sprint_items permission" do
     before do
-      RolePermission.where(permission: "add_work_packages").delete_all
+      RolePermission.where(permission: "manage_sprint_items").delete_all
     end
 
     it 'does not display the "New story" menu entry' do

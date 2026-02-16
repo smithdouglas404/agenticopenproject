@@ -59,28 +59,6 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
   end
 
   describe "permission-based items" do
-    context "with :create_sprints permission" do
-      let(:permissions) { %i[view_sprints create_sprints] }
-
-      it "shows Edit item with pencil icon" do
-        render_component
-
-        expect(page).to have_css("action-menu")
-        expect(page).to have_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
-        expect(page).to have_octicon(:pencil)
-      end
-    end
-
-    context "without :create_sprints permission" do
-      let(:permissions) { [:view_sprints] }
-
-      it "does not show Edit item" do
-        render_component
-
-        expect(page).to have_no_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
-      end
-    end
-
     context "with :manage_sprint_items permission" do
       let(:permissions) { %i[view_sprints manage_sprint_items] }
 
@@ -102,8 +80,8 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       end
     end
 
-    context "with :manage_versions permission" do
-      let(:permissions) { %i[view_sprints manage_versions] }
+    context "with :create_sprints permission" do
+      let(:permissions) { %i[view_sprints create_sprints] }
 
       it "shows Properties item with gear icon" do
         render_component
@@ -111,15 +89,29 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
         expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
         expect(page).to have_octicon(:gear)
       end
+
+      it "shows Edit item with pencil icon" do
+        render_component
+
+        expect(page).to have_css("action-menu")
+        expect(page).to have_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+        expect(page).to have_octicon(:pencil)
+      end
     end
 
-    context "without :manage_versions permission" do
+    context "without :create_sprints permission" do
       let(:permissions) { [:view_sprints] }
 
       it "does not show Properties item" do
         render_component
 
         expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
+      end
+
+      it "does not show Edit item" do
+        render_component
+
+        expect(page).to have_no_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
       end
     end
 
