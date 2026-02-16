@@ -1,4 +1,4 @@
-es-AR:
+es:
   plugin_openproject_openid_connect:
     name: "OpenProject OpenID Connect"
     description: "Añade proveedores de estrategia OmniAuth OpenID Connect a OpenProject."

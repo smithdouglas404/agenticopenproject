@@ -1,5 +1,5 @@
 #English strings go here for Rails i18n
-es-AR:
+es:
   plugin_openproject_bim:
     name: "Función BIM y BCF de OpenProject"
     description: "Este plugin OpenProject introduce funcionalidades BIM y BCF."

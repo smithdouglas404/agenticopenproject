@@ -1,4 +1,4 @@
-es-AR:
+es:
   plugin_openproject_webhooks:
     name: "Webhooks de OpenProject"
     description: "Proporciona una API plug-in para soportar webhooks de OpenProject para una mejor integración de terceros."
