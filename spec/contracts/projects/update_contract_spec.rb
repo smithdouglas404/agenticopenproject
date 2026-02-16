@@ -34,8 +34,11 @@ require_relative "shared_contract_examples"
 RSpec.describe Projects::UpdateContract do
   it_behaves_like "project contract" do
     shared_let(:custom_field) { create(:integer_project_custom_field) }
-    shared_let(:admin_only_custom_field) { create(:integer_project_custom_field, admin_only: true) }
+    shared_let(:admin_only_custom_field) { create(:integer_project_custom_field, :admin_only) }
     shared_let(:not_enabled_custom_field) { create(:integer_project_custom_field) }
+    shared_let(:commentable_custom_field) { create(:integer_project_custom_field, :has_comment) }
+    shared_let(:commentable_admin_only_custom_field) { create(:integer_project_custom_field, :has_comment, :admin_only) }
+    shared_let(:commentable_not_enabled_custom_field) { create(:integer_project_custom_field, :has_comment) }
 
     let(:project) do
       build_stubbed(:project,
@@ -45,9 +48,20 @@ RSpec.describe Projects::UpdateContract do
                     status_explanation: project_status_explanation,
                     workspace_type: project_workspace_type).tap do |p|
         # Use real AR relations for the custom field associations with actual IDs
-        available_custom_fields = ProjectCustomField.where(id: [custom_field, admin_only_custom_field])
-        all_available_custom_fields = ProjectCustomField.where(id: [custom_field, admin_only_custom_field,
-                                                                    not_enabled_custom_field])
+        available_custom_fields = ProjectCustomField.where(id: [
+                                                             custom_field,
+                                                             admin_only_custom_field,
+                                                             commentable_custom_field,
+                                                             commentable_admin_only_custom_field
+                                                           ])
+        all_available_custom_fields = ProjectCustomField.where(id: [
+                                                                 custom_field,
+                                                                 admin_only_custom_field,
+                                                                 not_enabled_custom_field,
+                                                                 commentable_custom_field,
+                                                                 commentable_admin_only_custom_field,
+                                                                 commentable_not_enabled_custom_field
+                                                               ])
 
         allow(p).to receive_messages(available_custom_fields:, all_available_custom_fields:)
 
@@ -235,15 +249,35 @@ RSpec.describe Projects::UpdateContract do
         end
       end
 
-      shared_examples "can write custom value" do |custom_field_name|
+      shared_examples "can write custom value and comment" do |custom_field_name|
+        commentable_custom_field_name = "commentable_#{custom_field_name}"
+
         it "can write custom value for #{custom_field_name}" do
           expect(contract.writable_attributes).to include(send(custom_field_name).attribute_name)
         end
+
+        it "can not write custom comment for #{custom_field_name}" do
+          expect(contract.writable_attributes).not_to include(send(custom_field_name).comment_attribute_name)
+        end
+
+        it "can write custom comment for #{commentable_custom_field_name}" do
+          expect(contract.writable_attributes).to include(send(commentable_custom_field_name).comment_attribute_name)
+        end
       end
 
-      shared_examples "can not write custom value" do |custom_field_name|
+      shared_examples "can not write custom value or comment" do |custom_field_name|
+        commentable_custom_field_name = "commentable_#{custom_field_name}"
+
         it "can not write custom value for #{custom_field_name}" do
           expect(contract.writable_attributes).not_to include(send(custom_field_name).attribute_name)
+        end
+
+        it "can not write custom comment for #{custom_field_name}" do
+          expect(contract.writable_attributes).not_to include(send(custom_field_name).comment_attribute_name)
+        end
+
+        it "can not write custom comment for #{commentable_custom_field_name}" do
+          expect(contract.writable_attributes).not_to include(send(commentable_custom_field_name).comment_attribute_name)
         end
       end
 
@@ -253,14 +287,14 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          include_examples "can write custom value", :custom_field
+          include_examples "can write custom value and comment", :custom_field
           include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "can write custom value", :custom_field
+          include_examples "can write custom value and comment", :custom_field
           include_examples "can not write", :name
         end
       end
@@ -269,14 +303,14 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          include_examples "can not write custom value", :custom_field
+          include_examples "can not write custom value or comment", :custom_field
           include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "can not write custom value", :custom_field
+          include_examples "can not write custom value or comment", :custom_field
           include_examples "can write", :name
         end
       end
@@ -287,14 +321,14 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          include_examples "can write custom value", :custom_field
+          include_examples "can write custom value and comment", :custom_field
           include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "can write custom value", :custom_field
+          include_examples "can write custom value and comment", :custom_field
           include_examples "can write", :name
         end
       end
@@ -305,14 +339,14 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          include_examples "can not write custom value", :custom_field
+          include_examples "can not write custom value or comment", :custom_field
           include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "can not write custom value", :custom_field
+          include_examples "can not write custom value or comment", :custom_field
           include_examples "can not write", :name
         end
       end
@@ -322,19 +356,19 @@ RSpec.describe Projects::UpdateContract do
           context "when user is admin" do
             let(:current_user) { build_stubbed(:admin) }
 
-            include_examples "can write custom value", :admin_only_custom_field
+            include_examples "can write custom value and comment", :admin_only_custom_field
           end
 
           context "when user is not admin" do
             let(:current_user) { build_stubbed(:user) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            include_examples "can not write custom value", :admin_only_custom_field
+            include_examples "can not write custom value or comment", :admin_only_custom_field
 
             context "with all permissions" do
               let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-              include_examples "can not write custom value", :admin_only_custom_field
+              include_examples "can not write custom value or comment", :admin_only_custom_field
             end
           end
         end
@@ -360,19 +394,19 @@ RSpec.describe Projects::UpdateContract do
             let(:current_user) { build_stubbed(:admin) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            include_examples "can not write custom value", :not_enabled_custom_field
+            include_examples "can not write custom value or comment", :not_enabled_custom_field
           end
 
           context "when user is not admin" do
             let(:current_user) { build_stubbed(:user) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            include_examples "can not write custom value", :not_enabled_custom_field
+            include_examples "can not write custom value or comment", :not_enabled_custom_field
 
             context "with all permissions" do
               let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-              include_examples "can not write custom value", :not_enabled_custom_field
+              include_examples "can not write custom value or comment", :not_enabled_custom_field
             end
           end
         end
@@ -384,19 +418,19 @@ RSpec.describe Projects::UpdateContract do
             let(:current_user) { build_stubbed(:admin) }
             let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-            include_examples "can write custom value", :not_enabled_custom_field
+            include_examples "can write custom value and comment", :not_enabled_custom_field
           end
 
           context "when user is not admin" do
             let(:current_user) { build_stubbed(:user) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            include_examples "can not write custom value", :not_enabled_custom_field
+            include_examples "can not write custom value or comment", :not_enabled_custom_field
 
             context "with all permissions" do
               let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-              include_examples "can write custom value", :not_enabled_custom_field
+              include_examples "can write custom value and comment", :not_enabled_custom_field
             end
           end
         end
