@@ -757,6 +757,12 @@ module Settings
         allowed: %w[danish dutch english finnish french german hungarian
                     italian norwegian portuguese romanian russian simple spanish swedish turkish]
       },
+      mcp_tool_response_format: {
+        default: :full,
+        format: :symbol,
+        allowed: -> { McpTools::Base::RESPONSE_FORMATS },
+        description: "How to format responses for MCP tools. Using values other than full may improve language model performance."
+      },
       migration_check_on_exceptions: {
         description: "Check for missing migrations in internal errors",
         default: true,
