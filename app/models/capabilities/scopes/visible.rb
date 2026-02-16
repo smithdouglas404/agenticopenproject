@@ -28,19 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Capability < ApplicationRecord
-  include Tableless
-  include Scopes::Scoped
+module Capabilities::Scopes
+  module Visible
+    extend ActiveSupport::Concern
 
-  scopes :default,
-         :visible
+    class_methods do
+      def visible(user = User.current)
+        scope = if user.admin?
+                  all
+                else
+                  where(context_id: nil)
+                    .or(where(context_id: Project.visible(user).select(:id)))
+                end
 
-  default_scope { default }
-
-  belongs_to :context, class_name: "Project"
-  belongs_to :principal
-
-  attribute :action, :text, default: nil
-  attribute :context_id, :integer, default: nil
-  attribute :principal_id, :integer, default: nil
+        scope.where(principal_id: Principal.visible(user).not_builtin.not_locked)
+      end
+    end
+  end
 end

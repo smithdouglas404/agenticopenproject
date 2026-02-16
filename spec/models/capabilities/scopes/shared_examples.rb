@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,21 +26,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Capability < ApplicationRecord
-  include Tableless
-  include Scopes::Scoped
+RSpec.shared_examples_for "consists of contract actions" do |with: "the expected actions"|
+  it "includes #{with} for the scoped to user" do
+    expect(scope.pluck(:action, :principal_id, :context_id))
+      .to match_array(expected)
+  end
+end
 
-  scopes :default,
-         :visible
-
-  default_scope { default }
-
-  belongs_to :context, class_name: "Project"
-  belongs_to :principal
-
-  attribute :action, :text, default: nil
-  attribute :context_id, :integer, default: nil
-  attribute :principal_id, :integer, default: nil
+RSpec.shared_examples_for "is empty" do
+  it "is empty for the scoped to user" do
+    expect(scope)
+      .to be_empty
+  end
 end
