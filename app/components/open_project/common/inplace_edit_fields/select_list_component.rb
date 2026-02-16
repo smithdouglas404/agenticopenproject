@@ -51,17 +51,23 @@ module OpenProject
           @system_arguments[:label] ||= model.class.human_attribute_name(attribute)
 
           @system_arguments[:autocomplete_options] ||= {}
-          @system_arguments[:autocomplete_options][:model] = { id: model.id, name: model.name }
-          @system_arguments[:autocomplete_options][:inputName] = attribute
-          @system_arguments[:autocomplete_options][:focusDirectly] = true
-          @system_arguments[:autocomplete_options][:closeOnSelect] = false
+          @system_arguments[:autocomplete_options][:model] ||= { id: model.id, name: model.name }
+          @system_arguments[:autocomplete_options][:inputName] ||= attribute
+          if @system_arguments[:autocomplete_options][:focusDirectly].nil?
+            @system_arguments[:autocomplete_options][:focusDirectly] =
+              true
+          end
+          if @system_arguments[:autocomplete_options][:closeOnSelect].nil?
+            @system_arguments[:autocomplete_options][:closeOnSelect] =
+              false
+          end
         end
 
         def call
           if custom_field?
             render_custom_field_input
           else
-            form.autocompleter(name: attribute, **@system_arguments)
+            render_autocompleter
           end
 
           form.group(layout: :horizontal, justify_content: :flex_end) do |button_group|
@@ -90,6 +96,10 @@ module OpenProject
           form.fields_for(:custom_field_values) do |builder|
             input_class.new(builder, custom_field:, object: model)
           end
+        end
+
+        def render_autocompleter
+          form.autocompleter(name: attribute, **@system_arguments)
         end
 
         def custom_field?

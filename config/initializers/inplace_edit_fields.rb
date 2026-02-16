@@ -47,7 +47,7 @@ Rails.application.config.to_prepare do
     "weighted_item_list" => OpenProject::Common::InplaceEditFields::TextInputComponent, # TODO
     "list" => OpenProject::Common::InplaceEditFields::SelectListComponent,
     "user" => OpenProject::Common::InplaceEditFields::TextInputComponent, # TODO
-    "version" => OpenProject::Common::InplaceEditFields::TextInputComponent, # TODO
+    "version" => OpenProject::Common::InplaceEditFields::VersionSelectListComponent,
     "calculated_value" => OpenProject::Common::InplaceEditFields::CalculatedValueInputComponent
   }
 

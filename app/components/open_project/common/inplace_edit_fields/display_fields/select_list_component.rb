@@ -44,7 +44,7 @@ module OpenProject
               if custom_field?
                 custom_field_values
               else
-                value.is_a?(Array) ? value.join(", ") : value
+                value.is_a?(Array) ? value.map(&:to_s).join(", ") : value.to_s
               end
             else
               t("placeholders.default")
