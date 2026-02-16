@@ -80,7 +80,7 @@ module Meetings
     private
 
     def delete_enabled?
-      !@meeting.template? && User.current.allowed_in_project?(:delete_meetings, @meeting.project)
+      !@meeting.series_template? && User.current.allowed_in_project?(:delete_meetings, @meeting.project)
     end
 
     def finish_setup_enabled?
@@ -157,6 +157,8 @@ module Meetings
     def delete_label
       if @series.present?
         I18n.t("label_recurring_meeting_cancel")
+      elsif @meeting.onetime_template?
+        I18n.t("label_meeting_template_delete")
       else
         I18n.t("label_meeting_delete")
       end
@@ -167,6 +169,14 @@ module Meetings
         I18n.t("label_recurring_meeting_duplicate")
       else
         I18n.t("button_duplicate")
+      end
+    end
+
+    def edit_label
+      if @meeting.onetime_template?
+        I18n.t("label_meeting_template_edit")
+      else
+        I18n.t("label_meeting_edit_title")
       end
     end
   end

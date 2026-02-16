@@ -39,7 +39,7 @@ class MeetingsController < ApplicationController
   before_action :set_activity, only: %i[history]
   before_action :find_copy_from_meeting, only: %i[create]
   before_action :convert_params, only: %i[create update]
-  before_action :prevent_template_destruction, only: :destroy
+  before_action :prevent_series_template_destruction, only: :destroy
 
   helper :watchers
   include MeetingsHelper
@@ -548,8 +548,8 @@ class MeetingsController < ApplicationController
     }
   end
 
-  def prevent_template_destruction
-    render_400 if @meeting.templated?
+  def prevent_series_template_destruction
+    render_400 if @meeting.series_template?
   end
 
   def redirect_to_project

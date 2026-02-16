@@ -62,7 +62,7 @@
       ) do |menu|
         if @meeting.editable? && !@series
           menu.with_item(
-            label: t("label_meeting_edit_title"),
+            label: edit_label,
             href: edit_project_meeting_path(@project, @meeting),
             content_arguments: {
               data: { "turbo-stream": true }
