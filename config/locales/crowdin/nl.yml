@@ -1035,7 +1035,6 @@ nl:
         title: "Workflow missing for work package sharing"
         message: "No workflow is configured for the 'Work package editor' role. Without a workflow, the shared with user cannot alter the status of the work package. Workflows can be copied. Select a source type (e.g. 'Task') and source role (e.g. 'Member'). Then select the target types. To start with, you could select all the types as targets. Finally, select the 'Work package editor' role as the target and press 'Copy'. After having thus created the defaults, fine tune the workflows as you do for every other role."
         link_message: "Configureer de workflows in de administratie."
-    templated_subject_hint: Automatisch gegenereerd via type %{type}
     summary:
       reports:
         category:
@@ -1160,6 +1159,9 @@ nl:
         dependencies: "Afhankelijkheden"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Toon tot"
       attachment:
@@ -1534,6 +1536,7 @@ nl:
         not_available: "is niet beschikbaar vanwege een systeemconfiguratie."
         not_deletable: "kan niet worden verwijderd."
         not_current_user: "is niet de huidige gebruiker."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "niet gevonden."
         not_a_date: "is geen geldige datum."
         not_a_datetime: "is geen geldige datum tijd."
@@ -2097,6 +2100,7 @@ nl:
     role: "Rol"
     roles: "Rollen"
     search: "Zoeken"
+    sprint: "Sprint"
     start_date: "Startdatum"
     status: "Status"
     state: "State"
@@ -3218,7 +3222,6 @@ nl:
   label_duplicate: "dupliceren"
   label_duplicates: "duplicaten"
   label_edit: "Wijzig"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Bewerken: %{x}"
   label_enable_multi_select: "Omschakelen multiselect"
   label_enabled_project_custom_fields: "Ingeschakelde aangepaste velden"
@@ -3972,6 +3975,7 @@ nl:
   notice_successful_delete: "Verwijdering geslaagd."
   notice_successful_cancel: "Successful cancellation."
   notice_successful_update: "Succesvolle wijziging."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4133,6 +4137,7 @@ nl:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4317,6 +4322,9 @@ nl:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4361,6 +4369,9 @@ nl:
   setting_smtp_password: "SMTP wachtwoord"
   setting_smtp_domain: "SMTP HELO domein"
   setting_activity_days_default: "Dagen weergegeven op projectactiviteit"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Applicatie ondertitel"
   setting_app_title: "Toepassingsnaam"
   setting_attachment_max_size: "Bijlage max. grootte"
@@ -4470,7 +4481,6 @@ nl:
   setting_repository_checkout_text: "Checkout instructies"
   setting_repository_log_display_limit: "Maximum aantal revisies weergegeven op logbestand"
   setting_repository_truncate_at: "Het maximaal aantal bestanden dat wordt weer gegeven in de reposity browser"
-  setting_rest_api_enabled: "REST webservice inschakelen"
   setting_self_registration: "Zelfregistratie"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.

@@ -27,8 +27,6 @@ de:
           not_set: 'Nicht gesetzt'
           finished: 'Abgeschlossen'
           discontinued: 'Eingestellt'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Unterelemente'
         project_favorites:

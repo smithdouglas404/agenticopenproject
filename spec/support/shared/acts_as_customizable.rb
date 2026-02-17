@@ -29,6 +29,13 @@
 #++
 
 RSpec.shared_examples_for "acts_as_customizable included" do
+  describe ".custom_field_class" do
+    it "returns the corresponding CustomField subclass" do
+      expect(described_class.custom_field_class)
+        .to eq("#{described_class.name}CustomField".constantize)
+    end
+  end
+
   describe "#custom_field_changes" do
     context "when no custom field value exists" do
       before do

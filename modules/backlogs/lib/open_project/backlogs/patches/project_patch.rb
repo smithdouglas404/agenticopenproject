@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,6 +32,7 @@ module OpenProject::Backlogs::Patches::ProjectPatch
   def self.included(base)
     base.class_eval do
       has_and_belongs_to_many :done_statuses, join_table: :done_statuses_for_project, class_name: "::Status"
+      has_many :sprints, class_name: "Agile::Sprint", dependent: :destroy
 
       include InstanceMethods
     end

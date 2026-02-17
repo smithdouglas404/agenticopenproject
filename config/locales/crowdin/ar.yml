@@ -1075,7 +1075,6 @@ ar:
         title: "Workflow missing for work package sharing"
         message: "No workflow is configured for the 'Work package editor' role. Without a workflow, the shared with user cannot alter the status of the work package. Workflows can be copied. Select a source type (e.g. 'Task') and source role (e.g. 'Member'). Then select the target types. To start with, you could select all the types as targets. Finally, select the 'Work package editor' role as the target and press 'Copy'. After having thus created the defaults, fine tune the workflows as you do for every other role."
         link_message: "Configure the workflows in the administration."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1200,6 +1199,9 @@ ar:
         dependencies: "الاعتماديات"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "أظهِر حتّى"
       attachment:
@@ -1574,6 +1576,7 @@ ar:
         not_available: "is not available due to a system configuration."
         not_deletable: "cannot be deleted."
         not_current_user: "is not the current user."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "is not a valid date."
         not_a_datetime: "is not a valid date time."
@@ -2213,6 +2216,7 @@ ar:
     role: "الدور"
     roles: "دور"
     search: "البحث"
+    sprint: "Sprint"
     start_date: "تاريخ البدء"
     status: "الحالة"
     state: "State"
@@ -3418,7 +3422,6 @@ ar:
   label_duplicate: "مكرر"
   label_duplicates: "التكرارات"
   label_edit: "تعديل"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "تبديل متعدد الخيارات"
   label_enabled_project_custom_fields: "تمكين الحقول المخصصة"
@@ -4177,6 +4180,7 @@ ar:
   notice_successful_delete: "حذف ناجح."
   notice_successful_cancel: "Successful cancellation."
   notice_successful_update: "تحديث ناجح."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4342,6 +4346,7 @@ ar:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4524,6 +4529,9 @@ ar:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4568,6 +4576,9 @@ ar:
   setting_smtp_password: "كلمة مرور SMTP"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "الأيام المعروضة على نشاط المشروع"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "العنوان الفرعي للتطبيق"
   setting_app_title: "عنوان التطبيق"
   setting_attachment_max_size: "الحد الأقصى لحجم المرفقات"
@@ -4677,7 +4688,6 @@ ar:
   setting_repository_checkout_text: "نص التعليمات الخروج"
   setting_repository_log_display_limit: "الحد الأقصى لعدد من التنقيحات المعروضة في ملف سجل"
   setting_repository_truncate_at: "Maximum number of files displayed in the repository browser"
-  setting_rest_api_enabled: "تمكين خدمة ويب REST"
   setting_self_registration: "التسجيل الذاتي"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.

@@ -27,8 +27,6 @@ bg:
           not_set: 'Не е зададено'
           finished: 'Завършено'
           discontinued: 'Discontinued'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

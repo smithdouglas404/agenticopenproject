@@ -24,3 +24,6 @@ id:
     work_packages:
       properties:
         storyPoints: "Cerita point"
+    burndown:
+      day: "Day"
+      points: "Points"

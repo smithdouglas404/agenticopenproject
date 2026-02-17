@@ -1055,7 +1055,6 @@ ru:
         title: "Отсутствует рабочий процесс для совместного использования пакета работ"
         message: "Рабочий процесс не настроен для роли 'Редактора пакетов работ'. Без рабочего процесса, общий с пользователем не может изменить статус рабочего пакета. Рабочие процессы могут быть скопированы. Выберите исходный тип (например, «Задача») и исходную роль (например, «Участник»). Затем выберите нужные типы. Чтобы начать, можно выбрать все типы в качестве целей. Наконец, выберите роль 'Редактор пакетов работ' в качестве цели и нажмите 'Копировать'. После создания таким образом по умолчанию, тонкая настройка рабочих процессов как вы делаете для каждой другой роли."
         link_message: "Настройка рабочих процессов в администрации."
-    templated_subject_hint: Автоматически сгенерировано по типу %{type}
     summary:
       reports:
         category:
@@ -1180,6 +1179,9 @@ ru:
         dependencies: "Связи"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Совместное использование"
+        finish_date: "Дата окончания"
       announcements:
         show_until: "Отобразить до"
       attachment:
@@ -1554,6 +1556,7 @@ ru:
         not_available: "недоступно из-за конфигурации системы."
         not_deletable: "не может быть удален."
         not_current_user: "не является текущим пользователем."
+        only_one_active_sprint_allowed: "для каждого проекта допускается только один активный спринт."
         not_found: "не найдено."
         not_a_date: "не является допустимой датой."
         not_a_datetime: "дата и время не являются допустимыми."
@@ -2155,6 +2158,7 @@ ru:
     role: "Роль"
     roles: "Роли"
     search: "Поиск"
+    sprint: "Спринт"
     start_date: "Дата начала"
     status: "Статус"
     state: "Область"
@@ -3318,7 +3322,6 @@ ru:
   label_duplicate: "дублировать"
   label_duplicates: "Дублирует"
   label_edit: "Правка"
-  label_edit_attribute: "Изменить атрибут"
   label_edit_x: "Правка: %{x}"
   label_enable_multi_select: "Разрешен множественный выбор"
   label_enabled_project_custom_fields: "Доступные настраиваемые поля"
@@ -4074,6 +4077,7 @@ ru:
   notice_successful_delete: "Удаление выполнено."
   notice_successful_cancel: "Отмена прошла успешно."
   notice_successful_update: "Обновление выполнено."
+  notice_successful_move: "Успешное перемещение из %{from} в %{to}."
   notice_unsuccessful_create: "Создание не удалось."
   notice_unsuccessful_create_with_reason: "Создание не удалось: %{reason}"
   notice_unsuccessful_update: "Ошибка обновления."
@@ -4237,6 +4241,7 @@ ru:
   permission_edit_project_query: "Редактирование запроса проекта"
   placeholders:
     default: "-"
+    templated_hint: Автоматически сгенерировано через тип %{type}
   portfolio:
     count:
       zero: "0 портфолио"
@@ -4419,6 +4424,9 @@ ru:
   setting_capture_external_links: "Перехват внешних ссылок"
   setting_capture_external_links_text: >
     Если эта функция включена, все внешние ссылки в форматированном тексте будут перенаправляться через страницу предупреждения, прежде чем покинуть приложение. Это помогает защитить пользователей от потенциально вредоносных внешних сайтов.
+  setting_capture_external_links_require_login: "Требуйте, чтобы пользователи входили в систему"
+  setting_capture_external_links_require_login_text: >
+    Когда эта функция включена, пользователи, желающие перейти по внешним ссылкам, должны войти в систему, прежде чем смогут продолжить.
   setting_after_first_login_redirect_url: "Перенаправление первого входа"
   setting_after_first_login_redirect_url_text_html: >
     Задайте путь для перенаправления пользователей после их первого входа в систему. Если не задано, то пользователь будет перенаправлен на домашнюю страницу обзорного тура. <br/> Например: <code>/my/page</code>
@@ -4463,6 +4471,9 @@ ru:
   setting_smtp_password: "SMTP пароль"
   setting_smtp_domain: "SMTP HELO домен"
   setting_activity_days_default: "Дни отображенные на проектной деятельности"
+  setting_api_tokens_enabled: "Разрешить API-токены"
+  setting_api_tokens_enabled_caption: >
+    Могут ли пользователи создавать персональные API-токены в настройках своей учётной записи. Эти токены могут быть использованы для доступа к различным API OpenProject, таким как APIv3 и MCP.
   setting_app_subtitle: "Второе название приложения"
   setting_app_title: "Название приложения"
   setting_attachment_max_size: "Максимальный размер вложения"
@@ -4572,7 +4583,6 @@ ru:
   setting_repository_checkout_text: "Текст инструкции проверки"
   setting_repository_log_display_limit: "Максимальное количество отображаемых ревизий в файле журнала изменений"
   setting_repository_truncate_at: "Максимальное число файлов, отображаемых в браузере репозитория"
-  setting_rest_api_enabled: "Включите веб-службы REST"
   setting_self_registration: "Самостоятельная регистрация"
   setting_self_registration_caption: >
     Выберите механизм саморегистрации для пользователей. Будьте осторожны с выбранной настройкой, так как некоторые опции позволяют пользователям активировать свои собственные учетные записи для этого экземпляра.

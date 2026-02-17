@@ -57,7 +57,7 @@ RSpec.describe "Wiki menu items",
   end
 
   before do
-    allow(User).to receive(:current).and_return user
+    login_as(user)
   end
 
   context "with identical names" do
@@ -171,15 +171,16 @@ RSpec.describe "Wiki menu items",
 
     click_link_or_button "Save"
 
+    wait_for_network_idle
+
     # Because it is the last wiki menu item, the user is prompted to select another menu item
     select another_wiki_page.title, from: "main-menu-item-select"
 
     click_link_or_button "Save"
 
-    expect(page)
-      .to have_no_css(".main-menu--children-menu-header", text: other_wiki_page.title)
+    wait_for_network_idle
 
-    expect(page)
-      .to have_css(".main-menu--children-menu-header", text: another_wiki_page.title)
+    expect(page).to have_css(".main-menu--children-menu-header", text: another_wiki_page.title, visible: :all)
+    expect(page).to have_no_css(".main-menu--children-menu-header", text: other_wiki_page.title, visible: :all)
   end
 end

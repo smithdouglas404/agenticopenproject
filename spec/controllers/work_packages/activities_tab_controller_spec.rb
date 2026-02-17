@@ -217,7 +217,7 @@ RSpec.describe WorkPackages::ActivitiesTabController do
 
         subject { response }
 
-        it { is_expected.to be_unauthorized }
+        it { is_expected.to be_not_found }
       end
     end
   end
@@ -228,7 +228,7 @@ RSpec.describe WorkPackages::ActivitiesTabController do
 
       subject { response }
 
-      it { is_expected.to be_forbidden }
+      it { is_expected.to be_not_found }
     end
 
     context "when a commenter is logged in who has no access to the project" do
@@ -236,7 +236,7 @@ RSpec.describe WorkPackages::ActivitiesTabController do
 
       subject { response }
 
-      it { is_expected.to be_forbidden }
+      it { is_expected.to be_not_found }
     end
 
     context "when a user with full privileges is logged in who has no access to the project" do
@@ -244,7 +244,7 @@ RSpec.describe WorkPackages::ActivitiesTabController do
 
       subject { response }
 
-      it { is_expected.to be_forbidden }
+      it { is_expected.to be_not_found }
     end
   end
 

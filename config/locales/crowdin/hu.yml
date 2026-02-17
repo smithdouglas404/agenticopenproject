@@ -1038,7 +1038,6 @@ hu:
         title: "Workflow missing for work package sharing"
         message: "No workflow is configured for the 'Work package editor' role. Without a workflow, the shared with user cannot alter the status of the work package. Workflows can be copied. Select a source type (e.g. 'Task') and source role (e.g. 'Member'). Then select the target types. To start with, you could select all the types as targets. Finally, select the 'Work package editor' role as the target and press 'Copy'. After having thus created the defaults, fine tune the workflows as you do for every other role."
         link_message: "Configure the workflows in the administration."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1163,6 +1162,9 @@ hu:
         dependencies: "Szükséges összetevők"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Megjelenít eddig"
       attachment:
@@ -1537,6 +1539,7 @@ hu:
         not_available: "nem érhető el a rendszer konfigurációja miatt.\n"
         not_deletable: "nem törölhető"
         not_current_user: "nem az aktuális felhasználó"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "nem érvényes dátum."
         not_a_datetime: "ez nem érvényes dátum."
@@ -2100,6 +2103,7 @@ hu:
     role: "Szerepkör"
     roles: "Szerepkörök"
     search: "Keresés"
+    sprint: "Sprint"
     start_date: "Indulási dátum"
     status: "Állapot"
     state: "State"
@@ -3221,7 +3225,6 @@ hu:
   label_duplicate: "duplikált"
   label_duplicates: "Ismétlődések"
   label_edit: "Szerkesztés"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Szerkesztés: %{x}"
   label_enable_multi_select: "Multiselect ki-/ bekapcsolása"
   label_enabled_project_custom_fields: "Egyéni mezők engedélyezve"
@@ -3975,6 +3978,7 @@ hu:
   notice_successful_delete: "Sikeres törlés."
   notice_successful_cancel: "Successful cancellation."
   notice_successful_update: "Sikeres frissítés."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4136,6 +4140,7 @@ hu:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4320,6 +4325,9 @@ hu:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4364,6 +4372,9 @@ hu:
   setting_smtp_password: "SMTP-jelszó"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Ennyi nap megjelenítése a projekttevékenységekben"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Alkalmazás felirat"
   setting_app_title: "Alkalmazás címe"
   setting_attachment_max_size: "Melléklet max. méret"
@@ -4473,7 +4484,6 @@ hu:
   setting_repository_checkout_text: "Checkout útmutató szöveg"
   setting_repository_log_display_limit: "A felülvizsgálatok maximális száma  megjelenitve a naplófájlban"
   setting_repository_truncate_at: "Megjelenített fájlok maximális száma a tároló böngészőben"
-  setting_rest_api_enabled: "Engedélyezi a REST-alapú webszolgáltatást"
   setting_self_registration: "Önregisztráció"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.

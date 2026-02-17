@@ -35,7 +35,6 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   include WorkPackages::ActivitiesTab::StimulusControllers
 
   before_action :find_work_package
-  before_action :find_project
   before_action :find_journal, only: %i[emoji_actions item_actions edit cancel_edit update toggle_reaction]
   before_action :set_filter
   before_action :authorize
@@ -201,41 +200,31 @@ class WorkPackages::ActivitiesTabController < ApplicationController
 
   private
 
+  def find_work_package
+    @work_package = WorkPackage.visible.find(params[:work_package_id])
+    @project = @work_package.project
+  rescue ActiveRecord::RecordNotFound
+    respond_with_error(I18n.t("label_not_found"))
+  end
+
   def initialize_pagination
     @paginator, @paginated_journals = WorkPackages::ActivitiesTab::Paginator
       .paginate(@work_package, params.merge(filter: @filter, limit: 20))
   end
 
   def respond_with_error(error_message)
-    respond_to do |format|
-      # turbo_frame requests (tab is initially rendered and an error occured) are handled below
+    @turbo_status = :not_found
+    render_error_flash_message_via_turbo_stream(message: error_message)
+
+    respond_to_with_turbo_streams do |format|
       format.html do
         render(
-          WorkPackages::ActivitiesTab::ErrorFrameComponent.new(
-            error_message:
-          ),
+          WorkPackages::ActivitiesTab::ErrorFrameComponent.new(error_message: error_message),
           layout: false,
           status: :not_found
         )
       end
-      # turbo_stream requests (tab is already rendered and an error occured in subsequent requests) are handled below
-      format.turbo_stream do
-        @turbo_status = :not_found
-        render_error_flash_message_via_turbo_stream(message: error_message)
-      end
     end
-  end
-
-  def find_work_package
-    @work_package = WorkPackage.find(params[:work_package_id])
-  rescue ActiveRecord::RecordNotFound
-    respond_with_error(I18n.t("label_not_found"))
-  end
-
-  def find_project
-    @project = @work_package.project
-  rescue ActiveRecord::RecordNotFound
-    respond_with_error(I18n.t("label_not_found"))
   end
 
   def find_journal

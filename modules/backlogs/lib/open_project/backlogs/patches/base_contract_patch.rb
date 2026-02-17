@@ -31,5 +31,6 @@ module OpenProject::Backlogs::Patches::BaseContractPatch
 
   included do
     attribute :story_points
+    attribute :position
   end
 end

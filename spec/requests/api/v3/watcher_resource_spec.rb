@@ -171,9 +171,7 @@ RSpec.describe "API v3 Watcher resource", content_type: :json do
     context "when the target user is not allowed to watch the work package" do
       let(:new_watcher) { create(:user) }
 
-      it_behaves_like "constraint violation" do
-        let(:message) { "User is not allowed to view this resource." }
-      end
+      it_behaves_like "not found"
     end
 
     context "when the target user is locked" do

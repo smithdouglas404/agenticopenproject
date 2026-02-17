@@ -36,9 +36,10 @@ module Admin
         include Dry::Monads[:result]
 
         layout :admin_or_frame_layout
-        model_object CustomField
 
-        before_action :require_admin, :find_model_object, :find_active_item
+        before_action :require_admin
+        before_action :find_custom_field
+        before_action :find_active_item
 
         # See https://github.com/hotwired/turbo-rails?tab=readme-ov-file#a-note-on-custom-layouts
         def admin_or_frame_layout
@@ -225,11 +226,6 @@ module Admin
           end
         end
 
-        def find_model_object
-          @object = find_custom_field
-          @custom_field = @object
-        end
-
         def find_custom_field
           raise NotImplementedError, "SubclassResponsibility"
         end
@@ -238,7 +234,7 @@ module Admin
           @active_item = if params[:id].present?
                            CustomField::Hierarchy::Item.including_children.find(params[:id])
                          else
-                           @object.hierarchy_root
+                           @custom_field.hierarchy_root
                          end
         end
       end

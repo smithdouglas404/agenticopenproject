@@ -27,8 +27,6 @@ ru:
           not_set: 'Не задано'
           finished: 'Завершен'
           discontinued: 'Прекращен'
-        project_status_beta:
-          title: 'Статус (BETA)'
         subprojects:
           title: 'Подпроекты'
         project_favorites:

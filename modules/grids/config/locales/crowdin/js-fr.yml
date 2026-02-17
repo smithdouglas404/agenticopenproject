@@ -27,8 +27,6 @@ fr:
           not_set: 'Non défini'
           finished: 'Terminé'
           discontinued: 'Interrompu'
-        project_status_beta:
-          title: 'Statut (BETA)'
         subprojects:
           title: 'Sous-éléments'
         project_favorites:

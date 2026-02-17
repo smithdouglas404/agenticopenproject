@@ -27,8 +27,6 @@ zh-CN:
           not_set: '未设置'
           finished: '已完成'
           discontinued: '已中断'
-        project_status_beta:
-          title: '状态 (BETA)'
         subprojects:
           title: '子项目'
         project_favorites:

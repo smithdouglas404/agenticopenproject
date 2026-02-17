@@ -1036,7 +1036,6 @@ pt-PT:
         title: "Falta um fluxo de trabalho para a partilha de pacotes de trabalho"
         message: "Nenhum fluxo de trabalho está configurado para a função \"Editor do pacote de trabalho\". Sem um fluxo de trabalho, o utilizador não pode alterar o estado do pacote de trabalho. Os fluxos de trabalho podem ser copiados. Selecione um tipo de fonte (por exemplo, \"Tarefa\") e uma função da fonte (por exemplo, \"Membro\"). Em seguida, selecione os tipos de destino. Para começar, pode selecionar todos os tipos como alvos. Por fim, selecione a função \"Editor do pacote de trabalho\" como destino e prima \"Copiar\". Depois de ter criado as predefinições, ajuste os fluxos de trabalho como faz para todas as outras funções."
         link_message: "Configure os fluxos de trabalho na administração."
-    templated_subject_hint: Gerado automaticamente através do tipo %{type}
     summary:
       reports:
         category:
@@ -1161,6 +1160,9 @@ pt-PT:
         dependencies: "Dependências"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Exibir até"
       attachment:
@@ -1535,6 +1537,7 @@ pt-PT:
         not_available: "não está disponível devido a uma configuração do sistema."
         not_deletable: "não pode ser eliminado"
         not_current_user: "não é o utilizador atual."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "não encontrado."
         not_a_date: "não é uma data válida."
         not_a_datetime: "não é uma data/hora válida."
@@ -2098,6 +2101,7 @@ pt-PT:
     role: "Função"
     roles: "Papel"
     search: "Pesquisar"
+    sprint: "Sprint"
     start_date: "Data de início"
     status: "Situação"
     state: "Estado"
@@ -3219,7 +3223,6 @@ pt-PT:
   label_duplicate: "duplicado"
   label_duplicates: "duplicados"
   label_edit: "Editar"
-  label_edit_attribute: "Editar atributo"
   label_edit_x: "Editar: %{x}"
   label_enable_multi_select: "Alternar para selecção múltipla"
   label_enabled_project_custom_fields: "Campos personalizados activados"
@@ -3973,6 +3976,7 @@ pt-PT:
   notice_successful_delete: "Eliminado com sucesso."
   notice_successful_cancel: "Cancelamento bem-sucedido."
   notice_successful_update: "Actualizado com sucesso."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "A criação falhou."
   notice_unsuccessful_create_with_reason: "A criação falhou: %{reason}"
   notice_unsuccessful_update: "Falha na atualização."
@@ -4134,6 +4138,7 @@ pt-PT:
   permission_edit_project_query: "Editar consulta de projeto"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 carteiras"
@@ -4316,6 +4321,9 @@ pt-PT:
   setting_capture_external_links: "Capturar links externos"
   setting_capture_external_links_text: >
     Quando ativada, todos os links externos no texto formatado serão redirecionados através de uma página de aviso antes de sair da aplicação. Isto ajuda a proteger os utilizadores de sites externos potencialmente maliciosos.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Redirecionamento do primeiro início de sessão"
   setting_after_first_login_redirect_url_text_html: >
     Defina um caminho para redirecionar os utilizadores após o primeiro início de sessão. Se estiver vazio, redireciona para a página inicial do tour de integração. <br/> Exemplo: <code>/my/page</code>
@@ -4360,6 +4368,9 @@ pt-PT:
   setting_smtp_password: "Senha SMTP"
   setting_smtp_domain: "Domínio SMTP HELO"
   setting_activity_days_default: "Dias mostrados na atividade do projeto"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtítulo da aplicação"
   setting_app_title: "Título da aplicação"
   setting_attachment_max_size: "Tamanho máx. do anexo"
@@ -4469,7 +4480,6 @@ pt-PT:
   setting_repository_checkout_text: "Texto instrutivo de checkout"
   setting_repository_log_display_limit: "Número máximo de revisões exibidas no arquivo de log"
   setting_repository_truncate_at: "Número máximo de ficheiros exibidos no navegador de repositório"
-  setting_rest_api_enabled: "Ativar webservices REST"
   setting_self_registration: "Registo automático"
   setting_self_registration_caption: >
     Escolha o mecanismo de registo automático para os utilizadores. Tenha cuidado com as definições que escolher, uma vez que algumas opções permitem que os utilizadores ativem as suas próprias contas para esta instância.

@@ -66,11 +66,12 @@ module OpenProject::Backlogs::Patches::SetAttributesServicePatch
     def ancestor_chain(parent_id)
       ancestors = []
       unless parent_id.nil?
-        real_parent = WorkPackage.find_by(id: parent_id)
+        real_parent = WorkPackage.visible(user).find_by(id: parent_id)
 
         # Sort immediate ancestors first
         ancestors = real_parent
                     .ancestors
+                    .visible(user)
                     .includes(project: :enabled_modules)
                     .order_by_ancestors("desc")
                     .select("work_packages.*, COALESCE(max_depth.depth, 0)")

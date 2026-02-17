@@ -126,22 +126,20 @@ module Redmine
         def custom_field_values=(values)
           return unless values.is_a?(Hash) && values.any?
 
-          values.with_indifferent_access.each do |custom_field_id, val|
-            existing_cv_by_value = custom_values_for_custom_field(id: custom_field_id, all: true)
+          values.with_indifferent_access.each do |custom_field_id, new_values|
+            existing_cv_by_value = custom_values_for_custom_field(custom_field_id, all: true)
                                      .group_by(&:value)
                                      .transform_values(&:first)
-            new_values = Array(val).map { |v| v.respond_to?(:id) ? v.id.to_s : v.to_s }
+            next if existing_cv_by_value.empty?
 
-            if existing_cv_by_value.any?
-              assign_new_values custom_field_id, existing_cv_by_value, new_values
-              delete_obsolete_custom_values existing_cv_by_value, new_values
-              handle_minimum_custom_value custom_field_id, existing_cv_by_value, new_values
-            end
+            update_custom_value(custom_field_id, existing_cv_by_value, new_values)
           end
         end
 
-        def custom_values_for_custom_field(id:, all: false)
-          custom_field_values(all:).select { |cv| cv.custom_field_id == id.to_i }
+        def custom_values_for_custom_field(custom_field_or_id, all: false)
+          id = custom_field_or_id.is_a?(CustomField) ? custom_field_or_id.id : custom_field_or_id.to_i
+
+          custom_field_values(all:).select { |cv| cv.custom_field_id == id }
         end
 
         def custom_field_values(all: false) = cached_custom_field_values[all ? :all_available : :available]
@@ -433,6 +431,14 @@ module Redmine
           touch if !saved_changes? && custom_values.loaded? && (custom_values.any?(&:saved_changes?) || custom_value_destroyed)
         end
 
+        def update_custom_value(custom_field_id, existing_cv_by_value, new_values)
+          new_values = Array(new_values).map { |v| v.respond_to?(:id) ? v.id.to_s : v.to_s }
+
+          assign_new_values(custom_field_id, existing_cv_by_value, new_values)
+          delete_obsolete_custom_values(existing_cv_by_value, new_values)
+          handle_minimum_custom_value(custom_field_id, existing_cv_by_value, new_values)
+        end
+
         def assign_new_values(custom_field_id, existing_cv_by_value, new_values)
           (new_values - existing_cv_by_value.keys).each do |new_value|
             add_custom_value(custom_field_id, new_value)
@@ -478,6 +484,12 @@ module Redmine
         end
 
         module AddClassMethods
+          def custom_field_class
+            "#{name}CustomField".constantize
+          rescue NameError
+            nil
+          end
+
           def available_custom_fields(_model)
             RequestStore.fetch(:"#{name.underscore}_custom_fields") do
               CustomField.where(type: "#{name}CustomField").order(:position)

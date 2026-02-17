@@ -671,9 +671,7 @@ RSpec.describe "BCF 2.1 topics resource", content_type: :json do
           }
         end
 
-        it_behaves_like "bcf api unprocessable response" do
-          let(:message) { "Work package does not exist." }
-        end
+        it_behaves_like "bcf api not found response"
       end
 
       context "with a work package where the user is not a bcf manager" do

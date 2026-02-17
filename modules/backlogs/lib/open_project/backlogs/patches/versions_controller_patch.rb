@@ -27,19 +27,26 @@
 #++
 
 module OpenProject::Backlogs::Patches::VersionsControllerPatch
-  def self.included(base)
+  def self.included(base) # rubocop:disable Metrics/AbcSize
     base.class_eval do
       include VersionSettingsHelper
+
       helper :version_settings
 
-      # Find project explicitly on update and edit
-      skip_before_action :find_project_from_association, only: %i[edit update]
-      skip_before_action :find_model_object, only: %i[edit update]
-      prepend_before_action :find_project_and_version, only: %i[edit update]
+      before_action :override_project_from_id, only: %i[edit update]
 
-      before_action :add_project_to_version_settings_attributes, only: %i[update create]
+      append_before_action :add_project_to_version_settings_attributes, only: %i[update create]
+      append_before_action :whitelist_update_params, only: :update
 
-      before_action :whitelist_update_params, only: :update
+      private
+
+      def override_project_from_id
+        # @project is already set by the VersionsController's find_version before action to the version's project
+        # here we want to add that we always set it to the project from params if present
+        if params[:project_id].present?
+          @project = Project.visible.find(params[:project_id])
+        end
+      end
 
       def whitelist_update_params
         if @project != @version.project
@@ -53,15 +60,6 @@ module OpenProject::Backlogs::Patches::VersionsControllerPatch
             # In this else branch we want the `version` to be an empty hash.
             permitted_params.define_singleton_method :version, lambda { {} }
           end
-        end
-      end
-
-      def find_project_and_version
-        find_model_object
-        if params[:project_id]
-          find_project
-        else
-          find_project_from_association
         end
       end
 

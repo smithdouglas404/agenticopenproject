@@ -1039,7 +1039,6 @@ tr:
         title: "İş paketi paylaşımı için iş akışı eksik"
         message: "'İş paketi düzenleyicisi' rolü için hiçbir iş akışı yapılandırılmamıştır. Bir iş akışı olmadan, paylaşılan kullanıcı iş paketinin durumunu değiştiremez. İş akışları kopyalanabilir. Bir kaynak türü (örn. 'Görev') ve kaynak rolü (örn. 'Üye') seçin. Ardından hedef türleri seçin. Başlangıç olarak, tüm türleri hedef olarak seçebilirsiniz. Son olarak, hedef olarak 'İş paketi düzenleyicisi' rolünü seçin ve 'Kopyala' düğmesine basın. Varsayılanları bu şekilde oluşturduktan sonra, diğer tüm roller için yaptığınız gibi iş akışlarında ince ayar yapın."
         link_message: "İş akışlarını yönetim alanından yapılandırın."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1164,6 +1163,9 @@ tr:
         dependencies: "Bağımlılıklar"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Son yayın tarihi"
       attachment:
@@ -1538,6 +1540,7 @@ tr:
         not_available: "Sistem yapılandırması nedeniyle kullanılamaz.\n"
         not_deletable: "kaldırılamadı."
         not_current_user: "mevcut kullanıcı değil."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "bulunamadı."
         not_a_date: "geçerli bir tarih değil."
         not_a_datetime: "geçerli bir zaman değil."
@@ -2101,6 +2104,7 @@ tr:
     role: "Rol"
     roles: "Yetkiler"
     search: "Ara"
+    sprint: "Sprint"
     start_date: "Başlangıç tarihi"
     status: "Durum"
     state: "Durum"
@@ -3222,7 +3226,6 @@ tr:
   label_duplicate: "kopya"
   label_duplicates: "kopyalayan"
   label_edit: "Düzenle"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Düzenle: %{x}"
   label_enable_multi_select: "Çoklu seçimi etkinleştir"
   label_enabled_project_custom_fields: "Etkin özel alanlar"
@@ -3976,6 +3979,7 @@ tr:
   notice_successful_delete: "Silme başarılı."
   notice_successful_cancel: "İptal işlemi başarılı."
   notice_successful_update: "Güncelleme başarılı."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Oluşturulamadı."
   notice_unsuccessful_create_with_reason: "Oluşturma başarısız oldu: %{reason}"
   notice_unsuccessful_update: "Güncellenemedi."
@@ -4136,6 +4140,7 @@ tr:
   permission_edit_project_query: "Proje sorgusunu düzenleme"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4320,6 +4325,9 @@ tr:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "İlk giriş yönlendirmesi"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4364,6 +4372,9 @@ tr:
   setting_smtp_password: "SMTP parolası"
   setting_smtp_domain: "SMTP HELO alan adı"
   setting_activity_days_default: "Proje faaliyetin de gösterilen gün sayısı istinaden"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Uygulama alt başlığı"
   setting_app_title: "Uygulama başlığı"
   setting_attachment_max_size: "En büyük ek boyutu"
@@ -4473,7 +4484,6 @@ tr:
   setting_repository_checkout_text: "Ödeme talimat metni"
   setting_repository_log_display_limit: "Dosya günlüğünde görüntülenen revizyonların maksimum sayısı"
   setting_repository_truncate_at: "Depo tarayıcıda görüntülenen dosya sayısı üst sınırı"
-  setting_rest_api_enabled: "REST web hizmetini etkinleştir"
   setting_self_registration: "Kendi kendine kayıt"
   setting_self_registration_caption: >
     Kullanıcılar için kendi kendine kayıt mekanizmasını seçin. Bazı seçenekler kullanıcıların bu sistemde kendi hesaplarını etkinleştirmelerine izin verdiğinden, seçtiğiniz ayara dikkat edin.

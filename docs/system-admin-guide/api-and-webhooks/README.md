@@ -13,9 +13,12 @@ Navigate to **Administration → API and webhooks**.
 
 ## API
 
+<!-- TODO: Replace screenshot with new version -->
 ![API settings in OpenProject administration](openproject_system_admin_guide_api.png)
 
-Here, you can manage the **REST web service** to selectively control whether foreign applications may access your OpenProject API endpoints from within the browser. This setting allows users to access the OpenProject API using an API token created from the users "Account settings" page. You can set the **maximum page size** the API will respond with. It will not be possible to perform API requests that return more values on a single page. You can also enable **write access to read-only attributes**, which will allow administrators to write static read-only attributes during creation, such as *createdAt* and *author*. 
+Here, you can manage whether users can create personal API tokens, this setting allows users to access the OpenProject APIs using an API token created from the user's "Account settings" page.
+You can set the **maximum page size** the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+You can also enable **write access to read-only attributes**, which will allow administrators to write static read-only attributes during creation, such as *createdAt* and *author*. This can be useful during data imports.
 
 ### Documentation
 

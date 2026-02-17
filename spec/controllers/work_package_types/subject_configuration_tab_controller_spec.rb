@@ -65,8 +65,8 @@ module WorkPackageTypes
       end
 
       context "if form data is invalid" do
-        let(:form_data) { { subject_configuration: "generated", pattern: nil } }
-        let(:expected_pattern_data) { { subject: { blueprint: "", enabled: true } } }
+        let(:form_data) { { subject_configuration: "generated", pattern: "{{invalid_token}}" } }
+        let(:expected_pattern_data) { { subject: { blueprint: "{{invalid_token}}", enabled: true } } }
         let(:service_result) { ServiceResult.failure }
 
         it "renders the edit template" do

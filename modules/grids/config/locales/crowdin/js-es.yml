@@ -27,8 +27,6 @@ es:
           not_set: 'No establecido'
           finished: 'Terminado'
           discontinued: 'Discontinuado'
-        project_status_beta:
-          title: 'Estado (BETA)'
         subprojects:
           title: 'Subelementos'
         project_favorites:

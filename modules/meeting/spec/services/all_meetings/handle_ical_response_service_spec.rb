@@ -302,7 +302,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
           expect(subject).to be_success
           expect(Rails.logger).to have_received(:warn).with(
             "[iCal Meeting Response] No attendee found for user #{user.mail} " \
-            "in event #{recurring_meeting.uid} with recurrence ID #{recurrence_id.iso8601}"
+            "in event #{recurring_meeting.uid} with recurrence ID #{recurrence_id.utc.strftime('%Y-%m-%dT%H:%M:%S+00:00')}"
           )
         end
       end
