@@ -1632,6 +1632,8 @@ ms:
               not_unique: "sudah digunakan. Sila pilih nama lain."
         meeting:
           error_conflict: "Tidak dapat menyimpan kerana mesyuarat telah dikemas kini oleh orang lain sementara itu. Sila muat semula halaman."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Sekurang-kurangnya satu saluran untuk menghantar pemberitahuan perlu ditentukan."
           attributes:

@@ -1644,6 +1644,8 @@ tr:
               not_unique: "zaten kullanılıyor. Lütfen başka bir isim seçiniz."
         meeting:
           error_conflict: "Toplantı bu sırada başka biri tarafından güncellendiği için kaydedilemiyor. Lütfen sayfayı yeniden yükleyin."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Bildirim göndermek için en az bir kanal belirtilmelidir."
           attributes:

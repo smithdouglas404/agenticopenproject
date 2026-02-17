@@ -1630,6 +1630,8 @@ zh-TW:
               not_unique: "已被使用。請選擇其他名稱。"
         meeting:
           error_conflict: "無法儲存，因為會議現主時已由其他人更新。請重新載入頁面。"
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "至少需要指定一個發送通知的方式"
           attributes:

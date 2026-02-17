@@ -1641,6 +1641,8 @@ es:
               not_unique: "ya está en uso. Por favor, seleccione otro nombre."
         meeting:
           error_conflict: "No se ha podido guardar porque otra persona ha actualizado la reunión mientras tanto. Vuelva a cargar la página."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Debe especificarse al menos un canal para enviar notificaciones."
           attributes:

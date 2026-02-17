@@ -1632,6 +1632,8 @@ vi:
               not_unique: "đã được sử dụng. Vui lòng chọn tên khác."
         meeting:
           error_conflict: "Không thể lưu vì cuộc họp đã được người khác cập nhật trong thời gian chờ đợi. Vui lòng tải lại trang."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Cần phải chỉ định ít nhất một kênh để gửi thông báo."
           attributes:

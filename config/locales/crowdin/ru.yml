@@ -1662,6 +1662,8 @@ ru:
               not_unique: "уже используется. Пожалуйста, выберите другое имя."
         meeting:
           error_conflict: "Невозможно сохранить, потому что совещание было обновлено кем-то другим за это время. Пожалуйста, перезагрузите страницу."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Нужно указать хотя бы один канал для отправки уведомлений."
           attributes:
