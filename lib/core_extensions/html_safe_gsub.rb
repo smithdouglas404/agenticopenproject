@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,9 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Dir[File.join(File.dirname(__FILE__), "core_extensions/**/*.rb")].each { |f| require f }
+# Refinement to allow gsub on html_safe strings
+module CoreExtensions
+  module HtmlSafeGsub
+    ##
+    # Calls #gsub on a string while retaining its original html_safe? property
+    def html_safe_gsub(*gsub_args, &)
+      html_safe = html_safe?
+      result = gsub(*gsub_args, &)
 
-String.prepend CoreExtensions::String
-String.prepend CoreExtensions::HtmlSafeGsub
-ActiveSupport::SafeBuffer.prepend CoreExtensions::HtmlSafeGsub
-ActiveSupport::TimeWithZone.include CoreExtensions::TimeWithZone
+      # We only mark the string as safe if the previous string was already safe
+      if html_safe
+        result.html_safe # rubocop:disable Rails/OutputSafety
+      else
+        result
+      end
+    end
+  end
+end

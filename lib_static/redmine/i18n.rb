@@ -115,35 +115,13 @@ module Redmine
     # @param links [Hash] Link names mapped to URLs.
     # @param external [Boolean] Whether the links should be opened as external links, i.e. in a new tab (default: true)
     # @param underline [Boolean] Whether to underline links inserted into the text (default: true)
-    def link_translate(i18n_key, links: {}, external: true, underline: true) # rubocop:disable Metrics/AbcSize
-      translation = ::I18n.t(i18n_key.to_s)
-      result = translation.scan(link_regex).inject(translation) do |t, matches|
-        link, text, key = matches
-        link_reference = links[key.to_sym]
-        href =
-          case link_reference
-          when Array
-            OpenProject::Static::Links.url_for(*link_reference)
-          else
-            String(link_reference)
-          end
-        target = external ? "_blank" : nil
-        link_tag = render(
-          Primer::Beta::Link.new(
-            href:,
-            target:,
-            underline:,
-            data: { allow_external_link: true }
-          )
-        ) do |l|
-          l.with_trailing_visual_icon(icon: :"link-external") if external
-          text
-        end
+    def link_translate(i18n_key, links: {}, external: true, underline: true)
+      output = ActiveSupport::SafeBuffer.new
+      output << ApplicationController.helpers.t(i18n_key.to_s)
 
-        t.sub(link, link_tag)
+      output.html_safe_gsub(link_regex) do
+        create_link_content($3, $2, external:, links:, underline:)
       end
-
-      result.html_safe
     end
 
     ##
@@ -287,6 +265,32 @@ module Redmine
         end
       end
       @cached_attribute_translations[locale]
+    end
+
+    private
+
+    def create_link_content(key, text, external:, links:, underline:)
+      link_reference = links[key.to_sym]
+      href =
+        case link_reference
+        when Array
+          OpenProject::Static::Links.url_for(*link_reference)
+        else
+          String(link_reference)
+        end
+      target = external ? "_blank" : nil
+
+      render(
+        Primer::Beta::Link.new(
+          href:,
+          target:,
+          underline:,
+          data: { allow_external_link: true }
+        )
+      ) do |l|
+        l.with_trailing_visual_icon(icon: :"link-external") if external
+        text
+      end
     end
   end
 end
