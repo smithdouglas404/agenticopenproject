@@ -266,6 +266,8 @@ paths:
     "$ref": "./paths/help_texts.yml"
   "/api/v3/help_texts/{id}":
     "$ref": "./paths/help_text.yml"
+  "/api/v3/meetings":
+    "$ref": "./paths/meetings.yml"
   "/api/v3/meetings/{id}":
     "$ref": "./paths/meeting.yml"
   "/api/v3/meetings/{id}/attachments":
@@ -829,6 +831,8 @@ components:
       "$ref": "./components/schemas/list_of_news_model.yml"
     List_workspaces_by_versionModel:
       "$ref": "./components/schemas/list_workspaces_by_version_model.yml"
+    MeetingCollectionModel:
+      "$ref": "./components/schemas/meeting_collection_model.yml"
     MeetingModel:
       "$ref": "./components/schemas/meeting_model.yml"
     MarkdownModel:

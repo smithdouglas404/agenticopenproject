@@ -48,26 +48,39 @@ properties:
     type: string
     format: date-time
     description: Time of the most recent change to the meeting.
+  _embedded:
+    type: object
+    required:
+      - attachments
+      - author
+      - project
+    properties:
+      attachments:
+        $ref: './attachments_model.yml'
+      author:
+        $ref: './user_model.yml'
+      project:
+        $ref: './project_model.yml'
   _links:
     type: object
     properties:
       self:
         allOf:
-          - "$ref": "./link.yml"
+          - $ref: './link.yml'
           - description: |-
               This meeting
 
               **Resource**: Meeting
       author:
         allOf:
-          - "$ref": "./link.yml"
+          - $ref: './link.yml'
           - description: |-
               The user having created the meeting
 
               **Resource**: User
       project:
         allOf:
-          - "$ref": "./link.yml"
+          - $ref: './link.yml'
           - description: |-
               The project the meeting is in
 
@@ -81,7 +94,7 @@ properties:
               **Resource**: AttachmentCollection
       addAttachment:
         allOf:
-          - "$ref": "./link.yml"
+          - $ref: './link.yml'
           - description: |-
               Attach a file to the meeting
 
