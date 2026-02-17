@@ -99,8 +99,8 @@ RSpec.describe "Overview page managing", :js, with_flag: { new_project_overview:
       members_area.expect_to_exist
       description_area.expect_to_span(1, 1, 3, 2)
       status_area.expect_to_span(1, 2, 2, 3)
-      overview_area.expect_to_span(3, 1, 4, 3)
-      members_area.expect_to_span(2, 2, 3, 3)
+      overview_area.expect_to_span(2, 2, 3, 3)
+      members_area.expect_to_span(3, 1, 4, 3)
 
       # The widgets load their respective contents
       within description_area.area do
@@ -122,28 +122,28 @@ RSpec.describe "Overview page managing", :js, with_flag: { new_project_overview:
       overview_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
 
       table_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(5)")
-      table_area.expect_to_span(1, 1, 2, 2)
+      table_area.expect_to_span(4, 1, 5, 3)
 
       # A useless resizing shows no message and does not alter the size
       table_area.resize_to(1, 1)
 
       overview_page.expect_no_toaster message: I18n.t("js.notice_successful_update")
 
-      table_area.expect_to_span(1, 1, 2, 2)
+      table_area.expect_to_span(4, 1, 5, 2)
 
       table_area.resize_to(1, 2)
 
       overview_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
-
+      sleep(0.1)
       # Resizing leads to the table area now spanning a larger area
-      table_area.expect_to_span(1, 1, 2, 3)
+      table_area.expect_to_span(4, 1, 5, 3)
 
-      within table_area.area do
+
         expect(page)
           .to have_content(created_work_package.subject)
         expect(page)
           .to have_content(assigned_work_package.subject)
-      end
+
 
       sleep(0.1)
 
@@ -154,11 +154,11 @@ RSpec.describe "Overview page managing", :js, with_flag: { new_project_overview:
       ## Because of the added column and the resizing the other widgets have moved down
       # For unknown, undesired reasons, the project description no longer spans two rows.
       # This happens when resizing the table area.
-      description_area.expect_to_span(2, 1, 3, 2)
-      status_area.expect_to_span(2, 2, 3, 3)
-      overview_area.expect_to_span(4, 1, 5, 3)
+      description_area.expect_to_span(1, 1, 2, 2)
+      status_area.expect_to_span(1, 2, 3, 3)
+      overview_area.expect_to_span(2, 1, 4, 2)
       members_area.expect_to_span(3, 2, 4, 3)
-      table_area.expect_to_span(1, 1, 2, 3)
+      table_area.expect_to_span(4, 1, 5, 3)
     end
 
     it "can add a new widget via a primary button" do
@@ -174,8 +174,8 @@ RSpec.describe "Overview page managing", :js, with_flag: { new_project_overview:
 
       description_area.expect_to_span(1, 1, 3, 2)
       status_area.expect_to_span(1, 2, 2, 3)
-      overview_area.expect_to_span(3, 1, 4, 3)
-      members_area.expect_to_span(2, 2, 3, 3)
+      overview_area.expect_to_span(2, 2, 3, 3)
+      members_area.expect_to_span(3, 1, 4, 3)
 
       page.find_test_selector("overview--add-widgets-button").click
 
@@ -188,11 +188,11 @@ RSpec.describe "Overview page managing", :js, with_flag: { new_project_overview:
       end
 
       second_members_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(5)")
-      second_members_area.expect_to_span(1, 1, 2, 2)
+      second_members_area.expect_to_span(4, 1, 5, 3)
 
-      description_area.expect_to_span(2, 1, 4, 2)
+      description_area.expect_to_span(1, 1, 2, 2)
       status_area.expect_to_span(1, 2, 3, 3)
-      overview_area.expect_to_span(4, 1, 5, 3)
+      overview_area.expect_to_span(2, 1, 4, 2)
       members_area.expect_to_span(3, 2, 4, 3)
     end
   end

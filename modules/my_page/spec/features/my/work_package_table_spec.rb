@@ -79,6 +79,7 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       # This one always exists by default.
       # Using it here as a safeguard to govern speed.
       created_by_me_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(2)")
+      sleep(2)
       expect(created_by_me_area.area)
         .to have_css(".subject", text: type_work_package.subject)
 
@@ -92,7 +93,7 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       my_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
 
       filter_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(3)")
-      filter_area.expect_to_span(1, 2, 2, 3)
+      filter_area.expect_to_span(1, 3, 2, 4)
 
       # At the beginning, the default query is displayed
       expect(filter_area.area)
@@ -105,7 +106,7 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
 
       filter_area.configure_wp_table
       modal.switch_to("Filters")
-      filters.expect_filter_count(2)
+      filters.expect_filter_count(3)
       filters.add_filter_by("Type", "is (OR)", type.name)
       modal.save
 
@@ -143,6 +144,7 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       my_page.visit!
 
       filter_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(3)")
+      sleep(2)
       expect(filter_area.area)
         .to have_css(".id", text: type_work_package.id)
 

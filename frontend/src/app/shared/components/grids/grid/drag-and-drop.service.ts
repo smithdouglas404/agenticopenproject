@@ -107,8 +107,7 @@ export class GridDragAndDropService implements OnDestroy {
     if (!this.draggedArea.unchangedSize) {
       this.layout.writeAreaChangesToWidgets();
       this.layout.cleanupUnusedAreas();
-      this.layout.sortWidgetAreasRowMajor();
-      this.layout.persist();
+      this.layout.rebuildAndPersist();
     }
 
     this.draggedArea = null;

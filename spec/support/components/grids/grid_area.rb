@@ -13,10 +13,27 @@ module Components
         self.area_selector = selector
       end
 
-      def resize_to(row, column)
+      def grid_value(style_name)
+        area.style(style_name)[style_name].to_i
+      end
+
+      def logical_start_row
+        grid_value("grid-row-start") / 2
+      end
+
+      def logical_start_col
+        grid_value("grid-column-start") / 2
+      end
+
+      def resize_to(rows, cols)
         area.hover
 
-        area.find(".grid--resizer").drag_to self.class.of(row * 2, column * 2).area
+        # rows/cols are the desired SIZE of the widget
+        # e.g. (1,2) means same height, +1 column
+        target_row = logical_start_row + rows - 1
+        target_col = logical_start_col + cols - 1
+
+        area.find(".grid--resizer").drag_to self.class.of(target_row * 2, target_col * 2).area
       end
 
       def open_menu

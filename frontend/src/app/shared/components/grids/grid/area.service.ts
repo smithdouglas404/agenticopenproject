@@ -193,7 +193,6 @@ export class GridAreaService {
 
       area.widget = newWidget!;
     });
-    this.sortWidgetAreasRowMajor();
   }
 
   private buildGridAreas() {
@@ -262,18 +261,7 @@ export class GridAreaService {
   }
 
   private buildGridWidgetAreas() {
-    const index = (w:GridWidgetResource) =>
-      (w.startRow - 1) * this.numColumns + w.startColumn;
-
-    const key = (w:GridWidgetResource) =>
-      w.id?.toString() ?? `${w.identifier}:${w.startRow}:${w.startColumn}:${w.endRow}:${w.endColumn}`;
-
-    return [...this.widgetResources]
-      .sort((a, b) => {
-        const d = index(a) - index(b);
-        return d !== 0 ? d : key(a).localeCompare(key(b));
-      })
-      .map((w) => new GridWidgetArea(w));
+    return this.widgetResources.map((widget) => new GridWidgetArea(widget));
   }
 
   // persist all changes to the areas caused by dragging/resizing

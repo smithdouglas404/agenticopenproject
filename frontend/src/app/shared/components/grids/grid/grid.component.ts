@@ -119,6 +119,19 @@ export class GridComponent implements OnDestroy, OnInit {
       this.GRID_AREA_HEIGHT);
   }
 
+  public get widgetAreasForDisplay():GridWidgetArea[] {
+    const index = (a:GridWidgetArea) =>
+      (a.startRow - 1) * this.layout.numColumns + a.startColumn;
+
+    const key = (a:GridWidgetArea) =>
+      (a.widget?.id ?? a.guid).toString();
+
+    return [...(this.layout.widgetAreas || [])].sort((a, b) => {
+      const diff = index(a) - index(b);
+      return diff !== 0 ? diff : key(a).localeCompare(key(b));
+    });
+  }
+
   public identifyGridArea(index:number, area:GridArea) {
     return area.guid;
   }
