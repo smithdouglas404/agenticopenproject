@@ -2,7 +2,14 @@
 ---
 type: object
 required:
+  - id
+  - lockVersion
   - title
+  - startTime
+  - endTime
+  - duration
+  - createdAt
+  - updatedAt
 properties:
   id:
     type: integer
@@ -12,6 +19,34 @@ properties:
   title:
     type: string
     description: The meeting's title
+  location:
+    type: string
+    description: The meeting's location
+  lockVersion:
+    type: integer
+    description: The version of the item as used for optimistic locking
+    readOnly: true
+  startTime:
+    type: string
+    format: date-time
+    description: The scheduled meeting start time.
+  endTime:
+    type: string
+    format: date-time
+    description: The scheduled meeting start time.
+  duration:
+    type: number
+    description: The meeting duration in minutes.
+  createdAt:
+    type: string
+    format: date-time
+    description: Time of creation. Can be writable by admins with the `apiv3_write_readonly_attributes` setting enabled.
+    readOnly: true
+  updatedAt:
+    type: string
+    format: date-time
+    description: Time of the most recent change to the meeting.
+    readOnly: true
   _links:
     type: object
     properties:
@@ -20,7 +55,7 @@ properties:
           - "$ref": "./link.yml"
           - description: |-
               This meeting
-              
+
               **Resource**: Meeting
             readOnly: true
       author:
@@ -28,7 +63,7 @@ properties:
           - "$ref": "./link.yml"
           - description: |-
               The user having created the meeting
-              
+
               **Resource**: User
             readOnly: true
       project:
@@ -36,23 +71,23 @@ properties:
           - "$ref": "./link.yml"
           - description: |-
               The project the meeting is in
-              
+
               **Resource**: Project
       attachments:
         allOf:
           - $ref: './link.yml'
           - description: |-
               The attachment collection of this grid.
-              
-              **Resource**: AttachmentCollection           
+
+              **Resource**: AttachmentCollection
       addAttachment:
         allOf:
           - "$ref": "./link.yml"
           - description: |-
               Attach a file to the meeting
-              
+
               # Conditions
-              
+
               **Permission**: edit meeting
             readOnly: true
 example:
@@ -85,4 +120,4 @@ example:
       href: "/api/v3/users/2"
       title: Peggie Feeney
     self:
-      href: "/api/v3/meetings/72"  
+      href: "/api/v3/meetings/72"
