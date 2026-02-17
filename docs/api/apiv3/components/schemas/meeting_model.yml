@@ -2,6 +2,7 @@
 ---
 type: object
 required:
+  - _type
   - id
   - lockVersion
   - title
@@ -38,7 +39,7 @@ properties:
     description: The scheduled meeting start time.
   duration:
     type: number
-    description: The meeting duration in minutes.
+    description: The meeting duration in hours.
   createdAt:
     type: string
     format: date-time

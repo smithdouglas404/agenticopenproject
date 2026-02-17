@@ -589,6 +589,8 @@ components:
       $ref: "./components/examples/hierarchy_item_collection_response.yml"
     HierarchyItemResponse:
       $ref: "./components/examples/hierarchy_item_response.yml"
+    MeetingCollectionSimpleResponse:
+      $ref: "./components/examples/meeting_collection_simple_response.yml"
     MeetingSimpleResponse:
       $ref: "./components/examples/meeting_simple_response.yml"
     MembershipCreateRequestCustomMessage:
