@@ -39,7 +39,7 @@ RSpec.describe "Meeting Presentation Mode",
   shared_let(:user) do
     create :user,
            preferences: { time_zone: "Etc/UTC" },
-           member_with_permissions: { project => %i[view_meetings manage_agendas manage_outcomes] }
+           member_with_permissions: { project => %i[view_meetings edit_meetings manage_agendas manage_outcomes] }
   end
   shared_let(:meeting) do
     create :meeting,
