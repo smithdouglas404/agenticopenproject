@@ -35,23 +35,16 @@ class RbSprintsController < RbApplicationController
 
   def new_dialog
     @project = Project.visible.find(params[:project_id])
-
-    # TODO: check sprint permissions
     @sprint = Agile::Sprint.new(project: @project)
+
+    if (generated_name = @sprint.sprint_name_from_predecessor).present?
+      @sprint.name = generated_name
+    end
 
     respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint)
   end
 
   def create
-    # @project = Project.visible.find(params[:project_id])
-    # @sprint = Agile::Sprint.new(project: @project)
-    # puts "FOOO =============================="
-    # pp permitted
-    # pp @sprint
-    # pp @sprint.valid?
-    # pp @sprint.errors
-
-    # TODO: check sprint permissions
     call = Sprints::CreateService
              .new(user: current_user)
              .call(attributes: agile_sprint_params.merge(project_id: params[:project_id]))
@@ -59,7 +52,7 @@ class RbSprintsController < RbApplicationController
     sprint = call.result
 
     if call.success?
-      flash[:notice] = I18n.t(:notice_successful_create)
+      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_update))
     else
       update_new_sprint_form_component_via_turbo_stream(sprint:, base_errors: call.errors[:base])
     end

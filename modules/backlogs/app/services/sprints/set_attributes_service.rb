@@ -32,19 +32,9 @@ module Sprints
   class SetAttributesService < ::BaseServices::SetAttributes
     def set_default_attributes(_params)
       model.change_by_system do
-        model.name ||= determine_sequence_name_from_previous_sprint
-
         model.status ||= "in_planning"
         model.sharing ||= "none"
       end
-    end
-
-    private
-
-    def determine_sequence_name_from_previous_sprint
-      # TODO: create name if applicable
-      # TODO 2: is this the right spot? It should be generated earlier so that it's prepopulated in the form.
-      "Sprint name"
     end
   end
 end

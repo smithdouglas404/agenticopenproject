@@ -59,6 +59,25 @@ module Agile
     # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide (#71374, #71253)
     # TODO: implement sharing logic once it has been defined (#71374)
 
+    def sprint_name_from_predecessor
+      return name unless new_record?
+
+      predecessor = project.sprints.last
+
+      if predecessor.nil?
+        # There is no predecessor, so we return a default name for the first sprint.
+        "#{I18n.t('activerecord.models.sprint')} 1"
+      elsif (match = predecessor.name.match(/(.*)\s(\d+)\z/))
+        # If the predecessor's name ends with a number, increment that number for the new sprint's name.
+        # E.g., if the previous sprint was called "Be ambitious 42", the next one will be "Be ambitious 43".
+        "#{match[1]} #{match[2].to_i + 1}"
+      else
+        # The predecessor's name doesn't end with a number. The user has chosen a custom name. Do not assume
+        # how the next sprint should be called. Return an empty string and let the user choose.
+        ""
+      end
+    end
+
     private
 
     # TODO: consider moving this validation to the database level to ensure data integrity.
